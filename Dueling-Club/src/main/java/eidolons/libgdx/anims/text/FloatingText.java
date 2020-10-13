@@ -146,7 +146,7 @@ public class FloatingText extends GroupX {
         AfterAction afterAction = new AfterAction();
         afterAction.setAction(removeAction);
 
-        Action parallelAction = null;
+        Action parallelAction;
         if (delay != 0) {
             parallelAction = new DelayAction();
             ((DelayAction) parallelAction).setTime(delay);

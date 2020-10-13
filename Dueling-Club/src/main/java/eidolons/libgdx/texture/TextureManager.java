@@ -111,7 +111,7 @@ public class TextureManager {
         if (sheet == TextureCache.getMissingTexture()) {
             main.system.auxiliary.log.LogMaster.log(1, ">>>>>>>> Sprite not found: " + path);
         }
-        TextureRegion[][] tmp = null;
+        TextureRegion[][] tmp;
         try {
             tmp = TextureRegion.split(sheet,
              sheet.getWidth() / FRAME_COLS,

@@ -58,7 +58,6 @@ public class MusicMaster {
     MusicEnums.AMBIENCE ambience = MusicEnums.AMBIENCE.MIST;
     private boolean shuffle = true;
     private boolean autoplay = true;
-    private boolean loopPlaylist = false;
     private final Map<String, Music> musicCache = new XLinkedMap<>();
 
     Soundscape soundscape = new Soundscape();
@@ -79,8 +78,6 @@ public class MusicMaster {
 //    private boolean mainThemePlayed;
 
     private Thread thread;
-    private Float musicVolume;
-    private Float ambientVolume;
     private float PAUSE;
     private boolean shouldLoop;
     private boolean interruptOnSet;
@@ -385,7 +382,6 @@ public class MusicMaster {
             }
 
             Boolean intro = null;
-            intro = lastPlayed != BATTLE_LOOP;
 
             int coef = AggroMaster.getBattleDifficulty();
             if (coef > 50) {
@@ -668,7 +664,7 @@ public class MusicMaster {
             }
         }
         checkLoopedTracks(); //breathing, heartbeat, ..
-        soundscape.act(new Float(PERIOD));
+        soundscape.act((float) PERIOD);
         WaitMaster.WAIT(PERIOD);
 //        soundPlayback(PERIOD);
 
@@ -766,7 +762,7 @@ public class MusicMaster {
     }
 
     public Float getAmbientVolume() {
-        ambientVolume = OptionsMaster.getSoundOptions().
+        Float ambientVolume = OptionsMaster.getSoundOptions().
                 getFloatValue(SOUND_OPTION.AMBIENCE_VOLUME) / 100;
         if (Cinematics.ON) {
             return Cinematics.VOLUME_AMBIENCE;
@@ -778,7 +774,7 @@ public class MusicMaster {
         if (Cinematics.ON) {
             return Cinematics.VOLUME_MUSIC;
         }
-        musicVolume = OptionsMaster.getSoundOptions().
+        Float musicVolume = OptionsMaster.getSoundOptions().
                 getFloatValue(SOUND_OPTION.MUSIC_VOLUME) / 100;
         return musicVolume * SoundMaster.getMasterVolume() / 100;
     }
@@ -807,7 +803,6 @@ public class MusicMaster {
     }
 
     public void setLoopPlaylist(boolean loopPlaylist) {
-        this.loopPlaylist = loopPlaylist;
     }
 
     public void autoPlaylist() {

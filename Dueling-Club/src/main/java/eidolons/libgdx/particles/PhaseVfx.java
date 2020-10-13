@@ -33,7 +33,7 @@ public class PhaseVfx extends SpellVfx {
         super(path_);
         for (ANIM_PART part : parts) {
             if (isRandom()) {
-                String fileName = null;
+                String fileName;
                 //                if (part== ANIM_PART.MISSILE) {
                 //                    fileName =    RandomWizard.getRandomListObject(missileVfx);
                 //                } else

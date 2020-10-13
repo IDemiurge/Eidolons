@@ -141,6 +141,6 @@ public class EUtils {
 
     public static void waitAndRun(int i, Runnable o) {
         WaitMaster.WAIT(i);
-        Eidolons.onNonGdxThread(()-> o.run()        );
+        Eidolons.onNonGdxThread(o::run);
     }
 }

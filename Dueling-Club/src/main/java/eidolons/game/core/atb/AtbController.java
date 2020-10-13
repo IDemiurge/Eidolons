@@ -190,7 +190,7 @@ public class AtbController implements Comparator<Unit> {
     }
 
     protected void updateTurnOrder() {
-        this.unitsInAtb.sort((o1, o2) -> compareForSort(o1, o2));
+        this.unitsInAtb.sort(AtbController::compareForSort);
     }
 
     protected void updateTimeTillTurn() {

@@ -14,8 +14,8 @@ public class WeaveButtonPanel extends TablePanelX{
 
 
     public WeaveButtonPanel(){
-        add (new SmartTextButton("Undo", STD_BUTTON.MENU, ()->undo()));
-        add (new SmartTextButton("Toggle", STD_BUTTON.MENU, ()->toggle()));
+        add (new SmartTextButton("Undo", STD_BUTTON.MENU, this::undo));
+        add (new SmartTextButton("Toggle", STD_BUTTON.MENU, this::toggle));
     }
 
     private void toggle() {

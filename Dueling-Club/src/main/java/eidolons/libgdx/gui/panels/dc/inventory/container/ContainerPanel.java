@@ -210,7 +210,7 @@ public class ContainerPanel extends TablePanel implements Blocking {
         if (isButtonRequired()) {
             lower.row();
             mainButton = new SmartTextButton(
-             getButtonText(), StyleHolder.getHqTextButtonStyle(20), () -> mainButton(), STD_BUTTON.MENU);
+             getButtonText(), StyleHolder.getHqTextButtonStyle(20), this::mainButton, STD_BUTTON.MENU);
             lower.add(mainButton).colspan(2).right().fillX().growX();
         }
         return addElement(lower).pad(0, 30, 20, 20);

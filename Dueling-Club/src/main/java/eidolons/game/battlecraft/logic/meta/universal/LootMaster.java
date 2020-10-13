@@ -107,8 +107,7 @@ public class LootMaster<E extends MetaGame> extends MetaGameHandler<E> {
 
     private Boolean makeRequest(LOOT_PREFERENCE preference, Unit hero, ObjType item) {
         //guiEvent
-        Boolean result = null;// WaitMaster.waitForInput();
-        return result;
+        return null;
     }
 
     private boolean checkRequest(LOOT_PREFERENCE preference, Unit hero, ObjType item) {

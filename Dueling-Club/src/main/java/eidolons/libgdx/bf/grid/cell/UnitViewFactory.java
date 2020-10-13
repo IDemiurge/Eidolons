@@ -135,10 +135,9 @@ public class UnitViewFactory {
             OUTLINE_TYPE type = bfObj.getOutlineTypeForPlayer();
             if (type == null)
                 return null;
-            String path = Eidolons.game.getVisionMaster().getVisibilityMaster()
-                    .getImagePath(type, bfObj);
 
-            return (path);
+            return (Eidolons.game.getVisionMaster().getVisibilityMaster()
+                    .getImagePath(type, bfObj));
         });
     }
 

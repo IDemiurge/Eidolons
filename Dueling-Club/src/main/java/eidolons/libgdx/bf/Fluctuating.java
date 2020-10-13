@@ -31,7 +31,6 @@ public class Fluctuating extends GroupX {
     protected float fluctuatingAlphaMinBase;
     protected float fluctuatingAlphaMaxBase;
     protected GenericEnums.ALPHA_TEMPLATE alphaTemplate;
-    private int fluctuatingAlphaPeriod;
     public static int fluctuatingAlphaPeriodGlobal = 1;
 
     static {
@@ -235,7 +234,6 @@ public class Fluctuating extends GroupX {
     }
 
     public void setFluctuatingAlphaPeriod(int fluctuatingAlphaPeriod) {
-        this.fluctuatingAlphaPeriod = fluctuatingAlphaPeriod;
     }
 
 }

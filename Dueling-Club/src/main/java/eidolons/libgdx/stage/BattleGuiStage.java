@@ -51,8 +51,6 @@ public class BattleGuiStage extends GuiStage {
     private final GuiVisualEffects guiVisualEffects;
     private final CombatInventory combatInventory;
     private final FullscreenAnims fullscreenAnims;
-    private HideButton sbHideBtn;
-    private VisualChoice vc;
     private UnitInfoPanelNew infoPanel;
     protected OutcomePanel outcomePanel;
     ParticlesSprites particlesSprites;
@@ -101,6 +99,7 @@ public class BattleGuiStage extends GuiStage {
 
         getBottomPanel().setX(GdxMaster.centerWidthScreen(getBottomPanel()));
         if (VisualChoiceHandler.isOn()) {
+            VisualChoice vc;
             addActor(vc = new VisualChoice());
             vc.setVisible(false);
         }
@@ -120,6 +119,7 @@ public class BattleGuiStage extends GuiStage {
             addActor(soulforcePanel = new SoulforcePanel());
             GdxMaster.center(soulforcePanel);
             soulforcePanel.setY(GdxMaster.getTopY(soulforcePanel));
+            HideButton sbHideBtn;
             addActor(sbHideBtn = new HideButton(soulforcePanel));
             GdxMaster.center(sbHideBtn);
             sbHideBtn.setX(sbHideBtn.getX() - 7);

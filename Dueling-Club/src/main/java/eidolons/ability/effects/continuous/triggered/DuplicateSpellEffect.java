@@ -10,7 +10,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 
 public class DuplicateSpellEffect extends MicroEffect implements TriggeredEffect {
     public static EVENT_TYPE EVENT_TYPE = STANDARD_EVENT_TYPE.SPELL_RESOLVED;
-    private boolean chooseTarget = false;
+    private final boolean chooseTarget;
     private boolean group = false;
     private boolean event = false;
     private String target_key;

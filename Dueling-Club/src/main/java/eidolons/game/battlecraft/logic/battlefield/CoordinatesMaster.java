@@ -58,7 +58,7 @@ public class CoordinatesMaster {
         final int x2 = getMaxX(coordinates);
         final int y1 = getMinY(coordinates);
         final int y2 = getMaxY(coordinates);
-        Collections.sort(coordinates, (o1, o2) -> compare_(x1, x2, y1, y2, prefLessMoreMiddle, x_more, y_more, o1, o2));
+        coordinates.sort((o1, o2) -> compare_(x1, x2, y1, y2, prefLessMoreMiddle, x_more, y_more, o1, o2));
         return coordinates;
     }
 
@@ -106,8 +106,8 @@ public class CoordinatesMaster {
                 }
             }
         }
-        float midX = new Float(x1 + x2) / 2;
-        float midY = new Float(y1 + y2) / 2;
+        float midX = (float) (x1 + x2) / 2;
+        float midY = (float) (y1 + y2) / 2;
         if (result == 0) {
             if (prefLessMoreMiddle == null) {
                 if (o1.getY() == o2.getY()) {
@@ -164,8 +164,7 @@ public class CoordinatesMaster {
         int x2 = getMaxX(coordinates);
         int y1 = getMinY(coordinates);
         int y2 = getMaxY(coordinates);
-        List<Coordinates> exceptions = new ArrayList<>();
-        exceptions.addAll(getCoordinatesWithin(x1, x2, y1, y2));
+        List<Coordinates> exceptions = new ArrayList<>(getCoordinatesWithin(x1, x2, y1, y2));
         return getBoundsString(x1, x2, y1, y2) + " " + exceptions.toString();
     }
 
@@ -496,11 +495,11 @@ public class CoordinatesMaster {
     }
 
     public static String getStringFromCoordinates(List<Coordinates> list) {
-        String textContent = "";
+        StringBuilder textContent = new StringBuilder();
         for (Coordinates c : list) {
-            textContent += c.toString() + ";";
+            textContent.append(c.toString()).append(";");
         }
-        return textContent;
+        return textContent.toString();
     }
 
     public static Coordinates getClosestValid(Coordinates coordinates) {
@@ -522,17 +521,15 @@ public class CoordinatesMaster {
     }
 
     public static List<Coordinates> getCoordinatesBetween(Coordinates c, Coordinates c2) {
-        List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesWithin(
+        return CoordinatesMaster.getCoordinatesWithin(
                 Math.min(c.x, c2.x), Math.max(c.x, c2.x), Math.min(c.y, c2.y), Math.max(
                         c.y, c2.y));
-        return coordinates;
     }
 
     public static List<Coordinates> getCoordinatesBetweenInclusive(Coordinates c, Coordinates c2) {
-        List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesWithin(
+        return CoordinatesMaster.getCoordinatesWithin(
                 Math.min(c.x, c2.x), Math.max(c.x, c2.x), Math.min(c.y, c2.y), Math.max(
                         c.y, c2.y), true);
-        return coordinates;
     }
 
     public static Set<Coordinates> getZoneCoordinates(DC_ActiveObj entity) {

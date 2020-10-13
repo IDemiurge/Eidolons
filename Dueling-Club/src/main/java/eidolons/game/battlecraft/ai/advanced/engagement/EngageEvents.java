@@ -130,7 +130,6 @@ public class EngageEvents extends ExplorationHandler {
                 case UNSUSPECTING:
                     return getPlayerStatus().getType() == VisionEnums.PLAYER_STATUS.EXPLORATION_DETECTED;
                 case SUSPECTING:
-                    break;
                 case ALERTED:
                     break;
             }

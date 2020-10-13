@@ -142,9 +142,6 @@ public class StructureBuilder extends DungeonHandler {
         }
 
         b.setCoordinates(coordinates);
-        if (objectMap == null) {
-            return b;
-        }
 
         return b;
     }

@@ -126,7 +126,7 @@ public class Pillars {
         return skewed ? SKEWED_CORNER : CORNER;
     }
 
-    public static final Vector2 getOffset(PILLAR pillar) {
+    public static Vector2 getOffset(PILLAR pillar) {
         switch (pillar) {
             case VERT:
             case UP:

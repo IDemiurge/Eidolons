@@ -25,12 +25,10 @@ import static eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums.PUZ
 
 public class ArtSetup extends PuzzleSetup<ArtPuzzle, Object> {
 
-    private final String[] mutatorArgs;
     Set<DC_Cell> mosaic = new LinkedHashSet<>();
 
     public ArtSetup(ArtPuzzle puzzle, PuzzleData data, String... mutatorArgs) {
         super(puzzle, data);
-        this.mutatorArgs = mutatorArgs;
     }
 
     public String getArtPiecePath(String n) {

@@ -245,7 +245,7 @@ public class ItemInfoPanel extends TablePanelX implements SelectableItemDisplaye
     }
 
     public void initStartButton(String text, Runnable runnable) {
-        addActor(startButton = new SmartTextButton(text, STD_BUTTON.MENU, () -> runnable.run()) {
+        addActor(startButton = new SmartTextButton(text, STD_BUTTON.MENU, runnable::run) {
             @Override
             public BUTTON_SOUND_MAP getSoundMap() {
                 return AudioEnums.BUTTON_SOUND_MAP.ENTER;

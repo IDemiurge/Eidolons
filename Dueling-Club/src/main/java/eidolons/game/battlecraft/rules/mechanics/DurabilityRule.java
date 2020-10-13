@@ -33,14 +33,14 @@ public class DurabilityRule extends DC_RuleImpl {
 
     private static int physicalDamage(int damage, int blocked, DAMAGE_TYPE damage_type,
                                       DC_HeroSlotItem armor, DC_WeaponObj weapon, BattleFieldObject target) {
-        MATERIAL m1 = null;
+        MATERIAL m1;
         if (armor != null)
             m1 = armor.getMaterial();
         else {
             m1 = getNaturalArmorMaterial(target);
         }
         MATERIAL m2 = weapon.getMaterial();
-        int self_damage_mod = 100;
+        int self_damage_mod;
         if (armor != null && blocked > 0) {
             self_damage_mod = armor.getIntParam(DC_ContentValsManager
                     .getArmorSelfDamageParamForDmgType(damage_type));

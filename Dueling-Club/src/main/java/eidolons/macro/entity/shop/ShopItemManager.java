@@ -344,8 +344,8 @@ public class ShopItemManager extends EntityHandler<Shop> {
             ));
         }
         if (isItemsSortedOnInit()) {
-            Collections.sort(items, SortMaster.getObjSorterByExpression(item ->
-             item.getIntParam(PARAMS.GOLD_COST)));
+            items.sort(SortMaster.getObjSorterByExpression(item ->
+                    item.getIntParam(PARAMS.GOLD_COST)));
         }
     }
 
@@ -380,8 +380,8 @@ public class ShopItemManager extends EntityHandler<Shop> {
         priceCache = new HashMap<>();
         for (String substring : ContainerUtils.openContainer(
          getProperty(MACRO_PROPS.SHOP_CACHED_PRICES))) {
-            int id = Integer.valueOf(VariableManager.removeVarPart(substring));
-            int price = Integer.valueOf(VariableManager.getVar(substring));
+            int id = Integer.parseInt(VariableManager.removeVarPart(substring));
+            int price = Integer.parseInt(VariableManager.getVar(substring));
             priceCacheMax.put(id, price);
         }
     }
@@ -410,8 +410,8 @@ public class ShopItemManager extends EntityHandler<Shop> {
     public void handleDebt(Unit hero) {
         if (playerDebt ==0)
             return;
-        int transferred = 0;
-        boolean ok = false;
+        int transferred;
+        boolean ok;
         boolean gives = false;
         if (playerDebt > 0) {
             transferred = Math.min(Math.abs(playerDebt), hero.getGold());

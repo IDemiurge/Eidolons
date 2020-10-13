@@ -30,12 +30,8 @@ import java.util.stream.Collectors;
 public class PartyTooltip extends Tooltip {
     private final MacroParty party;
     private final PartyActor actor;
-    private final ValueContainer leader;
-    private final ValueContainer members;
-    private final HorGroup<Image> membersPics;
     private final Label threatLabel;
     private final Label allegiance;
-    private final ValueContainer main;
 
     public PartyTooltip(MacroParty party, PartyActor actor) {
         this.party = party;
@@ -43,19 +39,18 @@ public class PartyTooltip extends Tooltip {
 
         setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
 
-        main = new ValueContainer(TextureCache.getOrCreateR(
-         party.getEmblemPath()),
-         party.getName());
-        leader = new ValueContainer(TextureCache.getOrCreateR(
-         party.getLeader().getImagePath()),
-         "Leader: ",
-         party.getName());
+        ValueContainer main = new ValueContainer(TextureCache.getOrCreateR(
+                party.getEmblemPath()),
+                party.getName());
+        ValueContainer leader = new ValueContainer(TextureCache.getOrCreateR(
+                party.getLeader().getImagePath()),
+                "Leader: ",
+                party.getName());
         //set to "known members: " if...
-        members = new ValueContainer(party.getMembers().size() + " ", "Members");
-        membersPics =
-         new HorGroup<>(Math.max(256, party.getMembers().size() * 128 / 3), 0, party.getMembers().stream().map(hero ->
-          new Image(TextureCache.getOrCreateR(hero.getImagePath()))
-         ).collect(Collectors.toList()));
+        ValueContainer members = new ValueContainer(party.getMembers().size() + " ", "Members");
+        HorGroup<Image> membersPics = new HorGroup<>(Math.max(256, party.getMembers().size() * 128 / 3), 0, party.getMembers().stream().map(hero ->
+                new Image(TextureCache.getOrCreateR(hero.getImagePath()))
+        ).collect(Collectors.toList()));
         allegiance = new Label("", StyleHolder.getDefaultLabelStyle());
 
 //        Label status; //traveling, guarding, ..
@@ -88,7 +83,7 @@ public class PartyTooltip extends Tooltip {
 
     @Override
     public void updateAct(float delta) {
-        String text = "Unknown";
+        String text;
         boolean showThreat = false;
         setVisible(showing);
 //        if (party.getInfoLevel() == MAP_OBJ_INFO_LEVEL.VISIBLE) {

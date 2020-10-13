@@ -259,7 +259,7 @@ public class DC_StateManager extends StateManager {
 
     protected void applyDifficulty() {
         if (!getGame().isSimulation())
-            unitsToReset.forEach(unit -> applyDifficulty(unit));
+            unitsToReset.forEach(this::applyDifficulty);
     }
 
     private void applyDifficulty(Unit unit) {
@@ -504,7 +504,6 @@ public class DC_StateManager extends StateManager {
             getGameManager().reset();
             getGameManager().resetValues();
             //            IlluminationRule.applyLightEmission(getGame());
-            game.getTurnManager().newRound();
         } else {
 
             resetAllSynchronized();
@@ -512,9 +511,9 @@ public class DC_StateManager extends StateManager {
             if (!VisionMaster.isNewVision()) {
                 getGame().getVisionMaster().getIllumination().resetIllumination(true);
             }
-            game.getTurnManager().newRound();
             //            getGameManager().refreshAll();
         }
+        game.getTurnManager().newRound();
         //        getGameManager().reset();
 
         if (!started)

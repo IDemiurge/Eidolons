@@ -48,18 +48,21 @@ public final class UI {
 	public boolean drawBackground, backgroundAffected, drawSprite;
 	public Sprite background;
 
-	private Stage stage;
-	private Label singleMessage, fps;
+	private final Stage stage;
+	private final Label singleMessage;
+    private final Label fps;
 
 	// panel animator
-	private boolean comboBoxFlag, panelShown, usePanelAnimator;
+	private boolean comboBoxFlag;
+    private boolean panelShown;
+    private final boolean usePanelAnimator;
 	private TopPanelAnimator panelAnimator;
 
 	private static final boolean DebugUI = false;
 	private static final int DefaultBackground = 2;
 	private static final int DefaultGradientMap = 0;
-	private PostProcessing post;
-	private Array<SelectBox> selectBoxes = new Array<SelectBox>();
+	private final PostProcessing post;
+	private final Array<SelectBox> selectBoxes = new Array<>();
 
 	public UI( InputMultiplexer inputMultiplexer, PostProcessing postProcessing, boolean panelAutoShow ) {
 		float width = Gdx.graphics.getWidth();

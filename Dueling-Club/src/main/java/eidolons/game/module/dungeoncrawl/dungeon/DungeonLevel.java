@@ -131,32 +131,30 @@ public class DungeonLevel  {
                 "" //TODO
                 : directionMapData);
 
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for (LevelBlock block : getBlocks()) {
             for (Coordinates c : block.getBoundCells().keySet()) {
                 if (block.getBoundCells().get(c) == null)
                     continue;
-                s += c + "=" + block.getBoundCells().get(c).toString() + ";";
+                s.append(c).append("=").append(block.getBoundCells().get(c).toString()).append(";");
             }
 
         }
-        xml += "\n" + XML_Converter.wrap(RngXmlMaster.BOUND_NODE, s);
+        xml += "\n" + XML_Converter.wrap(RngXmlMaster.BOUND_NODE, s.toString());
 
         xml = XML_Converter.wrap("Level", xml);
         return xml;
     }
 
     public String getAiData() {
-        String aiData = "";
+        StringBuilder aiData = new StringBuilder();
         for (LevelBlock block : getBlocks()) {
             for (List<ObjAtCoordinate> list : block.getUnitGroups().keySet()) {
-                aiData += block.getUnitGroups().get(list) + RngXmlMaster.AI_GROUP_SEPARATOR +
-                        ContainerUtils.toStringContainer(list, ";") +
-                        "\n";
+                aiData.append(block.getUnitGroups().get(list)).append(RngXmlMaster.AI_GROUP_SEPARATOR).append(ContainerUtils.toStringContainer(list, ";")).append("\n");
             }
         }
         return "\n" + XML_Converter.wrap(RngXmlMaster.AI_GROUPS_NODE,
-                aiData);
+                aiData.toString());
     }
 
     @Deprecated
@@ -261,11 +259,10 @@ public class DungeonLevel  {
     }
 
     public List<LevelBlock> getBlocks() {
-        List<LevelBlock> list = new ArrayList<>();
-//        for (LevelZone zone : getSubParts()) {
+        //        for (LevelZone zone : getSubParts()) {
 //            list.addAll(zone.getSubParts());
 //        }
-        return list;
+        return new ArrayList<>();
     }
 
     public String getExitType() {
@@ -325,7 +322,7 @@ public class DungeonLevel  {
     }
 
     public float getFillRatio() {
-        return new Float(model.getOccupiedCells().size())
+        return (float) model.getOccupiedCells().size()
                 / model.getCurrentWidth() / model.getCurrentHeight();
     }
 

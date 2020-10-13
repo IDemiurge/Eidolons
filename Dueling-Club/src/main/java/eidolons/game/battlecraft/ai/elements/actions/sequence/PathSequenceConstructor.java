@@ -113,14 +113,13 @@ public class PathSequenceConstructor extends AiHandler {
     private List<Coordinates> getTargetCells(Action targetAction, int limit, int range) {
 
         Coordinates enemyC = targetAction.getTarget().getCoordinates();
-        List<Coordinates> list = Arrays.stream(
+
+        return Arrays.stream(
                 CoordinatesMaster.getInRange(enemyC, range)).filter(
                 c -> canTarget(c, targetAction) && c!=enemyC). //close quarters?
                 sorted(CoordinatesMaster.getSorter(getUnit().getCoordinates(), true)).
                 limit(limit).
                 collect(Collectors.toList());
-
-        return list;
     }
 
     private List<Coordinates> getTargetCells(Action targetAction, boolean allowFastPick) {

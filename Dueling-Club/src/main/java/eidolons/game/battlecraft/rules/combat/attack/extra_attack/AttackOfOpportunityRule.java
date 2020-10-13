@@ -70,8 +70,7 @@ public class AttackOfOpportunityRule {
             return false;
         }
 
-        boolean result = checkInterrupted(active);
-        return result;
+        return checkInterrupted(active);
     }
 
     private static boolean checkOverride(DC_ActiveObj active) {
@@ -250,11 +249,10 @@ public class AttackOfOpportunityRule {
 
     public static List<DC_ActiveObj> getMoveAoOs(Coordinates prevCoordinates,
                                                  Coordinates coordinates, DC_ActiveObj action) {
-        List<DC_ActiveObj> list = new ArrayList<>();
         // TODO
         // if (!getConditions().preCheck(unit)) return;
 
-        return list;
+        return new ArrayList<>();
     }
 
     public static Boolean collisionAoO(DC_ActiveObj active, Unit collidedUnit) {

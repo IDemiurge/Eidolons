@@ -82,20 +82,14 @@ public class SpellbookContainer extends HqSpellContainer {
     }
 
     protected boolean checkValid(Spell spell) {
-        if (spell.getSpellPool() != null) {
-            return true;
-        }
-        return false;
+        return spell.getSpellPool() != null;
     }
 
     protected boolean checkAvailable(Spell spell) {
         if (spell.getSpellPool() != null) {
             return false;
         }
-        if (HqSpellMaster.canLearn(spell)) {
-            return true;
-        }
-        return false;
+        return HqSpellMaster.canLearn(spell);
     }
 
     protected List<Spell> getSpells() {

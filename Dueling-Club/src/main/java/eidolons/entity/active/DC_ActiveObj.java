@@ -94,8 +94,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     @Override
     public EntityMaster initMaster() {
-        ActiveMaster master = new ActiveMaster(this);
-        return master;
+        return new ActiveMaster(this);
 
     }
 
@@ -451,7 +450,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     public List<DC_UnitAction> getSubActions() {
         if (subActions == null) {
-            subActions = new ArrayList<DC_UnitAction>();
+            subActions = new ArrayList<>();
         }
         return subActions;
     }

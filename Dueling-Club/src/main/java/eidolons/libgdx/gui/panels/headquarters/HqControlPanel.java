@@ -15,9 +15,7 @@ public class HqControlPanel extends HqElement {
         //        setFixedSize(true);
 
         if (!HqDataMaster.isSimulationOff())
-            add(new SymbolButton(STD_BUTTON.UNDO, () -> {
-                HqDataMaster.undo();
-            }));
+            add(new SymbolButton(STD_BUTTON.UNDO, HqDataMaster::undo));
         add(new SymbolButton(STD_BUTTON.OK, () -> {
             if (!HqDataMaster.isSimulationOff())
                 save();
@@ -26,9 +24,7 @@ public class HqControlPanel extends HqElement {
         }));
 
         if (!HqDataMaster.isSimulationOff())
-            add(new SymbolButton(STD_BUTTON.CANCEL, () -> {
-                close();
-            }));
+            add(new SymbolButton(STD_BUTTON.CANCEL, this::close));
     }
 
     private void save() {

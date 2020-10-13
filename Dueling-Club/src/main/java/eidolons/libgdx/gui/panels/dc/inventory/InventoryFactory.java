@@ -77,7 +77,7 @@ public class InventoryFactory {
             if (versioned){
                 int durability = DataManager.getType(item.getBaseTypeName(),
                  item.getOBJ_TYPE_ENUM()).getIntParam(PARAMS.DURABILITY);
-                float perc = new Float(durability) / item.getIntParam(PARAMS.C_DURABILITY);
+                float perc = (float) durability / item.getIntParam(PARAMS.C_DURABILITY);
 
                 if (perc < 0.75f) {
                     typeName += " 2";
@@ -108,7 +108,7 @@ public class InventoryFactory {
             if (entity.getOBJ_TYPE_ENUM() instanceof DC_TYPE) {
                 switch (t) {
                     case WEAPONS:
-                        DC_WeaponObj weapon = null;
+                        DC_WeaponObj weapon;
                         if (entity instanceof DC_QuickItemObj) {
                             weapon = ((DC_QuickItemObj) entity).getWrappedWeapon();
                         } else weapon =

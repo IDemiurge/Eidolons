@@ -77,7 +77,7 @@ public class Loader {
         );
         Document xmlDoc = XML_Converter.getDoc(xml);
 
-        Unit hero = null;// Eidolons.getMainHero();
+        Unit hero;// Eidolons.getMainHero();
         Node node = XmlNodeMaster.findNode(xmlDoc, Saver.HERO_NODE);
         ObjType loadedType = TypeBuilder.buildType(node.getFirstChild(),
          DataManager.getType(

@@ -24,14 +24,12 @@ public class A_StarAlgorithm {
     private boolean agile;
     private boolean flying;
     private final PathingManager mngr;
-    private final List<PathNode> nodeList;
     private int N;
-    private boolean success;
     private LinkedList<Coordinates> targets;
 
     public A_StarAlgorithm(PathingManager mngr) {
         this.mngr = mngr;
-        nodeList = mngr.getNodeList();
+        List<PathNode> nodeList = mngr.getNodeList();
     }
 
     public Path getPath(boolean flying, boolean agile, Coordinates c1, Coordinates... targets) {
@@ -48,6 +46,7 @@ public class A_StarAlgorithm {
         refresh();
         closedList.add(orig);
 
+        boolean success;
         while (true) {
             if (step()) {
                 success = true;

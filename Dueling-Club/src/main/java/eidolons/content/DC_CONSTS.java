@@ -270,11 +270,9 @@ public class DC_CONSTS {
         private final int power;
         private final int level;
         private final int costFactor;
-        private final String iconSuffix;
 
         ITEM_LEVEL(int power, int n, int costFactor, String iconSuffix) {
             this.costFactor = costFactor;
-            this.iconSuffix = iconSuffix;
             this.level = n;
             this.power = power;
         }

@@ -136,7 +136,6 @@ public class DC_Game extends GenericGame {
 
     @Refactor
     public Town town; //TODO
-    private boolean bossFight;
 
     protected DC_GameObjMaster paleMaster;
 
@@ -933,7 +932,6 @@ public class DC_Game extends GenericGame {
     }
 
     public void setBossFight(boolean bossFight) {
-        this.bossFight = bossFight;
     }
 
     public ColorMap getColorMap() {

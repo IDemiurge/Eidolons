@@ -121,8 +121,7 @@ public class ParryRule {
         float chance = DefenseVsAttackRule.getProportionBasedChance(attackValue, defenseValue, false);
         chance += attack.getAttackedUnit().getIntParam(PARAMS.PARRY_CHANCE);
         chance += -attack.getAttacker().getIntParam(PARAMS.PARRY_PENETRATION);
-        Integer chanceRounded = Math.round(chance);
-        return chanceRounded;
+        return Math.round(chance);
     }
 
     // precalculateRawDamageForDisplay

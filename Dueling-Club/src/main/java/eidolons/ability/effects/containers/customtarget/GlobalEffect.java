@@ -7,7 +7,7 @@ import main.elements.targeting.AutoTargeting.AUTO_TARGETING_TEMPLATES;
 
 public class GlobalEffect extends SpecialTargetingEffect {
 
-    private AUTO_TARGETING_TEMPLATES template = AUTO_TARGETING_TEMPLATES.ALL;
+    private final AUTO_TARGETING_TEMPLATES template;
 
     // public GlobalEffect(Effect effects, Boolean friendlyFire,
     // Boolean notSelf) {

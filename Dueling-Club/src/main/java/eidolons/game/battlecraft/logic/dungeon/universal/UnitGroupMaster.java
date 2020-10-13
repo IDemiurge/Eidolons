@@ -54,7 +54,6 @@ public class UnitGroupMaster {
     private static int power_limit;
     private static List<ObjType> unitList;
     private static Integer powerLevel = 3;
-    private static ObjType hero;
     private static Object myHero;
     private static Object enemyHero;
 
@@ -128,7 +127,7 @@ public class UnitGroupMaster {
     }
 
     private static List<ObjAtCoordinate> mapPositions(List<ObjType> list, Entity hero) {
-        Unit unit = null;
+        Unit unit;
 
         // posView.in
         List<Unit> units = new ArrayList<>();
@@ -255,7 +254,7 @@ public class UnitGroupMaster {
                     + MetaEnums.WORKSPACE_GROUP.COMPLETE);
             ObjType faction = ListChooser.chooseType_(available, MACRO_OBJ_TYPES.FACTIONS);
             if (factionLeaderRequired) {
-                hero = UnitGroupMaster.createGroupLeader(me, faction, powerLevel);
+                ObjType hero = UnitGroupMaster.createGroupLeader(me, faction, powerLevel);
                 if (hero == null) {
                     return null;
                 }

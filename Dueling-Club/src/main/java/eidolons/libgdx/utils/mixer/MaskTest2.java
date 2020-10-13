@@ -110,9 +110,9 @@ public class MaskTest2 implements ApplicationListener {
 
         //the sprite we want the circle mask applied to
         int spriteWidth = 537;
-        int x = (int) ((WIDTH-spriteWidth)/2);
+        int x;
         int spriteHeight = 629;
-        int y = (int) ((HEIGHT-spriteHeight)/2);
+        int y;
 x=0;
 y=0;
         //draw the alpha mask

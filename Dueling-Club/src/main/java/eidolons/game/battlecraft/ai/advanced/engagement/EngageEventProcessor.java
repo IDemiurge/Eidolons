@@ -148,7 +148,7 @@ public class EngageEventProcessor {
     }
 
     private void statusChange(PLAYER_STATUS combat, Object arg) {
-        Integer integer = 0;
+        Integer integer;
         if (arg == null) {
             integer = 0;
         } else integer =               (Integer) arg;

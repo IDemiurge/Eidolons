@@ -43,7 +43,6 @@ public class NF_DefeatHandler extends DefeatHandler {
         VC_OPTION o = (VC_OPTION) WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.VISUAL_CHOICE);
         switch (o) {
             case ashen_rebirth:
-                return false;
             case fiery_rebirth:
                 return false;
             case dissolution:
@@ -96,11 +95,11 @@ public class NF_DefeatHandler extends DefeatHandler {
         return getMaster().getPartyManager().getHeroChain().isFinished();
     }
 
-    public static final boolean isOn() {
+    public static boolean isOn() {
         return true;
     }
 
-    public static final boolean isTestOn() {
+    public static boolean isTestOn() {
         return true;
     }
 

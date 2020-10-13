@@ -15,7 +15,7 @@ import main.entity.Ref.KEYS;
 
 public class SneakCondition extends MicroCondition {
 
-    private KEYS key;
+    private final KEYS key;
 
     public SneakCondition() {
         key = KEYS.TARGET;
@@ -35,8 +35,7 @@ public class SneakCondition extends MicroCondition {
 
     @Override
     public boolean check(Ref ref) {
-        boolean result = checkSneak(ref);
-        return result;
+        return checkSneak(ref);
     }
 
     public boolean checkSneak(Ref ref) {

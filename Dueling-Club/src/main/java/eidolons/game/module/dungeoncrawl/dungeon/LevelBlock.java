@@ -68,7 +68,7 @@ public class LevelBlock extends LevelStruct<LevelBlock, LevelBlock> {
         }
             LinkedHashSet<LayeredData> objs = DC_Game.game.getBfObjects().stream().filter(
                     obj -> isWithinBlock(obj) && obj.getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS).map(
-                    obj -> new ObjNode(obj)).collect(Collectors.toCollection(LinkedHashSet::new));
+                    ObjNode::new).collect(Collectors.toCollection(LinkedHashSet::new));
             objs.add(new ObjsNode(this));
             return objs;
     }
@@ -153,7 +153,7 @@ public class LevelBlock extends LevelStruct<LevelBlock, LevelBlock> {
     }
 
     public void setCoordinates(Collection<Coordinates> coordinatesList) {
-        coordinatesList.removeIf(c -> c == null);
+        coordinatesList.removeIf(Objects::isNull);
         this.coordinatesSet = new LinkedHashSet<>(coordinatesList);
 
     }

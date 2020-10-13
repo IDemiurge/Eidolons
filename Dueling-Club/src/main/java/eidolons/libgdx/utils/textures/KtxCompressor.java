@@ -16,9 +16,6 @@ public class KtxCompressor extends GdxUtil {
     private final String[] args;
     private SpriteBatch spriteBatch;
 
-    private final boolean checkRGB = true;
-    private final boolean writeKTX = true;
-
     public KtxCompressor(String... args) {
         this.args = args;
     }
@@ -61,12 +58,14 @@ public class KtxCompressor extends GdxUtil {
 
     private void convert(File file) {
         if (file.getName().contains(".txt")) {
+            boolean checkRGB = true;
             if (checkRGB)
                 checkRGB(file);
             if (!file.getName().contains("ktx")) {
                 generateAtlasVersion(file);
             }
         } else {
+            boolean writeKTX = true;
             if (writeKTX)
                 if (!file.getName().contains(".ktx"))
                     convert(file.getPath());

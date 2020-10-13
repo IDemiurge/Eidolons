@@ -152,7 +152,7 @@ public class DamageDealer {
             return 0;
         }
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
-        int damageDealt = 0;
+        int damageDealt;
         if (damage_type == DAMAGE_TYPE.PURE) {
             damageDealt = dealPureDamage(targetObj, attacker,
                     (DamageCalculator.isEnduranceOnly(ref) ? 0
@@ -272,7 +272,7 @@ public class DamageDealer {
             return;
         }
 
-        MultiDamage multiDamage = null;
+        MultiDamage multiDamage;
         if (active.getDamageDealt() instanceof MultiDamage) {
             multiDamage = (MultiDamage) active.getDamageDealt();
         } else {
@@ -382,7 +382,7 @@ public class DamageDealer {
             }
         }
 
-        int actual_e_damage = 0;
+        int actual_e_damage;
         if (endurance_dmg > 0) {
             ref.setAmount(endurance_dmg);
             event = new Event(STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_ENDURANCE_DAMAGE, ref);
@@ -430,9 +430,7 @@ public class DamageDealer {
             // will start new entry... a good preCheck
             try {
                 if (!attacked.kill(attacker, !annihilated, false)) {
-                    unconscious = true; //TODO wtf is this?
                 } else {
-                    unconscious = false;
                     if (annihilated) {
                         attacked.getGame().getManager().getDeathMaster().
                                 unitAnnihilated(attacked, attacker);

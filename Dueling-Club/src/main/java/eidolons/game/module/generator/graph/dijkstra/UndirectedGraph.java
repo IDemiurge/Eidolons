@@ -5,16 +5,16 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class UndirectedGraph<V, VertexData, EdgeData> {
-    private Map<V, VertexData> node;
-    private Map<V, Map<V, EdgeData>> adj;
+    private final Map<V, VertexData> node;
+    private final Map<V, Map<V, EdgeData>> adj;
     // constructor
     public UndirectedGraph() {
-        this.node = new ConcurrentHashMap<V, VertexData>();
-        this.adj = new ConcurrentHashMap<V, Map<V, EdgeData>>();
+        this.node = new ConcurrentHashMap<>();
+        this.adj = new ConcurrentHashMap<>();
     }
     // adds a node to the graph
     public void addNode(V n, VertexData d) {
-        this.adj.put(n, new ConcurrentHashMap<V, EdgeData>());
+        this.adj.put(n, new ConcurrentHashMap<>());
         this.node.put(n, d);
     }
     // removes a node from the graph

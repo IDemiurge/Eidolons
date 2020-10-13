@@ -138,10 +138,10 @@ public class WorldGenerator {
 
     private static MacroParty createParty(MacroRef ref, String s) {
         Coordinates coordinates = Coordinates.get(true,
-         Integer.valueOf(VariableManager.getVar(s, 0)),
-         Integer.valueOf(VariableManager.getVar(s, 1)));
+         Integer.parseInt(VariableManager.getVar(s, 0)),
+         Integer.parseInt(VariableManager.getVar(s, 1)));
         String string = (VariableManager.getVar(s, 2));
-        Faction faction = null;
+        Faction faction;
         if (StringMaster.isEmpty(string)) {
             faction = game.getPlayerFaction();
         } else if (string.equalsIgnoreCase("player")) {

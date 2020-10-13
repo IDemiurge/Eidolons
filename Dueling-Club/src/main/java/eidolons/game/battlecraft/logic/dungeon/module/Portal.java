@@ -14,7 +14,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
 class Portal extends GridObject {
-    public boolean oneWay = false; //TODO
+    public boolean oneWay; //TODO
     FACING_DIRECTION exitFacing;
     Coordinates coordinates;
     Portal pair;

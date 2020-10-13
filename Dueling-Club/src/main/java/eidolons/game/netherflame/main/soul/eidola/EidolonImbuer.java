@@ -210,7 +210,7 @@ public class EidolonImbuer {
     }
 
     private Function<ItemTrait, Integer> getValueFunction() {
-        return trait -> getTraitValue(trait);
+        return this::getTraitValue;
     }
 
     private Integer getTraitValue(ItemTrait trait) {
@@ -219,7 +219,7 @@ public class EidolonImbuer {
 
     private Function<Pair<ItemTrait, EIDOLON_ASPECT>, Integer> getMapFunction() {
         return pair -> {
-            Integer j = 0;
+            Integer j;
             j = pair.getKey().getTemplate().getStyleMap().get(pair.getValue());
             if (j == null) {
                 return 0;

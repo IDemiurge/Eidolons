@@ -69,7 +69,7 @@ public class ImageTransformer {
         if (finalTransparency == 100) {
             return image;
         }
-        float floatTransparent = new Float(finalTransparency) / 100;
+        float floatTransparent = (float) finalTransparency / 100;
         LogMaster.log(1, "**********finalTransparency==" + floatTransparent);
         finalGraphics.setComposite(AlphaComposite.getInstance(rule, floatTransparent));
         finalGraphics.drawImage(buffer, 0, 0, null);
@@ -77,7 +77,7 @@ public class ImageTransformer {
     }
 
     public static BufferedImage getTransparentImage(Image source, int alpha) {
-        return getTransparentImage(ImageManager.getBufferedImage(source), new Double(alpha) / 100);
+        return getTransparentImage(ImageManager.getBufferedImage(source), (double) alpha / 100);
     }
 
     public static BufferedImage getTransparentImage(BufferedImage source, double alpha) {
@@ -237,8 +237,7 @@ public class ImageTransformer {
         x = (x - img.getWidth(null) / 2);
         y = (y - img.getHeight(null) / 2);
 
-        boolean result = Math.round((x * x) + (y * y)) <= Math.round(radius * radius);
-        return result;
+        return Math.round((x * x) + (y * y)) <= Math.round(radius * radius);
 
     }
 

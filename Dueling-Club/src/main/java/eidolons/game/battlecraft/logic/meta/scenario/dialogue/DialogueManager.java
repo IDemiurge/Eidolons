@@ -33,7 +33,6 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
     private static final String DUEL = "Duel";
     private static final String INTRO = "Intro";
     private static final boolean SKIP_INTRO = CoreEngine.TEST_LAUNCH;
-    private static   boolean PARSE_ON_INIT = Flags.isIDE();
     private static boolean running;
     private static Runnable afterDialogue;
 
@@ -46,7 +45,7 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
     public DialogueManager(MetaGameMaster master) {
         super(master);
 //        SKIP_INTRO = OptionsMaster.getSystemOptions().getBooleanValue(SystemOptions.SYSTEM_OPTION.TESTER_VERSION);
-        PARSE_ON_INIT = Flags.isDialogueTest() || Flags.isFullVersion();
+        boolean PARSE_ON_INIT = Flags.isDialogueTest() || Flags.isFullVersion();
 
         if (PARSE_ON_INIT)
             DialogueLineFormatter.fullUpdate();
@@ -141,7 +140,7 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
 
     }
         public   void test() {
-        GameDialogue dialogue = null;//new LinearDialogue();
+        GameDialogue dialogue;//new LinearDialogue();
         dialogue =  getMaster().getDialogueFactory().getDialogue("Bearhug");
         List<Scene> list = SceneFactory.getScenesLinear(dialogue);
         GuiEventManager.trigger(DIALOG_SHOW,

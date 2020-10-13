@@ -6,6 +6,7 @@ import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.enums.entity.HeroEnums.RACE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
+import main.entity.DataModel;
 import main.entity.Entity;
 import main.entity.EntityCheckMaster;
 import main.entity.type.ObjType;
@@ -153,8 +154,7 @@ public class NameMaster {
     }
 
     public static String getFullNameForBackground(BACKGROUND bg) {
-        String name = getRandomName(bg) + " " + getRandomSecondName(bg);
-        return name;
+        return getRandomName(bg) + " " + getRandomSecondName(bg);
     }
 
     private static String getRandomSecondName(BACKGROUND bg) {
@@ -306,9 +306,7 @@ public class NameMaster {
         if (bg.toString().contains("Wolf")) {
             return (wolfNameGroups);
         }
-        if (bg.toString().contains("Ulduin")) {
-            return (ravenNameGroups);
-        }
+        bg.toString();
         return (ravenNameGroups);
     }
 
@@ -433,7 +431,7 @@ public class NameMaster {
 
     public static String getUniqueVersionedName(String name, OBJ_TYPE T) {
         return getUniqueVersionedName(DataManager.getTypes(T)
-         .stream().map(type -> type.getName()).collect(Collectors.toList())
+         .stream().map(DataModel::getName).collect(Collectors.toList())
          , name);
     }
 

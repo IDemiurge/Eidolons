@@ -13,19 +13,19 @@ public enum  StdTips implements TxtTip{
         return  "std";
     }
 
-    private final boolean optional = true;
-    private final boolean once = true;
     private boolean done;
     private String img; //TODO what about this one?
     private final WaitMaster.WAIT_OPERATIONS messageChannel = MESSAGE_RESPONSE;
 
     @Override
     public boolean isOptional() {
+        boolean optional = true;
         return optional;
     }
 
     @Override
     public boolean isOnce() {
+        boolean once = true;
         return once;
     }
 

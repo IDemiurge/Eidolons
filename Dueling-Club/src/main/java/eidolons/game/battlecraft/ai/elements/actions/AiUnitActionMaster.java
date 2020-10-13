@@ -150,8 +150,7 @@ public class AiUnitActionMaster {
     }
 
     public static List<DC_ActiveObj> getMoveActions(Unit unit) {
-        List<DC_ActiveObj> list = new ArrayList<>();
-        list.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE));
+        List<DC_ActiveObj> list = new ArrayList<>(unit.getActionMap().get(ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE));
         DequeImpl<DC_UnitAction> actionList = unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_MOVE);
         if (ListMaster.isNotEmpty(actionList)) {
             list.addAll(actionList);

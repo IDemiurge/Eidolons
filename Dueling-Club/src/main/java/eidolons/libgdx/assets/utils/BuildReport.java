@@ -8,10 +8,8 @@ public class BuildReport {
     StringBuilder builder = new StringBuilder();
     private String buildId;
     String time = TimeMaster.getTimeStamp();
-    private final boolean fast;
 
     public BuildReport(boolean fast) {
-        this.fast = fast;
     }
 
     public void append(String s) {

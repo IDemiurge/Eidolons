@@ -137,9 +137,8 @@ public class WaterRule extends RoundRule implements ActionRule {
     }
 
     private static float getSubmergedFactor(Unit unit) {
-        float heightFactor = Math.abs(waterObj.getIntParam(PARAMS.HEIGHT))
-                / unit.getIntParam(PARAMS.HEIGHT);
-        return heightFactor;
+        return (float) (Math.abs(waterObj.getIntParam(PARAMS.HEIGHT))
+                        / unit.getIntParam(PARAMS.HEIGHT));
     }
 
     public static boolean ignoresWater(Unit unit) {

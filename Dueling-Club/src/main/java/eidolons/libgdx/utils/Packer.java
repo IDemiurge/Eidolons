@@ -61,8 +61,6 @@ public class Packer {
     boolean test;
     int maxTreeDepth = 5;
     private final String outputRoot;
-    private final boolean readTree = true;
-    private final boolean updateTree = false;
     private StrPathBuilder pathBuilder;
     private StrPathBuilder lastBuilder;
     private boolean delayed;
@@ -98,7 +96,7 @@ public class Packer {
         if (treeDepth > maxTreeDepth)
             return;
         List<File> files = FileManager.getFilesFromDirectory(path, true).stream().filter(
-                file -> file.isDirectory()).sorted(new SortMaster<File>().getSorterByExpression_(
+                File::isDirectory).sorted(new SortMaster<File>().getSorterByExpression_(
                 file -> -(FileManager.getFilesFromDirectory(file.getPath(), true, false).size())))
                 .collect(Collectors.toList());
 
@@ -123,8 +121,10 @@ public class Packer {
         toCopy = new ArrayList<>();
         // failedFiles = new ArrayList<>();
 
+        boolean updateTree = false;
         if (updateTree)
             FileManager.write(createDirectoryTree(), PathFinder.getResPath() + "res tree.txt");
+        boolean readTree = true;
         if (readTree)
             copyResourceTree();
 

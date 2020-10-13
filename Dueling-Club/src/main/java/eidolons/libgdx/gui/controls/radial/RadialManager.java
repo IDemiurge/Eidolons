@@ -37,10 +37,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.launch.Flags;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.function.Supplier;
 
 import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
@@ -294,7 +291,7 @@ public class RadialManager {
         });
 
 
-        list.removeIf(i -> i == null); // REMOVE IF NO NODES IN PARENT!
+        list.removeIf(Objects::isNull); // REMOVE IF NO NODES IN PARENT!
         return list;
     }
 
@@ -358,7 +355,7 @@ public class RadialManager {
             DC_ActiveObj action = getShortcut(sub, sourceUnit, target);
             list.add(action);
         }
-        list.removeIf(a -> a == null);
+        list.removeIf(Objects::isNull);
         return list;
     }
 
@@ -447,7 +444,7 @@ public class RadialManager {
         if (el.getTargeting() instanceof SelectiveTargeting) {
             return configureSelectiveTargetedNode(el, target);
         }
-        RadialContainer valueContainer = null;
+        RadialContainer valueContainer;
         if (el instanceof Spell) {
             valueContainer = new SpellRadialContainer(
 
@@ -566,24 +563,21 @@ public class RadialManager {
 //        Runnable runnable=        runnableCaches.getVar(target).getVar(activeObj);
 
         if (activeObj instanceof DC_ActiveObj) {
-            DC_ActiveObj active = activeObj;
-            if (active.getTargeting() instanceof SelectiveTargeting) {
+            if (activeObj.getTargeting() instanceof SelectiveTargeting) {
                 return () -> {
-                    if (active.isMove()) {
+                    if (activeObj.isMove()) {
                         DC_Cell cell = target.getGame().getCellByCoordinate(target.getCoordinates());
-                        if (!active.getTargeter().canBeTargeted(cell.getId()))
+                        if (!activeObj.getTargeter().canBeTargeted(cell.getId()))
                             return;
                     }
-                    active.activateOn(target);
+                    activeObj.activateOn(target);
 
 
                 };
             }
         }
         if (target == activeObj.getOwnerUnit())
-            return () -> {
-                activeObj.invokeClicked();
-            };
+            return activeObj::invokeClicked;
         return () -> {
             activeObj.activateOn(target);
         };
@@ -611,7 +605,7 @@ public class RadialManager {
                     return null;
                 int finalChance = chance;
                 return () -> {
-                    String string = null;
+                    String string;
                     if (finalChance > 0) {
                         string = finalChance + "% to crit";
                     } else
@@ -634,8 +628,7 @@ public class RadialManager {
     }
 
     protected List<RadialContainer> getChildNodes(RADIAL_PARENT_NODE type, DC_ActiveObj activeObj, DC_Obj target) {
-        List<RadialContainer> list = new ArrayList<>();
-        return list;
+        return new ArrayList<>();
     }
 
     public enum RADIAL_ACTION_SHORTCUT {

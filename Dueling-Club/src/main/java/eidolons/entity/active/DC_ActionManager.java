@@ -182,11 +182,6 @@ public class DC_ActionManager implements ActionManager {
     }
 
     public boolean activateAttackOfOpportunity(ActiveObj action, Obj countering, boolean free) {
-        try {
-            // activateAction(countered, countering, action); TODO
-        } catch (Exception e) {
-            return false;
-        }
         return true;
     }
 
@@ -196,9 +191,8 @@ public class DC_ActionManager implements ActionManager {
     public DC_ActiveObj findCounterAttack(ActiveObj action, Obj _countering) {
         Unit target = (Unit) action.getOwnerUnit();
         Unit source = (Unit) _countering;
-        DC_ActiveObj counter = (DC_ActiveObj) getCounterAttackAction(target, source,
+        return (DC_ActiveObj) getCounterAttackAction(target, source,
                 (DC_ActiveObj) action);
-        return counter;
     }
 
 

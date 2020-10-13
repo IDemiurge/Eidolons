@@ -29,18 +29,15 @@ import main.system.GuiEventType;
 import main.system.graphics.FontMaster.FONT;
 import main.system.threading.WaitMaster;
 
-import static main.system.GuiEventType.SHOW_INVENTORY;
-import static main.system.GuiEventType.TOGGLE_INVENTORY;
-import static main.system.GuiEventType.UPDATE_INVENTORY_PANEL;
+import static main.system.GuiEventType.*;
 
 public class CombatInventory extends TablePanel implements Blocking {
-    private InventoryPanel inventoryPanel;
 
-    private Cell<Actor> actionPointsText;
-    private Cell<Actor> weightText;
-    private Cell<Actor> slotsText;
-    private Cell<Actor> goldText;
-    private SymbolButton doneButton;
+    private final Cell<Actor> actionPointsText;
+    private final Cell<Actor> weightText;
+    private final Cell<Actor> slotsText;
+    private final Cell<Actor> goldText;
+    private final SymbolButton doneButton;
     private SymbolButton cancelButton;
     private SymbolButton undoButton;
 
@@ -51,7 +48,7 @@ public class CombatInventory extends TablePanel implements Blocking {
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
         setBackground(drawable);
 
-        inventoryPanel = new InventoryPanel();
+        InventoryPanel inventoryPanel = new InventoryPanel();
         inventoryPanel.setBackground((Drawable) null);
         addElement(inventoryPanel);
         row();

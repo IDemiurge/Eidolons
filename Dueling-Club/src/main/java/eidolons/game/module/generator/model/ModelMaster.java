@@ -65,8 +65,8 @@ public class ModelMaster {
         Coordinates[] wall = side.isVertical() ? new Coordinates[room.getWidth()] : new Coordinates[room.getHeight()];
 
         for (int i = 0; i < wall.length; i++) {
-            int x = 0;
-            int y = 0;
+            int x;
+            int y;
             if (side.isVertical()) {
                 x = i;
                 y = side.isCloserToZero() ? 0 : room.getHeight() - 1;

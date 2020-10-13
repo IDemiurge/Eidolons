@@ -129,9 +129,8 @@ public class RaiseEffect extends SummonEffect {
         BuffType buffType = new BuffType(
          DataManager.getType(BUFF_NAME));
         buffType.setName(BUFF_NAME + corpse.getName());
-        AddBuffEffect e = new AddBuffEffect(buffType, effect);
 
-        return e;
+        return new AddBuffEffect(buffType, effect);
     }
 
     private String getParamModFormula(String valueName) {

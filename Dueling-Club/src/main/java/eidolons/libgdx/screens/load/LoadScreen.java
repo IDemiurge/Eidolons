@@ -42,8 +42,8 @@ public abstract class LoadScreen extends ScreenWithAssets {
         background.setNoAtlas(true);
         background.setImage(PathFinder.getImagePath() + backgroundPath);
 
-        float x = new Float(GdxMaster.getWidth()) / 1920;
-        float y = new Float(GdxMaster.getHeight()) / 1080;
+        float x = (float) GdxMaster.getWidth() / 1920;
+        float y = (float) GdxMaster.getHeight() / 1080;
         background.setScale(Math.max(x, y));
         background.fadeIn();
         //lerp?

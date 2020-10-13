@@ -25,7 +25,6 @@ public class SoulforceBar extends SuperActor {
     boolean labelDisplayed = true;
     float displayedPerc = 1f;
     private Float perc = 1f;
-    private Float previousPerc = 0f;
 
     SpriteX barSprite;
     SimpleAnim anim;
@@ -34,7 +33,6 @@ public class SoulforceBar extends SuperActor {
 
     private float max = 100f;
     private float value= 0;
-    private FadeImageContainer barBg;
     private SpriteX barBgSprite;
     private Fluctuating f;
 
@@ -50,7 +48,7 @@ public class SoulforceBar extends SuperActor {
     }
 
     private void updateAction() {
-        previousPerc = perc;
+        Float previousPerc = perc;
         perc = value/max;
 
         floatAction.reset();
@@ -63,7 +61,7 @@ public class SoulforceBar extends SuperActor {
     }
 
     public String getTooltip() {
-        return new Integer( (int)value/10)+"/"+( (int)max/10);
+        return (int) value / 10 +"/"+( (int)max/10);
     }
     public void init() {
         GuiEventManager.bind(GuiEventType.SOULFORCE_GAINED, p ->
@@ -75,6 +73,7 @@ public class SoulforceBar extends SuperActor {
         addAction(floatAction);
         floatAction.setTarget(this);
 
+        FadeImageContainer barBg;
         addActor(barBg = new FadeImageContainer("ui/components/dc/soulforce/bar frame.png"));
         addActor(barBgSprite = new SpriteX(Sprites.SOULFORCE_BAR_BG_WHITE){
             @Override

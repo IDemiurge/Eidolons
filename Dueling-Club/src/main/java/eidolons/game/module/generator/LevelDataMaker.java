@@ -573,8 +573,8 @@ public class LevelDataMaker {
 
     private static Object getReq(LEVEL_REQUIREMENTS req,
                                  SUBLEVEL_TYPE sublevelType, LOCATION_TYPE type, LevelData data) {
-        float sizeMod = new Float(data.getIntValue(LEVEL_VALUES.SIZE_MOD)) / 100;
-        float roomMod = new Float(data.getIntValue(LEVEL_VALUES.ROOM_COUNT_MOD)) / 100;
+        float sizeMod = (float) data.getIntValue(LEVEL_VALUES.SIZE_MOD) / 100;
+        float roomMod = (float) data.getIntValue(LEVEL_VALUES.ROOM_COUNT_MOD) / 100;
         switch (req) {
             case maxRooms:
                 switch (sublevelType) {

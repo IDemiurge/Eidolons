@@ -81,9 +81,9 @@ public class AttackTooltipFactory {
             case SNEAK:
                return SneakRule.checkSneak(ref);
             case CLOSE_QUARTERS:
-                return RangeRule.isCloseQuartersOrLongReach(ref)==true;
+                return RangeRule.isCloseQuartersOrLongReach(ref);
             case LONG_REACH:
-                return RangeRule.isCloseQuartersOrLongReach(ref)==false;
+                return !RangeRule.isCloseQuartersOrLongReach(ref);
             case SIDEWAYS:
                 return FacingMaster.getSingleFacing_(ref.getSourceObj(), ref.getTargetObj())== UnitEnums.FACING_SINGLE.TO_THE_SIDE;
             case DIAGONAL:
@@ -142,8 +142,7 @@ public class AttackTooltipFactory {
 //            DamageCalculator.isUnconscious()
 //        "(will drop)";
 //        tooltip +=" (shield!)";
-        ValueContainer container = new ValueContainer(info, tooltip);
-        return container;
+        return new ValueContainer(info, tooltip);
     }
 
     public static AttackTooltip createAttackTooltip(DC_UnitAction el,

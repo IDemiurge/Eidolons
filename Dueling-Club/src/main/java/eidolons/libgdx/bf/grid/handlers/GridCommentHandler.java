@@ -94,7 +94,7 @@ public class GridCommentHandler extends GridHandler{
         if (text == null) {
             text = key;
         }
-        Coordinates c = null;
+        Coordinates c;
         if (list.get(0) instanceof Unit) {
             Vector2 offset = null;
             if (list.size() > 2) {
@@ -135,7 +135,7 @@ public class GridCommentHandler extends GridHandler{
         } else {
             text = removeSequentialKey(text);
             String finalText = text;
-            String key = COMMENT_WAIT_KEY + (getWaitCounter());
+            String key;
 //       TODO outdated???
 //        if (waitCounter > 0)
 //                WaitMaster.waitLock(key, 8000);
@@ -157,7 +157,8 @@ public class GridCommentHandler extends GridHandler{
             style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 22);
             flag = new AtomicBoolean(false);
         }
-        FloatingText floatText = FloatingTextMaster.getInstance().createFloatingText
+
+        return FloatingTextMaster.getInstance().createFloatingText
                 (FloatingTextMaster.TEXT_CASES.BATTLE_COMMENT, text, new DummyUnit() {
                     @Override
                     public FACING_DIRECTION getFacing() {
@@ -169,8 +170,6 @@ public class GridCommentHandler extends GridHandler{
                         return c;
                     }
                 }, null, at, style, flag, false);
-
-        return floatText;
     }
 
     public static String removeSequentialKey(String text) {
@@ -187,7 +186,7 @@ public class GridCommentHandler extends GridHandler{
 
     private void comment(Unit unit, String text, Vector2 at) {
         boolean textTop = false;
-        String portrait = null;
+        String portrait;
 //        if (unit == Eidolons.getMainHero()) {
 //            portrait = (Sprites.COMMENT_KESERIM);
 //        } else {
@@ -203,11 +202,10 @@ public class GridCommentHandler extends GridHandler{
 
     private void commentGdx(String image, FACING_DIRECTION f, Coordinates c, boolean textTop, String text,
                             Vector2 at, String key, boolean seq) {
-        boolean uiStage = seq;
         AtomicBoolean flag = new AtomicBoolean();
         FloatingText floatingText = createFloatText(c, at, f, text, flag, seq);
 
-        if (!Cinematics.ON && !uiStage)
+        if (!Cinematics.ON && !seq)
             if (OptionsMaster.getControlOptions().getBooleanValue(ControlOptions.CONTROL_OPTION.CENTER_CAMERA_ON_COMMENTS))
                 GuiEventManager.trigger(CAMERA_ZOOM, new MotionData(-10f, 1f));
 
@@ -405,13 +403,12 @@ public class GridCommentHandler extends GridHandler{
         if (Cinematics.ON) {
 //            at.y= at.y-100;
         }
-        if (!uiStage) {
+        if (!seq) {
             if (OptionsMaster.getControlOptions().getBooleanValue(ControlOptions.CONTROL_OPTION.CENTER_CAMERA_ON_COMMENTS))
                 GuiEventManager.triggerWithParams(CAMERA_PAN_TO, seq ? v : at, true, 3f);
         }
 
 
-        GroupX finalPortrait = portrait;
         final boolean[] faded = {false};
         Runnable r = () -> {
             if (faded[0]) {
@@ -431,17 +428,16 @@ public class GridCommentHandler extends GridHandler{
 //       this will be a mess!     GdxMaster.inputPass();
 
             ActionMaster.addAction(finalCommentBgSprite, new WaitAction(delta -> Eidolons.getGame().isPaused()));
-            ActionMaster.addAction(finalPortrait, new WaitAction(delta -> Eidolons.getGame().isPaused()));
+            ActionMaster.addAction(portrait, new WaitAction(delta -> Eidolons.getGame().isPaused()));
             ActionMaster.addAction(finalCommentTextBgSprite, new WaitAction(delta -> Eidolons.getGame().isPaused()));
 
             ActionMaster.addFadeOutAction(finalCommentBgSprite, seq ? 6 : 4);
             ActionMaster.addRemoveAfter(finalCommentBgSprite);
-            ActionMaster.addFadeOutAction(finalPortrait, seq ? 4 : 3);
+            ActionMaster.addFadeOutAction(portrait, seq ? 4 : 3);
             ActionMaster.addFadeOutAction(finalCommentTextBgSprite, seq ? 5 : 4);
 
             WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.COMMENT_DONE, true);
         };
-        Runnable finalFade = r;
         boolean onInput = !Cinematics.ON && seq;
         WaitMaster.doAfterWait(1000 + text.length() * 3, () ->
         {
@@ -503,9 +499,7 @@ public class GridCommentHandler extends GridHandler{
 //        commentMap.put(co)
         if (!onInput)
             WaitMaster.doAfterWait((int) time, () -> {
-                GdxMaster.onInputGdx(() -> {
-                    r.run();
-                });
+                GdxMaster.onInputGdx(r::run);
 
                 WaitMaster.WAIT((int) time);
                 r.run();

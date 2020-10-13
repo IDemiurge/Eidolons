@@ -60,7 +60,6 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
     private final SymbolButton help;
     private final GroupX stashContainer;
     private boolean stashOpen;
-    private SymbolButton repairButton;
     private ValueContainer debtLabel;
 
     public ShopPanel() {
@@ -202,6 +201,7 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
         debtLabel = new ValueContainer("Debt:", "");
         rightMost.add(debtLabel);
         rightMost.row();
+        SymbolButton repairButton;
         rightMost.add(repairButton =
          new SymbolButton(STD_BUTTON.REPAIR, () -> getUserObject().getHandler().askRepair()));
         //selective repair => hammer cursor!

@@ -263,19 +263,19 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     }
 
     public String getDynamicInfo() {
-        String info = "";
+        StringBuilder info = new StringBuilder();
         for (VALUE V : ValuePages.UNIT_DYNAMIC_PARAMETERS) {
-            info += V.getName() + " = " + getValue(V);
+            info.append(V.getName()).append(" = ").append(getValue(V));
         }
-        return info;
+        return info.toString();
     }
 
     public String getParamInfo() {
-        String info = "";
+        StringBuilder info = new StringBuilder();
         for (VALUE V : ValuePages.UNIT_PARAMETERS) {
-            info += V.getName() + " = " + getValue(V);
+            info.append(V.getName()).append(" = ").append(getValue(V));
         }
-        return info;
+        return info.toString();
     }
 
 
@@ -388,15 +388,15 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     }
 
     public void saveRanks(DequeImpl<? extends DC_FeatObj> container, PROPERTY property) {
-        String value = "";
+        StringBuilder value = new StringBuilder();
         for (DC_FeatObj featObj : container) {
-            value += featObj.getName();
+            value.append(featObj.getName());
             if (featObj.getIntParam(PARAMS.RANK) > 0) {
-                value += StringMaster.wrapInParenthesis(featObj.getParam(PARAMS.RANK));
+                value.append(StringMaster.wrapInParenthesis(featObj.getParam(PARAMS.RANK)));
             }
-            value += ";";
+            value.append(";");
         }
-        setProperty(property, value, true);
+        setProperty(property, value.toString(), true);
     }
 
     public boolean incrementFeatRank(boolean skill, ObjType type) {
@@ -783,7 +783,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         // or implement a real buffer copy
         type.copyValues(this,
                 Arrays.stream(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE_CURRENT).map(
-                        (PARAMETER p) -> ContentValsManager.getPercentageParam(p)).
+                        ContentValsManager::getPercentageParam).
                         collect(Collectors.toList()));
         type.copyValues(this, Arrays.asList(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE_CURRENT));
         super.applyType(type);
@@ -1048,7 +1048,6 @@ public class Unit extends DC_UnitModel implements FacingEntity {
 
     @Override
     public boolean kill(Entity killer, boolean leaveCorpse, Boolean quietly) {
-        boolean result = super.kill(killer, leaveCorpse, quietly);
         //        if (!CoreEngine.isLevelEditor()) {
         //            if (result) {
         //                for (DC_FeatObj s : getSkills()) {
@@ -1062,7 +1061,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         // for a small thing...
         //            }
         //        }
-        return result;
+        return super.kill(killer, leaveCorpse, quietly);
     }
 
     public List<AbilityObj> getPassivesFiltered() {
@@ -1333,10 +1332,9 @@ public class Unit extends DC_UnitModel implements FacingEntity {
             return new ListMaster<DC_HeroSlotItem>().findType(typeName, new ArrayList<>(
                     getSlotItems()));
         }
-        DC_HeroItemObj item = !quick_inv_slot ? new ListMaster<DC_HeroItemObj>().findType(typeName,
+        return !quick_inv_slot ? new ListMaster<DC_HeroItemObj>().findType(typeName,
                 new ArrayList<>(getInventory())) : new ListMaster<DC_QuickItemObj>().findType(
                 typeName, new ArrayList<>(getQuickItems()));
-        return item;
     }
 
     public void setCoordinates(Coordinates coordinates) {

@@ -238,7 +238,7 @@ public class GdxMaster {
     public static float getFontSizeMod() {
 
         if (fontSizeMod == null) {
-            fontSizeMod = new Float(getWidth() * getHeight()) / getDefaultWidth() / getDefaultHeight();
+            fontSizeMod = (float) (getWidth() * getHeight()) / getDefaultWidth() / getDefaultHeight();
             fontSizeModSquareRoot = (float) Math.sqrt(fontSizeMod);
 
             if (isFixedSize()) {
@@ -247,7 +247,7 @@ public class GdxMaster {
             }
         }
         if (fontSizeMod < 0) {
-            fontSizeMod = Float.valueOf(1);
+            fontSizeMod = 1f;
         }
         return fontSizeMod * getUserFontScale();
     }
@@ -268,7 +268,7 @@ public class GdxMaster {
 
     public static Float getWidthMod() {
         if (widthMod == null) {
-            widthMod = new Float(getWidth()) / getDefaultWidth();
+            widthMod = (float) getWidth() / getDefaultWidth();
             if (isFixedSize()) {
                 widthMod = 1f;
             }
@@ -278,7 +278,7 @@ public class GdxMaster {
 
     public static Float getHeightMod() {
         if (heightMod == null) {
-            heightMod = new Float(getHeight()) / getDefaultHeight();
+            heightMod = (float) getHeight() / getDefaultHeight();
             if (isFixedSize()) {
                 heightMod = 1f;
             }
@@ -288,14 +288,14 @@ public class GdxMaster {
 
     public static Float getWidthModSquareRoot() {
         if (widthModSquareRoot == null) {
-            widthModSquareRoot = new Float(getWidth()) / getDefaultWidth();
+            widthModSquareRoot = (float) getWidth() / getDefaultWidth();
         }
         return widthModSquareRoot;
     }
 
     public static Float getHeightModSquareRoot() {
         if (heightModSquareRoot == null) {
-            heightModSquareRoot = new Float(getHeight()) / getDefaultHeight();
+            heightModSquareRoot = (float) getHeight() / getDefaultHeight();
         }
         return heightModSquareRoot;
     }

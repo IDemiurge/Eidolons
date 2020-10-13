@@ -38,8 +38,7 @@ public class OverlayView extends BaseView implements HpBarView, Colored {
     }
 
     protected HpBar createHpBar() {
-        HpBar bar = new HpBar(getUserObject());
-        return bar;
+        return new HpBar(getUserObject());
     }
 
     @Override

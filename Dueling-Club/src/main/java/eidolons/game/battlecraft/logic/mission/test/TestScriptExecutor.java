@@ -100,11 +100,10 @@ public class TestScriptExecutor extends ScriptManager<TestMission, TEST_SCRIPT> 
     @Override
     protected String readScriptsFile() {
 
-        String text = FileManager.readFile(
+        return FileManager.readFile(
          PathUtils.buildPath(
           getMaster().getMetaMaster().getMetaDataManager().getDataPath()
           , "tutorial " + ScriptGenerator.SCRIPTS_FILE_NAME));
-        return text;
     }
 
     @Override

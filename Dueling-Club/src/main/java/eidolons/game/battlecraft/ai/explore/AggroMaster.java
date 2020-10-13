@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.ai.explore;
 
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.advanced.engagement.EngageEvent;
@@ -184,7 +185,7 @@ public class AggroMaster extends ExplorationHandler {
     }
 
     public static int getBattleDifficulty() {
-        return getLastAggroGroup().stream().mapToInt(u -> u.getPower()).sum();
+        return getLastAggroGroup().stream().mapToInt(BattleFieldObject::getPower).sum();
     }
 
     public static void aggro(Unit unit, Unit mainHero) {

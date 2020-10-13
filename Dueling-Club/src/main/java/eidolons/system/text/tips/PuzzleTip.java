@@ -40,8 +40,6 @@ public enum PuzzleTip implements TxtTip {
         this.img = img;
     }
 
-    private final boolean optional = true;
-    private final boolean once = true;
     private boolean done;
     private String img; //TODO what about this one?
     private final WaitMaster.WAIT_OPERATIONS messageChannel = MESSAGE_RESPONSE;
@@ -53,11 +51,13 @@ public enum PuzzleTip implements TxtTip {
 
     @Override
     public boolean isOptional() {
+        boolean optional = true;
         return optional;
     }
 
     @Override
     public boolean isOnce() {
+        boolean once = true;
         return once;
     }
 

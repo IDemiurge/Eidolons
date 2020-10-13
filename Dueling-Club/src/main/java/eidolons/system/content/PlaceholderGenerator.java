@@ -90,22 +90,14 @@ public class PlaceholderGenerator {
     private static String getSubgroupsForCell(GeneratorEnums.ROOM_CELL cell) {
         switch (cell) {
             case ART_OBJ:
-                return "";
-            case SPECIAL_ART_OBJ:
-                return "";
-            case CONTAINER:
-                return "";
-            case SPECIAL_CONTAINER:
-                return "";
-            case DOOR:
-                return "";
-            case TRAP:
-                return "";
-            case LIGHT_EMITTER:
-                return "";
-            case WALL_WITH_LIGHT_OVERLAY:
-                return "";
             case WALL_WITH_DECOR_OVERLAY:
+            case WALL_WITH_LIGHT_OVERLAY:
+            case LIGHT_EMITTER:
+            case TRAP:
+            case DOOR:
+            case SPECIAL_CONTAINER:
+            case CONTAINER:
+            case SPECIAL_ART_OBJ:
                 return "";
         }
         return null;

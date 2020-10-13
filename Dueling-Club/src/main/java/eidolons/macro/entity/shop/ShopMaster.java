@@ -112,9 +112,7 @@ public class ShopMaster {
                 material)) {
             if (!ShopMaster.getMaterialsForShopModifier(shop.getShopModifier())
                     .contains(material)) {
-                if (!getSpecialMaterials(shop).contains(material)) {
-                    return false;
-                }
+                return getSpecialMaterials(shop).contains(material);
             }
         }
 
@@ -122,8 +120,7 @@ public class ShopMaster {
     }
 
     private static List<MATERIAL> getSpecialMaterials(ShopInterface shop) {
-        List<MATERIAL> list = new ArrayList<>();
-        return list;
+        return new ArrayList<>();
     }
 
     public static List<MATERIAL> getMaterialsForShopModifier(

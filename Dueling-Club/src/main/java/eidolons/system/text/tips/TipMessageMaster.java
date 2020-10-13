@@ -53,8 +53,7 @@ public class TipMessageMaster {
     }
 
     public static void tip(String s) {
-        tip(ContainerUtils.openContainer(s).stream().map(str -> Tips.getTipConst(str)).collect(Collectors.toList())
-                .toArray(new TextEvent[0]));
+        tip(ContainerUtils.openContainer(s).stream().map(Tips::getTipConst).toArray(TextEvent[]::new));
     }
     // public static void tip(String data) {
     //     tip(data, null);

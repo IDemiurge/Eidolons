@@ -23,7 +23,6 @@ public class GraphTransformer {
                 //another set of graph edges
                 break;
             case BLOCK:
-                  path = (GraphPath) args[0];
                 break;
             case CIRCLE_BACK:
                 //make a non-main path go back to start, lock the final link with a key

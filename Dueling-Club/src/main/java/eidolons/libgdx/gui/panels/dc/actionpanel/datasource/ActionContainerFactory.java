@@ -50,8 +50,7 @@ public class ActionContainerFactory {
     }
 
     private static String getImage(DC_ActiveObj el) {
-        String image = el.getImagePath();
         //        if (el.can)
-        return image;
+        return el.getImagePath();
     }
 }

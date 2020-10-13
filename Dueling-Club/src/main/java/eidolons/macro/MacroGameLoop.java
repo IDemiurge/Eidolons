@@ -112,7 +112,7 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
     }
 
     public void startRealTimeLogic() {
-        new Thread(() -> realTimeLogic(), "Map RT thread").start();
+        new Thread(this::realTimeLogic, "Map RT thread").start();
     }
 
     protected void realTimeLogic() {

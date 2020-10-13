@@ -4,11 +4,11 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
-import eidolons.macro.MacroGame;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.bf.generic.ImageContainer;
+import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.map.ui.time.MapTimePanel.MOON;
+import eidolons.macro.MacroGame;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.system.PathUtils;
@@ -26,7 +26,6 @@ public class MoonActor extends Group {
     ImageContainer circle;
     ImageContainer main;
     boolean active;
-    private EmitterActor emitter;
     private float emitterScale;
     private EmitterActor circleEmitter;
 
@@ -77,7 +76,7 @@ public class MoonActor extends Group {
     }
 
     private void initEmitters() {
-        emitter = new EmitterActor(StrPathBuilder.build(PathFinder.getVfxPath(), "moons", moon.name()));
+        EmitterActor emitter = new EmitterActor(StrPathBuilder.build(PathFinder.getVfxPath(), "moons", moon.name()));
         addActor(emitter);
         float offsetX = getOffset();
         float offsetY = getOffset();

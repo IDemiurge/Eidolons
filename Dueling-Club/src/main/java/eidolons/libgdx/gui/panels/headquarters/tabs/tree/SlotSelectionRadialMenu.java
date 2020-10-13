@@ -128,8 +128,8 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
         float w = getWidth();
         float h = getHeight();
 
-        float x = 0;
-        float y = 0;
+        float x;
+        float y;
 
         Vector2 v = activeNode.localToAscendantCoordinates(
                 activeNode.getFirstParentOfClass(HqTreeTab.class), new Vector2(0, 0));
@@ -258,8 +258,8 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
         float w = getWidth();
         float h = getHeight();
 
-        float x = 0;
-        float y = 0;
+        float x;
+        float y;
 
         Vector2 v = activeNode.localToAscendantCoordinates(
                 activeNode.getFirstParentOfClass(HqTreeTab.class), new Vector2(0, 0));

@@ -258,8 +258,6 @@ public abstract class SuperActor extends Fluctuating implements
     }
 
     public boolean isActive() {
-        if (active)
-            return active;
         return active;
     }
 

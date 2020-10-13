@@ -8,10 +8,10 @@ import main.entity.Ref;
 
 public class HeroCondition extends ConditionImpl {
 
-    private final String hero = DC_TYPE.CHARS.getName();
-    private StringComparison c;
+    private final StringComparison c;
 
     public HeroCondition(String obj_ref) {
+        String hero = DC_TYPE.CHARS.getName();
         this.c = new StringComparison(hero, "{" + obj_ref + "_"
          + G_PROPS.TYPE.name() + "}", false);
     }

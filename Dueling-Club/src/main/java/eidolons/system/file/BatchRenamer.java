@@ -103,8 +103,7 @@ public class BatchRenamer {
     private static void processAE_Dir() {
         String root = DialogMaster.inputText("Root?");
         String rawFolder = root + "/raw";
-        String outputFolder = root;
-        processAE_Dir(rawFolder, outputFolder); //String... frameNames
+        processAE_Dir(rawFolder, root); //String... frameNames
 
     }
     private static void processAE_Dir(String rawFolder, String outputFolder) {

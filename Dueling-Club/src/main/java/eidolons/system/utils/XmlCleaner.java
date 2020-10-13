@@ -20,9 +20,9 @@ import java.util.List;
 
 public class XmlCleaner {
 
-    private static List<DC_TYPE> cleaned = new ArrayList<>();
+    private static final List<DC_TYPE> cleaned = new ArrayList<>();
 
-    public static final void cleanTypesXml(DC_TYPE TYPE) {
+    public static void cleanTypesXml(DC_TYPE TYPE) {
 //        DC_TYPE.values()
 
         List<ObjType> types = new ArrayList<>(DataManager.getTypes(TYPE));

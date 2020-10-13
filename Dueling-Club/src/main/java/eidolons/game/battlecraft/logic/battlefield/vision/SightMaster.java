@@ -65,11 +65,10 @@ public class SightMaster {
                                                          FACING_DIRECTION facing,
                                                          boolean extended) {
         DequeImpl<Coordinates> list = new DequeImpl<>();
-        BattleFieldObject unit = source;
         Coordinates orig = source.getCoordinates();
         if (facing == null) {
-            if (unit != null) {
-                facing = unit.getFacing();
+            if (source != null) {
+                facing = source.getFacing();
             }
         }
         DIRECTION direction;

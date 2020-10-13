@@ -288,7 +288,7 @@ public class FloatingTextMaster {
         String finalText = text;
         FloatingText floatingText =
                 new FloatingText(
-                        () -> finalText.trim(), () -> getImage(active, CASE, arg)
+                        finalText::trim, () -> getImage(active, CASE, arg)
                         , getColor(CASE, arg));
 
         floatingText.setStayFullDuration(getStayFull(CASE, arg));
@@ -332,7 +332,7 @@ public class FloatingTextMaster {
     public static float getStayFull(TEXT_CASES aCase, Object arg) {
         switch (aCase) {
             case BATTLE_COMMENT:
-                return 6 + new Float(arg.toString().length()) / 40;
+                return 6 + (float) arg.toString().length() / 40;
         }
         return 0;
     }
@@ -381,7 +381,7 @@ public class FloatingTextMaster {
 
     private FloatingText addFloatingText(DC_ActiveObj active,
                                          TEXT_CASES CASE, Object arg, Animation animation, float delay) {
-        Anim anim = null;
+        Anim anim;
         if (animation instanceof Anim) {
             anim = ((Anim) animation);
         } else
@@ -564,7 +564,7 @@ public class FloatingTextMaster {
     public void createAndShowParamModText(Object o) {
         Pair<PARAMETER, Ref> pair = (Pair<PARAMETER, Ref>) o;
         Entity active = pair.getValue().getObj(KEYS.ACTIVE);
-        int amount = 0;
+        int amount;
         if (pair.getValue().getAmount() != null)
             amount = pair.getValue().getAmount();
         else {

@@ -22,7 +22,6 @@ public class ImbueItemInfo extends TablePanelX {
     private final FadeImageContainer img;
     private final Cell cell;
     private   ScrollPaneX scroll;
-    private boolean updating;
 
     public ImbueItemInfo() {
         super(400, 800);
@@ -58,7 +57,7 @@ public class ImbueItemInfo extends TablePanelX {
     @Override
     public void updateAct(float delta) {
 //        table.clearChildren();
-        updating = true;
+        boolean updating = true;
         DC_HeroItemObj item = (DC_HeroItemObj) getUserObject();
         if (item == null) {
             img.setImage("");

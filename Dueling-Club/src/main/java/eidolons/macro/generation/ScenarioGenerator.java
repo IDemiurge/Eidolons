@@ -47,7 +47,7 @@ public class ScenarioGenerator {
          PathFinder.getDungeonLevelFolder(), "place dungeons",
          place.getProperty(MACRO_PROPS.PLACE_SUBTYPE));
         for (int i = 0; i < n; i++) {
-            String mission = null;
+            String mission;
             try {
                 mission = FileManager.getRandomFilePath(path);
             } catch (Exception e) {
@@ -238,8 +238,7 @@ public class ScenarioGenerator {
         WeightMap map = data.getWeightMapValue(META_DATA.LAST_PREGEN_LVL_INDEX_MAP);
         String val = type + " " + locationType;
         data.addCount(META_DATA.LAST_PREGEN_LVL_INDEX, val, size );
-        int index = map.get(val) == null ? 0 : (int) map.get(val);
-        return index;
+        return map.get(val) == null ? 0 : (int) map.get(val);
     }
 
     private static boolean isSequentialPregenChoice() {

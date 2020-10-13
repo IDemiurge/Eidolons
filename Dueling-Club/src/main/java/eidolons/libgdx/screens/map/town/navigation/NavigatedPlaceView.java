@@ -10,13 +10,13 @@ import main.system.GuiEventType;
  * Created by JustMe on 11/22/2018.
  */
 public class NavigatedPlaceView extends TablePanelX {
-    private final TablePanelX lower;
     PlaceNavigationPanel navigationPanel;
     DescriptionPanel descriptionPanel;
     //dialogue space?
 
     public NavigatedPlaceView() {
         add(navigationPanel = new PlaceNavigationPanel(this)).row();
+        TablePanelX lower;
         add(lower = new TablePanelX<>());
 
         lower.add(descriptionPanel = new DescriptionPanel());

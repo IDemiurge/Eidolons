@@ -60,9 +60,8 @@ public class DC_MathManager extends MathMaster {
             max = armor;
         }
 
-        int reduction = 1 + MathMaster.round(max - DC_Formulas.DURABILITY_DAMAGE_THRESHOLD_ARMOR)
+        return 1 + MathMaster.round(max - DC_Formulas.DURABILITY_DAMAGE_THRESHOLD_ARMOR)
          / DC_Formulas.DURABILITY_DAMAGE_FACTOR_ARMOR;
-        return reduction;
     }
 
     private static int getWeaponDurabilityForDamage(int damage, int armor) {
@@ -74,9 +73,8 @@ public class DC_MathManager extends MathMaster {
             max = damage;
         }
 
-        int reduction = 1 + MathMaster.round(max - DC_Formulas.DURABILITY_DAMAGE_THRESHOLD_WEAPON)
+        return 1 + MathMaster.round(max - DC_Formulas.DURABILITY_DAMAGE_THRESHOLD_WEAPON)
          / DC_Formulas.DURABILITY_DAMAGE_FACTOR_WEAPON;
-        return reduction;
 
     }
 
@@ -178,7 +176,6 @@ public class DC_MathManager extends MathMaster {
         String property = hero.getProperty(PROPS.DIVINATION_PARAMETER);
         if (!property.isEmpty()) {
             if (!property.contains("{")) {
-                property = StringMaster.wrapInCurlyBraces(property);
             }
 
             divinationPoolFormula = new Formula(DC_Formulas.DIVINATION_POOL_FORMULA.toString().toLowerCase()

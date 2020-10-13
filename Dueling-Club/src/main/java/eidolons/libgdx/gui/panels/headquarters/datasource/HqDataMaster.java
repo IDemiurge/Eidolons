@@ -210,7 +210,7 @@ public class HqDataMaster {
         return new HqDataMaster(unit);
     }
 
-    public static final boolean isSimulationOff() {
+    public static boolean isSimulationOff() {
         return !HeroCreationMaster.isHeroCreationInProgress();
     }
 
@@ -373,15 +373,14 @@ public class HqDataMaster {
                     }
                     shop.sellItemTo(item, hero);
 //                    hero.modifyParameter(PARAMS.GOLD, price); all gold is handled by ShopItemManager!
-                    DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__GOLD);
                 } else {
                     Integer price = shop.buyItemFrom(item, hero);
                     if (price == null)
                         return;
                     hero.addItemToInventory(item);
 //                    hero.modifyParameter(PARAMS.GOLD, -price); all gold is handled by ShopItemManager!
-                    DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__GOLD);
                 }
+                DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__GOLD);
                 break;
             case PICK_UP:
                 item = (DC_HeroItemObj) args[0];
@@ -447,11 +446,11 @@ public class HqDataMaster {
         switch (operation) {
             case ADD_PARAMETER:
                 hero.modifyParameter((PARAMETER) args[0],
-                        Integer.valueOf(args[1].toString()));
+                        Integer.parseInt(args[1].toString()));
                 break;
 
             case SET_PARAMETER:
-                hero.setParameter((PARAMETER) args[0], Integer.valueOf(args[1].toString()));
+                hero.setParameter((PARAMETER) args[0], Integer.parseInt(args[1].toString()));
                 break;
             case APPLY_TYPE:
                 String imagePath = hero.getImagePath();

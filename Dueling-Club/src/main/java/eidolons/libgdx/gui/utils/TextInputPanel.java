@@ -40,8 +40,8 @@ public class TextInputPanel extends TablePanelX implements Blocking, TextFieldLi
         table.setBackground(NinePatchFactory.getLightPanelFilledSmallDrawable());
         setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
 
-        table.add(new SymbolButton(ButtonStyled.STD_BUTTON.OK, () -> ok())).left().bottom();
-        table.add(new SymbolButton(ButtonStyled.STD_BUTTON.CANCEL, () -> close())).right().bottom();
+        table.add(new SymbolButton(ButtonStyled.STD_BUTTON.OK, this::ok)).left().bottom();
+        table.add(new SymbolButton(ButtonStyled.STD_BUTTON.CANCEL, this::close)).right().bottom();
     }
 
     @Override

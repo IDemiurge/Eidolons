@@ -88,7 +88,7 @@ public class HearingRule implements ActionRule {
                     ", " + dstDescr;
 
             LogManager.LOGGING_DETAIL_LEVEL level = LogManager.LOGGING_DETAIL_LEVEL.ESSENTIAL;
-            boolean repeat = false;
+            boolean repeat;
             if (unit.isMine()) {
                 repeat = playerWasHeard;
                 logged = "You have been heard!" + StringMaster.wrapInParenthesis(unit.getIntParam("noise") + " Noise level");

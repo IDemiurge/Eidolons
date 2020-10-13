@@ -130,7 +130,7 @@ public abstract class HtNode extends DynamicLayeredActor {
     protected Tooltip getTooltip() {
         Entity entity = getEntity();
         String name = getTextPrefix();
-        String text = "";
+        String text;
         if (entity != null && !HeroClassMaster.isDataAnOpenSlot(entity)) {
             name = entity.getName();
             text = getTooltipText();

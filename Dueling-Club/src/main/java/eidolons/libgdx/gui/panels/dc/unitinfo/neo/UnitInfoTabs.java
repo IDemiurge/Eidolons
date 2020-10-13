@@ -15,11 +15,10 @@ import eidolons.libgdx.gui.panels.headquarters.hero.HqScrolledValuePanel;
  */
 public class UnitInfoTabs extends TabbedPanel {
     private final UnitDescriptionPanel descriptionPanel;
-    private final TablePanelX main;
 
 
     public UnitInfoTabs(float w, float h) {
-        main = new TablePanelX();
+        TablePanelX main = new TablePanelX();
         main.add(new HqParamPanel(false)).row(); //TODO DC revamp - it has to be solid or removed
         main.add(new HqParamPanel(true)).row();
 //        main.add(new ArmorPanel()).row();

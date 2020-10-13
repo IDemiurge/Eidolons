@@ -23,7 +23,7 @@ public class GearCluster extends GroupX {
     List<GearActor> gears = new ArrayList<>();
     float defaultSpeed = 1;
     Float speed = defaultSpeed;
-    float scale = 1;
+    float scale;
     AutoFloatAction speedAction;
     private boolean clockwise;
     static GEAR[] base_gears = {

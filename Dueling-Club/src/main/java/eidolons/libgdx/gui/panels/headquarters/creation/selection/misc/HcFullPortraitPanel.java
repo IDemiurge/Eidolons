@@ -31,8 +31,8 @@ public class HcFullPortraitPanel extends HcElement {
     private String current;
 
     public HcFullPortraitPanel() {
-        add(new SmartTextButton("Previous", STD_BUTTON.MENU, () -> previous()));
-        add(new SmartTextButton("Next", STD_BUTTON.MENU, () -> next())).row();
+        add(new SmartTextButton("Previous", STD_BUTTON.MENU, this::previous));
+        add(new SmartTextButton("Next", STD_BUTTON.MENU, this::next)).row();
         add(new ImageContainer(Images.SEPARATOR)).colspan(2).row();
         add(portrait = new FadeImageContainer(getDefaultPortrait()) {
             @Override
@@ -46,7 +46,7 @@ public class HcFullPortraitPanel extends HcElement {
             }
         }).colspan(2).row();
         add(new ImageContainer(Images.SEPARATOR)).colspan(2).row();
-        add(new SmartTextButton("Random", STD_BUTTON.MENU, () -> random())).colspan(2);
+        add(new SmartTextButton("Random", STD_BUTTON.MENU, this::random)).colspan(2);
 
        update();
     }
@@ -114,7 +114,7 @@ public class HcFullPortraitPanel extends HcElement {
             }
             return !StringMaster.cropFormat(file.getName()).endsWith(" full");
         });
-        return files.stream().map(file -> getImagePath(file)).collect(Collectors.toList());
+        return files.stream().map(this::getImagePath).collect(Collectors.toList());
     }
 
     private String getImagePath(File file) {

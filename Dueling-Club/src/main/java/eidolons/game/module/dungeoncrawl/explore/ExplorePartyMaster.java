@@ -57,7 +57,7 @@ public class ExplorePartyMaster extends ExplorationHandler {
 
     protected DequeImpl<Unit> initCompanions() {
         DequeImpl<Unit> companions = new DequeImpl<>(getAllies());
-        companions.removeIf(unit -> unit.isMainHero());
+        companions.removeIf(Unit::isMainHero);
         return companions;
     }
 

@@ -83,7 +83,7 @@ public class DC_Attributes {
 
                 hero.modifyParameter(PARAMS.DEFENSE, DC_Formulas.getDefFromDex(amount), modifierKey);
 
-                Float apBoost = new Float(amount +hero.getParamDouble(PARAMS.AGILITY));
+                Float apBoost = (float) (amount + hero.getParamDouble(PARAMS.AGILITY));
                 int bonus = DC_Formulas.getActsFromDexAndAgility(MathMaster
                         .round(apBoost));
                 hero.modifyParameter(PARAMS.INITIATIVE, bonus, modifierKey);

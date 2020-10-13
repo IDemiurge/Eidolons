@@ -131,7 +131,6 @@ public class GridAnimHandler extends GridHandler {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         } finally {
-            animated = null;
         }
     }
 

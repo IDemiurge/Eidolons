@@ -21,7 +21,7 @@ public class ActionSlot extends HqSlotActor<DC_ActiveObj> {
     protected boolean valid = true;
     protected boolean hover;
     protected  static boolean darkened;
-    protected  final float scaleByOnHover = (new Float(64) / ActionPanel.IMAGE_SIZE) - 1;
+    protected  final float scaleByOnHover = (64f / ActionPanel.IMAGE_SIZE) - 1;
     protected  float size = UiMaster.getIconSize();
     protected  RadialMenu customRadialMenu;
     

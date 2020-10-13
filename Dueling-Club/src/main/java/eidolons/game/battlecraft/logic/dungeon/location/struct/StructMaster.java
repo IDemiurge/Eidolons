@@ -62,9 +62,7 @@ public class StructMaster extends DungeonHandler {
     public Set<LevelBlock> getCurrentBlocks() {
         Set<LevelBlock> blocks = new LinkedHashSet<>();
         for (LevelZone zone : getModule().getZones()) {
-            for (LevelBlock block : zone.getSubParts()) {
-                blocks.add(block);
-            }
+            blocks.addAll(zone.getSubParts());
         }
         return blocks;
     }
@@ -74,9 +72,7 @@ public class StructMaster extends DungeonHandler {
             blocks = new LinkedHashSet<>();
             for (Module module : getModules()) {
                 for (LevelZone zone : module.getZones()) {
-                    for (LevelBlock block : zone.getSubParts()) {
-                        blocks.add(block);
-                    }
+                    blocks.addAll(zone.getSubParts());
                 }
             }
         }
@@ -92,9 +88,7 @@ public class StructMaster extends DungeonHandler {
         if (zones == null) {
             zones = new LinkedHashSet<>();
             for (Module module : getModules()) {
-                for (LevelZone zone : module.getSubParts()) {
-                    zones.add(zone);
-                }
+                zones.addAll(module.getSubParts());
             }
         }
         return zones;

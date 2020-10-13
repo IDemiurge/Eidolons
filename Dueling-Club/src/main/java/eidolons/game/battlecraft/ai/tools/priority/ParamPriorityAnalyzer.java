@@ -53,23 +53,19 @@ public class ParamPriorityAnalyzer extends AiHandler {
             case ARMOR:
                 return 5;
             case C_FOCUS:
+            case ESSENCE:
                 return 6;
             case C_ESSENCE:
+            case RESISTANCE:
                 return 4;
             case C_ATB:
                 return 2f * AtbController.ATB_TO_READY / AtbController.TIME_LOGIC_MODIFIER;
-            case RESISTANCE:
-                return 4;
             case BASE_DAMAGE:
-                return 2.5f;
-            case DAMAGE_BONUS:
-                return 2.5f;
             case DAMAGE_MOD:
+            case DAMAGE_BONUS:
                 return 2.5f;
             case FOCUS:
                 return 9;
-            case ESSENCE:
-                return 6;
 
             case STRENGTH:
             case VITALITY:

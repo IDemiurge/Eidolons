@@ -59,7 +59,7 @@ public class StateCloner {
     public DC_GameState clone(DC_GameState state) {
 //game's fields - units, structures - ???
         game.setCloningMode(true);
-        DC_GameState clone = null;
+        DC_GameState clone;
         try {
             Chronos.mark("clone");
             clone = new DC_GameState(game);
@@ -188,10 +188,9 @@ public class StateCloner {
         for (Effect e : abilities.getEffects()) {
             effects.add(cloneEffect(e));
         }
-        Ability ability = (abilities instanceof ActiveAbility) ?
+        return (abilities instanceof ActiveAbility) ?
          new ActiveAbility(abilities.getTargeting(), effects) : new PassiveAbility(
          abilities.getTargeting(), effects);
-        return ability;
     }
 
     private void cloneTriggers(DC_GameState state, DC_GameState clone) {

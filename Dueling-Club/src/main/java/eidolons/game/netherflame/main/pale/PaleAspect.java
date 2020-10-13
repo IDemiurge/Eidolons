@@ -28,18 +28,15 @@ public class PaleAspect {
     public static boolean ON;
     private static Unit avatarTrue;
     private static Unit avatarShade;
-    private static Unit activeAvatar;
 
     private static int d;
 
 
     public static void togglePale() {
         if (ON) {
-            Eidolons.onThisOrNonGdxThread(() ->
-                    exitPale());
+            Eidolons.onThisOrNonGdxThread(PaleAspect::exitPale);
         } else {
-            Eidolons.onThisOrNonGdxThread(() ->
-                    enterPale());
+            Eidolons.onThisOrNonGdxThread(PaleAspect::enterPale);
         }
     }
 
@@ -82,6 +79,7 @@ public class PaleAspect {
     }
 
     public static Unit getAvatar(boolean shade) {
+        Unit activeAvatar;
         if (shade) activeAvatar = avatarShade;
         else activeAvatar = avatarTrue;
 

@@ -30,8 +30,11 @@ import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.secondary.WorkspaceMaster;
 import main.system.entity.FilterMaster;
 
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+@Deprecated
 public class DivinationMaster {
     public static final String BUFF_FAVORED = "Favored";
     private static final int MAX_SPELL_DIVINE_CHANCE = 20;
@@ -195,7 +198,7 @@ public class DivinationMaster {
            .format(chosenGroup.name())),
          DC_TYPE.SPELLS);
         FilterMaster.filterOut(types, sdCondition);
-        Collections.sort(types, getComparator());
+        types.sort(getComparator());
         spellPool.addAll(types);
     }
 

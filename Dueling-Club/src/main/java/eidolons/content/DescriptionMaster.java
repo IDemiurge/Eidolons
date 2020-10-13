@@ -286,7 +286,7 @@ public class DescriptionMaster {
         return getDescription(entity, true);
     }
     public static String getDescription(Entity entity, boolean fallback) {
-        String text = null;
+        String text;
         text = FileManager.readFile(getDescriptionPath(entity));
         if (fallback&&text.isEmpty()){
             text = entity.getProperty(G_PROPS.DESCRIPTION);

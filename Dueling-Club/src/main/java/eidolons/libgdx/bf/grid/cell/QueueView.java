@@ -51,7 +51,6 @@ public class QueueView extends UnitView {
     private static final float PORTRAIT_Y_INACTIVE = -4;
     private static final float PORTRAIT_Y_ACTIVE = 14;
     private final Image activeMarker;
-    private final Image emblemBg;
     protected int initiativeIntVal;
     protected Label initiativeLabel;
     protected ImageContainer atbBg;
@@ -70,6 +69,7 @@ public class QueueView extends UnitView {
         addActor(activeMarker = new Image(ButtonStyled.STD_BUTTON.PULL.getTexture()));
         activeMarker.getColor().a = 0;
         init(o.getClockValue());
+        Image emblemBg;
         addActor(emblemBg = new Image(TextureCache.getRegionUI_DC(Images.INTENT_ICON_BG)));
         emblemBg.setPosition((AtbPanel.imageSize - 30) / 2, 80);
 
@@ -156,8 +156,8 @@ public class QueueView extends UnitView {
                 }
             }
         }
-        float y = 0;
-        float y1 = 0;
+        float y;
+        float y1;
         if (active) {
             y = VIEW_Y_ACTIVE;
             y1 = LINE_Y_ACTIVE;

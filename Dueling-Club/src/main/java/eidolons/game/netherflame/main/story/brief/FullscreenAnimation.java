@@ -68,8 +68,8 @@ public class FullscreenAnimation extends SuperActor {
             return;
         }
         if (GdxMaster.CUSTOM_RESOLUTION){
-            float x = new Float(GdxMaster.getWidth())/1920;
-            float y =  new Float(GdxMaster.getHeight())/1080;
+            float x = (float) GdxMaster.getWidth() /1920;
+            float y = (float) GdxMaster.getHeight() /1080;
             sprite.setScale(Math.max(x, y));
 //            sprite.setOffsetX(GdxMaster.getWidth() / 2 + (GdxMaster.getWidth()-1920)/2);
 //            sprite.setOffsetY(GdxMaster.getHeight() / 2+ (GdxMaster.getHeight()-1080)/2);

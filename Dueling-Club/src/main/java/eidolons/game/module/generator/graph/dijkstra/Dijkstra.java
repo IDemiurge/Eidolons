@@ -34,11 +34,11 @@ public class Dijkstra {
     // in the graph
     static <V> DijkstraResult<V> runDijkstra(V source, UndirectedGraph<V, ?, ?> G) {
         // shortest distances between source and other nodes in graph
-        HashMap<V, Integer> dist = new HashMap<V, Integer>();
+        HashMap<V, Integer> dist = new HashMap<>();
         // stores all prev nodes that each node can backtrack to to getVar to the source
-        HashMap<V, V> prev = new HashMap<V, V>();
+        HashMap<V, V> prev = new HashMap<>();
         // keep track of visited nodes
-        HashSet<V> unvisited = new HashSet<V>();
+        HashSet<V> unvisited = new HashSet<>();
 
         dist.put(source, 0);
         for (V v : G.getNodes()) {
@@ -71,7 +71,7 @@ public class Dijkstra {
                 }
             }
         }
-        DijkstraResult<V> D = new DijkstraResult<V>();
+        DijkstraResult<V> D = new DijkstraResult<>();
         D.dist = dist;
         D.prev = prev;
         return D;
@@ -82,7 +82,7 @@ public class Dijkstra {
     public static <V> SinglePaths<V> getSingleShortestPaths(UndirectedGraph<V, ?, ?> G) {
         // run dijkstra, then return first path in each
         // returns a list of lists for each node
-        SinglePaths<V> paths = new SinglePaths<V>();
+        SinglePaths<V> paths = new SinglePaths<>();
         for (V source : G.getNodes()) {
             if (source.equals(3)) {
                 int foo = 1;
@@ -90,7 +90,7 @@ public class Dijkstra {
             System.out.format("%d%n", source);
             DijkstraResult<V> D = runDijkstra(source, G);
             for (V target : G.getNodes()) {
-                LinkedList<V> path = new LinkedList<V>();
+                LinkedList<V> path = new LinkedList<>();
                 V u = target;
                 while (D.prev.get(u) != null) {
                     path.addFirst(u);

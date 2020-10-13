@@ -162,8 +162,7 @@ public class StealthRule implements ActionRule {
             }
         }
 
-        int detection = factor * source.getIntParam(PARAMS.DETECTION) / distance;
-        return detection;
+        return factor * source.getIntParam(PARAMS.DETECTION) / distance;
     }
 
     @Override

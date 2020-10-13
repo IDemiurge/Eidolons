@@ -21,16 +21,15 @@ import main.data.filesys.PathFinder;
 public class HcIntro extends HcElement {
     private static final String RECOMMENDED = "Demo Fighter";
 
-    private final DescriptionScroll description;
-
     public HcIntro() {
         super();
-        add(description= new DescriptionScroll()).row();
+        DescriptionScroll description;
+        add(description = new DescriptionScroll()).row();
         description.setUserObject(new SelectableItemData("Welcome!", getDescription(),
          getPreviewOne(), getPreviewTwo()));
 //        add(new TextButtonX("Select Preset", STD_BUTTON.MENU, () ->selectPreset()));
-        add(new SmartTextButton("Random Preset", STD_BUTTON.MENU, () ->randomPreset())).row();
-        add(new SmartTextButton("Recommended", STD_BUTTON.MENU, () ->recommended()));
+        add(new SmartTextButton("Random Preset", STD_BUTTON.MENU, this::randomPreset)).row();
+        add(new SmartTextButton("Recommended", STD_BUTTON.MENU, this::recommended));
 
 
     }

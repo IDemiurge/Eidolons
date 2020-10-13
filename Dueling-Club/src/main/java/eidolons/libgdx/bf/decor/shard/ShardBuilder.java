@@ -23,7 +23,6 @@ public class ShardBuilder {
     final ShardEnums.SHARD_TYPE DEFAULT_TYPE = ShardEnums.SHARD_TYPE.CHAINS;
     final ShardEnums.SHARD_TYPE DEFAULT_TYPE_ALT = ShardEnums.SHARD_TYPE.ROCKS;
     final int BASE_PASS_CHANCE = 33;
-    private final int LARGE_SHARD_CHANCE = 85;
 
     List<Shard> last = new ArrayList<>();
     private final GridPanel grid;
@@ -131,6 +130,7 @@ public class ShardBuilder {
         }
 
         // not adjacent to large? no more than 3 in line
+        int LARGE_SHARD_CHANCE = 85;
         return RandomWizard.chance(LARGE_SHARD_CHANCE);
 
         //add to map so we know where large ones are
@@ -215,7 +215,7 @@ public class ShardBuilder {
                 return -1;
             }
         } else
-            adj.removeIf(direction -> direction.isDiagonal());
+            adj.removeIf(DIRECTION::isDiagonal);
 
         if (adj.isEmpty()) {
             if (RandomWizard.chance(getIsleChanceEmpty())) {

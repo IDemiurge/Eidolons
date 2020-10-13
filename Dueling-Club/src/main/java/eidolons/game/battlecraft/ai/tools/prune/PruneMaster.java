@@ -121,7 +121,6 @@ public class PruneMaster extends AiHandler {
                 break;
             case ATTACK:
                 byHealth = false;
-                byDanger = true;
                 break;
             case CUSTOM_HOSTILE:
             case CUSTOM_SUPPORT:

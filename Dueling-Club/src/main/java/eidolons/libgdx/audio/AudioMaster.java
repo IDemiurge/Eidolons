@@ -15,9 +15,9 @@ import main.data.filesys.PathFinder;
 public class AudioMaster {
     private static AudioMaster instance; // мне не нравится синглтон
     Audio audio = Gdx.audio;
-    ObjectMap<String, Sound> sounds = new ObjectMap<String, Sound>();
-    ObjectMap<String, FileHandle> files = new ObjectMap<String, FileHandle>();
-    Array<String> badFiles = new Array<String>();
+    ObjectMap<String, Sound> sounds = new ObjectMap<>();
+    ObjectMap<String, FileHandle> files = new ObjectMap<>();
+    Array<String> badFiles = new Array<>();
     String soundPath = PathFinder.getSoundPath().replaceAll("//", "/");
     String badSoundsPath = soundPath + "/badSounds";
 

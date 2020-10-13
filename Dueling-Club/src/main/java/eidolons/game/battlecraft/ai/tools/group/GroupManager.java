@@ -10,8 +10,6 @@ import java.util.List;
 
 public class GroupManager {
 
-    private Integer factor = 4;
-
     public void initGroupManually(ObjAtCoordinate oac) {
 
     }
@@ -20,6 +18,7 @@ public class GroupManager {
         // by block if possible?
         // break into blocks if necessary...
         // go thru them, but make groups via adjacency
+        Integer factor = 4;
         int blockWidth = floor.getCellsX() / factor;
         int blockHeight = floor.getCellsY() / factor;
         List<Unit> units = new ArrayList<>();

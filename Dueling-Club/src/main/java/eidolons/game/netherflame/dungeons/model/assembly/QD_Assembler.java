@@ -108,7 +108,7 @@ public class QD_Assembler {
         QD_Picker picker = new QD_Picker(random, i, max, attempt, data, previous, next);
 
         LinkedList<QD_Module> sorted = new LinkedList<>(pool);
-        sorted.removeIf(module ->  picker.check(module));
+        sorted.removeIf(picker::check);
         sorted.sort(picker);
 
 

@@ -52,7 +52,7 @@ public class QuickAttackRadial extends RadialMenu {
         Unit source =getSource();
         List<? extends ActiveObj> attacks = quickWeaponPanel.
          getActiveWeaponDataSource().getActions();
-        List<RadialContainer> nodes = null;
+        List<RadialContainer> nodes;
         try {
             nodes =createNodes(source, attacks);
 //        getDualNode();

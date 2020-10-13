@@ -29,7 +29,6 @@ public class AnimDrawMaster extends Group {
     private FadeSprite fadeTest;
     private boolean drawing;
     private boolean drawingPlayer;
-    private Boolean parallelDrawing;
 
     public AnimDrawMaster(AnimMaster animMaster) {
     }
@@ -40,7 +39,6 @@ public class AnimDrawMaster extends Group {
     }
 
     public void setParallelDrawing(Boolean parallelDrawing) {
-        this.parallelDrawing = parallelDrawing;
     }
 
     public boolean isDrawing() {
@@ -151,7 +149,7 @@ public class AnimDrawMaster extends Group {
                 tryDrawAnimation(batch, a);
             }
 
-            leadQueue.removeIf((CompositeAnim anim) -> anim.isFinished());
+            leadQueue.removeIf(CompositeAnim::isFinished);
         }
 
         super.draw(batch, parentAlpha);
@@ -201,9 +199,7 @@ public class AnimDrawMaster extends Group {
     public void cleanUp() {
         if (leadAnimation != null)
             leadAnimation.finished();
-        leadQueue.forEach(a -> {
-            a.finished();
-        });
+        leadQueue.forEach(CompositeAnim::finished);
         leadAnimation = null;
         leadQueue.clear();
     }

@@ -45,7 +45,7 @@ public abstract class Filter<T extends Filter> {
 
 	protected Texture inputTexture = null;
 	protected FrameBuffer outputBuffer = null;
-	protected ShaderProgram program = null;
+	protected ShaderProgram program;
 	private boolean programBegan = false;
 
 	public Filter (ShaderProgram program) {

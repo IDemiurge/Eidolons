@@ -44,7 +44,7 @@ public class ModelFinalizer {
     RoomTemplateMaster templateMaster;
     RoomAttacher attacher;
     LevelModel model;
-    private LevelModelBuilder builder;
+    private final LevelModelBuilder builder;
     private int maxRooms;
 
     public ModelFinalizer(RoomTemplateMaster templateMaster, RoomAttacher attacher, LevelModelBuilder builder) {
@@ -159,8 +159,8 @@ public class ModelFinalizer {
         Loop loop = new Loop(model.getRoomMap().keySet().size() * 10 * maxNewPath);
         List<Room> rooms = new ArrayList<>(model.getRoomMap().values());
         //            rooms.removeIf(r -> r.getType() == ROOM_TYPE.CORRIDOR);
-        Collections.sort(rooms, new SortMaster<Room>().getSorterByExpression_(r ->
-         r.getExits().length - r.getUsedExits().size()));
+        rooms.sort(new SortMaster<Room>().getSorterByExpression_(r ->
+                r.getExits().length - r.getUsedExits().size()));
         Map<Room, List<Room>> failed = new HashMap<>();
 
         loop:
@@ -261,8 +261,7 @@ public class ModelFinalizer {
         List<Integer> coordinates = map.keySet().stream().map(c -> c.getXorY(onXorY)).collect(Collectors.toList());
         List<Integer> coordinates2 = map2.keySet().stream().map(c -> c.getXorY(onXorY)).collect(Collectors.toList());
 
-        return new LinkedHashSet<>(
-         coordinates.stream().filter(c -> coordinates2.contains(c)).collect(Collectors.toList()));
+        return coordinates.stream().filter(coordinates2::contains).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     private boolean connect(Room room, Room room2) {
@@ -300,15 +299,15 @@ public class ModelFinalizer {
         //        list.addAll(room2.getCoordinatesList());
 
         boolean middle = !RandomWizard.chance(aligned.size() * 9);
-        Integer line = 0;
+        Integer line;
         if (middle) {
             line = aligned.get(aligned.size() / 2);
         } else line = (Integer) RandomWizard.getRandomListObject(aligned);
         int n = side.isCloserToZero() ? -1 : 1;
-        int start = c.getXorY(!onXorY) - 1 * n;
+        int start = c.getXorY(!onXorY) - n;
         c = CoordinatesMaster.getFarmostCoordinateInDirection(
          side.getDirection().flip(), room2.getCoordinatesList());
-        int end = c.getXorY(!onXorY) + 1 * n;
+        int end = c.getXorY(!onXorY) + n;
 
         n = start;
         start = Math.min(start, end);
@@ -504,8 +503,8 @@ public class ModelFinalizer {
         //identify where there is the most empty space... to sort beans on each loop
         for (LevelGraphNode node : unbuiltNodes) {
 
-            Collections.sort(edgeRooms, new SortMaster<Room>()
-             .getSorterByExpression_(room -> getAttachRoomSortValue(room, node, model)));
+            edgeRooms.sort(new SortMaster<Room>()
+                    .getSorterByExpression_(room -> getAttachRoomSortValue(room, node, model)));
 
             Room room = new RandomWizard<Room>().getRandomListItem(edgeRooms);
             edgeRooms = ModelMaster.getEdgeRooms(model);

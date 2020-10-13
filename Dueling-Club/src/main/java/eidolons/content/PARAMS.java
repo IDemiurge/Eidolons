@@ -802,10 +802,8 @@ could have other params - sf discounts,
     private String entityType;
     private String[] entityTypes;
     private String[] sentityTypes;
-    private int AV_ID;
     private int defaultValue;
     private boolean dynamic = false;
-    private Metainfo metainfo;
     private final boolean lowPriority = false;
     private boolean attr = false;
     private boolean superLowPriority;
@@ -857,7 +855,7 @@ could have other params - sf discounts,
     PARAMS(String entityType, String shortName, String descr, boolean dynamic, int defaultValue,
            Color c) {
         this(entityType, shortName, descr, dynamic, defaultValue, Integer.MAX_VALUE);
-        this.metainfo = new Metainfo(c);
+        Metainfo metainfo = new Metainfo(c);
     }
 
     PARAMS(String entityType, String shortName, String descr, boolean dynamic, int defaultValue) {
@@ -877,7 +875,6 @@ could have other params - sf discounts,
         this.entityType = entityType;
         this.dynamic = dynamic;
         this.defaultValue = defaultValue;
-        this.AV_ID = AV_ID;
     }
 
     PARAMS() {

@@ -3,7 +3,6 @@ package eidolons.game.module.herocreator;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.item.DC_JewelryObj;
 import eidolons.entity.item.DC_QuickItemObj;
@@ -15,10 +14,8 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.master.EffectMaster;
 import eidolons.game.module.herocreator.logic.spells.SpellMaster;
-import eidolons.game.module.herocreator.logic.spells.SpellUpgradeMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.system.DC_Formulas;
-import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.Effect;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentValsManager;
@@ -27,8 +24,6 @@ import main.content.OBJ_TYPE;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.enums.entity.ItemEnums.WEAPON_CLASS;
-import main.content.enums.entity.SpellEnums;
-import main.content.enums.entity.SpellEnums.SPELL_UPGRADE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -48,7 +43,6 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.secondary.Bools;
 import main.system.launch.CoreEngine;
 import main.system.math.Formula;
-import main.system.sound.AudioEnums;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -106,7 +100,6 @@ public class HeroManager {
         if (discountParam != null) {
             mod = hero.getIntParam(discountParam);
             if (mod == 100) {
-                value = 0;
             } else {
                 costFormula.applyFactor((!buying ? "" : "-")
                         + StringMaster.getValueRef(KEYS.SOURCE, discountParam));
@@ -512,11 +505,10 @@ public class HeroManager {
     }
 
     private List<ObjType> getSortedJewelry(Unit hero) {
-        List<ObjType> sortedJewelryData = JewelryMaster
+        return JewelryMaster
                 .getSortedJewelryData(new ListMaster<DC_JewelryObj>().convertToTypeList(
                         hero
                                 .getJewelry()));
-        return sortedJewelryData;
     }
 
     public int addQuickItem(Unit hero, Entity type) {
@@ -585,25 +577,9 @@ public class HeroManager {
             }
         }
 
-        // DC_SpellObj base = LibraryManager.getVerbatimSpellVersion(hero,
-        // type);
-        // if (base != null) {
-        // if (isTrainer())
-        // return addSpellUpgrade(hero, type, PROP);
-        // if (!MessageManager.promptSpellReplace(hero, type, base.getType()))
-        // return false;
-        // else
-        // return addSpellUpgrade(hero, type, PROP);
-        // }
-        // }
-
         if (update) {
             saveHero(hero);
         }
-        // if (type.isUpgrade()) {
-        // if (!addUpgrade(hero, type, PROP))
-        // return false; TODO DEPRECATED!
-        // }
         if (!hero.getType().addProperty(PROP,
                 ((game.isSimulation() || trainer) ? type.getName() : type.getId() + ""),
                 checkNoDuplicates(TYPE)))
@@ -626,12 +602,6 @@ public class HeroManager {
 
         }
 
-        if (TYPE.equals(DC_TYPE.SPELLS)) {
-            if (PROP.equals(PROPS.VERBATIM_SPELLS)) {
-                SpellUpgradeMaster.removeUpgrades(hero, type);
-            }
-        }
-        // TODO preCheck if hero now has the prop!
         return true;
     }
 
@@ -709,9 +679,8 @@ public class HeroManager {
     }
 
     public int subtractCost(Unit hero, Entity type, OBJ_TYPE TYPE, PROPERTY p) {
-        int cost = modifyCostParam(hero, type, TYPE, false, p);
-//        update(hero);
-        return cost;
+        //        update(hero);
+        return modifyCostParam(hero, type, TYPE, false, p);
     }
 
     protected Integer modifyCostParam(Unit hero, Entity type, OBJ_TYPE TYPE, boolean selling,
@@ -923,30 +892,5 @@ public class HeroManager {
         this.trainer = trainer;
     }
 
-    public void spellUpgradeToggle(SPELL_UPGRADE selected, Entity entity) {
-        Unit hero = CharacterCreator.getHero();
-        Spell spell = hero.getSpell(entity.getName());
-        boolean verbatim = spell.getSpellPool() == SpellEnums.SPELL_POOL.VERBATIM;
-        if (!SpellUpgradeMaster.checkUpgrade(verbatim, hero, spell, selected)) {
-            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.FAIL);
-            return;
-        }
-        // result = SpellUpgradeMaster.isUpgraded(spell);
-        boolean result = SpellUpgradeMaster.toggleUpgrade(hero, spell, selected);
-
-        if (result) {
-            saveHero(hero);
-            if (verbatim) {
-                hero.modifyParameter(PARAMS.XP, -SpellUpgradeMaster.getXpCost(entity, hero,
-                        selected));
-            }
-            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.SPELL_UPGRADE_LEARNED);
-        } else {
-            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.SPELL_UPGRADE_UNLEARNED);
-        }
-        if (!verbatim) {
-            update(hero);
-        }
-    }
 
 }

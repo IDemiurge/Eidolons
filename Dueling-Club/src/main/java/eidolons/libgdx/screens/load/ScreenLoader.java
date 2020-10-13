@@ -153,11 +153,11 @@ public class ScreenLoader {
                     break;
                 case BRIEFING:
                 case CINEMATIC:
-                    switchScreen(() -> new IggBriefScreenOld(), newMeta);
+                    switchScreen(IggBriefScreenOld::new, newMeta);
                     break;
                 case MAP:
                     Eidolons.setScope(Eidolons.SCOPE.MAP);
-                    switchScreen(() -> MapScreen.getInstance(), newMeta);
+                    switchScreen(MapScreen::getInstance, newMeta);
                     if (newMeta.getName() != null)
                         AdventureInitializer.setScenario(newMeta.getName());
                     break;

@@ -43,9 +43,7 @@ public class TownPortalEffect extends DC_Effect { //TODO make this a subclass!
 
                 });
 
-        boolean result = (boolean) WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.CONFIRM);
-
-        return result;
+        return (boolean) WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.CONFIRM);
 //        GuiEventManager.trigger(GuiEventType.TIP_MESSAGE, new TipMessageSource(
 //                msg, img, btn, false, getRunnable(), getChannel(), true));
     }

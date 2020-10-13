@@ -184,7 +184,7 @@ public class TextureCache {
 
     public static Texture getOrCreate(String path, boolean silent) {
         getInstance().setSilent(silent);
-        Texture texture = null;
+        Texture texture;
         try {
             texture = getInstance()._getOrCreate(path);
         } catch (Exception e) {
@@ -400,10 +400,10 @@ public class TextureCache {
     }
 
     public Texture _createTexture(String path, boolean putIntoCache, boolean recursion) {
-        String filePath = null;
-        FileHandle fullPath = null;
+        String filePath;
+        FileHandle fullPath;
         if (fullLog) log(1, "CreateTexture request: " + path);
-        Path p = null;
+        Path p;
         try {
             p = Paths.get(imagePath, path);
             filePath = p.toString();

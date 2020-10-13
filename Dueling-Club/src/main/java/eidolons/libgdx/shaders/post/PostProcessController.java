@@ -49,7 +49,6 @@ public class PostProcessController {
 
     private final LensFlare2 lens2;
     private final LensFlare  lens1;
-    private final Zoomer zoomer;
     private final SaturateFx saturate;
     private final Bloom bloom;
     private final BloomFx bloomBright;
@@ -79,6 +78,7 @@ public class PostProcessController {
         addEffect(curvature = new Curvature());
         addEffect(nfaa = new Nfaa(GdxMaster.getWidth(), GdxMaster.getHeight()));
         addEffect(blur = new BlurFx());
+        Zoomer zoomer;
         addEffect(zoomer = main.zoomer, false);
         //TODO
         zoomer.setEnabled(false);

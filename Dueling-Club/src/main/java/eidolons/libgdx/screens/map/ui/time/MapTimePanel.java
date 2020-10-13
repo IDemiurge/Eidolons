@@ -109,7 +109,7 @@ public class MapTimePanel extends GroupX {
                 });
 
         float moonSize = GdxMaster.adjustSize(SIZE);
-        addListener(new DynamicTooltip(() -> getDateString()).getController());
+        addListener(new DynamicTooltip(this::getDateString).getController());
         //display DatePanel?
         for (MOON moon : MOON.values()) {
             MoonActor container = new MoonActor(moon);
@@ -201,10 +201,7 @@ public class MapTimePanel extends GroupX {
 
     public void update(DAY_TIME time) {
 
-        if (time.isNight())
-            weave.setImage(getPath() + "weave.png");
-        else
-            weave.setImage(getPath() + "weave.png");
+        weave.setImage(getPath() + "weave.png");
 
         if (time.isNight())
             mainCircle.setImage(getPath() + StrPathBuilder.build("circle", "night.png"));
@@ -307,8 +304,7 @@ public class MapTimePanel extends GroupX {
 
         GameDate date;
 //        getPhase();
-        String string = "";
-        return string;
+        return "";
     }
 
     private MOON[] getDisplayedMoons() {

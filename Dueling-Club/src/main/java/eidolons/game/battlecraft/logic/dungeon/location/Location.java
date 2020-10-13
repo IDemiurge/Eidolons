@@ -38,7 +38,6 @@ public class Location extends FloorWrapper {
 
     private final Set<Entrance> transits = new LinkedHashSet<>();
     private boolean initialEdit;
-    private final String defaultEntrance = "The Light";
 
     public Location(DungeonMaster master, Floor floor) {
         super(floor, master);
@@ -70,9 +69,10 @@ public class Location extends FloorWrapper {
         if (StringMaster.isEmpty(data)) {
             return;
         }
-        Entrance entrance = null;
+        Entrance entrance;
         if (!NumberUtils.isInteger(data)) {
             Coordinates c = Coordinates.get(data);
+            String defaultEntrance = "The Light";
             ObjType type = DataManager.getType(defaultEntrance, DC_TYPE.BF_OBJ);
             entrance = (Entrance) getGame().createObject(type, c, DC_Player.NEUTRAL);
         } else {

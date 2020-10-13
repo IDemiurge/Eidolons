@@ -52,8 +52,7 @@ public class Spawner extends DungeonHandler {
     }
 
     protected void spawnDone() {
-        List<Unit> unitsList = new ArrayList<>();
-        unitsList.addAll(game.getUnits());
+        List<Unit> unitsList = new ArrayList<>(game.getUnits());
         getFacingAdjuster().adjustFacing(unitsList);
 
         final Integer cellsX = Coordinates.getFloorWidth();

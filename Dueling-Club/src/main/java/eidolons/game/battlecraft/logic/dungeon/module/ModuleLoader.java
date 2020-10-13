@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 public class ModuleLoader extends DungeonHandler {
 
     private Module loading;
-    private Module last;
 
 
     /*
@@ -59,12 +58,12 @@ public class ModuleLoader extends DungeonHandler {
 
     private DequeImpl<BattleFieldObject> getObjects(Module module) {
         Set<BattleFieldObject> set = game.getBfObjects().stream().filter(obj -> module.getCoordinatesSet().
-                contains(obj.getCoordinates())).collect(Collectors.toCollection(() -> new LinkedHashSet<>()));
+                contains(obj.getCoordinates())).collect(Collectors.toCollection(LinkedHashSet::new));
         return new DequeImpl<>(set);
     }
 
     public void loadModuleFull(Module module) {
-        last = getMetaMaster().getModuleMaster()
+        Module last = getMetaMaster().getModuleMaster()
                 .getCurrent();
         loading = module;
         // checkBossModuleInit(module);

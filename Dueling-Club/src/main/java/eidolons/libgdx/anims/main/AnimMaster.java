@@ -86,12 +86,7 @@ public class AnimMaster extends Group {
     }
 
     public static boolean isSmoothStop(Anim anim) {
-        if (anim.getPart() == AnimEnums.ANIM_PART.CAST) {
-            return false; //TODO anim Review - was it too long? on vfx side..
-        }
-        if (anim.getOrigin().equals(anim.getDestination()))
-            return true;
-        return true;
+        return anim.getPart() != ANIM_PART.CAST; //TODO anim Review - was it too long? on vfx side..
 
     }
 
@@ -122,7 +117,7 @@ public class AnimMaster extends Group {
             return Cinematics.ANIM_SPEED;
         }
         if (animationSpeedFactor == null) {
-            animationSpeedFactor = new Float(OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED)) / 100;
+            animationSpeedFactor = (float) OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED) / 100;
         }
         return animationSpeedFactor;
     }
@@ -290,7 +285,7 @@ public class AnimMaster extends Group {
         onCustomAnim(new SimpleAnim(data, vfx, spritePath, runnable));
     }
     public static void onCustomAnim(SimpleAnim anim) {
-        Gdx.app.postRunnable(() -> anim.startAsSingleAnim());
+        Gdx.app.postRunnable(anim::startAsSingleAnim);
     }
 
     public void setOff(boolean off) {

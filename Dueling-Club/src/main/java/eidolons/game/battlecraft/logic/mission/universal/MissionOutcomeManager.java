@@ -131,9 +131,7 @@ public class MissionOutcomeManager<E extends DungeonSequence> extends MissionHan
         } else {
             if (checkDefeat()) {
                 //TODO final hack
-                new Thread(() -> {
-                    defeat();
-                }, "defeat thread").start();
+                new Thread(this::defeat, "defeat thread").start();
                 return true;
             }
         }

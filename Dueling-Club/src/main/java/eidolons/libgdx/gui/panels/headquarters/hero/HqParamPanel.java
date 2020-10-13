@@ -71,7 +71,7 @@ public class HqParamPanel extends HqElement{
         for (PARAMETER sub : params) {
             CharSequence text=getText(sub);
             containers.get(i).setValueText(text);
-            int size = 18 + Math.round(18 * new Float(2.0f) / (1 + text.length()) / 10);
+            int size = 18 + Math.round(18 * 2.0f / (1 + text.length()) / 10);
             containers.get(i).setStyle(StyleHolder.getHqLabelStyle(size));
             containers.get(i).clearListeners();
             containers.get(i).addListener(new ValueTooltip(DescriptionTooltips.tooltip(sub, getUserObject().getEntity())).getController());

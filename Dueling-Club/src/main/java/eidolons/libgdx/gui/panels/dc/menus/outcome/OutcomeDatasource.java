@@ -26,8 +26,7 @@ public class OutcomeDatasource {
     }
 
     public List<ValueContainer> getPlayerStatsContainers() {
-        return Arrays.stream(getDisplayedPlayerStats()).map(stat ->
-         getPlayerStatsContainer(stat)).collect(Collectors.toList());
+        return Arrays.stream(getDisplayedPlayerStats()).map(this::getPlayerStatsContainer).collect(Collectors.toList());
     }
 
     private ValueContainer getPlayerStatsContainer(PLAYER_STATS stat) {

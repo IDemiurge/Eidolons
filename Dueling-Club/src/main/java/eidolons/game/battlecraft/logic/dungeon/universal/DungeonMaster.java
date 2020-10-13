@@ -187,7 +187,7 @@ public abstract class DungeonMaster {
     private float getLerp(int size, int dst) {
         //max dst from center is about 1/3 of size for rectangular
         // Math.sqrt()
-        return MathMaster.minMax( new Float(size)/(dst+4)/10, 0.12f, 0.8f);
+        return MathMaster.minMax((float) size /(dst+4)/10, 0.12f, 0.8f);
     }
 
     public void setFloorWrapper(Location floorWrapper) {

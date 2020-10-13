@@ -65,8 +65,7 @@ public class Encounter extends DC_Obj {
     @Override
     public String toString() {
         // unitMap
-        String string = getNameAndCoordinate() + " with " + getUnits();
-        return string;
+        return getNameAndCoordinate() + " with " + getUnits();
     }
 
 

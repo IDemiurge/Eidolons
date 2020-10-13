@@ -164,7 +164,7 @@ public class GdxImageMaster extends LwjglApplication {
     //TODO gdx revamp - INTO REGION FOR ATLASES!!!
     public static Texture size(String path, int width, int height, boolean write) {
         int size = (width + height) / 2;
-        Texture texture = null;
+        Texture texture;
         if (height == AtbPanel.imageSize && width == AtbPanel.imageSize) {
             texture = sizedViewCache.get(path);
             if (texture != null) {
@@ -417,11 +417,10 @@ public class GdxImageMaster extends LwjglApplication {
 
     private static String getStandardAttackIcon(String baseType, String weaponGroup,
                                                 ObjType action) {
-        String path = StrPathBuilder.build("main", "actions", "standard attack",
+        return StrPathBuilder.build("main", "actions", "standard attack",
                 weaponGroup,
                 baseType,
                 action.getName().replace(ActionEnums.OFFHAND, "").replace(" ", "_") + ".png");
-        return path;
     }
 
     private static String getStandardAttackIcon(ObjType action, ObjType weapon) {
@@ -440,9 +439,9 @@ public class GdxImageMaster extends LwjglApplication {
 
 
     private static String findClosestIcon(ObjType action, ObjType weapon) {
-        String path = "";
+        String path;
         String subgroup = weapon.getSubGroupingKey();
-        String baseType = "";
+        String baseType;
         String weaponGroup = weapon.getProperty(G_PROPS.WEAPON_GROUP);
         for (ObjType sub : DataManager.getTypesSubGroup(DC_TYPE.WEAPONS, subgroup)) {
             baseType = sub.getName();

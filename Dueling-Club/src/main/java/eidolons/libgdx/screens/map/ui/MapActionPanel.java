@@ -40,9 +40,7 @@ public class MapActionPanel extends BaseSlotPanel {
         for (MacroAction sub : actions) {
             boolean valid = true;
             TextureRegion texture = TextureCache.getOrCreateR(sub.getImagePath());
-            list.add(new ActionContainer(valid, texture, () -> {
-                sub.invokeClicked();
-            }));
+            list.add(new ActionContainer(valid, texture, sub::invokeClicked));
         }
         return list;
     }

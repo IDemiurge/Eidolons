@@ -58,9 +58,6 @@ public class OutcomePanel extends TablePanelX implements EventListener {
     Cell<TextButton> exitButton;
     Cell<TextButton> continueButton;
     private Boolean outcome;
-    private OutcomeDatasource datasource;
-    private Image picture;
-    private Label message;
     private TabbedPanel unitStatTabs;
 
     public OutcomePanel() {
@@ -105,11 +102,10 @@ public class OutcomePanel extends TablePanelX implements EventListener {
         if (outcome == null)
             outcome = TEST_OUTCOME;
 
-        datasource = outcomeDatasource;
         String imgPath = "ui/big/victory.png";
         if (outcome != null)
             imgPath = outcome ? "ui/big/victory.png" : "ui/big/defeat.jpg";
-        picture = new Image(TextureCache.getOrCreateR(imgPath));
+        Image picture = new Image(TextureCache.getOrCreateR(imgPath));
 
         addActor(picture);
         picture.setAlign(Align.center);
@@ -126,7 +122,7 @@ public class OutcomePanel extends TablePanelX implements EventListener {
             sound = outcome ? AudioEnums.STD_SOUNDS.VICTORY : AudioEnums.STD_SOUNDS.DEATH;
         if (outcome != null)
             messageText = outcome ? VICTORY_MESSAGE : DEFEAT_MESSAGE;
-        message = new Label(messageText, StyleHolder.getSizedColoredLabelStyle(0.25f, FONT.AVQ, 22));
+        Label message = new Label(messageText, StyleHolder.getSizedColoredLabelStyle(0.25f, FONT.AVQ, 22));
         addActor(message);
         message.setAlignment(Align.top);
         message.setPosition(
@@ -137,7 +133,7 @@ public class OutcomePanel extends TablePanelX implements EventListener {
         DC_SoundMaster.playStandardSound(sound);
 
         TablePanel<Actor> stats = new TablePanel<>();
-        datasource.getPlayerStatsContainers().forEach(c -> {
+        outcomeDatasource.getPlayerStatsContainers().forEach(c -> {
             stats.addElement(c).fill(false).expand(0, 0).bottom()
              .size(150, 50);
             stats.row();
@@ -235,8 +231,7 @@ public class OutcomePanel extends TablePanelX implements EventListener {
                     //TODO display stats!
                     String stats = QuestMissionStatManager.getGameStatsText();
                     EUtils.onConfirm(stats +
-                     "\n Exit to menu?", true, () ->
-                     Eidolons.exitFromGame());
+                     "\n Exit to menu?", true, Eidolons::exitFromGame);
                     WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED,
                      false);
 

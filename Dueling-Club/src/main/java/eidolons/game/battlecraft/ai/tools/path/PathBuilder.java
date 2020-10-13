@@ -192,7 +192,7 @@ public class PathBuilder extends AiHandler {
                         if (isDebug()) {
                             EUtils.showInfoText(true, "Ai built " + path);
                             DC_MovementManager.playerPath = path.choices.stream()
-                                    .map(ch -> ch.getCoordinates()).collect(Collectors.toList());
+                                    .map(Choice::getCoordinates).collect(Collectors.toList());
 
                             DC_MovementManager.playerDestination = path.getTargetCoordinates();
                             GdxMaster.onInputGdx(() -> WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.INPUT, true));

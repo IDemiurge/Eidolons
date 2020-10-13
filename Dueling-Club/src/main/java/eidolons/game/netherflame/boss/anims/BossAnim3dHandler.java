@@ -16,8 +16,6 @@ import java.util.List;
 
 public abstract class BossAnim3dHandler<T extends BossModel> extends BossHandler<T> implements BossAnimHandler {
 
-    private final boolean fastMode = false;
-
     public BossAnim3dHandler(BossManager manager) {
         super(manager);
 
@@ -30,6 +28,7 @@ public abstract class BossAnim3dHandler<T extends BossModel> extends BossHandler
         GuiEventManager.bind(GuiEventType.KEY_TYPED, p -> {
             keyTyped((int) p.get());
         });
+        boolean fastMode = false;
         if (!fastMode)
             preloadSprites();
     }

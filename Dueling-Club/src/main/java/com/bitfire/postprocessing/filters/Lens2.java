@@ -25,7 +25,7 @@ import com.bitfire.utils.ShaderLoader;
  *      href="http://john-chapman-graphics.blogspot.co.uk/2013/02/pseudo-lens-flare.html">http://john-chapman-graphics.blogspot.co.uk/2013/02/pseudo-lens-flare.html</a>
  * @author Toni Sagrista **/
 public final class Lens2 extends Filter<Lens2> {
-	private Vector2 viewportInverse;
+	private final Vector2 viewportInverse;
 	private int ghosts;
 	private float haloWidth;
 	private Texture lensColorTexture;
@@ -36,10 +36,10 @@ public final class Lens2 extends Filter<Lens2> {
 			"u_haloWidth", 0);
 		// @formatter:on
 
-		private String mnemonic;
-		private int elementSize;
+		private final String mnemonic;
+		private final int elementSize;
 
-		private Param (String mnemonic, int arrayElementSize) {
+		Param(String mnemonic, int arrayElementSize) {
 			this.mnemonic = mnemonic;
 			this.elementSize = arrayElementSize;
 		}

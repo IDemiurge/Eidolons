@@ -188,8 +188,7 @@ public class RollMaster {
         int min2 = MathMaster.applyMod(max2, DEFAULT_MIN_ROLL_PERC);
 
         int proportion = Math.round((min1 + max1) / 2 * 100) / ((min2 + max2) / 2);
-        int perc = 50 + (100 - proportion) / 2;
-        return perc;
+        return 50 + (100 - proportion) / 2;
     }
 
     /**

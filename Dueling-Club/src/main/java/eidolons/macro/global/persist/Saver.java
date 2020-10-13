@@ -77,7 +77,7 @@ public class Saver {
     }
 
     private static String getSaveContent() {
-        String content = "";
+        String content;
 
         //write full type data!
         Unit hero = Eidolons.getMainHero();

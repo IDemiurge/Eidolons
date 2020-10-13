@@ -308,10 +308,10 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
     }
 
     private void spawn(MapMoveLayer container, MAP_AREA mapArea) {
-        int x = 0;
-        int y = 0;
-        int w = 0;
-        int h = 0;
+        int x;
+        int y;
+        int w;
+        int h;
         if (mapArea == null) {
             x = 0;
             y = 0;

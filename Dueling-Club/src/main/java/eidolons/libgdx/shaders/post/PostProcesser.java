@@ -18,13 +18,12 @@ public class PostProcesser {
 
     private static final float WORLD_TO_SCREEN = 0.01f;
     private final OrthographicCamera camera;
-    private final FitViewport viewport;
     SpriteBatch batch;
     Processor active;
     Blur blur;
-    private FrameBuffer fboA;
+    private final FrameBuffer fboA;
     //really multiple?! well in truth that would be cool... give it a shot
-    private FrameBuffer fboB;
+    private final FrameBuffer fboB;
 
     public PostProcesser(SpriteBatch batch) {
         this.batch = batch;
@@ -34,7 +33,7 @@ public class PostProcesser {
         float SCENE_WIDTH = VIRTUAL_WIDTH / 100;
         float SCENE_HEIGHT = VIRTUAL_HEIGHT / 100f;
         camera = new OrthographicCamera();
-        viewport = new FitViewport(SCENE_WIDTH, SCENE_HEIGHT, camera);
+        FitViewport viewport = new FitViewport(SCENE_WIDTH, SCENE_HEIGHT, camera);
         camera.position.set(SCENE_WIDTH * 0.5f, SCENE_HEIGHT * 0.5f, 0.0f);
         fboA = FrameBuffer.createFrameBuffer(Format.RGBA8888, VIRTUAL_WIDTH, VIRTUAL_HEIGHT, false);
         fboB = FrameBuffer.createFrameBuffer(Format.RGBA8888, VIRTUAL_WIDTH, VIRTUAL_HEIGHT, false);

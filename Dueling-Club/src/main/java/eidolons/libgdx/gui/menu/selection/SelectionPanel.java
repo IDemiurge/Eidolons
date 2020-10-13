@@ -28,7 +28,6 @@ import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -84,7 +83,7 @@ public abstract class SelectionPanel extends TablePanelX {
         addElement(null).bottom().size(getWidth(), 70);
 
         if (isDoneSupported()) {
-            infoPanel.initStartButton(getDoneText(), () -> done());
+            infoPanel.initStartButton(getDoneText(), this::done);
         }
         if (isBackSupported()) {
             addActor(backButton);
@@ -182,7 +181,7 @@ public abstract class SelectionPanel extends TablePanelX {
         List<SelectableItemData> list = createListData();
         Comparator<? super SelectableItemData> sorter = getDataSorter();
         if (sorter != null)
-            Collections.sort(list, sorter);
+            list.sort(sorter);
         listPanel.setItems(list);
         listener = new SelectionInputListener(this);
 
@@ -195,8 +194,7 @@ public abstract class SelectionPanel extends TablePanelX {
         } else if (isAutoDoneEnabled() && (Flags.isMacro()
                 || ListMaster.isNotEmpty(MainLauncher.presetNumbers))) {
             listPanel.updateAct(0);
-            Eidolons.onNonGdxThread(() ->
-                    tryDone());
+            Eidolons.onNonGdxThread(this::tryDone);
         }
     }
 

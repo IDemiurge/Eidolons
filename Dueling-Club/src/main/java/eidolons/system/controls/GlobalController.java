@@ -356,7 +356,7 @@ public class GlobalController implements Controller {
             }
             return true;
         }
-        SortMaster.sortByExpression(list, view -> view.hashCode());
+        SortMaster.sortByExpression(list, Object::hashCode);
         int index = list.indexOf(hovered);
         index++;
         if (list.size() <= index)

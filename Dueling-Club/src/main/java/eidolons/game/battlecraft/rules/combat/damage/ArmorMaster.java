@@ -39,7 +39,7 @@ public class ArmorMaster {
     boolean simulation;
     private final DC_Game game;
 
-    public static final boolean isCodeReady() {
+    public static boolean isCodeReady() {
         return false;
     }
 
@@ -106,13 +106,12 @@ public class ArmorMaster {
                                             BattleFieldObject targetObj, DC_ActiveObj action) {
         boolean zone = (action.isZone());
         boolean canCritOrBlock = !zone;
-        boolean average = zone;
         if (!zone) {
             if (!action.isMissile() || !damage_type.isNatural()) {
                 canCritOrBlock = false; // TODO astral?
             }
         }
-        return getArmorBlockDamage(false, action instanceof Spell, canCritOrBlock, average,
+        return getArmorBlockDamage(false, action instanceof Spell, canCritOrBlock, zone,
                 amount, targetObj, action.getOwnerObj(), action.isOffhand(),
                 action.getEnergyType(), action);
     }
@@ -161,7 +160,7 @@ public class ArmorMaster {
         if (!simulation) {
             action.getRef().setID(KEYS.BLOCK, armorObj.getId());
 
-            String entry = null;
+            String entry;
             if (blockedPercentage == 0 || blocked == 0) {
                 entry = attacker.getNameIfKnown()
                         + " penetrates "
@@ -355,7 +354,6 @@ public class ArmorMaster {
                 area = weapon.getIntParam(PARAMS.IMPACT_AREA);
             }
         }
-        int maximum = covered;
         int minimum = area - uncovered;
         if (minimum < 0) {
             minimum = 0;
@@ -363,13 +361,13 @@ public class ArmorMaster {
 
         if (!canCritOrBlock) {
             if (simulation || average) {
-                return MathMaster.getAverage(minimum, maximum);
+                return MathMaster.getAverage(minimum, covered);
             }
-            return RandomWizard.getRandomIntBetween(minimum, maximum);
+            return RandomWizard.getRandomIntBetween(minimum, covered);
         }
 
         int attack = DefenseVsAttackRule.getAttackValue(offhand, attacker, attacked, action); // sneak?
-        int defense = 0;
+        int defense;
         int def_coef = 100;
         int atk_coef = 100;
         if (shield) {
@@ -396,25 +394,24 @@ public class ArmorMaster {
         int blockPercBonus = (def_coef * defense - atk_coef * attack) / 100;
 
         if (shield) {
-            return Math.max(0, MathMaster.addFactor((maximum + minimum) / 2, blockPercBonus));
+            return Math.max(0, MathMaster.addFactor((covered + minimum) / 2, blockPercBonus));
         }
 
         // roll accuracy for minimum? or roll between minimum and maximum?
 
         // TODO OR MAKE REFLEX ROLL TO DOUBLE BLOCK CHANCE?
         if (simulation || average) {
-            return (minimum + maximum) / 2;
+            return (minimum + covered) / 2;
         }
         boolean crit_or_block = RandomWizard.chance(Math.abs(blockPercBonus));
         if (crit_or_block) {
             if (blockPercBonus > 0) {
-                return maximum;
+                return covered;
             }
             return minimum;
         }
-        int percentageBlocked = RandomWizard.getRandomIntBetween(minimum, maximum);
 
-        return percentageBlocked;
+        return RandomWizard.getRandomIntBetween(minimum, covered);
     }
 
     private DAMAGE_TYPE getDamageType(DC_ActiveObj action, DC_WeaponObj weapon) {

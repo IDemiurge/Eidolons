@@ -21,12 +21,7 @@ import static main.content.enums.DungeonEnums.DUNGEON_STYLE.*;
  */
 public class TileConverter {
 
-    private final LevelModel model;
-    private final LevelData metaData;
-
     public TileConverter(LevelModel model, LevelData metaData) {
-        this.metaData = metaData;
-        this.model = model;
     }
 
     public static DUNGEON_STYLE getStyle(LOCATION_TYPE subdungeonType) {
@@ -102,8 +97,7 @@ public class TileConverter {
     }
 
     private String getWall(RoomModel room, int x, int y) {
-        String wallType = "Stone Wall"; //from block/zone!!!
-        return wallType;
+        return "Stone Wall";
     }
 
     private Pair<String, OBJ_TYPE>[] getBfObjPair(String... names) {

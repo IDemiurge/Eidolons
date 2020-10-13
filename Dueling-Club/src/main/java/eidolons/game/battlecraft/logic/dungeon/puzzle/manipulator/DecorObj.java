@@ -34,7 +34,6 @@ public class DecorObj extends GroupWithEmitters {
     Coordinates c;
     DIRECTION d;
     ObjType type;
-    private boolean over;
 
     public DecorObj(Coordinates c, DIRECTION d, ObjType type) {
         this.c = c;
@@ -58,7 +57,6 @@ public class DecorObj extends GroupWithEmitters {
             if (d != null) {
                 actor.setRotation(d.getDegrees());
             }
-            this.over = over;
             //add to container over/under
         }
     }

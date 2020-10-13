@@ -78,8 +78,7 @@ public class QD_XmlModelReader {
 
     private static QD_Floor constructFloor(String fileName, String contents) {
         DataUnit<QD_Enums.FloorProperty> data=new QD_FloorLoader().createFloorData(contents);
-        QD_Floor floor= new QD_Floor(data, null );
-        return floor;
+        return new QD_Floor(data, null );
     }
 
 }

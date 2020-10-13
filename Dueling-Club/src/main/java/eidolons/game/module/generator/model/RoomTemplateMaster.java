@@ -1,7 +1,6 @@
 package eidolons.game.module.generator.model;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
-import eidolons.game.module.generator.GeneratorEnums;
 import eidolons.game.module.generator.GeneratorEnums.EXIT_TEMPLATE;
 import eidolons.game.module.generator.GeneratorEnums.LEVEL_VALUES;
 import eidolons.game.module.generator.GeneratorEnums.ROOM_CELL;
@@ -83,13 +82,12 @@ public class RoomTemplateMaster {
         }
         for (ROOM_TEMPLATE_GROUP group : groups) {
             if (group.isMultiGroup()) {
-                Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>> merged
-                 = new HashMap<>();
                 Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>> sub =
                  map.get(group.getMultiGroupOne());
                 if (sub == null)
                     sub = createMap(group.getMultiGroupOne());
-                merged.putAll(sub);
+                Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>> merged
+                        = new HashMap<>(sub);
 
                 sub = map.get(group.getMultiGroupTwo());
                 if (sub == null)
@@ -278,9 +276,8 @@ public class RoomTemplateMaster {
         if (APPLY_FAIL_SAFE_EXITS) {
             cells = applyFailSafe(cells);
         }
-        RoomModel model = new RoomModel(cells, template, exit);
 
-        return model;
+            return new RoomModel(cells, template, exit);
     }
 
     public static String[][] applyFailSafe(String[][] cells) {
@@ -423,20 +420,20 @@ public class RoomTemplateMaster {
 
 
     public String generate(int x, int y, float irregularity) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         int col = 0;
         int row = 0;
         while (row < y) {
             while (col < x) {
-                result += GeneratorEnums.ROOM_CELL.WALL.getSymbol();
+                result.append(ROOM_CELL.WALL.getSymbol());
                 col++;
             }
-            result += Strings.NEW_LINE;
+            result.append(Strings.NEW_LINE);
             row++;
         }
 
 
-        return result;
+        return result.toString();
     }
 
     public void resetSizedRandomRoomPools(ROOM_TEMPLATE_GROUP templateGroup) {
@@ -449,13 +446,12 @@ public class RoomTemplateMaster {
             if (!dimensions.contains(dimension))
                 dimensions.add(dimension);
         }
-        Collections.sort(dimensions,
-         new SortMaster<Dimension>().getSorterByExpression_((Dimension dim)
-          -> (int)
-          -(dim.getHeight() * dim.getWidth())
+        dimensions.sort(new SortMaster<Dimension>().getSorterByExpression_((Dimension dim)
+                -> (int)
+                -(dim.getHeight() * dim.getWidth())
 
-          * (RandomWizard.chance(data.getIntValue(LEVEL_VALUES.RANDOMIZED_SIZE_SORT_CHANCE))
-          ? RandomWizard.getRandomIntBetween(0, 100) : 1)));
+                * (RandomWizard.chance(data.getIntValue(LEVEL_VALUES.RANDOMIZED_SIZE_SORT_CHANCE))
+                ? RandomWizard.getRandomIntBetween(0, 100) : 1)));
 
         for (Dimension dimension : dimensions) {
             roomPoolStack.add(pools.get(dimension));
@@ -479,7 +475,7 @@ public class RoomTemplateMaster {
             return r.getWidth() != height || r.getHeight() != width;
         });
 
-        RoomModel model = null;
+        RoomModel model;
         while (!pool.isEmpty()) {
             model = clone(pool.remove(RandomWizard.getRandomIndex(pool)));
             //for culdesac?

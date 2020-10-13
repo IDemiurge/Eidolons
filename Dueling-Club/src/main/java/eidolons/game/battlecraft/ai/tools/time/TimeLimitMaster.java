@@ -57,7 +57,7 @@ public class TimeLimitMaster {
     }
 
     public static Long getTimeLimitMetric(METRIC metric) {
-        return new Long(Math.round(getTimeLimitMetricBase(metric) * TIME_LIMIT_FACTOR));
+        return Math.round(getTimeLimitMetricBase(metric) * TIME_LIMIT_FACTOR);
     }
 
     public static int getTimeLimitMetricBase(METRIC metric) {
@@ -132,7 +132,7 @@ public class TimeLimitMaster {
 
     public static float getTimeLimitMod() {
         if (timeLimitMod==null )
-            timeLimitMod =new Float( OptionsMaster.getGameplayOptions().getIntValue(GAMEPLAY_OPTION.AI_TIME_LIMIT_MOD))/100;
+            timeLimitMod = (float) OptionsMaster.getGameplayOptions().getIntValue(GAMEPLAY_OPTION.AI_TIME_LIMIT_MOD) /100;
         return timeLimitMod;
     }
 

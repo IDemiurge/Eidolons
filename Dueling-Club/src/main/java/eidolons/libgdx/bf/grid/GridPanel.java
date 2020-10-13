@@ -256,7 +256,7 @@ it sort of broke at some point - need to investigate!
                         continue;
                     }
                     TextureRegion image = TextureCache.getRegionUV(cell.getImagePath());
-                    GridCellContainer gridCell = null;
+                    GridCellContainer gridCell;
                     cells[x][y] = gridCell = createGridCell(image, x, y);
 
                     //setVoid(x, y, false);
@@ -509,7 +509,7 @@ it sort of broke at some point - need to investigate!
     public void resetMaps() {
         if (gridManager.isResetting())
             return;
-        Eidolons.onNonGdxThread(() -> GridManager.reset());
+        Eidolons.onNonGdxThread(GridManager::reset);
     }
 
     public void setVoid(int x, int y, boolean animated) {
@@ -1230,7 +1230,7 @@ it sort of broke at some point - need to investigate!
             }
             String path = VariableManager.removeVarPart(overlayData);
             Texture tex = TextureCache.getOrCreate(path);
-            TextureRegion r = null;
+            TextureRegion r;
             if (!VariableManager.getVars(overlayData).isEmpty()) {
                 Coordinates c = new Coordinates(VariableManager.getVars(overlayData));
                 r = new TextureRegion(tex, c.x * 128, c.y * 128, 128, 128);
@@ -1424,10 +1424,7 @@ it sort of broke at some point - need to investigate!
     }
 
     public GridCellContainer getGridCell(int x, int y) {
-        if (x >= cells.length || y < 0) {
-            return null;
-        }
-        if (y >= cells[0].length || y < 0) {
+        if (x >= cells.length || y < 0 || y >= cells[0].length ) {
             return null;
         }
         return cells[x][y];

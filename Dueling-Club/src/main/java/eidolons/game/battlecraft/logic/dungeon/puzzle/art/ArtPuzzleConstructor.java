@@ -23,8 +23,7 @@ public class ArtPuzzleConstructor extends ManipulatorPuzzleConstructor<ArtPuzzle
 
     @Override
     public ArtPuzzle create(String data, Map<Coordinates, CellScriptData> blockData, Coordinates coordinates, LevelBlock block) {
-        ArtPuzzle puzzle = super.create(data, blockData, coordinates, block);
-        return puzzle;
+        return super.create(data, blockData, coordinates, block);
     }
     @Override
     protected boolean isAreaEnter() {

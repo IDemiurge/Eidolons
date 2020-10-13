@@ -25,6 +25,7 @@ import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.data.XList;
+import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -49,9 +50,8 @@ public class Analyzer extends AiHandler {
 
     public static List<DC_Cell> getProtectCells(UnitAI ai) {
         List<Unit> list = getAllies(ai);
-        List<DC_Cell> cells = list.stream().map(unit -> unit.getGame().getCellByCoordinate(unit.getCoordinates())).collect(Collectors.toList());
         //TODO filter
-        return cells;
+        return list.stream().map(unit -> unit.getGame().getCellByCoordinate(unit.getCoordinates())).collect(Collectors.toList());
     }
 
     public static List<Unit> getAllies(UnitAI ai) {
@@ -283,7 +283,7 @@ public class Analyzer extends AiHandler {
             list.removeIf(e -> !e.canActNow());
         if (checkAttack)
             list.removeIf(e -> !e.canAttack());
-        list.removeIf(u -> u.isDead());
+        list.removeIf(Entity::isDead);
         if (!ExplorationMaster.isExplorationOn())
             list.removeIf(u -> u.getAI().isOutsideCombat());
         return list;

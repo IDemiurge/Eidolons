@@ -31,12 +31,11 @@ public class PuzzleSpawner {
         //puzzle is marked at the center...
         int w = puzzle.getWidth();
         int h = puzzle.getHeight();
-        boolean centerOrEdges = first; //check if hero is there
-        if (centerOrEdges) {
+        if (first) {
             ListMaster.fill(list, puzzle.getCoordinates(), types.size());
             return list;
         }
-        int x = 0, y = 0;
+        int x, y;
         int i = 0;
         ArrayList<DIRECTION> d = new ArrayList<>(Arrays.asList(DIRECTION.ORTHOGONAL));
         Collections.shuffle(d);
@@ -89,7 +88,7 @@ public class PuzzleSpawner {
         /*
         positioning around some 'nests'?
          */
-        List<Unit> units = null;
+        List<Unit> units;
         if (first) {
             puzzle.getEncounter().setTypes(types);
             puzzle.getEncounter().setAdjustmentProhibited(true);

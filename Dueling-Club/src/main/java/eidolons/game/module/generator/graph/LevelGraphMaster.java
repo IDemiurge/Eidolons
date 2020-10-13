@@ -98,7 +98,7 @@ public class LevelGraphMaster {
             candidates.add(path.endNode);
             candidates.add(path.getNodes().get(path.getNodes().size() / 2));
         }
-        candidates.removeIf(node -> node == null);
+        candidates.removeIf(Objects::isNull);
         candidates.removeIf(node -> {
 
             for (LevelGraphNode candidate : candidates) {

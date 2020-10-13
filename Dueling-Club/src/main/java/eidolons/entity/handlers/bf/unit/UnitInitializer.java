@@ -19,7 +19,6 @@ import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.game.module.herocreator.logic.spells.SpellMaster;
-import eidolons.game.module.herocreator.logic.spells.SpellUpgradeMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.macro.global.persist.Loader;
 import main.content.DC_TYPE;
@@ -126,19 +125,8 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     }
 
     public void initSpells(boolean reset) {
-        boolean initUpgrades = false;
-        if (game.isSimulation()) {
-            if (!ListMaster.isNotEmpty(
-                    getEntity().getSpells())) {
-                initUpgrades = true;
-            }
-        }
         getEntity().setSpells(
                 getGame().getManager().getSpellMaster().getSpells(getEntity(), reset));
-
-        if (initUpgrades) {
-            SpellUpgradeMaster.initSpellUpgrades(getEntity());
-        }
     }
 
     public void initSpellbook() {

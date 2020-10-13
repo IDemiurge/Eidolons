@@ -32,7 +32,6 @@ public class AdventureInitializer {
 
     public static void newAdventureGame(String data) {
         if (data==null ){
-            data =scenario; //single option for now....
         } else
         {
             load = true;

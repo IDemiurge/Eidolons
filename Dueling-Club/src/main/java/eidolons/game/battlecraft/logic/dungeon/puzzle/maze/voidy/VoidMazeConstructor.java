@@ -42,8 +42,7 @@ public class VoidMazeConstructor extends MazePuzzleConstructor {
     @Override
     public MazePuzzle create(String data, Map<Coordinates, CellScriptData> blockData,
                              Coordinates coordinates, LevelBlock block) {
-        MazePuzzle mazePuzzle = super.create(data, blockData, coordinates, block);
-        return mazePuzzle;
+        return super.create(data, blockData, coordinates, block);
     }
 
     @Override
@@ -53,7 +52,7 @@ public class VoidMazeConstructor extends MazePuzzleConstructor {
 
     @Override
     protected PuzzleResolution createResolution() {
-        PuzzleResolution resolution = new PuzzleResolution(puzzle) {
+        return new PuzzleResolution(puzzle) {
             @Override
             protected Condition getFailConditions() {
                 OrConditions conditions = new OrConditions();
@@ -73,7 +72,6 @@ public class VoidMazeConstructor extends MazePuzzleConstructor {
                 return super.getSolveConditions();
             }
         };
-        return resolution;
     }
 
     @Override

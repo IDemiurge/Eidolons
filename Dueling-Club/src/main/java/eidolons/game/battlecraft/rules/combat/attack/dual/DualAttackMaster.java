@@ -31,8 +31,6 @@ import java.util.List;
 public class DualAttackMaster {
     public static List<DC_UnitAction> getDualAttacks(Unit unit) {
         List<DC_UnitAction> list = new ArrayList<>();
-        if (true)
-            return list;
         // DC Review
         // unit.getMainWeapon().getAttackActions().forEach(main -> {
         //     unit.getOffhandWeapon().getAttackActions().forEach(offhand -> {
@@ -88,11 +86,11 @@ public class DualAttackMaster {
     private static Costs getDualCosts(DC_UnitAction main, DC_UnitAction offhand) {
         List<Cost> list = new ArrayList<>();
 
-        Costs costsMain = main.getCosts();
+        Costs costsMain;
         //        if (costsMain == null)
         costsMain = DC_CostsFactory.getCostsForAction(main);
 
-        Costs costsOffhand = offhand.getCosts();
+        Costs costsOffhand;
         //        if (costsOffhand == null)
         costsOffhand = DC_CostsFactory.getCostsForAction(offhand);
         for (Cost cost : costsMain.getCosts()) {
@@ -112,9 +110,9 @@ public class DualAttackMaster {
     }
 
     private static boolean checkCostsCanMerge(DC_UnitAction main, DC_UnitAction offhand) {
-        Costs costsMain = main.getCosts();
+        Costs costsMain;
         costsMain = DC_CostsFactory.getCostsForAction(main);
-        Costs costsOffhand = offhand.getCosts();
+        Costs costsOffhand;
         costsOffhand = DC_CostsFactory.getCostsForAction(offhand);
         for (Cost cost : costsMain.getCosts()) {
             PARAMETER p = cost.getPayment().getParamToPay();

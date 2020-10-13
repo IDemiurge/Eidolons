@@ -155,8 +155,8 @@ public class Atlases {
         if (aCase == AssetEnums.WEAPON_ANIM_CASE.POTION)
             return getPotionKey(activeObj);
         DC_WeaponObj weapon = activeObj.getActiveWeapon();
-        String actionName = null;
-        String projectionString = "to";
+        String actionName;
+        String projectionString;
 
         //        if (aCase != WEAPON_ANIM_CASE.RELOAD) {
         projectionString = (projection == null ? "hor" :
@@ -291,10 +291,9 @@ public class Atlases {
         if (loops != 0)
             frameDuration /= loops;
 
-        SpriteAnimation sprite = SpriteAnimationFactory.
-                getSpriteAnimation(regions, frameDuration, loops);
         //        sprite.setRotation(rotation);
-        return sprite;
+        return SpriteAnimationFactory.
+                getSpriteAnimation(regions, frameDuration, loops);
     }
 
     public static Array<TextureAtlas.AtlasRegion> getRegions(AssetEnums.WEAPON_ANIM_CASE aCase, DC_ActiveObj activeObj, Boolean projection) {
@@ -340,7 +339,7 @@ public class Atlases {
                                                                     DC_ActiveObj activeObj,
                                                                     boolean searchOtherWeaponOrAction) {
         String name = getAtlasFileKeyForAction(projection, activeObj, AssetEnums.WEAPON_ANIM_CASE.NORMAL);
-        List<Entity> types = null;
+        List<Entity> types;
         if (searchOtherWeaponOrAction) {
             types = Arrays.stream(DataManager.getBaseWeaponTypes()).
                     filter(type -> type.getProperty(G_PROPS.WEAPON_GROUP).equals(
@@ -391,7 +390,7 @@ public class Atlases {
             getOrCreateAtlas(weapon);
             return;
         }
-        String path = null;
+        String path;
 
         try {
             path = getFullAtlasPath(weapon);

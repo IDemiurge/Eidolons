@@ -16,7 +16,6 @@ public class AriusVessel extends BossVisual {
     BlendImageContainer runes;
     BlendImageContainer glaive;
     FadeImageContainer orb;
-    private final float speed=2f;
 
     EmitterActor emitterActor;
 
@@ -51,9 +50,10 @@ public class AriusVessel extends BossVisual {
         glaive.setX(glaive.getX()+12);
         glaive.setX(glaive.getY()+5);
 
-        runes.setRotation(runes.getRotation()+delta*speed);
-        glaive.setRotation(runes.getRotation()-delta*speed*2);
-        orb.setRotation(runes.getRotation()-delta*speed/2);
+        float speed = 2f;
+        runes.setRotation(runes.getRotation()+delta* speed);
+        glaive.setRotation(runes.getRotation()-delta* speed *2);
+        orb.setRotation(runes.getRotation()-delta* speed /2);
         //TODO manual!
     }
 

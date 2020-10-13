@@ -124,7 +124,7 @@ public class VisualChoice extends TablePanelX implements OverlayPanel {
         title.setX(GdxMaster.centerWidth(title));
         fadeIn();
         animate(false);
-        EUtils.waitAndRun(2000, ()-> show());
+        EUtils.waitAndRun(2000, this::show);
     }
 
     @Override
@@ -189,7 +189,7 @@ public class VisualChoice extends TablePanelX implements OverlayPanel {
         //wait for anims to finish
         fadeOut();
         animate(true);
-        EUtils.waitAndRun(2000, ()-> hide());
+        EUtils.waitAndRun(2000, this::hide);
     }
 
     public VC_Option getSelected() {

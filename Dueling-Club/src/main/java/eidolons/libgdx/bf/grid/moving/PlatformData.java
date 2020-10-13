@@ -32,11 +32,11 @@ public class PlatformData extends DataUnit<PlatformData.PLATFORM_VALUE> {
     }
 
     public void setCells(Set<Coordinates> cells) {
-        String c = "";
+        StringBuilder c = new StringBuilder();
         for (Coordinates cell : cells) {
-            c += cell.toString() + ",";
+            c.append(cell.toString()).append(",");
         }
-        setValue(PLATFORM_VALUE.cells, c);
+        setValue(PLATFORM_VALUE.cells, c.toString());
     }
 
     @Override

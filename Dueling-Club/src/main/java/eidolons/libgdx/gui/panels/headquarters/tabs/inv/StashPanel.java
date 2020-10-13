@@ -28,8 +28,6 @@ import java.util.List;
 public class StashPanel extends TablePanelX{
 
     StashSlotsPanel slotsPanel;
-    private int cols;
-    private int rows;
 
     public StashPanel() {
 //        TablePanelX header = new TablePanelX<>(400, 140);
@@ -56,8 +54,8 @@ public class StashPanel extends TablePanelX{
             n++;
             preferred=dividers.get(n);
         }
-        cols = preferred;
-        rows = size / cols;
+        int cols = preferred;
+        int rows = size / cols;
 
         add(slotsPanel = new StashSlotsPanel(rows, cols)).colspan(3);
         setSize(Math.max(400, slotsPanel.getWidth()),

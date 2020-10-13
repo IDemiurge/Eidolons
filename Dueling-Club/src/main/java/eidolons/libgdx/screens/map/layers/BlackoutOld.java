@@ -70,7 +70,7 @@ public class BlackoutOld extends Group {
             dur = 3f;
 
         if (dur instanceof Integer) {
-            dur = Float.valueOf((int) dur);
+            dur = (float) (int) dur;
         }
         image.setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
         addActor(image);

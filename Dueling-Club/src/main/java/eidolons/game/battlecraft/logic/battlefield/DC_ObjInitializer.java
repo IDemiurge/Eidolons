@@ -189,7 +189,7 @@ public class DC_ObjInitializer extends DungeonHandler {
     }
 
     public static String convertVarStringToObjCoordinates(String partyData) {
-        String reformatted = "";
+        StringBuilder reformatted = new StringBuilder();
         for (String subString : ContainerUtils.open(partyData)) {
             Coordinates c = Coordinates.get(VariableManager.getVar(subString));
             if (c == null) {
@@ -198,10 +198,10 @@ public class DC_ObjInitializer extends DungeonHandler {
             subString = VariableManager.removeVarPart(subString);
             subString = c + COORDINATES_OBJ_SEPARATOR
                     + subString;
-            reformatted += subString + OBJ_SEPARATOR;
+            reformatted.append(subString).append(OBJ_SEPARATOR);
         }
 
-        return reformatted;
+        return reformatted.toString();
     }
 
     public static List<ObjAtCoordinate> createObjTypeMap(String textContent) {

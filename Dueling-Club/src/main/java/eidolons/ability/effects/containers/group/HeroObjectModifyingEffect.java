@@ -41,7 +41,7 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
     protected String objName;
     protected DC_TYPE type;
     protected MOD code = MOD.MODIFY_BY_CONST;
-    protected boolean buff = true;
+    protected boolean buff;
     protected String buffName = "@";
     protected Conditions conditions;
     protected Map<PARAMETER, String> map;

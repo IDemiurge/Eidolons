@@ -11,11 +11,10 @@ import main.system.launch.Flags;
 
 public class ColorHandler extends GridHandler{
     private static boolean staticColors= Flags.isLiteLaunch();
-    private final GridManager gridManager;
 
     public ColorHandler(GridPanel grid) {
         super(grid);
-        gridManager = grid.getGridManager();
+        GridManager gridManager = grid.getGridManager();
     }
 
     public static boolean isStaticColors() {

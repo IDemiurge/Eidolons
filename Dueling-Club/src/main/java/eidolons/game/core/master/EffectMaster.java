@@ -43,9 +43,8 @@ public class EffectMaster extends Master {
     }
 
     public static AttackEffect getAttackEffect(ActiveObj action) {
-        AttackEffect effect = (AttackEffect) getEffectsOfClass((DC_ActiveObj) action,
+        return (AttackEffect) getEffectsOfClass((DC_ActiveObj) action,
          AttackEffect.class).get(0);
-        return effect;
     }
 
     public static Effect getDisablingEffect() {

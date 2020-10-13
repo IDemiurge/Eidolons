@@ -235,18 +235,18 @@ public class DefenseVsAttackRule {
             attack += -defense;
             defense = 1;
         }
-        float advantage = new Float(new Float(attack) / new Float(defense));
+        float advantage = (float) attack / (float) defense;
         if (Math.abs(advantage) < 1) {
-            advantage = new Float(new Float(defense) / new Float(attack));
+            advantage = (float) defense / (float) attack;
         }
         Float chance;
         if (crit) {
-            chance = new Float(Math.min(DC_Formulas.ATTACK_PROPORTION_CRIT_MAX, Math
-                    .sqrt(DC_Formulas.ATTACK_PROPORTION_CRIT_SQRT_BASE_MULTIPLIER * advantage)));
+            chance = (float) Math.min(DC_Formulas.ATTACK_PROPORTION_CRIT_MAX, Math
+                    .sqrt(DC_Formulas.ATTACK_PROPORTION_CRIT_SQRT_BASE_MULTIPLIER * advantage));
         } else {
-            chance = new Float(Math.min(DC_Formulas.DEFENSE_PROPORTION_CRIT_MAX, Math
+            chance = (float) Math.min(DC_Formulas.DEFENSE_PROPORTION_CRIT_MAX, Math
                     .sqrt(DC_Formulas.DEFENSE_PROPORTION_CRIT_SQRT_BASE_MULTIPLIER
-                            * advantage)));
+                            * advantage));
         }
         return chance;
     }

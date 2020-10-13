@@ -59,7 +59,7 @@ public abstract class MissionMaster<E extends DungeonSequence> {
     protected abstract E createMission();
 
     protected PlayerManager<E> createPlayerManager() {
-        return new PlayerManager<E>(this);
+        return new PlayerManager<>(this);
     }
 
     protected abstract MissionOutcomeManager<E> createOutcomeManager();

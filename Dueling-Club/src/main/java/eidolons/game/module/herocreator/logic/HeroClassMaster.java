@@ -141,13 +141,13 @@ public class HeroClassMaster {
     }
     public static String getNextClassInfo(Entity classType) {
         List<ObjType> classes = DataManager.getTypes(DC_TYPE.CLASSES);
-        String s = "Unlocked Classes: \n";
+        StringBuilder s = new StringBuilder("Unlocked Classes: \n");
         for (ObjType aClass : classes) {
             if (aClass.getProperty(G_PROPS.BASE_TYPE).equalsIgnoreCase(classType.getName())) {
-                s +="   "+ aClass.getName() + "\n";
+                s.append("   ").append(aClass.getName()).append("\n");
             }
         }
-        return s;
+        return s.toString();
     }
         public static String getImgPath(Entity data) {
         String  path = "gen/class/64/" + data.getName() + ".png";

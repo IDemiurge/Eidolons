@@ -283,9 +283,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
         // TODO how to determined when formula should be statically parsed?
         // what if some part of the formula depends on the target instead?
 
-        boolean result = modify(obj, map);
-
-        return result;
+        return modify(obj, map);
     }
 
     private boolean modify(Obj obj, Map<PARAMETER, String> map) {

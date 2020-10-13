@@ -29,7 +29,6 @@ import java.util.List;
  */
 public class ForceAnim extends Weapon3dAnim {
 
-    private VfxContainer<PhaseVfx> shaped;
     private final GenericEnums.DAMAGE_TYPE type;
 
     public static final List vfxList_death = Arrays.asList(GenericEnums.VFX.dark_blood,
@@ -91,7 +90,7 @@ public class ForceAnim extends Weapon3dAnim {
     protected SpriteAnimation createSprite(AssetEnums.PROJECTION projection) {
         SpriteAnimation atlas = SpriteAnimationFactory.getSpriteAnimation(getSpritePath());
 
-        Array<TextureAtlas.AtlasRegion> regions = null;
+        Array<TextureAtlas.AtlasRegion> regions;
         if (getSpritePath().equalsIgnoreCase(Sprites.REAPER_SCYTHE)) {
             regions = SpriteAnimationFactory.getSpriteAnimation(getSpritePath()).getAtlas()
                     .findRegions("Reaper_Scythe_Scythe_Swing_" + projection.toString().toLowerCase());
@@ -187,7 +186,7 @@ public class ForceAnim extends Weapon3dAnim {
                 String path = PathFinder.getVfxPath() + getVfxPath();
 
                 main.system.auxiliary.log.LogMaster.devLog("force anim destination: " + destination);
-                shaped = VfxShaper.shape(path, VFX_SHAPE.LINE, origin, destination);
+                VfxContainer<PhaseVfx> shaped = VfxShaper.shape(path, VFX_SHAPE.LINE, origin, destination);
                 emitterList.clear();
                 emitterList.add(shaped);
                 resetEmitters();

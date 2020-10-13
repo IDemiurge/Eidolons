@@ -154,9 +154,8 @@ public class GoalManager extends AiHandler {
                 break;
 
         }
-        GOAL_TYPE goal = AI_SpellMaster.getGoal(a);
 
-        return goal;
+        return AI_SpellMaster.getGoal(a);
     }
 
 }

@@ -64,7 +64,6 @@ public class Executor extends ActiveHandler {
     private final Activator activator;
     private final Targeter targeter;
     private List<DC_ActiveObj> pendingAttacksOpportunity;
-    private boolean visualsRefreshed;
     private boolean failedLast;
     private boolean instantMode;
     private boolean counterMode;
@@ -320,7 +319,7 @@ public class Executor extends ActiveHandler {
 
     private void refreshVisuals() {
         game.getManager().refresh(true);
-        visualsRefreshed = true;
+        boolean visualsRefreshed = true;
     }
 
     private void reset() {

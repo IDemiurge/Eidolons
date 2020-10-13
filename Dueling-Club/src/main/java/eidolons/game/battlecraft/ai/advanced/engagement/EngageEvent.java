@@ -115,7 +115,7 @@ public class EngageEvent {
                         append(", c: ", c).append(", anim: ", anim).toString();
     }
 
-    public class XmlStringBuilder2 extends XmlStringBuilder {
+    public static class XmlStringBuilder2 extends XmlStringBuilder {
         public XmlStringBuilder2 append(String s, Object o) {
             if (o == null) {
                 return this;

@@ -80,12 +80,11 @@ public class MapPointMaster {
         return place;
     }
     public void save() {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for (String substring : map.keySet()) {
-            s += substring + StringMaster.wrapInParenthesis(map.get(substring).toString())
-             + StringMaster.getSeparator();
+            s.append(substring).append(StringMaster.wrapInParenthesis(map.get(substring).toString())).append(StringMaster.getSeparator());
         }
-        FileManager.write(s, getPath());
+        FileManager.write(s.toString(), getPath());
     }
 
     public void added() {

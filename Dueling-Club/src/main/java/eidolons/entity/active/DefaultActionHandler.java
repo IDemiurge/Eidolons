@@ -86,7 +86,7 @@ public class DefaultActionHandler {
 
         //        if (target.isMine())
         //            return false;
-        DC_ActiveObj action = null;
+        DC_ActiveObj action;
         String msg = null;
         if (target instanceof DungeonObj) {
             action = getDungeonObjAction(source, (DungeonObj) target);
@@ -140,10 +140,9 @@ public class DefaultActionHandler {
         List<DC_UnitAction> atks = source.getGame().getActionManager().getOrCreateWeaponActions(w);
         w = source.getNaturalWeapon(offhand);
         atks.addAll(source.getGame().getActionManager().getOrCreateWeaponActions(w));
-        DC_ActiveObj action = pickAutomatically(
-                atks, target);
 
-        return action;
+        return pickAutomatically(
+                atks, target);
     }
 
     //

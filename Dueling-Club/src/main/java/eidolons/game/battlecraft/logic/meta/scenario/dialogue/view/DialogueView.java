@@ -41,7 +41,6 @@ public class DialogueView extends TablePanelX implements Scene {
     private Float timeToRespond;
     private boolean canSkip;
     private boolean autoRespond;
-    private final Float speed = 0.5f;
     private boolean paused;
     private boolean timerDisabled;
     private boolean scrollToBottom;
@@ -231,7 +230,7 @@ public class DialogueView extends TablePanelX implements Scene {
                     if (time > 0) {
 //                    disableReplies();
                         main.system.auxiliary.log.LogMaster.devLog("autoRespond = true in " + handler.getDialogue().getTimeBetweenScripts());
-                        setTime(new Float(time));
+                        setTime((float) time);
                     }
                 }
                 if (timeToRespond != null)
@@ -313,6 +312,7 @@ public class DialogueView extends TablePanelX implements Scene {
         }
 //        setVisible(true);
         setPosition(-150, 0);
+        Float speed = 0.5f;
         if (speed != null) {
             delta = delta * speed;
         }

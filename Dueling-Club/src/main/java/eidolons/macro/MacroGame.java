@@ -41,7 +41,6 @@ public class MacroGame extends Game {
 
     private MacroGameLoop loop;
     private MapPointMaster pointMaster;
-    private RouteMaster routeMaster;
     private Faction playerFaction;
 
 
@@ -75,7 +74,7 @@ public class MacroGame extends Game {
         world =  generateWorld( );
 
         pointMaster = MapPointMaster.getInstance();
-        routeMaster = new RouteMaster();
+        RouteMaster routeMaster = new RouteMaster();
 
     }
 

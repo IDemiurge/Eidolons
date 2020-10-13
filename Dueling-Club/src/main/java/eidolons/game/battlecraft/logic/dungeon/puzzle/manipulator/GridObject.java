@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.game.core.Eidolons;
@@ -244,7 +245,7 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
             super.fadeOut();
         }
         for (EmitterActor emitterActor : emitters.keySet()) {
-            emitterActor.getEffect().getEmitters().forEach(e -> e.allowCompletion());
+            emitterActor.getEffect().getEmitters().forEach(ParticleEmitter::allowCompletion);
         }
     }
 

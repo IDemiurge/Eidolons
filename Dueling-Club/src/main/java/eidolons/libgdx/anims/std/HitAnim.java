@@ -61,14 +61,11 @@ public class HitAnim extends ActionAnim {
     private static Boolean bloodOff;
     private static boolean displacementOn = true;
     private SPRITE_TYPE spriteType;
-    private HIT hitType;
     private final String text;
     private String imagePath;
     private Color c;
-    private FloatingText floatingText;
     private float originalActorX;
     private float originalActorY;
-    private boolean blood;
     private DAMAGE_TYPE damageType;
 
     public HitAnim(DC_ActiveObj active, AnimData data) {
@@ -155,7 +152,7 @@ public class HitAnim extends ActionAnim {
         if (spriteType == null || getRef().getObj(KEYS.BLOCK) instanceof DC_WeaponObj) {
             spriteType = SPRITE_TYPE.SPARKS; //shield!
         }
-        hitType = getHitType(spriteType);
+        HIT hitType = getHitType(spriteType);
         String spritePath = getSpritePath(spriteType, hitType);
         //         + ".png";
         //        SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(spritePath);
@@ -183,14 +180,14 @@ public class HitAnim extends ActionAnim {
 
         if (getRef().getTargetObj() instanceof Unit)
             sprite.setColor(getColorForSprite((Unit) getRef().getTargetObj()));
-        blood = spriteType == SPRITE_TYPE.BLOOD;
+        boolean blood = spriteType == SPRITE_TYPE.BLOOD;
         if (blood)
             if (getBloodOff())
                 return;
         sprites.add(sprite);
     }
 
-    public static final String getSpritePath(SPRITE_TYPE spriteType, HIT hitType) {
+    public static String getSpritePath(SPRITE_TYPE spriteType, HIT hitType) {
         return StrPathBuilder.build(PathFinder.getHitSpritesPath(), spriteType.name(), hitType.spritePath)
                 + ".txt";
     }
@@ -317,7 +314,7 @@ public class HitAnim extends ActionAnim {
         if (damage == null) {
             damage = DamageFactory.getGenericDamage(damageType, ref.getAmount(), ref);
         }
-        floatingText = FloatingTextMaster.getInstance().getFloatingText(
+        FloatingText floatingText = FloatingTextMaster.getInstance().getFloatingText(
                 active, TEXT_CASES.HIT, text == null ?
                         damage.getAmount()
                         : text);

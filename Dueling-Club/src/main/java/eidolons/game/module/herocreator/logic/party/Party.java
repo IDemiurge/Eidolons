@@ -32,10 +32,7 @@ import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.ListMaster;
 import main.system.math.MathMaster;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class    Party extends Obj {
@@ -166,7 +163,7 @@ public class    Party extends Obj {
     }
 
     public List<Unit> getMembers() {
-        members.removeIf(m -> m == null);
+        members.removeIf(Objects::isNull);
         return members;
     }
 
@@ -304,8 +301,8 @@ public class    Party extends Obj {
         }
         int avrgIntelligence = intelligence / i;
 
-        int organization = Math.round(new Float(100) - (new Float(10) - new Float(maxTactics) / 5)
-         * i + 50 * Math.min(5 + new Float(maxTactics) / i, new Float(avrgIntelligence) / i)
+        int organization = Math.round(100f - (10f - (float) maxTactics / 5)
+         * i + 50 * Math.min(5 + (float) maxTactics / i, (float) avrgIntelligence / i)
          * (maxTactics + minIntelligence) / 100);
         setParam(PARAMS.ORGANIZATION, organization);
 

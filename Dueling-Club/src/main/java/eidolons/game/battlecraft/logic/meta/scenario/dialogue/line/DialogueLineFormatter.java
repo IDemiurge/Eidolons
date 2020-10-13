@@ -182,8 +182,7 @@ public class DialogueLineFormatter {
     }
 
     public static String getLineFromTextPart(String text) {
-        String lineContents = XML_Converter.wrap(ID + id, text.trim()) + Strings.NEW_LINE;
-        return lineContents;
+        return XML_Converter.wrap(ID + id, text.trim()) + Strings.NEW_LINE;
     }
 
 

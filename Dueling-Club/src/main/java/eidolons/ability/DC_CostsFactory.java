@@ -22,7 +22,7 @@ public class DC_CostsFactory {
 
     public static Costs getCostsForSpell(DC_ActiveObj spell, boolean isSpell) {
         List<Cost> costs = new ArrayList<>();
-        Cost cost = null;
+        Cost cost;
 
         cost = getCost(spell, PARAMS.ENERGY_COST, PARAMS.C_ENERGY);
         if (cost != null) {

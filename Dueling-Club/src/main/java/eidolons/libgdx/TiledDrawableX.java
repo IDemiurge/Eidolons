@@ -10,7 +10,6 @@ public class TiledDrawableX extends TiledDrawable {
     private final int w;
     private final int h;
     private final Texture background;
-    private final boolean fillWithBlack;
     private final TextureRegion corner1;
     private final TextureRegion corner2;
     private final TextureRegion corner3;
@@ -28,7 +27,6 @@ public class TiledDrawableX extends TiledDrawable {
         this.w = w;
         this.h = h;
         this.background = background;
-        this.fillWithBlack = fillWithBlack;
         this.corner1 = corner1;
         this.corner2 = corner2;
         this.corner3 = corner3;

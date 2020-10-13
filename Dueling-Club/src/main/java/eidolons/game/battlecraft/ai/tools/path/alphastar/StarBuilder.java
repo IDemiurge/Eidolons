@@ -31,7 +31,7 @@ public class StarBuilder extends AiHandler implements IPathHandler {
         if (path == null) {
             return null;
         }
-        Coordinates prev = c;
+        Coordinates prev;
         List<Choice> choices = new ArrayList<>(path.nodes.size());
         try {
             for (int i = path.nodes.size() - 1; i >= 0; i--) {

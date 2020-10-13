@@ -13,7 +13,6 @@ import eidolons.libgdx.gui.panels.headquarters.tabs.stats.HqNewMasteryPanel;
  */
 public class HcStatsPanel extends HqElement {
 
-    private final HqNewMasteryPanel newMastery;
     HqAttributeTable attributeTable;
     HqMasteryTable masteryTable;
 
@@ -36,6 +35,7 @@ public class HcStatsPanel extends HqElement {
             }
         });
         row();
+        HqNewMasteryPanel newMastery;
         add(newMastery = new HqNewMasteryPanel());
         attributeTable.setEditable(true);
         masteryTable.setEditable(true);

@@ -35,6 +35,7 @@ import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
 import main.elements.triggers.Trigger;
+import main.entity.DataModel;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.type.ObjType;
@@ -236,7 +237,7 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
     private boolean doEsoterica(Ref ref, String[] args) {
 
         int n = getGame().getMetaMaster().getQuestMaster().getQuest(BridgeMaster.ESOTERICA_QUEST).getNumberAchieved();
-        int req = Integer.valueOf(args[1]);
+        int req = Integer.parseInt(args[1]);
         if (req > n) {
             String text = BridgeMaster.getEsotericaKey(req);
             doComment(Eidolons.getMainHero(), text);
@@ -346,7 +347,7 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
                 getMembers();
         List<Coordinates> coordinates =
                 getCoordinatesListForUnits(args[0], getPlayerManager().getPlayer(true),
-                        members.stream().map(m -> m.getName()).collect(Collectors.toList()), ref);
+                        members.stream().map(DataModel::getName).collect(Collectors.toList()), ref);
         Iterator<Coordinates> i = coordinates.iterator();
         for (Unit unit : members) {
             if (i.hasNext()) {
@@ -529,7 +530,7 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
 
 
     private List<Coordinates> getCoordinatesListForUnits(String arg, DC_Player player, List<String> units, Ref ref) {
-        List<Coordinates> list = new ArrayList<>();
+        List<Coordinates> list;
         Coordinates origin = getCoordinates(arg, ref);
         // formation as arg? ;)
         list = getPositioner().getCoordinates(origin, player.isMe(), units);

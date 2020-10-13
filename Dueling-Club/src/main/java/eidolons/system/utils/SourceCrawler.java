@@ -61,8 +61,7 @@ public class SourceCrawler {
         }
 
         String insertion = getInsertion() + parameters + ");\n";
-        String replacement = sub.substring(0, insertIndex) + insertion + "\n}";
-        return replacement;
+        return sub.substring(0, insertIndex) + insertion + "\n}";
     }
 
     private String getInsertion() {

@@ -72,7 +72,6 @@ import java.util.Map;
 
 public class OptionsMaster {
     private static OptionsMaster instance;
-    private static OptionsPanelSwing optionsPanel;
     private static JDialog modalOptionsPanelFrame;
 
     protected Map<OPTIONS_GROUP, Options> optionsMap = new HashMap<>();
@@ -162,7 +161,7 @@ public class OptionsMaster {
                     ScrollPanel.setScrollAmount(intValue);
                     break;
                 case ZOOM_STEP:
-                    InputController.setZoomStep(Integer.valueOf(value) / new Float(100));
+                    InputController.setZoomStep(Integer.parseInt(value) / 100f);
                     break;
                 case UNLIMITED_ZOOM:
                     InputController.setUnlimitedZoom(booleanValue);
@@ -302,7 +301,7 @@ public class OptionsMaster {
             if (key == null)
                 continue;
             String value = graphicsOptions.getValue(key);
-            boolean bool = Boolean.valueOf(value.toLowerCase());
+            boolean bool = Boolean.parseBoolean(value.toLowerCase());
             //            Eidolons.getApplication().getGraphics(). setCursor();
 
             try {
@@ -321,7 +320,7 @@ public class OptionsMaster {
             if (key == null)
                 continue;
             String value = systemOptions.getValue(key);
-            boolean bool = Boolean.valueOf(value.toLowerCase());
+            boolean bool = Boolean.parseBoolean(value.toLowerCase());
             //            Eidolons.getApplication().getGraphics(). setCursor();
 
             try {
@@ -395,7 +394,7 @@ public class OptionsMaster {
                 LightLayer.setAdditive(bool);
                 break;
             case PERFORMANCE_BOOST:
-                Fluctuating.fluctuatingAlphaPeriodGlobal = (Integer.valueOf(value)) / 10;
+                Fluctuating.fluctuatingAlphaPeriodGlobal = (Integer.parseInt(value)) / 10;
                 break;
             case GRID_VFX:
                 GridPanel.setShowGridEmitters(bool);
@@ -404,7 +403,7 @@ public class OptionsMaster {
                 GuiVisualEffects.setOff(!bool);
                 break;
             case BRIGHTNESS:
-                GdxMaster.setBrightness(new Float(Integer.valueOf(value) / 100));
+                GdxMaster.setBrightness((float) (Integer.parseInt(value) / 100));
                 break;
             case AMBIENCE_VFX:
                 ParticleManager.setAmbienceOn(bool);
@@ -439,13 +438,13 @@ public class OptionsMaster {
                 ShadowMap.setOn(!bool);
                 break;
             case SPECIAL_EFFECTS:
-                ParticleEffectX.setGlobalAlpha(Float.valueOf(value) / 100);
+                ParticleEffectX.setGlobalAlpha(Float.parseFloat(value) / 100);
                 break;
             case FONT_SIZE:
-                GdxMaster.setUserFontScale(Float.valueOf(value) / 100);
+                GdxMaster.setUserFontScale(Float.parseFloat(value) / 100);
                 break;
             case UI_SCALE:
-                GdxMaster.setUserUiScale(Float.valueOf(value) / 100);
+                GdxMaster.setUserUiScale(Float.parseFloat(value) / 100);
                 break;
             case COLOR_TEXT_LOG:
                 LogPanel.setColorText(bool);
@@ -642,7 +641,7 @@ public class OptionsMaster {
             //            optionsPanelFrame.dispatchEvent(new WindowEvent(optionsPanelFrame, WindowEvent.WINDOW_CLOSING));
             modalOptionsPanelFrame.setVisible(false);
         }
-        optionsPanel = new OptionsPanelSwing(getInstance().getOptionsMap());
+        OptionsPanelSwing optionsPanel = new OptionsPanelSwing(getInstance().getOptionsMap());
         //        optionsPanelFrame = GuiManager.inNewWindow(optionsPanel,
         //         "Options", new Dimension(800, 600));
         modalOptionsPanelFrame = GuiManager.inModalWindow(optionsPanel,
@@ -779,8 +778,7 @@ public class OptionsMaster {
     }
 
     protected Map<OPTIONS_GROUP, Options> initDefaults() {
-        Map<OPTIONS_GROUP, Options> defaults = initDefaults(false);
-        return defaults;
+        return initDefaults(false);
     }
 
     protected Map<OPTIONS_GROUP, Options> initDefaults(boolean adjust) {

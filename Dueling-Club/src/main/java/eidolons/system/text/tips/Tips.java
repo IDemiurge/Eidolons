@@ -27,7 +27,6 @@ public class Tips {
             substring+= "_" + suffix;
         }
 
-        PuzzleTip tip = new EnumMaster<PuzzleTip>().retrieveEnumConst(PuzzleTip.class, substring);
-        return tip;
+        return new EnumMaster<PuzzleTip>().retrieveEnumConst(PuzzleTip.class, substring);
     }
 }

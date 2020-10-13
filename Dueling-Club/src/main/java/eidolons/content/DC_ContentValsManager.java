@@ -643,7 +643,7 @@ public class DC_ContentValsManager extends ContentValsManager {
     }
 
     public static void sortMasteries(final Unit hero, List<PARAMETER> params) {
-        Collections.sort(params, new Comparator<PARAMETER>() {
+        params.sort(new Comparator<PARAMETER>() {
             public int compare(PARAMETER o1, PARAMETER o2) {
                 Integer v1 = hero.getIntParam(o1);
                 Integer v2 = hero.getIntParam(o2);

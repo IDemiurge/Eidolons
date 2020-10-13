@@ -35,7 +35,6 @@ import java.util.List;
 
 public class LoadingStage extends Stage {
     protected ScreenData data;
-    private final boolean fogOn = false;//!CoreEngine.isLiteLaunch();
     private FadeImageContainer fullscreenImage;
     private final List<Ambience> fogList = new ArrayList<>();
 
@@ -51,12 +50,14 @@ public class LoadingStage extends Stage {
             underText.setPosition(GdxMaster.centerWidth(underText), 52);
             fullscreenImage = new FadeImageContainer(loadScreenPath);
             fullscreenImage.setNoAtlas(true);
-            float x = new Float(GdxMaster.getWidth()) / 1920;
-            float y = new Float(GdxMaster.getHeight()) / 1080;
+            float x = (float) GdxMaster.getWidth() / 1920;
+            float y = (float) GdxMaster.getHeight() / 1080;
             float s = MathUtils.lerp(1, Math.max(x, y), 0.5f);
             fullscreenImage.setScale(s);
             addActor(fullscreenImage);
             addActor(underText);
+            //!CoreEngine.isLiteLaunch();
+            boolean fogOn = false;
             if (fogOn)
                 addFog();
         }

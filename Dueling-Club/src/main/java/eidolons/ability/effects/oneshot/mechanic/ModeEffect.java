@@ -156,8 +156,7 @@ divination?
         if (e != null) {
             e.apply(ref);
         }
-        boolean result = addBuffEffect.apply(ref);
-        return result;
+        return addBuffEffect.apply(ref);
     }
 
     private Effect createOneShotEffect(MODE mode, Obj obj) {

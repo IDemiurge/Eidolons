@@ -66,10 +66,8 @@ public abstract class BossSpriteVisual extends BossVisual {
                 attackAnim();
                 break;
             case appear:
-                break;
-            case death:
-                break;
             case idle:
+            case death:
                 break;
         }
 

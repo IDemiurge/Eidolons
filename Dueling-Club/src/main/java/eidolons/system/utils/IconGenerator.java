@@ -56,7 +56,6 @@ public class IconGenerator extends GdxUtil {
     private final String backgroundOverlays;
     private final boolean subdirs;
     private int i = 0;
-    private final boolean flipUnderlayisOn = true;
     private static boolean realNaming;
 
     public IconGenerator(String root, String underlay, String output, boolean subdirs) {
@@ -242,8 +241,8 @@ public class IconGenerator extends GdxUtil {
 
         int w = Math.min(underlayTexture.getWidth(), texture.getWidth());
         int h = Math.min(underlayTexture.getHeight(), texture.getHeight());
-        int x = 0;
-        int y = 0;
+        int x;
+        int y;
 
         if (TextureCache.isImage(bgOverlay)) {
             Texture bgOverlayTexture = TextureCache.getOrCreate(bgOverlay);
@@ -285,6 +284,7 @@ public class IconGenerator extends GdxUtil {
 
         boolean[] flipsX = flipXisOn ? new boolean[]{false, true} : new boolean[]{false};
         boolean[] flipsY = flipYisOn ? new boolean[]{false, true} : new boolean[]{false};
+        boolean flipUnderlayisOn = true;
         boolean[] flipUnderlay = flipUnderlayisOn ? new boolean[]{false, true} : new boolean[]{false};
         for (boolean flipX : flipsX) {
             for (boolean flipY : flipsY) {
@@ -305,7 +305,7 @@ public class IconGenerator extends GdxUtil {
                         if (!FileManager.isImageFile(sub.getName()))
                             continue;
                         String underlaySuffix = StringMaster.cropFormat(PathUtils.getLastPathSegment(underlay));
-                        FileHandle handle = null;
+                        FileHandle handle;
                         String path = sub.getPath().replace(PathFinder.getImagePath(), "");
 
                         if (FileManager.isDirectory(backgroundOverlays)) {

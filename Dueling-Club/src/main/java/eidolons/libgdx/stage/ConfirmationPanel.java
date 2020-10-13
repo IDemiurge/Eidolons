@@ -40,12 +40,8 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
         TablePanel<Actor> btns = new TablePanel<>();
         add(btns)
                 .center().colspan(2).fill().minWidth(400);
-        btns.addNormalSize((Actor) (cancel = new SymbolButton(STD_BUTTON.CANCEL, () -> {
-                    cancel();
-                }))).left();
-        btns.addNormalSize((Actor) (ok = new SymbolButton(STD_BUTTON.OK, () -> {
-                    ok();
-                }))).right();
+        btns.addNormalSize((Actor) (cancel = new SymbolButton(STD_BUTTON.CANCEL, this::cancel))).left();
+        btns.addNormalSize((Actor) (ok = new SymbolButton(STD_BUTTON.OK, this::ok))).right();
         ok.setIgnoreConfirmBlock(true);
         cancel.setIgnoreConfirmBlock(true);
         setVisible(false);

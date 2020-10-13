@@ -47,7 +47,7 @@ public class DeathMaster extends Master {
 
 
     public void unitAnnihilated(Obj _killed, Obj _killer) {
-        String message = null;
+        String message;
         if (_killed == _killer) {
             message = _killed + " annihilates";// + _killed.getInfoString();
         } else
@@ -110,7 +110,7 @@ public class DeathMaster extends Master {
                 return;
             }
 
-        String message = null;
+        String message;
         if (_killed == _killer) {
             message = _killed + " dies ";// + _killed.getInfoString();
         } else {

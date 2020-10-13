@@ -36,8 +36,8 @@ public class LevelInfoPanel extends TablePanelX {
         locationLabel.padBottom(12);
 
         GuiEventManager.bind(GuiEventType.GAME_STARTED, p -> {
-            CharSequence text = "";
-            CharSequence v = "";
+            CharSequence text;
+            CharSequence v;
             if (Eidolons.getGame() instanceof ScenarioGame) {
                 if (EidolonsGame.FOOTAGE) {
                     text = "Castle Evarinath";

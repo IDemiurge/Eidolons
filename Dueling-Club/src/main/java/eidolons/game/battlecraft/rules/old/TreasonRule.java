@@ -26,7 +26,6 @@ public class TreasonRule extends DC_RuleImpl {
 
     private static final Condition CONDITION0 = new NotCondition(
      new StatusCheckCondition(Ref.KEYS.TARGET.name(), UnitEnums.STATUS.CHARMED));
-    private final String buffTypeName = "Treason";
 
     private Conditions retain_conditions;
 
@@ -60,6 +59,7 @@ public class TreasonRule extends DC_RuleImpl {
     @Override
     public void initEffects() {
         OwnershipChangeEffect effect = new OwnershipChangeEffect(true);
+        String buffTypeName = "Treason";
         effects = new AddBuffEffect(retain_conditions, buffTypeName, effect);
 
     }

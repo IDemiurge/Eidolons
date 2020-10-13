@@ -30,7 +30,6 @@ public class GridManager {
     private final ColorHandler colorHandler;
     private final GridPanel gridPanel;
     private static final boolean customDraw = true;
-    private final Woods woods;
     protected GridAnimHandler animHandler;
     protected PlatformHandler platformHandler;
     Set<GridHandler> handlers = new LinkedHashSet<>();
@@ -63,6 +62,7 @@ public class GridManager {
         // customDraw = !CoreEngine.isLevelEditor();
         handlers.add(pillarManager = new PillarManager(gridPanel));
         handlers.add(colorHandler = new ColorHandler(gridPanel));
+        Woods woods;
         handlers.add(woods = new Woods(gridPanel));
         handlers.add(commentHandler = new GridCommentHandler(gridPanel));
         handlers.add(animHandler = new GridAnimHandler(gridPanel));

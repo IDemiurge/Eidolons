@@ -16,7 +16,7 @@ public abstract class DungeonInitializer extends DungeonHandler {
     }
 
     public static DungeonData generateDungeonData(String dataString) {
-        String formatted = "";
+        String formatted;
         DungeonData.DUNGEON_VALUE value;
         if (dataString.contains(".xml")) {
             value = DUNGEON_VALUE.PATH;

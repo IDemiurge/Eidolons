@@ -148,7 +148,7 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
         }
         //check intelligence, mastery
         List<DC_ActiveObj> list = new ArrayList<>();
-        DC_UnitAction action = null;
+        DC_UnitAction action;
         for (DOOR_ACTION sub : DOOR_ACTION.values()) {
 
             if (checkAction(unit, (Door) door, sub)) {

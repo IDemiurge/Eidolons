@@ -11,7 +11,7 @@ import java.util.List;
  * Created by JustMe on 8/11/2018.
  */
 public class RestoredDungeonLevel extends DungeonLevel {
-    private List<LevelZone> zones = new ArrayList<>();
+    private List<LevelZone> zones;
     private LevelData data;
     public RestoredDungeonLevel(List<LevelZone> zones, String name) {
         super(name);

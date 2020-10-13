@@ -41,7 +41,6 @@ public class CameraMan {
     private final CamController camController = new CamController(this);
 
     private boolean firstCenteringDone;
-    private static Float cameraPanMod;
     private final GameScreen screen;
     OrthographicCamera cam;
 
@@ -246,8 +245,8 @@ public class CameraMan {
                 break;
         }
         CameraMotion motion = moveMap.get(direction);
-        float x = 0;
-        float y = 0;
+        float x;
+        float y;
         x = cam.position.x;
         y = cam.position.y;
         if (motion == null) {
@@ -284,7 +283,7 @@ public class CameraMan {
     }
 
     public static void setCameraPanMod(float mod) {
-        cameraPanMod = mod;
+        Float cameraPanMod = mod;
     }
 
     protected boolean isCameraPanningOff() {

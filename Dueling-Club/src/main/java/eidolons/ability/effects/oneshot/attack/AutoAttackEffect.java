@@ -79,8 +79,7 @@ public class AutoAttackEffect extends DC_Effect implements OneshotEffect {
         if (getSourceUnitOrNull().isAiControlled() || isPickAutomaticallyOn()) {
             return pickAutomatically(subActions);
         }
-        DC_ActiveObj pick = pickAutomatically(subActions);
-        return pick;
+        return pickAutomatically(subActions);
     }
 
     private boolean isPickAutomaticallyOn() {

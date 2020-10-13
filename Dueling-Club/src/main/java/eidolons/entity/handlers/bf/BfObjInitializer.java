@@ -88,7 +88,7 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
             List<String> idList = new ArrayList<>();
             Collection<DC_HeroItemObj> items = new ArrayList<>();
             for (String subString : ContainerUtils.open(getProperty(prop))) {
-                DC_HeroItemObj item = null;
+                DC_HeroItemObj item;
                 if (NumberUtils.isInteger(subString)) {
                     Integer id = NumberUtils
                             .getIntParse(subString);

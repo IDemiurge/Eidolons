@@ -28,7 +28,6 @@ import static main.system.MapEvent.UPDATE_MAP_BACKGROUND;
  * Created by JustMe on 2/20/2018.
  */
 public class MapStage extends Stage {
-    private final MapAlphaLayers alphaLayers;
     protected MapMoveLayers moveLayerMaster;
     protected MapParticles particles;
     List<MapTimedLayer> layers = new ArrayList<>();
@@ -40,6 +39,7 @@ public class MapStage extends Stage {
 
     public MapStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
+        MapAlphaLayers alphaLayers;
         addActor(alphaLayers = new MapAlphaLayers());
         addActor(particles = new MapParticles());
         addActor(routes = new MapRoutes());
@@ -79,8 +79,7 @@ public class MapStage extends Stage {
     }
 
     private void updateBackground(String s, boolean nextMapUpdate) {
-        final String path = s;
-        TextureRegion backTexture = getOrCreateR(path);
+        TextureRegion backTexture = getOrCreateR(s);
         ImageContainer map = this.map;
         if (nextMapUpdate) {
             map = this.nextMap;
@@ -103,7 +102,7 @@ public class MapStage extends Stage {
          MacroGame.getGame().getLoop().getTimeMaster().getPercentageIntoNextDaytime();
         if (percentage <= lastNextMapAlphaPercentage) //no going back in time...
             return;
-        layers.forEach(layer -> layer.applyDynamicTint());
+        layers.forEach(MapTimedLayer::applyDynamicTint);
         lastNextMapAlphaPercentage = percentage;
         color.a = percentage;
 //        nextMap.getContent().setColor(color);

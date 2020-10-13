@@ -24,7 +24,6 @@ public class GameDate extends DataUnit<TIME_UNITS> {
     private MONTH month=HUMAN_MONTHS.ARDENT;
     private int day;
     private int hour;
-    private final boolean humanMonthsDisplayed = true;
     private DAY_TIME dayTime;
 
 
@@ -97,6 +96,7 @@ public class GameDate extends DataUnit<TIME_UNITS> {
 
     public MONTH getMonth() {
         if (month == null) {
+            boolean humanMonthsDisplayed = true;
             if (humanMonthsDisplayed) {
                 month = HUMAN_MONTHS.values()[getMonthNumber()];
             } else {

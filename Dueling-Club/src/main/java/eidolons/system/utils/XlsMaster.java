@@ -65,8 +65,6 @@ public class XlsMaster {
       "Standard Attack"
      },
     };
-    private static String simUnitName = "Thief";
-    private static String formula_sep = ":";
 
     private static void parseXls(
      String path) {
@@ -83,6 +81,7 @@ public class XlsMaster {
         rowhead.createCell(0).setCellValue("Name");
         int column = 1;
         for (String formula : formulas) {
+            String formula_sep = ":";
             rowhead.createCell(column).setCellValue(
              formula.split(formula_sep)[0]);
             column++;
@@ -104,6 +103,7 @@ public class XlsMaster {
                 rowhead.createCell(column).setCellValue(objType.getName());
                 column++;
 
+                String simUnitName = "Thief";
                 final ObjType simUnit = DataManager.getType(simUnitName, C_OBJ_TYPE.UNITS_CHARS);
                 Ref ref = new Ref() {
                     @Override

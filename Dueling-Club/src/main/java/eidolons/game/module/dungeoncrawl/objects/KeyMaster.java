@@ -87,9 +87,6 @@ public class KeyMaster {
             return item;
         }
         item = unit.findItem("Master Key", null);
-        if (item != null) {
-            return item;
-        }
         return item;
     }
 

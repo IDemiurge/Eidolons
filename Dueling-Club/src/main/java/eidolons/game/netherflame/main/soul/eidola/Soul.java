@@ -49,7 +49,7 @@ public class Soul {
         } else {
             aspects = new WeightMap<>(new RandomWizard< EIDOLON_ASPECT>().constructWeightMap(prop, EIDOLON_ASPECT.class));
         }
-        aspects.modifyByCoef(new Float(getForce()) / 100);
+        aspects.modifyByCoef((float) getForce() / 100);
     }
 
     private WeightMap<EIDOLON_ASPECT> fromGroup(UnitEnums.UNIT_GROUPS group) {

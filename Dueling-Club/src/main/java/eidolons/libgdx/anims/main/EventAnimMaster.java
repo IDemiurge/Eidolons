@@ -54,7 +54,7 @@ public class EventAnimMaster {
 //                });
 //            }
 //        }
-        CompositeAnim parentAnim = null;
+        CompositeAnim parentAnim;
         if (FloatingTextMaster.isEventDisplayable(event)) {
             parentAnim = AnimMaster.getParentAnim(event.getRef());
             if (parentAnim != null) {

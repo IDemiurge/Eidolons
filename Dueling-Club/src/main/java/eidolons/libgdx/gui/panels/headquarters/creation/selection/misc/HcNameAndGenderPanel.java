@@ -70,7 +70,7 @@ public class HcNameAndGenderPanel extends SelectionTable<SmartTextButton> {
         super.init();
         add(new ImageContainer(Images.SEPARATOR)).colspan(wrap);
         row();
-        add(new SmartTextButton("Randomize", STD_BUTTON.MENU, () -> randomize())).colspan(3);
+        add(new SmartTextButton("Randomize", STD_BUTTON.MENU, this::randomize)).colspan(3);
     }
 
     protected int getDynamicWrap(int i) {

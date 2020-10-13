@@ -16,8 +16,6 @@ import eidolons.libgdx.gui.panels.headquarters.tabs.stats.HqMasteryTable;
  */
 public class UnitStatTabs extends TabbedPanel {
     private final HqScrolledValuePanel scrolledValuePanel;
-    private HqAttributeTable attributeTable;
-    private HqMasteryTable masteryTable;
 
 
     public UnitStatTabs(float w, float h) {
@@ -27,8 +25,8 @@ public class UnitStatTabs extends TabbedPanel {
         scrolledValuePanel = new HqScrolledValuePanel(
                 GdxMaster.adjustWidth(width), GdxMaster.adjustHeight(height));
 
-        masteryTable = new HqMasteryTable();
-        attributeTable = new HqAttributeTable();
+        HqMasteryTable masteryTable = new HqMasteryTable();
+        HqAttributeTable attributeTable = new HqAttributeTable();
         attributeTable.setEditable(false);
         attributeTable.setSize(width, height);
         masteryTable.setSize(width, height);

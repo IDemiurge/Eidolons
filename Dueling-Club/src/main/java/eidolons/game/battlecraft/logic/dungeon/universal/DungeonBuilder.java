@@ -99,11 +99,10 @@ public class DungeonBuilder extends DungeonHandler {
         } else {
             type = TypeBuilder.buildType(typeNode, type); // custom base type
         }
-        Location dungeon = getInitializer().createDungeon(type);
         // getDungeon().setName(name)
 
 
-        return dungeon;
+        return getInitializer().createDungeon(type);
 
     }
 

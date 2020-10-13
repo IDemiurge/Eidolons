@@ -143,7 +143,7 @@ public abstract class OverlayMap<T> extends SuperActor {
     protected void fillMap() {
         drawMap = new LinkedList<>();
         for (Coordinates coordinates : map.keySet()) {
-            List<T> list = null;
+            List<T> list;
             if (map.get(coordinates) != null) //TODO was supposed to check more..
             {
                 T d = (T) map.get(coordinates);

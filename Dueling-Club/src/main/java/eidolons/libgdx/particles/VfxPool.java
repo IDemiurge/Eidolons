@@ -6,7 +6,6 @@ public class VfxPool extends Pool<ParticleEffectX> {
     private   ParticleEffectX effect;
     private final String path;
     private int emittersCounter;
-    private final boolean logging = false;
 
     public VfxPool(String path, int initialCapacity, int max) {
         super(initialCapacity, max);
@@ -26,6 +25,7 @@ public class VfxPool extends Pool<ParticleEffectX> {
     @Override
     public ParticleEffectX obtain() {
         emittersCounter++;
+        boolean logging = false;
         if (logging) {
             main.system.auxiliary.log.LogMaster.important(emittersCounter + "th emitter: " + path);
         }

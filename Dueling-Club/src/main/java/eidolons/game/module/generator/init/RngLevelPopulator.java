@@ -58,7 +58,7 @@ public class RngLevelPopulator  {
     private void fillOut() {
           requiredFill = 0.8f;
         float current = calculateFill();
-        float dif = 0;
+        float dif;
         while (!checkDone() && ((dif = requiredFill - current) > 0.05f)) {
             Stack<LevelBlock> prioritySpawnLocations = createPrioritySpawnLocations();
             fill(prioritySpawnLocations, dif);

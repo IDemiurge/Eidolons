@@ -279,8 +279,6 @@ public class EngagedRule implements ActionRule {
             AttackOfOpportunityRule.triggerAttack(unit, action.getOwnerUnit(), true);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
-        } finally {
-
         }
         // TODO mod!
 

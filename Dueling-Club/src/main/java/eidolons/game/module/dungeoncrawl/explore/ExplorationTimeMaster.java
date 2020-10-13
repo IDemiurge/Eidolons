@@ -44,15 +44,13 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     private float lastTimeChecked;
     private float round_delta = 0;
     private float ai_delta = 0;
-    private float delta;
     private boolean guiDirtyFlag;
-    private static float defaultSpeed = new Float(OptionsMaster.getGameplayOptions().
-            getIntValue(GAMEPLAY_OPTION.GAME_SPEED)) / 100;
+    private static float defaultSpeed = (float) OptionsMaster.getGameplayOptions().
+            getIntValue(GAMEPLAY_OPTION.GAME_SPEED) / 100;
     private static float speed = defaultSpeed;
     private final float visibilityResetPeriod = 1.25f;
     private float visibilityResetTimer = visibilityResetPeriod;
     private float ignore_reset_delta;
-    private final float ignore_reset_period = 5.5f;
 
     public static void setDefaultSpeed(float daSpeed) {
         defaultSpeed = daSpeed;
@@ -132,8 +130,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__ENTER);
         if (wait(timeInSeconds, rest))
             return false;
-        Boolean result = (Boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.WAIT_COMPLETE);
-        return result;
+        return (Boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.WAIT_COMPLETE);
     }
 
     private boolean wait(float timeInSeconds, boolean rest) {
@@ -189,7 +186,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     public void checkTimedEvents() {
-        delta = time - lastTimeChecked;
+        float delta = time - lastTimeChecked;
         if (delta == 0) return;
         lastTimeChecked = time;
         round_delta += delta;
@@ -212,6 +209,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         getGame().getMovementManager().checkContinueMove();
         guiDirtyFlag = false;
 
+        float ignore_reset_period = 5.5f;
         if (isResetIgnoreSetterOn())
         if (ignore_reset_delta> ignore_reset_period) {
             master.getGame().getVisionMaster().getVisionRule().resetIgnore();
@@ -304,9 +302,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     private void processCounterRules() {
-        master.getGame().getRules().getDamageRules().forEach(rule -> {
-            rule.newTurn();
-        });
+        master.getGame().getRules().getDamageRules().forEach(DC_CounterRule::newTurn);
         master.getGame().getRules().getCounterRules().forEach(rule -> {
             rule.newTurn(); // ???
             master.getGame().getUnits().forEach(unit -> {

@@ -163,7 +163,7 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
         List<MenuItem<T>> items = getItems();
         buttons.clear();
         for (MenuItem sub : items) {
-            TextButton button = null;
+            TextButton button;
             if (sub.toString().equalsIgnoreCase("Back")) {
                 button = getBackButton();
             } else

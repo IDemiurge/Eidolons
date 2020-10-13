@@ -35,12 +35,11 @@ public class LavaRule extends DamageCounterRule  implements TimedRule {
 
 
     protected Effect getSpecialRoundEffects() {
-        Effects effects = new Effects(new CustomTargetEffect(
+
+        return new Effects(new CustomTargetEffect(
          new FixedTargeting(KEYS.ARMOR), new ModifyValueEffect(
          PARAMS.C_DURABILITY, MOD.MODIFY_BY_CONST,
          getCounterRef() + "*" + DURABILITY_PER_COUNTER)));
-
-        return effects;
 
         // immolation???
     }

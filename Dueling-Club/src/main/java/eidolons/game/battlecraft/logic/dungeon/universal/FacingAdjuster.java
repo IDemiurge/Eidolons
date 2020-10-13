@@ -30,7 +30,7 @@ public class FacingAdjuster extends DungeonHandler  {
     }
 
     public void adjustFacing(List<Unit> unitsList) {
-        unitsList.forEach(unit -> adjustFacing(unit));
+        unitsList.forEach(this::adjustFacing);
     }
 
     public FACING_DIRECTION getFacingOptimal(Coordinates c, boolean mine) {

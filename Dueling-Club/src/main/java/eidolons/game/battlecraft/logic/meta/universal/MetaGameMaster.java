@@ -55,7 +55,6 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected GameEventHandler eventHandler;
 
     ShadowMaster shadowMaster = new ShadowMaster(this);
-    private VisualChoiceHandler choiceHandler;
 
     public ShadowMaster getShadowMaster() {
         return shadowMaster;
@@ -83,7 +82,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         partyManager = createPartyManager();
         initializer = createMetaInitializer();
         metaDataManager = createMetaDataManager();
-        choiceHandler = new VisualChoiceHandler(this);
+        VisualChoiceHandler choiceHandler = new VisualChoiceHandler(this);
 
         if (Flags.isCombatGame()) {
             lootMaster = createLootMaster();

@@ -94,12 +94,11 @@ public class RoomAttacher {
         if (xOrY) {
             if (!isEvenDimensionAdjustedX())
                 return value;
-            value--;
         } else {
             if (!isEvenDimensionAdjustedY())
                 return value;
-            value--;
         }
+        value--;
         return value;
     }
 
@@ -154,7 +153,7 @@ public class RoomAttacher {
     public Room findFitting(Coordinates entranceCoordinates, EXIT_TEMPLATE roomExitTemplate,
                             ROOM_TYPE roomType, FACING_DIRECTION parentExit, LevelZone zone) {
         Loop loop = new Loop(40); //model.getGenerator().getGeneratorData()
-        RoomModel roomModel = null;
+        RoomModel roomModel;
         templateMaster.resetSizedRandomRoomPools(zone.getTemplateGroup());
 
         FACING_DIRECTION roomEntrance = FacingMaster.rotate180

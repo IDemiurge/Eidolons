@@ -30,10 +30,9 @@ public class DC_PriorityManager {
     private static PriorityManager impl;
     private static AiMaster aiMaster;
     private static PriorityManager mainImpl;
-    private static PriorityManagerImpl alt;
 
     public static PriorityManager alt(AiMaster master) {
-        alt = new PriorityManagerImpl(master);
+        PriorityManagerImpl alt = new PriorityManagerImpl(master);
         return alt;
     }
 

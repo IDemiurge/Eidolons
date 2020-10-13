@@ -38,7 +38,7 @@ public class ExplorationActionHandler extends ExplorationHandler {
             coef = 2f;
         }
         coef /= action.getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().getSpeed();
-        return new Float(AtbMaster.getReadinessCost(action)) / 10000 * coef;
+        return AtbMaster.getReadinessCost(action) / 10000 * coef;
 
     }
 
@@ -76,8 +76,7 @@ public class ExplorationActionHandler extends ExplorationHandler {
     }
 
     public List<DC_ActiveObj> getExplorationActions(Unit unit) {
-        List<DC_ActiveObj> list = new ArrayList<>();
-        return list;
+        return new ArrayList<>();
     }
 
     public void payCosts(DC_ActiveObj entity) {

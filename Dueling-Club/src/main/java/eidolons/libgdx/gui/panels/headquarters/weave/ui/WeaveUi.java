@@ -25,13 +25,13 @@ import java.util.stream.Collectors;
  * Created by JustMe on 6/4/2018.
  */
 public class WeaveUi extends GuiStage {
-    private final ImageContainer frame;
     WeaveButtonPanel buttonPanel;
     WeaveHeroPreview heroPreview;
     private VisSelectBox<String> viewModeBox;
 
     public WeaveUi(Viewport viewport, Batch batch) {
         super(viewport, batch);
+        ImageContainer frame;
         addActor(frame = new ImageContainer(new Image(
          TiledNinePatchGenerator.getOrCreateNinePatch(
           NINE_PATCH.FRAME, BACKGROUND_NINE_PATCH.TRANSPARENT,

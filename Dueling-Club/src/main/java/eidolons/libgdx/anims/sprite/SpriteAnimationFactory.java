@@ -88,7 +88,7 @@ public class SpriteAnimationFactory {
                 Assets.loadedKtxAtlas(texturePath);
                 texturePath = Assets.getKtxAtlasPath(texturePath);
             }
-            TextureAtlas atlas = null;
+            TextureAtlas atlas;
             SpriteAnimation animation = null;
             if (isAtlasesFromMain()) {
                 Array<AtlasRegion> regions = Atlases.getAtlasRegions(texturePath);

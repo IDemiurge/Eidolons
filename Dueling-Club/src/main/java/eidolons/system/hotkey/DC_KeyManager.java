@@ -247,7 +247,7 @@ public class DC_KeyManager
             charString = charString.toLowerCase();
         }
         if (numberChars.indexOf(CHAR) != -1) {
-            index = Integer.valueOf(charString);
+            index = Integer.parseInt(charString);
         }
         if (index == -1) {
             if (stdActionKeyMap.containsKey(charString)) {

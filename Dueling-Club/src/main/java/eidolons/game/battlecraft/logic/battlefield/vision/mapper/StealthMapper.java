@@ -10,10 +10,9 @@ public class StealthMapper extends PlayerMapper<Boolean> {
 
     @Override
     public Boolean get(DC_Player source, DC_Obj object) {
-        Boolean result = getMap(source).get(object);
-//        if (result==null )
+        //        if (result==null )
 //            return false;
-        return result;
+        return getMap(source).get(object);
     }
 
     @Override

@@ -50,8 +50,8 @@ public class ActionPanel extends GroupX {
     QuickWeaponPanel offhand;
     FacingPanel facingPanel;
 
-    SymbolButton spellbookBtn = new SymbolButton(STD_BUTTON.SPELLBOOK, () -> showSpellbook());
-    SymbolButton invBtn = new SymbolButton(STD_BUTTON.INV, () -> showInventory());
+    SymbolButton spellbookBtn = new SymbolButton(STD_BUTTON.SPELLBOOK, this::showSpellbook);
+    SymbolButton invBtn = new SymbolButton(STD_BUTTON.INV, this::showInventory);
 
     protected BuffPanelSimple buffPanelBody;
     protected BuffPanelSimple buffPanelSoul;
@@ -59,12 +59,10 @@ public class ActionPanel extends GroupX {
     private final SoulParamsBar soulParamsBar;
     private final BodyParamsBar bodyParamsBar;
 
-    private boolean altBg;
     private Float defaultX;
 
     ExtraPtsComp movePts = new ExtraPtsComp(false);
     ExtraPtsComp atkPts = new ExtraPtsComp(true);
-    private boolean hidden;
 
     public ActionPanel() {
         addActor(background = new FadeImageContainer((Textures.BOTTOM_PANEL_BG)));
@@ -78,8 +76,8 @@ public class ActionPanel extends GroupX {
 
         /////////////ADDITIONAL
 
-        soulParamsBar = new SoulParamsBar(() -> Eidolons.getMainHero());
-        bodyParamsBar = new BodyParamsBar(() -> Eidolons.getMainHero());
+        soulParamsBar = new SoulParamsBar(Eidolons::getMainHero);
+        bodyParamsBar = new BodyParamsBar(Eidolons::getMainHero);
 
         addActor(bodyParamsBar);
         addActor(soulParamsBar);
@@ -351,11 +349,9 @@ public class ActionPanel extends GroupX {
     }
 
     public void setAltBg(boolean altBg) {
-        this.altBg = altBg;
     }
 
     public void setHidden(boolean hidden) {
-        this.hidden = hidden;
         modeActionsPanel.setVisible(!hidden);
         spellPanel.setVisible(!hidden);
         modeActionsPanel.setVisible(!hidden);

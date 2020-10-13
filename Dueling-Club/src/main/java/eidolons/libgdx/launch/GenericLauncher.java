@@ -49,7 +49,6 @@ public abstract class GenericLauncher extends Game {
     public GameScreen gameScreen;
     protected ScreenViewport viewport;
     protected boolean fullscreen;
-    private LwjglApplicationConfiguration conf;
     public static GenericLauncher instance;
     private GLProfiler profiler;
     private boolean logProfiler;
@@ -138,7 +137,7 @@ public abstract class GenericLauncher extends Game {
 
 
     public LwjglApplicationConfiguration getConf() {
-        conf = new LwjglApplicationConfiguration();
+        LwjglApplicationConfiguration conf = new LwjglApplicationConfiguration();
         conf.title = getTitle();
         //if (Gdx.graphics.isGL30Available())
         //conf.useGL30 = true;
@@ -237,8 +236,8 @@ public abstract class GenericLauncher extends Game {
         if (VideoMaster.player != null) {
             if (getScreen() instanceof DungeonScreen) {
                 VideoMaster.player.stop();
-                resize((int) (1920 / (new Float(Gdx.graphics.getWidth()) / 1920)),
-                        (int) (1050 / (new Float(Gdx.graphics.getHeight()) / 1050)));
+                resize((int) (1920 / ((float) Gdx.graphics.getWidth() / 1920)),
+                        (int) (1050 / ((float) Gdx.graphics.getHeight() / 1050)));
                 resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             } else {
                 VideoMaster.player.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

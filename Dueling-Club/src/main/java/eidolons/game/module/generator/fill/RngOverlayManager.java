@@ -93,13 +93,13 @@ public class RngOverlayManager {
     }
 
     public String getDirectionMapData() {
-        String directionData = "";
+        StringBuilder directionData = new StringBuilder();
         for (Coordinates coordinates : map.keySet()) {
             String entry = ContainerUtils.constructContainer(
              map.get(coordinates).stream().map(
               pair -> pair.getKey() + StringMaster.wrapInParenthesis(pair.getValue().name()))
               .collect(Collectors.toList()));
-            directionData += coordinates.toString() + "=" + entry + ";";
+            directionData.append(coordinates.toString()).append("=").append(entry).append(";");
         }
 
 
@@ -107,6 +107,6 @@ public class RngOverlayManager {
         //        model.getDirectionMap().put(coordinates, direction);
 
 
-        return directionData;
+        return directionData.toString();
     }
 }

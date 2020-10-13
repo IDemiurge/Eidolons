@@ -55,8 +55,6 @@ public class ToolTipManager extends TablePanel {
     private Cell actorCell;
     private float toWait;
     private Vector2 originalPosition;
-    private final float offsetX = 32;
-    private final float offsetY = 32;
     private Boolean bottom;
     private Boolean right;
     private final StackViewMaster stackMaster = new StackViewMaster();
@@ -363,6 +361,7 @@ public class ToolTipManager extends TablePanel {
         if (setLeft)
             right = false;
 
+        float offsetY = 32;
         if (bottom == null)
             y += offsetY;
         else if (bottom) {
@@ -375,6 +374,7 @@ public class ToolTipManager extends TablePanel {
                 y += tooltip.getHeight();
         }
 
+        float offsetX = 32;
         if (right == null)
             x += offsetX;
         else if (right) {

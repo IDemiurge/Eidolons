@@ -57,9 +57,9 @@ public final class Timer {
 	public void update() {
 		long now = (stopped ? nsStopTime : TimeUtils.nanoTime());
 		elapsedSecs = (float)(now - nsStartTime) * oneOnOneBillion;
-	};
+	}
 
-	/** Returns the elapsed time in seconds. */
+    /** Returns the elapsed time in seconds. */
 	public float elapsed() {
 		return elapsedSecs;
 	}

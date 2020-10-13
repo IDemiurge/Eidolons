@@ -11,13 +11,9 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
  */
 public class ScriptedCondition extends MicroCondition {
 
-    private Condition wrapped;
-    private STANDARD_EVENT_TYPE type;
-    private String args;
+    private final Condition wrapped;
 
     public ScriptedCondition(STANDARD_EVENT_TYPE type, String args) {
-        this.type = type;
-        this.args = args;
         wrapped = ScriptParser.getDefaultCondition(type, args);
     }
 

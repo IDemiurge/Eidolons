@@ -25,7 +25,7 @@ public class FloorData extends StructureData<FLOOR_VALUES, Location> {
     @Override
     public String[] getValuesCropped() {
         if (cropped == null) {
-            List<String> list = Arrays.stream(getEnumClazz().getEnumConstants()).map(constant -> constant.toString()).
+            List<String> list = Arrays.stream(getEnumClazz().getEnumConstants()).map(Enum::toString).
                     collect(Collectors.toList());
             list.remove(FLOOR_VALUES.height.toString());
             list.remove(FLOOR_VALUES.width.toString());

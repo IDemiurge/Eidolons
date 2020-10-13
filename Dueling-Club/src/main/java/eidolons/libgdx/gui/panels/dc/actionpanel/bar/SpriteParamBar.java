@@ -32,7 +32,7 @@ public abstract class SpriteParamBar extends DualParamBar {
 
     public SpriteParamBar(Supplier<BattleFieldObject> supplier) {
         super(supplier);
-        addListener(new DynamicTooltip(()-> getTooltipText()).getController());
+        addListener(new DynamicTooltip(this::getTooltipText).getController());
     }
 
     protected abstract String getTooltipText();

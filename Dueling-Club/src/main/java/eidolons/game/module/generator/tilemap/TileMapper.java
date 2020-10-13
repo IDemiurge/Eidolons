@@ -25,15 +25,12 @@ import java.util.regex.Pattern;
  */
 public class TileMapper {
     private static boolean loggingOff;
-    private final TileConverter converter;
     private final LevelModel model;
-    private final LevelData data;
     private final ROOM_CELL DEFAULT_CELL = ROOM_CELL.WALL;
 
     public TileMapper(LevelModel model, LevelData data) {
         this.model = model;
-        this.data = data;
-        this.converter = new TileConverter(model, data);
+        TileConverter converter = new TileConverter(model, data);
     }
 
     public static void print(LevelModel model) {
@@ -279,11 +276,11 @@ public class TileMapper {
     public static String[] getLinesFromCells(String[][] cells) {
         String[] lines = new String[cells[0].length];
         for (int y = 0; y < cells[0].length; y++) {
-            String line = "";
+            StringBuilder line = new StringBuilder();
             for (int x = 0; x < cells.length; x++) {
-                line += cells[x][y];
+                line.append(cells[x][y]);
             }
-            lines[y] = line;
+            lines[y] = line.toString();
         }
         //does rotation!
 //        for (String[] column : cells) {

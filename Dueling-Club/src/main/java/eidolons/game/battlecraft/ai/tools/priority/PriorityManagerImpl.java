@@ -106,7 +106,6 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     private UnitAI unit_ai;
     private float modifier;
     private int priority;
-    private BEHAVIOR_MODE behaviorMode;
     private LOG_CHANNEL logChannel = LOG_CHANNEL.AI_DEBUG;
     private Map<Effect, RollEffect> rollMap;
 
@@ -271,8 +270,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
     @Override
     public int getCowerPriority(Unit unit) {
-        int p = Math.round(300 * getCowardiceFactor(unit));
-        return p;
+        return Math.round(300 * getCowardiceFactor(unit));
     }
 
     @Override
@@ -335,7 +333,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             float i = 1;
             switch (p) {
                 case DURATION:
-                    i = new Float(getDurationMultiplier(action)) / 100;
+                    i = (float) getDurationMultiplier(action) / 100;
                     break;
                 case CAPACITY:
                     i = calculateCapacity(action.getSource());
@@ -359,8 +357,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             int unitPriority = getUnitPriority(action.getTarget(), less_or_more_for_health);
             property = property.replace("{target_power}", "" + unitPriority);
         }
-        Integer p = new Formula(property).getInt(action.getRef());
-        return p;
+        return new Formula(property).getInt(action.getRef());
     }
 
     @Override
@@ -440,7 +437,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
     @Override
     public int getSelfSpellPriority(Action action) {
-        Effects effects = null;
+        Effects effects;
         if (action instanceof AiQuickItemAction)
             effects = EffectMaster.getEffectsFromSpell(
                     ((DC_QuickItemAction) action.getActive()).getItem().getActives().get(0));
@@ -730,9 +727,8 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         }
 
         int spirit = coward.getIntParam(PARAMS.SPIRIT);
-        float factor = 10 / new Float((Math.sqrt(spirit) + new Float(spirit) / 3)) * mod / 100;
 
-        return factor;
+        return 10 / new Float((Math.sqrt(spirit) + new Float(spirit) / 3)) * mod / 100;
     }
 
     @Override
@@ -941,7 +937,6 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         }
         int multiplier = Math.abs(Math.round(numericPriority * (amount) * mod / 100));
         if (multiplier != 0) {
-            valid = true;
         }
 
         int percentagePriority = 0;
@@ -955,7 +950,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         multiplier += MathMaster.getFractionValueCentimal(percentagePriority, percentage) * mod / 100;
 
 
-        return new Float(multiplier) / 100;
+        return (float) multiplier / 100;
     }
 
     private void initRollMap(DC_ActiveObj spell, List<Effect> effects) {
@@ -1072,8 +1067,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         }
 
         boolean attack = !(active instanceof Spell);
-        int enemy_priority = getUnitPriority(targetObj);
-        int priority = enemy_priority;
+        int priority = getUnitPriority(targetObj);
         int damage_priority = getDamagePriority(active, targetObj, attack);
         if (active.isThrow()) {
             if (damage_priority < getUnitPriority(targetObj) * 2) {
@@ -1169,7 +1163,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     }
 
     private void applyThrowPenalty(DC_ActiveObj active) {
-        DC_WeaponObj item = null;
+        DC_WeaponObj item;
         boolean offhand = active.isOffhand();
         boolean quick = active instanceof DC_QuickItemAction;
         if (quick) {
@@ -1488,7 +1482,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         int base = 100 - percentage; // how important/good it is for
         // this unit
         int paramModifier = getParamAnalyzer().getParamPriority(p, unit); // how important/good is it now
-        int dangerModifier = 100;
+        int dangerModifier;
         switch (mode) {
             case MEDITATION:
                 if (ParamAnalyzer.isEssenceIgnore(unit))
@@ -1589,7 +1583,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     public ActionSequence getByPriority(List<ActionSequence> actions) {
         Chronos.mark("Priority sorting ");
         ActionSequence sequence = new FuncMaster<ActionSequence>().
-                getGreatest_(actions, a -> a.getPriority());
+                getGreatest_(actions, ActionSequence::getPriority);
         Chronos.logTimeElapsedForMark("Priority sorting ");
         return sequence;
     }
@@ -1643,7 +1637,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
     @Override
     public int getPriority(ActionSequence sequence) {
-        behaviorMode = getUnitAi().getBehaviorMode();
+        BEHAVIOR_MODE behaviorMode = getUnitAi().getBehaviorMode();
         if (behaviorMode == AiEnums.BEHAVIOR_MODE.BERSERK) {
             return getPriorityForActionSequence(sequence);
         } else if (behaviorMode == AiEnums.BEHAVIOR_MODE.CONFUSED) {

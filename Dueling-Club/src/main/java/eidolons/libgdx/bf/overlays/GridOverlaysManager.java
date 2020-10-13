@@ -398,7 +398,7 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
     }
 
     protected void addTooltip(DC_Obj obj, Actor parent, OVERLAY overlay, Vector2 v, int x, int y) {
-        Rectangle rect = null;
+        Rectangle rect;
         if (isTooltipRequired(overlay)) {
             if (obj == null) {
                 obj = Eidolons.getGame().getObjMaster().getCellByCoordinate(Coordinates.get(x, y));
@@ -526,10 +526,8 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
         switch (overlay) {
 
             case SPOTTED:
-                break;
-            case STEALTH:
-                break;
             case BAG:
+            case STEALTH:
                 break;
             case HP_BAR:
                 return isHpTooltipOn();

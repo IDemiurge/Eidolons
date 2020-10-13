@@ -56,11 +56,9 @@ public class QuestJournal extends SelectionPanel implements Blocking{
     protected List<SelectableItemData> createListData() {
         List<DungeonQuest> quests = (List<DungeonQuest>) getUserObject();
 
-        List<SelectableItemData> list = quests.stream().map(
+        return quests.stream().map(
          quest -> new SelectableItemData(quest.getTitle(), quest.getDescription(),
          "" ,quest.getImage())).collect(Collectors.toList());
-
-        return list;
     }
 
     @Override

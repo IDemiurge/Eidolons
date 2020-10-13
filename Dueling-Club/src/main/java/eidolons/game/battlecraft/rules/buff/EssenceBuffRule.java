@@ -29,8 +29,6 @@ public class EssenceBuffRule extends DC_BuffRule {
     };
     public static final String[] formulas = {"1", "20", "200",};
 
-    private final String maxFormula="100";
-
     public static final String parameterString = PARAMS.SPIRIT.getName()
     + Strings.VERTICAL_BAR     + PARAMS.RESISTANCE.getName();
 
@@ -65,6 +63,7 @@ public class EssenceBuffRule extends DC_BuffRule {
                  + formulas[level] + ")*2")));
             }
             case 2: {
+                String maxFormula = "100";
                 return new Effects(new ModifyValueEffect(parameterString,
                  MOD.MODIFY_BY_PERCENT, "("
                  + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-"

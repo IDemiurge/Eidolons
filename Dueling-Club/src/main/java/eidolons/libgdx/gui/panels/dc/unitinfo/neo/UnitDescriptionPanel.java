@@ -31,7 +31,7 @@ public class UnitDescriptionPanel extends DescriptionPanel{
     }
     @Override
     protected void updateAct() {
-        String text = null ;
+        String text;
         if (getUserObject() instanceof String){
             text = (String) getUserObject();
         } else {

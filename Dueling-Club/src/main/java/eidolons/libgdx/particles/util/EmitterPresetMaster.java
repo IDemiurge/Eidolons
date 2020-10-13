@@ -32,7 +32,6 @@ public class EmitterPresetMaster {
     private static boolean spriteEmitterTest;
     private static final Map<EmitterActor, String> mods = new HashMap<>();
     private final Map<String, String> map = new HashMap<>();
-    private final String lowHighMinMax = "lowMin lowMax highMin highMax";
 
     public EmitterPresetMaster() {
         instance = this;
@@ -168,9 +167,8 @@ public class EmitterPresetMaster {
 
         if (spriteEmitterTest) {
             //            effect.getEmitters().forEach(e -> {
-            String randomPath = FileManager.getRandomFile(PathFinder.getSpritesPathFull() +
+            return FileManager.getRandomFile(PathFinder.getSpritesPathFull() +
                     "impact/").getPath();
-            return randomPath;
             //        ((Emitter) e).offset(20, "scale");
             //        e.setImagePath(randomPath);
             //        e.setPremultipliedAlpha(false);
@@ -189,7 +187,7 @@ public class EmitterPresetMaster {
     }
 
     public String getImagePath(String path) {
-        String imgPath = null;
+        String imgPath;
         //        if (imagePathMap != null) {
         //            imgPath = imagePathMap.getVar(path.toLowerCase());
         //            if (imgPath != null)
@@ -285,6 +283,7 @@ public class EmitterPresetMaster {
         String text = getGroupText(data, group);
         List<Pair<String, String>> entryList = getGroupEntries(text);
         for (Pair<String, String> p : entryList) {
+            String lowHighMinMax = "lowMin lowMax highMin highMax";
             if (lowHighMinMax.contains(p.getKey())) {
                 double newValue = NumberUtils.getDouble(p.getValue()) + offset;
                 text = text.replace(p.getKey() + value_separator + p.getValue(),
@@ -342,8 +341,7 @@ public class EmitterPresetMaster {
         }
         if (valuePart == null)
             return null;
-        String text = valuePart.split("- ")[0];
-        return text;
+        return valuePart.split("- ")[0];
     }
 
     public String getModifiedData(String data, EMITTER_VALUE_GROUP image_path, String newVal) {

@@ -97,9 +97,9 @@ public class GdxColorMaster {
     }
 
     private static Color getColorFromString(String value) {
-        float r = new Float(StringMaster.countChar(value, "r"));
-        float g = new Float(StringMaster.countChar(value, "g"));
-        float b = new Float(StringMaster.countChar(value, "b"));
+        float r = (float) StringMaster.countChar(value, "r");
+        float g = (float) StringMaster.countChar(value, "g");
+        float b = (float) StringMaster.countChar(value, "b");
         // MathMaster.getMax
         if (r>=g && r>=b){
             g=r/g;

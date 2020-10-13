@@ -96,7 +96,7 @@ public class Loader {
 
         List<String> objectNodes = XmlNodeMaster.getNodeList(
          XmlNodeMaster.findNode(saveData, Saver.OBJ_NODE)).stream().map
-         (node -> XML_Converter.getStringFromXML(node)).collect(Collectors.toList());
+         (XML_Converter::getStringFromXML).collect(Collectors.toList());
         List<Obj> objects = createObjects(objectNodes);
         initializeObjects(objects);
     }

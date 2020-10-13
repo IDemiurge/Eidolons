@@ -21,7 +21,6 @@ public class BaseSlotPanel extends TablePanel {
 
     protected PagesMod activePage = PagesMod.NONE;
     private float beforeReset;
-    private final float resetPeriod = 11f;
     private boolean hovered;
     public static boolean hoveredAny;
     private boolean firstUpdateDone;
@@ -102,6 +101,7 @@ public class BaseSlotPanel extends TablePanel {
         if (CoreEngine.TEST_LAUNCH) {
             return 20f;
         }
+        float resetPeriod = 11f;
         return resetPeriod;
     }
 

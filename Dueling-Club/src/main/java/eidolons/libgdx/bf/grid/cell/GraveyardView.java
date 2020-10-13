@@ -50,7 +50,7 @@ public class GraveyardView extends TablePanel {
             graves[i] = graveTables.add().expand().fill();
         }
         add(graveTables).expand().fill();
-        DynamicTooltip tooltip = new DynamicTooltip(() -> getTooltipText());
+        DynamicTooltip tooltip = new DynamicTooltip(this::getTooltipText);
         graveyardButton.addListener(tooltip.getController());
 
         graveyardButton.addListener(new BattleClickListener() {

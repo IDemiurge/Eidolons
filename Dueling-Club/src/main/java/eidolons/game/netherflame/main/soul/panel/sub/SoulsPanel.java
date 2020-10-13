@@ -49,7 +49,7 @@ public class SoulsPanel extends SoulTab {
         infoHeader.add(soulforce = new LabelX("Soulforce: ")).row();
         infoHeader.add(trapped = new LabelX("Souls Trapped: ")).row();
 
-        headerButtons.add(new SmartTextButton("Imbue", ButtonStyled.STD_BUTTON.TAB_HIGHLIGHT_COLUMN, () -> toggleImbuePanel()));
+        headerButtons.add(new SmartTextButton("Imbue", ButtonStyled.STD_BUTTON.TAB_HIGHLIGHT_COLUMN, this::toggleImbuePanel));
 
         header.add(infoHeader);
         header.add(headerButtons);
@@ -63,7 +63,7 @@ public class SoulsPanel extends SoulTab {
 
         GuiEventManager.bind(GuiEventType.UPDATE_SOULS_PANEL, p -> {
             imbuePanel.update();
-            soulActors.forEach(a -> a.update());
+            soulActors.forEach(SoulActor::update);
         });
     }
 
@@ -102,7 +102,6 @@ public class SoulsPanel extends SoulTab {
     }
 
     public class SoulActor extends TablePanelX {
-        private final TablePanelX<Actor> table;
         private final SmartTextButton btn;
         private  ShaderProgram shader;
         Soul soul;
@@ -124,7 +123,7 @@ public class SoulsPanel extends SoulTab {
         public SoulActor(Soul soul) {
             super(240, 128);
             this.soul = soul;
-             table = new TablePanelX<>();
+            TablePanelX<Actor> table = new TablePanelX<>();
             LabelX name = new LabelX(soul.getUnitType().getName(), StyleHolder.getAVQLabelStyle(18));
             table.add(name).center().row();
             String sf = soul.getForce() + "";

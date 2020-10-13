@@ -22,7 +22,7 @@ public class ZoneData extends StructureData<LevelStructure.ZONE_VALUE, LevelZone
     @Override
     public String[] getValuesCropped() {
         if (cropped == null) {
-            List<String> list = Arrays.stream(getEnumClazz().getEnumConstants()).map(constant -> constant.toString()).
+            List<String> list = Arrays.stream(getEnumClazz().getEnumConstants()).map(Enum::toString).
                     collect(Collectors.toList());
             list.remove(LevelStructure.ZONE_VALUE.height.toString());
             list.remove(LevelStructure.ZONE_VALUE.width.toString());

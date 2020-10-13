@@ -152,9 +152,7 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
         if (checkCutAway(false)) {
             return false;
         }
-        if (checkCutAway(true)) {
-            return false;
-        }
+        checkCutAway(true);
 
         // TODO ally help PLS
 

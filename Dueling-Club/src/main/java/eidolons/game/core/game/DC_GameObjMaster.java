@@ -229,20 +229,17 @@ public class DC_GameObjMaster extends GameObjMaster {
         for (Coordinates c : coordinates) {
             list.add(getCellByCoordinate(c));
         }
-        list.removeIf(c -> c == null);
+        list.removeIf(Objects::isNull);
         return list;
     }
 
     @Override
     public Obj getObjectById(Integer id) {
         Obj obj = super.getObjectById(id);
-        if (obj == null) {
-            //            if (Eidolons.getMainHero() != null) { this is madness... main hero must be added to state!
-            //                if (Eidolons.getMainHero().getId().equals(id))
-            //                    return Eidolons.getMainHero();
-            //            }
-            return obj;
-        }
+        //            if (Eidolons.getMainHero() != null) { this is madness... main hero must be added to state!
+        //                if (Eidolons.getMainHero().getId().equals(id))
+        //                    return Eidolons.getMainHero();
+        //            }
         return obj;
     }
 

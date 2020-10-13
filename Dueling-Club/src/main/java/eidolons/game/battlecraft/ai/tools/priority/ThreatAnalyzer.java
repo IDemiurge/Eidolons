@@ -51,7 +51,7 @@ public class ThreatAnalyzer extends AiHandler {
     public float getRelativeThreat(UnitAI ai, Unit enemy) {
         int threat = getThreat(ai, enemy);
         int selfPriority = getPriorityManager().getUnitPriority(null, ai.getUnit(), false);
-        return new Float(threat) / selfPriority;
+        return (float) threat / selfPriority;
     }
 
     public static PartyTooltip.THREAT_LEVEL getThreatLevel(int percentage) {

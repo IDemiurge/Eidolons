@@ -45,10 +45,9 @@ public class EffectAnimCreator {
         Float distance =
                 GridMaster.getDistance(destination,
                         e.getActiveObj().getOwnerUnit().getCoordinates()); //TODO from parent anim's origin!
-        float delay = distance / subAnim.getPixelsPerSecond();
 
 
-        return delay;
+        return distance / subAnim.getPixelsPerSecond();
     }
 
     public static Anim getOrCreateEffectAnim(Effect e) {
@@ -121,8 +120,7 @@ public class EffectAnimCreator {
     }
 
     private static AnimData getModValAnimData(ModifyValueEffect e) {
-        AnimData data = new AnimData();
-        return data;
+        return new AnimData();
     }
 
     private static AnimData getDamageAnimData(DealDamageEffect e) {

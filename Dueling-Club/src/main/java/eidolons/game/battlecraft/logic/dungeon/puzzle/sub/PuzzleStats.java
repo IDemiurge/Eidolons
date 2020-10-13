@@ -22,7 +22,7 @@ public class PuzzleStats extends DataUnit<PuzzleStats.PUZZLE_STAT> {
 
     public void ended(boolean success) {
         int time = Math.toIntExact(Chronos.getTimeElapsedForMark(getMark()));
-        String timeString = NumberUtils.formatFloat(1, new Float(time) / 1000) + " seconds";
+        String timeString = NumberUtils.formatFloat(1, (float) time / 1000) + " seconds";
         addToInt(PUZZLE_STAT.TIME_TOTAL, time);
 
         FileLogManager.stream(FileLogManager.LOG_OUTPUT.MAIN, puzzle+" ended: " +
@@ -56,17 +56,14 @@ public class PuzzleStats extends DataUnit<PuzzleStats.PUZZLE_STAT> {
 
     @Override
     public String getRelevantData() {
-        String s="";
+        StringBuilder s= new StringBuilder();
         for (PUZZLE_STAT value : PUZZLE_STAT.values()) {
             if (value.displayed ) {
-                s += StringMaster.format(value.toString())
-                        + ": " +
-                        getValue(value) +
-                        "\n";
+                s.append(StringMaster.format(value.toString())).append(": ").append(getValue(value)).append("\n");
             }
 
         }
-        return s;
+        return s.toString();
     }
 
     public enum PUZZLE_STAT {

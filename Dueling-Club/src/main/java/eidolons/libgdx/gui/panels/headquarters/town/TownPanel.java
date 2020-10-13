@@ -72,7 +72,7 @@ public class TownPanel extends TabbedPanel {
 
         initContainer();
         addActor(new NoHitImage(frame));
-        addActor(okBtn = new SmartTextButton("Done", STD_BUTTON.MENU, () -> done()) {
+        addActor(okBtn = new SmartTextButton("Done", STD_BUTTON.MENU, this::done) {
             public BUTTON_SOUND_MAP getSoundMap() {
                 return AudioEnums.BUTTON_SOUND_MAP.ENTER;
             }
@@ -80,8 +80,8 @@ public class TownPanel extends TabbedPanel {
         okBtn.setDisabledRunnable(() -> {
             EUtils.infoPopup(tooltip);
         });
-        addActor(hqBtn = new SmartTextButton("Hero Screen", STD_BUTTON.MENU, () -> openHq()));
-        okBtn.addListener(new DynamicTooltip(() -> getDoneTooltip()).getController());
+        addActor(hqBtn = new SmartTextButton("Hero Screen", STD_BUTTON.MENU, this::openHq));
+        okBtn.addListener(new DynamicTooltip(this::getDoneTooltip).getController());
         tabTable.setZIndex(Integer.MAX_VALUE);
         headerBg = TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.SAURON_ALT,
          BACKGROUND_NINE_PATCH.TRANSPARENT,

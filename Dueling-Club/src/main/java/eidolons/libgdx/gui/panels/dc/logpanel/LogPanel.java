@@ -120,7 +120,7 @@ public class LogPanel extends ScrollTextWrapper {
 
     public void bind() {
         GuiEventManager.bind(getCallbackEvent(), p -> {
-            Actor toAdd = null;
+            Actor toAdd;
             if (p.get() == Images.SEPARATOR_NARROW) {
                 toAdd = new ImageContainer(Images.SEPARATOR_NARROW);
                 scrollPanel.addElement(toAdd).center();
@@ -225,9 +225,7 @@ public class LogPanel extends ScrollTextWrapper {
         }
         word = word.replace(".", "");
         if (previous == null) {
-            previous = word;
-        } else
-            previous = previous.replace(".", "");
+        }
         if (Eidolons.MAIN_HERO != null)
             if (StringMaster.containsWord(Eidolons.MAIN_HERO.getName(), word)
             ) {

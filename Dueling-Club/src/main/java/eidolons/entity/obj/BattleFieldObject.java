@@ -315,7 +315,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     }
 
     public void resetPercentages() {
-        Arrays.stream(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE).forEach(p -> resetPercentage(p));
+        Arrays.stream(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE).forEach(this::resetPercentage);
     }
 
     public void resetCurrentValues() {
@@ -344,9 +344,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
 
     public void regen() {
 
-        Arrays.stream(ContentConsts.REGENERATED_PARAMS).forEach(parameter -> {
-            regen(parameter);
-        });
+        Arrays.stream(ContentConsts.REGENERATED_PARAMS).forEach(this::regen);
 
     }
 

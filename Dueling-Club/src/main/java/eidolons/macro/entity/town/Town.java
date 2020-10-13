@@ -198,7 +198,7 @@ public class Town extends Place {
             if (!NumberUtils.isInteger(substring)) {
                 continue;
             }
-            int id = Integer.valueOf(substring);
+            int id = Integer.parseInt(substring);
             Obj item = Eidolons.getGame().getObjectById(id);
             if (item instanceof DC_HeroItemObj)
                 stash.add((DC_HeroItemObj) item);

@@ -65,12 +65,12 @@ public class SpellAnim extends ActionAnim {
     protected void resetSprites() {
         super.resetSprites();
         if (!emitterList.isEmpty()) {
-            sprites.removeIf(sprite -> SpriteAnimationFactory.isDefault(sprite));
+            sprites.removeIf(SpriteAnimationFactory::isDefault);
         }
 
     }
 
-    public static final String getOverriddenVfx(DC_ActiveObj active, AnimEnums.ANIM_PART part) {
+    public static String getOverriddenVfx(DC_ActiveObj active, AnimEnums.ANIM_PART part) {
         //could be a bit randomized too!
         // enum for vfx after all?
 

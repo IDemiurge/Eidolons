@@ -15,7 +15,7 @@ import main.system.auxiliary.EnumMaster;
  */
 public class Door extends DungeonObj {
 
-    private   boolean obstructing=true;
+    private final boolean obstructing;
     DOOR_STATE state;
 
     public Door(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {

@@ -36,7 +36,7 @@ import static com.badlogic.gdx.Input.Keys.CONTROL_LEFT;
 public abstract class InputController implements InputProcessor {
     protected static final float MARGIN = 300;
     protected static float zoomStep_ = OptionsMaster.getControlOptions().
-            getIntValue(CONTROL_OPTION.ZOOM_STEP) / new Float(100);
+            getIntValue(CONTROL_OPTION.ZOOM_STEP) / 100f;
     protected float zoomStep;
     protected OrthographicCamera camera;
     protected boolean isLeftPressed = false;

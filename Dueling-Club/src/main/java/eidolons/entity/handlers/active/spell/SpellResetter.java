@@ -3,7 +3,6 @@ package eidolons.entity.handlers.active.spell;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.entity.active.Spell;
 import eidolons.entity.handlers.active.ActiveResetter;
-import eidolons.game.module.herocreator.logic.spells.SpellUpgradeMaster;
 import main.content.enums.system.MetaEnums;
 import main.content.values.parameters.PARAMETER;
 
@@ -28,12 +27,6 @@ public class SpellResetter extends ActiveResetter {
     @Override
     public void toBase() {
         super.toBase();
-
-        if (SpellUpgradeMaster.applyUpgrades(getEntity())) {
-            getEntity().setCustomIcon(SpellUpgradeMaster.generateSpellIcon(getEntity()));
-        } else {
-            getEntity().setCustomIcon(null);
-        }
         getEntity().setDirty(false);
     }
 

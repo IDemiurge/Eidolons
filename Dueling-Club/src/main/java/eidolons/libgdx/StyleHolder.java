@@ -232,9 +232,6 @@ public class StyleHolder {
             }
 
         }
-        if (closest != null)
-            if (Math.abs(closest - size) <= sizeGap)
-                return closest;
         return closest;
     }
 
@@ -260,9 +257,8 @@ public class StyleHolder {
             data.imagePaths = new String[]{
                     StringMaster.cropFormat(path) + ".png"
             };
-            BitmapFont bitmapFont = new BitmapFont(data, tex, true);
 
-            return bitmapFont;
+            return new BitmapFont(data, tex, true);
         } else {
             BitmapFont bitmapFont = generator.generateFont(parameter);
             generator.dispose();
@@ -362,7 +358,7 @@ public class StyleHolder {
     public static TextButtonStyle getTextButtonStyle(
             STD_BUTTON button, FONT FONT, Color color, int size) {
         ObjectMap<LabelStyle, TextButtonStyle> map = textButtonStyleMap.get(button);
-        LabelStyle labelStyle = null;
+        LabelStyle labelStyle;
         if (FONT == null) {
             labelStyle = new LabelStyle();
         } else
@@ -434,15 +430,13 @@ public class StyleHolder {
     }
 
     public static TextButtonStyle getHqTabStyle() {
-        TextButtonStyle style = getTextButtonStyle(STD_BUTTON.TAB_HIGHLIGHT_COLUMN,
+        return getTextButtonStyle(STD_BUTTON.TAB_HIGHLIGHT_COLUMN,
                 FONT.METAMORPH, GdxColorMaster.GOLDEN_GRAY, 20);
-        return style;
     }
 
     public static TextButtonStyle getHqTabStyleEmpty() {
-        TextButtonStyle style = getTextButtonStyle(STD_BUTTON.TAB_HIGHLIGHT_COLUMN,
+        return getTextButtonStyle(STD_BUTTON.TAB_HIGHLIGHT_COLUMN,
                 FONT.METAMORPH, GdxColorMaster.GOLDEN_GRAY, 20);
-        return style;
     }
 
 

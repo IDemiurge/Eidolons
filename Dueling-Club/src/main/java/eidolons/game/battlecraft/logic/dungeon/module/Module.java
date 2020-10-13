@@ -81,17 +81,15 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
     @Override
     public Set<Coordinates> initCoordinateSet(boolean buffer) {
         //TODO nullify this on reset!
-        Set<Coordinates> coordinatesSet = new LinkedHashSet<>();
         Coordinates c =
                 buffer ? getOrigin()
                         : getOrigin()
                         .getOffset(getWidthBuffer(), getHeightBuffer());
         Coordinates c1 = c.getOffset(getEffectiveWidth(false), getEffectiveHeight(false));
-        coordinatesSet.addAll(CoordinatesMaster.getCoordinatesBetween(
+        Set<Coordinates> coordinatesSet = new LinkedHashSet<>(CoordinatesMaster.getCoordinatesBetween(
                 c,
                 buffer ? c1.getOffset(getWidthBuffer(), getHeightBuffer())
-                        : c1)
-        );
+                        : c1));
 
         return coordinatesSet;
     }

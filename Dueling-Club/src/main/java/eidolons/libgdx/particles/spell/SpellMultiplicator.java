@@ -36,11 +36,9 @@ public class SpellMultiplicator implements Runnable {
     static final MULTIPLICATION_METHOD defaultMultiplicationMethod = MULTIPLICATION_METHOD.COORDINATE;
     MULTIPLICATION_METHOD multiplicationMethod = defaultMultiplicationMethod;
     private final Anim anim;
-    private SpellAnim spellAnim;
     //parallel, in different threads!
     private List<SpellVfx> emitterList;
     private float duration;
-    private Entity active;
     private SPELL_ANIMS template;
 
     public SpellMultiplicator(Anim anim) {
@@ -87,9 +85,9 @@ public class SpellMultiplicator implements Runnable {
         main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.ANIM_DEBUG, anim.getEmitterList().size() + " EmitterList= " + anim.getEmitterList());
         emitterList = anim.getEmitterList();
         duration = anim.getDuration();
-        active = anim.getActive();
+        Entity active = anim.getActive();
         if (anim instanceof SpellAnim) {
-            spellAnim = (SpellAnim) anim;
+            SpellAnim spellAnim = (SpellAnim) anim;
             template = spellAnim.getTemplate();
         }
         multiply(anim);

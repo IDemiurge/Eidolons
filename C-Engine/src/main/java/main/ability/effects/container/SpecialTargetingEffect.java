@@ -93,9 +93,6 @@ public abstract class SpecialTargetingEffect extends MicroEffect implements Cont
         if (isZLevelDependent()) {
             getFilteringConditions().add(new ZLevelCondition(true));
         }
-        if (isLoggingWrapped()) {
-            getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.ZONE_EFFECT, ref.getActive());
-        }
         this.targeting.select(ref);
         getActiveObj().getRef().setGroup(ref.getGroup());
         //        if (         (coordinates == null || getActiveObj().checkBool(STD_BOOLS.APPLY_THRU))) {

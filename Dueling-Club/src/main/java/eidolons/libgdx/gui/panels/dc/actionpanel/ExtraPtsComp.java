@@ -21,7 +21,7 @@ public class ExtraPtsComp extends TablePanelX {
     public ExtraPtsComp(boolean attack) {
         this.attack = attack;
         addActor(button = new SymbolButton(attack ? STD_BUTTON.EXTRA_ATK : STD_BUTTON.EXTRA_MOVES,
-                () -> toggle()));
+                this::toggle));
         addActor(label = new LabelX(StyleHolder.getSizedLabelStyle(FontMaster.FONT.METAMORPH, 20)));
         // read from obj on first update?
         {

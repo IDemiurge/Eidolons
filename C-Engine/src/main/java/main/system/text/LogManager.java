@@ -403,6 +403,10 @@ public abstract class LogManager {
         return displayedLines;
     }
 
+    public void newLogEntryNode(ENTRY_TYPE type, Object... args) {
+
+    }
+
     public enum LOG_CASES {
         ALLY_PARAMETER_CHANGE, ALLY_DAMAGE_TAKEN, CRITICAL_STRIKE,
 

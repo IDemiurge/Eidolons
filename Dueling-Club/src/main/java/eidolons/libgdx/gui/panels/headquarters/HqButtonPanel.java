@@ -15,31 +15,19 @@ import main.system.launch.Flags;
 public class HqButtonPanel extends HqElement {
     public HqButtonPanel() {
         if (!Flags.isJar()) {
-            add(new SmartTextButton("Level Up", STD_BUTTON.MENU, () -> {
-                levelUp();
-            }));
-            add(new SmartTextButton("Save Type", STD_BUTTON.MENU, () -> {
-                saveType();
-            }));
-            add(new SmartTextButton("Save as New", STD_BUTTON.MENU, () -> {
-                saveTypeNew();
-            }));
+            add(new SmartTextButton("Level Up", STD_BUTTON.MENU, this::levelUp));
+            add(new SmartTextButton("Save Type", STD_BUTTON.MENU, this::saveType));
+            add(new SmartTextButton("Save as New", STD_BUTTON.MENU, this::saveTypeNew));
         }
 
-            add(new SmartTextButton("View Info", STD_BUTTON.MENU, () -> {
-                viewInfo();
-            }));
+            add(new SmartTextButton("View Info", STD_BUTTON.MENU, this::viewInfo));
 
 
         if (!HqDataMaster.isSimulationOff())
-        add(new SmartTextButton("Undo All", STD_BUTTON.MENU, () -> {
-            undoAll();
-        }));
+        add(new SmartTextButton("Undo All", STD_BUTTON.MENU, this::undoAll));
 
 
-        add(new SmartTextButton("Done", STD_BUTTON.MENU, () -> {
-            saveAndExit();
-        }));
+        add(new SmartTextButton("Done", STD_BUTTON.MENU, this::saveAndExit));
     }
 
     @Override

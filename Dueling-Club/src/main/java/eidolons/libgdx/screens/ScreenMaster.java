@@ -160,8 +160,7 @@ public class ScreenMaster {
                 if (Eidolons.getScope() != null)
                     if (Eidolons.getScope() != Eidolons.SCOPE.MENU) {
                         EUtils.onConfirm(
-                                "New resolution will be applied on restart... Ok?", true, () ->
-                                        OptionsMaster.saveOptions());
+                                "New resolution will be applied on restart... Ok?", true, OptionsMaster::saveOptions);
                         return;
                     }
                 getApplication().getGraphics().setResizable(true);

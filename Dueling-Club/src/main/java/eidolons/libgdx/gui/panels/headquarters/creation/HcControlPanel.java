@@ -11,10 +11,10 @@ public class HcControlPanel extends TablePanelX{
     public HcControlPanel() {
         //symbol/title
         super(320, 64);
-        add(new SymbolButton(STD_BUTTON.CANCEL, ()->cancel()));
-        add(new SymbolButton(STD_BUTTON.UNDO, ()->undo()));
-        add(new SymbolButton(STD_BUTTON.NEXT, ()->redo()));
-        add(new SymbolButton(STD_BUTTON.HELP, ()->cancel()));
+        add(new SymbolButton(STD_BUTTON.CANCEL, this::cancel));
+        add(new SymbolButton(STD_BUTTON.UNDO, this::undo));
+        add(new SymbolButton(STD_BUTTON.NEXT, this::redo));
+        add(new SymbolButton(STD_BUTTON.HELP, this::cancel));
     }
 
     private void undo() {

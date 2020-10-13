@@ -26,7 +26,7 @@ public class VisualChoiceHandler extends MetaGameHandler {
 
     public   boolean isDisabled(VC_DataSource.VC_OPTION option) {
 
-            Set<ChainHero> heroes = null;
+            Set<ChainHero> heroes;
             switch (option) {
             case ashen_rebirth:
                 heroes= getMaster().getSoulforceMaster().

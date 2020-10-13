@@ -118,7 +118,7 @@ public class ShardEnums {
     }
 
     public static String getBackgroundTexturePath(Object arg, DIRECTION direction, SHARD_TYPE type, SHARD_SIZE size) {
-        String path = null;
+        String path;
         String name=null ;
         if (direction == null) {
             path = StrPathBuilder.build("ui", "cells", "shards",

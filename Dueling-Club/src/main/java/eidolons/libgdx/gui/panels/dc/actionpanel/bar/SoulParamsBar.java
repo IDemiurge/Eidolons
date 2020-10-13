@@ -9,7 +9,6 @@ import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.texture.Sprites;
 import main.content.enums.GenericEnums;
 import main.content.values.parameters.PARAMETER;
-import main.system.launch.Flags;
 
 import java.util.function.Supplier;
 
@@ -42,9 +41,6 @@ public class SoulParamsBar extends SpriteParamBar {
     }
 
     private boolean isColored() {
-        if (Flags.isLiteLaunch()) {
-            return false;
-        }
         return false;
     }
 

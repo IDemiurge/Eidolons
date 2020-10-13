@@ -32,7 +32,7 @@ FadeImageContainer icon;
         this.navigable = navigable;
         addActor(icon = new FadeImageContainer(navigable.getIconPath()));
         addActor(body = new SmartTextButton(navigable.getName(),
-         STD_BUTTON.TAB_HIGHLIGHT, () -> navigable.interact()));
+         STD_BUTTON.TAB_HIGHLIGHT, navigable::interact));
         //is disabled
 
     }

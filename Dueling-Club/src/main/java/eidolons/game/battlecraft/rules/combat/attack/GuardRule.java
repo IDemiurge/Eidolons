@@ -73,10 +73,9 @@ public class GuardRule {
          ")/100/" + attack.getAction().getIntParam(PARAMS.AP_COST);
         String log = " to defend " + attack.getAttackedUnit().getName() +
          " against " + attack.getAction().getName();
-        boolean result = !RollMaster.roll(ROLL_TYPES.REACTION, success, fail, ref, log);
-//        boolean result = RollMaster.roll(ROLL_TYPES.REACTION, ref);
+        //        boolean result = RollMaster.roll(ROLL_TYPES.REACTION, ref);
 
-        return result;
+        return !RollMaster.roll(ROLL_TYPES.REACTION, success, fail, ref, log);
     }
 
     private static boolean checkDefenderTakesMissile(DC_ActiveObj action, Unit unit) {

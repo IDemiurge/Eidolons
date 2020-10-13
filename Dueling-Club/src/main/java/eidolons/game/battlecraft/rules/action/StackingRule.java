@@ -282,7 +282,7 @@ public class StackingRule implements ActionRule {
             }
         }
         if (!result) {
-            units.removeIf(u -> u.isDead());
+            units.removeIf(Entity::isDead);
             if (units.size() == 1) {
                 if (units.get(0) instanceof Door) {
                     return true;

@@ -70,7 +70,7 @@ public class SpellVfxPool extends EmitterPools {
                 emitter =   getEmitterActor(path);
             }
             if (NumberUtils.isNumber(speed, false)) {
-                emitter.setSpeed(Float.valueOf(speed) / 100);
+                emitter.setSpeed(Float.parseFloat(speed) / 100);
             }
             if (emitter != null) {
                 list.add(emitter);

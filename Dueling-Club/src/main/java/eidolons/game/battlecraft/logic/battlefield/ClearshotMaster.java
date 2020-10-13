@@ -19,15 +19,15 @@ public class ClearshotMaster {
     static Map<DC_Obj, Map<Obj, Boolean>> cache = new HashMap<>();
 
     public static void clearCache() {
-        cache.values().forEach(map -> map.clear());
+        cache.values().forEach(Map::clear);
     }
 
     public static Map<DC_Obj, Map<Obj, Boolean>> getCache() {
         return cache;
     }
 
-    public static final boolean isOverlayingWithinSightAngle(DC_Obj target,
-                                                             DC_Obj source) {
+    public static boolean isOverlayingWithinSightAngle(DC_Obj target,
+                                                       DC_Obj source) {
         return isOverlayingWithinSightAngle(target.getCoordinates(), target.getDirection(), source.getCoordinates());
     }
 
@@ -39,7 +39,7 @@ public class ClearshotMaster {
     //    ###
     //    ###U
     //== 45 == NO TODO could customize 90 angle!
-    public static final boolean isOverlayingWithinSightAngle(Coordinates c, DIRECTION d, Coordinates c1) {
+    public static boolean isOverlayingWithinSightAngle(Coordinates c, DIRECTION d, Coordinates c1) {
         DIRECTION d1 = DirectionMaster.getRelativeDirection(c, c1);
         if (d != null) {
             if ((Math.abs(d.getDegrees() - d1.getDegrees()) + 360) % 360 <= 90)
@@ -246,7 +246,6 @@ diagonal adjacent walls will remove whole directions..
     }
 
     private static double lineY(double slope, double k, double x) {
-        double y = slope * x + k;
-        return y;
+        return slope * x + k;
     }
 }

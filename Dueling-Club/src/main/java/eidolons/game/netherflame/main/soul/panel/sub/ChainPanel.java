@@ -44,7 +44,7 @@ public class ChainPanel extends SoulTab {
         }
     }
 
-    public class ChainHeroView extends TablePanelX {
+    public static class ChainHeroView extends TablePanelX {
         ChainHero chainHero;
 
         public ChainHeroView(ChainHero chainHero) {

@@ -36,7 +36,6 @@ import java.util.Map;
 
     public static PARAMS[] rankParams = {PARAMS.RANK_XP_MOD, PARAMS.RANK_SD_MOD,
      PARAMS.RANK_FORMULA_MOD};
-    private boolean rankApplied;
     private boolean paramStringParsed;
     private Map<PARAMETER, String> modMap;
     private Map<PARAMETER, String> bonusMap;
@@ -178,7 +177,7 @@ import java.util.Map;
         float quotientSum = 0;
         for (PARAMETER param : getBonusMap().keySet()) {
             Integer amount = NumberUtils.getIntParse(getBonusMap().get(param), getRef());
-            float d = new Float(amount * getRankTotalFormulaMod()) / 100;
+            float d = (float) (amount * getRankTotalFormulaMod()) / 100;
 
             if (param.isAttribute()) {
                 quotientSum += d - Math.floor(d);
@@ -282,7 +281,7 @@ import java.util.Map;
         setParam(PARAMS.SKILL_DIFFICULTY, getIntParam(PARAMS.SKILL_DIFFICULTY, true));
         modifyParamByPercent(PARAMS.SKILL_DIFFICULTY, sdMod);
 
-        rankApplied = true;
+        boolean rankApplied = true;
     }
 
     public Integer getRankFormulaMod() {

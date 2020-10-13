@@ -55,8 +55,7 @@ public class DifficultySelectionPanel extends SelectionPanel {
     }
 
     private Supplier<List<SelectableItemData>> getSupplier(DIFFICULTY[] values) {
-        return () -> Arrays.stream(values).map(dif ->
-         getItemFromDiff(dif)).collect(Collectors.toList());
+        return () -> Arrays.stream(values).map(this::getItemFromDiff).collect(Collectors.toList());
     }
 
     private SelectableItemData getItemFromDiff(DIFFICULTY dif) {

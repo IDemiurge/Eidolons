@@ -27,7 +27,6 @@ import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.utilities.workspace.WorkspaceManager;
-import music.MuseCore;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -66,7 +65,6 @@ public class ArcaneVault {
         CoreEngine.setArcaneVault(true);
         CoreEngine.setGraphicsOff(true);
         GuiManager.init();
-        new MuseCore().init();
 
         if (args.length > 0) {
             args = args[0].split(";");

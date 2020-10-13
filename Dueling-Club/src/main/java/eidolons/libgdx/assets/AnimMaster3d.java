@@ -46,7 +46,7 @@ public class AnimMaster3d {
                 Atlases.preloadAtlas(sub.getWrappedWeapon());
             } else {
                 if (sub.getWrappedWeapon() == null) {
-                    String path = null;
+                    String path;
                     try {
                         path = Atlases.getPotionAtlasPath(sub.getActive());
                     } catch (Exception e) {

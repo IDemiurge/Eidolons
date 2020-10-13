@@ -131,9 +131,7 @@ public abstract class GameLoop {
                 ExceptionMaster.printStackTrace(e);
             }
         }
-        thread = new Thread(() -> {
-            start();
-        }, getThreadName());
+        thread = new Thread(this::start, getThreadName());
 
         thread.start();
         LogMaster.log(1, "Game Loop started " + this);
@@ -223,8 +221,8 @@ public abstract class GameLoop {
         if (!game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.UNIT_TURN_READY, getActiveUnit().getRef()))) {
             return false;
         }
-        Boolean result = null;
-        ActionInput action = null;
+        Boolean result;
+        ActionInput action;
         boolean channeling = false;
         if (!playerActionQueue.isEmpty()) {
             action = (playerActionQueue.removeLast());

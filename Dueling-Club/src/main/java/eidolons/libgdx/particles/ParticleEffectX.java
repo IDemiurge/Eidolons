@@ -135,7 +135,7 @@ public class ParticleEffectX extends ParticleEffect {
     }
 
     public void offset(String value, String offset) {
-        offset(Float.valueOf(offset),
+        offset(Float.parseFloat(offset),
                 new EnumMaster<EMITTER_VALS_SCALED>().retrieveEnumConst(EMITTER_VALS_SCALED.class, value));
     }
 
@@ -197,7 +197,7 @@ public class ParticleEffectX extends ParticleEffect {
         }
         InputStream input = effectFile.read();
         getEmitters().clear();
-        BufferedReader reader = null;
+        BufferedReader reader;
 
         reader = new BufferedReader(new InputStreamReader(input), 512);
         while (true) {
@@ -241,7 +241,7 @@ public class ParticleEffectX extends ParticleEffect {
         for (int i = 0, n = getEmitters().size; i < n; i++) {
             ParticleEmitter emitter = getEmitters().get(i);
             if (emitter.getImagePaths().size == 0) continue;
-            Array<Sprite> sprites = new Array<Sprite>();
+            Array<Sprite> sprites = new Array<>();
             for (String imagePath : emitter.getImagePaths()) {
                 String imageName = new File(imagePath.replace('\\', '/')).getName();
                 int lastDotIndex = imageName.lastIndexOf('.');

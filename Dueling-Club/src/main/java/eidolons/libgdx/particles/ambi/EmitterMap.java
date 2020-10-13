@@ -32,7 +32,6 @@ import java.util.Map;
 public class EmitterMap extends GroupX {
 
     private static final boolean HIDE_SMOKE_AROUND_MAIN_HERO = true;
-    private final boolean hideAroundPC = HIDE_SMOKE_AROUND_MAIN_HERO;
     private static final float MIN_DISTANCE_BETWEEN_FOG = 2;
 
     private static Boolean on;
@@ -41,7 +40,6 @@ public class EmitterMap extends GroupX {
     String presetPath;
     private int showChance;
     private Color color;
-    private final float minDistance = MIN_DISTANCE_BETWEEN_FOG;
     private boolean hidden;
     private int activeCount;
 
@@ -190,7 +188,7 @@ public class EmitterMap extends GroupX {
 
     public void hide() {
         hidden = true;
-        map.values().forEach(ambience -> ambience.hide());
+        map.values().forEach(EmitterActor::hide);
     }
 
     public void show() {
@@ -240,12 +238,12 @@ public class EmitterMap extends GroupX {
     }
 
     public boolean isHideAroundPC() {
-        return hideAroundPC;
+        return HIDE_SMOKE_AROUND_MAIN_HERO;
     }
 
 
     public float getMinDistance() {
-        return minDistance;
+        return MIN_DISTANCE_BETWEEN_FOG;
     }
 
     public static Integer getGlobalShowChanceCoef() {

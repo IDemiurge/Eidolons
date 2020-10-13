@@ -33,16 +33,15 @@ public class MazePuzzleConstructor extends PuzzleConstructor<MazePuzzle> {
     }
     @Override
     protected PuzzleResolution createResolution() {
-        PuzzleResolution resolution = new PuzzleResolution(puzzle) {
+        // DIRECTION d= DIRECTION.LEFT;// TODO
+        // Coordinates back = puzzle.getEntranceCoordinates().getAdjacentCoordinate(d);
+        // resolution.addPunishment(PuzzleResolution.PUZZLE_PUNISHMENT.teleport, back.toString());
+        return new PuzzleResolution(puzzle) {
             @Override
             protected Condition getFailConditions() {
                 return new MazeMarkCondition((MazePuzzle) puzzle);
             }
         };
-        // DIRECTION d= DIRECTION.LEFT;// TODO
-        // Coordinates back = puzzle.getEntranceCoordinates().getAdjacentCoordinate(d);
-        // resolution.addPunishment(PuzzleResolution.PUZZLE_PUNISHMENT.teleport, back.toString());
-        return resolution;
     }
 
     @Override

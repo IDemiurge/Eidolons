@@ -424,20 +424,6 @@ public class AI_SpellMaster {
             type = DataManager.getType(effect.getTypeName(), C_OBJ_TYPE.BF_OBJ);
             return type;
         }
-
-        if (effect instanceof RaiseEffect) {
-            RaiseEffect raiseEffect = (RaiseEffect) effect;
-            return DataManager.getType(raiseEffect.getUnitType(),
-             C_OBJ_TYPE.BF_OBJ);
-
-        }
-
-        if (effect instanceof RaiseEffect) {
-            RaiseEffect raiseEffect = (RaiseEffect) effect;
-            return DataManager.getType(raiseEffect.getUnitType(),
-             C_OBJ_TYPE.BF_OBJ);
-
-        }
         return null;
     }
 

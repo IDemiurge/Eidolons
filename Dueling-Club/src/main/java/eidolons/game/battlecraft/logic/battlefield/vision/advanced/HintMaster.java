@@ -67,8 +67,8 @@ public class HintMaster {
     }
 
     public String getSoundHints(Unit  unit) {
-        String
-        hintString = "";
+        StringBuilder
+        hintString = new StringBuilder();
         Set<OUTLINE_HINT> set = new LinkedHashSet<>();
         OUTLINE_IMAGE image = master.getOutlineMaster().getImageDark(unit);
 
@@ -82,9 +82,9 @@ public class HintMaster {
 
         }
         for (OUTLINE_HINT hint : set) {
-            hintString += StringMaster.format(hint.toString()) + " ";
+            hintString.append(StringMaster.format(hint.toString())).append(" ");
         }
-        return hintString;
+        return hintString.toString();
     }
         private void addImgHints(OUTLINE_IMAGE image, Set<OUTLINE_HINT> list) {
 

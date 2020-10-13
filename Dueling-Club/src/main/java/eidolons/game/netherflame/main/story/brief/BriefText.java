@@ -39,9 +39,7 @@ public class BriefText extends TablePanelX {
                 FontMaster.FONT.DARK, GdxColorMaster.getDefaultTextColor(), 20)));
         continueBtn.pack();
         continueBtn.setPosition(GdxMaster.centerWidth(continueBtn), 0);
-        continueBtn.setRunnable(() -> {
-            nextMsg();
-        });
+        continueBtn.setRunnable(this::nextMsg);
 
 //        nextMsg();
         if (messages.length > 0) {

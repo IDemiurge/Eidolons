@@ -28,7 +28,7 @@ public class BlockData extends StructureData<BLOCK_VALUE,  LevelBlock> {
     @Override
     public String[] getValuesCropped() {
         if (cropped == null) {
-            List<String> list = Arrays.stream(getEnumClazz().getEnumConstants()).map(constant -> constant.toString()).
+            List<String> list = Arrays.stream(getEnumClazz().getEnumConstants()).map(Enum::toString).
                     collect(Collectors.toList());
             list.remove(BLOCK_VALUE.height.toString());
             list.remove(BLOCK_VALUE.width.toString());

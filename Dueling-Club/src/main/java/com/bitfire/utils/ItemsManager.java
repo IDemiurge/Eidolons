@@ -16,15 +16,15 @@
 
 package com.bitfire.utils;
 
-import java.util.Iterator;
-
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
+import java.util.Iterator;
+
 public class ItemsManager<T extends Disposable> implements Iterable<T>, Disposable {
 	private static final int ItemNotFound = -1;
-	private final Array<T> items = new Array<T>();
-	protected final Array<Boolean> owned = new Array<Boolean>();
+	private final Array<T> items = new Array<>();
+	protected final Array<Boolean> owned = new Array<>();
 
 	@Override
 	public void dispose() {

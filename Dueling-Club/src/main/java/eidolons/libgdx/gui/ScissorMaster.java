@@ -21,7 +21,7 @@ public class ScissorMaster {
         if (width<=0 || height<= 0)
             return;
         Rectangle scissors = new Rectangle();
-        Rectangle clipBounds = null;
+        Rectangle clipBounds;
         clipBounds = new Rectangle(x, y, width, height);
 
         batch.flush();

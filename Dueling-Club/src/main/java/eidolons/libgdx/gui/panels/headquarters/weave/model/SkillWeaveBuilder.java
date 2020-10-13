@@ -15,7 +15,6 @@ import main.system.images.ImageManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 6/28/2018.
@@ -57,10 +56,8 @@ public class SkillWeaveBuilder extends WeaveModelBuilder {
 
     @Override
     protected String[] getWeaveGroups() {
-        List<String> list = Arrays.stream(SKILL_GROUP.values()).filter(group -> checkFilter(group)).map
-         (group -> StringMaster.format(group.name())).
-         collect(Collectors.toList());
-        return list.toArray(new String[0]);
+        return Arrays.stream(SKILL_GROUP.values()).filter(this::checkFilter).map
+                (group -> StringMaster.format(group.name())).toArray(String[]::new);
     }
 
     private boolean checkFilter(SKILL_GROUP group) {

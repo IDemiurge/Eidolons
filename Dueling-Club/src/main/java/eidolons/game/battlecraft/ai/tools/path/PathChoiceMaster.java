@@ -37,7 +37,6 @@ public class PathChoiceMaster {
     private final ArrayList<Object> nonSneakCells;
     private Unit unit;
     private Action targetAction;
-    private Coordinates targetCoordinate;
 
     private boolean firstStep;
 
@@ -51,7 +50,6 @@ public class PathChoiceMaster {
                                  List<DC_ActiveObj> moveActions) {
         this.unit = unit;
         this.targetAction = targetAction;
-        this.targetCoordinate = targetCoordinate;
         this.moveActions = moveActions;
         stdMove = unit.getAction(ActionEnums.STD_ACTIONS.Move.name());
         return this;
@@ -170,14 +168,13 @@ public class PathChoiceMaster {
          UnitEnums.FACING_SINGLE.IN_FRONT, unit, targetCoordinate);
         actions.add(moveAction);
         // resetUnit();// TODO is that right?
-        Choice choice = new Choice(targetCoordinate, c_coordinate, actions
-         .toArray(new Action[0]));
 
-        return choice;
+        return new Choice(targetCoordinate, c_coordinate, actions
+         .toArray(new Action[0]));
     }
 
     private void sortChoices(List<Choice> choices) {
-        Collections.sort(choices, getSorter());
+        choices.sort(getSorter());
 
     }
 

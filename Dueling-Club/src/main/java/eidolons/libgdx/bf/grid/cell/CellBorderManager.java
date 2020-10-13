@@ -98,14 +98,13 @@ public class CellBorderManager extends Group {
                         EUtils.playSound(AudioEnums.STD_SOUNDS.NEW__CLICK_DISABLED);
                     }
                 }
-                clearTeamColorBorder(true);
 
 
             } else {
                 EUtils.playSound(AudioEnums.STD_SOUNDS.NEW__CLICK_UP2);
                 Eidolons.game.getManager().selectingStopped(true);
-                clearTeamColorBorder(true);
             }
+            clearTeamColorBorder(true);
 
         });
     }

@@ -82,18 +82,6 @@ public class Path {
         return result;
     }
 
-    public void clearGraphics() {
-//		origin.clearGraphics();
-        for (PathNode node : nodes) {
-            try {
-//				node.clearGraphics();
-            } catch (Exception e) {
-                // main.system.auxiliary.LogMaster.log(LogMaster
-                e.printStackTrace();
-            }
-        }
-    }
-
     public DequeImpl<PathNode> getNodes() {
         return nodes;
     }

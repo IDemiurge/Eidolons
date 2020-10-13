@@ -257,7 +257,7 @@ public class DC_Formulas {
         return MAIN_HAND_DUAL_ATTACK_MOD;
     }
 
-    public static int getPowerFromUnitXP(int xp) {
+    public static int getPowerFromUnitXP(float xp) {
         return Math.round(xp / POWER_XP_FACTOR);
     }
 

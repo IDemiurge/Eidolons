@@ -1,8 +1,8 @@
 package eidolons.system.text;
 
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.Spell;
 import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.Spell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
@@ -18,8 +18,7 @@ import java.util.List;
 
 public class ToolTipMaster {
 
-    private List<TextItem> toolTipTextItems = new ArrayList<>();
-    private DC_Game game;
+    private final List<TextItem> toolTipTextItems = new ArrayList<>();
     private TextItem actionRequirementText;
     private TextItem unitToolTip;
     private TextItem targetingText;
@@ -30,7 +29,6 @@ public class ToolTipMaster {
 
     // separate by type? - req, anim, hover-info ...
     public ToolTipMaster(DC_Game game) {
-        this.game = game;
     }
 
     public static String getActionTargetingTooltip(DC_Obj target, DC_ActiveObj active) {

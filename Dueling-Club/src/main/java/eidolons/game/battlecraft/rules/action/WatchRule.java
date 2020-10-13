@@ -50,7 +50,7 @@ public class WatchRule implements ActionRule {
     >> No AoO's if not watched, by default?
     >> attack bonus for AoOs in spectrum?
          */
-    private static Map<Unit, List<DC_Obj>> watchersMap = new HashMap<>();
+    private static final Map<Unit, List<DC_Obj>> watchersMap = new HashMap<>();
 
     private static void removeWatcher(Unit watcher) {
         getWatchersMap().remove(watcher);
@@ -196,19 +196,17 @@ public class WatchRule implements ActionRule {
     }
 
     public static String getDefenseModVsWatched(Unit watcher, List<DC_Obj> list) {
-        String mod = StringMaster.wrapInParenthesis(""
+        // TODO from WATCHED
+        return StringMaster.wrapInParenthesis(""
          + MathMaster.applyModIfNotZero(DEFENSE_MOD, watcher
          .getIntParam(PARAMS.WATCH_DEFENSE_MOD)));
-        // TODO from WATCHED
-        return mod;
     }
 
     public static String getAttackModVsWatched(Unit watcher, List<DC_Obj> list) {
-        String mod = StringMaster.wrapInParenthesis(""
+        // TODO reduce?
+        return StringMaster.wrapInParenthesis(""
          + MathMaster.applyModIfNotZero(ATTACK_MOD, watcher
          .getIntParam(PARAMS.WATCH_ATTACK_MOD)));
-        // TODO reduce?
-        return mod;
     }
 
     public static String getAttackModVsOthers(Unit watcher, List<DC_Obj> list) {

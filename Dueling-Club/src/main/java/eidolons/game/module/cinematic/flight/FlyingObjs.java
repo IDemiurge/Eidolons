@@ -68,11 +68,11 @@ public class FlyingObjs extends GroupX {
     }
 
     private float getMaxDelay(FLY_OBJ_TYPE type, int intensity) {
-        return 3 /type.speedFactor / new Float(intensity);
+        return 3 /type.speedFactor / (float) intensity;
     }
 
     private float getMinDelay(FLY_OBJ_TYPE type, int intensity) {
-        return 1 / type.speedFactor / new Float(intensity);
+        return 1 / type.speedFactor / (float) intensity;
 
     }
 

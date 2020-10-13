@@ -82,8 +82,6 @@ public class AtlasGen extends GdxUtil {
     };
 
     public static boolean OVERWRITE = false;
-    private static boolean CLEANUP = true;
-    private static boolean UPDATE_GEN_IMAGES = false;
     private static final boolean UPDATE_ATLASES = false;
 
     public static final String[] roundedFolders = {
@@ -123,8 +121,10 @@ public class AtlasGen extends GdxUtil {
         PathFinder.init();
         boolean result=true;
         try {
+            boolean CLEANUP = true;
             if (CLEANUP = args.length > 0)
                 cleanUp();
+            boolean UPDATE_GEN_IMAGES = false;
             if (UPDATE_GEN_IMAGES = args.length > 1)
                 update();
             AtlasGen.moveFiles();

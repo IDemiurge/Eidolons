@@ -24,9 +24,7 @@ public class IlluminationMaster {
     public static final Integer DEFAULT_GLOBAL_ILLUMINATION_DAY = 90;
     public static final Integer DEFAULT_GLOBAL_ILLUMINATION_UNDERGROUND = 50;
     private final VisionMaster master;
-    private final Integer lightEmissionModifier = 100;
     private final Integer globalIllumination = 0;
-    private final Integer globalConcealment = 10;
     private final Map<DC_Obj, Integer> cache = new HashMap<>();
 
     public IlluminationMaster(VisionMaster visionManager) {
@@ -39,12 +37,13 @@ public class IlluminationMaster {
             if (floor.getIntParam(PARAMS.LIGHT_EMISSION_MODIFIER) != 0)
                 return floor.getIntParam(PARAMS.LIGHT_EMISSION_MODIFIER);
         }
+        Integer lightEmissionModifier = 100;
         return lightEmissionModifier;
     }
 
     //Light revamp
     public Integer getVisibleIllumination(Unit source, DC_Obj target) {
-        Integer illumination = 0;
+        Integer illumination;
         if (source == master.getSeeingUnit()) {
             illumination = cache.get(target);
             if (illumination != null) {
@@ -108,6 +107,7 @@ public class IlluminationMaster {
             concealment += floor.getIntParam(PARAMS.GLOBAL_CONCEALMENT);
         }
 
+        Integer globalConcealment = 10;
         concealment += globalConcealment;
 
         Integer cMod = 100;

@@ -31,9 +31,8 @@ public class DC_ValueManager implements ValueManager {
     }
 
     public static VALUE_GROUP getValueGroup(String string) {
-        VALUE_GROUP template = new EnumMaster<VALUE_GROUP>().retrieveEnumConst(VALUE_GROUP.class,
-         StringMaster.cropValueGroup(string));
-        return (template);
+        return (new EnumMaster<VALUE_GROUP>().retrieveEnumConst(VALUE_GROUP.class,
+         StringMaster.cropValueGroup(string)));
     }
 
     public static PARAMETER[] getGroupParams(String string) {

@@ -53,7 +53,7 @@ public class TexturePackerLaunch {
             customPack();
             return;
         }
-        String[] chosen = packs;
+        String[] chosen;
         GuiManager.init();
         if (Flags.isExe() || Flags.isJar())
             chosen =
@@ -106,8 +106,7 @@ public class TexturePackerLaunch {
             a=atlas;
             String name = atlas.toString().toLowerCase();
             String input = PathFinder.getAtlasGenPath() + name;
-            String output = input;
-            pack(input, output, name);
+            pack(input, input, name);
         }
     }
 
@@ -154,8 +153,6 @@ public class TexturePackerLaunch {
                     // indices = true;
                     break;
                 case SPRITES_GRID:
-                    indices = true;
-                    break;
                 case SPRITES_UI:
                     indices = true;
                     break;

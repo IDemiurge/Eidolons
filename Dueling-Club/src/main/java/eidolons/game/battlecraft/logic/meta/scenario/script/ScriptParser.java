@@ -26,8 +26,7 @@ public class ScriptParser {
     public static final boolean TEST_MODE = false;//CoreEngine.isLiteLaunch() ;
 
     public static Conditions parseConditions(String conditionPart) {
-        Conditions c = DC_ConditionMaster.toConditions(conditionPart);
-        return c;
+        return DC_ConditionMaster.toConditions(conditionPart);
     }
 
     public static STANDARD_EVENT_TYPE getEventByShortcut(String text) {
@@ -152,7 +151,7 @@ public class ScriptParser {
         STANDARD_EVENT_TYPE event_type = parseEvent(processedPart);
         script = StringMaster.cropFirstSegment(script, ScriptSyntax.PART_SEPARATOR);
         Conditions conditions = new Conditions();
-        Condition defaultCondition = null;
+        Condition defaultCondition;
         defaultCondition = getDefaultCondition(event_type, VariableManager.getVars(processedPart));
         if (defaultCondition != null) {
             defaultCondition.setXml(XML_Converter.wrap("ScriptedCondition",
@@ -185,7 +184,7 @@ public class ScriptParser {
 
         boolean isRemove = true;
 //        if (contains("cyclic"))remove = false;
-        Ability abilities = null;
+        Ability abilities;
         Ref ref = new Ref(game); // TODO Global
         script = StringMaster.getLastPart(script, ScriptSyntax.PART_SEPARATOR);
         String funcPart = VariableManager.removeVarPart(script);

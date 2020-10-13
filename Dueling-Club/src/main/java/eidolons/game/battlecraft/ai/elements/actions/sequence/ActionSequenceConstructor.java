@@ -43,7 +43,6 @@ import java.util.List;
 public class ActionSequenceConstructor extends AiHandler {
 
     int defaultDistancePruneFactor = 3;
-    private Game game;
     private Unit unit;
     private List<Coordinates> prioritizedCells;
 
@@ -60,7 +59,7 @@ public class ActionSequenceConstructor extends AiHandler {
         if (ai.getCurrentOrder() != null)
             forced = true;
         for (GOAL_TYPE type : GoalManager.getGoalsForUnit(ai)) {
-            List<ActionSequence> sequences = null;
+            List<ActionSequence> sequences;
             try {
                 Goal goal = new Goal(type, null // ???
                  , ai);
@@ -175,7 +174,7 @@ public class ActionSequenceConstructor extends AiHandler {
 
     private List<ActionSequence> getSequencesWithPathsForAction(Action action, Object arg, Task task) {
         List<ActionSequence> list = new ArrayList<>();
-        game = action.getRef().getGame();
+        Game game = action.getRef().getGame();
         unit = action.getSource();
 
         if (task.getAI().getBehaviorMode() == AiEnums.BEHAVIOR_MODE.PANIC) {
@@ -183,9 +182,8 @@ public class ActionSequenceConstructor extends AiHandler {
         }
         if (task.getType() == AiEnums.GOAL_TYPE.RETREAT) {
             {
-                List<ActionSequence> sequencesFromPaths = getSequencesFromPaths(
+                return getSequencesFromPaths(
                  getPathSequenceConstructor().getRetreatPaths(arg), task, action);
-                return sequencesFromPaths;
             } // TODO
         }
 

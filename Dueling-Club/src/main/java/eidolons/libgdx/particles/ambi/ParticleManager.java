@@ -86,7 +86,7 @@ public class ParticleManager extends GroupX {
             List l = (List) p.get();
             GenericEnums.VFX vfx = (GenericEnums.VFX) l.get(0);
             Vector2 v = (Vector2) l.get(1);
-            Ambience ambi = null;
+            Ambience ambi;
             addActor(ambi = new Ambience(vfx));
             ambi.setPosition(v.x, v.y);
 

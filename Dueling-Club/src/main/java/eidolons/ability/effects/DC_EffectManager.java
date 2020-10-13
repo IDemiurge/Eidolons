@@ -13,10 +13,7 @@ import main.entity.obj.Obj;
 
 public class DC_EffectManager implements EffectManager {
 
-    private final DC_Game game;
-
     public DC_EffectManager(DC_Game game) {
-        this.game = game;
     }
 
     @Override

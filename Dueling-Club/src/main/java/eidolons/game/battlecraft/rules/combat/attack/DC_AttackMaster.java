@@ -118,7 +118,7 @@ public class DC_AttackMaster {
         }
         //        LogEntryNode entry = game.getLogManager().newLogEntryNode(type,
         //         attack.getAttacker().getName(), attack.getAttackedUnit().getName(), attack.getAction());
-        Boolean result = null;
+        Boolean result;
         if (!extraAttack) {
             Unit guard = (Unit) GuardRule.checkTargetChanged(attack.getAction());
             if (guard != null) {

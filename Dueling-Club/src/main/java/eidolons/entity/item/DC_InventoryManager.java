@@ -53,8 +53,7 @@ public class DC_InventoryManager {
 
     public boolean operationDone(int n, OPERATIONS operation) {
         setOperationsLeft(getOperationsLeft() - n);
-        boolean result = hasOperations();
-        return result;
+        return hasOperations();
     }
 
 

@@ -10,14 +10,12 @@ public class AbilityEffect extends MicroEffect {
 
     private String abilName;
     private Effects effects;
-    private Ability ability;
 
     public AbilityEffect(String abilName) {
         this.abilName = abilName;
     }
 
     public AbilityEffect(Ability ability) {
-        this.ability = ability;
     }
 
     @Override

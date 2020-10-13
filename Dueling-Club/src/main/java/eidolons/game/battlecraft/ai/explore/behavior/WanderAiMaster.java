@@ -86,8 +86,7 @@ public class WanderAiMaster extends AiBehavior {
         if (direction == null) {
             return null;
         }
-        Coordinates c = ai.getUnit().getCoordinates().getAdjacentCoordinate(direction);
-        return c;
+        return ai.getUnit().getCoordinates().getAdjacentCoordinate(direction);
         // auto-turn if facing ain't right? take relative *position*
 
     }
@@ -339,7 +338,7 @@ public class WanderAiMaster extends AiBehavior {
         c.add(c1);
         getMaster(ai).setUnit(ai.getUnit());
 
-        Action action = null;
+        Action action;
         if (c.get(0) != null)
             action = getMaster(ai).getAtomicAi().getAtomicMove(c.get(0), ai.getUnit());
         else

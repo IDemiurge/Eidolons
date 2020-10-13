@@ -148,7 +148,7 @@ public class RngMainSpawner {
     }
 
     private void spawnForQuests() {
-        Collection<Quest> quests = null;
+        Collection<Quest> quests;
         try {
             quests = Eidolons.getGame().getMetaMaster().getQuestMaster().getQuestsPool();
         } catch (Exception e) {
@@ -226,7 +226,6 @@ public class RngMainSpawner {
             for (LevelZone levelZone : level.getZones()) {
                 blocks = getBlocksForSpawn(EncounterEnums.UNIT_GROUP_TYPE.BOSS, levelZone);
                 if (!blocks.isEmpty()) {
-                    zone = levelZone;
                     break;
                 }
             }
@@ -261,9 +260,9 @@ public class RngMainSpawner {
                 main.system.auxiliary.log.LogMaster.log(1, block.getRoomType() + " has groups: ");
             for (List<ObjAtCoordinate> unitGroup : block.getUnitGroups().keySet()) {
                 groups++;
-                String text = "";
+                StringBuilder text = new StringBuilder();
                 for (ObjAtCoordinate objAtCoordinate : unitGroup) {
-                    text += objAtCoordinate.getType().getName() + "; ";
+                    text.append(objAtCoordinate.getType().getName()).append("; ");
                     units++;
                     //TODO lvls?
                     power += objAtCoordinate.getType().getIntParam(PARAMS.POWER);
@@ -721,7 +720,7 @@ public class RngMainSpawner {
                 .getOffset(levelBlock.getOrigin());
 
         float max = levelBlock.getTileMap().getMap().
-                values().stream().filter(cell -> TilesMaster.isPassable(cell)).count() * getCellLimitCoef();
+                values().stream().filter(TilesMaster::isPassable).count() * getCellLimitCoef();
 
         List<Coordinates> emptyCells = levelBlock.getTileMap().getMap().keySet().stream()
                 .filter(c -> isCellValidForSpawn(c, levelBlock)).

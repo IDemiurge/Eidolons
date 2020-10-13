@@ -19,12 +19,12 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
 public class SoulCounter extends SuperActor {
-    private final TablePanelX<Actor> table;
     SmartTextButton btn;
     LabelX counter;
     int souls = 3;
 
     public SoulCounter() {
+        TablePanelX<Actor> table;
         addActor(table = new TablePanelX<>());
         // table.setY(-25);
         // table.setBackground(new FlipDrawable(Images.ZARK_TITLE, () -> false, () -> true));
@@ -53,8 +53,7 @@ public class SoulCounter extends SuperActor {
             counter.setText("" + souls);
         });
 
-        addListener(new DynamicTooltip(() ->
-               SoulforceMaster.getTooltip()).getController());
+        addListener(new DynamicTooltip(SoulforceMaster::getTooltip).getController());
         counter.setText("3");
     }
 

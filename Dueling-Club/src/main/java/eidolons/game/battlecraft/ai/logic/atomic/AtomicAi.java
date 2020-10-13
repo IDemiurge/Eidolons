@@ -100,7 +100,7 @@ public class AtomicAi extends AiHandler {
     }
 
     public Action getAtomicActionForced(UnitAI ai) {
-        Action action = null;
+        Action action;
         action = getAtomicActionDoor(ai);
         if (action != null)
             action.setTaskDescription("Door");
@@ -250,7 +250,7 @@ public class AtomicAi extends AiHandler {
     }
 
     public Action getAtomicActionMove(UnitAI ai, Boolean approach_retreat_search) {
-        Coordinates pick = null;
+        Coordinates pick;
         boolean b = isHotzoneMode();
         if (b) {
             pick = getHotZoneCell(ai, approach_retreat_search);
@@ -263,8 +263,7 @@ public class AtomicAi extends AiHandler {
         if (pick == null)
             return null;
 
-        Action a = getAtomicMove(pick, ai.getUnit());
-        return a;
+        return getAtomicMove(pick, ai.getUnit());
     }
 
     private Coordinates getHotZoneCell(UnitAI ai, Boolean approach_retreat_search) {
@@ -322,7 +321,6 @@ public class AtomicAi extends AiHandler {
     }
 
     private int getCellPriorityMod(Coordinates c, UnitAI ai) {
-        int mod = 100;
         //        if (FacingMaster
         //                .getSingleFacing(ai.getUnit().getFacing(), ai.getUnit().getCoordinates(), c) == UnitEnums.FACING_SINGLE.IN_FRONT) {
         //            mod += 35;
@@ -337,12 +335,12 @@ public class AtomicAi extends AiHandler {
         //            }
         //            mod += 35;
         //        }
-        return mod;
+        return 100;
     }
 
     private float getEnemyPriority(Coordinates c, Unit e, UnitAI ai, ATOMIC_LOGIC logic) {
         if (logic == ATOMIC_LOGIC.GEN_AGGRO || logic == ATOMIC_LOGIC.GROUP_AGGRO) {
-            return new Float(DC_PriorityManager.getUnitPriority(ai, e, null))
+            return (float) DC_PriorityManager.getUnitPriority(ai, e, null)
                     / (1 + PositionMaster.getDistance(e.getCoordinates(), c));
         }
         return 0;
@@ -350,7 +348,7 @@ public class AtomicAi extends AiHandler {
 
     private float getAllyPriority(Coordinates c, Unit a, UnitAI ai, ATOMIC_LOGIC logic) {
         if (logic == ATOMIC_LOGIC.PROTECT || logic == ATOMIC_LOGIC.FORMATION) {
-            return new Float(DC_PriorityManager.getUnitPriority(ai, a, null))
+            return (float) DC_PriorityManager.getUnitPriority(ai, a, null)
                     / (1 + PositionMaster.getDistance(a.getCoordinates(), c));
         }
         return 0;
@@ -506,9 +504,8 @@ public class AtomicAi extends AiHandler {
                     return new FuncMaster().getGreatestValueEntity(ai.getUnit().getRangedWeapon()
                             .getOrCreateAttackActions(), PARAMS.RANGE).getIntParam(PARAMS.RANGE);
         }
-        int maxDistance = getConstInt(AiConst.ATOMIC_APPROACH_DEFAULT_DISTANCE);
 
-        return maxDistance;
+        return getConstInt(AiConst.ATOMIC_APPROACH_DEFAULT_DISTANCE);
     }
 
     //Check if the unit is close enough to JUST GO IN

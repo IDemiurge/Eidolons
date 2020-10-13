@@ -43,7 +43,6 @@ public class FlightHandler extends GroupX {
                     "objs_under:mist(20),stars(5),isle(10),cloud(10),;" +
                     "angle:30;";
     Set<FlyingObjs> objs = new LinkedHashSet<>();
-    private FlightData data;
     private final GroupX objsUnder = new GroupX() {
         @Override
         public void draw(Batch batch, float parentAlpha) {
@@ -97,7 +96,7 @@ public class FlightHandler extends GroupX {
     }
 
     public void startFlight(String s, boolean cinematic) {
-        this.data = new FlightData(s);
+        FlightData data = new FlightData(s);
         CinematicPlatform platform = new CinematicPlatform(data.getFloatValue(FlightData.FLIGHT_VALUE.angle));
 
         String value = data.getValue(FlightData.FLIGHT_VALUE.objs_under);

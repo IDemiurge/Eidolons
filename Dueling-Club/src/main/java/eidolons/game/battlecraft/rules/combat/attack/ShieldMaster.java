@@ -14,7 +14,7 @@ import main.system.auxiliary.RandomWizard;
 
 public class ShieldMaster {
     public static SpriteAnimation getSprite(DC_WeaponObj shield, DC_ActiveObj atk, Integer blockValue) {
-        Array<TextureAtlas.AtlasRegion> regions = null;
+        Array<TextureAtlas.AtlasRegion> regions;
         try {
             regions = getShieldRegions(shield, atk, blockValue);
         } catch (Exception e) {

@@ -55,12 +55,9 @@ public class Reinforcer {
     private void preCombat(Reinforcement reinforcement ) {
         switch (reinforcement.type) {
             case call_help:
-                break;
-            case portal:
-                break;
-            case patrol:
-                break;
             case ambush:
+            case patrol:
+            case portal:
                 break;
         }
     }
@@ -106,12 +103,9 @@ public class Reinforcer {
     private void afterSpawn(Reinforcement reinforcement, Coordinates origin) {
         switch (reinforcement.type) {
             case call_help:
-                break;
-            case portal:
-                break;
-            case patrol:
-                break;
             case ambush:
+            case patrol:
+            case portal:
                 break;
         }
     }

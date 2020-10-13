@@ -135,10 +135,7 @@ public class EmitterActor extends SuperActor {
     }
 
     public void hide() {
-        effect.getEmitters().forEach(e ->
-        {
-            e.allowCompletion();
-        });
+        effect.getEmitters().forEach(ParticleEmitter::allowCompletion);
     }
 
     public void setFlipX(boolean flipX) {

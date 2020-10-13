@@ -55,8 +55,7 @@ public class Shop extends TownPlace implements ShopInterface {
 
     @Override
     public String getSaveData() {
-        String s = "";
-        return s;
+        return "";
     }
 
     public void getIncome(float timeCoef) {

@@ -4,7 +4,6 @@ import main.entity.Entity;
 import main.system.data.DataUnit;
 
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 public class EntityData<S extends Enum<S>> extends DataUnit<S> {
     public EntityData(Entity entity) {
@@ -22,7 +21,6 @@ public class EntityData<S extends Enum<S>> extends DataUnit<S> {
     }
     @Override
     public String[] getRelevantValues() {
-        return Arrays.stream(getEnumClazz().getEnumConstants()).map(constant -> constant.toString()).
-                collect(Collectors.toList()).toArray(new String[0]);
+        return Arrays.stream(getEnumClazz().getEnumConstants()).map(Enum::toString).toArray(String[]::new);
     }
 }

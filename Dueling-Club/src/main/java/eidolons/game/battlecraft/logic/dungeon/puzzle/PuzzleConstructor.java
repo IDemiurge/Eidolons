@@ -117,7 +117,7 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
     }
 
     protected PuzzleData createData(String text) {
-        PuzzleData data =null ;
+        PuzzleData data;
         if (!text.contains(">>")) {
             data = new PuzzleData();
             PuzzleData.PUZZLE_VALUE[] values = getRelevantValues();
@@ -175,14 +175,13 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
                 ConditionsUtils.join(new LambdaCondition(ref -> puzzle.active),
                         ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAIN_HERO),
                         getPuzzleExitConditions()),
-                () -> exited(),
+                this::exited,
                 Event.STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING
         ));
     }
 
     public Trigger createTrigger(PuzzleTrigger.PUZZLE_TRIGGER type, Condition checks, Runnable action, Event.EVENT_TYPE event) {
-        Trigger trigger = new PuzzleTrigger(puzzle, type, event, checks, action);
-        return trigger;
+        return new PuzzleTrigger(puzzle, type, event, checks, action);
     }
     private void exited() {
         //TODO isApplyPunishment()

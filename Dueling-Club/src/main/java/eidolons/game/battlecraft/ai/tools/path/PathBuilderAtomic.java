@@ -44,19 +44,14 @@ public class PathBuilderAtomic extends AiHandler {
             lists.add(list);
         }
         return lists.stream().sorted(new SortMaster<List>()
-         .getSorterByExpression_(l -> l.size())).findFirst().orElse(null);
+         .getSorterByExpression_(List::size)).findFirst().orElse(null);
     }
 
     private boolean check(Coordinates last, Coordinates c1, Coordinates cell, Unit unit) {
         if (last.dst_(cell) < c1.dst_(cell)) {
             return false;
         }
-        if (!getGame().getMovementManager().canMove(unit, c1)) {
-            return false;
-        }
-        if (c1.equals(cell))
-            return true;
+        return getGame().getMovementManager().canMove(unit, c1);
         //girth check?
-        return true;
     }
 }

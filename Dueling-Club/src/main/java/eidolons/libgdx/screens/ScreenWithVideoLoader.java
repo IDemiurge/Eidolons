@@ -101,15 +101,9 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
     protected void preLoad() {
         super.preLoad();
 
-        GuiEventManager.bind(true, SHOW_LOAD_PANEL, p -> {
-            selectionPanelEvent(p);
-        });
-        GuiEventManager.bind(true, SHOW_SELECTION_PANEL, p -> {
-            selectionPanelEvent(p);
-        });
-        GuiEventManager.bind(true, HC_SHOW, p -> {
-            showHeroCreationPanel(p);
-        });
+        GuiEventManager.bind(true, SHOW_LOAD_PANEL, this::selectionPanelEvent);
+        GuiEventManager.bind(true, SHOW_SELECTION_PANEL, this::selectionPanelEvent);
+        GuiEventManager.bind(true, HC_SHOW, this::showHeroCreationPanel);
         GuiEventManager.bind(true, GuiEventType.SHOW_DIFFICULTY_SELECTION_PANEL, p -> {
             GuiEventManager.trigger(SHOW_SELECTION_PANEL, DIFFICULTY_PANEL_ARG);
         });

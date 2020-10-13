@@ -271,11 +271,10 @@ public class GuiVisualEffects extends GroupX {
             EmitterActor actor = new EmitterActor(preset_);
             addActor(actor);
             emitters.add(actor);
-            int x = i;
             int y = bottom ? 0 : GdxMaster.getHeight() - 50;
 
             actor.start();
-            actor.setPosition(x + (50 - RandomWizard.getRandomInt(100)) / 2, y
+            actor.setPosition(i + (50 - RandomWizard.getRandomInt(100)) / 2, y
              + (50 - RandomWizard.getRandomInt(100)) / 2);
             actor.act(RandomWizard.getRandomFloatBetween(0, 2));
         }

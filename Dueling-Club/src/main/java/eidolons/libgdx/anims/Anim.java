@@ -537,7 +537,7 @@ public class Anim extends Group implements Animation {
             e.getEffect().dispose();
 
         });
-        sprites.forEach(s -> s.dispose());
+        sprites.forEach(SpriteAnimation::dispose);
     }
 
     public void initPosition() {
@@ -757,7 +757,7 @@ public class Anim extends Group implements Animation {
             pixelsPerSecond = data.getIntValue(ANIM_VALUES.MISSILE_SPEED);
         } else
             pixelsPerSecond = getDefaultSpeed();
-        float mod = new Float(AnimMaster.speedMod());
+        float mod = AnimMaster.speedMod();
         if (mod > 0)
             return pixelsPerSecond * mod;
         return pixelsPerSecond;

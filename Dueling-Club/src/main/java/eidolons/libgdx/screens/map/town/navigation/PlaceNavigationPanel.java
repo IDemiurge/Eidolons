@@ -27,7 +27,6 @@ public class PlaceNavigationPanel extends TablePanelX {
     Map<Navigable, NavigationJoint> jointCache = new HashMap<>();
     Set<NavigationJoint> displayed = new LinkedHashSet<>();
     private final NavigationMaster navigationMaster;
-    private Navigable root;
     private final NavigatedPlaceView view;
     private Navigable tip;
 
@@ -41,8 +40,8 @@ public class PlaceNavigationPanel extends TablePanelX {
         if (root == null) {
             root = MacroGame.getGame().getPlayerParty().getCurrentLocation();
         }
-        this.root = navigationMaster.getNavigable(root);
-        selected(this.root);
+        Navigable root1 = navigationMaster.getNavigable(root);
+        selected(root1);
     }
 
     public void back() {

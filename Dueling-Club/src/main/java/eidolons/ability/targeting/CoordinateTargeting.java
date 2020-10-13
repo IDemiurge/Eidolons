@@ -27,7 +27,6 @@ public class CoordinateTargeting extends TargetingImpl {
     private final String facingKey;
     private final String coordinateKey;
     boolean useActivesRange;
-    private final boolean cellTargeting = true;
 
     public CoordinateTargeting(UNIT_DIRECTION unitDirection, String facingKey, String coordinateKey) {
         this.unitDirection = unitDirection;
@@ -109,6 +108,7 @@ public class CoordinateTargeting extends TargetingImpl {
         }
         Set<BattleFieldObject> objects = new HashSet<>();
 
+        boolean cellTargeting = true;
         if (!cellTargeting) {
             objects = obj.getGame().getObjMaster().
                     getObjectsOnCoordinate(coordinate, true); //TODO EA hack - overlaying!

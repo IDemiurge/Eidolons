@@ -54,12 +54,11 @@ public class SpeedControlPanel extends TablePanelX {
                     OptionsMaster.getAnimOptions().setValue(AnimationOptions.ANIMATION_OPTION.SPEED, value * 3);
                     OptionsMaster.getGameplayOptions().setValue(GameplayOptions.GAMEPLAY_OPTION.GAME_SPEED, value);
                     OptionsMaster.applyAnimOptions();
-                    OptionsMaster.applyGameplayOptions();
                 } else {
                     OptionsMaster.getGameplayOptions().setValue(GameplayOptions.GAMEPLAY_OPTION.GAME_SPEED, value);
-                    OptionsMaster.applyGameplayOptions();
                 }
-//                Gdx.app.log("Options", option + " -> " + value);
+                OptionsMaster.applyGameplayOptions();
+                //                Gdx.app.log("Options", option + " -> " + value);
             }
         });
         slider.addListener(new DynamicTooltip(()->"Adjust speed; current = " + getSpeed()).getController());

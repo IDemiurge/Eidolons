@@ -7,7 +7,6 @@ import main.system.math.Formula;
 
 public class ChainEffect extends SpecialTargetingEffect {
 
-    private CHAIN_TEMPLATES template;
     private boolean override = false;
     private int nOfJumps = 0;
 
@@ -22,7 +21,6 @@ public class ChainEffect extends SpecialTargetingEffect {
                        CHAIN_TEMPLATES template) {
 
         this.effects = effects;
-        this.template = template;
         this.formula = nOfJumps;
         initTargeting();
     }

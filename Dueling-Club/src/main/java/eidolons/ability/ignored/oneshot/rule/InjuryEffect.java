@@ -15,7 +15,6 @@ import main.system.auxiliary.StringMaster;
 public class InjuryEffect extends DC_Effect implements OneshotEffect {
 
     private INJURY template;
-    private boolean random;
     private boolean old;
     private INJURY_TYPE type;
 
@@ -25,7 +24,7 @@ public class InjuryEffect extends DC_Effect implements OneshotEffect {
     }
 
     public InjuryEffect() {
-        random = true;
+        boolean random = true;
     }
 
     public InjuryEffect(INJURY template, Boolean old) {

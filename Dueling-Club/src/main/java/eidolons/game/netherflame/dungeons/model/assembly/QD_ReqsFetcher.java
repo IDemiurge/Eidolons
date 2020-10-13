@@ -32,24 +32,24 @@ public class QD_ReqsFetcher {
     }
 
     public Set<String> getPermittedElevation() {
-        return getSet(ElevationLevel.class, t -> checkElevation(t));
+        return getSet(ElevationLevel.class, this::checkElevation);
     }
 
     public Set<String> getPermittedEntrances() {
-        return getSet(EntranceType.class, t -> checkEntrance(t));
+        return getSet(EntranceType.class, this::checkEntrance);
     }
 
 
     public Set<String> getPermittedLocations() {
-        return getSet(QD_LOCATION.class, t -> checkLocation(t));
+        return getSet(QD_LOCATION.class, this::checkLocation);
     }
 
     public Set<String> getPermittedType() {
-        return getSet(ModuleType.class, t -> checkType(t));
+        return getSet(ModuleType.class, this::checkType);
     }
 
     public Set<String> getPermittedTags() {
-        return getSet(ModuleTags.class, t -> checkTag(t));
+        return getSet(ModuleTags.class, this::checkTag);
     }
 
     private boolean checkType(ModuleType value) {
@@ -68,12 +68,9 @@ public class QD_ReqsFetcher {
     private int getValueType(ModuleType value) {
         switch (value) {
             case boss:
-                break;
-            case explore:
-                break;
-            case normal:
-                break;
             case hard:
+            case normal:
+            case explore:
                 break;
         }
         return 0;

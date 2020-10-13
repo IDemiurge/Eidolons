@@ -32,9 +32,9 @@ import main.data.filesys.PathFinder;
 
 public final class ResourceFactory {
 	public static boolean DebugUI = true;
-	private static Skin UISkin =   new Skin( Gdx.files.internal(PathFinder.getSkinPath()) );
-	private static ItemsManager<Texture> textures = new ItemsManager<Texture>();
-	private static LongMap<Texture> textureCache = new LongMap<Texture>();
+	private static final Skin UISkin =   new Skin( Gdx.files.internal(PathFinder.getSkinPath()) );
+	private static final ItemsManager<Texture> textures = new ItemsManager<>();
+	private static final LongMap<Texture> textureCache = new LongMap<>();
 
 	// graphics
 
@@ -110,7 +110,7 @@ public final class ResourceFactory {
 	}
 
 	public static SelectBox<String> newSelectBox( String[] items, ChangeListener listener ) {
-		SelectBox<String> sb = new SelectBox<String>( UISkin );
+		SelectBox<String> sb = new SelectBox<>(UISkin);
 		if( listener != null ) {
 			sb.addListener( listener );
 		}
@@ -120,8 +120,7 @@ public final class ResourceFactory {
 	}
 
 	public static Label newLabel( String text ) {
-		Label l = new Label( text, UISkin );
-		return l;
+        return new Label( text, UISkin );
 	}
 
 	public static Table newTable() {

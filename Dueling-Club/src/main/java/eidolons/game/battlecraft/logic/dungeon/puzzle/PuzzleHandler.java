@@ -66,8 +66,8 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
         if (setup != null)
             setup.started();
 
-        puzzle.resolutions.forEach(r -> r.started());
-        puzzle.rules.forEach(r -> r.started());
+        puzzle.resolutions.forEach(PuzzleResolution::started);
+        puzzle.rules.forEach(PuzzleRules::started);
         getMaster().activated(puzzle);
         GuiEventManager.trigger(PLAYER_STATUS_CHANGED,
                 new PlayerStatus(VisionEnums.PLAYER_STATUS.PUZZLE,
@@ -110,9 +110,9 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
 
             TextEvent tip = getWinTip();
             if (tip == null) {
-                TipMessageMaster.tip(puzzle.getWinText(), () -> afterEndTip());
+                TipMessageMaster.tip(puzzle.getWinText(), this::afterEndTip);
             } else
-                TipMessageMaster.tip(tip, () -> afterEndTip());
+                TipMessageMaster.tip(tip, this::afterEndTip);
 
         } else {
             failed();
@@ -153,9 +153,9 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
 
         TextEvent failTip = getFailTip();
         if (failTip == null) {
-            TipMessageMaster.tip(puzzle.getFailText(), () -> afterEndTip());
+            TipMessageMaster.tip(puzzle.getFailText(), this::afterEndTip);
         } else
-            TipMessageMaster.tip(failTip, () -> afterEndTip());
+            TipMessageMaster.tip(failTip, this::afterEndTip);
         ended();
     }
 
@@ -242,9 +242,9 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
         if (true) {
             TextEvent tip = getIntroTip();
             if (tip == null) {
-                TipMessageMaster.tip(puzzle.getIntroText(), () -> afterTipAction());
+                TipMessageMaster.tip(puzzle.getIntroText(), this::afterTipAction);
             } else
-                TipMessageMaster.tip(tip, () -> afterTipAction());
+                TipMessageMaster.tip(tip, this::afterTipAction);
 
         } else {
             afterTipAction();

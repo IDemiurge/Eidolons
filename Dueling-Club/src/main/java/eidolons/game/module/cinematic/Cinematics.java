@@ -31,7 +31,7 @@ public class Cinematics {
         GuiEventManager.trigger(GuiEventType.CAMERA_ZOOM, new MotionData(zoom, dur, interpolation));
     }
 
-    public static final void set(String field, Object val) {
+    public static void set(String field, Object val) {
         try {
             Cinematics.class.getField(field.toUpperCase()).set(null, val);
         } catch (IllegalAccessException e) {

@@ -24,7 +24,6 @@ class QueueViewContainer extends Container<QueueView> {
 
     SpriteX intentIconSprite;
     ObjectMap<INTENT_ICON, SpriteAnimation> iconMap = new ObjectMap<>(12);
-    private INTENT_ICON intentIcon;
 
     public QueueViewContainer(QueueView actor) {
         super(actor);
@@ -53,7 +52,7 @@ class QueueViewContainer extends Container<QueueView> {
             if (getActor() != null) {
                     if (getActor().getUserObject() instanceof Unit) {
                     Unit unit = (Unit) getActor().getUserObject();
-                    intentIcon =unit.getIntentIcon();
+                        INTENT_ICON intentIcon = unit.getIntentIcon();
                     if (intentIcon == null) {
                         intentIcon = unit.getAI().getCombatAI().getIntentIcon();
                     }

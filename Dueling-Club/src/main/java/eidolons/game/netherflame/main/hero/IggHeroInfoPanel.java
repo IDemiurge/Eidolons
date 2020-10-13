@@ -18,7 +18,7 @@ public class IggHeroInfoPanel extends HeroInfoPanel  {
 
     @Override
     public void initStartButton(String text, Runnable runnable) {
-        addActor(startButton = new SmartTextButton(text, ButtonStyled.STD_BUTTON.MENU, () -> runnable.run()) {
+        addActor(startButton = new SmartTextButton(text, ButtonStyled.STD_BUTTON.MENU, runnable::run) {
             @Override
             public AudioEnums.BUTTON_SOUND_MAP getSoundMap() {
                 return AudioEnums.BUTTON_SOUND_MAP.ENTER;

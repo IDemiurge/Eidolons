@@ -188,9 +188,8 @@ public class QuestCreator extends QuestHandler {
             }
         }
         QUALITY_LEVEL q = QUALITY_LEVEL.ANCIENT;
-        ObjType type = ItemGenerator.getOrCreateItemType(base.getType(), m, q);
 
-        return type;
+        return ItemGenerator.getOrCreateItemType(base.getType(), m, q);
     }
 
     public static ObjType getItemTypeCommon(int powerLevel, DungeonQuest quest, DUNGEON_STYLE style) {

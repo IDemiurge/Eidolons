@@ -377,11 +377,10 @@ public class DC_GameManager extends GameManager {
 
         // add Cancel button? add hotkey listener?
         LogMaster.log(1, "***** awaiting selection from: " + selectingSet);
-        Integer selectedId = (Integer) WaitMaster.waitForInput(
-                WAIT_OPERATIONS.SELECT_BF_OBJ);
         // selecting = false;
         // cancelSelecting();
-        return selectedId;
+        return (Integer) WaitMaster.waitForInput(
+                WAIT_OPERATIONS.SELECT_BF_OBJ);
     }
 
     public void addAttachment(PassiveAbilityObj abil, Obj obj) {

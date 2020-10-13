@@ -2,7 +2,6 @@ package eidolons.libgdx.screens.map.layers;
 
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -147,9 +146,7 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
         //remove if alpha zero?
 //        displayed = displayed.subList(0, getMaxLayers());
 
-        displayed.forEach(LightContainer -> {
-            adjust(LightContainer);
-        });
+        displayed.forEach(this::adjust);
     }
 
     private void adjust(LightContainer container) {
@@ -157,8 +154,8 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
         container.getContent().setScale(RandomWizard.getRandomFloatBetween(1 + scaleRange / 2, 1 + scaleRange));
         container.setVisible(true);
         addActor(container);
-        Boolean flipX = null;
-        float y, x = 0;
+        Boolean flipX;
+        float y, x;
         if (container.lightLayer.vertical) {
             x = getWidth() / 3 +
                     RandomWizard.getRandomInt((int) getWidth() / 3) - container.getWidth() / 2;
@@ -277,12 +274,11 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
     }
 
     private static TextureRegion getTexture(LIGHT_LAYER type) {
-        TextureAtlas.AtlasRegion texture = getLightAtlas().findRegion(
-                type.name().toLowerCase(). replace("_", " "));
-//        if (texture == null) {
+        //        if (texture == null) {
 //            return null;
 //        }
-        return texture;
+        return getLightAtlas().findRegion(
+                type.name().toLowerCase(). replace("_", " "));
     }
 
     public static class LightContainer extends ImageContainer {

@@ -41,7 +41,7 @@ public class LevelModelBuilder {
     Map<LevelGraphNode, Room> nodeModelMap = new HashMap<>();
     Map<Room, List<Room>> roomLinkMap = new HashMap<>();
     Map<LevelGraphEdge, Room> edgeMap = new HashMap<>();
-    private int randomExitChance;
+    private final int randomExitChance;
 
     public LevelModelBuilder(LevelData data) {
         this.data = data;
@@ -211,7 +211,7 @@ public class LevelModelBuilder {
         //recursive build - will it ensure that Main Paths are built?
 
         Room room = getOrCreateRoomForNode(true, node, null, entrance, roomExitTemplate);
-        Set<LevelGraphNode> next = null;
+        Set<LevelGraphNode> next;
         if (room == null)
             throw new RuntimeException();
 
@@ -463,7 +463,7 @@ public class LevelModelBuilder {
 
     public Room findFitting(Room parent, EXIT_TEMPLATE roomExitTemplate,
                             ROOM_TYPE roomType, FACING_DIRECTION parentExit, boolean attach) {
-        Coordinates entranceCoordinates = null;
+        Coordinates entranceCoordinates;
         if (parent != null)
             entranceCoordinates = RoomAttacher.adjust(parent.getCoordinates(), parentExit, parent, true);
         else

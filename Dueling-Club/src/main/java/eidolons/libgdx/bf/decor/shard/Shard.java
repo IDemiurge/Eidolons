@@ -35,7 +35,6 @@ public class Shard extends SuperActor {
     ImageContainer foreground; //idea - fade between 2 variants?
     LabelX debugInfo;
     private Coordinates coord;
-    private Function<Coordinates, Float> lightnessFunc;
     private Function<Coordinates, Color> colorFunc;
     private boolean broken;
 
@@ -153,7 +152,6 @@ public class Shard extends SuperActor {
     }
 
     public void setLightnessFunc(Function<Coordinates, Float> lightnessFunc) {
-        this.lightnessFunc = lightnessFunc;
     }
 
     public void setColorFunc(Function<Coordinates, Color> colorFunc) {

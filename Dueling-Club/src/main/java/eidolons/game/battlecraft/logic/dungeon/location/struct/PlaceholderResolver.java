@@ -30,8 +30,7 @@ public class PlaceholderResolver extends DungeonHandler {
         GeneratorEnums.ROOM_CELL cellType= GeneratorEnums.ROOM_CELL.getBySymbol(
                 type.getProperty(PROPS.PLACEHOLDER_SYMBOL)) ;
 
-        ObjType  resolvedType = getType(module,property, cellType,   c);
-        return resolvedType;
+        return getType(module,property, cellType,   c);
     }
 
     private ObjType getType(Module module, String property, GeneratorEnums.ROOM_CELL cellType,

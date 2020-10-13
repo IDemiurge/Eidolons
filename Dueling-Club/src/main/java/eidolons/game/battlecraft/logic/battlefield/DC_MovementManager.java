@@ -61,7 +61,6 @@ import static main.system.auxiliary.log.LogMaster.log;
 public class DC_MovementManager implements MovementManager {
 
     public static boolean anObjectMoved;
-    private static DC_MovementManager instance;
     Map<Unit, List<ActionPath>> pathCache = new HashMap<>();
     private final DC_Game game;
     public static Coordinates playerDestination;
@@ -70,7 +69,7 @@ public class DC_MovementManager implements MovementManager {
 
     public DC_MovementManager(DC_Game game) {
         this.game = game;
-        instance = this;
+        DC_MovementManager instance = this;
     }
 
     public static Coordinates getMovementDestinationCoordinate(DC_ActiveObj active) {
@@ -269,7 +268,7 @@ public class DC_MovementManager implements MovementManager {
                 if (!checkPathStillValid(path, playerDestination)) {
                     continue;
                 }
-                playerPath = path.choices.stream().map(c -> c.getCoordinates()).collect(Collectors.toList());
+                playerPath = path.choices.stream().map(Choice::getCoordinates).collect(Collectors.toList());
 
                 for (Choice choice : path.choices) {
                     for (Action action : choice.getActions()) {

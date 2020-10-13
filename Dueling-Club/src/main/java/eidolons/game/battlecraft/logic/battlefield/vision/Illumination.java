@@ -62,7 +62,7 @@ public class Illumination {
         }
         //Light revamp - HERO LIGHT
         if (isHeroLightOn()){
-        Map<Coordinates, Float> lerp = null;
+        Map<Coordinates, Float> lerp;
         if (heroLight == null) {
             heroLight = new ColorMap.Light(GdxColorMaster.PALE_GOLD, lerp = new ConcurrentHashMap<>(), GenericEnums.ALPHA_TEMPLATE.GRID_LIGHT);
         } else {

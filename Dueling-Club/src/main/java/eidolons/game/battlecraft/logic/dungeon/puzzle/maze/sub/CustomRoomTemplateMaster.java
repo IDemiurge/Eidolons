@@ -47,7 +47,6 @@ public class CustomRoomTemplateMaster {
                                         FACING_DIRECTION randomFacing,
                                         ROOM_TEMPLATE_GROUP templateGroup) {
         Set<RoomModel> rooms = roomMap.get(templateGroup);
-        RoomModel roomModel = rooms.stream().filter(room -> room.getType() == roomTypeForPuzzle).findAny().get();
-        return roomModel;
+        return rooms.stream().filter(room -> room.getType() == roomTypeForPuzzle).findAny().get();
     }
 }

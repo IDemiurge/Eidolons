@@ -31,7 +31,6 @@ public class BehaviorMasterOld extends AiHandler {
 	 */
 
     Map<AI_BEHAVIOR_MODE, AiBehavior> behaviorMap = new HashMap<>();
-    private boolean recursion;
 
     public BehaviorMasterOld(AiMaster master) {
         super(master);
@@ -173,7 +172,7 @@ public class BehaviorMasterOld extends AiHandler {
         DC_ActiveObj active = unit.getAction(action);
 
         ref.setTarget(target);
-        recursion = false;
+        boolean recursion = false;
         return new Action(active, ref);
 
     }

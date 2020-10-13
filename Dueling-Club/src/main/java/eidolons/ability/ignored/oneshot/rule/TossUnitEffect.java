@@ -6,10 +6,7 @@ import main.system.math.Formula;
 
 public class TossUnitEffect extends DC_Effect implements OneshotEffect {
 
-    private Boolean fallDown;
-
     public TossUnitEffect(String forceFormula, Boolean fallDown) {
-        this.fallDown = fallDown;
         this.formula = new Formula(forceFormula);
     }
 

@@ -75,8 +75,8 @@ public class AiGroupHandler extends AiHandler {
         }
         encounterAiMap =
                 new MapBuilder<>("=", Strings.VERTICAL_BAR,
-                        s -> NumberUtils.getIntParse(s),
-                        s -> new AiData(s)
+                        NumberUtils::getIntParse,
+                        AiData::new
                 )
                 .build(nodeContents);
     }

@@ -19,14 +19,10 @@ public class SpellCondition extends MicroCondition {
         }
         Spell spell = (Spell) ref.getMatchObj();
         Unit hero = (Unit) ref.getSourceObj();
-        if (!hero.getSpells().contains(spell)) {
-            return false;
-        }
+        return hero.getSpells().contains(spell);
 
         // if (spell.canBeActivated(ref, true))
         // return false;
-
-        return true;
     }
 
     public enum SPELL_CHECK {

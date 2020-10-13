@@ -69,7 +69,7 @@ public class TipMaster {
                  : BASIC_USABILITY_TIPS.class;
                 break;
         }
-        String tip = "";
+        String tip;
 
         Loop loop = new Loop(200); //if we check 200 tips and they all have been displayed,
         //well, let's go for another round!
@@ -111,7 +111,7 @@ public class TipMaster {
             String path = getPath(clazz);
             String contents = FileManager.readFile(path);
             ArrayList<String> lines = new ArrayList<>(Arrays.asList(StringMaster.splitLines(contents)));
-            lines.removeIf(line -> line.isEmpty());
+            lines.removeIf(String::isEmpty);
             if (lines.isEmpty()) {
                 continue;
             }

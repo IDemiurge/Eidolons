@@ -131,7 +131,7 @@ public class VisionController {
     }
 
     public void reset() {
-        mappers.forEach(mapper -> mapper.reset());
+        mappers.forEach(GenericMapper::reset);
     }
 
     public void afterCheck() {

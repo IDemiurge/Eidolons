@@ -31,7 +31,7 @@ import java.util.Map;
 public class PixmapPathBuilder {
 
     static Map<ALPHA_MAP, List<Vector2>> pointsMap = new XLinkedMap<>();
-    private static ALPHA_MAP[] impassable = new ALPHA_MAP[]{
+    private static final ALPHA_MAP[] impassable = new ALPHA_MAP[]{
      ALPHA_MAP.OCEAN, ALPHA_MAP.INLAND_WATER, ALPHA_MAP.IMPASSABLE
     };
     private static Vector2 lastPoint;
@@ -223,7 +223,7 @@ public class PixmapPathBuilder {
                                               Vector2 dest, ALPHA_MAP... impassable) {
 
         List<Vector2> list = new ArrayList<>();
-        Vector2 last = orig;
+        Vector2 last;
         if (map != null) {
             Rectangle rect = new Rectangle(Math.min(orig.x, dest.x), Math.min(orig.y, dest.y),
              Math.abs(orig.x - dest.x),

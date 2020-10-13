@@ -135,7 +135,7 @@ public class QuickWeaponPanel extends TablePanelX {
 
         toggleUnarmed.clearListeners();
         if (dataSourceAlt != null) {
-            toggleUnarmed.addListener(new Clicker(() -> toggleUnarmed()));
+            toggleUnarmed.addListener(new Clicker(this::toggleUnarmed));
             toggleUnarmed.addListener(
                     new ScaleAndTextTooltip(toggleUnarmed, () -> (unarmed
                             ? dataSource.getName() : dataSourceAlt.getName()))

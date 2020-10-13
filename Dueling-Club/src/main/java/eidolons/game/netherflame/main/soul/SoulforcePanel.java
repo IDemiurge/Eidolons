@@ -11,7 +11,6 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
 public class SoulforcePanel extends GroupX {
-    private final FadeImageContainer bg;
     private final SymbolButton lordBtn;
     private final SymbolButton paleBtn;
     private final SoulCounter soulCounter;
@@ -19,12 +18,13 @@ public class SoulforcePanel extends GroupX {
 
     public SoulforcePanel() {
         addActor(soulCounter = new SoulCounter());
+        FadeImageContainer bg;
         addActor(bg = new FadeImageContainer("ui/components/dc/soulforce/background.png"));
         addActor(bar = new SoulforceBar( ));
-        addActor(lordBtn = new SymbolButton(ButtonStyled.STD_BUTTON.LORD_BTN, ()-> leftButton()));
-        addActor(paleBtn = new SymbolButton(ButtonStyled.STD_BUTTON.PALE_BTN, ()-> rightButton()));
+        addActor(lordBtn = new SymbolButton(ButtonStyled.STD_BUTTON.LORD_BTN, this::leftButton));
+        addActor(paleBtn = new SymbolButton(ButtonStyled.STD_BUTTON.PALE_BTN, this::rightButton));
 
-        bar.addListener(new DynamicTooltip(() ->  SoulforceMaster.getTooltip()).getController());
+        bar.addListener(new DynamicTooltip(SoulforceMaster::getTooltip).getController());
 //        bar.addListener(new DynamicTooltip(() -> "Current Soulforce: " + bar.getTooltip()).getController());
         lordBtn.addListener(new DynamicTooltip(() -> "Use Eidolon Arts").getController());
         paleBtn.addListener(new DynamicTooltip(() -> "Eidolon Lord panel").getController());

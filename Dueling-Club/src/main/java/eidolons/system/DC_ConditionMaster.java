@@ -190,8 +190,7 @@ public class DC_ConditionMaster extends ConditionMaster {
         if (condition == null) {
             return null;
         }
-        Requirement req = new Requirement(condition, CONST.getText(variables));
-        return req;
+        return new Requirement(condition, CONST.getText(variables));
     }
 
     private static Condition getItemCondition(String slot, String prop, String val, String obj_ref) {
@@ -470,10 +469,9 @@ public class DC_ConditionMaster extends ConditionMaster {
                 case FACING:
                     return new FacingCondition(FacingMaster.getFacing(str1));
                 case ITEM: {
-                    String slot = str1;
                     String prop = VariableManager.removeVarPart(str2);
                     String val = VariableManager.getVarPart(str2);
-                    return new ItemCondition(KEYS.SOURCE.toString(), slot, prop, val);
+                    return new ItemCondition(KEYS.SOURCE.toString(), str1, prop, val);
                 }
                 case ENEMIES_LEFT:
                     Integer n = Integer.valueOf(str1);

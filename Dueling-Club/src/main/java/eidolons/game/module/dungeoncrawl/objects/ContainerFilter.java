@@ -9,6 +9,7 @@ import main.entity.type.ObjType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by JustMe on 5/3/2018.
@@ -17,7 +18,7 @@ public class ContainerFilter {
     public static List<ObjType> filter(List<ObjType> list,
                                        CONTAINER_CONTENTS c, ITEM_RARITY rarity) {
         list = new ArrayList<>(list);
-        list.removeIf(type -> type==null );
+        list.removeIf(Objects::isNull);
         list.removeIf(type -> isFilteredOut(type, c, rarity));
 
         return list;

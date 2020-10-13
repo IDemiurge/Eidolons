@@ -2,6 +2,7 @@ package eidolons.libgdx.gui.menu.selection;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -192,7 +193,7 @@ public abstract class ItemListPanel extends TablePanel {
 
     public void selectRandomItem() {
         List<SelectableItemData> available = new LinkedList<>(items);
-        available.removeIf(btn -> isBlocked(btn));
+        available.removeIf(this::isBlocked);
         SelectableItemData item = new RandomWizard<SelectableItemData>().
                 getRandomListItem(available);
         currentItem = item;
@@ -258,7 +259,7 @@ public abstract class ItemListPanel extends TablePanel {
         if (getBackground() != null)
             clear(); //some funny issue with rows without clear()...
         else
-            buttons.forEach(button -> button.remove());
+            buttons.forEach(Actor::remove);
 
         buttons.clear();
         for (SelectableItemData sub : items) {

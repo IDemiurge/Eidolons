@@ -62,7 +62,6 @@ public class LightEmitter extends SuperActor {
     private float baseAlpha;
     private boolean withinCamera;
     private boolean alphaChanging;
-    private boolean off;
 
 
     public LightEmitter(BattleFieldObject obj, LightEmittingEffect effect) {
@@ -245,7 +244,6 @@ public class LightEmitter extends SuperActor {
     }
 
     public void setOff(boolean off) {
-        this.off = off;
         if (off) {
             alphaAction.setEnd(0);
         } else {

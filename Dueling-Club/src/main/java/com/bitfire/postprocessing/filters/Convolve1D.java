@@ -24,10 +24,10 @@ public final class Convolve1D extends Filter<Convolve1D> {
 		Texture("u_texture0", 0), SampleWeights("SampleWeights", 1), SampleOffsets("SampleOffsets", 2 /* vec2 */);
 		// @formatter:on
 
-		private String mnemonic;
-		private int elementSize;
+		private final String mnemonic;
+		private final int elementSize;
 
-		private Param (String mnemonic, int arrayElementSize) {
+		Param(String mnemonic, int arrayElementSize) {
 			this.mnemonic = mnemonic;
 			this.elementSize = arrayElementSize;
 		}

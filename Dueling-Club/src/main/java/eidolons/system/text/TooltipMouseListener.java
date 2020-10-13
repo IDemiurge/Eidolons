@@ -9,11 +9,9 @@ public class TooltipMouseListener implements MouseListener {
 
     TOOLTIP_TYPE type;
     Object arg;
-    private ToolTipMaster master;
 
     public TooltipMouseListener(TOOLTIP_TYPE type, ToolTipMaster master) {
         this.type = type;
-        this.master = master;
     }
 
     public TooltipMouseListener(TOOLTIP_TYPE t, ToolTipMaster toolTipMaster, Object arg) {

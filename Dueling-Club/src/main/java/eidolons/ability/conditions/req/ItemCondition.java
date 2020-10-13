@@ -13,11 +13,10 @@ import main.system.auxiliary.EnumMaster;
 
 public class ItemCondition extends MicroCondition {
 
-    private String obj_ref;
+    private final String obj_ref;
     private String slot;
     private String prop;
     private String val;
-    private Boolean strict = true;
     private boolean weapon;
 
     public ItemCondition(String obj_ref, String slot) {
@@ -75,6 +74,7 @@ public class ItemCondition extends MicroCondition {
             return true;
         }
         String string = item.getProp(prop);
+        Boolean strict = true;
         return new StringComparison(string, val, strict).preCheck(ref);
 
         // String prop2 = ref.getObj(obj_string).getProp(slot);

@@ -53,7 +53,6 @@ public abstract class AiBehavior {
     protected float speed;
     protected Action queuedAction;
     protected Map<XLine, List<Coordinates>> pathCache = new HashMap<>();
-    private Action lastAction;
     private final List<Action> actionLog = new ArrayList<>();
     private final List<Orders> ordersLog = new ArrayList<>();
 
@@ -322,7 +321,7 @@ public abstract class AiBehavior {
         orders.popNextAction(); //ensure sync
 
         log("Action to execute: " + queuedAction);
-        lastAction = queuedAction;
+        Action lastAction = queuedAction;
         actionLog.add(lastAction);
         queuedAction = null;
         resetSinceLastAction();
@@ -446,9 +445,8 @@ public abstract class AiBehavior {
             log("Path chosen for " +
              cell + "" + path);
         }
-        ActionSequence sequence = master.getActionSequenceConstructor().getSequenceFromPath(path, ai);
 
-        return sequence;
+        return master.getActionSequenceConstructor().getSequenceFromPath(path, ai);
     }
 
     protected boolean isAtomicAllowed(Coordinates cell) {

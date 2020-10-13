@@ -58,7 +58,7 @@ public class ObjCreator extends Master {
         if (!CoreEngine.isArcaneVault())
             type = checkTypeSubstitution(type, ref);
 
-        BattleFieldObject obj = null;
+        BattleFieldObject obj;
 
         if (type.checkProperty(G_PROPS.BF_OBJECT_GROUP, BfObjEnums.BF_OBJECT_GROUP.ENTRANCE.toString())) {
             obj = new Entrance(x, y, type, game);

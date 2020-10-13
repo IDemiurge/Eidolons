@@ -39,10 +39,8 @@ public class PlayerStatus {
                     subText = arg + " enemies spotted";
                 }
             case COMBAT:
-                break;
-            case SHADOW:
-                break;
             case DEAD:
+            case SHADOW:
                 break;
         }
         switch (type) {

@@ -23,7 +23,7 @@ import main.system.auxiliary.secondary.ReflectionMaster;
 class GdxAssetManager extends AssetManager {
     public GdxAssetManager() {
         super(
-                fileName -> GDX.file(fileName));
+                GDX::file);
         setLogger(new Logger("Atlases", Logger.DEBUG));
         setErrorListener(new AssetErrorListener() {
             @Override
@@ -64,8 +64,7 @@ class GdxAssetManager extends AssetManager {
                 TextureAtlas.TextureAtlasData data = new ReflectionMaster<TextureAtlas.TextureAtlasData>()
                         .getFieldValue("data", this, TextureAtlasLoader.class);
                 for (TextureAtlas.TextureAtlasData.Page page : data.getPages()) {
-                    Texture texture = assetManager.get(page.textureFile.path().replaceAll("//", "/"), Texture.class);
-                    page.texture = texture;
+                    page.texture = assetManager.get(page.textureFile.path().replaceAll("//", "/"), Texture.class);
                 }
                 SmartTextureAtlas atlas = new SmartTextureAtlas(data);
                 new ReflectionMaster<TextureAtlas.TextureAtlasData>()

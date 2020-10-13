@@ -44,8 +44,8 @@ public class PillarManager extends GridHandler {
         DIRECTION[] adj = Pillars.getAdjacent(type, wall);
         Set<Color> collect = Arrays.stream(adj).map(d -> getManager().getColor(d == null
                 ? coord
-                : coord.getAdjacentCoordinate(d))).collect(Collectors.toCollection(() -> new LinkedHashSet<>()));
-        collect.removeIf(c -> c == null);
+                : coord.getAdjacentCoordinate(d))).collect(Collectors.toCollection(LinkedHashSet::new));
+        collect.removeIf(Objects::isNull);
         Color lerp = collect.iterator().next();
         //GdxColorMaster.getAverage(collect);
 
@@ -57,8 +57,7 @@ public class PillarManager extends GridHandler {
         //         wall ? lerp.a * LightConsts.PILLAR_WALL_COEF_LIGHT
         //                 : lerp.a * LightConsts.PILLAR_COEF_LIGHT);
 
-        Color c1 = LightHandler.applyLightnessToColor(lerp.clamp(), false);
-        return c1;
+        return LightHandler.applyLightnessToColor(lerp.clamp(), false);
     }
 
     @Override
@@ -212,8 +211,7 @@ public class PillarManager extends GridHandler {
     }
 
     public PILLAR getPillar(Set<DIRECTION> adj, boolean wall) {//ToDo-Cleanup
-        PILLAR p = getPillar_(adj, wall);
-        return p;
+        return getPillar_(adj, wall);
     }
 
     public PILLAR getPillar_(Set<DIRECTION> adj, boolean wall) {
@@ -224,11 +222,11 @@ public class PillarManager extends GridHandler {
             return wall ? PILLAR.SKEWED_CORNER : PILLAR.SINGLE;
         }
 
-        if (adj.size() == 0) {
-            if (adj.iterator().next() == LEFT) {
-                return PILLAR.SKEWED_CORNER_UP;
-            }
-        }
+        // if (adj.size() == 0) {
+        //     if (adj.iterator().next() == LEFT) {
+        //         return PILLAR.SKEWED_CORNER_UP;
+        //     }
+        // }
         //CORNER
         if (!adj.contains(RIGHT)) {
             if (!adj.contains(DOWN)) {

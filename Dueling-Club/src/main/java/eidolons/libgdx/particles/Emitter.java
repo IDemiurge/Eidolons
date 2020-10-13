@@ -36,8 +36,7 @@ public class Emitter extends ParticleEmitter {
             value.setHigh(f, f);
             value.setLow(f, f);
         } else {
-            Object v = fieldValue;
-            new ReflectionMaster<>().setValue(fieldName, v, this);
+            new ReflectionMaster<>().setValue(fieldName, fieldValue, this);
         }
     }
 

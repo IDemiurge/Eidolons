@@ -16,17 +16,13 @@ import eidolons.libgdx.gui.panels.dc.inventory.datasource.EquipDataSource;
 
 public class InventoryPanel extends TablePanel {
 
-    private InventorySlotsPanel inventorySlotsPanel;
-    private InventoryQuickSlotPanel quickSlot;
-    private Cell mainWeapon;
-    private Cell offWeapon;
-    private   Cell offWeaponReserve;
-    private   Cell mainWeaponReserve;
-    private RingSlotsPanel leftRingSlotsPanel;
-    private RingSlotsPanel rightRingSlotsPanel;
-    private Cell avatarPanel;
-    private Cell armorSlot;
-    private Cell amuletSlot;
+    private final Cell mainWeapon;
+    private final Cell offWeapon;
+    private final Cell offWeaponReserve;
+    private final Cell mainWeaponReserve;
+    private final Cell avatarPanel;
+    private final Cell armorSlot;
+    private final Cell amuletSlot;
 
     public InventoryPanel() {
         TextureRegion textureRegion = new TextureRegion(
@@ -36,7 +32,7 @@ public class InventoryPanel extends TablePanel {
         setBackground(drawable);
 
         TablePanel upper = new TablePanel();
-        inventorySlotsPanel = new InventorySlotsPanel();
+        InventorySlotsPanel inventorySlotsPanel = new InventorySlotsPanel();
 
         addElement(upper)
          .height(340)
@@ -44,7 +40,7 @@ public class InventoryPanel extends TablePanel {
          .top().expand(1, 0);
         row();
 
-        quickSlot = new InventoryQuickSlotPanel();
+        InventoryQuickSlotPanel quickSlot = new InventoryQuickSlotPanel();
         addElement(quickSlot);
         row();
         addElement(inventorySlotsPanel).pad(0, 20, 0, 20);
@@ -67,7 +63,7 @@ public class InventoryPanel extends TablePanel {
         mainWeaponReserve = left.addElement(null).fill(0, 0).bottom();
         left.row();
 
-        leftRingSlotsPanel = new RingSlotsPanel(true);
+        RingSlotsPanel leftRingSlotsPanel = new RingSlotsPanel(true);
 
         left.addElement(leftRingSlotsPanel).fill(0, 0);
 
@@ -87,7 +83,7 @@ public class InventoryPanel extends TablePanel {
         offWeaponReserve = right.addElement(null).fill(0, 0).bottom();
         right.row();
 
-        rightRingSlotsPanel = new RingSlotsPanel(false);
+        RingSlotsPanel rightRingSlotsPanel = new RingSlotsPanel(false);
 
         right.addElement(rightRingSlotsPanel).fill(0, 0);
 

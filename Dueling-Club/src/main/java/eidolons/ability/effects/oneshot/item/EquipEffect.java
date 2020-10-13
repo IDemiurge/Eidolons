@@ -13,7 +13,7 @@ import main.entity.Ref.KEYS;
 public class EquipEffect extends MicroEffect implements OneshotEffect {
 
     private DC_HeroItemObj item;
-    private Boolean weapon = false;
+    private final Boolean weapon;
     private Boolean quickItem = false;
 
     @OmittedConstructor

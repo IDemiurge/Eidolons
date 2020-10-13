@@ -16,11 +16,9 @@ public class WatchBuffEffect extends AddBuffEffect {
 
     public static final String BUFF_TYPE_NAME = "Watching";
     private final List<DC_Obj> list;
-    private final Unit watcher;
 
     public WatchBuffEffect(Unit watcher, List<DC_Obj> list) {
         super(BUFF_TYPE_NAME, generateEffects(watcher, list), true);
-        this.watcher = watcher;
         this.list = list;
     }
 

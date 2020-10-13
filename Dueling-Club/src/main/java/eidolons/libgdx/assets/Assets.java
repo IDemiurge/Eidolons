@@ -237,7 +237,7 @@ public class Assets {
         main.system.auxiliary.log.LogMaster.important("*********** Dispose Called for: " + scope);
         List<String> toClear = //new ArrayList<>(Arrays.asList(paths));
                 ContainerUtils.openContainer(scope.assets);
-        toClear = toClear.stream().map(t -> PathUtils.getLastPathSegment(t)).collect(Collectors.toList());
+        toClear = toClear.stream().map(PathUtils::getLastPathSegment).collect(Collectors.toList());
         main.system.auxiliary.log.LogMaster.important("*********** To Dispose: " + toClear);
         Array<TextureAtlas> array = new Array<>();
         for (TextureAtlas textureAtlas : get().getManager().getAll(TextureAtlas.class, array)) {

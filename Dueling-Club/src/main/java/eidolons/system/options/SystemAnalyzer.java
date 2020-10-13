@@ -14,8 +14,6 @@ import java.util.Map;
  */
 public class SystemAnalyzer {
     private static float memoryLevel;
-    private static int CPUs;
-    private static float pcLevel;
     private static float cpuLevel;
 
     public static void analyze() {
@@ -34,8 +32,8 @@ public class SystemAnalyzer {
             level = 1.0f;
         setMemoryLevel(level);
 
-        CPUs = Runtime.getRuntime().availableProcessors();
-        pcLevel = Math.min(CPUs, memoryLevel);
+        int CPUs = Runtime.getRuntime().availableProcessors();
+        float pcLevel = Math.min(CPUs, memoryLevel);
     }
 
     public enum GRAPHICS_LEVEL{

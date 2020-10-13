@@ -40,14 +40,14 @@ public class QuestInfoPanel extends ItemInfoPanel {
         super(o);
         row();
         addActor(accept = new SmartTextButton("Accept Quest",
-         STD_BUTTON.MENU, () -> accept()) {
+         STD_BUTTON.MENU, this::accept) {
             @Override
             public BUTTON_SOUND_MAP getSoundMap() {
                 return AudioEnums.BUTTON_SOUND_MAP.OK;
             }
         });
         addActor(cancel = new SmartTextButton("Cancel Quest",
-         STD_BUTTON.MENU, () -> cancel()) {
+         STD_BUTTON.MENU, this::cancel) {
             @Override
             public BUTTON_SOUND_MAP getSoundMap() {
                 return AudioEnums.BUTTON_SOUND_MAP.CANCEL;

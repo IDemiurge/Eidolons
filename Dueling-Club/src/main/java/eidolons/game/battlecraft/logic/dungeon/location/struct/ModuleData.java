@@ -20,7 +20,7 @@ public class ModuleData extends StructureData<MODULE_VALUE, Module> {
     @Override
     public String[] getValuesCropped() {
         if (cropped == null) {
-            List<String> list = Arrays.stream(getEnumClazz().getEnumConstants()).map(constant -> constant.toString()).
+            List<String> list = Arrays.stream(getEnumClazz().getEnumConstants()).map(Enum::toString).
                     collect(Collectors.toList());
             list.remove(MODULE_VALUE.assets.toString());
             list.remove(MODULE_VALUE.id.toString());

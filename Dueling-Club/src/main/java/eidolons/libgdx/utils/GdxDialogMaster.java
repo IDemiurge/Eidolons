@@ -32,8 +32,7 @@ public class GdxDialogMaster {
              , title, text, hint
             ));
 
-        String input = (String) WaitMaster.waitForInput(OPERATION);
-        return input;
+        return (String) WaitMaster.waitForInput(OPERATION);
     }
 
     private static void textInput(boolean script, TextInputListener textInputListener, String title,

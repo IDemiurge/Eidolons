@@ -20,7 +20,7 @@ import com.bitfire.utils.ShaderLoader;
 
 public final class RadialBlur extends Filter<Filter> {
 	// ctrl quality
-	private int blur_len;
+	private final int blur_len;
 
 	// ctrl quantity
 	private float strength, x, y;
@@ -32,7 +32,7 @@ public final class RadialBlur extends Filter<Filter> {
 
 		final int length;
 
-		private Quality (int value) {
+		Quality(int value) {
 			this.length = value;
 		}
 	}
@@ -47,10 +47,10 @@ public final class RadialBlur extends Filter<Filter> {
 		Zoom("zoom", 0), ;
 		// @on
 
-		private String mnemonic;
-		private int elementSize;
+		private final String mnemonic;
+		private final int elementSize;
 
-		private Param (String mnemonic, int arrayElementSize) {
+		Param(String mnemonic, int arrayElementSize) {
 			this.mnemonic = mnemonic;
 			this.elementSize = arrayElementSize;
 		}

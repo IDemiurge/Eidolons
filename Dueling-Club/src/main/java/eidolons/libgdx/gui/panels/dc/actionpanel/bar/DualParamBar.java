@@ -42,14 +42,14 @@ public abstract class DualParamBar extends ValueBar {
         if (!smooth) {
             displayedSecondaryPerc = getSecondaryPerc();
 
-            float realPerc = new Float(100 * getDataSource().getIntParam(getUnderParam(true)) /
+            float realPerc = (float) (100 * getDataSource().getIntParam(getUnderParam(true)) /
                     getDataSource().getIntParam(getUnderParam(false))) / 100f;
             {
                 displayedSecondaryPerc = realPerc;
             }
             displayedPrimaryPerc = getPrimaryPerc();
 
-            realPerc = new Float(100 * getDataSource().getIntParam(getOverParam(true)) /
+            realPerc = (float) (100 * getDataSource().getIntParam(getOverParam(true)) /
                     getDataSource().getIntParam(getOverParam(false))) / 100f;
             {
                 displayedPrimaryPerc = realPerc;

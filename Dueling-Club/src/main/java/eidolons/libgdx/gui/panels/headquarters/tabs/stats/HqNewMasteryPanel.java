@@ -40,9 +40,7 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
     public HqNewMasteryPanel() {
         super(12, DC_ContentValsManager.getMasteries().size());
         setVisible(false);
-        cancelButton = new SymbolButton(STD_BUTTON.CANCEL, () -> {
-            fadeOut();
-        });
+        cancelButton = new SymbolButton(STD_BUTTON.CANCEL, this::fadeOut);
         initDefaultBackground();
         GuiEventManager.bind(GuiEventType.SHOW_MASTERY_LEARN, p -> {
             if (p.get() == null) {
@@ -142,15 +140,13 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
         List<PARAMETER> unlocked = SkillMaster.getUnlockedMasteries(getUserObject().getEntity());
         if (Flags.isIggDemoRunning()) {
             List<PARAMETER> pool = IGG_Demo.getMasteriesForHero(getUserObject().getEntity().getName());
-            pool.removeIf(p ->
-                    unlocked.contains(p));
+            pool.removeIf(unlocked::contains);
             return pool.toArray(new PARAMETER[0]) ;
         }
         List<PARAMETER> availableMasteries = new ArrayList<>(
                 DC_ContentValsManager.getMasteries());
 
-        availableMasteries.removeIf(p ->
-                unlocked.contains(p));
+        availableMasteries.removeIf(unlocked::contains);
 
         availableMasteries.removeIf(p ->
                 !SkillMaster.isMasteryAvailable(p, getUserObject().getEntity()));

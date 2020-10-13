@@ -97,9 +97,8 @@ public class ImbuePanel extends TablePanelX {
     }
 
     private String initAspectInfo() {
-        String info = "\n" + EidolonImbuer.getAspects(getSouls());
 
-        return info;
+        return "\n" + EidolonImbuer.getAspects(getSouls());
     }
 
     public EidolonImbuer getImbuer() {

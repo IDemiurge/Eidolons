@@ -92,10 +92,8 @@ public class EngagementHandler extends ExplorationHandler {
     }
 
     private ENGAGEMENT_LEVEL getLevel(Unit source) {
-        if (source.isMine()) {
-            // return playerEngagement;
-            return source.getAI().getEngagementLevel();
-        }
+        // return playerEngagement;
+        source.isMine();
         return source.getAI().getEngagementLevel();
     }
 

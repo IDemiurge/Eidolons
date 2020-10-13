@@ -59,7 +59,6 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.launch.Flags;
 import main.system.math.PositionMaster;
 
 import java.util.ArrayList;
@@ -81,8 +80,7 @@ public class AnimConstructor {
     }
 
     public static void preconstruct(Unit unit) {
-        unit.getActives().forEach(spell ->
-                getOrCreate(spell));
+        unit.getActives().forEach(AnimConstructor::getOrCreate);
         AnimMaster3d.preloadAtlases(unit);
     }
 
@@ -126,10 +124,10 @@ public class AnimConstructor {
     public static void preconstructSpells(Unit unit) {
         if (ListMaster.isNotEmpty(unit.getSpells()))
             if (GdxMaster.isLwjglThread()) {
-                unit.getSpells().forEach(spell -> getOrCreate(spell));
+                unit.getSpells().forEach(AnimConstructor::getOrCreate);
             } else
                 Gdx.app.postRunnable((() -> {
-                    unit.getSpells().forEach(spell -> getOrCreate(spell));
+                    unit.getSpells().forEach(AnimConstructor::getOrCreate);
                 }));
     }
 
@@ -326,7 +324,7 @@ public class AnimConstructor {
             //            Chronos.logTimeElapsedForMark("sprite " + path);
             exists = true;
         }
-        List<SpellVfx> list = new ArrayList<>();
+        List<SpellVfx> list;
         //     if (!Thread.currentThread().getName().contains("LWJGL")){
         //
         //     }
@@ -557,8 +555,7 @@ public class AnimConstructor {
     }
 
     public static boolean isReconstruct() {
-        if (Flags.isJar()) //not to forget
-            return false;
+        //not to forget
         return false;
     }
 
@@ -608,7 +605,7 @@ public class AnimConstructor {
     public static void preconstructAllForAV() {
         for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
             Spell active = new Spell(type, Player.NEUTRAL, DC_Game.game, new Ref());
-            AnimData data = null;
+            AnimData data;
             try {
                 int i = 0;
                 for (ANIM_PART part : ANIM_PART.values()) {

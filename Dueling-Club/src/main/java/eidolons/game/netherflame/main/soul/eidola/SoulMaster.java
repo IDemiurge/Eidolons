@@ -33,7 +33,7 @@ public class SoulMaster {
         List<ObjType> types = DataManager.toTypeList(EidolonLord.lord.getProperty(PROPS.LORD_SOULS),
                 DC_TYPE.UNITS);
 
-        lastList = types.stream().map(type -> getOrCreate(type)).collect(Collectors.toList());
+        lastList = types.stream().map(SoulMaster::getOrCreate).collect(Collectors.toList());
         return lastList;
     }
 
@@ -52,7 +52,7 @@ public class SoulMaster {
         //TODO wtf do we do when a soul is removed?!
 
 
-        Integer id = null;
+        Integer id;
         Soul soul = soulMap.get(id = getId(type));
         if (soul == null) {
             soul = new Soul(type);

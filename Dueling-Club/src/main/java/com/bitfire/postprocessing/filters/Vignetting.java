@@ -25,9 +25,10 @@ public final class Vignetting extends Filter<Vignetting> {
 	private float intensity, saturation, saturationMul;
 
 	private Texture texLut;
-	private boolean dolut, dosat;
+	private boolean dolut;
+    private final boolean dosat;
 	private float lutintensity;
-	private int[] lutindex;
+	private final int[] lutindex;
 	private float lutStep, lutStepOffset, lutIndexOffset;
 	private float centerX, centerY;
 
@@ -40,9 +41,9 @@ public final class Vignetting extends Filter<Vignetting> {
 		// @formatter:on
 
 		private final String mnemonic;
-		private int elementSize;
+		private final int elementSize;
 
-		private Param (String m, int elementSize) {
+		Param(String m, int elementSize) {
 			this.mnemonic = m;
 			this.elementSize = elementSize;
 		}

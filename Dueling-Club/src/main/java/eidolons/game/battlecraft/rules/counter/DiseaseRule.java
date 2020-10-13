@@ -59,8 +59,7 @@ public class DiseaseRule extends DamageCounterRule  implements TimedRule {
         ModifyValueEffect modifyValueEffect = new ModifyValueEffect(PARAMS.C_ATB,
          MOD.MODIFY_BY_CONST, getCounterRef() + "*" + ATB_PER_COUNTER);
         modifyValueEffect.setMin_max_formula(new Formula("0"));
-        Effects effects = new Effects(modifyValueEffect);
-        return effects;
+        return new Effects(modifyValueEffect);
     }
 
     @Override

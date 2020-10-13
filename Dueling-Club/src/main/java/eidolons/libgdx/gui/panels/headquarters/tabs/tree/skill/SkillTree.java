@@ -72,14 +72,12 @@ public class SkillTree extends HeroTree<MasteryRankSlot, SkillSlot> {
 
     @Override
     protected MasteryRankSlot buildEmptyNode(int tier, int i) {
-        MasteryRankSlot node = new MasteryRankSlot(tier, i);
-        return node;
+        return new MasteryRankSlot(tier, i);
     }
 
     @Override
     protected SkillSlot buildEmptyLinkNode(int tier, int i) {
-        SkillSlot node = new SkillSlot(tier, i);
-        return node;
+        return new SkillSlot(tier, i);
     }
 
     @Override

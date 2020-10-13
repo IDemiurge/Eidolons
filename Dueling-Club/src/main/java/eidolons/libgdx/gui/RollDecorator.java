@@ -30,8 +30,7 @@ public class RollDecorator {
     }
     public static RollableGroup decorate(Actor actor, FACING_DIRECTION direction, boolean manual,
                                          ButtonStyled.STD_BUTTON style) {
-        RollableGroup group = new RollableGroup(actor, direction, manual, style);
-        return group;
+        return new RollableGroup(actor, direction, manual, style);
     }
 
     public static class RollableGroup extends GroupX {

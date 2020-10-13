@@ -27,24 +27,17 @@ public class ShrineHandler {
         switch (choice) {
 
             case burn_item:
-                break;
+            case fracture_soul:
+            case eidolon_vision:
+            case travel_back:
+            case travel_forward:
+            case sacrifice_blood:
+            case drink_blood:
             case ash_shape:
                 break;
-            case drink_blood:
-                break;
-            case sacrifice_blood:
-                break;
-            case travel_forward:
-                break;
-            case travel_back:
-                break;
-            case eidolon_vision:
-                break;
 
-                //SOUL SHRINE
+            //SOUL SHRINE
             case imbue_soul:
-                break;
-            case fracture_soul:
                 break;
         }
     }

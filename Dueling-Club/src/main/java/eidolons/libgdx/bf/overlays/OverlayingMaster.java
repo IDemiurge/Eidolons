@@ -139,17 +139,16 @@ public class OverlayingMaster {
             calcXOffset += (w - width) * (view == null ? OverlayView.SCALE : scale);
             calcYOffset += (h - height) * (view == null ? OverlayView.SCALE : scale);
         } else {
-            int size = width;
-            int x = MigMaster.getCenteredPosition(w, size);
+            int x = MigMaster.getCenteredPosition(w, width);
 
             if (direction.growX != null)
-                x = (direction.growX) ? w - size : 0;
+                x = (direction.growX) ? w - width : 0;
 
 
-            int y = MigMaster.getCenteredPosition(h, size);
+            int y = MigMaster.getCenteredPosition(h, width);
 
             if (direction.growY != null)
-                y = (!direction.growY) ? h - size : 0;
+                y = (!direction.growY) ? h - width : 0;
 
 
             calcXOffset += x;

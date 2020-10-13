@@ -17,12 +17,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ChainParty extends Party {
-    private  String leaderName;
+    private final String leaderName;
     Set<Unit> deadHeroes = new LinkedHashSet<>();
     Set<ChainHero> heroes = new LinkedHashSet<>();
     private int totalXp; //during this run; TODO - will it work with transits?
     private int goldStashed;
-    private int deathTaxPerc = 35;
 
     Set<DC_HeroItemObj> stash = new LinkedHashSet<>(); //TODO
     private Unit lastHero;
@@ -133,6 +132,7 @@ public class ChainParty extends Party {
 
         deadHeroes.add(getLeader());
         goldStashed = getLeader().getIntParam(PARAMS.GOLD);
+        int deathTaxPerc = 35;
         int deathTax = goldStashed * deathTaxPerc / 100;
         deathTax += goldStashed * RandomWizard.getRandomInt(deathTaxPerc) / 100;
         goldStashed -= deathTax;
@@ -147,7 +147,7 @@ public class ChainParty extends Party {
     }
 
     private Collection<? extends DC_HeroItemObj> getStashedItems(DequeImpl<DC_HeroItemObj> inventory) {
-        return inventory.stream().filter(t -> isStashed(t)).collect(Collectors.toList());
+        return inventory.stream().filter(this::isStashed).collect(Collectors.toList());
     }
 
     public Set<ChainHero> getHeroes() {

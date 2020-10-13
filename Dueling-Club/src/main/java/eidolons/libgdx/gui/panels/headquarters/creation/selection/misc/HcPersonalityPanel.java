@@ -15,7 +15,6 @@ import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 7/4/2018.
@@ -35,10 +34,9 @@ public class HcPersonalityPanel extends SelectionTable<SmartTextButton> {
     @Override
     protected SelectableItemData[] initDataArray() {
         return Arrays.stream(HERO_SOUNDSET.values()).
-         filter(soundset -> soundset.isFemale() == (
-          HeroCreationMaster.getModel().getGender() == GENDER.FEMALE))
-         .map(type -> new SelectableItemData(type.getName(), type.getName()))
-         .collect(Collectors.toList()).toArray(new SelectableItemData[0]);
+                filter(soundset -> soundset.isFemale() == (
+                        HeroCreationMaster.getModel().getGender() == GENDER.FEMALE))
+                .map(type -> new SelectableItemData(type.getName(), type.getName())).toArray(SelectableItemData[]::new);
 
     }
 

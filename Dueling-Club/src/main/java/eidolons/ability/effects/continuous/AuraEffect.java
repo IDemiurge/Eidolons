@@ -25,14 +25,12 @@ import main.system.math.Formula;
 public class AuraEffect extends MicroEffect implements AttachmentEffect {
     STANDARD_EVENT_TYPE event_type; // ++ UNIT MOVES!!!!
     private final Effect effect;
-    private final boolean initialized = false;
     private AddTriggerEffect trigger;
     private final boolean notSelf;
     private final Boolean onlyEnemiesOrAllies;
     private final Formula radius;
     private final Boolean continuous;
     private final Condition additionalConditions;
-    private AddBuffEffect auraEffect;
     private boolean on;
 
 	/*
@@ -112,7 +110,7 @@ public class AuraEffect extends MicroEffect implements AttachmentEffect {
              new ConditionalEffect(ConditionMaster
               .getAliveCondition(KEYS.SOURCE),
               new CustomTargetEffect(targeting, buffEffect)));
-            auraEffect = new AddBuffEffect(auraEffects);
+            AddBuffEffect auraEffect = new AddBuffEffect(auraEffects);
             // auraEffect.setTransient(false);
             boolean results = auraEffect.apply(ref);
             if (results) {
@@ -127,6 +125,7 @@ public class AuraEffect extends MicroEffect implements AttachmentEffect {
         // use zoneEffect?
         // if only modifies non-dynamic values, then it's continuous. How to
         // preCheck?
+        boolean initialized = false;
         if (!initialized) {
             init();
         }

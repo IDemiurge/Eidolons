@@ -81,7 +81,7 @@ public class QuestMaster extends MetaGameHandler {
                 });
     }
 
-    public static final boolean isPrecreatedQuests() {
+    public static boolean isPrecreatedQuests() {
         return true;
     }
 
@@ -153,7 +153,7 @@ public class QuestMaster extends MetaGameHandler {
     }
 
     public void startQuests() {
-        quests.removeIf(quest -> quest.isComplete());
+        quests.removeIf(Quest::isComplete);
         quests.forEach(quest -> {
             if (quest instanceof DungeonQuest) {
                 getResolver().questTaken((DungeonQuest) quest);

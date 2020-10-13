@@ -160,7 +160,7 @@ public class Weapon3dAnim extends ActionAnim {
 
     protected boolean checkFlipHorizontally() {
         boolean offhand = getActive().isOffhand();
-        boolean flipHor = false;
+        boolean flipHor;
         if (getProjection(ref,getActive()) == AssetEnums.PROJECTION.HOR) {
             flipHor = getActive().getOwnerUnit().getFacing() == FACING_DIRECTION.WEST;
             // PositionMaster.isToTheLeft(activeObj.getOwnerUnit(), targetObj);

@@ -263,11 +263,10 @@ public class ItemTraitParser {
     }
 
     private static String parseBind(PARAMETER p1, PARAMETER p2, float n) {
-        String s = PROPS.PARAMETER_BONUSES.getName() +VALUE_SEPARATOR +
+
+        return PROPS.PARAMETER_BONUSES.getName() +VALUE_SEPARATOR +
          p1.getName() + StringMaster.wrapInParenthesis(
          StringMaster.getValueRef(KEYS.SOURCE, p2) + "*" + getBindCoef(p1, p2, n));
-
-        return s;
     }
 
     private static String getBoostCoef(PARAMETER p1, float n) {

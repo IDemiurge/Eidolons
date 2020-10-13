@@ -13,7 +13,7 @@ public class ShopTransactions {
     public static boolean confirm(int debt, int max, DC_HeroItemObj item, Shop shop, boolean heroBuys) {
         if (confirmOff)
             return true;
-        String text = "";
+        String text;
         if (heroBuys) {
             text = "It seems you don't have enough coin, but I will let you have this " + item.getName() +
              " in credit. You'll owe me " +
@@ -98,17 +98,15 @@ public class ShopTransactions {
          .getRandomByWeight();
     }
     private static String getDebtDoneMessage(boolean gives, Shop shop) {
-        String msg = "";
-        return msg;
+        return "";
     }
     private static String getDebtRemainsMessage(boolean gives, Shop shop) {
-        String msg = "";
         //"Don't let see you slipping out of town! " +
         //         "Wouldn't be surprised if other merchants gave you a bit of a friendly discount after this.";
         //         "gold pieces, wasn't it? Still don't have it? Well, the interest's just doubled, friend. " +
         //          //         " Nice doing business with you!");
 
-        return msg;
+        return "";
     }
 
 }

@@ -71,12 +71,11 @@ public class DC_SoundMaster extends SoundMaster {
             G_PROPS.SPELL_TYPE,
     };
     private static SoundPlayer soundPlayer;
-    private final SoundController controller;
     private final DungeonScreen screen;
 
     public DC_SoundMaster(DungeonScreen screen) {
         this.screen = screen;
-        controller = new SoundController(this);
+        SoundController controller = new SoundController(this);
     }
 
     public static void playRangedAttack(DC_WeaponObj weapon) {

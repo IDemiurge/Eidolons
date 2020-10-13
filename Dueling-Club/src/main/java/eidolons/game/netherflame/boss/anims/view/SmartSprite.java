@@ -41,9 +41,7 @@ or just substitute another sprite?
 
     public void allowFinish() {
         end = frames.length;
-        setOnCycle(() -> {
-            resetRange();
-        });
+        setOnCycle(this::resetRange);
     }
 
     @Override

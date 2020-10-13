@@ -39,12 +39,7 @@ public class DC_GameState extends MicroGameState {
 
     @Override
     public void gameStarted(boolean first) {
-        if (first) {
-            this.setRound(DEFAULT_ROUND);
-        } else {
-            this.setRound(DEFAULT_ROUND);
-//          ???  this.setRound(DEFAULT_ROUND - 1);
-        }
+        this.setRound(DEFAULT_ROUND);
 
     }
 

@@ -22,7 +22,6 @@ public class DialogueContainer extends TablePanelX {
     protected DialogueView current;
     protected List<Scene> toPlay;
     protected Iterator<Scene> iterator;
-    private float bgAlpha = 0.7f;
 
     public DialogueContainer() {
         GuiEventManager.bind(GuiEventType.DIALOGUE_UPDATED, p -> {
@@ -113,6 +112,7 @@ public class DialogueContainer extends TablePanelX {
     public void draw(Batch batch, float parentAlpha) {
         if (bgSprite != null) {
 //            if (bgSprite.getColor().a==1)
+            float bgAlpha = 0.7f;
             bgSprite.setAlpha(bgAlpha * getColor().a);
         }
         bgSprite.draw(batch, parentAlpha);

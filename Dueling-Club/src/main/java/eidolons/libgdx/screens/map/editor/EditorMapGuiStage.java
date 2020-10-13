@@ -12,10 +12,8 @@ import eidolons.libgdx.stage.ConfirmationPanel;
  * Created by JustMe on 2/10/2018.
  */
 public class EditorMapGuiStage extends MapGuiStage {
-    private EditorControlPanel controlPanel;
     private EditorPalette palette;
     private EmitterPalette emitterPalette;
-    private EditorInfoPanel editorInfoPanel;
 
     public EditorMapGuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
@@ -27,7 +25,7 @@ public class EditorMapGuiStage extends MapGuiStage {
 
     @Override
     protected void init() {
-        controlPanel = new EditorControlPanel();
+        EditorControlPanel controlPanel = new EditorControlPanel();
         DragPane dragPane = new DragPane(controlPanel);
         Draggable listener = new Draggable();
         listener.setKeepWithinParent(false);
@@ -45,7 +43,7 @@ public class EditorMapGuiStage extends MapGuiStage {
         palette.setPosition(0, 0);
         addActor(palette);
 
-        editorInfoPanel = new EditorInfoPanel();
+        EditorInfoPanel editorInfoPanel = new EditorInfoPanel();
         addActor(editorInfoPanel);
         editorInfoPanel.setPosition(GdxMaster.right(editorInfoPanel), 0);
 

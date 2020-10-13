@@ -240,8 +240,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
     }
 
     private int getDamageModifier(PARAMS dmgModifier, PARAMS value) {
-        int amount = getIntParam(dmgModifier) * getHero().getIntParam(value) / 100;
-        return (amount);
+        return (getIntParam(dmgModifier) * getHero().getIntParam(value) / 100);
     }
 
     @Override

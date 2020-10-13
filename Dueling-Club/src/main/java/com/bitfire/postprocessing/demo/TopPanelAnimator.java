@@ -48,7 +48,7 @@ public final class TopPanelAnimator {
 		this.state = State.Idle;
 		this.panel = panel;
 		this.timer = new Timer();
-		this.hotZone = new HotZone( hotZone );
+		this.hotZone = new HotZone(hotZone);
 		this.yShow = yWhenShown;
 		this.yHidden = yWhenHidden;
 		this.suspended = false;
@@ -151,12 +151,12 @@ public final class TopPanelAnimator {
 		hotZone.mouseMoved( x, y );
 	}
 
-	private final class HotZone {
+	private static final class HotZone {
 		public boolean isIn;
 		public boolean wasIn;
 		public boolean justIn;
 		public boolean justOut;
-		private Vector2 mouse;
+		private final Vector2 mouse;
 		Rectangle rectHotZone;
 
 		public HotZone( Rectangle hotZone ) {

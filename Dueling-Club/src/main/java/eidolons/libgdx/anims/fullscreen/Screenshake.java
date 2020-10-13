@@ -1,24 +1,24 @@
 package eidolons.libgdx.anims.fullscreen;
 
-import java.util.Random;
-
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+
+import java.util.Random;
 
 public class Screenshake {
     float[] samples;
     Random rand = new Random();
     float internalTimer = 0;
-    float shakeDuration = 0;
+    float shakeDuration;
 
-    int duration = 5; // In seconds, make longer if you want more variation
-    int frequency = 35; // hertz
-    float amplitude = 20; // how much you want to shake
-    boolean falloff = true; // if the shake should decay as it expires
+    int duration; // In seconds, make longer if you want more variation
+    int frequency; // hertz
+    float amplitude; // how much you want to shake
+    boolean falloff; // if the shake should decay as it expires
 
-    float coefY = 1f;
-    float coefX = 1f;
+    float coefY;
+    float coefX;
 
     int sampleCount;
     private Vector2 center;
@@ -36,8 +36,8 @@ public class Screenshake {
         HORIZONTAL(50, 35),
         ;
         int duration = 5; // In seconds, make longer if you want more variation
-        int frequency = 35; // hertz
-        float amplitude = 20; // how much you want to shake
+        int frequency; // hertz
+        float amplitude; // how much you want to shake
         boolean falloff = true; // if the shake should decay as it expires
 
         ScreenShakeTemplate(int frequency, float amplitude) {

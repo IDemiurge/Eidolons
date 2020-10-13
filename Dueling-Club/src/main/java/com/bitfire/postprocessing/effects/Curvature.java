@@ -21,7 +21,7 @@ import com.bitfire.postprocessing.PostProcessorEffect;
 import com.bitfire.postprocessing.filters.RadialDistortion;
 
 public final class Curvature extends PostProcessorEffect {
-	private RadialDistortion distort;
+	private final RadialDistortion distort;
 	private float baseDistort;
 
 	public Curvature () {
@@ -58,9 +58,9 @@ public final class Curvature extends PostProcessorEffect {
 	public void render (FrameBuffer src, FrameBuffer dest) {
 		restoreViewport(dest);
 		distort.setInput(src).setOutput(dest).render();
-	};
+	}
 
-	@Override
+    @Override
 	public void setBase(float coef) {
 		baseDistort = coef;
 		distort.setDistortion(coef);

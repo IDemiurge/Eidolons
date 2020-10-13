@@ -273,16 +273,14 @@ public class WallMap extends OverlayMap<DIRECTION> {
                         adjY = 0;
                     else if (side.isGrowY() != null)
                         if (side.isGrowY() == true) {
-                            int dif = (128 - 36) / 2;
-                            adjY = dif;
+                            adjY = (128 - 36) / 2;
                         }
 
                     if (side == DIRECTION.LEFT)
                         adjX = 0;
                     else if (side.isGrowX() != null)
                         if (side.isGrowX() == true) {
-                            int dif = (128 - 36) / 2;
-                            adjX = dif;
+                            adjX = (128 - 36) / 2;
                         }
 
                     offsetX += adjX;
@@ -307,12 +305,11 @@ public class WallMap extends OverlayMap<DIRECTION> {
         switch (side) {
             case RIGHT:
             case LEFT:
-                return -get3dTexture(side, true).getRegionHeight() / 2; //consider wall's own dim?
             case DOWN_LEFT:
             case UP_RIGHT:
             case DOWN_RIGHT:
             case UP_LEFT:
-                return -get3dTexture(side, true).getRegionHeight() / 2;
+                return -get3dTexture(side, true).getRegionHeight() / 2; //consider wall's own dim?
         }
         return 0;
     }

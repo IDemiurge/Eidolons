@@ -242,7 +242,7 @@ public class CompositeAnim implements Animation {
                 }
             }
         });
-        timeAttachedAnims.get(part).removeIf(a -> a.isRunning());
+        timeAttachedAnims.get(part).removeIf(Animation::isRunning);
     }
 
 

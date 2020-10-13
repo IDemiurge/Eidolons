@@ -108,8 +108,7 @@ public class GraphicData extends DataUnit<GraphicData.GRAPHIC_VALUE> {
             }
         }
         if (!getVfxPath().isEmpty()) {
-            String imagePath = EmitterPresetMaster.getInstance().getImagePath(getVfxPath());
-            return imagePath;
+            return EmitterPresetMaster.getInstance().getImagePath(getVfxPath());
 
         }
         return path;

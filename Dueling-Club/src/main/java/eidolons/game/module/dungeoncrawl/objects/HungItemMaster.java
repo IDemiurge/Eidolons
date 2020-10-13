@@ -97,10 +97,8 @@ potions
 
     private DC_HeroItemObj generateItem(HungItem hungObj) {
         Ref ref = new Ref();
-        DC_HeroItemObj itemObj =
-         ItemFactory.createItemObj(hungObj.getItemType(), DC_Player.NEUTRAL,
-          (GenericGame) ref.getGame(), ref, false);
-        return itemObj;
+        return ItemFactory.createItemObj(hungObj.getItemType(), DC_Player.NEUTRAL,
+         (GenericGame) ref.getGame(), ref, false);
     }
 
     public List<DC_ActiveObj> getActions(DungeonObj obj, Unit unit) {
@@ -108,7 +106,7 @@ potions
             return new ArrayList<>();
         //check intelligence, mastery
         List<DC_ActiveObj> list = new ArrayList<>();
-        DC_UnitAction action = null;
+        DC_UnitAction action;
         for (HUNG_ITEM_ACTION sub : HUNG_ITEM_ACTION.values()) {
             if (checkAction(unit, (HungItem) obj, sub)) {
                 String name = StringMaster.format(sub.name()) + " Door";

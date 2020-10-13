@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData.PARTY_VALUE;
 import eidolons.game.module.herocreator.logic.party.Party;
+import main.entity.DataModel;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.ContainerUtils;
@@ -18,7 +19,7 @@ public class UnitsData extends DataUnit<PARTY_VALUE> {
         this(PARTY_VALUE.UNITS +
          DataUnitFactory.getPairSeparator(FORMAT) +
          ContainerUtils.joinList(party.getMembers().stream().
-           map(s -> s.getName()).collect(Collectors.toList())
+           map(DataModel::getName).collect(Collectors.toList())
 //         ,
          ) + DataUnitFactory.getSeparator(FORMAT));
     }
@@ -34,7 +35,7 @@ public class UnitsData extends DataUnit<PARTY_VALUE> {
     public UnitsData(List<Coordinates> coordinatesList, List<ObjType> types) {
         setValue(PARTY_VALUE.UNITS,
                 ContainerUtils.joinList(types.stream().
-                        map(s -> s.getName()).collect(Collectors.toList())));
+                        map(DataModel::getName).collect(Collectors.toList())));
         setValue(PARTY_VALUE.COORDINATES, ContainerUtils.joinList(coordinatesList) );
     }
 

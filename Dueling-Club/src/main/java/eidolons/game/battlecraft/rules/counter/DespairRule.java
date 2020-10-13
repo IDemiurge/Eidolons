@@ -36,11 +36,10 @@ public class DespairRule extends DC_CounterRule {
 
     @Override
     protected Effect getSpecialRoundEffects() {
-        Effects effects = new Effects(new ModifyValueEffect(PARAMS.C_ESSENCE,
+
+        return new Effects(new ModifyValueEffect(PARAMS.C_ESSENCE,
          MOD.MODIFY_BY_CONST, getCounterRef() + "*"
          + MORALE_PER_COUNTER));
-
-        return effects;
     }
 
     @Override

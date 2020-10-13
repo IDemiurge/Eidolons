@@ -47,10 +47,10 @@ public class EidolonsGame {
     //convenience fields
     public static String lvlPath;
 
-    public static final void reset() {
+    public static void reset() {
     }
 
-    public static final void set(String field, boolean val) {
+    public static void set(String field, boolean val) {
         setVar(field, val);
         try {
             EidolonsGame.class.getField(field.toUpperCase()).set(null, val);
@@ -70,7 +70,7 @@ public class EidolonsGame {
 
     }
 
-    public static final boolean get(String field) {
+    public static boolean get(String field) {
         try {
             return (boolean) EidolonsGame.class.getField(field.toUpperCase()).get(null);
         } catch (Exception e) {

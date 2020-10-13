@@ -272,7 +272,7 @@ public class ContentGenerator {
         }
     }
 
-    public static final void afterRead() {
+    public static void afterRead() {
         clearGenType();
 
         if (DataManager.isTypesRead(DC_TYPE.SKILLS)) {

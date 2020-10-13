@@ -53,7 +53,6 @@ it's trivial - use some other pc if you got to
 
  */
 public class AtlasGenSpriteBatch extends CustomSpriteBatchImpl {
-    private final boolean overwrite = false;
 
     Set<Texture> map = new HashSet<>();
 
@@ -157,6 +156,7 @@ public class AtlasGenSpriteBatch extends CustomSpriteBatchImpl {
     private boolean write(String path, Texture texture) {
         FileHandle handle = new FileHandle(path);
         if (handle.exists()) {
+            boolean overwrite = false;
             if (!overwrite) {
                 return false;
             }

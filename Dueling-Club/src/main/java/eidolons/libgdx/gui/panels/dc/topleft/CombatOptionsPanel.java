@@ -21,6 +21,7 @@ import main.system.GuiEventType;
 import main.system.graphics.FontMaster;
 import main.system.launch.CoreEngine;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -70,14 +71,10 @@ public class CombatOptionsPanel extends TablePanelX {
         GuiEventManager.bind(GuiEventType.MINIMIZE_UI_ON , p-> hide() );
         GuiEventManager.bind(GuiEventType.MINIMIZE_UI_OFF , p-> show() );
         List<OPTION> list = new LinkedList<>();
-        for (OPTION devOption : OPTIONS) {
-            list.add(devOption);
-        }
+        list.addAll(Arrays.asList(OPTIONS));
         if (CoreEngine.TEST_LAUNCH) {
 //            if (CoreEngine.isLogicTest()){
-            for (OPTION devOption : DEV_OPTIONS) {
-                list.add(devOption);
-            }
+            list.addAll(Arrays.asList(DEV_OPTIONS));
         }
         final int height = 100 + list.size() * 40;
         TablePanelX<Actor> table = new TablePanelX(200, height) {

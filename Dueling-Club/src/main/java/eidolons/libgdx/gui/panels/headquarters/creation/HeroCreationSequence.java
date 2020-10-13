@@ -14,10 +14,10 @@ import java.util.stream.Collectors;
  * Created by JustMe on 6/5/2018.
  */
 public class HeroCreationSequence extends ItemListPanel {
-    private final HcControlPanel controlPanel;
 
     public HeroCreationSequence() {
         super();
+        HcControlPanel controlPanel;
         add(controlPanel = new HcControlPanel()).center().row();
     }
 
@@ -101,7 +101,7 @@ public class HeroCreationSequence extends ItemListPanel {
         if (HeroCreationMaster.TEST_MODE)
             return false;
         int i = getItems().indexOf(item);
-        int i1 = getItems().stream().map(x -> getSequenceItem(x)).collect(Collectors.toList())
+        int i1 = getItems().stream().map(this::getSequenceItem).collect(Collectors.toList())
          .indexOf(
           HeroCreationMaster.getCurrentItem());
 
@@ -128,7 +128,7 @@ public class HeroCreationSequence extends ItemListPanel {
         GENDER(), //"Male", "Female" now w/o subpanel
         PORTRAIT,
         PERSONALITY,
-        DEITY(Arrays.stream(ASPECT.values()).map(aspect -> aspect.toString())
+        DEITY(Arrays.stream(ASPECT.values()).map(Enum::toString)
          .collect(Collectors.toList()).toArray(new String[ASPECT.values().length])),
         //        STATS,
         SKILLSET,

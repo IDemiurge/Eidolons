@@ -15,9 +15,11 @@ import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.*;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.texture.TextureCache;
+import main.ability.AbilityObj;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
+import main.entity.obj.BuffObj;
 import main.system.images.ImageManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -291,7 +293,7 @@ public class UnitDataSource implements
     @Override
     public List<ValueContainer> getBuffs(boolean body) {
         return unit.getBuffs().stream()
-         .filter(obj -> obj.isDisplayed())
+         .filter(BuffObj::isDisplayed)
                 .filter(obj -> obj.isPhysical()==body)
          .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
          .map(AttackTooltipFactory.getObjValueContainerMapper())
@@ -301,7 +303,7 @@ public class UnitDataSource implements
     @Override
     public List<ValueContainer> getAbilities(boolean body) {
         return unit.getPassives().stream()
-         .filter(obj -> obj.isDisplayed())
+         .filter(AbilityObj::isDisplayed)
          .filter(obj -> obj.isPhysical()==body)
          .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
          .map(AttackTooltipFactory.getObjValueContainerMapper())

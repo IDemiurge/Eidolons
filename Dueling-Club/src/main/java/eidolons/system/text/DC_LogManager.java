@@ -43,13 +43,20 @@ public class DC_LogManager extends LogManager {
     public static final String ALIGN_CENTER = "<center>";
     public static final String IMAGE_SEPARATOR = "[img==]";
     public static final String UNIT_TURN_PREFIX = "Active: ";
-    private final int logLevel = 1;
     private final List<String> fullEntryList = new ArrayList<>();
 
     public DC_LogManager(Game game) {
         super(game);
     }
 
+    @Override
+    public void newLogEntryNode(ENTRY_TYPE type, Object... args) {
+
+    }
+
+    @Override
+    public void doneLogEntryNode() {
+    }
     /*
      * Do I need to have information levels? What is the best way to access the
      * log and control its filtering?
@@ -76,6 +83,7 @@ public class DC_LogManager extends LogManager {
         }
 
     }
+
 
     public void logOrderFailed(Order order, Unit unit) {
         String entry = unit.getName() + " has failed to obey " + order.toString();
@@ -272,6 +280,7 @@ public class DC_LogManager extends LogManager {
     public boolean log(LOGGING_DETAIL_LEVEL log, String entry) {
 //    TODO     fullEntryList.add(entry);
         int i = EnumMaster.getEnumConstIndex(LOGGING_DETAIL_LEVEL.class, log);
+        int logLevel = 1;
         if (logLevel < i)
             return false;
 

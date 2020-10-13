@@ -60,8 +60,7 @@ public class ChannelingRule {
             list.add(cost);
         }
         CostRequirements reqs = action.getCosts().getRequirements();
-        Costs costs = new Costs(reqs, list);
-        return costs;
+        return new Costs(reqs, list);
     }
 
     public static void channelingInterrupted(Unit sourceObj) {

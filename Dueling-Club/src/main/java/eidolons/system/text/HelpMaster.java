@@ -1,6 +1,5 @@
 package eidolons.system.text;
 
-import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaDataManager;
 import eidolons.game.core.Eidolons;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
@@ -12,10 +11,9 @@ import main.system.launch.Flags;
  */
 public class HelpMaster {
     public static String getHelpText() {
-        String text = FileManager.readFile(
+        return FileManager.readFile(
          StrPathBuilder.build(PathFinder.getTextPath(),
           TextMaster.getLocale(), "manual", "manual.txt"));
-        return text;
     }
 
     public static String getHeroMainInfoText(String name) {
@@ -54,8 +52,6 @@ public class HelpMaster {
     }
 
     public static boolean isDefaultTextOn() {
-        if (ScenarioMetaDataManager.missionIndex > 0)
-            return false;
         return false;
     }
 

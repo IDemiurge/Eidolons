@@ -57,7 +57,7 @@ public class HeroGenerator {
     }
 
     private static int getMaxApplied(int xp, boolean background) {
-        return (int) Math.round((Math.sqrt(new Double(xp)) / 25));
+        return (int) Math.round((Math.sqrt(xp) / 25));
     }
 
     public static void alterHero(Unit hero) {

@@ -58,7 +58,7 @@ public class ClockPanel extends GroupX {
         updateTime();
     }
     public void updateTime() {
-        String time = "";
+        String time;
         if (ExplorationMaster.isExplorationOn()) {
             roundLabel.setText("Exploration");
             time = Eidolons.game.getDungeonMaster().getExplorationMaster().getTimeMaster().getDisplayedTime();

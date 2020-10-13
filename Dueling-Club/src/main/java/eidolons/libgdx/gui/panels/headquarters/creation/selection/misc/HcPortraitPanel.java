@@ -29,7 +29,7 @@ public class HcPortraitPanel extends SelectionImageTable {
             return new SelectableItemData[0];
         }
         return ImageManager.getPortraitsForBackground(HeroCreationMaster.getModel().
-         getBackground().toString(), false).stream().filter(portrait -> checkPortrait(portrait)).map(portrait ->
+         getBackground().toString(), false).stream().filter(this::checkPortrait).map(portrait ->
          new SelectableItemData(portrait, portrait))
          .limit(SIZE).
           collect(Collectors.toList()).toArray(new SelectableItemData[1]);

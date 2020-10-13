@@ -43,6 +43,6 @@ public class MemorizedContainer extends HqSpellContainer {
     protected List<Spell> getSpells() {
         return
          getUserObject().getEntity().getSpells().stream()
-          .filter(s -> s.isMemorized()).collect(Collectors.toList());
+          .filter(Spell::isMemorized).collect(Collectors.toList());
     }
 }

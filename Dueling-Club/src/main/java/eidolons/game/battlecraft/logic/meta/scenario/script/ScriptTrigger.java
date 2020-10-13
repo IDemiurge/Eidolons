@@ -13,7 +13,7 @@ import main.game.logic.event.Event.EVENT_TYPE;
 public class ScriptTrigger extends Trigger {
 
     private   boolean tutorial;
-    private String scriptText;
+    private final String scriptText;
 
     public ScriptTrigger(String originalText, EVENT_TYPE eventType, Condition conditions, Ability abilities) {
         super(eventType, conditions, abilities);
@@ -35,16 +35,13 @@ public class ScriptTrigger extends Trigger {
     public boolean trigger() {
         if (ScriptMaster.isScriptsOff())
             return false;
-        boolean result = super.trigger();
-        return result;
+        return super.trigger();
     }
 
     @Override
     public boolean isRemoveAfterTriggers(boolean result) {
         if (result)
-        if (isOneshot()) {
-            return true;
-        }
+            return isOneshot();
         return false;
     }
 

@@ -52,7 +52,7 @@ public class TablePanelX<T extends Actor> extends TablePanel<T> {
         super.setUserObject(userObject);
     }
 
-    protected Class<? extends Object> getUserObjectClass() {
+    protected Class<?> getUserObjectClass() {
         return null;
     }
 

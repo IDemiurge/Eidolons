@@ -7,7 +7,9 @@ import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.FileManager;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * Created by JustMe on 11/19/2018.
@@ -68,11 +70,9 @@ public class InkIoMaster {
     }
     public static String readJson(String path) throws IOException {
 
-        BufferedReader br = new BufferedReader(
-         new FileReader(FileManager.getFile(PathFinder.getRootPath()+PathFinder.getTextPath()+
-         path )));
-
-        try {
+        try (BufferedReader br = new BufferedReader(
+                new FileReader(FileManager.getFile(PathFinder.getRootPath() + PathFinder.getTextPath() +
+                        path)))) {
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
 
@@ -82,10 +82,7 @@ public class InkIoMaster {
                 line = br.readLine();
             }
 
-            String json = sb.toString().replace('\uFEFF', ' ');
-            return json;
-        } finally {
-            br.close();
+            return sb.toString().replace('\uFEFF', ' ');
         }
 
     }

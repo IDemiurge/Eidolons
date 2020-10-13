@@ -66,7 +66,6 @@ public class DC_Rules implements GameRules {
     private BlazeRule blazeRule;
     private StackingRule stackingRule;
     private EngagedRule engagedRule;
-    private HearingRule hearingRule;
     private WaterRule waterRule;
     private UnconsciousRule unconsciousRule;
     private GreaseRule greaseRule;
@@ -101,7 +100,7 @@ public class DC_Rules implements GameRules {
         ensnareRule = new EnsnaredRule(getGame());
         stealthRule = new StealthRule(getGame());
         stackingRule = new StackingRule(getGame());
-        hearingRule = new HearingRule(getGame());
+        HearingRule hearingRule = new HearingRule(getGame());
         actionRules.add(unconsciousRule);
         actionRules.add(watchRule);
         actionRules.add(stealthRule);

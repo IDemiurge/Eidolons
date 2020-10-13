@@ -36,8 +36,6 @@ public class PlatformController extends MoveController {
     Runnable onCycle; //script
     private float destX, destY, originX, originY, period, time;
     Interpolation interpolation = Interpolation.sine;
-    private Coordinates block;
-    private boolean blocked;
 
     public PlatformController(PlatformData data, List<PlatformCell> cells, PlatformDecor visuals) {
         super(data);
@@ -125,9 +123,8 @@ public class PlatformController extends MoveController {
 
         for (Coordinates c : line) {
             if (isBlocked(c)) {
-                block = c;
                 initDestination(c);
-                blocked = true;
+                boolean blocked = true;
                 interpolation = Interpolation.bounce;
                 return;
             }

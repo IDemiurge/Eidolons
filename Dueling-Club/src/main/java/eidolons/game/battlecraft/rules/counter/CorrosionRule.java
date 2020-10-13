@@ -37,7 +37,8 @@ public class CorrosionRule extends DC_CounterRule {
 
     @Override
     protected Effect getSpecialRoundEffects() {
-        Effects effects =   new Effects(new CustomTargetEffect(
+
+        return new Effects(new CustomTargetEffect(
          new FixedTargeting(KEYS.WEAPON), new ModifyValueEffect(
          PARAMS.C_DURABILITY, MOD.MODIFY_BY_CONST,
          getCounterRef() + "*" + DURABILITY_PER_COUNTER)),
@@ -47,8 +48,6 @@ public class CorrosionRule extends DC_CounterRule {
            MOD.MODIFY_BY_CONST, getCounterRef()
            + "*" + DURABILITY_PER_COUNTER))
                 ));
-
-        return effects;
     }
 
     @Override

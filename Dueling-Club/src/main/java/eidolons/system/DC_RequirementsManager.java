@@ -311,11 +311,11 @@ public class DC_RequirementsManager implements RequirementsManager {
     }
 
     private Condition getTotalCondition(String req, PARAMETER... params) {
-        String valRef = "";
+        StringBuilder valRef = new StringBuilder();
         for (PARAMETER param : params) {
-            valRef += param.getName() + Strings.VAR_SEPARATOR;
+            valRef.append(param.getName()).append(Strings.VAR_SEPARATOR);
         }
-        return getTotalCondition(valRef, req);
+        return getTotalCondition(valRef.toString(), req);
 
     }
 

@@ -27,7 +27,6 @@ import main.system.threading.WaitMaster;
 
 public class TipMessageWindow extends TablePanelX implements OverlayingUI {
 
-    private boolean large;
     FadeImageContainer imageContainer;
     LabelX label;
     SmartTextButton[] btns;
@@ -45,7 +44,7 @@ public class TipMessageWindow extends TablePanelX implements OverlayingUI {
         if (!StringMaster.isEmpty(source.title)) {
 
         }
-        large = false;
+        boolean large = false;
         boolean medium = false;
         boolean over = false;
         if (!StringMaster.isEmpty(source.image)) {
@@ -146,7 +145,7 @@ public class TipMessageWindow extends TablePanelX implements OverlayingUI {
             GdxMaster.center(imageContainer);
             imageContainer.setY(imageContainer.getY() + getHeight() / 2);
 
-            ImageContainer c = null;
+            ImageContainer c;
             addActor(c = new ImageContainer("ui/INK BLOTCH.png"));
             //            c.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.HIGHLIGHT_SPEAKER);
             c.setColor(1, 1, 1, 0.6f);

@@ -94,18 +94,15 @@ public class ForceRule {
     }
 
     private static int getForceFromSpell(DC_ActiveObj spell) {
-        int force =
-                // new Formula(spell.getProp(PROPS.FO)).getInt(ref);
-                spell.getIntParam(PARAMS.FORCE, true) + spell.getOwnerUnit().getIntParam(PARAMS.SPELLPOWER)
-                        * spell.getIntParam(PARAMS.FORCE_SPELLPOWER_MOD);
-        return force;
+        return spell.getIntParam(PARAMS.FORCE, true) + spell.getOwnerUnit().getIntParam(PARAMS.SPELLPOWER)
+                * spell.getIntParam(PARAMS.FORCE_SPELLPOWER_MOD);
     }
 
     public static void applyForceEffects(int force, DC_ActiveObj action, BattleFieldObject target) {
         if (action.isCounterMode())
             return;
         BattleFieldObject source = (BattleFieldObject) action.getRef().getSourceObj();
-        Boolean result = null;
+        Boolean result;
         //TODO DEXTERITY ROLL TO AVOID ALL? ROLL MASS
         if (target instanceof Unit) {
             if (((Unit) target).                    getChecker().checkClassification(UnitEnums.CLASSIFICATIONS.WRAITH)

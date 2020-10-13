@@ -38,7 +38,7 @@ public class ActionContainer extends ValueContainer {
     private static ActionContainer lastPressed;
     private static boolean darkened;
 
-    private final float scaleByOnHover = (new Float(64) / ActionPanel.IMAGE_SIZE) - 1;
+    private final float scaleByOnHover = (64f / ActionPanel.IMAGE_SIZE) - 1;
 
     private RadialMenu customRadialMenu;
     protected Runnable clickAction;

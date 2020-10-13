@@ -10,17 +10,15 @@ import main.content.VALUE;
  */
 public class HqScrollPropPanel extends HqElement {
 
-    private ScrollPanel scroll;
-    private HqVerticalValueTable valueTable;
-
     public HqScrollPropPanel() {
         this(500, 230);
     }
 
     public HqScrollPropPanel(float w, float h) {
         setSize(w, h);
-        valueTable = new StatsListPanel(getValuesOne());
+        HqVerticalValueTable valueTable = new StatsListPanel(getValuesOne());
         valueTable.setSize(w, h);
+        ScrollPanel scroll;
         add(scroll = new ScrollPanel() {
             @Override
             public int getDefaultOffsetY() {

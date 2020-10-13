@@ -80,7 +80,6 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     private static final boolean test_mode = QuestMaster.TEST_MODE;
     Map<ObjType, Map<CONTAINER_CONTENTS,
             Map<ITEM_RARITY, List<ObjType>>>> itemPoolsMaps = new HashMap();
-    private final boolean noDuplicates = true;
     private BattleFieldObject container;
 
 
@@ -132,7 +131,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         return null;
     }
 
-    public static final MATERIAL[] getMaterials(ITEM_RARITY rarity) {
+    public static MATERIAL[] getMaterials(ITEM_RARITY rarity) {
         switch (rarity) {
             case EXCEPTIONAL:
                 if (exceptionalMaterials == null) {
@@ -205,9 +204,8 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         main.system.auxiliary.log.LogMaster.verbose( "filtered pool= " + pool + " max cost: " + maxCost);
         if (pool.isEmpty())
             return null;
-        ObjType baseType = new RandomWizard<ObjType>().getRandomListItem(pool);
 
-        return baseType;
+        return new RandomWizard<ObjType>().getRandomListItem(pool);
 
     }
 
@@ -250,7 +248,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         if (isFastSelect()) {
             String group = getItemGroup(contents, false, TYPE);
             String subgroup = getItemGroup(contents, true, TYPE);
-            ObjType type = null;
+            ObjType type;
             List<ObjType> types = DataManager.getTypes(TYPE, iterate);
             main.system.auxiliary.log.LogMaster.verbose( " group= " + group + " subgroup= " + subgroup
                     + "; types = " + types);
@@ -576,7 +574,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         }
         RandomWizard<CONTAINER_CONTENTS> wizard = new RandomWizard<>();
         String prop = obj.getProperty(PROPS.CONTAINER_CONTENTS);
-        Map<CONTAINER_CONTENTS, Integer> map = null;
+        Map<CONTAINER_CONTENTS, Integer> map;
         if (unit) {
             map = wizard.constructWeightMap(getUnitContentsWeightMap(obj), CONTAINER_CONTENTS.class);
         } else {
@@ -606,6 +604,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         int totalCost = 0;
         int maxGroups = 2; //size prop!
         Loop overLoop = new Loop(maxGroups);
+        boolean noDuplicates = true;
         while (overLoop.continues()) {
             CONTAINER_CONTENT_VALUE rarity = wizard_.getObjectByWeight(typeMap);
             if (rarity == null)
@@ -717,7 +716,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     private int getAmountOfGold(BattleFieldObject obj, int totalCost) {
-        float c = 0;
+        float c;
         if (obj instanceof Unit) {
             float coef = RandomWizard.getRandomFloatBetween(1.5f, 3f);
             coef = coef - totalCost / 100;

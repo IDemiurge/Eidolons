@@ -67,7 +67,6 @@ public class DC_GridPanel extends GridPanel {
     private VoidHandler customVoidHandler;
 
     private float resetTimer;
-    private final float autoResetVisibleOnInterval = 0.5f;
 
     private List<GroupX> commentSprites = new ArrayList<>(5);
     private final List<GroupX> activeCommentSprites = new ArrayList<>(3);
@@ -156,6 +155,7 @@ public class DC_GridPanel extends GridPanel {
             if (DC_Game.game != null)
                 if (DC_Game.game.getVisionMaster().getVisible() != null) {
                     if (resetTimer <= 0) {
+                        float autoResetVisibleOnInterval = 0.5f;
                         resetTimer = autoResetVisibleOnInterval;
                         BattleFieldObject[] visible = DC_Game.game.getVisionMaster().getVisible();
                         for (int i = 0, visibleLength = visible.length; i < visibleLength; i++) {
@@ -216,7 +216,7 @@ public class DC_GridPanel extends GridPanel {
                         OUTLINE_TYPE outline = obj.getOutlineType();
                         UnitGridView uv = (UnitGridView) viewMap.get(obj);
 
-                        TextureRegion texture = null;
+                        TextureRegion texture;
                         if (outline != null) {
                             String path = Eidolons.game.getVisionMaster().getVisibilityMaster().getImagePath(outline, obj);
                             if (obj instanceof Unit) {
@@ -251,7 +251,7 @@ public class DC_GridPanel extends GridPanel {
 
 
     private void initMaze(boolean hide, MazePuzzle.MazeData data) {
-        Coordinates c = null;
+        Coordinates c;
         if (data.mazeTypeAlt != MazePuzzle.MazeType.NONE) {
             if (data.mazeMarksAlt != null)
                 for (Coordinates coordinates : data.mazeMarksAlt) {

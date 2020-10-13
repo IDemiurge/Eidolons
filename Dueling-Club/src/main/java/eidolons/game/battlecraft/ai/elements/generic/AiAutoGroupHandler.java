@@ -46,7 +46,7 @@ public class AiAutoGroupHandler extends AiHandler {
                 for (ObjAtCoordinate at : list) {
                     game.getUnitsForCoordinates(at.getCoordinates()).stream().filter(
                             u -> u.getName().equals(at.getType().getName())
-                    ).collect(Collectors.toList()).forEach(obj -> group.add(obj));
+                    ).collect(Collectors.toList()).forEach(group::add);
                 }
                 if (group.getMembers().isEmpty())
                     continue;
