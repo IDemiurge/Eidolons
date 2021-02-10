@@ -1,10 +1,11 @@
 package eidolons.game.battlecraft.ai;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.explore.AggroMaster.ENGAGEMENT_LEVEL;
 import eidolons.game.battlecraft.ai.explore.Patrol;
+import eidolons.game.battlecraft.logic.mission.encounter.Encounter;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.content.enums.EncounterEnums.UNIT_GROUP_TYPE;
+import main.content.enums.rules.VisionEnums.ENGAGEMENT_LEVEL;
 import main.data.XStack;
 import main.entity.obj.MicroObj;
 import main.game.bf.Coordinates;
@@ -39,6 +40,7 @@ public class GroupAI {
     private Stack<Coordinates> wanderStepCoordinateStack;
     private Patrol patrol;
     private UnitAI.AI_BEHAVIOR_MODE behavior;
+    private Encounter encounter;
 
     public GroupAI() {
 
@@ -99,7 +101,7 @@ public class GroupAI {
     }
 
     public void setLeader(Unit leader) {
-        if (this.leader == null) {
+        if (this.originalLeader == null) {
             originalLeader = leader;
         }
         this.leader = leader;
@@ -217,6 +219,14 @@ public class GroupAI {
         this.block = block;
     }
 
+    public void setMembers(DequeImpl<Unit> members) {
+        this.members = members;
+        members.forEach(member -> member.getAI().setGroupAI(this));
+        if (leader == null) {
+            setLeader(leader = members.get(0));
+        }
+    }
+
     public LevelBlock getBlock() {
         return block;
     }
@@ -227,5 +237,13 @@ public class GroupAI {
 
     public UnitAI.AI_BEHAVIOR_MODE getBehavior() {
         return behavior;
+    }
+
+    public Encounter getEncounter() {
+        return encounter;
+    }
+
+    public void setEncounter(Encounter encounter) {
+        this.encounter = encounter;
     }
 }

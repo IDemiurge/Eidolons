@@ -3,7 +3,6 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue.ink;
 import com.bladecoder.ink.runtime.Choice;
 import com.bladecoder.ink.runtime.Story;
 import com.bladecoder.ink.runtime.Story.VariableObserver;
-import com.bladecoder.ink.runtime.StoryException;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActor;
 
 import java.util.List;
@@ -36,7 +35,7 @@ public class InkDialogue {
         return null;
     }
 
-    public void observeVariable(String variableName, VariableObserver observer) throws StoryException, Exception {
+    public void observeVariable(String variableName, VariableObserver observer) throws Exception {
         story.observeVariable(variableName, observer);
     }
 
@@ -50,7 +49,7 @@ public class InkDialogue {
 
     public List<String> getResponses() {
         return story.getCurrentChoices().stream().map(
-         choice -> choice.getText()).collect(Collectors.toList());
+                Choice::getText).collect(Collectors.toList());
     }
 
     public List<Choice> getCurrentChoices() {

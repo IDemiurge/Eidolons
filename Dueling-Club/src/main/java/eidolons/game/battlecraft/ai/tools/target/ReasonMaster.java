@@ -87,14 +87,14 @@ public class ReasonMaster {
     }
 
     public static List<FILTER_REASON> getReasonsCannotTarget(Action action
-//     , boolean ignoreOthersIfNotFacing
+            //     , boolean ignoreOthersIfNotFacing
     ) {
 
         List<FILTER_REASON> reasonsCannotTarget = getReasonsCannotTarget(action, true, false, null);
         // if reasons are something other than single FACING, we don't care about OTHERS
         if (!reasonsCannotTarget.isEmpty()) {
             if (reasonsCannotTarget.size() != 1
-             && reasonsCannotTarget.get(0) != (FILTER_REASON.FACING)) {
+                    && reasonsCannotTarget.get(0) != (FILTER_REASON.FACING)) {
                 return reasonsCannotTarget;
             }
         }
@@ -113,7 +113,7 @@ public class ReasonMaster {
             targeting = TargetingMaster.findTargeting(action.getActive());
         }
         if (targeting == null) {
-            return     new ArrayList<>() ;
+            return new ArrayList<>();
         }
         Conditions conditions = targeting.getFilter().getConditions();
         // conditions.preCheck(REF);
@@ -134,12 +134,14 @@ public class ReasonMaster {
                     continue;
                 }
             }
-            boolean result = c.isTrue();
-            if (!useConditionResultCache) {
-                result = c.preCheck(REF);
-            } else {
-//                LogMaster.log(0, c + " uses cached result " + result);
-            }
+            //TODO ai Review - is this caching possible/needed?
+            //= c.isTrue();
+            // if (result==null || !useConditionResultCache) {
+            boolean result = c.preCheck(REF);
+            // }
+            // else {
+            //    LogMaster.log(1, c + " reason uses cached result: " + result+ " on " + REF);
+            // }
             if (!result) {
                 if (reason != null) {
                     reasons.add(reason);

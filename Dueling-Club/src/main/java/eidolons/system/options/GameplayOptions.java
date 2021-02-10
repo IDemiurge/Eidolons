@@ -1,16 +1,16 @@
 package eidolons.system.options;
 
-import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE_SCOPE;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import main.content.enums.GenericEnums;
 import main.content.enums.rules.VisionEnums.INFO_LEVEL;
+import main.system.launch.CoreEngine;
 import main.system.text.LogManager;
 
 public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
 
     static {
-        GAMEPLAY_OPTION.RULES_SCOPE.setDefaultValue(RULE_SCOPE.BASIC);
+        GAMEPLAY_OPTION.RULES_SCOPE.setDefaultValue(RuleEnums.RULE_SCOPE.BASIC);
         GAMEPLAY_OPTION.GAME_DIFFICULTY.setDefaultValue(GenericEnums.DIFFICULTY.NOVICE);
         GAMEPLAY_OPTION.INFO_DETAIL_LEVEL.setDefaultValue(INFO_LEVEL.NORMAL);
 
@@ -25,6 +25,7 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
         GAMEPLAY_OPTION.PREGENERATED_RNG_LEVELS.setDevOnly(true);
         GAMEPLAY_OPTION.AUTOSAVE_ON.setDevOnly(true);
 
+        GAMEPLAY_OPTION.AI_DEBUG.setDevOnly(true);
         GAMEPLAY_OPTION.IMMORTALITY.setDevOnly(true);
         GAMEPLAY_OPTION.GHOST_MODE.setDevOnly(true);
     }
@@ -38,7 +39,7 @@ static {
 //    GAMEPLAY_OPTION.LOG_DETAIL_LEVEL.defaultValue= LOG_DETAIL_LEVEL.verbose
 }
     public enum GAMEPLAY_OPTION implements Options.OPTION {
-        RULES_SCOPE(RuleKeeper.RULE_SCOPE.values()),
+        RULES_SCOPE(RuleEnums.RULE_SCOPE.values()),
         GAME_DIFFICULTY(GenericEnums.DIFFICULTY.values()),
 
         //        AI_SPEED,
@@ -48,6 +49,7 @@ static {
         RANDOM_HERO(false),
         MANUAL_CONTROL(false),
         DEBUG_MODE(false),
+        AI_DEBUG(CoreEngine.TEST_LAUNCH),
         LOG_DETAIL_LEVEL(LogManager.LOGGING_DETAIL_LEVEL.values()),
 
         INFO_DETAIL_LEVEL(INFO_LEVEL.values()),

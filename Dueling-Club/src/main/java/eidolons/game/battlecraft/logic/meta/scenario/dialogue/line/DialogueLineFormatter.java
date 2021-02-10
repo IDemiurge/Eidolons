@@ -12,6 +12,7 @@ import main.data.xml.XML_Writer;
 import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.FileManager;
 
 import java.io.File;
@@ -174,15 +175,14 @@ public class DialogueLineFormatter {
             }
 
             if (id != 0) {
-                linearDialogueFileContents += id + StringMaster.NEW_LINE;
+                linearDialogueFileContents += id + Strings.NEW_LINE;
             }
         }
 
     }
 
     public static String getLineFromTextPart(String text) {
-        String lineContents = XML_Converter.wrap(ID + id, text.trim()) + StringMaster.NEW_LINE;
-        return lineContents;
+        return XML_Converter.wrap(ID + id, text.trim()) + Strings.NEW_LINE;
     }
 
 

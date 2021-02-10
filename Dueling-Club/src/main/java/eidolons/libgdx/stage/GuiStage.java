@@ -8,37 +8,33 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueContainer;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.netherflame.igg.event.TipMessageSource;
-import eidolons.game.netherflame.igg.event.TipMessageWindow;
-import eidolons.game.netherflame.igg.soul.EidolonLord;
-import eidolons.game.netherflame.igg.soul.panel.LordPanel;
+import eidolons.game.netherflame.main.soul.EidolonLord;
+import eidolons.game.netherflame.main.soul.panel.LordPanel;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.gui.HideButton;
+import eidolons.libgdx.gui.controls.radial.RadialContainer;
 import eidolons.libgdx.gui.controls.radial.RadialMenu;
-import eidolons.libgdx.gui.controls.radial.RadialValueContainer;
 import eidolons.libgdx.gui.generic.GroupX;
-import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SymbolButton;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.ExtendableLogPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.FullLogPanel;
-import eidolons.libgdx.gui.panels.dc.logpanel.text.OverlayTextPanel;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
@@ -49,6 +45,8 @@ import eidolons.libgdx.screens.map.town.navigation.PlaceNavigationPanel;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.OptionsWindow;
+import eidolons.system.text.tips.TipMessageSource;
+import eidolons.system.text.tips.TipMessageWindow;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.elements.targeting.SelectiveTargeting;
@@ -56,9 +54,11 @@ import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.log.FileLogManager;
 import main.system.graphics.FontMaster;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
 
 import java.util.*;
@@ -70,7 +70,7 @@ import static main.system.GuiEventType.SHOW_TEXT_CENTERED;
 /**
  * Created by JustMe on 2/9/2018.
  */
-public class GuiStage extends GenericGuiStage implements StageWithClosable {
+public abstract class GuiStage extends GenericGuiStage implements StageWithClosable {
 
     private final Blackout blackout;
     protected List<String> charsUp = new ArrayList<>();
@@ -80,7 +80,7 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
     protected RadialMenu radial;
     protected ContainerPanel containerPanel;
     protected GameMenu gameMenu;
-    protected SmartButton menuButton;
+    protected SymbolButton menuButton;
 
     protected HqPanel hqPanel;
     protected boolean blackoutIn;
@@ -102,6 +102,8 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
     protected PlaceNavigationPanel navigationPanel;
     protected HideButton hideQuests;
     protected ExtendableLogPanel logPanel;
+    private GroupX customPanel;
+    private long timeLastTyped;
 
 
     public GuiStage(Viewport viewport, Batch batch) {
@@ -161,12 +163,12 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         logPanel = new ExtendableLogPanel(true);
         // RollDecorator.decorate(log, main.game.bf.directions.FACING_DIRECTION.EAST);
         addActor(logPanel);
-//        logPanel.setOnClose(()->{
-//            GuiEventManager.trigger(GuiEventType. LOG_ROLLED_OUT);
-//        });
-//        logPanel.setOnOpen(()->{
-//            GuiEventManager.trigger(GuiEventType. LOG_ROLLED_IN);
-//        });
+        //        logPanel.setOnClose(()->{
+        //            GuiEventManager.trigger(GuiEventType. LOG_ROLLED_OUT);
+        //        });
+        //        logPanel.setOnOpen(()->{
+        //            GuiEventManager.trigger(GuiEventType. LOG_ROLLED_IN);
+        //        });
         logPanel.
                 setPosition(GdxMaster.getWidth() - logPanel.getWidth(), GdxMaster.getTopY(logPanel));
         addActor(fullLogPanel = new FullLogPanel(100, 200));
@@ -231,9 +233,8 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         ));
         menuButton.setSize(btnBg.getImageWidth(), btnBg.getImageHeight());
         menuButton.addActor(btnBg);
-        this.menuButton = new SmartButton(STD_BUTTON.OPTIONS, () ->
+        this.menuButton = new SymbolButton(STD_BUTTON.OPTIONS, () ->
                 gameMenu.toggle());
-
         this.menuButton.setPosition(-4, 13);
         menuButton.addActor(this.menuButton);
 
@@ -243,20 +244,6 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         menuButton.setPosition(GdxMaster.getWidth() - btnBg.getWidth(),
                 GdxMaster.getHeight() - btnBg.getHeight() + 16);
 
-
-        addActor(locationLabel = new ValueContainer("", "") {
-            @Override
-            protected boolean isVertical() {
-                return true;
-            }
-        });
-        locationLabel.setNameStyle(StyleHolder.getAVQLabelStyle(19));
-        locationLabel.setValueStyle(StyleHolder.getAVQLabelStyle(17));
-
-        locationLabel.padTop(12);
-        locationLabel.padBottom(12);
-        locationLabel.setPosition(0,
-                GdxMaster.getHeight() - locationLabel.getHeight());
     }
 
     protected GameMenu createGameMenu() {
@@ -269,23 +256,7 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
 
     @Override
     public void draw() {
-        //can we just pass if in 'cinematic mode'?
-
-//        if (Cinematics.ON) TODO could it be useful?
-//            if (dialogueContainer.getCurrent().getColor().a == 0) {
-//                getBatch().begin();
-//                drawCinematicMode(getBatch());
-//                blackout.draw(getCustomSpriteBatch());
-//                getBatch().end();
-//                return;
-//            }
-//        if (hqPanel.isVisible()) {
-//            getBatch().begin();
-//            hqPanel.draw(getBatch(), 1f);
-//            getBatch().end();
-//            return;
-//        }
-        if (CoreEngine.isFootageMode()) { //|| !EidolonsGame.isHqEnabled()
+        if (Flags.isFootageMode()) { //|| !EidolonsGame.isHqEnabled()
             getBatch().begin();
             if (gameMenu.isVisible())
                 gameMenu.draw(getBatch(), 1);
@@ -337,13 +308,13 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
 
         blocked = checkBlocked();
 
-        if (actionTooltipContainer != null)
-            if (actionTooltipContainer.getActions().size == 0) {
-                actionTooltipContainer.setFluctuateAlpha(true);
-                if (!Eidolons.getGame().getManager().isSelecting())
-                    if (!CoreEngine.isIggDemoRunning()) //TODO igg demo fix
-                        hideTooltip(actionTooltip, 1);
-            }
+        ////TODO GDx revamp - can't do this all the time!
+        // if (actionTooltipContainer != null)
+        //     if (actionTooltipContainer.getActions().size == 0) {
+        //         actionTooltipContainer.setFluctuateAlpha(true);
+        //         if (!Eidolons.getGame().getManager().isSelecting())
+        //                 hideTooltip(actionTooltip, 1);
+        //     }
         if (infoTooltipContainer != null)
             if (infoTooltipContainer.getActions().size == 0)
                 infoTooltipContainer.setFluctuateAlpha(true);
@@ -360,10 +331,7 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
             }
         }
 
-        if (locationLabel != null) {
-            locationLabel.setPosition(0,
-                    GdxMaster.getHeight() - locationLabel.getHeight());
-        }
+
         super.act(delta);
         resetZIndices();
 
@@ -379,6 +347,10 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
             dialogueActors.add(tipMessageWindow);
         }
         return dialogueActors;
+    }
+
+    protected void afterInit() {
+
     }
 
     protected Actor[] getDialogueActors() {
@@ -406,15 +378,15 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
     }
 
     protected boolean checkBlocked() {
-//        if (dialogueMode)
-//            return true;
+        //        if (dialogueMode)
+        //            return true;
         if (tipMessageWindow != null)
             if (tipMessageWindow.isVisible())
                 if (tipMessageWindow.getColor().a != 0) //TODO why are there such cases?!
                     return true;
         return
                 LordPanel.visibleNotNull() ||
-                        confirmationPanel.isVisible() || textPanel.isVisible() ||
+                        confirmationPanel.isVisible() || GdxMaster.isVisibleEffectively(textPanel) ||
                         HqPanel.getActiveInstance() != null || OptionsWindow.isActive()
                         || GameMenu.menuOpen;
     }
@@ -424,18 +396,23 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         Actor actor = super.hit(stageX, stageY, touchable);
 
         if (actor != null)
-            if (blocked) {
+            if (blocked) { //if an overlay has blocked other UI but we want IT to be touchable
                 if (actor instanceof com.badlogic.gdx.scenes.scene2d.ui.List)
                     return actor;
 
                 List<Group> ancestors = GdxMaster.getAncestors(actor);
+                for (Group ancestor : ancestors) {
+                    if (ancestor == overlayPanel) {
+                        return actor;
+                    }
+                }
                 if (actor instanceof Group)
                     ancestors.add((Group) actor);
                 if (checkContainsNoOverlaying(ancestors)) {
                     if (!ancestors.contains(LordPanel.getInstance()))
                         if (!ancestors.contains(OptionsWindow.getInstance())) {
                             if (GdxMaster.getFirstParentOfClass(
-                                    actor, RadialValueContainer.class) == null) {
+                                    actor, RadialContainer.class) == null) {
                                 if (HqPanel.getActiveInstance() == null || !ancestors.contains(HqPanel.getActiveInstance()))
                                     return null;
                             } else if (
@@ -450,6 +427,11 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
     }
 
     protected boolean checkContainsNoOverlaying(List<Group> ancestors) {
+        for (Group ancestor : ancestors) {
+            if (ancestor instanceof OverlayingUI) {
+                return false;
+            }
+        }
         if (!ancestors.contains(textPanel))
             if (!ancestors.contains(confirmationPanel))
                 if (!ancestors.contains(tipMessageWindow))
@@ -461,6 +443,16 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
 
     protected void bindEvents() {
 
+        GuiEventManager.bind(GuiEventType.SHOW_CUSTOM_PANEL, p -> {
+            addActor(customPanel = (GroupX) p.get());
+            GdxMaster.center(customPanel);
+
+        });
+        GuiEventManager.bind(GuiEventType.HIDE_CUSTOM_PANEL, p -> {
+            customPanel.fadeOut();
+            ActionMaster.addRemoveAfter(customPanel);
+            customPanel = null;
+        });
         GuiEventManager.bind(GuiEventType.TOGGLE_LORD_PANEL, p -> {
             if (lordPanel.isVisible()) {
                 GuiEventManager.trigger(GuiEventType.SHOW_LORD_PANEL, null);
@@ -535,7 +527,7 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         if (tipMessageWindow != null)
             if (tipMessageWindow.isVisible())
                 if (tipMessageWindow.getColor().a > 0) {
-//            ActorMaster.addRemoveAfter(tipMessageWindow);
+                    //            ActorMaster.addRemoveAfter(tipMessageWindow);
                     tipMessageWindow.setOnClose(() -> tip(o));
                     return;
                 }
@@ -581,9 +573,12 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
 
     @Override
     public boolean keyUp(int keyCode) {
+        if (overlayPanel != null)
+            if (!overlayPanel.keyUp(keyCode))
+                return true;
         String c = Keys.toString(keyCode);
-
-        FileLogManager.streamInput("Key Up: " + c);
+        // if (Analystics.inOn())
+        //     FileLogManager.streamInput("Key Up: " + c);
         if (!charsUp.contains(c)) {
             charsUp.add(c);
         }
@@ -592,6 +587,9 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
 
     @Override
     public boolean keyDown(int keyCode) {
+        if (overlayPanel != null)
+            if (!overlayPanel.keyDown(keyCode))
+                return true;
         FileLogManager.streamInput("Key Down: " + Keys.toString(keyCode));
         if (DC_Game.game == null) {
             return false;
@@ -611,6 +609,13 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
 
     @Override
     public boolean keyTyped(char character) {
+        if (GdxMaster.isVisibleEffectively(textInputPanel)) {
+            textInputPanel.keyTyped(character);
+            return true;
+        }
+        if (overlayPanel != null)
+            if (!overlayPanel.keyTyped(character))
+                return true;
         if ((int) character == 0)
             return false;
         FileLogManager.streamInput("Key Typed: " + character);
@@ -620,24 +625,24 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         }
         String str = String.valueOf(character).toUpperCase();
         if (Character.isAlphabetic(character)) {
-            if (character == lastTyped) {
-                if (!charsUp.contains(str)) {
-                    return false;
-                }
-            }
+            // if (character == lastTyped) {
+            //     if (!charsUp.contains(str)) {
+            //         return false;
+            //     }
+            // }
             charsUp.remove(str);
         }
-
+        if (lastTyped == character) {
+            float delta = 450; //TODO gdx quick fix
+            if (TimeMaster.getTime()-timeLastTyped  < delta) {
+                main.system.auxiliary.log.LogMaster.log(1, character + " - DOUBLE keyTyped!");
+                return true;
+            }
+        }
+        timeLastTyped = TimeMaster.getTime();
         lastTyped = character;
 
-        boolean result = false;
-        try {
-            result = handleKeyTyped(character);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-        if (result)
-            return true;
+        Eidolons.onNonGdxThread(() ->  handleKeyTyped(character));
         return super.keyTyped(character);
     }
 
@@ -670,15 +675,12 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         return containerPanel;
     }
 
-    public OverlayTextPanel getTextPanel() {
-        return textPanel;
-    }
 
     public GameMenu getGameMenu() {
         return gameMenu;
     }
 
-    public SmartButton getMenuButton() {
+    public SymbolButton getMenuButton() {
         return menuButton;
     }
 
@@ -701,6 +703,8 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
             tooltips.setZIndex(Integer.MAX_VALUE);
         if (dragManager != null)
             dragManager.setZIndex(Integer.MAX_VALUE);
+        if (cursorDecorator != null)
+            cursorDecorator.setZIndex(Integer.MAX_VALUE);
     }
 
     public void setBlackoutIn(boolean blackoutIn) {
@@ -749,19 +753,19 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
     }
 
     public void afterBlackout(Runnable runnable) {
-//TODO         blackout.fadeOutAndBack(runnable);
+        //TODO         blackout.fadeOutAndBack(runnable);
         runnable.run();
-//        Eidolons.onNonGdxThread(() -> {
-//            int time=0;
-//            while (time < 3000) {
-//                time += 100;
-//                WaitMaster.WAIT(100);
-//                if (blackout.getChildren().getVar(0). getColor().a == 0) {
-//                    Gdx.app.postRunnable(runnable);
-//                    break;
-//                }
-//            }
-//        });
+        //        Eidolons.onNonGdxThread(() -> {
+        //            int time=0;
+        //            while (time < 3000) {
+        //                time += 100;
+        //                WaitMaster.WAIT(100);
+        //                if (blackout.getChildren().getVar(0). getColor().a == 0) {
+        //                    Gdx.app.postRunnable(runnable);
+        //                    break;
+        //                }
+        //            }
+        //        });
 
     }
 
@@ -784,14 +788,14 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
 
         dialogueCache.put(handler.getDialogue(), dialogueContainer);
 
-//        Eidolons.getScreen().toBlack();
-//        Eidolons.getScreen().blackout(5, 0);
+        //        Eidolons.getScreen().toBlack();
+        //        Eidolons.getScreen().blackout(5, 0);
     }
 
     protected void dialogueToggle(boolean on) {
-//        if (!DialogueManager.TEST) {
-//            VisionManager.setCinematicVision(on);
-//        }
+        //        if (!DialogueManager.TEST) {
+        //            VisionManager.setCinematicVision(on);
+        //        }
         setDialogueMode(on);
         DialogueManager.setRunning(on);
         Cinematics.ON = on;
@@ -809,7 +813,7 @@ public class GuiStage extends GenericGuiStage implements StageWithClosable {
         GdxMaster.setDefaultCursor();
         WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.DIALOGUE_DONE, dialogueContainer.getDialogue());
         DialogueManager.dialogueDone();
-        VisionManager.setCinematicVision(false);
+        VisionHelper.setCinematicVision(false);
     }
 
     public boolean isDialogueMode() {

@@ -58,7 +58,7 @@ public class FloatingTextLayer extends GroupX {
     }
 
     private void show(FloatingText text) {
-        float offsetX = 0;
+        float offsetX;
         float offsetY = 0;
         offsetX =
                 displacementInvertFlag
@@ -87,8 +87,7 @@ public class FloatingTextLayer extends GroupX {
 
     public static Float getDurationMod() {
         if (durationMod == null) {
-            durationMod = new Float(
-                    OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.FLOAT_TEXT_DURATION_MOD)) / 100;
+            durationMod = (float) OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.FLOAT_TEXT_DURATION_MOD) / 100;
         }
         return durationMod;
     }

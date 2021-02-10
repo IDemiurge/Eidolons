@@ -2,6 +2,7 @@ package main.level_editor.backend.functions.io;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
@@ -9,7 +10,8 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.netherflame.dungeons.model.assembly.ModuleGridMapper;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.gui.utils.FileChooserX;
+import eidolons.libgdx.utils.GdxDialogMaster;
+import eidolons.system.text.NameMaster;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
@@ -17,9 +19,9 @@ import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.handlers.structure.FloorManager;
 import main.level_editor.backend.struct.campaign.Campaign;
-import main.level_editor.backend.struct.level.Floor;
-import main.level_editor.gui.screen.LE_Screen;
+import main.level_editor.backend.struct.level.LE_Floor;
 import main.system.PathUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 
 import java.util.Calendar;
@@ -28,6 +30,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class LE_DataHandler extends LE_Handler {
+    public static final String PREFIX_CRAWL = "crawl/";
+    public static final String PREFIX_TEMPLATE = "templates/";
     private Campaign campaign;
     private Timer timer;
     private boolean dirty;
@@ -45,7 +49,11 @@ public class LE_DataHandler extends LE_Handler {
             public void run() {
                 if (isDirty())
                     if (isAutosave()) {
-                        autosave();
+                        try {
+                            autosave();
+                        } catch (Exception e) {
+                            main.system.ExceptionMaster.printStackTrace(e);
+                        }
                     }
             }
         };
@@ -58,24 +66,24 @@ public class LE_DataHandler extends LE_Handler {
     }
 
     public void backup() {
-        String path = getBackupPath(getFloor());
-        String contents = FileManager.readFile(getDefaultSavePath(getFloor()));
+        String path = getBackupPath(getFloorWrapper());
+        String contents = FileManager.readFile(getDefaultSavePath(getFloorWrapper()));
         FileManager.write(contents, path);
         EUtils.showInfoText("Backed up as " + PathUtils.getLastPathSegment(path));
     }
 
 
     public void autosave() {
-//        LE_OptionsMaster.getOptions_().getBooleanValue(AUTOSAVE)
+        //        LE_OptionsMaster.getOptions_().getBooleanValue(AUTOSAVE)
         if (isBackupAutosave()) {
-            backup();
+            saveAs(getBackupPath(getFloorWrapper()));
         } else {
             saveFloor();
         }
     }
 
     private boolean isBackupAutosave() {
-        return false;
+        return true;
     }
 
     private boolean isAutosave() {
@@ -84,20 +92,18 @@ public class LE_DataHandler extends LE_Handler {
 
 
     public void saveFloor() {
-        doPresave();
-        String path = getDefaultSavePath(getFloor());
+        String path = getDefaultSavePathFull(getFloorWrapper(), "crawl");
         saveAs(path);
-        setDirty(false);
-        try {
-            saveModulesSeparately();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+        //        try {
+        //            saveModulesSeparately();
+        //        } catch (Exception e) {
+        //            main.system.ExceptionMaster.printStackTrace(e);
+        //        }
     }
 
     private void doPresave() {
-        if (!isResizingSupported()){
-            return ;
+        if (!isResizingSupported()) {
+            return;
         }
         boolean changed = false;
         for (Module module : getModuleHandler().getModules()) {
@@ -106,7 +112,7 @@ public class LE_DataHandler extends LE_Handler {
         }
         if (changed) {
             getModuleHandler().resetBorders();
-            getModuleHandler().resetBufferVoid();
+            getModuleHandler().initVoidCells();
             getStructureHandler().resetWalls(getDungeonLevel());
         }
         if (getModuleHandler().getModuleGrid() != null) {
@@ -128,7 +134,7 @@ public class LE_DataHandler extends LE_Handler {
         int h = structure.getEffectiveHeight(false);
         int originalH = h;
         int originalW = w;
-//        structure.getEffectiveHeight()
+        //        structure.getEffectiveHeight()
         Set<Coordinates> coordinatesSet = structure.initCoordinateSet(false);
         Set<Coordinates> coordinatesSetToSearch = structure.initCoordinateSet(true);
         int maxX = CoordinatesMaster.getMaxX(coordinatesSet);
@@ -137,7 +143,7 @@ public class LE_DataHandler extends LE_Handler {
         int minY = CoordinatesMaster.getMinY(coordinatesSet);
 
         for (Coordinates coordinates : coordinatesSetToSearch) {
-            Set<BattleFieldObject> objects = DC_Game.game.getObjectsOnCoordinate(coordinates);
+            Set<BattleFieldObject> objects = DC_Game.game.getObjectsOnCoordinateNoOverlaying(coordinates);
             if (!objects.isEmpty()) {
                 for (BattleFieldObject object : objects) {
                     if (object.isModuleBorder()) {
@@ -174,67 +180,137 @@ public class LE_DataHandler extends LE_Handler {
         return changed;
     }
 
-    public void saveModulesSeparately() {
-        for (Module module : getModuleHandler().getModules()) {
-            String contents = getXmlMaster().toXml(getFloorWrapper(), module);
-            String path = getStandalonePath(module);
+    public void saveModule() {
+        saveModule(getModel().getModule());
+    }
+
+    public void saveModule(Module module) {
+        String contents = getXmlMaster().toXml(getFloorWrapper(), module);
+        String path = getStandalonePath(module);
+        FileManager.write(contents, path);
+        EUtils.showInfoText("Saved " +
+                module.getName() +
+                " as " + PathUtils.getLastPathSegment(path));
+        if (isAutowrapSavedModules()) {
+            contents = getXmlMaster().wrapSingleModule(getFloorWrapper(), module, contents);
             FileManager.write(contents, path);
-            EUtils.showInfoText("Saved " +
-                    module +
-                    " as " + PathUtils.getLastPathSegment(path));
         }
     }
 
+    private boolean isAutowrapSavedModules() {
+        return true;
+    }
+
+    public void saveModulesSeparately() {
+        for (Module module : getModuleHandler().getModules()) {
+            saveModule(module);
+        }
+    }
+
+
     private String getStandalonePath(Module module) {
-        return PathFinder.getModuleTemplatesPath() + " " + module.getName() + ".xml";
+        String value = module.getData().getValue(LevelStructure.MODULE_VALUE.readiness);
+        if (value.isEmpty()) {
+            value = "new";
+        }
+        value = value.toLowerCase();
+        return PathFinder.getModuleTemplatesPath() + value + "/" +
+                module.getName() + ".xml";
+    }
+
+    public void saveVersion() {
+        String path = getDefaultSavePath(getFloorWrapper());
+        String name = FileManager.getFileNameAndFormat(path);
+          path = PathUtils.cropLastPathSegment(path);
+        String newName = NameMaster.getUniqueVersionedFileName(name,PathFinder.getDungeonLevelFolder()+ path);
+        saveAs((path) + "/" + newName);
+
+        getFloorWrapper().setName(StringMaster.cropFormat(newName));
+        //        getFloorWrapper().getData().apply();
+        getStructureHandler().updateTree();
+    }
+
+    public void saveAs() {
+        String path = GdxDialogMaster.inputText("Enter save path", getDefaultSavePath(getFloorWrapper()));
+        if (path == null) {
+            return;
+        }
+        saveAs(path);
+
+        boolean rename = EUtils.waitConfirm("Rename?");
+        if (rename) {
+            String name = StringMaster.getNameFromPath(path);
+            getFloorWrapper().setName(name);
+        }
     }
 
     public void saveAs(String path) {
+        saveAs(path, true);
+    }
+
+    public void saveAs(String path, boolean saveToCategoryFolder) {
+        doPresave();
         String contents = getXmlMaster().toXml(getFloorWrapper());
-        FileManager.write(contents, path);
-        EUtils.showInfoText("Saved as " + PathUtils.getLastPathSegment(path));
-    }
-
-    private String getBackupPath(Floor floor) {
-        return getDefaultSavePath(floor, "backup");
-    }
-
-    private String getDefaultSavePath(Floor floor, String prefix) {
-        String value = floor.getWrapper().getData().getValue(LevelStructure.FLOOR_VALUES.filepath);
-        if (!value.isEmpty()) {
-            return PathFinder.getDungeonLevelFolder() + prefix + "/" + value + ".xml";
+        FileManager.write(contents, PathFinder.getDungeonLevelFolder() + path);
+        if (saveToCategoryFolder
+                && !getFloorWrapper().getData().getValue(LevelStructure.FLOOR_VALUES.readiness).isEmpty()) {
+            FileManager.write(contents, PathFinder.getDungeonLevelFolder() +
+                    getFloorWrapper().getData().getValue(LevelStructure.FLOOR_VALUES.readiness)
+                    + "/" + path);
+            //TODO how to ensure there is no duplicating?
         }
-        return PathFinder.getDungeonLevelFolder() + prefix + "/" + floor.getName() + ".xml";
+        EUtils.showInfoText("Saved as " + PathUtils.getLastPathSegment(path));
+
+        for (LE_Handler handler : LevelEditor.getManager().getHandlers()) {
+            handler.saved();
+        }
+        setDirty(false);
     }
 
-    private String getDefaultSavePath(Floor floor) {
+    private String getBackupPath(Location location) {
+        return "backup/" + getDefaultSavePath(location);
+    }
+
+    public String getDefaultSavePath(Location location, String prefix) {
+        String value = location.getData().getValue(LevelStructure.FLOOR_VALUES.filepath);
+        if (value.isEmpty()) {
+            return prefix + "/" + location.getName() + ".xml";
+        }
+        return value;
+    }
+
+    public String getDefaultSavePathFull(Location location, String prefix) {
+        return getDefaultSavePath(location, prefix);
+    }
+
+    public String getDefaultSavePath(Location floor) {
         String prefix = "";
         if (campaign == null) {
             if (LevelEditor.TEST_MODE) {
                 prefix = "test/";
             } else {
-                prefix = "crawl/";
-//                prefix += floor.getGame().getDungeon().getGroup() + "/";
+                prefix = PREFIX_CRAWL;
+                //                prefix += floor.getGame().getDungeon().getGroup() + "/";
             }
         } else {
-//            TODO campaign
+            //            TODO campaign
         }
         return getDefaultSavePath(floor, prefix);
     }
 
     public void open(String floorName) {
         Campaign campaign = getDataHandler().getCampaign();
-//        campaign.getFloorPath(floorName);
-//        Floor floor = getDataHandler().loadFloor(floorName);
-//        LevelEditor.floorSelected(floor);
+        //        campaign.getFloorPath(floorName);
+        //        Floor floor = getDataHandler().loadFloor(floorName);
+        //        LevelEditor.floorSelected(floor);
 
-//        ScreenData data = new ScreenData(SCREEN_TYPE.EDITOR, floorName);
-//        data.setParam(new EventCallbackParam(floor));
-//        GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
+        //        ScreenData data = new ScreenData(SCREEN_TYPE.EDITOR, floorName);
+        //        data.setParam(new EventCallbackParam(floor));
+        //        GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
 
     }
 
-    public void activateFloorTab(Floor floor) {
+    public void activateFloorTab(LE_Floor floor) {
 
     }
 
@@ -243,9 +319,6 @@ public class LE_DataHandler extends LE_Handler {
     }
 
     public void openFloor() {
-        String file = FileChooserX.chooseFile(PathFinder.getDungeonLevelFolder(),
-                "xml", LE_Screen.getInstance().getGuiStage());
-
         FloorManager.addFloor();
     }
 
@@ -261,5 +334,13 @@ public class LE_DataHandler extends LE_Handler {
         } else {
             GdxMaster.setWindowName(LevelEditor.getWindowName());
         }
+    }
+
+    public void saveAll() {
+        for (LE_Floor floor : FloorManager.getFloors()) {
+            FloorManager.setTempFloor(floor);
+            saveFloor();
+        }
+        FloorManager.resetTempFloor();
     }
 }

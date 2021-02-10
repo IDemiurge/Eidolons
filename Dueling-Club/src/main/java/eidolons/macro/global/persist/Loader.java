@@ -18,6 +18,7 @@ import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.data.xml.XmlNodeMaster;
 import main.entity.type.ObjType;
+import main.entity.type.TypeBuilder;
 import main.system.GuiEventType;
 import main.system.SortMaster;
 import main.system.auxiliary.ContainerUtils;
@@ -25,7 +26,6 @@ import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.datatypes.DequeImpl;
-import main.system.launch.TypeBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -77,11 +77,11 @@ public class Loader {
         );
         Document xmlDoc = XML_Converter.getDoc(xml);
 
-        Unit hero = null;// Eidolons.getMainHero();
+        Unit hero;// Eidolons.getMainHero();
         Node node = XmlNodeMaster.findNode(xmlDoc, Saver.HERO_NODE);
         ObjType loadedType = TypeBuilder.buildType(node.getFirstChild(),
          DataManager.getType(
-          StringMaster.getWellFormattedString(
+          StringMaster.format(
            node.getFirstChild().getNodeName()), DC_TYPE.CHARS));
         //        hero.applyType(loadedType);
         //overload type?
@@ -93,8 +93,8 @@ public class Loader {
             PROPERTY prop = ContentValsManager.getPROP(propNode.getNodeName());
             for (Node sub : XmlNodeMaster.getNodeList(propNode)) {
                 Node typeNode = sub.getFirstChild();
-                int id = NumberUtils.getInteger(StringMaster.getLastPart(sub.getNodeName(), "_"));
-                String name = StringMaster.getWellFormattedString(sub.getNodeName().replace("" + id, ""));
+                int id = NumberUtils.getIntParse(StringMaster.getLastPart(sub.getNodeName(), "_"));
+                String name = StringMaster.format(sub.getNodeName().replace("" + id, ""));
                 OBJ_TYPE TYPE = DC_ContentValsManager.getTypeForProperty(prop);
                 ObjType type = DataManager.getType(name, TYPE);
 
@@ -126,7 +126,7 @@ public class Loader {
             for (String substring : ContainerUtils.openContainer(hero.getProperty(sub))) {
                 if (!NumberUtils.isInteger(substring))
                     continue;
-                int id = NumberUtils.getInteger(substring);
+                int id = NumberUtils.getIntParse(substring);
                 newValue += itemMap.get(id).getId() + ";";
             }
             hero.setProperty(sub, newValue);
@@ -145,7 +145,7 @@ public class Loader {
         DequeImpl<DC_HeroItemObj> container = new DequeImpl<>();
 
         for (String substring : ContainerUtils.openContainer(entity.getProperty(prop))) {
-            container.add(itemMap.get(NumberUtils.getInteger(substring)));
+            container.add(itemMap.get(NumberUtils.getInt(substring)));
         }
 
         return container;
@@ -153,7 +153,7 @@ public class Loader {
 
     public static DC_HeroItemObj getLoadedItem(Unit entity, G_PROPS prop) {
         return
-         itemMap.get(NumberUtils.getInteger(entity.getProperty(prop)));
+         itemMap.get(NumberUtils.getIntParse(entity.getProperty(prop)));
     }
 
     public static String getLoadedMainHeroName() {

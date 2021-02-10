@@ -1,7 +1,7 @@
 package eidolons.libgdx.gui.panels.headquarters.creation.selection.misc;
 
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SmartTextButton;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.headquarters.creation.HcElement;
 import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationMaster;
@@ -21,16 +21,15 @@ import main.data.filesys.PathFinder;
 public class HcIntro extends HcElement {
     private static final String RECOMMENDED = "Demo Fighter";
 
-    private final DescriptionScroll description;
-
     public HcIntro() {
         super();
-        add(description= new DescriptionScroll()).row();
+        DescriptionScroll description;
+        add(description = new DescriptionScroll()).row();
         description.setUserObject(new SelectableItemData("Welcome!", getDescription(),
          getPreviewOne(), getPreviewTwo()));
 //        add(new TextButtonX("Select Preset", STD_BUTTON.MENU, () ->selectPreset()));
-        add(new SmartButton("Random Preset", STD_BUTTON.MENU, () ->randomPreset())).row();
-        add(new SmartButton("Recommended", STD_BUTTON.MENU, () ->recommended()));
+        add(new SmartTextButton("Random Preset", STD_BUTTON.MENU, this::randomPreset)).row();
+        add(new SmartTextButton("Recommended", STD_BUTTON.MENU, this::recommended));
 
 
     }

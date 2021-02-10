@@ -5,15 +5,16 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.content.PARAMS;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActionMaster;
-import eidolons.libgdx.anims.Assets;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
+import eidolons.libgdx.assets.Assets;
 import eidolons.libgdx.bf.datasource.SpriteData;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.NoHitImage;
@@ -28,12 +29,11 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.FileManager;
+import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by JustMe on 10/12/2018.
@@ -42,7 +42,7 @@ public class FullscreenAnims extends GroupX {
     public static final boolean randomFacingMode = true;
     private static final float DELAY = 0.5f;
     private static final boolean SPRITE_MODE = true; //TODO just make 2 instances
-    Map<FULLSCREEN_ANIM, Map<FACING_DIRECTION, Actor>> groupCache = new HashMap<>();
+    ObjectMap<FULLSCREEN_ANIM, ObjectMap<FACING_DIRECTION, Actor>> groupCache = new ObjectMap<>();
     private FullscreenAnimDataSource data;
     private float delayTimer;
     private float showingTimer;
@@ -52,7 +52,7 @@ public class FullscreenAnims extends GroupX {
     public FullscreenAnims() {
         if (!SPRITE_MODE)
             init();
-        GuiEventManager.bind(GuiEventType.INGAME_EVENT_TRIGGERED, p -> {
+        GuiEventManager.bind(GuiEventType.INGAME_EVENT, p -> {
             Event e = (Event) p.get();
             FULLSCREEN_ANIM type = getType(e);
             if (type == null) {
@@ -147,12 +147,15 @@ public class FullscreenAnims extends GroupX {
 
 
     private void initAnim(FullscreenAnimDataSource dataSource) {
+        if (!isOn()){
+            return;
+        }
         String path =
 //                FileManager.getRandomFilePathVariant(
 //                PathFinder.getImagePath()+
                 dataSource.type.getSpritePath();
         if (Assets.get().getManager().isLoaded(path)){
-            main.system.auxiliary.log.LogMaster.dev("No fullscreen anim preloaded for " +path);
+            main.system.auxiliary.log.LogMaster.devLog("No fullscreen anim preloaded for " +path);
             return;
         }
         SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(path, false, false);
@@ -178,7 +181,7 @@ public class FullscreenAnims extends GroupX {
         }
         spriteList.add(sprite);
 
-        main.system.auxiliary.log.LogMaster.dev("Fullscreen anim added: " +path);
+        main.system.auxiliary.log.LogMaster.devLog("Fullscreen anim added: " +path);
         if (dataSource.type.color != null) {
             sprite.setColor(dataSource.type.color);
         }
@@ -191,6 +194,10 @@ public class FullscreenAnims extends GroupX {
 //        }
 //        delayTimer = DELAY;
 //        showingTimer = getDuration() + delayTimer;
+    }
+
+    private boolean isOn() {
+        return !CoreEngine.TEST_LAUNCH;
     }
 
     @Override
@@ -279,13 +286,14 @@ public class FullscreenAnims extends GroupX {
 
     private void init() {
         for (FULLSCREEN_ANIM type : FULLSCREEN_ANIM.values()) {
-            Map<FACING_DIRECTION, Actor> map = new HashMap<>();
+            ObjectMap<FACING_DIRECTION, Actor> map = new ObjectMap<>();
             for (FACING_DIRECTION facing : FACING_DIRECTION.values) {
                 //                Actor group = new Actor();
 
                 String path = PathFinder.getImagePath() + getCorePath() + type;
                 path = FileManager.getRandomFilePathVariant(path, ".png");
                 path = GdxImageMaster.cropImagePath(path);
+                //TODO Anim Review
                 Image img = new NoHitImage(TextureCache.getOrCreateR(path));
                 //                group.addActor(img);
                 img.setVisible(false);

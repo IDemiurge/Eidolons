@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 
 public class DummyParticleEffectX extends ParticleEffectX {
     public DummyParticleEffectX(String s) {
-
     }
 
     @Override

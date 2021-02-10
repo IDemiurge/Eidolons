@@ -9,9 +9,7 @@ import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.math.DC_MathManager;
 import main.content.C_OBJ_TYPE;
-import main.content.ContentValsManager;
 import main.content.DC_TYPE;
-import main.content.values.parameters.PARAMETER;
 import main.data.DataManager;
 import main.entity.handlers.EntityCalculator;
 import main.entity.handlers.EntityMaster;
@@ -178,35 +176,10 @@ public class UnitCalculator extends EntityCalculator<Unit> {
 
     }
 
-    public int calculateInitiative(boolean current) {
-        PARAMETER param = PARAMS.N_OF_ACTIONS;
-        if (current) {
-            param = ContentValsManager.getCurrentParam(param);
-        }
-        int initiative =
-         getIntParam(param)
-          * getIntParam(PARAMS.INITIATIVE_MODIFIER);
-        initiative += getIntParam(PARAMS.C_INITIATIVE_BONUS);
-
-        if (game.isDummyMode()) {
-            if (!getChecker().isBfObj()) {
-                if (!getChecker().isNeutral()) {
-                    if (!getEntity().getOwner().isMe()) {
-                        initiative = Math.min(10, getGame().getRules().getTimeRule()
-                         .getTimeRemaining() + 1);
-                    }
-                }
-            }
-        }
-        return initiative;
-    }
 
     @Override
     public DC_Game getGame() {
         return (DC_Game) super.getGame();
     }
 
-    public Integer getFocusRecoveryRequirement() {
-        return getEntity().getIntParam(PARAMS.FOCUS_RECOVER_REQ);
-    }
 }

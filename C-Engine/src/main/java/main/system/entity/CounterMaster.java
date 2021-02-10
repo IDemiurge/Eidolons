@@ -4,6 +4,7 @@ import main.content.enums.entity.UnitEnums.COUNTER;
 import main.entity.obj.Obj;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 
 public class CounterMaster {
 
@@ -28,10 +29,10 @@ public class CounterMaster {
         COUNTER c = getCounter(valueName, strict);
         if (c != null)
             return c.getName().toUpperCase();
-        valueName = StringMaster.getWellFormattedString(valueName);
-        if (!valueName.contains(StringMaster.COUNTER)) {
-            valueName = StringMaster.getWellFormattedString(valueName.trim())
-             + StringMaster.COUNTER;
+        valueName = StringMaster.format(valueName);
+        if (!valueName.contains(Strings.COUNTER)) {
+            valueName = StringMaster.format(valueName.trim())
+             + Strings.COUNTER;
         }
 
         return valueName.toUpperCase();
@@ -41,8 +42,8 @@ public class CounterMaster {
         if (valueName == null) {
             return null;
         }
-        if (!StringMaster.contains(valueName, StringMaster.COUNTER, true, true)) {
-            valueName = valueName + StringMaster.COUNTER;
+        if (!StringMaster.contains(valueName, Strings.COUNTER, true, true)) {
+            valueName = valueName + Strings.COUNTER;
         }
         COUNTER counter = new EnumMaster<COUNTER>().retrieveEnumConst(COUNTER.class,
          valueName);

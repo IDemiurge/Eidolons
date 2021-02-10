@@ -30,8 +30,11 @@ import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.secondary.WorkspaceMaster;
 import main.system.entity.FilterMaster;
 
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+@Deprecated
 public class DivinationMaster {
     public static final String BUFF_FAVORED = "Favored";
     private static final int MAX_SPELL_DIVINE_CHANCE = 20;
@@ -138,7 +141,7 @@ public class DivinationMaster {
         if (hero.checkPassive(UnitEnums.STANDARD_PASSIVES.HOLY_PRAYER)) {
             Ref ref = Ref.getSelfTargetingRefCopy(hero);
             ref.setID(KEYS.SPELL, spell.getId());
-            new ModifyValueEffect(PARAMS.C_MORALE, MOD.MODIFY_BY_CONST,
+            new ModifyValueEffect(PARAMS.C_ESSENCE, MOD.MODIFY_BY_CONST,
              DC_Formulas.HOLY_PRAYER_MORALE).apply(ref);
             // ++ REMOVE COOLDOWN FROM SPELL?
         }
@@ -150,7 +153,7 @@ public class DivinationMaster {
           MOD.MODIFY_BY_PERCENT, "-25"),
          new ModifyValueEffect(PARAMS.FOC_COST,
           MOD.MODIFY_BY_PERCENT, "-25"),
-         new ModifyValueEffect(PARAMS.STA_COST,
+         new ModifyValueEffect(PARAMS.TOU_COST,
           MOD.MODIFY_BY_PERCENT, "-25"),
          new ModifyValueEffect(PARAMS.SPELLPOWER_MOD,
           MOD.MODIFY_BY_PERCENT, "25")));
@@ -192,10 +195,10 @@ public class DivinationMaster {
         List<ObjType> types = DataManager.toTypeList(
          DataManager
           .getTypesSubGroupNames(DC_TYPE.SPELLS, StringMaster
-           .getWellFormattedString(chosenGroup.name())),
+           .format(chosenGroup.name())),
          DC_TYPE.SPELLS);
         FilterMaster.filterOut(types, sdCondition);
-        Collections.sort(types, getComparator());
+        types.sort(getComparator());
         spellPool.addAll(types);
     }
 

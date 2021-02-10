@@ -15,20 +15,21 @@ import eidolons.entity.obj.attach.DC_HeroAttachedObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.AI_Manager;
-import eidolons.game.battlecraft.logic.battle.test.TestBattleMaster;
-import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.DC_BattleFieldManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.logic.battlefield.DroppedItemManager;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
+import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMap;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGame;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import eidolons.game.battlecraft.logic.mission.test.TestMissionMaster;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
+import eidolons.game.battlecraft.logic.mission.universal.MissionMaster;
 import eidolons.game.battlecraft.rules.DC_Rules;
 import eidolons.game.battlecraft.rules.combat.attack.DC_AttackMaster;
 import eidolons.game.battlecraft.rules.combat.damage.ArmorMaster;
@@ -42,13 +43,12 @@ import eidolons.game.core.state.DC_StateManager;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExploreGameLoop;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
-import eidolons.game.netherflame.igg.pale.PaleAspect;
+import eidolons.game.netherflame.main.pale.PaleAspect;
 import eidolons.macro.entity.town.Town;
 import eidolons.system.DC_ConditionMaster;
 import eidolons.system.DC_RequirementsManager;
-import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
-import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
 import eidolons.system.hotkey.DC_KeyManager;
 import eidolons.system.math.DC_MathManager;
 import eidolons.system.test.TestMasterContent;
@@ -68,23 +68,23 @@ import main.game.bf.GraveyardManager;
 import main.game.bf.directions.DIRECTION;
 import main.game.core.game.Game;
 import main.game.core.game.GenericGame;
+import main.game.core.state.GameState;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.Refactor;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.entity.IdManager;
 import main.system.launch.CoreEngine;
-import main.system.sound.SoundMaster.STD_SOUNDS;
-import main.system.util.Refactor;
+import main.system.launch.Flags;
 
 import java.util.*;
 
-import static main.system.launch.CoreEngine.isCombatGame;
+import static main.system.launch.Flags.isCombatGame;
 
 /**
  * contains references to everything that may be needed in scope of a single game
@@ -98,7 +98,7 @@ public class DC_Game extends GenericGame {
 
     protected MetaGameMaster metaMaster;
     protected DungeonMaster dungeonMaster;
-    protected BattleMaster battleMaster;
+    protected MissionMaster missionMaster;
     protected CombatMaster combatMaster;
 
     protected InventoryTransactionManager inventoryTransactionManager;
@@ -119,7 +119,7 @@ public class DC_Game extends GenericGame {
 
 
     protected Map<Coordinates, Map<BattleFieldObject, DIRECTION>> directionMap; // ?!
-    protected HashMap<Coordinates, Map<BattleFieldObject, FLIP>> flipMap;
+    protected Map<Coordinates, FLIP> flipMap = new LinkedHashMap<>();
 
     protected boolean testMode;
     protected boolean dummyPlus;
@@ -136,7 +136,6 @@ public class DC_Game extends GenericGame {
 
     @Refactor
     public Town town; //TODO
-    private boolean bossFight;
 
     protected DC_GameObjMaster paleMaster;
 
@@ -182,27 +181,28 @@ public class DC_Game extends GenericGame {
     public void initMasters(boolean nextLevel) {
 
         setIdManager(new DC_IdManager(this));
-        master = new DC_GameObjMaster(this);
+        objMaster = new DC_GameObjMaster(this);
         paleMaster = new DC_GameObjMaster(this, true);
         manager = createGameManager();
         manager.init();
 
         combatMaster = createCombatMaster();
 
-        requirementsManager = new DC_RequirementsManager(this);
+        requirementsManager = new DC_RequirementsManager();
         valueManager = new DC_ValueManager(this);
         if (!isSimulation())
-            visionMaster = new VisionMaster(this);
+            visionMaster = createVisionMaster();
         mathManager = new DC_MathManager(this);
         effectManager = new DC_EffectManager(this);
         setTestMaster(new TestMasterContent(this));
         conditionMaster = new DC_ConditionMaster();
-        logManager = new DC_LogManager(this);
+        if (!isSimulation()) {
+            logManager = new DC_LogManager(this);
+        }
+        if (!CoreEngine.isArcaneVault())
+             rules = new DC_Rules(this);
 
-//        if (isCombatGame())
-        rules = new DC_Rules(this);
-
-        if (!isCombatGame() && !CoreEngine.isDungeonTool() && !CoreEngine.isLevelEditor())
+        if (!isCombatGame() && !Flags.isDungeonTool() && !CoreEngine.isLevelEditor())
             return;
         if (isSimulation()) {
             return;
@@ -213,13 +213,17 @@ public class DC_Game extends GenericGame {
         }
         dungeonMaster = createDungeonMaster();
 
-        //TODO igg demo hack
+        //TODO DC main - transit
         if (nextLevel)
             dungeonMaster.setExplorationMaster(master);
         if (!isCombatGame())
             return;
-        battleMaster = createBattleMaster();
+        missionMaster = createBattleMaster();
         musicMaster = MusicMaster.getInstance();
+    }
+
+    protected VisionMaster createVisionMaster() {
+        return new VisionMaster(this);
     }
 
     protected DC_GameManager createGameManager() {
@@ -245,23 +249,35 @@ public class DC_Game extends GenericGame {
         return new DC_KeyManager(getManager());
     }
 
-    protected BattleMaster createBattleMaster() {
-        return new TestBattleMaster(this);
+    protected MissionMaster createBattleMaster() {
+        return new TestMissionMaster(this);
     }
 
     protected boolean isLocation() {
-        return CoreEngine.isMainGame();
+        return Flags.isMainGame();
     }
 
     protected DungeonMaster createDungeonMaster() {
         return new LocationMaster(this);
     }
 
-    public void initGrid(Module module) {
+    Map<Module, GameState> stateMap = new HashMap<>();
+
+    public void enterModule(Module module) {
         if (grid == null) {
             grid = new DC_BattleFieldGrid(module);
         } else
             grid.setModule(module);
+
+        if (state != null) {
+            stateMap.put(module, state);
+        } else {
+            state = stateMap.get(module);
+            if (state == null) {
+                state = new DC_GameState(this);
+                stateMap.put(module, state);
+            }
+        }
     }
 
     public void battleInit() {
@@ -272,15 +288,14 @@ public class DC_Game extends GenericGame {
         }
         ActionGenerator.init();
 
-        getRules().getIlluminationRule().clearCache();
+        getVisionMaster().getIllumination().clearCache();
         inventoryTransactionManager = new InventoryTransactionManager(this);
         inventoryManager = new DC_InventoryManager();
-        battleMaster.init();
+        missionMaster.init();
         if (AI_ON) {
             aiManager = new AI_Manager(this);
         }
         dungeonMaster.init();
-        setOffline(true);
 
         battleFieldManager = new DC_BattleFieldManager(this, getModule().getId(),
                 getModule().getEffectiveWidth(), getModule().getEffectiveHeight());
@@ -288,13 +303,13 @@ public class DC_Game extends GenericGame {
         droppedItemManager = new DroppedItemManager(this);
         droppedItemManager.init();
 
-
+        getDungeonMaster().getModuleLoader().loadInitial();
+        getDungeonMaster().loadingDone();
+        getMetaMaster().loadingDone();
         if (AI_ON) {
             aiManager.init();
             dungeonMaster.getExplorationMaster().getAiMaster().getExploreAiManager().initialize();
         }
-
-        getDungeonMaster().getModuleLoader().loadInitial();
         setBattleInit(true);
     }
 
@@ -309,7 +324,7 @@ public class DC_Game extends GenericGame {
 
         keyManager.init();
         getGraveyardManager().init();//TODO in init?
-        battleMaster.startGame();
+        missionMaster.startGame();
 
         if (getMetaMaster() != null)
             getMetaMaster().gameStarted();
@@ -319,7 +334,7 @@ public class DC_Game extends GenericGame {
             dungeonMaster.getExplorationMaster().init();
 
         }
-        visionMaster.refresh();
+//        visionMaster.refresh();
         getMetaMaster().getDialogueManager().introDialogue();
         DialogueManager.afterDialogue(() -> {
             fireEvent(new Event(Event.STANDARD_EVENT_TYPE.INTRO_FINISHED, new Ref()));
@@ -334,7 +349,7 @@ public class DC_Game extends GenericGame {
 
     public void startGameLoop() {
         startGameLoop(true);
-        getVisionMaster().refresh();
+//        getVisionMaster().refresh();
     }
 
 
@@ -372,7 +387,7 @@ public class DC_Game extends GenericGame {
         else
             exploreLoop.startInNewThread();
         if (isStarted())
-            musicMaster.scopeChanged(MUSIC_SCOPE.ATMO);
+            musicMaster.scopeChanged(MusicEnums.MUSIC_SCOPE.ATMO);
         getStateManager().newRound();
 
 
@@ -390,11 +405,9 @@ public class DC_Game extends GenericGame {
         else
             combatLoop.resume();
 
-        musicMaster.scopeChanged(MUSIC_SCOPE.BATTLE);
-        DC_SoundMaster.playStandardSound(
-                RandomWizard.random() ? STD_SOUNDS.NEW__BATTLE_START2
-                        : STD_SOUNDS.NEW__BATTLE_START);
+        musicMaster.scopeChanged(MusicEnums.MUSIC_SCOPE.BATTLE);
 
+        metaMaster.combatStarts();
     }
 
 
@@ -422,21 +435,11 @@ public class DC_Game extends GenericGame {
         return unit;
     }
 
-    public void destruct() {
-        state.getObjMaps().clear();
-        state.getObjects().clear();
-        state.getAttachments().clear();
-        state.getTriggers().clear();
-        state.getTypeMap().clear();
-        getUnits().clear();
-        getStructures().clear();
-        getCells().clear();
-    }
 
     @Override
     public void initObjTypes() {
         super.initObjTypes();
-        if (CoreEngine.isMacro()) {
+        if (Flags.isMacro()) {
             for (OBJ_TYPE TYPE : MACRO_OBJ_TYPES.values()) {
                 if (TYPE.getCode() == -1) {
                     continue;
@@ -447,61 +450,70 @@ public class DC_Game extends GenericGame {
         if (!CoreEngine.isLevelEditor())
             if ((!CoreEngine.isArcaneVault()
                     || !XML_Reader.isMacro())
-                    && !CoreEngine.isItemGenerationOff()
+                    && !Flags.isItemGenerationOff()
             ) {
-                itemGenerator = new ItemGenerator(CoreEngine.isFastMode());
+                itemGenerator = new ItemGenerator(Flags.isFastMode());
                 itemGenerator.init();
             }
 
     }
 
     public Obj getObjectVisibleByCoordinate(Coordinates c) {
-        return getMaster().getObjectVisibleByCoordinate(c);
+        return getObjMaster().getObjectVisibleByCoordinate(c);
     }
 
-    public DC_GameObjMaster getMaster() {
+    public DC_GameObjMaster getObjMaster() {
         if (PaleAspect.ON)
             return getPaleMaster();
-        return (DC_GameObjMaster) master;
+        return (DC_GameObjMaster) objMaster;
     }
 
     public DC_GameObjMaster getPaleMaster() {
         return paleMaster;
     }
 
-    public Obj getObjectByCoordinate(Coordinates c, boolean cellsIncluded) {
-        return getMaster().getObjectByCoordinate(c, cellsIncluded);
-    }
 
-    public Obj getObjectByCoordinate(Coordinates c, boolean cellsIncluded, boolean passableIncluded, boolean overlayingIncluded) {
-        return getMaster().getObjectByCoordinate(c, cellsIncluded, passableIncluded, overlayingIncluded);
+    public Obj getObjectByCoordinate(Coordinates c, Boolean overlayingIncluded ) {
+        return getObjMaster().getObjectByCoordinate(c, overlayingIncluded );
     }
 
     public Set<BattleFieldObject> getOverlayingObjects(Coordinates c) {
-        return getMaster().getOverlayingObjects(c);
+        return getObjMaster().getOverlayingObjects(c);
     }
 
-    public Set<BattleFieldObject> getObjectsOnCoordinate(Coordinates c, Boolean overlayingIncluded, boolean passableIncluded, boolean cellsIncluded) {
-        return getMaster().getObjectsOnCoordinate(c, overlayingIncluded, passableIncluded, cellsIncluded);
+    public Set<BattleFieldObject> getObjectsNoOverlaying(Coordinates c) {
+        return getObjMaster().getObjectsOnCoordinate(c, false );
+    }
+    public Set<BattleFieldObject> getObjectsOnCoordinateNoOverlaying(Coordinates c) {
+        return getObjectsOnCoordinate(c, false );
+    }
+    public Set<BattleFieldObject> getObjectsOnCoordinateAll(Coordinates c  ) {
+        return getObjMaster().getObjectsOnCoordinate(c, true  );
+    }
+    public Set<BattleFieldObject> getObjectsOnCoordinate(Coordinates c, Boolean overlayingIncluded  ) {
+        return getObjMaster().getObjectsOnCoordinate(c, overlayingIncluded );
     }
 
     public Set<DC_Cell> getCellsForCoordinates(Set<Coordinates> coordinates) {
-        return getMaster().getCellsForCoordinates(coordinates);
+        return getObjMaster().getCellsForCoordinates(coordinates);
     }
 
     public Unit getUnitByCoordinate(Coordinates coordinates) {
-        return getMaster().getUnitByCoordinate(coordinates);
+        return getObjMaster().getUnitByCoordinate(coordinates);
     }
 
     public Collection<Unit> getUnitsForCoordinates(Coordinates... coordinates) {
-        return getMaster().getUnitsOnCoordinates(coordinates);
+        return getObjMaster().getUnitsOnCoordinates(coordinates);
     }
 
     @Override
     public void remove(Obj obj) {
         super.remove(obj);
-        if (obj instanceof Unit) {
-            removeUnit((Unit) obj);
+        if (obj instanceof BattleFieldObject) {
+            if (((BattleFieldObject) obj).isWall()) {
+                manager.setWallResetRequired(true);
+            }
+            softRemove((BattleFieldObject) obj);
         }
     }
 
@@ -511,20 +523,20 @@ public class DC_Game extends GenericGame {
         if (obj instanceof Unit) {
             removeUnit((Unit) obj);
         } else {
-            getMaster().removeStructure((Structure) obj);
+            getObjMaster().removeStructure((Structure) obj);
         }
     }
 
     public void removeUnit(Unit unit) {
-        getMaster().removeUnit(unit);
+        getObjMaster().removeUnit(unit);
     }
 
     public Set<DC_Cell> getCells() {
-        return getMaster().getCells();
+        return getObjMaster().getCellsSet();
     }
 
     public Set<Unit> getUnits() {
-        return getMaster().getUnits();
+        return getObjMaster().getUnits();
     }
 
     @Override
@@ -602,11 +614,11 @@ public class DC_Game extends GenericGame {
 
     @Override
     public DC_Cell getCellByCoordinate(Coordinates coordinates) {
-        return getMaster().getCellByCoordinate(coordinates);
+        return getObjMaster().getCellByCoordinate(coordinates);
     }
 
     public DC_Player getPlayer(boolean me) {
-        return getBattleMaster().getPlayerManager().getPlayer(me);
+        return getMissionMaster().getPlayerManager().getPlayer(me);
     }
 
     public Thread getGameLoopThread() {
@@ -661,9 +673,9 @@ public class DC_Game extends GenericGame {
     }
 
 
-    public Dungeon getDungeon() {
+    public Floor getDungeon() {
         try {
-            return getDungeonMaster().getDungeonWrapper().getDungeon();
+            return getDungeonMaster().getFloorWrapper().getFloor();
         } catch (Exception e) {
             ExceptionMaster.printStackTrace(e);
         }
@@ -678,11 +690,12 @@ public class DC_Game extends GenericGame {
         this.gameType = game_mode;
     }
 
-    public Map<Coordinates, Map<BattleFieldObject, FLIP>> getFlipMap() {
-        if (flipMap == null) {
-            flipMap = new HashMap<>();
-        }
+    public Map<Coordinates, FLIP> getFlipMap() {
         return flipMap;
+    }
+
+    public void setFlipMap(Map<Coordinates, FLIP> flipMap) {
+        this.flipMap = flipMap;
     }
 
     public Map<Coordinates, Map<BattleFieldObject, DIRECTION>> getDirectionMap() {
@@ -714,25 +727,18 @@ public class DC_Game extends GenericGame {
     }
 
     public Set<Structure> getStructures() {
-        return getMaster().getStructures();
+        return getObjMaster().getStructures();
     }
 
     public DequeImpl<BattleFieldObject> getBfObjects() {
-        return getMaster().getBfObjects();
+        return getObjMaster().getBfObjects();
     }
 
-    public Set<BattleFieldObject> getObjectsAt(Coordinates c) {
-        return getMaster().getObjectsOnCoordinate(c, false, true, false);
-    }
 
     public DC_InventoryManager getInventoryManager() {
         return inventoryManager;
     }
 
-    public Set<BattleFieldObject> getObjectsOnCoordinate(Coordinates c) {
-        //        return getMaster().getObjectsOnCoordinate(c);
-        return getObjectsOnCoordinate(c, false, true, false);
-    }
 
     public Obj getObjectByCoordinate(Coordinates
                                              c) {
@@ -751,8 +757,8 @@ public class DC_Game extends GenericGame {
         return keyManager;
     }
 
-    public BattleMaster getBattleMaster() {
-        return battleMaster;
+    public MissionMaster getMissionMaster() {
+        return missionMaster;
     }
 
     public MetaGameMaster getMetaMaster() {
@@ -832,7 +838,8 @@ public class DC_Game extends GenericGame {
     public GameLoop getGameLoop() {
         if (loop.getThread() != null)
             if (!loop.getThread().isAlive()) {
-                LogMaster.log(1, "********* getGameLoop() --> THREAD WAS DEAD! restarting.... "); // igg demo hack
+                LogMaster.log(1, "********* getGameLoop() --> THREAD WAS DEAD! restarting.... ");
+                // EA check
                 if (loop == combatLoop) {
                     combatLoop.endCombat();
                 } else {
@@ -848,7 +855,7 @@ public class DC_Game extends GenericGame {
     }
 
     public void reinit(boolean restart) {
-        master = new DC_GameObjMaster(this);
+        objMaster = new DC_GameObjMaster(this);
         paleMaster = new DC_GameObjMaster(this, true);
         List<Obj> cachedObjects = new ArrayList<>();
         if (!restart)
@@ -915,22 +922,29 @@ public class DC_Game extends GenericGame {
 
     }
 
+    @Override
+    public boolean isWall(Coordinates c) {
+        return getGrid().isWallCoordinate(c);
+    }
+
     public boolean isBossFight() {
         return EidolonsGame.BOSS_FIGHT;
     }
 
     public void setBossFight(boolean bossFight) {
-        this.bossFight = bossFight;
     }
 
-    public boolean toggleVoid(Coordinates c) {
-        DC_Cell cell = getCellByCoordinate(c);
-        boolean v;
-        cell.setVOID(v = !cell.isVOID());
-        //what about things on this cell?
-        return v;
+    public ColorMap getColorMap() {
+        if (dungeonMaster == null) {
+            return null;
+        }
+        return dungeonMaster.getColorMap();
     }
 
+    public void engageEvent(Object... args) {
+        getDungeonMaster().getExplorationMaster().getEngagementHandler().
+                getEvents().addEvent(args);
+    }
 
     public enum GAME_MODES {
         ARENA, SIMULATION, DUEL, ENCOUNTER, DUNGEON_CRAWL, ARENA_ARCADE
@@ -941,5 +955,8 @@ public class DC_Game extends GenericGame {
 
     }
 
-
+    @Override
+    public boolean checkModule(Obj obj) {
+        return getMetaMaster().getModuleMaster().isWithinModule(obj );
+    }
 }

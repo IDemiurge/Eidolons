@@ -15,9 +15,9 @@ public class LevelGraph {
 
     protected static int index = 0;
     Set<GraphPath> paths;
-    private Set<LevelGraphNode> nodes;
-    private Set<LevelGraphEdge> edges;
-    private Map<LevelGraphNode, Set<LevelGraphEdge>> adjList;
+    private final Set<LevelGraphNode> nodes;
+    private final Set<LevelGraphEdge> edges;
+    private final Map<LevelGraphNode, Set<LevelGraphEdge>> adjList;
     private List<LevelZone> zones;
 
     public LevelGraph() {
@@ -69,7 +69,7 @@ public class LevelGraph {
     }
 
     public boolean addNodes(Collection<LevelGraphNode> vertices) {
-         vertices.forEach(node-> addNode(node));
+         vertices.forEach(this::addNode);
         return true;
     }
 

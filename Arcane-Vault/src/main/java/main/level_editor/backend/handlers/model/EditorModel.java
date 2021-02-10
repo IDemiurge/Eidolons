@@ -3,6 +3,7 @@ package main.level_editor.backend.handlers.model;
 import eidolons.game.battlecraft.logic.dungeon.location.layer.Layer;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import main.data.tree.LayeredData;
 import main.data.tree.StructNode;
@@ -35,11 +36,12 @@ public class EditorModel {
     private Layer layer;
     private ObjType defaultWallType;
     private boolean brushMode;
+    private LevelStruct lastSelectedStruct;
+    private boolean appendMode;
 
     public EditorModel() {
         selection = new LE_Selection();
         displayMode = new LE_DisplayMode();
-        paletteSelection = new PaletteSelection(null);
         brush = new LE_Brush(BrushShape.single, LE_BrushType.none);
     }
 
@@ -50,9 +52,14 @@ public class EditorModel {
 
     private void copy(EditorModel model) {
         selection = (LE_Selection) CloneMaster.deepCopy(model.getSelection());
+        if (selection == null) {
+            selection = new LE_Selection();
+        }
         displayMode = (LE_DisplayMode) CloneMaster.deepCopy(model.getDisplayMode());
         paletteSelection = (PaletteSelection) CloneMaster.deepCopy(model.getPaletteSelection());
-        brush=model.getBrush();
+        brush = model.getBrush();
+        brushMode = model.brushMode ;
+        appendMode = model.appendMode ;
     }
 
     public StructNode getTreeModel() {
@@ -86,11 +93,10 @@ public class EditorModel {
     }
 
     public LE_DisplayMode getDisplayMode() {
+        if (displayMode == null) {
+            displayMode = new LE_DisplayMode();
+        }
         return displayMode;
-    }
-
-    public void setDisplayMode(LE_DisplayMode displayMode) {
-        this.displayMode = displayMode;
     }
 
     public LE_Selection getSelection() {
@@ -98,11 +104,14 @@ public class EditorModel {
     }
 
     public void setSelection(LE_Selection selection) {
+        if (selection == null) {
+            return ;
+        }
         this.selection = selection;
     }
 
     public PaletteSelection getPaletteSelection() {
-        return paletteSelection;
+        return PaletteSelection.getInstance();
     }
 
     public void setPaletteSelection(PaletteSelection paletteSelection) {
@@ -122,7 +131,10 @@ public class EditorModel {
 
     public Module getModule() {
         if (module == null) {
-            return LevelEditor.getCurrent().getDefaultModule();
+            if (getLastSelectedStruct() == null) {
+                return LevelEditor.getCurrent().getDefaultModule();
+            }
+            return getLastSelectedStruct().getModule();
         }
         return module;
     }
@@ -145,5 +157,26 @@ public class EditorModel {
 
     public void setBrushMode(boolean brushMode) {
         this.brushMode = brushMode;
+    }
+
+    public void setLastSelectedStruct(LevelStruct lastSelectedStruct) {
+        this.lastSelectedStruct = lastSelectedStruct;
+    }
+
+    public LevelStruct getLastSelectedStruct() {
+        return lastSelectedStruct;
+    }
+
+
+    public boolean isAppendMode() {
+        return appendMode;
+    }
+
+    public void setAppendMode(boolean appendMode) {
+        this.appendMode = appendMode;
+    }
+
+    public void toggleAppend() {
+        appendMode = !appendMode;
     }
 }

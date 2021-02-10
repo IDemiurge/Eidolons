@@ -63,9 +63,7 @@ public class ShopSelectionPanel extends PlaceSelectionPanel {
             return new ArrayList<>();
         }
         return shops.stream().map(shop -> {
-            SelectableItemData item =
-                    new SelectableItemData(shop);
-            return item;
+            return new SelectableItemData(shop);
         }).collect(Collectors.toList());
     }
 

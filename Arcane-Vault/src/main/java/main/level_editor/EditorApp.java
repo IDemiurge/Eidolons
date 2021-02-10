@@ -9,10 +9,12 @@ import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.ScreenWithLoader;
+import eidolons.libgdx.screens.load.ScreenLoader;
 import main.data.filesys.PathFinder;
-import main.level_editor.backend.struct.level.Floor;
+import main.level_editor.backend.struct.level.LE_Floor;
 import main.level_editor.gui.screen.LE_Screen;
 import main.level_editor.gui.screen.LE_WaitingScreen;
+import main.system.EventCallbackParam;
 
 import java.util.function.Supplier;
 
@@ -25,23 +27,50 @@ public class EditorApp extends GenericLauncher {
     }
 
     @Override
-    protected void screenSwitcher(ScreenData newMeta) {
-        switch (newMeta.getType()) {
-            case EDITOR_WELCOME:
-                switchScreen(LE_WaitingScreen::getInstance, newMeta);
-                break;
-            case EDITOR:
-                Supplier<ScreenWithLoader> fac = LE_Screen.getScreen((Floor) newMeta.getParameter());
+    protected ScreenLoader createScreenLoader() {
+        return new ScreenLoader(this){
+            @Override
+            public void loadScreen(EventCallbackParam param) {
+                ScreenData newMeta = ((ScreenData) param.get());
+                switch (newMeta.getType() ) {
+                    case EDITOR_WELCOME:
+                        switchScreen(LE_WaitingScreen::getInstance, newMeta);
+                        break;
+                    case EDITOR:
+                        Supplier<ScreenWithLoader> fac = LE_Screen.getScreen((LE_Floor) newMeta.getParameter());
 
-                fac.get().initLoadingStage(newMeta);
-                fac.get().setViewPort(viewport);
-                ScreenMaster.screenSet(newMeta.getType());
-                fac.get().setData(newMeta);
-                setScreen(fac.get());
-                //                switchScreen(LE_Screen.getScreen((Floor) newMeta.getParameter()), newMeta);
-                break;
-        }
+                        ScreenWithLoader screen = fac.get();
+                        screen.initLoadingStage(newMeta);
+                        screen.setViewPort(viewport);
+                        ScreenMaster.screenSet(newMeta.getType());
+                        setScreen(screen);
+                        screen.setData(newMeta);
+
+                        screen.updateInputController();
+                        Eidolons.onNonGdxThread(() -> Eidolons.game.getMetaMaster().getDungeonMaster().reinit());
+                        //                GuiEventManager.trigger(GuiEventType.LE_TREE_RESET, LevelEditor.getModel());
+                        //                switchScreen(LE_Screen.getScreen((Floor) newMeta.getParameter()), newMeta);
+                        break;
+                }
+            }
+
+            public void screenInit() {
+                //        if (args.length> 0 ){
+                //            // ???
+                //        } else
+                {
+                    LE_WaitingScreen newScreen =LE_WaitingScreen.getInstance();
+                    ScreenData meta = new ScreenData(SCREEN_TYPE.EDITOR_WELCOME, "Welcome!");
+                    newScreen.initLoadingStage(meta);
+                    setScreen(newScreen);
+                }
+                load();
+
+                render();
+            }
+        };
     }
+
 
     @Override
     public void resize(int width, int height) {
@@ -62,20 +91,6 @@ public class EditorApp extends GenericLauncher {
         super.create();
     }
 
-    protected void screenInit() {
-//        if (args.length> 0 ){
-//            // ???
-//        } else
-        {
-            LE_WaitingScreen newScreen =LE_WaitingScreen.getInstance();
-            ScreenData meta = new ScreenData(SCREEN_TYPE.EDITOR_WELCOME, "Welcome!");
-            newScreen.initLoadingStage(meta);
-            setScreen(newScreen);
-        }
-        load();
-
-        render();
-    }
 
     private void load() {
         LE_WaitingScreen.getInstance();

@@ -1,8 +1,8 @@
 package eidolons.system.audio;
 
 import com.badlogic.gdx.audio.Music;
-import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
-import eidolons.system.audio.MusicMaster.MUSIC_THEME;
+import eidolons.system.audio.MusicEnums.MUSIC_SCOPE;
+import eidolons.system.audio.MusicEnums.MUSIC_THEME;
 
 import java.util.List;
 
@@ -16,9 +16,9 @@ public class Playlist {
     List<Music> tracks;
     private Music playedMusic;
 
-    private boolean shuffle = true;
-    private boolean autoplay = true; //?
-    private boolean loop = false;
+    private final boolean shuffle = true;
+    private final boolean autoplay = true; //?
+    private final boolean loop = false;
 
     private Float volume;
 

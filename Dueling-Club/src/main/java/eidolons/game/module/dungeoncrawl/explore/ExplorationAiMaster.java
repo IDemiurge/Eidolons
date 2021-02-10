@@ -23,11 +23,11 @@ import java.util.stream.Collectors;
  */
 public class ExplorationAiMaster extends ExplorationHandler {
 
-    private DequeImpl<UnitAI> activeUnitAIs;
+    private final DequeImpl<UnitAI> activeUnitAIs;
     private boolean aiActs;
-    private DequeImpl<ActionInput> aiActionQueue;
+    private final DequeImpl<ActionInput> aiActionQueue;
     private Set<Unit> allies;
-    private ExploreAiManager aiManager;
+    private final ExploreAiManager aiManager;
 
     public ExplorationAiMaster(ExplorationMaster master) {
         super(master);
@@ -68,7 +68,7 @@ public class ExplorationAiMaster extends ExplorationHandler {
             if (ai.getExplorationTimePassed() <= ExplorationTimeMaster.secondsPerAP)
                 continue;
             double distance = PositionMaster.getExactDistance(ai.getUnit().getCoordinates(),
-             Eidolons.getMainHero().getCoordinates());
+             Eidolons.getPlayerCoordinates());
             if (distance > getMaxDistance(ai))
                 continue;
             try {
@@ -135,12 +135,12 @@ public class ExplorationAiMaster extends ExplorationHandler {
             return false;
         }
         Double cost = ai.getStandingOrders().getCurrentAction().getActive().
-         getParamDouble(PARAMS.AP_COST) / ai.getUnit().getIntParam(PARAMS.N_OF_ACTIONS);
+         getParamDouble(PARAMS.AP_COST) / ai.getUnit().getIntParam(PARAMS.INITIATIVE);
         if (timePercentage >= cost) {
             ActionInput input = new ActionInput(
              ai.getStandingOrders().getCurrentAction().getActive(),
              new Context(ai.getStandingOrders().getCurrentAction().getRef()));
-            master.getGame().getGameLoop().actionInput(input);
+            master.getGame().getGameLoop().actionInputManual(input);
             return true;
         }
         return false;
@@ -203,7 +203,7 @@ public class ExplorationAiMaster extends ExplorationHandler {
 
     public DequeImpl<UnitAI> getActiveUnitAIs(boolean outOfBattleOnly) {
         if (outOfBattleOnly) {
-            DequeImpl<UnitAI> d = new DequeImpl<UnitAI>(activeUnitAIs);
+            DequeImpl<UnitAI> d = new DequeImpl<>(activeUnitAIs);
             d.removeIf(ai -> !ai.isOutsideCombat());
             return d;
         }
@@ -230,7 +230,7 @@ public class ExplorationAiMaster extends ExplorationHandler {
     public DequeImpl<UnitAI> getAlliesAndActiveUnitAIs(boolean outOfBattleOnly) {
 
         DequeImpl<UnitAI> deque = new DequeImpl<>(allies.stream().map
-         (unit -> unit.getAI()).collect(Collectors.toList()), getActiveUnitAIs());
+         (Unit::getAI).collect(Collectors.toList()), getActiveUnitAIs());
 
         deque.removeIf(ai -> ai.getUnit().isAnnihilated() ||
          (outOfBattleOnly && !ai.isOutsideCombat()));

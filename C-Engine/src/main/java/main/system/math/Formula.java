@@ -20,7 +20,7 @@ public class Formula {
 
     private static FuncMap functionMap;
     private String formula;
-    private static Map<String, Expression> expressionMap = new HashMap<>();
+    private static final Map<String, Expression> expressionMap = new HashMap<>();
 
     public Formula(String formula) {
         this.formula = formula;
@@ -42,7 +42,7 @@ public class Formula {
             return 0;
         }
         if (NumberUtils.isInteger(formula)) {
-            return NumberUtils.getInteger(formula);
+            return NumberUtils.getIntParse(formula);
         }
 
         if (NumberUtils.isNumber(formula, false)) {

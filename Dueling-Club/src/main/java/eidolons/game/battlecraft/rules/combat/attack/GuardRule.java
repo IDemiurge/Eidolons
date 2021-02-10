@@ -4,7 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.core.master.EffectMaster;
 import eidolons.system.math.roll.RollMaster;
 import main.content.enums.GenericEnums.ROLL_TYPES;
 import main.content.enums.entity.UnitEnums.STATUS;
@@ -50,7 +50,7 @@ public class GuardRule {
                         return guard;
                     continue;
                 }
-                Attack attack = EffectFinder.getAttackFromAction(action);
+                Attack attack = EffectMaster.getAttackFromAction(action);
                 if (checkDefenderTakesAttack(attack, guard))
                     return guard;
             } else {
@@ -65,18 +65,17 @@ public class GuardRule {
     private static boolean checkDefenderTakesAttack(Attack attack, Unit guard) {
         Ref ref = Ref.getCopy(attack.getRef());
         ref.setTarget(guard.getId());
-        String success = StringMaster.getValueRef(KEYS.TARGET, PARAMS.INITIATIVE_MODIFIER)
+        String success = StringMaster.getValueRef(KEYS.TARGET, PARAMS.INITIATIVE )
          + "*(100+" + RollMaster.getVigilanceModifier(guard, attack.getAction()) +
          ")/100/3 ";
-        String fail = StringMaster.getValueRef(KEYS.SOURCE, PARAMS.INITIATIVE_MODIFIER) +
+        String fail = StringMaster.getValueRef(KEYS.SOURCE, PARAMS.INITIATIVE) +
          "*(100+" + RollMaster.getDexterousModifier(guard, attack.getAction()) +
          ")/100/" + attack.getAction().getIntParam(PARAMS.AP_COST);
         String log = " to defend " + attack.getAttackedUnit().getName() +
          " against " + attack.getAction().getName();
-        boolean result = !RollMaster.roll(ROLL_TYPES.REACTION, success, fail, ref, log);
-//        boolean result = RollMaster.roll(ROLL_TYPES.REACTION, ref);
+        //        boolean result = RollMaster.roll(ROLL_TYPES.REACTION, ref);
 
-        return result;
+        return !RollMaster.roll(ROLL_TYPES.REACTION, success, fail, ref, log);
     }
 
     private static boolean checkDefenderTakesMissile(DC_ActiveObj action, Unit unit) {

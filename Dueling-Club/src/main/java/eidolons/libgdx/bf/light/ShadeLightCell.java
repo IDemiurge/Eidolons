@@ -1,10 +1,7 @@
 package eidolons.libgdx.bf.light;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -12,16 +9,17 @@ import com.badlogic.gdx.utils.Align;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.GdxImageMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.bf.grid.cell.GridCellContainer;
+import eidolons.libgdx.bf.grid.handlers.GridManager;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.bf.overlays.OverlayingMaster;
 import eidolons.libgdx.screens.ScreenMaster;
-import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
@@ -39,36 +37,22 @@ import java.util.Random;
  */
 public class ShadeLightCell extends SuperContainer {
 
-    private static boolean alphaFluctuation = true;
+    private static final boolean alphaFluctuation = true;
     private final float width;
     private final float height;
     FloatActionLimited alphaAction = (FloatActionLimited) ActionMaster.getAction(FloatActionLimited.class);
-    private SHADE_CELL type;
+    private final SHADE_CELL type;
     private Float originalX;
     private Float originalY;
-    private boolean voidCell;
-    static SmartTextureAtlas shadowMapAtlas;
-
-    public static SmartTextureAtlas getShadowMapAtlas() {
-        if (shadowMapAtlas == null) {
-            shadowMapAtlas = new SmartTextureAtlas(
-                    PathFinder.getImagePath() +
-                            "ui/cells/outlines/shadows/shadows.txt");
-        }
-        return shadowMapAtlas;
-    }
-
-    public ShadeLightCell(SHADE_CELL type) {
-        this(type, null);
-    }
 
     public ShadeLightCell(SHADE_CELL type, Object arg) {
-        super(new Image(getTexture(type, arg)));
+        super(new Image(getTexture(type)));
         this.type = type;
         randomize();
         baseAlpha = 0;
+        setUserObject(arg);
         if (isColored()) {
-            teamColor = ShadowMap.getLightColor(null);
+            teamColor = ShadowMap.getLightColor(arg);
             if (getTeamColor() != null)
                 getContent().setColor(getTeamColor());
         }
@@ -85,30 +69,37 @@ public class ShadeLightCell extends SuperContainer {
 
     }
 
-    private static TextureRegion getTexture(SHADE_CELL type, Object arg) {
-        TextureAtlas.AtlasRegion texture = getShadowMapAtlas().findRegionFromFullPath(
-                (getTexturePath(type, arg)));
-        if (texture == null) {
-            main.system.auxiliary.log.LogMaster.important(getTexturePath(type, arg) + " - " + type + " has null texture ( " + arg);
-            return TextureCache.getOrCreateR(getTexturePath(type, arg));
-        }
-        return texture;
+    @Override
+    public void setTransform(boolean transform) {
+        super.setTransform(transform);
     }
 
-    private static String getTexturePath(SHADE_CELL type, Object arg) {
+    private static TextureRegion getTexture(SHADE_CELL type) {
+            return TextureCache.getRegionUV(GdxImageMaster.cropImagePath(getTexturePath(type)));
+    }
+
+    private static String getTexturePath(SHADE_CELL type) {
+        String variant = null;
         switch (type) {
             //                    TODO varied enough already?
             case VOID:
-                return FileManager.formatPath(PathFinder.getImagePath() +
-                                        StringMaster.cropFormat(type.getTexturePath()) +
-                                        getRandomVoidVariant() +
-                                        ".png", false, false);
+                variant = getRandomVariant(7);
+                break;
+            // case GAMMA_SHADOW:
+            //     variant=   getRandomVariant(3);
+            //     break;
+        }
+        if (variant != null) {
+            return FileManager.formatPath(PathFinder.getImagePath() +
+                    StringMaster.cropFormat(type.getTexturePath()) +
+                    variant +
+                    ".png", false, false);
         }
         return type.getTexturePath();
     }
 
-    private static String getRandomVoidVariant() {
-        int n = RandomWizard.getRandomIntBetween(1, 7, true);
+    private static String getRandomVariant(int max) {
+        int n = RandomWizard.getRandomIntBetween(1, max, true);
         if (n == 1) {
             return "";
         }
@@ -141,9 +132,9 @@ public class ShadeLightCell extends SuperContainer {
         switch (type) {
             case GAMMA_LIGHT:
             case LIGHT_EMITTER:
+            case GAMMA_SHADOW:
                 return ShadowMap.isColoringSupported();
             case CONCEALMENT:
-            case GAMMA_SHADOW:
                 break;
         }
         return false;
@@ -168,23 +159,16 @@ public class ShadeLightCell extends SuperContainer {
     public void draw(Batch batch, float parentAlpha) {
         if (isIgnored())
             return;
-        if (getBaseAlpha() < getMinAlpha())
-            return;
-        //        if (isBlendingOn())
-        //        storeBlendingFuncData(batch);
-        //        initBlending(batch);
         super.draw(batch, parentAlpha);
-        //        restoreBlendingFuncData(batch);
-    }
-
-    private float getMinAlpha() {
-        return 0.05f;
     }
 
     @Override
     public boolean isIgnored() {
         // check cell is visible TODO
-        if (!InputController.cameraMoved )
+        if (GridManager.isCustomDraw()) {
+            return false;
+        }
+        if (!InputController.cameraMoved)
             return !withinCamera;
         withinCamera = getController().isWithinCamera(this);
         return !withinCamera;
@@ -237,7 +221,8 @@ public class ShadeLightCell extends SuperContainer {
             return;
         }
         super.act(delta);
-        if (alphaAction.getTime() < alphaAction.getDuration()) {
+        if (alphaAction.getTime() <= alphaAction.getDuration()
+                || (getColor().a == 0 && alphaAction.getValue() > 0)) {
             getColor().a = alphaAction.getValue();
             fluctuatingAlpha = alphaAction.getValue();
         }
@@ -252,35 +237,13 @@ public class ShadeLightCell extends SuperContainer {
         super.setPosition(x, y);
     }
 
-    private void initBlending(Batch batch) {
-        GenericEnums.BLENDING mode = null;
-        switch (type) {
-            case GAMMA_LIGHT:
-            case LIGHT_EMITTER:
-
-                mode = (!Gdx.input.isButtonPressed(Keys.SHIFT_LEFT))
-                        ? GenericEnums.BLENDING.OVERLAY
-                        : GenericEnums.BLENDING.SATURATE;
-                break;
-            case CONCEALMENT:
-            case GAMMA_SHADOW:
-                mode = (!Gdx.input.isButtonPressed(Keys.SHIFT_LEFT))
-                        ? GenericEnums.BLENDING.OVERLAY
-                        : GenericEnums.BLENDING.MULTIPLY;
-            case BLACKOUT:
-            case HIGLIGHT:
-                break;
-        }
-        if (mode != null)
-            batch.setBlendFunction(mode.blendSrcFunc, mode.blendDstFunc);
-    }
-
+    //If I ever remake the Light emitter overlays...
     public void adjustPosition(int x, int y) {
         float offsetX = 0;
         float offsetY = 0;
         setScale(1f, 1f);
         setVisible(true);
-        for (Obj sub : DC_Game.game.getRules().getIlluminationRule().getEffectCache().keySet()) {
+        for (Obj sub : DC_Game.game.getVisionMaster().getIllumination().getEffectCache().keySet()) {
             if (sub instanceof Unit)
                 continue; //TODO illuminate some other way for units...
 
@@ -303,7 +266,7 @@ public class ShadeLightCell extends SuperContainer {
                             //so if 2+ overlays, will be centered between them...
                         } else {
 
-                            BaseView view = ScreenMaster.getDungeonGrid().getViewMap().get(sub);
+                            BaseView view = ScreenMaster.getGrid().getViewMap().get(sub);
                             offsetX += view.getX() * 3;
                             offsetY += view.getY() * 3;
                             if (view.getParent() instanceof GridCellContainer) {
@@ -320,24 +283,29 @@ public class ShadeLightCell extends SuperContainer {
         setPosition(originalX + offsetX / 3, originalY + offsetY / 3);
     }
 
-    public void setVoid(boolean aVoid) {
-        this.voidCell = aVoid;
-    }
-
     public float getBaseAlpha() {
         return baseAlpha;
     }
 
     public void setBaseAlpha(float baseAlpha) {
         alphaAction.reset();
-        alphaAction.setStart(getColor().a);
+        float a = getColor().a;
+        alphaAction.setStart(a);
         alphaAction.setEnd(baseAlpha * ShadowMap.getInitialAlphaCoef());
         addAction(alphaAction);
         alphaAction.setTarget(this);
-        alphaAction.setDuration(0.4f + (Math.abs(getColor().a - baseAlpha)) / 2);
+        alphaAction.setDuration(0.4f + (Math.abs(a - baseAlpha)) / 2);
         this.baseAlpha = baseAlpha;
 
-        if (isColored())
-            teamColor = ShadowMap.getLightColor(null);
+        if (isColored()) {
+            teamColor = ShadowMap.getLightColor(getUserObject());
+            setColor(new Color(teamColor));
+            getColor().a = a;
+        }
+    }
+
+    @Override
+    public void setColor(Color color) {
+        super.setColor(color);
     }
 }

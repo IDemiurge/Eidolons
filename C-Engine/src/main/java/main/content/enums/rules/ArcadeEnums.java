@@ -88,7 +88,7 @@ public class ArcadeEnums {
 
         // shop "level" - materials, qualities, special items *level*
         public String toString() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
 
         }
 

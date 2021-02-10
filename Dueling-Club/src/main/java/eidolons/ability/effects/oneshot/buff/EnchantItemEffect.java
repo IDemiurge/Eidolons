@@ -8,7 +8,7 @@ import eidolons.ability.ignored.special.media.SoundEffect;
 import eidolons.ability.targeting.TemplateSelectiveTargeting;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.Spell;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.core.master.EffectMaster;
 import eidolons.game.module.herocreator.logic.items.Enchanter;
 import main.ability.effects.Effects;
 import main.ability.effects.MicroEffect;
@@ -18,16 +18,16 @@ import main.content.values.properties.G_PROPS;
 import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.type.BuffType;
+import main.entity.type.impl.BuffType;
 import main.system.auxiliary.StringMaster;
-import main.system.sound.SoundMaster.SOUNDS;
+import main.system.sound.AudioEnums;
 
 public class EnchantItemEffect extends MicroEffect implements OneshotEffect {
 
     private static final String buffName = "Enchantment";
     private SPECIAL_EFFECTS_CASE case_type;
-    private boolean weapon;
-    private String energy;
+    private final boolean weapon;
+    private final String energy;
     private Boolean selectSpell;
     private Spell spell;
 
@@ -72,8 +72,8 @@ public class EnchantItemEffect extends MicroEffect implements OneshotEffect {
 
         spell = (Spell) ref.getTargetObj();
 
-        Effects effects = EffectFinder.getEffectsFromSpell(spell);
-        effects.add(new SoundEffect(SOUNDS.IMPACT, ref.getTargetObj()));
+        Effects effects = EffectMaster.getEffectsFromSpell(spell);
+        effects.add(new SoundEffect(AudioEnums.SOUNDS.IMPACT, ref.getTargetObj()));
         // TODO fail sound on energy lapse?
         // ++ energy bar for items!
         // String passive = "";

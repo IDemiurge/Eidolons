@@ -7,14 +7,11 @@ import eidolons.ability.effects.oneshot.rule.UnconsciousBuffEffect;
 import eidolons.ability.effects.oneshot.rule.UnconsciousFallEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.rules.DC_RuleMaster;
 import eidolons.game.battlecraft.rules.action.ActionRule;
+import eidolons.game.core.atb.AtbController;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.netherflame.igg.death.ShadowMaster;
+import eidolons.game.netherflame.main.death.ShadowMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effect.MOD_PROP_TYPE;
@@ -25,81 +22,46 @@ import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.system.math.MathMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 public class UnconsciousRule extends RoundRule implements ActionRule {
     /*
      * For living units, when their Toughness falls to or below 0, they are knocked out and lose all current Focus
-	 * Focus and Toughness will regenerate with half the speed while you are Unconscious, and you only getOrCreate up once you have
-	 * 25-{focus_retainment}/2 and of x% of maximum Toughness . 
-	 *  
-	 *  You can still be attacked 
-	 *  
-	 *  getOrCreate Prone and Immobile status and lose all Defense, plus your Willpower is halved so you are more vulnerable to spells and Mind-affecting effects
-	 *   
-	 *  
-	 *  Units with Trample will automatically crush an unconscious target if <...> 
-	 * 
-	 * If Toughness goes below -35%, the unit dies. 
-	 * 
-	 * 
-	 */
+     * Focus and Toughness will regenerate with half the speed while you are Unconscious, and you only getOrCreate up once you have
+     * 25-{focus_retainment}/2 and of x% of maximum Toughness .
+     *
+     *  You can still be attacked
+     *
+     *   Prone and Immobile status and lose all Defense,
+     * plus your Willpower is halved so you are more vulnerable to spells and Mind-affecting effects
+     *
+     */
 
-    public static final Integer DEFAULT_FOCUS_REQ = 15;
-    public static final Integer DEFAULT_FOCUS_REQ_UNIT = 25;
-    // ++ only regen part of toughness ...
-    public static final int DEFAULT_DEATH_BARRIER = DC_RuleMaster.isToughnessReduced()?66 : 33;
-    public static final int DEFAULT_ANNIHILATION_BARRIER = 100;
-    public static final String BUFF_NAME = null;
-    public static final int MIN_FOCUS_REQ = 5;
-    public static final Integer AP_PENALTY = 2;
-    public static final Integer INITIATIVE_PENALTY = 75;
+    public static final Integer DEFAULT_TOUGHNESS_RECOVER = 50;
+    public static final Integer DEFAULT_INITIATIVE_PENALTY = 75;
+    public static final int DEFAULT_ATB_FALL_TO = (int) (-20 * AtbController.TIME_LOGIC_MODIFIER);
+    public static final int DEFAULT_FOCUS_REQ_UNIT = 0;
+    public static final int DEFAULT_FOCUS_REQ = 0;
 
     public UnconsciousRule(DC_Game game) {
         super(game);
     }
 
-    public static boolean checkUnitRecovers(Unit unit) {
-        // toughness barrier... ++ focus? ++status?
-        if (ShadowMaster.isOn()){
-            if (unit.isPlayerCharacter()) {
-                return false;
-            }
-        }
-
-        int req = unit.isPlayerCharacter() ? 20 : 40;
-        req *= MathMaster.MULTIPLIER;//TODO
-        if (unit.getIntParam(PARAMS.TOUGHNESS_PERCENTAGE) >= req) {
-            // Math.min(unit.getIntParam(PARAMS.FOCUS_RECOVER_REQ),
-            // DEFAULT_FOCUS_REQ )
-            return unit.getIntParam(PARAMS.C_FOCUS) >=
-                    unit.getCalculator().getFocusRecoveryRequirement();
-        }
-        return false;
-    }
-
-    public static void unitRecovers(Unit unit) {
+    public void unitRecovers(Unit unit) {
         // unit.removeBuff(BUFF_NAME);
-
         unit.getGame().
-         fireEvent(new Event(
-          STANDARD_EVENT_TYPE.UNIT_HAS_RECOVERED_FROM_UNCONSCIOUSNESS, unit.getRef()));
+                fireEvent(new Event(
+                        STANDARD_EVENT_TYPE.UNIT_HAS_RECOVERED_FROM_UNCONSCIOUSNESS, unit.getRef()));
         getWakeUpEffect(unit).apply(); // remove buff pretty much
         unit.getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.CONSCIOUS, unit);
-
+        unit.setUnconscious(false);
         // event
 
     }
 
     public static Effect getWakeUpEffect(Unit unit) {
         Effects e = new Effects();
-        e.add(new ModifyValueEffect(PARAMS.C_N_OF_ACTIONS, MOD.MODIFY_BY_CONST, "-" + AP_PENALTY));
-        e.add(new ModifyValueEffect(
-         DC_Engine.isAtbMode() ?
-          PARAMS.C_INITIATIVE :
-          PARAMS.C_INITIATIVE_BONUS, MOD.MODIFY_BY_CONST, "-"
-         + INITIATIVE_PENALTY));
+        e.add(new ModifyValueEffect(PARAMS.TOUGHNESS_PERCENTAGE, MOD.SET, DEFAULT_TOUGHNESS_RECOVER + ""));
         e.add(new RemoveBuffEffect("Unconscious"));
         e.add(new ModifyPropertyEffect(G_PROPS.STATUS, MOD_PROP_TYPE.REMOVE, "Unconscious"));
         e.setRef(Ref.getSelfTargetingRefCopy(unit));
@@ -108,10 +70,6 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
 
     private static Effect getUnconsciousEffect(Unit unit) {
         Effects e = new Effects();
-        // Effects effects = new Effects(new
-        // AddStatusEffect(STATUS.UNCONSCIOUS));
-        // e.add(new ModifyValueEffect(PARAMS.C_FOCUS, MODVAL_TYPE.SET, "0"));
-        // e.add(new AddBuffEffect(BUFF_NAME, effects));
         e.add(new UnconsciousFallEffect());
         e.add(new UnconsciousBuffEffect());
         e.setRef(Ref.getSelfTargetingRefCopy(unit));
@@ -119,17 +77,23 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
     }
 
     public static void fallUnconscious(Unit unit) {
+        if (unit.isDead()) {
+            return;
+        }
         if (unit.isPlayerCharacter()) {
             if (ShadowMaster.isShadowAlive()) {
                 return;
             }
         }
+        if (unit.getGame().getMetaMaster().getPartyManager().heroUnconscious(unit)){
+            return;
+        }
+
         getUnconsciousEffect(unit).apply();
-        unit.getAI().getCombatAI().setEngagementDuration(0);
-        unit.getAI().getCombatAI().setEngaged(false);
+        unit.setUnconscious(true);
         unit.getGame().
-         fireEvent(new Event(
-          STANDARD_EVENT_TYPE.UNIT_HAS_FALLEN_UNCONSCIOUS, unit.getRef()));
+                fireEvent(new Event(
+                        STANDARD_EVENT_TYPE.UNIT_HAS_FALLEN_UNCONSCIOUS, unit.getRef()));
 
         unit.getGame().getLogManager().log(unit.getNameIfKnown() + " falls unconscious!");
         unit.getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.UNCONSCIOUS, unit);
@@ -138,67 +102,55 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         // may be reset, others reduced, others regen
     }
 
-    public static boolean checkUnitDies(Unit unit) {
-        return checkUnitDies
-         (unit, getDeathBarrier(unit), true);
-    }
 
-    public static boolean checkUnitDies(Unit unit, Integer barrier, boolean unconscious) {
-        return checkUnitDies(unit.getIntParam(PARAMS.C_TOUGHNESS),
-         unit.getIntParam(PARAMS.C_ENDURANCE),
-         unit, barrier, unconscious
+    public static boolean checkUnitDies(Unit unit) {
+        return checkUnitDies(unit.getIntParam(PARAMS.C_FOCUS),unit.getIntParam(PARAMS.C_TOUGHNESS),
+                unit.getIntParam(PARAMS.C_ENDURANCE),
+                unit
         );
     }
 
-    public static boolean checkUnitDies(Integer toughness, Integer endurance, Unit unit,
-                                        Integer barrier,
-                                        boolean unconscious //false if checking Annihilation
-    ) {
-        if (unit.isDead() == unconscious) {
+    public static boolean checkUnitAnnihilated(Integer endurance, Unit unit) {
+        if (!unit.isDead()) {
             return false;
         }
-        if (EidolonsGame.getVar("ENDURANCE")|| !unit.isPlayerCharacter())
+        if (!canBeAnnihilated(unit)) {
+            return false;
+        }
+        return endurance <= -unit.getIntParam(PARAMS.ENDURANCE) / 2;
+    }
+
+    public static boolean checkUnitDies(Integer focus,Integer toughness, Integer endurance, Unit unit
+    ) {
         if (endurance <= 0) {
             return true;
         }
-        if (toughness > 0) {
+        if (focus > 0 && toughness > 0) {
             return false;
         }
-        if (!unconscious) {
-            if (!canBeAnnihilated(unit)) {
-                return false;
-            }
-        } else {
-            if (!canFallUnconscious(unit)) {
-                return toughness <= 0;
-            }
-            if (checkFallsUnconscious(unit)) {
-                if (!new Event(STANDARD_EVENT_TYPE.UNIT_IS_FALLING_UNCONSCIOUS, unit.getRef()).fire()) {
-                    return true;
-                }
-                fallUnconscious(unit);
-                return false;
-            }
+        if (!canFallUnconscious(unit)) {
+            return toughness <= 0;
         }
-        Integer max_toughness = unit.getIntParam(PARAMS.TOUGHNESS);
-        if (barrier == null) {//  TODO some attacks may reduce the barrier...
-            barrier = getDeathBarrier(unit);   // TODO + PARAMS.DEATH_BARRIER_MOD
+        if (checkFallsUnconscious(unit)) {
+            if (!new Event(STANDARD_EVENT_TYPE.UNIT_IS_FALLING_UNCONSCIOUS, unit.getRef()).fire()) {
+                return true;
+            }
+            fallUnconscious(unit);
+            return false;
         }
-
-        return toughness < -max_toughness * barrier / 100;
-
+        return false;
     }
 
     public static boolean checkFallsUnconscious(Unit unit) {
-        return checkFallsUnconscious(unit, unit.getIntParam(PARAMS.C_TOUGHNESS));
+        return checkFallsUnconscious(unit, unit.getIntParam(PARAMS.C_TOUGHNESS), unit.getIntParam(PARAMS.C_FOCUS));
     }
 
-    public static boolean checkFallsUnconscious(Unit unit, int toughness) {
+    public static boolean checkFallsUnconscious(Unit unit, int toughness, int  focus) {
         if (unit.isUnconscious())
             return false;
         if (!canFallUnconscious(unit))
             return false;
-        return toughness <= 0;
+        return toughness <= 0 || focus <= 0 ;
     }
 
     private static boolean canBeAnnihilated(Unit unit) {
@@ -211,10 +163,6 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         // special? vampires and such...
     }
 
-    public static int getDeathBarrier(BattleFieldObject attacked) {
-        return MathMaster.applyModIfNotZero(DEFAULT_DEATH_BARRIER,
-         attacked.getIntParam(PARAMS.TOUGHNESS_DEATH_BARRIER_MOD));
-    }
 
     //returns true if unit Recovers
     public boolean checkStatusUpdate(Unit unit) {
@@ -229,21 +177,13 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
                     return false;
                 }
             return false;
-        } else if (checkUnitDies(unit, getDeathBarrier(unit), true)) {
-//            unit.getGame().getManager().unitDies(activeObj, unit, activeObj.getOwnerUnit(), true, false);
-            unit.getGame().getManager().unitDies(unit, unit,  true, false);
+        } else if (checkUnitDies(unit)) {
+            //            unit.getGame().getManager().unitDies(activeObj, unit, activeObj.getOwnerUnit(), true, false);
+            unit.getGame().getManager().unitDies(unit, unit, true, false);
             return false;
-        }
-        if (!unit.isDead()) //really...
-        if (unit.isUnconscious()) {
-            return checkUnitRecovers(unit);
         }
 
         return false;
-    }
-
-    public boolean checkUnitAnnihilated(Unit unit) {
-        return checkUnitDies(unit, DEFAULT_ANNIHILATION_BARRIER, false);
     }
 
     @Override
@@ -268,5 +208,9 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
     @Override
     public void apply(Unit unit, float delta) {
         unitRecovers(unit);
+    }
+
+    public boolean checkUnitAnnihilated(Unit attacked) {
+        return checkUnitAnnihilated(attacked.getIntParam(PARAMS.C_ENDURANCE), attacked);
     }
 }

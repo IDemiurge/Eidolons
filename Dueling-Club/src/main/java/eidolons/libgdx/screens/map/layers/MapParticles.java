@@ -3,15 +3,16 @@ package eidolons.libgdx.screens.map.layers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import eidolons.libgdx.particles.util.EmitterMaster;
-import eidolons.libgdx.particles.ParticleEffectX;
-import eidolons.libgdx.screens.CustomSpriteBatch;
-import eidolons.macro.MacroGame;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.particles.EmitterPools;
+import eidolons.libgdx.particles.ParticleEffectX;
+import eidolons.libgdx.particles.util.EmitterMaster;
+import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.map.editor.EditorParticleMaster;
 import eidolons.libgdx.screens.map.layers.MapMoveLayers.MAP_POINTS;
 import eidolons.libgdx.screens.map.layers.MapMoveLayers.MOVE_DIRECTION;
+import eidolons.macro.MacroGame;
 import main.content.CONTENT_CONSTS2.MIST_VFX;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.data.ability.construct.VariableManager;
@@ -34,7 +35,7 @@ import java.util.Map;
  */
 public class MapParticles extends MapTimedLayer<EmitterActor> {
 
-    private List broken=    new ArrayList<>() ;
+    private final List broken=    new ArrayList<>() ;
 
     public Map<DAY_TIME, List<EmitterActor>> getEmitterMap() {
         return map;
@@ -42,10 +43,8 @@ public class MapParticles extends MapTimedLayer<EmitterActor> {
 
     @Override
     protected void clearLayer() {
-        displayed.forEach(emitterActor -> {
-            emitterActor.remove();
-//      TODO       emitterActor.getEffect().dispose();
-        });
+        //      TODO       emitterActor.getEffect().dispose();
+        displayed.forEach(Actor::remove);
     }
 
     @Override
@@ -151,8 +150,7 @@ public class MapParticles extends MapTimedLayer<EmitterActor> {
          StringMaster.contains(path, "cloud") ||
          StringMaster.contains(path, "smoke")
          ) {
-            if (windDirection.growX != true)
-                return true;
+            return windDirection.growX != true;
         }
         return false;
     }

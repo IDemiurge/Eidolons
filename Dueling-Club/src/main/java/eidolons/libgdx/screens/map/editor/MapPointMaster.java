@@ -4,13 +4,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import eidolons.macro.MacroGame;
-import eidolons.macro.map.Place;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.screens.map.layers.MapMoveLayers.MAP_POINTS;
 import eidolons.libgdx.texture.TextureCache;
-import eidolons.swing.generic.services.dialog.DialogMaster;
+import eidolons.macro.MacroGame;
+import eidolons.macro.map.Place;
 import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
@@ -21,7 +20,8 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager.STD_IMAGES;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
+import main.system.util.DialogMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -38,7 +38,7 @@ public class MapPointMaster {
     private static MapPointMaster instance;
 
     private MapPointMaster() {
-        if (CoreEngine.isMapEditor()) {
+        if (Flags.isMapEditor()) {
             GuiEventManager.bind(MapEvent.LOCATION_ADDED, p -> {
                 Pair<String, Coordinates> pair = (Pair<String, Coordinates>) p.get();
                 TextureRegion region = TextureCache.getOrCreateR(STD_IMAGES.MAP_PLACE.getPath());
@@ -80,12 +80,11 @@ public class MapPointMaster {
         return place;
     }
     public void save() {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for (String substring : map.keySet()) {
-            s += substring + StringMaster.wrapInParenthesis(map.get(substring).toString())
-             + StringMaster.getSeparator();
+            s.append(substring).append(StringMaster.wrapInParenthesis(map.get(substring).toString())).append(StringMaster.getSeparator());
         }
-        FileManager.write(s, getPath());
+        FileManager.write(s.toString(), getPath());
     }
 
     public void added() {
@@ -102,7 +101,7 @@ public class MapPointMaster {
              Coordinates.get(true, VariableManager.getVar(substring)));
         }
         for (MAP_POINTS sub : MAP_POINTS.values()) {
-            map.put(StringMaster.getWellFormattedString(sub.name()),
+            map.put(StringMaster.format(sub.name()),
              Coordinates.get(true, sub.x, sub.y));
         }
     }

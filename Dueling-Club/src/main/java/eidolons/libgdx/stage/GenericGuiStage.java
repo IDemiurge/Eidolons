@@ -9,20 +9,20 @@ import com.kotcrab.vis.ui.widget.file.FileChooser;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.core.EUtils;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.netherflame.igg.event.TipMessageWindow;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.gui.LabelX;
-import eidolons.libgdx.gui.generic.ValueContainer;
+import eidolons.libgdx.gui.overlay.LargeText;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.OverlayTextPanel;
+import eidolons.libgdx.gui.tooltips.CursorDecorator;
 import eidolons.libgdx.gui.tooltips.ToolTipManager;
-import eidolons.libgdx.screens.CustomSpriteBatch;
+import eidolons.libgdx.gui.utils.TextInputPanel;
 import eidolons.libgdx.shaders.ShaderDrawer;
-import eidolons.libgdx.utils.TextInputPanel;
+import eidolons.system.text.tips.TipMessageWindow;
 import main.content.enums.GenericEnums;
 import main.entity.Entity;
 import main.system.GuiEventManager;
@@ -30,12 +30,13 @@ import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import org.apache.commons.lang3.tuple.Triple;
 
+import java.util.List;
+
 public class GenericGuiStage extends StageX  implements StageWithClosable{
 
     protected final LabelX actionTooltip = new LabelX("", StyleHolder.getDefaultInfoStyle());
     protected final LabelX infoTooltip = new LabelX("", StyleHolder.getDefaultInfoStyle());
     protected OverlayTextPanel textPanel;
-    protected ValueContainer locationLabel;
     protected TextInputPanel textInputPanel;
     protected ToolTipManager tooltips;
     protected SuperContainer actionTooltipContainer;
@@ -47,16 +48,25 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
     protected Closable displayedClosable;
     private FileChooser fileChooser;
 
+    protected LargeText largeText;
+    protected CursorDecorator cursorDecorator = CursorDecorator.getInstance();
+
+    protected  OverlayPanel overlayPanel;
+
     public GenericGuiStage(Viewport viewport, Batch batch) {
         super(viewport == null
                         ? new FillViewport(GdxMaster.getWidth(),
                         GdxMaster.getHeight(), new OrthographicCamera())
                         : viewport,
                 batch == null
-                        ? new CustomSpriteBatch()
+                        ?  GdxMaster.createBatchInstance()
                         : batch);
 
         initTooltipsAndMisc();
+        GuiEventManager.bind(GuiEventType.SHOW_LARGE_TEXT, p -> {
+            List list= (List) p.get();
+            largeText.show((String) list.get(0),(String)  list.get(1), (Float) list.get(2));
+        });
 
         GuiEventManager.bind(GuiEventType.SHOW_INFO_TEXT, p -> {
             if (p.get() == null) {
@@ -157,12 +167,9 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
 
     protected void initTooltipsAndMisc() {
 
-        textPanel = new OverlayTextPanel();
-        addActor(textPanel);
-        textPanel.setPosition(GdxMaster.centerWidth(textPanel),
-                GdxMaster.centerHeight(textPanel));
+        addActor(cursorDecorator);
 
-        addActor(tooltips = new ToolTipManager(this));
+        addActor(tooltips = createToolTipManager( ));
 
         addActor(infoTooltipContainer = new SuperContainer(infoTooltip) {
             @Override
@@ -182,7 +189,14 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
         Fluctuating.setAlphaFluctuationOn(true);
 
         addActor(confirmationPanel = ConfirmationPanel.getInstance());
+        addActor(largeText = new LargeText());
 
+        largeText.setPosition(GdxMaster.centerWidth(largeText),
+                GdxMaster.centerHeight(largeText));
+    }
+
+    protected ToolTipManager createToolTipManager() {
+        return new ToolTipManager(this);
     }
 
     protected void showTooltip(String s, LabelX tooltip, float dur) {
@@ -237,20 +251,41 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
 
     protected void showText(String s) {
         if (s == null) {
-            textPanel.close();
+            getTextPanel().close();
             return;
         }
-        textPanel.setText(s);
-        textPanel.open();
+        getTextPanel().setText(s);
+        getTextPanel().open();
     }
 
-    public void textInput(Input.TextInputListener textInputListener, String title, String text, String hint) {
+    public OverlayTextPanel getTextPanel() {
+        if (textPanel == null) {
+            textPanel = new OverlayTextPanel();
+            addActor(textPanel);
+            textPanel.setPosition(GdxMaster.centerWidth(textPanel),
+                    GdxMaster.centerHeight(textPanel));
+        }
+        return textPanel;
+    }
+
+    public void textInput(Input.TextInputListener textInputListener,
+                          String title, String text, String hint) {
+        textInput(false,textInputListener, title, text, hint);
+    }
+    public void textInput(boolean script,Input.TextInputListener textInputListener, String title, String text, String hint) {
         textInputPanel = new TextInputPanel(title, text, hint, textInputListener);
         addActor(textInputPanel);
         textInputPanel.setPosition(GdxMaster.centerWidth(textInputPanel), GdxMaster.centerHeight(textInputPanel));
         textInputPanel.open();
         setKeyboardFocus(textInputPanel);
 
+    }
+
+    @Override
+    public boolean keyDown(int keyCode) {
+        if (keyCode== Input.Keys.ENTER) {
+        }
+        return super.keyDown(keyCode);
     }
 
     public ToolTipManager getTooltips() {
@@ -289,5 +324,17 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
 
     public FileChooser getFileChooser() {
         return fileChooser;
+    }
+
+    public OverlayPanel getOverlayPanel() {
+        return overlayPanel;
+    }
+
+    public void setOverlayPanel(OverlayPanel overlayPanel) {
+        this.overlayPanel = overlayPanel;
+    }
+
+    public TextInputPanel getTextInputPanel() {
+       return textInputPanel;
     }
 }

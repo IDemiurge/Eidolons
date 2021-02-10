@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.netherflame.igg.hero.IggHeroSelectionPanel;
+import eidolons.game.netherflame.main.hero.IggHeroSelectionPanel;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
@@ -25,7 +25,7 @@ import main.entity.Entity;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -50,7 +50,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
             initVideo();
         underText = new Label(LoadingStage.getBottomText(), StyleHolder.getHqLabelStyle(20));
         getOverlayStage().addActor(underText);
-        underText.setPosition(GdxMaster.centerWidth(underText), 0);
+        underText.setPosition(GdxMaster.centerWidth(underText), 50);
 
         GuiEventManager.bind(BRIEFING_START, p -> underText.setVisible(false));
         GuiEventManager.bind(BRIEFING_FINISHED, p -> underText.setVisible(true));
@@ -61,10 +61,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
     }
 
     public static Boolean isVideoEnabled() {
-//        if (CoreEngine.isIggDemo()){
-//            return false;
-//        }
-        if (GdxMaster.getWidth()!=1920){
+        if (GdxMaster.getWidth() != 1920) {
             return false;
         }
         if (videoEnabled == null)
@@ -96,7 +93,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
         }
 
         selectionPanel =
-         createSelectionPanel(p);
+                createSelectionPanel(p);
         addSelectionPanel(selectionPanel);
     }
 
@@ -104,15 +101,9 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
     protected void preLoad() {
         super.preLoad();
 
-        GuiEventManager.bind(true, SHOW_LOAD_PANEL, p -> {
-            selectionPanelEvent(p);
-        });
-        GuiEventManager.bind(true, SHOW_SELECTION_PANEL, p -> {
-            selectionPanelEvent(p);
-        });
-        GuiEventManager.bind(true, HC_SHOW, p -> {
-            showHeroCreationPanel(p);
-        });
+        GuiEventManager.bind(true, SHOW_LOAD_PANEL, this::selectionPanelEvent);
+        GuiEventManager.bind(true, SHOW_SELECTION_PANEL, this::selectionPanelEvent);
+        GuiEventManager.bind(true, HC_SHOW, this::showHeroCreationPanel);
         GuiEventManager.bind(true, GuiEventType.SHOW_DIFFICULTY_SELECTION_PANEL, p -> {
             GuiEventManager.trigger(SHOW_SELECTION_PANEL, DIFFICULTY_PANEL_ARG);
         });
@@ -169,6 +160,10 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
     }
 
     private void addSelectionPanel(SelectionPanel selectionPanel) {
+        if (selectionPanel.isDone()) {
+            return;
+        }
+
         boolean displayOnLoader = !(selectionPanel instanceof HeroSelectionPanel); // loading == isLoadingWithVideo();
         Stage stage = displayOnLoader ? getOverlayStage() : getMainStage();
         if (stage != null) {
@@ -180,8 +175,8 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
         updateInputController();
         selectionPanel.setVisible(true);
         selectionPanel.setPosition(
-         GdxMaster.right(selectionPanel),
-         GdxMaster.centerHeight(selectionPanel));
+                GdxMaster.right(selectionPanel),
+                GdxMaster.centerHeight(selectionPanel));
 
         selectionPanel.fadeIn();
 
@@ -190,12 +185,12 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
 
     protected void selectionPanelClosed() {
         if (selectionPanel != null)
-        try {
-            selectionPanel.setStage(null);
-            selectionPanel.setVisible(false);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+            try {
+                selectionPanel.setStage(null);
+                selectionPanel.setVisible(false);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         GdxMaster.setLoadingCursor();
     }
 
@@ -209,7 +204,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
                 return new QuestSelectionPanel(() -> (List<? extends Entity>) iterator.next());
             }
         }
-        if (CoreEngine.isIggDemoRunning())
+        if (Flags.isIggDemoRunning())
             return new IggHeroSelectionPanel(() -> (List<? extends Entity>) p.get());
         return new HeroSelectionPanel(() -> (List<? extends Entity>) p.get());
 
@@ -225,13 +220,13 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
         if (!isLoadingWithVideo()) {
             initVideo();
         } else if (loadVideo != null) {
-//            try {
-//                loadVideo.stop();
-//                loadVideo.getPlayer().dispose();
-//                loadVideo = null;
-//            } catch (Exception e) {
-//                main.system.ExceptionMaster.printStackTrace(e);
-//            }
+            //            try {
+            //                loadVideo.stop();
+            //                loadVideo.getPlayer().dispose();
+            //                loadVideo = null;
+            //            } catch (Exception e) {
+            //                main.system.ExceptionMaster.printStackTrace(e);
+            //            }
         }
     }
 
@@ -257,28 +252,14 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
         }
     }
 
-    @Override
-    public void render(float delta) {
-        if (CoreEngine.isJar() && !CoreEngine.isCrashSafeMode()) {
-            super.render(delta);
-        } else
-            try {
-                super.render(delta);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-
-
-    }
-
     protected void renderLoader(float delta) {
         super.renderLoader(delta);
 
         if (loadVideo != null) {
             renderVideo(delta);
-            if (isVideoAsBackground()){
-            overlayStage.act(delta);
-            overlayStage.draw();
+            if (isVideoAsBackground()) {
+                overlayStage.act(delta);
+                overlayStage.draw();
             }
 
         }
@@ -325,12 +306,11 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
         if (!loadVideo.isAvailable()) return;
         if (loadVideo.getPlayer() == null)
             playVideo();
-        else if (!loadVideo.getPlayer().isPlaying())
-        {
+        else if (!loadVideo.getPlayer().isPlaying()) {
             if (isLooped())
-             playVideo();
+                playVideo();
         }
-//        Gdx.gl.glViewport(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
+        //        Gdx.gl.glViewport(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
         if (isClearForVideo())
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         if (!loadVideo.getPlayer().render())

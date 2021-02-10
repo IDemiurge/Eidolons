@@ -51,7 +51,7 @@ public class HqMasteryTable extends HqStatTable {
     protected PARAMS[] initDataArray() {
         HqHeroDataSource hero = getUserObject();
         List<PARAMETER> list = new ArrayList<>(SkillMaster.getUnlockedMasteries(hero.getEntity()));
-        list = list.stream().map(p -> ContentValsManager.getMasteryFromScore(p)).
+        list = list.stream().map(ContentValsManager::getMasteryFromScore).
                 collect(Collectors.toList());
         ListMaster.fillWithNullElements(list, size);
         return list.toArray(new PARAMS[0]);

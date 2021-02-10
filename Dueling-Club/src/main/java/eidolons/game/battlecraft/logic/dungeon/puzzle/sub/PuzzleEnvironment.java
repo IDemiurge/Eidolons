@@ -1,12 +1,12 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.sub;
 
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
-import eidolons.system.audio.MusicMaster;
+import eidolons.system.audio.MusicEnums;
 
 public class PuzzleEnvironment {
 
-    MusicMaster.AMBIENCE ambience;
-    AmbienceDataSource.AMBIENCE_TEMPLATE vfxTemplate;
+    MusicEnums.AMBIENCE ambience;
+    AmbienceDataSource.VFX_TEMPLATE vfxTemplate;
 
 
 

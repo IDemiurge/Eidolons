@@ -97,6 +97,10 @@ public interface Effect extends Interruptable, Referred, XmlConvertable,
 
     void setOriginalFormula(Formula formula);
 
+    default void initAnimRef(Ref ref) {
+
+    }
+
 
     enum ABILITY_MANIPULATION {
         ADD, REMOVE, REMOVE_ALL, MODIFY_FORMULA, STEAL
@@ -201,7 +205,7 @@ public interface Effect extends Interruptable, Referred, XmlConvertable,
         }
 
         SPECIAL_EFFECTS_CASE() {
-            name = StringMaster.getWellFormattedString(name().replace("_SELF", " (self)")
+            name = StringMaster.format(name().replace("_SELF", " (self)")
                     .replace("_HIT", " being hit"));
             if (name.contains("Crit")) {
                 name = name.replace("Crit", "") + "(Critical)";
@@ -225,7 +229,7 @@ public interface Effect extends Interruptable, Referred, XmlConvertable,
         CONFUSION(" is rendered mindless as its summoner is no longer able to pay the upkeep!"),
         BERSERK(" goes berserk as its summoner is no longer able to pay the upkeep!"),;
 
-        private String logString;
+        private final String logString;
 
         UPKEEP_FAIL_ACTION(String l) {
             this.logString = l;

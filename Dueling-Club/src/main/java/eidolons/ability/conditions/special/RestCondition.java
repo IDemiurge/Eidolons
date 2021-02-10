@@ -12,8 +12,7 @@ import java.util.List;
  * Created by JustMe on 11/16/2017.
  */
 public class RestCondition extends DC_Condition {
-    private int minDistance = 5;
-    private String FOOD_ITEM = "Food";
+    private final int minDistance = 5;
 
     @Override
     public boolean check(Ref ref) {
@@ -25,6 +24,7 @@ public class RestCondition extends DC_Condition {
             int distance = getGame().getAiManager().getAnalyzer().getClosestEnemyDistance(sub);
 //            if (distance < minDistance)
 //                return false;
+            String FOOD_ITEM = "Food";
             if (new SearchMaster<DC_HeroItemObj>().find(FOOD_ITEM, sub.getInventory(), true) != null)
                 hasFood = true;
         }

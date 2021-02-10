@@ -18,9 +18,7 @@ public class MapKeyHandler extends GlobalController{
                 return true;
         }
 
-        if (charTyped(character))
-            return true;
-        return false;
+        return charTyped(character);
 
     }
 }

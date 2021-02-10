@@ -1,101 +1,222 @@
 package eidolons.libgdx.bf.grid.cell;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
-import eidolons.libgdx.bf.overlays.HpBar;
-import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
+import eidolons.libgdx.bf.overlays.bar.HpBar;
+import eidolons.libgdx.gui.generic.btn.ButtonStyled;
+import eidolons.libgdx.gui.panels.dc.topleft.atb.AtbPanel;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltipFactory;
+import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.CONTENT_CONSTS;
+import main.content.enums.GenericEnums;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.launch.Flags;
 
 import java.util.function.Supplier;
 
+import static eidolons.libgdx.GdxImageMaster.getRoundedPath;
+import static eidolons.libgdx.GdxImageMaster.getSizedImagePath;
+import static eidolons.libgdx.anims.actions.ActionMaster.*;
 import static main.system.GuiEventType.ADD_OR_UPDATE_INITIATIVE;
 
 /**
  * Created by JustMe on 4/6/2018.
  */
 public class QueueView extends UnitView {
+    private static final float LINE_Y_INACTIVE = -40;
+    private static final float LINE_Y_ACTIVE = -75;
+    private static final float VIEW_Y_INACTIVE = -30;
+    private static final float VIEW_Y_ACTIVE = -14;
+    private static final float PORTRAIT_Y_INACTIVE = -4;
+    private static final float PORTRAIT_Y_ACTIVE = 14;
+    private final Image activeMarker;
     protected int initiativeIntVal;
     protected Label initiativeLabel;
-    protected ImageContainer clockImage;
+    protected ImageContainer atbBg;
     protected boolean queueMoving = true;//queueMoving, temporary. 
-    protected GridUnitView parentView;
+    protected Actor parentView;
+    private ImageContainer roundBorder;
+    private final ImageContainer verticalLine;
 
     protected QueueView(UnitViewOptions o, int curId) {
         super(o, curId);
+        addActor(verticalLine = new ImageContainer(Images.SEPARATOR_NARROW_VERTICAL));
+        verticalLine.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.SUN);
+        verticalLine.setColor(1, 1, 1, 0);
+        //        getTeamColor()
+        GdxMaster.center(verticalLine);
+        addActor(activeMarker = new Image(ButtonStyled.STD_BUTTON.PULL.getTexture()));
+        activeMarker.getColor().a = 0;
         init(o.getClockValue());
+        Image emblemBg;
+        addActor(emblemBg = new Image(TextureCache.getRegionUI_DC(Images.INTENT_ICON_BG)));
+        emblemBg.setPosition((AtbPanel.imageSize - 30) / 2, 80);
+
+        initEmblem(o.getEmblem());
+        emblemImage.setPosition(emblemBg.getX(), emblemBg.getY());
+        verticalLine.setZIndex(0);
+
+        emblemImage.setZIndex(9234);
+    }
+
+    public static String getProperViewPath(String path) {
+        return                getRoundedPath(getSizedImagePath(path, AtbPanel.imageSize));
     }
 
     @Override
-    protected void initSprite(UnitViewOptions o) {
-        //TODO could do it of course , but..
+    protected float getEmblemSize() {
+        return 40;
     }
 
     @Override
-    public BattleFieldObject getUserObject() {
-        return parentView.getUserObject();
-    }
+    public void act(float delta) {
+        super.act(delta);
+        emblemLighting.setVisible(false);
+        modeImage.setPosition(78, -20);
+        modeImage.setZIndex(654);
+        verticalLine.setX(GdxMaster.centerWidth(verticalLine) + 5);
+        highlight.setX(portrait.getX() - 4);
+        roundBorder.setY(portrait.getY());
+        highlight.setY(portrait.getY() - 3);
+        if (!active) {
+            hpBar.setY(portrait.getY() + 6);
+        } else {
+            hpBar.setY(portrait.getY() + 1);
+        }
+        hpBar.setY(-5);
+        hpBar.setX(-6);
 
-    @Override
-    public TextureRegion getDefaultTexture() {
-        return TextureCache.getOrCreateR(OUTLINE_TYPE.UNKNOWN.getImagePath());
+        atbBg.setY(-24);
+        activeMarker.setY(-32);
+        activeMarker.setZIndex(6534);
+        activeMarker.setX(GdxMaster.centerWidth(activeMarker) + 4);
+
+        initiativeLabel.setPosition(
+                atbBg.getX() +
+                        (atbBg.getWidth() / 2 - initiativeLabel.getWidth() * 1.63f - 11),
+                atbBg.getY() +
+                        (atbBg.getHeight() / 2 - initiativeLabel.getHeight() / 2));
+
     }
 
     protected void init(int clockVal) {
         this.initiativeIntVal = clockVal;
         initiativeLabel = new Label(
-                String.valueOf(clockVal),
-                getInitiativeFontStyle());
-        clockImage = new ImageContainer(PathFinder.getComponentsPath()
+                "", getInitiativeFontStyle());
+        atbBg = new ImageContainer(PathFinder.getComponentsPath()
                 + "dc/atb/readiness bg.png");
-        addActor(clockImage);
+        roundBorder = new ImageContainer(PathFinder.getComponentsPath()
+                + "dc/borders/circle border down 96.png");
+        addActor(atbBg);
         addActor(initiativeLabel);
+        addActor(roundBorder);
+        highlight.setZIndex(999);
 
-        addListener(new SmartClickListener(this) {
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                if (getUserObject().isDetectedByPlayer()) {
-                    getUserObject().getGame().getManager().setHighlightedObj(getUserObject());
-//                    parentView.setHovered(true);
-//                    parentView.setBorder(true);
-                } else
-                    GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP,
-                            UnitViewTooltipFactory.create((UnitView) event.getListenerActor(), getUserObject()));
-                super.enter(event, x, y, pointer, fromActor);
-            }
-
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                getUserObject().getGame().getManager().setHighlightedObj(null);
-                super.exit(event, x, y, pointer, toActor);
-            }
-        });
+        addListener(createListener());
         setInitialized(true);
     }
 
-    protected void updateVisible() {
-        if (getOutline() != null || isHovered()) {
-            initiativeLabel.setVisible(false);
-            clockImage.setVisible(false);
-        } else {
-            initiativeLabel.setVisible(true);
-            clockImage.setVisible(true);
+    public void hoverOff() {
+        hover(false);
+    }
+
+    public void hoverOn() {
+        hover(true);
+    }
+
+    public void hover(boolean on) {
+        if (isHovered() != on) {
+            return;
         }
+        for (Actor allChild : GdxMaster.getAllChildren(this)) {
+            for (Action action : allChild.getActions()) {
+                if (action instanceof MoveToAction) {
+                    allChild.removeAction(action);
+                }
+            }
+        }
+        float y;
+        float y1;
+        if (active) {
+            y = VIEW_Y_ACTIVE;
+            y1 = LINE_Y_ACTIVE;
+        } else {
+            y = VIEW_Y_INACTIVE;
+            y1 = LINE_Y_INACTIVE;
+            if (on) {
+                addFadeInAction(verticalLine, 1f * AtbPanel.getSpeedFactor());
+            } else {
+                addFadeOutAction(verticalLine, 1f * AtbPanel.getSpeedFactor());
+            }
+        }
+        if (on) {
+            y -= 20;
+            y1 -= 30;
+        } else {
+            y += 20;
+            y1 += 30;
+        }
+        MoveToAction move = getMoveToAction(0, y, 1f * AtbPanel.getSpeedFactor());
+        ActionMaster.addAction(this, move);
+        move = getMoveToAction(verticalLine.getX(), y1, 1f * AtbPanel.getSpeedFactor());
+        ActionMaster.addAction(verticalLine, move);
+    }
+
+    public void setActive(boolean active) {
+        //gdx review - why is this getting called more than one?
+        if (ExplorationMaster.isExplorationOn()) {
+            return; //quick fix..
+        }
+        if (this.active == active) {
+            return;
+        }
+        // ActionMaster.addBlockingAction(this, ()-> queueMoving);
+        this.active = active;
+        //we would need a delay here? elsewise...
+        if (active) {
+            addFadeInAction(verticalLine, 1f * AtbPanel.getSpeedFactor());
+            addFadeInAction(activeMarker, 1f * AtbPanel.getSpeedFactor());
+            addMoveToAction(this, portrait.getX(), PORTRAIT_Y_ACTIVE, 1f * AtbPanel.getSpeedFactor());
+            addMoveToAction(verticalLine, verticalLine.getX(), LINE_Y_ACTIVE, 1f * AtbPanel.getSpeedFactor());
+            verticalLine.setVisible(true);
+        } else {
+            addFadeOutAction(verticalLine, 1f * AtbPanel.getSpeedFactor());
+            addFadeOutAction(activeMarker, 1f * AtbPanel.getSpeedFactor());
+            addMoveToAction(portrait, portrait.getX(), PORTRAIT_Y_INACTIVE, 1f * AtbPanel.getSpeedFactor());
+            addMoveToAction(verticalLine, verticalLine.getX(), LINE_Y_INACTIVE, 1f * AtbPanel.getSpeedFactor());
+        }
+    }
+
+    protected void updateVisible() {
+        //        if (getOutline() != null || isHovered()) {
+        //            initiativeLabel.setVisible(false);
+        //            atbBg.setVisible(false);
+        //        } else {
+        //            initiativeLabel.setVisible(true);
+        //            atbBg.setVisible(true);
+        //        }
+
     }
 
     @Override
@@ -104,16 +225,11 @@ public class QueueView extends UnitView {
 
         if (initiativeLabel != null) {
             if (AtbPanel.isLeftToRight())
-                clockImage.setPosition(GdxMaster.right(clockImage) + 6, -5);
-            initiativeLabel.setPosition(
-                    clockImage.getX() +
-                            (clockImage.getWidth() / 2 - initiativeLabel.getWidth() * 1.23f),
-                    clockImage.getY() +
-                            (clockImage.getHeight() / 2 - initiativeLabel.getHeight() / 2));
+                atbBg.setPosition(GdxMaster.right(atbBg) + 6, -5);
         }
         if (!GridMaster.isHpBarsOnTop())
             if (hpBar != null)
-                hpBar.setPosition(GdxMaster.centerWidth(hpBar)- 5, -hpBar.getHeight() / 2);
+                hpBar.setPosition(GdxMaster.centerWidth(hpBar) - 5, -hpBar.getHeight() / 2);
         if (isInitialized())
             reset();
 
@@ -147,8 +263,8 @@ public class QueueView extends UnitView {
         initiativeLabel.setStyle(
                 getInitiativeFontStyle());
         initiativeLabel.setPosition(
-                clockImage.getX() + (clockImage.getWidth() / 2 - initiativeLabel.getWidth() / 2),
-                clockImage.getY() + (clockImage.getHeight() / 2 - initiativeLabel.getHeight() / 2));
+                atbBg.getX() + (atbBg.getWidth() / 2 - initiativeLabel.getWidth() / 2),
+                atbBg.getY() + (atbBg.getHeight() / 2 - initiativeLabel.getHeight() / 2));
 
         GuiEventManager.trigger(ADD_OR_UPDATE_INITIATIVE, this);
     }
@@ -157,10 +273,11 @@ public class QueueView extends UnitView {
         //TODO need it due to some glitch in updates..
         initiativeLabel.setText(String.valueOf(initiative));
     }
+
     public LabelStyle getInitiativeFontStyle() {
         return StyleHolder.getSizedColoredLabelStyle(
                 0.3f,
-                StyleHolder.ALT_FONT, 16,
+                StyleHolder.ALT_FONT, 18,
                 getTeamColor());
     }
 
@@ -173,6 +290,9 @@ public class QueueView extends UnitView {
     }
 
     protected void setDefaultTexture() {
+        if (!OutlineMaster.isOutlinesOn()) {
+            return;
+        }
         if (getUserObject() == null) {
             return;
         }
@@ -183,33 +303,39 @@ public class QueueView extends UnitView {
             return;
         }
         setOutline(getDefaultTextureSized());
-        setPortraitTexture(getOutline());
+        if (getOutline() != null) {
+            setPortraitTexture(getOutline());
+        }
     }
-
 
 
     protected boolean isHpBarVisible() {
         return true;
     }
 
-    //    @Override
-    //    public void draw(Batch batch, float parentAlpha) {
-    //        if (parentAlpha== ShaderMaster.SUPER_DRAW)
-    //            super.draw(batch, 1);
-    //        else
-    //        ShaderMaster.drawWithCustomShader(this, batch,
-    //         greyedOut ? GrayscaleShader.getGrayscaleShader() : null, true);
-    //    }
-
     public void setPortraitTexture(TextureRegion textureRegion) {
-        getPortrait().setTexture(TextureCache.getOrCreateTextureRegionDrawable(textureRegion));
+        if (textureRegion != null)
+            getPortrait().setTexture(TextureCache.getOrCreateTextureRegionDrawable(textureRegion,
+                    () -> flip == CONTENT_CONSTS.FLIP.HOR, () -> flip == CONTENT_CONSTS.FLIP.VERT
+            ));
     }
 
-    protected TextureRegion processPortraitTexture(TextureRegion region, String path) {
-        Texture texture = GdxImageMaster.size(path, AtbPanel.imageSize, true);
-        if (texture == null)
-            return region;
-        return new TextureRegion(texture);
+    public TextureRegion processPortraitTexture(String path) {
+        // if (Flags.isJarlike()) {
+            if (Flags.isIDE()) {
+                GdxImageMaster.size( (path),
+                        AtbPanel.imageSize, true);
+            }
+            return GdxImageMaster.round(path, Flags.isIDE(),  GdxImageMaster.getSizedImagePath(path, AtbPanel.imageSize));
+        // }
+        // TextureRegion region = TextureCache.getRegionUV(path);
+        // GdxImageMaster.round(path, true, "");
+        // Texture texture = GdxImageMaster.size(GdxImageMaster.getRoundedPath(path),
+        //         AtbPanel.imageSize, Flags.isIDE());
+        //
+        // if (texture == null)
+        //     return region;
+        // return new TextureRegion(texture);
     }
 
     public void setOutlineSupplier(Supplier<TextureRegion> outlineSupplier) {
@@ -223,7 +349,7 @@ public class QueueView extends UnitView {
         this.hpBar = hpBar;
         //        if (!GridPanel.isHpBarsOnTop()) {
         addActor(hpBar);
-        hpBar.setPosition(GdxMaster.centerWidth(hpBar)- 5, -hpBar.getHeight() / 2);
+        hpBar.setPosition(GdxMaster.centerWidth(hpBar) - 5, -hpBar.getHeight() / 2);
         //        }
         hpBar.setQueue(true);
     }
@@ -240,11 +366,11 @@ public class QueueView extends UnitView {
         return getClass().getSimpleName() + " for " + name;
     }
 
-    public GridUnitView getParentView() {
+    public Actor getParentView() {
         return parentView;
     }
 
-    public void setParentView(GridUnitView parentView) {
+    public void setParentView(Actor parentView) {
         this.parentView = parentView;
     }
 
@@ -254,12 +380,62 @@ public class QueueView extends UnitView {
 
     public TextureRegion getDefaultTextureSized() {
         if (defaultTexture == null) {
-            defaultTexture = TextureCache.getSizedRegion(
-                    AtbPanel.imageSize,
-                    OUTLINE_TYPE.UNKNOWN.getImagePath());
+            //TODO EA check
+            String path =
+                    getProperViewPath(
+                    OutlineMaster.isOutlinesOn()?  OUTLINE_TYPE.UNKNOWN.getImagePath() : getUserObject().getImagePath());
+            return defaultTexture = TextureCache.getRegionUV( path);
+            // Texture sized = GdxImageMaster.size(GdxImageMaster.getRoundedPath(path),
+            //         AtbPanel.imageSize, Flags.isIDE());
+            // if (sized == null) {
+            //     TextureCache.getSizedRegion()
+            // }
+            // return defaultTexture = new TextureRegion(sized);
         }
         return defaultTexture;
     }
 
+
+    @Override
+    public BattleFieldObject getUserObject() {
+        return (BattleFieldObject) parentView.getUserObject();
+    }
+
+    @Override
+    public TextureRegion getDefaultTexture() {
+        return TextureCache.getRegionUV(OUTLINE_TYPE.UNKNOWN.getImagePath());
+    }
+
+    @Override
+    public String getActiveHighlightImgPath() {
+        return PathFinder.getComponentsPath()
+                + "dc/borders/hl circle 96.png";
+    }
+
+    @Override
+    protected void initSprite(UnitViewOptions o) {
+        //TODO will it look good? Needs re-pos?
+    }
+
+
+    private EventListener createListener() {
+        return new SmartClickListener(this) {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                if (getUserObject().isDetectedByPlayer()) {
+                    getUserObject().getGame().getManager().setHighlightedObj(getUserObject());
+                } else
+                    GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP,
+                            UnitViewTooltipFactory.create((UnitView) event.getListenerActor(), getUserObject()));
+                super.enter(event, x, y, pointer, fromActor);
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                getUserObject().getGame().getManager().setHighlightedObj(null);
+                super.exit(event, x, y, pointer, toActor);
+            }
+        };
+    }
 }
 

@@ -2,11 +2,14 @@ package eidolons.libgdx.gui.menu.selection;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.content.DescriptionMaster;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
@@ -18,7 +21,7 @@ import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.RollDecorator;
 import eidolons.libgdx.gui.RollDecorator.RollableGroup;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SmartTextButton;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import main.entity.Entity;
@@ -30,7 +33,8 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
-import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
+import main.system.sound.AudioEnums;
+import main.system.sound.AudioEnums.BUTTON_SOUND_MAP;
 
 import java.util.*;
 
@@ -57,12 +61,20 @@ public abstract class ItemListPanel extends TablePanel {
         //        setBackground(TextureCache.getOrCreateTextureRegionDrawable(getBackgroundPath()));
 
         if (getNinePatch() != null) {
-            TextureRegion generated = new TextureRegion(
-                    TiledNinePatchGenerator.getOrCreateNinePatch(getNinePatch(),
-                            getNinePatchBackground(),
-                            getDefaultWidth()
-                            , getDefaultHeight()));
-            setSize(generated.getRegionWidth(), generated.getRegionHeight());
+            Drawable generated =
+                    TiledNinePatchGenerator.isUseDynamicDrawable()
+                            ?
+                            TiledNinePatchGenerator.getDrawable(getNinePatch(),
+                                    getNinePatchBackground(),
+                                    getDefaultWidth()
+                                    , getDefaultHeight())
+                            : new TextureRegionDrawable(
+                            new TextureRegion(
+                                    TiledNinePatchGenerator.getOrCreateNinePatch(getNinePatch(),
+                                            getNinePatchBackground(),
+                                            getDefaultWidth()
+                                            , getDefaultHeight())));
+            setSize(generated.getMinWidth(), generated.getMinHeight());
             setFixedSize(true);
             addActor(new Image(generated));
         } else {
@@ -105,11 +117,11 @@ public abstract class ItemListPanel extends TablePanel {
         TextButton button = getCache().get(sub);
 
         if (button == null || sub == null) {
-            button = new SmartButton((sub.name),
+            button = new SmartTextButton((sub.name),
                     StyleHolder.getTextButtonStyle(getButtonStyle(),
                             getFontStyle(), getFontColor(), getFontSize())) {
                 @Override
-                protected BUTTON_SOUND_MAP getSoundMap() {
+                public BUTTON_SOUND_MAP getSoundMap() {
                     return getButtonSoundMap();
                 }
 
@@ -134,7 +146,7 @@ public abstract class ItemListPanel extends TablePanel {
     }
 
     protected BUTTON_SOUND_MAP getButtonSoundMap() {
-        return BUTTON_SOUND_MAP.SELECTION;
+        return AudioEnums.BUTTON_SOUND_MAP.SELECTION;
     }
 
     protected Color getFontColor() {
@@ -157,8 +169,12 @@ public abstract class ItemListPanel extends TablePanel {
         selectWithOffset(-1);
     }
 
-    public void select(int i) {
-        clicked(i);
+    public void select(int index) {
+        try {
+            clicked(buttons.get(index), getItems().get(index));
+        } catch (Exception e) {
+            selected(items.get(index));
+        }
     }
 
     public int getIndex() {
@@ -172,30 +188,21 @@ public abstract class ItemListPanel extends TablePanel {
             index = 0;
         else if (index < 0)
             index = buttons.size() - 1;
-        clicked(index);
+        select(index);
     }
 
     public void selectRandomItem() {
         List<SelectableItemData> available = new LinkedList<>(items);
-        available.removeIf(btn -> isBlocked(btn));
+        available.removeIf(this::isBlocked);
         SelectableItemData item = new RandomWizard<SelectableItemData>().
                 getRandomListItem(available);
         currentItem = item;
         if (ListMaster.isNotEmpty(buttons))
-            clicked(items.indexOf(item));
+            select(items.indexOf(item));
     }
 
     public void next() {
         selectWithOffset(1);
-    }
-
-    protected void clicked(int index) {
-        index = Math.min(buttons.size() - 1, index);
-        try {
-            clicked(buttons.get(index), getItems().get(index));
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
     }
 
     protected boolean clicked(TextButton textButton, SelectableItemData sub) {
@@ -252,7 +259,7 @@ public abstract class ItemListPanel extends TablePanel {
         if (getBackground() != null)
             clear(); //some funny issue with rows without clear()...
         else
-            buttons.forEach(button -> button.remove());
+            buttons.forEach(Actor::remove);
 
         buttons.clear();
         for (SelectableItemData sub : items) {

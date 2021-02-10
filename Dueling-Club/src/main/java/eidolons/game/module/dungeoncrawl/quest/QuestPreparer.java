@@ -56,6 +56,7 @@ public class QuestPreparer {
         DungeonEnums.DUNGEON_STYLE style = DungeonEnums.DUNGEON_STYLE.Somber; //quest.getMaster().getStyle();
 //        Eidolons.getGame().getDungeonMaster().getDungeonLevel().getMainStyle()
 // TODO is it useful?
+        if (type != null)
         switch (type) {
             case BOSS:
                quest. setArg(QuestCreator.getBossType(powerLevel, quest,
@@ -69,16 +70,16 @@ public class QuestPreparer {
                 quest. setArg(unitType);
                 break;
             case OBJECTS:
-                quest. setPowerCoef(new Float(powerLevel)/40);
+                quest. setPowerCoef((float) powerLevel /40);
                 quest.  setArg(
                         QuestCreator.getOverlayObjType(quest));
                 break;
             case SECRETS:
-                quest. setPowerCoef(new Float(powerLevel)/180);
+                quest. setPowerCoef((float) powerLevel /180);
                 quest.  setArg(DataManager.getType("Old Stone Wall", DC_TYPE.BF_OBJ));
                 break;
             case COMMON_ITEMS:
-                quest. setPowerCoef(new Float(powerLevel)/70);
+                quest. setPowerCoef((float) powerLevel /70);
                 quest. setArg(QuestCreator.getItemTypeCommon(powerLevel, quest,
                         style ));
                 break;
@@ -93,7 +94,7 @@ public class QuestPreparer {
     }
 
     private float getMobPower(int powerLevel, ObjType unitType) {
-        return MathMaster.minMax(new Float(powerLevel) / unitType.getIntParam(PARAMS.POWER)
+        return MathMaster.minMax((float) powerLevel / unitType.getIntParam(PARAMS.POWER)
                 , 0.25f, 3);
     }
 

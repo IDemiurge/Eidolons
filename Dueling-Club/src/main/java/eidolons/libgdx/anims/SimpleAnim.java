@@ -3,9 +3,9 @@ package eidolons.libgdx.anims;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.anims.construct.AnimConstructor;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.particles.spell.SpellVfx;
 import eidolons.libgdx.particles.spell.SpellVfxPool;
 import main.content.enums.GenericEnums;
@@ -36,6 +36,7 @@ public class SimpleAnim implements Animation {
     Vector2 pos;
     Float duration;
 
+    GraphicData data;
 
     public SimpleAnim(String vfx, String spritePaths, Runnable onDone, Vector2 origin, Vector2 dest, Float duration) {
         this.vfxPaths = vfx;
@@ -50,16 +51,25 @@ public class SimpleAnim implements Animation {
         this(null, spritePaths, onDone);
     }
 
+    public SimpleAnim( GraphicData data, String vfx, String spritePaths, Runnable onDone) {
+        this(vfx, spritePaths, onDone);
+        this.data=data;
+    }
     public SimpleAnim(String vfx, String spritePaths, Runnable onDone) {
-        this(vfx, spritePaths, onDone, GridMaster.getCenteredPos(Eidolons.getMainHero().getCoordinates()), null, null);
+        this(vfx, spritePaths, onDone, GridMaster.getCenteredPos(
+                Eidolons.getPlayerCoordinates()), null, null);
         this.spritePaths = spritePaths;
         this.onDone = onDone;
     }
 
     @Override
     public void start(Ref ref) {
-        pos = origin;
-        vfx = SpellVfxPool.getEmitters(vfxPaths);
+        if (data == null) {
+            pos = origin;
+        } else
+            pos =                    new Vector2(origin.x + data.getFloatValue(GraphicData.GRAPHIC_VALUE.x),
+                            origin.y + data.getFloatValue(GraphicData.GRAPHIC_VALUE.y));
+        vfx = SpellVfxPool.getEmitters(vfxPaths, 1);
         for (SpellVfx spellVfx : vfx) {
             spellVfx.start();
             spellVfx.allowFinish();
@@ -98,12 +108,12 @@ public class SimpleAnim implements Animation {
     @Override
     public boolean tryDraw(Batch batch) {
         //TODO dest
-//        if (duration == null) what's that?
+        //        if (duration == null) what's that?
         {
             done = true;
 
             for (SpellVfx spellVfx : vfx) {
-                spellVfx.updatePosition(pos.x,pos.y);
+                spellVfx.updatePosition(pos.x, pos.y);
                 spellVfx.draw(batch, 1f);
                 if (!spellVfx.isComplete()) {
                     done = false;
@@ -149,7 +159,7 @@ public class SimpleAnim implements Animation {
     }
 
     @Override
-    public AnimConstructor.ANIM_PART getPart() {
+    public AnimEnums.ANIM_PART getPart() {
         return null;
     }
 

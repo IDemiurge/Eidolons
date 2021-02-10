@@ -5,14 +5,14 @@ import main.system.auxiliary.StringMaster;
 import java.util.List;
 
 public class ArgumentImpl implements Argument {
-    private AE_ELEMENT_TYPE ELEMENT_TYPE;
-    private String name;
+    private final AE_ELEMENT_TYPE ELEMENT_TYPE;
+    private final String name;
     private boolean primitive = false;
     private List<Class<?>> ENUM_CLASSES;
-    private Class<?> c;
+    private final Class<?> c;
 
     ArgumentImpl(Class<?> c, String name) {
-        this.name = StringMaster.getWellFormattedString(name);
+        this.name = StringMaster.format(name);
         this.c = c;
         this.ELEMENT_TYPE = AE_ELEMENT_TYPE.ENUM_CHOOSING;
     }

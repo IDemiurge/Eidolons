@@ -52,7 +52,7 @@ public class LayerManager extends DungeonHandler {
     }
 
     private Layer addLayer(String name) {
-        Layer layer = null;
+        Layer layer;
         layers.add(layer = new Layer(name, new LinkedHashSet<>()));
         if (current == null) {
             current = layer;
@@ -66,7 +66,7 @@ public class LayerManager extends DungeonHandler {
         hidden,
 
     }
-public class LayerData extends DataUnit<LAYER_VALUE>{
+public static class LayerData extends DataUnit<LAYER_VALUE>{
     public LayerData(String text) {
         super(text);
     }
@@ -80,7 +80,6 @@ public class LayerData extends DataUnit<LAYER_VALUE>{
                 layer.setTriggerText(data.getValue(LAYER_VALUE.trigger));
                 break;
             case VFX_NODE:
-                break;
             case SCRIPT_NODE:
                 break;
             case ID_NODE:

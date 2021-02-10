@@ -3,9 +3,9 @@ package eidolons.libgdx.gui.panels.dc.actionpanel.weapon;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.libgdx.gui.controls.radial.RadialContainer;
 import eidolons.libgdx.gui.controls.radial.RadialManager;
 import eidolons.libgdx.gui.controls.radial.RadialMenu;
-import eidolons.libgdx.gui.controls.radial.RadialValueContainer;
 import main.entity.obj.ActiveObj;
 import main.system.EventCallbackParam;
 
@@ -52,7 +52,7 @@ public class QuickAttackRadial extends RadialMenu {
         Unit source =getSource();
         List<? extends ActiveObj> attacks = quickWeaponPanel.
          getActiveWeaponDataSource().getActions();
-        List<RadialValueContainer> nodes = null;
+        List<RadialContainer> nodes;
         try {
             nodes =createNodes(source, attacks);
 //        getDualNode();
@@ -68,8 +68,8 @@ public class QuickAttackRadial extends RadialMenu {
         return  quickWeaponPanel.getDataSource().getOwnerObj();
     }
 
-    protected List<RadialValueContainer> createNodes(Unit source,
-                                                     List<? extends ActiveObj> attacks) {
+    protected List<RadialContainer> createNodes(Unit source,
+                                                List<? extends ActiveObj> attacks) {
         return RadialManager.createNodes(source, null, attacks, false);
     }
 

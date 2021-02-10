@@ -1,6 +1,7 @@
 package main.content.enums.entity;
 
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.images.ImageManager;
 
 import java.util.Map;
@@ -64,7 +65,7 @@ public final class UnitEnums {
         }
 
         public String getName() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
 
         public boolean isDisplayed() {
@@ -133,9 +134,9 @@ public final class UnitEnums {
         private Map<COUNTER, COUNTER_INTERACTION> interactionMap;
         private COUNTER down;
         private COUNTER up;
-        private String imagePath;
-        private String name =
-         StringMaster.getWellFormattedString(name()) + StringMaster.COUNTER;
+        private final String imagePath;
+        private final String name =
+         StringMaster.format(name()) + Strings.COUNTER;
 
         COUNTER() {
             imagePath = ImageManager.getValueIconsPath() + "counters/" + toString() + ".png";
@@ -226,7 +227,6 @@ public final class UnitEnums {
         FLESHLESS("Poison, disease and bleeding have no effect on this unit"),
 
         BLIND_FIGHTER("Concealed and Invisible units do not receive bonuses when fighting this unit"),
-        TRANSPARENT("Transparent"),
         NON_OBSTRUCTING("Non obstructing"),
 
         DARKVISION("Darkvision"),
@@ -252,7 +252,7 @@ public final class UnitEnums {
         CLEAVE("CLEAVE"),
         TRUE_STRIKE("True Strike"),
         INDESTRUCTIBLE("Indestructible"),
-        INVULNERABLE(StringMaster.getWellFormattedString("INVULNERABLE")),
+        INVULNERABLE(StringMaster.format("INVULNERABLE")),
 
         // NEW
         UNLIMITED_RETALIATION("Unlimited Retaliation"),
@@ -317,7 +317,7 @@ public final class UnitEnums {
 
         public String getName() {
             if (name == null) {
-                name = StringMaster.getWellFormattedString(name());
+                name = StringMaster.format(name());
             }
 
             return name;
@@ -359,7 +359,7 @@ public final class UnitEnums {
 
         CONCEALED,
         BLOCKED,
-        PREPARED, // COOLDOWN
+        PREPARED,
 
         // OBJ
         CLAIMED,
@@ -386,7 +386,10 @@ public final class UnitEnums {
         UNCONSCIOUS,
         UNDYING,
         ENGAGED,
-        VIRULENT, // cannot
+        VIRULENT,
+        DISABLED, //("Is not active now")
+
+        // cannot
         // act/counter,
         // gets
         // -75%
@@ -410,7 +413,7 @@ public final class UnitEnums {
 
 
         public String toString() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
     }
 
@@ -430,7 +433,7 @@ public final class UnitEnums {
         WRAITH_MONSTROCITY,;
 
         public String toString() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
 
     }
@@ -488,7 +491,7 @@ public final class UnitEnums {
         ANIMALS("Animals,Wolves,Wargs,wild,"),
         REPTILES, BANDIT_SCUM(), SPIDERS,;
 
-        private String subgroups;
+        private final String subgroups;
 
         UNIT_GROUP(String groups) {
             this.subgroups = groups;

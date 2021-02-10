@@ -5,7 +5,6 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.Referred;
 import main.game.core.game.Game;
-import main.system.util.Optimize;
 
 public abstract class DynamicValue implements Referred {
 
@@ -17,7 +16,7 @@ public abstract class DynamicValue implements Referred {
     protected Game game;
     protected boolean base;
 
-    @Optimize
+    //Core Review Optimize
     public DynamicValue(String fullString) {
         if (fullString.contains("@")) {
             fullString = fullString.replace("@", "");
@@ -30,7 +29,7 @@ public abstract class DynamicValue implements Referred {
                 this.value_string = fullString;
             } else {
                 if (fullString.contains("_")) {
-                    String s[] = fullString.split("_");
+                    String[] s = fullString.split("_");
                     obj_string = s[0];
                     value_string = s[1];
 //                    this.value_string = fullString.substring(fullString.indexOf("_") + 1);

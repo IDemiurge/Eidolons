@@ -30,10 +30,7 @@ public class G_Panel extends G_Component implements VisualComponent {
     }
 
     public G_Panel(String constraints) {
-        setMigLayout("insets 0 0 0 0," +
-
-         (GuiManager.isGuiDebug() ? "debug," : "")
-
+        setMigLayout("insets 0 0 0 0,"
          + constraints);// "debug,"
         // +
         setBorder(null);
@@ -63,7 +60,7 @@ public class G_Panel extends G_Component implements VisualComponent {
     @Override
     public String toString() {
         String string = getClass().getSimpleName();
-        string += StringMaster.wrapInBraces("" + id);
+        string += StringMaster.wrapInBrackets("" + id);
 
         string += "; Width=" + getWidth();
         string += ", Height=" + getHeight();
@@ -83,9 +80,6 @@ public class G_Panel extends G_Component implements VisualComponent {
     @Override
     public void add(Component comp, Object constraints) {
         if (constraints instanceof String) {
-            if (getKeyManager() == null) {
-                setKeyManager(GuiManager.getKeyListener());
-            }
             if (getKeyManager() != null) {
                 if (comp instanceof G_Panel) {
                     ((G_Panel) comp).setKeyManager(getKeyManager()); // doesn't

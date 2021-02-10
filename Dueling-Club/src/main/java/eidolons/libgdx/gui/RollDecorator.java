@@ -4,11 +4,11 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import eidolons.libgdx.anims.ActionMaster;
-import eidolons.libgdx.bf.generic.ImageContainer;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.gui.generic.GroupX;
+import eidolons.libgdx.gui.generic.btn.ButtonStyled;
+import eidolons.libgdx.gui.generic.btn.SymbolButton;
 import eidolons.libgdx.gui.panels.TablePanel;
-import eidolons.libgdx.texture.Images;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.images.ImageManager.STD_IMAGES;
 
@@ -26,16 +26,18 @@ public class RollDecorator {
     }
 
     public static RollableGroup decorate(Actor actor, FACING_DIRECTION direction, boolean manual) {
-        RollableGroup group = new RollableGroup(actor, direction, manual);
-        return group;
+        return decorate(actor, direction, manual, null );
+    }
+    public static RollableGroup decorate(Actor actor, FACING_DIRECTION direction, boolean manual,
+                                         ButtonStyled.STD_BUTTON style) {
+        return new RollableGroup(actor, direction, manual, style);
     }
 
     public static class RollableGroup extends GroupX {
-        private final boolean manual;
-        private TablePanel table;
-        private ImageContainer arrow;
-        private Actor contents;
-        private FACING_DIRECTION direction;
+        private final TablePanel table;
+        private final Actor arrow;
+        private final Actor contents;
+        private final FACING_DIRECTION direction;
         private float origX;
         private float origY;
 
@@ -45,16 +47,11 @@ public class RollDecorator {
         private float rollPercentage = 1f;
         private boolean rollIsLessWhenOpen;
 
-        public RollableGroup(Actor contents, FACING_DIRECTION direction) {
-            this(contents, direction, true);
-        }
-
-        public RollableGroup(Actor contents, FACING_DIRECTION direction, boolean manual) {
+        public RollableGroup(Actor contents, FACING_DIRECTION direction, boolean manual, ButtonStyled.STD_BUTTON style) {
             super(true);
-            this.manual = manual;
             this.direction = direction;
             this.contents = contents;
-            this.arrow = initArrow();
+            this.arrow = initArrow( style);
             if (!manual)
                 arrow.setVisible(false);
             table = new TablePanel();
@@ -82,6 +79,15 @@ public class RollDecorator {
             addActor(table);
             table.setSize(getWidth(),
                     getHeight());
+            addListener(new ClickListener() {
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    if (getTapCount()>1) {
+                        toggle();
+                    }
+                    return super.touchDown(event, x, y, pointer, button);
+                }
+            });
         }
 
         @Override
@@ -138,20 +144,23 @@ public class RollDecorator {
         }
 
 
-        private ImageContainer initArrow() {
-            ImageContainer arrow = new ImageContainer(Images.ROLL_ARROW);
-
+        private SymbolButton initArrow(ButtonStyled.STD_BUTTON style) {
+            if (style == null) {
+                style = ButtonStyled.STD_BUTTON.ARROW;
+            }
+            SymbolButton arrow = new SymbolButton(style, () -> {
+                if (getActions().size > 0)
+                    return;
+                toggle();
+            }){
+                @Override
+                public boolean isCheckClickArea() {
+                    return false;
+                }
+            };
             arrow.setRotation(direction.getDirection().getDegrees() + 90);
             arrow.setOrigin(arrow.getWidth() / 2, arrow.getHeight() / 2);
-            arrow.addListener(new ClickListener() {
-                @Override
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    if (getActions().size > 0)
-                        return true;
-                    toggle();
-                    return super.touchDown(event, x, y, pointer, button);
-                }
-            });
+            arrow.setTransform(true);
             return arrow;
         }
 
@@ -165,10 +174,10 @@ public class RollDecorator {
 //            int toX = open ? 0 : (int) -contents.getWidth();
             if (rollIsLessWhenOpen)
                 switch (direction) {
-                    case SOUTH:
+                    case NORTH:
                         toY = open ? (int) origY + contents.getHeight() * rollPercentage : origY;
                         break;
-                    case NORTH:
+                    case SOUTH:
                         toY = open ? (int) origY - contents.getHeight() * rollPercentage : origY;
                         break;
                     case WEST:
@@ -182,21 +191,21 @@ public class RollDecorator {
                 }
             else
                 switch (direction) {
-                    case SOUTH:
-                        toY = open ? (int) origY + contents.getHeight() : origY
-                                - (contents.getHeight() * ( rollPercentage));
-                        break;
                     case NORTH:
+                        toY = open ? (int) origY + contents.getHeight() : origY
+                                - (contents.getHeight() * (rollPercentage));
+                        break;
+                    case SOUTH:
                         toY = open ? (int) origY - contents.getHeight() * rollPercentage : origY
                                 + (contents.getHeight() * (rollPercentage));
                         break;
                     case WEST:
                         toX = open ? (int) origX - contents.getWidth() : origX
-                                + (contents.getWidth() * ( rollPercentage));
+                                + (contents.getWidth() * (rollPercentage));
                         break;
                     case EAST:
                         toX = open ? (int) origX + contents.getWidth() : origX
-                                - (contents.getWidth() * ( rollPercentage));
+                                - (contents.getWidth() * (rollPercentage));
                         break;
                 }
 
@@ -204,7 +213,7 @@ public class RollDecorator {
                     this, toX, toY, getDuration());
 
             ActionMaster.addRotateByAction(
-                    arrow.getContent(), 180);
+                    arrow, 180);
 
             if (onEither != null) {
                 onEither.run();
@@ -224,11 +233,13 @@ public class RollDecorator {
             this.rollIsLessWhenOpen = rollIsLessWhenOpen;
         }
 
-        private boolean isOpen() {
+        public boolean isOpen() {
             switch (direction) {
-                case NORTH:
-                    return getY() < origY;
-                case SOUTH:
+               case NORTH:
+                // case SOUTH:
+                    return getY() <= origY;
+               case SOUTH:
+                // case NORTH:
                     return getY() >= origY;
                 case WEST:
                     return getX() >= origX;

@@ -52,7 +52,7 @@ public class BleedingDamageRule extends DamageCounterRule  implements TimedRule 
 
     @Override
     public String getBuffName() {
-        return MetaEnums.STD_BUFF_NAMES.Bleeding.toString();
+        return MetaEnums.STD_BUFF_NAME.Bleeding.toString();
     }
 
     @Override

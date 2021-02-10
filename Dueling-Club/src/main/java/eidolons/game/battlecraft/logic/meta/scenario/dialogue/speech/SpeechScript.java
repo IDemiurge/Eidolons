@@ -11,13 +11,13 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
+public class SpeechScript extends DataUnit<SpeechScript.SCRIPT> {
     public static final boolean TEST_MODE = false;
     public static final String SCRIPT_KEY = "script_key=";
     public boolean interrupted;
-    List<Pair<SPEECH_ACTION, String>> actions = new ArrayList<>();
+    List<Pair<SCRIPT, String>> actions = new ArrayList<>();
     MetaGameMaster master;
-    private String scriptText;
+    private final String scriptText;
     private boolean executed;
     private boolean executing;
 
@@ -46,7 +46,7 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
 
     @Override
     protected void handleMalformedData(String entry) {
-        setValue(SPEECH_ACTION.SCRIPT, entry);
+        setValue(SCRIPT.SCRIPT, entry);
 
     }
 
@@ -78,71 +78,98 @@ public class SpeechScript extends DataUnit<SpeechScript.SPEECH_ACTION> {
     }
 
     @Override
-    public Class<? extends SPEECH_ACTION> getEnumClazz() {
-        return SPEECH_ACTION.class;
+    public Class<? extends SCRIPT> getEnumClazz() {
+        return SCRIPT.class;
     }
 
     @Override
-    public void setValue(SPEECH_ACTION name, String value) {
+    public DataUnit<SCRIPT> setValue(SCRIPT name, String value) {
         actions.add(new ImmutablePair<>(name, value));
         values.put(name.toString(), value);
+        return null;
     }
 
     @Override
-    public void setValue(SPEECH_ACTION name, Object val) {
+    public DataUnit<SCRIPT> setValue(SCRIPT name, Object val) {
         setValue(name, val.toString());
+        return null;
     }
 
     @Override
-    public void setValue(String name, String value) {
-        SPEECH_ACTION c = getEnumConst(StringMaster.toEnumFormat(name.trim()));
-        if (c==null) {
-            main.system.auxiliary.log.LogMaster.dev("No script command for: " +name);
-            return;
+    public DataUnit<SCRIPT> setValue(String name, String value) {
+        SCRIPT c = getEnumConst(StringMaster.toEnumFormat(name.trim()));
+        if (c == null) {
+            main.system.auxiliary.log.LogMaster.devLog("No script command for: " + name);
+            return null;
         }
         setValue(c, value);
 //        setValue(new EnumMaster<SPEECH_ACTION>().retrieveEnumConst(SPEECH_ACTION.class, name), value);
+        return null;
     }
 
-    public enum SPEECH_ACTION {
-        SOUND,
-        MOMENT,
-        MUSIC,
-        PARALLEL_MUSIC,
+    public enum SCRIPT {
+        //GAMEPLAY
+        AWAKEN,
+        RAISE,
+        COLLAPSE, //(area keyword/
+        AUTO_RAISE_ON,
+        AUTO_RAISE_OFF,
+        //AUDIO
+        SOUND, MOMENT, MUSIC, PARALLEL_MUSIC, RANDOM_SOUND, SOUNDSCAPE, SOUND_VARIANT,
+        LOOP_TRACK, STOP_LOOP, STOP_LOOP_NOW,
 
-        ANIM,
-        PORTRAIT_ANIM, // do something with it!
-        BG_ANIM,
-        CUSTOM_ANIM,
-        UI_ANIM,
+        //VISUALS
+        ANIM, PORTRAIT_ANIM, BG_ANIM, CUSTOM_ANIM, UI_ANIM,
+        SPRITE, FULLSCREEN, BLACKOUT, POSTFX, SHAKE, WHITEOUT, PARTICLES,
 
-        SPRITE,
-        FULLSCREEN,
-        BLACKOUT,
-        POSTFX,
+        REMOVE_GRID_OBJ, GRID_OBJ,
+        COLOR, GRID_OBJ_ANIM, DISPLACE, SCREEN,
+        PORTAL, PORTAL_CLOSE, PORTAL_OPEN,
+        ATTACHED, LINKED_OBJ, AREA, VFX,
 
-        ACTION,
-        UNIT,
-        SCRIPT,
+        CAMERA_OFFSET, ZOOM, CAMERA, CAMERA_SET, AUTOCAMERA,
 
-        REMOVE_GRID_OBJ,
-        GRID_OBJ,
+        //TEXT
+        TIP, COMMENT, DIALOGUE, COMMENT_CENTERED,
+        QUEST, QUEST_DONE, QUEST_ADD,
 
-
-        CAMERA,
-        CAMERA_SET,
-
-        COMMENT,
-        DIALOGUE,
-
-        WAIT, TIME, TIME_THIS,
-        WAIT_EACH, WAIT_OFF,
-
-        ZOOM,
+        //FLOW AND AUXILIARY
+        WAIT, TIME, TIME_THIS, WAIT_EACH, WAIT_OFF,
         NEXT, NEXT_OFF, NEXT_ALL,
-        SHAKE, WHITEOUT,
-        REVEAL_AREA, PORTAL, AUTOCAMERA, PARTICLES, SOUNDSCAPE, OPTION_SOUND, OPTION_GRAPHICS, OPTION_GAMEPLAY, OPTION_ANIM, LOOP_TRACK, STOP_LOOP, SPEED, GLOBAL, ABS, CAMERA_OFFSET, DIALOGUE_AFTER, COORDINATE, MOVE, TURN, VAR, SOUND_VARIANT, DISPLACE, SCREEN, VAR_FLOAT, VAR_INTEGER, WAIT_FOR, COLOR, GRID_OBJ_ANIM, PORTAL_CLOSE, PORTAL_OPEN, ATTACHED, TURN_AUTO, ADD_SPELL, REMOVE_SPELL, WAIT_INPUT, VAR_MAP, ACTION_MAP, BF_OBJ, ADD, PARAM, PROP, BLOCK_ACTION, ORDER, LINKED_OBJ, DEBUG, CHEAT, DEV, OFFSET, TRIGGER, AREA, VFX, CINEMATICS, SCRIPT_PARALLEL, FILL, NAMED_COORDINATES_ADD, CLEAR, VIDEO, REPLACE, TIP, BUFF_REMOVE, BUFF_ADD, TRIGGER_REMOVE, SCRIPT_IF, SCRIPT_CHANCE, TUT_SCRIPT, ALL, WAIT_ANIMS, CONTINUE_IF, WAIT_PASS, COMMENT_CENTERED, NO_SKIP, SKIP, CHECK_SKIP, PASS, WAIT_FOR_NO_COMMENTS, ADD_PARAM, PRELOAD_MUSIC, HIGHLIGHT_ACTION, VISION, RESET_VISION, BREAK_IF, FREEZE, UNFREEZE, RANDOM_SOUND, END, LAST_TUTORIAL, END_ROUND, RESET, QUEST, QUEST_DONE, QUEST_ADD, GLOBAL_CONTINUE_IF, UNLOAD_SCOPE, LOAD_SCOPE, CONCEAL, REVEAL, STOP_LOOP_NOW, AMBI_VFX, CONFIRM, SWITCH,
+        SCRIPT_PARALLEL, SCRIPT_IF, SCRIPT_CHANCE, TUT_SCRIPT, LAST_TUTORIAL,
+        CONFIRM, SWITCH, ALL, WAIT_ANIMS, CONTINUE_IF, WAIT_PASS, BREAK_IF,
+        GLOBAL_CONTINUE_IF, NO_SKIP, SKIP, CHECK_SKIP, PASS, WAIT_FOR_NO_COMMENTS,
+        SPEED, OFFSET, ABS, END, DIALOGUE_AFTER,
 
+        WAIT_INPUT, VAR_MAP, ACTION_MAP, CINEMATICS,
+        DEBUG, CHEAT, DEV,VAR, GLOBAL,COORDINATE,
+        VAR_FLOAT, VAR_INTEGER, WAIT_FOR,
+
+        HIGHLIGHT_ACTION, BLOCK_ACTION,
+        ADD_SPELL, REMOVE_SPELL,
+        FREEZE, UNFREEZE,
+
+        //LOGIC
+        ACTION, UNIT, SCRIPT,
+        CONCEAL, REVEAL, REVEAL_AREA,
+        VISION, RESET_VISION,
+         MOVE, TURN,
+        TRIGGER, TRIGGER_REMOVE,
+
+        //AI
+         TURN_AUTO, ORDER,
+
+        //OBJS
+        BF_OBJ, ADD, PARAM, PROP, FILL,
+        NAMED_COORDINATES_ADD, CLEAR, REPLACE,
+        ADD_PARAM, BUFF_REMOVE, BUFF_ADD,
+        END_ROUND, RESET,
+
+        //SYSTEM
+        PRELOAD_MUSIC, UNLOAD_SCOPE, LOAD_SCOPE, AMBI_VFX,
+        VIDEO,
+        OPTION_SOUND, OPTION_GRAPHICS, OPTION_GAMEPLAY, OPTION_ANIM,
+        GUI_EVENT,
         //make templates mapped by name?
     }
 

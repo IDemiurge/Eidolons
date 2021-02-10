@@ -9,7 +9,6 @@ import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponTooltip;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Created by JustMe on 6/30/2018.
@@ -61,21 +60,19 @@ public class UnitInfoWeapon extends QuickWeaponPanel{
             return null;
         }
         Unit hero = ((HqHeroDataSource) super.getUserObject()).getEntity().getHero();
-        Pair<WeaponDataSource, WeaponDataSource> pair =
-         new ImmutablePair<>(new WeaponDataSource(hero.getActiveWeapon(offhand)),
-          new WeaponDataSource(hero.getNaturalWeapon(offhand)));
 
-        return pair;
+        return new ImmutablePair<>(new WeaponDataSource(hero.getActiveWeapon(offhand)),
+         new WeaponDataSource(hero.getNaturalWeapon(offhand)));
     }
 
     @Override
     public void updateAct(float delta) {
+        //TODO Gdx Review - radial wasn't working, and it ain't looking top?
         if (super.getUserObject() == null) {
             return;
         }
         weapon.addListener(getListener());
         setVisible(true);
-        //TODO igg demo hack for null weapons
         super.updateAct(delta);
         if (!isVisible())
             return;

@@ -18,17 +18,29 @@ public class TablePanelX<T extends Actor> extends TablePanel<T> {
         setSize(width, height);
     }
 
+    public TablePanelX(Actor actor) {
+        this(actor.getWidth(), actor.getHeight());
+        addActor(actor);
+    }
+
     protected void initResolutionScaling() {
         float coef = (float) Math.pow(GdxMaster.getFontSizeMod(), 0.3f);
         setScale(coef, coef);
     }
+
     protected TablePanelX createInnerTable() {
         return new TablePanelX<>(getWidth(), getHeight());
     }
+
     @Override
     public void setSize(float width, float height) {
         setFixedSize(true);
         super.setSize(width, height);
+    }
+
+    public void  addBackgroundActor(Actor actor) {
+        addActor(actor);
+        setSize(actor.getWidth(), actor.getHeight());
     }
 
     @Override
@@ -40,7 +52,7 @@ public class TablePanelX<T extends Actor> extends TablePanel<T> {
         super.setUserObject(userObject);
     }
 
-    protected Class<? extends Object> getUserObjectClass() {
+    protected Class<?> getUserObjectClass() {
         return null;
     }
 

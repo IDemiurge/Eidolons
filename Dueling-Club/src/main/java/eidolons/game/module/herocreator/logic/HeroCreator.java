@@ -1,11 +1,9 @@
 package eidolons.game.module.herocreator.logic;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.universal.PlayerManager;
+import eidolons.game.battlecraft.logic.mission.universal.PlayerManager;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.macro.AdventureInitializer;
-import eidolons.macro.global.persist.Loader;
 import eidolons.system.test.TestMasterContent;
 import main.content.CONTENT_CONSTS.RANK;
 import main.content.DC_TYPE;
@@ -22,7 +20,7 @@ public class HeroCreator {
     public static final String BASE_HERO = "Base Hero Type";
     public static final int NEW_HERO_LEVELS = 3;
     public static ObjType ROOT_TYPE;
-   static HeroCreator instance;
+    static HeroCreator instance;
 
     public static HeroCreator getInstance() {
         if (instance == null) {
@@ -31,23 +29,27 @@ public class HeroCreator {
         return instance;
     }
 
-    private HeroCreator( ) {
-            ROOT_TYPE = DataManager.getType(BASE_HERO, DC_TYPE.CHARS);
+    private HeroCreator() {
+        ROOT_TYPE = DataManager.getType(BASE_HERO, DC_TYPE.CHARS);
     }
 
     public static Unit initHero(String typeName) {
-        if (AdventureInitializer.isLoad()){
-            return Loader.getLoadedHero(typeName);
-        }
+        // if (AdventureInitializer.isLoad()) {
+        //     return Loader.getLoadedHero(typeName);
+        // }
         ObjType type = new ObjType(DataManager.getType(typeName, DC_TYPE.CHARS));
         Eidolons.getGame().initType(type);
-        TestMasterContent.addTestItems(type, false);
+        try {
+            TestMasterContent.addTestItems(type, false);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
         return createHeroObj(type);
     }
 
     public static Unit createHeroObj(ObjType type) {
         Unit hero = new Unit(type, 0, 0, PlayerManager.getDefaultPlayer(), Eidolons.getGame(),
-         new Ref(Eidolons.getGame()));
+                new Ref(Eidolons.getGame()));
         newId(type);
         Eidolons.getGame().getState().addObject(hero);
         return hero;
@@ -64,6 +66,7 @@ public class HeroCreator {
         type.setProperty(G_PROPS.ID, id + "");
 
     }
+
     public Unit newHero() {
         return newHero(false);
     }

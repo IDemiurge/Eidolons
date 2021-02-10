@@ -2,13 +2,13 @@ package eidolons.libgdx.screens.map.ui;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.libgdx.gui.generic.ValueContainer;
+import eidolons.libgdx.gui.panels.dc.actionpanel.ActionContainer;
+import eidolons.libgdx.gui.panels.dc.actionpanel.BaseSlotPanel;
+import eidolons.libgdx.texture.TextureCache;
 import eidolons.macro.entity.action.MACRO_ACTION_GROUPS;
 import eidolons.macro.entity.action.MacroAction;
 import eidolons.macro.entity.action.MacroActionManager;
 import eidolons.macro.entity.party.MacroParty;
-import eidolons.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
-import eidolons.libgdx.gui.panels.dc.actionpanel.BaseSlotPanel;
-import eidolons.libgdx.texture.TextureCache;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +40,7 @@ public class MapActionPanel extends BaseSlotPanel {
         for (MacroAction sub : actions) {
             boolean valid = true;
             TextureRegion texture = TextureCache.getOrCreateR(sub.getImagePath());
-            list.add(new ActionValueContainer(valid, texture, () -> {
-                sub.invokeClicked();
-            }));
+            list.add(new ActionContainer(valid, texture, sub::invokeClicked));
         }
         return list;
     }

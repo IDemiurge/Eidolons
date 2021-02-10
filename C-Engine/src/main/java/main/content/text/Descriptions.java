@@ -1,6 +1,6 @@
 package main.content.text;
 
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 
 public class Descriptions {
     // Witchery spell school specializes in curses and debilitating
@@ -57,7 +57,7 @@ public class Descriptions {
     public static final String LAW = "One must always do what is right, not easy or desirable. Freedom is an illusion, a false temptation, leading only to suffering, chaos and doubt. The wisest must decree, and the rest follow them. Obedience, order, discipline!";
     public static final String PEACE = "Why do you struggle? We will all die in the end. Look at the trees. They live while they live, and die when they must die. Why do you struggle?";
     public static final String TRADITION = "Wisdom of ages is the only reliable asset of civilization. Progress is naught but a futile rush towards self-destruction... "
-     + StringMaster.NEW_LINE
+     + Strings.NEW_LINE
      + "Empires rise and fall, and the higher they rise, the more painful their fall. Only those who learn to keep their traditions have a chance to pass the challenge of time. Elder races are better known to recognize the value Tradition, while the upstart humans have yet to experience the full scope of the devastation that recklessness brings. ";
     public static final String WAR = "What can compare to the sheer joy of the battle? Only the triumph of victory. War is the very lifeblood of creation. Let the dead enjoy their peace...";
     public static final String PROGRESS = "What use is tradition when things are known "

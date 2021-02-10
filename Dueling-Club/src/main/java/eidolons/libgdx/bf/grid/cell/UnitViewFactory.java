@@ -1,6 +1,7 @@
 package eidolons.libgdx.bf.grid.cell;
 
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -11,11 +12,10 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.LinkedGridObject;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.netherflame.boss.anims.view.BossView;
-import eidolons.game.netherflame.igg.death.ShadowMaster;
+import eidolons.game.module.cinematic.Cinematics;
+import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.gui.panels.dc.unitinfo.neo.UnitInfoPanelNew;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
@@ -23,6 +23,7 @@ import eidolons.libgdx.gui.tooltips.LastSeenTooltipFactory;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltip;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltipFactory;
 import eidolons.libgdx.screens.ScreenMaster;
+import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.BfObjEnums.CUSTOM_OBJECT;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
@@ -32,11 +33,11 @@ import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.Map;
+import java.util.function.Function;
 
-import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.CREATE_RADIAL_MENU;
 import static main.system.GuiEventType.RADIAL_MENU_CLOSE;
 
@@ -51,17 +52,17 @@ public class UnitViewFactory {
         return instance;
     }
 
-    public static GridUnitView doCreate(BattleFieldObject battleFieldObject) {
+    public static UnitGridView doCreate(BattleFieldObject battleFieldObject) {
         return getInstance().create(battleFieldObject);
     }
 
-    public static OverlayView doCreateOverlay(BattleFieldObject bfObj) {
-        return getInstance().createOverlay(bfObj);
+    public static OverlayView doCreateOverlay(BattleFieldObject bfObj, Function<Coordinates, Color> colorFunction) {
+        return getInstance().createOverlay(bfObj, colorFunction);
     }
 
-    public GridUnitView create(BattleFieldObject bfObj) {
+    public UnitGridView create(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);
-        GridUnitView view = createView(bfObj, options);
+        UnitGridView view = createView(bfObj, options);
 
         addLastSeenView(bfObj, view, options);
 
@@ -89,18 +90,16 @@ public class UnitViewFactory {
         return view;
     }
 
-    protected GridUnitView createView(BattleFieldObject bfObj, UnitViewOptions options) {
-        return
-                bfObj.isBoss() ? new BossView(options) :
-                        new GridUnitView(bfObj, options);
+    protected UnitGridView createView(BattleFieldObject bfObj, UnitViewOptions options) {
+        return new UnitGridView(bfObj, options);
     }
 
-    protected void addLastSeenView(BattleFieldObject bfObj, GridUnitView view, UnitViewOptions options) {
+    protected void addLastSeenView(BattleFieldObject bfObj, UnitGridView view, UnitViewOptions options) {
         if (bfObj instanceof Unit || bfObj.isLandscape() || bfObj.isWall() || bfObj.isWater())
             if (VisionMaster.isLastSeenOn()) {
                 if (!bfObj.isPlayerCharacter())
                     if (!bfObj.isBoss())
-//                        if (!bfObj.isWall())
+                    //                        if (!bfObj.isWall())
                     {
                         LastSeenView lsv = new LastSeenView(options, view);
                         view.setLastSeenView(lsv);
@@ -109,10 +108,10 @@ public class UnitViewFactory {
             }
     }
 
-    protected void addOutline(BattleFieldObject bfObj, GridUnitView view, UnitViewOptions options) {
+    protected void addOutline(BattleFieldObject bfObj, UnitGridView view, UnitViewOptions options) {
 
         view.setOutlinePathSupplier(() -> {
-            if (CoreEngine.isFootageMode()) {
+            if (Flags.isFootageMode()) {
                 return null;
             }
             if (Cinematics.ON) {
@@ -121,10 +120,7 @@ public class UnitViewFactory {
             if (bfObj.isWater()) {
                 return null;
             }
-            if (EidolonsGame.BRIDGE) {
-                return null;
-            }
-            if (!CoreEngine.isOutlinesFixed()) {
+            if (!Flags.isOutlinesFixed()) {
                 return null;
             }
             if (bfObj.isBoss()) {
@@ -139,14 +135,13 @@ public class UnitViewFactory {
             OUTLINE_TYPE type = bfObj.getOutlineTypeForPlayer();
             if (type == null)
                 return null;
-            String path = Eidolons.game.getVisionMaster().getVisibilityMaster()
-                    .getImagePath(type, bfObj);
 
-            return (path);
+            return (Eidolons.game.getVisionMaster().getVisibilityMaster()
+                    .getImagePath(type, bfObj));
         });
     }
 
-    protected void addForDC(BattleFieldObject bfObj, GridUnitView view, UnitViewOptions options) {
+    protected void addForDC(BattleFieldObject bfObj, UnitGridView view, UnitViewOptions options) {
         view.createHpBar();
         if (bfObj instanceof Unit) {
             view.getInitiativeQueueUnitView().getHpBar().setTeamColor(options.getTeamColor());
@@ -154,7 +149,7 @@ public class UnitViewFactory {
         view.getHpBar().setTeamColor(options.getTeamColor());
 
         final UnitViewTooltip tooltip = new UnitViewTooltip(view);
-        tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj));
+        tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj, view));
         view.setToolTip(tooltip);
         if (bfObj.checkBool(GenericEnums.STD_BOOLS.INVISIBLE)) {
             view.setInvisible(true);
@@ -166,9 +161,9 @@ public class UnitViewFactory {
     }
 
     public static BaseView createGraveyardView(BattleFieldObject bfObj) {
-        BaseView view = new BaseView(getOrCreateR(bfObj.getImagePath()), bfObj.getImagePath());
+        BaseView view = new BaseView(TextureCache.getRegionUV(bfObj.getImagePath()), bfObj.getImagePath());
         final UnitViewTooltip tooltip = new UnitViewTooltip(view);
-        tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj));
+        tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj, view));
         view.addListener(tooltip.getController());
         view.addListener(doCreateListener(bfObj));
         view.setUserObject(bfObj);
@@ -190,8 +185,9 @@ public class UnitViewFactory {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                tryDefaultAction(event);
-
+                int btn = event.getButton();
+                Eidolons.onNonGdxThread(() ->
+                        tryDefaultAction(btn, event));
                 super.clicked(event, x, y);
             }
 
@@ -204,10 +200,10 @@ public class UnitViewFactory {
                 return super.handle(e);
             }
 
-            private void tryDefaultAction(InputEvent event) {
+            private void tryDefaultAction(int button, InputEvent event) {
                 try {
                     if (getTapCount() > 1)
-                        if (event.getButton() == 0)
+                        if (button == 0)
                             if (bfObj.isPlayerCharacter() && !UnitInfoPanelNew.isNewUnitInfoPanelWIP())
                                 if (EidolonsGame.isHqEnabled()) {
                                     HqMaster.openHqPanel();
@@ -226,15 +222,11 @@ public class UnitViewFactory {
 
                                 }
                     //TODO control options
-
-                    if (event.getButton() == Buttons.LEFT) {
-                        if (isAlt() || isShift() || isControl()) {
+                    if (button == Buttons.LEFT) {
+                        if (!DefaultActionHandler.leftClickInteractiveObj(bfObj)) {
                             DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
-                            event.cancel();
-                        } else {
-                            if (DefaultActionHandler.leftClickActor(bfObj)) {
-                            }
                         }
+                        event.cancel();
                     }
                 } catch (Exception e) {
                     ExceptionMaster.printStackTrace(e);
@@ -265,14 +257,14 @@ public class UnitViewFactory {
 
     public void addOverlayingListener(OverlayView view, BattleFieldObject bfObj) {
         final UnitViewTooltip tooltip = new UnitViewTooltip(view);
-        tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj));
+        tooltip.setUserObject(UnitViewTooltipFactory.getSupplier(bfObj, view));
         view.addListener(tooltip.getController());
         view.addListener(UnitViewFactory.doCreateListener(bfObj));
     }
 
-    public OverlayView createOverlay(BattleFieldObject bfObj) {
+    public OverlayView createOverlay(BattleFieldObject bfObj, Function<Coordinates, Color> colorFunction) {
         UnitViewOptions options = new UnitViewOptions(bfObj);
-        OverlayView view = new OverlayView(options, bfObj);
+        OverlayView view = new OverlayView(options, colorFunction);
         addOverlayingListener(view, bfObj);
 
         Map<Coordinates, Map<BattleFieldObject, DIRECTION>> directionMap = DC_Game.game.getDirectionMap();

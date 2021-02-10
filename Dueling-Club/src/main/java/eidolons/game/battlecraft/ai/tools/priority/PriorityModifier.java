@@ -55,9 +55,8 @@ public class PriorityModifier extends AiHandler {
         try {
             if (as.getLastAction().getActive().isChanneling()) {
                 cost_penalty += cost_penalty
-                 * cost.getCost(PARAMS.C_N_OF_ACTIONS).getPayment().getAmountFormula()
-                 .getInt(as.getLastAction().getRef()) / 5;
-                string = "channeling cost";
+                 * cost.getCost(PARAMS.C_ATB).getPayment().getAmountFormula()
+                 .getInt(as.getLastAction().getRef())  ;
             }
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);

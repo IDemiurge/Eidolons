@@ -27,13 +27,20 @@ public class ParticleEffectX extends ParticleEffect {
     public static final boolean TEST_MODE = false;
     private static float globalAlpha;
     public String path;
-    private static List<String> broken = new ArrayList<>();
+    private static final List<String> broken = new ArrayList<>();
     private Float alpha = 1f;
     private boolean spell;
+    private VfxPool pool;
+
+    public ParticleEffectX(ParticleEffect effect) {
+        super(effect);
+    }
+
+    public ParticleEffectX() {
+    }
 
     public ParticleEffectX(String path) {
         this.path = path;
-
         if (broken.contains(path))
             return;
         if (isEmitterAtlasesOn()) {
@@ -73,8 +80,8 @@ public class ParticleEffectX extends ParticleEffect {
         this.alpha = a;
         if (a != 1f) {
             for (ParticleEmitter e : getEmitters()) {
-//                e.getTransparency().set
-//                float a = e.getTransparency().getScale(e.getPercentComplete());
+                //                e.getTransparency().set
+                //                float a = e.getTransparency().getScale(e.getPercentComplete());
 
                 float min = e.getTransparency().getHighMin();
                 float max = e.getTransparency().getHighMax();
@@ -114,9 +121,6 @@ public class ParticleEffectX extends ParticleEffect {
         return new Texture(file, false);
     }
 
-    public ParticleEffectX() {
-        super();
-    }
 
     public static boolean isEmitterAtlasesOn() {
         return true;//!CoreEngine.isFastMode();
@@ -131,7 +135,7 @@ public class ParticleEffectX extends ParticleEffect {
     }
 
     public void offset(String value, String offset) {
-        offset(Float.valueOf(offset),
+        offset(Float.parseFloat(offset),
                 new EnumMaster<EMITTER_VALS_SCALED>().retrieveEnumConst(EMITTER_VALS_SCALED.class, value));
     }
 
@@ -144,8 +148,11 @@ public class ParticleEffectX extends ParticleEffect {
 
     public void offsetAngle(float offset) {
         for (ParticleEmitter e : getEmitters()) {
-            Emitter emitter = (Emitter) e;
-            emitter.offsetAngle(offset);
+            if (e instanceof Emitter) {
+                Emitter emitter = (Emitter) e;
+                emitter.offsetAngle(offset);
+            }
+
         }
     }
 
@@ -158,14 +165,14 @@ public class ParticleEffectX extends ParticleEffect {
     }
 
     private boolean checkSprite(FileHandle effectFile) {
-//        if (EmitterActor.spriteEmitterTest) {
-//            return true;
-//        }
+        //        if (EmitterActor.spriteEmitterTest) {
+        //            return true;
+        //        }
         String imgPath = EmitterPresetMaster.getInstance().getImagePath(effectFile.path());
-//        if (imgPath.contains("sprites")){
-//            main.system.auxiliary.log.LogMaster.log(1,effectFile.path()+" is a SPRITES!.. " );
-//            return true;
-//        }
+        //        if (imgPath.contains("sprites")){
+        //            main.system.auxiliary.log.LogMaster.log(1,effectFile.path()+" is a SPRITES!.. " );
+        //            return true;
+        //        }
         if (TEST_MODE)
             LogMaster.log(1, effectFile.path() + " created with imgPath " + imgPath);
         return false;
@@ -182,7 +189,7 @@ public class ParticleEffectX extends ParticleEffect {
     }
 
     public void loadEmitters_(FileHandle effectFile) throws IOException {
-//        if (CoreEngine.isMacro())
+        //        if (CoreEngine.isMacro())
         if (!effectFile.exists()) {
             broken.add(effectFile.path());
             LogMaster.log(0, "no such emitter preset: " + effectFile.path());
@@ -190,7 +197,7 @@ public class ParticleEffectX extends ParticleEffect {
         }
         InputStream input = effectFile.read();
         getEmitters().clear();
-        BufferedReader reader = null;
+        BufferedReader reader;
 
         reader = new BufferedReader(new InputStreamReader(input), 512);
         while (true) {
@@ -234,7 +241,7 @@ public class ParticleEffectX extends ParticleEffect {
         for (int i = 0, n = getEmitters().size; i < n; i++) {
             ParticleEmitter emitter = getEmitters().get(i);
             if (emitter.getImagePaths().size == 0) continue;
-            Array<Sprite> sprites = new Array<Sprite>();
+            Array<Sprite> sprites = new Array<>();
             for (String imagePath : emitter.getImagePaths()) {
                 String imageName = new File(imagePath.replace('\\', '/')).getName();
                 int lastDotIndex = imageName.lastIndexOf('.');
@@ -250,5 +257,16 @@ public class ParticleEffectX extends ParticleEffect {
             }
             emitter.setSprites(sprites);
         }
+    }
+
+    public void setPool(VfxPool pool) {
+        this.pool = pool;
+    }
+
+    public void free() {
+        if (pool == null) {
+            // main.system.auxiliary.log.LogMaster.log(1,"No pool for vfx: " +this.path);
+        } else
+            pool.free(this);
     }
 }

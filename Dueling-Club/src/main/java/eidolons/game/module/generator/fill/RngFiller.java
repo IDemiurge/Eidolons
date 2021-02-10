@@ -107,7 +107,7 @@ public abstract class RngFiller implements RngFillerInterface {
             return;
         this.zone = zone;
         currentFill = calculateFill();
-        float dif = 0;
+        float dif;
 
         main.system.auxiliary.log.LogMaster.log(1, zone + " being filled; now there's fill of %" + currentFill);
         Loop loop = new Loop(zone.getSubParts().size() * 100);
@@ -130,7 +130,7 @@ public abstract class RngFiller implements RngFillerInterface {
           room -> room.getZone() == zone).filter(
           room -> !getMandatoryTypes().contains(room.getType())).filter
           (room -> checkTypeIsFilled(room.getType())).sorted(
-          new SortMaster<Room>().getSorterByExpression_(room -> getSortValue(room))
+          new SortMaster<Room>().getSorterByExpression_(this::getSortValue)
          ).collect(Collectors.toList()));
         return stack;
     }

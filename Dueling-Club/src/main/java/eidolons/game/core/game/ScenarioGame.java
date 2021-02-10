@@ -1,10 +1,10 @@
 package eidolons.game.core.game;
 
-import eidolons.game.battlecraft.logic.battle.mission.MissionBattleMaster;
-import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
+import eidolons.game.battlecraft.logic.mission.quest.QuestMissionMaster;
+import eidolons.game.battlecraft.logic.mission.universal.MissionMaster;
 
 /**
  * Created by JustMe on 5/10/2017.
@@ -19,8 +19,8 @@ public class ScenarioGame extends DC_Game {
     }
 
     @Override
-    public MissionBattleMaster getBattleMaster() {
-        return (MissionBattleMaster) super.getBattleMaster();
+    public QuestMissionMaster getMissionMaster() {
+        return (QuestMissionMaster) super.getMissionMaster();
     }
 
     @Override
@@ -44,8 +44,8 @@ public class ScenarioGame extends DC_Game {
     }
 
     @Override
-    protected BattleMaster createBattleMaster() {
-        return new MissionBattleMaster(this);
+    protected MissionMaster createBattleMaster() {
+        return new QuestMissionMaster(this);
     }
 
     @Override

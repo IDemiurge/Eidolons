@@ -12,9 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SmartTextButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.stage.Blocking;
+import eidolons.libgdx.stage.OverlayingUI;
 import eidolons.libgdx.stage.StageWithClosable;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.audio.DC_SoundMaster;
@@ -22,7 +23,7 @@ import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.OptionsWindow;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +33,7 @@ import java.util.Map;
 /**
  * Created by JustMe on 11/28/2017.
  */
-public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX implements Blocking {
+public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX implements Blocking, OverlayingUI {
     private final InputListener keyListener;
     protected Map<T, TextButton> cache = new HashMap<>();
     OptionsWindow optionsWindow;
@@ -162,11 +163,11 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
         List<MenuItem<T>> items = getItems();
         buttons.clear();
         for (MenuItem sub : items) {
-            TextButton button = null;
+            TextButton button;
             if (sub.toString().equalsIgnoreCase("Back")) {
                 button = getBackButton();
             } else
-                button = getButton((T) sub, StringMaster.getWellFormattedString(sub.toString()));
+                button = getButton((T) sub, StringMaster.format(sub.toString()));
             add(button).top().pad(10, 10, 10, 10);
             buttons.add(button);
             row();
@@ -199,7 +200,7 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
     protected TextButton getButton(T sub, String name) {
         TextButton button = getCache().get(sub);
         if (button == null || sub == null) {
-            button = new SmartButton((name),
+            button = new SmartTextButton((name),
                     StyleHolder.getTextButtonStyle(getButtonStyle(),
                             getFontStyle(), getFontColor(), getFontSize()), getClickRunnable(sub), STD_BUTTON.MENU);
             getCache().put(sub, button);
@@ -297,7 +298,7 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
 
     public void close() {
         getStageWithClosable().closeClosable(this);
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__HOVER);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__HOVER);
     }
 
     @Override

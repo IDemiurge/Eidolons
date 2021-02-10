@@ -1,7 +1,6 @@
 package eidolons.game.module.generator.model;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
-import eidolons.game.module.generator.GeneratorEnums;
 import eidolons.game.module.generator.GeneratorEnums.EXIT_TEMPLATE;
 import eidolons.game.module.generator.GeneratorEnums.LEVEL_VALUES;
 import eidolons.game.module.generator.GeneratorEnums.ROOM_CELL;
@@ -12,10 +11,7 @@ import main.data.filesys.PathFinder;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.PathUtils;
 import main.system.SortMaster;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.Loop;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.data.ArrayMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
@@ -43,17 +39,17 @@ public class RoomTemplateMaster {
     public static final boolean SINGLE_FILE_DATA = false;
     public static final FACING_DIRECTION DEFAULT_ENTRANCE_SIDE = FACING_DIRECTION.WEST;
     public static final String MODEL_SPLITTER = "=";
-    public static final String EXIT_TEMPLATE_SEPARATOR = "><" + StringMaster.NEW_LINE;
-    public static final String ROOM_TYPE_SEPARATOR = "<>" + StringMaster.NEW_LINE;
+    public static final String EXIT_TEMPLATE_SEPARATOR = "><" + Strings.NEW_LINE;
+    public static final String ROOM_TYPE_SEPARATOR = "<>" + Strings.NEW_LINE;
     private static final boolean APPLY_FAIL_SAFE_EXITS = true;
     private final LevelData data;
     Stack<List<RoomModel>> roomPoolStack = new Stack<>();
-    private ROOM_TEMPLATE_GROUP[] groups;
-    private String wrapType;
-    private int wrapWidth;
-    private Map<ROOM_TEMPLATE_GROUP, Set<RoomModel>> models = new LinkedHashMap<>();
-    private Map<ROOM_TEMPLATE_GROUP, Map<ROOM_TYPE, Map<EXIT_TEMPLATE, List<RoomModel>>>> templateMap;
-    private Map<ROOM_TEMPLATE_GROUP, Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>>> preloadedData;
+    private final ROOM_TEMPLATE_GROUP[] groups;
+    private final String wrapType;
+    private final int wrapWidth;
+    private final Map<ROOM_TEMPLATE_GROUP, Set<RoomModel>> models = new LinkedHashMap<>();
+    private final Map<ROOM_TEMPLATE_GROUP, Map<ROOM_TYPE, Map<EXIT_TEMPLATE, List<RoomModel>>>> templateMap;
+    private final Map<ROOM_TEMPLATE_GROUP, Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>>> preloadedData;
 
     public RoomTemplateMaster(LevelData data) {
         this.data = data;
@@ -75,7 +71,7 @@ public class RoomTemplateMaster {
     loadMergedData(boolean singleFile) {
         Map<ROOM_TEMPLATE_GROUP, Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>>> map = new HashMap<>();
         if (singleFile) {
-
+//?
         }
         for (ROOM_TEMPLATE_GROUP group : groups) {
 
@@ -86,13 +82,12 @@ public class RoomTemplateMaster {
         }
         for (ROOM_TEMPLATE_GROUP group : groups) {
             if (group.isMultiGroup()) {
-                Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>> merged
-                 = new HashMap<>();
                 Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>> sub =
                  map.get(group.getMultiGroupOne());
                 if (sub == null)
                     sub = createMap(group.getMultiGroupOne());
-                merged.putAll(sub);
+                Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>> merged
+                        = new HashMap<>(sub);
 
                 sub = map.get(group.getMultiGroupTwo());
                 if (sub == null)
@@ -121,7 +116,7 @@ public class RoomTemplateMaster {
              StringMaster.splitLines(roomData)[0].trim());
             if (roomType == null)
                 continue;
-            roomData = StringMaster.cropFirstSegment(roomData, StringMaster.NEW_LINE);
+            roomData = StringMaster.cropFirstSegment(roomData, Strings.NEW_LINE);
 
             String[] byExit = StringMaster.splitLines(roomData, false, EXIT_TEMPLATE_SEPARATOR);
             Map<EXIT_TEMPLATE, String> exitMap = new HashMap<>();
@@ -134,7 +129,7 @@ public class RoomTemplateMaster {
             for (String part : byExit) {
                 EXIT_TEMPLATE exit = new EnumMaster<EXIT_TEMPLATE>().retrieveEnumConst(EXIT_TEMPLATE.class,
                  StringMaster.splitLines(part)[0].trim());
-                String text = StringMaster.cropFirstSegment(part, StringMaster.NEW_LINE);
+                String text = StringMaster.cropFirstSegment(part, Strings.NEW_LINE);
                 if (!StringMaster.contains(text, ROOM_CELL.FLOOR.getSymbol())) {
                     text = getRoomData(exit, group, roomType);
                 }
@@ -281,9 +276,8 @@ public class RoomTemplateMaster {
         if (APPLY_FAIL_SAFE_EXITS) {
             cells = applyFailSafe(cells);
         }
-        RoomModel model = new RoomModel(cells, template, exit);
 
-        return model;
+            return new RoomModel(cells, template, exit);
     }
 
     public static String[][] applyFailSafe(String[][] cells) {
@@ -426,20 +420,20 @@ public class RoomTemplateMaster {
 
 
     public String generate(int x, int y, float irregularity) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         int col = 0;
         int row = 0;
         while (row < y) {
             while (col < x) {
-                result += GeneratorEnums.ROOM_CELL.WALL.getSymbol();
+                result.append(ROOM_CELL.WALL.getSymbol());
                 col++;
             }
-            result += StringMaster.NEW_LINE;
+            result.append(Strings.NEW_LINE);
             row++;
         }
 
 
-        return result;
+        return result.toString();
     }
 
     public void resetSizedRandomRoomPools(ROOM_TEMPLATE_GROUP templateGroup) {
@@ -452,13 +446,12 @@ public class RoomTemplateMaster {
             if (!dimensions.contains(dimension))
                 dimensions.add(dimension);
         }
-        Collections.sort(dimensions,
-         new SortMaster<Dimension>().getSorterByExpression_((Dimension dim)
-          -> (int)
-          -(dim.getHeight() * dim.getWidth())
+        dimensions.sort(new SortMaster<Dimension>().getSorterByExpression_((Dimension dim)
+                -> (int)
+                -(dim.getHeight() * dim.getWidth())
 
-          * (RandomWizard.chance(data.getIntValue(LEVEL_VALUES.RANDOMIZED_SIZE_SORT_CHANCE))
-          ? RandomWizard.getRandomIntBetween(0, 100) : 1)));
+                * (RandomWizard.chance(data.getIntValue(LEVEL_VALUES.RANDOMIZED_SIZE_SORT_CHANCE))
+                ? RandomWizard.getRandomIntBetween(0, 100) : 1)));
 
         for (Dimension dimension : dimensions) {
             roomPoolStack.add(pools.get(dimension));
@@ -482,7 +475,7 @@ public class RoomTemplateMaster {
             return r.getWidth() != height || r.getHeight() != width;
         });
 
-        RoomModel model = null;
+        RoomModel model;
         while (!pool.isEmpty()) {
             model = clone(pool.remove(RandomWizard.getRandomIndex(pool)));
             //for culdesac?

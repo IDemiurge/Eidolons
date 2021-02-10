@@ -16,10 +16,10 @@ public class MotionFilter extends Filter<MotionFilter> {
 		Texture("u_texture0", 0), LastFrame("u_texture1", 0), BlurOpacity("u_blurOpacity", 0);
 		// @formatter:on
 
-		private String mnemonic;
-		private int elementSize;
+		private final String mnemonic;
+		private final int elementSize;
 
-		private Param (String mnemonic, int arrayElementSize) {
+		Param(String mnemonic, int arrayElementSize) {
 			this.mnemonic = mnemonic;
 			this.elementSize = arrayElementSize;
 		}

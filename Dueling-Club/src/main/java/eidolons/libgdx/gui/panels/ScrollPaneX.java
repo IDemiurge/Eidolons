@@ -12,7 +12,8 @@ import eidolons.libgdx.StyleHolder;
 public class ScrollPaneX extends ScrollPane {
     public  ScrollPaneX(Actor widget) {
         super(widget, StyleHolder.getScrollStyle());
-        widget.addListener(new ClickListener(){
+        // widget.
+                addListener(new ClickListener(){
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 super.enter(event, x, y, pointer, fromActor);
@@ -21,4 +22,9 @@ public class ScrollPaneX extends ScrollPane {
         });
     }
 
+    @Override
+    public void act(float delta) {
+        setForceScroll(false, false);
+        super.act(delta);
+    }
 }

@@ -4,8 +4,9 @@ import main.ability.AE_Manager;
 import main.ability.utilities.NodeMaster;
 import main.ability.utilities.TemplateManager;
 import main.data.ability.AE_Item;
-import main.launch.ArcaneVault;
+import main.launch.AvConsts;
 import main.swing.generic.components.G_Panel;
+import main.system.auxiliary.TreeMaster;
 import main.system.auxiliary.log.LogMaster;
 import org.w3c.dom.Node;
 
@@ -25,8 +26,8 @@ public class AE_MainPanel extends G_Panel implements TreeSelectionListener,
     private JSplitPane sp;
 
     private NodeMaster nodeMaster;
-    private Node doc;
-    private TemplateManager templateManager;
+    private final Node doc;
+    private final TemplateManager templateManager;
 
     public AE_MainPanel(String typeName) {
         Node document = AE_Manager.getDoc(typeName);
@@ -96,13 +97,14 @@ public class AE_MainPanel extends G_Panel implements TreeSelectionListener,
         // editPanel.setBackground(ColorManager.BLACK);
         // sp.setBackground(ColorManager.BLACK);
 
-        add(sp, "pos 0 0 visual.x2 " + ArcaneVault.AE_HEIGHT);
+        add(sp, "pos 0 0 visual.x2 " + AvConsts.AE_HEIGHT);
 
     }
 
     private void initComponents() {
         if (tree.getSelectionPath() == null) {
             editPanel = new AE_EditPanel();
+            TreeMaster.expandTree(tree);
         } else {
             editPanel = AE_Manager.getAE_EditPanel(this, getSelectedItem(),
                     tree.getRowForPath(tree.getSelectionPath()));
@@ -164,17 +166,12 @@ public class AE_MainPanel extends G_Panel implements TreeSelectionListener,
         return tree;
     }
 
-    public void setTree(JTree tree) {
-        this.tree = tree;
-    }
-
     public TemplateManager getTemplateManager() {
         return templateManager;
     }
 
     public void setTreeSelection(DefaultMutableTreeNode newNode) {
         TreePath path = new TreePath(newNode.getPath());
-
         tree.setSelectionPath(path);
 
     }

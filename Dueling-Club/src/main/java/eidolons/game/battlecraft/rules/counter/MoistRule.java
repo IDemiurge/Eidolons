@@ -84,7 +84,7 @@ public class MoistRule extends DC_CounterRule {
 
     @Override
     public String getBuffName() {
-        return MetaEnums.STD_BUFF_NAMES.Soaked.name();
+        return MetaEnums.STD_BUFF_NAME.Soaked.name();
     }
 
     @Override

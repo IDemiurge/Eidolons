@@ -29,11 +29,12 @@ public class HqSpellMaster {
 
         return null;
     }
+    //DC Review - any global changes to spell sys?
 
     public static void learnSpellEnVerbatim(Unit hero, Spell spell) {
         //        LibraryManager.addVerbatimSpell(hero, spell.getType());
         Integer cost = Integer.valueOf(HeroManager.getCost(spell, hero));
-        hero.modifyParameter(PARAMS.XP, - cost);
+        hero.modifyParameter(PARAMS.XP, -cost);
         hero.addProperty(true, PROPS.VERBATIM_SPELLS, spell.getName());
         spellsChanged(hero);
 
@@ -41,7 +42,7 @@ public class HqSpellMaster {
 
     public static void learnSpell(Unit hero, Spell spell) {
         Integer cost = Integer.valueOf(HeroManager.getCost(spell, hero));
-        hero.modifyParameter(PARAMS.XP, - cost);
+        hero.modifyParameter(PARAMS.XP, -cost);
         hero.addProperty(true, PROPS.LEARNED_SPELLS, spell.getName());
         spellsChanged(hero);
     }
@@ -72,16 +73,16 @@ public class HqSpellMaster {
             }
         }
         return spell.getGame().getRequirementsManager().check(spell.getOwnerUnit(), spell
-         , RequirementsManager.ALT_MODE) == null;
+                , RequirementsManager.ALT_MODE) == null;
     }
 
     public static boolean canLearn(Spell spell) {
-        return spell.getGame().getRequirementsManager().check(Eidolons.getMainHero(), spell) == null; //TODO igg demo hack
+        return spell.getGame().getRequirementsManager().check(Eidolons.getMainHero(), spell) == null;
     }
 
     public static boolean canLearnEnVerbatim(Spell spell) {
         return spell.getGame().getRequirementsManager().check(spell.getOwnerUnit(), spell,
-         RequirementsManager.VERBATIM_MODE) == null;
+                RequirementsManager.VERBATIM_MODE) == null;
     }
 
 }

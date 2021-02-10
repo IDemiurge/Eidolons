@@ -2,7 +2,7 @@ package eidolons.entity.obj.attach;
 
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import main.ability.AbilityObj;
 import main.content.ContentValsManager;
 import main.content.enums.entity.UnitEnums;
@@ -122,17 +122,6 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
         this.hero = hero;
     }
 
-    protected void modifyHeroParameters() {
-        for (PARAMETER p : getParamMap().getMap().keySet()) {
-            if (ContentValsManager.isValueForOBJ_TYPE(getHero().getOBJ_TYPE_ENUM(), p)) {
-                Integer amount = getIntParam(p);
-                if (amount != 0) {
-                    getHero().modifyParameter(p, amount);
-                }
-            }
-        }
-
-    }
 
     @Override
     public void activatePassives() {

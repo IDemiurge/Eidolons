@@ -18,6 +18,7 @@ import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.Err;
@@ -93,7 +94,7 @@ public class ListEditor implements EDITOR {
 
     @Override
     public String launch(String value, String name) {
-        if (getFilter()!=null || (listData == null && !listDataSet)) {
+        if (getFilter() != null || (listData == null && !listDataSet)) {
             if (res_name != null) {
                 listData = FileManager.getFileNames(FileManager.getFilesFromDirectory(res_name, false));
                 // StringMaster.formatResList(listData);
@@ -190,7 +191,7 @@ public class ListEditor implements EDITOR {
             if (mouseEvent.isShiftDown()) {
 //                listData=    new ArrayList<>() ;
 //                return null;
-                return s->true;
+                return s -> true;
             }
         }
         if (BASE_TYPE instanceof DC_TYPE) {
@@ -218,10 +219,14 @@ public class ListEditor implements EDITOR {
             };
             for (PROPERTY property1 : property) {
                 for (PROPERTY property2 : property) {
-                    if (type.getProperty(property1).equalsIgnoreCase(encounter.getProperty(property2))) {
-                        if (!type.getProperty(property1).isEmpty()) {
-                            return true;
-                        }
+
+                    if (StringMaster.contains(
+                            type.getProperty(property1), encounter.getProperty(property2), true ,false)) {
+                        return true;
+                    }
+                    if (StringMaster.contains(
+                            encounter.getProperty(property1), type.getProperty(property2), true ,false)) {
+                        return true;
                     }
                 }
             }

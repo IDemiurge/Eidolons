@@ -12,8 +12,8 @@ import main.data.xml.XML_Converter;
 import main.data.xml.XML_Writer;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 
 import java.util.List;
@@ -77,7 +77,7 @@ public class Saver {
     }
 
     private static String getSaveContent() {
-        String content = "";
+        String content;
 
         //write full type data!
         Unit hero = Eidolons.getMainHero();
@@ -91,7 +91,7 @@ public class Saver {
             for (String substring : ContainerUtils.openContainer(hero.getProperty(sub))) {
                 if (!NumberUtils.isInteger(substring))
                     continue;
-                Integer id = NumberUtils.getInteger(substring);
+                Integer id = NumberUtils.getIntParse(substring);
                 DC_HeroItemObj item = (DC_HeroItemObj) hero.getGame()
                  .getObjectById((id));
                 String itemData = XML_Writer.getTypeXML_Builder(item,
@@ -132,7 +132,7 @@ public class Saver {
                 if (NumberUtils.isInteger(item)) {
                     try {
                         propValue = StringMaster.replaceFirst(propValue, item, type.getGame()
-                         .getObjectById(NumberUtils.getInteger(item)).getType().getName());
+                         .getObjectById(NumberUtils.getIntParse(item)).getType().getName());
                     } catch (Exception e) {
                         main.system.ExceptionMaster.printStackTrace(e);
                     }

@@ -95,15 +95,16 @@ public class TownInitializer {
               town.getProperty(MACRO_PROPS.SHOP_MODIFIER),
               SHOP_MODIFIER.class, MACRO_OBJ_TYPES.SHOP);
 
-            while (true) {
-                SHOP_TYPE shopType = new RandomWizard<SHOP_TYPE>()
-                 .getObjectByWeight(typeMap);
-                SHOP_MODIFIER shopMode = new RandomWizard<SHOP_MODIFIER>()
-                 .getObjectByWeight(modMap);
-                ObjType type = getGenericShopType(shopType.toString());
-                type.setProperty(MACRO_PROPS.SHOP_MODIFIER, shopMode.toString());
-                addShop(town, ref, type);
-            }
+            // while (true) {
+            //     SHOP_TYPE shopType = new RandomWizard<SHOP_TYPE>()
+            //      .getObjectByWeight(typeMap);
+            //     SHOP_MODIFIER shopMode = new RandomWizard<SHOP_MODIFIER>()
+            //      .getObjectByWeight(modMap);
+            //     ObjType type = getGenericShopType(shopType.toString());
+            //     type.setProperty(MACRO_PROPS.SHOP_MODIFIER, shopMode.toString());
+            //     addShop(town, ref, type);
+            // break?
+            // }
         }
     }
 

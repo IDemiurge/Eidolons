@@ -17,7 +17,6 @@ import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.type.ObjType;
-import main.game.bf.Coordinates;
 import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
@@ -48,7 +47,7 @@ public class ScenarioGenerator {
          PathFinder.getDungeonLevelFolder(), "place dungeons",
          place.getProperty(MACRO_PROPS.PLACE_SUBTYPE));
         for (int i = 0; i < n; i++) {
-            String mission = null;
+            String mission;
             try {
                 mission = FileManager.getRandomFilePath(path);
             } catch (Exception e) {
@@ -58,8 +57,8 @@ public class ScenarioGenerator {
             }
 
             mission = PathUtils.removePreviousPathSegments(mission, PathFinder.getDungeonLevelFolder());
-            ObjType missionType = new ObjType("", DC_TYPE.MISSIONS);
-            missionType.setProperty(PROPS.MISSION_FILE_PATH, mission);
+            ObjType missionType = new ObjType("", DC_TYPE.FLOORS);
+            missionType.setProperty(PROPS.FLOOR_FILE_PATH, mission);
             DataManager.addType(missionType);
             missions += mission;
         }
@@ -70,7 +69,7 @@ public class ScenarioGenerator {
          DataManager.getRandomType(DC_TYPE.SCENARIOS, "Crawl");
         ObjType scenarioType = new ObjType(
          NameMaster.getUniqueVersionedName(place.getName(), DC_TYPE.SCENARIOS), templateType);
-        scenarioType.setProperty(PROPS.SCENARIO_PATHS, missions);
+        scenarioType.setProperty(PROPS.SCENARIO_MISSIONS, missions);
 
         DataManager.addType(scenarioType);
         //place types
@@ -152,10 +151,9 @@ public class ScenarioGenerator {
                 FileManager.write(stringData, path);
                 levelPaths += (path) + ContainerUtils.getContainerSeparator();
 
-                Coordinates.resetCaches();
             }
         }
-        scenarioType.setProperty(PROPS.SCENARIO_PATHS, levelPaths);
+        scenarioType.setProperty(PROPS.SCENARIO_MISSIONS, levelPaths);
         DataManager.addType(scenarioType);
         scenarioType.setGroup("Random", false);
         return scenarioType;
@@ -240,8 +238,7 @@ public class ScenarioGenerator {
         WeightMap map = data.getWeightMapValue(META_DATA.LAST_PREGEN_LVL_INDEX_MAP);
         String val = type + " " + locationType;
         data.addCount(META_DATA.LAST_PREGEN_LVL_INDEX, val, size );
-        int index = map.get(val) == null ? 0 : (int) map.get(val);
-        return index;
+        return map.get(val) == null ? 0 : (int) map.get(val);
     }
 
     private static boolean isSequentialPregenChoice() {

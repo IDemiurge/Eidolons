@@ -25,13 +25,13 @@ import java.util.stream.Collectors;
  * Created by JustMe on 6/4/2018.
  */
 public class WeaveUi extends GuiStage {
-    private final ImageContainer frame;
     WeaveButtonPanel buttonPanel;
     WeaveHeroPreview heroPreview;
     private VisSelectBox<String> viewModeBox;
 
     public WeaveUi(Viewport viewport, Batch batch) {
         super(viewport, batch);
+        ImageContainer frame;
         addActor(frame = new ImageContainer(new Image(
          TiledNinePatchGenerator.getOrCreateNinePatch(
           NINE_PATCH.FRAME, BACKGROUND_NINE_PATCH.TRANSPARENT,
@@ -60,10 +60,10 @@ public class WeaveUi extends GuiStage {
          */
     public VisSelectBox<String> createViewModeBox() {
         String[] strings  = Arrays.stream(WEAVE_VIEW_MODE.values())
-         .map(mode -> StringMaster.getWellFormattedString(mode.name()))
+         .map(mode -> StringMaster.format(mode.name()))
          .collect(Collectors.toList())
          .toArray(new String[WEAVE_VIEW_MODE.values().length]);
-        String selected = StringMaster.getWellFormattedString(
+        String selected = StringMaster.format(
          WEAVE_VIEW_MODE.DEFAULT.name());
 
         final VisSelectBox<String> selectBox = new VisSelectBox<>();

@@ -41,7 +41,7 @@ public class LayerInitializer extends DungeonHandler {
         }
         for (Coordinates coordinates : layer.getScripts().keySet()) {
             if (on) {
-            getMetaMaster().getBattleMaster().getScriptManager().parseScripts(layer.getScripts().get(coordinates));
+            getMetaMaster().getMissionMaster().getScriptManager().parseScripts(layer.getScripts().get(coordinates));
                             }
         }
         for (Coordinates coordinates : layer.getVfxMap().keySet()) {

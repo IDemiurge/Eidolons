@@ -3,11 +3,13 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Manipulator;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleElement;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTrigger;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.ConditionsUtils;
 import main.elements.conditions.Condition;
+import main.elements.conditions.standard.EmptyCondition;
 import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -15,21 +17,14 @@ import main.system.entity.ConditionMaster;
 
 public class PuzzleRules extends PuzzleElement {
 
-    public enum PUZZLE_RULE_ACTION{
-        FAIL,
-        WIN,
-        DEATH,
-        COUNT_DOWN,
-    }
-
-    PUZZLE_RULE_ACTION action;
-    PuzzleMaster.PUZZLE_ACTION_BASE base;
+    PuzzleEnums.PUZZLE_RULE_ACTION action;
+    PuzzleEnums.PUZZLE_ACTION_BASE base;
 
     public PuzzleRules(Puzzle puzzle) {
         super(puzzle);
-       }
+    }
 
-    public PuzzleRules(Puzzle puzzle, PUZZLE_RULE_ACTION action, PuzzleMaster.PUZZLE_ACTION_BASE base) {
+    public PuzzleRules(Puzzle puzzle, PuzzleEnums.PUZZLE_RULE_ACTION action, PuzzleEnums.PUZZLE_ACTION_BASE base) {
         super(puzzle);
         this.action = action;
         this.base = base;
@@ -40,23 +35,31 @@ public class PuzzleRules extends PuzzleElement {
         if (base == null) {
             return;
         }
-         puzzle.createTrigger(PuzzleTrigger.PUZZLE_TRIGGER.ACTION,
-                 getActionEvent(), getActionChecks(), createAction() );
+        puzzle.createTrigger(PuzzleTrigger.PUZZLE_TRIGGER.ACTION,
+                getActionEvent(), getActionChecks(), createAction());
 
     }
+
     //special rule for the puzzle
     protected Runnable createAction() {
-        return ()->{
+        return () -> {
             switch (action) {
                 case COUNT_DOWN:
                     puzzle.decrementCounter();
+                    break;
+                case CUSTOM:
+                    getHandler().customAction();
                     break;
             }
         };
     }
 
     protected Condition getActionChecks() {
-        return ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAINHERO);
+        switch (base) {
+            case ROUND:
+                return new EmptyCondition();
+        }
+        return ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAIN_HERO);
     }
 
     protected Event.EVENT_TYPE getActionEvent() {
@@ -68,32 +71,36 @@ public class PuzzleRules extends PuzzleElement {
             case MOVE:
                 return Event.STANDARD_EVENT_TYPE.UNIT_BEING_MOVED;
             case MOVE_AFTER:
-                return   Event.STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING;
+                return Event.STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING;
+            case ROUND:
+                return Event.STANDARD_EVENT_TYPE.NEW_ROUND;
+            case ROUND_BEFORE:
+                return Event.STANDARD_EVENT_TYPE.ROUND_ENDS;
         }
         return null;
     }
 
-    public PUZZLE_RULE_ACTION getAction() {
+    public PuzzleEnums.PUZZLE_RULE_ACTION getAction() {
         return action;
     }
 
-    public void setAction(PUZZLE_RULE_ACTION action) {
+    public void setAction(PuzzleEnums.PUZZLE_RULE_ACTION action) {
         this.action = action;
     }
 
-    public PuzzleMaster.PUZZLE_ACTION_BASE getBase() {
+    public PuzzleEnums.PUZZLE_ACTION_BASE getBase() {
         return base;
     }
 
-    public void setBase(PuzzleMaster.PUZZLE_ACTION_BASE base) {
+    public void setBase(PuzzleEnums.PUZZLE_ACTION_BASE base) {
         this.base = base;
     }
 
     public void manipulatorActs(Manipulator manipulator) {
 
-        DC_Cell cell = DC_Game.game.getCellByCoordinate(Eidolons.getMainHero().getCoordinates());
+        DC_Cell cell = DC_Game.game.getCellByCoordinate(Eidolons.getPlayerCoordinates());
 
-        cell.setOverlayRotation(cell.getOverlayRotation()+90);
+        cell.setOverlayRotation(cell.getOverlayRotation() + 90);
 
         GuiEventManager.trigger(GuiEventType.CELL_RESET, cell);
 

@@ -11,18 +11,20 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.kotcrab.vis.ui.building.utilities.Alignment;
 import eidolons.libgdx.bf.mouse.GlobalInputController;
 import eidolons.libgdx.gui.panels.TablePanel;
-import eidolons.libgdx.screens.ScreenMaster;
+import eidolons.libgdx.screens.*;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
 import main.data.filesys.PathFinder;
-import main.system.launch.CoreEngine;
+import main.game.bf.directions.DIRECTION;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,11 +36,12 @@ public class GdxMaster {
     public static final float fontSizeAdjustCoef = 0.15f;
     public static final float sizeAdjustCoef = 0.25f;
     public static final boolean FULLHD_ONLY = false;
+    private static final boolean COLORFUL = false;
     public static boolean CUSTOM_RESOLUTION;
-    private static final int DEFAULT_WIDTH = 1500;
-    private static final int DEFAULT_HEIGHT = 900;
-    private static final int DEFAULT_WIDTH_FULLSCREEN = 1600;
-    private static final int DEFAULT_HEIGHT_FULLSCREEN = 960;
+    private static final int DEFAULT_WIDTH = 1824;
+    private static final int DEFAULT_HEIGHT = 972;
+    private static final int DEFAULT_WIDTH_FULLSCREEN = 1920;
+    private static final int DEFAULT_HEIGHT_FULLSCREEN = 1080;
     private static int width;
     private static int height;
     private static Float fontSizeMod;
@@ -55,6 +58,8 @@ public class GdxMaster {
     private static boolean stackRunnables;
     private static Runnable stackRunnable;
     private static CURSOR cursor;
+    private static CustomSpriteBatch batch;
+    private static boolean keyInputBlocked;
 
     public static List<Group> getAncestors(Actor actor) {
         List<Group> list = new ArrayList<>();
@@ -67,6 +72,10 @@ public class GdxMaster {
             actor = actor.getParent();
         }
         return list;
+    }
+
+    public static void setKeyInputBlocked(boolean keyInputBlocked) {
+        GdxMaster.keyInputBlocked = keyInputBlocked;
     }
 
     public static float adjustPos(boolean x, float pos) {
@@ -155,9 +164,14 @@ public class GdxMaster {
     }
 
     public static float right(Actor actor) {
-        if (actor.getParent() != null && actor.getParent().getWidth() != 0)
-            return actor.getParent().getWidth() - actor.getWidth();
-        return GdxMaster.getWidth() - actor.getWidth();
+        if (actor.getParent() != null && actor.getParent().getWidth() != 0) {
+            float x = actor.getParent().getWidth() - actor.getWidth();
+            actor.setX(x);
+            return x;
+        }
+        float x = GdxMaster.getWidth() - actor.getWidth();
+        actor.setX(x);
+        return x;
     }
 
     public static float rightScreen(Actor actor) {
@@ -190,6 +204,9 @@ public class GdxMaster {
         return v2;
     }
 
+    public static boolean isGdxThread() {
+        return isLwjglThread();
+    }
     public static boolean isLwjglThread() {
         return Thread.currentThread().getName().equalsIgnoreCase("LWJGL Application");
     }
@@ -221,7 +238,7 @@ public class GdxMaster {
     public static float getFontSizeMod() {
 
         if (fontSizeMod == null) {
-            fontSizeMod = new Float(getWidth() * getHeight()) / getDefaultWidth() / getDefaultHeight();
+            fontSizeMod = (float) (getWidth() * getHeight()) / getDefaultWidth() / getDefaultHeight();
             fontSizeModSquareRoot = (float) Math.sqrt(fontSizeMod);
 
             if (isFixedSize()) {
@@ -230,7 +247,7 @@ public class GdxMaster {
             }
         }
         if (fontSizeMod < 0) {
-            fontSizeMod = Float.valueOf(1);
+            fontSizeMod = 1f;
         }
         return fontSizeMod * getUserFontScale();
     }
@@ -251,7 +268,7 @@ public class GdxMaster {
 
     public static Float getWidthMod() {
         if (widthMod == null) {
-            widthMod = new Float(getWidth()) / getDefaultWidth();
+            widthMod = (float) getWidth() / getDefaultWidth();
             if (isFixedSize()) {
                 widthMod = 1f;
             }
@@ -261,7 +278,7 @@ public class GdxMaster {
 
     public static Float getHeightMod() {
         if (heightMod == null) {
-            heightMod = new Float(getHeight()) / getDefaultHeight();
+            heightMod = (float) getHeight() / getDefaultHeight();
             if (isFixedSize()) {
                 heightMod = 1f;
             }
@@ -271,14 +288,14 @@ public class GdxMaster {
 
     public static Float getWidthModSquareRoot() {
         if (widthModSquareRoot == null) {
-            widthModSquareRoot = new Float(getWidth()) / getDefaultWidth();
+            widthModSquareRoot = (float) getWidth() / getDefaultWidth();
         }
         return widthModSquareRoot;
     }
 
     public static Float getHeightModSquareRoot() {
         if (heightModSquareRoot == null) {
-            heightModSquareRoot = new Float(getHeight()) / getDefaultHeight();
+            heightModSquareRoot = (float) getHeight() / getDefaultHeight();
         }
         return heightModSquareRoot;
     }
@@ -320,6 +337,9 @@ public class GdxMaster {
 
     public static void top(Actor actor) {
         actor.setY(getTopY(actor));
+    }
+    public static void top(Actor actor, float offset) {
+        actor.setY(getTopY(actor)+offset);
     }
 
     public static void center(Actor actor) {
@@ -399,6 +419,9 @@ public class GdxMaster {
     public static Float getUserFontScale() {
         if (userFontScale == null) {
             userFontScale = OptionsMaster.getGraphicsOptions().getFloatValue(GraphicsOptions.GRAPHIC_OPTION.FONT_SIZE) / 100;
+            if (userFontScale==0) {
+                userFontScale=1f;
+            }
         }
         return userFontScale;
     }
@@ -456,59 +479,47 @@ public class GdxMaster {
     }
 
     private static void setCursor(Cursor cursor) {
-        if (CoreEngine.isSuperLite()) {
-            return;
-        }
-
+        // if (CoreEngine.isSuperLite()) {
+        //     return;
+        // }
         int x = Gdx.input.getX();
         int y = Gdx.input.getY();
         Gdx.graphics.setCursor(cursor);
         Gdx.input.setCursorPosition(x, y);
     }
 
-    public static void setDefaultCursor() {
-        if (cursor == CURSOR.DEFAULT) {
+    public static void setCursorType(CURSOR cursor) {
+        if (GdxMaster.cursor == cursor) {
             return;
         }
-//        if (CoreEngine.isIDE()) {
-//            if (cursorSet)
-//                return;
-//            cursorSet = true;
-//        }
-        Pixmap pm = new Pixmap(GDX.file(PathFinder.getCursorPath()));
-        setCursor(Gdx.graphics.newCursor(pm, 0, 0));
-        cursor = CURSOR.DEFAULT;
+        Pixmap pm = new Pixmap(GDX.file(cursor.getFilePath()));
+        setCursor(Gdx.graphics.newCursor(pm, cursor.x , cursor.y));
+        GdxMaster.cursor = cursor;
+    }
+
+    public static void setDefaultCursor() {
+        setCursorType(CURSOR.DEFAULT);
     }
 
     public static void setLoadingCursor() {
-        if (CoreEngine.isIDE()) {
+        if (Flags.isIDE()) {
             return;
         }
-        Pixmap pm = new Pixmap(GDX.file(PathFinder.getLoadingCursorPath()));
-        setCursor(Gdx.graphics.newCursor(pm, 32, 32));
-        cursor = CURSOR.LOADING;
+        setCursorType(CURSOR.LOADING);
     }
 
-    public static void setEmptyCursor() {
-        if (CoreEngine.isIDE()) {
-            return;
-        }
-        Pixmap pm = new Pixmap(GDX.file(PathFinder.getEmptyCursorPath()));
-        setCursor(Gdx.graphics.newCursor(pm, 32, 32));
-        cursor = CURSOR.EMPTY;
-    }
 
     public static void setTargetingCursor() {
-        Pixmap pm = new Pixmap(GDX.file(PathFinder.getTargetingCursorPath()));
-        setCursor(Gdx.graphics.newCursor(pm, 32, 32));
-        cursor = CURSOR.TARGETING;
+        setCursorType(CURSOR.TARGETING);
     }
 
-    public static boolean isVisibleEffectively(Group a) {
+    public static boolean isVisibleEffectively(Actor a) {
         if (a == null) {
             return false;
         }
         if (!a.isVisible())
+            return false;
+        if ( a.getParent()==null )
             return false;
         for (Group group : GdxMaster.getAncestors(a)) {
             if (group == null) {
@@ -574,13 +585,94 @@ public class GdxMaster {
                 Gdx.graphics.setTitle(s));
     }
 
-    public enum CURSOR {
-        DEFAULT,
-        TARGETING,
-        LOADING,
-        WAITING,
-        NO, EMPTY,
+    public static CustomSpriteBatch createBatchInstance( ) {
+        if (COLORFUL){
+            return new ColorBatch();
+        }
+        if (isWRITE_ATLAS_IMAGES()){
+            return new AtlasGenSpriteBatch();
+        }
+        return new CustomSpriteBatchImpl();
+    }
 
+    private static boolean isWRITE_ATLAS_IMAGES() {
+        return Flags.isIDE() &&Flags.isMe() ;
+    }
+
+    public static CustomSpriteBatch getMainBatch() {
+        if (batch == null) {
+            batch =  createBatchInstance( );
+        }
+        return batch;
+    }
+
+    public static boolean isKeyPressed(int keyPressed) {
+        if (keyInputBlocked)
+            return false;
+        return Gdx.input.isKeyPressed(keyPressed);
+    }
+
+
+    public static int getAlignForDirection(DIRECTION direction) {
+        switch (direction) {
+            case UP:
+                return Align.top;
+            case DOWN:
+                return Align.bottom;
+            case LEFT:
+                return Align.left;
+            case RIGHT:
+                return Align.right;
+            case UP_LEFT:
+                return Align.topLeft;
+            case UP_RIGHT:
+                return Align.topRight;
+            case DOWN_RIGHT:
+                return Align.bottomRight;
+            case DOWN_LEFT:
+                return Align.bottomLeft;
+        }
+        return 0;
+    }
+
+    public enum CURSOR {
+        DEFAULT(PathFinder.getCursorPath()),
+        TARGETING(32, 32, PathFinder.getTargetingCursorPath()),
+        LOADING(PathFinder.getLoadingCursorPath()),
+        WAITING(PathFinder.getLoadingCursorPath()),
+        ATTACK(PathFinder.getAttackCursorPath()),
+        ATTACK_SNEAK(2, 60, PathFinder.getSneakAttackCursorPath()),
+        SPELL,
+        DOOR_OPEN,
+        LOOT,
+        INTERACT,
+        EXAMINE,
+
+        NO, EMPTY,
+        ;
+        int x, y;
+        private String filePath;
+
+        CURSOR(int x, int y, String filePath) {
+            this.x = x;
+            this.y = y;
+            this.filePath = filePath;
+        }
+
+        CURSOR(String filePath) {
+            this.filePath = filePath;
+        }
+
+        CURSOR() {
+        }
+
+        public String getFilePath() {
+            return filePath;
+        }
+
+        public void setFilePath(String filePath) {
+            this.filePath = filePath;
+        }
     }
     //    protected static void setAttackTargetingCursor() {
     //        Pixmap pm = new Pixmap(GDX.file(PathFinder.getTargetingCursorPath()));

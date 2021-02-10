@@ -21,7 +21,7 @@ import com.bitfire.utils.ShaderLoader;
 /** Fast approximate anti-aliasing filter.
  * @author Toni Sagrista */
 public final class FxaaFilter extends Filter<FxaaFilter> {
-	private Vector2 viewportInverse;
+	private final Vector2 viewportInverse;
 	private float FXAA_REDUCE_MIN;
 	private float FXAA_REDUCE_MUL;
 	private float FXAA_SPAN_MAX;
@@ -32,10 +32,10 @@ public final class FxaaFilter extends Filter<FxaaFilter> {
 			"FXAA_REDUCE_MUL", 0), FxaaSpanMax("FXAA_SPAN_MAX", 0), ;
 		// @formatter:on
 
-		private String mnemonic;
-		private int elementSize;
+		private final String mnemonic;
+		private final int elementSize;
 
-		private Param (String mnemonic, int arrayElementSize) {
+		Param(String mnemonic, int arrayElementSize) {
 			this.mnemonic = mnemonic;
 			this.elementSize = arrayElementSize;
 		}

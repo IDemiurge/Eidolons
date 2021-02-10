@@ -100,9 +100,6 @@ public class InventorySlotsPanel extends TablePanelX {
     @Override
     public Actor hit(float x, float y, boolean touchable) {
         Actor actor = super.hit(x, y, touchable);
-        if (actor == null) {
-            return null;
-        }
 
         //        if (actor instanceof Image) {
         //            return null;
@@ -119,9 +116,8 @@ public class InventorySlotsPanel extends TablePanelX {
     }
 
     protected List<InvItemActor> getSlotActors() {
-        List<InvItemActor> inventorySlots = getUserObject().getInventorySlots();
-//        inventorySlots.removeIf(slot-> slot.getParent()!=null && slot.getParent()!=table );
-        return inventorySlots;
+        //        inventorySlots.removeIf(slot-> slot.getParent()!=null && slot.getParent()!=table );
+        return getUserObject().getInventorySlots();
     }
 
     @Override

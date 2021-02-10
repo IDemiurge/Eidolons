@@ -7,15 +7,16 @@ import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.ItemFactory;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.EUtils;
 import eidolons.game.module.dungeoncrawl.objects.InteractiveObjMaster.INTERACTION;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
-import eidolons.game.netherflame.igg.event.TipMessageSource;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
+import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
+import eidolons.system.text.tips.TipMessageSource;
 import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
@@ -46,7 +47,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
     public InscriptionMaster getInscriptionMaster() {
         if (inscriptionMaster == null) {
             inscriptionMaster = new InscriptionMaster(
-                    dungeonMaster.getDungeonLevel().getLevelName());
+                    dungeonMaster.getFloorWrapper().getName());
         }
         return inscriptionMaster;
     }
@@ -130,15 +131,15 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
                 pickup(obj, unit);
                 break;
             case MAGE_CIRCLE:
-                boolean kill = doSpecial(obj, unit);
-                if (kill) {
-                    obj.kill(unit, false, false);
-                }
-                break;
-
+                // boolean kill = doSpecial(obj, unit);
+                // if (kill) {
+                //     obj.kill(unit, false, false);
+                // }
+                // break;
             case RUNE:
                 //random spell?
-                doMagic(obj, unit);
+                // doMagic(obj, unit);
+                doEssence(obj, unit);
                 obj.kill(unit, false, false);
                 break;
             case MECHANISM:
@@ -172,7 +173,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
             text = src.split("|")[1];
         }
 
-        MusicMaster.playMoment(RandomWizard.random() ? MusicMaster.MUSIC_MOMENT.TOWN : MusicMaster.MUSIC_MOMENT.SAD);
+        MusicMaster.playMoment(RandomWizard.random() ? MusicEnums.MUSIC_MOMENT.TOWN : MusicEnums.MUSIC_MOMENT.SAD);
         GuiEventManager.trigger(GuiEventType.TIP_MESSAGE, new TipMessageSource(
                 text, image, "Continue", false, () ->
         {
@@ -187,8 +188,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
             return true;
         }
         if (obj.getName().equalsIgnoreCase("gateway glyph")) {
-            //TODO igg demo hack
-
+            //TODO make real
             new TownPortalEffect().apply(new Ref(unit));
             return true;
         }
@@ -226,6 +226,12 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         return name + " " + StringMaster.wrapInParenthesis("Consumable");
     }
 
+    private void doEssence(InteractiveObj obj, Unit unit) {
+        int amount = (int) (RandomWizard.getRandomFloatBetween(0.14f, 0.31f) * unit.getIntParam(PARAMS.ESSENCE));
+        unit.addParam(PARAMS.C_ESSENCE, amount);
+
+        EUtils.showInfoText("Ancient magic fills you with Essence...");
+    }
     private void doMagic(InteractiveObj obj, Unit unit) {
         Ref ref = obj.getRef();
         ref.setTarget(obj.getId());

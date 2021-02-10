@@ -87,8 +87,8 @@ public class Pregenerator implements Runnable {
     public static final String CUSTOM_REQS_minRooms = "8";
 
     private static List<Pregenerator> running = new ArrayList<>();
-    private static Map<PregeneratorData, List<GenerationStats>> analysisStats = new XLinkedMap<>();
-    private PregeneratorData data;
+    private static final Map<PregeneratorData, List<GenerationStats>> analysisStats = new XLinkedMap<>();
+    private final PregeneratorData data;
     private int generated;
     private int valid;
     private Map<String, List<DungeonLevel>> successful = new HashMap<>();
@@ -146,10 +146,9 @@ public class Pregenerator implements Runnable {
          .toArray(new String[PREGENERATOR_VALUES.values().length]);
         factory.setValues(vals);
 
-        SUBLEVEL_TYPE[] sublevelTypes = GENERATED_SUBLEVELS_ALL;
         LOCATION_TYPE[] locationTypes = GENERATED_LOCATIONS[i];
         PregeneratorData data = new PregeneratorData(factory.constructDataString(),
-         sublevelTypes, locationTypes);
+                GENERATED_SUBLEVELS_ALL, locationTypes);
         data.setValue(PREGENERATOR_VALUES.LEVELS_REQUIRED,
          "" + LEVELS_TO_GENERATE_PER_TYPE);
         return data;
@@ -215,7 +214,7 @@ public class Pregenerator implements Runnable {
 
             stats = new GenerationStats(locationType, type);
             generated = 0;
-            DungeonLevel level = null;
+            DungeonLevel level;
             try {
                 level = generateLevel(locationType, type);
             } catch (Exception e) {
@@ -302,7 +301,7 @@ public class Pregenerator implements Runnable {
     }
 
     private boolean checkRate(DungeonLevel level) {
-        float rate = 0;
+        float rate;
         try {
             rate = new LevelRater(level).rateLevel();
         } catch (Exception e) {

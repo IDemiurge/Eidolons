@@ -8,13 +8,12 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
-import eidolons.game.battlecraft.rules.round.UnconsciousRule;
 import eidolons.game.core.game.DC_GameManager;
+import eidolons.game.core.master.EffectMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
-import eidolons.libgdx.bf.overlays.HpBar;
+import eidolons.libgdx.bf.overlays.bar.HpBar;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.container.SpecialTargetingEffect;
@@ -33,7 +32,7 @@ import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
-import main.system.sound.SoundMaster;
+import main.system.sound.AudioEnums;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 /**
@@ -63,7 +62,7 @@ public class DamageDealer {
             if (!isBonusDamage)
              FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
                      "Ineffective!",  damage.getTarget());
-            DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.LAUGH, damage.getTarget());
+            DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.LAUGH, damage.getTarget());
             return 0;
         }
         //       damage.getRef().getGame().
@@ -153,7 +152,7 @@ public class DamageDealer {
             return 0;
         }
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
-        int damageDealt = 0;
+        int damageDealt;
         if (damage_type == DAMAGE_TYPE.PURE) {
             damageDealt = dealPureDamage(targetObj, attacker,
                     (DamageCalculator.isEnduranceOnly(ref) ? 0
@@ -164,18 +163,19 @@ public class DamageDealer {
 
         if (!ref.isQuiet()) {
             try {
-                active.getRef().setValue(KEYS.DAMAGE_DEALT, damageDealt + "");
+                active.getRef().addValue(KEYS.DAMAGE_DEALT, damageDealt  );
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
-        addDamageDealt(active, damage_type, damageDealt, !bonus);
+        addDamageDealt(active, damage_type, damageDealt, !bonus, ref);
         return damageDealt;
 
     }
 
     private static boolean isLogged(BattleFieldObject attacker, BattleFieldObject targetObj, ActiveObj active) {
-        if (EffectFinder.getFirstEffectOfClass((DC_ActiveObj) active, SpecialTargetingEffect.class) != null) {
+        if (active == null||EffectMaster.getFirstEffectOfClass((DC_ActiveObj) active, SpecialTargetingEffect.class) != null) {
+            //don't log every crate being damaged...
             return !(targetObj instanceof Structure);
         }
         return true;
@@ -263,16 +263,16 @@ public class DamageDealer {
 
     // for floatingText anims
     protected static void addDamageDealt(DC_ActiveObj active, DAMAGE_TYPE damage_type,
-                                         int amount, boolean main) {
+                                         int amount, boolean main, Ref ref) {
         if (active == null)
             return;
 
         if (main) {
-            active.setDamageDealt(DamageFactory.getGenericDamage(damage_type, amount, active.getRef()));
+            active.setDamageDealt(DamageFactory.getGenericDamage(damage_type, amount, ref));
             return;
         }
 
-        MultiDamage multiDamage = null;
+        MultiDamage multiDamage;
         if (active.getDamageDealt() instanceof MultiDamage) {
             multiDamage = (MultiDamage) active.getDamageDealt();
         } else {
@@ -280,7 +280,7 @@ public class DamageDealer {
         }
 
         multiDamage.getAdditionalDamage().add(DamageFactory.
-                getGenericDamage(damage_type, amount, active.getRef()));
+                getGenericDamage(damage_type, amount, ref));
 
         active.setDamageDealt(multiDamage);
     }
@@ -367,10 +367,7 @@ public class DamageDealer {
                 }
                 toughness_dmg = ref.getAmount(); // triggers may have changed the
                 // amount!
-                actual_t_damage = Math.min(
-                        attacked.getIntParam(PARAMS.C_TOUGHNESS)
-                                * (100 + UnconsciousRule.getDeathBarrier(attacked)) / 100
-                        , toughness_dmg);
+                actual_t_damage = toughness_dmg; //TODO
                 ref.setAmount(actual_t_damage);
                 // for cleave and other sensitive effects
 
@@ -385,7 +382,7 @@ public class DamageDealer {
             }
         }
 
-        int actual_e_damage = 0;
+        int actual_e_damage;
         if (endurance_dmg > 0) {
             ref.setAmount(endurance_dmg);
             event = new Event(STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_ENDURANCE_DAMAGE, ref);
@@ -420,7 +417,8 @@ public class DamageDealer {
         }
         boolean dead = DamageCalculator.isDead(attacked);
 
-        boolean annihilated = attacked instanceof Unit && attacked.getGame().getRules().getUnconsciousRule().checkUnitAnnihilated((Unit) attacked);
+        boolean annihilated = attacked instanceof Unit && attacked.getGame().getRules().getUnconsciousRule().
+                checkUnitAnnihilated((Unit) attacked);
         boolean unconscious = false;
 
         if (!dead) {
@@ -432,9 +430,7 @@ public class DamageDealer {
             // will start new entry... a good preCheck
             try {
                 if (!attacked.kill(attacker, !annihilated, false)) {
-                    unconscious = true; //TODO wtf is this?
                 } else {
-                    unconscious = false;
                     if (annihilated) {
                         attacked.getGame().getManager().getDeathMaster().
                                 unitAnnihilated(attacked, attacker);
@@ -448,13 +444,13 @@ public class DamageDealer {
             // if (DC_GameManager.checkInterrupted(ref))
             // return 0; ???
         }
-        unconscious = attacked instanceof Unit && attacked.getIntParam(PARAMS.C_TOUGHNESS) <= 0;
+        // unconscious = attacked instanceof Unit && attacked.getIntParam(PARAMS.C_TOUGHNESS) <= 0;
 //                    attacked.getGame().getRules().getUnconsciousRule().checkStatusUpdate((Unit) attacked, (DC_ActiveObj) ref.getActive());
-
-        if (unconscious) {
-            attacked.getGame().getRules().getUnconsciousRule().
-                    fallUnconscious((Unit) attacked);
-        }
+        //TODO check this
+        // if (unconscious) {
+        //     attacked.getGame().getRules().getUnconsciousRule().
+        //             fallUnconscious((Unit) attacked);
+        // }
         if (toughness_dmg < 0 || endurance_dmg < 0) {
             LogMaster.log(1, toughness_dmg + "rogue damage " + endurance_dmg);
         } else
@@ -468,7 +464,7 @@ public class DamageDealer {
 
         if (!CoreEngine.isGraphicsOff())
             if (HpBar.isResetOnLogicThread())
-                ScreenMaster.getDungeonGrid().getGridManager().
+                ScreenMaster.getGrid().getGridManager().getEventHandler().
                         checkHpBarReset(attacked);
 
         return damageDealt;

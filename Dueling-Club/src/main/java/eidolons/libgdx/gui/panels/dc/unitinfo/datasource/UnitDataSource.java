@@ -15,9 +15,11 @@ import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.*;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.texture.TextureCache;
+import main.ability.AbilityObj;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
+import main.entity.obj.BuffObj;
 import main.system.images.ImageManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -40,7 +42,7 @@ public class UnitDataSource implements
  MainAttributesSource, ResistSource, StatsDataSource,
  ArmorDataSource {
     private static List<VALUE> values;
-    private Unit unit;
+    private final Unit unit;
 
     public UnitDataSource(Unit unit) {
         this.unit = unit;
@@ -157,20 +159,6 @@ public class UnitDataSource implements
     }
 
     @Override
-    public String getStamina() {
-        int c = unit.getIntParam(PARAMS.C_STAMINA);
-        int m = unit.getIntParam(PARAMS.STAMINA);
-        return c + "/" + m;
-    }
-
-    @Override
-    public String getMorale() {
-        int c = unit.getIntParam(PARAMS.C_MORALE);
-        int m = unit.getIntParam(PARAMS.MORALE);
-        return c + "/" + m;
-    }
-
-    @Override
     public String getEssence() {
         int c = unit.getIntParam(PARAMS.C_ESSENCE);
         int m = unit.getIntParam(PARAMS.ESSENCE);
@@ -187,8 +175,6 @@ public class UnitDataSource implements
     @Override
     public String getParam(PARAMS param) {
         switch (param) {
-            case STAMINA:
-                return getStamina();
             case FOCUS:
                 return getFocus();
             case TOUGHNESS:
@@ -197,8 +183,6 @@ public class UnitDataSource implements
                 return getEndurance();
             case ESSENCE:
                 return getEssence();
-            case MORALE:
-                return getMorale();
         }
         return null;
     }
@@ -238,34 +222,21 @@ public class UnitDataSource implements
 
     @Override
     public ValueContainer getCounterPoints() {
-        int c = unit.getIntParam(PARAMS.C_N_OF_COUNTERS);
-        int m = unit.getIntParam(PARAMS.N_OF_COUNTERS);
+        int c = unit.getIntParam(PARAMS.C_EXTRA_ATTACKS);
+        int m = unit.getIntParam(PARAMS.EXTRA_ATTACKS);
         final String value = c + "/" + m;
 
         VerticalValueContainer container = new VerticalValueContainer(
-         getOrCreateR(ImageManager.getValueIconPath(PARAMS.N_OF_COUNTERS)), value);
+         getOrCreateR(ImageManager.getValueIconPath(PARAMS.EXTRA_ATTACKS)), value);
 
         ValueTooltip toolTip = new ValueTooltip();
         toolTip.setUserObject(Collections.singletonList(
-                new ValueContainer(PARAMS.N_OF_COUNTERS.getName(), value)));
+                new ValueContainer(PARAMS.EXTRA_ATTACKS.getName(), value)));
         container.addListener(toolTip.getController());
 
         return container;
     }
 
-    @Override
-    public ValueContainer getActionPoints() {
-        int c = unit.getIntParam(PARAMS.C_N_OF_ACTIONS);
-        int m = unit.getIntParam(PARAMS.N_OF_ACTIONS);
-        final String value = c + "/" + m;
-        VerticalValueContainer container = getValueContainer(PARAMS.N_OF_ACTIONS, value);
-
-        ValueTooltip toolTip = new ValueTooltip();
-        toolTip.setUserObject(Collections.singletonList(
-                new ValueContainer(PARAMS.N_OF_ACTIONS.getName(), value)));
-        container.addListener(toolTip.getController());
-        return container;
-    }
 
     public VerticalValueContainer getParamContainer(PARAMETER parameter) {
         final String string = unit.getStrParam(parameter);
@@ -320,18 +291,20 @@ public class UnitDataSource implements
     }
 
     @Override
-    public List<ValueContainer> getBuffs() {
+    public List<ValueContainer> getBuffs(boolean body) {
         return unit.getBuffs().stream()
-         .filter(obj -> obj.isDisplayed())
+         .filter(BuffObj::isDisplayed)
+                .filter(obj -> obj.isPhysical()==body)
          .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
          .map(AttackTooltipFactory.getObjValueContainerMapper())
          .collect(Collectors.toList());
     }
 
     @Override
-    public List<ValueContainer> getAbilities() {
+    public List<ValueContainer> getAbilities(boolean body) {
         return unit.getPassives().stream()
-         .filter(obj -> obj.isDisplayed())
+         .filter(AbilityObj::isDisplayed)
+         .filter(obj -> obj.isPhysical()==body)
          .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
          .map(AttackTooltipFactory.getObjValueContainerMapper())
          .collect(Collectors.toList());

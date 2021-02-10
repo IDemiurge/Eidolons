@@ -1,19 +1,19 @@
 package eidolons.game.core.launch;
 
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonInitializer;
 import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData.PARTY_VALUE;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.game.DC_Game;
 import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Refactor;
+import main.system.auxiliary.Strings;
 import main.system.data.DataUnitFactory;
 import main.system.data.PlayerData;
-import main.system.util.Refactor;
 
 /**
  * Created by JustMe on 5/10/2017.
@@ -78,13 +78,13 @@ public class LaunchDataKeeper {
         if (dataString != null)
             for (String substring : ContainerUtils.open(dataString)) {
                 if (dataString.contains("=")) {
-                    coordinates += substring.split("=")[0] + StringMaster.SEPARATOR;
-                    units += substring.split("=")[1] + StringMaster.SEPARATOR;
+                    coordinates += substring.split("=")[0] + Strings.SEPARATOR;
+                    units += substring.split("=")[1] + Strings.SEPARATOR;
                 } else if (dataString.contains("(") && dataString.contains(")")) {
-                    units += VariableManager.removeVarPart(substring) + StringMaster.SEPARATOR;
-                    coordinates += VariableManager.getVar(substring) + StringMaster.SEPARATOR;
+                    units += VariableManager.removeVarPart(substring) + Strings.SEPARATOR;
+                    coordinates += VariableManager.getVar(substring) + Strings.SEPARATOR;
                 } else
-                    units += substring + StringMaster.SEPARATOR;
+                    units += substring + Strings.SEPARATOR;
             }
 
         if (positioner != null)

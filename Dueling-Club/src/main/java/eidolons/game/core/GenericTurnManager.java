@@ -6,7 +6,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.system.audio.DC_SoundMaster;
 import main.game.logic.battle.turn.TurnManager;
 import main.system.datatypes.DequeImpl;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,6 @@ import java.util.Set;
  */
 
 public abstract class GenericTurnManager implements TurnManager {
-    private static boolean visionInitialized;
     protected DequeImpl<Unit> unitQueue;
     protected DequeImpl<Unit> displayedUnitQueue;
     protected DC_Game game;
@@ -27,14 +26,6 @@ public abstract class GenericTurnManager implements TurnManager {
 
     public GenericTurnManager(DC_Game game) {
         this.game = game;
-    }
-
-    public static boolean isVisionInitialized() {
-        return visionInitialized;
-    }
-
-    public static void setVisionInitialized(boolean visionInitialized) {
-        GenericTurnManager.visionInitialized = visionInitialized;
     }
 
     public void init() {
@@ -54,15 +45,6 @@ public abstract class GenericTurnManager implements TurnManager {
             }
         }
         return getActiveUnit();
-    }
-
-    protected boolean playerHasActiveUnits() {
-        for (Unit u : getUnitQueue()) {
-            if (u.isMine() || (u.isPlayerControlled() && !game.isOffline())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public Boolean nextAction() {
@@ -139,23 +121,18 @@ public abstract class GenericTurnManager implements TurnManager {
         return true;
     }
 
-    @Override
-    public int getTimeModifier() {
-        return game.getRules().getTimeRule().getTimePercentageRemaining();
-    }
 
     public void newRound() {
 
-        game.getRules().getTimeRule().newRound();
         for (Unit sub : getGame().getUnits()) {
             if (getGame().getState().getRound() > 0)
                 if (sub.getAI().getEngagementDuration() > 0)
                     sub.getAI().setEngagementDuration(sub.getAI().getEngagementDuration() - 1);
 
             if (game.isStarted()) {
-                DC_SoundMaster.playStandardSound(STD_SOUNDS.DEATH);
+                DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.DEATH);
             } else {
-                DC_SoundMaster.playStandardSound(STD_SOUNDS.FIGHT);
+                DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.FIGHT);
             }
         }
     }

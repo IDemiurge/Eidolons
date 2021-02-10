@@ -47,7 +47,7 @@ public class ListInfoPanel extends G_InfoPanel implements ListSelectionListener 
 
     @Override
     public void setInts() {
-        sizeInfo = "w 4*" + GuiManager.getSquareCellSize() + "!, h (" + 8 + ")*"
+        sizeInfo = "w 4*" + 128 + "!, h (" + 8 + ")*"
          + GuiManager.getSmallObjSize() + "!";
 
     }

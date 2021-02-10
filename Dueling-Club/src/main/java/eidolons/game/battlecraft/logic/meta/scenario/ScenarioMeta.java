@@ -1,11 +1,11 @@
 package eidolons.game.battlecraft.logic.meta.scenario;
 
 import eidolons.content.PROPS;
-import eidolons.game.battlecraft.logic.battle.mission.Mission;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGame;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import eidolons.game.battlecraft.logic.mission.quest.QuestMission;
 import main.system.auxiliary.ContainerUtils;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.List;
 
@@ -13,28 +13,19 @@ import java.util.List;
  * Created by JustMe on 5/12/2017.
  */
 public class ScenarioMeta extends MetaGame {
-    private Scenario scenario;
+    private final Scenario scenario;
     private int missionIndex;
     private List<String> missions;
     private int missionNumber;
 
-    public ScenarioMeta(Scenario scenario, MetaGameMaster<ScenarioMeta> master) {
+    public ScenarioMeta(Scenario scenario, MetaGameMaster master) {
         super(master);
         this.scenario = scenario;
     }
 
-    /*
-    number of mission
-
-    save/load data
-
-
-     */
-
     @Override
-    public ScenarioMetaMaster getMaster() {
-
-        return (ScenarioMetaMaster) super.getMaster();
+    public MetaGameMaster getMaster() {
+        return   super.getMaster();
     }
 
     public Scenario getScenario() {
@@ -42,8 +33,8 @@ public class ScenarioMeta extends MetaGame {
     }
 
 
-    public Mission getMission() {
-        return getMaster().getBattleMaster().getBattle().getMission();
+    public QuestMission getMission() {
+        return (QuestMission) getMaster().getMissionMaster().getMission();
     }
 
     public int getMissionIndex() {
@@ -60,15 +51,12 @@ public class ScenarioMeta extends MetaGame {
 
     public boolean isPartyRespawn() {
 //        if (getMissionIndex().checkProperty(PROPS.MISSION_BRIEFING_DATA))
-        if (CoreEngine.isMacro()) {
+        if (Flags.isMacro()) {
             return false;
         }
         if (getMissionIndex() == 0)
             return true;
-        if (isRestarted()) {
-            return true;
-        }
-        return false;
+        return isRestarted();
     }
 
     public void setMissions(List<String> missions) {

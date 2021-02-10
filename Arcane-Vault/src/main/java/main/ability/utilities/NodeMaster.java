@@ -15,8 +15,8 @@ import main.data.ability.Mapper;
 import main.launch.ArcaneVault;
 import main.system.auxiliary.*;
 import main.system.auxiliary.log.LogMaster;
+import main.system.sound.AudioEnums;
 import main.system.sound.SoundMaster;
-import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import org.w3c.dom.Node;
 
@@ -32,7 +32,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
     AE_Item selectedItem;
     private JTree tree;
     private boolean autoSelect = true;
-    private boolean ability;
+    private final boolean ability;
     private DefaultMutableTreeNode copyBuffer;
 
     public NodeMaster(JTree tree, boolean ability) {
@@ -117,7 +117,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
         boolean primitive = rootItem.isPrimitive();
         if (rootItem.isENUM()) {
             AE_Item childItem = null;
-            if (StringMaster.isEmpty(e.getTextContent()) || e.getTextContent().equals(StringMaster.VAR_STRING)) {
+            if (StringMaster.isEmpty(e.getTextContent()) || e.getTextContent().equals(Strings.VAR_STRING)) {
                 primitive = true;
             } else {
                 childItem = getEnumItem(rootItem.getArg(), EnumMaster.getEnumConstIndex(
@@ -493,7 +493,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
             main.system.ExceptionMaster.printStackTrace(e);
         }
 
-        SoundMaster.playStandardSound(STD_SOUNDS.ERASE);
+        SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.ERASE);
     }
 
     private void trySetBase() {
@@ -536,7 +536,7 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
             main.system.ExceptionMaster.printStackTrace(e);
         }
 
-        SoundMaster.playStandardSound(STD_SOUNDS.DONE);
+        SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.DONE);
     }
 
     private boolean checkNodeClonable(String string) {

@@ -4,6 +4,7 @@ import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
 
 public class DirectionMaster {
@@ -141,18 +142,17 @@ public class DirectionMaster {
         //        if (d != null) {
         //            return d.flip();
         //        }
-        source = new Coordinates(source.x, source.y);
-        target = new Coordinates(target.x, target.y);
-        if (diffX < 0) {
-            int x = target.getX();
-            target.setX(source.getX());
-            source.setX(x);
-        }
-        if (diffY < 0) {
-            int y = target.getY();
-            target.setY(source.getY());
-            source.setY(y);
-        }
+        source = new Coordinates(
+                diffX < 0 ? target.x
+                        : source.x,
+                diffY < 0 ? target.y
+                        : source.y);
+        target = new Coordinates(
+                diffX >= 0 ? target.x
+                        : source.x,
+                diffY >= 0 ? target.y
+                        : source.y);
+
         d = getRelativeDirectionNoCache(source, target);
         relative_directions[absX][absY] = d;
         return d;
@@ -229,7 +229,8 @@ public class DirectionMaster {
 
     public static void initCache(Integer cellsX, Integer cellsY) {
         //save over TODO
-        relative_directions = new DIRECTION[cellsX][cellsY];
+        if (!CoreEngine.RAM_OPTIMIZATION)
+            relative_directions = new DIRECTION[cellsX][cellsY];
     }
 
     public static String getNSWE(DIRECTION direction) {

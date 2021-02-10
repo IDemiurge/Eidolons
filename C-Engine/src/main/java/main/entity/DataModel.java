@@ -1,10 +1,12 @@
 package main.entity;
 
+import com.badlogic.gdx.utils.ObjectMap;
 import main.ability.effects.Effect.MOD_PROP_TYPE;
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
 import main.content.ContentValsManager;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
+import main.content.ValueMap;
 import main.content.enums.GenericEnums.STD_BOOLS;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
@@ -25,25 +27,21 @@ import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.system.GuiEventManager;
-import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.NumberUtils;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.entity.CounterMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.Formula;
 import main.system.math.FormulaMaster;
 import main.system.math.MathMaster;
 import main.system.text.TextParser;
 
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by JustMe on 1/28/2017.
@@ -62,10 +60,10 @@ public abstract class DataModel {
     private PropMap propMap = new PropMap();
     private ParamMap paramMap = new ParamMap();
 
-    protected Map<PARAMETER, Map<String, Double>> modifierMaps;
-    protected Map<VALUE, Boolean> booleanMap = new HashMap<>();
-    protected Map<String, String> customParamMap;
-    protected Map<String, String> customPropMap;
+    protected ObjectMap<PARAMETER, ObjectMap<String, Double>> modifierMaps;
+    protected ObjectMap<VALUE, Boolean> booleanMap = new ObjectMap<>();
+    protected ObjectMap<String, String> customParamMap;
+    protected ObjectMap<String, String> customPropMap;
     protected XLinkedMap<VALUE, String> rawValues;
     protected boolean constructed = false;
     protected boolean constructing;
@@ -77,8 +75,8 @@ public abstract class DataModel {
     protected boolean defaultValuesInitialized;
     protected String modifierKey;
     protected Double C;
-    private HashMap<PROPERTY, Map<String, Boolean>> propCache;
-    private Map<PARAMETER, Integer> integerMap = new HashMap<>();
+    private ObjectMap<PROPERTY, ObjectMap<String, Boolean>> propCache;
+    private final ObjectMap<PARAMETER, Integer> integerMap = new ObjectMap<>();
     private boolean beingReset;
     private boolean loaded;
 
@@ -156,8 +154,8 @@ public abstract class DataModel {
         String realName = new MapMaster<String, String>().getKeyForValue(getCustomParamMap(),
                 getCustomParamMap().get(name));
         if (realName == null) {
-            if (!name.contains(StringMaster.COUNTER)) {
-                return setCounter(name + StringMaster.COUNTER, newValue);
+            if (!name.contains(Strings.COUNTER)) {
+                return setCounter(name + Strings.COUNTER, newValue);
             }
             // if (!strict)
             realName = CounterMaster.findCounter(name, strict);
@@ -310,7 +308,9 @@ public abstract class DataModel {
     }
 
     public Integer getIntParam(PARAMETER param, boolean base) {
-
+        if (param == null) {
+            return 0;
+        }
         Integer result = null;
         if (integerCacheOn) {
             if (base)
@@ -332,7 +332,7 @@ public abstract class DataModel {
             return 0;
         }
         if (NumberUtils.isInteger(string)) {
-            result = NumberUtils.getInteger(string);
+            result = NumberUtils.getIntParse(string);
         } else
             result = FormulaMaster.getInt(string, ref);
 
@@ -346,11 +346,11 @@ public abstract class DataModel {
         return integerCacheOn;
     }
 
-    public Map<PARAMETER, Integer> getIntegerMap() {
+    public ObjectMap<PARAMETER, Integer> getIntegerMap() {
         return integerMap;
     }
 
-    public Map<PARAMETER, Integer> getIntegerMap(boolean base) {
+    public ObjectMap<PARAMETER, Integer> getIntegerMap(boolean base) {
         if (base) {
             return type.getIntegerMap(false);
         }
@@ -369,14 +369,10 @@ public abstract class DataModel {
         booleanMap.put(prop, b);
     }
 
-    public Boolean getBoolean(String prop) {
-        return booleanMap.get(prop);
-    }
-
     public String getProperty(String prop) {
         PROPERTY property = ContentValsManager.getPROP(prop);
         if (property == null) {
-            return null;
+            return "";
         } else {
             return getProperty(property);
         }
@@ -431,7 +427,7 @@ public abstract class DataModel {
         if (value.isEmpty()) {
             return true;
         }
-        Integer val2 = NumberUtils.getInteger(value);
+        Integer val2 = NumberUtils.getIntParse(value);
         if (val2 == null)
             return false;
         return checkParam(param, val2);
@@ -447,17 +443,17 @@ public abstract class DataModel {
 
     }
 
-    public Map<PROPERTY, Map<String, Boolean>> getPropCache(boolean base) {
+    public ObjectMap<PROPERTY, ObjectMap<String, Boolean>> getPropCache(boolean base) {
         return base ? type.getPropCache() : getPropCache();
     }
 
     public boolean checkProperty(PROPERTY p, String value, boolean base) {
         Boolean result = null;
-        Map<String, Boolean> boolCache = null;
-        if (!CoreEngine.isRamEconomy()) {
+        ObjectMap<String, Boolean> boolCache = null;
+        if (!Flags.isRamEconomy()) {
             boolCache = getPropCache().get(p);
             if (boolCache == null) {
-                boolCache = new HashMap<>();
+                boolCache = new ObjectMap<>();
                 getPropCache().put(p, boolCache);
             }
             result = boolCache.get(value);
@@ -472,7 +468,7 @@ public abstract class DataModel {
         } else {
             result = checkSingleProp(p, value);
         }
-        if (!CoreEngine.isRamEconomy())
+        if (!Flags.isRamEconomy())
             boolCache.put(value, result);
         return result;
     }
@@ -582,6 +578,7 @@ public abstract class DataModel {
     }
 
     public String getValue(VALUE val, boolean base) {
+        //TODO optimize - this is core!
         StringBuilder value = new StringBuilder();
         if (val instanceof MultiParameter) {
             MultiParameter multiParameter = (MultiParameter) val;
@@ -630,7 +627,7 @@ public abstract class DataModel {
         if (!NumberUtils.isNumber(amountString, false))
             amount = new Formula(amountString).evaluate(ref);
         else if (NumberUtils.isInteger(amountString)) {
-            amount = NumberUtils.getInteger(amountString);
+            amount = NumberUtils.getIntParse(amountString);
             if (amount.equals(0)) {
                 return false;
             }
@@ -643,11 +640,12 @@ public abstract class DataModel {
         if (LogMaster.VALUE_DEBUG_ON)
             LogMaster.log(LogMaster.VALUE_DEBUG, "modifying " + getName() + "'s "
                     + param.getName() + " by " + amount);
-        if (!quietly || GuiEventManager.isParamEventAlwaysFired(param.getName()))
-            if (!fireParamEvent(param, String.valueOf(amount),
-                    CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED)) {
-                return true; // false?
-            }
+        if (isFiringValueEvents())
+            if (!quietly || GuiEventManager.isBarParam(param.getName()))
+                if (!fireParamEvent(param, String.valueOf(amount),
+                        CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED)) {
+                    return true; // false?
+                }
 
         boolean result = true;
         Double newValue;
@@ -689,14 +687,15 @@ public abstract class DataModel {
         setParam(param, newValue.toString(), quietly);
 
         if (isModifierMapOn()) {
-            Map<String, Double> map = getModifierMaps().get(param);
+            ObjectMap<String, Double> map = getModifierMaps().get(param);
             if (map == null) {
-                map = new XLinkedMap<>();
+                map = new ObjectMap<>();
                 getModifierMaps().put(param, map);
             }
             if (modifierKey != null) {
                 modifierKey = this.modifierKey;
             }
+            if (modifierKey != null) {
             Double amountByModifier = map.get(modifierKey);
             this.modifierKey = null; //for a single operation
             if (modifierKey != null) {
@@ -705,6 +704,7 @@ public abstract class DataModel {
                 } else {
                     map.put(modifierKey, amountByModifier + amount.doubleValue());
                 }
+            }
             }
         }
 
@@ -718,9 +718,9 @@ public abstract class DataModel {
         return false;
     }
 
-    public Map<PARAMETER, Map<String, Double>> getModifierMaps() {
+    public ObjectMap<PARAMETER, ObjectMap<String, Double>> getModifierMaps() {
         if (modifierMaps == null) {
-            modifierMaps = new XLinkedMap<>();
+            modifierMaps = new ObjectMap<>();
         }
         return modifierMaps;
     }
@@ -830,7 +830,7 @@ public abstract class DataModel {
         if (getGame().isSimulation() || this instanceof ObjType) {
             return false;
         }
-        return GuiEventManager.isParamEventAlwaysFired(param);
+        return GuiEventManager.isBarParam(param);
     }
 
     public boolean fireParamEvent(PARAMETER param, String amount, CONSTRUCTED_EVENT_TYPE event_type) {
@@ -913,38 +913,30 @@ public abstract class DataModel {
 
     public void modifyParameter(String param, String string) {
         PARAMETER p = ContentValsManager.getPARAM(param);
-        int perc = NumberUtils.getInteger(string);
+        int perc = NumberUtils.getIntParse(string);
         modifyParameter(p, perc);
     }
 
     public void modifyParamByPercent(String param, String string) {
         PARAMETER p = ContentValsManager.getPARAM(param);
-        int perc = NumberUtils.getInteger(string);
+        int perc = NumberUtils.getIntParse(string);
         modifyParamByPercent(p, perc);
     }
 
     public boolean setParam(PARAMETER param, String value, boolean quiety) {
-        //        if (param == null) {
-        //            return false;
-        //        }
-        if (Game.game != null)
-            if (GuiEventManager.isParamEventAlwaysFired(param.getName()) || !quiety)
-                if (getGame() == null)
-                    return false;
-        //            if (getGame().isStarted()) {
-        //                if (!fireParamEvent(param, value, CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED)) {
-        //                    return false;
-        //                }
-        //            }
-        //        }
-        // if (isParamSetLogged())
-        //        LogMaster.log(0, "==========> " + getName() + "'s " + param + "  is set to" + value);
+        if (getGame() == null)
+            if (GuiEventManager.isBarParam(param.getName()) || !quiety)
+                if (isFiringValueEvents())
+                    if (Game.game != null)
+                        return false;
         if (getParamMap().get(param.getName()).equals(value))
             return false;
         putParameter(param, value);
         setDirty(true);
+        return true;
+    }
 
-
+    protected boolean isFiringValueEvents() {
         return true;
     }
 
@@ -1083,8 +1075,8 @@ public abstract class DataModel {
         LogMaster.log(LogMaster.VALUE_DEBUG, "adding  " + value + " to "
                 + getName() + "'s " + prop.getName());
 
-        if (value.contains(StringMaster.AND_PROPERTY_SEPARATOR)) {
-            for (String s : ContainerUtils.open(value, StringMaster.AND_PROPERTY_SEPARATOR)) {
+        if (value.contains(Strings.AND_PROPERTY_SEPARATOR)) {
+            for (String s : ContainerUtils.open(value, Strings.AND_PROPERTY_SEPARATOR)) {
                 addProperty(prop, s, noDuplicates);
             }
             return true;
@@ -1135,11 +1127,6 @@ public abstract class DataModel {
     }
 
     protected void putParameter(PARAMETER param, String value) {
-        //        if (param.getName().equalsIgnoreCase("Foc Req")) {
-        //            main.system.auxiliary.log.LogMaster.log(1,
-        //             this +
-        //              " Foc Req set to" + value + " from " + getParam(param));
-        //        }
         if (isTypeLinked()) {
             type.getParamMap().put(param, value);
         }
@@ -1253,7 +1240,7 @@ public abstract class DataModel {
             if (!base) {
                 setParam((PARAMETER) valName, value);
             } else {
-                setParam((PARAMETER) valName, NumberUtils.getInteger(value), false, true);
+                setParam((PARAMETER) valName, NumberUtils.getIntParse(value), false, true);
             }
         }
         setDirty(true);
@@ -1307,12 +1294,13 @@ public abstract class DataModel {
     public void addParam(String parameter, int value) {
         modifyParameter(ContentValsManager.getPARAM(parameter), value);
     }
+
     public void addParam(PARAMETER parameter, int value) {
         modifyParameter(parameter, value);
     }
 
     public void addParam(PARAMETER parameter, String param, boolean base) {
-        modifyParameter(parameter, NumberUtils.getInteger(param), base);
+        modifyParameter(parameter, NumberUtils.getIntParse(param), base);
     }
 
     public void copyValues(Entity type, List<VALUE> list) {
@@ -1328,7 +1316,7 @@ public abstract class DataModel {
     }
 
     public void cloneMapsWithExceptions(DataModel type, VALUE... exceptions) {
-        Map<VALUE, String> map = new HashMap<>();
+        ObjectMap<VALUE, String> map = new ObjectMap<>();
         for (VALUE exception : exceptions) {
             map.put(exception, getValue(exception));
         }
@@ -1353,37 +1341,28 @@ public abstract class DataModel {
 
     }
 
-    protected ParamMap cloneParamMap(Map<PARAMETER, String> map) {
+    protected ParamMap cloneParamMap( Map<PARAMETER, String> map) {
         ParamMap clone = new ParamMap();
-        Map<PARAMETER, String> innerMap = new HashMap<>();
-        map.keySet().removeIf(key -> map.get(key) == null);
-        map.keySet().removeIf(key -> (key) == null);
-        innerMap.putAll(map);
-
+         Map<PARAMETER, String> innerMap = new LinkedHashMap<>();
+        for (PARAMETER key : map.keySet()) {
+            String value = map.get(key);
+            if (value != null) {
+                innerMap.put(key, value);
+            }
+        }
         clone.setMap(innerMap);
-
-        // so the problem is that it doesn't seem to carry over c_ and perc_
-        // values?
-        //        for (PARAMETER p : type.getParamMap().getMap().keySet()) {
-        //            if (!p.isDynamic()) {
-        //                paramMap.remove(p);
-        //            }
-        //        }
-        //        for (PARAMETER p : type.getParamMap().getMap().keySet()) {
-        //            paramMap.put(p, type.getParamMap().getMap().get(p));
-        //        }
-
-
         return clone;
     }
 
     protected PropMap clonePropMap(Map<PROPERTY, String> map) {
         PropMap clone = new PropMap();
-        Map<PROPERTY, String> innerMap = new ConcurrentHashMap<>();
-        map.keySet().removeIf(key -> map.get(key) == null);
-        map.keySet().removeIf(key -> (key) == null);
-        innerMap.putAll(map);
-
+        Map<PROPERTY, String> innerMap = new LinkedHashMap<>();
+        for (PROPERTY key : map.keySet()) {
+            String value = map.get(key);
+            if (value != null) {
+                innerMap.put(key, value);
+            }
+        }
         clone.setMap(innerMap);
         return clone;
     }
@@ -1476,14 +1455,14 @@ public abstract class DataModel {
         return !StringMaster.isEmpty(getCustomProperty(name));
     }
 
-    public Map<String, String> getCustomPropMap() {
+    public ObjectMap<String, String> getCustomPropMap() {
         if (customPropMap == null) {
-            setCustomPropMap(new HashMap<>());
+            setCustomPropMap(new ObjectMap<>());
         }
         return customPropMap;
     }
 
-    public void setCustomPropMap(Map<String, String> customPropMap) {
+    public void setCustomPropMap(ObjectMap<String, String> customPropMap) {
         this.customPropMap = customPropMap;
     }
 
@@ -1496,14 +1475,14 @@ public abstract class DataModel {
         getCustomParamMap().put(properName, value);
     }
 
-    public Map<String, String> getCustomParamMap() {
+    public ObjectMap<String, String> getCustomParamMap() {
         if (customParamMap == null) {
-            setCustomParamMap(new XLinkedMap<>());
+            setCustomParamMap(new ObjectMap<>());
         }
         return customParamMap;
     }
 
-    public void setCustomParamMap(Map<String, String> customParamMap) {
+    public void setCustomParamMap(ObjectMap<String, String> customParamMap) {
         this.customParamMap = customParamMap;
     }
 
@@ -1622,7 +1601,7 @@ public abstract class DataModel {
     }
 
     public int getTypeId() {
-        return NumberUtils.getInteger(getProperty(G_PROPS.ID));
+        return NumberUtils.getIntParse(getProperty(G_PROPS.ID));
     }
 
     public List<ObjType> getListFromProperty(OBJ_TYPE TYPE, PROPERTY prop) {
@@ -1639,9 +1618,9 @@ public abstract class DataModel {
         }
     }
 
-    public HashMap<PROPERTY, Map<String, Boolean>> getPropCache() {
+    public ObjectMap<PROPERTY, ObjectMap<String, Boolean>> getPropCache() {
         if (propCache == null) {
-            propCache = new HashMap<>();
+            propCache = new ObjectMap<>();
         }
         return propCache;
     }
@@ -1709,4 +1688,7 @@ public abstract class DataModel {
         setProperty(G_PROPS.DESCRIPTION, description);
     }
 
+    public ValueMap getValueMap(boolean parameter) {
+        return parameter ? getParamMap() : getPropMap();
+    }
 }

@@ -16,6 +16,7 @@ import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
+import main.entity.EntityCheckMaster;
 import main.entity.obj.ActiveObj;
 import main.system.math.Formula;
 
@@ -38,15 +39,15 @@ public class WaterRule extends RoundRule implements ActionRule {
     public static boolean isBridged(BattleFieldObject waterObj) {
         boolean bridged = false;
         Integer girth = 0;
-        for (BattleFieldObject object : waterObj.getGame().getObjectsOnCoordinate(waterObj.getCoordinates())) {
-            if (object==waterObj) {
+        for (BattleFieldObject object : waterObj.getGame().getObjectsOnCoordinateNoOverlaying(waterObj.getCoordinates())) {
+            if (object == waterObj) {
                 continue;
             }
             if (object.isDead()) {
                 continue;
             }
             girth += object.getIntParam(PARAMS.GIRTH);
-            if (waterObj.getIntParam(PARAMS.SPACE)<=girth){
+            if (waterObj.getIntParam(PARAMS.SPACE) <= girth) {
                 bridged = true;
             }
         }
@@ -55,79 +56,56 @@ public class WaterRule extends RoundRule implements ActionRule {
 
     public static boolean checkPassable(boolean manualCheck, BattleFieldObject waterObj, Entity obj) {
         if (obj != null)
-        if (isSwimming(obj)) {
-            return true;
-        }
+            if (canSwim(obj)) {
+                return true;
+            }
         boolean bridged = isBridged(waterObj);
-        if (obj instanceof Structure){
+        if (obj instanceof Structure) {
             if (bridged) {
-//                if (girth >= 1000-obj.getIntParam(PARAMS.GIRTH))
-                    return false;
+                //                if (girth >= 1000-obj.getIntParam(PARAMS.GIRTH))
+                return false;
             } else
-            FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
-                    obj.getName()+ " falls into " + waterObj.getName(), obj);
+                FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
+                        obj.getName() + " falls into " + waterObj.getName(), obj);
             return true;
         }
-        if (bridged) {
-            return true;
-        }
-//        if (canSwim(unit)) {
-//            if (isOnSwimmingDepth(unit)) {
-//                return true;
-//            }
-//        }
-//        obj.getGame().getManager().isSelecting()
-//        if (manualCheck) {
-//            if (EidolonsGame.BRIDGE_CROSSED)
-//        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
-//                "Won't touch that"
-//                "Too deep to cross!"
-//                , obj);
-//        }
-        return false;
+        return bridged;
+        //        if (canSwim(unit)) {
+        //            if (isOnSwimmingDepth(unit)) {
+        //                return true;
+        //            }
+        //        }
+        //        obj.getGame().getManager().isSelecting()
+        //        if (manualCheck) {
+        //            if (EidolonsGame.BRIDGE_CROSSED)
+        //        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
+        //                "Won't touch that"
+        //                "Too deep to cross!"
+        //                , obj);
+        //        }
     }
 
-    private static boolean isSwimming(Entity obj) {
+    private static boolean canSwim(Entity obj) {
+        if (EntityCheckMaster.isImmaterial(obj)) {
+            return true;
+        }
+        if (obj instanceof Unit) {
+            Unit unit = (Unit) obj;
+            if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.AVIAN)) {
+                return true;
+            }
+        }
         return obj.checkBool(GenericEnums.STD_BOOLS.SWIMMING);
     }
 
-    private static boolean isForceSwimmingDepth(Unit unit) {
-        float heightFactor = getSubmergedFactor(unit);
-        return heightFactor > SWIM_FORCE_FACTOR;
-    }
-
-    private static boolean isOnSwimmingDepth(Unit unit) {
-        float heightFactor = getSubmergedFactor(unit);
-        return heightFactor > SWIM_FACTOR;
-    }
-
-    private static float getSubmergedFactor(Unit unit) {
-        float heightFactor = Math.abs(waterObj.getIntParam(PARAMS.HEIGHT))
-                / unit.getIntParam(PARAMS.HEIGHT);
-        return heightFactor;
-    }
-
-    public static boolean ignoresWater(Unit unit) {
-        if (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
-            return true;
-        }
-        return unit.isFlying();
-    }
-
-    public static boolean canSwim(Unit unit) {
-        if (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
-            return false;
-        }
-        return !unit.checkClassification(UnitEnums.CLASSIFICATIONS.MECHANICAL);
-    }
 
     public static int getWaterMoveApMod(Unit unit) {
-        return Math.round(waterObj.getIntParam(PARAMS.MOVE_AP_PENALTY) * getSubmergedFactor(unit));
+        return Math.round(waterObj.getIntParam(PARAMS.MOVE_ATB_COST_MOD) * getSubmergedFactor(unit));
 
     }
 
     public static int getWaterMoveStaMod(Unit unit) {
-        return Math.round(waterObj.getIntParam(PARAMS.MOVE_STA_PENALTY) * getSubmergedFactor(unit));
+        return Math.round(waterObj.getIntParam(PARAMS.MOVE_TOU_COST_MOD) * getSubmergedFactor(unit));
 
     }
 
@@ -148,10 +126,26 @@ public class WaterRule extends RoundRule implements ActionRule {
         // apply status?
     }
 
-    public void checkDrowning(Unit unit) {
-        if (!isOnSwimmingDepth(unit)) {
+    private static boolean isForceSwimmingDepth(Unit unit) {
+        float heightFactor = getSubmergedFactor(unit);
+        return heightFactor > SWIM_FORCE_FACTOR;
+    }
+
+    private static boolean isOnSwimmingDepth(Unit unit) {
+        float heightFactor = getSubmergedFactor(unit);
+        return heightFactor > SWIM_FACTOR;
+    }
+
+    private static float getSubmergedFactor(Unit unit) {
+        return (float) (Math.abs(waterObj.getIntParam(PARAMS.HEIGHT))
+                        / unit.getIntParam(PARAMS.HEIGHT));
+    }
+
+    public static boolean ignoresWater(Unit unit) {
+        if (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
+            return true;
         }
-        // reduce endurance by percentage
+        return unit.isFlying();
     }
 
     @Override
@@ -193,13 +187,13 @@ public class WaterRule extends RoundRule implements ActionRule {
 
     @Override
     public boolean check(Unit unit) {
-        Set<BattleFieldObject> units = game.getObjectsOnCoordinate(unit.getCoordinates());
+        Set<BattleFieldObject> units = game.getObjectsOnCoordinateNoOverlaying(unit.getCoordinates());
 
         for (BattleFieldObject u : units) {
-//            if (isWater(u)) {
-//                waterObj = u;
-//                return true;
-//            }
+            //            if (isWater(u)) {
+            //                waterObj = u;
+            //                return true;
+            //            }
         }
 
         return false;

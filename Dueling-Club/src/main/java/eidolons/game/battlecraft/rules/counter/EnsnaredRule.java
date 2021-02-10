@@ -94,7 +94,7 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
 
     @Override
     public String getBuffName() {
-        return MetaEnums.STD_BUFF_NAMES.Entangled.getName();
+        return MetaEnums.STD_BUFF_NAME.Entangled.getName();
     }
 
     @Override
@@ -138,23 +138,21 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
          getNumberOfCounters(unit) + "*1.5", ref, " and breaks free!",
          "Entanglement")) {
             unit.setCounter(getCounterName(), 0);
-            unit.modifyParameter(PARAMS.C_N_OF_ACTIONS, -1);
+            unit.modifyParameter(PARAMS.C_ATB, -10); //TODO review
             return false;
         }
 
         if (RollMaster.roll(GenericEnums.ROLL_TYPES.QUICK_WIT, "-",
          getNumberOfCounters(unit) + "/2.5", ref,
          "@, unable to figure out how to cut free...", "Entanglement")) {
-            unit.modifyParameter(PARAMS.C_N_OF_ACTIONS, -1);
+            unit.modifyParameter(PARAMS.C_ATB, -10);
             return false;
         }
 
         if (checkCutAway(false)) {
             return false;
         }
-        if (checkCutAway(true)) {
-            return false;
-        }
+        checkCutAway(true);
 
         // TODO ally help PLS
 

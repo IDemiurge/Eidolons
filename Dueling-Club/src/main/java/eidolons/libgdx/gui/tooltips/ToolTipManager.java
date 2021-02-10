@@ -11,15 +11,18 @@ import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.Structure;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
+import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActionMaster;
-import eidolons.libgdx.anims.anim3d.AnimMaster3d;
+import eidolons.libgdx.anims.actions.ActionMaster;
+import eidolons.libgdx.assets.AnimMaster3d;
+import eidolons.libgdx.bf.Hoverable;
 import eidolons.libgdx.bf.grid.cell.BaseView;
-import eidolons.libgdx.bf.grid.cell.GridUnitView;
 import eidolons.libgdx.bf.grid.cell.LastSeenView;
+import eidolons.libgdx.bf.grid.cell.QueueView;
+import eidolons.libgdx.bf.grid.cell.UnitGridView;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.gui.controls.StackViewMaster;
 import eidolons.libgdx.gui.panels.TablePanel;
@@ -35,6 +38,8 @@ import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
+import main.system.datatypes.DequeImpl;
+import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.system.threading.WaitMaster;
 
@@ -50,14 +55,18 @@ public class ToolTipManager extends TablePanel {
     private Cell actorCell;
     private float toWait;
     private Vector2 originalPosition;
-    private float offsetX = 32;
-    private float offsetY = 32;
     private Boolean bottom;
     private Boolean right;
-    private StackViewMaster stackMaster = new StackViewMaster();
+    private final StackViewMaster stackMaster = new StackViewMaster();
     private static Vector2 presetTooltipPos;
     private static HqTooltipPanel tooltipPanel;
     private static boolean hoverOff;
+
+    private static final float HOVER_CHECK_PERIOD = 2.0f;
+    private float hoverCheck = 0;
+    Hoverable hovered;
+    DequeImpl<BaseView> hoveredList = new DequeImpl<>();
+    private boolean hidden;
 
     public static void setTooltipPanel(HqTooltipPanel tooltipPanel) {
         ToolTipManager.tooltipPanel = tooltipPanel;
@@ -70,14 +79,22 @@ public class ToolTipManager extends TablePanel {
     public ToolTipManager(GenericGuiStage battleGuiStage) {
         guiStage = battleGuiStage;
         GuiEventManager.bind(SHOW_TOOLTIP, (event) -> {
+            if (ScreenMaster.getScreen().getController().isLeftPressed()) {
+                return;
+            }
             Object object = event.get();
             requestedShow(object);
         });
 
         GuiEventManager.bind(GRID_OBJ_HOVER_ON, (event) -> {
-            if (DungeonScreen.getInstance().isBlocked())
-                return;
+            if (ScreenMaster.getScreen() instanceof DungeonScreen){
+                if (DungeonScreen.getInstance().isBlocked())
+                    return;
+            }
             if (Cinematics.ON) {
+                return;
+            }
+            if (ScreenMaster.getScreen().getController().isLeftPressed()) {
                 return;
             }
             BaseView object = (BaseView) event.get();
@@ -182,15 +199,8 @@ public class ToolTipManager extends TablePanel {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
-            if (tooltip instanceof UnitViewTooltip)
-                return;
-        }
-        if (DungeonScreen.getInstance() != null)
-        if (DungeonScreen.getInstance().getGridPanel() != null)
-        if (DungeonScreen.getInstance().getGridPanel().getActiveCommentSprites().size()>0) {
+        if (hidden)
             return;
-        }
         if (parentAlpha == ShaderDrawer.SUPER_DRAW ||
                 ConfirmationPanel.getInstance().isVisible())
             super.draw(batch, 1);
@@ -218,7 +228,7 @@ public class ToolTipManager extends TablePanel {
         bottom = null;
         right = null;
 
-//        presetTooltipPos= null;
+        //        presetTooltipPos= null;
         updatePosition();
 
         tooltip.getColor().a = 0;
@@ -228,10 +238,40 @@ public class ToolTipManager extends TablePanel {
             entityHover(tooltip.getEntity());
     }
 
+    protected boolean isHidden() {
+        if (DialogueManager.isRunning()) {
+            return true;
+        }
+        if (DC_Game.game.getDungeonMaster().getPuzzleMaster() != null) {
+            if (DC_Game.game.getDungeonMaster().getPuzzleMaster().isUiMinimized()) {
+                return true;
+            }
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) != CoreEngine.isLevelEditor()) {
+            if (tooltip instanceof UnitViewTooltip)
+                return true;
+        }
+        if (DungeonScreen.getInstance() != null)
+            if (DungeonScreen.getInstance().getGridPanel() != null)
+                return DungeonScreen.getInstance().getGridPanel().getActiveCommentSprites().size() > 0;
+        return false;
+    }
+
     @Override
     public void act(float delta) {
-        setVisible(!DialogueManager.isRunning());
+        if (hidden = isHidden())
+            return;
+        // if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
+        //  //TODO    retained = tooltip;
+        // }
         super.act(delta);
+        hoverCheck -= delta;
+        if (hoverCheck <= 0) {
+            hoverCheck = HOVER_CHECK_PERIOD;
+            resetHovered();
+        }
+
+
         stackMaster.act(delta);
         if (tooltip != null) {
             if (tooltip.getColor().a == 0) {
@@ -263,10 +303,10 @@ public class ToolTipManager extends TablePanel {
                 if (guiStage.isBlocked() ||
                         originalPosition != null && originalPosition.dst(GdxMaster.getCursorPosition(this))
                                 > 300 * GdxMaster.getFontSizeModSquareRoot()) {
-//                    if (guiStage.isBlocked())
-//                        main.system.auxiliary.log.LogMaster.log(1, tooltip + " Blocked");
-//                    else
-//                        main.system.auxiliary.log.LogMaster.log(1, tooltip + " Too far!" + originalPosition + "vs " + GdxMaster.getCursorPosition(this));
+                    //                    if (guiStage.isBlocked())
+                    //                        main.system.auxiliary.log.LogMaster.log(1, tooltip + " Blocked");
+                    //                    else
+                    //                        main.system.auxiliary.log.LogMaster.log(1, tooltip + " Too far!" + originalPosition + "vs " + GdxMaster.getCursorPosition(this));
                     requestedShow(null);
                     //                        TODO ? ? if (isStackHoverOn())
                     //                            waitToHideStack = 2;
@@ -277,6 +317,15 @@ public class ToolTipManager extends TablePanel {
             return;
         }
         updatePosition();
+    }
+
+
+    private void resetHovered() {
+        for (BaseView hoverable : hoveredList) {
+            if (hoverable != hovered) {
+                hoverOff(hoverable);
+            }
+        }
     }
 
 
@@ -312,6 +361,7 @@ public class ToolTipManager extends TablePanel {
         if (setLeft)
             right = false;
 
+        float offsetY = 32;
         if (bottom == null)
             y += offsetY;
         else if (bottom) {
@@ -324,6 +374,7 @@ public class ToolTipManager extends TablePanel {
                 y += tooltip.getHeight();
         }
 
+        float offsetX = 32;
         if (right == null)
             x += offsetX;
         else if (right) {
@@ -461,19 +512,30 @@ public class ToolTipManager extends TablePanel {
 
 
     private void hovered(BaseView object) {
+
+        CursorDecorator.getInstance().hovered(object.getUserObject());
         if (object.getUserObject() instanceof Structure) {
             if (((Structure) object.getUserObject()).isLandscape()) {
                 return;
             }
         }
-        scaleUp(object);
-
         object.setHovered(true);
+        if (object instanceof QueueView) {
+            ((QueueView) object).hoverOn();
+        } else {
+            if (object instanceof UnitGridView) {
+                ((UnitGridView) object).getInitiativeQueueUnitView().hoverOn();
+            }
+            scaleUp(object);
+        }
+
         hoverOff = false;
         stackMaster.checkShowStack(object);
 
 
-        ScreenMaster.getDungeonGrid().setUpdateRequired(true);
+        ScreenMaster.getGrid().setUpdateRequired(true);
+        hoveredList.add(object);
+        hovered = object;
 
     }
 
@@ -488,29 +550,20 @@ public class ToolTipManager extends TablePanel {
 
 
     private void scale(BaseView object, float scale, float scaleQueue) {
-//        float scaleX = getDefaultScale(object);
-//        if (object.getScaleX() == getDefaultScale(object))
-//            scaleX = getZoomScale(object);
-//        float scaleY = getDefaultScale(object);
-//        if (object.getScaleY() == getDefaultScale(object))
-//            scaleY = getZoomScale(object);
+        //        float scaleX = getDefaultScale(object);
+        //        if (object.getScaleX() == getDefaultScale(object))
+        //            scaleX = getZoomScale(object);
+        //        float scaleY = getDefaultScale(object);
+        //        if (object.getScaleY() == getDefaultScale(object))
+        //            scaleY = getZoomScale(object);
 
         ActionMaster.
                 addScaleActionIfNoActions(object, scale, scale, 0.35f);
 
-        if (object instanceof GridUnitView) {
-//            if (scaleX == getDefaultScale(object))
-//                scaleX = getZoomScale(object);
-//            if (scaleY == getDefaultScale(object))
-//                scaleY = getZoomScale(object);
-            ActionMaster.
-                    addScaleAction(((GridUnitView) object).getInitiativeQueueUnitView()
-                            , scaleQueue, scaleQueue, 0.35f);
-        }
-
     }
 
     private void hoverOff(BaseView object) {
+        CursorDecorator.getInstance().hoverOff();
         if (object instanceof LastSeenView) {
             return;
         }
@@ -520,30 +573,24 @@ public class ToolTipManager extends TablePanel {
             }
         }
         scaleDown(object);
-
+        ActionMaster.screenOff(object);
         float scaleX;
         float scaleY;
-        if (object instanceof GridUnitView) {
+        object.setHovered(false);
+        if (object instanceof UnitGridView) {
             scaleX = object.getScaledWidth();
             scaleY = object.getScaledHeight();
             ActionMaster.
                     addScaleAction(object, scaleX, scaleY, 0.35f);
-            scaleX = getDefaultScale(object);
-            scaleY = getDefaultScale(object);
-            ActionMaster.
-                    addScaleAction(((GridUnitView) object).getInitiativeQueueUnitView()
-                            , scaleX, scaleY, 0.35f);
-        } else {
-            scaleX = getDefaultScale(object);
-            scaleY = getDefaultScale(object);
-            ActionMaster.
-                    addScaleAction(object, scaleX, scaleY, 0.35f);
+            ((UnitGridView) object).getInitiativeQueueUnitView().hoverOff();
+        } else if (object instanceof QueueView) {
+            ((QueueView) object).hoverOff();
         }
 
         hoverOff = true;
-        object.setHovered(false);
         stackMaster.checkStackOff(object);
-        ScreenMaster.getDungeonGrid().setUpdateRequired(true);
+        ScreenMaster.getGrid().setUpdateRequired(true);
+        hoveredList.remove(object);
 
     }
 
@@ -564,7 +611,7 @@ public class ToolTipManager extends TablePanel {
         //        if (object instanceof OverlayView){
         //            return 0.61f;
         //        } gridPanel handles this by setBounds()!
-        return 1.12f;
+        return 1.08f;
     }
 
     private float getDefaultScale(BaseView object) {
@@ -572,6 +619,10 @@ public class ToolTipManager extends TablePanel {
         //            return OverlayView.SCALE;
         //        } gridPanel handles this by setBounds()!
         return 1;
+    }
+
+    public GenericGuiStage getGuiStage() {
+        return guiStage;
     }
 
     public StackViewMaster getStackMaster() {

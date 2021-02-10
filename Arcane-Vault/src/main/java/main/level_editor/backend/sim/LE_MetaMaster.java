@@ -1,5 +1,6 @@
 package main.level_editor.backend.sim;
 
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioPartyManager;
@@ -16,6 +17,11 @@ public class LE_MetaMaster extends ScenarioMetaMaster {
     public LE_MetaMaster(Campaign campaign) {
         super(campaign.getName());
         this.campaign = campaign;
+    }
+
+    @Override
+    public Floor getFloor() {
+        return LevelEditor.getCurrent();
     }
 
     @Override
@@ -81,7 +87,7 @@ public class LE_MetaMaster extends ScenarioMetaMaster {
     }
 
     @Override
-    public PartyManager<ScenarioMeta> getPartyManager() {
+    public PartyManager  getPartyManager() {
         return super.getPartyManager();
     }
 

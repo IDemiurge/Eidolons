@@ -4,7 +4,7 @@ import eidolons.ability.effects.oneshot.status.ImmobilizeEffect;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.core.master.EffectMaster;
 import eidolons.system.DC_ConditionMaster;
 import main.ability.effects.*;
 import main.ability.effects.continuous.ContinuousEffect;
@@ -23,10 +23,11 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.BuffObj;
 import main.entity.obj.Obj;
-import main.entity.type.BuffType;
+import main.entity.type.impl.BuffType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.entity.ConditionMaster;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
@@ -152,7 +153,7 @@ public class AddBuffEffect extends MultiEffect implements OneshotEffect, Resisti
          effect, duration, getRetainConditions());
 
         getBuffCache().put(target, buff);
-            if (EffectFinder.check(effect, ImmobilizeEffect.class)){
+            if (EffectMaster.check(effect, ImmobilizeEffect.class)){
                 buff.setImmobilizing(true);
         }
         return buff != null;
@@ -183,7 +184,7 @@ public class AddBuffEffect extends MultiEffect implements OneshotEffect, Resisti
             if (getBuffTypeName() == null) {
                 return new BuffType();
             }
-            boolean invisible = getBuffTypeName().contains(StringMaster.INVISIBLE_BUFF_CODE);
+            boolean invisible = getBuffTypeName().contains(Strings.INVISIBLE_BUFF_CODE);
             if (TextParser.checkHasRefs(getBuffTypeName())) {
                 ref.setID(KEYS.INFO, ref.getId(KEYS.ABILITY));
                 String parsedName = TextParser.parse(getBuffTypeName(), ref,

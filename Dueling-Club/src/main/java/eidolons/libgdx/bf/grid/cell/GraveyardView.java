@@ -1,5 +1,8 @@
 package eidolons.libgdx.bf.grid.cell;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
@@ -9,9 +12,8 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.datasource.GraveyardDataSource;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.gui.NinePatchFactory;
-import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanel;
-import eidolons.libgdx.gui.tooltips.ValueTooltip;
+import eidolons.libgdx.gui.tooltips.DynamicTooltip;
 import eidolons.libgdx.texture.TextureCache;
 
 import java.util.Arrays;
@@ -20,19 +22,20 @@ import java.util.List;
 public class GraveyardView extends TablePanel {
     private static final int SIZE = 4;
     private static final int ROW_SIZE = 2;
-    private Cell<UnitView>[] graves;
+    private final Cell<UnitView>[] graves;
 
-    private TablePanel<UnitView> graveTables;
+    private final TablePanel<UnitView> graveTables;
 
-    private Button graveyardButton;
+    final Button graveyardButton;
     private int graveCount = 0;
 
+    //Gdx Review
     public GraveyardView() {
         graveyardButton = new Button(new Image(
-         TextureCache.getOrCreate(
-          "ui/components/small/skulls_32x32.png")),
-//                StyleHolder.getCustomButtonStyle("ui/components/small/skulls_32x32.png")
-         StyleHolder.getDefaultTextButtonStyle()
+                TextureCache.getRegionUV(
+                        "ui/content/dc_icons/skulls_32x32.png")),
+                //                StyleHolder.getCustomButtonStyle("ui/components/small/skulls_32x32.png")
+                StyleHolder.getDefaultTextButtonStyle()
         );
 
         graveyardButton.setChecked(true);
@@ -47,10 +50,7 @@ public class GraveyardView extends TablePanel {
             graves[i] = graveTables.add().expand().fill();
         }
         add(graveTables).expand().fill();
-        ValueTooltip tooltip = new ValueTooltip();
-        tooltip.setUserObject(Arrays.asList(
-         new ValueContainer("\"Death smiles at us all,", ""),
-         new ValueContainer("all a man can do is smile back.\"", "")));
+        DynamicTooltip tooltip = new DynamicTooltip(this::getTooltipText);
         graveyardButton.addListener(tooltip.getController());
 
         graveyardButton.addListener(new BattleClickListener() {
@@ -63,6 +63,33 @@ public class GraveyardView extends TablePanel {
         graveTables.setVisible(false);
         setVisible(false);
         graveyardButton.setChecked(false);
+    }
+
+    private String getTooltipText() {
+        return graveCount + " corpses\n" +
+                (isAlt() ? "Alt-" : "") +
+                "Click to view";
+    }
+
+    private boolean isAlt() {
+        return getParent().getUnitViewsVisible().size() > 0;
+    }
+
+    @Override
+    public Actor hit(float x, float y, boolean touchable) {
+        Actor hit = super.hit(x, y, touchable);
+        if (hit != null)
+            if (isAlt()) {
+                if (!Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
+                    return null;
+                }
+            }
+        return hit;
+    }
+
+    @Override
+    public GridCellContainer getParent() {
+        return (GridCellContainer) super.getParent();
     }
 
     public void addCorpse(BaseView unitView) {

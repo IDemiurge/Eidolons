@@ -55,7 +55,7 @@ public class Structure extends BattleFieldObject {
     @Override
     public String getToolTip() {
         if (isWater()) {
-            if (WaterRule.isBridged(this)){
+            if (WaterRule.isBridged(this)) {
                 return getName() + "(bridged)";
             }
         }
@@ -65,16 +65,20 @@ public class Structure extends BattleFieldObject {
     @Override
     public String getImagePath() {
         //     this is insanity...
-        if (getGame().getDungeonMaster().getDungeonWrapper() != null) {
+        if (getGame().getDungeonMaster().getFloorWrapper() != null) {
             return ImageManager.getThemedImagePath(super.getImagePath(), getGame()
-                    .getDungeonMaster().getDungeonWrapper().getColorTheme());
+                    .getDungeonMaster().getFloorWrapper().getColorTheme());
         }
         return super.getImagePath();
     }
 
     public boolean isWall() {
-        if (wall == null)
+        if (wall == null) {
             wall = getType().checkProperty(G_PROPS.BF_OBJECT_GROUP, BfObjEnums.BF_OBJECT_GROUP.WALL.toString());
+            if (!wall) {
+                wall = getType().checkProperty(G_PROPS.BF_OBJECT_TAGS, BfObjEnums.BF_OBJECT_GROUP.WALL.toString());
+            }
+        }
         return wall;
     }
 
@@ -118,7 +122,7 @@ public class Structure extends BattleFieldObject {
     }
 
     public void resetFacing() {
-//        getResetter().setFacing();
+        //        getResetter().setFacing();
         if (getDirection() != null) {
             setFacing(FacingMaster.getFacingFromDirection(getDirection()));
         } else {

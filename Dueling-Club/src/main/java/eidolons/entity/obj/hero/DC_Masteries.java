@@ -19,7 +19,7 @@ import java.util.Map;
 public class DC_Masteries {
 
     Map<MASTERY, Integer> map;
-    private Unit hero;
+    private final Unit hero;
 
     public DC_Masteries(Unit hero) {
         this.hero = hero;
@@ -80,10 +80,10 @@ public class DC_Masteries {
                 boostParameter(amount, PARAMS.OFFHAND_DAMAGE_MOD,
                  MOD.MODIFY_BY_CONST);
                 if (hero.checkDualWielding()) {
-                    boostParameter(-amount / 2, PARAMS.ATTACK_AP_PENALTY,
+                    boostParameter(-amount / 2, PARAMS.ATTACK_ATB_COST_MOD,
                      MOD.MODIFY_BY_CONST);
                     boostParameter(-amount / 2,
-                     PARAMS.OFFHAND_ATTACK_AP_PENALTY,
+                     PARAMS.OFFHAND_ATTACK_ATB_COST_MOD,
                      MOD.MODIFY_BY_CONST);
                 }
                 break;

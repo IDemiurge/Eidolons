@@ -10,5 +10,4 @@ public interface ValueManager {
 
     PARAMETER[] getParamsFromContainer(String sparam);
 
-    boolean isRolledRoundind(PARAMETER valueToPay);
 }

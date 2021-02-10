@@ -5,14 +5,13 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.decor.ShardVisuals;
-import eidolons.libgdx.bf.decor.ShardVisuals.SHARD_SIZE;
+import eidolons.libgdx.bf.decor.shard.ShardEnums;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
-import eidolons.libgdx.particles.ambi.AmbienceDataSource.AMBIENCE_TEMPLATE;
+import eidolons.libgdx.particles.ambi.AmbienceDataSource.VFX_TEMPLATE;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.screens.map.layers.LightLayer;
 import eidolons.libgdx.shaders.VignetteShader;
@@ -24,7 +23,7 @@ import main.system.GuiEventManager;
 import main.system.MapEvent;
 import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.WeightMap;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,20 +42,21 @@ public class GuiVisualEffects extends GroupX {
         GuiVisualEffects.off = off;
     }
 
+    //TODO gdx revamp
     public GuiVisualEffects() {
         if (isVignetteOn()) {
             addActor(vignette =
              VignetteShader.createVignetteActor());
         }
         //        initEmitters();
-        addActor(lightLayer = new LightLayer(true));
+        // addActor(lightLayer = new LightLayer(true));
 
         GuiEventManager.bind(MapEvent.PREPARE_TIME_CHANGED, p -> {
             //                getEmitterData((DAY_TIME) p.getVar());
             if (!isCustomEmitters())
                 return;
-            LevelStruct struct = DC_Game.game.getDungeonMaster().getStructureMaster().findLowestStruct(
-             Eidolons.getMainHero().getCoordinates());
+            LevelStruct struct = DC_Game.game.getDungeonMaster().getStructMaster().getLowestStruct(
+             Eidolons.getPlayerCoordinates());
             initEmitters(AmbienceDataSource.getTemplate(struct.getStyle()), (DAY_TIME) p.get());
 
         });
@@ -69,9 +69,8 @@ public class GuiVisualEffects extends GroupX {
         if ( off) {
             return;
         }
-        if (!CoreEngine.isDebugLaunch())
         if (HqPanel.getActiveInstance()!= null) {
-            return; //TODO igg demo fix
+            return;
         }
         super.draw(batch, parentAlpha);
         if (batch instanceof CustomSpriteBatch) {
@@ -83,7 +82,7 @@ public class GuiVisualEffects extends GroupX {
         return false;
     }
 
-    private void initEmitters(AMBIENCE_TEMPLATE template, DAY_TIME time) {
+    private void initEmitters(VFX_TEMPLATE template, DAY_TIME time) {
         if (emitters != null) {
             for (EmitterActor emitter : emitters) {
                 emitter.hide();
@@ -171,11 +170,11 @@ public class GuiVisualEffects extends GroupX {
             }
     }
 
-    private int getEmitterCount(AMBIENCE_TEMPLATE template, DAY_TIME time) {
+    private int getEmitterCount(VFX_TEMPLATE template, DAY_TIME time) {
         return 3;
     }
 
-    private WeightMap<GenericEnums.VFX> getEmittersWeightMap(AMBIENCE_TEMPLATE template, boolean night) {
+    private WeightMap<GenericEnums.VFX> getEmittersWeightMap(VFX_TEMPLATE template, boolean night) {
         WeightMap<GenericEnums.VFX> map = new WeightMap<>(GenericEnums.VFX.class);
         int fog = night ? 10 : 5;
         int down = night? 5 : 10;
@@ -261,7 +260,7 @@ public class GuiVisualEffects extends GroupX {
             }
             if (!RandomWizard.chance(chance*2)) {
                 try {
-                    preset_ = ShardVisuals.getEmitters(null , SHARD_SIZE.NORMAL)[0];
+                    preset_ = ShardEnums.getEmitters(null , ShardEnums.SHARD_SIZE.NORMAL)[0];
                 } catch (Exception e) {
                     continue;
                 }
@@ -272,18 +271,17 @@ public class GuiVisualEffects extends GroupX {
             EmitterActor actor = new EmitterActor(preset_);
             addActor(actor);
             emitters.add(actor);
-            int x = i;
             int y = bottom ? 0 : GdxMaster.getHeight() - 50;
 
             actor.start();
-            actor.setPosition(x + (50 - RandomWizard.getRandomInt(100)) / 2, y
+            actor.setPosition(i + (50 - RandomWizard.getRandomInt(100)) / 2, y
              + (50 - RandomWizard.getRandomInt(100)) / 2);
             actor.act(RandomWizard.getRandomFloatBetween(0, 2));
         }
     }
 
     public void resetZIndices() {
-        if (CoreEngine.isMapEditor())
+        if (Flags.isMapEditor())
             return;
         lightLayer.setZIndex(0);
         vignette.setZIndex(0);

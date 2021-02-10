@@ -10,7 +10,6 @@ import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.game.core.game.GenericGame;
 import main.game.logic.event.Event;
-import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 
 import java.util.HashMap;
@@ -30,6 +29,8 @@ public abstract class GameState {
     private static boolean resetDone;
     protected boolean dirty = false;
     protected boolean interrupted = false;
+
+
     protected Map<Integer, Obj> objMap = new ConcurrentMap<>();
     protected Map<OBJ_TYPE, Map<Integer, Obj>> objMaps = new ConcurrentMap<>();
     protected Map<Integer, ObjType> typeMap = new ConcurrentMap<>();
@@ -37,8 +38,9 @@ public abstract class GameState {
     protected DequeImpl<Trigger> triggers = new DequeImpl<>();
     protected DequeImpl<Effect> effects = new DequeImpl<>();
     protected DequeImpl<Attachment> attachments = new DequeImpl<>();
-    //TODO remove spaghetti! who aggregates whom?!
-    protected StateManager manager;
+
+
+    public StateManager manager;
     protected Game game;
     private int round = ROUND_NOT_SET;
     private boolean cloned;
@@ -100,29 +102,6 @@ public abstract class GameState {
         return objMap;
     }
 
-
-    public void removeTrigger(Trigger trigger) {
-        LogMaster.log(LogMaster.TRIGGER_DEBUG, "Trigger removed: " + trigger);
-        triggers.remove(trigger);
-    }
-
-    public void removeEffect(Effect effect) {
-        if (!effects.remove(effect)) {
-            LogMaster.log(LogMaster.EFFECT_DEBUG, "Effect could not be removed: " + effect);
-        } else {
-            LogMaster.log(LogMaster.EFFECT_DEBUG, "Effect removed: " + effect);
-        }
-
-        // setDirty(true);
-        // resetAll();
-    }
-
-    public void removeObject(Integer id) {
-        Obj obj = objMap.get(id);
-        LogMaster.log(LogMaster.CORE_DEBUG_1, "Obj removed: " + obj);
-        objMap.remove(id);
-        removed(obj);
-    }
 
     protected void removed(Obj obj) {
     }

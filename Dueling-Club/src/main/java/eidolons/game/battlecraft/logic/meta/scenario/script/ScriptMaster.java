@@ -2,8 +2,8 @@ package eidolons.game.battlecraft.logic.meta.scenario.script;
 
 import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
-import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
+import main.system.auxiliary.Strings;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 5/31/2017.
@@ -19,7 +19,7 @@ public class ScriptMaster {
         String vars = VariableManager.getVars(name);
         if (vars.isEmpty())
             return getScriptByName(name, false);
-        return getScriptByName(name, true, vars.split(StringMaster.SEPARATOR));
+        return getScriptByName(name, true, vars.split(Strings.SEPARATOR));
     }
 
     public static String getScriptByName(String name, boolean variables, String... vars) {
@@ -33,7 +33,7 @@ public class ScriptMaster {
     }
 
     public static boolean isScriptsOff() {
-        return CoreEngine.isActiveTestMode();
+        return Flags.isActiveTestMode();
     }
 
     public void generateScripts() {

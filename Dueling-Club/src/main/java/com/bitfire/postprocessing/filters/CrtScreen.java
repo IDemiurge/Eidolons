@@ -26,11 +26,11 @@ import com.bitfire.utils.ShaderLoader;
 public final class CrtScreen extends Filter<CrtScreen> {
 	private float elapsedSecs, offset, zoom;
 	private float cdRedCyan, cdBlueYellow;
-	private Vector2 chromaticDispersion;
+	private final Vector2 chromaticDispersion;
 	private final Vector3 vtint;
 	private final Color tint;
 	private float distortion;
-	private boolean dodistortion;
+	private final boolean dodistortion;
 	private RgbMode mode;
 
 	public enum RgbMode {
@@ -38,7 +38,7 @@ public final class CrtScreen extends Filter<CrtScreen> {
 
 		public int v;
 
-		private RgbMode (int value) {
+		RgbMode(int value) {
 			this.v = value;
 		}
 	}
@@ -48,7 +48,7 @@ public final class CrtScreen extends Filter<CrtScreen> {
 
 		public int v;
 
-		private Effect (int value) {
+		Effect(int value) {
 			this.v = value;
 		}
 	}
@@ -66,9 +66,9 @@ public final class CrtScreen extends Filter<CrtScreen> {
 		// @on
 
 		private final String mnemonic;
-		private int elementSize;
+		private final int elementSize;
 
-		private Param (String m, int elementSize) {
+		Param(String m, int elementSize) {
 			this.mnemonic = m;
 			this.elementSize = elementSize;
 		}

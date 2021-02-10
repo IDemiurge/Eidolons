@@ -15,12 +15,10 @@ import java.util.List;
 public class WatchBuffEffect extends AddBuffEffect {
 
     public static final String BUFF_TYPE_NAME = "Watching";
-    private List<DC_Obj> list;
-    private Unit watcher;
+    private final List<DC_Obj> list;
 
     public WatchBuffEffect(Unit watcher, List<DC_Obj> list) {
         super(BUFF_TYPE_NAME, generateEffects(watcher, list), true);
-        this.watcher = watcher;
         this.list = list;
     }
 
@@ -49,7 +47,7 @@ public class WatchBuffEffect extends AddBuffEffect {
              .getDefenseModVsOthers(watcher, list)));
             e.add(new ModifyValueEffect(PARAMS.ATTACK_MOD, MOD.MODIFY_BY_CONST, WatchRule
              .getAttackModVsOthers(watcher, list)));
-            e.add(new ModifyValueEffect(PARAMS.AP_PENALTY, MOD.MODIFY_BY_CONST, WatchRule
+            e.add(new ModifyValueEffect(PARAMS.ATB_COST_MOD, MOD.MODIFY_BY_CONST, WatchRule
              .getApPenaltyMod(watcher, list)));
 
         } else {

@@ -2,15 +2,16 @@ package eidolons.libgdx.screens.map.editor;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
-import eidolons.macro.MacroGame;
-import eidolons.macro.entity.MacroRef;
-import eidolons.macro.entity.MacroObj;
-import eidolons.macro.entity.party.MacroParty;
-import eidolons.macro.map.Place;
-import eidolons.macro.map.Region;
+import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.screens.map.editor.EditorControlPanel.MAP_EDITOR_MOUSE_MODE;
 import eidolons.libgdx.screens.map.obj.MapActor;
+import eidolons.macro.MacroGame;
+import eidolons.macro.entity.MacroObj;
+import eidolons.macro.entity.MacroRef;
+import eidolons.macro.entity.party.MacroParty;
+import eidolons.macro.map.Place;
+import eidolons.macro.map.Region;
 import main.content.DC_TYPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.entity.type.ObjType;
@@ -130,7 +131,8 @@ public class EditorManager {
         MacroObj obj = actorObjMap.remove(actor);
         if (obj == null)
             return;
-        MacroGame.getGame().getState().removeObject(obj.getId());
+//        ga.getState().manager.removeTrigger(getTrigger());
+        DC_Game.game.getStateManager().removeObject(obj.getId());
         GuiEventManager.trigger(MapEvent.REMOVE_MAP_OBJ, actor);
     }
 

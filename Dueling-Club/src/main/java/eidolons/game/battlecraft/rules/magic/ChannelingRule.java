@@ -10,6 +10,7 @@ import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.ActionInput;
 import eidolons.libgdx.anims.AnimContext;
+import eidolons.libgdx.anims.main.ActionAnimMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.mode.STD_MODES;
 import main.data.filesys.PathFinder;
@@ -17,11 +18,8 @@ import main.elements.costs.Cost;
 import main.elements.costs.CostRequirements;
 import main.elements.costs.Costs;
 import main.entity.Ref;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.secondary.InfoMaster;
-import main.system.sound.SoundMaster;
+import main.system.sound.AudioEnums;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +39,7 @@ public class ChannelingRule {
     };
     private static final PARAMS[] costParamsActivate = {
             PARAMS.AP_COST,
-            PARAMS.STA_COST,
+            PARAMS.TOU_COST,
             PARAMS.FOC_COST,
     };
     static boolean testMode;
@@ -59,20 +57,10 @@ public class ChannelingRule {
         for (PARAMS costParam : activateOrResolve ? costParamsActivate : costParamsResolve) {
             PARAMS payParam = DC_ContentValsManager.getPayParameterForCost(costParam);
             Cost cost = DC_CostsFactory.getCost(action, costParam, payParam);
-//            int mod = 100;
-//            cost.getPayment().getAmountFormula().applyModifier(mod);
             list.add(cost);
         }
-//        Costs costs = getEntity().getCosts();
-//        Costs channelingResolveCosts = new Costs(costs.getRequirements(), costs.getCosts());
-//        Costs channelingActivateCosts = new Costs(costs.getRequirements(), costs
-//         .getCost(PARAMS.C_N_OF_ACTIONS));
-//        channelingResolveCosts.removeCost(PARAMS.C_N_OF_ACTIONS);
         CostRequirements reqs = action.getCosts().getRequirements();
-        Costs costs = new Costs(reqs, list);
-        if (!activateOrResolve)
-            costs.removeRequirement(InfoMaster.COOLDOWN_REASON);
-        return costs;
+        return new Costs(reqs, list);
     }
 
     public static void channelingInterrupted(Unit sourceObj) {
@@ -86,8 +74,8 @@ public class ChannelingRule {
 
     public static boolean activateChanneing(Spell spell) {
 
-        DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.DARK, spell.getOwnerObj());
-        DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.EVIL, spell.getOwnerObj());
+        DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.DARK, spell.getOwnerObj());
+        DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.EVIL, spell.getOwnerObj());
         // ActiveAbility spell_ability = ActivesConstructor
         // .mergeActiveList(spell, TARGETING_MODE.SINGLE);
         spell.getOwnerUnit().getHandler().initChannelingSpellData(spell);
@@ -124,7 +112,8 @@ public class ChannelingRule {
         modeEffect.getAddBuffEffect().setDuration(0);
         result &= modeEffect.apply(REF);
         modeEffect.getAddBuffEffect().getBuff().setDuration(0);
-        GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES, new ActionInput(spell, new AnimContext(REF)));
+
+        ActionAnimMaster.animate( new ActionInput(spell, new AnimContext(REF)));
         return result;
 
     }

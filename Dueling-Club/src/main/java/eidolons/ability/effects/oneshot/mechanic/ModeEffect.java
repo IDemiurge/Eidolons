@@ -36,7 +36,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.Strings;
 import main.system.math.Formula;
 
 import java.util.Map;
@@ -57,12 +57,11 @@ public class ModeEffect extends MicroEffect implements OneshotEffect {
     protected boolean onDeactivateEffect;
 
     private MODE mode;
-    private String prop = "{SOURCE_MODE}";
+    private final String prop = "{SOURCE_MODE}";
     private AddBuffEffect addBuffEffect;
     private STANDARD_EVENT_TYPE REMOVE_EVENT = STANDARD_EVENT_TYPE.ROUND_ENDS;
-    private ModifyPropertyEffect modPropEffect;
+    private final ModifyPropertyEffect modPropEffect;
     private boolean reinit = true;
-    private int timeModifier;
 
     @AE_ConstrArgs(argNames = {"template", "name", "defenseMod", "disableCounter", "dispelOnHit",})
     public ModeEffect(STD_MODES template, String name, Integer defenseMod, Boolean disableCounter,
@@ -114,9 +113,6 @@ divination?
         if (reinit) {
             initBuffEffect();
         }
-        timeModifier = getGame().getTurnManager().getTimeModifier();
-        LogMaster.log(LogMaster.COMBAT_DEBUG,
-                getActiveObj() + "'s timeModifier= " + timeModifier);
         if (mode.isDispelOnHit()) {
             addDispelOnHitTrigger();
         }
@@ -160,16 +156,20 @@ divination?
         if (e != null) {
             e.apply(ref);
         }
-        boolean result = addBuffEffect.apply(ref);
-        return result;
+        return addBuffEffect.apply(ref);
     }
 
     private Effect createOneShotEffect(MODE mode, Obj obj) {
         if (mode instanceof STD_MODES) {
             switch (((STD_MODES) mode)) {
+                case CONCENTRATION:
+                    //TODO DC Review - might wanna introduce some variable here
+                    int n= obj.getIntParam(PARAMS.EXTRA_ATTACKS)/3;
+                    return new ModifyValueEffect(PARAMS.C_EXTRA_MOVES, MOD.MODIFY_BY_CONST, n+"");
+                case ALERT:
                 case DEFENDING:
-                    int n= obj.getIntParam(PARAMS.N_OF_COUNTERS)/2;
-                    return new ModifyValueEffect(PARAMS.C_N_OF_COUNTERS, MOD.MODIFY_BY_CONST, n+"");
+                    n= obj.getIntParam(PARAMS.EXTRA_ATTACKS)/2;
+                    return new ModifyValueEffect(PARAMS.C_EXTRA_ATTACKS, MOD.MODIFY_BY_CONST, n+"");
             }
         }
         return null;
@@ -328,7 +328,7 @@ divination?
         String formula = mode.getFormula();
         if (ref.getActive() instanceof DC_ActiveObj) {
             DC_ActiveObj activeObj = (DC_ActiveObj) ref.getActive();
-            if (activeObj.getParam(PARAMS.FORMULA).contains(StringMaster.MOD)) {
+            if (activeObj.getParam(PARAMS.FORMULA).contains(Strings.MOD)) {
                 formula = StringMaster.wrapInParenthesis(formula) + "*"
                         + activeObj.getParam(PARAMS.FORMULA) + "/100";
             } else if (activeObj.getIntParam(PARAMS.FORMULA) != 0) {
@@ -340,8 +340,9 @@ divination?
         PARAMETER param = ContentValsManager.getPARAM(mode.getParameter());
         effect.setParam(param);
         effect.setMaxParam(ContentValsManager.getBaseParameterFromCurrent(param));
-        Formula appendedByModifier = new Formula(formula).getAppendedByModifier(timeModifier);
-        effect.setFormula(appendedByModifier);
+        // Formula appendedByModifier = new Formula(formula).
+        //         getAppendedByModifier(timeModifier);
+        effect.setFormula(new Formula(formula));
         addBuffEffect.addEffect(new DelayedEffect(effect, condition));
         // new DelayedEffect(effect, condition).apply(ref);
     }

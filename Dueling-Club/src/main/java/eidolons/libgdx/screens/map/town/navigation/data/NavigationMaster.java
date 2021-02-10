@@ -19,8 +19,7 @@ public class NavigationMaster {
         return map.get(navigable);
     }
         public Navigable getNavigable(Nested obj) {
-        Navigable root = createNavigable(obj);
-        return root;
+            return createNavigable(obj);
     }
 
     private Navigable createNavigable(Nested obj) {
@@ -58,8 +57,7 @@ public class NavigationMaster {
             children.add(createNavigable(place));
         }
         root.setChildren(children);
-        NavigationDataSource data = new NavigationDataSource(root, children, path);
-        return data;
+        return new NavigationDataSource(root, children, path);
     }
 
     public static boolean isTestOn() {

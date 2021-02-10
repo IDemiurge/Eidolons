@@ -5,8 +5,8 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
@@ -23,13 +23,12 @@ public class CleaveRule {
     private static final int DEFAULT_CRITICAL_DAMAGE_PERCENTAGE_TRANSFER = 75;
     private static final String DEFAULT_CRITICAL_DAMAGE_LOSS_PER_JUMP = "50 -{Strength}";
     Boolean clockwise;
-    private BattleFieldObject originalTarget;
     private DC_Obj currentTarget;
     private Unit source;
     private Integer jumpsRemaining;
     private DC_ActiveObj action;
     private Attack attack;
-    private DC_Game game;
+    private final DC_Game game;
 
     // can I make it work as a ChainRule as well? Perhaps extend...
     // Slashing Criticals should add Cleave params and dmg_type upon crit!
@@ -48,7 +47,7 @@ public class CleaveRule {
     }
 
     public void apply(Ref ref, Attack attack) {
-        if (!RuleKeeper.isRuleOn(RULE.CLEAVE)) {
+        if (!RuleKeeper.isRuleOn(RuleEnums.RULE.CLEAVE)) {
             return;
         }
         this.attack = attack;
@@ -57,7 +56,7 @@ public class CleaveRule {
         attack.setCanCounter(false);
         attack.setCounter(false);
 
-        originalTarget = (BattleFieldObject) ref.getObj(KEYS.TARGET);
+        BattleFieldObject originalTarget = (BattleFieldObject) ref.getObj(KEYS.TARGET);
         currentTarget = originalTarget;
         source = (Unit) ref.getObj(KEYS.SOURCE);
         jumpsRemaining = source.getIntParam(PARAMS.CLEAVE_MAX_TARGETS);

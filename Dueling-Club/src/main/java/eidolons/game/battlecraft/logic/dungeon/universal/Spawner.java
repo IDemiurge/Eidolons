@@ -2,12 +2,12 @@ package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.ability.UnitTrainingMaster;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData.PARTY_VALUE;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.launch.LaunchDataKeeper;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
-import eidolons.libgdx.bf.BFDataCreatedEvent;
+import eidolons.libgdx.bf.GridCreateData;
 import eidolons.system.test.TestMasterContent;
 import main.content.C_OBJ_TYPE;
 import main.data.DataManager;
@@ -17,10 +17,10 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.NumberUtils;
-import main.system.graphics.GuiManager;
+import main.system.auxiliary.Refactor;
 import main.system.math.MathMaster;
-import main.system.util.Refactor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,18 +28,10 @@ import java.util.List;
 import static main.system.GuiEventType.SCREEN_LOADED;
 
 
-public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
-    public static final Integer MAX_SPACE_PERC_CREEPS = 25; // 1 per cell only
-    private static final Integer MAX_SPACE_PERC_PARTY = 0;
-    //    public Spawner(String unitData, DC_Player player, SPAWN_MODE mode) {
-    boolean coordinatesSet;
+public class Spawner extends DungeonHandler {
 
     public Spawner(DungeonMaster master) {
         super(master);
-    }
-
-    public static void setEnemyUnitGroupMode(boolean b) {
-
     }
 
     @Refactor
@@ -60,17 +52,23 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
     }
 
     protected void spawnDone() {
-//       TODO selective??
-// getGame().getMetaMaster().getPartyManager().getParty().getMembers()
-        List<Unit> unitsList = new ArrayList<>();
-        unitsList.addAll(game.getUnits());
+        List<Unit> unitsList = new ArrayList<>(game.getUnits());
         getFacingAdjuster().adjustFacing(unitsList);
 
-        final Integer cellsX = GuiManager.getCurrentLevelCellsX();
-        final Integer cellsY = GuiManager.getCurrentLevelCellsY();
-        GuiEventManager.trigger(SCREEN_LOADED,
-                new BFDataCreatedEvent(cellsX, cellsY, game.getBfObjects()));
+        final Integer cellsX = Coordinates.getFloorWidth();
+        final Integer cellsY = Coordinates.getFloorHeight();
+        final Integer moduleHeight = Coordinates.getModuleHeight();
+        final Integer moduleWidth = Coordinates.getModuleWidth();
+        GridCreateData param = new GridCreateData(
+                getMetaMaster().getData(),
+                cellsX, cellsY, game.getBfObjects(),
+                moduleWidth,
+                moduleHeight
+        );
+        GuiEventManager.trigger(GuiEventType.INITIAL_LOAD_DONE, param);
 
+        GuiEventManager.trigger(SCREEN_LOADED,
+                param);
         //WaitMaster.waitForInput(WAIT_OPERATIONS.DUNGEON_SCREEN_READY);
     }
 
@@ -115,7 +113,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
             String level = data.getContainerValue(PARTY_VALUE.LEVEL, i);
             if (!owner.isMe())
                 if (owner.isAi())
-                    if (NumberUtils.getInteger(level) == 0) {
+                    if (NumberUtils.getIntParse(level) == 0) {
                         level = getMinLevel(type) + "";
                     }
             units.add(spawnUnit(type, c, owner, facing, level));
@@ -144,12 +142,26 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
     public Unit spawnUnit(ObjType type, Coordinates c, DC_Player owner,
                           String facing, String level) {
-
-        //TODO chars or units?!
         if (level != null) {
-            int levelUps = NumberUtils.getInteger(level);
+            int levelUps = NumberUtils.getIntParse(level);
             if (levelUps > 0) {
                 type = new UnitLevelManager().getLeveledType(type, levelUps);
+            }
+        }
+        FACING_DIRECTION facing_direction = FACING_DIRECTION.NORTH;
+        try {
+            facing_direction =
+                    facing == null
+                            ? getFacingAdjuster().getFacingForUnit(c, type.getName())
+                            : FacingMaster.getFacing(facing);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        if (game.isStarted()) {
+            try {
+                c = Positioner.adjustCoordinate(type, c, facing_direction);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 
@@ -160,16 +172,8 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         if (unit.isMine())
             TestMasterContent.addTestItems(unit.getType(), false);
 
-        try {
-            FACING_DIRECTION facing_direction = facing == null
-                    ? getFacingAdjuster().getFacingForUnit(c, type.getName())
-                    : FacingMaster.getFacing(facing);
-            unit.setFacing(facing_direction);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-            unit.setFacing(FACING_DIRECTION.NORTH);
-        }
 
+        unit.setFacing(facing_direction);
         return unit;
     }
 
@@ -208,7 +212,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
                 .getEnemySpawningCoordinates();
         offset_coordinate = spawnCoordinates.getOffsetByX(offsetX).getOffsetByY(offsetY);
         List<MicroObj> units = null;
-//      TODO   DC_ObjInitializer.createUnits(game.getPlayer(me), data, offset_coordinate);
+        //      TODO   DC_ObjInitializer.createUnits(game.getPlayer(me), data, offset_coordinate);
 
 
         List<Unit> list = new ArrayList<>();
@@ -216,20 +220,6 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         return list;
     }
 
-    public enum FACING_TEMPLATE {
-        TOWARDS_CENTER,
-        OUTWARD_FROM_ORIGIN,
-        TOWARDS_PLAYER_HERO,
-        OPTIMAL_TOWARDS_ENEMIES,
-        RANDOM,
-
-    }
-
-    public enum POSITIONING_MODE {
-        ROWS_AT_SIDE,
-        LAYERS_AROUND_COORDINATE,
-
-    }
 
     //after-spawn actions -
     public enum SPAWN_MODE {

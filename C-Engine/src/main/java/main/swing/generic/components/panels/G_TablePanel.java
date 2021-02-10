@@ -58,7 +58,7 @@ public class G_TablePanel extends G_Panel {
          .setMaxWidth(GuiManager.getInfoNamesColumnMaxWidth());
 
         table.getColumnModel().getColumn(1)
-         .setPreferredWidth(GuiManager.getSquareCellSize());
+         .setPreferredWidth(128);
         table.getColumnModel().getColumn(1)
          .setMaxWidth(GuiManager.getInfoNamesColumnMaxWidth());
         // table.getColumnModel().getColumn(1)

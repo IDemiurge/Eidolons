@@ -4,14 +4,15 @@ import main.ability.Interruptable;
 import main.ability.PassiveAbilityObj;
 import main.ability.effects.Effect;
 import main.ability.effects.EffectImpl;
+import main.content.DC_TYPE;
 import main.elements.Filter;
 import main.elements.conditions.Condition;
 import main.elements.triggers.Trigger;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.*;
-import main.entity.type.BuffType;
 import main.entity.type.ObjType;
+import main.entity.type.impl.BuffType;
 import main.game.bf.Coordinates;
 import main.game.core.state.GameState;
 import main.game.core.state.MicroGameState;
@@ -24,8 +25,6 @@ import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.Set;
-
-import static main.system.GuiEventType.UPDATE_BUFFS;
 
 /**
  * With gamestate being mostly a data holder, this class is a method container
@@ -107,12 +106,11 @@ public abstract class GameManager implements GenericGameManager {
         }
         if (!buff.isPermanent())
             main.system.auxiliary.log.LogMaster.log(1, buff + " is removed");
-        getState().removeObject(buff.getId());
+        getState().manager.removeObject(buff.getId(), DC_TYPE.BUFFS);
         buff.getBasis().getBuffs().remove(buff);
         attachmentRemoved(buff, buff.getBasis());
         getState().getAttachmentsMap().get(buff.getBasis()).remove(buff);
         getState().getAttachments().remove(buff);
-        GuiEventManager.trigger(UPDATE_BUFFS, buff);
     }
 
     public abstract void refreshAll();
@@ -120,7 +118,7 @@ public abstract class GameManager implements GenericGameManager {
     public void attachmentRemoved(Attachment attachment, Obj basis) {
         for (Effect e : attachment.getEffects()) {
             e.remove();
-            getState().removeEffect(e);
+            getState().manager.removeEffect(e );
             //TODO when addTrigger effect is removed, so is the trigger
         }
     }

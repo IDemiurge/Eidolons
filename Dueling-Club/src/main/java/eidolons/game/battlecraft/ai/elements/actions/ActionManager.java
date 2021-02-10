@@ -1,12 +1,10 @@
 
 package eidolons.game.battlecraft.ai.elements.actions;
 
-import eidolons.content.DC_ContentValsManager;
-import eidolons.entity.active.DC_ActionManager;
-import eidolons.entity.active.DC_ActionManager.STD_MODE_ACTIONS;
+import eidolons.content.ContentConsts;
+import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
@@ -18,7 +16,8 @@ import eidolons.game.battlecraft.ai.tools.AiLogger;
 import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
-import eidolons.game.battlecraft.logic.battlefield.vision.StealthRule;
+import eidolons.game.battlecraft.logic.battlefield.vision.advanced.StealthRule;
+import eidolons.game.core.atb.AtbMaster;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.system.AiEnums;
@@ -30,7 +29,6 @@ import main.elements.costs.Cost;
 import main.elements.costs.Costs;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
@@ -46,6 +44,9 @@ import main.system.math.Formula;
 import java.util.ArrayList;
 import java.util.List;
 
+import static main.content.enums.entity.ActionEnums.MISC_ACTIONS;
+import static main.content.enums.entity.ActionEnums.STD_SPEC_ACTIONS;
+
 public class ActionManager extends AiHandler {
 
     public ActionManager(AiMaster master) {
@@ -55,17 +56,10 @@ public class ActionManager extends AiHandler {
 
     public static Costs getTotalCost(List<Action> actions) {
         XLinkedMap<PARAMETER, Formula> map = new XLinkedMap<>();
-        for (PARAMETER p : DC_ContentValsManager.PAY_PARAMS) {
+        for (PARAMETER p : ContentConsts.PAY_PARAMS) {
             map.put(p, new Formula(""));
         }
         for (Action a : actions) {
-            // a.getActive().getCosts().getRequirements().getFocusRequirement()
-            // !
-
-            if (a.getActive().isChanneling()) {
-
-            }
-
             for (Cost c : a.getActive().getCosts().getCosts()) {
                 Formula formula = map.get(c.getPayment().getParamToPay());
                 if (formula != null) {
@@ -73,7 +67,10 @@ public class ActionManager extends AiHandler {
                 }
 
             }
+            map.put(PARAMS.C_ATB, new Formula("" + AtbMaster.getReadinessCost(a.getActive())));
         }
+        map.keySet().removeIf(p-> map.get(p).toString().isEmpty());
+
         return new Costs(map);
     }
 
@@ -105,15 +102,15 @@ public class ActionManager extends AiHandler {
 
     public Action chooseAction(boolean intent) {
         UnitAI ai = getMaster().getUnitAI();
-        if (ai.checkStandingOrders(EidolonsGame.DUEL)) {
+        if (ai.checkStandingOrders(false)) {
             getUnitAi().getCombatAI().setLastSequence(ai.getStandingOrders());
             Action ordered = ai.getStandingOrders().popNextAction();
             ordered.setOrder(true);
             if (ordered == ai.getStandingOrders().getLastAction()) {
                 ai.setStandingOrders(null);
-                main.system.auxiliary.log.LogMaster.dev(getUnit() + "'s last order: " + ordered);
+                main.system.auxiliary.log.LogMaster.devLog(getUnit() + "'s last order: " + ordered);
             } else {
-                main.system.auxiliary.log.LogMaster.dev(getUnit() + "'s next order: " + ordered);
+                main.system.auxiliary.log.LogMaster.devLog(getUnit() + "'s next order: " + ordered);
             }
             return ordered;
         }
@@ -125,8 +122,8 @@ public class ActionManager extends AiHandler {
 
         if (unit != ai.getUnit()) {
             getCellPrioritizer().reset();
-        } else {
         }
+
 
         checkDeactivate();
 
@@ -136,29 +133,20 @@ public class ActionManager extends AiHandler {
             return action;
         }
 
-//        if (!ai.isEngaged()) {
-//       TODO      return behaviorMaster.getBehaviorAction(ai);
-//        }
-
-        FACING_DIRECTION originalFacing = unit.getFacing();
-        Coordinates originalCoordinates = unit.getCoordinates();
+        unit.initTempFacing();
+        unit.initTempCoordinates();
         Action action = null;
         ActionSequence chosenSequence = null;
-        boolean atomic = false;
         if (isAtomicAiOn())
             try {
-                atomic = getAtomicAi().checkAtomicActionRequired(ai);
+                AiEnums.AI_LOGIC_CASE atomic = getAtomicAi().checkAtomicActionRequired(ai);
+                if (atomic != null)
+                    action = getAtomicAi().getAtomicAction(ai, atomic);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
-        if (atomic)
-            if (isAtomicAiOn())
-                try {
-                    action = getAtomicAi().getAtomicAction(ai);
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                    action = getAtomicAi().getAtomicWait(ai.getUnit());
-                }
+
+
         if (action == null) {
             List<ActionSequence> actions = new ArrayList<>();
             try {
@@ -175,8 +163,8 @@ public class ActionManager extends AiHandler {
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             } finally {
-                unit.setCoordinates(originalCoordinates);
-                unit.setFacing(originalFacing);
+                unit.removeTempCoordinates();
+                unit.removeTempFacing();
             }
 
         }
@@ -191,8 +179,8 @@ public class ActionManager extends AiHandler {
 
             return action;
         } else {
-//            if (chosenSequence.getType() == GOAL_TYPE.DEFEND)
-//                return chosenSequence.popNextAction(); what for?
+            //            if (chosenSequence.getType() == GOAL_TYPE.DEFEND)
+            //                return chosenSequence.popNextAction(); what for?
 
         }
         if (unit.getUnitAI().getLogLevel() > AiLogger.LOG_LEVEL_NONE) {
@@ -204,7 +192,7 @@ public class ActionManager extends AiHandler {
                     + chosenSequence + " with priority of "
                     + StringMaster.wrapInParenthesis(chosenSequence.getPriority() + "");
             LogMaster.log(LOG_CHANNEL.AI_DEBUG, message);
-            SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.AI, message);
+            SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.AI, message);
         }
         //TODO for behaviors? ai-issued-orders?
 
@@ -221,28 +209,24 @@ public class ActionManager extends AiHandler {
         Action action = null;
         if (behaviorMode != null) {
             if (behaviorMode == AiEnums.BEHAVIOR_MODE.PANIC) {
-                action = new Action(ai.getUnit().getAction("Cower in Terror"));
+                action = new Action(ai.getUnit().getAction(MISC_ACTIONS.Cower.toString()));
             }
             if (behaviorMode == AiEnums.BEHAVIOR_MODE.CONFUSED) {
-                action = new Action(ai.getUnit().getAction("Stumble About"));
+                action = new Action(ai.getUnit().getAction(MISC_ACTIONS.stumble.toString()));
             }
             if (behaviorMode == AiEnums.BEHAVIOR_MODE.BERSERK) {
-                if (RandomWizard.chance(100)) { //igg demo hack
-                    if (RandomWizard.chance(66)) { //igg demo hack
-                        action = new Action(ai.getUnit().getAction(
-                                RandomWizard.random() ? "Turn Clockwise" :
-                                        "Turn Anticlockwise"));
-                    } else
-                        action = new Action(ai.getUnit().getAction("Move"));
+                // TODO make real
+                if (RandomWizard.chance(66)) {
+                    action = new Action(ai.getUnit().getAction(
+                            RandomWizard.random() ? "Turn Clockwise" :
+                                    "Turn Anticlockwise"));
+                } else
+                    action = new Action(ai.getUnit().getAction("Move"));
 
-                    getGame().getLogManager().log(getUnit().getName() + "'s Fury forces him to "
-                            + action.getActive().getName());
-                } else {
-                    action = new Action(ai.getUnit().getAction("Helpless Rage"));
-                    getGame().getLogManager().log(getUnit().getName() + " is beyond himself - with "
-                            + action.getActive().getName());
-                }
+                getGame().getLogManager().log(getUnit().getName() + "'s Fury forces him to "
+                        + action.getActive().getName());
             }
+
             action.setTaskDescription("Forced Behavior");
             return action;
         }
@@ -268,11 +252,11 @@ public class ActionManager extends AiHandler {
         if (behaviorMode == null) {
             if (ParamAnalyzer.isFatigued(getUnit())) {
                 actions.add(new ActionSequence(AiEnums.GOAL_TYPE.PREPARE, getAction(getUnit(),
-                        STD_MODE_ACTIONS.Rest.name())));
+                        ActionEnums.STD_MODE_ACTIONS.Rest.name())));
             }
             if (ParamAnalyzer.isHazed(getUnit())) { // when is that used?
                 actions.add(new ActionSequence(AiEnums.GOAL_TYPE.PREPARE, getAction(getUnit(),
-                        STD_MODE_ACTIONS.Concentrate.name())));
+                        ActionEnums.STD_MODE_ACTIONS.Concentrate.name())));
             }
         }
         if (actions.isEmpty()) {
@@ -280,7 +264,7 @@ public class ActionManager extends AiHandler {
                 return getForcedForBehavior(getUnit(), getUnit().getBehaviorMode());
             }
             LogMaster.log(1, getUnit() + " has been Forced to wait!");
-            return getAction(getUnit(), DC_ActionManager.STD_SPEC_ACTIONS.Wait.name(), null);
+            return getAction(getUnit(), STD_SPEC_ACTIONS.Wait.name(), null);
         }
         ActionSequence sequence = getPriorityManager().chooseByPriority(actions);
 
@@ -292,7 +276,7 @@ public class ActionManager extends AiHandler {
         action = sequence.popNextAction();
         if (action == null) {
             LogMaster.log(1, getUnit() + " has been Forced to Defend!");
-            return getAction(getUnit(), STD_MODE_ACTIONS.Defend.name(), null);
+            return getAction(getUnit(), ActionEnums.STD_MODE_ACTIONS.Defend.name(), null);
         }
         return action;
     }
@@ -306,7 +290,7 @@ public class ActionManager extends AiHandler {
             case CONFUSED:
                 return new Action(unit.getAction("Stumble About"));
         }
-        return getAction(getUnit(), DC_ActionManager.STD_SPEC_ACTIONS.Wait.name(), null);
+        return getAction(getUnit(), STD_SPEC_ACTIONS.Wait.name(), null);
     }
 
     private Integer checkWaitForBlockingAlly() {

@@ -10,6 +10,7 @@ import main.elements.targeting.TargetingImpl;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.group.GroupImpl;
+import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
@@ -21,13 +22,11 @@ import java.util.Set;
 
 public class CoordinateTargeting extends TargetingImpl {
     private static final KEYS DEFAULT_KEY = KEYS.SOURCE;
-    private UNIT_DIRECTION unitDirection;
+    private final UNIT_DIRECTION unitDirection;
     private DIRECTION direction;
-    private String facingKey;
-    private String coordinateKey;
-    boolean flip; //TODO igg demo fix
+    private final String facingKey;
+    private final String coordinateKey;
     boolean useActivesRange;
-    private boolean cellTargeting = true;
 
     public CoordinateTargeting(UNIT_DIRECTION unitDirection, String facingKey, String coordinateKey) {
         this.unitDirection = unitDirection;
@@ -75,9 +74,6 @@ public class CoordinateTargeting extends TargetingImpl {
         if (unitDirection != null) {
             BattleFieldObject unit = (BattleFieldObject) obj;
             used_direction = DirectionMaster.getDirectionByFacing(unit.getFacing(), unitDirection);
-            if (flip) {
-                used_direction = used_direction.flip();
-            }
         }
         if (used_direction != null) {
             if (useActivesRange) {
@@ -98,8 +94,12 @@ public class CoordinateTargeting extends TargetingImpl {
         if (ref.getEffect() instanceof CustomTargetEffect) {//TODO EA hack - overlaying!
             if (((CustomTargetEffect) ref.getEffect()).getEffect() instanceof SummonEffect) {
                 try {
-                    ref.setTarget(obj.getGame().getObjectByCoordinate(  coordinate,
-                            false, false, true).getId());
+                    Obj object = obj.getGame().getObjectByCoordinate(coordinate,
+                            false);
+                    if (object == null) {
+                        object = obj.getGame().getCellByCoordinate(coordinate);
+                    }
+                    ref.setTarget(object.getId());
                     return true;
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
@@ -108,8 +108,9 @@ public class CoordinateTargeting extends TargetingImpl {
         }
         Set<BattleFieldObject> objects = new HashSet<>();
 
+        boolean cellTargeting = true;
         if (!cellTargeting) {
-            objects = obj.getGame().getMaster().
+            objects = obj.getGame().getObjMaster().
                     getObjectsOnCoordinate(coordinate, true); //TODO EA hack - overlaying!
         }
         if (objects.size() == 0 || cellTargeting) {

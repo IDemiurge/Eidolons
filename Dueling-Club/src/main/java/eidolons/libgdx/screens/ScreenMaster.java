@@ -9,8 +9,10 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.bf.grid.DC_GridPanel;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.launch.GenericLauncher;
+import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.screens.dungeon.GenericDungeonScreen;
 import eidolons.system.graphics.RESOLUTION;
 import eidolons.system.options.GraphicsOptions;
@@ -114,10 +116,10 @@ public class ScreenMaster {
         String[] parts = resolution.toString().substring(1).
                 split("x");
         Integer w =
-                NumberUtils.getInteger(
+                NumberUtils.getInt(
                         parts[0]);
         Integer h =
-                NumberUtils.getInteger(parts[1]);
+                NumberUtils.getInt(parts[1]);
 //        if (Gdx.graphics.getDisplayMode())
         if (!fullscreen) {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -158,8 +160,7 @@ public class ScreenMaster {
                 if (Eidolons.getScope() != null)
                     if (Eidolons.getScope() != Eidolons.SCOPE.MENU) {
                         EUtils.onConfirm(
-                                "New resolution will be applied on restart... Ok?", true, () ->
-                                        OptionsMaster.saveOptions());
+                                "New resolution will be applied on restart... Ok?", true, OptionsMaster::saveOptions);
                         return;
                     }
                 getApplication().getGraphics().setResizable(true);
@@ -196,9 +197,15 @@ public class ScreenMaster {
         return previousScreenType;
     }
 
-    public static GridPanel getDungeonGrid() {
+    public static GridPanel getGrid() {
         if (getScreen() instanceof GenericDungeonScreen) {
             return ((GenericDungeonScreen) getScreen()).getGridPanel();
+        }
+        return null;
+    }
+    public static DC_GridPanel getDungeonGrid() {
+        if (getScreen() instanceof DungeonScreen) {
+            return (( DungeonScreen) getScreen()).getGridPanel();
         }
         return null;
     }

@@ -14,7 +14,7 @@ public class FearsomeEffect extends ModifyValueEffect implements OneshotEffect {
     private boolean friendlyFire;
 
     public FearsomeEffect(String amount) {
-        super(PARAMS.C_MORALE, MOD.MODIFY_BY_CONST, (template.replace(
+        super(PARAMS.C_ESSENCE, MOD.MODIFY_BY_CONST, (template.replace(
          "amount", amount)));
 
     }

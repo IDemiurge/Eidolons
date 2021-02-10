@@ -8,20 +8,16 @@ import main.system.math.Formula;
 
 public class DispelEffect extends MicroEffect implements OneshotEffect {
 
-    private Formula chance;
-    private Formula durationMod;
-    private boolean friendlyFire;
-    private Boolean positiveOnly;
-    private Boolean negativeOnly;
+    private final Formula durationMod;
+    private final boolean friendlyFire;
+    private final Boolean positiveOnly;
 
     public DispelEffect(Formula chance, Formula durationMod,
                         Boolean friendlyFire, Boolean positiveOnly, Boolean negativeOnly) {
 
-        this.chance = chance;
         this.durationMod = durationMod;
         this.friendlyFire = friendlyFire;
         this.positiveOnly = positiveOnly;
-        this.negativeOnly = negativeOnly;
     }
 
     public DispelEffect(Formula chance, Formula durationMod,

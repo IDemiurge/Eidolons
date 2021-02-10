@@ -10,7 +10,6 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.game.core.Eidolons;
-import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.HeroManager;
 import eidolons.game.module.herocreator.logic.HeroClassMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
@@ -29,8 +28,9 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -57,10 +57,6 @@ public class DC_RequirementsManager implements RequirementsManager {
     private Entity hero;
     private Map<Entity, Requirements> rankReqMap;
 
-    public DC_RequirementsManager(DC_Game game) {
-
-    }
-
     private static MASTERY_RANK getRank(Integer score) {
         MASTERY_RANK rank = SkillEnums.MASTERY_RANK.NONE;
         for (MASTERY_RANK r : SkillEnums.MASTERY_RANK.values()) {
@@ -72,26 +68,6 @@ public class DC_RequirementsManager implements RequirementsManager {
         return rank;
     }
 
-    // private String specialCheck(Entity type, Entity heroObj) {
-    // switch ((OBJ_TYPES) type.getOBJ_TYPE_ENUM()) {
-    // case SKILLS:
-    // PARAMETER masteryParam =
-    // ContentManager.getPARAM(type.getProperty(G_PROPS.MASTERY));
-    // if (masteryParam == null)
-    // masteryParam =
-    // ContentManager.getMastery(type.getProperty(G_PROPS.MASTERY));
-    // if (masteryParam != null) {
-    // DC_HeroObj hero = (DC_HeroObj) heroObj;
-    // int result = DC_MathManager.getFreeMasteryPoints(hero, masteryParam)
-    // - type.getIntParam(PARAMS.SKILL_DIFFICULTY);
-    // if (result < 0)
-    // return type.getProperty(G_PROPS.MASTERY)
-    // + InfoMaster.NOT_ENOUGH_MASTERY_SLOTS + (-result);
-    // }
-    // }
-    // return null;
-    // }
-
     @Override
     public String check(Entity hero, Entity type) {
         return check(hero, type, NORMAL_MODE);
@@ -102,21 +78,13 @@ public class DC_RequirementsManager implements RequirementsManager {
         if (CoreEngine.isArcaneVault()) {
             return null;
         }
-        // Chronos.mark(type.getName() + " req preCheck");
         this.setHero(hero);
         String reason;
-        // specialCheck(type, hero);
-        // if (reason != null)
-        // return reason;
-
-        // Chronos.mark(type.getName() + " req build");
         Requirements requirements = getRequirements(type, mode);
-        // Chronos.logTimeElapsedForMark(type.getName() + " req build");
         if (requirements == null) {
             return null;
         }
         reason = requirements.checkReason(hero.getRef(), type);
-        // Chronos.logTimeElapsedForMark(type.getName() + " req preCheck");
         return reason;
     }
 
@@ -216,9 +184,9 @@ public class DC_RequirementsManager implements RequirementsManager {
             }
             String t;
             Conditions c;
-            if (StringMaster.contains(subString, StringMaster.OR)) {
+            if (StringMaster.contains(subString, Strings.OR)) {
                 // REFACTOR
-                List<String> parts = ContainerUtils.split(subString, StringMaster.OR, false);
+                List<String> parts = ContainerUtils.split(subString, Strings.OR, false);
                 c = new OrConditions();
                 StringBuilder tBuilder = new StringBuilder();
                 for (String part : parts) {
@@ -241,14 +209,14 @@ public class DC_RequirementsManager implements RequirementsManager {
                     valRef = subString.split(NOT)[0];
                     value = subString.split(NOT)[1];
                     not = true;
-                } else if (!subString.contains(StringMaster.REQ_VALUE_SEPARATOR)) {
+                } else if (!subString.contains(Strings.REQ_VALUE_SEPARATOR)) {
                     // TODO
                     valRef = subString.substring(0, subString.lastIndexOf(" "));
                     value = subString.substring(subString.lastIndexOf(" "))
                      .trim();
                 } else {
-                    valRef = subString.split(StringMaster.REQ_VALUE_SEPARATOR)[0];
-                    value = subString.split(StringMaster.REQ_VALUE_SEPARATOR)[1];
+                    valRef = subString.split(Strings.REQ_VALUE_SEPARATOR)[0];
+                    value = subString.split(Strings.REQ_VALUE_SEPARATOR)[1];
                 }
                 c = new Conditions(getCustomCondition(valRef, value));
                 if (not) {
@@ -303,7 +271,7 @@ public class DC_RequirementsManager implements RequirementsManager {
     }
 
     private String getSeparator(String s) {
-        String separator = StringMaster.REQ_VALUE_SEPARATOR;
+        String separator = Strings.REQ_VALUE_SEPARATOR;
         if (s.contains(separator)) {
             return separator;
         }
@@ -343,20 +311,20 @@ public class DC_RequirementsManager implements RequirementsManager {
     }
 
     private Condition getTotalCondition(String req, PARAMETER... params) {
-        String valRef = "";
+        StringBuilder valRef = new StringBuilder();
         for (PARAMETER param : params) {
-            valRef += param.getName() + StringMaster.VAR_SEPARATOR;
+            valRef.append(param.getName()).append(Strings.VAR_SEPARATOR);
         }
-        return getTotalCondition(valRef, req);
+        return getTotalCondition(valRef.toString(), req);
 
     }
 
     private Condition getTotalCondition(String valRef, String value) {
         List<PARAMETER> params;
         String str1;
-        if (valRef.contains(StringMaster.VAR_SEPARATOR)) {
+        if (valRef.contains(Strings.VAR_SEPARATOR)) {
             params = new ArrayList<>();
-            for (String s : ContainerUtils.open(valRef, StringMaster.VAR_SEPARATOR)) {
+            for (String s : ContainerUtils.open(valRef, Strings.VAR_SEPARATOR)) {
 
                 PARAMETER p = ContentValsManager.getPARAM(s);
                 if (p == null) {

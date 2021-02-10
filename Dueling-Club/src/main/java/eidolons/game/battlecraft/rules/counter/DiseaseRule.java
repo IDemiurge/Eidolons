@@ -30,7 +30,7 @@ public class DiseaseRule extends DamageCounterRule  implements TimedRule {
     private static final String ENDURANCE_DAMAGE_PERC = "0.5";
     private static final int REDUCTION = 0;
     private static final int INCREASE = 0;
-    private static final String STAMINA_PER_COUNTER = "(-0.2)";
+    private static final String ATB_PER_COUNTER = "(-3)";
 
     public DiseaseRule(DC_Game game) {
         super(game);
@@ -56,11 +56,10 @@ public class DiseaseRule extends DamageCounterRule  implements TimedRule {
     @Override
     protected Effect getSpecialRoundEffects() {
         // spread effects could go here! :)
-        ModifyValueEffect modifyValueEffect = new ModifyValueEffect(PARAMS.C_STAMINA,
-         MOD.MODIFY_BY_CONST, getCounterRef() + "*" + STAMINA_PER_COUNTER);
+        ModifyValueEffect modifyValueEffect = new ModifyValueEffect(PARAMS.C_ATB,
+         MOD.MODIFY_BY_CONST, getCounterRef() + "*" + ATB_PER_COUNTER);
         modifyValueEffect.setMin_max_formula(new Formula("0"));
-        Effects effects = new Effects(modifyValueEffect);
-        return effects;
+        return new Effects(modifyValueEffect);
     }
 
     @Override
@@ -106,7 +105,7 @@ public class DiseaseRule extends DamageCounterRule  implements TimedRule {
 
     @Override
     public String getBuffName() {
-        return MetaEnums.STD_BUFF_NAMES.Contaminated.getName();
+        return MetaEnums.STD_BUFF_NAME.Contaminated.getName();
     }
 
     @Override

@@ -1,10 +1,12 @@
 package main.gui.components.menu;
 
-import main.gui.components.controls.ModelManager;
+import eidolons.system.text.TextMaster;
 import main.gui.components.menu.AV_Menu.MENU_ITEMS;
+import main.handlers.AvManager;
+import main.handlers.mod.AvModelHandler;
+import main.handlers.mod.AvSaveHandler;
 import main.launch.ArcaneVault;
 import main.system.auxiliary.EnumMaster;
-import eidolons.system.text.TextMaster;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
@@ -44,19 +46,19 @@ public class AV_MenuHandler implements MenuListener, ActionListener {
                 TextMaster.generateMissingDescrTemplate();
                 break;
             case ADD_TO_WORKSPACE:
-                ModelManager.addToWorkspace();
+                AvModelHandler.addToWorkspace();
                 break;
             case ADD:
-                ModelManager.add();
+                AvModelHandler.add();
                 break;
             case FIND_TYPE:
-                ModelManager.findType();
+                AvModelHandler.findType();
                 break;
             case SET_VALUE:
                 ArcaneVault.getGame().getValueHelper().promptSetValue();
                 break;
             case SIMULATION:
-                ModelManager.toggle();
+                AvManager.toggle();
                 break;
 
             case ADD_TO_CUSTOM_WORKSPACE:
@@ -64,15 +66,15 @@ public class AV_MenuHandler implements MenuListener, ActionListener {
             case AUTO_SAVE:
                 break;
             case BACK:
-                ModelManager.undo();
+                AvModelHandler.undo();
                 break;
             case BACKUP:
-                ModelManager.backUp();
+                AvModelHandler.backUp();
                 break;
             case CUSTOM_FILTER:
                 break;
             case DELETE:
-                ModelManager.remove();
+                AvModelHandler.remove();
                 break;
             case DELETE_WORKSPACE:
                 break;
@@ -109,7 +111,7 @@ public class AV_MenuHandler implements MenuListener, ActionListener {
             case RENAME_WORKSPACE:
                 break;
             case SAVE:
-                ModelManager.saveAll();
+                AvSaveHandler.saveAll();
                 break;
             case SAVE_TEMPLATE:
                 break;
@@ -125,7 +127,7 @@ public class AV_MenuHandler implements MenuListener, ActionListener {
             case TOGGLE_SIM:
                 break;
             case UNDO:
-                ModelManager.undo();
+                AvModelHandler.undo();
                 break;
             case UPGRADE:
                 break;

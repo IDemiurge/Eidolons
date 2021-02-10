@@ -5,13 +5,14 @@ import eidolons.entity.handlers.bf.unit.UnitChecker;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.core.state.DC_GameState;
 import eidolons.game.module.dungeoncrawl.explore.DungeonCrawler;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
-import eidolons.game.netherflame.igg.soul.eidola.SoulMaster;
+import eidolons.game.netherflame.main.soul.SoulforceMaster;
 import main.ability.AbilityObj;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
@@ -46,66 +47,58 @@ public class DeathMaster extends Master {
 
 
     public void unitAnnihilated(Obj _killed, Obj _killer) {
-
-        String message = null;
+        String message;
         if (_killed == _killer) {
             message = _killed + " annihilates";// + _killed.getInfoString();
         } else
             message = _killed + " is annihilated by " + _killer;
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
+        SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.MAIN, message);
         getGame().getLogManager().log(message);
         getGame().getGraveyardManager().removeCorpse(_killed);
         _killed.setAnnihilated(true);
 
         getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_ANNIHILATED,
-         new Context(_killer, _killed)));
-
-//     TODO igg demo fix
-//      GuiEventManager.trigger(GuiEventType.SHOW_SPRITE,
-//                HitAnim.getSpritePath(HitAnim.SPRITE_TYPE.BONE,
-//                        HitAnim.HIT.BONE_CRACK),
-//                _killed.getRef().getObj(KEYS.HOSTILITY));
+                new Context(_killer, _killed)));
 
         getGameMaster().remove(_killed, true);
-//	TODO 	getGame().getDroppedItemManager().remove((DC_HeroObj) _killed, item);
 
     }
 
     private void checkXpGranted(Obj killed, Obj killer) {
-        if ( killed ==  killer)
+        if (killed == killer)
             return;
         if (killed instanceof Unit) {
             if (!((Unit) killed).isHostileTo((DC_Player) killer.getOwner())) {
                 return;
             }
-        } else
-        {
-            if (killed.checkBool(STD_BOOLS.FAUX)){
+        } else {
+            if (killed.checkBool(STD_BOOLS.FAUX)) {
                 if (EntityCheckMaster.isWall(killed)) {
                     DungeonCrawler.secretFound(killed, (Unit) killer);
                 }
             }
             return;
         }
-            Unit unit = (Unit) killed;
+        Unit unit = (Unit) killed;
 
-            HeroLevelManager.addXpForKill(unit,(Unit) killer );
+        HeroLevelManager.addXpForKill(unit, (Unit) killer);
 
     }
 
     public void unitDies(DC_ActiveObj activeObj, Obj _killed, Obj _killer, boolean leaveCorpse, boolean quietly) {
         unitDies(activeObj, _killed, _killer, leaveCorpse, quietly, false);
     }
+
     public void unitDies(DC_ActiveObj activeObj, Obj _killed, Obj _killer, boolean leaveCorpse, boolean quietly, boolean annihilate) {
         if (_killed.isDead())
             return;
         if (!quietly)
-        if (_killed.getChecker() instanceof UnitChecker) {
-            if (((UnitChecker) _killed.getChecker()).isImmortalityOn()) {
-                ((Unit) _killed).preventDeath();
-                return;
+            if (_killed.getChecker() instanceof UnitChecker) {
+                if (((UnitChecker) _killed.getChecker()).isImmortalityOn()) {
+                    ((Unit) _killed).preventDeath();
+                    return;
+                }
             }
-        }
         BattleFieldObject killed = (BattleFieldObject) _killed;
         BattleFieldObject killer = (BattleFieldObject) _killer;
         Ref ref = Ref.getCopy(killed.getRef());
@@ -113,22 +106,21 @@ public class DeathMaster extends Master {
         ref.setTarget(killed.getId());
 
         if (!quietly)
-        if (!new Event(STANDARD_EVENT_TYPE.UNIT_IS_BEING_KILLED, ref).fire()) {
-            return;
-        }
+            if (!new Event(STANDARD_EVENT_TYPE.UNIT_IS_BEING_KILLED, ref).fire()) {
+                return;
+            }
 
-        String message = null;
+        String message;
         if (_killed == _killer) {
             message = _killed + " dies ";// + _killed.getInfoString();
-        } else
-        {
+        } else {
             message = _killed + " killed by " + _killer + " with " + activeObj;
 
 
         }
         if (!quietly)
             checkXpGranted(_killed, _killer);
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
+        SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.MAIN, message);
         _killed.setDead(true);
 
 
@@ -149,26 +141,25 @@ public class DeathMaster extends Master {
             Ref REF = Ref.getCopy(killer.getRef());
             REF.setTarget(killed.getId());
             REF.setSource(killer.getId());
-            if (!getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED, REF))){
+            if (!getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED, REF))) {
                 return;
             }
             if (activeObj != null)
                 REF.setObj(KEYS.ACTIVE, activeObj);
             if (killed instanceof Unit) {
                 getGame().getRules().getMoraleKillingRule().unitDied((Unit) killed,
-                 killer.getRef().getAnimationActive());
+                        killer.getRef().getAnimationActive());
             }
-//        TODO too bad now really
-//         DC_SoundMaster.playEffectSound(SOUNDS.DEATH, killed);
+            //        TODO too bad now really
+            //         DC_SoundMaster.playEffectSound(SOUNDS.DEATH, killed);
 
             game.getLogManager().logDeath(killed, killer);
-            getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED, REF));
             game.getLogManager().doneLogEntryNode();
         } else {
             GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL, killed);
         }
-        if (killed.isSummoned()){
-            leaveCorpse=false;
+        if (killed.isSummoned()) {
+            leaveCorpse = false;
         }
         if (!leaveCorpse) {
             // leave a *ghost*?
@@ -194,13 +185,16 @@ public class DeathMaster extends Master {
         }
 
         if (killed instanceof Structure) {
-            game.getMaster().clearCache(killed.getCoordinates());
-        } else
-        if (!killed.isMine())
-        if (killer.isPlayerCharacter())
-        {
-            SoulMaster.slain(killed);
-        }
+            game.getObjMaster().clearCache(killed.getCoordinates());
+        } else if (!killed.isMine())
+            if (killer.isPlayerCharacter()) {
+                if (killed instanceof Unit) {
+                    SoulforceMaster.slain((Unit) killed);
+                }
+            }
+
+        DC_GameState.gridChanged=true;
+        getGame().getVisionMaster().getIllumination().setResetRequired(true);
     }
 
 
@@ -219,7 +213,7 @@ public class DeathMaster extends Master {
 
     public void killAllUnits(boolean retainPlayerParty) {
         killAllUnits(false, retainPlayerParty,
-         true);
+                true);
     }
 
     public void killAllUnits(boolean removeBfObjects, boolean retainPlayerParty, boolean quiet) {

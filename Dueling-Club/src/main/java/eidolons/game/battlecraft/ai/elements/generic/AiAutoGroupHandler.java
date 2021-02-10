@@ -4,10 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
-import eidolons.game.core.game.DC_Game;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.content.enums.EncounterEnums;
 import main.entity.type.ObjAtCoordinate;
@@ -21,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AiAutoGroupHandler extends AiHandler{
+public class AiAutoGroupHandler extends AiHandler {
     private GroupAI allyGroup;
     private GroupAI enemyGroup;
 
@@ -33,17 +30,23 @@ public class AiAutoGroupHandler extends AiHandler{
 
     }
 
+    @Override
+    public void initialize() {
+        autoAssignGroups();
+    }
+
     private void initGroups() {
         setGroups(new ArrayList<>());
-        for (LevelBlock block : game.getDungeonMaster().getDungeonLevel().getBlocks()) {
+        for (LevelBlock block : game.getDungeonMaster().getStructMaster().getBlocks()) {
             for (List<ObjAtCoordinate> list : block.getUnitGroups().keySet()) {
+                //TODO ai Review - allow to create group for entire block!
                 GroupAI group = new GroupAI();
                 group.setType(block.getUnitGroups().get(list));
                 group.setBlock(block);
                 for (ObjAtCoordinate at : list) {
                     game.getUnitsForCoordinates(at.getCoordinates()).stream().filter(
                             u -> u.getName().equals(at.getType().getName())
-                    ).collect(Collectors.toList()).forEach(obj -> group.add(obj));
+                    ).collect(Collectors.toList()).forEach(group::add);
                 }
                 if (group.getMembers().isEmpty())
                     continue;
@@ -57,24 +60,6 @@ public class AiAutoGroupHandler extends AiHandler{
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
                 getGroups().add(group);
-            }
-        }
-//        if (!CoreEngine.isIggDemo())
-        if (game.getDungeonMaster().getDungeonLevel().isPregen()) {
-            for (GroupAI group : getGroups()) {
-                Coordinates c=group.getBlock().getCenterCoordinate();
-                for (Unit member : group.getMembers()) {
-                    if (!DC_Game.game.getRules().getStackingRule().canBeMovedOnto(member, c)) {
-                        // TODO tactics?
-                        c = Positioner.adjustCoordinate(member, c, FacingMaster.getRandomFacing()); // direction
-                        // preference?
-                    }
-                    main.system.auxiliary.log.LogMaster.important( member+ " coordinate adjusted from " +
-                            member.getCoordinates() +
-                            " to " +c );
-                    member.setCoordinates(c);
-                }
-
             }
         }
     }
@@ -109,6 +94,7 @@ public class AiAutoGroupHandler extends AiHandler{
         }
         return null;
     }
+
     private void updateGroups() {
         double join_distance = 1;
         double leave_distance = 5;
@@ -150,11 +136,11 @@ public class AiAutoGroupHandler extends AiHandler{
         }
         return enemyGroup;
     }
+
     private void autoAssignGroups() {
-        if (isAutoGroups()) {
-                initGroups();
-//            if (isOnlyLargeGroups())
-//                return;
+        initGroups();
+        if (!isAutoGroups()) {
+            return;
         }
         //by proximity... not all mobs will be part of a group
 
@@ -165,7 +151,7 @@ public class AiAutoGroupHandler extends AiHandler{
         if (getGroups() == null)
             return;
 
-        for (Object sub : game.getBattleMaster().getPlayerManager().getPlayers()) {
+        for (Object sub : game.getMissionMaster().getPlayerManager().getPlayers()) {
             DC_Player player = (DC_Player) sub;
             if (player.isMe()) {
                 continue;
@@ -183,7 +169,7 @@ public class AiAutoGroupHandler extends AiHandler{
                         continue;
                     if (unit1.equals(unit))
                         continue;
-                    double max_distance = 2.5;
+                    double max_distance = 3.5;
                     if (PositionMaster.getExactDistance(unit1.getCoordinates(),
                             unit.getCoordinates()) >= max_distance)
                         continue;
@@ -202,30 +188,29 @@ public class AiAutoGroupHandler extends AiHandler{
         String report = ">>>>>>>>> " +
                 getGroups().size() +
                 " AI groups created: \n";
-        report+= "" + getGroups().stream().filter(g->g.getMembers().size()>1).count() +
+        report += "" + getGroups().stream().filter(g -> g.getMembers().size() > 1).count() +
                 " (non-singletons)\n";
         StringBuilder reportBuilder = new StringBuilder(report);
         for (GroupAI group : getGroups()) {
             reportBuilder.append(group).append("\n");
         }
         report = reportBuilder.toString();
-        int checkNumber =   getGroups().stream().mapToInt(group -> group.getMembers().size()).sum();
-        if (checkNumber!= game.getPlayer(false).collectControlledUnits_().size()){
-            main.system.auxiliary.log.LogMaster.log(1,">>>> AI GROUP UNIT COUNT MISMATCH!!! " );
-            main.system.auxiliary.log.LogMaster.log(1,game.getPlayer(false).collectControlledUnits_().size()+
-                    " VS " +checkNumber);
+        int checkNumber = getGroups().stream().mapToInt(group -> group.getMembers().size()).sum();
+        if (checkNumber != game.getPlayer(false).collectControlledUnits_().size()) {
+            main.system.auxiliary.log.LogMaster.log(1, ">>>> AI GROUP UNIT COUNT MISMATCH!!! ");
+            main.system.auxiliary.log.LogMaster.log(1, game.getPlayer(false).collectControlledUnits_().size() +
+                    " VS " + checkNumber);
             // find unit who is in 2+ groups!
         }
 
-        main.system.auxiliary.log.LogMaster.log(1," "  + report);
+        main.system.auxiliary.log.LogMaster.log(1, " " + report);
         if (!getGroups().isEmpty()) {
-        }
-        else {
+        } else {
         }
     }
 
     private boolean isAutoGroups() {
-        return false;
+        return getMaster().isDefaultAiGroupForUnitOn();
     }
 
     public List<GroupAI> getGroups() {

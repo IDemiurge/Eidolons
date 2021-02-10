@@ -1,28 +1,27 @@
 package eidolons.libgdx.bf.generic;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
+import eidolons.libgdx.assets.AssetEnums;
 import eidolons.libgdx.texture.TextureCache;
 import main.entity.Entity;
 import main.system.auxiliary.StringMaster;
-import main.system.images.ImageManager;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by JustMe on 2/10/2018.
  */
-public class ImageContainer extends SuperContainer {
+public class ImageContainer extends SuperContainer  implements Flippable{
+    private  AssetEnums.ATLAS atlas;
     protected boolean flipX, flipY;
     protected Sprite sprite;
     protected String path;
-    protected Map<TextureRegion, Image> imageCache = new HashMap<>();
+    protected ObjectMap<TextureRegion, Image> imageCache = new ObjectMap<>();
+    private boolean noAtlas;
 
     public ImageContainer(Image content) {
         super(content);
@@ -32,13 +31,28 @@ public class ImageContainer extends SuperContainer {
         this(new Image(TextureCache.getOrCreateR(entity.getImagePath())));
     }
 
+    public ImageContainer(AssetEnums.ATLAS atlas, String path) {
+        this.atlas = atlas;
+        this.path = path;
+        if (!StringMaster.isEmpty(path)) {
+            content = new Image(sprite = new Sprite(TextureCache.getOrCreateR(path, noAtlas, atlas)));
+            addActor(content);
+        }
+    }
+
     public ImageContainer(String path) {
         super();
         if (!StringMaster.isEmpty(path)) {
-            content = new Image(sprite = new Sprite(TextureCache.getOrCreateR(path)));
+            content = new Image(sprite = new Sprite(TextureCache.getOrCreateR(path, noAtlas, atlas)));
             addActor(content);
         }
         this.path = path;
+
+    }
+
+    @Override
+    public void setColor(Color color) {
+        getContent().setColor(color);
     }
 
     public ImageContainer() {
@@ -53,6 +67,14 @@ public class ImageContainer extends SuperContainer {
     @Override
     public void addAction(Action action) {
         getContent().addAction(action);
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        super.setVisible(visible);
+        if (getContent() != null) {
+            getContent().setVisible(visible);
+        }
     }
 
     @Override
@@ -72,17 +94,17 @@ public class ImageContainer extends SuperContainer {
         setImage(image);
     }
     public void setImage(String path) {
-        if (ImageManager.isImageFile(path)) {
+        if (!StringMaster.isEmpty(path)) {
             this.path = path;
-            Texture r = TextureCache.getOrCreate(path);
+            TextureRegion r = TextureCache.getOrCreateR(path, noAtlas, atlas);
             if (sprite != null)
-                if (sprite.getTexture().equals(r)) {
+                if (sprite.getTexture().equals(r.getTexture())) {
                     if (getContent() == null || isResetImageAlways())
                         //                     if (!getContent().getDrawable().equals(new TextureRegionDrawable(sprite)))
                         setImage(new Image(sprite));
                     return;
                 }
-            setImage(new Image(sprite = new Sprite(TextureCache.getOrCreate(path))));
+            setImage(new Image(sprite = new Sprite(TextureCache.getOrCreateR(path, noAtlas, atlas))));
         } else {
             setEmpty();
         }
@@ -91,9 +113,8 @@ public class ImageContainer extends SuperContainer {
     @Override
     public void act(float delta) {
         super.act(delta);
-        if (sprite != null)
-        if (sprite.getY()!=0){
-        }
+        // gdx cleanup
+        // setTransform(getRotation()!=0);
     }
 
     protected boolean isResetImageAlways() {
@@ -152,7 +173,7 @@ public class ImageContainer extends SuperContainer {
 
     @Override
     public String toString() {
-        return path + " container";
+        return (path==null ? getContent() : path )+ " container";
     }
 
     @Override
@@ -175,7 +196,16 @@ public class ImageContainer extends SuperContainer {
         this.flipY = flipY;
         if (sprite != null)
             sprite.setFlip(flipX, flipY);
+
+        // new FlipDrawable(new TextureRegionDrawable(getContent().getDrawable()), ()-> flipX, ()-> flipX)
     }
 
 
+    public void setNoAtlas(boolean noAtlas) {
+        this.noAtlas = noAtlas;
+    }
+
+    public void setAtlas(AssetEnums.ATLAS atlas) {
+        this.atlas = atlas;
+    }
 }

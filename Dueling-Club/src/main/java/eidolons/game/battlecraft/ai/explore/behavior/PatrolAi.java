@@ -6,6 +6,7 @@ import eidolons.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.system.math.DC_PositionMaster;
+import main.entity.obj.MicroObj;
 import main.game.bf.Coordinates;
 import main.system.math.MathMaster;
 
@@ -22,7 +23,7 @@ public class PatrolAi extends CyclicGroupBehavior {
     public static final int MAX_RALLY_POINTS = 4;
     public static final int MIN_RALLY_POINTS = 2;
     int failedRallies = 0;
-    private Coordinates[] presetPoints;
+    private final Coordinates[] presetPoints;
 
     public PatrolAi(AiMaster master, UnitAI ai, Coordinates... points) {
         super(master, ai);
@@ -122,7 +123,7 @@ public class PatrolAi extends CyclicGroupBehavior {
     public String getDebugInfo() {
         return ((int) sinceLastAction) + " "
          + (ai.isLeader() ? cycledArgs == null ? "No cycled args" :
-         Arrays.deepToString(Arrays.stream(cycledArgs).map(c -> c.getCoordinates()).toArray())
+         Arrays.deepToString(Arrays.stream(cycledArgs).map(MicroObj::getCoordinates).toArray())
          : ((queuedAction == null) ? "null" : queuedAction.getActive().getName()))
          + "\n" + ((target == null) ? "target =null" : "target " + target.getCoordinates())
          + "\n" + ((orders == null) ? "orders =null" : orders.getActionSequence())

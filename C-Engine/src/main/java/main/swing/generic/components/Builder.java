@@ -1,7 +1,6 @@
 package main.swing.generic.components;
 
 import main.system.auxiliary.log.LogMaster;
-import main.system.graphics.GuiManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -114,11 +113,11 @@ public abstract class Builder implements GameGUI {
         }
     }
 
-    private void add(JComponent newComp, String info) {
+    protected void add(JComponent newComp, String info) {
         getComp().add(newComp, info);
         if (getKeyListener() != null) {
             if (newComp instanceof G_Component) {
-                ((G_Component) newComp).setKeyManager(keyListener);
+                ((G_Component) newComp).setKeyManager(getKeyListener());
             } else {
                 newComp.addKeyListener(getKeyListener());
             }
@@ -183,23 +182,6 @@ public abstract class Builder implements GameGUI {
     @Override
     public void refresh() {
 
-//        if (!isDirty())
-//            return;
-//        for (Refreshable r : compArray) {
-//            try {
-//                r.refresh();
-//            } catch (Exception e) {
-//                main.system.ExceptionMaster.printStackTrace(e);
-//            }
-//        }
-//        for (Refreshable r : builderArray) {
-//            try {
-//                r.refresh();
-//            } catch (Exception e) {
-//                main.system.ExceptionMaster.printStackTrace(e);
-//            }
-//        }
-
     }
 
     public boolean isDirty() {
@@ -219,7 +201,7 @@ public abstract class Builder implements GameGUI {
         //c.dataChanged();
     }
 
-    private KeyListener getKeyListener() {
+    protected KeyListener getKeyListener() {
         return keyListener;
     }
 
@@ -246,20 +228,6 @@ public abstract class Builder implements GameGUI {
         public String getMiGString() {
 
             return mig;
-        }
-
-        public String getMigForBF() {
-            return getMigForBF(false);
-        }
-
-        public String getMigForBF(boolean overlaying) {
-            int X = GuiManager.getCellWidth() * x;
-            int Y = GuiManager.getCellHeight() * y;
-            if (overlaying) {
-                X += (GuiManager.getCellWidth() - GuiManager.getSmallObjSize()) / 2;
-                Y += (GuiManager.getCellHeight() - GuiManager.getSmallObjSize()) / 2;
-            }
-            return "x " + X + ", y " + Y;
         }
 
         public int getX() {

@@ -8,7 +8,6 @@ import main.system.SortMaster;
 import main.system.auxiliary.secondary.GeometryMaster;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -70,9 +69,9 @@ public class ShapeFillMaster {
 
     public static boolean checkShape(FILL_SHAPE shape, List<Coordinates> coords, int arg) {
         Coordinates topLeft = CoordinatesMaster.getFarmostCoordinateInDirection(DIRECTION.UP_LEFT, coords);
-        Collections.sort(coords, new SortMaster<Coordinates>()
-         .getSorterByExpression_(c ->
-          -c.x * 100 - c.y * 101)); //x difference goes first
+        coords.sort(new SortMaster<Coordinates>()
+                .getSorterByExpression_(c ->
+                        -c.x * 100 - c.y * 101)); //x difference goes first
         coords = coords.stream().map(c -> c.getOffset(topLeft.negative())).collect(Collectors.toList());
 //relative to 0-0 ALWAYS!
 
@@ -191,7 +190,7 @@ public class ShapeFillMaster {
     XOX
      */
 
-        private int minPoints;
+        private final int minPoints;
 
         FILL_SHAPE() {
             this(2);

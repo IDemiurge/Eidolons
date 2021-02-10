@@ -11,7 +11,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
@@ -50,7 +50,7 @@ public class WatchRule implements ActionRule {
     >> No AoO's if not watched, by default?
     >> attack bonus for AoOs in spectrum?
          */
-    private static Map<Unit, List<DC_Obj>> watchersMap = new HashMap<>();
+    private static final Map<Unit, List<DC_Obj>> watchersMap = new HashMap<>();
 
     private static void removeWatcher(Unit watcher) {
         getWatchersMap().remove(watcher);
@@ -78,7 +78,7 @@ public class WatchRule implements ActionRule {
     }
 
     private static boolean checkValidWatchTarget(DC_Obj watched) {
-        if (!VisionManager.checkVisible(watched, true)) // TODO 'to watcher' !..
+        if (!VisionHelper.checkVisible(watched, true)) // TODO 'to watcher' !..
         {
             return false;
         }
@@ -106,14 +106,10 @@ public class WatchRule implements ActionRule {
         if (watcher.checkStatusPreventsActions()) {
             return false;
         }
-        if (!watcher.getMode().isWatchSupported()) {
-            return false;
-        }
+        return watcher.getMode().isWatchSupported();
         // if (watcher.checkModeDisablesActions() &&
         // !watcher.getMode().equals(STD_MODES.ALERT)) {
         // return false;
-
-        return true;
     }
 
     // FOR PROMPT/INFO ONLY!
@@ -151,9 +147,7 @@ public class WatchRule implements ActionRule {
         // only no-state actions, others will break on checkValid()
         if (action.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.ATTACK) {
             // other target ; special skill may allow retain watch
-            if (action.getRef().getTargetObj() != watched) {
-                return true;
-            }
+            return action.getRef().getTargetObj() != watched;
         }
         return false;
     }
@@ -202,19 +196,17 @@ public class WatchRule implements ActionRule {
     }
 
     public static String getDefenseModVsWatched(Unit watcher, List<DC_Obj> list) {
-        String mod = StringMaster.wrapInParenthesis(""
+        // TODO from WATCHED
+        return StringMaster.wrapInParenthesis(""
          + MathMaster.applyModIfNotZero(DEFENSE_MOD, watcher
          .getIntParam(PARAMS.WATCH_DEFENSE_MOD)));
-        // TODO from WATCHED
-        return mod;
     }
 
     public static String getAttackModVsWatched(Unit watcher, List<DC_Obj> list) {
-        String mod = StringMaster.wrapInParenthesis(""
+        // TODO reduce?
+        return StringMaster.wrapInParenthesis(""
          + MathMaster.applyModIfNotZero(ATTACK_MOD, watcher
          .getIntParam(PARAMS.WATCH_ATTACK_MOD)));
-        // TODO reduce?
-        return mod;
     }
 
     public static String getAttackModVsOthers(Unit watcher, List<DC_Obj> list) {

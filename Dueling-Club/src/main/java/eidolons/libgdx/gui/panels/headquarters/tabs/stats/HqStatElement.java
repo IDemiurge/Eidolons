@@ -13,7 +13,7 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SmartTextButton;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
@@ -35,12 +35,11 @@ import main.system.images.ImageManager;
 public class HqStatElement extends HqElement {
 
     private final ValueContainer container;
-    private final SmartButton button;
+    private final SmartTextButton button;
     private final Runnable modifyRunnable;
     boolean mastery;
     boolean editable;
     PARAMS displayedParam;
-    private boolean leftToRight;
     private PARAMETER modifyParam;
     private boolean disabled;
 
@@ -48,7 +47,6 @@ public class HqStatElement extends HqElement {
         this.modifyRunnable = modifyRunnable;
         this.displayedParam = param;
         this.mastery = mastery;
-        leftToRight = mastery;
         this.editable = editable;
 //   TODO      leftToRight = mastery;
         setSize(GDX.size(80), GDX.size(50));
@@ -58,12 +56,12 @@ public class HqStatElement extends HqElement {
         container.setStyle(StyleHolder.getHqLabelStyle(16));
         container.overrideImageSize(50, 50);
         container.getValueContainer().size(30, 50);
-        if (leftToRight)
+        if (mastery)
             container.getValueContainer().left();
         else
             container.getValueContainer().right();
 
-        button = new SmartButton(STD_BUTTON.STAT);
+        button = new SmartTextButton(STD_BUTTON.STAT);
         button.setVisible(false);
         button.addListener(getListener());
         button.setFixedSize(true);
@@ -74,7 +72,7 @@ public class HqStatElement extends HqElement {
 //         STD_BUTTON.STAT.getTexture().getMinWidth(), TODO atlas..
 //         STD_BUTTON.STAT.getTexture().getMinHeight());
 
-        if (leftToRight) {
+        if (mastery) {
             add(button).left();
             add(container).right();
         } else {

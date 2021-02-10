@@ -33,7 +33,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.WeightMap;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.FuncMaster;
 
 import java.util.*;
@@ -62,8 +62,8 @@ public class RngMainSpawner {
             EncounterEnums.UNIT_GROUP_TYPE.PATROL,
     };
     private static final float POWER_FILL_COEF = 1.25f;
-    private static final boolean SPAWN_GROUP_ON_ONE_CELL = CoreEngine.isCombatGame();
-    private static final boolean SPAWN_GROUP_IN_CENTER = CoreEngine.isCombatGame();
+    private static final boolean SPAWN_GROUP_ON_ONE_CELL = Flags.isCombatGame();
+    private static final boolean SPAWN_GROUP_IN_CENTER = Flags.isCombatGame();
     Map<LevelBlock, Float> coefMap = new LinkedHashMap<>();
     private DungeonLevel level;
     private LevelData data;
@@ -124,8 +124,8 @@ public class RngMainSpawner {
         //some meta data to take from?
 
         log(1, "Spawning for quests ");
-        if (!CoreEngine.isFullFastMode())
-            if (CoreEngine.isCombatGame())
+        if (!Flags.isFullFastMode())
+            if (Flags.isCombatGame())
                 if (Eidolons.getGame().getMetaMaster().isRngQuestsEnabled())
                     try {
                         spawnForQuests();
@@ -148,7 +148,7 @@ public class RngMainSpawner {
     }
 
     private void spawnForQuests() {
-        Collection<Quest> quests = null;
+        Collection<Quest> quests;
         try {
             quests = Eidolons.getGame().getMetaMaster().getQuestMaster().getQuestsPool();
         } catch (Exception e) {
@@ -226,7 +226,6 @@ public class RngMainSpawner {
             for (LevelZone levelZone : level.getZones()) {
                 blocks = getBlocksForSpawn(EncounterEnums.UNIT_GROUP_TYPE.BOSS, levelZone);
                 if (!blocks.isEmpty()) {
-                    zone = levelZone;
                     break;
                 }
             }
@@ -261,9 +260,9 @@ public class RngMainSpawner {
                 main.system.auxiliary.log.LogMaster.log(1, block.getRoomType() + " has groups: ");
             for (List<ObjAtCoordinate> unitGroup : block.getUnitGroups().keySet()) {
                 groups++;
-                String text = "";
+                StringBuilder text = new StringBuilder();
                 for (ObjAtCoordinate objAtCoordinate : unitGroup) {
-                    text += objAtCoordinate.getType().getName() + "; ";
+                    text.append(objAtCoordinate.getType().getName()).append("; ");
                     units++;
                     //TODO lvls?
                     power += objAtCoordinate.getType().getIntParam(PARAMS.POWER);
@@ -721,7 +720,7 @@ public class RngMainSpawner {
                 .getOffset(levelBlock.getOrigin());
 
         float max = levelBlock.getTileMap().getMap().
-                values().stream().filter(cell -> TilesMaster.isPassable(cell)).count() * getCellLimitCoef();
+                values().stream().filter(TilesMaster::isPassable).count() * getCellLimitCoef();
 
         List<Coordinates> emptyCells = levelBlock.getTileMap().getMap().keySet().stream()
                 .filter(c -> isCellValidForSpawn(c, levelBlock)).
@@ -790,7 +789,7 @@ public class RngMainSpawner {
     }
 
     private boolean isEnclosedSpawnAllowed() {
-        return !CoreEngine.isCombatGame();
+        return !Flags.isCombatGame();
     }
 
     private void addUnit(ObjAtCoordinate at, LevelBlock levelBlock) {

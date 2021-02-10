@@ -7,9 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import eidolons.content.PARAMS;
-import eidolons.macro.MacroGame;
-import eidolons.macro.entity.party.MacroParty;
+import eidolons.game.battlecraft.ai.tools.priority.ThreatAnalyzer;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
@@ -18,6 +16,8 @@ import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.screens.map.obj.PartyActor;
 import eidolons.libgdx.texture.TextureCache;
+import eidolons.macro.MacroGame;
+import eidolons.macro.entity.party.MacroParty;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.graphics.FontMaster.FONT;
@@ -30,12 +30,8 @@ import java.util.stream.Collectors;
 public class PartyTooltip extends Tooltip {
     private final MacroParty party;
     private final PartyActor actor;
-    private final ValueContainer leader;
-    private final ValueContainer members;
-    private final HorGroup<Image> membersPics;
     private final Label threatLabel;
     private final Label allegiance;
-    private final ValueContainer main;
 
     public PartyTooltip(MacroParty party, PartyActor actor) {
         this.party = party;
@@ -43,19 +39,18 @@ public class PartyTooltip extends Tooltip {
 
         setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
 
-        main = new ValueContainer(TextureCache.getOrCreateR(
-         party.getEmblemPath()),
-         party.getName());
-        leader = new ValueContainer(TextureCache.getOrCreateR(
-         party.getLeader().getImagePath()),
-         "Leader: ",
-         party.getName());
+        ValueContainer main = new ValueContainer(TextureCache.getOrCreateR(
+                party.getEmblemPath()),
+                party.getName());
+        ValueContainer leader = new ValueContainer(TextureCache.getOrCreateR(
+                party.getLeader().getImagePath()),
+                "Leader: ",
+                party.getName());
         //set to "known members: " if...
-        members = new ValueContainer(party.getMembers().size() + " ", "Members");
-        membersPics =
-         new HorGroup<>(Math.max(256, party.getMembers().size() * 128 / 3), 0, party.getMembers().stream().map(hero ->
-          new Image(TextureCache.getOrCreateR(hero.getImagePath()))
-         ).collect(Collectors.toList()));
+        ValueContainer members = new ValueContainer(party.getMembers().size() + " ", "Members");
+        HorGroup<Image> membersPics = new HorGroup<>(Math.max(256, party.getMembers().size() * 128 / 3), 0, party.getMembers().stream().map(hero ->
+                new Image(TextureCache.getOrCreateR(hero.getImagePath()))
+        ).collect(Collectors.toList()));
         allegiance = new Label("", StyleHolder.getDefaultLabelStyle());
 
 //        Label status; //traveling, guarding, ..
@@ -84,22 +79,11 @@ public class PartyTooltip extends Tooltip {
         super.draw(batch, parentAlpha);
     }
 
-    private THREAT_LEVEL getThreatLevel(MacroParty party, MacroParty playerParty) {
-        int percentage = party.getParamSum(PARAMS.POWER)
-         * 100 / playerParty.getParamSum(PARAMS.POWER);
-        THREAT_LEVEL level = null;
-        for (THREAT_LEVEL sub : THREAT_LEVEL.values()) {
-            level = sub;
-            if (sub.powerPercentage <= percentage)
-                break;
-        }
-        return level;
-    }
 
 
     @Override
     public void updateAct(float delta) {
-        String text = "Unknown";
+        String text;
         boolean showThreat = false;
         setVisible(showing);
 //        if (party.getInfoLevel() == MAP_OBJ_INFO_LEVEL.VISIBLE) {
@@ -117,7 +101,7 @@ public class PartyTooltip extends Tooltip {
         this.allegiance.setText(text);
 
         if (showThreat) {
-            THREAT_LEVEL threat = getThreatLevel(party, MacroGame.getGame().getPlayerParty());
+            THREAT_LEVEL threat = ThreatAnalyzer.getThreatLevel(party, MacroGame.getGame().getPlayerParty());
             threatLabel.setText(threat.name());
             threatLabel.setStyle(StyleHolder.getSizedColoredLabelStyle(FONT.AVQ, 20, threat.color));
         } else

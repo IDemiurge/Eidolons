@@ -32,9 +32,8 @@ public class EvasionRule {
         DC_Obj source = action.getOwnerUnit();
         Obj target = action.getRef().getTargetObj();
 
-        int chance = target.getIntParam(PARAMS.EVASION)
+        return target.getIntParam(PARAMS.EVASION)
          - source.getIntParam(PARAMS.ACCURACY);
-        return chance;
     }
 
     public static void logDodged(LogManager logManager, DC_ActiveObj activeObj) {

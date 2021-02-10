@@ -10,13 +10,14 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
+import eidolons.game.core.master.EffectMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.math.ModMaster;
 import main.ability.Abilities;
 import main.ability.Interruptable;
+import main.ability.effects.Effect;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.content.enums.entity.ActionEnums.ACTION_TAGS;
@@ -50,7 +51,8 @@ import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.launch.Flags;
+import main.system.sound.AudioEnums;
 import main.system.text.TextParser;
 
 import java.util.ArrayList;
@@ -82,6 +84,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     private GroupImpl targetGroup;
     private boolean targetingCachingOff;
     private boolean disabled;
+    private boolean pointCostActivation;
 
     public DC_ActiveObj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -91,8 +94,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     @Override
     public EntityMaster initMaster() {
-        ActiveMaster master = new ActiveMaster(this);
-        return master;
+        return new ActiveMaster(this);
 
     }
 
@@ -162,7 +164,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public boolean isDamageSpell() {
-        return EffectFinder.getFirstEffectOfClass(this,
+        return EffectMaster.getFirstEffectOfClass(this,
          DealDamageEffect.class) != null;
     }
 
@@ -186,7 +188,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public boolean isDebuffSpell() {
-        return EffectFinder.getFirstEffectOfClass(this,
+        return EffectMaster.getFirstEffectOfClass(this,
          AddBuffEffect.class) != null;
     }
 
@@ -215,9 +217,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         return super.isConstructed();
     }
     protected boolean isConstructOnToBase() {
-        if (!ExplorationMaster.isExplorationOn())
-            return true;
-        return false;
+        return !ExplorationMaster.isExplorationOn();
     }
 
     @Override
@@ -237,17 +237,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     public String getSpecialRequirements() {
         return getProperty(G_PROPS.SPECIAL_REQUIREMENTS);
-    }
-
-    public void tick() {
-        Integer cooldown = getIntParam(PARAMS.COOLDOWN);
-        if (cooldown <= 0) {
-            setParam(PARAMS.C_COOLDOWN, cooldown); // modify by [cooldown]?
-        } else {
-            if (getIntParam(PARAMS.C_COOLDOWN) > 0) {
-                modifyParameter(PARAMS.C_COOLDOWN, -1, 0);
-            }
-        }
     }
 
 
@@ -322,7 +311,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         if (getOwnerUnit() == null) {
             return getName();
         }
-        if (CoreEngine.isIDE()) {
+        if (Flags.isIDE()) {
         return StringMaster.getPossessive(getOwnerUnit().getName()) + " " + getName();
         }
         return StringMaster.getPossessive(getOwnerUnit().getNameIfKnown()) + " " + getName();
@@ -358,7 +347,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public void playActivateSound() {
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.CLICK);
     }
 
     public Targeting getTargeting() {
@@ -461,7 +450,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     public List<DC_UnitAction> getSubActions() {
         if (subActions == null) {
-            subActions = new ArrayList<DC_UnitAction>();
+            subActions = new ArrayList<>();
         }
         return subActions;
     }
@@ -693,6 +682,10 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         getHandler().actionComplete();
     }
 
+    public boolean isInstantAction() {
+        return getChecker().isInstantAction();
+    }
+
     public boolean isInstantMode() {
         return getHandler().isInstantMode();
     }
@@ -713,12 +706,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public boolean isExtraAttackMode() {
         return getHandler().isExtraAttackMode();
     }
-
-    //LOG
-
-    //CALC
-
-    //Targeter
 
     public boolean selectTarget(Ref ref) {
         return getTargeter().selectTarget(ref);
@@ -817,7 +804,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     @Override
-    public ActiveInitializer getInitializer() {
+    public ActiveObjInitializer getInitializer() {
         return getMaster().getInitializer();
     }
 
@@ -905,7 +892,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     @Override
     protected void putParameter(PARAMETER param, String value) {
         if (param == PARAMS.AP_COST) {
-            int v = NumberUtils.getInteger(value);
+            int v = NumberUtils.getIntParse(value);
             if (v > type.getIntParam(param) * 2) {
                 return;
             }
@@ -920,7 +907,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public boolean isTargetingCached() {
         if (targetingCachingOff)
             return false;
-        return CoreEngine.isTargetingResultCachingOn();
+        return Flags.isTargetingResultCachingOn();
     }
 
     public List<DC_ActiveObj> getValidSubactions() {
@@ -949,5 +936,22 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             getCosts().setReason("Disabled");
         }
     }
+
+    public void initAnimRefs(Ref ref) {
+        if (abilities != null) {
+            for (Effect effect : abilities.getEffects()) {
+                effect.initAnimRef(ref);
+            }
+        }
+    }
+
+    public boolean isPointCostActivation() {
+        return pointCostActivation;
+    }
+
+    public void setPointCostActivation(boolean pointCostActivation) {
+        this.pointCostActivation = pointCostActivation;
+    }
+
 }
 

@@ -48,31 +48,29 @@ public class MacroObj extends Obj {
         return coordinates;
     }
 
-    public void setCoordinates(MacroCoordinates coordinates) {
-        this.coordinates = coordinates;
-        setX(coordinates.getX());
-        setY(coordinates.getY());
-    }
-
-    public int getY() {
-        return y;
+    public void setCoordinates(MacroCoordinates c) {
+        this.coordinates = c;
+        this.y = c.y;
+        setParam(MACRO_PARAMS.MAP_POS_Y, y, true);
+        this.x =  c.x;
+        setParam(MACRO_PARAMS.MAP_POS_X, x, true);
     }
 
     public void setY(int y) {
-        this.y = y;
-        setParam(MACRO_PARAMS.MAP_POS_Y, y, true);
-        getCoordinates().setY(y);
+        setCoordinates(MacroCoordinates.get(getCoordinates().x, y));
+    }
+
+    public void setX(int x) {
+        setCoordinates(MacroCoordinates.get(x, getCoordinates().y));
+    }
+    public int getY() {
+        return y;
     }
 
     public int getX() {
         return x;
     }
 
-    public void setX(int x) {
-        this.x = x;
-        setParam(MACRO_PARAMS.MAP_POS_X, x, true);
-        getCoordinates().setX(x);
-    }
 
 
     @Override

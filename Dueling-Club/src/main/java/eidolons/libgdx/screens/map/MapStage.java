@@ -7,16 +7,16 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import eidolons.macro.MacroGame;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.screens.map.layers.*;
 import eidolons.libgdx.texture.TextureCache;
+import eidolons.macro.MacroGame;
 import main.content.enums.GenericEnums;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,18 +28,18 @@ import static main.system.MapEvent.UPDATE_MAP_BACKGROUND;
  * Created by JustMe on 2/20/2018.
  */
 public class MapStage extends Stage {
-    private final MapAlphaLayers alphaLayers;
     protected MapMoveLayers moveLayerMaster;
     protected MapParticles particles;
     List<MapTimedLayer> layers = new ArrayList<>();
-    private Group topLayer;
-    private ImageContainer map;
-    private ImageContainer nextMap;
-    private MapRoutes routes;
+    private final Group topLayer;
+    private final ImageContainer map;
+    private final ImageContainer nextMap;
+    private final MapRoutes routes;
     private float lastNextMapAlphaPercentage;
 
     public MapStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
+        MapAlphaLayers alphaLayers;
         addActor(alphaLayers = new MapAlphaLayers());
         addActor(particles = new MapParticles());
         addActor(routes = new MapRoutes());
@@ -79,8 +79,7 @@ public class MapStage extends Stage {
     }
 
     private void updateBackground(String s, boolean nextMapUpdate) {
-        final String path = s;
-        TextureRegion backTexture = getOrCreateR(path);
+        TextureRegion backTexture = getOrCreateR(s);
         ImageContainer map = this.map;
         if (nextMapUpdate) {
             map = this.nextMap;
@@ -94,7 +93,7 @@ public class MapStage extends Stage {
     public void act(float delta) {
         super.act(delta);
         resetZIndices();
-        if (CoreEngine.isMapEditor())
+        if (Flags.isMapEditor())
             return;
         if (nextMap.getContent()==null )
             return; //TODO make sure background is initialized always on time! 
@@ -103,7 +102,7 @@ public class MapStage extends Stage {
          MacroGame.getGame().getLoop().getTimeMaster().getPercentageIntoNextDaytime();
         if (percentage <= lastNextMapAlphaPercentage) //no going back in time...
             return;
-        layers.forEach(layer -> layer.applyDynamicTint());
+        layers.forEach(MapTimedLayer::applyDynamicTint);
         lastNextMapAlphaPercentage = percentage;
         color.a = percentage;
 //        nextMap.getContent().setColor(color);

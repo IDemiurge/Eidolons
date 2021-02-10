@@ -18,12 +18,11 @@ import java.util.Vector;
 
 public class OptionsPanelSwing<T extends Enum<T>> extends G_Panel implements ActionListener {
     OptionsMaster master;
-    private Map<OPTION, Component> map = new HashMap<>();
-    private G_TabbedPanel tabs;
+    private final Map<OPTION, Component> map = new HashMap<>();
 
     public OptionsPanelSwing(Map<OPTIONS_GROUP, Options> optionsMap) {
         super(("flowy "));
-        tabs = new G_TabbedPanel(new Dimension(600, 400));
+        G_TabbedPanel tabs = new G_TabbedPanel(new Dimension(600, 400));
         for (OPTIONS_GROUP group : optionsMap.keySet()) {
             G_Panel subpanel = new G_Panel("flowy");
             Options options = optionsMap.get(group);
@@ -42,16 +41,16 @@ public class OptionsPanelSwing<T extends Enum<T>> extends G_Panel implements Act
                 subpanel.add(comp, "sg comps");
 
             }
-            tabs.addTab(subpanel, StringMaster.getWellFormattedString(group.toString()));
+            tabs.addTab(subpanel, StringMaster.format(group.toString()));
             // subpanel.setPanelSize(size);
         }
         add(tabs, "x 100");
         G_Panel btnpanel = new G_Panel();
-        btnpanel.add(new G_Button("Ok", () -> ok()), "sg btns");
-        btnpanel.add(new G_Button("Save", () -> save()), "sg btns");
-        btnpanel.add(new G_Button("Apply", () -> update()), "sg btns");
-        btnpanel.add(new G_Button("Cancel", () -> cancel()), "sg btns");
-        btnpanel.add(new G_Button("Defaults", () -> toDefaults()), "sg btns");
+        btnpanel.add(new G_Button("Ok", this::ok), "sg btns");
+        btnpanel.add(new G_Button("Save", this::save), "sg btns");
+        btnpanel.add(new G_Button("Apply", this::update), "sg btns");
+        btnpanel.add(new G_Button("Cancel", this::cancel), "sg btns");
+        btnpanel.add(new G_Button("Defaults", this::toDefaults), "sg btns");
         add(btnpanel);
 
     }

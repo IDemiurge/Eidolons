@@ -1,36 +1,23 @@
 package eidolons.game.netherflame.boss.logic.rules;
 
-import main.game.bf.Coordinates;
+import eidolons.game.netherflame.boss.BossHandler;
+import eidolons.game.netherflame.boss.BossManager;
+import eidolons.game.netherflame.boss.BossModel;
 import main.game.logic.event.Event;
 
-public class BossRulesImpl implements BossRules {
+public class BossRulesImpl <T extends BossModel> extends BossHandler<T> implements BossRules {
+    public BossRulesImpl(BossManager<T> manager) {
+        super(manager);
+    }
     @Override
     public void handleEvent(Event e) {
-
-    }
-
-    @Override
-    public void checkRoundEnds(Event e) {
-
-    }
-
-    @Override
-    public boolean isMeleeCell(Coordinates c) {
-        return false;
-    }
-
-    @Override
-    public void checkScriptRules() {
-
+/*
+custom rules for extra attacks
+ */
     }
 
     @Override
     public void newTurn() {
-
-    }
-
-    @Override
-    public void roundStarts() {
 
     }
 
@@ -45,27 +32,7 @@ public class BossRulesImpl implements BossRules {
     }
 
     @Override
-    public void heroSacrificed() {
-
-    }
-
-    @Override
     public void death() {
-
-    }
-
-    @Override
-    public void bossDeath() {
-
-    }
-
-    @Override
-    public void allyDeath() {
-
-    }
-
-    @Override
-    public void doubleDeath() {
 
     }
 }

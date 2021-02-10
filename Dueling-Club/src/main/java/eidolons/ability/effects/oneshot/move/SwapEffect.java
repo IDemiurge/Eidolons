@@ -5,11 +5,10 @@ import main.game.bf.Coordinates;
 import main.game.bf.MovementManager.MOVE_MODIFIER;
 
 public class SwapEffect extends MoveEffect {
-    private Coordinates c;
 
     @Override
     public boolean applyThis() {
-        c = ref.getTargetObj().getCoordinates();
+        Coordinates c = ref.getTargetObj().getCoordinates();
         try {
             game.getMovementManager().move(ref.getTargetObj(),
              ref.getSourceObj().getCoordinates(), free,

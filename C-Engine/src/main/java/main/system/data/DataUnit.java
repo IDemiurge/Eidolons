@@ -12,9 +12,11 @@ import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.WeightMap;
 
+import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
-public class DataUnit<T extends Enum<T>> {
+public class DataUnit<T extends Enum<T>> implements Serializable {
     public static final String TRUE = "TRUE";
     protected Class<? extends Enum<T>> enumClass;
     protected Class<? extends T> enumClazz;
@@ -63,6 +65,10 @@ public class DataUnit<T extends Enum<T>> {
         return StringMaster.getBoolean(getValue(t));
     }
 
+    public boolean getBooleanValue(String t) {
+        return StringMaster.getBoolean(getValue(t));
+    }
+
     public int getIntValue(String value) {
         String val = getValue(value);
         if (StringMaster.isEmpty(val)) {
@@ -70,7 +76,7 @@ public class DataUnit<T extends Enum<T>> {
         }
         if (!NumberUtils.isInteger(val))
             return 0;
-        return NumberUtils.getInteger(val);
+        return NumberUtils.getIntParse(val);
     }
 
     public float getFloatValue(T value) {
@@ -84,7 +90,15 @@ public class DataUnit<T extends Enum<T>> {
     }
 
     public String[] getRelevantValues() {
+        if (relevantValues == null) {
+            return getValueConsts();
+        }
         return relevantValues;
+    }
+
+    protected String[] getValueConsts() {
+        return Arrays.stream(getEnumClazz().getEnumConstants()).map(constant -> constant.toString()).
+                collect(Collectors.toList()).toArray(new String[0]);
     }
 
     public int getIntValue(T value) {
@@ -125,20 +139,24 @@ public class DataUnit<T extends Enum<T>> {
     }
 
 
-    public void setValue(T name, String value) {
+    public DataUnit<T> setValue(T name, String value) {
         if (value == null) {
             removeValue(name);
         }
-        setValue(name.name(), value);
+        return setValue(name.name(), value);
     }
 
+
+    public void addValue(String name, String value) {
+        MapMaster.addToStringMap(values, name, value, ",");
+    }
     public void addValue(T name, String value) {
-        MapMaster.addToStringMap(values, name.name(), value,
-                DataUnitFactory.getSeparator(false));
+        MapMaster.addToStringMap(values, name.name(), value, ",");
     }
 
-    public void setValue(String name, String value) {
+    public DataUnit<T> setValue(String name, String value) {
         values.put(name, value);
+        return this;
     }
 
     public String getValue(T t) {
@@ -170,7 +188,7 @@ public class DataUnit<T extends Enum<T>> {
         for (String entry : entries) {
             String[] pair = entry.split(getPairSeparator());
             if (pair.length != 2) {
-//                format=
+                //                format=
                 LogMaster.log(0, "malformed data:" + entry);
                 handleMalformedData(entry);
                 continue;
@@ -220,6 +238,9 @@ public class DataUnit<T extends Enum<T>> {
 
     }
 
+    public void addCount(T stat, int val) {
+        addCount(stat, "" + val);
+    }
     public Map<Coordinates, ObjType> buildObjCoordinateMapFromString(String string) {
 
         Map<Coordinates, ObjType> objMap = new LinkedHashMap<>();
@@ -315,11 +336,12 @@ public class DataUnit<T extends Enum<T>> {
         return new WeightMap(getValue(val), String.class);
     }
 
-    public void setValue(T name, Object val) {
+    public DataUnit<T> setValue(T name, Object val) {
         if (val == null) {
             removeValue(name);
         } else
             setValue(name, val.toString());
+        return this;
     }
 
     public DataUnit<T> clear() {
@@ -333,6 +355,10 @@ public class DataUnit<T extends Enum<T>> {
             set.remove(exception);
         }
         return getData(set);
+    }
+
+    public void removeFromValue( T val, String s) {
+        setValue(val, getValue(val).replace(s, ""));
     }
 
 

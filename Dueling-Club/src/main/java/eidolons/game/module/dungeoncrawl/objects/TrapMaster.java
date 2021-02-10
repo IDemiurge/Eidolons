@@ -1,31 +1,32 @@
 package eidolons.game.module.dungeoncrawl.objects;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.netherflame.igg.event.TIP;
-import eidolons.game.netherflame.igg.event.TipMessageMaster;
-import eidolons.game.netherflame.igg.event.TipMessageSource;
+import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
+import eidolons.system.text.tips.TextEvent;
+import eidolons.system.text.tips.TipMessageMaster;
+import eidolons.system.text.tips.TipMessageSource;
+import eidolons.system.text.tips.Tips;
 import main.entity.Entity;
 import main.game.bf.Coordinates;
-import main.system.auxiliary.EnumMaster;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class TrapMaster extends DungeonHandler {
 
-    private Map<Coordinates, Trap> trapMap = new HashMap<>();
+    private final Map<Coordinates, Trap> trapMap = new HashMap<>();
 
     public TrapMaster(DungeonMaster master) {
         super(master);
     }
 
 
-    public Trap createTrap(Dungeon dungeon, String name, Coordinates coordinates) {
+    public Trap createTrap(Floor floor, String name, Coordinates coordinates) {
         return new Trap() {
             @Override
             public void trigger(Unit victim) {
@@ -35,14 +36,13 @@ public class TrapMaster extends DungeonHandler {
                 if (!victim.isPlayerCharacter())
                     return;
 
-                TIP tip = new EnumMaster<TIP>().
-                        retrieveEnumConst(TIP.class, name);
-                TipMessageSource data = new TipMessageSource(tip.message, tip.img, "Onward!", false,
+                TextEvent tip = Tips.getTipConst(name);
+                TipMessageSource data = new TipMessageSource(tip.getMessage(), tip.getImg(), "Onward!", false,
                         () -> {
                             tip.run();
                             victim.kill(victim, true, null);
                             try {
-                                victim.getGame().getLoop().actionInput(null);
+                                victim.getGame().getLoop().actionInputManual(null);
                             } catch (Exception e) {
                                 main.system.ExceptionMaster.printStackTrace(e);
                             }
@@ -50,7 +50,7 @@ public class TrapMaster extends DungeonHandler {
                             DC_Game.game.getMetaMaster().getDefeatHandler().isEnded(true, true);
                         });
 
-                MusicMaster.playMoment(MusicMaster.MUSIC_MOMENT.FALL);
+                MusicMaster.playMoment(MusicEnums.MUSIC_MOMENT.FALL);
                 TipMessageMaster.tip(data);
             }
         };
@@ -61,14 +61,14 @@ public class TrapMaster extends DungeonHandler {
          */
     }
 
-    public void initTraps(Dungeon dungeon) {
-        for (String s : dungeon.getCustomDataMap().keySet()) {
-            if (dungeon.getCustomDataMap().get(s).toLowerCase().contains("trap")) {
-                Coordinates c = new Coordinates(s);
-                trapMap.put(c, createTrap(dungeon, dungeon.getCustomDataMap().get(s),
-                        c));
-            }
-        }
+    public void initTraps(Floor floor) {
+//        for (String s : dungeon.getCustomDataMap().keySet()) {
+//            if (dungeon.getCustomDataMap().get(s).toLowerCase().contains("trap")) {
+//                Coordinates c = new Coordinates(s);
+//                trapMap.put(c, createTrap(dungeon, dungeon.getCustomDataMap().get(s),
+//                        c));
+//            }
+//        }
     }
 
     public void unitMoved(Unit unit) {

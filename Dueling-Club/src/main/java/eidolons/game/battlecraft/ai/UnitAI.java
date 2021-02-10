@@ -6,10 +6,11 @@ import eidolons.game.battlecraft.ai.advanced.companion.MetaGoal;
 import eidolons.game.battlecraft.ai.advanced.companion.Order;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
-import eidolons.game.battlecraft.ai.explore.AggroMaster.ENGAGEMENT_LEVEL;
 import eidolons.game.battlecraft.ai.tools.AiExecutor;
+import eidolons.game.battlecraft.ai.tools.AiLogger;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.CONTENT_CONSTS2.ORDER_TYPE;
+import main.content.enums.rules.VisionEnums.ENGAGEMENT_LEVEL;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
@@ -36,7 +37,7 @@ public class UnitAI {
     private List<DC_ActiveObj> usedActions;
     private List<MetaGoal> metaGoals;
     private boolean engagedOverride;
-    ENGAGEMENT_LEVEL engagementLevel;
+    ENGAGEMENT_LEVEL engagementLevel=ENGAGEMENT_LEVEL.UNSUSPECTING;
 
     //    private CHARACTER_TYPE characterType;
 //    private INCLINATION_TYPE characterType;
@@ -70,7 +71,7 @@ public class UnitAI {
 
     public int getLogLevel() {
         // TODO group leader? by level? By selection?
-        return 0;
+        return AiLogger.LOG_LEVEL_FULL;
 
     }
 
@@ -117,9 +118,9 @@ public class UnitAI {
     }
 
     public ENGAGEMENT_LEVEL getEngagementLevel() {
-        if (engagementLevel == null) {
-           return getGroup().getEngagementLevel();
-        }
+        // if (engagementLevel == null) {
+        //    return getGroup().getEngagementLevel();
+        // }
         return engagementLevel;
     }
 
@@ -167,7 +168,7 @@ public class UnitAI {
                 orderType = ORDER_TYPE.PURSUIT;
             }
         }
-        main.system.auxiliary.log.LogMaster.dev(unit + " received orders: " + standingOrders);
+        main.system.auxiliary.log.LogMaster.devLog(unit + " received orders: " + standingOrders);
         this.standingOrders = standingOrders;
     }
 
@@ -191,9 +192,10 @@ public class UnitAI {
     }
 
     public GroupAI getGroupAI() {
-        if (getUnit().getGame().getAiManager().isDefaultAiGroupForUnitOn())
+        if (!getUnit().getGame().getAiManager().isDefaultAiGroupForUnitOn())
             if (groupAI == null) {
                 groupAI = (unit.getGame().getAiManager().getCustomUnitGroup(getUnit()));
+                main.system.auxiliary.log.LogMaster.log(1,"Custom AI UnitGroup created for "+unit.getNameAndCoordinate() );
                 if (groupAI != null) {
                     groupAI.add(getUnit());
                 }

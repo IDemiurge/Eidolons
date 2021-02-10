@@ -15,6 +15,9 @@ public interface IStructureHandler extends ControlButtonHandler {
     @IgnoredCtrlMethod
     void removeCells();
     void addCells();
+
+    void exportStruct();
+
     void addZone();
     @IgnoredCtrlMethod
     void removeZone();

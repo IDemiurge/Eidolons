@@ -77,11 +77,7 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
         if (!(ref.getTargetObj() instanceof BattleFieldObject)) {
             return true; // TODO if cell, apply damage to corpses?
         }
-        if (checkDamageMod(DAMAGE_MODIFIER.QUIET)) {
-            getRef().setQuiet(true);
-        } else {
-            getRef().setQuiet(false);
-        }
+        getRef().setQuiet(checkDamageMod(DAMAGE_MODIFIER.QUIET));
 
         BattleFieldObject targetObj = (BattleFieldObject) ref.getTargetObj();
         int amount = formula.getAppendedByModifier(ref.getValue(KEYS.FORMULA))

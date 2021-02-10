@@ -7,10 +7,6 @@ public interface ResourceSource {
 
     String getEndurance();
 
-    String getStamina();
-
-    String getMorale();
-
     String getEssence();
 
     String getFocus();

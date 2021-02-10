@@ -45,11 +45,11 @@ public class SpellMaster {
                     }
                 }
             }
-            String known = "";
+            StringBuilder known = new StringBuilder();
             for (ObjType type : list) {
-                known += type.getName() + ContainerUtils.getContainerSeparator();
+                known.append(type.getName()).append(ContainerUtils.getContainerSeparator());
             }
-            hero.setProperty(PROPS.KNOWN_SPELLS, known, true);
+            hero.setProperty(PROPS.KNOWN_SPELLS, known.toString(), true);
 
         } else {
             String prop = hero.getProperty(PROPS.KNOWN_SPELLS);
@@ -132,9 +132,7 @@ public class SpellMaster {
             }
             if (checkKnowledge(hero, type)) // Intelligence ?
             {
-                if (checkMastery(hero, type)) {
-                    return true;
-                }
+                return checkMastery(hero, type);
             }
         }
         return false;

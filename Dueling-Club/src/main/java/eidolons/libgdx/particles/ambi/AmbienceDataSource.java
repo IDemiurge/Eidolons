@@ -1,7 +1,7 @@
 package eidolons.libgdx.particles.ambi;
 
 import com.badlogic.gdx.graphics.Color;
-import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
+import com.badlogic.gdx.utils.ObjectMap;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.GenericEnums;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
@@ -11,7 +11,7 @@ import main.system.datatypes.WeightMap;
 import java.util.ArrayList;
 import java.util.List;
 
-import static eidolons.libgdx.particles.ambi.AmbienceDataSource.AMBIENCE_TEMPLATE.*;
+import static eidolons.libgdx.particles.ambi.AmbienceDataSource.VFX_TEMPLATE.*;
 import static main.content.enums.GenericEnums.VFX.*;
 
 /**
@@ -20,90 +20,54 @@ import static main.content.enums.GenericEnums.VFX.*;
 public class AmbienceDataSource {
 
 
+    private final ObjectMap<String, Integer> map = new ObjectMap<>(12);
     Color colorHue;
-    private AMBIENCE_TEMPLATE template;
+    boolean shadow;
     private List<String> emitters;
-    private int showChance = 100;
 
-    public AmbienceDataSource(AMBIENCE_TEMPLATE template, DAY_TIME time) {
+
+    public AmbienceDataSource(VFX_TEMPLATE template, DAY_TIME time) {
         emitters = new ArrayList<>();
-        this.template = template;
-
         float daynessCoef = getDayness(time);
-        float priority = 1f;
         if (daynessCoef != 0)
-            for (GenericEnums.VFX preset : template.daily) {
-                float chance = (daynessCoef)*5/template.daily.length;
-                emitters.add(string(preset, (int) (chance * 100 * priority)));
-                priority -= 0.05f;
-                priority = priority * 4 / 5;
-            }
-        priority = 1f;
+            addVfx(daynessCoef, false, template);
         if (daynessCoef != 1)
-            for (GenericEnums.VFX preset : template.nightly) {
-                float chance = (1 - daynessCoef)*5/template.nightly.length;
-                emitters.add(string(preset, (int) (chance * 100 * priority)));
-                priority -= 0.05f;
-                priority = priority * 4 / 5;
+            addVfx(daynessCoef, true, template);
+
+    }
+
+    public int getShowChance(String vfx) {
+        if (map == null) {
+            return 0;
+        }
+        return map.get(vfx);
+    }
+
+    private void addVfx(float daynessCoef, boolean night, VFX_TEMPLATE template) {
+        float priority = 1f;
+        GenericEnums.VFX[] vfx = night ? template.nightly : template.daily;
+        for (GenericEnums.VFX preset : vfx) {
+            //invert chance for nightly emitters
+            float chance = (1 - daynessCoef) * 6 / vfx.length; //default average
+            if (shadow) {
+                chance *= 2;
             }
-
-        if (emitters.isEmpty()) {
-            switch (time) {
-                case DAWN:
-                    emitters.add(MIST_WHITE2.getPath());
-                case MORNING:
-                    emitters.add(SMOKE_TEST.getPath());
-                    emitters.add(MIST_WHITE.getPath());
-                    emitters.add(WISPS.getPath());
-                    break;
-                case MIDDAY:
-                    emitters.add(MIST_WHITE3.getPath());
-                case DUSK:
-                    emitters.add(MIST_WHITE.getPath());
-                    emitters.add(MIST_BLACK.getPath());
-                    emitters.add(SNOW.getPath());
-
-                    break;
-
-                case NIGHTFALL:
-                    emitters.add(MIST_CYAN.getPath());
-                case MIDNIGHT:
-                    emitters.add(WISPS.getPath());
-                    emitters.add(STARS.getPath());
-                    emitters.add(SMOKE_TEST.getPath());
-
-                    emitters.add(DARK_MIST_LITE.getPath());
-                    break;
-            }
-            showChance = 80 - 10 * emitters.size();
-
-
-            switch (time) {
-                case MORNING:
-                    emitters.add(string(MIST_WHITE3, showChance / 3));
-                    break;
-                case DUSK:
-                    emitters.add(string(MIST_SAND_WIND, showChance / 3));
-                    break;
-                case MIDNIGHT:
-                    emitters.add(string(MIST_WIND, showChance / 3));
-
-            }
+            int baseChance = (int) (chance * 100 * priority);
+            emitters.add(string(preset, baseChance));
+            map.put(preset.getPath(), Math.round(chance * 100 * priority));
+            //each next vfx is less likely
+            priority -= 0.05f;
+            priority = priority * 4 / 5;
         }
     }
 
-    public AmbienceDataSource(LevelBlock block, DAY_TIME dayTime) {
-        this(getTemplate(block.getStyle()),
-         dayTime);
 
-    }
-
-    public static AMBIENCE_TEMPLATE getTemplate(DUNGEON_STYLE style) {
+    public static VFX_TEMPLATE getTemplate(DUNGEON_STYLE style) {
         return getTemplateMap(style).getRandomByWeight();
     }
 
-    public static WeightMap<AMBIENCE_TEMPLATE> getTemplateMap(DUNGEON_STYLE style) {
-        WeightMap<AMBIENCE_TEMPLATE> map = new WeightMap<>(AMBIENCE_TEMPLATE.class);
+    public static WeightMap<VFX_TEMPLATE> getTemplateMap(DUNGEON_STYLE style) {
+        WeightMap<VFX_TEMPLATE> map = new WeightMap<>(VFX_TEMPLATE.class);
         switch (style) {
             case Knightly:
             case Holy:
@@ -135,12 +99,12 @@ public class AmbienceDataSource {
             case DWARF:
 
                 map.chain(COLD, 20)
-                        . chain(DEEP_MIST, 20)
-                        . chain(HALL, 20)
-                        . chain(POISON, 20)
-                        . chain(HELL, 20)
-                        . chain(CRYPT, 20)
-                        . chain(CAVE, 20)
+                        .chain(DEEP_MIST, 20)
+                        .chain(HALL, 20)
+                        .chain(POISON, 20)
+                        .chain(HELL, 20)
+                        .chain(CRYPT, 20)
+                        .chain(CAVE, 20)
                 ;
                 break;
         }
@@ -169,7 +133,7 @@ public class AmbienceDataSource {
 
     private String string(GenericEnums.VFX emitterPreset, int i) {
         return emitterPreset.getPath()
-         + StringMaster.wrapInParenthesis("" + i / 3);
+                + StringMaster.wrapInParenthesis("" + i / 3);
     }
 
     public List<String> getEmitters() {
@@ -180,15 +144,11 @@ public class AmbienceDataSource {
         this.emitters = emitters;
     }
 
-    public int getShowChance() {
-        return showChance;
+    public ObjectMap<String, Integer> getMap() {
+        return map;
     }
 
-    public void setShowChance(int showChance) {
-        this.showChance = showChance;
-    }
-
-    public enum AMBIENCE_TEMPLATE {
+    public enum VFX_TEMPLATE {
 
         CAVE,
         COLD,
@@ -198,140 +158,141 @@ public class AmbienceDataSource {
         HELL,
         HALL,
         FOREST,
-        DEEP_MIST,;
+        DEEP_MIST,
+        ;
 
         static {
             COLD.setDaily(
-             SNOW,
-             MIST_ARCANE,
-             MIST_WIND,
-             SNOWFALL,
-//             MIST_CYAN,
-//             DARK_MIST_LITE,
-             MIST_CYAN,
+                    SNOW,
+                    MIST_ARCANE,
+                    MIST_WIND,
+                    SNOWFALL,
+                    //             MIST_CYAN,
+                    //             DARK_MIST_LITE,
+                    MIST_CYAN,
                     STARS,
-             SNOWFALL_THICK
+                    SNOWFALL_THICK
             );
             COLD.setNightly(
-//             MIST_CYAN,
-             MIST_WIND,
+                    //             MIST_CYAN,
+                    MIST_WIND,
                     STARS,
-             MIST_ARCANE,
-             SNOW,
-             SNOWFALL,
+                    MIST_ARCANE,
+                    SNOW,
+                    SNOWFALL,
                     MIST_WHITE2,
                     MIST_ARCANE,
-//             DARK_MIST_LITE,
+                    //             DARK_MIST_LITE,
                     DARK_MIST_LITE
             );
 
             POISON.setDaily(
-             POISON_MIST,
-             POISON_MIST2,
-             ASH,
-             MIST_BLACK
+                    POISON_MIST,
+                    POISON_MIST2,
+                    ASH,
+                    MIST_BLACK
             );
             POISON.setNightly(
-             POISON_MIST,
-             POISON_MIST2,
-             MIST_BLACK
+                    POISON_MIST,
+                    POISON_MIST2,
+                    MIST_BLACK
 
             );
 
 
             CRYPT.setDaily(
-             MIST_WIND,
-             MIST_WHITE2,
-             MIST_ARCANE,
-             MIST_TRUE,
-             MIST_TRUE2
+                    MIST_WIND,
+                    MIST_WHITE2,
+                    MIST_ARCANE,
+                    MIST_TRUE,
+                    MIST_TRUE2
             );
             CRYPT.setNightly(
-             MIST_ARCANE,
-             MIST_WIND,
-             MIST_ARCANE,
-             DARK_MIST_LITE,
-             MIST_CYAN,
-             MIST_WIND
+                    MIST_ARCANE,
+                    MIST_WIND,
+                    MIST_ARCANE,
+                    DARK_MIST_LITE,
+                    MIST_CYAN,
+                    MIST_WIND
             );
 
             HELL.setDaily(
-             MIST_WIND,
-             POISON_MIST2,
-             ASH,
-             MIST_SAND_WIND,
-             CINDERS,
-             ASH
+                    MIST_WIND,
+                    POISON_MIST2,
+                    ASH,
+                    MIST_SAND_WIND,
+                    CINDERS,
+                    ASH
             );
             HELL.setNightly(
-             POISON_MIST,
-             POISON_MIST2,
-             ASH,
-             CINDERS,
-             ASH,
-             MIST_SAND_WIND
+                    POISON_MIST,
+                    POISON_MIST2,
+                    ASH,
+                    CINDERS,
+                    ASH,
+                    MIST_SAND_WIND
             );
 
             FOREST.setDaily(
-             FALLING_LEAVES
+                    FALLING_LEAVES
             );
             FOREST.setNightly(
-             FALLING_LEAVES_WINDY,
-             WISPS,
-             STARS
+                    FALLING_LEAVES_WINDY,
+                    WISPS,
+                    STARS
             );
 
             DEEP_MIST.setDaily(
-             MIST_WIND,
-             MIST_WHITE3,
-             MIST_BLACK,
-             DARK_MIST,
-             MIST_TRUE2
+                    MIST_WIND,
+                    MIST_WHITE3,
+                    MIST_BLACK,
+                    DARK_MIST,
+                    MIST_TRUE2
             );
 
             DEEP_MIST.setNightly(
-             MIST_WIND,
-             MIST_WHITE3,
-             MIST_ARCANE,
-             MIST_TRUE,
-             DARK_MIST,
-             MIST_TRUE2
+                    MIST_WIND,
+                    MIST_WHITE3,
+                    MIST_ARCANE,
+                    MIST_TRUE,
+                    DARK_MIST,
+                    MIST_TRUE2
             );
             DUNGEON.setDaily(
-             MIST_BLACK,
-             MIST_CYAN,
-             MIST_ARCANE
+                    MIST_BLACK,
+                    MIST_CYAN,
+                    MIST_ARCANE
             );
             DUNGEON.setNightly(
-             MIST_BLACK,
-             WISPS,
-             STARS,
-             MOTHS_TIGHT2
+                    MIST_BLACK,
+                    WISPS,
+                    STARS,
+                    MOTHS_TIGHT2
             );
             HALL.setDaily(
-             MIST_WIND
+                    MIST_WIND
             );
             HALL.setNightly(
-             MIST_WIND,
-             MIST_ARCANE,
-             MOTHS,
-             MOTHS_TIGHT2
+                    MIST_WIND,
+                    MIST_ARCANE,
+                    MOTHS,
+                    MOTHS_TIGHT2
             );
 
             CAVE.setDaily(
-             MIST_BLACK,
-             MIST_WIND,
-             MIST_TRUE2,
-             MIST_WHITE
+                    MIST_BLACK,
+                    MIST_WIND,
+                    MIST_TRUE2,
+                    MIST_WHITE
             );
             CAVE.setNightly(
-             MIST_WIND,
-             MIST_WHITE,
-             MIST_ARCANE,
-             DARK_MIST_LITE,
-             MIST_TRUE2,
-             WISPS,
-             STARS
+                    MIST_WIND,
+                    MIST_WHITE,
+                    MIST_ARCANE,
+                    DARK_MIST_LITE,
+                    MIST_TRUE2,
+                    WISPS,
+                    STARS
 
             );
         }

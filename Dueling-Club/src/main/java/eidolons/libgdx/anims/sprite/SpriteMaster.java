@@ -3,6 +3,8 @@ package eidolons.libgdx.anims.sprite;
 import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.libgdx.GdxColorMaster;
+import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.texture.Sprites;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.BfObjEnums;
@@ -15,15 +17,12 @@ import main.system.auxiliary.data.FileManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import static main.content.enums.entity.BfObjEnums.SPRITES.ALTAR;
-import static main.content.enums.entity.BfObjEnums.SPRITES.ORB;
-
 public class SpriteMaster {
     private static final int DEFAULT_FPS = 12;
     private static int n = 1;
     private static SpriteX s;
 
-    public static List<SpriteX> getSpriteForUnit(BattleFieldObject obj, boolean over) {
+    public static List<SpriteX> getSpriteForUnit(BattleFieldObject obj, boolean over, BaseView baseView) {
         String path = getPath(obj, over);
         List<SpriteX> list = new ArrayList<>();
         if (path == null) {
@@ -62,14 +61,23 @@ public class SpriteMaster {
 //            if (over)
             boolean offset = isOffset(sprite, over, i, n);
             if (offset) {
-                s.getSprite().setOffsetX(s.getWidth() / 2 - 64);
-                s.getSprite().setOffsetY(s.getHeight() / 2 - 64);
+                s.getSprite().centerOnParent(baseView);
+                // s.getSprite().setOffsetX(s.getWidth() / 2 - 64);
+                // s.getSprite().setOffsetY(s.getHeight() / 2 - 64);
             }
             s.setOrigin(0, s.getHeight() / 2);
             if (obj.isOverlaying()) {
                 s.setScale(0.5f);
+                // s.setWidth(s.getWidth()/2);
+                // s.setHeight(s.getHeight()/2);
             }
             s.act(RandomWizard.getRandomFloatBetween(0, 3));
+            if (!obj.isOverlaying())
+                if (obj.isLightEmitter()) {
+                s.getSprite().centerOnParent(baseView);
+                s.getSprite().setOffsetX(40);
+                s.getSprite().setOffsetY(64);
+            }
         }
 //        s.setScale();
 //        s.setColor();
@@ -110,20 +118,20 @@ public class SpriteMaster {
         if (over && n <= 1) {
             return 0;
         }
-        if (sprite==ORB)
-            return 32;
-        if (sprite==ALTAR) {
-            return 64;
-        }
+        // if (sprite==ORB)
+        //     return 32;
+        // if (sprite==ALTAR) {
+        //     return 64;
+        // }
         return -i * s.getHeight() / 12 + i * i * s.getHeight() / 54;
     }
 
     private static float getX(BfObjEnums.SPRITES sprite, boolean over, BattleFieldObject obj, int i, int n) {
-        if (sprite==ORB) {
-            return 32;
-        } if (sprite==ALTAR) {
-            return 64;
-        }
+        // if (sprite==ORB) {
+        //     return 32;
+        // } if (sprite==ALTAR) {
+        //     return 64;
+        // }
 //        if (getParent() instanceof BaseView) {
 //            switch (((BaseView) getParent()).getUserObject().getName()) {
 //                case "Eldritch Sphere":
@@ -176,8 +184,6 @@ public class SpriteMaster {
                         return Sprites.RUNE_INSCRIPTION;
                     case ("Torch"):
                         return Sprites.TORCH;
-                    case ("Altar"):
-                        return Sprites.ALTAR;
                     case ("Eldritch Sphere"):
                         return Sprites.ORB;
                 }
@@ -206,6 +212,9 @@ public class SpriteMaster {
     }
 
     private static Color getColor(int i, BfObjEnums.SPRITES sprite, boolean over, BattleFieldObject obj) {
+        if (obj.isLightEmitter()) {
+          return  GdxColorMaster.getColorForTheme(obj.getColorTheme());
+        }
         switch (obj.getName()) {
             case "Netherbound Horror":
                 if (i==4) {

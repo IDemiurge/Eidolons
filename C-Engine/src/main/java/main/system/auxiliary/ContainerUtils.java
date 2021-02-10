@@ -46,7 +46,7 @@ public class ContainerUtils {
                     delimiter = delimiter.toLowerCase();
                 }
                 if (!containerString.contains(delimiter)) {
-                    delimiter = StringMaster.getWellFormattedString(delimiter);
+                    delimiter = StringMaster.format(delimiter);
                 }
             }
         }
@@ -69,8 +69,10 @@ public class ContainerUtils {
     }
 
     public static String[] open(String containerString, String separator) {
-        if (containerString == null)
-            return new String[]{""};
+        if (StringMaster.isEmpty(containerString))
+            return new String[]{};
+        if (!containerString.contains(separator))
+            return new String[]{};
 
         String[] array = containerString.split(Pattern.quote(separator));
         int n = 0;
@@ -91,7 +93,7 @@ public class ContainerUtils {
     }
 
     public static List<String> openContainer(String containerString) {
-        return openContainer(containerString, StringMaster.CONTAINER_SEPARATOR);
+        return openContainer(containerString, Strings.CONTAINER_SEPARATOR);
     }
 
     public static String getContainerSeparator() {
@@ -102,7 +104,7 @@ public class ContainerUtils {
         int i = 0;
         for (String item : listData) {
 
-            listData.set(i, StringMaster.getWellFormattedString(item));
+            listData.set(i, StringMaster.format(item));
             i++;
         }
     }
@@ -116,7 +118,7 @@ public class ContainerUtils {
         }
     }
 
-    public static String joinStringList(List<String> list, String divider, boolean cropLastDivider) {
+    public static String joinStringList(Collection<String> list, String divider, boolean cropLastDivider) {
         if (list == null) {
             return "";
         }
@@ -145,18 +147,18 @@ public class ContainerUtils {
     }
 
     public static String joinList(List list) {
-        return joinList(list, StringMaster.SEPARATOR);
+        return joinList(list, Strings.SEPARATOR);
     }
 
     public static String joinList(List list, String divider) {
         return joinStringList(convertToStringList(list), divider);
     }
 
-    public static String joinStringList(List<String> list, String divider) {
+    public static String joinStringList(Collection<String> list, String divider) {
         return joinStringList(list, divider, true);
     }
 
-    public static String constructContainer(List<String> list) {
+    public static String constructContainer(Collection<String> list) {
         return joinStringList(list, getContainerSeparator(), false);
     }
 
@@ -165,7 +167,7 @@ public class ContainerUtils {
 
     }
 
-    public static String constructStringContainer(List<?> list) {
+    public static String constructStringContainer(Collection<?> list) {
         return constructStringContainer(list, getContainerSeparator());
     }
 
@@ -178,11 +180,14 @@ public class ContainerUtils {
                 , divider);
     }
 
-    public static String constructStringContainer(List<?> list, String separator) {
+    public static String constructStringContainer(Collection<?> list, String separator) {
         return joinStringList(ListMaster.toStringList(list.toArray()), separator, false);
     }
 
-    public static String constructEntityNameContainer(List<? extends Entity> list
+    public static String constructStringContainer(boolean cropLast, Collection<?> list, String separator) {
+        return joinStringList(ListMaster.toStringList(list.toArray()), separator, cropLast);
+    }
+    public static String constructEntityNameContainer(Collection<? extends Entity> list
 
     ) {
         return joinStringList(ListMaster.toStringList(true, list.toArray()),

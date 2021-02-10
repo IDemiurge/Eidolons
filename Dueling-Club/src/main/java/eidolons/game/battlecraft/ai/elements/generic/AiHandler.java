@@ -16,6 +16,7 @@ import eidolons.game.battlecraft.ai.logic.atomic.AtomicAi;
 import eidolons.game.battlecraft.ai.tools.*;
 import eidolons.game.battlecraft.ai.tools.path.CellPrioritizer;
 import eidolons.game.battlecraft.ai.tools.path.PathBuilder;
+import eidolons.game.battlecraft.ai.tools.path.alphastar.StarBuilder;
 import eidolons.game.battlecraft.ai.tools.priority.PriorityManager;
 import eidolons.game.battlecraft.ai.tools.priority.PriorityModifier;
 import eidolons.game.battlecraft.ai.tools.priority.ThreatAnalyzer;
@@ -33,6 +34,13 @@ public abstract class AiHandler {
     protected AiMaster master;
     protected DC_Game game;
 
+
+    protected boolean isDebug() {
+        // if (OptionsMaster.getGameplayOptions().getBooleanValue(GameplayOptions.GAMEPLAY_OPTION.AI_DEBUG)) {
+            return false;
+        // }
+        // return false;
+    }
 
     public AiHandler(AiMaster master) {
         this.master = master;
@@ -58,7 +66,6 @@ public abstract class AiHandler {
     }
 
     public void initialize() {
-        master.getHandlers().add(this);
     }
 
     public SituationAnalyzer getSituationAnalyzer() {
@@ -67,6 +74,9 @@ public abstract class AiHandler {
 
     public TaskManager getTaskManager() {
         return master.getTaskManager();
+    }
+    public StarBuilder getStarBuilder() {
+        return master.getStarBuilder();
     }
 
     public ThreatAnalyzer getThreatAnalyzer() {

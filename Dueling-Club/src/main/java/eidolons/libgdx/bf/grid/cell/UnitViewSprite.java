@@ -3,7 +3,7 @@ package eidolons.libgdx.bf.grid.cell;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import eidolons.game.netherflame.boss.anims.view.SpriteModel;
+import eidolons.game.netherflame.boss.anims.old.SpriteModel;
 import eidolons.game.netherflame.boss.logic.entity.BossUnit;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.bf.GridMaster;
@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * Created by JustMe on 11/28/2018.
  */
-public abstract class UnitViewSprite extends GridUnitView {
+public abstract class UnitViewSprite extends UnitGridView {
     public static final boolean randomEmitter = true;
     public static final boolean TEST_MODE = false;
     private float height;

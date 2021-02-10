@@ -1,7 +1,7 @@
 package eidolons.entity.item;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.gui.panels.headquarters.datasource.GoldMaster;
 import main.content.DC_TYPE;
@@ -37,8 +37,8 @@ public class ItemFactory {
         if (GoldMaster.isGoldPack(type)
          && NumberUtils.isInteger(var)
          ) {
-            item.setParameter(GoldMaster.GOLD_VALUE, Integer.valueOf(var));
-            item.getType(). setParameter(GoldMaster.GOLD_VALUE, Integer.valueOf(var));
+            item.setParameter(GoldMaster.GOLD_VALUE, Integer.parseInt(var));
+            item.getType(). setParameter(GoldMaster.GOLD_VALUE, Integer.parseInt(var));
         }
         return item;
     }
@@ -51,9 +51,8 @@ public class ItemFactory {
             case ARMOR:
                 return new DC_ArmorObj(type, originalOwner, game, ref);
             case ITEMS:
-                DC_QuickItemObj dc_QuickItemObj = new DC_QuickItemObj(type, originalOwner, game,
+                return new DC_QuickItemObj(type, originalOwner, game,
                  ref);
-                return dc_QuickItemObj;
             case WEAPONS:
                 if (!quick) {
                     return new DC_WeaponObj(type, originalOwner, game, ref);

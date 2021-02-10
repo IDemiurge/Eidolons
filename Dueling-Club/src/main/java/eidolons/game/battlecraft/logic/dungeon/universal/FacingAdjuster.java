@@ -16,25 +16,11 @@ import java.util.Map;
 /**
  * Created by JustMe on 5/8/2017.
  */
-public class FacingAdjuster<E extends DungeonWrapper> extends DungeonHandler<E> {
+public class FacingAdjuster extends DungeonHandler  {
     protected Map<Coordinates, FACING_DIRECTION> facingMap = new HashMap<>();
 
-    public FacingAdjuster(DungeonMaster<E> master) {
+    public FacingAdjuster(DungeonMaster  master) {
         super(master);
-
-//        for (MicroObj unit : list) {
-//            FACING_DIRECTION facing;
-//            if (!game.isOffline()) {
-//                // TODO not always vertical!
-//                facing = FacingMaster.getFacingFromDirection(getPositioner().getClosestEdgeY(
-//                 unit.getCoordinates()).getDirection().flip());
-//            } else
-////             TODO    if (game.getGameMode() == GAME_MODES.ARENA_ARCADE) {
-//            {
-//                facing = FacingMaster.getPresetFacing(me);
-//            }
-//            ((BattleFieldObject) unit).setFacing(facing);
-//        }
     }
 
 
@@ -44,7 +30,7 @@ public class FacingAdjuster<E extends DungeonWrapper> extends DungeonHandler<E> 
     }
 
     public void adjustFacing(List<Unit> unitsList) {
-        unitsList.forEach(unit -> adjustFacing(unit));
+        unitsList.forEach(this::adjustFacing);
     }
 
     public FACING_DIRECTION getFacingOptimal(Coordinates c, boolean mine) {
@@ -54,27 +40,12 @@ public class FacingAdjuster<E extends DungeonWrapper> extends DungeonHandler<E> 
 
     }
 
-//    public FACING_DIRECTION getFacingInitial(Coordinates c) {
-//        // TODO
-//        return FacingMaster
-//         .getRelativeFacing(c, getGame().getDungeon().getPlayerSpawnCoordinates());
-//
-//    }
-
     boolean isAutoOptimalFacing() {
         return true;
     }
 
     public FACING_DIRECTION getFacingForUnit(Coordinates c, String typeName) {
-       Map<Coordinates, FACING_DIRECTION> map=getUnitFacingMap();
-        if (map!=null) {
-            return map.get(c);
-        }
         return getFacingOptimal(c, false);
-    }
-
-    protected Map<Coordinates, FACING_DIRECTION> getUnitFacingMap() {
-        return getBattleMaster().getDungeonMaster().getDungeonLevel().getUnitFacingMap();
     }
 
     public FACING_DIRECTION getPartyMemberFacing(Unit unit) {
@@ -93,14 +64,11 @@ public class FacingAdjuster<E extends DungeonWrapper> extends DungeonHandler<E> 
         if (facingMap.containsKey(c)) {
             return facingMap.get(c);
         }
-
-        // TODO
-
-
         return main.game.bf.directions.FACING_DIRECTION.NORTH;
     }
 
     public void unitPlaced(Coordinates adjacentCoordinate, FACING_DIRECTION facingFromDirection) {
-    }
+        //what was the idea?..
 
+    }
 }

@@ -47,7 +47,7 @@ public class TextureManager {
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {
                 getSpriteCache().beginCache();
-                getSpriteCache().add(TextureCache.createTexture(emptyCellPath, false),
+                getSpriteCache().add(TextureCache.getInstance()._createTexture(emptyCellPath, false, false),
                  x * GridMaster.CELL_W,
                  y * GridMaster.CELL_H);
                 cacheId++;
@@ -111,7 +111,7 @@ public class TextureManager {
         if (sheet == TextureCache.getMissingTexture()) {
             main.system.auxiliary.log.LogMaster.log(1, ">>>>>>>> Sprite not found: " + path);
         }
-        TextureRegion[][] tmp = null;
+        TextureRegion[][] tmp;
         try {
             tmp = TextureRegion.split(sheet,
              sheet.getWidth() / FRAME_COLS,
@@ -146,13 +146,13 @@ public class TextureManager {
 
         if (!xOrY) {
             if (NumberUtils.isNumber(y, true)) {
-                return NumberUtils.getInteger(y);
+                return NumberUtils.getIntParse(y);
             }
         }
-        path = StringMaster.cropLast(path, y);
+        path = StringMaster.cropAfter(path, y);
         String x = StringMaster.getLastPart(path, " ");
         if (NumberUtils.isNumber(x, true)) {
-            return NumberUtils.getInteger(x);
+            return NumberUtils.getIntParse(x);
         }
         return xOrY ?
          getXY(origPath).getKey() :

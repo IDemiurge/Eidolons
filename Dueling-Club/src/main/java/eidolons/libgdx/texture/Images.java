@@ -1,10 +1,15 @@
 package eidolons.libgdx.texture;
 
 import eidolons.entity.Deity;
-import eidolons.game.netherflame.igg.IGG_Images;
+import eidolons.game.netherflame.main.NF_Images;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.data.filesys.PathFinder;
+import main.system.ExceptionMaster;
 import main.system.auxiliary.StrPathBuilder;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 4/17/2018.
@@ -46,6 +51,7 @@ public class Images {
 
 
     public static final String LOGO_EDITOR_64 = "ui/main/editor.png";
+    public static final String LOGO_EDITOR_32 = "ui/main/editor32.png";
 
     public static final String LOGO32 = "ui/main/logo32.png";
     public static final String LOGO64 = "ui/main/logo64.png";
@@ -76,25 +82,29 @@ public class Images {
     public static final String UNKNOWN_PERK = StrPathBuilder.build(
      PathFinder.getComponentsPath(), "hq", "trees", "unknown perk.png");
     public static final String DIAMOND_OVERLAY = StrPathBuilder.build(
-     PathFinder.getComponentsPath(), "hq", "trees", "DIAMOND OVERLAY.png");
+     PathFinder.getComponentsPath(), "hq", "trees", "diamond overlay.png");
     public static final String DIAMOND_UNDERLAY = StrPathBuilder.build(
-     PathFinder.getComponentsPath(), "hq", "trees", "DIAMOND UNDERLAY.png");
+     PathFinder.getComponentsPath(), "hq", "trees", "diamond underlay.png");
 
     public static final String COLORLESS_BORDER = StrPathBuilder.build(
      PathFinder.getUiPath(), "components","generic",  "Borders", "neo", "colorless.png");
     public static final String TARGET_BORDER = StrPathBuilder.build(
-     PathFinder.getUiPath(), "components","generic", "Borders", "neo", "TARGET.png");
+            PathFinder.getUiPath(), "components","generic", "Borders", "neo", "target.png");
+    public static final String TARGET_BORDER_CIRCLE = StrPathBuilder.build(
+            PathFinder.getUiPath(), "components","generic", "Borders", "neo", "target rounded.png");
+    public static final String TARGET_BORDER_CIRCLE_96 = StrPathBuilder.build(
+            PathFinder.getUiPath(), "components","generic", "Borders", "neo", "target rounded 96.png");
     public static final String WEAVE_LINK = StrPathBuilder.build(
      PathFinder.getComponentsPath(), "hq", "weave", "link.png");
     public static final String WEAVE_OVERLAY = StrPathBuilder.build(
-     PathFinder.getComponentsPath(), "hq", "weave", "OVERLAY.png");
+     PathFinder.getComponentsPath(), "hq", "weave", "overlay.png");
     public static final String WEAVE_UNDERLAY = StrPathBuilder.build(
-     PathFinder.getComponentsPath(), "hq", "weave", "UNDERLAY.png");
+     PathFinder.getComponentsPath(), "hq", "weave", "underlay.png");
     public static final String WEAVE_BACKGROUND = StrPathBuilder.build(
-     PathFinder.getComponentsPath(), "hq", "weave", "BACKGROUND.jpg");
+     PathFinder.getComponentsPath(), "hq", "weave", "background.jpg");
 
     public static final String HC_SCROLL_BACKGROUND = StrPathBuilder.build(
-     PathFinder.getComponentsPath(), "hq","hc", "HC_SCROLL_BACKGROUND.jpg");
+     PathFinder.getComponentsPath(), "hq","hc", "hc_scroll_background.jpg");
     public static final String PARTY_BACKGROUND_COLS = StrPathBuilder.build(
             PathFinder.getComponentsPath(), "generic/decor/columns.png");
 
@@ -102,10 +112,18 @@ public class Images {
             PathFinder.getComponentsPath(), "generic/decor/columns.png");
 //    public static final String COLUMNS_CROPPED = StrPathBuilder.build(
 //            PathFinder.getComponentsPath(), "generic/decor/columns cropped.png");
-    public static final String SEPARATOR_ALT = StrPathBuilder.build(
-            PathFinder.getComponentsPath(), "generic/decor/SEPARATOR alt.png");
+public static final String SEPARATOR_NARROW = StrPathBuilder.build(
+        PathFinder.getComponentsPath(), "generic/decor/SEPARATOR alt.png");
+
+    public static final String SEPARATOR_METAL = StrPathBuilder.build(
+            PathFinder.getComponentsPath(), "generic/decor/separator metal.png");
+    public static final String SEPARATOR_METAL_VERTICAL = StrPathBuilder.build(
+            PathFinder.getComponentsPath(), "generic/decor/separator metal vertical.png");
+
+    public static final String SEPARATOR_NARROW_VERTICAL = StrPathBuilder.build(
+            PathFinder.getComponentsPath(), "generic/decor/separator alt vertical.png");
     public static final String SEPARATOR = StrPathBuilder.build(
-            PathFinder.getComponentsPath(), "generic","decor" ,"SEPARATOR.png");
+            PathFinder.getComponentsPath(), "generic","decor" ,"separator.png");
     public static final String SEPARATOR_LARGE = StrPathBuilder.build(
             PathFinder.getComponentsPath(), "generic","decor" ,"horizontal slice white.png");
     public static final  String TINY_CHEST = "ui/components/tiny/chest.png";
@@ -143,15 +161,46 @@ public class Images {
     public static final String GATEWAY_GLYPH = "sprites/bf/hanging/occult_circles.png";
     public static final String COLUMNS_AND_TREE_BG = "ui/components/lord/tab bg.png";
 
-    public static final String BG_EIDOLONS = IGG_Images.MAIN_ART.HALL2.getPath();
+    public static final String BG_EIDOLONS = NF_Images.MAIN_ART.HALL2.getPath();
     public static final String CIRCLE_BORDER = "ui/components/generic/borders/border circle.png";
     public static final String EMPTY_SKULL = "ui/empty1.jpg";
     public static final String DEMIURGE = "main/heroes/demiurge.jpg";
-    public static final String LIGHT_SKULL = "sprites/cells/light skull.png";
+    public static final String OVERLAY_LIGHT_SKULL = "ui/cells/outlines/overlays/skull.png";
+    public static final String OVERLAY_DARK = "ui/cells/outlines/overlays/dark.png";
     public static final String ROLL_ARROW = "ui/roll arrow.png";
     public static final String REALLY_EMPTY_32 ="ui/really empty 32.png" ;
     public static final String MISSING_TEXTURE = "ui/missing.png";
     public static final String COLOR_EMBLEM = "ui/color emblem.png";
+    public static final String ZARK_TITLE = "ui/components/ninepatch/zark/title box.png";
+    public static final String ZARK_BOX_UPSIDE_DOWN = "ui/components/ninepatch/zark/zark box down.png";
+    public static final String ZARK_BOX = "ui/components/ninepatch/zark/zark box.png";
+    public static final String ZARK_BTN_LARGE ="ui/components/ninepatch/zark/btn2.png" ;
+    public static final String INTENT_ICON_BG = "ui/components/dc/atb/intent bg.png";
+    public static final String TIME_BG = "ui/components/dc/atb/time bg.png";
+    public static final String STATUS_EXPLORE ="ui/components/dc/status/status explore.png";
+    public static final String STATUS_EXPLORE_DETECTED ="ui/components/dc/status/status_explore_detected.png";
+    public static final String STATUS_COMBAT ="ui/components/dc/status/status_combat.png";
+    public static final String STATUS_ALARM ="ui/components/dc/radial/examine.png";
+    // public static final String STATUS_ALARM ="ui/components/dc/status/status_alarm.png";
+    public static final String STATUS_PUZZLE ="ui/components/dc/status/puzzle.png";
+
+    public static final String VC_BG = "ui/components/generic/dialogue/grunge bg full.png";
+    // public static final String VC_BG = "ui/components/generic/vc/bg.png";
+    public static final String VC_DECOR_GATE =  "ui/components/generic/vc/gate.png";
+    public static final String VC_BOTTOM =  "ui/components/generic/vc/bottom.png";
+    public static final String BLACK_250_350 =  "ui/components/generic/vc/black_250_350.png";
+    public static final String HL_250_350 =  "ui/components/generic/vc/hl_250_350.png";
+    public static final String TEXT_BORDER_DECOR = "ui/components/ninepatch/std/frame decor.png";
+    public static final String PLATFORM_VESSEL =  "ui/cells/advanced/platform/visuals/vessel.png";
+    public static final String PLATFORM_HORN = "ui/cells/advanced/platform/visuals/horn.png";
+    public static final String PLATFORM_ISLAND = "ui/cells/advanced/platform/visuals/island.png";
+    public static final String PLATFORM_ROCKS= "ui/cells/advanced/platform/visuals/rocks.png";
+    public static final String BLOTCH = "ui/INK BLOTCH.png";
+    public static final String BLOTCH_INVERT = "ui/INK BLOTCH INVERT.png";
+    public static final String RUNE_CIRCLE = "sprites/boss/knight/runes.png";
+    public static final String GLAIVE = "sprites/boss/knight/glaive.png";
+    public static final String ARIUS_ORB = "sprites/boss/knight/stone.png";
+
 
     public static String getSketch(BACKGROUND background) {
         if (background == null) {
@@ -239,5 +288,27 @@ public class Images {
     public static String getDefaultSkillImage(String mastery) {
         return "gen/skill/mastery/"+mastery+".png";
 
+    }
+
+    public static String getByName(String path) {
+        try {
+            return (String) Images.class.getDeclaredField(path.toUpperCase().replace(" ", "_")).get(null);
+        }  catch (NoSuchFieldException e) {
+            main.system.auxiliary.log.LogMaster.log(1,"No such image field: " +path);
+        }catch (Exception e) {
+            ExceptionMaster.printStackTrace(e);
+        }
+        return null ;
+    }
+
+    public static List<String> getFieldsAsPaths() {
+        return Arrays.stream(Images.class.getDeclaredFields()).map(field -> {
+            try {
+                return field.get(null).toString();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }).collect(Collectors.toList());
     }
 }

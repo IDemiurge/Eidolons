@@ -27,7 +27,6 @@ public abstract class MicroGameState extends GameState {
 
     protected void initTypeMaps() {
         for (OBJ_TYPE TYPE : DC_TYPE.values()) {
-
             getObjMaps().put(TYPE, new ConcurrentMap<>());
         }
     }

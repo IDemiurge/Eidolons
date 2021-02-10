@@ -1,12 +1,11 @@
 package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import main.data.tree.LayeredData;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.data.DataUnit;
-
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 public abstract class StructureData<T extends Enum<T>, S extends LayeredData> extends DataUnit<T> {
     protected S structure;
@@ -15,7 +14,6 @@ public abstract class StructureData<T extends Enum<T>, S extends LayeredData> ex
     public StructureData(S structure) {
         this.structure = structure;
         init();
-
     }
 
     protected abstract void init();
@@ -24,9 +22,16 @@ public abstract class StructureData<T extends Enum<T>, S extends LayeredData> ex
 
     @Override
     public String[] getRelevantValues() {
-        return Arrays.stream(getEnumClazz().getEnumConstants()).map(constant -> constant.toString()).
-                collect(Collectors.toList()).toArray(new String[0]);
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+            return getValueConsts();
+        }
+        return getValuesCropped();
     }
+
+    protected String[] getValuesCropped() {
+        return getValueConsts();
+    }
+
 
     public S getStructure() {
         return structure;
@@ -42,7 +47,7 @@ public abstract class StructureData<T extends Enum<T>, S extends LayeredData> ex
 
     @Override
     protected String getPairSeparator() {
-        return StringMaster.ALT_PAIR_SEPARATOR;
+        return Strings.ALT_PAIR_SEPARATOR;
     }
 
     public LevelStruct<LevelStruct, LevelStruct> getLevelStruct() {

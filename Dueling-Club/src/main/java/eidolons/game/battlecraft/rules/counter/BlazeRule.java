@@ -32,12 +32,11 @@ public class BlazeRule extends DamageCounterRule implements TimedRule{
     }
 
     protected Effect getSpecialRoundEffects() {
-        Effects effects = new Effects(new CustomTargetEffect(
+
+        return new Effects(new CustomTargetEffect(
          new FixedTargeting(KEYS.ARMOR), new ModifyValueEffect(
          PARAMS.C_DURABILITY, MOD.MODIFY_BY_CONST,
          getCounterRef() + "*" + DURABILITY_PER_COUNTER)));
-
-        return effects;
 
         // immolation???
     }
@@ -87,7 +86,7 @@ public class BlazeRule extends DamageCounterRule implements TimedRule{
 
     @Override
     public String getBuffName() { // different while burning slow?
-        return MetaEnums.STD_BUFF_NAMES.Ablaze.getName();
+        return MetaEnums.STD_BUFF_NAME.Ablaze.getName();
     }
 
     @Override

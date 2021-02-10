@@ -1,16 +1,10 @@
 package eidolons.game.battlecraft.ai.advanced.engagement;
 
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.GroupAI;
-import eidolons.game.battlecraft.ai.UnitAI;
-import eidolons.game.battlecraft.ai.advanced.companion.Order;
-import eidolons.game.battlecraft.ai.explore.AggroMaster;
-import eidolons.game.core.EUtils;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationHandler;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import main.content.CONTENT_CONSTS2;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
+import main.content.enums.rules.VisionEnums.ENGAGEMENT_LEVEL;
 
 /*
 Features:
@@ -46,69 +40,72 @@ Who will this handler talk to?
 
 When do we decide about reinforcements?
 
+    actual combat begins when either a hostile actin is performed or dst<=4
+    otherwise it's still possible to evade
+    it matters whether when we detect a unit we know they have detected us!..
+    what about SNEAKING ?
+=> making those rolls
+=> getting events
+=> enable enemy sneaking!
+    Hearing and Perception?
+
+    NEXT:
+    status propagation in AiGroup
 
  */
+
 public class EngagementHandler extends ExplorationHandler {
+    EngageEvents events;
+
     public EngagementHandler(ExplorationMaster master) {
         super(master);
+        events = new EngageEvents(master);
     }
 
     @Override
-    protected float getTimerPeriod() {
-        return 1f;
+    public void act(float delta) {
+        super.act(delta);
+        events.act(delta);
     }
 
-    public void timerEvent() {
-        checkAggroEvents();
-    }
-    public void checkAggroEvents(){
-        for (Unit unit : getGame().getUnits()) {
-
+    public void detected(Unit source, BattleFieldObject object) {
+        if (object instanceof Unit) {
+            events.detected(source, (Unit) object);
+            //precombat event
         }
     }
-    public void engagementChanged(UnitAI ai, AggroMaster.ENGAGEMENT_LEVEL level){
+
+    public void lostSight(Unit source, BattleFieldObject object) {
+        events.lostSight(source, object);
+        //punishing retreat
+    }
+
+    //an outline came into view
+    public void alert(Unit source, BattleFieldObject object) {
+
+        ENGAGEMENT_LEVEL level = getLevel(source);
         switch (level) {
-            case ALARMED:
-                //call out
-            case AGGRO:
-                //check if group engages, otherwise
+            case UNSUSPECTING:
+                events.newAlert(source, object);
+                break;
         }
-        ai.setEngagementLevel(level);
-
-        String comment=getComment(ai.getGroupAI(), ai.getUnit(), level);
-        GuiEventManager.triggerWithParams(GuiEventType.SHOW_COMMENT_PORTRAIT, ai.getUnit(),  comment);
-//        GuiEventManager.trigger(GuiEventType.GRID_OBJ_ANIM, new AnimData());
-
-        String message= getMessage(ai.getUnit(), level);
-        getGame().getLogManager().log(message);
-        EUtils.showInfoText(message);
-
-        //ai orders
-        Order orders= new Order(CONTENT_CONSTS2.ORDER_TYPE.MOVE, "");
-        ai.setCurrentOrder(orders);
     }
 
-    private String getComment(GroupAI groupAI, Unit unit, AggroMaster.ENGAGEMENT_LEVEL level) {
-        return null;
+    private ENGAGEMENT_LEVEL getLevel(Unit source) {
+        // return playerEngagement;
+        source.isMine();
+        return source.getAI().getEngagementLevel();
     }
 
-    private String getMessage(Unit unit, AggroMaster.ENGAGEMENT_LEVEL level) {
-        return null;
+    public EngageEvents getEvents() {
+        return events;
     }
 
-    public AggroMaster.ENGAGEMENT_LEVEL getLevelForGroup(GroupAI groupAI){
+    public void clearEventQueue() {
+        events.clearQueue();
+    }
 
-        AggroMaster.ENGAGEMENT_LEVEL level= AggroMaster.ENGAGEMENT_LEVEL.UNSUSPECTING;
-
-        Unit leader = groupAI.getLeader();
-        leader.getAI().getEngagementDuration();
-        for (Unit member : groupAI.getMembers()) {
-
-        }
-        switch (level) {
-            case AGGRO:
-
-        }
-        return level;
+    public void addEvent(Object... args) {
+        getEvents().addEvent(args);
     }
 }

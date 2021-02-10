@@ -17,7 +17,6 @@ import eidolons.libgdx.gui.tooltips.Tooltip;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -75,8 +74,7 @@ implements HqActor {
     }
 
     private Tooltip<Actor> createTooltip(Spell datum) {
-        ActionCostTooltip tooltip = new ActionCostTooltip(datum);
-        return tooltip;
+        return new ActionCostTooltip(datum);
     }
 
     protected boolean checkValid(Spell datum) {
@@ -127,7 +125,7 @@ implements HqActor {
     @Override
     protected Spell[] initDataArray() {
         List<Spell> list =    new ArrayList<>( getSpells()) ;
-        Collections.sort(list, getSorter());
+        list.sort(getSorter());
         ListMaster.fillWithNullElements(list, size);
         return list.toArray(new Spell[0]);
     }

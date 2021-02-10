@@ -5,7 +5,7 @@ import eidolons.game.core.EUtils;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SmartTextButton;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationMaster;
@@ -19,6 +19,7 @@ import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,7 +56,7 @@ public class HcDeitySelectionPanel extends SelectionTable<HcDeityElement> {
         } else {
             Unit hero = (Unit) getUserObject();
             String deities = hero.getProperty(G_PROPS.DEITY);
-            deities= StringMaster.replace(true, deities, ";", StringMaster.OR);
+            deities= StringMaster.replace(true, deities, ";", Strings.OR);
             List<ObjType> types = DataManager.getFilteredTypes(DC_TYPE.DEITIES, getUserObject().toString(), G_PROPS.ASPECT);
             return types.stream().map(type -> new SelectableItemData(type.getName(), type))
                     .collect(Collectors.toList()).toArray(new SelectableItemData[types.size()]);
@@ -99,13 +100,13 @@ public class HcDeitySelectionPanel extends SelectionTable<HcDeityElement> {
 
     public class HcDeityElement extends TablePanelX {
         private final Entity deity;
-        private final SmartButton button;
+        private final SmartTextButton button;
 
         public HcDeityElement(Entity entity) {
             deity = entity;
             add(new ImageContainer(entity.getEmblemPath()));
 
-            add(button = new SmartButton( entity.getName(),
+            add(button = new SmartTextButton( entity.getName(),
              StyleHolder.getHqTextButtonStyle(STD_BUTTON.TAB_HIGHLIGHT,  26), () -> clicked(entity), STD_BUTTON.MENU));
 
             add(new ImageContainer(entity.getEmblemPath()));
@@ -115,7 +116,7 @@ public class HcDeitySelectionPanel extends SelectionTable<HcDeityElement> {
             return deity;
         }
 
-        public SmartButton getButton() {
+        public SmartTextButton getButton() {
             return button;
         }
     }

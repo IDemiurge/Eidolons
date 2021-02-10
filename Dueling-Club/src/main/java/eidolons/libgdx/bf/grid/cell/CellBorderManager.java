@@ -2,17 +2,14 @@ package eidolons.libgdx.bf.grid.cell;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.bf.Borderable;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
-import main.system.sound.SoundMaster.STD_SOUNDS;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
+import main.system.sound.AudioEnums;
 
 import static main.system.GuiEventType.*;
 
@@ -24,29 +21,29 @@ public class CellBorderManager extends Group {
     private static TextureRegion targetTexture;
     public TextureRegion singleBorderImageBackup = null;
     private Borderable unitBorderOwner = null;
-    private Map<Borderable, Runnable> teamColorBorderOwners = new HashMap<>();
+    private ObjectMap<Borderable, Runnable> teamColorBorderOwners = new ObjectMap<>();
 
 
     public CellBorderManager() {
 
-        teamcolorTexture = TextureCache.getOrCreateR(teamcolorPath);
-        targetTexture = TextureCache.getOrCreateR(targetPath);
+        teamcolorTexture = TextureCache.getRegionUV(teamcolorPath);
+        targetTexture = TextureCache.getRegionUV(targetPath);
         bindEvents();
     }
 
-    public boolean isteamColorBorderActive() {
-        return teamColorBorderOwners.size() > 0;
-    }
+    // public boolean isteamColorBorderActive() {
+    //     return teamColorBorderOwners.size > 0;
+    // }
 
     private void clearTeamColorBorder(boolean restoreLastBorder) {
-        teamColorBorderOwners.entrySet().forEach(entity -> {
+        teamColorBorderOwners.entries().forEach(entity -> {
             try {
-                entity.getKey().setBorder(null);
+                entity.key.setBorder(null);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         });
-        teamColorBorderOwners = new HashMap<>();
+        teamColorBorderOwners = new ObjectMap<>();
         if (restoreLastBorder) {
             if (singleBorderImageBackup != null) {
                 showBorder(singleBorderImageBackup, unitBorderOwner);
@@ -71,12 +68,11 @@ public class CellBorderManager extends Group {
         });
 
         GuiEventManager.bind(SHOW_TARGET_BORDERS, obj -> {
-            Map<Borderable, Runnable> map = (Map<Borderable, Runnable>) obj.get();
+            ObjectMap<Borderable, Runnable> map = (ObjectMap<Borderable, Runnable>) obj.get();
             clearTeamColorBorder(false);
             if (map != null) {
-                map.entrySet().forEach((Entry<Borderable, Runnable> entry) -> {
-                    setTargetBorder(entry.getKey());
-
+                map.entries().forEach((ObjectMap.Entry<Borderable, Runnable> entry) -> {
+                    setTargetBorder(entry.key);
                 });
 
                 teamColorBorderOwners = map;
@@ -92,24 +88,23 @@ public class CellBorderManager extends Group {
                 Runnable entity = teamColorBorderOwners.get(borderable);
                 if (entity != null) {
                     entity.run();
-                    EUtils.playSound(STD_SOUNDS.NEW__CLICK_UP2);
+                    EUtils.playSound(AudioEnums.STD_SOUNDS.NEW__CLICK_UP2);
                 } else {
                     //TODO replace this quick-fix:
                     // click on non-blue-border cell must still do cell.invokeClicked() (run()) somehow
 
                     if (Eidolons.game.getManager().isSelecting()) {
                         Eidolons.game.getManager().selectingStopped(true);
-                        EUtils.playSound(STD_SOUNDS.NEW__CLICK_DISABLED);
+                        EUtils.playSound(AudioEnums.STD_SOUNDS.NEW__CLICK_DISABLED);
                     }
                 }
-                clearTeamColorBorder(true);
 
 
             } else {
-                EUtils.playSound(STD_SOUNDS.NEW__CLICK_UP2);
+                EUtils.playSound(AudioEnums.STD_SOUNDS.NEW__CLICK_UP2);
                 Eidolons.game.getManager().selectingStopped(true);
-                clearTeamColorBorder(true);
             }
+            clearTeamColorBorder(true);
 
         });
     }

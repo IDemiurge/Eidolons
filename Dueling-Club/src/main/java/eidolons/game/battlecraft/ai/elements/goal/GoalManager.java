@@ -49,7 +49,9 @@ public class GoalManager extends AiHandler {
             list.add(AiEnums.GOAL_TYPE.STEALTH);
         }
 //        if (Analyzer.getVisibleEnemies(unit.getUnitAI()).isEmpty()) {
-//            list = new ListMaster<GOAL_TYPE>().getList(AiEnums.GOAL_TYPE.SEARCH); //TODO igg demo fix
+//            list = new ListMaster<GOAL_TYPE>().getList(AiEnums.GOAL_TYPE.SEARCH);
+        // TODO make real
+
 //            addNonEnemyGoals(list);
 //            return list;
 //        }
@@ -152,9 +154,8 @@ public class GoalManager extends AiHandler {
                 break;
 
         }
-        GOAL_TYPE goal = AI_SpellMaster.getGoal(a);
 
-        return goal;
+        return AI_SpellMaster.getGoal(a);
     }
 
 }

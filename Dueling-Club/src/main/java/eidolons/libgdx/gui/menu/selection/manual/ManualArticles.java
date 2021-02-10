@@ -38,7 +38,7 @@ public class ManualArticles extends ItemListPanel {
         Units,
         Controls,;
 
-        public String name = StringMaster.getWellFormattedString(name());
+        public String name = StringMaster.format(name());
 
         public String getArticleFileName() {
             return name + ".txt";

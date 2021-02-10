@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
-import eidolons.game.battlecraft.logic.battle.mission.MissionStatManager;
+import eidolons.game.battlecraft.logic.mission.quest.QuestMissionStatManager;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -23,7 +23,7 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.TiledNinePatchGenerator;
 import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.gui.panels.TabbedPanel;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
@@ -37,8 +37,9 @@ import main.system.auxiliary.secondary.Bools;
 import main.system.datatypes.WeightMap;
 import main.system.graphics.FontMaster.FONT;
 import main.system.graphics.MigMaster;
-import main.system.launch.CoreEngine;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.launch.Flags;
+import main.system.sound.AudioEnums;
+import main.system.sound.AudioEnums.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -57,9 +58,6 @@ public class OutcomePanel extends TablePanelX implements EventListener {
     Cell<TextButton> exitButton;
     Cell<TextButton> continueButton;
     private Boolean outcome;
-    private OutcomeDatasource datasource;
-    private Image picture;
-    private Label message;
     private TabbedPanel unitStatTabs;
 
     public OutcomePanel() {
@@ -104,11 +102,10 @@ public class OutcomePanel extends TablePanelX implements EventListener {
         if (outcome == null)
             outcome = TEST_OUTCOME;
 
-        datasource = outcomeDatasource;
         String imgPath = "ui/big/victory.png";
         if (outcome != null)
             imgPath = outcome ? "ui/big/victory.png" : "ui/big/defeat.jpg";
-        picture = new Image(TextureCache.getOrCreateR(imgPath));
+        Image picture = new Image(TextureCache.getOrCreateR(imgPath));
 
         addActor(picture);
         picture.setAlign(Align.center);
@@ -118,14 +115,14 @@ public class OutcomePanel extends TablePanelX implements EventListener {
          MigMaster.center(getHeight(), picture.getHeight() * picture.getScaleY()
          ));
 
-        STD_SOUNDS sound = STD_SOUNDS.DEATH;
+        STD_SOUNDS sound = AudioEnums.STD_SOUNDS.DEATH;
 
         String messageText = VICTORY_MESSAGE;
         if (outcome != null)
-            sound = outcome ? STD_SOUNDS.VICTORY : STD_SOUNDS.DEATH;
+            sound = outcome ? AudioEnums.STD_SOUNDS.VICTORY : AudioEnums.STD_SOUNDS.DEATH;
         if (outcome != null)
             messageText = outcome ? VICTORY_MESSAGE : DEFEAT_MESSAGE;
-        message = new Label(messageText, StyleHolder.getSizedColoredLabelStyle(0.25f, FONT.AVQ, 22));
+        Label message = new Label(messageText, StyleHolder.getSizedColoredLabelStyle(0.25f, FONT.AVQ, 22));
         addActor(message);
         message.setAlignment(Align.top);
         message.setPosition(
@@ -136,7 +133,7 @@ public class OutcomePanel extends TablePanelX implements EventListener {
         DC_SoundMaster.playStandardSound(sound);
 
         TablePanel<Actor> stats = new TablePanel<>();
-        datasource.getPlayerStatsContainers().forEach(c -> {
+        outcomeDatasource.getPlayerStatsContainers().forEach(c -> {
             stats.addElement(c).fill(false).expand(0, 0).bottom()
              .size(150, 50);
             stats.row();
@@ -215,7 +212,7 @@ public class OutcomePanel extends TablePanelX implements EventListener {
                 final Boolean exit_continue_next = getEventType(actor);
                 if (exit_continue_next == null) {
                     if (!ExplorationMaster.isExplorationOn())
-                        Eidolons.getGame().getMaster().nextLevel();
+                        Eidolons.getGame().getObjMaster().nextLevel();
 
                     if (!Bools.isTrue(outcome))
                         Eidolons.restart();
@@ -223,7 +220,7 @@ public class OutcomePanel extends TablePanelX implements EventListener {
 
                 } else if (exit_continue_next) {
 
-                    if (CoreEngine.isMacro()) {
+                    if (Flags.isMacro()) {
                         GuiEventManager.trigger(GuiEventType.BATTLE_FINISHED);
                     } else {
                         Eidolons.exitFromGame();
@@ -232,10 +229,9 @@ public class OutcomePanel extends TablePanelX implements EventListener {
 
                 } else {
                     //TODO display stats!
-                    String stats = MissionStatManager.getGameStatsText();
+                    String stats = QuestMissionStatManager.getGameStatsText();
                     EUtils.onConfirm(stats +
-                     "\n Exit to menu?", true, () ->
-                     Eidolons.exitFromGame());
+                     "\n Exit to menu?", true, Eidolons::exitFromGame);
                     WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED,
                      false);
 
@@ -282,10 +278,7 @@ public class OutcomePanel extends TablePanelX implements EventListener {
     }
 
     private Boolean getEventType(Actor actor) {
-        if (actor == continueButton.getActor().getLabel()) {
-            return false;
-        }
-        return true;
+        return actor != continueButton.getActor().getLabel();
     }
 
 }

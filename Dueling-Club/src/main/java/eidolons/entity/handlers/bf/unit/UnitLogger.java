@@ -4,7 +4,6 @@ import eidolons.content.ValuePages;
 import eidolons.entity.obj.unit.Unit;
 import main.content.ContentValsManager;
 import main.content.VALUE;
-import main.content.values.parameters.PARAMETER;
 import main.entity.handlers.EntityLogger;
 import main.entity.handlers.EntityMaster;
 
@@ -21,14 +20,14 @@ public class UnitLogger extends EntityLogger<Unit> {
     }
 
     public void logVals(List<VALUE> vals) {
-        vals.forEach(p -> logParam(p));
+        vals.forEach(this::logParam);
 
     }
 
     // FOR DEBUG
     public void logCoreParamPercentages() {
         logVals(Arrays.stream(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE_CURRENT).map(
-         (PARAMETER p) -> ContentValsManager.getPercentageParam(p)).
+                ContentValsManager::getPercentageParam).
          collect(Collectors.toList()));
 
     }

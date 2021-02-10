@@ -7,10 +7,10 @@ import main.entity.obj.Obj;
 import main.system.auxiliary.StringMaster;
 
 public class Task {
-    private GOAL_TYPE type;
-    private Object arg;
-    private Unit unit;
-    private UnitAI ai;
+    private final GOAL_TYPE type;
+    private final Object arg;
+    private final Unit unit;
+    private final UnitAI ai;
     private boolean blocked;
     private boolean forced;
 
@@ -29,7 +29,7 @@ public class Task {
 
     public String toShortString() {
         try {
-            return StringMaster.getWellFormattedString(type.toString()) + " on "
+            return StringMaster.format(type.toString()) + " on "
              +
              (arg instanceof Integer ?
               getUnit().getGame().getObjectById((Integer) arg).getNameIfKnown() :

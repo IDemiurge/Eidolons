@@ -41,6 +41,7 @@ public class BlockTreeBuilder {
                 Set<RoomModel> models=     new LinkedHashSet<>();
                 for (String room : contents.split(RoomTemplateMaster.MODEL_SPLITTER)) {
                     room = room.trim();
+
                     String[][] cells = TileMapper.toSymbolArray(room);
                     models.add(new RoomModel(cells, type, GeneratorEnums.EXIT_TEMPLATE.CROSSROAD));
 
@@ -58,7 +59,7 @@ public class BlockTreeBuilder {
 
         }
 
-        RoomTemplateMaster manager = LevelEditor.getManager().getStructureManager().
+        RoomTemplateMaster manager = LevelEditor.getManager().getStructureHandler().
                 getRoomTemplateManager();
 
         for (ROOM_TEMPLATE_GROUP group : manager.getModels().keySet()) {

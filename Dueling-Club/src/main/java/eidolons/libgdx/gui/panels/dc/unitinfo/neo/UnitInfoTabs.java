@@ -8,7 +8,6 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.TabbedPanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.hero.HqParamPanel;
-import eidolons.libgdx.gui.panels.headquarters.hero.HqScrollPropPanel;
 import eidolons.libgdx.gui.panels.headquarters.hero.HqScrolledValuePanel;
 
 /**
@@ -16,13 +15,11 @@ import eidolons.libgdx.gui.panels.headquarters.hero.HqScrolledValuePanel;
  */
 public class UnitInfoTabs extends TabbedPanel {
     private final UnitDescriptionPanel descriptionPanel;
-    private HqScrollPropPanel propPanel;
-    private final TablePanelX main;
 
 
     public UnitInfoTabs(float w, float h) {
-        main = new TablePanelX();
-        main.add(new HqParamPanel(false)).row(); //TODO igg demo fix
+        TablePanelX main = new TablePanelX();
+        main.add(new HqParamPanel(false)).row(); //TODO DC revamp - it has to be solid or removed
         main.add(new HqParamPanel(true)).row();
 //        main.add(new ArmorPanel()).row();
         final float height = h * getHeightCoef();
@@ -46,8 +43,8 @@ public class UnitInfoTabs extends TabbedPanel {
         descriptionPanel.setSize(
                 (width), (height));
 
-        propPanel = new HqScrollPropPanel(
-                (width), (height));
+        // propPanel = new HqScrollPropPanel(
+        //         (width), (height));
 
         addTab(main, "Main");
         addTab(descriptionPanel, "Lore");

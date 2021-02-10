@@ -1,5 +1,6 @@
 package eidolons.game.core.state;
 
+import com.google.inject.internal.util.ImmutableList;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
@@ -7,7 +8,6 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
 import eidolons.game.battlecraft.rules.DC_RuleImpl;
@@ -18,14 +18,11 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.texture.Images;
-import eidolons.system.config.ConfigMaster;
 import eidolons.system.text.DC_LogManager;
 import main.ability.AbilityObj;
 import main.ability.effects.Effect;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
-import main.content.enums.entity.UnitEnums;
-import main.content.values.properties.G_PROPS;
 import main.elements.conditions.Condition;
 import main.elements.conditions.standard.PositionCondition;
 import main.entity.Ref;
@@ -42,6 +39,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.Arrays;
 import java.util.LinkedHashSet;
@@ -49,7 +47,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.stream.Collectors;
 
 import static main.system.auxiliary.log.LogMaster.log;
 
@@ -58,12 +55,11 @@ import static main.system.auxiliary.log.LogMaster.log;
  */
 public class DC_StateManager extends StateManager {
 
-    private StatesKeeper keeper;
-    private OBJ_TYPE[] toBaseIgnoredTypes = {DC_TYPE.SPELLS, DC_TYPE.ACTIONS};
-    private boolean savingOn = ConfigMaster.getInstance()
-            .getBoolean("SAVING_ON_DEFAULT");
+    private final StatesKeeper keeper;
+    private final OBJ_TYPE[] toBaseIgnoredTypes = {DC_TYPE.SPELLS, DC_TYPE.ACTIONS};
+    private boolean savingOn;
 
-    private Lock resetLock = new ReentrantLock();
+    private final Lock resetLock = new ReentrantLock();
     private volatile boolean resetting = false;
     private Set<BattleFieldObject> objectsToReset;
     private Set<Unit> unitsToReset;
@@ -96,12 +92,12 @@ public class DC_StateManager extends StateManager {
 
     public void resetAllSynchronized_(boolean recursion) {
         if (!recursion)
-            if (CoreEngine.isIDE()) {
+            if (Flags.isIDE()) {
                 Eidolons.tryIt(() -> resetAllSynchronized_(false));
                 return;
             }
         if (!resetting) {
-            resetLock.lock();
+            // resetLock.lock(); //TODO core review - this is dangerous, why do we need this?
             if (!resetting) {
                 if (!isSelectiveResetOn() || (ExplorationMaster.isExplorationOn() && !isSelectiveResetInExplore())) {
                     objectsToReset = new LinkedHashSet<>(getGame().getBfObjects());
@@ -109,7 +105,7 @@ public class DC_StateManager extends StateManager {
                 } else {
                     objectsToReset = new LinkedHashSet<>();
                     unitsToReset = new LinkedHashSet<>();
-                    for (BattleFieldObject obj : getGame().getBfObjects()) {
+                    for (BattleFieldObject obj : isResetUnitsOnly()? getGame().getUnits(): getGame().getBfObjects()) {
 
                         if ((ExplorationMaster.isExplorationOn() && obj.isOutsideCombat()) ||
                                 getGame().getVisionMaster().getVisionRule().
@@ -125,19 +121,6 @@ public class DC_StateManager extends StateManager {
 
                         }
                     }
-                    //                    objectsToReset=getGame().getBfObjects().stream().filter(obj -> {
-                    //                        if (!obj.isOutsideCombat())
-                    //                            return true;
-                    //                        return  getGame().getVisionMaster().getVisionRule().
-                    //                         isResetRequiredSafe(Eidolons.getMainHero(), obj) ;
-                    //                    }).collect(Collectors.toCollection(()-> new LinkedHashSet<>()));
-                    //
-                    //                    unitsToReset= getGame().getUnits().stream().filter(obj -> {
-                    //                        if (!obj.isOutsideCombat())
-                    //                            return true;
-                    //                        return  getGame().getVisionMaster().getVisionRule().
-                    //                         isResetRequiredSafe(Eidolons.getMainHero(), obj) ;
-                    //                    }).collect(Collectors.toCollection(()-> new LinkedHashSet<>()));
                 }
 
                 log(1, objectsToReset.size() + " objects To Reset   ");
@@ -148,8 +131,13 @@ public class DC_StateManager extends StateManager {
                 resetAll();
                 resetting = false;
             }
-            resetLock.unlock();
+            // resetLock.unlock();
         }
+    }
+
+    //TODO Core Review - too extreme? we do need to reset structs somehow
+    private boolean isResetUnitsOnly() {
+        return true;
     }
 
     private boolean isAlwaysReset(BattleFieldObject obj) {
@@ -171,12 +159,12 @@ public class DC_StateManager extends StateManager {
 
     private void resetAll() {
         Ref ref = new Ref(game);
-        DC_ActiveObj active=null ;
+        DC_ActiveObj active = null;
         if (getGame().getLoop().getLastAction() != null) {
-            if ( getGame().getLoop().getLastAction()==null ){
-                ref.setObj(KEYS.ACTIVE, active=getGame().getLoop().getLastActionEvent());
+            if (getGame().getLoop().getLastAction() == null) {
+                ref.setObj(KEYS.ACTIVE, active = getGame().getLoop().getLastActionEvent());
             } else {
-                getGame().getLoop().setLastActionEvent( active= getGame().getLoop().getLastAction());
+                getGame().getLoop().setLastActionEvent(active = getGame().getLoop().getLastAction());
                 getGame().getLoop().setLastAction(null);
             }
         }
@@ -222,14 +210,13 @@ public class DC_StateManager extends StateManager {
             if (active instanceof Spell) {
                 Spell s = (Spell) active;
                 if (s.isChanneling())
-                if (!s.isChannelingNow())
-                {
-                    for (AbilityObj passive : s.getPassives()) {
-                        passive.activatedOn(ref);
+                    if (!s.isChannelingNow()) {
+                        for (AbilityObj passive : s.getPassives()) {
+                            passive.activatedOn(ref);
+                        }
+                        ref.setObj(KEYS.ACTIVE, active);
+                        game.fireEvent(new Event(STANDARD_EVENT_TYPE.CHANNELING_DONE, ref));
                     }
-                    ref.setObj(KEYS.ACTIVE, active);
-                    game.fireEvent(new Event(STANDARD_EVENT_TYPE.CHANNELING_DONE, ref));
-                }
             }
         }
         game.fireEvent(new Event(STANDARD_EVENT_TYPE.RESET_DONE, ref));
@@ -237,13 +224,14 @@ public class DC_StateManager extends StateManager {
 
 
     private void triggerOnResetGuiEvents() {
-        GuiEventManager.trigger(GuiEventType.HP_BAR_UPDATE_MANY, objectsToReset.stream().filter(obj -> {
-            if (!VisionManager.checkVisible(obj))
-                return true;
-            if ((obj).isWall())
-                return true;
-            return (obj).isOverlaying();
-        }).collect(Collectors.toList()));
+        //TODO DC cleanup - why walls and overlaying? this is some kind of a hack..
+        // GuiEventManager.trigger(GuiEventType.HP_BAR_UPDATE_MANY, objectsToReset.stream().filter(obj -> {
+        //     if (!VisionHelper.checkVisible(obj))
+        //         return true;
+        //     if ((obj).isWall())
+        //         return true;
+        //     return (obj).isOverlaying();
+        // }).collect(Collectors.toList()));
     }
 
     /**
@@ -271,11 +259,11 @@ public class DC_StateManager extends StateManager {
 
     protected void applyDifficulty() {
         if (!getGame().isSimulation())
-            unitsToReset.forEach(unit -> applyDifficulty(unit));
+            unitsToReset.forEach(this::applyDifficulty);
     }
 
     private void applyDifficulty(Unit unit) {
-        getGame().getBattleMaster().getOptionManager().applyDifficulty(unit);
+        getGame().getMissionMaster().getOptionManager().applyDifficulty(unit);
     }
 
 
@@ -428,8 +416,8 @@ public class DC_StateManager extends StateManager {
         for (Unit unit : unitsToReset) {
             if (!checkUnitIgnoresReset(unit))
                 unit.afterBuffRuleEffects();
-            unit.removeProperty(G_PROPS.STD_BOOLS,
-                    UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE.getName());
+            // unit.removeProperty(G_PROPS.STD_BOOLS,
+            //         UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE.getName());
         }
     }
 
@@ -491,8 +479,16 @@ public class DC_StateManager extends StateManager {
     public void newRound() {
         //        getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.NEW_ROUND, state.getRound());
 
+        if (!ExplorationMaster.isExplorationOn()) {
+            if (getState().getRound() > 0) {
+                GuiEventManager.trigger(GuiEventType.SHOW_LARGE_TEXT,
+                        ImmutableList.of("Round " + getState().getRoundDisplayedNumber(), "Fight on!", 3f));
+                //really just some flavor text there? no useful info?
+                // stats, reinf. status, total power remaining
+            }
+        }
 
-        getGame().getLogManager().addImageToLog(Images.SEPARATOR_ALT);
+        getGame().getLogManager().addImageToLog(Images.SEPARATOR_NARROW);
 
         game.getLogManager().log(
                 DC_LogManager.ALIGN_CENTER +
@@ -508,18 +504,16 @@ public class DC_StateManager extends StateManager {
             getGameManager().reset();
             getGameManager().resetValues();
             //            IlluminationRule.applyLightEmission(getGame());
-            game.getTurnManager().newRound();
         } else {
 
             resetAllSynchronized();
             game.setStarted(true);
             if (!VisionMaster.isNewVision()) {
-                getGame().getRules().getIlluminationRule().resetIllumination();
-                getGame().getRules().getIlluminationRule().applyLightEmission();
+                getGame().getVisionMaster().getIllumination().resetIllumination(true);
             }
-            game.getTurnManager().newRound();
             //            getGameManager().refreshAll();
         }
+        game.getTurnManager().newRound();
         //        getGameManager().reset();
 
         if (!started)
@@ -544,12 +538,6 @@ public class DC_StateManager extends StateManager {
             for (Attachment attachment : state.getAttachments()) {
                 attachment.tick();
             }
-        for (Obj obj : state.getObjMaps().get(DC_TYPE.ACTIONS).values()) {
-            ((DC_ActiveObj) obj).tick();
-        }
-        for (Obj obj : state.getObjMaps().get(DC_TYPE.SPELLS).values()) {
-            ((Spell) obj).tick();
-        }
     }
 
 
@@ -560,11 +548,11 @@ public class DC_StateManager extends StateManager {
         super.addObject(obj);
         if (obj instanceof DC_Obj) {
             if (((DC_Obj) obj).isPale()) {
-                getGame().getPaleMaster().tryAddUnit(obj);
+                getGame().getPaleMaster().objAdded(obj);
                 return;
             }
         }
-        getGame().getMaster().tryAddUnit(obj);
+        getGame().getObjMaster().objAdded(obj);
 
     }
 
@@ -573,23 +561,27 @@ public class DC_StateManager extends StateManager {
         if (obj == null) {
             return;
         }
+        Map<Integer, Obj> map = state.getObjMaps().get(obj.getOBJ_TYPE_ENUM());
+        if (map != null) {
+            map.remove(id);
+        }
         if (obj instanceof BattleFieldObject) {
             if (obj instanceof Structure) {
                 getGame().getStructures().remove(obj);
             }
             if (obj instanceof Unit) {
-                unitsToReset.remove(obj);
+                getGame().getUnits().remove(obj);
+                removeAttachedObjects((Unit) obj);
+                if (unitsToReset != null) {
+                    unitsToReset.remove(obj);
+                }
             }
-
-            removeAttachedObjects((Unit) obj);
-
-        }
-        Map<Integer, Obj> map = state.getObjMaps().get(obj.getOBJ_TYPE_ENUM());
-        if (map != null) {
-            map.remove(id);
         }
         //        super.removeObject(id);
+    }
 
+    public void removeObject(Integer id, OBJ_TYPE TYPE) {
+        removeObject(id);
     }
 
     private void removeAttachedObjects(BattleFieldObject unit) {

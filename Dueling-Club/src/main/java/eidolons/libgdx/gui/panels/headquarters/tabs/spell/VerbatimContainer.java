@@ -33,6 +33,6 @@ public class VerbatimContainer extends HqSpellContainer {
     protected List<Spell> getSpells() {
         return
          getUserObject().getEntity().getSpells().stream()
-          .filter(s -> s.isVerbatim()).collect(Collectors.toList());
+          .filter(Spell::isVerbatim).collect(Collectors.toList());
     }
 }

@@ -66,6 +66,7 @@ public class PaletteTypesTable extends SelectionImageTable {
     public void setUserObject(Object userObject) {
         types = (List<ObjType>) userObject;
         size = types.size();
+        initSize(6, size);
         super.setUserObject(userObject);
 
     }

@@ -1,17 +1,18 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
-import eidolons.game.battlecraft.logic.battle.universal.*;
-import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
+import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.TransitHandler;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.PlaceholderResolver;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.StructMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureBuilder;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.module.ModuleLoader;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import eidolons.game.battlecraft.logic.mission.universal.*;
+import eidolons.game.battlecraft.logic.mission.universal.stats.MissionStatManager;
 import eidolons.game.core.game.DC_Game;
 
 import java.util.Set;
@@ -19,12 +20,12 @@ import java.util.Set;
 /**
  * Created by JustMe on 5/8/2017.
  */
-public class DungeonHandler<E extends DungeonWrapper> {
+public class DungeonHandler {
 
     protected DC_Game game;
-    protected DungeonMaster<E> master;
+    protected DungeonMaster  master;
 
-    public DungeonHandler(DungeonMaster<E> master) {
+    public DungeonHandler(DungeonMaster master) {
         this.master = master;
         this.game = master.getGame();
     }
@@ -44,8 +45,8 @@ public class DungeonHandler<E extends DungeonWrapper> {
         return master.getFloorLoader();
     }
 
-    public StructureMaster getStructureMaster() {
-        return master.getStructureMaster();
+    public StructMaster getStructureMaster() {
+        return master.getStructMaster();
     }
 
     public DC_ObjInitializer getObjInitializer() {
@@ -59,7 +60,7 @@ public class DungeonHandler<E extends DungeonWrapper> {
         return master.getGame();
     }
 
-    public DungeonMaster<E> getMaster() {
+    public DungeonMaster getMaster() {
         return master;
     }
 
@@ -67,7 +68,7 @@ public class DungeonHandler<E extends DungeonWrapper> {
         return getGame().getMetaMaster();
     }
 
-    public DungeonInitializer<E> getInitializer() {
+    public DungeonInitializer getInitializer() {
         return master.getInitializer();
     }
 
@@ -75,11 +76,11 @@ public class DungeonHandler<E extends DungeonWrapper> {
         return master.getBuilder();
     }
 
-    public Positioner<E> getPositioner() {
+    public Positioner getPositioner() {
         return master.getPositioner();
     }
 
-    public FacingAdjuster<E> getFacingAdjuster() {
+    public FacingAdjuster getFacingAdjuster() {
         return master.getFacingAdjuster();
     }
 
@@ -90,32 +91,32 @@ public class DungeonHandler<E extends DungeonWrapper> {
         return master.getPlaceholderResolver();
     }
 
-    public BattleMaster getBattleMaster() {
-        return master.getBattleMaster();
+    public MissionMaster getBattleMaster() {
+        return master.getMissionMaster();
     }
 
 
-    public BattleOptionManager getOptionManager() {
+    public MissionOptionManager getOptionManager() {
         return master.getOptionManager();
     }
 
-    public BattleStatManager getStatManager() {
+    public MissionStatManager getStatManager() {
         return master.getStatManager();
     }
 
-    public BattleConstructor getConstructor() {
+    public MissionConstructor getConstructor() {
         return master.getConstructor();
     }
 
-    public BattleOutcomeManager getOutcomeManager() {
+    public MissionOutcomeManager getOutcomeManager() {
         return master.getOutcomeManager();
     }
 
-    public Battle getBattle() {
-        return master.getBattle();
+    public DungeonSequence getBattle() {
+        return master.getMission();
     }
 
-    public Spawner<E> getSpawner() {
+    public Spawner getSpawner() {
         return master.getSpawner();
     }
 
@@ -127,7 +128,7 @@ public class DungeonHandler<E extends DungeonWrapper> {
         return master.getTransitHandler();
     }
 
-    public E getDungeon() {
-        return master.getDungeonWrapper();
+    public Location getFloorWrapper() {
+        return master.getFloorWrapper();
     }
 }

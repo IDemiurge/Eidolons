@@ -2,11 +2,11 @@ package main.level_editor.gui.screen;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import eidolons.libgdx.bf.mouse.DungeonInputController;
-import main.level_editor.backend.struct.level.Floor;
+import main.level_editor.backend.struct.level.LE_Floor;
 
 public class LE_InputController extends DungeonInputController {
 
-    public LE_InputController(OrthographicCamera camera, Floor parameter) {
+    public LE_InputController(OrthographicCamera camera, LE_Floor parameter) {
         super(camera);
         setUnlimitedZoom(true);
 

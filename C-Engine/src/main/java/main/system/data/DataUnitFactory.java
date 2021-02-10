@@ -3,6 +3,7 @@ package main.system.data;
 import main.data.XLinkedMap;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 
 import java.util.Map;
 
@@ -23,7 +24,7 @@ public class DataUnitFactory<E extends DataUnit> {
 
     public static String getContainerSeparator(Boolean std_alt_map) {
         return std_alt_map ?
-         StringMaster.AND_SEPARATOR : StringMaster.getSeparator();
+         Strings.VERTICAL_BAR : StringMaster.getSeparator();
     }
 
     public static String getSeparator(Boolean std_alt_map) {

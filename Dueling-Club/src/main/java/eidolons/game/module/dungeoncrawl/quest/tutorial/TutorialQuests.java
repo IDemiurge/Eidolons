@@ -2,7 +2,6 @@ package eidolons.game.module.dungeoncrawl.quest.tutorial;
 
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import main.content.values.properties.G_PROPS;
-import main.content.values.properties.MACRO_PROPS;
 import main.entity.type.ObjType;
 
 /**
@@ -43,7 +42,7 @@ public class TutorialQuests {
     public static void generateQuestTypes(){
         for (TUTORIAL_QUEST tutorial_quest : TUTORIAL_QUEST.values()) {
             ObjType type = new ObjType();
-type.setProperty(MACRO_PROPS.QUEST_TYPE, "Tutorial");
+type.setProperty(G_PROPS.QUEST_TYPE, "Tutorial");
 //args?
 type.setProperty(G_PROPS.DESCRIPTION, tutorial_quest.text[0]);
             new DungeonQuest(type);

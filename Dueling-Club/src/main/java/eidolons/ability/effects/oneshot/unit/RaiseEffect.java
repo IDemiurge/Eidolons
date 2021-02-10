@@ -14,7 +14,7 @@ import main.data.ability.construct.VariableManager;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
-import main.entity.type.BuffType;
+import main.entity.type.impl.BuffType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -129,9 +129,8 @@ public class RaiseEffect extends SummonEffect {
         BuffType buffType = new BuffType(
          DataManager.getType(BUFF_NAME));
         buffType.setName(BUFF_NAME + corpse.getName());
-        AddBuffEffect e = new AddBuffEffect(buffType, effect);
 
-        return e;
+        return new AddBuffEffect(buffType, effect);
     }
 
     private String getParamModFormula(String valueName) {

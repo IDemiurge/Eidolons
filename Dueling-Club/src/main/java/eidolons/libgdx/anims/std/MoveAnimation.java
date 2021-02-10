@@ -1,16 +1,16 @@
 package eidolons.libgdx.anims.std;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.ability.effects.oneshot.move.MoveEffect;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.art.ArtPuzzle;
+import eidolons.game.core.master.EffectMaster;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.actions.MoveByActionLimited;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.grid.cell.BaseView;
-import eidolons.libgdx.bf.grid.cell.GridUnitView;
+import eidolons.libgdx.bf.grid.cell.UnitGridView;
 import eidolons.libgdx.particles.spell.SpellVfx;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
@@ -43,7 +43,7 @@ public class MoveAnimation extends ActionAnim {
 
     public MoveAnimation(Entity active, AnimData params) {
         super(active, params);
-        if (!ListMaster.isNotEmpty(EffectFinder.getEffectsOfClass(getActive(),
+        if (!ListMaster.isNotEmpty(EffectMaster.getEffectsOfClass(getActive(),
          MoveEffect.class))) // for teleports, telekinesis etc
         {
             unit = (Unit) getRef().getTargetObj();
@@ -120,17 +120,17 @@ public class MoveAnimation extends ActionAnim {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         Unit unit = (Unit) getRef().getSourceObj();
-        if (!ListMaster.isNotEmpty(EffectFinder.getEffectsOfClass(getActive(),
+        if (!ListMaster.isNotEmpty(EffectMaster.getEffectsOfClass(getActive(),
          MoveEffect.class)))
             unit = (Unit) getRef().getTargetObj();
-        GridUnitView actor = (GridUnitView) ScreenMaster.getDungeonGrid().getViewMap()
+        UnitGridView actor = (UnitGridView) ScreenMaster.getGrid().getViewMap()
          .get(unit);
 
         if (actor.isStackView()) {
             DungeonScreen.getInstance().getGuiStage().getTooltips().getStackMaster().stackOff();
         }
 
-        if (!ScreenMaster.getDungeonGrid().detachUnitView(unit)) {
+        if (!ScreenMaster.getGrid().detachUnitView(unit)) {
             return;
         }
 
@@ -141,10 +141,18 @@ public class MoveAnimation extends ActionAnim {
         actor.addAction(getAction());
         action.setTarget(actor);
 
-
-        ScreenMaster.getDungeonGrid().showMoveGhostOnCell(unit);
-        ScreenMaster.getDungeonGrid().resetCell(unit.getBufferedCoordinates());
+if (isGhostMoveOn()){
+    ScreenMaster.getGrid().showMoveGhostOnCell(unit);
+    ScreenMaster.getGrid().resetCell(unit.getLastCoordinates());
+}
 //        GuiEventManager.trigger(GuiEventType.CELL_SHOW_MOVE_GHOST, unit);
+    }
+
+    protected boolean isGhostMoveOn() {
+        if (unit.getGame().getDungeonMaster().getPuzzleMaster().getCurrent() instanceof ArtPuzzle) {
+            return false;
+        }
+        return unit.isPlayerCharacter();
     }
 
     @Override
@@ -163,7 +171,7 @@ public class MoveAnimation extends ActionAnim {
         //         MoveEffect.class))) // for teleports, telekinesis etc
         //            return getRef().getTargetObj().getCoordinates();
         //        return super.getOriginCoordinates();
-        MoveEffect e = (MoveEffect) EffectFinder.getFirstEffectOfClass(getActive(),
+        MoveEffect e = (MoveEffect) EffectMaster.getFirstEffectOfClass(getActive(),
          MoveEffect.class);
         return e.getOrigin();
 
@@ -188,7 +196,7 @@ public class MoveAnimation extends ActionAnim {
     public Coordinates getDestinationCoordinates() {
 
 
-        MoveEffect e = (MoveEffect) EffectFinder.getFirstEffectOfClass(getActive(),
+        MoveEffect e = (MoveEffect) EffectMaster.getFirstEffectOfClass(getActive(),
          MoveEffect.class); //TODO could be 2+?
         return e.getDestination();
         //            if (e.getDirection() != null) {
@@ -212,18 +220,9 @@ public class MoveAnimation extends ActionAnim {
     @Override
     public void finished() {
         super.finished();
-        ScreenMaster.getDungeonGrid().unitViewMoved((BaseView) getActor());
+        ScreenMaster.getGrid().unitViewMoved((BaseView) getActor());
 
 
     }
 
-    @Override
-    protected Texture getTexture() {
-        //        if (ListMaster.isNotEmpty(EffectMaster.getEffectsOfClass(getActive(),
-        //         MoveEffect.class))) {
-        //            return TextureCache.getOrCreate(getRef().getSourceObj().getImagePath());
-        //        }
-        //        return TextureCache.getOrCreate(getRef().getTargetObj().getImagePath());
-        return null;
-    }
 }

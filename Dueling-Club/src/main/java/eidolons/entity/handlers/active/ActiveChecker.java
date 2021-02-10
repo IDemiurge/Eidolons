@@ -3,10 +3,9 @@ package eidolons.entity.handlers.active;
 import eidolons.ability.effects.containers.customtarget.ShapeEffect;
 import eidolons.ability.effects.containers.customtarget.ZoneEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.core.master.EffectMaster;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.STD_BOOLS;
@@ -52,7 +51,7 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
             }
         }
         return checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.THROW.toString())
-         || checkProperty(G_PROPS.GROUP, ActionEnums.ACTION_TAGS.THROW.toString());
+                || checkProperty(G_PROPS.GROUP, ActionEnums.ACTION_TAGS.THROW.toString());
     }
 
     public boolean isBlocked() {
@@ -61,14 +60,6 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
         if (getEntity().getOwnerUnit().isAiControlled()) {
             getEntity().getCosts().setReason("This unit is AI controlled!");
             return true;
-        } else {
-            if (!getGame().isOffline()) {
-                if (!getEntity().getOwnerUnit().isMine()) {
-                    getEntity().getCosts().setReason("You do not control this unit!");
-                    return true;
-                }
-            }
-
         }
         return false;
     }
@@ -80,6 +71,7 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
     public boolean isTurn() {
         return getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.TURN;
     }
+
     public boolean isMode() {
         return getActionGroup() == ACTION_TYPE_GROUPS.MODE;
     }
@@ -99,8 +91,8 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
 
 
     public boolean isAttackGeneric() {
-        return getName().equals(DC_ActionManager.ATTACK)
-         || getName().equals(DC_ActionManager.OFFHAND_ATTACK);
+        return getName().equals(ActionEnums.ATTACK)
+                || getName().equals(ActionEnums.OFFHAND_ATTACK);
     }
 
     public boolean isOffhand() {
@@ -120,7 +112,7 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
             return false;
         }
         return (checkProperty(G_PROPS.GROUP, ActionEnums.ACTION_TAGS.RANGED.toString()) || checkProperty(
-         G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.RANGED.toString()));
+                G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.RANGED.toString()));
         // return false;
         // return getIntParam(PARAMS.RANGE) > 1;
     }
@@ -145,11 +137,11 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
         if (zone != null) {
             return zone;
         }
-        if (EffectFinder.check(getEntity().getAbilities(), ZoneEffect.class)) {
+        if (EffectMaster.check(getEntity().getAbilities(), ZoneEffect.class)) {
             zone = true;
             return true;
         }
-        if (EffectFinder.check(getEntity().getAbilities(), ShapeEffect.class)) {
+        if (EffectMaster.check(getEntity().getAbilities(), ShapeEffect.class)) {
             zone = true;
             return true;
         }
@@ -168,7 +160,7 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
 
     public boolean isCancellable() {
         return checkProperty(G_PROPS.STD_BOOLS, STD_BOOLS.CANCELLABLE
-         .toString());
+                .toString());
     }
 
     public boolean isRangedTouch() {
@@ -223,5 +215,25 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
 
     public boolean isUnarmed() {
         return checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.UNARMED.toString());
+    }
+
+    public boolean checkAttackType(ActionEnums.ATTACK_TYPE type) {
+        return checkProperty(G_PROPS.ACTION_TAGS, type.toString());
+    }
+
+    public boolean isInstantAction() {
+        if (getEntity().getIntParam(PARAMS.MOVE_PTS_COST)>0) {
+            //TODO some actions will ALWAYS cost MP
+            return true;
+        }
+        if (getEntity().getOwnerUnit().isMovePointsOn()) {
+            if (isTurn() || isMove()) {
+                return getEntity().getOwnerObj().checkCanDoFreeMove(getEntity());
+            }
+
+        } else {
+            return false;
+        }
+        return false;
     }
 }

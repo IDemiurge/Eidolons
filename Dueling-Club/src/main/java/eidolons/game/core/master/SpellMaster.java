@@ -51,7 +51,6 @@ public class SpellMaster extends Master {
 //                if (!HqMaster.isContentDisplayable(type)) {
 //                    continue;
 //                }
-
             if (SkillMaster.isMasteryUnlocked(entity, mastery)) {
                 Spell spell = globalSpellCache.get(type);
                 if (spell == null) {
@@ -67,8 +66,7 @@ public class SpellMaster extends Master {
     }
 
     public Spell createSpell(ObjType type, Player player, Ref ref) {
-        Spell spell = new Spell(type, player, getGame(), ref);
-        return spell;
+        return new Spell(type, player, getGame(), ref);
     }
 
 

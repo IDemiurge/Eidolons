@@ -12,11 +12,11 @@ import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.elements.task.Task;
 import eidolons.game.battlecraft.ai.tools.path.ActionPath;
-import eidolons.game.battlecraft.logic.battle.mission.CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
+import eidolons.game.battlecraft.logic.mission.quest.CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.cinematic.Cinematics;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.data.DataManager;
@@ -50,15 +50,14 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                 unit = getUnit(arg);
             }
             if (unit == null) {
-                String name = unitData;
-                if (!DataManager.isTypeName(name)) {
+                if (!DataManager.isTypeName(unitData)) {
                     return null;
                 }
 
                 Boolean power = null;// getPower(arg);
                 Boolean distance = true; // getDistance(arg);
                 Boolean ownership = false; // getOwnership(arg);
-                unit = getGame().getMaster().getByName(name, ref,
+                unit = getGame().getObjMaster().getByName(unitData, ref,
                         ownership, distance, power);
             }
         }
@@ -106,7 +105,7 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                 break;
             case TURN_TO:
                 //cell id
-                List<Action> turnSequence = null;
+                List<Action> turnSequence;
                 if (FacingMaster.getFacing(args[1].toString()) == null) {
                     turnSequence = getTurnSequenceConstructor().getTurnSequence(FACING_SINGLE.IN_FRONT, unit,
                             Coordinates.get(args[1].toString()));
@@ -191,7 +190,7 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
             }
         }
         if (args.length > 2) {
-            BattleFieldObject target = null;
+            BattleFieldObject target;
             if (args[2] instanceof BattleFieldObject) {
                 target = (BattleFieldObject) args[2];
             } else

@@ -1,7 +1,7 @@
 package eidolons.libgdx.particles.spell;
 
 import com.badlogic.gdx.utils.Pool;
-import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
+import eidolons.libgdx.anims.AnimEnums.ANIM_PART;
 import eidolons.libgdx.particles.PhaseVfx;
 
 import java.util.HashMap;
@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class PhaseVfxPool {
 
-    private static Map<String, Pool<PhaseVfx>> actorPoolMap = new HashMap<>();
+    private static final Map<String, Pool<PhaseVfx>> actorPoolMap = new HashMap<>();
 
     public static PhaseVfx getEmitterActor(String path, ANIM_PART... parts) {
 

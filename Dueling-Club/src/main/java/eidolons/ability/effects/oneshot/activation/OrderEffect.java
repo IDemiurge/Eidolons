@@ -9,13 +9,12 @@ import main.ability.effects.OneshotEffect;
 import main.content.enums.system.AiEnums.ORDER_PRIORITY_MODS;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
-import main.system.util.Untested;
 
-@Untested
+//Untested
 public class OrderEffect extends DC_Effect implements OneshotEffect {
 
 
-    private Boolean cancel;
+    private final Boolean cancel;
     private ORDER_PRIORITY_MODS strictPriority;
     private Boolean customTarget;
 

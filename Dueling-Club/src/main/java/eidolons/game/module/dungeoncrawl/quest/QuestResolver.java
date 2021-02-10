@@ -77,12 +77,9 @@ public class QuestResolver  extends QuestHandler{
 
     private Condition getCompletionConditions(DungeonQuest quest) {
        return new DynamicCondition<>(q -> {
-            if (q.getNumberRequired() <=
-             q.getNumberAchieved())
-                return true;
-
-            return false;
-        }, quest);
+           return q.getNumberRequired() <=
+                   q.getNumberAchieved();
+       }, quest);
 
     }
 

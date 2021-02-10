@@ -15,7 +15,7 @@ static {
 //    TEST_MODE.setDevOnly(true);
 }
     public   enum POST_PROCESSING_OPTIONS implements Options.OPTION {
-        ALL_OFF(false),
+        ENABLED(false),
         HERO_EFFECTS_OFF(true),
         SHADOW_EFFECT_OFF(false),
 
@@ -42,7 +42,7 @@ static {
         private Integer min;
         private Integer max;
         private Object[] options;
-        private Object defaultValue;
+        private final Object defaultValue;
 
         POST_PROCESSING_OPTIONS(Boolean exclusive) {
             this.exclusive = exclusive;

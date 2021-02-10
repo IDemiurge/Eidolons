@@ -1,6 +1,7 @@
 package eidolons.libgdx.gui.panels.headquarters.datasource;
 
 import eidolons.ability.InventoryTransactionManager;
+import eidolons.content.ContentConsts;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
@@ -44,8 +45,8 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
-import main.system.launch.CoreEngine;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.launch.Flags;
+import main.system.sound.AudioEnums;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -109,7 +110,7 @@ public class HqDataMaster {
     }
 
     private static String getNewSaveHeroName(HeroDataModel model) {
-        if (CoreEngine.isIggDemo()) {
+        if (Flags.isIggDemo()) {
             return model.getName()+" lvl " + model.getIntParam(PARAMS.HERO_LEVEL);
         }
         return NameMaster.getUniqueVersionedName(model.getName(), DC_TYPE.CHARS);
@@ -122,7 +123,7 @@ public class HqDataMaster {
             for (String substring : ContainerUtils.openContainer(val)) {
                 if (!NumberUtils.isInteger(substring))
                     continue;
-                Integer id = NumberUtils.getInteger(substring);
+                Integer id = NumberUtils.getIntParse(substring);
                 if (id != 0) {
                     Obj obj = model.getGame().getObjectById(id);
                     if (obj == null)
@@ -209,10 +210,8 @@ public class HqDataMaster {
         return new HqDataMaster(unit);
     }
 
-    public static final boolean isSimulationOff() {
-        if (HeroCreationMaster.isHeroCreationInProgress())
-            return false;
-        return true;
+    public static boolean isSimulationOff() {
+        return !HeroCreationMaster.isHeroCreationInProgress();
     }
 
     public static HqDataMaster createAndSaveInstance(Unit unit) {
@@ -374,23 +373,22 @@ public class HqDataMaster {
                     }
                     shop.sellItemTo(item, hero);
 //                    hero.modifyParameter(PARAMS.GOLD, price); all gold is handled by ShopItemManager!
-                    DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__GOLD);
                 } else {
                     Integer price = shop.buyItemFrom(item, hero);
                     if (price == null)
                         return;
                     hero.addItemToInventory(item);
 //                    hero.modifyParameter(PARAMS.GOLD, -price); all gold is handled by ShopItemManager!
-                    DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__GOLD);
                 }
+                DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__GOLD);
                 break;
             case PICK_UP:
                 item = (DC_HeroItemObj) args[0];
                 if (GoldMaster.checkGoldPack(item, hero)) {
-                    DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__GOLD);
+                    DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__GOLD);
                 } else {
                     hero.addItemToInventory(item); //TODO fix pickup!
-                    DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__HOVER);
+                    DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__HOVER);
                 }
                 break;
             case DROP:
@@ -448,11 +446,11 @@ public class HqDataMaster {
         switch (operation) {
             case ADD_PARAMETER:
                 hero.modifyParameter((PARAMETER) args[0],
-                        Integer.valueOf(args[1].toString()));
+                        Integer.parseInt(args[1].toString()));
                 break;
 
             case SET_PARAMETER:
-                hero.setParameter((PARAMETER) args[0], Integer.valueOf(args[1].toString()));
+                hero.setParameter((PARAMETER) args[0], Integer.parseInt(args[1].toString()));
                 break;
             case APPLY_TYPE:
                 String imagePath = hero.getImagePath();
@@ -460,7 +458,7 @@ public class HqDataMaster {
                 for (PARAMETER item : DC_ContentValsManager.getAttributes()) {
                     hero.getType().modifyParameter((item), 5, null, true);
                 }
-                for (PARAMETER item : DC_ContentValsManager.DYNAMIC_PARAMETERS) {
+                for (PARAMETER item : ContentConsts.DYNAMIC_PARAMETERS) {
                     hero.setParameter(DC_ContentValsManager.getPercentageParam(item),
                             DC_MathManager.PERCENTAGE);
                 }

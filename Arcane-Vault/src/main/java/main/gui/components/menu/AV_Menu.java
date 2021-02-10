@@ -38,14 +38,19 @@ public class AV_Menu {
             if (sub.hasSubMenu()) {
                 JMenu menuItem = getMenu(sub);
                 menuItem.addActionListener(handler);
-                // menu.addMenuListener(new AV_MenuHandler(i.getName(), true));
+                menu.addMenuListener(handler);
             } else {
-                JMenuItem menuItem = new JMenuItem(sub.getName());
-                menuItem.setActionCommand(i.getName());
-                menuItem.addActionListener(handler);
+                // JMenuItem menuItem = new JMenuItem(new UIAction(sub.getName()) {
+                //     @Override
+                //     public void actionPerformed(ActionEvent e) {
+                //         handler.actionPerformed(e);
+                //     }
+                // });
+                // menuItem.setActionCommand(i.getName());
+                // menuItem.addActionListener(handler);
 
                 // menu.addMenuListener(new AV_MenuHandler(i.getName(), true));
-                menu.add(menuItem);
+                // menu.add(menuItem);
             }
         }
         return menu;
@@ -78,14 +83,14 @@ public class AV_Menu {
         TEST(MENU_ITEMS.DC, MENU_ITEMS.HC),
         TEXT(MENU_ITEMS.GENERATE_MISSING_DESCRIPTIONS);
         // ++ AE MENU?
-        private MENU_ITEMS[] items;
+        private final MENU_ITEMS[] items;
 
         MENUS(MENU_ITEMS... items) {
             this.items = items;
         }
 
         public String getName() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
 
         public MENU_ITEMS[] getItems() {
@@ -159,7 +164,7 @@ public class AV_Menu {
         REMOVE_VALUE,
         // AE
         SAVE_TEMPLATE,;
-        private MENU_ITEMS[] items;
+        private final MENU_ITEMS[] items;
 
         // boolean customGeneratedItems
         MENU_ITEMS(MENU_ITEMS... items) {
@@ -175,7 +180,7 @@ public class AV_Menu {
         }
 
         public String getName() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
 
         public MENU_ITEMS[] getItems() {

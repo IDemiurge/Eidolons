@@ -7,16 +7,18 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.handlers.DC_ObjMaster;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.vision.GammaMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionController;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.battlefield.vision.mapper.*;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.ability.effects.Effects;
+import main.content.CONTENT_CONSTS;
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
 import main.content.enums.GenericEnums.DAMAGE_CASE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
@@ -36,7 +38,6 @@ import main.entity.handlers.EntityMaster;
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.game.core.game.Game;
@@ -46,37 +47,31 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class DC_Obj extends MicroObj {
+
+    Module module;
 
     protected Map<SPECIAL_EFFECTS_CASE, Effect> specialEffects;
     protected Map<DAMAGE_CASE, List<Damage>> bonusDamage;
     protected DAMAGE_TYPE dmg_type;
-    //    protected UNIT_TO_PLAYER_VISION activeVisionStatus;
-//    protected UNIT_TO_UNIT_VISION activeUnitVisionStatus;
-//    protected boolean detected;
-//protected boolean detectedByPlayer;
-//    protected OUTLINE_TYPE outlineTypeForPlayer;
-//    protected VISIBILITY_LEVEL visibilityLevelForPlayer = VISIBILITY_LEVEL.UNSEEN;
-//    protected UNIT_TO_PLAYER_VISION playerVisionStatus = UNIT_TO_PLAYER_VISION.UNKNOWN;
-//    protected VISIBILITY_LEVEL visibilityLevel;
-//    protected OUTLINE_TYPE outlineType;
+
     protected Integer gamma;
-    //    protected PERCEPTION_STATUS_PLAYER playerPerceptionStatus;
-//    protected PERCEPTION_STATUS perceptionStatus;
-//    protected IDENTIFICATION_LEVEL identificationLevel;
-    protected DIRECTION blockingWallDirection;
-    protected boolean blockingDiagonalSide;
-    protected Coordinates blockingWallCoordinate;
-    protected boolean pale;
-    Coordinates blockingCoordinate;
     private VisionController visionController;
     private boolean visibilityOverride;
     private boolean resetIgnored;
     private boolean visibilityFrozen;
+
+    protected boolean pale;
+
+    protected Set<ObjType> appliedTypes = new LinkedHashSet<>();
+    protected ObjType originalType;
 
     public DC_Obj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -101,7 +96,11 @@ public abstract class DC_Obj extends MicroObj {
     public DetectionMapper getDetectionMapper() {
         return getVisionController().getDetectionMapper();
     }
+
     public GammaMapper getGammaMapper() {
+        if (getVisionController() == null) {
+            return null;
+        }
         return getVisionController().getGammaMapper();
     }
 
@@ -117,7 +116,7 @@ public abstract class DC_Obj extends MicroObj {
             // if (getOutlineType()==)
             // getToolTip();
             {
-                return StringMaster.getWellFormattedString(getOutlineType().toString());
+                return StringMaster.format(getOutlineType().toString());
             }
         }
 
@@ -140,17 +139,8 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     protected void addDefaultValues() {
-        if (CoreEngine.isDefaultValuesAddedDynamically())
+        if (Flags.isDefaultValuesAddedDynamically())
             DC_ContentValsManager.addDefaultValues(this);
-        // for (String value : DC_ContentManager
-        // .getInfoPanelValueList(getOBJ_TYPE())) {
-        // VALUE VAL = ContentManager.getValue(value);
-        // if (StringMaster.isEmpty(getValue(VAL))
-        // && !StringMaster.isEmpty(VAL.getDefaultValue())) {
-        // getType().setValue(VAL, VAL.getDefaultValue());
-        // setValue(VAL, VAL.getDefaultValue());
-        // }
-        // }
     }
 
     public boolean checkInSight() {
@@ -164,7 +154,7 @@ public abstract class DC_Obj extends MicroObj {
     @Override
     public String getToolTip() {
 
-        if (!VisionManager.checkDetected(this)) {
+        if (!VisionHelper.checkDetected(this)) {
             return "?";
         }
         return super.getToolTip();
@@ -282,11 +272,8 @@ public abstract class DC_Obj extends MicroObj {
         }
         Ref ref = Ref.getCopy(REF);
         ref.setTarget(target.getId());
-//        if (this instanceof Unit) { //TODO igg demo hack
-            ref.setSource(getId());
-//        } else {
-            ref.setID(KEYS.THIS, getId());
-//        }
+        ref.setSource(getId());
+        ref.setID(KEYS.THIS, getId());
         Effect effect = specialEffects.get(case_type);
         getGame().getLogManager().log(getName() + ": special effect " + case_type.getName());
         effect.apply(ref);
@@ -307,7 +294,7 @@ public abstract class DC_Obj extends MicroObj {
         }
         if (getSpecialEffects().get(case_type) != null) {
             getSpecialEffects().put(case_type,
-             new Effects(getSpecialEffects().get(case_type), effects));
+                    new Effects(getSpecialEffects().get(case_type), effects));
         } else {
             getSpecialEffects().put(case_type, effects);
         }
@@ -317,7 +304,6 @@ public abstract class DC_Obj extends MicroObj {
     public void modified(ModifyValueEffect modifyValueEffect) {
 
     }
-
 
 
     public PLAYER_VISION getActiveVisionStatus() {
@@ -337,7 +323,6 @@ public abstract class DC_Obj extends MicroObj {
     }
 
 
-
     public UNIT_VISION getActiveUnitVisionStatus() {
         return getUnitVisionMapper().get(this);
     }
@@ -345,6 +330,7 @@ public abstract class DC_Obj extends MicroObj {
     public void setActiveUnitVisionStatus(UNIT_VISION activeUnitVisionStatus) {
         getUnitVisionMapper().set(this, activeUnitVisionStatus);
     }
+
     public UNIT_VISION getUnitVisionStatus() {
         return getUnitVisionMapper().getForMe(this);
     }
@@ -352,7 +338,6 @@ public abstract class DC_Obj extends MicroObj {
     public void setUnitVisionStatus(UNIT_VISION activeUnitVisionStatus) {
         getUnitVisionMapper().setForMe(this, activeUnitVisionStatus);
     }
-
 
 
     public boolean isDetected() {
@@ -368,9 +353,8 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     public void setDetectedByPlayer(boolean detectedByPlayer) {
-          getDetectionMapper().setForMe(this, detectedByPlayer);
+        getDetectionMapper().setForMe(this, detectedByPlayer);
     }
-
 
 
     public OUTLINE_TYPE getOutlineType() {
@@ -378,7 +362,7 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     public void setOutlineType(OUTLINE_TYPE outlineTypeForPlayer) {
-        getOutlineMapper().set(this,outlineTypeForPlayer);
+        getOutlineMapper().set(this, outlineTypeForPlayer);
     }
 
     public VISIBILITY_LEVEL getVisibilityLevel() {
@@ -390,13 +374,12 @@ public abstract class DC_Obj extends MicroObj {
     }
 
 
-
     public OUTLINE_TYPE getOutlineTypeForPlayer() {
         return getOutlineMapper().getForMe(this);
     }
 
     public void setOutlineTypeForPlayer(OUTLINE_TYPE outlineTypeForPlayer) {
-        getOutlineMapper().setForMe(this,outlineTypeForPlayer);
+        getOutlineMapper().setForMe(this, outlineTypeForPlayer);
     }
 
     public VISIBILITY_LEVEL getVisibilityLevelForPlayer() {
@@ -407,253 +390,9 @@ public abstract class DC_Obj extends MicroObj {
         getVisibilityLevelMapper().setForMe(this, visibilityLevelForPlayer);
     }
 
-
-
-
-//           TODO OLD                                <><><><><>
-    //    public VISIBILITY_LEVEL getActiveVisibilityLevel() {
-//        return getVisibilityLevel(true);
-//    }
-//    public VISIBILITY_LEVEL getVisibilityLevel() {
-//        return getVisibilityLevel(false);
-//    }
-//
-//    public void setVisibilityLevel(VISIBILITY_LEVEL visibilityLevel) {
-//        Unit seeingUnit = getGame().getVisionMaster().getSeeingUnit();
-//        if (seeingUnit != null) {
-//            if (seeingUnit.isMine())
-//                if (seeingUnit.isMainHero()) {
-//                    setVisibilityLevelForPlayer(visibilityLevel);
-//                }
-//        }
-//
-//        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG,
-//         this + " setVisibilityLevel " + visibilityLevel);
-//        if (this instanceof Unit) {
-//            if (activeUnitVisionStatus == UNIT_TO_UNIT_VISION.IN_SIGHT ||
-//             activeUnitVisionStatus == UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT) {
-//                if (visibilityLevel == VISIBILITY_LEVEL.UNSEEN || visibilityLevel == VISIBILITY_LEVEL.BLOCKED)
-//                    main.system.auxiliary.log.LogMaster.log(1,
-//                     this + " gotcha " + visibilityLevel);
-//            } else {
-//                if (activeUnitVisionStatus == UNIT_TO_UNIT_VISION.BEYOND_SIGHT)
-//                    if (visibilityLevel == VISIBILITY_LEVEL.CLEAR_SIGHT
-//                     ) {
-//                        main.system.auxiliary.log.LogMaster.log(1,
-//                         this + " gotcha " + visibilityLevel);
-//                    }
-//
-//            }
-//        }
-//        this.visibilityLevel = visibilityLevel;
-//    }
-//
-//    public VISIBILITY_LEVEL getVisibilityLevel(boolean active) {
-//        if (VisionManager.isVisionHacked()) {
-//            return VISIBILITY_LEVEL.CLEAR_SIGHT;
-//        }
-//        if (!active) {
-//            if (!game.isDebugMode()) {
-//                return getVisibilityLevelForPlayer();
-//            }
-//        }
-//        return visibilityLevel;
-//    }
-//
-//    public VISIBILITY_LEVEL getVisibilityLevelForPlayer() {
-//        if (visibilityLevelForPlayer == null) {
-//            if (game.isDebugMode())
-//                return VISIBILITY_LEVEL.CLEAR_SIGHT;
-//            return VISIBILITY_LEVEL.UNSEEN;
-//        }
-//        if (isDisplayEnemyVisibility()) {
-//            return visibilityLevel;
-//        }
-//        return visibilityLevelForPlayer;
-//    }
-//
-//    private void setVisibilityLevelForPlayer(VISIBILITY_LEVEL visibilityLevelForPlayer) {
-//        this.visibilityLevelForPlayer = visibilityLevelForPlayer;
-//    }
-//
-//
-//
-//
-//    public OUTLINE_TYPE getOutlineType() {
-//        if (getGame().isSimulation()) {
-//            return null;
-//        }
-//        if (VisionManager.isVisionHacked()) {
-//            return null;
-//        }
-//        if (!game.isDebugMode()) {
-//            return getOutlineTypeForPlayer();
-//        }
-//        return outlineType;
-//    }
-//
-//    public void setOutlineType(OUTLINE_TYPE outlineType) {
-//        if (getGame().getManager().getActiveObj() != null) {
-//            if (getGame().getManager().getActiveObj().isMine())
-//            // TODO MAIN HERO ONLY?
-//            {
-//                setOutlineTypeForPlayer(outlineType);
-//            }
-//        }
-//        else {
-//            setOutlineTypeForPlayer(outlineType);
-//        }
-//        if (outlineType != null)
-//            if (isMine()) {
-//                return;
-//            }
-//        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG,
-//         this + "   setOutlineType " + outlineType);
-//        this.outlineType = outlineType;
-//    }
-//
-//    public OUTLINE_TYPE getOutlineTypeForPlayer() {
-//        if (isDisplayEnemyVisibility()) {
-//            return outlineType;
-//        }
-//        return outlineTypeForPlayer;
-//    }
-//
-//    public void setOutlineTypeForPlayer(OUTLINE_TYPE outlineTypeForPlayer) {
-//
-//        this.outlineTypeForPlayer = outlineTypeForPlayer;
-//        if (outlineTypeForPlayer == null) {
-//            if (getGame().getManager().getActiveObj() != null) {
-//                if (!getGame().getManager().getActiveObj().isMine()) {
-//                    main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG, "outlineTypeForPlayer set to "
-//                     + outlineTypeForPlayer);
-//                }
-//            }
-//        }
-//
-//        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG,
-//         this + "   setOutlineTypeForPlayer " + outlineTypeForPlayer);
-//        // main.system.auxiliary.getGame().getLogManager().appendSpecialLog(SPECIAL_LOG.VISIBILITY, "outlineTypeForPlayer set to "
-//        // + outlineTypeForPlayer);
-//    }
-//
-//    protected boolean isDisplayEnemyVisibility() {
-//        return false;
-//    }
-//
-//    public UNIT_TO_UNIT_VISION getUnitVisionStatus() {
-//        if (VisionManager.isVisionHacked()) {
-//            return VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT;
-//        }
-//        if (activeUnitVisionStatus == null) {
-//            try {
-//                activeUnitVisionStatus = getGame().getVisionMaster()
-//                 .getUnitVisibilityStatus(this);
-//            } catch (Exception e) {
-//                main.system.ExceptionMaster.printStackTrace(e);
-//            }
-//        }
-//        return activeUnitVisionStatus;
-//    }
-//
-//    public void setUnitVisionStatus(UNIT_TO_UNIT_VISION unitVisionStatus) {
-//        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG, "setUnitVisionStatus " + getNameAndCoordinate() +
-//         " from " +
-//         this.activeUnitVisionStatus +
-//         " to "
-//         + unitVisionStatus.toString());
-//
-//        this.activeUnitVisionStatus = unitVisionStatus;
-//        if (unitVisionStatus != null) {
-//            setProperty(PROPS.VISIBILITY_STATUS, unitVisionStatus.toString());
-//        }
-//    }
-//
-//    public UNIT_TO_PLAYER_VISION getActivePlayerVisionStatus() {
-//        if (VisionManager.isVisionHacked()) {
-//            return VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED;
-//        }
-//        return activeVisionStatus;
-//    }
-//
-//    public UNIT_TO_PLAYER_VISION getPlayerVisionStatus(boolean active) {
-//        if (VisionManager.isVisionHacked()) {
-//            return VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED;
-//        }
-//
-//        if (active) {
-//            return activeVisionStatus;
-//        }
-//        return playerVisionStatus;
-//    }
-//
-//    public void setPlayerVisionStatus(UNIT_TO_PLAYER_VISION playerVisionStatus) {
-//        if (getGame().getManager().getActiveObj() != null) {
-//            if (getGame().getManager().getActiveObj().isMine()) {
-////                if (this instanceof Unit)
-////              main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG, "set PlayerVisionStatus " + getNameAndCoordinate()   +
-////                 " from " +
-////                 this.playerVisionStatus +
-////                 " to "
-////                 + playerVisionStatus.toString());
-//                this.playerVisionStatus = playerVisionStatus;
-//            }
-//        }
-////        if (this instanceof Unit)
-////      main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG, "set activeVisionStatus " + getNameAndCoordinate()   +
-////         " from " +
-////         this.activeVisionStatus +
-////         " to "
-////         + playerVisionStatus.toString());
-//        this.activeVisionStatus = playerVisionStatus;
-//        if (playerVisionStatus != null) {
-//            setProperty(PROPS.DETECTION_STATUS, playerVisionStatus.toString());
-//        }
-//
-//    }
-//
-//
-//    public boolean isDetected() {
-//        if (VisionManager.isVisionHacked()) {
-//            return true;
-//        }
-//        if (getGame().getManager().getActiveObj() != null) {
-//            if (getGame().getManager().getActiveObj().isMine()) {
-//                return isDetectedByPlayer();
-//            }
-//        }
-//        return detected;
-//    }
-//
-//    public void setDetected(boolean b) {
-//        if (!b) {
-//            this.detected = b;
-//        }
-//        this.detected = b;
-//        if (getGame().getManager().getActiveObj() != null) {
-//            if (getGame().getManager().getActiveObj().isMine()) {
-//                setDetectedByPlayer(b);
-//            }
-//        }
-//    }
-//
-//    public boolean isDetectedByPlayer() {
-//        if (VisionManager.isVisionHacked()) {
-//            return true;
-//        }
-//        if (isMine()) return true;
-//        return detectedByPlayer;
-//    }
-//
-//    public void setDetectedByPlayer(boolean detectedByPlayer) {
-//        if (!detectedByPlayer) {
-//            this.detectedByPlayer = detectedByPlayer;
-//        }
-//        this.detectedByPlayer = detectedByPlayer;
-//    }
     public boolean checkVisible() {
 
-        return VisionManager.checkVisible(this);
+        return VisionHelper.checkVisible(this);
     }
 
     public boolean isFlippedImage() {
@@ -710,16 +449,22 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     public Integer getGamma(Unit source) {
+        if (getGammaMapper() == null) {
+            return null;
+        }
         return getGammaMapper().get(source, this);
     }
+
     public void setGamma(Unit source, Integer i) {
-          getGammaMapper().set(source, this, i);
+        if (getGammaMapper() != null) {
+            getGammaMapper().set(source, this, i);
+        }
         if (source.isPlayerCharacter()) {
             {
                 setGamma(i);
                 if (GammaMaster.DEBUG_MODE)
-                if (game.isDebugMode())
-                    LogMaster.log(1,this + " gamma = " +i);
+                    if (game.isDebugMode())
+                        LogMaster.log(1, this + " gamma = " + i);
             }
         }
     }
@@ -729,13 +474,13 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     public void setUnitVisionStatus(UNIT_VISION status, BattleFieldObject observer) {
-        getUnitVisionMapper() .set(observer, this, status);
+        getUnitVisionMapper().set(observer, this, status);
     }
 
     public VisionController getVisionController() {
         if (visionController == null) {
-            if (!isSimulation())
-                visionController=getGame().getVisionMaster().getVisionController();
+            if (!isSimulation() || CoreEngine.isLevelEditor())
+                visionController = getGame().getVisionMaster().getVisionController();
             else {
                 return null;
             }
@@ -758,8 +503,18 @@ public abstract class DC_Obj extends MicroObj {
     public DIRECTION getDirection() {
         return null;
     }
+
     public boolean isResetIgnored() {
         return resetIgnored;
+    }
+
+    @Override
+    public Module getModule() {
+        return module;
+    }
+
+    public void setModule(Module module) {
+        this.module = module;
     }
 
     public void setResetIgnored(boolean resetIgnored) {
@@ -784,5 +539,25 @@ public abstract class DC_Obj extends MicroObj {
 
     public void setVisibilityFrozen(boolean visibilityFrozen) {
         this.visibilityFrozen = visibilityFrozen;
+    }
+
+    public CONTENT_CONSTS.COLOR_THEME getColorTheme() {
+        if (!getProperty("COLOR_THEME").isEmpty()) {
+            return new EnumMaster<CONTENT_CONSTS.COLOR_THEME>().retrieveEnumConst(CONTENT_CONSTS.COLOR_THEME.class,
+                    getProperty("COLOR_THEME"));
+        }
+        return getGame().getDungeonMaster().getStructMaster().getLowestStruct(getCoordinates()).getColorTheme();
+    }
+
+    public Set<ObjType> getAppliedTypes() {
+        return appliedTypes;
+    }
+
+    public ObjType getOriginalType() {
+        return originalType;
+    }
+
+    public void setOriginalType(ObjType originalType) {
+        this.originalType = originalType;
     }
 }

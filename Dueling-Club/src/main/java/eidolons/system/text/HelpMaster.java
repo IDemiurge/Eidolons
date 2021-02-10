@@ -1,21 +1,19 @@
 package eidolons.system.text;
 
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.launch.ScenarioLauncher;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.FileManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 11/17/2017.
  */
 public class HelpMaster {
     public static String getHelpText() {
-        String text = FileManager.readFile(
+        return FileManager.readFile(
          StrPathBuilder.build(PathFinder.getTextPath(),
           TextMaster.getLocale(), "manual", "manual.txt"));
-        return text;
     }
 
     public static String getHeroMainInfoText(String name) {
@@ -24,7 +22,7 @@ public class HelpMaster {
 
     public static String getHeroInfoText(String name, String suffix) {
         String prefix = null ;
-        if (CoreEngine.isIggDemo()) {
+        if (Flags.isIggDemo()) {
             prefix = "igg";
         } else
         if (name.contains(" ")) {
@@ -35,7 +33,7 @@ public class HelpMaster {
                 name = name.split(" ")[0];
         }
         String path=StrPathBuilder.build(PathFinder.getTextPath(),
-         TextMaster.getLocale(), "info", "heroes");
+         TextMaster.getLocale(), "descriptions", "heroes");
         if (prefix!=null ){
             path=StrPathBuilder.build(path, prefix);
         }
@@ -54,15 +52,13 @@ public class HelpMaster {
     }
 
     public static boolean isDefaultTextOn() {
-        if (ScenarioLauncher.missionIndex > 0)
-            return false;
         return false;
     }
 
     public static String getScenarioInfoText(String name, String suffix) {
         String text = FileManager.readFile(
          StrPathBuilder.build(PathFinder.getTextPath(),
-          TextMaster.getLocale(), "info", "scenarios",
+          TextMaster.getLocale(), "descriptions", "scenarios",
           name + (suffix != null ? suffix : "") + ".txt"));
         if (text.isEmpty()) {
             text = "Sorry, no info on this scenario!..";

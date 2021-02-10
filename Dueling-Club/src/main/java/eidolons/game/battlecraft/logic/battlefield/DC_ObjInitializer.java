@@ -2,15 +2,14 @@ package eidolons.game.battlecraft.logic.battlefield;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.game.battlecraft.logic.battle.encounter.Encounter;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.mission.encounter.Encounter;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.generator.GeneratorEnums;
-import eidolons.libgdx.bf.overlays.WallMap;
+import eidolons.libgdx.bf.overlays.map.WallMap;
 import eidolons.system.content.PlaceholderGenerator;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
@@ -26,7 +25,6 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
-import org.w3c.dom.Node;
 
 import java.util.*;
 
@@ -40,7 +38,7 @@ import static main.system.auxiliary.log.LogMaster.log;
  * 2) Set party units' positions
  * 3) init direction/flip maps
  */
-public class DC_ObjInitializer extends DungeonHandler<Location> {
+public class DC_ObjInitializer extends DungeonHandler {
 
     public static final String OBJ_SEPARATOR = StringMaster.getAltSeparator();
     public static final String COORDINATES_OBJ_SEPARATOR = StringMaster.getAltPairSeparator();
@@ -74,7 +72,7 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
         return item.split(COORDINATES_OBJ_SEPARATOR)[1];
     }
 
-    public DC_Obj initObject(Module module, Coordinates c, ObjType type, DC_Player owner, DC_Game game) {
+    public DC_Obj initObject(Module module, Coordinates c, ObjType type, DC_Player owner, DC_Game game, Integer id) {
         DC_Obj obj;
         if (owner == null) {
             if (type.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
@@ -84,17 +82,26 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
             }
         }
         if (type.getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS) {
-            obj = new Encounter(type, game, new Ref(), game.getPlayer(false), c);
+            obj =  createEncounter(type, c, id);
+
         } else {
-            type = getPlaceholderResolver().resolve(module, type, c);
-            if (type.getOBJ_TYPE_ENUM() == DC_TYPE.UNITS) {
-                obj = getSpawner().spawnUnit(type, c, owner, null, null);
+            ObjType resolvedType = getPlaceholderResolver().resolve(module, type, c);
+            if (resolvedType == null) {
+                main.system.auxiliary.log.LogMaster.log(1,module+": Null resolvedType for " +type);
+                return null;
+            }
+            if (resolvedType.getOBJ_TYPE_ENUM() == DC_TYPE.UNITS) {
+                obj = getSpawner().spawnUnit(resolvedType, c, owner, null, null);
             } else
-                obj = game.createObject(type, c, owner);
+                obj = game.createObject(resolvedType, c, owner);
 
         }
-
+        obj.setModule(module);
         return obj;
+    }
+
+    protected DC_Obj createEncounter(ObjType type, Coordinates c, Integer id) {
+     return    new Encounter(type, game, new Ref(), game.getPlayer(false), c);
     }
 
     public Map<Integer, BattleFieldObject> processObjects(
@@ -119,12 +126,12 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
                 Integer id = Integer.valueOf(idString);
                 ObjType type = idMap.get(id);
                 if (type == null) {
-                    LogMaster.log(1, "ERROR: Type not found - " + id);
+                    LogMaster.log(1, "ERROR: Type not found; id = " + id);
                     continue;
                 }
                 DC_Player owner = ownerMap.get(id);
 
-                DC_Obj obj = initObject(module, c, type, owner, DC_Game.game);
+                DC_Obj obj = initObject(module, c, type, owner, DC_Game.game, id);
 
                 if (obj instanceof BattleFieldObject) {
                     objIdMap.put(id, (BattleFieldObject) obj);
@@ -144,17 +151,17 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
     }
 
     public void processBorderObjects(
-            Module module, Node subNode) {
+            Module module, String data) {
 
         List<String> items = ContainerUtils.openContainer(
-                subNode.getTextContent());
+                data );
 
         log(LOG_CHANNEL.BUILDING,module.getName()+" has " + items.size() +
                 " border objects...");
         for (String substring : items) {
             Coordinates c = Coordinates.get(true, substring);
             ObjType type = getBorderType();
-            DC_Obj value = initObject(module, c, type, null, DC_Game.game);
+            DC_Obj value = initObject(module, c, type, null, DC_Game.game, null);
 
             if (value instanceof BattleFieldObject) {
                 ((BattleFieldObject) value).setModuleBorder(true);
@@ -182,7 +189,7 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
     }
 
     public static String convertVarStringToObjCoordinates(String partyData) {
-        String reformatted = "";
+        StringBuilder reformatted = new StringBuilder();
         for (String subString : ContainerUtils.open(partyData)) {
             Coordinates c = Coordinates.get(VariableManager.getVar(subString));
             if (c == null) {
@@ -191,10 +198,10 @@ public class DC_ObjInitializer extends DungeonHandler<Location> {
             subString = VariableManager.removeVarPart(subString);
             subString = c + COORDINATES_OBJ_SEPARATOR
                     + subString;
-            reformatted += subString + OBJ_SEPARATOR;
+            reformatted.append(subString).append(OBJ_SEPARATOR);
         }
 
-        return reformatted;
+        return reformatted.toString();
     }
 
     public static List<ObjAtCoordinate> createObjTypeMap(String textContent) {

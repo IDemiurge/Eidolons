@@ -11,26 +11,6 @@ import main.system.auxiliary.data.ArrayMaster;
 import main.system.auxiliary.data.MapMaster;
 
 import java.util.*;
-//UNITS 
-//SPELLS 
-//CHARS 
-//ABILS 
-//BF_OBJ
-
-//BUFFS
-//ACTIONS
-//ARMOR
-//WEAPONS
-//SKILLS
-
-//ITEMS
-//CLASSES
-
-//ALL 
-
-//DEITIES 
-//ENCOUNTERS 
-//TERRAIN 
 public class ValuePageManager {
     public static final VALUE[][][] altPageArray = {ValuePages.ALT_UNIT_PAGES,
      ValuePages.ALT_SPELL_PAGES, ValuePages.ALT_CHAR_PAGES, null

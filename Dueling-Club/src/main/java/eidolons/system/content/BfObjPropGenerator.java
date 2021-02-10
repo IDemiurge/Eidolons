@@ -124,11 +124,11 @@ public class BfObjPropGenerator {
         }
         if (group != null) {
             t.setProperty(G_PROPS.BF_OBJECT_GROUP, StringMaster
-                    .getWellFormattedString(group.name()));
+                    .format(group.name()));
         }
 
         if (type != null) {
-            t.setProperty(G_PROPS.BF_OBJECT_TYPE, StringMaster.getWellFormattedString(type.name()));
+            t.setProperty(G_PROPS.BF_OBJECT_TYPE, StringMaster.format(type.name()));
         }
 
     }
@@ -335,17 +335,17 @@ public class BfObjPropGenerator {
             }
         }
         if (size != null) {
-            t.setProperty(PROPS.BF_OBJECT_SIZE, StringMaster.getWellFormattedString(size.name()));
+            t.setProperty(PROPS.BF_OBJECT_SIZE, StringMaster.format(size.name()));
         }
         if (material != null) {
-            t.setProperty(PROPS.BF_OBJ_MATERIAL, StringMaster.getWellFormattedString(material
+            t.setProperty(PROPS.BF_OBJ_MATERIAL, StringMaster.format(material
                     .name()));
         }
         if (dimension != null) {
-            t.setProperty(PROPS.DIMENSION, StringMaster.getWellFormattedString(dimension.name()));
+            t.setProperty(PROPS.DIMENSION, StringMaster.format(dimension.name()));
         }
         if (armorType != null) {
-            t.setProperty(PROPS.OBJECT_ARMOR_TYPE, StringMaster.getWellFormattedString(armorType
+            t.setProperty(PROPS.OBJECT_ARMOR_TYPE, StringMaster.format(armorType
                     .name()));
         }
 

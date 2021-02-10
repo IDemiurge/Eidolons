@@ -47,12 +47,11 @@ public class Traverser {
             return 0;
         c = c.getOffset(room.getCoordinates());
         Coordinates c2 = room2.getEntranceCoordinates().getOffset(room2.getCoordinates());
-        int dif = c.getXorY(xOrY) - c2.getXorY(xOrY);
         //        if (xOrY) { this seems wrong
         //            return dif - (room.getWidth() / 2 - room2.getWidth() / 2);
         //        }
         //        return dif - (room.getHeight() / 2 - room2.getHeight() / 2);
-        return dif;
+        return c.getXorY(xOrY) - c2.getXorY(xOrY);
     }
 
     public static boolean simpleCheck(Room room, Room room1, Room link) {

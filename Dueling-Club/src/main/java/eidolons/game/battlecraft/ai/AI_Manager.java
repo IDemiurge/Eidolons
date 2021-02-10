@@ -27,9 +27,10 @@ import java.util.List;
 public class AI_Manager extends AiMaster {
     public static final boolean BRUTE_AI_MODE = false;
     public static final boolean DEV_MODE = false;
+    public static final boolean MELEE_HACK = true;
     private static boolean running;
     private static boolean off;
-    private static List<DC_ActiveObj> brokenActions = new ArrayList<>();
+    private static final List<DC_ActiveObj> brokenActions = new ArrayList<>();
     protected BossAi bossAi;
 
     public AI_Manager(DC_Game game) {
@@ -38,6 +39,13 @@ public class AI_Manager extends AiMaster {
         priorityManager = DC_PriorityManager.init(this);
     }
 
+    public static boolean isAiVisionHack() {
+        return true;
+    }
+
+    public static boolean isSimplifiedLogic() {
+        return true;
+    }
 
     public static boolean isRunning() {
         return running;
@@ -55,6 +63,8 @@ public class AI_Manager extends AiMaster {
         return brokenActions;
     }
 
+
+
     public GroupAI getAllyGroup() {
         return getAutoGroupHandler().getAllyGroup();
     }
@@ -66,7 +76,7 @@ public class AI_Manager extends AiMaster {
     public GroupAI getCustomUnitGroup(Unit unit) {
         if (unit.isMine()) {
             return
-             getAllyGroup();
+                    getAllyGroup();
         }
         if (isCustomGroups())
             return new GroupAI(unit);
@@ -83,7 +93,7 @@ public class AI_Manager extends AiMaster {
 
     public Action getAction(Unit unit) {
         if (unit.isBoss()) {
-            return getBossAi(unit).getAction();
+            return getBossAi().getAction(unit);
         }
         if (unit.isMine()) {
             unit.getQuickItemActives();
@@ -106,13 +116,13 @@ public class AI_Manager extends AiMaster {
                 action = actionManager.getForcedAction(getAI(unit));
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
-                SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.AI, getUnit() +
-                 "'s Forced Action choice failed: " + e.getMessage());
+                SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.AI, getUnit() +
+                        "'s Forced Action choice failed: " + e.getMessage());
                 return null;
             } finally {
                 running = false;
-                SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.AI, getUnit() +
-                 " opts for Forced Action: " + action);
+                SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.AI, getUnit() +
+                        " opts for Forced Action: " + action);
             }
         } else {
             try {
@@ -121,8 +131,8 @@ public class AI_Manager extends AiMaster {
                 if (!CoreEngine.isGraphicsOff()) {
                     if (game.isDebugMode())
                         FloatingTextMaster.getInstance().
-                         createFloatingText(TEXT_CASES.BATTLE_COMMENT,
-                          getMessageBuilder().toString(), getUnit());
+                                createFloatingText(TEXT_CASES.BATTLE_COMMENT,
+                                        getMessageBuilder().toString(), getUnit());
                 }
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
@@ -134,7 +144,6 @@ public class AI_Manager extends AiMaster {
 
         return action;
     }
-
 
 
     public UnitAI getAI(Unit unit) {
@@ -169,22 +178,20 @@ public class AI_Manager extends AiMaster {
         return taskManager;
     }
 
-    protected BossAi getBossAi(Unit unit) {
-        if (bossAi == null) {
-//            bossAi = new BossAi(unit.getAI());
-        }
-        return bossAi;
+    protected BossAi getBossAi() {
+        return getGame().getMetaMaster().getBossManager().getAi();
     }
 
     public List<GroupAI> getGroups() {
         return getGroupHandler().getGroups();
     }
 
-
+@Override
     public boolean isDefaultAiGroupForUnitOn() {
-//        return isRngDungeon()  ;
-        return false;
+        //        return isRngDungeon()  ;
+        return true;
     }
+
     public Action getDefaultAction(Unit activeUnit) {
         return getAtomicAi().getAtomicWait(activeUnit);
     }

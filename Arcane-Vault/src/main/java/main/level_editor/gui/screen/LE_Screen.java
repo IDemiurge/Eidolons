@@ -4,8 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL30;
+import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.BFDataCreatedEvent;
+import eidolons.libgdx.bf.GridCreateData;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.particles.EmitterPools;
@@ -13,25 +16,35 @@ import eidolons.libgdx.particles.ambi.ParticleManager;
 import eidolons.libgdx.screens.ScreenWithLoader;
 import eidolons.libgdx.screens.dungeon.GenericDungeonScreen;
 import eidolons.libgdx.stage.GenericGuiStage;
-import eidolons.libgdx.stage.StageX;
-import main.level_editor.backend.struct.level.Floor;
+import eidolons.libgdx.stage.GridStage;
+import main.level_editor.backend.handlers.structure.FloorManager;
+import main.level_editor.backend.struct.level.LE_Floor;
 import main.level_editor.gui.grid.LE_BfGrid;
+import main.level_editor.gui.grid.LE_GridCell;
 import main.level_editor.gui.stage.LE_GuiStage;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
+import main.system.datatypes.DequeImpl;
 import main.system.threading.WaitMaster;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import static main.system.auxiliary.log.LogMaster.log;
+
 public class LE_Screen extends GenericDungeonScreen {
 
-    private static Map<Floor, Supplier<ScreenWithLoader>> cached = new HashMap();
+    private static final Map<LE_Floor, Supplier<ScreenWithLoader>> cached = new HashMap();
     private static LE_Screen instance;
-    private Floor floor;
+    private LE_Floor floor;
     private LE_InputController processor;
     private InputMultiplexer multiplexer;
+    private String floorName;
+    private boolean init;
 
-    public static Supplier<ScreenWithLoader> getScreen(Floor parameter) {
+    public static Supplier<ScreenWithLoader> getScreen(LE_Floor parameter) {
         Supplier<ScreenWithLoader> supplier = cached.get(parameter);
         if (supplier != null) {
             return supplier;
@@ -41,18 +54,38 @@ public class LE_Screen extends GenericDungeonScreen {
         return supplier;
     }
 
+    @Override
+    public void moduleEntered(Module module, DequeImpl<BattleFieldObject> objects) {
+        super.moduleEntered(module, objects);
+    }
+
     public static LE_Screen getInstance() {
         return instance;
     }
 
+    public static Map<LE_Floor, Supplier<ScreenWithLoader>> getCache() {
+        return cached;
+    }
 
     @Override
     protected void preLoad() {
         instance = this;
+        if (floor != null) return;
+        floor = (LE_Floor) data.getParameter();
+        initLabels();
+        GuiEventManager.bind(GuiEventType.LE_FLOORS_TABS, p -> {
+            LE_GridCell.hoveredCell=null; //TODO refactor?
+            log(1,"Tabs for " +floorName);
+                ((LE_GuiStage) guiStage).getFloorTabs().removeAll();
+                List<LE_Floor> floors = (List<LE_Floor>) p.get();
+                for (LE_Floor le_floor : floors) {
+                    ((LE_GuiStage) guiStage).getFloorTabs().addTab(le_floor);
+//                ((LE_GuiStage) guiStage).getFloorTabs().setActiveTab((LE_Floor) data.getParameter());
+                }
+        });
         WaitMaster.unmarkAsComplete(WaitMaster.WAIT_OPERATIONS.GUI_READY);
-        floor = (Floor) data.getParameter();
 
-        gridStage = new StageX(viewPort, getBatch()){
+        gridStage = new GridStage(viewPort, getBatch()) {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
                 return super.touchDown(screenX, screenY, pointer, button);
@@ -77,7 +110,7 @@ public class LE_Screen extends GenericDungeonScreen {
     }
 
     @Override
-    protected boolean isWaitForInput() {
+    protected boolean isWaitForInputSupported() {
         return false;
     }
 
@@ -89,8 +122,9 @@ public class LE_Screen extends GenericDungeonScreen {
     }
 
     @Override
-    protected GridPanel createGrid(BFDataCreatedEvent param) {
-        return new LE_BfGrid(param.getCols(), param.getRows());
+    protected GridPanel createGrid(GridCreateData param) {
+        return new LE_BfGrid(param.getCols(), param.getRows(), param.getModuleWidth(),
+                param.getModuleHeight());
     }
 
     @Override
@@ -104,21 +138,39 @@ public class LE_Screen extends GenericDungeonScreen {
     @Override
     protected void afterLoad() {
         super.afterLoad();
-        particleManager = new ParticleManager();
-        gridStage.addActor(particleManager);
+        if (floorName == null) {
+            final GridCreateData param = ((GridCreateData) data.getParams().get());
+            createAndInitModuleGrid(param);
+            particleManager = new ParticleManager();
+            gridStage.addActor(particleManager);
+            this.floorName = param.getName();
+            controller = (InputController) createInputController();
+            GuiEventManager.trigger(GuiEventType.LE_FLOOR_LOADED, param.getName());
+        }
 
-        controller = (InputController) createInputController();
+        GuiEventManager.trigger(GuiEventType.LE_FLOORS_TABS , FloorManager.getFloors());
     }
 
     @Override
     public void render(float delta) {
-//        super.render(delta);
+        if (floor.getGame()!= DC_Game.game) {
+            return; //new floor being loaded
+        }
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
+        if (cameraMan == null) {
+            drawBg(delta);
+            return;
+        }
         cameraMan.act(delta);
         gridStage.act(delta);
         guiStage.act(delta);
+//        getBatch().setColor(1,1,1,0.5f);
         drawBg(delta);
+//        getBatch().drawBlack(0.5f, false);
+//        getBatch().draw(TextureCache.getOrCreateR());
+//        getBatch().setColor(1,1,1,1f);
         gridStage.draw();
         guiStage.draw();
         Gdx.input.setInputProcessor(getMultiplexer());
@@ -128,6 +180,14 @@ public class LE_Screen extends GenericDungeonScreen {
         if (multiplexer == null)
             multiplexer = new InputMultiplexer(createInputController(), guiStage, gridStage);
         return multiplexer;
+    }
+
+    @Override
+    public void assetsLoaded() {
+        // if (!init){
+        //     afterLoad();
+        //     init=true;
+        // }
     }
 
     @Override

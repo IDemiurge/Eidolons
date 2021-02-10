@@ -21,17 +21,17 @@ import static eidolons.libgdx.gui.controls.radial.RadialManager.addSimpleTooltip
  * Created by JustMe on 12/29/2016.
  */
 public class SpellRadialManager {
-    private static int MAX_SPELLS_DISPLAYED = 16;
+    private static final int MAX_SPELLS_DISPLAYED = 16;
 
-    public static List<RadialValueContainer> getSpellNodes(Unit source,
-                                                           DC_Obj target) {
+    public static List<RadialContainer> getSpellNodes(Unit source,
+                                                      DC_Obj target) {
         List<Spell> spells = source.getSpells().stream()
          .filter(spell -> (spell.getGame().isDebugMode() || (spell.canBeActivated() && spell.canBeTargeted(target.getId()))))
          .collect(Collectors.toList());
         if (spells.size() <= MAX_SPELLS_DISPLAYED) {
             return spells.stream()
              .map(el -> {
-                 final RadialValueContainer valueContainer = createNodeBranch(new EntityNode(el), source, target);
+                 final RadialContainer valueContainer = createNodeBranch(new EntityNode(el), source, target);
                  addSimpleTooltip(valueContainer, el.getName());
                  return valueContainer;
              })
@@ -44,7 +44,7 @@ public class SpellRadialManager {
 
     }
 
-    private static List<RadialValueContainer> constructNestedSpellNodes(List<Spell> spells, Unit source, DC_Obj target) {
+    private static List<RadialContainer> constructNestedSpellNodes(List<Spell> spells, Unit source, DC_Obj target) {
 
         Set<SPELL_GROUP> spell_groups = new HashSet<>();
         List<SPELL_ASPECT> aspects = new ArrayList<>();
@@ -79,8 +79,8 @@ public class SpellRadialManager {
         return false; //TODO
     }
 
-    private static RadialValueContainer createNodeBranch(RADIAL_ITEM object, Unit source, DC_Obj target) {
-        RadialValueContainer valueContainer;
+    private static RadialContainer createNodeBranch(RADIAL_ITEM object, Unit source, DC_Obj target) {
+        RadialContainer valueContainer;
         if (object instanceof EntityNode) {
             final DC_ActiveObj action = (DC_ActiveObj) object.getContents();
             valueContainer =
@@ -105,7 +105,7 @@ public class SpellRadialManager {
              .map(el -> createNodeBranch(el, source, target))
              .collect(Collectors.toList()));
 
-            String tooltip = StringMaster.getWellFormattedString(object.getContents().toString());
+            String tooltip = StringMaster.format(object.getContents().toString());
             addSimpleTooltip(valueContainer, tooltip);
         }
         return valueContainer;

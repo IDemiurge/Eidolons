@@ -33,10 +33,12 @@ public class TransitHandler extends DungeonHandler {
 
     public boolean checkNextFloor() {
         Coordinates c = getGame().getManager().getMainHeroCoordinates();
-        if (master.getDungeonWrapper() instanceof Location) {
-            Location location = (Location) getGame().getDungeonMaster().getDungeonWrapper();
-            if (location.getMainExit().getCoordinates().equals(c)) {
-                return true;
+        if (master.getFloorWrapper() instanceof Location) {
+            Location location = getGame().getDungeonMaster().getFloorWrapper();
+            if (location.getMainExit() != null) {
+                if (location.getMainExit().getCoordinates().equals(c)) {
+                    return true;
+                }
             }
             //TODO support retreat?!
             for (Entrance transit : location.getTransits()) {
@@ -57,6 +59,6 @@ public class TransitHandler extends DungeonHandler {
         getModuleLoader().loadModuleFull(transit.getTargetModule());
         WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.GUI_READY);
         GuiEventManager.trigger(GuiEventType.UNIT_MOVED, Eidolons.getMainHero());
-        GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_COORDINATE, Eidolons.getMainHero().getCoordinates());
+        GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_COORDINATE, Eidolons.getPlayerCoordinates());
     }
 }

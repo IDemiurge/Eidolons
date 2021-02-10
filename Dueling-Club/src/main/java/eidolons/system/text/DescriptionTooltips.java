@@ -6,21 +6,23 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.module.herocreator.logic.AttributeMaster;
-import eidolons.game.netherflame.igg.event.TIP;
 import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
-import main.data.filesys.PathFinder;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.Strings;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static main.data.filesys.PathFinder.*;
+import static main.system.auxiliary.data.FileManager.*;
 
 public class DescriptionTooltips {
     public static final String MASTERY_SLOT = "Filled automatically when you attain sufficient Mastery of any type. " +
@@ -29,66 +31,62 @@ public class DescriptionTooltips {
 
     private static final String VALUE_SEPARATOR = "==";
     private static final String NAME_SEPARATOR = ">>";
+
+    private static final String DESCR = "descriptions";
+    private static final String TUTORIAL = "tutorial";
+    private static final String TIPS = "tips";
+    private static final String LORE = "lore";
+
     private static Map<VALUE, String> paramMap;
-    private static Map<String, String> tipMap;
-    private static Map<String, String> loreMap;
-    private static Map<String, String> descrMap;
-    private static Map<String, String> tutorialMap;
+    static boolean init;
+    private static final Map<String, Map<String, String>> maps = new HashMap();
 
     public static void initTutorialMap() {
-        tutorialMap = new XLinkedMap<>();
-        String path = PathFinder.getRootPath() + PathFinder.getTextPathLocale() + "descriptions/tutorial.txt";
-        String source = FileManager.readFile(path);
-        parseSource(source,tutorialMap, false);
+        String path = getRootPath() + getTextPathLocale() + "tutorial/tutorial.txt";
+        String source = readFile(path);
+        parseSource(source, getMap(TUTORIAL), false);
     }
-   static boolean init;
+
+    private static boolean isParam(String name) {
+        return name.equalsIgnoreCase("values.txt")
+                || name.equalsIgnoreCase("masteries.txt")
+                || name.equalsIgnoreCase("attributes.txt");
+    }
+
     public static void init() {
         if (init)
             return;
-        init=true;
+        init = true;
         paramMap = new XLinkedMap<>();
-        tipMap = new XLinkedMap<>();
-        loreMap = new XLinkedMap<>();
-        descrMap = new XLinkedMap<>();
-        tutorialMap = new XLinkedMap<>();
 
-        String path = PathFinder.getRootPath() + PathFinder.getTextPathLocale() + "descriptions/values.txt";
-        String source = FileManager.readFile(
-                path);
-        parseSource(source, true);
-
-        path = PathFinder.getRootPath() + PathFinder.getTextPathLocale() + "descriptions/attributes.txt";
-        source = FileManager.readFile(path);
-        if (source.isEmpty()) {
-            source = compileAndReadSource(path, DC_ContentValsManager.getAttributes());
+        //VALUES
+        String source;
+        for (File file : getFilesFromDirectory(getRootPath() + getTextPathLocale() + "/descriptions",
+                false, true)) {
+            source = readFile(file);
+            String name = StringMaster.cropFormat(file.getName());
+            parseSource(source, getMap(name), isParam(name));
         }
-        parseSource(source, true);
-
-        path = PathFinder.getRootPath() + PathFinder.getTextPathLocale() + "descriptions/masteries.txt";
-        source = FileManager.readFile(path);
-        if (source.isEmpty()) {
-            source = compileAndReadSource(path, DC_ContentValsManager.getMasteries());
+        //TIPS
+        for (File file : getFilesFromDirectory(getRootPath() + getTextPathLocale() + TIPS,
+                false, true)) {
+            source = readFile(file);
+            String name = StringMaster.cropFormat(file.getName());
+            parseSource(source, getMap(name), false);
         }
-        parseSource(source, true);
-
-        path = PathFinder.getRootPath() + PathFinder.getTextPathLocale() + "descriptions/messages.txt";
-        source = FileManager.readFile(path);
-        parseSource(source, false);
 
 
-        path = StrPathBuilder.build(PathFinder.getTextPath(),
-                TextMaster.getLocale(), "info", "heroes", "igg");
-        source = FileManager.readFile(path + "/heroes info.txt");
-        parseSource(source, descrMap, false);
+        String path = StrPathBuilder.build(getTextPath(),
+                TextMaster.getLocale(), DESCR, "types");
+        source = readFile(path + "/heroes info.txt");
+        parseSource(source, getMap(DESCR), false);
 
-        path = StrPathBuilder.build(PathFinder.getTextPath(),
-                TextMaster.getLocale(), "info", "heroes", "igg");
-        source = FileManager.readFile(path + "/heroes.txt");
-        parseSource(source, loreMap, false);
+        path = StrPathBuilder.build(getTextPath(),
+                TextMaster.getLocale(), DESCR, "types");
+        source = readFile(path + "/heroes.txt");
+        parseSource(source, getMap(LORE), false);
 
-        path = PathFinder.getRootPath() + PathFinder.getTextPathLocale() + "descriptions/tutorial.txt";
-        source = FileManager.readFile(path);
-        parseSource(source,tutorialMap, false);
+        initTutorialMap();
 
         /**
          * quests
@@ -98,14 +96,22 @@ public class DescriptionTooltips {
          */
     }
 
+    public static Map<String, String> getMap(String name) {
+        Map<String, String> map = maps.get(name);
+        if (map == null) {
+            map = new XLinkedMap<>();
+            maps.put(name, map);
+        }
+        return map;
+    }
+
+
     private static String compileAndReadSource(String path, List<PARAMETER> vals) {
         List<String> list = vals.stream().map(p ->
                 VALUE_SEPARATOR + p.getDisplayedName() + NAME_SEPARATOR +
-                        StringMaster.NEW_LINE + extractDescription(p)).collect(Collectors.toList());
-
-        String contents = ContainerUtils.constructStringContainer(list, StringMaster.NEW_LINE);
-
-        FileManager.write(contents, path);
+                        Strings.NEW_LINE + extractDescription(p)).collect(Collectors.toList());
+        String contents = ContainerUtils.constructStringContainer(list, Strings.NEW_LINE);
+        write(contents, path);
         return contents;
     }
 
@@ -121,19 +127,19 @@ public class DescriptionTooltips {
     }
 
     public static Map<String, String> getTipMap() {
-        return tipMap;
+        return getMap(TIPS);
     }
 
     public static Map<String, String> getLoreMap() {
-        return loreMap;
+        return getMap(LORE);
     }
 
     public static Map<String, String> getTutorialMap() {
-        return tutorialMap;
+        return getMap(TUTORIAL);
     }
 
     public static Map<String, String> getDescrMap() {
-        return descrMap;
+        return getMap(DESCR);
     }
 
     private static void parseSource(String source, boolean paramOrTip) {
@@ -147,25 +153,28 @@ public class DescriptionTooltips {
             }
             String name = item.split(NAME_SEPARATOR)[0].trim();
             String value = item.split(NAME_SEPARATOR)[1].trim();
+            map.put(name.toLowerCase(), value);
+
             if (paramOrTip) {
                 VALUE val = ContentValsManager.getValueByDisplayedName(name);
                 paramMap.put(val, value);
-            } else {
-
-                TIP tip = new EnumMaster<TIP>().retrieveEnumConst(TIP.class, name);
-                if (map != null) {
-                    map.put(name.toLowerCase(), value);
-                    continue;
-                }
-                if (tip == null) {
-                    tipMap.put(name.toLowerCase(), value);
-                    continue;
-                } else
-                    tipMap.put(tip.toString().toLowerCase(), value);
-                tip.message = value;
             }
-
         }
+        //     else {
+        //         if (map != null) {
+        //             map.put(name.toLowerCase(), value);
+        //             continue;
+        //         }
+        //         TextEvent tip = Tips.getTipConst(name);
+        //         if (tip == null) {
+        //             tipMap.put(name.toLowerCase(), value);
+        //             continue;
+        //         } else
+        //             tipMap.put(tip.toString().toLowerCase(), value);
+        //         tip.setMessage(value);
+        //     }
+        //
+        // }
     }
 
     public static String slotTooltip(VALUE displayedParam) {
@@ -193,7 +202,7 @@ public class DescriptionTooltips {
         if (paramMap == null) {
             init();
         }
-        return value.getDisplayedName() + StringMaster.NEW_LINE + paramMap.get(ContentValsManager.getBaseParameterFromCurrent(value))
+        return value.getDisplayedName() + Strings.NEW_LINE + paramMap.get(ContentValsManager.getBaseParameterFromCurrent(value))
                 + getSpecialForHero(value, hero);
     }
 
@@ -202,10 +211,10 @@ public class DescriptionTooltips {
             List<String> s = AttributeMaster.getAttributeBonusInfoStrings(
                     DC_ContentValsManager.ATTRIBUTE.getForParameter(value), hero);
             if (s.isEmpty()) {
-                return StringMaster.NEW_LINE + "[cannot display values provided!]";
+                return Strings.NEW_LINE + "[cannot display values provided!]";
             }
-            return "Provides: " + StringMaster.NEW_LINE +
-                    ContainerUtils.constructStringContainer(s, StringMaster.NEW_LINE);
+            return "Provides: " + Strings.NEW_LINE +
+                    ContainerUtils.constructStringContainer(s, Strings.NEW_LINE);
         }
         if (value == PARAMS.C_FOCUS) {
             return "Base value: " + hero.getIntParam(PARAMS.STARTING_FOCUS);
@@ -217,18 +226,16 @@ public class DescriptionTooltips {
         switch (params) {
             case C_ENDURANCE:
             case C_FOCUS:
-            case C_MORALE:
-            case C_STAMINA:
             case C_TOUGHNESS:
                 return ContentValsManager.getBaseParameterFromCurrent(params).getDisplayedName();
-            case N_OF_ACTIONS:
+            case INITIATIVE:
                 if (DC_Engine.isAtbMode()) return "Initiative";
                 break;
-            case C_INITIATIVE:
+            case C_ATB:
                 if (DC_Engine.isAtbMode()) return "Readiness";
                 break;
-            case C_N_OF_COUNTERS:
-            case N_OF_COUNTERS:
+            case C_EXTRA_ATTACKS:
+            case EXTRA_ATTACKS:
                 return "Extra Attacks";
         }
         return params.getName();

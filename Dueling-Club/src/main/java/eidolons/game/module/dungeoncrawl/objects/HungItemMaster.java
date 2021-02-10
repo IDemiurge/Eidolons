@@ -7,8 +7,8 @@ import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.ItemFactory;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.module.dungeoncrawl.objects.HungItemMaster.HUNG_ITEM_ACTION;
 import main.content.DC_TYPE;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_TAGS;
@@ -19,8 +19,6 @@ import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.core.game.GenericGame;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.math.PositionMaster;
 
@@ -34,7 +32,7 @@ public class HungItemMaster extends DungeonObjMaster<HUNG_ITEM_ACTION> {
 
     private static final String SPRITE = " sprite";
     static ObjType dummyHungObjType;
-    private static String typeName = "Dummy Hung Obj";
+    private static final String typeName = "Dummy Hung Obj";
 
     public HungItemMaster(DungeonMaster dungeonMaster) {
         super(dungeonMaster);
@@ -87,7 +85,7 @@ potions
                 } else {
                     unit.addItemToInventory(item);
                 }
-                GuiEventManager.trigger(GuiEventType.ITEM_TAKEN, hungObj);
+                // GuiEventManager.trigger(GuiEventType.ITEM_TAKEN, hungObj);
                 //take animation
                 obj.kill(obj, false, true);
                 break;
@@ -99,10 +97,8 @@ potions
 
     private DC_HeroItemObj generateItem(HungItem hungObj) {
         Ref ref = new Ref();
-        DC_HeroItemObj itemObj =
-         ItemFactory.createItemObj(hungObj.getItemType(), DC_Player.NEUTRAL,
-          (GenericGame) ref.getGame(), ref, false);
-        return itemObj;
+        return ItemFactory.createItemObj(hungObj.getItemType(), DC_Player.NEUTRAL,
+         (GenericGame) ref.getGame(), ref, false);
     }
 
     public List<DC_ActiveObj> getActions(DungeonObj obj, Unit unit) {
@@ -110,10 +106,10 @@ potions
             return new ArrayList<>();
         //check intelligence, mastery
         List<DC_ActiveObj> list = new ArrayList<>();
-        DC_UnitAction action = null;
+        DC_UnitAction action;
         for (HUNG_ITEM_ACTION sub : HUNG_ITEM_ACTION.values()) {
             if (checkAction(unit, (HungItem) obj, sub)) {
-                String name = StringMaster.getWellFormattedString(sub.name()) + " Door";
+                String name = StringMaster.format(sub.name()) + " Door";
                 action = unit.getAction(name);
                 if (action == null)
                     action = createAction(sub, unit, name, obj);

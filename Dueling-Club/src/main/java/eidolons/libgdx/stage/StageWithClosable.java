@@ -8,7 +8,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.macro.MacroGame;
 import eidolons.system.audio.DC_SoundMaster;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 /**
  * Created by JustMe on 11/25/2017.
@@ -64,7 +64,7 @@ public interface StageWithClosable {
             ((BattleGuiStage) this).getTooltips().getStackMaster().stackOff();
 
         }
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__OPEN_MENU);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__OPEN_MENU);
     }
 
     default boolean closeDisplayed(Closable newClosable) {
@@ -80,4 +80,6 @@ public interface StageWithClosable {
         setDisplayedClosable(null);
         return true;
     }
+
+    void setOverlayPanel(OverlayPanel overlayPanel);
 }

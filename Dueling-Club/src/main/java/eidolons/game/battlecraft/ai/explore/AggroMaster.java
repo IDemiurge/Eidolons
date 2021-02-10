@@ -1,55 +1,64 @@
 package eidolons.game.battlecraft.ai.explore;
 
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.UnitAI;
+import eidolons.game.battlecraft.ai.advanced.engagement.EngageEvent;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationHandler;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.system.audio.DC_SoundMaster;
 import io.vertx.core.impl.ConcurrentHashSet;
+import main.content.enums.rules.VisionEnums;
 import main.entity.obj.Obj;
 import main.system.auxiliary.data.ListMaster;
 import main.system.math.PositionMaster;
-import main.system.sound.SoundMaster;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 public class AggroMaster extends ExplorationHandler {
-    public static final float AGGRO_RANGE = 2.5f;
-    public static final float AGGRO_GROUP_RANGE = 1.5f;
     private static final int DEFAULT_ENGAGEMENT_DURATION = 2;
     private static final double MAX_AGGRO_DST = 5;
-    private static boolean aiTestOn = true;
-    private static boolean sightRequiredForAggro = true;
     private static List<Unit> lastAggroGroup;
-    private int minDistance = 4;
 
+    /*
+    so the statuses of the units/groups are handled elsewhere now.
+    This class could just give us a final, filtered set of units that should be in combat
+    ... and maybe manage some aggro-related behavior/checks
+     */
     public AggroMaster(ExplorationMaster master) {
         super(master);
     }
 
+    public void checkStatusUpdate() {
+        if (checkEngaged()) {
+            if (!isCombat()) {
+                Unit leader=null;
+                for (Unit unit : AggroMaster.getAggroGroup()) {
+                    if (unit.getAI().isLeader()) {
+                        leader = unit; break;
+                    }
+                }
+                if (leader == null) {
+                    leader = getAggroGroup().get(0);
+                }
+                master.event(new EngageEvent(leader, Eidolons.getMainHero(), EngageEvent.ENGAGE_EVENT.combat_start,
+                        getAggroGroup().size()));
+            }
+        } else {
+            if (isCombat())
+                master.event(new EngageEvent(EngageEvent.ENGAGE_EVENT.combat_end));
+        }
+    }
+
     public static List<Unit> getAggroGroup() {
-//        if (EidolonsGame.BRIDGE)
-//        if (!EidolonsGame.FIRST_BATTLE_STARTED ||
-//                getPlayerUnseenMode()) {
-//            return new ArrayList<>();
-//        }
-        //        Unit hero = (Unit) DC_Game.game.getPlayer(true).getHeroObj();
         List<Unit> list = new ArrayList<>();
         Set<Unit> heroes = DC_Game.game.getPlayer(true).collectControlledUnits_();
 
         for (Unit ally : heroes) {
-            //            if (sightRequiredForAggro) {
-            //                if (!VisionManager.checkDetected(ally, true)) {
-            //                    continue;
-            //                }
-            //            }
-//            if (ally.isSneaking())
-//                continue; // TODO igg demo hack
             for (Unit unit : getAggroGroup(ally)) {
                 if (!list.contains(unit))
                     list.add(unit);
@@ -88,28 +97,24 @@ public class AggroMaster extends ExplorationHandler {
     }
 
     public static Set<Unit> getAggroGroup(Unit hero) {
-        Set<Unit> set =
-                new ConcurrentHashSet<>();
-        //        Analyzer.getEnemies(hero, false, false, false);
-        //            if (ExplorationMaster.isExplorationOn())
+        Set<Unit> set = new ConcurrentHashSet<>();
 
         boolean newAggro = false;
         for (Unit unit : DC_Game.game.getUnits()) {
             if (unit.isDead())
                 continue;
-            if (unit.isUnconscious())
-                continue;
             if (!unit.isEnemyTo(DC_Game.game.getPlayer(true)))
                 continue;
+            //?
             if (unit.isNamedUnit() || unit.isBoss() || unit.getAI().isEngagedOverride()) {
                 set.add(unit);
                 newAggro = true;
-                DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.THREAT, unit);
                 continue;
 
             }
             if (isCriticalBreak(unit, hero))
                 continue;
+            //TODO  remove
             if (PositionMaster.getExactDistance(hero, unit) >=
                     5 + unit.getAI().getEngagementDuration()//+ unit.getSightRangeTowards(hero)
             )
@@ -122,22 +127,22 @@ public class AggroMaster extends ExplorationHandler {
             if (unit.getAI().getEngagementDuration() > 0) {
                 set.add(unit);
             }
-            if (!EidolonsGame.DUEL)
-            if (!unit.getGame().getVisionMaster().getVisionRule().isAggro(hero, unit))
+//                  OLD LOGIC
+//                if (!unit.getGame().getVisionMaster().getVisionRule().isAggro(hero, unit))
+//                    continue;
+            if (unit.getAI().getEngagementLevel() != VisionEnums.ENGAGEMENT_LEVEL.ENGAGED) {
                 continue;
-            //TODO these units will instead 'surprise attack' you or stalk
+            }
 
-            DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.THREAT, unit);
             newAggro = true;
+            //event?
             set.add(unit);
-            //            }
+
         }
-//        if (!EidolonsGame.DUEL)
-//        set.removeIf(unit -> !(unit.getGame().getVisionMaster().getVisionRule().isAggro(hero, unit)
-//                || unit.getAI().getEngagementDuration() > 0 || unit.getAI().isEngaged()));
 
         for (Unit unit : set) {
-            unit.getAI().setEngaged(false); //TODO better place for it?
+            //TODO remove now?
+            unit.getAI().setEngaged(false);
             if (unit.getAI().getGroup() != null) {
                 for (Unit sub : unit.getAI().getGroup().getMembers()) {
                     set.add(sub);
@@ -151,20 +156,12 @@ public class AggroMaster extends ExplorationHandler {
                 }
             }
         }
-
-
-//      igg clean  for (Unit unit : set) {
-//            if (unit.getAI().getEngagementDuration() <= 1)
-//                return set;
-//        }
         return set;
     }
 
+    //TODO remove !
     private static boolean isCriticalBreak(Unit unit, Unit hero) {
         double max = MAX_AGGRO_DST + unit.getAI().getEngagementDuration();
-//     TODO igg demo hack   if (unit.getGame().getVisionMaster().getVisionRule().isAggro(hero, unit)) {
-//            max = 1.35f * max;
-//        }
         return unit.getCoordinates().dst_(hero.getCoordinates()) >= max;
     }
 
@@ -172,43 +169,7 @@ public class AggroMaster extends ExplorationHandler {
         return DEFAULT_ENGAGEMENT_DURATION;
     }
 
-    private static boolean checkAggro(Unit unit, Unit hero, double range) {
-        return PositionMaster.getExactDistance(
-                hero.getCoordinates(), unit.getCoordinates()) <= range;
-    }
-
-    public static boolean isAiTestOn() {
-        return aiTestOn;
-    }
-
-    public static boolean checkEngaged(UnitAI ai) {
-        return false;
-        //        Unit unit = ai.getUnit();
-        // PERCEPTION_STATUS_PLAYER status =
-        // ai.getGroup().getPerceptionStatus();
-
-        // after each action? some events may trigger it separately
-        // any hostile action triggers Engagement with the group, even if they
-        // don't see you
-        // HEARING would be an important factor...
-        // for (DC_HeroObj unit : getCreeps()) {
-        //        List<Unit> relevantEnemies = getRelevantEnemies(unit);
-        //        for (Unit hero : relevantEnemies) {
-        // preCheck detections - perhaps it's really just about making a preCheck
-        // before AS-constr.
-        // sometimes creeps may be engaged but not know what hit them...
-        // different aggro levels?
-        // if (status == PERCEPTION_STATUS_PLAYER.KNOWN_TO_BE_THERE)
-        // return true;
-        //            if (VisionManager.checkVisible(hero)) {
-        //                return true;
-        //            }
-        //        }
-        // }
-    }
-
     public static void unitAttacked(DC_ActiveObj action, Obj targetObj) {
-
         if (targetObj.isMine()) {
             action.getOwnerUnit().
                     getAI().setEngaged(true);
@@ -216,106 +177,40 @@ public class AggroMaster extends ExplorationHandler {
             if (checkAttackEngages(action, targetObj)) {
                 ((Unit) targetObj).getAI().setEngaged(true);
             }
-            //                                GroupAI g = ((Unit) getAction().getTargetObj()).getAI().getGroup();
-            //                                //TODO
-            //                                if (g == null) {
-            //                                    ((Unit) getAction().getTargetObj()).getAI().setEngagementDuration(2);
-            //                                } else g.
-            //                                 getMembers().forEach(
-            //                                 unit -> unit.getAI().setEngagementDuration(2)
-            //                                );
         }
-
-
-        //        }
     }
 
     private static boolean checkAttackEngages(DC_ActiveObj action, Obj targetObj) {
-//       done already?
-//       if (action.getGame().getRules().getStealthRule().rollSpotted(action.getOwnerUnit(), targetObj, action)) {
-//            return true;
-//        }
         return true;
     }
 
     public static int getBattleDifficulty() {
-        return getLastAggroGroup().stream().mapToInt(u -> u.getPower()).sum();
+        return getLastAggroGroup().stream().mapToInt(BattleFieldObject::getPower).sum();
     }
 
     public static void aggro(Unit unit, Unit mainHero) {
         unit.getAI().setEngaged(true);
         unit.getAI().setEngagementDuration(2);
         unit.getAI().setEngagedOverride(true);
-
     }
 
     private boolean checkEngaged() {
         List<Unit> aggroGroup = AggroMaster.getAggroGroup();
 
         if (!aggroGroup.isEmpty()) {
-//            for (Unit sub : aggroGroup) {
-//           wtf???     sub.getAI().setStandingOrders(null);
-//            }
             for (Unit sub : master.getGame().getUnits()) {
                 sub.getAI().setOutsideCombat(false);
                 if (!aggroGroup.contains(sub))
                     if (!sub.isMine())
-                        //                    if (!master.getAiMaster().getAllies().contains(sub))
                         sub.getAI().setOutsideCombat(true);
             }
             return true;
         }
-        //        for (Unit ally :allies) {
-        // check block if (unit.getCoordinates())
-        //         TODO    if (master. getGame().getVisionMaster().getDetectionMaster().checkDetected(ally))
-        //                return true;
-        //        }
         return false;
     }
 
     public boolean checkExplorationDefault() {
         return !checkEngaged();
-    }
-
-    public void checkStatusUpdate() {
-        if (checkEngaged()) {
-            master.switchExplorationMode(false);
-        } else {
-            if (checkDanger()) {
-                //?
-            } else {
-                master.switchExplorationMode(true);
-            }
-        }
-
-    }
-
-    private boolean checkDanger() {
-        //range? potential vision?
-        //        for (Unit unit : allies) {
-        //            if (master. getGame().getAiManager().getAnalyzer().getClosestEnemyDistance(unit)
-        //                > minDistance)
-        //                return true;
-        //        }
-        return false;
-
-    }
-
-    public enum CRAWL_STATUS {
-        EXPLORE,
-        DANGER, //rounds on? behaviors ?
-        ENGAGED,
-        TIME_RUN
-    }
-
-
-    public enum ENGAGEMENT_LEVEL {
-
-        UNSUSPECTING, // will use its behavior and rest actions
-        SUSPECTING, // will search, ambush or stalk
-        ALARMED // will not Rest or otherwise let down their guard
-        ,
-        AGGRO // will engage and make combat-actions
     }
 
 

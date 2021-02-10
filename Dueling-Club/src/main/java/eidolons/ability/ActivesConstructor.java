@@ -32,9 +32,12 @@ import main.data.ability.construct.AbilityConstructor;
 import main.data.ability.construct.VariableManager;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
-import main.elements.targeting.*;
 import main.elements.targeting.AutoTargeting.AUTO_TARGETING_TEMPLATES;
+import main.elements.targeting.FixedTargeting;
+import main.elements.targeting.MultiTargeting;
+import main.elements.targeting.SelectiveTargeting;
 import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
+import main.elements.targeting.Targeting;
 import main.entity.Entity;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Active;
@@ -43,6 +46,7 @@ import main.game.bf.directions.UNIT_DIRECTION;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.log.LogMaster;
 import main.system.entity.ConditionMaster;
 import main.system.math.Formula;
@@ -59,7 +63,7 @@ public class ActivesConstructor {
         // TODO
         ArrayList<ROLL_TYPES> rolls = new ArrayList<>();
         ArrayList<String> vars = new ArrayList<>();
-        for (String roll : ContainerUtils.open(saveRoll, StringMaster.AND_SEPARATOR)) {
+        for (String roll : ContainerUtils.open(saveRoll, Strings.VERTICAL_BAR)) {
             String varArgs = VariableManager.getVarPart(roll);
             roll = roll.replace(varArgs, "");
             rolls.add(new EnumMaster<ROLL_TYPES>().retrieveEnumConst(ROLL_TYPES.class, roll));
@@ -161,8 +165,7 @@ public class ActivesConstructor {
     public static Targeting getDefaultSingleTargeting(DC_ActiveObj entity) {
         Conditions conditions = new Conditions(DC_ConditionMaster
          .getSelectiveTargetingTemplateConditions(DEFAULT_TARGETING_TEMPLATE));
-        Targeting targeting = new SelectiveTargeting(conditions);
-        return targeting;
+        return new SelectiveTargeting(conditions);
     }
 
     public static Targeting getTargeting(TARGETING_MODE mode, DC_ActiveObj obj) {

@@ -46,11 +46,12 @@ import main.system.SortMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.entity.FilterMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.MathMaster;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
+import main.system.sound.AudioEnums.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -76,10 +77,9 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     public static MATERIAL[] rareMaterials;
     public static MATERIAL[] uncommonMaterials;
     public static MATERIAL[] commonMaterials;
-    private static boolean test_mode = QuestMaster.TEST_MODE;
+    private static final boolean test_mode = QuestMaster.TEST_MODE;
     Map<ObjType, Map<CONTAINER_CONTENTS,
             Map<ITEM_RARITY, List<ObjType>>>> itemPoolsMaps = new HashMap();
-    private boolean noDuplicates = true;
     private BattleFieldObject container;
 
 
@@ -92,11 +92,11 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     public static boolean isGenerateItemsForUnits() {
-        return !CoreEngine.isFullFastMode();
+        return !Flags.isFullFastMode();
     }
 
     public static boolean isGenerateItemsForContainers() {
-        return !CoreEngine.isFullFastMode() || test_mode;
+        return !Flags.isFullFastMode() || test_mode;
     }
 
     public static boolean loot(Unit unit, DC_Obj obj) {
@@ -109,9 +109,9 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         if (getSpecialSound(obj) != null) {
             DC_SoundMaster.playStandardSound(getSpecialSound(obj));
         } else if (RandomWizard.random()) {
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__TAB);
+            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__TAB);
         } else
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__CONTAINER);
+            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__CONTAINER);
         boolean result = (boolean) WaitMaster.waitForInput(InventoryTransactionManager.OPERATION);
         unit.getGame().getManager().reset();
         return result;
@@ -121,9 +121,9 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         if (obj instanceof Structure) {
             switch (((Structure) obj).getBfObjGroup()) {
                 case REMAINS:
-                    return STD_SOUNDS.NEW__BONES;
+                    return AudioEnums.STD_SOUNDS.NEW__BONES;
                 case TREASURE:
-                    return STD_SOUNDS.NEW__CHEST;
+                    return AudioEnums.STD_SOUNDS.NEW__CHEST;
             }
 
         }
@@ -131,7 +131,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         return null;
     }
 
-    public static final MATERIAL[] getMaterials(ITEM_RARITY rarity) {
+    public static MATERIAL[] getMaterials(ITEM_RARITY rarity) {
         switch (rarity) {
             case EXCEPTIONAL:
                 if (exceptionalMaterials == null) {
@@ -204,9 +204,8 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         main.system.auxiliary.log.LogMaster.verbose( "filtered pool= " + pool + " max cost: " + maxCost);
         if (pool.isEmpty())
             return null;
-        ObjType baseType = new RandomWizard<ObjType>().getRandomListItem(pool);
 
-        return baseType;
+        return new RandomWizard<ObjType>().getRandomListItem(pool);
 
     }
 
@@ -249,7 +248,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         if (isFastSelect()) {
             String group = getItemGroup(contents, false, TYPE);
             String subgroup = getItemGroup(contents, true, TYPE);
-            ObjType type = null;
+            ObjType type;
             List<ObjType> types = DataManager.getTypes(TYPE, iterate);
             main.system.auxiliary.log.LogMaster.verbose( " group= " + group + " subgroup= " + subgroup
                     + "; types = " + types);
@@ -575,7 +574,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         }
         RandomWizard<CONTAINER_CONTENTS> wizard = new RandomWizard<>();
         String prop = obj.getProperty(PROPS.CONTAINER_CONTENTS);
-        Map<CONTAINER_CONTENTS, Integer> map = null;
+        Map<CONTAINER_CONTENTS, Integer> map;
         if (unit) {
             map = wizard.constructWeightMap(getUnitContentsWeightMap(obj), CONTAINER_CONTENTS.class);
         } else {
@@ -605,6 +604,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         int totalCost = 0;
         int maxGroups = 2; //size prop!
         Loop overLoop = new Loop(maxGroups);
+        boolean noDuplicates = true;
         while (overLoop.continues()) {
             CONTAINER_CONTENT_VALUE rarity = wizard_.getObjectByWeight(typeMap);
             if (rarity == null)
@@ -639,7 +639,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
                         + "; total : " + cost);
                 if (item == null)
                     continue;
-                contentsBuilder.append(item.getName()).append(StringMaster.SEPARATOR);
+                contentsBuilder.append(item.getName()).append(Strings.SEPARATOR);
                 cost += item.getIntParam(PARAMS.GOLD_COST);
                 items++;
             }
@@ -650,7 +650,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         } else
             main.system.auxiliary.log.LogMaster.verbose( ">> " + obj + " has contents: " + contents + itemValueList);
 
-        if (!CoreEngine.isIggDemo())
+        if (!Flags.isIggDemo())
             contents = checkSpecialContents(contents, obj);
 
         int gold = getAmountOfGold(obj, totalCost);
@@ -706,7 +706,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
 
     private boolean checkCanPlaceQuestItem(DungeonQuest quest, String contents, BattleFieldObject obj) {
         if (obj instanceof ContainerObj) {
-            if (obj.getCoordinates().dst(Eidolons.getMainHero().getCoordinates()) > 20) {
+            if (obj.getCoordinates().dst(Eidolons.getPlayerCoordinates()) > 20) {
                 return false;
             }
             return obj.getProperty(G_PROPS.BF_OBJECT_GROUP).equalsIgnoreCase(BF_OBJECT_GROUP.TREASURE.toString());
@@ -716,7 +716,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     private int getAmountOfGold(BattleFieldObject obj, int totalCost) {
-        float c = 0;
+        float c;
         if (obj instanceof Unit) {
             float coef = RandomWizard.getRandomFloatBetween(1.5f, 3f);
             coef = coef - totalCost / 100;

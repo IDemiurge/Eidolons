@@ -47,23 +47,23 @@ public class PostProcessor implements Disposable {
     private final Zoomer failSafe;
     private TextureWrap compositeWrapU;
 	private TextureWrap compositeWrapV;
-	private final ItemsManager<PostProcessorEffect> effectsManager = new ItemsManager<PostProcessorEffect>();
-	private static final Array<PingPongBuffer> buffers = new Array<PingPongBuffer>(5);
+	private final ItemsManager<PostProcessorEffect> effectsManager = new ItemsManager<>();
+	private static final Array<PingPongBuffer> buffers = new Array<>(5);
 	private final Color clearColor = Color.CLEAR;
 	private int clearBits = GL20.GL_COLOR_BUFFER_BIT;
 	private float clearDepth = 1f;
-	private static Rectangle viewport = new Rectangle();
+	private static final Rectangle viewport = new Rectangle();
 	private static boolean hasViewport = false;
 
-	private boolean enabled = true;
-	private boolean capturing = false;
-	private boolean hasCaptured = false;
-	private boolean useDepth = false;
+	private boolean enabled;
+	private boolean capturing;
+	private boolean hasCaptured;
+	private final boolean useDepth;
 
 	private PostProcessorListener listener = null;
 
 	// maintains a per-frame updated list of enabled effects
-	private Array<PostProcessorEffect> enabledEffects = new Array<PostProcessorEffect>(5);
+	private final Array<PostProcessorEffect> enabledEffects = new Array<>(5);
 
 	/** Construct a new PostProcessor with FBO dimensions set to the size of the screen */
 	public PostProcessor (boolean useDepth, boolean useAlphaChannel, boolean use32Bits) {
@@ -409,24 +409,19 @@ public class PostProcessor implements Disposable {
         public boolean canRender(Array<PostProcessorEffect> items) {
 	    if (items.size==1)
             return false;
-        if ((items.get(items.size-1) instanceof CustomPostEffect)) {
-            return false;
+            return !(items.get(items.size - 1) instanceof CustomPostEffect);
         }
-        return true;
-    }
 
     public Array<PostProcessorEffect> sort(Array<PostProcessorEffect> enabledEffects) {
-        Array<PostProcessorEffect> items =
-         enabledEffects;
 
         for (PostProcessorEffect effect : enabledEffects) {
             if (effect instanceof CustomPostEffect || effect instanceof SaturateFx)
             {
-                items.removeValue(effect, true);
-                items.insert(0, effect);
+                enabledEffects.removeValue(effect, true);
+                enabledEffects.insert(0, effect);
             }
         }
-        return items;
+        return enabledEffects;
     }
 
     /** Convenience method to render to screen. */

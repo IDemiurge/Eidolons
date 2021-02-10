@@ -4,24 +4,23 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanel;
+import main.system.launch.CoreEngine;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
+import static eidolons.libgdx.texture.TextureCache.getRegionUI_DC;
 
 public class BaseSlotPanel extends TablePanel {
     protected final int imageSize;
-    protected Map<PagesMod, TablePanel> modTableMap = new HashMap<>();
+    protected ObjectMap<PagesMod, TablePanel> modTableMap = new ObjectMap<>(5);
 
     protected PagesMod activePage = PagesMod.NONE;
     private float beforeReset;
-    private float resetPeriod = 4f;
     private boolean hovered;
     public static boolean hoveredAny;
     private boolean firstUpdateDone;
@@ -29,6 +28,7 @@ public class BaseSlotPanel extends TablePanel {
     public BaseSlotPanel(int imageSize) {
         this.imageSize = imageSize;
         left().bottom();
+        setUpdateRequired(true);
     }
 
     @Override
@@ -56,11 +56,12 @@ public class BaseSlotPanel extends TablePanel {
     @Override
     public void act(float delta) {
         beforeReset -= delta;
+        //TODO Gdx Review
         if (hoveredAny) {
             super.setUpdateRequired(false);
         } else
         if (beforeReset <= 0) {
-            beforeReset = 6f;
+            beforeReset = getResetPeriod();
             super.setUpdateRequired(true);
         } else {
             super.setUpdateRequired(false);
@@ -73,6 +74,7 @@ public class BaseSlotPanel extends TablePanel {
 //            return;
 //        }
         firstUpdateDone=true;
+        if (isModPages()){
         PagesMod mod = PagesMod.NONE;
 
             PagesMod[] pagesMods = PagesMod.getValues();
@@ -88,6 +90,19 @@ public class BaseSlotPanel extends TablePanel {
                 setActivePage(mod);
             }
         }
+        }
+    }
+
+    private boolean isModPages() {
+        return false;
+    }
+
+    private float getResetPeriod() {
+        if (CoreEngine.TEST_LAUNCH) {
+            return 20f;
+        }
+        float resetPeriod = 11f;
+        return resetPeriod;
     }
 
     protected void initContainer(List<ValueContainer> sources, String emptyImagePath) {
@@ -105,7 +120,7 @@ public class BaseSlotPanel extends TablePanel {
             addPage(sources.subList(indx, toIndx), emptyImagePath);
         }
 
-        if (modTableMap.size() == 0) {
+        if (modTableMap.size == 0) {
             addPage(Collections.EMPTY_LIST, emptyImagePath);
         }
 
@@ -128,7 +143,7 @@ public class BaseSlotPanel extends TablePanel {
 
     protected void addPage(List<ValueContainer> list, String emptyImagePath) {
         final TablePanel page = initPage(list, emptyImagePath);
-        modTableMap.put(PagesMod.values()[modTableMap.size()], page);
+        modTableMap.put(PagesMod.values()[modTableMap.size], page);
         addElement(page).left().bottom();
 
         page.setVisible(false);
@@ -138,7 +153,7 @@ public class BaseSlotPanel extends TablePanel {
     protected void setActivePage(PagesMod page) {
         TablePanel view = modTableMap.get(activePage);
         if (view == null) {
-            if (modTableMap.isEmpty())
+            if (modTableMap.size==0)
                 return;
             else
                 view = modTableMap.values().iterator().next();
@@ -157,7 +172,7 @@ public class BaseSlotPanel extends TablePanel {
             ValueContainer valueContainer = null;
             if (sources.size() > i)
                 valueContainer = sources.get(i);
-            addValueContainer(page, valueContainer, getOrCreateR(emptyImagePath));
+            addValueContainer(page, valueContainer, getRegionUI_DC(emptyImagePath));
         }
 
         return page;

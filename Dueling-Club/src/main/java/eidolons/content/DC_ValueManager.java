@@ -3,27 +3,36 @@ package eidolons.content;
 import eidolons.game.core.game.DC_Game;
 import main.content.ContentValsManager;
 import main.content.ValueManager;
+import main.content.enums.system.MetaEnums;
 import main.content.values.parameters.PARAMETER;
-import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DC_ValueManager implements ValueManager {
 
-    private ValueHelper valueHelper;
+    public static final String CUSTOM_VALUE = "CUSTOM_VALUE";
+    private static final String VARIABLES = "VARIABLES";
+
+    private final ValueHelper valueHelper;
 
     public DC_ValueManager(DC_Game game) {
         valueHelper = new ValueHelper(game);
     }
 
+    public static String getCustomValueName(MetaEnums.CUSTOM_VALUE_TEMPLATE template, Object... array) {
+        return StringMaster.getEnumFormat(template.getText(array));
+    }
+
+    public static String getVarEnumCustomValueName(Class<?> ENUM_CLASS) {
+        return ENUM_CLASS.getSimpleName() + "_" + VARIABLES + "_"
+                + CUSTOM_VALUE;
+    }
+
     public static VALUE_GROUP getValueGroup(String string) {
-        VALUE_GROUP template = new EnumMaster<VALUE_GROUP>().retrieveEnumConst(VALUE_GROUP.class,
-         StringMaster.cropValueGroup(string));
-        return (template);
+        return (new EnumMaster<VALUE_GROUP>().retrieveEnumConst(VALUE_GROUP.class,
+         StringMaster.cropValueGroup(string)));
     }
 
     public static PARAMETER[] getGroupParams(String string) {
@@ -35,18 +44,18 @@ public class DC_ValueManager implements ValueManager {
     }
 
     public static boolean isCentimalModParam(PARAMS p) {
-        return NumberUtils.getInteger(p.getDefaultValue()) == 100;
+        return NumberUtils.getIntParse(p.getDefaultValue()) == 100;
     }
 
     public static int getMod(Integer mod, PARAMS p) {
-        if (NumberUtils.getInteger(p.getDefaultValue()) == 0) {
+        if (NumberUtils.getIntParse(p.getDefaultValue()) == 0) {
             return 100 + mod;
         }
         return mod;
     }
 
     public boolean checkValueGroup(String string) {
-        if (!string.contains(StringMaster.VALUE_GROUP_OPEN_CHAR)) {
+        if (!string.contains(Strings.VALUE_GROUP_OPEN_CHAR)) {
             return false;
         }
 
@@ -64,7 +73,7 @@ public class DC_ValueManager implements ValueManager {
 
     @Override
     public PARAMETER[] getParamsFromContainer(String sparam) {
-        List<String> container = ContainerUtils.openContainer(sparam, StringMaster.AND_SEPARATOR);
+        List<String> container = ContainerUtils.openContainer(sparam, Strings.VERTICAL_BAR);
         ArrayList<PARAMETER> params = new ArrayList<>();
         for (String s : container) {
             PARAMETER param = ContentValsManager.getPARAM(s);
@@ -81,17 +90,8 @@ public class DC_ValueManager implements ValueManager {
 
     }
 
-    @Override
-    public boolean isRolledRoundind(PARAMETER valueToPay) {
-        return valueToPay == PARAMS.C_N_OF_ACTIONS;
-    }
-
     public ValueHelper getValueHelper() {
         return valueHelper;
-    }
-
-    public void setValueHelper(ValueHelper valueHelper) {
-        this.valueHelper = valueHelper;
     }
 
     public enum VALUE_GROUP {

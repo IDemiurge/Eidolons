@@ -1,9 +1,9 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner.SPAWN_MODE;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.rules.action.StackingRule;
 import eidolons.game.core.game.DC_Game;
 import main.content.C_OBJ_TYPE;
@@ -31,11 +31,12 @@ import java.util.stream.Collectors;
 /**
  * Created by JustMe on 5/7/2017.
  */
-public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
+public class Positioner  extends DungeonHandler  {
     protected Map<Coordinates, List<ObjType>> unitCache;
+    List<Coordinates> coordinatesUsed = new ArrayList<>();
     private Integer maxSpacePercentageTaken = 100;
 
-    public Positioner(DungeonMaster<E> master) {
+    public Positioner(DungeonMaster  master) {
         super(master);
     }
 
@@ -52,13 +53,17 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
     public static Coordinates adjustCoordinate(Entity entity,
                                                Coordinates c, FACING_DIRECTION facing
-            , Predicate<Coordinates> filterPredicate
-    ) {
-        if (c == null) {
-            return null;
+            , Predicate<Coordinates> filterPredicate    ) {
+        if (canBeMovedOnto(entity, c )) {
+            return c;
         }
+        Coordinates coordinate = c.getAdjacentCoordinate(facing.getDirection());
+        if (canBeMovedOnto(entity, coordinate )) {
+            return coordinate;
+        }
+
         Loop loop = new Loop(50);
-        Coordinates coordinate = Coordinates.get(c.x, c.y);
+        coordinate = Coordinates.get(c.x, c.y);
         while (loop.continues()) { // TODO remove from adj. list to limit
             // iterations to 8!
             DIRECTION direction = getRandomSpawnAdjustDirection();
@@ -68,21 +73,14 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
                     if (!filterPredicate.test(coordinate))
                         continue;
 
-                if (!DC_Game.game.isSimulation()) {
-                    if (DC_Game.game.getBattleFieldManager().canMoveOnto(entity, coordinate)) {
-                        break;
-                    }
-                }
-                if (new StackingRule(DC_Game.game).canBeMovedOnto(entity, coordinate)) {
+                if ( canBeMovedOnto(entity, coordinate )) {
                     break;
                 }
             }
         }
-        loop = new Loop(50); // second layer in case first one is fully
-        // blocked
+        loop = new Loop(50); // second layer in case first one is fully blocked
         while (!loop.continues() &&
-
-                !DC_Game.game.getBattleFieldManager().canMoveOnto(entity, c)
+                !canBeMovedOnto(entity, c)
 
                 // (DC_Game.game.getBattleField().getGrid().isCoordinateObstructed(coordinate)
                 || coordinate == null) {
@@ -95,6 +93,10 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
             return null;
         }
         return coordinate;
+    }
+
+    private static boolean canBeMovedOnto(Entity entity, Coordinates coordinate) {
+      return DC_Game.game.getRules().getStackingRule().canBeMovedOnto(entity, coordinate, true, false);
     }
 
     public boolean isAutoOptimalFacing() {
@@ -112,7 +114,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
     }
 
     public List<Coordinates> getPlayerPartyCoordinates(List<String> partyTypes) {
-        return getCoordinates(getDungeon().getDefaultPlayerSpawnCoordinates(), true, partyTypes);
+        return getCoordinates(getFloorWrapper().getDefaultPlayerSpawnCoordinates(), true, partyTypes);
     }
 
     public List<String> getCoordinates(List<String> types, DC_Player owner, SPAWN_MODE mode) {
@@ -184,10 +186,10 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
         while (Loop.loopContinues()) {
             int x = playerC.x + RandomWizard.getRandomIntBetween(-4, 4);
             int y = playerC.y + RandomWizard.getRandomIntBetween(-4, 4);
-            if (y >= getDungeon().getCellsY() - 1) {
+            if (y >= getFloorWrapper().getCellsY() - 1) {
                 continue;
             }
-            if (x >= getDungeon().getCellsX() - 1) {
+            if (x >= getFloorWrapper().getCellsX() - 1) {
                 continue;
             }
             if (y <= 0) {
@@ -245,13 +247,22 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
                 .getFacingFromDirection(direction));
         return nextCoordinate;
     }
-
     private boolean checkCoordinateNotUsed(Coordinates c) {
 //        for (Map<Coordinates, ObjType> group : unitDungeonGroups.values()) {
 //            if (group.keySet().contains(c)) {
 //                return false;
 //            }
 //        }
+        if (isNoStacking()){
+            if (coordinatesUsed.contains(c)) {
+                return false;
+            }
+            coordinatesUsed.add(c);
+        }
+        return true;
+    }
+
+    private boolean isNoStacking() {
         return true;
     }
 

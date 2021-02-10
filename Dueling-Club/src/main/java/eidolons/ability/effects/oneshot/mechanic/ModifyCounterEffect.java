@@ -14,14 +14,14 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.CounterMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 
 public class ModifyCounterEffect extends MicroEffect implements OneshotEffect, ResistibleEffect, ReducedEffect {
 
     private String counterName;
-    private MOD modtype;
+    private final MOD modtype;
     private Integer resistanceMod;
 
 
@@ -82,7 +82,7 @@ public class ModifyCounterEffect extends MicroEffect implements OneshotEffect, R
                 break;
 
         }
-        if (CoreEngine.isPhaseAnimsOn()) {
+        if (Flags.isPhaseAnimsOn()) {
             //TODO
         }
         REF.setAmount(ref.getTargetObj().getCounter(counterName));
@@ -106,7 +106,7 @@ public class ModifyCounterEffect extends MicroEffect implements OneshotEffect, R
         return
                 StringMaster.getModifierString(formula
                         .getInt(getRef())) + " " +
-                        StringMaster.getFirstItem(StringMaster.getWellFormattedString(counterName), " ") + " counters";
+                        StringMaster.getFirstItem(StringMaster.format(counterName), " ") + " counters";
     }
 
     public String getCounterName() {

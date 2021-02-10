@@ -3,8 +3,8 @@ package eidolons.entity.active;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.handlers.active.spell.SpellActiveMaster;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.audio.DC_SoundMaster;
@@ -22,7 +22,7 @@ import main.entity.type.ObjType;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 public class Spell extends DC_ActiveObj {
 
@@ -41,6 +41,10 @@ public class Spell extends DC_ActiveObj {
         // DC_CostsFactory.copyCosts();
     }
 
+//    public enum CHANNELING_SOUND {
+//        ARCANE, ELDRITCH, DARK, CHAOS, HOLY, EVIL, SUMMON, BUFF, DAMAGE, MISC
+//    }
+
     @Override
     public EntityMaster initMaster() {
         return new SpellActiveMaster(this);
@@ -52,7 +56,7 @@ public class Spell extends DC_ActiveObj {
 
     @Override
     public void playCancelSound() {
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.SPELL_CANCELLED);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.SPELL_CANCELLED);
     }
 
     @Override
@@ -134,7 +138,7 @@ public class Spell extends DC_ActiveObj {
     }
 
     public void playActivateSound() {
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.SPELL_ACTIVATE);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.SPELL_ACTIVATE);
     }
 
 
@@ -245,9 +249,9 @@ public class Spell extends DC_ActiveObj {
     public boolean isChanneling() {
         if (ChannelingRule.isTestMode())
             return true;
-        if (RuleKeeper.isRuleOn(RULE.CHANNELING))
+        if (RuleKeeper.isRuleOn(RuleEnums.RULE.CHANNELING))
             return false;
-        if (RuleKeeper.isRuleTestOn(RULE.CHANNELING))
+        if (RuleKeeper.isRuleTestOn(RuleEnums.RULE.CHANNELING))
             return true;
         return checkProperty(G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.CHANNELING.toString());
         // fix
@@ -328,9 +332,5 @@ public class Spell extends DC_ActiveObj {
     }
 
 
-    public enum CHANNELING_SOUND {
-        ARCANE, ELDRITCH, DARK, CHAOS, HOLY, EVIL, SUMMON, BUFF, DAMAGE, MISC
-
-    }
 
 }

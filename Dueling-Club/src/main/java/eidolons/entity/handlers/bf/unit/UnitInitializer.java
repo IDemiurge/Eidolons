@@ -11,14 +11,14 @@ import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.hero.DC_Attributes;
 import eidolons.entity.obj.hero.DC_Masteries;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
+import eidolons.game.battlecraft.rules.RuleEnums;
+import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.core.game.SimulationGame;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.game.module.herocreator.logic.spells.SpellMaster;
-import eidolons.game.module.herocreator.logic.spells.SpellUpgradeMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.macro.global.persist.Loader;
 import main.content.DC_TYPE;
@@ -32,7 +32,6 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
-import main.data.ability.construct.AbilityConstructor;
 import main.data.ability.construct.VariableManager;
 import main.entity.handlers.EntityMaster;
 import main.entity.type.ObjType;
@@ -41,6 +40,7 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +60,6 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
 
     @Override
     protected void initDefaults() {
-
     }
 
     @Override
@@ -122,33 +121,15 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     }
 
     public void initActives() {
-        // if (!isActivesReady()) {
-
-        AbilityConstructor.constructActives(getEntity());
-        // }
-        //        setActivesReady(true);
+        master.getActionManager().resetActions(getEntity());
     }
 
     public void initSpells(boolean reset) {
-        boolean initUpgrades = false;
-        if (game.isSimulation()) {
-            if (!ListMaster.isNotEmpty(
-                    getEntity().getSpells())) {
-                initUpgrades = true;
-            }
-        }
         getEntity().setSpells(
                 getGame().getManager().getSpellMaster().getSpells(getEntity(), reset));
-
-        if (initUpgrades) {
-            SpellUpgradeMaster.initSpellUpgrades(getEntity());
-        }
     }
 
     public void initSpellbook() {
-        if (EidolonsGame.BRIDGE){
-            return ;
-        }
         SpellMaster.initSpellbook(getEntity());
         List<Spell> spellbook =
                 new ArrayList<>(getEntity().getSpells());
@@ -205,7 +186,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
 
 
     public void initItems() {
-        if (CoreEngine.isItemGenerationOff()) {
+        if (Flags.isItemGenerationOff()) {
             main.system.auxiliary.log.LogMaster.log(1, "NO ITEMS! - Item Generation Off!");
             return;
         }
@@ -299,7 +280,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
             // or special separator!
             if (NumberUtils.isInteger(StringMaster.cropParenthesises(VariableManager
                     .getVarPart(feat)))) {
-                rank = NumberUtils.getInteger(StringMaster.cropParenthesises(VariableManager
+                rank = NumberUtils.getIntParse(StringMaster.cropParenthesises(VariableManager
                         .getVarPart(feat)));
                 feat = VariableManager.removeVarPart(feat);
             }
@@ -326,7 +307,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
             if (CoreEngine.isArcaneVault())// TODO prevent from piling up?
             {
                 if (item != null) {
-                    game.getState().removeObject(item.getId());
+                    game.getState().manager.removeObject(item.getId(), item.getOBJ_TYPE_ENUM());
                     return true;
                 }
             } else {
@@ -444,6 +425,9 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
 
 
     public void initIntegrityAlignments() {
+        if (!RuleKeeper.isRuleOn(RuleEnums.RULE.INTEGRITY)) {
+            return ;
+        }
         Map<PRINCIPLES, Integer> map = new RandomWizard<PRINCIPLES>().constructWeightMap(
                 getProperty(G_PROPS.PRINCIPLES), PRINCIPLES.class);
         for (PRINCIPLES principle : map.keySet()) {

@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 public class LevelRater {
     private final LevelData data;
     private final LevelModel model;
-    private final DataUnit<LEVEL_REQUIREMENTS> reqs;
     private final LevelStats stats;
     private final LevelGraph graph;
     private final DungeonLevel level;
@@ -38,7 +37,7 @@ public class LevelRater {
         this.data = level.getLevelData();
         this.model = level.getModel();
         this.graph = model.getGraph();
-        this.reqs = level.getLevelData().getReqs();
+        DataUnit<LEVEL_REQUIREMENTS> reqs = level.getLevelData().getReqs();
         this.stats = new LevelStats(level);
     }
 
@@ -118,8 +117,7 @@ public class LevelRater {
         //exit templates?
     }
     private float getParametersRate() {
-        float rate = stats.getIntValue(LEVEL_STAT.FILL_PERCENTAGE);
-        return rate;
+        return (float) stats.getIntValue(LEVEL_STAT.FILL_PERCENTAGE);
     }
 
     private float getDistancesRate() {

@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.logic.meta.tutorial;
 
-import eidolons.game.netherflame.igg.IGG_Demo;
-import eidolons.game.netherflame.igg.event.TIP;
-import eidolons.game.netherflame.igg.event.TipMessageMaster;
+import eidolons.game.netherflame.additional.IGG_Demo;
+import eidolons.system.text.tips.TextEvent;
+import eidolons.system.text.tips.TipMessageMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +12,8 @@ public class TutorialManager {
     public static String NEXT_HERO= IGG_Demo.HERO_KESERIM_SLEEPLESS;
 
     public static void init(){
-        for (TIP tutorialTip : TipMessageMaster.tutorialTips) {
-            messages.add(tutorialTip.message);
+        for (TextEvent tutorialTip : TipMessageMaster.tutorialTips) {
+            messages.add(tutorialTip.getMessage());
         }
 //        Rune messages?
     }

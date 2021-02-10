@@ -29,32 +29,27 @@ import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 public class OrbElement extends SuperActor {
     private static final String EMPTY_PATH = StrPathBuilder.build(
             PathFinder.getComponentsPath(), "dc", "orbs", "orb 64.png");
-    private static final String OVERLAY_PATH = StrPathBuilder.build(
-            PathFinder.getComponentsPath(), "dc", "orbs", "overlay.png");
     private final PARAMS parameter;
-    private Label label;
-    private Image background;
+    private final Label label;
     private Image gem;
     private ImageContainer gemLight;
     private Image overlay;
 
-    private Image icon;
     private Image lighting;
-    private TextureRegion orbRegion;
-    private TextureRegion iconRegion;
+    private final TextureRegion orbRegion;
+    private final TextureRegion iconRegion;
     private int orbFullness = 62;
-    private int orbFullnessPrevious = 62;
     private float fluctuation = 0;
 
     public OrbElement(TextureRegion iconRegion, TextureRegion texture, String value, PARAMS param) {
-        icon = new Image(iconRegion);
+        Image icon = new Image(iconRegion);
         orbRegion = texture;
         this.iconRegion = iconRegion;
         this.parameter = param;
         label = new Label(value, StyleHolder.
                 getSizedLabelStyle(FONT.AVQ, 18));
         calculateOrbFullness(value);
-        addActor(background = new Image(getOrCreateR(EMPTY_PATH)));
+        addActor( new Image(getOrCreateR(EMPTY_PATH)));
         //        addActor(icon);
         icon.setPosition(orbRegion.getRegionWidth() / 2 - icon.getWidth() / 2,
                 orbRegion.getRegionHeight() / 2 - icon.getHeight() / 2);
@@ -136,7 +131,7 @@ public class OrbElement extends SuperActor {
     }
 
     private boolean calculateOrbFullness(String value) {
-        orbFullnessPrevious = orbFullness;
+        int orbFullnessPrevious = orbFullness;
         label.setText(value);
 
         label.setStyle(StyleHolder.
@@ -151,8 +146,8 @@ public class OrbElement extends SuperActor {
 
         final String[] split = value.split("/");
         if (split.length == 2) {
-            final int cur = Integer.valueOf(split[0]);
-            final int max = Integer.valueOf(split[1]);
+            final int cur = Integer.parseInt(split[0]);
+            final int max = Integer.parseInt(split[1]);
             orbFullness = Math.min(Math.round(cur / (max / 62f)), 62);
             if (cur <= 0) {
                 orbFullness = 0;
@@ -165,7 +160,7 @@ public class OrbElement extends SuperActor {
 
         if (!isAlphaFluctuationOn()) {
             if (lighting != null)
-                lighting.setColor(1, 1, 1, 0.5f + new Float(orbFullness) / 100);
+                lighting.setColor(1, 1, 1, 0.5f + (float) orbFullness / 100);
         } else
             fluctuation = MathMaster.getMinMax(
                     super.getAlphaFluctuationPerDelta() / (1 + orbFullness) * 30, 0.4f, 0.7f);

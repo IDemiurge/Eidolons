@@ -11,7 +11,7 @@ import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 10/18/2018.
@@ -62,8 +62,7 @@ public class WanderAi extends AiGroupBehavior {
             return false;
         }
         if (!ai.isLeader())
-            if (isNearby())
-                return false;
+            return !isNearby();
         return true;
     }
     @Override
@@ -160,11 +159,11 @@ public class WanderAi extends AiGroupBehavior {
 
     protected int getMaxDistance() {
         if (block == null) {
-            block = master.getGame().getDungeonMaster().getDungeonLevel().getBlockForCoordinate(
+            block = master.getGame().getDungeonMaster().getStructMaster().getLowestStruct(
              ai.getUnit().getCoordinates());
             if (block == null) {
                 for (Coordinates c : ai.getUnit().getCoordinates().getAdjacent()) {
-                    block = master.getGame().getDungeonMaster().getDungeonLevel().getBlockForCoordinate(
+                    block = master.getGame().getDungeonMaster().getStructMaster().getLowestStruct(
                      c);
                     if (block != null)
                         break;
@@ -185,11 +184,11 @@ public class WanderAi extends AiGroupBehavior {
         if (getUnit().getAI().getGroup().getMembers().size()==0){
             return 1;
         }
-        return CoreEngine.isSafeMode()? 2: 7;
+        return Flags.isSafeMode()? 2: 7;
     }
 
     private float getBlockSizeCoefForMaxDistance() {
-        return CoreEngine.isSafeMode()? 0.1f: 0.5f;
+        return Flags.isSafeMode()? 0.1f: 0.5f;
     }
 
 }

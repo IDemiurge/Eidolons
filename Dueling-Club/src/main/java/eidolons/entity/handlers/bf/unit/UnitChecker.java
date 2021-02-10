@@ -3,24 +3,25 @@ package eidolons.entity.handlers.bf.unit;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.netherflame.igg.death.ShadowMaster;
 import main.content.DC_TYPE;
-import main.content.enums.entity.UnitEnums;
+import main.content.OBJ_TYPE;
 import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
 import main.content.enums.entity.UnitEnums.IMMUNITIES;
 import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.enums.entity.UnitEnums.STATUS;
+import main.content.mode.STD_MODES;
 import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
+import main.data.DataManager;
 import main.entity.handlers.EntityChecker;
 import main.entity.handlers.EntityMaster;
 import main.entity.obj.Obj;
+import main.entity.type.ObjType;
 import main.game.logic.battle.player.Player;
-import main.system.launch.CoreEngine;
-import main.system.math.PositionMaster;
+import main.system.auxiliary.ContainerUtils;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 2/26/2017.
@@ -57,7 +58,7 @@ public class UnitChecker extends EntityChecker<Unit> {
 
     public boolean canUseArmor() {
         return checkContainerProp(G_PROPS.CLASSIFICATIONS,
-                UnitEnums.CLASSIFICATIONS.HUMANOID.toString());
+                CLASSIFICATIONS.HUMANOID.toString());
     }
 
 
@@ -114,8 +115,8 @@ public class UnitChecker extends EntityChecker<Unit> {
 
         if (getGame().isDebugMode())
             return false;
-        if (CoreEngine.isLiteLaunch()){
-            if (CoreEngine.isActiveTestMode()) {
+        if (Flags.isLiteLaunch()) {
+            if (Flags.isActiveTestMode()) {
                 return true;
             }
         }
@@ -178,13 +179,6 @@ public class UnitChecker extends EntityChecker<Unit> {
         return getEntity().getOBJ_TYPE_ENUM() == DC_TYPE.CHARS;
     }
 
-    public boolean isDone() {
-        return getEntity().isDone();
-    }
-
-    public boolean isUnmoved() {
-        return getEntity().isUnmoved();
-    }
 
     public boolean isFull() {
         return getEntity().isFull();
@@ -215,10 +209,10 @@ public class UnitChecker extends EntityChecker<Unit> {
         if (checkStatus(STATUS.CHARMED)) {
             return false;
         }
-        if (checkStatus(UnitEnums.STATUS.EXHAUSTED)) {
+        if (checkStatus(STATUS.EXHAUSTED)) {
             return false;
         }
-        if (checkStatus(UnitEnums.STATUS.ASLEEP)) {
+        if (checkStatus(STATUS.ASLEEP)) {
             return false;
         }
         return !checkStatus(STATUS.FROZEN);
@@ -238,58 +232,30 @@ public class UnitChecker extends EntityChecker<Unit> {
     }
 
     public boolean checkStatusDisablesCounters() {
-        if (checkStatus(UnitEnums.STATUS.IMMOBILE)) {
+        if (checkStatus(STATUS.IMMOBILE)) {
             return true;
         }
-        if (checkStatus(UnitEnums.STATUS.CHARMED)) {
+        if (checkStatus(STATUS.CHARMED)) {
             return true;
         }
-        if (checkStatus(UnitEnums.STATUS.ENSNARED)) {
+        if (checkStatus(STATUS.ENSNARED)) {
             return true;
         }
-        if (checkStatus(UnitEnums.STATUS.PRONE)) {
+        if (checkStatus(STATUS.PRONE)) {
             return true;
         }
-        return checkStatus(UnitEnums.STATUS.EXHAUSTED);
+        return checkStatus(STATUS.EXHAUSTED);
 
     }
 
     public boolean isUnconscious() {
-        if (checkStatus(UnitEnums.STATUS.UNCONSCIOUS))
+        if (checkStatus(STATUS.UNCONSCIOUS))
             return true;
-        if (getEntity().isPlayerCharacter()) {
-            if (ShadowMaster.isShadowAlive())
-                return true; //TODO igg demo hack
-            return getEntity().getBuff("Unconscious") != null;
-        }
-
-        return false;
+        return getEntity().getBuff("Unconscious") != null;
     }
 
     public boolean canAttack() {
         return getEntity().getAttack().canBeActivated(getRef(), true);
-    }
-
-    // melee/ranged separate!
-    public boolean canAttack(DC_UnitModel attacked) {
-        if (!canAttack()) {
-            return false;
-        }
-        // ConditionMaster.getAdjacent().preCheck(ref);
-        int range = getIntParam(PARAMS.RANGE);
-        if (range == 1) {
-            return attacked.getCoordinates().isAdjacent(getEntity().getCoordinates());
-        }
-        return (range >= PositionMaster.getDistance(getEntity(), attacked));
-
-    }
-
-    public boolean canMove() {
-        if (isBfObj()) {
-            return false;
-        }
-        // if (isstructure)
-        return canActNow();
     }
 
     public boolean canCounter(DC_ActiveObj active) {
@@ -300,22 +266,18 @@ public class UnitChecker extends EntityChecker<Unit> {
         if (!canCounter()) {
             return false;
         }
-        if (active.checkPassive(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION)) {
+        if (getEntity().checkPassive(STANDARD_PASSIVES.VIGILANCE))
+            return true;
+        if (sneak)
+            return false;
+        if (active.checkPassive(STANDARD_PASSIVES.NO_RETALIATION)) {
             return false;
         }
-        // if (!attacked.checkPassive(STANDARD_PASSIVES.VIGILANCE))
         return !active.getOwnerUnit().checkPassive(STANDARD_PASSIVES.NO_RETALIATION);
-        // may still fail to activate any particular Attack Action!
     }
 
     public boolean canAct() {
-        if (getEntity().getOwner() == Player.NEUTRAL) {
-            return false;
-        }
-        if (checkStatusPreventsActions()) {
-            return false;
-        }
-        return !isImmobilized();
+        return canActNow(); // TODO difference in Mode?
     }
 
     public boolean canActNow() {
@@ -329,11 +291,10 @@ public class UnitChecker extends EntityChecker<Unit> {
         if (checkStatusPreventsActions()) {
             return false;
         }
+        if (isUnconscious()) {
+            return false;
+        }
 
-        if (!DC_Engine.isAtbMode())
-            if (getIntParam(PARAMS.C_N_OF_ACTIONS) <= 0) {
-                return false;
-            }
         return !isImmobilized();
 
     }
@@ -346,29 +307,29 @@ public class UnitChecker extends EntityChecker<Unit> {
     }
 
     public boolean checkStatusPreventsActions() {
-        if (checkStatus(UnitEnums.STATUS.DEAD)) {
+        if (checkStatus(STATUS.DEAD)) {
+            return true;
+        }
+        if (checkStatus(STATUS.DISABLED)) {
             return true;
         }
         if (checkPassive(STANDARD_PASSIVES.IMMOBILE)) {
             return true;
         }
-        if (checkStatus(UnitEnums.STATUS.EXHAUSTED)) {
+        if (checkStatus(STATUS.EXHAUSTED)) {
             return true;
         }
-        if (checkStatus(UnitEnums.STATUS.ASLEEP)) {
+        if (checkStatus(STATUS.ASLEEP)) {
             return true;
         }
-        if (checkStatus(UnitEnums.STATUS.FROZEN)) {
-            return true;
-        }
-        return isUnconscious();
+        return checkStatus(STATUS.FROZEN);
     }
 
     public boolean isIncapacitated() {
-        if (checkStatus(UnitEnums.STATUS.IMMOBILE)) {
+        if (checkStatus(STATUS.IMMOBILE)) {
             return true;
         }
-        if (checkStatus(UnitEnums.STATUS.CHARMED)) {
+        if (checkStatus(STATUS.CHARMED)) {
             return true;
         }
         return checkStatusPreventsActions();
@@ -376,11 +337,11 @@ public class UnitChecker extends EntityChecker<Unit> {
 
     public boolean isImmobilized() {
 
-        if (checkStatus(UnitEnums.STATUS.IMMOBILE)) {
+        if (checkStatus(STATUS.IMMOBILE)) {
             return true;
         }
 
-        if (checkStatus(UnitEnums.STATUS.CHARMED)) {
+        if (checkStatus(STATUS.CHARMED)) {
             return true;
         }
 
@@ -403,22 +364,22 @@ public class UnitChecker extends EntityChecker<Unit> {
 
 
     public boolean isLiving() {
-        if (checkClassification(UnitEnums.CLASSIFICATIONS.UNDEAD)) {
+        if (checkClassification(CLASSIFICATIONS.UNDEAD)) {
             return false;
         }
-        if (checkClassification(UnitEnums.CLASSIFICATIONS.WRAITH)) {
+        if (checkClassification(CLASSIFICATIONS.WRAITH)) {
             return false;
         }
-        if (checkClassification(UnitEnums.CLASSIFICATIONS.ELEMENTAL)) {
+        if (checkClassification(CLASSIFICATIONS.ELEMENTAL)) {
             return false;
         }
-        if (checkClassification(UnitEnums.CLASSIFICATIONS.CONSTRUCT)) {
+        if (checkClassification(CLASSIFICATIONS.CONSTRUCT)) {
             return false;
         }
-        if (checkClassification(UnitEnums.CLASSIFICATIONS.STRUCTURE)) {
+        if (checkClassification(CLASSIFICATIONS.STRUCTURE)) {
             return false;
         }
-        return !checkClassification(UnitEnums.CLASSIFICATIONS.MECHANICAL);
+        return !checkClassification(CLASSIFICATIONS.MECHANICAL);
     }
 
     public boolean isHidden() {
@@ -432,11 +393,57 @@ public class UnitChecker extends EntityChecker<Unit> {
 
     public boolean hasDoubleStrike() {
         return
-                checkPassive(UnitEnums.STANDARD_PASSIVES.DOUBLE_STRIKE);
+                checkPassive(STANDARD_PASSIVES.DOUBLE_STRIKE);
     }
 
     public boolean checkImmunity(IMMUNITIES type) {
         return checkProperty(G_PROPS.IMMUNITIES, type.toString());
+    }
+
+    public boolean checkCanDoFreeMove(DC_ActiveObj activeObj) {
+        return (getEntity().getFreeMovesDone())<1+getEntity().getIntParam(PARAMS.FREE_MOVE_BONUS);
+    }
+
+    /**
+     * mastery group (spell/skill),
+     *
+     * @param potential    has or can have
+     * @param TYPE
+     * @param dividingProp spellgroup/mastery group/...
+     * @param prop         spellbook/verbatim/skills/etc
+     * @return
+     */
+
+    public boolean checkItemGroup(PROPERTY prop, PROPERTY dividingProp, String name,
+                                  boolean potential, OBJ_TYPE TYPE) {
+        // at least one item with NAME as PROP
+
+        for (String item : ContainerUtils.open(getProperty(prop))) {
+
+            ObjType type = DataManager.getType(item, TYPE);
+            if (type == null) {
+                continue;
+            }
+            if (!potential) {
+                return type.checkSingleProp(dividingProp, name);
+            }
+
+            return game.getRequirementsManager().check(getEntity(), type) == null;
+
+        }
+
+        return false;
+
+    }
+
+    public boolean canInstantAttack() {
+        if (!getEntity().canCounter()) {
+            return false;
+        }
+        if (getEntity().checkPassive(STANDARD_PASSIVES.VIGILANCE)) {
+            return true;
+        }
+        return getEntity().getMode() == STD_MODES.ALERT;
     }
 
 }

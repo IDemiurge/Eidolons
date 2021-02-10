@@ -1,9 +1,9 @@
 package eidolons.libgdx.screens.map.layers;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import eidolons.macro.map.Route;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.texture.TextureCache;
+import eidolons.macro.map.Route;
 import main.system.PathUtils;
 import main.system.auxiliary.StringMaster;
 
@@ -16,14 +16,13 @@ import main.system.auxiliary.StringMaster;
  */
 public class RouteActor extends ImageContainer {
     private static final String HIGHLIGHT = " hl";
-    private final Image overlay;
     private final Route route;
     boolean highlighted;
 
     public RouteActor(Route sub) {
         super(new Image(TextureCache.getOrCreateR(
          getHighlightImgPath(sub))));
-        overlay = new Image(TextureCache.getOrCreateR(sub.getRouteImage()));
+        Image overlay = new Image(TextureCache.getOrCreateR(sub.getRouteImage()));
         addActor(overlay);
         this.route = sub;
 

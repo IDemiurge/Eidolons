@@ -12,17 +12,16 @@ import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.action.EngagedRule;
 import eidolons.game.battlecraft.rules.combat.damage.ResistMaster;
 import eidolons.game.battlecraft.rules.rpg.IntegrityRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.system.DC_Constants;
-import eidolons.system.DC_Formulas;
 import main.content.ContentValsManager;
 import main.content.enums.entity.UnitEnums;
+import main.content.mode.STD_MODES;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -33,6 +32,7 @@ import main.entity.handlers.EntityMaster;
 import main.entity.handlers.EntityResetter;
 import main.entity.obj.ActiveObj;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.system.GuiEventManager;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
@@ -43,6 +43,8 @@ import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static main.system.GuiEventType.SHOW_MODE_ICON;
 
 /**
  * Created by JustMe on 2/26/2017.
@@ -106,6 +108,10 @@ public class UnitResetter extends EntityResetter<Unit> {
 //        getEntity().setMode(STD_MODES.NORMAL); ??
         // Chronos.mark(toString() + "to base (values)");
         getEntity().setMode(null);
+        if (getEntity().isUnconscious()) {
+            GuiEventManager.triggerWithParams(SHOW_MODE_ICON, getEntity(), STD_MODES.UNCONSCIOUS.getImagePath());
+            // return; will break construct() !
+        }
         if (getEntity().getSpecialEffects() != null) {
             getEntity().getSpecialEffects().clear();
         }
@@ -162,16 +168,12 @@ public class UnitResetter extends EntityResetter<Unit> {
                 }
                 if (game.isDummyMode()) {
                     if (getGame().isDummyPlus()) {
-                        getEntity().resetDynamicParam(PARAMS.C_N_OF_COUNTERS);
-                        resetParam(PARAMS.C_STAMINA);
+                        getEntity().resetDynamicParam(PARAMS.C_EXTRA_ATTACKS);
+                        getEntity().resetDynamicParam(PARAMS.C_EXTRA_MOVES);
                         resetParam(PARAMS.C_FOCUS);
                         resetParam(PARAMS.C_ESSENCE);
                         resetParam(PARAMS.C_FOCUS);
                     }
-                    if (!getEntity().getOwner().isMe()) {
-                        setParam(PARAMS.INITIATIVE_MODIFIER, 1);
-                    }
-
 
                 }
             }
@@ -308,7 +310,7 @@ public class UnitResetter extends EntityResetter<Unit> {
         for (String feat : ContainerUtils.open(getProperty(property))) {
             if (!NumberUtils.isInteger(VariableManager.getVarPart(feat)))
                 continue;
-            Integer rank = NumberUtils.getInteger(VariableManager.getVarPart(feat));
+            Integer rank = NumberUtils.getIntParse(VariableManager.getVarPart(feat));
             if (rank == 0) {
                 continue;
             }
@@ -332,28 +334,6 @@ public class UnitResetter extends EntityResetter<Unit> {
             active.toBase();
         }
     }
-
-    public void resetActions() {
-        if (getChecker().checkPassive(UnitEnums.STANDARD_PASSIVES.AUTOMATA)) {
-            return;
-        }
-        if (getChecker().checkStatus(UnitEnums.STATUS.IMMOBILE)) {
-            setParam(PARAMS.C_N_OF_ACTIONS, 0);
-            return;
-        }
-        float carryOverFactor = DC_Constants.CARRY_OVER_FACTOR;
-        if (getIntParam(PARAMS.C_N_OF_ACTIONS) < 0) {
-            carryOverFactor = DC_Constants.CARRY_OVER_FACTOR_NEGATIVE;
-        }
-        if (getGame().getState().getRound() == 0)
-            carryOverFactor = 0;
-        int actions = (int) (getIntParam(PARAMS.N_OF_ACTIONS) + getIntParam(PARAMS.C_N_OF_ACTIONS)
-                * carryOverFactor);
-
-        setParam(PARAMS.C_N_OF_ACTIONS, actions);
-
-    }
-
 
     public void resetIntegrity() {
         IntegrityRule.resetIntegrity(getEntity());
@@ -434,20 +414,21 @@ public class UnitResetter extends EntityResetter<Unit> {
         if (ParamAnalyzer.isMoraleIgnore(getEntity())) {
             return;
         }
-        if (getIntParam(PARAMS.BATTLE_SPIRIT) == 0) {
+        Integer intParam = getIntParam(PARAMS.BATTLE_SPIRIT);
+        if (intParam == 0) {
             if (getRef().getObj(KEYS.PARTY) == null) {
                 getEntity().setParam(PARAMS.BATTLE_SPIRIT, 100);
             }
+            return;
         }
-        getEntity().setParam(PARAMS.MORALE, getIntParam(PARAMS.SPIRIT) * DC_Formulas.MORALE_PER_SPIRIT
-                * getIntParam(PARAMS.BATTLE_SPIRIT) / 100);
+        if (intParam == 100) {
+            return;
+        }
+        getEntity().setParam(PARAMS.ESSENCE, getIntParam(PARAMS.ESSENCE)
+                * intParam / 100);
         // the C_ value cannot be changed, but the PERCENTAGE
-        getEntity().setParam(PARAMS.C_MORALE, getIntParam(PARAMS.C_MORALE), true);
-
-    }
-
-    public void regenerateToughness() {
-        regenerateToughness(1f);
+        // getEntity().setParam(PARAMS.C_MORALE, getIntParam(PARAMS.C_MORALE), true);
+        getEntity().resetPercentage(PARAMS.ESSENCE);
     }
 
     public void regenerateToughness(float delta) {
@@ -465,7 +446,7 @@ public class UnitResetter extends EntityResetter<Unit> {
     public void afterEffectsApplied() {
         getEntity().setBeingReset(true);
         resetHeroValues();
-//        if (game.isSimulation()) { TODO igg demo fix ?
+//        if (game.isSimulation()) { TODO EA check
             getInitializer().initSpellbook();
 //        }
 
@@ -508,19 +489,14 @@ public class UnitResetter extends EntityResetter<Unit> {
     }
 
     public void applyBuffRules() {
-        if (!getGame().getRules().getStaminaRule().apply(getEntity())) {
-            getEntity().setInfiniteValue(PARAMS.STAMINA, 0.2f);
-        }
+        //Param revamp - toughness rule, and new essence rule
         if (!getGame().getRules().getFocusBuffRule().apply(getEntity())) {
             getEntity().setInfiniteValue(PARAMS.FOCUS, 1);
-        }
-        if (!getGame().getRules().getMoraleBuffRule().apply(getEntity())) {
-            getEntity().setInfiniteValue(PARAMS.MORALE, 0.5f);
         }
         if (!getGame().getRules().getWeightRule().apply(getEntity())) {
             getEntity().setInfiniteValue(PARAMS.CARRYING_CAPACITY, 2);
         }
-        if (RuleKeeper.isRuleOn(RULE.WATCH))
+        if (RuleKeeper.isRuleOn(RuleEnums.RULE.WATCH))
             getGame().getRules().getWatchRule().updateWatchStatus(getEntity());
         getGame().getRules().getWoundsRule().apply(getEntity());
     }
@@ -548,6 +524,8 @@ public class UnitResetter extends EntityResetter<Unit> {
 
     private void finalizeReset() {
         getGame().getRules().getDynamicBuffRules().checkBuffs(getEntity());
+        getGame().getRules().getStackingRule().checkStackingPenalty(getEntity());
+
     }
 
 }

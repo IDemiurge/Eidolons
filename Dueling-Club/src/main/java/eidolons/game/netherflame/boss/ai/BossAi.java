@@ -1,25 +1,38 @@
 package eidolons.game.netherflame.boss.ai;
 
+import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
-import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
-import eidolons.game.core.game.DC_Game;
-import eidolons.game.netherflame.boss.BossModel;
+import eidolons.game.core.Eidolons;
+import eidolons.game.netherflame.boss.BossHandler;
+import eidolons.game.netherflame.boss.BossManager;
+import eidolons.game.netherflame.boss.logic.BossCycle;
 
-public abstract class BossAi extends AiMaster {
-    public BossAi(DC_Game game, BossModel model) {
-        super(game);
-        atomicAi = new BossAtomicAi(this, model);
-        //ignore facing - how?
-//        priorityManager = new BossPriorityManager(this, model);
+public abstract class BossAi extends BossHandler {
+    protected Unit unit;
+
+    public BossAi(BossManager manager) {
+        super(manager);
     }
 
-    /*
-    use priority functions?
+    public Action getAction(Unit unit) {
+        this.unit = unit;
+        if (getEntity(BossCycle.BOSS_TYPE.caster)==unit) {
+            return getSpell();
+        }
+        //TODO others
+        return getAttack();
+    }
 
-     */
+    protected Action getAttack() {
+        DC_ActiveObj active = unit.getAction(getActionMaster().getMainAttack());
+        //zone ? it's also delayed!
+        return new Action(active, Eidolons.getMainHero());
+    }
 
-    public abstract Action getAction();
 
-
+    protected Action getSpell() {
+        return null;
+    }
 
 }

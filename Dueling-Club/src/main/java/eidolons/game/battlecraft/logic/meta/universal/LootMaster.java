@@ -8,7 +8,7 @@ import main.content.C_OBJ_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.math.MathMaster;
 
 import java.util.HashMap;
@@ -107,8 +107,7 @@ public class LootMaster<E extends MetaGame> extends MetaGameHandler<E> {
 
     private Boolean makeRequest(LOOT_PREFERENCE preference, Unit hero, ObjType item) {
         //guiEvent
-        Boolean result = null;// WaitMaster.waitForInput();
-        return result;
+        return null;
     }
 
     private boolean checkRequest(LOOT_PREFERENCE preference, Unit hero, ObjType item) {
@@ -167,9 +166,9 @@ public class LootMaster<E extends MetaGame> extends MetaGameHandler<E> {
 
     private String generateLootData() {
         final StringBuilder builder = new StringBuilder();
-        getMaster().getBattleMaster().getStatManager().
+        getMaster().getMissionMaster().getStatManager().
          getStats().getSlainEnemyUnits().forEach(enemy -> {
-            builder.append(getLootFromEnemy(enemy)).append(StringMaster.SEPARATOR);
+            builder.append(getLootFromEnemy(enemy)).append(Strings.SEPARATOR);
             lootValue += evaluateLootValue(enemy);
         });
         return null;

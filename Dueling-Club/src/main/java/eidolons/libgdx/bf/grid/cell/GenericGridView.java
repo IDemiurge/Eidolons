@@ -3,23 +3,20 @@ package eidolons.libgdx.bf.grid.cell;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.FileTextureData;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
+import eidolons.game.module.cinematic.Cinematics;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
-import eidolons.libgdx.bf.overlays.HpBar;
+import eidolons.libgdx.bf.overlays.bar.HpBar;
 import eidolons.libgdx.gui.generic.NoHitGroup;
-import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.images.ImageManager.STD_IMAGES;
 
 /**
  * Created by JustMe on 4/6/2018.
@@ -28,7 +25,6 @@ import main.system.images.ImageManager.STD_IMAGES;
 public class GenericGridView extends UnitView {
     public static final int ARROW_ROTATION_OFFSET = 90;
     protected NoHitGroup arrow;
-    protected Image emblemLighting;
     protected Image icon;
     protected int arrowRotation;
     protected float alpha = 1f;
@@ -37,7 +33,7 @@ public class GenericGridView extends UnitView {
     public FadeImageContainer torch;
     private boolean stackView;
     private boolean invisible;
-    private Label infoText=new Label("", StyleHolder.getDebugLabelStyle());
+    private final Label infoText = new Label("", StyleHolder.getDebugLabelStyle());
 
     public GenericGridView(BattleFieldObject obj, UnitViewOptions o) {
         super(o);
@@ -70,6 +66,16 @@ public class GenericGridView extends UnitView {
 
     protected void init(TextureRegion arrowTexture, int arrowRotation,
                         TextureRegion emblem) {
+        if (arrowTexture != null) {
+            initArrow(arrowTexture, arrowRotation);
+        }
+        if (emblem != null) {
+            initEmblem(emblem);
+        }
+        setInitialized(true);
+    }
+
+    protected void initArrow(TextureRegion arrowTexture, int arrowRotation) {
 
         if (arrowTexture != null) {
             arrow = new NoHitGroup();
@@ -101,45 +107,19 @@ public class GenericGridView extends UnitView {
             this.arrowRotation = arrowRotation;
             updateRotation();
         }
-
-//        if (iconTexture != null) {
-//            icon = new Image(iconTexture);
-//            addActor(icon);
-//            icon.setPosition(0, getHeight() - icon.getImageHeight());
-//        }
-
-        if (emblem != null) {
-            emblemLighting = new Image(
-                    UnitViewOptions.UNIT_VIEW_ATLAS
-                    ? TextureCache.fromAtlas(UnitView.getAtlasPath(), "light")
-                            : TextureCache.getOrCreateR(STD_IMAGES.LIGHT.getPath()));
-            emblemLighting.setSize(getEmblemSize() * 10 / 9, getEmblemSize() * 10 / 9);
-            emblemLighting.setPosition(getWidth() - emblemLighting.getWidth(), getHeight() - emblemLighting.getHeight());
-            if (getTeamColor() != null)
-                emblemLighting.setColor(getTeamColor());
-            addActor(emblemLighting);
-
-            emblemImage = new FadeImageContainer(new Image(emblem));
-            addActor(emblemImage);
-            emblemImage.setSize(getEmblemSize(), getEmblemSize());
-            emblemImage.setPosition(getWidth() - emblemImage.getWidth(), getHeight() - emblemImage.getHeight());
-        }
-        setInitialized(true);
-    }
-
-    protected float getEmblemSize() {
-        if (isMainHero())
-            return 36;
-        return 32;
     }
 
     @Override
     public void setVisible(boolean visible) {
+        setVisible(visible, false);
+    }
+    public void setVisible(boolean visible, boolean quiet) {
         if (invisible) {
             visible = false;
         }
         if (this.isVisible() != visible) {
             super.setVisible(visible);
+            if (!quiet)
             if (getParent() instanceof GridCellContainer) {
                 ((GridCellContainer) getParent()).recalcUnitViewBounds();
 
@@ -149,26 +129,20 @@ public class GenericGridView extends UnitView {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-//        if (batch instanceof CustomSpriteBatch) {
-//            ((CustomSpriteBatch) batch).resetBlending();
-//        }
         if (alpha != 1f) {
             parentAlpha = alpha;
         }
         super.draw(batch, parentAlpha);
-//        if (getUserObject().isPlayerCharacter()) {
-//            return;
-//        }
     }
 
     @Override
     public void act(float delta) {
         if (!isVisible())
             return; //TODO make withinCamera()  work with actions
-        if (getY() < 0)
-            setY(0);
-        if (getX() < 0)
-            setX(0);
+        // if (getY() < 0) TODO this was a check before module grids... do we still need it?
+        //     setY(0);
+        // if (getX() < 0)
+        //     setX(0);
         if (emblemLighting != null)
             alphaFluctuation(emblemLighting, delta);
         super.act(delta);
@@ -258,15 +232,6 @@ public class GenericGridView extends UnitView {
         }
     }
 
-    public void setPortraitTexture(TextureRegion textureRegion) {
-        if (((FileTextureData) textureRegion.getTexture().getTextureData()).getFileHandle().name().toLowerCase().
-                contains("unknown")) {
-            if (getUserObject().isWater()) {
-                return;
-            }
-        }
-        getPortrait().setTexture(TextureCache.getOrCreateTextureRegionDrawable(textureRegion));
-    }
 
     @Override
     public float getWidth() {
@@ -319,7 +284,7 @@ public class GenericGridView extends UnitView {
     @Override
     public void setHpBar(HpBar hpBar) {
         super.setHpBar(hpBar);
-        hpBar.setPosition(GdxMaster.centerWidth(hpBar)-32, -hpBar.getHeight() / 2);
+        hpBar.setPosition(GdxMaster.centerWidth(hpBar) - 32, -hpBar.getHeight() / 2);
     }
 
     @Override

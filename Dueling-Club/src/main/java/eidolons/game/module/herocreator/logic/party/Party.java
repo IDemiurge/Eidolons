@@ -6,8 +6,8 @@ import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.Simulation;
 import eidolons.game.core.game.DC_Game;
-import eidolons.macro.entity.party.MacroParty;
 import eidolons.game.module.herocreator.logic.HeroCreator;
+import eidolons.macro.entity.party.MacroParty;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums;
@@ -28,6 +28,7 @@ import main.game.logic.battle.player.Player;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.ListMaster;
 import main.system.math.MathMaster;
 
@@ -162,7 +163,7 @@ public class    Party extends Obj {
     }
 
     public List<Unit> getMembers() {
-        members.removeIf(m -> m == null);
+        members.removeIf(Objects::isNull);
         return members;
     }
 
@@ -210,7 +211,7 @@ public class    Party extends Obj {
     }
 
     public boolean isArcade() {
-        return type.checkProperty(G_PROPS.GROUP, StringMaster.ARCADE);
+        return type.checkProperty(G_PROPS.GROUP, Strings.ARCADE);
     }
 
     public int getGlory() {
@@ -300,8 +301,8 @@ public class    Party extends Obj {
         }
         int avrgIntelligence = intelligence / i;
 
-        int organization = Math.round(new Float(100) - (new Float(10) - new Float(maxTactics) / 5)
-         * i + 50 * Math.min(5 + new Float(maxTactics) / i, new Float(avrgIntelligence) / i)
+        int organization = Math.round(100f - (10f - (float) maxTactics / 5)
+         * i + 50 * Math.min(5 + (float) maxTactics / i, (float) avrgIntelligence / i)
          * (maxTactics + minIntelligence) / 100);
         setParam(PARAMS.ORGANIZATION, organization);
 

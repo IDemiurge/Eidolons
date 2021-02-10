@@ -7,7 +7,6 @@ import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.battlecraft.rules.combat.attack.extra_attack.AttackOfOpportunityRule;
 import eidolons.game.core.game.DC_Game;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.SpellEnums;
@@ -19,7 +18,8 @@ import main.entity.obj.Obj;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.math.PositionMaster;
-import main.system.sound.SoundMaster.SOUNDS;
+import main.system.sound.AudioEnums;
+import main.system.util.DialogMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class EngagedRule implements ActionRule {
      * make AoO against E-target for auto-breaking engagement (special Disengage can be used)
     choose an enemy to engage...
          * auto-engagement too 	 */
-    private DC_Game game;
+    private final DC_Game game;
 
     public EngagedRule(DC_Game game) {
         this.game = game;
@@ -122,15 +122,6 @@ public class EngagedRule implements ActionRule {
         }
         return topPriorityUnit;
     }
-    public boolean checkCanDisengage(Unit disengager) {
-        return disengager.getIntParam(PARAMS.C_N_OF_ACTIONS) >= 1 + getEngagers(disengager).size();
-        // getDisengageCost(disengager).canBePaid();
-        // new Costs(map) //preCheck provoke
-
-        // TODO ++ visuals - some little sword pointing...
-        // NESW on cells? for directional blocking
-    }
-
     public List<Unit> getEngagers(Unit engaged) {
         List<Unit> list = new ArrayList<>();
         for (Unit u : engaged.getGame().getUnits()) {
@@ -261,9 +252,9 @@ public class EngagedRule implements ActionRule {
         // when moved, instead of Collision perhaps... though in some cases
         // getting pushed out is OK
         engager.setEngagementTarget(engaged);
-        DC_SoundMaster.playEffectSound(SOUNDS.THREAT, engager);
+        DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.THREAT, engager);
         if (RandomWizard.random()) {
-            DC_SoundMaster.playEffectSound(SOUNDS.THREAT, engaged);
+            DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.THREAT, engaged);
         }
         if (!isAutoEngageOff(engaged)) {
             if (engaged.getEngagementTarget() == null) // TODO preCheck dead!
@@ -288,8 +279,6 @@ public class EngagedRule implements ActionRule {
             AttackOfOpportunityRule.triggerAttack(unit, action.getOwnerUnit(), true);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
-        } finally {
-
         }
         // TODO mod!
 

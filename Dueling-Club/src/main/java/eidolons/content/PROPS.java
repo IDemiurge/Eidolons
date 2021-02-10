@@ -18,42 +18,32 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     // INSTEAD OF 'ACTIVES'!
     // AGE(null, "chars"),
     DIALOGUE_DATA(null, false, "dialogue"),
+
     PARTY_MISSIONS_NEXT(null, false, "party"),
     PARTY_MISSION(null, false, "party"),
     PARTY_MAIN_HERO(null, false, "party"),
-
-    SCENARIO_TYPE(null, false, "scenarios"),
-    DUNGEON_STYLE(null, false, "scenarios"),
-    SCENARIO_MISSIONS(null, true, "scenarios"),
-    SCENARIO_PATHS(null, true, "scenarios"),
-    SCENARIO_PARTY(null, false, "scenarios"),
-    SCENARIO_MAIN_HERO(null, false, "scenarios"),
-    DIFFICULTY(null, false, "scenarios", "missions", "chars", "dungeons"),
-
-
-    PLACE_COORDINATES(null, false, "places"),
-
-    MISSION_PLACE(null, false, "missions"),
-    NEXT_MISSION(null, false, "missions"),
-    MISSION_BRIEFING_DATA(null, false, "missions"),
-    MISSION_LOADING_SCREEN(null, false, "missions"),
-    MISSION_FILE_PATH(null, false, "missions"),
-    MISSION_SCRIPTS(null, true, "missions"),
-
-    LAST_ARCADE(null, false, "meta"), // "meta data" obj_type?
     MEMBERS(null, true, "party"),
     LEADER(null, false, "party"),
-
-    PERKS(null, true, "deities", "chars"),
-
     STATS_SLAIN_ENEMIES(null, true, "party"),
     STATS_FALLEN_HEROES(null, true, "party"),
-    ARCADE_STATUS(null, false, "party"),
+
+
+    SCENARIO_TYPE(null, false, "scenarios"),
+    SCENARIO_MISSIONS(null, true, "scenarios"),
+    SCENARIO_PARTY(null, false, "scenarios"),
+    DIFFICULTY(null, false, "scenarios", "dungeons", "chars" ),
+
+    BRIEFING_DATA(null, false, "dungeons"),
+    LOADING_SCREEN(null, false, "dungeons"),
+    FLOOR_TEMPLATE_PATH(null, false, "dungeons"  ),
+    FLOOR_FILE_PATH(null, false, "dungeons"),
+    FLOOR_SCRIPTS(null, true, "dungeons"),
+
     DUNGEON_TAGS(null, true, "dungeons"),
-    MAP_BACKGROUND(null, false, "dungeons", "area", "route", "place"),
+    MAP_BACKGROUND(null, false, "dungeons", "area" ),
 
     // TODO remove useless props... (just disabled for now)
-    COLOR_THEME(null, false, "bf obj", "dungeons", "route", "place"),
+    COLOR_THEME(null, false, "bf obj", "dungeons" ),
     ALT_COLOR_THEME(null, false, "dungeons"),
 
     SUBDUNGEON_TYPE(null, false, "dungeons"),
@@ -259,82 +249,79 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     ATTRIBUTE_BONUSES(null, true, "skills", "classes", "perks"),
     APPLY_REQS(null, true, "skills", "classes"),
 
-    ARCADE_LEVELS(null, true, "arcades"),
-    ARCADE_ENEMY_GROUPS(null, true, "arcades"),
-    ARCADE_FACTIONS(null, true, "arcades"),
 
     TERRAIN_TYPE(null, false, "terrain"),
 
-    DURABILITY_GRADE_PIERCING(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    DURABILITY_GRADE_PIERCING(StringMaster.format(StringMaster.getLastPart(
             "DURABILITY_GRADE_PIERCING", "_")), false, "weapons", "armor"),
-    DURABILITY_GRADE_BLUDGEONING(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    DURABILITY_GRADE_BLUDGEONING(StringMaster.format(StringMaster.getLastPart(
             "DURABILITY_GRADE_BLUDGEONING", "_")), false, "weapons", "armor"),
-    DURABILITY_GRADE_SLASHING(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    DURABILITY_GRADE_SLASHING(StringMaster.format(StringMaster.getLastPart(
             "DURABILITY_GRADE_SLASHING", "_")), false, "weapons", "armor"),
-    DURABILITY_GRADE_POISON(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    DURABILITY_GRADE_POISON(StringMaster.format(StringMaster.getLastPart(
             "DURABILITY_GRADE_POISON", "_")), false, "weapons", "armor"),
-    DURABILITY_GRADE_FIRE(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    DURABILITY_GRADE_FIRE(StringMaster.format(StringMaster.getLastPart(
             "DURABILITY_GRADE_FIRE", "_")), false, "weapons", "armor"),
-    DURABILITY_GRADE_COLD(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    DURABILITY_GRADE_COLD(StringMaster.format(StringMaster.getLastPart(
             "DURABILITY_GRADE_COLD", "_")), false, "weapons", "armor"),
-    DURABILITY_GRADE_LIGHTNING(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    DURABILITY_GRADE_LIGHTNING(StringMaster.format(StringMaster.getLastPart(
             "DURABILITY_GRADE_LIGHTNING", "_")), false, "weapons", "armor"),
-    DURABILITY_GRADE_ACID(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    DURABILITY_GRADE_ACID(StringMaster.format(StringMaster.getLastPart(
             "DURABILITY_GRADE_ACID", "_")), false, "weapons", "armor"),
 
-    DURABILITY_GRADE_SONIC(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    DURABILITY_GRADE_SONIC(StringMaster.format(StringMaster.getLastPart(
             "DURABILITY_GRADE_SONIC", "_")), false, "weapons", "armor"),
-    DURABILITY_GRADE_LIGHT(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    DURABILITY_GRADE_LIGHT(StringMaster.format(StringMaster.getLastPart(
             "DURABILITY_GRADE_LIGHT", "_")), false, "weapons", "armor"),
 
-    DURABILITY_GRADE_ARCANE(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    DURABILITY_GRADE_ARCANE(StringMaster.format(StringMaster.getLastPart(
             "DURABILITY_GRADE_ARCANE", "_")), false, "weapons", "armor"),
-    DURABILITY_GRADE_CHAOS(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    DURABILITY_GRADE_CHAOS(StringMaster.format(StringMaster.getLastPart(
             "DURABILITY_GRADE_CHAOS", "_")), false, "weapons", "armor"),
 
-    DURABILITY_GRADE_SHADOW(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    DURABILITY_GRADE_SHADOW(StringMaster.format(StringMaster.getLastPart(
             "DURABILITY_GRADE_SHADOW", "_")), false, "weapons", "armor"),
-    DURABILITY_GRADE_HOLY(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    DURABILITY_GRADE_HOLY(StringMaster.format(StringMaster.getLastPart(
             "DURABILITY_GRADE_HOLY", "_")), false, "weapons", "armor"),
-    DURABILITY_GRADE_DEATH(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    DURABILITY_GRADE_DEATH(StringMaster.format(StringMaster.getLastPart(
             "DURABILITY_GRADE_DEATH", "_")), false, "weapons", "armor"),
-    DURABILITY_GRADE_PSIONIC(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    DURABILITY_GRADE_PSIONIC(StringMaster.format(StringMaster.getLastPart(
             "DURABILITY_GRADE_PSIONIC", "_")), false, "weapons", "armor"),
     //
-    RESIST_GRADE_PIERCING(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    RESIST_GRADE_PIERCING(StringMaster.format(StringMaster.getLastPart(
             "RESIST_GRADE_PIERCING", "_")), false, "units", "chars", "weapons", "armor"),
-    RESIST_GRADE_BLUDGEONING(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    RESIST_GRADE_BLUDGEONING(StringMaster.format(StringMaster.getLastPart(
             "RESIST_GRADE_BLUDGEONING", "_")), false, "units", "chars", "weapons", "armor"),
-    RESIST_GRADE_SLASHING(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    RESIST_GRADE_SLASHING(StringMaster.format(StringMaster.getLastPart(
             "RESIST_GRADE_SLASHING", "_")), false, "units", "chars", "weapons", "armor"),
-    RESIST_GRADE_POISON(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    RESIST_GRADE_POISON(StringMaster.format(StringMaster.getLastPart(
             "RESIST_GRADE_POISON", "_")), false, "units", "chars", "weapons", "armor"),
-    RESIST_GRADE_FIRE(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    RESIST_GRADE_FIRE(StringMaster.format(StringMaster.getLastPart(
             "RESIST_GRADE_FIRE", "_")), false, "units", "chars", "weapons", "armor"),
-    RESIST_GRADE_COLD(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    RESIST_GRADE_COLD(StringMaster.format(StringMaster.getLastPart(
             "RESIST_GRADE_COLD", "_")), false, "units", "chars", "weapons", "armor"),
-    RESIST_GRADE_LIGHTNING(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    RESIST_GRADE_LIGHTNING(StringMaster.format(StringMaster.getLastPart(
             "RESIST_GRADE_LIGHTNING", "_")), false, "units", "chars", "weapons", "armor"),
-    RESIST_GRADE_ACID(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    RESIST_GRADE_ACID(StringMaster.format(StringMaster.getLastPart(
             "RESIST_GRADE_ACID", "_")), false, "units", "chars", "weapons", "armor"),
 
-    RESIST_GRADE_SONIC(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    RESIST_GRADE_SONIC(StringMaster.format(StringMaster.getLastPart(
             "RESIST_GRADE_SONIC", "_")), false, "units", "chars", "weapons", "armor"),
-    RESIST_GRADE_LIGHT(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    RESIST_GRADE_LIGHT(StringMaster.format(StringMaster.getLastPart(
             "RESIST_GRADE_LIGHT", "_")), false, "units", "chars", "weapons", "armor"),
 
-    RESIST_GRADE_ARCANE(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    RESIST_GRADE_ARCANE(StringMaster.format(StringMaster.getLastPart(
             "RESIST_GRADE_ARCANE", "_")), false, "units", "chars", "weapons", "armor"),
-    RESIST_GRADE_CHAOS(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    RESIST_GRADE_CHAOS(StringMaster.format(StringMaster.getLastPart(
             "RESIST_GRADE_CHAOS", "_")), false, "units", "chars", "weapons", "armor"),
 
-    RESIST_GRADE_SHADOW(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    RESIST_GRADE_SHADOW(StringMaster.format(StringMaster.getLastPart(
             "RESIST_GRADE_SHADOW", "_")), false, "units", "chars", "weapons", "armor"),
-    RESIST_GRADE_HOLY(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    RESIST_GRADE_HOLY(StringMaster.format(StringMaster.getLastPart(
             "RESIST_GRADE_HOLY", "_")), false, "units", "chars", "weapons", "armor"),
-    RESIST_GRADE_DEATH(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    RESIST_GRADE_DEATH(StringMaster.format(StringMaster.getLastPart(
             "RESIST_GRADE_DEATH", "_")), false, "units", "chars", "weapons", "armor"),
-    RESIST_GRADE_PSIONIC(StringMaster.getWellFormattedString(StringMaster.getLastPart(
+    RESIST_GRADE_PSIONIC(StringMaster.format(StringMaster.getLastPart(
             "RESIST_GRADE_PSIONIC", "_")), false, "units", "chars", "weapons", "armor"),
     // common,
     // rare,
@@ -386,12 +373,14 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     MASTERY_RANKS_4(null, true, "chars"),
     MASTERY_RANKS_5(null, true, "chars"),
 
+    PERKS(null, true, "deities", "chars"),
     CLASS_PERK_GROUP(null, false, "classes"),
     PERK_FOR_CLASSES(null, false, "perks"),
     PERK_PARAM(null, false, "perks"),
     KEY_TYPE(null, false, "bf obj"),
     ACTOR_TYPE(null, false, "actors"),
     ACTOR_UNIT_NAMES(null, true, "actors"),
+
 
     COATING_MOD(null, false, "chars", "units", "skills"),
     KEY_DOOR_PAIRS(null, false, "dungeons"),
@@ -401,79 +390,29 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     ITEM_TRAITS(null, true, "weapons", "armor", "jewelry"),
     OVERLAY_SPRITES(null, false, "units", "chars", "bf obj"),
     UNDERLAY_SPRITES(null, false, "units", "chars", "bf obj"),
+    TEXTURES_OVERLAY(null, false, "units", "chars", "bf obj"),
+    TEXTURES_UNDERLAY(null, false, "units", "chars", "bf obj"),
+    VFX(null, false, "units", "chars", "bf obj"),
     CUSTOM_OBJECT(null, false, "units", "chars", "bf obj"),
     PLACEHOLDER_DATA(null, false, "units", "bf obj"),
     PLACEHOLDER_SYMBOL(null, false, "units", "bf obj"),
-    ;
+    LINKED_UNIT(null, false, "units", "bf obj");
 
-    static {
-        FAVORED_SPELL_GROUPS.setContainer(true);
-        NATURAL_WEAPON.setDefaultValue("Average Fist");
-        // OFFHAND_NATURAL_WEAPON.setDefaultValue("Average Fist");
-        SPELL_UPGRADES.setDynamic(true);
-
-        HINTS.setDynamic(true);
-        LAST_SEEN.setDynamic(true);
-        UPKEEP_FAIL_ACTION.setDynamic(true);
-        DROPPED_ITEMS.setDynamic(true);
-        // QUICK_ITEMS.setDynamic(true);
-        // INVENTORY.setDynamic(true);
-        // JEWELRY.setDynamic(true);
-        // VERBATIM_SPELLS.setDynamic(true);
-        // MEMORIZED_SPELLS.setDynamic(true);
-        DIVINED_SPELLS.setDynamic(true);
-        // KNOWN_SPELLS.setDynamic(true);
-        // LEARNED_SPELLS.setDynamic(true);
-
-        FACING_DIRECTION.setDynamic(true);
-        VISIBILITY_STATUS.setDynamic(true);
-        DETECTION_STATUS.setDynamic(true);
-        PERCEPTION_STATUS_PLAYER.setDynamic(true);
-        PERCEPTION_STATUS.setDynamic(true);
-
-        DC_TYPE.SPELLS.setUpgradeRequirementProp(KNOWN_SPELLS);
-        DC_TYPE.CLASSES.setUpgradeRequirementProp(CLASSES);
-        DC_TYPE.SKILLS.setUpgradeRequirementProp(SKILLS);
-
-        // DYNAMIC CONTAINERS
-
-        DEFAULT_COUNTER_ATTACK_ACTION.setLowPriority(true);
-        DEFAULT_ATTACK_OF_OPPORTUNITY_ACTION.setLowPriority(true);
-        SPELLBOOK.setLowPriority(true);
-        VERBATIM_SPELLS.setLowPriority(true);
-        MEMORIZED_SPELLS.setLowPriority(true);
-        PREPARED_SPELLS.setLowPriority(true);
-
-        ON_BEING_HIT.setLowPriority(true);
-        ON_HIT.setLowPriority(true);
-        ON_ACTIVATE.setLowPriority(true);
-        ON_KILL.setLowPriority(true);
-
-        VISION_MODE.setLowPriority(true);
-
-        XP_PLAN.setSuperLowPriority(true);
-        XP_PLAN.setLowPriority(true);
-        ATTRIBUTE_PROGRESSION.setSuperLowPriority(true);
-        ATTRIBUTE_PROGRESSION.setLowPriority(true);
-    }
 
     boolean writeToType;
     INPUT_REQ inputReq;
-    private String name;
+    private final String name;
     private String descr;
     private String entityType;
     private boolean dynamic;
     private String defaultValue;
-    private int AV_ID;
-    private boolean lowPriority = false;
     private String[] entityTypes;
     private boolean container;
-    private boolean superLowPriority = false;
-    private boolean highPriority;
     private String fullName;
     private String shortName;
     private Map<OBJ_TYPE, Object> defaultValuesMap;
     private String iconPath;
+    private boolean devOnly;
 
     PROPS(String shortName, boolean container, C_OBJ_TYPE entityType) {
         this(shortName, container, Arrays.stream(entityType.getTypes())
@@ -497,7 +436,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
 
     PROPS(String entityType, String shortName, String descr, boolean dynamic, String defaultValue,
           int AV_ID) {
-        this.name = StringMaster.getWellFormattedString(name());
+        this.name = StringMaster.format(name());
         this.shortName = shortName;
         if (StringMaster.isEmpty(shortName)) {
             this.shortName = name;
@@ -509,7 +448,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
         this.entityType = entityType;
         this.dynamic = dynamic;
         this.defaultValue = defaultValue;
-        this.AV_ID = AV_ID;
     }
 
     @Override
@@ -597,20 +535,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
         this.defaultValue = defaultValue;
     }
 
-    /**
-     * @return the aV_ID
-     */
-    public int getAV_ID() {
-        return AV_ID;
-    }
-
-    /**
-     * @param aV_ID the aV_ID to set
-     */
-    public void setAV_ID(int aV_ID) {
-        AV_ID = aV_ID;
-    }
-
     @Override
     public String getDescription() {
         // TODO Auto-generated method stub
@@ -633,33 +557,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
         this.container = container;
     }
 
-    public boolean isLowPriority() {
-        return lowPriority;
-    }
-
-    public void setLowPriority(boolean lowPriority) {
-        this.lowPriority = lowPriority;
-    }
-
-    @Override
-    public boolean isSuperLowPriority() {
-        return superLowPriority;
-    }
-
-    @Override
-    public void setSuperLowPriority(boolean superLowPriority) {
-        this.superLowPriority = superLowPriority;
-    }
-
-    @Override
-    public boolean isHighPriority() {
-        return highPriority;
-    }
-
-    @Override
-    public void setHighPriority(boolean highPriority) {
-        this.highPriority = highPriority;
-    }
 
     public boolean isPrinciple() {
         for (PRINCIPLES p : HeroEnums.PRINCIPLES.values()) {
@@ -697,17 +594,14 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     }
 
     @Override
-    public void addSpecialDefault(OBJ_TYPE type, Object value) {
-        getDefaultValuesMap().put(type, value);
-
+    public void setDevOnly(boolean devOnly) {
+        this.devOnly = devOnly;
     }
 
     @Override
-    public Object getSpecialDefault(OBJ_TYPE type) {
-        return getDefaultValuesMap().get(type);
-
+    public boolean isDevOnly() {
+        return devOnly;
     }
-
     @Override
     public String getIconPath() {
         return iconPath;

@@ -45,9 +45,10 @@ public class MetaDataUnit extends DataUnit<META_DATA> {
     }
 
     @Override
-    public void setValue(String name, String value) {
+    public DataUnit<META_DATA> setValue(String name, String value) {
         super.setValue(name, value);
         write();
+        return null;
     }
 
     @Override

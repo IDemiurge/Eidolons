@@ -6,20 +6,20 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechExecutor;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.netherflame.boss.logic.entity.BossUnit;
 import eidolons.libgdx.anims.*;
+import eidolons.libgdx.anims.AnimEnums.ANIM_PART;
 import eidolons.libgdx.anims.construct.AnimConstructor;
-import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
-import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.anims.std.sprite.CustomSpriteAnim;
+import eidolons.libgdx.bf.datasource.GraphicData;
 import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
@@ -30,7 +30,10 @@ import main.ability.effects.Effect;
 import main.content.enums.entity.ActionEnums;
 import main.entity.Ref;
 import main.entity.obj.Obj;
+import main.game.bf.Coordinates;
 import main.game.logic.event.Event;
+import main.system.EventCallback;
+import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
@@ -83,12 +86,7 @@ public class AnimMaster extends Group {
     }
 
     public static boolean isSmoothStop(Anim anim) {
-        if (anim.getPart() == ANIM_PART.CAST) {
-            return false; //TODO igg demo hack
-        }
-        if (anim.getOrigin().equals(anim.getDestination()))
-            return true;
-        return true;
+        return anim.getPart() != ANIM_PART.CAST; //TODO anim Review - was it too long? on vfx side..
 
     }
 
@@ -105,7 +103,7 @@ public class AnimMaster extends Group {
                 return true;
         if (sourceObj instanceof DC_Obj)
             if (!sourceObj.isMine())
-                return !VisionManager.checkVisible((DC_Obj) sourceObj, false);
+                return !VisionHelper.checkVisible((DC_Obj) sourceObj, false);
 
         return false;
     }
@@ -114,12 +112,12 @@ public class AnimMaster extends Group {
         return false;
     }
 
-    public static float getAnimationSpeedFactor() {
+    public static float speedMod() {
         if (Cinematics.ON) {
             return Cinematics.ANIM_SPEED;
         }
         if (animationSpeedFactor == null) {
-            animationSpeedFactor = new Float(OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED)) / 100;
+            animationSpeedFactor = (float) OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED) / 100;
         }
         return animationSpeedFactor;
     }
@@ -283,8 +281,11 @@ public class AnimMaster extends Group {
         onCustomAnim(new SimpleAnim(spritePath, runnable));
     }
 
+    public static void onCustomAnim(GraphicData data, String vfx,String spritePath, Runnable runnable) {
+        onCustomAnim(new SimpleAnim(data, vfx, spritePath, runnable));
+    }
     public static void onCustomAnim(SimpleAnim anim) {
-        Gdx.app.postRunnable(() -> anim.startAsSingleAnim());
+        Gdx.app.postRunnable(anim::startAsSingleAnim);
     }
 
     public void setOff(boolean off) {
@@ -360,7 +361,7 @@ public class AnimMaster extends Group {
             }
 
         });
-        GuiEventManager.bind(GuiEventType.INGAME_EVENT_TRIGGERED, p -> {
+        GuiEventManager.bind(GuiEventType.INGAME_EVENT, p -> {
             if (!isOn()) {
                 return;
             }
@@ -373,12 +374,7 @@ public class AnimMaster extends Group {
         });
         GuiEventManager.bind(GuiEventType.CUSTOM_ANIMATION, p -> {
             CustomSpriteAnim anim = (CustomSpriteAnim) p.get();
-            try {
-                anim.startAsSingleAnim();
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-                anim.getOnDone().call(anim.getCallbackParam());
-            }
+            customAnimation(anim);
 
         });
         GuiEventManager.bind(GuiEventType.EFFECT_APPLIED, p -> {
@@ -395,6 +391,15 @@ public class AnimMaster extends Group {
         );
 
 
+    }
+
+    public void customAnimation(CustomSpriteAnim anim) {
+        try {
+            anim.startAsSingleAnim();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+            anim.getOnDone().call(anim.getCallbackParam());
+        }
     }
 
     @Override
@@ -482,7 +487,7 @@ public class AnimMaster extends Group {
         getDrawer().add(animation);
     }
 
-    public boolean getParallelDrawing() {
+    public boolean isParallelDrawing() {
         return getDrawer().getParallelDrawing();
     }
 
@@ -494,4 +499,16 @@ public class AnimMaster extends Group {
         drawer.addAttached(a);
     }
 
+    public CustomSpriteAnim spriteAnim(String path, Coordinates coordinates) {
+        return spriteAnim(path, coordinates, null , null);
+    }
+    public CustomSpriteAnim spriteAnim(String path, Coordinates coordinates,
+                                       EventCallback callback, EventCallbackParam param) {
+        CustomSpriteAnim anim = new CustomSpriteAnim(null, path);
+        anim.setOrigin(coordinates);
+        anim.onDone(callback, param);
+        Eidolons.onThisOrGdxThread(()->
+            customAnimation(anim));
+        return anim;
+    }
 }

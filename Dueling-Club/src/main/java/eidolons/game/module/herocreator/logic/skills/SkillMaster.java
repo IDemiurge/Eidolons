@@ -50,7 +50,7 @@ public class SkillMaster {
     public static final String DUMMY_SKILL = "Skill Slot";
     private static DC_FeatObj dummy;
 
-    public static final DC_FeatObj getEmptySkill() {
+    public static DC_FeatObj getEmptySkill() {
         if (dummy == null) {
             dummy = new DC_FeatObj(new ObjType(SkillMaster.DUMMY_SKILL), new Ref(Eidolons.getMainHero()));
         }
@@ -87,7 +87,7 @@ public class SkillMaster {
         Map<PARAMS, Integer> sortedMap = map;
         while (true) {
             sortedMap = new MapMaster<PARAMS, Integer>().getSortedMap(sortedMap,
-                    param -> map.get(param));
+                    map::get);
             PARAMS top = sortedMap.keySet().iterator().next();
             if (map.get(top) < 5)
                 break;
@@ -116,7 +116,7 @@ public class SkillMaster {
                 continue;
             if (skill.getIntParam("circle") != tier)
                 continue;
-            int slot = parts.length > 1 ? Integer.valueOf(parts[0]) : i++;
+            int slot = parts.length > 1 ? Integer.parseInt(parts[0]) : i++;
             list.add(slot, skill);
         }
         return list;
@@ -141,9 +141,9 @@ public class SkillMaster {
                                              MASTERY mastery1, MASTERY mastery2) {
         List<ObjType> list = new ArrayList<>();
         list.addAll(DataManager.getTypesSubGroup(DC_TYPE.SKILLS,
-                StringMaster.getWellFormattedString(mastery1.toString())));
+                StringMaster.format(mastery1.toString())));
         list.addAll(DataManager.getTypesSubGroup(DC_TYPE.SKILLS,
-                StringMaster.getWellFormattedString(mastery2.toString())));
+                StringMaster.format(mastery2.toString())));
 
         list.removeIf(type -> type.getIntParam(PARAMS.CIRCLE) != tier);
         list.removeIf(type -> isSkillProhibited(type, hero));
@@ -169,8 +169,7 @@ public class SkillMaster {
     }
 
     public static String getReqReasonForSkill(Unit hero, ObjType type) {
-        String reason = hero.getGame().getRequirementsManager().check(hero, type);
-        return reason;
+        return hero.getGame().getRequirementsManager().check(hero, type);
     }
 
     public static PROPERTY getMasteryRankProp(int tier) {

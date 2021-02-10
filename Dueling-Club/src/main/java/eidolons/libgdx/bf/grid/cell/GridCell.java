@@ -1,114 +1,150 @@
 package eidolons.libgdx.bf.grid.cell;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.RemoveActorAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import eidolons.content.PARAMS;
 import eidolons.entity.active.DefaultActionHandler;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.battlefield.vision.GammaMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
+import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.Borderable;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
+import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
-import eidolons.libgdx.screens.dungeon.DungeonScreen;
-import eidolons.libgdx.shaders.DarkShader;
-import eidolons.libgdx.shaders.ShaderDrawer;
+import eidolons.libgdx.bf.overlays.GridOverlaysManager;
+import eidolons.libgdx.gui.NinePatchFactory;
+import eidolons.libgdx.gui.generic.BlockableGroup;
+import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.system.controls.GlobalController;
 import main.game.bf.Coordinates;
-import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.RandomWizard;
+import main.system.launch.Flags;
+
+import java.util.function.Function;
 
 import static main.system.GuiEventType.*;
 
-public class GridCell extends Group implements Borderable {
-    protected static boolean spriteCacheOn;
-    protected Image backImage;
-    protected Image overlayTexture;
+public abstract class GridCell extends BlockableGroup implements Borderable, Colored {
+    protected ImageContainer cellImgContainer;
     protected TextureRegion backTexture;
-    //    protected TextureRegion overlay;
+    protected FadeImageContainer overlay;
     protected float overlayRotation;
     protected Image border = null;
     protected int gridX;
     protected int gridY;
     protected TextureRegion borderTexture;
-    protected Label cordsText;
+    protected Actor cordsText;
     protected Label infoText;
 
-    FadeImageContainer overlay;
+    protected boolean voidAnimHappened;
+    protected boolean withinCamera;
+    protected FadeImageContainer pillar;
+    protected Function<Coordinates, Color> colorFunc;
 
-    // some creatures can walk there?
-
-    /**
-     * so we do create cells, but hide them...
-     * fade in
-     * <p>
-     * check if void - via prop
-     */
-
-    public GridCell(TextureRegion backTexture, int gridX, int gridY) {
+    public GridCell(TextureRegion backTexture, int gridX, int gridY, Function<Coordinates, Color> colorFunc) {
         this.backTexture = backTexture;
         this.gridX = gridX;
         this.gridY = gridY;
+        this.colorFunc = colorFunc;
         setTransform(false);
     }
 
-
-    public static void setSpriteCacheOn(boolean spriteCacheOn) {
-        GridCell.spriteCacheOn = spriteCacheOn;
+    public Image getCellImage() {
+        return cellImgContainer.getContent();
     }
 
-    public Image getBackImage() {
-        return backImage;
+    public ImageContainer getCellImgContainer() {
+        return cellImgContainer;
     }
 
-    public TextureRegion getBackTexture() {
-        return backTexture;
+    public void setVoid(boolean VOID, boolean animated) {
+        if (animated) {
+            if (VOID) {
+                ActionMaster.addFadeOutAction(cellImgContainer, 0.5f, false);
+            } else {
+                ActionMaster.addFadeInAction(cellImgContainer, 0.5f);
+            }
+        } else {
+            cellImgContainer.setVisible(!VOID);
+            cellImgContainer.getColor().a = 0;
+        }
+    }
+
+    public boolean isRotation(boolean wall) {
+        return false;
     }
 
     public GridCell init() {
-        backImage = new Image(backTexture);
-        backImage.setFillParent(true);
-        addActor(backImage);
-//        addActor(overlay = new SpriteX());
-        addActor(overlayTexture = new Image());
+        cellImgContainer = new ImageContainer(new Image(backTexture));
+        cellImgContainer.getColor().a = getCellImgAlpha();
+        if (isRotation(false)) {
+            int n = RandomWizard.getRandomIntBetween(0, 4);
+            cellImgContainer.setRotation(90 * n);
+            cellImgContainer.setOrigin(64, 64);
+        }
+        addActor(cellImgContainer);
+        //        addActor(overlay = new SpriteX());
         setSize(GridMaster.CELL_W, GridMaster.CELL_H);
 
         cordsText = new Label(getGridX() + ":" + getGridY(),
-                StyleHolder.getDebugLabelStyle());
-        cordsText.setPosition(getWidth() / 2 - cordsText.getWidth() / 2,
-                getHeight() / 2 - cordsText.getHeight() / 2);
-        cordsText.setVisible(false);
-        addActor(cordsText);
+                StyleHolder.getDebugLabelStyleLarge());
+        TablePanelX<Actor> cordsTextTable = new TablePanelX<>(50, 30);
+        cordsTextTable.setBackground(NinePatchFactory.getLightPanelFilledDrawable());
+        cordsTextTable.add(cordsText).center();
+        addActor(cordsTextTable);
+        cordsTextTable.setTouchable(Touchable.disabled);
         cordsText.setTouchable(Touchable.disabled);
+        cordsTextTable.setPosition(getWidth() / 2 - cordsText.getWidth() / 2,
+                getHeight() / 2 - cordsText.getHeight() / 2);
+        cordsText = cordsTextTable;
+        cordsText.setVisible(false);
         addListener(
                 createListener());
 
         infoText = new Label("", StyleHolder.getDebugLabelStyle());
-//        addActor(infoText); NOW VIA OVERLAYS
+        //        addActor(infoText); NOW VIA OVERLAYS
 
         return this;
     }
 
+
+    public float getCellImgAlpha() {
+        return 1.0f;
+        // return 0.8f;
+        //TODO derive alpha from somewhere
+    }
+
+    @Override
+    public void clearListeners() {
+        super.clearListeners();
+    }
+
+    @Override
+    public boolean removeListener(EventListener listener) {
+        return super.removeListener(listener);
+    }
+
     protected EventListener createListener() {
 
-        return new BattleClickListener() {
+        return new BattleClickListener(-1) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
@@ -124,37 +160,35 @@ public class GridCell extends Group implements Borderable {
             }
 
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return super.touchDown(event, x, y, pointer, button);
-            }
-
-            @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                DC_Obj dc_cell = Eidolons.gameMaster.getCellByCoordinate(Coordinates.get(getGridX(), getGridY()));
+                DC_Obj cell = getUserObject();// Eidolons.gameMaster.getCellByCoordinate(Coordinates.get(getGridX(), getGridY()));
+
                 if (button == Input.Buttons.RIGHT && !event.isHandled()) {
+                    if (Flags.isMe()) {
+                        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+                            cell.getGame().getMovementManager().move(Eidolons.getMainHero(), cell.getCoordinates());
+                            GuiEventManager.trigger(UNIT_MOVED, Eidolons.getMainHero());
+                            return;
+                        }
+                    }
                     event.handle();
-                    GuiEventManager.trigger(CREATE_RADIAL_MENU, dc_cell);
+                    if (cell.getCoordinates().dst(Eidolons.getPlayerCoordinates()) > 1) {
+                        DefaultActionHandler.moveToMotion(cell.getCoordinates());
+                    } else
+                        GuiEventManager.trigger(CREATE_RADIAL_MENU, cell);
                 }
 
                 super.touchUp(event, x, y, pointer, button);
                 if (button == Input.Buttons.LEFT) {
                     event.handle();
                     if (isEmpty())
-                        if (isAlt() || isShift() || isControl()
-                            //|| ExplorationMaster.isExplorationOn()
-                        )
-                            try {
-                                if (DefaultActionHandler.
-                                        leftClickCell(isShift(), isControl(), getGridX(), getGridY()))
-                                    return;
-                            } catch (Exception e) {
-                                ExceptionMaster.printStackTrace(e);
-                            }
+                        if (isAlt() || isShift() || isControl())
+                            if (DefaultActionHandler.
+                                    leftClickCell(isShift(), isControl(), getGridX(), getGridY()))
+                                return;
                     GuiEventManager.trigger(TARGET_SELECTION, GridCell.this);
-
                     GuiEventManager.trigger(RADIAL_MENU_CLOSE);
                 }
-                //                super.touchUp(event, x, y, pointer, button);
             }
         };
     }
@@ -165,35 +199,12 @@ public class GridCell extends Group implements Borderable {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (EidolonsGame.BOSS_FIGHT) {
-            super.draw(batch, 1);
-            return;
-        }
         if (!isWithinCamera()) {
             return;
         }
-
-        if (!isShadersSupported() || parentAlpha == ShaderDrawer.SUPER_DRAW
-        ) {
-            super.draw(batch, 1);
-        } else {
-            ShaderDrawer.drawWithCustomShader(this,
-                    batch,
-                    !getUserObject().isPlayerHasSeen() ?
-                            DarkShader.getDarkShader()
-                            : null, true);
-        }
-
+        super.draw(batch, 1);
     }
 
-    protected boolean isShadersSupported() {
-        return true;
-    }
-
-    protected boolean isWithinCamera() {
-        return DungeonScreen.getInstance().controller.isWithinCamera
-                (this);
-    }
 
     @Override
     public DC_Cell getUserObject() {
@@ -202,28 +213,25 @@ public class GridCell extends Group implements Borderable {
 
     @Override
     public void setUserObject(Object userObject) {
+        boolean propagate = false;
+        if (getUserObject() == null) {
+            propagate = true;
+        }
         super.setUserObject(userObject);
-        getChildren().forEach(ch -> ch.setUserObject(userObject));
+        if (propagate)
+            getChildren().forEach(ch -> ch.setUserObject(userObject));
+    }
+
+    public boolean isWithinCamera() {
+        return true;
+
     }
 
     @Override
     public void act(float delta) {
-//        if (!DungeonScreen.getInstance().controller.isWithinCamera((this))
-//         ) {
-//            return;
-//        }
         super.act(delta);
         if (isCoordinatesShown()) {
-            DC_Cell cell = getUserObject();
-            cordsText.setText(
-                    ContainerUtils.build(getGridX(), ":", getGridY())
-                            + (GammaMaster.DEBUG_MODE ? //TODO into method
-                            "\n gamma=" + DC_Game.game.getVisionMaster().getGammaMaster().
-                                    getGammaForCell(getGridX(), getGridY())
-                                    + "\n illumination="
-                                    + cell.getIntParam(PARAMS.ILLUMINATION)
-                            : "")
-            );
+            infoText.setText(getInfoText());
             cordsText.setVisible(true);
         } else {
             if (cordsText.isVisible()) {
@@ -232,8 +240,18 @@ public class GridCell extends Group implements Borderable {
         }
     }
 
+    private CharSequence getInfoText() {
+        DC_Cell cell = getUserObject();
+        return ContainerUtils.build(getGridX(), ":", getGridY())
+                +  //TODO into method
+                "\n gamma=" + DC_Game.game.getVisionMaster().getGammaMaster().
+                getGammaForCell(getGridX(), getGridY())
+                + "\n color = "
+                + cell.getGame().getColorMap().getOutput().get(cell.getCoordinates());
+    }
+
     protected boolean isCoordinatesShown() {
-        return DC_Game.game.getVisionMaster().isVisionDebugMode();
+        return GridOverlaysManager.debug;// DC_Game.game.isDebugMode();
     }
 
     @Override
@@ -253,22 +271,18 @@ public class GridCell extends Group implements Borderable {
         } else {
             addActor(border = new Image(texture));
             borderTexture = texture;
-            updateBorderSize();
+            border.setX(-4);
+            border.setY(-4);
+            border.setHeight(getWidth() - 8);
+            border.setWidth(getHeight() - 8);
         }
     }
 
-    protected void updateBorderSize() {
-        border.setX(-4);
-        border.setY(-4);
-        border.setHeight(getWidth() - 8);
-        border.setWidth(getHeight() - 8);
-    }
-
-    protected int getGridX() {
+    public int getGridX() {
         return gridX;
     }
 
-    protected int getGridY() {
+    public int getGridY() {
         return gridY;
     }
 
@@ -293,45 +307,102 @@ public class GridCell extends Group implements Borderable {
     }
 
     public void setOverlayRotation(float overlayRotation) {
+        if (this.overlayRotation == overlayRotation)
+            return;
         this.overlayRotation = overlayRotation;
-        overlayTexture.setOrigin(64, 64);
-        ActionMaster.addRotateByAction(overlayTexture, overlayTexture.getRotation(), overlayRotation);
+        overlay.setOrigin(64, 64);
+        ActionMaster.addRotateByAction(overlay, overlay.getRotation(), overlayRotation);
     }
 
-    public void setOverlayTexture(TextureRegion overlay) {
-        if (overlay == null) {
-            ActionMaster.addFadeOutAction(overlayTexture, 2);
-//            setDebug(false, true);
+    public void setOverlayTexture(TextureRegion region) {
+        if (region == null) {
+            ActionMaster.addFadeOutAction(getOverlay(), 2);
             return;
         }
-        ActionMaster.addFadeInAction(overlayTexture, 2);
-        this.overlayTexture.setDrawable(new TextureRegionDrawable(overlay));
-        this.overlayTexture.setWidth(overlay.getRegionWidth());
-        this.overlayTexture.setHeight(overlay.getRegionHeight());
-        GdxMaster.center(this.overlayTexture);
-//        debug();
-//        this.overlay = overlay;
+        ActionMaster.addFadeInAction(getOverlay(), 2);
+        this.overlay.setImage(region);
+        GdxMaster.center(this.overlay);
     }
 
 
-    public Label getInfoText() {
+    public Label getInfoTextLabel() {
         return infoText;
     }
 
-    public float getOverlayRotation() {
-        return overlayRotation;
+    public void setVoidAnimHappened(boolean voidAnimHappened) {
+        this.voidAnimHappened = voidAnimHappened;
+    }
+
+    public boolean getVoidAnimHappened() {
+        return voidAnimHappened;
+    }
+
+    public FadeImageContainer addPillar(String path) {
+        if (pillar == null) {
+            pillar = new FadeImageContainer(path) {
+                @Override
+                public void draw(Batch batch, float parentAlpha) {
+                    super.draw(batch, parentAlpha);
+                }
+
+                @Override
+                public boolean remove() {
+                    return super.remove();
+                }
+
+                @Override
+                public void setColor(Color color) {
+                    super.setColor(color);
+                }
+
+                @Override
+                public void setVisible(boolean visible) {
+                    super.setVisible(visible);
+                }
+            };
+        } else {
+            if (pillar.getImagePath().equalsIgnoreCase(path)) {
+                return null;
+            }
+            pillar.setImage(path);
+        }
+        if (pillar.getParent() == null) {
+            addActor(this.pillar);
+        }
+        pillar.setZIndex(0);
+        return pillar;
+    }
+
+    public void removePillar() {
+        if (pillar != null)
+            ActionMaster.addAfter(pillar, new SequenceAction(
+                    ActionMaster.getFadeOut(pillar, 1f),
+                    new RemoveActorAction()));
+    }
+
+    public FadeImageContainer getOverlay() {
+        if (overlay == null) {
+            addActor(overlay = new FadeImageContainer() {
+                public float getFadeDuration() {
+                    float mod = 1 / (AnimMaster.speedMod());
+                    return 1.0f * mod;
+                }
+
+                @Override
+                protected boolean isHideWhenFade() {
+                    return false;
+                }
+            });
+            overlay.setTouchable(Touchable.disabled);
+        }
+        return overlay;
+    }
+
+    public FadeImageContainer getPillar() {
+        return pillar;
+    }
+
+    public Function<Coordinates, Color> getColorFunc() {
+        return colorFunc;
     }
 }
-
-
-//        if (overlay != null) {
-//            Vector2 v =  localToStageCoordinates
-//                    (new Vector2(getGridX()*128, getGridY()*128));
-//            float x= v.x;
-//            float y= v.y;
-//            batch.draw(overlay, x, y, x+64, y+64, 128, 128, 1, 1, overlayRotation);
-//              v = localToStageCoordinates(new Vector2(0, 0));
-//              x= v.x;
-//              y= v.y;
-//            batch.draw(overlay, 0, 0, x+64, y+64, 128, 128, 1, 1, overlayRotation);
-//        }

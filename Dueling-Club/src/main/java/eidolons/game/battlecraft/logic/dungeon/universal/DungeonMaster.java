@@ -1,33 +1,39 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
+import com.badlogic.gdx.graphics.Color;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.battle.universal.*;
-import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
+import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMap;
+import eidolons.game.battlecraft.logic.battlefield.vision.colormap.LightConsts;
+import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.TransitHandler;
 import eidolons.game.battlecraft.logic.dungeon.location.layer.LayerManager;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.PlaceholderResolver;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.StructMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureBuilder;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureMaster;
-import eidolons.game.battlecraft.logic.dungeon.module.BridgeMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.module.ModuleLoader;
 import eidolons.game.battlecraft.logic.dungeon.module.PortalMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
-import eidolons.game.battlecraft.logic.dungeon.universal.data.DataMap;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Awakener;
+import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
+import eidolons.game.battlecraft.logic.mission.universal.*;
+import eidolons.game.battlecraft.logic.mission.universal.stats.MissionStatManager;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.*;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
-import eidolons.libgdx.particles.ambi.ParticleManager;
+import eidolons.libgdx.GdxColorMaster;
+import main.content.enums.DungeonEnums;
+import main.game.bf.Coordinates;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
-import main.system.graphics.GuiManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
+import main.system.math.MathMaster;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,33 +42,34 @@ import static main.system.GuiEventType.UPDATE_DUNGEON_BACKGROUND;
 /*
  *
  */
-public abstract class DungeonMaster<E extends DungeonWrapper> {
+public abstract class DungeonMaster {
     protected DC_Game game;
-    protected E dungeonWrapper;
-    protected DungeonInitializer<E> initializer;
-    protected DungeonBuilder<E> builder;
-    protected Positioner<E> positioner;
-    protected Spawner<E> spawner;
-    protected FacingAdjuster<E> facingAdjuster;
+    protected Location floorWrapper;
+    protected DungeonInitializer initializer;
+    protected DungeonBuilder builder;
+    protected Positioner positioner;
+    protected Spawner spawner;
+    protected FacingAdjuster facingAdjuster;
     private ExplorationMaster explorationMaster;
     private DoorMaster doorMaster;
     private LockMaster lockMaster;
     private ContainerMaster containerMaster;
     private InteractiveObjMaster interactiveMaster;
-    private DungeonLevel dungeonLevel;
-    private TrapMaster trapMaster;
+    private final TrapMaster trapMaster;
     private PuzzleMaster puzzleMaster;
-    private PortalMaster portalMaster;
-    private LayerManager layerManager;
-    private StructureMaster structureMaster;
-    private FloorLoader floorLoader;
+    private final PortalMaster portalMaster;
+    private final LayerManager layerManager;
+    private final StructMaster structMaster;
+    private final FloorLoader floorLoader;
+    private Awakener awakener;
 
-    private Map<DataMap, Map<Integer, String>> dataMaps;
-    private DC_ObjInitializer objInitializer;
-    private StructureBuilder structureBuilder;
-    private ModuleLoader moduleLoader;
-    private PlaceholderResolver placeholderResolver;
-    private TransitHandler transitHandler;
+    private Map<DungeonEnums.DataMap, Map<Integer, String>> dataMaps;
+    private final DC_ObjInitializer objInitializer;
+    private final StructureBuilder structureBuilder;
+    private final ModuleLoader moduleLoader;
+    private final PlaceholderResolver placeholderResolver;
+    private final TransitHandler transitHandler;
+    private ColorMap colorMap;
 
 
     public DungeonMaster(DC_Game game) {
@@ -75,11 +82,13 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         positioner = createPositioner();
         facingAdjuster = createFacingAdjuster();
         builder = createBuilder();
-        structureMaster = new StructureMaster(this);
-        objInitializer = new DC_ObjInitializer(this);
+        structMaster = new StructMaster(this);
+        objInitializer = createObjInitializer();
         structureBuilder = new StructureBuilder(this);
         floorLoader = createFloorLoader();
-        if (CoreEngine.isCombatGame()) {
+
+        if (Flags.isCombatGame()) {
+            awakener = new Awakener(game);
             explorationMaster = new ExplorationMaster(game);
             doorMaster = new DoorMaster(this);
             lockMaster = new LockMaster(this);
@@ -91,15 +100,21 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         placeholderResolver = new PlaceholderResolver(this);
         transitHandler = new TransitHandler(this);
     }
+
+    protected DC_ObjInitializer createObjInitializer() {
+        return new DC_ObjInitializer(this);
+    }
+
     protected FloorLoader createFloorLoader() {
         return new FloorLoader(this);
     }
+
     protected LayerManager createLayerManager() {
         return null;
     }
 
-    protected DungeonBuilder<E> createBuilder() {
-        return new DungeonBuilder<E>(this);
+    protected DungeonBuilder createBuilder() {
+        return new DungeonBuilder(this);
     }
 
     public void setExplorationMaster(ExplorationMaster explorationMaster) {
@@ -107,14 +122,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     }
 
     public void gameStarted() {
-        if (isPuzzlesOn())
-            try {
-                puzzleMaster.initPuzzles(getDungeon() );
-            } catch (Exception e) {
-                ExceptionMaster.printStackTrace(e);
-            }
-        ParticleManager.init(dungeonWrapper.getDungeon());
-        GuiEventManager.trigger(UPDATE_DUNGEON_BACKGROUND, dungeonWrapper.getMapBackground());
+        GuiEventManager.trigger(UPDATE_DUNGEON_BACKGROUND, floorWrapper.getMapBackground());
         spawner.spawn();
     }
 
@@ -123,132 +131,153 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     }
 
     public void init() {
-        if (dungeonWrapper == null)
-            dungeonWrapper = initDungeon();
+        if (floorWrapper == null)
+            floorWrapper = initDungeon();
         //TODO remove this!
 
-        if (dungeonWrapper == null) {
-            dungeonWrapper = initDungeon();
+        if (floorWrapper == null) {
+            floorWrapper = initDungeon();
         }
-        if (!CoreEngine.isCombatGame()) {
+        if (!Flags.isCombatGame()) {
             return;
         }
-//TODO dc init fix
-//        getBattleMaster().getScriptManager().parseDungeonScripts(dungeonWrapper.getDungeon());
-//        trapMaster.initTraps(getDungeon());
+        //TODO dc init fix
+        //        getBattleMaster().getScriptManager().parseDungeonScripts(dungeonWrapper.getDungeon());
+        //        trapMaster.initTraps(getDungeon());
 
-        GuiManager.setCurrentLevelCellsX(dungeonWrapper.getWidth());
-        GuiManager.setCurrentLevelCellsY(dungeonWrapper.getHeight());
+        Coordinates.setFloorWidth(floorWrapper.getWidth());
+        Coordinates.setFloorHeight(floorWrapper.getHeight());
 
     }
 
-    public void setDungeonWrapper(E dungeonWrapper) {
-        this.dungeonWrapper = dungeonWrapper;
-    }
-
-    protected void processMetaDataMap(Map<String, String> dataMap) {
-        getDungeonLevel().initUnitFacingMap(dataMap);
-        getDungeonLevel().initCellTypeMap(dataMap);
-
-
-        for (String coordinate : dataMap.keySet()) {
-            String data = dataMap.get(coordinate);
-            data = BridgeMaster.processMetaData(data);
-
-            if (portalMaster.addPortal(coordinate, data)) {
-                continue;
+    public void resetColorMap(Set<Coordinates> set) {
+        Map<Coordinates, Color> map = new HashMap<>(set.size() + 10, 0.991f);
+        //TODO do it per struct instead !
+        for (Coordinates coordinate : set) {
+            //ambient light here
+            LevelStruct struct = getStructMaster().getLowestStruct(coordinate);
+            int light =LightConsts.MIN_AMBIENT_LIGHT;
+            Coordinates center = struct.getCenterCoordinate();
+            if (struct.getIlluminationValue()> light) {
+                light =  struct.getIlluminationValue();
             }
-            if (KeyMaster.addCustomKey(coordinate, data)) {
-                continue;
+            int size = struct.getCoordinatesSet().size();
+            float a=light / 100f;
+            Color c;
+            Color c2 = GdxColorMaster.getColorForTheme(struct.getAltColorTheme());
+            if (c2 == null) {
+                c2=GdxColorMaster.LIGHT_GREY;
             }
-            //anything else?
+            if (struct.getColorTheme() != null) {
+                c = GdxColorMaster.getColorForTheme(struct.getColorTheme());
+                //lerp based on how far from center
+                float lerp=getLerp(size, center.dst(coordinate));
+                c= new Color(c2.r, c2.g, c2.b, a).lerp(c, lerp);
+            } else {
+                c= GdxColorMaster.LIGHT_GREY;
+            }
+            if (a>0.9f) {
+                map.put(coordinate, new Color(c.r, c.g, c.b, a));
+            }
+            map.put(coordinate, new Color(c.r, c.g, c.b, a));
         }
+        colorMap = new ColorMap(map);
     }
 
-    protected E initDungeon() {
+    private float getLerp(int size, int dst) {
+        //max dst from center is about 1/3 of size for rectangular
+        // Math.sqrt()
+        return MathMaster.minMax((float) size /(dst+4)/10, 0.12f, 0.8f);
+    }
+
+    public void setFloorWrapper(Location floorWrapper) {
+        this.floorWrapper = floorWrapper;
+    }
+
+    protected Location initDungeon() {
         try {
             return initializer.initDungeon();
         } catch (Exception e) {
             ExceptionMaster.printStackTrace(e);
+            return floorWrapper;
         }
-        return dungeonWrapper;
     }
 
-    protected abstract FacingAdjuster<E> createFacingAdjuster();
+    protected abstract FacingAdjuster createFacingAdjuster();
 
-    protected abstract Positioner<E> createPositioner();
+    protected abstract Positioner createPositioner();
 
-    protected abstract Spawner<E> createSpawner();
+    protected abstract Spawner createSpawner();
 
-    protected abstract DungeonInitializer<E> createInitializer();
+    protected abstract DungeonInitializer createInitializer();
 
     public DC_Game getGame() {
         return game;
     }
 
-    public StructureMaster getStructureMaster() {
-        return structureMaster;
+    public StructMaster getStructMaster() {
+        return structMaster;
     }
 
-    public DungeonInitializer<E> getInitializer() {
+    public DungeonInitializer getInitializer() {
         return initializer;
     }
 
-    public FacingAdjuster<E> getFacingAdjuster() {
+    public FacingAdjuster getFacingAdjuster() {
         return facingAdjuster;
     }
 
-    public DungeonBuilder<E> getBuilder() {
+    public DungeonBuilder getBuilder() {
         return builder;
     }
 
-    public Positioner<E> getPositioner() {
+    public Positioner getPositioner() {
         return positioner;
     }
 
-    public Spawner<E> getSpawner() {
+    public Spawner getSpawner() {
         return spawner;
     }
 
-    public E getDungeonWrapper() {
-        return dungeonWrapper;
+    public Location getFloorWrapper() {
+        return floorWrapper;
     }
 
 
-    public BattleMaster getBattleMaster() {
-        return game.getBattleMaster();
+    public MissionMaster getMissionMaster() {
+        return game.getMissionMaster();
     }
 
     public PlayerManager getPlayerManager() {
-        return getBattleMaster().getPlayerManager();
+        return getMissionMaster().getPlayerManager();
     }
 
     public PuzzleMaster getPuzzleMaster() {
         return puzzleMaster;
     }
 
-    public BattleOptionManager getOptionManager() {
-        return getBattleMaster().getOptionManager();
+    public MissionOptionManager getOptionManager() {
+        return getMissionMaster().getOptionManager();
     }
 
-    public BattleStatManager getStatManager() {
-        return getBattleMaster().getStatManager();
+    public MissionStatManager getStatManager() {
+        return getMissionMaster().getStatManager();
     }
 
-    public BattleConstructor getConstructor() {
-        return getBattleMaster().getConstructor();
+    public MissionConstructor getConstructor() {
+        return getMissionMaster().getConstructor();
     }
 
-    public BattleOutcomeManager getOutcomeManager() {
-        return getBattleMaster().getOutcomeManager();
+    public MissionOutcomeManager getOutcomeManager() {
+        return getMissionMaster().getOutcomeManager();
     }
 
-    public Battle getBattle() {
-        return getBattleMaster().getBattle();
+    public DungeonSequence getMission() {
+        return getMissionMaster().getMission();
     }
 
-    public Dungeon getDungeon() {
-        return dungeonWrapper.getDungeon();
+    public Floor getDungeon() {
+        return floorWrapper.getFloor();
     }
 
     public ExplorationMaster getExplorationMaster() {
@@ -270,21 +299,8 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         return null;
     }
 
-    public DungeonLevel getDungeonLevel() {
-        if (EidolonsGame.TOWN)
-            if (dungeonWrapper == null && dungeonLevel == null) {
-//            dungeonWrapper = initDungeon();
-                init();
-            }
-        return dungeonLevel;
-    }
-
-    public void setDungeonLevel(DungeonLevel dungeonLevel) {
-        this.dungeonLevel = dungeonLevel;
-    }
-
     public void next() {
-        dungeonWrapper = null;
+        floorWrapper = null;
     }
 
     public TrapMaster getTrapMaster() {
@@ -295,26 +311,18 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         return portalMaster;
     }
 
-    public String getDefaultEntranceType() {
-        return getDungeonLevel().getEntranceType();
-    }
-
-    public String getDefaultExitType() {
-        return getDungeonLevel().getExitType();
-    }
-
     public LayerManager getLayerManager() {
         return layerManager;
     }
 
-    public Map<Integer, String> getDataMap(DataMap type) {
+    public Map<Integer, String> getDataMap(DungeonEnums.DataMap type) {
         if (dataMaps == null) {
             return null;
         }
         return dataMaps.get(type);
     }
 
-    public void setDataMaps(Map<DataMap, Map<Integer, String>> dataMaps) {
+    public void setDataMaps(Map<DungeonEnums.DataMap, Map<Integer, String>> dataMaps) {
         this.dataMaps = dataMaps;
     }
 
@@ -360,4 +368,30 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         return transitHandler;
     }
 
+    public boolean isModuleSizeBased() {
+        return true;
+    }
+
+    public void reinit() {
+        getBuilder().initLocationSize(getFloorWrapper());
+    }
+
+    public void initPuzzles(Map<Coordinates, CellScriptData> textDataMap) {
+        if (isPuzzlesOn()) {
+            getPuzzleMaster().init(textDataMap);
+        }
+    }
+
+    public Awakener getAwakener() {
+        return awakener;
+    }
+
+    public ColorMap getColorMap() {
+        return colorMap;
+    }
+
+    public void loadingDone() {
+        getFloorLoader().loadingDone();
+        resetColorMap(game.getModule().getCoordinatesSet());
+    }
 }

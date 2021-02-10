@@ -7,11 +7,11 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.battlecraft.rules.combat.attack.AttackCalculator;
 import eidolons.game.battlecraft.rules.combat.attack.SneakRule;
 import eidolons.game.battlecraft.rules.round.UnconsciousRule;
+import eidolons.game.core.master.EffectMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.enums.GenericEnums;
@@ -148,7 +148,7 @@ public class DamageCalculator {
 
     public static boolean isDead(BattleFieldObject unit) {
         if (unit instanceof Unit) {
-            return UnconsciousRule.checkUnitDies((Unit) unit, null, !unit.isDead());
+            return UnconsciousRule.checkUnitDies((Unit) unit );
         }
         if (0 >= unit.getIntParam(PARAMS.C_ENDURANCE)) {
             return true;
@@ -199,11 +199,9 @@ public class DamageCalculator {
             return
              unconscious ?
               UnconsciousRule.checkFallsUnconscious((Unit) targetObj,
-               targetObj.getIntParam(PARAMS.C_TOUGHNESS) - damage)
-              : UnconsciousRule.checkUnitDies(
-              targetObj.getIntParam(PARAMS.C_TOUGHNESS) - damage,
-              targetObj.getIntParam(PARAMS.C_ENDURANCE) - damage, (Unit) targetObj,
-              null, false);
+               targetObj.getIntParam(PARAMS.C_TOUGHNESS) - damage,  targetObj.getIntParam(PARAMS.C_FOCUS) )
+              : UnconsciousRule.checkUnitAnnihilated(
+              targetObj.getIntParam(PARAMS.C_ENDURANCE) - damage, (Unit) targetObj );
         }
         if (damage >= targetObj.getIntParam(PARAMS.C_TOUGHNESS)) {
             return true;
@@ -267,7 +265,7 @@ public class DamageCalculator {
         }
         for (Effect e : effects) {
             // TODO ++ PARAM MOD
-            for (Effect dmgEffect : EffectFinder.getEffectsOfClass(e, DealDamageEffect.class)) {
+            for (Effect dmgEffect : EffectMaster.getEffectsOfClass(e, DealDamageEffect.class)) {
                 int amount = dmgEffect.getFormula().getInt(attack.getRef());
                 list.add(DamageFactory.getDamageFromEffect((DealDamageEffect) dmgEffect, amount));
             }

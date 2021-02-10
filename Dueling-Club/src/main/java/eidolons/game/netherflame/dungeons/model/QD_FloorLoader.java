@@ -15,14 +15,10 @@ public class QD_FloorLoader   {
         for (ModuleProperty value : ModuleProperty.values()) {
             switch (value) {
                 case size:
-                    break;
-                case dimension:
-                    break;
-                case type:
-                    break;
-                case location:
-                    break;
                 case elevation:
+                case location:
+                case type:
+                case dimension:
                     break;
             }
         }

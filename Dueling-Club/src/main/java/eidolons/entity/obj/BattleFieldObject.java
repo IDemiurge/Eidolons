@@ -1,6 +1,6 @@
 package eidolons.entity.obj;
 
-import eidolons.content.DC_ContentValsManager;
+import eidolons.content.ContentConsts;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.ValuePages;
@@ -9,15 +9,15 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_ArmorObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
-import eidolons.game.core.atb.AtbController;
+import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster;
+import eidolons.game.battlecraft.logic.battlefield.vision.mapper.SeenMapper;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.game.module.dungeoncrawl.objects.Door;
-import eidolons.game.netherflame.igg.death.ShadowMaster;
-import eidolons.system.DC_Formulas;
 import eidolons.system.math.DC_MathManager;
 import main.ability.AbilityObj;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
+import main.content.CONTENT_CONSTS;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums.STD_BOOLS;
@@ -48,8 +48,6 @@ import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.LogMaster;
-import main.system.launch.CoreEngine;
-import main.system.math.MathMaster;
 
 import java.util.Arrays;
 import java.util.List;
@@ -73,6 +71,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     private boolean summoned;
     private boolean revealed;
     private boolean moduleBorder;
+    private CONTENT_CONSTS.FLIP flip;
 
     public BattleFieldObject(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -92,8 +91,8 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     @Override
     public void setPassives(List<AbilityObj> passives) {
         super.setPassives(passives);
-        passivesReady=true;
-//        activatePassives();
+        passivesReady = true;
+        //        activatePassives();
     }
 
     public boolean isWall() {
@@ -110,12 +109,12 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     public String getToolTip() {
         if (!isMine())
             if (OutlineMaster.isOutlinesOn()) {
-            if (getOutlineTypeForPlayer() != null)
-                return getOutlineTypeForPlayer().getName();
-            if (!getGame().getVisionMaster().getDetectionMaster().checkKnownForPlayer(this)) {
-                return "Unknown";
+                if (getOutlineTypeForPlayer() != null)
+                    return getOutlineTypeForPlayer().getName();
+                if (!getGame().getVisionMaster().getDetectionMaster().checkKnownForPlayer(this)) {
+                    return "Unknown";
+                }
             }
-        }
         String prefix = "";
 
         if (isMine()) {
@@ -147,21 +146,6 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
             quietly = false;
 
         }
-        if (!quietly)
-        if (CoreEngine.isIggDemoRunning())
-            if (isPlayerCharacter()) {
-//                if (!ShadowMaster.isShadowAlive()) {
-//                    preventDeath();
-//                    return false;
-//                }
-                if (ShadowMaster.checkCheatDeath(this)) {
-                    preventDeath();
-                    return false;
-                } else {
-
-                }
-            }
-
         if ((game.isDebugMode() && isMine()) || (!ignoreInterrupt && !quietly)) {
             if ((game.isDebugMode() && isMine()) || checkPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE)) {
                 preventDeath();
@@ -304,18 +288,15 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     public void addDynamicValues() {
         setParam(G_PARAMS.POS_X, x, true);
         setParam(G_PARAMS.POS_Y, y, true);
-        setParam(PARAMS.C_MORALE, getIntParam(PARAMS.SPIRIT) * DC_Formulas.MORALE_PER_SPIRIT, true);
 
         setParam(PARAMS.C_ENDURANCE, getIntParam(PARAMS.ENDURANCE), true);
         setParam(PARAMS.C_TOUGHNESS, getIntParam(PARAMS.TOUGHNESS), true);
-        if (!DC_Engine.isAtbMode())
-            setParam(PARAMS.C_N_OF_ACTIONS, getIntParam(PARAMS.N_OF_ACTIONS), true);
-        setParam(PARAMS.C_N_OF_COUNTERS, getIntParam(PARAMS.N_OF_COUNTERS), true);
+        setParam(PARAMS.C_EXTRA_ATTACKS, getIntParam(PARAMS.EXTRA_ATTACKS), true);
+        setParam(PARAMS.C_EXTRA_MOVES, getIntParam(PARAMS.EXTRA_MOVES), true);
         setParam(PARAMS.C_ENERGY, "0", true);
 
         setParam(PARAMS.C_FOCUS, DC_MathManager.getStartingFocus(this), true);
         setParam(PARAMS.C_ESSENCE, getGame().getMathManager().getStartingEssence(this), true);
-        setParam(PARAMS.C_STAMINA, getIntParam(PARAMS.STAMINA), true);
 
 
     }
@@ -323,48 +304,23 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     @Override
     protected void putParameter(PARAMETER param, String value) {
         if (param == PARAMS.C_TOUGHNESS) {
-            if (NumberUtils.getInteger(value) >
+            if (NumberUtils.getIntParse(value) >
                     getIntParam(PARAMS.TOUGHNESS)) {
-                LogMaster.log(1, "gotcha dwarf " + this + value);
-            //igg demo hack!
+                LogMaster.log(1, "BUG: toughness >100%! " + this + value);
+                //TODO debug
                 value = getParam(PARAMS.TOUGHNESS);
             }
         }
-        if (param == PARAMS.C_N_OF_ACTIONS) {
-            Integer prev = getIntParam(param);
-            int diff = NumberUtils.getInteger(value) - prev;
-            if (diff == 0)
-                return;
-            int mod = AtbController.ATB_READINESS_PER_AP * diff;
-            //            main.system.auxiliary.log.LogMaster.log
-            //             (1,this+"'s INITIATIVE modified by " +mod);
-            modifyParameter(PARAMS.C_INITIATIVE, mod);
-        } else if (param == PARAMS.INITIATIVE_MODIFIER) {
-            //            Integer prev = getIntParam(param);
-            //            int diff = StringMaster.getInteger(value) - prev;
-            //            modifyParameter(PARAMS.N_OF_ACTIONS, diff);
-        } else if (param == PARAMS.C_INITIATIVE_BONUS) {
-            Integer prev = getIntParam(param);
-            int diff = NumberUtils.getInteger(value) - prev;
-            modifyParameter(PARAMS.C_INITIATIVE, diff);
-        } else if (param == PARAMS.INITIATIVE_BONUS) {
-            super.putParameter(param, value);
-        } else if (param == PARAMS.C_INITIATIVE) {
-            Integer val = NumberUtils.getInteger(value);
-            float max = AtbController.TIME_LOGIC_MODIFIER * AtbController.TIME_TO_READY;
-            val = MathMaster.getMinMax(val, 0, (int) max);
-            super.putParameter(param, val + "");
-        } else
-            super.putParameter(param, value);
+        super.putParameter(param, value);
     }
 
     public void resetPercentages() {
-        Arrays.stream(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE).forEach(p -> resetPercentage(p));
+        Arrays.stream(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE).forEach(this::resetPercentage);
     }
 
     public void resetCurrentValues() {
         Arrays.stream(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE).forEach(p -> {
-            if (p == PARAMS.N_OF_ACTIONS)
+            if (p == PARAMS.INITIATIVE)
                 if (DC_Engine.isAtbMode())
                     return;
             resetCurrentValue(p);
@@ -386,18 +342,9 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         }
     }
 
-    public boolean isDone() {
-        if (isDead()) {
-            return true;
-        }
-        return getIntParam(PARAMS.C_N_OF_ACTIONS) <= 0;
-    }
-
     public void regen() {
 
-        Arrays.stream(DC_ContentValsManager.REGENERATED_PARAMS).forEach(parameter -> {
-            regen(parameter);
-        });
+        Arrays.stream(ContentConsts.REGENERATED_PARAMS).forEach(this::regen);
 
     }
 
@@ -407,19 +354,11 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         }
         Integer regen = getIntParam(ContentValsManager.getRegenParam(p));
         if (regen != 0) {
-            //TODO igg demo hack
-            if (p == PARAMS.STAMINA) {
-                regen = MathMaster.getMinMax(regen, 5, getIntParam("stamina")/2);
-            }
             modifyParameter(ContentValsManager.getCurrentParam(p), regen, getIntParam(p));
         }
 
     }
 
-    public boolean isUnmoved() {
-        return getIntParam(PARAMS.C_N_OF_ACTIONS) >= getIntParam(PARAMS.N_OF_ACTIONS);
-
-    }
 
     public boolean isFull() {
         if (getIntParam(PARAMS.C_ENDURANCE) < getIntParam(PARAMS.ENDURANCE)) {
@@ -432,9 +371,6 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
             return false;
         }
         if (getIntParam(PARAMS.C_FOCUS) < getIntParam(PARAMS.FOCUS)) {
-            return false;
-        }
-        if (getIntParam(PARAMS.C_STAMINA) < getIntParam(PARAMS.STAMINA)) {
             return false;
         }
         if (getIntParam(PARAMS.C_ESSENCE) < getIntParam(PARAMS.ESSENCE)) {
@@ -602,7 +538,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     public boolean isIndestructible() {
         if (getGame().isDebugMode())
             return false;
-        if (checkStatus( STATUS.UNDYING ))
+        if (checkStatus(STATUS.UNDYING))
             return true;
         return checkProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INDESTRUCTIBLE.name());
     }
@@ -700,9 +636,11 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         }
         return checkProperty(G_PROPS.STANDARD_PASSIVES, UnitEnums.STANDARD_PASSIVES.IMMATERIAL.getName());
     }
+
     public void setHidden(boolean b) {
         hidden = b;
     }
+
     public boolean isHidden() {
         return hidden;
     }
@@ -725,5 +663,35 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
 
     public void setModuleBorder(boolean moduleBorder) {
         this.moduleBorder = moduleBorder;
+    }
+
+
+    public String getVisionInfo() {
+        return "[" +
+                "gamma=" + gamma +
+                "; " + getVisibilityLevel() +
+                "/" + getUnitVisionStatus() +
+                "/" + getPlayerVisionStatus() +
+                ']';
+    }
+
+    public SeenMapper getSeenMapper() {
+        return getVisionController().getSeenMapper();
+    }
+
+    public void setFlip(CONTENT_CONSTS.FLIP flip) {
+        this.flip = flip;
+    }
+
+    public CONTENT_CONSTS.FLIP getFlip() {
+        return flip;
+    }
+
+    public LevelStruct getStruct() {
+        return getGame().getDungeonMaster().getStructMaster().getLowestStruct(getCoordinates());
+    }
+
+    public boolean checkCanDoFreeMove(DC_ActiveObj entity) {
+        return false;
     }
 }

@@ -3,13 +3,13 @@ package eidolons.entity.item;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.ValuePages;
-import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.game.module.dungeoncrawl.objects.Trap;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.DC_TYPE;
 import main.content.VALUE;
 import main.content.enums.GenericEnums;
+import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ItemEnums;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -18,14 +18,14 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.HeroItem;
 import main.entity.type.ObjType;
+import main.entity.type.TypeInitializer;
 import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.Bools;
-import main.system.launch.TypeInitializer;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 import main.system.text.TextParser;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -85,7 +85,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
 
         if (checkProperty(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.AMMO + "")) {
             this.ammo = true;
-            typeName = DC_ActionManager.RELOAD + " " + type.getGroup();
+            typeName = ActionEnums.RELOAD + " " + type.getGroup();
             ref.setID(KEYS.AMMO, id);
             setParam(PARAMS.CHARGES, getIntParam(PARAMS.DURABILITY));// TODO C_
             // in
@@ -94,7 +94,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
             // version!
             setParam(PARAMS.C_CHARGES, getIntParam(PARAMS.CHARGES));
         } else {
-            typeName = DC_ActionManager.THROW;
+            typeName = ActionEnums.THROW;
 
             // will it not have effect on hero?
 
@@ -212,7 +212,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
 
     public boolean activate() {
         if (getGame().getLoop().isPaused()) {
-            return false; //TODO igg demo hack
+            return false;
         }
         if (!isConstructed() || wrapped) {
             construct();
@@ -311,7 +311,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     public void clicked() {
         // TODO // threading?
         if (getGame().getLoop().getActivatingAction() != null) {
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
+            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.CLICK_BLOCKED);
             return;
         }
         if (game.getManager().isSelecting()) {

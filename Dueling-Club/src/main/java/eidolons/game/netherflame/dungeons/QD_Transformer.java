@@ -19,20 +19,17 @@ import java.util.Set;
 
 public class QD_Transformer {
 
-    private LocationMaster master;
-    private QD_Model model;
-    private Location location;
+    private final LocationMaster master;
 
     public QD_Transformer(LocationMaster master) {
         this.master = master;
     }
 
     public String constructXmlFromModel(QD_Model model) {
-        this.model = model;
         for (QD_Floor fl : model.getDungeon().getFloors().values()) {
             String contents = constructXmlForFloor(fl);
             FileManager.write(contents, getFloorFilePath(fl));
-            location = master.getDungeonWrapper();
+            Location location = master.getFloorWrapper();
         }
         return getRootPath();
     }

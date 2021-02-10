@@ -2,7 +2,6 @@ package eidolons.libgdx.bf.menu;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import eidolons.game.EidolonsGame;
 import eidolons.game.core.GameLoop;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.bf.menu.GameMenu.GAME_MENU_ITEM;
@@ -12,7 +11,7 @@ import eidolons.libgdx.screens.menu.GenericMenu;
 import eidolons.libgdx.screens.menu.MenuItem;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.graphics.FontMaster.FONT;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -105,17 +104,6 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
     }
 
     protected boolean isHidden(GAME_MENU_ITEM item) {
-        if (EidolonsGame.BRIDGE) {
-            switch (item) {
-                case MANUAL:
-                case BACK_TO_TOWN:
-                case TUTORIAL_RECAP:
-                    return false;
-            }
-        }
-        if (item== GAME_MENU_ITEM.BACK_TO_TOWN) {
-            return CoreEngine.isLiteLaunch();
-        }
         if (TownPanel.getActiveInstance() != null) {
             if (item == GAME_MENU_ITEM.MAP_INFO
             ) {
@@ -123,11 +111,7 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
             }
         }
         if (item == GAME_MENU_ITEM.RETREAT)
-            return !CoreEngine.isMacro();
-//        if (item==GAME_MENU_ITEM.BACK_TO_TOWN)
-//            if (!CoreEngine.isFastMode())
-//             return  CoreEngine.isMacro();
-
+            return !Flags.isMacro();
         return item.hidden;
     }
 
@@ -167,7 +151,6 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
         RESTART(true),
         PASS_TIME(true),
         //        QUESTS(),
-        BACK_TO_TOWN(),
         ACHIEVEMENTS(),
         RETREAT(true),
         SAVE(true),
@@ -181,7 +164,7 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
 //        INFO(QUICK_HELP, TUTORIAL_RECAP, MANUAL),
         ;
         boolean hidden;
-        private GAME_MENU_ITEM[] items;
+        private final GAME_MENU_ITEM[] items;
 
         GAME_MENU_ITEM(boolean hidden, GAME_MENU_ITEM... items) {
             this(items);

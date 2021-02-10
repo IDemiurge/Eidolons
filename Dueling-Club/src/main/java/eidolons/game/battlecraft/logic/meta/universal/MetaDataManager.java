@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.universal;
 
-import eidolons.game.netherflame.igg.CustomLaunch;
+import eidolons.game.netherflame.additional.CustomLaunch;
 import eidolons.libgdx.launch.MainLauncher;
 
 /**
@@ -22,7 +22,7 @@ public class MetaDataManager<E extends MetaGame> extends MetaGameHandler<E> {
         return null;
     }
 
-    public String getMissionPath() {
+    public String getSoloDungeonPath() {
             if (MainLauncher.getCustomLaunch()!=null ){
                 main.system.auxiliary.log.LogMaster.important("*******Custom Launch xml path: " +
                         MainLauncher.getCustomLaunch().getValue(CustomLaunch.CustomLaunchValue.xml_path));

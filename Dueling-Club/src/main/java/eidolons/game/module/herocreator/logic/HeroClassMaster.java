@@ -18,7 +18,7 @@ import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,14 +101,11 @@ public class HeroClassMaster {
         if (hero.getProperty(PROPS.SECOND_CLASS).equalsIgnoreCase(property)) {
             return true;
         }
-        if (hero.getProperty(PROPS.THIRD_CLASS).equalsIgnoreCase(property)) {
-            return true;
-        }
-        return false;
+        return hero.getProperty(PROPS.THIRD_CLASS).equalsIgnoreCase(property);
     }
 
     public static List<ObjType> getClassesToChooseFrom(Unit hero, int tier) {
-        if (CoreEngine.isIggDemoRunning()){
+        if (Flags.isIggDemoRunning()){
             return getPotentiallyAvailableClasses(hero, tier);
         }
         return getAllClasses(hero, tier);
@@ -144,13 +141,13 @@ public class HeroClassMaster {
     }
     public static String getNextClassInfo(Entity classType) {
         List<ObjType> classes = DataManager.getTypes(DC_TYPE.CLASSES);
-        String s = "Unlocked Classes: \n";
+        StringBuilder s = new StringBuilder("Unlocked Classes: \n");
         for (ObjType aClass : classes) {
             if (aClass.getProperty(G_PROPS.BASE_TYPE).equalsIgnoreCase(classType.getName())) {
-                s +="   "+ aClass.getName() + "\n";
+                s.append("   ").append(aClass.getName()).append("\n");
             }
         }
-        return s;
+        return s.toString();
     }
         public static String getImgPath(Entity data) {
         String  path = "gen/class/64/" + data.getName() + ".png";

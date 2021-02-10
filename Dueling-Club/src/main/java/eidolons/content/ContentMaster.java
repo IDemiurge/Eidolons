@@ -5,6 +5,7 @@ import main.content.enums.entity.HeroEnums;
 import main.entity.type.ObjType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class ContentMaster {
             case JEWELRY:
                 return checkItemBlocked(type, version);
             case CHARS:
-                if (type.getSubGroupingKey().equalsIgnoreCase(StringMaster.BACKGROUND)) {
+                if (type.getSubGroupingKey().equalsIgnoreCase(Strings.BACKGROUND)) {
                     return checkHeroBackgroundBlocked(type, version);
                 }
 
@@ -41,7 +42,7 @@ public class ContentMaster {
 
             case DEITIES:
 
-            case DUNGEONS:
+            case FLOORS:
 
             case SKILLS:
 
@@ -99,7 +100,7 @@ public class ContentMaster {
 
             case DEITIES:
 
-            case DUNGEONS:
+            case FLOORS:
 
             case SKILLS:
 

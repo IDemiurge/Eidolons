@@ -30,11 +30,10 @@ public class ShopDataSource extends ContainerDataSource
  InventoryTableDataSource,
  EquipDataSource {
     private static final int SIZE = 24;
-    private static Map<Shop, ShopClickHandler> handlerCache = new HashMap<>();
+    private static final Map<Shop, ShopClickHandler> handlerCache = new HashMap<>();
     Shop shop;
     InventoryDataSource invDataSource;
-    private ITEM_FILTERS filter;
-    private Set<DC_HeroItemObj> stash;
+    private final Set<DC_HeroItemObj> stash;
 
     public ShopDataSource(Shop shop, Unit unit) {
         super(shop, unit);
@@ -67,7 +66,6 @@ public class ShopDataSource extends ContainerDataSource
 
     @Override
     public void setFilter(ITEM_FILTERS filter) {
-        this.filter = filter;
     }
 
     public InventoryDataSource getInvDataSource() {

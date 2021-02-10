@@ -3,7 +3,8 @@ package eidolons.game.battlecraft.rules.buff;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
 import eidolons.content.ValuePages;
-import eidolons.game.battlecraft.rules.RuleKeeper.COMBAT_RULES;
+import eidolons.game.battlecraft.rules.RuleEnums;
+import eidolons.game.battlecraft.rules.RuleEnums.COMBAT_RULES;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.content.VALUE;
@@ -12,6 +13,7 @@ import main.entity.Ref.KEYS;
 import main.game.core.game.GenericGame;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 
 import java.util.Arrays;
 
@@ -26,14 +28,14 @@ public class WeightBuffRule extends DC_BuffRule {
     public static final String FORMULA = StringMaster.getValueRef(KEYS.SOURCE,
      PARAMS.C_CARRYING_WEIGHT)
      + "-" + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.CARRYING_CAPACITY);
-    public static final String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Immobilized.getName(), // TODO
-     MetaEnums.STD_BUFF_NAMES.Overburdened.getName(), MetaEnums.STD_BUFF_NAMES.Encumbered.getName(),};
+    public static final String[] buffNames = {MetaEnums.STD_BUFF_NAME.Immobilized.getName(), // TODO
+     MetaEnums.STD_BUFF_NAME.Overburdened.getName(), MetaEnums.STD_BUFF_NAME.Encumbered.getName(),};
     public static final String[] formulas = {getCarryingCapacity() + "*2",
      getCarryingCapacity() + "*3/2", getCarryingCapacity(),};
     private static final String PARAMETERS_MODIFIED_1 =
-     ContainerUtils.constructStringContainer(Arrays.asList(ValuePages.PENALTIES_MOVE), StringMaster.AND_SEPARATOR);
+     ContainerUtils.constructStringContainer(Arrays.asList(ValuePages.PENALTIES_MOVE), Strings.VERTICAL_BAR);
     private static final String PARAMETERS_MODIFIED_2 =
-     ContainerUtils.constructStringContainer(Arrays.asList(ValuePages.PENALTIES_MAIN), StringMaster.AND_SEPARATOR);
+     ContainerUtils.constructStringContainer(Arrays.asList(ValuePages.PENALTIES_MAIN), Strings.VERTICAL_BAR);
 
 
     public WeightBuffRule(GenericGame game) {
@@ -98,7 +100,7 @@ public class WeightBuffRule extends DC_BuffRule {
 
     @Override
     protected COMBAT_RULES getCombatRuleEnum() {
-        return COMBAT_RULES.WEIGHT;
+        return RuleEnums.COMBAT_RULES.WEIGHT;
     }
 
 }

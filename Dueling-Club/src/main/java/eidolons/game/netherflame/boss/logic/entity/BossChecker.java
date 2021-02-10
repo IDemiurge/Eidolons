@@ -2,6 +2,7 @@ package eidolons.game.netherflame.boss.logic.entity;
 
 import eidolons.entity.handlers.bf.unit.UnitChecker;
 import eidolons.entity.obj.unit.Unit;
+import main.content.enums.entity.UnitEnums;
 
 public class BossChecker extends UnitChecker {
     public BossChecker(BossUnit unit, BossMaster bossMaster) {
@@ -39,7 +40,7 @@ public class BossChecker extends UnitChecker {
     }
 
     @Override
-    public boolean canMove() {
-        return false;
+    public boolean checkImmunity(UnitEnums.IMMUNITIES type) {
+        return super.checkImmunity(type);
     }
 }

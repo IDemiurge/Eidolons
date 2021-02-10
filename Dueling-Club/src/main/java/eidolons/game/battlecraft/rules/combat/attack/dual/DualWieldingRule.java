@@ -39,8 +39,8 @@ public class DualWieldingRule {
     private static final G_PROPS PROP = G_PROPS.ACTION_TAGS;
     // private static final String DEFAULT_STA_REDUCTION = "-25";
     // private static final String DEFAULT_AP_REDUCTION = "-33";
-    public static final String buffTypeNameOffHand = StringMaster.getWellFormattedString(MetaEnums.STD_BUFF_NAMES.Off_Hand_Cadence.name());
-    public static final String buffTypeNameMainHand = StringMaster.getWellFormattedString(MetaEnums.STD_BUFF_NAMES.Main_Hand_Cadence.name());
+    public static final String buffTypeNameOffHand = StringMaster.format(MetaEnums.STD_BUFF_NAME.Off_Hand_Cadence.name());
+    public static final String buffTypeNameMainHand = StringMaster.format(MetaEnums.STD_BUFF_NAME.Main_Hand_Cadence.name());
     private static final Formula DURATION = new Formula("1");
 
     private static boolean checkSingleWeaponCadence(Unit unit, DC_UnitAction action) {
@@ -62,12 +62,8 @@ public class DualWieldingRule {
             return false;
         }
 
-        if (buff.getRef().getObj(KEYS.WEAPON) == action.getRef().getObj(KEYS.WEAPON)) {
-            return false;
-        }
+        return buff.getRef().getObj(KEYS.WEAPON) != action.getRef().getObj(KEYS.WEAPON);
         // preCheck new weapon - ? Buff ref?
-
-        return true;
     }
 
     public static void checkDualAttackCadence(DC_UnitAction action, Unit unit) {
@@ -75,7 +71,8 @@ public class DualWieldingRule {
             return;
         }
         boolean singleCadence = checkSingleWeaponCadence(unit, action);
-        if (!UnitAnalyzer.checkDualWielding(unit) && !UnitAnalyzer.checkDualNaturalWeapons(unit)
+        boolean natural =isNaturalAllowed() && UnitAnalyzer.checkDualNaturalWeapons(unit) ;
+        if (!UnitAnalyzer.checkDualWielding(unit) && !natural
          && !singleCadence
             // || checkSingleCadence(action)
          ) {
@@ -126,7 +123,7 @@ public class DualWieldingRule {
             cadence = DC_Formulas.DEFAULT_CADENCE_AP_MOD + "";
         }
         ModifyValueEffect valueEffect = new ModifyValueEffect(
-         PARAMS.ATTACK_AP_PENALTY,
+         PARAMS.ATTACK_ATB_COST_MOD,
          MOD.MODIFY_BY_CONST, cadence);
 
         valueEffect.appendFormulaByMod(100 + weapon.getIntParam(PARAMS.CADENCE_BONUS));
@@ -136,7 +133,7 @@ public class DualWieldingRule {
             cadence = DC_Formulas.DEFAULT_CADENCE_STA_MOD + "";
         }
         valueEffect = new ModifyValueEffect(
-         PARAMS.ATTACK_STA_PENALTY,
+         PARAMS.ATTACK_TOUGHNESS_COST_MOD,
          MOD.MODIFY_BY_CONST, cadence);
         valueEffect.appendFormulaByMod(100 + weapon.getIntParam(PARAMS.CADENCE_BONUS));
 
@@ -191,8 +188,11 @@ public class DualWieldingRule {
         // TODO defense mod effect
     }
 
-    private static void addHeroBuff(Unit unit, Boolean offhand) {
+    private static boolean isNaturalAllowed() {
+        return false;
+    }
 
+    private static void addHeroBuff(Unit unit, Boolean offhand) {
 
     }
 

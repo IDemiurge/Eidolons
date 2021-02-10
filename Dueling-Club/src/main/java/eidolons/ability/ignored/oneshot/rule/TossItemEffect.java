@@ -22,8 +22,6 @@ import main.system.math.PositionMaster;
 
 public class TossItemEffect extends DC_Effect implements OneshotEffect {
 
-    private Condition conditions;
-
     public TossItemEffect() {
 
     }
@@ -38,11 +36,11 @@ public class TossItemEffect extends DC_Effect implements OneshotEffect {
     public boolean applyThis() {
         Unit source = (Unit) ref.getSourceObj();
         Ref REF = ref.getCopy();
-        conditions = new OrConditions(
-         DC_ConditionMaster
-          .getSelectiveTargetingTemplateConditions(SELECTIVE_TARGETING_TEMPLATES.MY_ITEM),
-         DC_ConditionMaster
-          .getSelectiveTargetingTemplateConditions(SELECTIVE_TARGETING_TEMPLATES.MY_WEAPON));
+        Condition conditions = new OrConditions(
+                DC_ConditionMaster
+                        .getSelectiveTargetingTemplateConditions(SELECTIVE_TARGETING_TEMPLATES.MY_ITEM),
+                DC_ConditionMaster
+                        .getSelectiveTargetingTemplateConditions(SELECTIVE_TARGETING_TEMPLATES.MY_WEAPON));
         if (!new SelectiveTargeting(conditions).select(REF)) {
             ref.getActive().setCancelled(true);
             return false;
@@ -86,7 +84,6 @@ public class TossItemEffect extends DC_Effect implements OneshotEffect {
 
         }
         // ref.getObj(KEYS.ITEM);
-        unit.modifyParameter(PARAMS.C_N_OF_ACTIONS, -1);
         return true;
     }
 

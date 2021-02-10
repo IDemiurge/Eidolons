@@ -13,7 +13,7 @@ import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH_PADDING;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SmartTextButton;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
@@ -21,7 +21,8 @@ import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
-import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
+import main.system.sound.AudioEnums;
+import main.system.sound.AudioEnums.BUTTON_SOUND_MAP;
 
 /**
  * Created by JustMe on 11/29/2017.
@@ -36,7 +37,7 @@ public class ItemInfoPanel extends TablePanelX implements SelectableItemDisplaye
     protected FadeImageContainer fullsizePortrait;
     protected Label title;
     protected SelectableItemData item;
-    protected SmartButton startButton;
+    protected SmartTextButton startButton;
 
     public ItemInfoPanel(SelectableItemData item) {
         //bg
@@ -75,8 +76,8 @@ public class ItemInfoPanel extends TablePanelX implements SelectableItemDisplaye
             @Override
             protected float getDefaultWidth() {
 
-//                 if (getDescriptionWidth()!=0)
-//                return getDescriptionWidth();
+                //                 if (getDescriptionWidth()!=0)
+                //                return getDescriptionWidth();
                 return 450;
             }
 
@@ -85,7 +86,7 @@ public class ItemInfoPanel extends TablePanelX implements SelectableItemDisplaye
         title = new Label(getDefaultTitle(), StyleHolder.getSizedLabelStyle(FONT.METAMORPH, 30));
         preview = new FadeImageContainer((getEmptyImagePath()), 1.4f);
         fullsizePortrait =
-         new FadeImageContainer(getEmptyImagePathFullSize(), 1.4f);
+                new FadeImageContainer(getEmptyImagePathFullSize(), 1.4f);
 
     }
 
@@ -103,17 +104,17 @@ public class ItemInfoPanel extends TablePanelX implements SelectableItemDisplaye
         if (startButton != null) {
             try {
                 startButton.setPosition(getCell(fullsizePortrait).getActorX(),
-                 NINE_PATCH_PADDING.SAURON.bottom);
+                        NINE_PATCH_PADDING.SAURON.bottom);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
-        float offset=GDX.height(70);
-        if (GdxMaster.getHeight()>1000){
-            offset= 20;
+        float offset = GDX.height(70);
+        if (GdxMaster.getHeight() > 1000) {
+            offset = 20;
         }
         description.setY(description.getY() + offset);
-//        description.setHeight(getDescriptionHeight());
+        //        description.setHeight(getDescriptionHeight());
     }
 
     protected float getDescriptionHeight() {
@@ -127,16 +128,23 @@ public class ItemInfoPanel extends TablePanelX implements SelectableItemDisplaye
     }
 
     protected void initBg() {
-        if (isNinepatch())
-            //            setBackground(new NinePatchDrawable(NinePatchFactory.getInfoPanel()));
+        int w = (int) GdxMaster.adjustWidth(WIDTH + 30);
+        int h = (int) GdxMaster.adjustHeight(HEIGHT);
+        if (isNinepatch()) {
+            if (TiledNinePatchGenerator.isUseDynamicDrawable()) {
+                setBackground(TiledNinePatchGenerator.getDrawable(NINE_PATCH.SAURON, BACKGROUND_NINE_PATCH.PATTERN,
+                        w, h));
+            } else {
             setBackground(new TextureRegionDrawable(new TextureRegion(
-             TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.SAURON,
-              BACKGROUND_NINE_PATCH.PATTERN,
-              (int) GdxMaster.adjustWidth(WIDTH + 30)
-              , (int) GdxMaster.adjustHeight(HEIGHT)))));
-        else {
+                    TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.SAURON,
+                            BACKGROUND_NINE_PATCH.PATTERN, w, h))));
+            }
+        } else {
             setBackground(TextureCache.getOrCreateTextureRegionDrawable(getBackgroundPath()));
         }
+        setWidth(w);
+        setHeight(h);
+        setFixedSize(true);
         //
     }
 
@@ -168,12 +176,12 @@ public class ItemInfoPanel extends TablePanelX implements SelectableItemDisplaye
 
     protected String getBackgroundPath() {
         return StrPathBuilder.build(
-         "ui",
-         "components",
-         "dc",
-         "dialog",
-         "log",
-         "background.png");
+                "ui",
+                "components",
+                "dc",
+                "dialog",
+                "log",
+                "background.png");
         //        return VISUALS.MAIN.getImgPath();
     }
 
@@ -237,15 +245,15 @@ public class ItemInfoPanel extends TablePanelX implements SelectableItemDisplaye
     }
 
     public void initStartButton(String text, Runnable runnable) {
-        addActor(startButton = new SmartButton(text, STD_BUTTON.MENU, () -> runnable.run()) {
+        addActor(startButton = new SmartTextButton(text, STD_BUTTON.MENU, runnable::run) {
             @Override
-            protected BUTTON_SOUND_MAP getSoundMap() {
-                return BUTTON_SOUND_MAP.ENTER;
+            public BUTTON_SOUND_MAP getSoundMap() {
+                return AudioEnums.BUTTON_SOUND_MAP.ENTER;
             }
         });
 
         startButton.setPosition(preview.getX(),
-         NINE_PATCH_PADDING.SAURON.bottom);
+                NINE_PATCH_PADDING.SAURON.bottom);
     }
 
     @Override

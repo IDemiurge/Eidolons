@@ -15,12 +15,13 @@ import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.PathUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 4/29/2018.
  */
 public class TiledNinePatchGenerator implements ApplicationListener {
-    private static VISUALS[] replaced_sauron = {
+    private static final VISUALS[] replaced_sauron = {
      VISUALS.INFO_PANEL,
      VISUALS.INFO_PANEL_HC,
      VISUALS.END_PANEL,
@@ -110,7 +111,7 @@ public class TiledNinePatchGenerator implements ApplicationListener {
          backgroundNinePatch.name().toLowerCase() + " " +
          maxWidth + " " + maxHeight + ".png";
     }
-
+//Gdx revamp - try to pass a batch and just draw, maybe make a Drawable class like this - worthy of libgdx contrib!
     public static Texture generate(
 
      Texture top,
@@ -135,7 +136,7 @@ public class TiledNinePatchGenerator implements ApplicationListener {
      String path,
      boolean preventOverlapping,
      boolean fillWithBlack) {
-        boolean write = CoreEngine.isIDE() && !CoreEngine.isIggDemo();
+        boolean write = Flags.isIDE() && !Flags.isIggDemo();
 
         FileHandle handle = GDX.file(
          PathFinder.getImagePath() +
@@ -216,7 +217,74 @@ public class TiledNinePatchGenerator implements ApplicationListener {
             return new Texture(pixmap);
         }
     }
+/////////////////////////
 
+    public static TiledDrawableX getDrawable(
+            TextureRegion top,
+            TextureRegion bottom,
+            TextureRegion right,
+            TextureRegion left,
+            TextureRegion corner,
+            Texture background,
+            int maxWidth, int maxHeight,
+            int cornerOffsetX1,
+            int cornerOffsetY1,
+            int cornerOffsetY3,
+            boolean fillWithBlack) {
+        return getDrawable(top, bottom, right, left,
+                corner,
+                corner,
+                corner,
+                corner,
+                background, maxWidth, maxHeight, cornerOffsetX1, cornerOffsetY1, cornerOffsetY3, fillWithBlack);
+    }
+    public static TiledDrawableX getDrawable(
+            TextureRegion top,
+            TextureRegion bottom,
+            TextureRegion right,
+            TextureRegion left,
+            TextureRegion corner1,
+            TextureRegion corner2,
+            TextureRegion corner3,
+            TextureRegion corner4,
+
+            Texture background,
+            int maxWidth, int maxHeight,
+            int cornerOffsetX1,
+            int cornerOffsetY1,
+            int cornerOffsetY3,
+            boolean fillWithBlack) {
+
+        if (bottom == null  ) {
+            bottom = top;
+        }
+        if (left == null  )
+            left = right;
+
+        int timesL = maxHeight / left.getRegionHeight();
+        int timesR = maxHeight / right.getRegionHeight();
+        int timesT = maxWidth / top.getRegionWidth();
+        int timesB = maxWidth / bottom.getRegionWidth();
+
+        int w = Math.max(timesB * bottom.getRegionWidth(), timesT * top.getRegionWidth());
+        int h = Math.max(timesL * left.getRegionHeight(), timesR * right.getRegionHeight());
+        w += -cornerOffsetX1 * 2;
+        h += cornerOffsetY1;
+        h += -cornerOffsetY3;
+
+        int offsetX = -cornerOffsetX1 / 2;
+        int offsetY = cornerOffsetY1 / 2;
+
+        return new TiledDrawableX(w, h, background, fillWithBlack,
+                corner1,
+                corner2,
+                corner3,
+                corner4,
+                bottom, left, right, top,
+                offsetX,offsetY
+                );
+
+    }
     public static TextureRegionDrawable getOrCreateNinePatchDrawable(NINE_PATCH ninePatch,
                                                                      BACKGROUND_NINE_PATCH background,
                                                                      int w, int h) {
@@ -237,10 +305,40 @@ public class TiledNinePatchGenerator implements ApplicationListener {
          fillWithBlack);
     }
 
+    public static TiledDrawableX getDrawable(NINE_PATCH ninePatch,
+                                                BACKGROUND_NINE_PATCH background,
+                                                int w, int h) {
+        String partPath = StrPathBuilder.build(ninePatch.path,
+                "parts") + PathUtils.getPathSeparator();
+
+        return getDrawable(
+                TextureCache.getOrCreateR(partPath + "top.png"),
+                TextureCache.getOrCreateR(partPath + "bottom.png"),
+                TextureCache.getOrCreateR(partPath + "right.png"),
+                TextureCache.getOrCreateR(partPath + "left.png"),
+
+                TextureCache.getOrCreateR(partPath + "corner1.png"),
+                TextureCache.getOrCreateR(partPath + "corner2.png"),
+                TextureCache.getOrCreateR(partPath + "corner3.png"),
+                TextureCache.getOrCreateR(partPath + "corner4.png"),
+                background == BACKGROUND_NINE_PATCH.TRANSPARENT
+                        ? null
+                        : TextureCache.getOrCreate(background.path),
+w, h,
+                ninePatch.cornerOffsetX1,
+                ninePatch.cornerOffsetY1,
+                ninePatch.cornerOffsetY3,
+                false
+        );
+    }
     public static Texture getOrCreateNinePatch(NINE_PATCH ninePatch,
-                                               BACKGROUND_NINE_PATCH background,
-                                               int w, int h) {
+                                                BACKGROUND_NINE_PATCH background,
+                                                int w, int h) {
         return getOrCreateNinePatch(ninePatch, background, w, h, false);
+    }
+
+    public static boolean isUseDynamicDrawable() {
+        return true;
     }
 
     @Override
@@ -293,6 +391,7 @@ public class TiledNinePatchGenerator implements ApplicationListener {
         DEMIURGE,
         LIGHT,
         HL,
+        ZARK,
         VIGNETTE {
             public boolean isPreventOverlapping() {
                 return true;

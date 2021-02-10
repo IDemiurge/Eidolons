@@ -5,10 +5,9 @@ import eidolons.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import eidolons.libgdx.anims.ANIM_MODS.CONTINUOUS_ANIM_MODS;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
-import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
+import eidolons.libgdx.anims.AnimEnums;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
-import eidolons.libgdx.texture.TextureCache;
-import main.content.enums.system.MetaEnums.STD_BUFF_NAMES;
+import main.content.enums.system.MetaEnums.STD_BUFF_NAME;
 import main.data.filesys.PathFinder;
 import main.entity.obj.BuffObj;
 import main.game.bf.Coordinates;
@@ -31,12 +30,12 @@ public class BuffAnim extends ActionAnim {
         super(buff.getActive(), getBuffAnimData(buff));
         this.buff = buff;
         mods = new ANIM_MOD[]{
-         CONTINUOUS_ANIM_MODS.PENDULUM_ALPHA
+                CONTINUOUS_ANIM_MODS.PENDULUM_ALPHA
         };
-        part = ANIM_PART.AFTEREFFECT;
-        textureSupplier = () -> TextureCache.getOrCreate(buff.getImagePath());
+        part = AnimEnums.ANIM_PART.AFTEREFFECT;
+        // textureSupplier = () -> TextureCache.getOrCreate(buff.getImagePath());
 
-//setPlayContinuous(buff.checkBool());
+        //setPlayContinuous(buff.checkBool());
         setPlayOnHover(true);
         initDuration();
 
@@ -44,25 +43,25 @@ public class BuffAnim extends ActionAnim {
 
     private static AnimData getBuffAnimData(BuffObj buff) {
         AnimData data = new AnimData();
-//    buff.getVar
+        //    buff.getVar
         if (buff.getName().equals("Channeling")) {
-//rotating!
+            //rotating!
         }
         /*
         ablaze, frozen, bleeding, wounded, charmed,
          */
-        STD_BUFF_NAMES name =
-         new EnumMaster<STD_BUFF_NAMES>().retrieveEnumConst(STD_BUFF_NAMES.class, buff.getName());
+        STD_BUFF_NAME name =
+                new EnumMaster<STD_BUFF_NAME>().retrieveEnumConst(STD_BUFF_NAME.class, buff.getName());
         if (name == null) {
             return data;
         }
         String sfx = PathFinder.getVfxPath() + getStdSfx(name);
         String sprites = PathFinder.getSpritesPathFull() + "buffs/razorsharp 20 1.png";
-//        String std = PathFinder.getSpritesPathFull() + getStdSprites(name);
-//        if (FileManager.isFile(std))
-//        sprites=std+";";
-//        else
-//        sprites  =   buff.getImagePath()+TextureManager.SINGLE_SPRITE+";";;
+        //        String std = PathFinder.getSpritesPathFull() + getStdSprites(name);
+        //        if (FileManager.isFile(std))
+        //        sprites=std+";";
+        //        else
+        //        sprites  =   buff.getImagePath()+TextureManager.SINGLE_SPRITE+";";;
 
         if (sfx.split(";").length > 1 || FileManager.isFile(sfx)) {
             data.setValue(ANIM_VALUES.PARTICLE_EFFECTS, sfx);
@@ -71,11 +70,11 @@ public class BuffAnim extends ActionAnim {
         return data;
     }
 
-    private static String getStdSprites(STD_BUFF_NAMES name) {
+    private static String getStdSprites(STD_BUFF_NAME name) {
         return "buffs/" + name.getName() + ".png";
     }
 
-    private static String getStdSfx(STD_BUFF_NAMES name) {
+    private static String getStdSfx(STD_BUFF_NAME name) {
         switch (name) {
 
             case Channeling:

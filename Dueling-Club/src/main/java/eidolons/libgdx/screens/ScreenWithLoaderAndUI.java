@@ -1,6 +1,6 @@
 package eidolons.libgdx.screens;
 
-import eidolons.game.netherflame.igg.story.brief.IggBriefScreen;
+import eidolons.game.netherflame.main.story.brief.IggBriefScreen;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.gui.menu.selection.manual.ManualPanel;
 import eidolons.libgdx.stage.UiStage;
@@ -32,6 +32,7 @@ public abstract class ScreenWithLoaderAndUI extends ScreenWithLoader {
         loadingStage.draw();
         overlayStage.act(delta);
         overlayStage.draw();
+        loadWaited(delta);
     }
 
     @Override

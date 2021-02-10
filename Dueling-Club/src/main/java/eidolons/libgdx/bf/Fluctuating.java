@@ -7,7 +7,7 @@ import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.utils.GdxTimeMaster;
 import main.content.enums.GenericEnums;
 import main.system.auxiliary.RandomWizard;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.MathMaster;
 
 /**
@@ -28,12 +28,13 @@ public class Fluctuating extends GroupX {
     protected float fluctuatingAlphaRandomness;
     protected float fluctuatingAlphaMin;
     protected float fluctuatingAlphaMax;
-    GenericEnums.ALPHA_TEMPLATE alphaTemplate;
-    private int fluctuatingAlphaPeriod;
+    protected float fluctuatingAlphaMinBase;
+    protected float fluctuatingAlphaMaxBase;
+    protected GenericEnums.ALPHA_TEMPLATE alphaTemplate;
     public static int fluctuatingAlphaPeriodGlobal = 1;
 
     static {
-        if (CoreEngine.isMainGame()) {
+        if (Flags.isMainGame()) {
             fluctuatingAlphaPeriodGlobal =1;
 //            OptionsMaster.getGraphicsOptions().
 //                    getIntValue(GraphicsOptions.GRAPHIC_OPTION.PERFORMANCE_BOOST) / 10 + 1;
@@ -53,6 +54,8 @@ public class Fluctuating extends GroupX {
         this.alphaStep = alphaTemplate.alphaStep;
         this.fluctuatingAlphaMax = alphaTemplate.max;
         this.fluctuatingAlphaMin = alphaTemplate.min;
+        this.fluctuatingAlphaMaxBase = alphaTemplate.max;
+        this.fluctuatingAlphaMinBase = alphaTemplate.min;
         this.fluctuatingAlphaPauseDuration = alphaTemplate.fluctuatingAlphaPauseDuration;
         this.fluctuatingFullAlphaDuration = alphaTemplate.fluctuatingFullAlphaDuration;
         this.fluctuatingAlphaRandomness = alphaTemplate.fluctuatingAlphaRandomness;
@@ -131,11 +134,19 @@ public class Fluctuating extends GroupX {
             alphaPause = getFluctuatingAlphaPauseDuration() * (
                     1 + (RandomWizard.getRandomFloatBetween(
                             -fluctuatingAlphaRandomness, fluctuatingAlphaRandomness)) / 2);
+            //TODO gotta be a way to do this without flickers...
+            // fluctuatingAlphaMax = MathMaster.minMax((fluctuatingAlphaMaxBase+randomizeAlpha(fluctuatingAlphaMaxBase))/2,
+            //         fluctuatingAlphaMin, 1);
+
         } else if (fluctuatingAlpha >= getAlphaFluctuationMax()) {
             alphaGrowing = false;
             alphaPause = getFluctuatingFullAlphaDuration() * (
                     1 + (RandomWizard.getRandomFloatBetween(
                             -fluctuatingAlphaRandomness, fluctuatingAlphaRandomness)) / 2);
+
+            // fluctuatingAlphaMin = MathMaster.minMax((fluctuatingAlphaMin+randomizeAlpha(fluctuatingAlphaMinBase))/2,
+            //         0, fluctuatingAlphaMax);
+
         }
 
         if (!alphaGrowing)
@@ -223,7 +234,6 @@ public class Fluctuating extends GroupX {
     }
 
     public void setFluctuatingAlphaPeriod(int fluctuatingAlphaPeriod) {
-        this.fluctuatingAlphaPeriod = fluctuatingAlphaPeriod;
     }
 
 }

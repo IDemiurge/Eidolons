@@ -2,132 +2,149 @@ package eidolons.libgdx.gui.panels.dc.actionpanel;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
-import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SymbolButton;
+import eidolons.libgdx.gui.panels.dc.actionpanel.bar.BodyParamsBar;
+import eidolons.libgdx.gui.panels.dc.actionpanel.bar.SoulParamsBar;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.ActiveQuickSlotsDataSource;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import eidolons.libgdx.gui.panels.dc.actionpanel.facing.FacingPanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.weapon.QuickWeaponPanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.weapon.WeaponDataSource;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
-import main.data.filesys.PathFinder;
+import eidolons.libgdx.texture.Textures;
+import main.content.enums.entity.ActionEnums;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.StrPathBuilder;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import static main.system.GuiEventType.ACTION_PANEL_UPDATE;
+import static main.system.auxiliary.log.LogMaster.log;
 
 public class ActionPanel extends GroupX {
     public final static int IMAGE_SIZE = 60;
+
     public static final float EMPTY_OFFSET = 110;
-    private static final String BACKGROUND_PATH = StrPathBuilder.build(PathFinder.getComponentsPath(), "dc", "bottom panel", "background.png");
-    private static final String BACKGROUND_PATH_ALT = StrPathBuilder.build(PathFinder.getComponentsPath(), "dc", "bottom panel", "background alt.png");
     private static final float SPELL_OFFSET_Y = -6;
-    private static final float OFFSET_X = 70 + EMPTY_OFFSET;
+    private static final float OFFSET_X = 100 + EMPTY_OFFSET;
     private static final float QUICK_SLOTS_OFFSET_X = 20;
-    private static final float SPELL_OFFSET_X = 40;
-    private static final float ORB_OFFSET_X = OFFSET_X + 76;
-    private static final String ORB_OVERLAY = StrPathBuilder.build(PathFinder.getComponentsPath(), "dc", "bottom panel", "overlay.png");
-    private static final String BOTTOM_OVERLAY = StrPathBuilder.build(PathFinder.getComponentsPath(), "dc", "bottom panel", "bottom overlay.png");
-    private final ImageContainer orbOverlay;
+    private static final float SPELL_OFFSET_X = 70;
+    private static final float PUZZLE_OFFSET_Y =  -88;
+    private final Vector2 spellsPos = new Vector2();
+
     private final ImageContainer bottomOverlay;
-    private final Vector2 spellsPos;
-    protected OrbsPanel leftOrbPanel;
-    protected OrbsPanel rigthOrbPanel;
     protected QuickSlotPanel quickSlotPanel;
     protected ModeActionsPanel modeActionsPanel;
     protected SpellPanel spellPanel;
-    protected BuffPanelSimple buffPanelSimple;
     protected FadeImageContainer background;
     QuickWeaponPanel mainHand;
     QuickWeaponPanel offhand;
     FacingPanel facingPanel;
 
-    SymbolButton spellbookBtn = new SymbolButton(STD_BUTTON.SPELLBOOK, () -> showSpellbook());
-    SymbolButton invBtn = new SymbolButton(STD_BUTTON.INV, () -> showInventory());
-    private boolean altBg;
+    SymbolButton spellbookBtn = new SymbolButton(STD_BUTTON.SPELLBOOK, this::showSpellbook);
+    SymbolButton invBtn = new SymbolButton(STD_BUTTON.INV, this::showInventory);
+
+    protected BuffPanelSimple buffPanelBody;
+    protected BuffPanelSimple buffPanelSoul;
+
+    private final SoulParamsBar soulParamsBar;
+    private final BodyParamsBar bodyParamsBar;
+
     private Float defaultX;
 
+    ExtraPtsComp movePts = new ExtraPtsComp(false);
+    ExtraPtsComp atkPts = new ExtraPtsComp(true);
+
     public ActionPanel() {
-        background = new FadeImageContainer((BACKGROUND_PATH));
-//        background.pack();
+        addActor(background = new FadeImageContainer((Textures.BOTTOM_PANEL_BG)));
+        //        background.pack();
         setSize(background.getWidth(), background.getHeight());
-        addActor(background);
-        quickSlotPanel = new QuickSlotPanel(IMAGE_SIZE);
+        addActor(quickSlotPanel = new QuickSlotPanel(IMAGE_SIZE));
 
-        quickSlotPanel.setPosition(OFFSET_X + QUICK_SLOTS_OFFSET_X, SPELL_OFFSET_Y);
-        addActor(quickSlotPanel);
-
-        final float actionOffset = OFFSET_X + (IMAGE_SIZE * 6) + 5;
         addActor(modeActionsPanel = new ModeActionsPanel(IMAGE_SIZE));
-        modeActionsPanel.setPosition(actionOffset, 0);
 
+        addActor(spellPanel = new SpellPanel(IMAGE_SIZE));
 
-        spellPanel = new SpellPanel(IMAGE_SIZE);
-        final float spellOffset = SPELL_OFFSET_X + actionOffset + (IMAGE_SIZE * 6) + 5;
-        spellPanel.setPosition(spellOffset, SPELL_OFFSET_Y);
-        spellsPos = new Vector2(spellPanel.getX(), spellPanel.getY());
-        addActor(spellPanel);
+        /////////////ADDITIONAL
 
+        soulParamsBar = new SoulParamsBar(Eidolons::getMainHero);
+        bodyParamsBar = new BodyParamsBar(Eidolons::getMainHero);
 
-        leftOrbPanel = new OrbsPanel(PARAMS.TOUGHNESS, PARAMS.ENDURANCE, PARAMS.STAMINA);
-        leftOrbPanel.setPosition(ORB_OFFSET_X, IMAGE_SIZE);
-        addActor(leftOrbPanel);
-
-        rigthOrbPanel = new OrbsPanel(PARAMS.MORALE, PARAMS.ESSENCE, PARAMS.FOCUS);
-        rigthOrbPanel.setPosition(spellOffset - 11
-                , IMAGE_SIZE);
-        addActor(rigthOrbPanel);
-
+        addActor(bodyParamsBar);
+        addActor(soulParamsBar);
         addActor(facingPanel = new FacingPanel());
+
+        addActor(movePts);
+        addActor(atkPts);
+
         addActor(mainHand = new QuickWeaponPanel(false));
         addActor(offhand = new QuickWeaponPanel(true));
 
+        addActor(bottomOverlay = new ImageContainer(Textures.BOTTOM_OVERLAY));
 
-        mainHand.setPosition(rigthOrbPanel.getX() - 146,
-                leftOrbPanel.getY() + 12);
-        offhand.setPosition(leftOrbPanel.getX() + 272,
-                leftOrbPanel.getY() + 12);
+        buffPanelBody = new BuffPanelSimple(false);
+        buffPanelSoul = new BuffPanelSimple(true);
 
-        facingPanel.setPosition((mainHand.getX() + offhand.getX()) / 2 + 7,
-                leftOrbPanel.getY() + 32);
-
-        addActor(orbOverlay = new ImageContainer(ORB_OVERLAY));
-        orbOverlay.setPosition(EMPTY_OFFSET + 136, 56);
-
-        addActor(bottomOverlay = new ImageContainer(BOTTOM_OVERLAY));
-        bottomOverlay.setPosition(EMPTY_OFFSET + 80, -12);
-
-        buffPanelSimple = new BuffPanelSimple();
-        buffPanelSimple.setPosition(actionOffset + 88, IMAGE_SIZE + 12);
-        addActor(buffPanelSimple);
+        addActor(buffPanelBody);
+        addActor(buffPanelSoul);
 
         addActor(spellbookBtn);
         addActor(invBtn);
-        spellbookBtn.setPosition(modeActionsPanel.getX() + IMAGE_SIZE * 6 - 12,
-                2);
-        invBtn.setPosition(modeActionsPanel.getX() - 58,
-                2);
 
         setY(-IMAGE_SIZE);
         bindEvents();
         initListeners();
 
         initResolutionScaling();
+        resetPositions();
+    }
 
+    public void resetPositions() {
+        quickSlotPanel.setPosition(-32 + OFFSET_X + QUICK_SLOTS_OFFSET_X, SPELL_OFFSET_Y);
+        final float actionOffset =17+ OFFSET_X + (IMAGE_SIZE * 6) + 5;
+        modeActionsPanel.setPosition(-28+26+actionOffset, 0);
+        final float spellOffset = SPELL_OFFSET_X-60 + actionOffset + (IMAGE_SIZE * 6)- 35;
+        spellPanel.setPosition(spellOffset, SPELL_OFFSET_Y);
+        spellsPos.x = spellOffset;
+        spellsPos.y = SPELL_OFFSET_Y;
+        bottomOverlay.setPosition(EMPTY_OFFSET + 100, -12);
+
+        float x = quickSlotPanel.getX();
+
+        bodyParamsBar.setPosition(x - 37, 47);
+        buffPanelBody.setPosition(bodyParamsBar.getX() + 20, IMAGE_SIZE + 40);
+
+        x = modeActionsPanel.getX()-34;
+        mainHand.setPosition(x - 14,
+                bodyParamsBar.getY() + 22);
+        offhand.setPosition(mainHand.getX() + 235 + 146- 112,
+                mainHand.getY()  );
+
+        facingPanel.setPosition((mainHand.getX() + offhand.getX()) / 2  ,
+                bodyParamsBar.getY() + 52);
+
+
+        x = spellPanel.getX();
+        soulParamsBar.setPosition(x +11
+                , bodyParamsBar.getY());
+        buffPanelSoul.setPosition(soulParamsBar.getX() + 65, IMAGE_SIZE + 40);
+
+        invBtn.setPosition(bodyParamsBar.getX() + bodyParamsBar.getWidth() / 2 + 79,
+                getHeight() - 90);
+        spellbookBtn.setPosition(soulParamsBar.getX() + soulParamsBar.getWidth() / 2 + 89,
+                invBtn.getY());
+
+        atkPts.setPosition(spellPanel.getX()-12, 50);
+        movePts.setPosition(bodyParamsBar.getX() + 337, 54);
     }
 
     public ActionPanel(int x, int y) {
@@ -169,7 +186,7 @@ public class ActionPanel extends GroupX {
 
         if (DC_Game.game != null)
             if (DC_Game.game.isStarted())
-                Eidolons.activateMainHeroAction(DC_ActionManager.USE_INVENTORY);
+                Eidolons.activateMainHeroAction(ActionEnums.USE_INVENTORY);
     }
 
     @Override
@@ -188,11 +205,17 @@ public class ActionPanel extends GroupX {
             ActionMaster.addMoveToAction(this, defaultX, getY(), 1.4f);
         });
 
-        GuiEventManager.bind(GuiEventType.PUZZLE_STARTED, p -> {
-            ActionMaster.addMoveToAction(this, getX(), -64, 1.4f);
+        GuiEventManager.bind(GuiEventType.MINIMIZE_UI_ON, p -> {
+            ActionMaster.addMoveToAction(this, getX(), PUZZLE_OFFSET_Y, 1.4f);
+            ActionMaster.addAfter(this, ()-> setHidden(true));
+            soulParamsBar.fadeOut();
+            bodyParamsBar.fadeOut();
         });
-        GuiEventManager.bind(GuiEventType.PUZZLE_FINISHED, p -> {
+        GuiEventManager.bind(GuiEventType.MINIMIZE_UI_OFF, p -> {
             ActionMaster.addMoveToAction(this, getX(), 0, 1.4f);
+            ActionMaster.addAfter(this, ()-> setHidden(false));
+            soulParamsBar.fadeIn();
+            bodyParamsBar.fadeIn();
         });
 
         GuiEventManager.bind(GuiEventType.ACTION_HOVERED_OFF, p -> {
@@ -204,6 +227,9 @@ public class ActionPanel extends GroupX {
         GuiEventManager.bind(GuiEventType.UPDATE_MAIN_HERO, p -> {
             Unit hero = (Unit) p.get();
             // dirty flag?
+            if (hero == null) {
+                hero = Eidolons.getMainHero();
+            }
             if (hero.isDead()) {
                 return;
             }
@@ -216,45 +242,45 @@ public class ActionPanel extends GroupX {
                     new WeaponDataSource(hero.getOffhandNaturalWeapon()));
             offhand.setUserObject(pair);
 
-            GuiEventManager.trigger(ACTION_PANEL_UPDATE,
-                    new PanelActionsDataSource(hero));
+            updatePanel();
 
         });
-    }
-
-    private void nullifyUi() {
-
     }
 
     protected void initListeners() {
-        GuiEventManager.bind(ACTION_PANEL_UPDATE, obj -> {
-            final ActiveQuickSlotsDataSource source = (ActiveQuickSlotsDataSource) obj.get();
-            if (source != null) {
-                ActionValueContainer.setDarkened(false);
-                if (getY() < 0) {
-                    if (isMovedDownOnEnemyTurn())
-                        ActionMaster.addMoveToAction(this, getX(), 0, 1);
-                    //  ActorMaster.addFadeInOrOut(leftOrbPanel, 1);
-                    //    ActorMaster.addFadeInOrOut(rigthOrbPanel, 1);
-                }
+        GuiEventManager.bind(ACTION_PANEL_UPDATE, obj -> updatePanel());
+    }
 
-
-                quickSlotPanel.setUserObject(source);
-                modeActionsPanel.setUserObject(source);
-                spellPanel.setUserObject(source);
-                buffPanelSimple.setUserObject(source);
-                leftOrbPanel.setUserObject(source);
-                rigthOrbPanel.setUserObject(source);
-            } else {
-                //                setY(-IMAGE_SIZE);
+    public void updatePanel() {
+        final ActiveQuickSlotsDataSource source = new PanelActionsDataSource(Eidolons.getMainHero());
+        if (source != null) {
+            ActionContainer.setDarkened(false);
+            if (getY() < 0) {
                 if (isMovedDownOnEnemyTurn())
-                    ActionMaster.addMoveToAction(this, getX(), -IMAGE_SIZE, 1);
-
-                ActionValueContainer.setDarkened(true);
-                // ActorMaster.addFadeInOrOut(leftOrbPanel, 1);
-                // ActorMaster.addFadeInOrOut(rigthOrbPanel, 1);
+                    ActionMaster.addMoveToAction(this, getX(), 0, 1);
+                //  ActorMaster.addFadeInOrOut(bodyParamsBar, 1);
+                //    ActorMaster.addFadeInOrOut(soulParamsBar, 1);
             }
-        });
+
+            //Gdx revamp - action containers re-creation!
+            atkPts.setUserObject(source);
+            movePts.setUserObject(source);
+            quickSlotPanel.setUserObject(source);
+            modeActionsPanel.setUserObject(source);
+            spellPanel.setUserObject(source);
+            buffPanelBody.setUserObject(source);
+            buffPanelSoul.setUserObject(source);
+            bodyParamsBar.setUserObject(source);
+            soulParamsBar.setUserObject(source);
+        } else {
+            //                setY(-IMAGE_SIZE);
+            if (isMovedDownOnEnemyTurn())
+                ActionMaster.addMoveToAction(this, getX(), -IMAGE_SIZE, 1);
+
+            ActionContainer.setDarkened(true);
+            // ActorMaster.addFadeInOrOut(bodyParamsBar, 1);
+            // ActorMaster.addFadeInOrOut(soulParamsBar, 1);
+        }
     }
 
     private boolean isMovedDownOnEnemyTurn() {
@@ -264,63 +290,35 @@ public class ActionPanel extends GroupX {
     @Override
     public void act(float delta) {
         super.act(delta);
-        altBg = EidolonsGame.isAltControlPanel();
-        background.setImage(altBg ? BACKGROUND_PATH_ALT : BACKGROUND_PATH);
-        if (altBg) {
-//            if (!EidolonsGame.isSpellsEnabled()) {
-//                if (spellPanel.getColor().a == 1)
-//                    spellPanel.fadeOut();
-//            } else {
-//                if (!EidolonsGame.DUEL) {
-//                    spellPanel.setPosition(modeActionsPanel.getX(), modeActionsPanel.getY());
-//                }
-//            }
-//            if (modeActionsPanel.getColor().a == 1)
-//                modeActionsPanel.fadeOut();
+        resetPositions();
 
-            if (quickSlotPanel.getColor().a == 1)
-                quickSlotPanel.fadeOut();
-            if (orbOverlay.getColor().a == 1)
-                orbOverlay.fadeOut();
-            spellbookBtn.setVisible(false);
-            invBtn.setVisible(false);
-        } else {
-                spellPanel.setPosition(spellsPos.x , spellsPos.y);
+        // altBg = EidolonsGame.isAltControlPanel();
+        // background.setImage(altBg ? UiImages.BOTTOM_PANEL_BG_ALT : UiImages.BOTTOM_PANEL_BG);
+        // if (altBg) {
+        //     if (quickSlotPanel.getColor().a == 1)
+        //         quickSlotPanel.fadeOut();
+        //     spellbookBtn.setVisible(false);
+        //     invBtn.setVisible(false);
+        // } else
+            {
+            spellPanel.setPosition(spellsPos.x, spellsPos.y);
             if (spellPanel.getColor().a == 0)
                 spellPanel.fadeIn();
             if (modeActionsPanel.getColor().a == 0)
                 modeActionsPanel.fadeIn();
             if (quickSlotPanel.getColor().a == 0)
                 quickSlotPanel.fadeIn();
-            if (orbOverlay.getColor().a == 0)
-                orbOverlay.fadeIn();
 
             spellbookBtn.setVisible(true);
             invBtn.setVisible(true);
 
-            if (quickSlotPanel.isHovered() ||
+            //TODO while hovering, don't update!!!
+            BaseSlotPanel.hoveredAny = quickSlotPanel.isHovered() ||
                     spellPanel.isHovered() ||
-                    modeActionsPanel.isHovered()
-            ) {
-                //TODO while hovering, don't update!!!
-                BaseSlotPanel.hoveredAny = true;
-            } else {
-                BaseSlotPanel.hoveredAny = false;
-            }
+                    modeActionsPanel.isHovered();
         }
-        spellbookBtn.setPosition(modeActionsPanel.getX() + IMAGE_SIZE * 6 - 12,
-                2);
-        invBtn.setPosition(modeActionsPanel.getX() - 55,
-                2);
 
 
-        mainHand.setPosition(rigthOrbPanel.getX() - 146,
-                leftOrbPanel.getY() + 12);
-        offhand.setPosition(leftOrbPanel.getX() + 272,
-                leftOrbPanel.getY() + 12);
-
-        facingPanel.setPosition((mainHand.getX() + offhand.getX()) / 2 + 12,
-                leftOrbPanel.getY() + 32);
     }
 
     @Override
@@ -340,17 +338,25 @@ public class ActionPanel extends GroupX {
         return spellPanel;
     }
 
-    public BuffPanelSimple getBuffPanelSimple() {
-        return buffPanelSimple;
+    public BuffPanelSimple getBuffPanelBody() {
+        return buffPanelBody;
     }
 
     public void update() {
-        leftOrbPanel.setUpdateRequired(true);
-        rigthOrbPanel.setUpdateRequired(true);
+        bodyParamsBar.reset();
+        soulParamsBar.reset();
         initResolutionScaling();
     }
 
     public void setAltBg(boolean altBg) {
-        this.altBg = altBg;
     }
+
+    public void setHidden(boolean hidden) {
+        modeActionsPanel.setVisible(!hidden);
+        spellPanel.setVisible(!hidden);
+        modeActionsPanel.setVisible(!hidden);
+        log(1,"Action panel hidden: " +hidden);
+    }
+
+
 }

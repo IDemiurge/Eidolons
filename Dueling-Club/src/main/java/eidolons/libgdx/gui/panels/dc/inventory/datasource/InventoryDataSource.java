@@ -117,9 +117,7 @@ public class InventoryDataSource implements QuickSlotDataSource,
         List<DC_HeroItemObj> inv = applyFilter(items, filter);
         ListMaster.fillWithNullElements(inv
          , InventorySlotsPanel.SIZE);
-        List<InvItemActor> list =
-         getFactory().getList(inv, CELL_TYPE.INVENTORY);
-        return list;
+        return getFactory().getList(inv, CELL_TYPE.INVENTORY);
     }
 
     public Runnable getDoneHandler() {

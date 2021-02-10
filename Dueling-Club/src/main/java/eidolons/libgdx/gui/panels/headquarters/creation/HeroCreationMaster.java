@@ -38,12 +38,13 @@ public class HeroCreationMaster {
     private static final int INITIAL_LEVEL = 2;
     public static final boolean HUMAN_ONLY = true;
     static HcHeroModel model;
-    private static HERO_CREATION_ITEM currentItem=HERO_CREATION_ITEM.values()[0];
+    private static HERO_CREATION_ITEM currentItem = HERO_CREATION_ITEM.values()[0];
     private static HERO_CREATION_ITEM previousItem;
     private static boolean heroCreationInProgress;
-    private static Stack<HERO_CREATION_ITEM> screens =     new Stack<>() ;
-    private static Stack<HERO_CREATION_ITEM> backScreens =     new Stack<>() ;
-// what if a single STAGE contains 2 property changes? and we do the 2nd... 1st will be lost?!
+    private static Stack<HERO_CREATION_ITEM> screens = new Stack<>();
+    private static Stack<HERO_CREATION_ITEM> backScreens = new Stack<>();
+
+    // what if a single STAGE contains 2 property changes? and we do the 2nd... 1st will be lost?!
     // or we can overwrite ? that will pile up operations...
     // how will it work in stats?
     public static void modified(PROPERTY property, String value) {
@@ -53,7 +54,7 @@ public class HeroCreationMaster {
             else return;
         }
         HqDataMaster.operation(model,
-         HERO_OPERATION.SET_PROPERTY, property, value);
+                HERO_OPERATION.SET_PROPERTY, property, value);
 
         screens.add(currentItem);
         backScreens.clear();
@@ -76,8 +77,8 @@ public class HeroCreationMaster {
             return false;
         if (previousItem != null)
             return EnumMaster.getEnumConstIndex(HERO_CREATION_ITEM.class,
-             previousItem) > EnumMaster.getEnumConstIndex(HERO_CREATION_ITEM.class,
-             currentItem);
+                    previousItem) > EnumMaster.getEnumConstIndex(HERO_CREATION_ITEM.class,
+                    currentItem);
         return false;
     }
 
@@ -93,7 +94,7 @@ public class HeroCreationMaster {
 
     public static void modified(PARAMETER parameter, String value) {
         HqDataMaster.operation(model,
-         HERO_OPERATION.SET_PARAMETER, parameter, value);
+                HERO_OPERATION.SET_PARAMETER, parameter, value);
     }
 
     public static void export() {
@@ -101,19 +102,20 @@ public class HeroCreationMaster {
     }
 
     public static void cancel() {
-        heroCreationInProgress=false;
-        WaitMaster.receiveInputIfWaiting(WAIT_OPERATIONS.HC_DONE, null );
+        heroCreationInProgress = false;
+        WaitMaster.receiveInputIfWaiting(WAIT_OPERATIONS.HC_DONE, null);
 
     }
-        public static void done() {
-            heroCreationInProgress=false;
-            HqDataMaster.getInstance(model.getHero()).applyModifications();
-            WaitMaster.receiveInputIfWaiting(WAIT_OPERATIONS.HC_DONE, model.getHero());
+
+    public static void done() {
+        heroCreationInProgress = false;
+        HqDataMaster.getInstance(model.getHero()).applyModifications();
+        WaitMaster.receiveInputIfWaiting(WAIT_OPERATIONS.HC_DONE, model.getHero());
     }
 
     public static Unit newHero() {
-        screens =     new Stack<>() ;
-        backScreens =     new Stack<>() ;
+        screens = new Stack<>();
+        backScreens = new Stack<>();
         //        ObjType baseType = DataManager.getType("base hero type", DC_TYPE.CHARS);
         Unit hero = HeroCreator.getInstance().newHero();
         Eidolons.setMainHero(hero);
@@ -139,37 +141,35 @@ public class HeroCreationMaster {
     public static boolean checkItemIsDone(HERO_CREATION_ITEM currentItem) {
         switch (currentItem) {
             case RACE:
-                return  model.checkProperty(G_PROPS.RACE) //TODO remove race from base type!
-                 && checkProperty(G_PROPS.BACKGROUND);
+                return model.checkProperty(G_PROPS.RACE) //TODO remove race from base type!
+                        && checkProperty(G_PROPS.BACKGROUND);
             case GENDER:
-                return  checkProperty(G_PROPS.GENDER);
+                return checkProperty(G_PROPS.GENDER);
             case PORTRAIT:
-                return  checkProperty(G_PROPS.IMAGE );
+                return checkProperty(G_PROPS.IMAGE);
             case PERSONALITY:
                 return checkProperty(G_PROPS.SOUNDSET)
-//        TODO fix King's!         &&!model.checkProperty(G_PROPS.SOUNDSET,
-//                  DataManager.getType(model.getBackground().toString(),
-//                   DC_TYPE.CHARS).getProperty(G_PROPS.SOUNDSET))
-                 ;
+                        //        TODO fix King's!         &&!model.checkProperty(G_PROPS.SOUNDSET,
+                        //                  DataManager.getType(model.getBackground().toString(),
+                        //                   DC_TYPE.CHARS).getProperty(G_PROPS.SOUNDSET))
+                        ;
             case DEITY:
                 return checkProperty(G_PROPS.DEITY)
-                 &&
-                 !model.getProperty(G_PROPS.DEITY).contains(";");
+                        &&
+                        !model.getProperty(G_PROPS.DEITY).contains(";");
             case INTRODUCTION:
                 return true;
 
         }
         return checkItemIsDone(
-         HERO_CREATION_ITEM.values()[
-         EnumMaster.getEnumConstIndex(HERO_CREATION_ITEM.class, currentItem)-1]);
+                HERO_CREATION_ITEM.values()[
+                        EnumMaster.getEnumConstIndex(HERO_CREATION_ITEM.class, currentItem) - 1]);
     }
 
     private static boolean checkProperty(G_PROPS prop) {
         if (model.checkProperty(prop))
-            if (!model.checkProperty(prop,
-             HeroCreator.ROOT_TYPE.getProperty(prop))) {
-                return true;
-            }
+            return !model.checkProperty(prop,
+                    HeroCreator.ROOT_TYPE.getProperty(prop));
         return false;
     }
 
@@ -199,24 +199,25 @@ public class HeroCreationMaster {
         //updates the model etc
         HeroCreationPanel.getInstance().setUserObject(new HqHeroDataSource(model));
         //just create a new model base on this! 
-//        HqDataMaster.operation(model, HERO_OPERATION.APPLY_TYPE, entity);
+        //        HqDataMaster.operation(model, HERO_OPERATION.APPLY_TYPE, entity);
     }
-        public static void applyBackgroundType(Entity entity) {
+
+    public static void applyBackgroundType(Entity entity) {
         HqDataMaster.operation(model, HERO_OPERATION.APPLY_TYPE, entity);
         HqDataMaster.operation(model, HERO_OPERATION.LEVEL_UP, INITIAL_LEVEL);
     }
 
     public static void undo() {
-        if (screens.size()<2)
+        if (screens.size() < 2)
             return;
         HqDataMaster.undo(model.getHero());
         screens.pop();
-        backScreens.add(currentItem= screens.peek());
+        backScreens.add(currentItem = screens.peek());
         HeroCreationPanel.getInstance().setView(getCurrentItem(), true);
     }
 
     public static void redo() {
-        if (backScreens.size()<2)
+        if (backScreens.size() < 2)
             return;
         HqDataMaster.redo(model.getHero());
         backScreens.pop();

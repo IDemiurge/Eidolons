@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.anims.actions.WaitAction;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.gui.LabelX;
@@ -146,7 +146,7 @@ public class FloatingText extends GroupX {
         AfterAction afterAction = new AfterAction();
         afterAction.setAction(removeAction);
 
-        Action parallelAction = null;
+        Action parallelAction;
         if (delay != 0) {
             parallelAction = new DelayAction();
             ((DelayAction) parallelAction).setTime(delay);

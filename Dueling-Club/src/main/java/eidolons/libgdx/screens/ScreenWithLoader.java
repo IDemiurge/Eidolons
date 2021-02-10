@@ -3,7 +3,6 @@ package eidolons.libgdx.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Interpolation;
@@ -12,40 +11,44 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
-import eidolons.libgdx.bf.BFDataCreatedEvent;
+import eidolons.libgdx.assets.Assets;
 import eidolons.libgdx.shaders.post.PostProcessController;
-import eidolons.libgdx.stage.ChainedStage;
 import eidolons.libgdx.stage.LoadingStage;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.PostProcessingOptions;
 import eidolons.system.text.TipMaster;
 import main.system.EventCallbackParam;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.FileLogManager;
 import main.system.graphics.FontMaster;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
-public abstract class ScreenWithLoader extends ScreenAdapter {
-    public static final String ASSET_LOADING = "ASSET LOADING";
+public abstract class ScreenWithLoader extends ScreenWithAssets {
     protected CustomSpriteBatch batch;
     protected ScreenData data;
     protected ScreenViewport viewPort;
-    protected ChainedStage introStage;
     protected EventCallbackParam param;
     protected PostProcessController postProcessing;
-    private float tooltipTimer = getTooltipPeriod();
-    private boolean loadingAtlases;
+
+    private boolean loadingFinalAtlases;
     private int assetLoadTimer = getAssetLoadTimeLimit();
 
     protected LoadingStage loadingStage;
     protected boolean loading = true;
     protected boolean loaded;
+    private float tooltipTimer = getTooltipPeriod();
     protected boolean waitingForInput;
     protected float timeWaited;
     protected Label tooltipLabel;
     protected Label waitingLabel;
+
+    protected Label statusLabel;
+    protected Label loadingLabel;
+    protected Label buildLabel;
 
 
     protected SpriteAnimation backgroundSprite;
@@ -56,38 +59,25 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     private boolean whiteout;
 
     public ScreenWithLoader() {
-
         initBlackout();
         initPostProcessing();
-
-    }
-
-    public enum SCREEN_STATUS {
-        TO_PRELOAD,
-        PRELOADED,
-        AFTERLOADED,
-        DISPOSED,
-        CACHED,
-        WAITING,
-        LOADING,
-        ;
+        initLabels();
     }
 
     protected void initPostProcessing() {
-        if (CoreEngine.isIggDemo()) {
+        if (Flags.isIggDemo()) {
             return;
         }
-        if (CoreEngine.isLiteLaunch() || !CoreEngine.isIDE())
-            if (OptionsMaster.getPostProcessingOptions().getBooleanValue(
-                    PostProcessingOptions.POST_PROCESSING_OPTIONS.ALL_OFF))
-                return;
-
+        if (!OptionsMaster.getPostProcessingOptions().getBooleanValue(
+                PostProcessingOptions.POST_PROCESSING_OPTIONS.ENABLED))
+            return;
         try {
             postProcessing = getPostProcessController();
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
             FileLogManager.streamMain("Shader loader failed!");
-            OptionsMaster.getPostProcessingOptions().setValue(PostProcessingOptions.POST_PROCESSING_OPTIONS.ALL_OFF, true);
+            OptionsMaster.getPostProcessingOptions().setValue(
+                    PostProcessingOptions.POST_PROCESSING_OPTIONS.ENABLED, false);
             OptionsMaster.saveOptions();
         }
 
@@ -99,17 +89,6 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected void preLoad() {
-
-        initLabels();
-
-        if (data.getDialogViews().size() > 0) {
-            introStage = new ChainedStage(viewPort, getBatch(), data.getDialogViews());
-            introStage.setOnDoneCallback(() -> {
-                if (!loading) {
-                    updateInputController();
-                }
-            });
-        }
     }
 
     protected void initLabels() {
@@ -120,38 +99,40 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
                 getWaitY());
         tooltipLabel = new Label("", StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 20));
 
+        statusLabel = new Label("", StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 20));
+        statusLabel.setPosition(125,                90);
+        GuiEventManager.bind(GuiEventType.UPDATE_LOAD_STATUS,
+                p -> statusLabel.setText(p.get().toString()));
+
+        loadingLabel = new Label("", StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 20));
+        loadingLabel.setPosition(0,                GdxMaster.getHeight()-100);
+
+        buildLabel = new Label("Build "+ CoreEngine.VERSION, StyleHolder.getSizedLabelStyle(FontMaster.FONT.MAIN, 14));
+        buildLabel.pack();
+        buildLabel.setPosition(GdxMaster.right(buildLabel)-9,                 10);
+
     }
 
+    public void loadTick() {
+        loadingLabel.setText( loadingLabel.getText()+".");
+
+    }
     public void loadDone(EventCallbackParam param) {
         this.param = param;
-
-        if (param.get() instanceof BFDataCreatedEvent)
-            if (Assets.isOn()) {
-                Chronos.mark(ASSET_LOADING);
-                if (Assets.preloadMain(((BFDataCreatedEvent) param.get()).getObjects())) {
-                    setLoadingAtlases(true);
-                    GdxMaster.setEmptyCursor();
-                    return;
-                }
-
-            }
         loadingAssetsDone(param);
         GdxMaster.setDefaultCursor();
 
     }
 
     public void loadingAssetsDone(EventCallbackParam param) {
-        Chronos.logTimeElapsedForMark(ASSET_LOADING);
-        if (isWaitForInput()) {
+        loadingLabel.setText("");
+        Chronos.logTimeElapsedForMark("ASSET_LOADING");
+        if (isWaitForInputSupported()) {
             setWaitingForInput(true);
             this.param = param;
             updateInputController();
         } else
             done(this.param);
-
-//        if (param.get() instanceof BFDataCreatedEvent) {
-//       TODO      Assets.preloadAdditional(((BFDataCreatedEvent) param.get()).getObjects());
-//        }
     }
 
     protected void renderMain(float delta) {
@@ -159,19 +140,14 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected void renderLoader(float delta) {
-        if (introStage != null && !introStage.isDone()) {
-            introStage.act(delta);
-            introStage.draw();
-        } else if (loading) {
+        if (loading) {
             renderLoaderAndOverlays(delta);
-
         } else
             renderMain(delta);
 
     }
 
-    protected boolean isWaitForInput() {
-//        return !(CoreEngine.isIDE() || CoreEngine.isMacro());
+    protected boolean isWaitForInputSupported() {
         return true;
     }
 
@@ -194,9 +170,9 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected void done(EventCallbackParam param) {
+        updateInputController();
         if (isLoaded()) {
-            updateInputController();
-            main.system.auxiliary.log.LogMaster.dev(" FIX DOUBLE LOAD!!!! " + toString() + param);
+            main.system.auxiliary.log.LogMaster.devLog(" FIX DOUBLE LOAD!!!! " + toString() + param);
             return;
         }
         data.setParam(param);
@@ -204,6 +180,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         afterLoad();
         GdxMaster.setDefaultCursor();
         triggerInitialEvents();
+        main.system.auxiliary.log.LogMaster.devLog(toString() + " LOADed with " + param);
     }
 
     protected void triggerInitialEvents() {
@@ -224,10 +201,6 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         this.loading = false;
         setLoaded(true);
         loadingStage.done();
-        if (introStage != null)
-            if (introStage.isDone()) {
-                updateInputController();
-            }
 
     }
 
@@ -259,17 +232,26 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
                 getBatch().resetBlending();
                 postProcessing.end();
             }
-        waited(delta);
+        loadWaited(delta);
         checkShaderReset();
-        if (isLoadingAtlases()) {
-            if (assetLoadTimer <= 0 || Assets.get().getManager().update()) {
-                setLoadingAtlases(false);
+        if (isLoadingFinalAtlases()) {
+            if (Assets.get().getManager().update()) {
+                setLoadingFinalAtlases(false);
                 loadingAssetsDone(param);
             } else if (isAssetLoadTimerOn())
                 assetLoadTimer -= delta;
+
         }
 
         doBlackout();
+        
+        renderMeta();
+    }
+
+    protected void renderMeta() {
+        getBatch().begin();
+        buildLabel.draw(getBatch(), 1f);
+        getBatch().end();
     }
 
     public void removeBlack() {
@@ -291,7 +273,8 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     public void blackout(float dur, float to, boolean back) {
         if (back)
             blackoutBack = back;
-        main.system.auxiliary.log.LogMaster.dev(toString() + " BlackoutOld to " + to);
+        //gdx Review
+        // main.system.auxiliary.log.LogMaster.dev(toString() + " BlackoutOld to " + to);
         blackoutAction.setDuration(dur);
         if (!whiteout)
             blackoutAction.setInterpolation(Interpolation.fade);
@@ -303,15 +286,9 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected void doBlackout() {
-//       TODO  if (!BlackoutOld.isOnNewScreen())
-//            if (isBlackoutIn()) {
-//                blackout.fadeOutAndBack(2f);
-//                setBlackoutIn(false);
-//            }
-
         if (blackoutAction.getTime() >= blackoutAction.getDuration()) {
             if (blackoutBack) {
-//                main.system.auxiliary.log.LogMaster.dev("BlackoutOld BACK;" + " blackout==" + blackout);
+                //                main.system.auxiliary.log.LogMaster.dev("BlackoutOld BACK;" + " blackout==" + blackout);
                 blackoutAction.setStart((blackout));
                 blackoutAction.setEnd(0);
                 blackoutAction.restart();
@@ -338,15 +315,9 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     }
 
-    protected void waited(float delta) {
-        timeWaited += delta;
-
-        //
-
-        //    TODO     tooltipLabel.draw(batch, 1f);
-
+    protected void loadWaited(float delta) {
         if (isWaitingForInputNow()) {
-
+            timeWaited += delta;
             float alpha = (timeWaited / 3) % 1;
             alpha = (alpha >= 0.5f) ? 1.5f - (alpha)
                     : alpha * 2 + 0.15f;
@@ -366,6 +337,8 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
                     tooltipTimer = 0;
                 }
                 tooltipLabel.draw(batch, 1);
+                statusLabel.draw(batch, 1);
+                loadingLabel.draw(batch, 1);
                 batch.end();
             } else tooltipLabel.setVisible(false);
         }
@@ -382,17 +355,17 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
 
-    private float getWaitY() {
-        return GdxMaster.getHeight() / 20 + 35;
+    protected float getWaitY() {
+        return getTipY() + 15;
     }
 
-    private float getTipY() {
-        return GdxMaster.getHeight() / 20;
+    protected float getTipY() {
+        return 100;
     }
 
     public CustomSpriteBatch getBatch() {
         if (batch == null) {
-            batch = CustomSpriteBatch.getMainInstance();
+            batch = GdxMaster.getMainBatch();
         }
         return batch;
     }
@@ -421,11 +394,14 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     protected void renderLoaderAndOverlays(float delta) {
         loadingStage.act(delta);
         loadingStage.draw();
+        loadWaited(delta);
     }
 
 
     public void backToLoader() {
         loading = true;
+
+        loadingLabel.setText("");
     }
 
     public boolean isWaitingForInputNow() {
@@ -441,6 +417,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         }
         this.waitingForInput = waitingForInput;
 
+        updateInputController();
     }
 
     public float getTimeWaited() {
@@ -448,12 +425,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected boolean canShowScreen() {
-        boolean isIntroFinished = true;
-        if (introStage != null && !introStage.isDone()) {
-            isIntroFinished = false;
-        }
-
-        return !loading && isIntroFinished;
+        return !loading;
     }
 
     public void setData(ScreenData data) {
@@ -475,9 +447,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     protected InputProcessor createInputController() {
         if (isWaitingForInputNow())
             return getWaitForInputController(param);
-        return introStage != null ?
-                GdxMaster.getMultiplexer(loadingStage, introStage) :
-                GdxMaster.getMultiplexer(loadingStage);
+        return GdxMaster.getMultiplexer(loadingStage);
     }
 
     public void updateInputController() {
@@ -486,22 +456,26 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     public void initLoadingStage(ScreenData meta) {
-        this.loadingStage = new LoadingStage(meta);
+        this.loadingStage = new LoadingStage(meta, getLoadScreenPath());
         loadingStage.setViewport(new ScreenViewport(new OrthographicCamera()));
 
+    }
+
+    protected String getLoadScreenPath() {
+        return null;
     }
 
     public void reset() {
 
     }
 
-    public boolean isLoadingAtlases() {
-        return loadingAtlases;
+    public boolean isLoadingFinalAtlases() {
+        return loadingFinalAtlases;
     }
 
-    public void setLoadingAtlases(boolean loadingAtlases) {
+    public void setLoadingFinalAtlases(boolean loadingAtlases) {
         assetLoadTimer = getAssetLoadTimeLimit();
-        this.loadingAtlases = loadingAtlases;
+        this.loadingFinalAtlases = loadingAtlases;
     }
 
     private int getAssetLoadTimeLimit() {

@@ -65,7 +65,7 @@ public class RageRule extends DC_CounterRule {
                         new ModifyValueEffect(true, PARAMS.DAMAGE_MOD,
                                 MOD.MODIFY_BY_PERCENT, getCounterRef() + "*"
                                 + DAMAGE_PER_COUNTER), new ModifyValueEffect(true,
-                        PARAMS.INITIATIVE_MODIFIER, MOD.MODIFY_BY_PERCENT,
+                        PARAMS.INITIATIVE, MOD.MODIFY_BY_PERCENT,
                         getCounterRef() + "*" + INITIATIVE_PER_COUNTER),
                         new ModifyValueEffect(true, PARAMS.SPELLPOWER,
                                 MOD.MODIFY_BY_PERCENT, getCounterRef() + "*"
@@ -98,7 +98,7 @@ public class RageRule extends DC_CounterRule {
 
     @Override
     public String getBuffName() {
-        return MetaEnums.STD_BUFF_NAMES.Enraged.getName();
+        return MetaEnums.STD_BUFF_NAME.Enraged.getName();
     }
 
     @Override

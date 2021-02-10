@@ -10,8 +10,7 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.generic.ValueContainer;
 
 public class PlainDialogueView extends Group implements Scene{
-    private int time;
-    private Image back;
+    private final int time;
     private boolean done;
     private long currentTime = 0;
 
@@ -29,7 +28,7 @@ public class PlainDialogueView extends Group implements Scene{
         }
 
         if (backTexture != null) {
-            this.back = new Image(backTexture);
+            Image back = new Image(backTexture);
             final float width = back.getWidth();
             final float height = back.getHeight();
 

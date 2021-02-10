@@ -24,7 +24,7 @@ public class ItemTrait {
         template =
          new EnumMaster<ITEM_TRAIT>().
           retrieveEnumConst(ITEM_TRAIT.class, substring.split(" - ")[0]);
-        int lvl = NumberUtils.getInteger(substring.split(" - ")[1]);
+        int lvl = NumberUtils.getIntParse(substring.split(" - ")[1]);
         level = ITEM_LEVEL.values()[lvl];
     }
 
@@ -47,7 +47,7 @@ public class ItemTrait {
     //some templates are put before level!
     @Override
     public String toString() {
-        return StringMaster.getWellFormattedString(template.toString()) + " " +
+        return StringMaster.format(template.toString()) + " " +
                 StringMaster.wrapInParenthesis(level.toString());
     }
 }

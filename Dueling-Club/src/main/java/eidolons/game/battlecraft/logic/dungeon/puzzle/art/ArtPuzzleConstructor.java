@@ -1,11 +1,14 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.art;
 
-import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.ManipulatorPuzzleConstructor;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
+import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import main.elements.conditions.Condition;
 import main.game.bf.Coordinates;
+
+import java.util.Map;
 
 public class ArtPuzzleConstructor extends ManipulatorPuzzleConstructor<ArtPuzzle> {
 
@@ -19,9 +22,8 @@ public class ArtPuzzleConstructor extends ManipulatorPuzzleConstructor<ArtPuzzle
     }
 
     @Override
-    public ArtPuzzle create(String data, String blockData, Coordinates coordinates, LevelBlock block) {
-        ArtPuzzle puzzle = super.create(data, blockData, coordinates, block);
-        return puzzle;
+    public ArtPuzzle create(String data, Map<Coordinates, CellScriptData> blockData, Coordinates coordinates, LevelBlock block) {
+        return super.create(data, blockData, coordinates, block);
     }
     @Override
     protected boolean isAreaEnter() {
@@ -32,7 +34,7 @@ public class ArtPuzzleConstructor extends ManipulatorPuzzleConstructor<ArtPuzzle
         return true;
     }
     @Override
-    protected int getBaseCounters(PuzzleMaster.PUZZLE_ACTION_BASE base) {
+    protected int getBaseCounters(PuzzleEnums.PUZZLE_ACTION_BASE base) {
         switch (base) {
             case MOVE:
                 return puzzle.getWidth()*puzzle.getHeight()*puzzle.getRotateChance()/100 ;
@@ -47,16 +49,10 @@ public class ArtPuzzleConstructor extends ManipulatorPuzzleConstructor<ArtPuzzle
 
 
 
-    @Override
-    protected void initSetup() {
-        ArtSetup setup = new ArtSetup(puzzle, puzzle.getData(), mutatorArgs);
-        puzzle.setup(setup);
-
-    }
 
     @Override
-    protected PuzzleMaster.PUZZLE_SOLUTION getSolution() {
-        return PuzzleMaster.PUZZLE_SOLUTION.MOSAIC;
+    protected PuzzleEnums.PUZZLE_SOLUTION getSolution() {
+        return PuzzleEnums.PUZZLE_SOLUTION.MOSAIC;
     }
     @Override
     protected PuzzleData.PUZZLE_VALUE[] getRelevantValues() {
@@ -67,8 +63,7 @@ public class ArtPuzzleConstructor extends ManipulatorPuzzleConstructor<ArtPuzzle
                 PuzzleData.PUZZLE_VALUE.EXIT,
                 PuzzleData.PUZZLE_VALUE.COUNTER_TYPE,
                 PuzzleData.PUZZLE_VALUE.RESOLUTION,
-                PuzzleData.PUZZLE_VALUE.TIP,
-                PuzzleData.PUZZLE_VALUE.PALE,
+                PuzzleData.PUZZLE_VALUE.TIP_INTRO,
                 PuzzleData.PUZZLE_VALUE.ARG,
 
         };
@@ -79,9 +74,6 @@ public class ArtPuzzleConstructor extends ManipulatorPuzzleConstructor<ArtPuzzle
         return super.getPuzzleEnterConditions();
     }
 
-    protected void entered() {
-        super.entered();
-    }
     /**
      * exit via veil as well
      *

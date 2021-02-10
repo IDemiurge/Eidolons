@@ -26,7 +26,7 @@ import static eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Spee
  */
 public class SpeechBuilder {
     Map<Integer, SpeechData> idToDataMap;
-    private String linesPath;
+    private final String linesPath;
     MetaGameMaster master;
 
     public SpeechBuilder(String linesPath, MetaGameMaster master) {
@@ -74,7 +74,7 @@ public class SpeechBuilder {
                 part = part.trim();
                 SpeechScript script = new SpeechScript(part, master);
                 speech.setScript(script);
-                Integer time = script.getIntValue(SpeechScript.SPEECH_ACTION.TIME_THIS);
+                Integer time = script.getIntValue(SpeechScript.SCRIPT.TIME_THIS);
                 if (time != 0) {
                     speech.setTime(time);
                 }
@@ -108,7 +108,7 @@ public class SpeechBuilder {
         Document doc = XML_Converter.getDoc(xml);
         for (Node node : XmlNodeMaster.getNodeList(doc.getFirstChild())) {
             String idString = node.getNodeName();
-            int id = NumberUtils.getInteger(idString.replace(DialogueLineFormatter.ID, ""));
+            int id = NumberUtils.getIntParse(idString.replace(DialogueLineFormatter.ID, ""));
 
             if (node.hasChildNodes()) {
                 SpeechData data = new SpeechData();

@@ -5,18 +5,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionRule;
+import eidolons.game.battlecraft.rules.RuleEnums.RULE_SCOPE;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE_SCOPE;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationTimeMaster;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.FloatingTextLayer;
-import eidolons.libgdx.anims.anim3d.AnimMaster3d;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.std.HitAnim;
+import eidolons.libgdx.assets.AnimMaster3d;
 import eidolons.libgdx.bf.Fluctuating;
+import eidolons.libgdx.bf.decor.shard.ShardVisuals;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.light.ShadowMap;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
@@ -27,13 +28,11 @@ import eidolons.libgdx.particles.ParticleEffectX;
 import eidolons.libgdx.particles.ambi.EmitterMap;
 import eidolons.libgdx.particles.ambi.ParticleManager;
 import eidolons.libgdx.screens.ScreenMaster;
-import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.screens.map.layers.LightLayer;
 import eidolons.libgdx.shaders.post.PostProcessController;
 import eidolons.libgdx.stage.GuiVisualEffects;
-import eidolons.libgdx.stage.camera.CameraMan;
+import eidolons.libgdx.stage.camera.CameraOptions;
 import eidolons.macro.global.time.MacroTimeMaster;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.data.MetaDataUnit;
 import eidolons.system.data.MetaDataUnit.META_DATA;
@@ -53,15 +52,16 @@ import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.ExceptionMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
-import main.system.auxiliary.log.FileLogManager;
 import main.system.graphics.FontMaster;
 import main.system.graphics.GuiManager;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.sound.SoundMaster;
+import main.system.util.DialogMaster;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -72,7 +72,6 @@ import java.util.Map;
 
 public class OptionsMaster {
     private static OptionsMaster instance;
-    private static OptionsPanelSwing optionsPanel;
     private static JDialog modalOptionsPanelFrame;
 
     protected Map<OPTIONS_GROUP, Options> optionsMap = new HashMap<>();
@@ -80,6 +79,16 @@ public class OptionsMaster {
     protected boolean initialized;
     protected String optionsPath;
     protected String OPTIONS_MODE;
+
+    public static void init() {
+        /*
+        save locally - how ?
+        presets vs custom
+        auto-adjust 
+         */
+        //    TODO    Gdx.app.getPreferences()
+        getInstance().initialize();
+    }
 
     protected static void applyAnimOptions(AnimationOptions animOptions) {
 
@@ -135,6 +144,8 @@ public class OptionsMaster {
     }
 
     protected static void applyControlOptions(ControlOptions options) {
+        CameraOptions.update(options);
+
         for (Object sub : options.getValues().keySet()) {
             new EnumMaster<CONTROL_OPTION>().
                     retrieveEnumConst(CONTROL_OPTION.class,
@@ -145,34 +156,18 @@ public class OptionsMaster {
             String value = options.getValue(key);
             int intValue = options.getIntValue(key);
             boolean booleanValue = options.getBooleanValue(key);
-            float floatValue = new Float(intValue) / 100;
             switch (key) {
                 case SCROLL_SPEED:
                     ScrollPanel.setScrollAmount(intValue);
                     break;
                 case ZOOM_STEP:
-                    InputController.setZoomStep(Integer.valueOf(value) / new Float(100));
+                    InputController.setZoomStep(Integer.parseInt(value) / 100f);
                     break;
                 case UNLIMITED_ZOOM:
                     InputController.setUnlimitedZoom(booleanValue);
                     break;
-                //                    case DRAG_OFF:
-                //                        InputController.setDragOff(booleanValue);
-                //                        break;
-                case AUTO_CENTER_CAMERA_ON_HERO:
-                    CameraMan.setCameraAutoCenteringOn(booleanValue);
-                    break;
                 case ALT_MODE_ON:
                     BattleClickListener.setAltDefault(booleanValue);
-                    break;
-                case CENTER_CAMERA_AFTER_TIME:
-                    if (DungeonScreen.getInstance() == null) {
-                        break;
-                    }
-                    DungeonScreen.getInstance().getCameraMan().setCameraTimer(intValue);
-                    break;
-                case CENTER_CAMERA_DISTANCE_MOD:
-                    CameraMan.setCameraPanMod(floatValue);
                     break;
             }
         }
@@ -188,9 +183,9 @@ public class OptionsMaster {
 
     protected static void applyGameplayOptions(GameplayOptions gameplayOptions) {
         for (Object sub : gameplayOptions.getValues().keySet()) {
-//            new EnumMaster<GAMEPLAY_OPTION>().
-//                    retrieveEnumConst(GAMEPLAY_OPTION.class,
-//                            gameplayOptions.getValues().get(sub).toString());
+            //            new EnumMaster<GAMEPLAY_OPTION>().
+            //                    retrieveEnumConst(GAMEPLAY_OPTION.class,
+            //                            gameplayOptions.getValues().get(sub).toString());
 
             GAMEPLAY_OPTION key = gameplayOptions.getKey((sub.toString()));
             if (key == null) {
@@ -209,8 +204,8 @@ public class OptionsMaster {
                     }
                     break;
                 case GHOST_MODE:
-                    if (!CoreEngine.isFastMode())
-                        VisionRule.setPlayerUnseenMode(gameplayOptions.getBooleanValue(key));
+                    // if (!CoreEngine.isFastMode())
+                    VisionRule.setPlayerUnseenMode(gameplayOptions.getBooleanValue(key));
                     break;
                 case RULES_SCOPE:
                     RuleKeeper.setScope(
@@ -221,8 +216,8 @@ public class OptionsMaster {
                     break;
                 case GAME_DIFFICULTY:
                     if (Eidolons.game != null)
-                        if (Eidolons.game.getBattleMaster() != null)
-                            Eidolons.game.getBattleMaster().getOptionManager().difficultySet(value);
+                        if (Eidolons.game.getMissionMaster() != null)
+                            Eidolons.game.getMissionMaster().getOptionManager().difficultySet(value);
                     break;
             }
         }
@@ -306,7 +301,7 @@ public class OptionsMaster {
             if (key == null)
                 continue;
             String value = graphicsOptions.getValue(key);
-            boolean bool = Boolean.valueOf(value.toLowerCase());
+            boolean bool = Boolean.parseBoolean(value.toLowerCase());
             //            Eidolons.getApplication().getGraphics(). setCursor();
 
             try {
@@ -325,7 +320,7 @@ public class OptionsMaster {
             if (key == null)
                 continue;
             String value = systemOptions.getValue(key);
-            boolean bool = Boolean.valueOf(value.toLowerCase());
+            boolean bool = Boolean.parseBoolean(value.toLowerCase());
             //            Eidolons.getApplication().getGraphics(). setCursor();
 
             try {
@@ -340,13 +335,13 @@ public class OptionsMaster {
     protected static void applySystemOption(SYSTEM_OPTION key, String value, boolean bool) {
         switch (key) {
             case LITE_MODE:
-                CoreEngine.setLiteLaunch(bool);
+                Flags.setLiteLaunch(bool);
                 break;
             case SUPERLITE_MODE:
-                CoreEngine.setSuperLite(bool);
+                Flags.setSuperLite(bool);
                 break;
             case DEV:
-                CoreEngine.setDevEnabled(bool);
+                Flags.setDevEnabled(bool);
                 break;
             case LOGGING:
             case LAZY:
@@ -359,28 +354,29 @@ public class OptionsMaster {
             case RESET_COSTS:
                 break;
             case LOG_TO_FILE:
-                FileLogManager.on = bool;
+                //TODO options Review
+                // FileLogManager.on = bool;
                 break;
             case TESTER_VERSION:
-                CoreEngine.setTesterVersion(bool);
+                Flags.setTesterVersion(bool);
                 break;
             case ActiveTestMode:
-                CoreEngine.setActiveTestMode(bool);
+                Flags.setActiveTestMode(bool);
                 break;
             case Ram_economy:
-                CoreEngine.setRamEconomy(bool);
+                Flags.setRamEconomy(bool);
                 break;
             case levelTestMode:
-                CoreEngine.setLevelTestMode(bool);
+                Flags.setLevelTestMode(bool);
                 break;
             case contentTestMode:
-                CoreEngine.setContentTestMode(bool);
+                Flags.setContentTestMode(bool);
                 break;
             case reverseExit:
-                CoreEngine.setReverseExit(bool);
+                Flags.setReverseExit(bool);
                 break;
             case KeyCheat:
-                CoreEngine.setKeyCheat(bool);
+                Flags.setKeyCheat(bool);
                 break;
         }
 
@@ -388,9 +384,9 @@ public class OptionsMaster {
 
     protected static void applyOption(GRAPHIC_OPTION key, String value, boolean bool) {
         switch (key) {
-//            case ALT_ASSET_LOAD:
-//                Assets.setON(!bool);
-//                break;
+            //            case ALT_ASSET_LOAD:
+            //                Assets.setON(!bool);
+            //                break;
             case AMBIENCE_DENSITY:
                 EmitterMap.setGlobalShowChanceCoef(Integer.valueOf(value));
                 break;
@@ -398,7 +394,7 @@ public class OptionsMaster {
                 LightLayer.setAdditive(bool);
                 break;
             case PERFORMANCE_BOOST:
-                Fluctuating.fluctuatingAlphaPeriodGlobal = (Integer.valueOf(value)) / 10;
+                Fluctuating.fluctuatingAlphaPeriodGlobal = (Integer.parseInt(value)) / 10;
                 break;
             case GRID_VFX:
                 GridPanel.setShowGridEmitters(bool);
@@ -407,7 +403,7 @@ public class OptionsMaster {
                 GuiVisualEffects.setOff(!bool);
                 break;
             case BRIGHTNESS:
-                GdxMaster.setBrightness(new Float(Integer.valueOf(value) / 100));
+                GdxMaster.setBrightness((float) (Integer.parseInt(value) / 100));
                 break;
             case AMBIENCE_VFX:
                 ParticleManager.setAmbienceOn(bool);
@@ -435,17 +431,20 @@ public class OptionsMaster {
             case RESOLUTION:
                 ScreenMaster.setResolution(value);
                 break;
+            case SHARDS_OFF:
+                ShardVisuals.setOn(!bool);
+                break;
             case SHADOW_MAP_OFF:
                 ShadowMap.setOn(!bool);
                 break;
             case SPECIAL_EFFECTS:
-                ParticleEffectX.setGlobalAlpha(Float.valueOf(value) / 100);
+                ParticleEffectX.setGlobalAlpha(Float.parseFloat(value) / 100);
                 break;
             case FONT_SIZE:
-                GdxMaster.setUserFontScale(Float.valueOf(value) / 100);
+                GdxMaster.setUserFontScale(Float.parseFloat(value) / 100);
                 break;
             case UI_SCALE:
-                GdxMaster.setUserUiScale(Float.valueOf(value) / 100);
+                GdxMaster.setUserUiScale(Float.parseFloat(value) / 100);
                 break;
             case COLOR_TEXT_LOG:
                 LogPanel.setColorText(bool);
@@ -505,8 +504,8 @@ public class OptionsMaster {
             });
 
         if (CoreEngine.TEST_LAUNCH) {
-            CoreEngine.setFullFastMode(true);
-            CoreEngine.setSuperLite(true);
+            Flags.setFullFastMode(true);
+            Flags.setSuperLite(true);
         }
     }
 
@@ -521,22 +520,83 @@ public class OptionsMaster {
         return instance;
     }
 
+    public static Options getOptionsByConst(OPTION option) {
+        OPTIONS_GROUP group = getGroupForConst(option);
+        return getOptions(group);
+    }
+
+    public static void setOption(OPTION option, Object value, boolean apply) {
+        OPTIONS_GROUP group = getGroupForConst(option);
+        Options options = getOptions(group);
+        options.setValue(option.toString(), value.toString());
+        if (apply) {
+            applyOptions(group);
+        }
+
+    }
+
+    private static void applyOptions(OPTIONS_GROUP group) {
+        switch (group) {
+            case GRAPHICS:
+                applyGraphicsOptions();
+                break;
+            case GAMEPLAY:
+                applyGameplayOptions();
+                break;
+            case CONTROLS:
+                applyControlOptions();
+                break;
+            case SOUND:
+                applySoundOptions(getSoundOptions());
+                break;
+            case ANIMATION:
+                applyAnimOptions();
+                break;
+            case SYSTEM:
+                applySystemOptions(getSystemOptions());
+                break;
+            case POST_PROCESSING:
+                break;
+        }
+    }
+
+    private static OPTIONS_GROUP getGroupForConst(OPTION option) {
+        switch (option.getClass().getSimpleName()) {
+            case "GAMEPLAY_OPTION":
+                return OPTIONS_GROUP.GAMEPLAY;
+            case "CONTROL_OPTION":
+                return OPTIONS_GROUP.CONTROLS;
+            case "ANIMATION_OPTION":
+                return OPTIONS_GROUP.ANIMATION;
+            case "SOUND_OPTION":
+                return OPTIONS_GROUP.SOUND;
+            case "GRAPHIC_OPTION":
+                return OPTIONS_GROUP.GRAPHICS;
+            case "SYSTEM_OPTION":
+                return OPTIONS_GROUP.SYSTEM;
+            case "POST_PROCESSING_OPTION":
+                return OPTIONS_GROUP.POST_PROCESSING;
+        }
+        return null;
+    }
+
     public void save() {
         StringBuilder content = new StringBuilder();
-        content.append(XML_Converter.openXml("Options" + StringMaster.NEW_LINE));
+        content.append(XML_Converter.openXml("Options" + Strings.NEW_LINE));
         for (OPTIONS_GROUP sub : optionsMap.keySet()) {
-            content.append(XML_Converter.openXml(sub.toString())).append(StringMaster.NEW_LINE);
+            content.append(XML_Converter.openXml(sub.toString())).append(Strings.NEW_LINE);
             //OR PUT UNID-DATA-STRING there
             for (Object option : optionsMap.get(sub).getValues().keySet()) {
                 content.append(XML_Converter.wrap(option.toString(),
-                        optionsMap.get(sub).getValues().get(option).toString())).append(StringMaster.NEW_LINE);
+                        optionsMap.get(sub).getValues().get(option).toString())).append(Strings.NEW_LINE);
             }
-            content.append(XML_Converter.closeXml(sub.toString())).append(StringMaster.NEW_LINE);
+            content.append(XML_Converter.closeXml(sub.toString())).append(Strings.NEW_LINE);
         }
         content.append(XML_Converter.closeXml("Options"));
         String path = getSaveOptionsPath();
         FileManager.write(content.toString(), path);
-//    TODO igg demo fix    FileManager.write("Global options are now saved at " + getGlobalOptionsPath(), getLocalOptionsPath());
+        //    TODO EA check
+        //     FileManager.write("Global options are now saved at " + getGlobalOptionsPath(), getLocalOptionsPath());
     }
 
     protected String getSaveOptionsPath() {
@@ -581,7 +641,7 @@ public class OptionsMaster {
             //            optionsPanelFrame.dispatchEvent(new WindowEvent(optionsPanelFrame, WindowEvent.WINDOW_CLOSING));
             modalOptionsPanelFrame.setVisible(false);
         }
-        optionsPanel = new OptionsPanelSwing(getInstance().getOptionsMap());
+        OptionsPanelSwing optionsPanel = new OptionsPanelSwing(getInstance().getOptionsMap());
         //        optionsPanelFrame = GuiManager.inNewWindow(optionsPanel,
         //         "Options", new Dimension(800, 600));
         modalOptionsPanelFrame = GuiManager.inModalWindow(optionsPanel,
@@ -622,14 +682,11 @@ public class OptionsMaster {
     }
 
     protected boolean isLocalOptionsPreferred() {
-//        return CoreEngine.isMe() &&
-////                !CoreEngine.isJar();
+        //        return CoreEngine.isMe() &&
+        ////                !CoreEngine.isJar();
         return false;
     }
 
-    public static void init() {
-        getInstance().initialize();
-    }
 
     public void initialize() {
         if (initialized)
@@ -641,7 +698,7 @@ public class OptionsMaster {
             optionsMap = readOptions(data);
             addMissingDefaults(optionsMap);
 
-            if (!CoreEngine.isIDE())
+            if (!Flags.isIDE())
                 if (MetaDataUnit.getInstance().getIntValue(META_DATA.TIMES_LAUNCHED) < 2)
                     autoAdjustOptions(OPTIONS_GROUP.GRAPHICS, optionsMap.get(OPTIONS_GROUP.GRAPHICS));
         }
@@ -655,9 +712,9 @@ public class OptionsMaster {
         } catch (Exception e) {
             ExceptionMaster.printStackTrace(e);
         }
-//        if (CoreEngine.isMapPreview()) {
-//            getGraphicsOptions().setValue("RESOLUTION", RESOLUTION._3840x2160.toString());
-//        }
+        //        if (CoreEngine.isMapPreview()) {
+        //            getGraphicsOptions().setValue("RESOLUTION", RESOLUTION._3840x2160.toString());
+        //        }
         cacheOptions();
 
         initFlags();
@@ -681,7 +738,7 @@ public class OptionsMaster {
     }
 
     protected void initFlags() {
-        if (CoreEngine.isLiteLaunch()) {
+        if (Flags.isLiteLaunch()) {
             getSystemOptions().setValue(SYSTEM_OPTION.LITE_MODE, true);
         }
     }
@@ -721,8 +778,7 @@ public class OptionsMaster {
     }
 
     protected Map<OPTIONS_GROUP, Options> initDefaults() {
-        Map<OPTIONS_GROUP, Options> defaults = initDefaults(false);
-        return defaults;
+        return initDefaults(false);
     }
 
     protected Map<OPTIONS_GROUP, Options> initDefaults(boolean adjust) {
@@ -764,11 +820,11 @@ public class OptionsMaster {
     }
 
     public static GraphicsOptions getGraphicsOptions() {
-        return (GraphicsOptions) (getInstance().getOptionsMap()).get(OPTIONS_GROUP.GRAPHICS);
+        return (GraphicsOptions) getOptions(OPTIONS_GROUP.GRAPHICS);
     }
 
     public static GameplayOptions getGameplayOptions() {
-        return (GameplayOptions) (getInstance().getOptionsMap()).get(OPTIONS_GROUP.GAMEPLAY);
+        return (GameplayOptions) getOptions(OPTIONS_GROUP.GAMEPLAY);
     }
 
     public Options getOptions(OPTION group) {
@@ -788,7 +844,11 @@ public class OptionsMaster {
     }
 
     public static Options getOptions(OPTIONS_GROUP group) {
-        return (getInstance().getOptionsMap()).get(group);
+        Options options = (getInstance().getOptionsMap()).get(group);
+        if (options == null) {
+            options = getInstance().createOptions(group);
+        }
+        return options;
     }
 
     protected Options generateDefaultOptions(OPTIONS_GROUP group) {
@@ -890,7 +950,7 @@ public class OptionsMaster {
     }
 
     public static PostProcessingOptions getPostProcessingOptions() {
-        return (PostProcessingOptions) (getInstance().getOptionsMap()).get(OPTIONS_GROUP.POST_PROCESSING);
+        return (PostProcessingOptions) getOptions(OPTIONS_GROUP.POST_PROCESSING);
     }
 
 

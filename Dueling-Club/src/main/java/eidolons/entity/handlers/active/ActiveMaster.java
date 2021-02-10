@@ -14,7 +14,7 @@ public class ActiveMaster extends EntityMaster<DC_ActiveObj> {
 
     @Override
     protected EntityInitializer<DC_ActiveObj> createInitializer() {
-        return new ActiveInitializer(getEntity(), this);
+        return new ActiveObjInitializer(getEntity(), this);
     }
 
     @Override
@@ -58,8 +58,8 @@ public class ActiveMaster extends EntityMaster<DC_ActiveObj> {
     }
 
     @Override
-    public ActiveInitializer getInitializer() {
-        return (ActiveInitializer) super.getInitializer();
+    public ActiveObjInitializer getInitializer() {
+        return (ActiveObjInitializer) super.getInitializer();
     }
 
     @Override

@@ -1,10 +1,10 @@
 package eidolons.game.battlecraft.logic.dungeon.module;
 
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.battlecraft.logic.battle.encounter.Encounter;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
+import eidolons.game.battlecraft.logic.mission.encounter.Encounter;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
@@ -12,6 +12,7 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
+import main.system.launch.CoreEngine;
 
 import java.util.*;
 
@@ -23,12 +24,18 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
     private List<LevelZone> zones;
     private List<Encounter> encounters;
     private int id;
-    private static Integer ID = 0;
-    private Set<Coordinates> voidCells = new LinkedHashSet<>();
+    public static Integer ID = 0;
+    private final Set<Coordinates> voidCells = new LinkedHashSet<>();
 
-    private Map<Integer, BattleFieldObject> objIdMap = new LinkedHashMap<>();
-    private Map<Integer, ObjType> idTypeMap = new LinkedHashMap<>();
+    private final Map<Integer, BattleFieldObject> objIdMap = new LinkedHashMap<>();
+    private final Map<Integer, ObjType> idTypeMap = new LinkedHashMap<>();
     private String objectsData;
+    private String borderObjectsData;
+    private boolean firstInit;
+    private boolean startModule;
+    private String platformData;
+    private Integer full_height;
+    private Integer full_width;
 
     public Module(Coordinates origin, int width, int height, String name) {
         this.origin = origin;
@@ -38,13 +45,25 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
         id = ID++;
     }
 
+    public void fauxInit() {
+        zones = new ArrayList<>();
+        encounters = new ArrayList<>();
+        origin = new Coordinates(0, 0);
+        data = new ModuleData(this);
+    }
+    @Override
+    public int getWidth() {
+        return super.getWidth();
+    }
+
     public Module(DC_Game game) {
         this.game = game;
+        id = ID++;
     }
 
     @Override
-    protected LevelStruct getParent() {
-        return DC_Game.game.getDungeonMaster().getDungeonWrapper();
+    public LevelStruct getParent() {
+        return DC_Game.game.getDungeonMaster().getFloorWrapper();
     }
 
     public Module(ModuleData data) {
@@ -62,14 +81,15 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
     @Override
     public Set<Coordinates> initCoordinateSet(boolean buffer) {
         //TODO nullify this on reset!
-        Set<Coordinates> coordinatesSet = new LinkedHashSet<>();
-        Coordinates c = buffer
-                ? getOrigin()
-                .getOffset(-getWidthBuffer(), -getHeightBuffer())
-                : getOrigin();
-        coordinatesSet.addAll(CoordinatesMaster.getCoordinatesBetween(
+        Coordinates c =
+                buffer ? getOrigin()
+                        : getOrigin()
+                        .getOffset(getWidthBuffer(), getHeightBuffer());
+        Coordinates c1 = c.getOffset(getEffectiveWidth(false), getEffectiveHeight(false));
+        Set<Coordinates> coordinatesSet = new LinkedHashSet<>(CoordinatesMaster.getCoordinatesBetween(
                 c,
-                c.getOffset(getEffectiveWidth(buffer), getEffectiveHeight(buffer))));
+                buffer ? c1.getOffset(getWidthBuffer(), getHeightBuffer())
+                        : c1));
 
         return coordinatesSet;
     }
@@ -134,11 +154,19 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
     }
 
     public int getEffectiveHeight() {
-        return getEffectiveHeight(true);
+        if (!CoreEngine.isLevelEditor()) {
+            if (full_height!=null)
+                return full_height;
+        }
+        return full_height=getEffectiveHeight(true);
     }
 
     public int getEffectiveWidth() {
-        return getEffectiveWidth(true);
+        if (!CoreEngine.isLevelEditor()) {
+            if (full_width!=null)
+                return full_width;
+        }
+        return full_width= getEffectiveWidth(true);
     }
 
     public int getEffectiveWidth(boolean buffer) {
@@ -174,11 +202,12 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
         return idTypeMap;
     }
 
-    public boolean isInitialModule() {
-        return getId() == 0;
+
+    public void initBorderObjects() {
+        game.getDungeonMaster().getObjInitializer().processBorderObjects(this, borderObjectsData);
     }
 
-    public void initObjects() {
+    public Map<Integer, BattleFieldObject> initObjects() {
         Map<Integer, BattleFieldObject> objectMap =
                 game.getDungeonMaster().getObjInitializer().processObjects(this,
                         getIdTypeMap(),
@@ -186,6 +215,11 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
 
         log(LOG_CHANNEL.BUILDING, "Objects created: " + objectMap.size());
         getObjIdMap().putAll(objectMap);
+        return objectMap;
+    }
+
+    public Module getModule() {
+        return this;
     }
 
     public void setObjectsData(String objectsData) {
@@ -194,5 +228,37 @@ public class Module extends LevelStruct<LevelZone, LevelZone> {
 
     public String getObjectsData() {
         return objectsData;
+    }
+
+    public void setBorderObjectsData(String borderObjectsData) {
+        this.borderObjectsData = borderObjectsData;
+    }
+
+    public String getBorderObjectsData() {
+        return borderObjectsData;
+    }
+
+    public boolean isFirstInit() {
+        return firstInit;
+    }
+
+    public void setFirstInit(boolean firstInit) {
+        this.firstInit = firstInit;
+    }
+
+    public boolean isStartModule() {
+        return startModule;
+    }
+
+    public void setStartModule(boolean startModule) {
+        this.startModule = startModule;
+    }
+
+    public void setPlatformData(String platformData) {
+        this.platformData = platformData;
+    }
+
+    public String getPlatformData() {
+        return platformData;
     }
 }

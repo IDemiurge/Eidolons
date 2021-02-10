@@ -6,7 +6,7 @@ import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.gui.UiMaster;
 import eidolons.libgdx.gui.generic.ValueContainer;
-import eidolons.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
+import eidolons.libgdx.gui.panels.dc.actionpanel.ActionContainer;
 import eidolons.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.*;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
@@ -23,21 +23,22 @@ public class PanelActionsDataSource implements
         EffectsAndAbilitiesSource, ResourceSource,
         MainWeaponDataSource<ValueContainer>, OffWeaponDataSource {
 
-    private Unit unit;
+    private final Unit unit;
 
-    private UnitDataSource unitDataSource;
+    private final UnitDataSource unitDataSource;
 
     public PanelActionsDataSource(Unit unit) {
         this.unit = unit;
         unitDataSource = new UnitDataSource(unit);
     }
 
+    public Unit getUnit() {
+        return unit;
+    }
 
     @Override
     public String getParam(PARAMS param) {
         switch (param) {
-            case STAMINA:
-                return getStamina();
             case FOCUS:
                 return getFocus();
             case TOUGHNESS:
@@ -46,8 +47,6 @@ public class PanelActionsDataSource implements
                 return getEndurance();
             case ESSENCE:
                 return getEssence();
-            case MORALE:
-                return getMorale();
         }
         return null;
     }
@@ -62,7 +61,7 @@ public class PanelActionsDataSource implements
         List<ValueContainer> list = items.stream()
                 .map((DC_QuickItemObj key) -> {
                     boolean valid = key.getActive().canBeManuallyActivated();
-                    final ValueContainer valueContainer = new ActionValueContainer(
+                    final ValueContainer valueContainer = new ActionContainer(
                             UiMaster.getBottomQuickItemIconSize(),
                             valid,
                             (key.getImagePath()),
@@ -124,15 +123,6 @@ public class PanelActionsDataSource implements
         };
     }
 
-    @Override
-    public List<ValueContainer> getBuffs() {
-        return unitDataSource.getBuffs();
-    }
-
-    @Override
-    public List<ValueContainer> getAbilities() {
-        return unitDataSource.getAbilities();
-    }
 
     @Override
     public String getToughness() {
@@ -142,16 +132,6 @@ public class PanelActionsDataSource implements
     @Override
     public String getEndurance() {
         return unitDataSource.getEndurance();
-    }
-
-    @Override
-    public String getStamina() {
-        return unitDataSource.getStamina();
-    }
-
-    @Override
-    public String getMorale() {
-        return unitDataSource.getMorale();
     }
 
     @Override
@@ -202,5 +182,15 @@ public class PanelActionsDataSource implements
     @Override
     public List<ValueContainer> getNaturalMainWeaponDetailInfo() {
         return null;
+    }
+
+    @Override
+    public List<ValueContainer> getBuffs(boolean body) {
+        return unitDataSource.getBuffs(body);
+    }
+
+    @Override
+    public List<ValueContainer> getAbilities(boolean body) {
+        return unitDataSource.getAbilities(body);
     }
 }

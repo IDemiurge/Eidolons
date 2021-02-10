@@ -1,10 +1,11 @@
 package eidolons.game.battlecraft.logic.battlefield;
 
+import com.google.inject.internal.util.ImmutableList;
 import eidolons.ability.conditions.req.CellCondition;
 import eidolons.ability.conditions.shortcut.PushableCondition;
 import eidolons.ability.effects.oneshot.move.MoveEffect;
 import eidolons.ability.effects.oneshot.move.SelfMoveEffect;
-import eidolons.content.PARAMS;
+import eidolons.content.DC_ValueManager;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
@@ -16,13 +17,16 @@ import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.AiActionFactory;
 import eidolons.game.battlecraft.ai.elements.actions.AiUnitActionMaster;
 import eidolons.game.battlecraft.ai.tools.path.ActionPath;
+import eidolons.game.battlecraft.ai.tools.path.Choice;
 import eidolons.game.battlecraft.ai.tools.path.PathBuilder;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
-import eidolons.game.battlecraft.rules.mechanics.CollisionRule;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.game.DC_BattleFieldGrid;
 import eidolons.game.core.game.DC_Game;
-import eidolons.system.CustomValueManager;
+import eidolons.game.core.master.EffectMaster;
+import eidolons.game.core.state.DC_GameState;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
+import eidolons.game.module.dungeoncrawl.explore.ExploreGameLoop;
+import eidolons.libgdx.screens.ScreenMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.system.AiEnums;
@@ -41,6 +45,8 @@ import main.game.bf.directions.UNIT_DIRECTION;
 import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -48,22 +54,28 @@ import main.system.datatypes.DequeImpl;
 import main.system.math.PositionMaster;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static main.system.auxiliary.log.LogMaster.log;
 
 public class DC_MovementManager implements MovementManager {
 
-    private static DC_MovementManager instance;
+    public static boolean anObjectMoved;
     Map<Unit, List<ActionPath>> pathCache = new HashMap<>();
-    private DC_Game game;
+    private final DC_Game game;
+    public static Coordinates playerDestination;
+    public static boolean outsideInterrupt;
+    public static List<Coordinates> playerPath;
 
     public DC_MovementManager(DC_Game game) {
         this.game = game;
-        instance = this;
+        DC_MovementManager instance = this;
     }
 
     public static Coordinates getMovementDestinationCoordinate(DC_ActiveObj active) {
         try {
-            MoveEffect effect = (MoveEffect) EffectFinder.getEffectsOfClass(active.getAbilities(),
-             MoveEffect.class).get(0);
+            MoveEffect effect = (MoveEffect) EffectMaster.getEffectsOfClass(active.getAbilities(),
+                    MoveEffect.class).get(0);
             effect.setRef(active.getRef());
             if (effect instanceof SelfMoveEffect) {
                 SelfMoveEffect selfMoveEffect = (SelfMoveEffect) effect;
@@ -76,24 +88,39 @@ public class DC_MovementManager implements MovementManager {
         return active.getOwnerUnit().getCoordinates();
     }
 
-    public static Action getFirstAction(Unit unit, Coordinates coordinates) {
+    public static Action getMoveAction(Unit unit, Coordinates coordinates) {
+        return getMoveAction(unit, unit.getCoordinates(), coordinates);
+    }
+
+    public static Action getMoveAction(Unit unit, Coordinates from, Coordinates c) {
+
+        // if (diagAllowed){
+        if (from.x != c.x && from.y != c.y) {
+            Action leap = AiActionFactory.newAction("Clumsy Leap", unit.getAI());
+            leap.setRef(Ref.getCopy(leap.getRef()));
+            leap.getRef().setTarget(unit.getGame().getCellByCoordinate(c).getId());
+            return leap;
+        }
+        // }
         FACING_SINGLE relative = FacingMaster.getSingleFacing(unit.getFacing(),
-         unit.getCoordinates(), coordinates);
+                from, c);
         if (relative == FACING_SINGLE.IN_FRONT) {
             if (!new CellCondition(UNIT_DIRECTION.AHEAD).check(unit))
                 return null;
             return AiActionFactory.newAction("Move", unit.getAI());
         }
-        boolean wantToMoveLeft = (unit.getFacing().isVertical()) ?
-         PositionMaster.isToTheLeft(unit.getCoordinates(), coordinates)
-         : PositionMaster.isAbove(unit.getCoordinates(), coordinates);
-        if (!unit.getFacing().isCloserToZero()) {
-            wantToMoveLeft = !wantToMoveLeft;
-        }
+        boolean left = (unit.getFacing().isVertical())
 
-        if (!new CellCondition(wantToMoveLeft ? UNIT_DIRECTION.LEFT : UNIT_DIRECTION.RIGHT).check(unit))
+                ? unit.getFacing().isCloserToZero() == PositionMaster.isToTheLeft(c, from)
+
+                : unit.getFacing().isCloserToZero() != PositionMaster.isAbove(c, from);
+        // if (!unit.getFacing().isCloserToZero()) {
+        //     left = !left;
+        // }
+
+        if (!new CellCondition(left ? UNIT_DIRECTION.LEFT : UNIT_DIRECTION.RIGHT).check(unit))
             return null;
-        return AiActionFactory.newAction("Move " + (wantToMoveLeft ? "Left" : "Right"), unit.getAI());
+        return AiActionFactory.newAction("Move " + (left ? "Left" : "Right"), unit.getAI());
     }
 
     public static List<DC_ActiveObj> getMoves(Unit unit) {
@@ -151,20 +178,38 @@ public class DC_MovementManager implements MovementManager {
         return pathCache.get(activeUnit);
     }
 
-    public void cancelAutomove(Obj activeUnit) {
+    public void cancelAutomove(Unit activeUnit) {
+        if (!(activeUnit.getGame().getGameLoop() instanceof ExploreGameLoop)) {
+            return;
+        }
+        ((ExploreGameLoop) activeUnit.getGame().getGameLoop()).clearPlayerActions();
         pathCache.remove(activeUnit);
+        playerDestination = null;
+        playerPath = null;
     }
 
     public List<ActionPath> buildPath(Unit unit, Coordinates coordinates) {
         List<DC_ActiveObj> moves = getMoves(unit);
+        if (isStarPath(unit, coordinates)) {
+            ActionPath path = game.getAiManager().getStarBuilder().getPath(unit, unit.getCoordinates(), coordinates);
+            if (path != null) {
+                return ImmutableList.of(path);
+            }
+        }
         PathBuilder builder = PathBuilder.getInstance().init
-         (moves, new Action(unit.getAction("Move")));
+                (moves, new Action(unit.getAction("Move")));
+        builder.simplified = true;
         List<ActionPath> paths = builder.build(new ListMaster<Coordinates>().getList(coordinates));
+        builder.simplified = false;
         if (paths.isEmpty()) {
             return null;
         }
-
         return paths;
+    }
+
+    private boolean isStarPath(Unit unit, Coordinates coordinates) {
+        return true;
+        // return coordinates.dst(unit.getCoordinates()) >= StarBuilder.PREF_MIN_RANGE;
     }
 
     @Override
@@ -174,36 +219,85 @@ public class DC_MovementManager implements MovementManager {
     }
 
     public void moveTo(Coordinates coordinates) {
-        Unit unit = game.getManager().getActiveObj();
-        List<ActionPath> paths = pathCache.get(unit);
-        if (paths == null) {
-            paths = buildPath(unit, coordinates);
-            pathCache.put(unit, paths);
-        }
-        if (paths == null) {
-            return;
-        }
-        Action action = null;
-        for (ActionPath path : paths) {
-            action = path.getActions().get(0);
-            break;
-        }
-        if (action == null) {
-            pathCache.remove(unit);
-            return;
-        }
-        // ActionAnimation anim = new ActionAnimation(action);
-        // anim.start();
-
-        Context context = new Context(unit.getRef());
-        if (action.getActive().isMove()) {
-            context.setTarget(game.getCellByCoordinate(coordinates).getId());
-        }
-        unit.getGame().getGameLoop().
-         actionInput(new ActionInput(action.getActive(), context));
+        playerDestination = coordinates;
+        //highlight the destination with overlays
     }
 
-@Override
+    private boolean checkInterruption(Unit unit) {
+        if (outsideInterrupt) {
+            outsideInterrupt = false;
+            return true;
+        }
+        /*
+                check status
+
+         */
+        return false;
+    }
+
+    public boolean isValidDestination(Coordinates coordinates, Unit unit) {
+        if (coordinates == null)
+            return false;
+
+        return !unit.getCoordinates().equals(coordinates);
+    }
+
+    public boolean checkContinueMove() {
+        if (playerDestination == null)
+            return false;
+        Unit unit = game.getManager().getActiveObj();
+        if (checkInterruption(unit)) {
+            return false;
+        }
+        if (!isValidDestination(playerDestination, unit)) {
+            return false;
+        }
+        try {
+            List<ActionPath> paths = pathCache.get(unit);
+            //TODO IDEA: plot the path on the grid for PC to see!
+            if (paths == null) {
+                paths = buildPath(unit, playerDestination);
+                pathCache.put(unit, paths);
+            }
+            if (paths == null) {
+                log(1, "Cannot find path to " + playerDestination);
+                game.getLogManager().log("Cannot find path to " + playerDestination);
+                return false;
+            }
+            for (ActionPath path : paths) {
+                if (!checkPathStillValid(path, playerDestination)) {
+                    continue;
+                }
+                playerPath = path.choices.stream().map(Choice::getCoordinates).collect(Collectors.toList());
+
+                for (Choice choice : path.choices) {
+                    for (Action action : choice.getActions()) {
+                        log(action.getActive().getName() + " added to queue " + playerDestination);
+                        Context context = new Context(unit,
+                                game.getCellByCoordinate(choice.getCoordinates()));
+                        ActionInput actionInput = new ActionInput(action.getActive(), context);
+                        actionInput.setAuto(true);
+                        ((ExploreGameLoop) unit.getGame().getGameLoop()).tryAddPlayerActions(actionInput);
+                        unit.getGame().getGameLoop().signal();
+                        //could support instant mode or just set speed to 10x
+                        playerDestination = null; //?
+                    }
+                }
+                break;
+            }
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+            return false;
+        }
+        return true;
+
+    }
+
+    private boolean checkPathStillValid(ActionPath path, Coordinates playerDestination) {
+        return true;
+    }
+
+    @Override
     public boolean canMove(Entity obj, Coordinates c) {
         return game.getRules().getStackingRule().canBeMovedOnto(obj, c);
     }
@@ -224,11 +318,11 @@ public class DC_MovementManager implements MovementManager {
         return move((BattleFieldObject) obj, getGrid().getCell(c), false, MOVE_MODIFIER.NONE, obj.getRef());
     }
 
-    public boolean checkPushByMovement(BattleFieldObject obj, Coordinates c){
-        for (BattleFieldObject object : game.getObjectsOnCoordinate(c)) {
+    public boolean checkPushByMovement(BattleFieldObject obj, Coordinates c) {
+        for (BattleFieldObject object : game.getObjectsOnCoordinateNoOverlaying(c)) {
             if (object instanceof Structure) {
                 if (PushableCondition.isPushable((Structure) object, (Unit) obj)) {
-//                    if (obj.getIntParam(PARAMS.WEIGHT)>=object.getIntParam(PARAMS.WEIGHT))
+                    //                    if (obj.getIntParam(PARAMS.WEIGHT)>=object.getIntParam(PARAMS.WEIGHT))
                     {
                         push(obj, object);
                     }
@@ -239,26 +333,25 @@ public class DC_MovementManager implements MovementManager {
         }
 
 
-
         return false;
 
     }
 
     private void push(BattleFieldObject obj, BattleFieldObject object) {
-        DIRECTION d = DirectionMaster.getRelativeDirection(obj, object) ;
-        Coordinates c=object.getCoordinates().getAdjacentCoordinate(d);
+        DIRECTION d = DirectionMaster.getRelativeDirection(obj, object);
+        Coordinates c = object.getCoordinates().getAdjacentCoordinate(d);
         if (c != null) {
-        move(object, c);
+            move(object, c);
         }
 
     }
 
     public boolean move(BattleFieldObject obj, DC_Cell cell, boolean free, MOVE_MODIFIER mod,
                         Ref ref) {
-        Ref REF =ref.getCopy();// new Ref(obj.getGame());
+        Ref REF = ref.getCopy();// new Ref(obj.getGame());
         REF.setTarget(cell.getId());
         REF.setSource(obj.getId());
-        LogMaster.log(LogMaster.MOVEMENT_DEBUG, "Moving " + obj + " to " + cell);
+        log(LogMaster.MOVEMENT_DEBUG, "Moving " + obj + " to " + cell);
         Event event = new Event(STANDARD_EVENT_TYPE.UNIT_BEING_MOVED, REF);
         if (!game.fireEvent(event)) {
             return false;
@@ -266,20 +359,22 @@ public class DC_MovementManager implements MovementManager {
 
         Coordinates c = cell.getCoordinates();
         if (mod != MOVE_MODIFIER.TELEPORT) { // TODO UPDATE!
-            Unit moveObj = (Unit) getGrid().getObj(cell.getCoordinates());
-            if (moveObj != null) {
-                if (ref.getActive() instanceof DC_ActiveObj) {
-                    DC_ActiveObj activeObj = (DC_ActiveObj) ref.getActive();
-                    if (moveObj instanceof Unit) {
-                        Unit heroObj = moveObj;
-                        c = CollisionRule.collision(ref, activeObj, moveObj, heroObj,
-                         false, activeObj.getIntParam(PARAMS.FORCE));
-                        if (c == null) {// TODO UPDATE!
-                            return true; // displaced by Collision rule?
-                        }
-                    }
-                }
-            }
+            //            if (RuleKeeper.isRuleOn(RuleKeeper.RULE.COLLISION)) {
+            //            BattleFieldObject moveObj = (BattleFieldObject)game.getObjMaster().getObjectByCoordinate( cell.getCoordinates(), false);
+            //            if (moveObj != null) {
+            //                if (ref.getActive() instanceof DC_ActiveObj) {
+            //                    DC_ActiveObj activeObj = (DC_ActiveObj) ref.getActive();
+            //                    if (moveObj instanceof Unit) {
+            //                        BattleFieldObject heroObj = moveObj;
+            //                        c = CollisionRule.collision(ref, activeObj, moveObj, heroObj,
+            //                         false, activeObj.getIntParam(PARAMS.FORCE));
+            //                        if (c == null) {// TODO UPDATE!
+            //                            return true; // displaced by Collision rule?
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //            }
         }
         if (obj.isDead()) {
             return false;
@@ -288,37 +383,59 @@ public class DC_MovementManager implements MovementManager {
         if (!game.getRules().getStackingRule().canBeMovedOnto(obj, c)) {
             return false;
         }
-//        if (checkPushByMovement(obj, c)) {
-            //TODO
-//        }
+        //        if (checkPushByMovement(obj, c)) {
+        //TODO
+        //        }
 
 
-
-//
-//   if (game.getObjectByCoordinate(c) instanceof BattleFieldObject) {
-//            BattleFieldObject bfObj = (BattleFieldObject) game.getObjectByCoordinate(c);
-//            if (!bfObj.isDead())
-//                if (bfObj.isWall()) {
-//                    return false;
-//                }
-//        }
+        //
+        //   if (game.getObjectByCoordinate(c) instanceof BattleFieldObject) {
+        //            BattleFieldObject bfObj = (BattleFieldObject) game.getObjectByCoordinate(c);
+        //            if (!bfObj.isDead())
+        //                if (bfObj.isWall()) {
+        //                    return false;
+        //                }
+        //        }
         if (obj instanceof Unit) {
             if (!game.getRules().getEngagedRule().unitMoved((Unit) obj, c.x, c.y)) {
                 return false;
             }
         }
-
         obj.setCoordinates(c);
 
-//        if (IGG_HACK_MOVE)
-//            ScreenMaster.getDungeonGrid().unitMoved(obj); //igg demo hack
-        event = new Event(STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING, REF);
+        return moved(obj, cell, false);
+    }
 
-        if (obj instanceof Unit)
-        {
-            game.getDungeonMaster().getTrapMaster().unitMoved((Unit) obj);
-            game.getDungeonMaster().getPortalMaster().unitMoved((Unit) obj);
+    public boolean moved(BattleFieldObject obj, DC_Cell cell, boolean quiet) {
+        Ref ref = Ref.getSelfTargetingRefCopy(obj);
+        ref.setQuiet(quiet);
+        return moved(obj, cell, ref);
+    }
+
+    public void moved(Unit unit, boolean quiet) {
+        moved(unit, game.getCellByCoordinate(unit.getCoordinates()), quiet);
+    }
+
+    public boolean moved(BattleFieldObject obj, DC_Cell cell, Ref REF) {
+        anObjectMoved=true;
+        DC_GameState.gridChanged=true;
+        if (!REF.isQuiet())
+            if (obj instanceof Unit) {
+                game.getDungeonMaster().getTrapMaster().unitMoved((Unit) obj);
+                game.getDungeonMaster().getPortalMaster().unitMoved((Unit) obj);
+            }
+        cell.setObjectsModified(true);
+        cell.setUnitsHaveMovedHere(true);
+        if (obj.isPlayerCharacter()) {
+            LevelStruct struct = game.getDungeonMaster().getStructMaster().getLowestStruct(obj.getCoordinates());
+            String background = struct.getPropagatedValue("background");
+            if (!ScreenMaster.getScreen().getBackgroundPath().equalsIgnoreCase(background)) {
+                GuiEventManager.trigger(GuiEventType.UPDATE_DUNGEON_BACKGROUND, background);
+            }
         }
+        if (REF.isQuiet())
+            return true;
+        Event event = new Event(STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING, REF);
         return game.fireEvent(event);
     }
 
@@ -338,13 +455,13 @@ public class DC_MovementManager implements MovementManager {
 
         if (template.getVarClasses() != null) {
             String vars = ref.getObj(KEYS.ACTIVE).getCustomProperty(
-             CustomValueManager.getVarEnumCustomValueName(MOVE_TEMPLATES.class));
+                    DC_ValueManager.getVarEnumCustomValueName(MOVE_TEMPLATES.class));
             List<String> varList = VariableManager.getVarList(vars);
 
             range = varList.get(0);
             if (varList.size() > 1) {
                 direction = new EnumMaster<UNIT_DIRECTION>().retrieveEnumConst(
-                 UNIT_DIRECTION.class, varList.get(1));
+                        UNIT_DIRECTION.class, varList.get(1));
             }
 
             if (varList.size() > 2) {
@@ -363,7 +480,7 @@ public class DC_MovementManager implements MovementManager {
         } else {
             if (range.equals("1")) {
                 return obj.getCoordinates().getAdjacentCoordinate(
-                 DirectionMaster.getDirectionByFacing(facing, direction));
+                        DirectionMaster.getDirectionByFacing(facing, direction));
             }
             // preCheck int >= formla
 
@@ -372,5 +489,6 @@ public class DC_MovementManager implements MovementManager {
         return null;
 
     }
+
 
 }

@@ -5,7 +5,9 @@ import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.TablePanelX;
-import eidolons.libgdx.gui.panels.dc.atb.AtbPanel;
+import eidolons.libgdx.gui.panels.dc.topleft.CombatOptionsPanel;
+import eidolons.libgdx.gui.panels.dc.topleft.TopLeftPanel;
+import eidolons.libgdx.gui.panels.dc.topleft.atb.AtbPanel;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.stage.ConfirmationPanel;
@@ -21,7 +23,7 @@ public abstract class Tooltip<T extends Actor> extends TablePanelX<T> {
     protected boolean showing;
     protected ToolTipManager manager;
     protected Actor actor;
-    private boolean mouseHasMoved;
+    protected boolean mouseHasMoved;
 
     public Tooltip(Actor actor) {
         this.actor = actor;
@@ -206,7 +208,11 @@ public abstract class Tooltip<T extends Actor> extends TablePanelX<T> {
             list.add((Group) actor);
         }
         for (Group sub : list) {
+            if (sub instanceof CombatOptionsPanel)
+               return true;
             if (sub instanceof AtbPanel)
+                return false;
+            if (sub instanceof TopLeftPanel)
                 return false;
         }
         return true;

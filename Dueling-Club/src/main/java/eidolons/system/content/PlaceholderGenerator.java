@@ -4,7 +4,7 @@ import eidolons.content.PROPS;
 import eidolons.game.core.master.ObjCreator;
 import eidolons.game.module.generator.GeneratorEnums;
 import eidolons.game.module.generator.init.RngBfObjProvider;
-import eidolons.libgdx.bf.overlays.WallMap;
+import eidolons.libgdx.bf.overlays.map.WallMap;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
 import main.content.enums.GenericEnums;
@@ -40,7 +40,7 @@ public class PlaceholderGenerator {
     private static final String ROOM_CELL_PLACEHOLDER = "Bf Placeholder";
 
     public static String getPlaceholderName(GeneratorEnums.ROOM_CELL cell) {
-        String name = StringMaster.getWellFormattedString(cell.name());
+        String name = StringMaster.format(cell.name());
         return name + " "+ ObjCreator.PLACEHOLDER ;
     }
     public static void generateForRoomCells() {
@@ -50,7 +50,7 @@ public class PlaceholderGenerator {
         ObjType baseType =new ObjType(ROOM_CELL_PLACEHOLDER, DC_TYPE.BF_OBJ);
         for (GeneratorEnums.ROOM_CELL cell : placeholder_cells) {
             ObjType type = new ObjType(baseType);
-            String name = StringMaster.getWellFormattedString(cell.name());
+            String name = StringMaster.format(cell.name());
             type.setName(getPlaceholderName(cell));
             PROPERTY groupsProp = PROPS.PLACEHOLDER_DATA;
             type.setProperty(groupsProp, getSubgroupsForCell(cell));
@@ -90,22 +90,14 @@ public class PlaceholderGenerator {
     private static String getSubgroupsForCell(GeneratorEnums.ROOM_CELL cell) {
         switch (cell) {
             case ART_OBJ:
-                return "";
-            case SPECIAL_ART_OBJ:
-                return "";
-            case CONTAINER:
-                return "";
-            case SPECIAL_CONTAINER:
-                return "";
-            case DOOR:
-                return "";
-            case TRAP:
-                return "";
-            case LIGHT_EMITTER:
-                return "";
-            case WALL_WITH_LIGHT_OVERLAY:
-                return "";
             case WALL_WITH_DECOR_OVERLAY:
+            case WALL_WITH_LIGHT_OVERLAY:
+            case LIGHT_EMITTER:
+            case TRAP:
+            case DOOR:
+            case SPECIAL_CONTAINER:
+            case CONTAINER:
+            case SPECIAL_ART_OBJ:
                 return "";
         }
         return null;

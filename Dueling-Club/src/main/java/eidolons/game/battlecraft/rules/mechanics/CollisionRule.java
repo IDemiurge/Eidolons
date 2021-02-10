@@ -3,8 +3,8 @@ package eidolons.game.battlecraft.rules.mechanics;
 import eidolons.ability.effects.oneshot.DealDamageEffect;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battlefield.vision.StealthRule;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
+import eidolons.game.battlecraft.logic.battlefield.vision.advanced.StealthRule;
 import eidolons.game.battlecraft.rules.combat.attack.extra_attack.AttackOfOpportunityRule;
 import eidolons.game.battlecraft.rules.combat.attack.extra_attack.InstantAttackRule;
 import eidolons.game.battlecraft.rules.combat.mechanics.ForceRule;
@@ -99,7 +99,7 @@ public class CollisionRule {
             new DealDamageEffect(ForceRule.getCollisionDamageFormula(moveObj, collideObj, force,
              false), GenericEnums.DAMAGE_TYPE.BLUDGEONING).apply(Ref.getSelfTargetingRefCopy(moveObj));
         }
-        if (!VisionManager.checkVisible(collideObj))
+        if (!VisionHelper.checkVisible(collideObj))
         // if (moveObj.canAct())
         {
             StealthRule.applySpotted(collideObj); // ROLL?

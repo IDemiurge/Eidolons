@@ -7,14 +7,10 @@ import main.entity.obj.Obj;
  */
 public class EffectTimer<R extends Runnable, O extends Obj> {
 
-    private R runnable;
-    private O object;
-    private float period;
+    private final float period;
     private float timer;
 
     public EffectTimer(R runnable, O object, float period) {
-        this.runnable = runnable;
-        this.object = object;
         this.period = period;
     }
 

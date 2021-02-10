@@ -5,15 +5,16 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SymbolButton;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.ValueTable;
 import eidolons.libgdx.texture.Images;
+import main.level_editor.gui.stage.LE_GuiStage;
 import main.system.threading.WaitMaster;
 
 import java.util.Arrays;
@@ -21,7 +22,6 @@ import java.util.Collection;
 
 public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T1> {
 
-    public static final WaitMaster.WAIT_OPERATIONS SELECTION = WaitMaster.WAIT_OPERATIONS.DIALOG_SELECTION;
     protected T selected;
     protected TablePanel scrolledTable;
     protected ScrollPane scroll;
@@ -41,7 +41,7 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
 
     @Override
     protected TablePanel getContentTable() {
-        if (isScrolled()){
+        if (isScrolled()) {
             return getScrolledTable();
         }
         return super.getContentTable();
@@ -54,7 +54,7 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
     @Override
     public void clearChildren() {
         super.clearChildren();
-        if (scroll!=null ){
+        if (scroll != null) {
             add(scroll);
         }
     }
@@ -68,39 +68,42 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
         }
         row();
 
-        addNormalSize(new ImageContainer(Images.SEPARATOR_ALT)).center().colspan(2).padBottom(10) ;
+        addNormalSize(new ImageContainer(Images.SEPARATOR_NARROW)).center().colspan(2).padBottom(10);
         row();
-        addNormalSize(new SmartButton(ButtonStyled.STD_BUTTON.OK, () -> ok())).left() ;
-        addNormalSize(new SmartButton(ButtonStyled.STD_BUTTON.CANCEL, () -> cancel())).right();
+        addNormalSize(new SymbolButton(ButtonStyled.STD_BUTTON.OK, () -> ok())).left();
+        addNormalSize(new SymbolButton(ButtonStyled.STD_BUTTON.CANCEL, () -> cancel())).right();
     }
 
     protected abstract T1 createElement_(T datum);
 
-    protected void cancel() {
+    public void cancel() {
         chosen(null);
         close();
     }
+
     public void ok() {
         chosen(selected);
         close();
     }
 
     protected void chosen(T selected) {
-        WaitMaster.receiveInput(SELECTION, selected);
+        WaitMaster.receiveInput(getSelectionOperation(), selected);
     }
 
-    protected void close() {
-        fadeOut();
+    protected WaitMaster.WAIT_OPERATIONS getSelectionOperation() {
+        return WaitMaster.WAIT_OPERATIONS.DIALOG_SELECTION;
     }
+
 
     public T choose(T[] from) {
-       return  choose(Arrays.asList(from));
+        return choose(Arrays.asList(from));
     }
+
     public T choose(Collection<T> from) {
         show();
         setUserObject(from);
-        T res = (T) WaitMaster.waitForInput(SELECTION);
-        close();
+        T res = (T) WaitMaster.waitForInputAnew(getSelectionOperation());
+//        close(); via ok()
         return res;
     }
 
@@ -110,8 +113,7 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 selected = item;
-                if (isInstaOk())
-                {
+                if (isInstaOk()) {
                     ActionMaster.addScaleAction(actor, 0, 1f);
                     ok();
                 }
@@ -124,14 +126,23 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
     }
 
     protected void show() {
-        fadeIn();
+        if (getColor().a != 1) {
+            fadeIn();
+        } else {
+            setVisible(true);
+        }
+
     }
 
+    protected void close() {
+//        if (getColor().a == 1)
+            fadeOut();
+    }
 
     public TablePanel getScrolledTable() {
         if (scrolledTable == null) {
             scrolledTable = new TablePanelX();
-            scroll = new ScrollPane ( scrolledTable);
+            scroll = new ScrollPane(scrolledTable);
             add(scroll);
         }
         return scrolledTable;
@@ -140,5 +151,7 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
     @Override
     public void act(float delta) {
         super.act(delta);
+        if (isVisible())
+            LE_GuiStage.dialogActive = true;
     }
 }

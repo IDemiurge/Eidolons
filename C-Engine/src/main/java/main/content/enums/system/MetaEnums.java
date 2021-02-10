@@ -51,8 +51,8 @@ public class MetaEnums {
 
         ENABLE_COUNTER(false, "mode", "ENABLE_COUNTER_FOR_" + VariableManager.getVarIndex(0), STD_MODES.class),;
 
-        private String text;
-        private Object[] vars;
+        private final String text;
+        private final Object[] vars;
         private String variableNames;
         private Boolean param = true;
 
@@ -116,7 +116,7 @@ public class MetaEnums {
         INTERIOR, DUNGEON, NATURE, DARK, DEATH, CHAOS, ARCANE,
     }
 
-    public enum STD_BUFF_NAMES {
+    public enum STD_BUFF_NAME {
         Encumbered,
         Overburdened,
         Immobilized,
@@ -152,10 +152,10 @@ public class MetaEnums {
         Weakening_Poison,
         Paralyzing_Poison,
         Entangled,
-        Channeling;
+        Channeling, Disabled;
 
         public String getName() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
     }
 
@@ -164,7 +164,10 @@ public class MetaEnums {
 
     }
 
-    public enum WORKSPACE_GROUP {
+    public enum READINESS {
+        NEW, OUTLINE, TESTING, POLISH, PUBLIC,
+    }
+        public enum WORKSPACE_GROUP {
         FOCUS, FIX, TEST, IMPLEMENT, DESIGN, POLISH, COMPLETE, EXLCUDED, DEMO, IGG_TODO, IGG_TESTING, IGG_CONTENT, DEMO_READY
     }
 }

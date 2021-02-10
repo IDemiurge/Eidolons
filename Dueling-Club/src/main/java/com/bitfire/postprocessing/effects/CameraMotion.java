@@ -26,9 +26,10 @@ import com.bitfire.postprocessing.filters.CameraBlur;
  * 
  * @author bmanuel */
 public final class CameraMotion extends PostProcessorEffect {
-	private CameraBlur camblur;
-	private Matrix4 ctp = new Matrix4();
-	private float width, height;
+	private final CameraBlur camblur;
+	private final Matrix4 ctp = new Matrix4();
+	private final float width;
+    private final float height;
 
 	public CameraMotion (int width, int height) {
 		this.width = width;
@@ -83,5 +84,5 @@ public final class CameraMotion extends PostProcessorEffect {
 
 		restoreViewport(dest);
 		camblur.setInput(src).setOutput(dest).render();
-	};
+	}
 }

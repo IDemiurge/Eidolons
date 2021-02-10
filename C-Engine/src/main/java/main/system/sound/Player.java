@@ -17,8 +17,8 @@ import main.system.PathUtils;
 import main.system.auxiliary.*;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
-import main.system.sound.SoundMaster.SOUNDS;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums.SOUNDS;
+import main.system.sound.AudioEnums.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 
 import javax.sound.sampled.*;
@@ -27,19 +27,22 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static main.system.auxiliary.log.LogMaster.log;
+
 public class Player {
     public static final String ALT = "_ALT";
     private static final String SOUNDSETS = "/soundsets/";
     private static final String FORMAT = ".mp3";
     private static final String ALT_FORMAT = ".wav";
     private static final String SOUNDSET_FOLDER_PATH = PathFinder.getSoundPath() + SOUNDSETS;
-    private static Stack<String> lastplayed = new Stack<>();
+    private static final Stack<String> lastplayed = new Stack<>();
     private static boolean neverRepeat = false;
     private static boolean switcher = true;
     private int volume;
     private int delay = 0;
-//    Stack<SoundFx> process =new Stack();
-    private static Map<String, Sound> cache = new HashMap<>();
+    //    Stack<SoundFx> process =new Stack();
+    private static final Map<String, Sound> cache = new HashMap<>();
+    private static final Set<String> broken = new HashSet<>();
 
     // mute
     public Player() {
@@ -106,9 +109,9 @@ public class Player {
         if (!basePath.contains(SoundMaster.getPath())) {
             basePath = SoundMaster.getPath() + basePath;
         }
-        String sound = FileManager.getRandomFilePathVariant(basePath, format,alt);
+        String sound = FileManager.getRandomFilePathVariant(basePath, format, alt);
         if (sound == null) {
-            sound = FileManager.getRandomFilePathVariant(basePath, format,  !alt);
+            sound = FileManager.getRandomFilePathVariant(basePath, format, !alt);
         }
         if (sound == null) {
             format = (format.equalsIgnoreCase(FORMAT)) ? ALT_FORMAT : FORMAT;
@@ -123,8 +126,8 @@ public class Player {
                 files = FileManager.getFilesFromDirectory((basePath), false);
 
             if (!files.isEmpty()) {
-//                String fileName = StringMaster.cropFormat(PathUtils.getLastPathSegment(basePath));
-//                List<File> filtered = files.stream().filter(file -> file.getName().toLowerCase().contains(fileName)).collect(Collectors.toList());
+                //                String fileName = StringMaster.cropFormat(PathUtils.getLastPathSegment(basePath));
+                //                List<File> filtered = files.stream().filter(file -> file.getName().toLowerCase().contains(fileName)).collect(Collectors.toList());
                 sound = FileManager.getRandomFile(files).getPath();
             } else {
                 // failedSounds.add(basePath);
@@ -161,12 +164,12 @@ public class Player {
             if (neverRepeat) {
                 if (lastplayed.peek().equals(sound)
                         && !lastplayed.get(lastplayed.size() - 2).equals(sound)) {
-                    LogMaster.log(0, "NOT playing twice! - " + sound);
+                    log(0, "NOT playing twice! - " + sound);
                     return false;
                 }
             }
         }
-        LogMaster.log(0, "Playing: " + sound);
+        log(0, "Playing: " + sound);
         if (!FileManager.getFile(sound).isFile()) {
             if (!sound.contains(".")) {
                 return play(sound + FORMAT, delay);
@@ -175,7 +178,7 @@ public class Player {
             } else if (sound.contains(" ")) {
                 return play(sound.replace(" ", "_"), delay);
             } else {
-                LogMaster.log(0, "Sound not found: " + sound);
+                log(0, "Sound not found: " + sound);
             }
             return false;
         }
@@ -200,10 +203,12 @@ public class Player {
             playNow(new SoundFx(s, 1, 0));
         }
     }
+
     public static void preload(String path) {
         cache.put(path, Gdx.audio.newSound(Gdx.files.getFileHandle(path,
                 Files.FileType.Absolute)));
     }
+
     public void playNow(SoundFx sound) {
         if (SoundMaster.isBlockNextSound()) {
             SoundMaster.setBlockNextSound(false);
@@ -211,37 +216,44 @@ public class Player {
         }
         if (sound.getSound().endsWith(".ini"))
             return;
+        if (broken.contains(sound.getSound()))
+            return;
         try {
             Sound soundFile = cache.get(sound.getSound());
-            if (soundFile ==null) {
+            if (soundFile == null) {
                 String path = sound.getSound();
-                if ( path.isEmpty( ))
+                if (path.isEmpty())
                     return;
 
-                    if (!path.contains(".")) {
-                    if (FileManager.isFile( path +  ".mp3" )) {
+                if (!path.contains(".")) {
+                    if (FileManager.isFile(path + ".mp3")) {
                         path += ".mp3";
-                    } else
-                    if (FileManager.isFile( path +  ".wav" )) {
+                    } else if (FileManager.isFile(path + ".wav")) {
                         path += ".wav";
                     }
 
                 }
-              soundFile = Gdx.audio.newSound(Gdx.files.getFileHandle(path,
-                    FileType.Absolute));
-                cache.put(sound.getSound(), soundFile);
-        }
+                try {
+                    soundFile = Gdx.audio.newSound(Gdx.files.getFileHandle(path,
+                            FileType.Absolute));
+                    cache.put(sound.getSound(), soundFile);
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                    broken.add(path);
+                }
+            }
             long id = soundFile.play(sound.getVolume());
             float v = sound.getVolume();
             if (v >= 5) {
                 v = v / 100;
             }
             soundFile.setVolume(id, v);
-//            main.system.auxiliary.log.LogMaster.dev(sound.getSound() + " Playing, sound id: " + id + " volume: "
-//                    + v);
+            log(" Playing sound" + sound.getSound() +
+                    "; id: " + id + " volume: "
+                    + v);
 
-//            soundFile.setPitch(id, sound.getPitch());
-//            soundFile.setPan(id, sound.getPan(), sound.getVolume());
+            //            soundFile.setPitch(id, sound.getPitch());
+            //            soundFile.setPan(id, sound.getPan(), sound.getVolume());
             if (neverRepeat)
                 lastplayed.push(sound.getSound());
 
@@ -291,14 +303,13 @@ public class Player {
                 if (variant == null) {
                     corePath = getRandomSound(sound_type, soundSet, true, false);
                     file = FileManager.getFile(corePath + "_01" + FORMAT);
-                    if (!file.isFile())
-                    {
+                    if (!file.isFile()) {
                         corePath = getRandomSound(sound_type, soundSet, false, false);
                     }
                     if (corePath != null)
-                     if (new File(corePath).isFile()) {
-                        return corePath;
-                    }
+                        if (new File(corePath).isFile()) {
+                            return corePath;
+                        }
                 }
                 if (!file.isFile()) {
                     LogMaster.verbose("no sound file available for " + sound_type + " - " + soundSet);
@@ -348,7 +359,7 @@ public class Player {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-//        new Thread(() -> playSoundOnCurrentThread(sound_type, obj), "playing " + sound_type + " sound for " + obj).start();
+        //        new Thread(() -> playSoundOnCurrentThread(sound_type, obj), "playing " + sound_type + " sound for " + obj).start();
     }
 
 
@@ -405,7 +416,7 @@ public class Player {
     public void playRandomSoundFromFolder(String path) {
         if (!path.contains(PathFinder.getSoundPath())) {
             path = PathFinder.getSoundPath() + path;
-//            StringMaster.addMissingPathSegments(
+            //            StringMaster.addMissingPathSegments(
         }
         File file = FileManager.getRandomFile(path);
 
@@ -504,23 +515,23 @@ public class Player {
     }
 
     private String getCustomSoundsetPath(SOUNDS sound_type, Obj obj) {
-        boolean add_name = sound_type != SOUNDS.READY;
+        boolean add_name = sound_type != AudioEnums.SOUNDS.READY;
 
         String string = SoundMaster.getPath()
                 + getBasePath(obj.getProperty(G_PROPS.CUSTOM_SOUNDSET), false);
         if (add_name) {
-            string += StringMaster.FORMULA_REF_SEPARATOR + sound_type.toString();
+            string += Strings.FORMULA_REF_SEPARATOR + sound_type.toString();
         }
         return string;
     }
 
     private String getBasePath(String property, boolean b) {
-        return StringMaster.clipEnding(property, (b) ? StringMaster.FORMULA_REF_SEPARATOR
-                : StringMaster.FORMAT_CHAR);
+        return StringMaster.clipEnding(property, (b) ? Strings.FORMULA_REF_SEPARATOR
+                : Strings.FORMAT_CHAR);
     }
 
     public void playHitSound(Obj obj) {
-        playEffectSound(SOUNDS.HIT, obj);
+        playEffectSound(AudioEnums.SOUNDS.HIT, obj);
     }
 
     public void playSkillAddSound(ObjType type, PARAMETER mastery, String masteryGroup, String rank) {

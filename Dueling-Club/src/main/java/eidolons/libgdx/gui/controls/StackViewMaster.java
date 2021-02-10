@@ -3,18 +3,18 @@ package eidolons.libgdx.gui.controls;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector2;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.bf.grid.cell.BaseView;
 import eidolons.libgdx.bf.grid.cell.GenericGridView;
 import eidolons.libgdx.bf.grid.cell.GridCellContainer;
-import eidolons.libgdx.bf.grid.cell.GridUnitView;
+import eidolons.libgdx.bf.grid.cell.UnitGridView;
 import eidolons.libgdx.screens.ScreenMaster;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.PositionMaster;
 
 import java.util.HashMap;
@@ -30,30 +30,26 @@ import java.util.Map;
  * <p>
  * just proper show/hide!
  * <p>
- * hide when:
- * mouse leaves and stays out for X time
- * user hits ESC
- * any action is activated
+ * hide when: mouse leaves and stays out for X time user hits ESC any action is activated
  * <p>
  * <p>
- * if showing:
- * don't let other things getVar in the way of tooltips/hover
+ * if showing: don't let other things getVar in the way of tooltips/hover
  */
 public class StackViewMaster {
     private static final float WAIT_AFTER_HOVER_OFF = 2;
     private static final float WAIT_AFTER_SHOW = 5;
     private float stackTimer;
-    private int minStackSize = OptionsMaster.getControlOptions().
-     getIntValue(CONTROL_OPTION.MIN_OBJECTS_TO_OPEN_STACK_ON_HOVER);
+    private final int minStackSize = OptionsMaster.getControlOptions().
+            getIntValue(CONTROL_OPTION.MIN_OBJECTS_TO_OPEN_STACK_ON_HOVER);
     private float waitToHideStack;
-    private Map<GenericGridView, Vector2> posMap = new HashMap<>();
-    private Map<GenericGridView, Float> scaleMap = new HashMap<>();
+    private final Map<GenericGridView, Vector2> posMap = new HashMap<>();
+    private final Map<GenericGridView, Float> scaleMap = new HashMap<>();
     private GridCellContainer stackCell;
 
     public StackViewMaster() {
         GuiEventManager.bind(GuiEventType.UNIT_VIEW_MOVED, p -> {
-            if (p.get() instanceof GridUnitView) {
-                if (((GridUnitView) p.get()).isStackView()) {
+            if (p.get() instanceof UnitGridView) {
+                if (((UnitGridView) p.get()).isStackView()) {
                     stackOff();
                 }
 
@@ -148,10 +144,12 @@ public class StackViewMaster {
     }
 
     public void checkShowStack(BaseView object) {
-
+        if (true)
+            return;
+        //TODO review this
         Coordinates c = object.getUserObject().getCoordinates();
-        GridCellContainer cell = ScreenMaster.getDungeonGrid().getCells()[c.x][
-         PositionMaster.getLogicalY(c.y)];
+        GridCellContainer cell = ScreenMaster.getGrid().getCells()[c.x][
+                PositionMaster.getLogicalY(c.y)];
 
 
         if (cell.isStackView()) {
@@ -163,7 +161,7 @@ public class StackViewMaster {
     }
 
     private boolean isStackHoverOn(GridCellContainer cell) {
-        if (CoreEngine.isFootageMode())
+        if (Flags.isFootageMode())
             return false;
         if (isOff())
             return false;

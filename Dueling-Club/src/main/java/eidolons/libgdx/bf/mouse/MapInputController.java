@@ -3,7 +3,7 @@ package eidolons.libgdx.bf.mouse;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.screens.map.MapScreen;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 2/7/2018.
@@ -22,7 +22,7 @@ public class MapInputController extends InputController {
     @Override
     protected void initZoom() {
         super.initZoom();
-        if (CoreEngine.isMapPreview()) {
+        if (Flags.isMapPreview()) {
             defaultZoom = 1;
             camera.zoom = defaultZoom;
             zoomStep = zoomStep_ * defaultZoom;

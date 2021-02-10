@@ -7,14 +7,13 @@ import eidolons.libgdx.GdxMaster;
  */
 public class UiMaster {
 
-    private static Float speedFactor= 0.7f;
-
     public static float getSpeedFactor() {
 //        if (speedFactor == null) {
 //       TODO another option value for it
 //        speedFactor =new Float(100)
 //             / OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED)            ;
 //        }
+        Float speedFactor = 0.7f;
         return speedFactor;
     }
 
@@ -31,7 +30,7 @@ public class UiMaster {
     public static int getSmallIconSize() {
         if (!isIconsScaled())
             return 32;
-        return (int) (32 * new Float((((int) (GdxMaster.getFontSizeMod() * 100)) / 10)) / 10);
+        return (int) (32 * (float) (((int) (GdxMaster.getFontSizeMod() * 100)) / 10) / 10);
     }
 
     public static int getIconSize() {
@@ -42,7 +41,7 @@ public class UiMaster {
     public static int getSpellIconSize() {
         if (!isIconsScaled())
                 return 80;
-        return (int) (80 * new Float((((int) (GdxMaster.getFontSizeMod() * 100)) / 10)) / 10);
+        return (int) (80 * (float) (((int) (GdxMaster.getFontSizeMod() * 100)) / 10) / 10);
     }
 
     public static int getIconSize(boolean smaller) {
@@ -53,8 +52,8 @@ public class UiMaster {
            return 64;
 
         if (smaller)
-            return (int) (42 * new Float((((int) (GdxMaster.getFontSizeMod() * 100)) / 10)) / 10);
-        return (int) (64 * new Float((((int) (GdxMaster.getFontSizeMod() * 100)) / 10)) / 10);
+            return (int) (42 * (float) (((int) (GdxMaster.getFontSizeMod() * 100)) / 10) / 10);
+        return (int) (64 * (float) (((int) (GdxMaster.getFontSizeMod() * 100)) / 10) / 10);
     }
 
     private static boolean isIconsScaled() {

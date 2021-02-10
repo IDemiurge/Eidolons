@@ -3,7 +3,7 @@ package eidolons.libgdx.gui.panels.headquarters.hero;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
-import eidolons.content.DC_ContentValsManager;
+import eidolons.content.ContentConsts;
 import eidolons.content.PARAMS;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.StyleHolder;
@@ -20,14 +20,14 @@ import main.content.values.parameters.PARAMETER;
  * Created by JustMe on 4/15/2018.
  */
 public class HqParamPanel extends HqElement{
-    private   PARAMETER[] params;
+    private final PARAMETER[] params;
     private   HorizontalGroup group;
     Array<ValueContainer> containers;
 
     public HqParamPanel(boolean dynamic) {
         this((dynamic)
-         ? DC_ContentValsManager.DYNAMIC_PARAMETERS
-         : DC_ContentValsManager.MAIN_PARAMETERS);
+         ? ContentConsts.DYNAMIC_PARAMETERS
+         : ContentConsts.MAIN_PARAMETERS);
     }
     public HqParamPanel(PARAMETER...params) {
         setBackground(getDefaultBackground());
@@ -71,7 +71,7 @@ public class HqParamPanel extends HqElement{
         for (PARAMETER sub : params) {
             CharSequence text=getText(sub);
             containers.get(i).setValueText(text);
-            int size = 18 + Math.round(18 * new Float(2.0f) / (1 + text.length()) / 10);
+            int size = 18 + Math.round(18 * 2.0f / (1 + text.length()) / 10);
             containers.get(i).setStyle(StyleHolder.getHqLabelStyle(size));
             containers.get(i).clearListeners();
             containers.get(i).addListener(new ValueTooltip(DescriptionTooltips.tooltip(sub, getUserObject().getEntity())).getController());
@@ -97,7 +97,6 @@ public class HqParamPanel extends HqElement{
                 case C_TOUGHNESS:
 //                case C_MORALE:
                 case C_ESSENCE:
-                case C_STAMINA:
 //                case C_FOCUS:
                     return true;
             }

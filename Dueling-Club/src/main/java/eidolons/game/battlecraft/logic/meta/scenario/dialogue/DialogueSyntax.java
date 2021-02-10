@@ -65,8 +65,6 @@ public class DialogueSyntax {
 
 
     public static Condition getConditions(String text) {
-        if (!text.contains(PARAM_MOD))
-            return null;
         return null;
     }
 

@@ -72,7 +72,7 @@ public abstract class Options<E extends Enum<E>, T extends OPTION> extends DataU
         Object[] getOptions();
 
         default String getName() {
-            return StringMaster.getWellFormattedString(toString());
+            return StringMaster.format(toString());
         }
 
         default boolean isHidden(){
@@ -80,6 +80,10 @@ public abstract class Options<E extends Enum<E>, T extends OPTION> extends DataU
         }
         default boolean isDevOnly(){
             return false;
+        }
+
+        default String getTooltip(){
+            return getName();
         }
     }
 }

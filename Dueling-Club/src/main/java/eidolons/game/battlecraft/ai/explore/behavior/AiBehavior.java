@@ -15,14 +15,14 @@ import eidolons.game.battlecraft.ai.tools.path.ActionPath;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.swing.XLine;
 import main.system.auxiliary.ContainerUtils;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.PositionMaster;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public abstract class AiBehavior {
 
     protected BEHAVIOR_STATUS status;
     protected BEHAVIOR_METHOD method;
-    protected LevelBlock block;
+    protected LevelStruct<LevelStruct, LevelStruct> block;
     protected Coordinates preferredPosition;
     protected DC_Obj target;
     protected float sinceLastAction;
@@ -53,9 +53,8 @@ public abstract class AiBehavior {
     protected float speed;
     protected Action queuedAction;
     protected Map<XLine, List<Coordinates>> pathCache = new HashMap<>();
-    private Action lastAction;
-    private List<Action> actionLog = new ArrayList<>();
-    private List<Orders> ordersLog = new ArrayList<>();
+    private final List<Action> actionLog = new ArrayList<>();
+    private final List<Orders> ordersLog = new ArrayList<>();
 
     public AiBehavior(AiMaster master, UnitAI ai) {
         this.master = master;
@@ -63,11 +62,11 @@ public abstract class AiBehavior {
         this.group = ai.getGroupAI();
         origin = getCoordinates();
         speed = getDefaultSpeed();
-        block = master.getGame().getDungeonMaster().getDungeonLevel().getBlockForCoordinate(
+        block = master.getGame().getDungeonMaster().getStructMaster().getLowestStruct(
          ai.getUnit().getCoordinates());
         if (block == null) {
             for (Coordinates c : ai.getUnit().getCoordinates().getAdjacent()) {
-                block = master.getGame().getDungeonMaster().getDungeonLevel().getBlockForCoordinate(
+                block = master.getGame().getDungeonMaster().getStructMaster().getLowestStruct(
                  c);
                 if (block != null)
                     return;
@@ -294,7 +293,7 @@ public abstract class AiBehavior {
     }
 
     protected boolean isLogged() {
-        return CoreEngine.isIDE() && AiBehaviorManager.TEST_MODE;
+        return Flags.isIDE() && AiBehaviorManager.TEST_MODE;
     }
 
     protected void initOrders() {
@@ -322,7 +321,7 @@ public abstract class AiBehavior {
         orders.popNextAction(); //ensure sync
 
         log("Action to execute: " + queuedAction);
-        lastAction = queuedAction;
+        Action lastAction = queuedAction;
         actionLog.add(lastAction);
         queuedAction = null;
         resetSinceLastAction();
@@ -446,9 +445,8 @@ public abstract class AiBehavior {
             log("Path chosen for " +
              cell + "" + path);
         }
-        ActionSequence sequence = master.getActionSequenceConstructor().getSequenceFromPath(path, ai);
 
-        return sequence;
+        return master.getActionSequenceConstructor().getSequenceFromPath(path, ai);
     }
 
     protected boolean isAtomicAllowed(Coordinates cell) {

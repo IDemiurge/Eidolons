@@ -4,7 +4,7 @@ import main.content.values.parameters.G_PARAMS;
 import main.data.ability.construct.AbilityConstructor;
 import main.entity.Entity;
 import main.system.auxiliary.log.LogMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 2/15/2017.
@@ -30,7 +30,7 @@ public class EntityInitializer<E extends Entity> extends EntityHandler<E> {
     public void construct() {
         if (!getEntity().isConstructed() || game.isSimulation() || getEntity().isConstructAlways()) {
             getEntity().resetRef(); // potential threat
-            if (!CoreEngine.isIDE())
+            if (!Flags.isIDE())
             {
                 AbilityConstructor.constructObj(getEntity());
                 if (!game.isSimulation())

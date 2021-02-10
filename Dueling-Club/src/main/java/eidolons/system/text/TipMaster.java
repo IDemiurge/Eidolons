@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.game.EidolonsGame;
 import eidolons.system.text.TextMaster.LOCALE;
-import eidolons.system.text.Tips.*;
+import eidolons.system.text.Tooltips.*;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.*;
 import main.system.auxiliary.data.FileManager;
@@ -37,7 +37,7 @@ public class TipMaster {
     };
     static boolean no_repeat;
     static Boolean basicOrAdvanced = EidolonsGame.TESTER_VERSION;
-    private static List displayedTips = new ArrayList<>();
+    private static final List displayedTips = new ArrayList<>();
 
     public static String getTip() {
         return getTip(0);
@@ -69,7 +69,7 @@ public class TipMaster {
                  : BASIC_USABILITY_TIPS.class;
                 break;
         }
-        String tip = "";
+        String tip;
 
         Loop loop = new Loop(200); //if we check 200 tips and they all have been displayed,
         //well, let's go for another round!
@@ -111,7 +111,7 @@ public class TipMaster {
             String path = getPath(clazz);
             String contents = FileManager.readFile(path);
             ArrayList<String> lines = new ArrayList<>(Arrays.asList(StringMaster.splitLines(contents)));
-            lines.removeIf(line -> line.isEmpty());
+            lines.removeIf(String::isEmpty);
             if (lines.isEmpty()) {
                 continue;
             }
@@ -141,7 +141,7 @@ public class TipMaster {
 
     public static String getPath() {
         return StrPathBuilder.build(PathFinder.getTextPath(),
-         LOCALE.english.name(), "tips");
+         LOCALE.english.name(), "tooltips");
     }
 
     public static void initTooltips(String tooltipType, String locale) {
@@ -221,7 +221,7 @@ public class TipMaster {
                 return
                  "You can adjust options by clicking on gears icon in top-right corner";
             case MODES:
-                return "Use Restoration Mode on the bottom panel to regain lost Stamina, Focus or Essence. Camp when outside combat and with enough food.";
+                return "Use Restoration Mode on the bottom panel to regain lost Toughness, Focus or Essence. Camp when outside combat and with enough food.";
 
             case DEFAULT_ACTIONS:
                 return

@@ -3,27 +3,17 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Manipulator;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Veil;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.*;
-import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.cinematic.flight.FlightData;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.generator.model.AbstractCoordinates;
-import eidolons.game.netherflame.igg.event.TipMessageMaster;
-import eidolons.game.netherflame.igg.event.TipMessageSource;
-import eidolons.game.netherflame.igg.pale.PaleAspect;
-import eidolons.libgdx.anims.fullscreen.FullscreenAnimDataSource;
-import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
-import eidolons.system.audio.MusicMaster;
 import eidolons.system.text.DescriptionTooltips;
-import main.content.enums.GenericEnums;
 import main.elements.conditions.Condition;
 import main.elements.triggers.Trigger;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.event.Event;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.log.LOG_CHANNEL;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,34 +21,41 @@ import java.util.List;
 
 import static main.system.auxiliary.log.LogMaster.log;
 
-public class Puzzle {
+public abstract class Puzzle {
 
-    PuzzleEnvironment environment;
-    PuzzleQuest quest;
-    PuzzleData data;
-    PuzzleStats stats;
+    protected PuzzleEnvironment environment;
+    protected PuzzleHandler handler;
+    protected PuzzleQuest quest;
+    protected PuzzleData data;
+    protected PuzzleStats stats;
 
-    List<PuzzleTrigger> triggers = new ArrayList<>();
+    protected List<PuzzleTrigger> triggers = new ArrayList<>();
 
-    List<PuzzleSetup> setups;
-    List<PuzzleRules> rules;
-    List<PuzzleResolution> resolutions;
+    protected List<PuzzleSetup> setups;
+    protected List<PuzzleRules> rules;
+    protected List<PuzzleResolution> resolutions;
 
-    boolean active;
-    boolean solved;
-    boolean failed;
-    private Coordinates coordinates;
 
-    private Veil veil;
-    private Veil exitVeil;
-    private LevelBlock block;
-    private String title;
+    protected boolean active;
+    protected boolean solved;
+    protected boolean failed;
+    protected Coordinates coordinates;
+
+    protected Veil veil;
+    protected Veil exitVeil;
+    protected LevelBlock block;
+    protected String title;
 
     public Puzzle() {
-        stats = new PuzzleStats(this);
-        title = getDefaultTitle();
     }
 
+    protected void init() {
+        stats = new PuzzleStats(this);
+        title = getDefaultTitle();
+        handler = createHandler();
+    }
+
+    protected abstract PuzzleHandler createHandler();
 
     public void setResolutions(PuzzleResolution... resolutions) {
         this.resolutions = new ArrayList<>(Arrays.asList(resolutions));
@@ -77,32 +74,39 @@ public class Puzzle {
     }
 
     public int getWidth() {
-        return data.getIntValue(PuzzleData.PUZZLE_VALUE.WIDTH);
+        int width = data.getIntValue(PuzzleData.PUZZLE_VALUE.WIDTH);
+        if (width==0) {
+            return getDefaultWidth();
+        }
+        return width;
     }
 
+
     public int getHeight() {
-        return data.getIntValue(PuzzleData.PUZZLE_VALUE.HEIGHT);
+        int height = data.getIntValue(PuzzleData.PUZZLE_VALUE.HEIGHT);
+        if (height==0) {
+            return getDefaultHeight();
+        }
+        return height;
     }
     //TODO
 
+    protected int getDefaultHeight() {
+        return 0;
+    }
+    protected int getDefaultWidth() {
+        return 0;
+    }
     public void createTrigger(PuzzleTrigger.PUZZLE_TRIGGER type, Event.EVENT_TYPE event, Condition checks, Runnable action) {
         log(1, ">> Puzzle createTrigger :" + event + " " + checks);
         triggers.add(new PuzzleTrigger(this, type, event, checks, action));
     }
 
-    public void createTriggerGlobal(PuzzleTrigger.PUZZLE_TRIGGER type, Condition checks, Runnable action, Event.EVENT_TYPE event) {
-        Trigger trigger = new PuzzleTrigger(this, type, event, checks, action);
-        Eidolons.getGame().getManager().addTrigger(trigger);
-    }
 
     public void manipulatorActs(Manipulator manipulator) {
         for (PuzzleRules rule : rules) {
             rule.manipulatorActs(manipulator);
         }
-    }
-
-    public PuzzleEnvironment getEnvironment() {
-        return environment;
     }
 
     public PuzzleQuest getQuest() {
@@ -121,16 +125,8 @@ public class Puzzle {
         return triggers;
     }
 
-    public List<PuzzleSetup> getSetups() {
-        return setups;
-    }
-
     public List<PuzzleRules> getRules() {
         return rules;
-    }
-
-    public List<PuzzleResolution> getResolutions() {
-        return resolutions;
     }
 
     public boolean isActive() {
@@ -154,27 +150,16 @@ public class Puzzle {
     }
 
     public boolean isPale() {
-        return data.getBooleanValue(PuzzleData.PUZZLE_VALUE.PALE);
+        // return data.getBooleanValue(PuzzleData.PUZZLE_VALUE.PALE);
+        return false;
     }
 
     public void setEnterVeil(Veil veil) {
         this.veil = veil;
     }
 
-    public Veil getVeil() {
-        return veil;
-    }
-
     public void setExitVeil(Veil exitVeil) {
         this.exitVeil = exitVeil;
-    }
-
-    public Veil getExitVeil() {
-        return exitVeil;
-    }
-
-    public void setEnvironment(PuzzleEnvironment environment) {
-        this.environment = environment;
     }
 
     public void setQuest(PuzzleQuest quest) {
@@ -183,30 +168,20 @@ public class Puzzle {
 
     public void setData(PuzzleData data) {
         this.data = data;
+        init();
     }
+
 
     public void setStats(PuzzleStats stats) {
         this.stats = stats;
     }
 
-    public void activate() {
-        active = true;
-        failed = false;
-        triggers.clear();
-        for (PuzzleSetup setup : setups) {
-            setup.started();
-        }
-        resolutions.forEach(r -> r.started());
-        rules.forEach(r -> r.started());
-        getMaster().activated(this);
-        quest = initQuest(data);
-        stats.started();
-        log(LOG_CHANNEL.ANIM_DEBUG, "Puzzle Activated: " + this);
-        glimpse();
+    public String getOverrideBackground() {
+        return null;
     }
 
-    protected PuzzleQuest initQuest(PuzzleData data) {
-        return new PuzzleQuest(this, data);
+    public FlightData getFlightData() {
+        return null;
     }
 
     public LevelBlock getBlock() {
@@ -214,7 +189,11 @@ public class Puzzle {
     }
 
     public Coordinates getExitCoordinates() {
-        return new Coordinates(data.getValue(PuzzleData.PUZZLE_VALUE.EXIT)).negativeY().getOffset(getCoordinates());
+        String value = data.getValue(PuzzleData.PUZZLE_VALUE.EXIT);
+        if (value.isEmpty()) {
+            return null;
+        }
+        return getAbsoluteCoordinate(new Coordinates(value));
     }
 
     public void setBlock(LevelBlock block) {
@@ -222,51 +201,23 @@ public class Puzzle {
     }
 
     public Coordinates getEntranceCoordinates() {
-        return new Coordinates(data.getValue(PuzzleData.PUZZLE_VALUE.ENTRANCE)).negativeY().getOffset(getCoordinates());
+        return getAbsoluteCoordinate(new Coordinates(data.getValue(PuzzleData.PUZZLE_VALUE.ENTRANCE)));
     }
 
-    public void failed() {
-        if (isFailed())
-            return;
-        log(LOG_CHANNEL.ANIM_DEBUG, "Puzzle failed: " + this);
-        MusicMaster.playMoment(MusicMaster.MUSIC_MOMENT.FALL);
-
-        EUtils.showInfoText(true, "Mystery fades: " + getTitle());
-        stats.failed();
-        quest.failed();
-
-        failed = true;
-
-        String text = getFailText();
-        TipMessageSource src = new TipMessageSource(
-                text, "", "Continue", false, () -> {
-            Eidolons.onThisOrNonGdxThread(() -> finished());
-        }
-        );
-        TipMessageMaster.tip(src);
+    protected int getWaitTimeBeforeEndMsg(boolean failed) {
+        return 0;
     }
 
-    public void exited() {
-
+    protected String getFailCinematicScriptKey() {
+        return null;
     }
 
-    public void complete() {
-        log(LOG_CHANNEL.ANIM_DEBUG, "Puzzle completed: " + this);
-        quest.complete();
-        stats.complete();
-        //TODO  stats.complete();
-        GuiEventManager.trigger(GuiEventType.PUZZLE_COMPLETED, this);
-        solved = true;
-        String text = getCompletionText();
-        TipMessageSource src = new TipMessageSource(
-                text, "", "Onward!", false, () -> {
-            Eidolons.onThisOrNonGdxThread(() -> finished());
-        }
-        );
-        TipMessageMaster.tip(src);
+    protected String getWinCinematicScriptKey() {
+        return null;
     }
 
-    private String getFailText() {
+
+    protected String getFailText() {
         String key = data.getValue(PuzzleData.PUZZLE_VALUE.TIP_FAIL);
         if (StringMaster.isEmpty(key)) {
             key = getTitle() + "_failed";
@@ -274,41 +225,32 @@ public class Puzzle {
         return DescriptionTooltips.getTipMap().get(
                 key.toLowerCase());
     }
-    private String getCompletionText() {
+
+    protected String getWinText() {
         return getTitle() + " has been completed! \n" +
                 quest.getVictoryText() + "\n" +
                 stats.getVictoryText();
     }
 
-    public void finished() {
-        log(LOG_CHANNEL.ANIM_DEBUG, "Puzzle finished: " + this);
-//        resolutions.forEach(r -> r.finished());
-//        rules.forEach(r -> r.finished());
-        glimpse();
 
-        if (isPale()) {
-            PaleAspect.exitPale();
+    public Coordinates getAbsoluteCoordinate(Coordinates c) {
+        AbstractCoordinates coord = new AbstractCoordinates(true, c.x + getCoordinates().x, c.y + getCoordinates().y);
+        if (coord.isInvalid()) {
+            return c;
         }
-        active = false;
-        getMaster().deactivated(this);
-    }
-
-    public void glimpse() {
-        GuiEventManager.trigger(GuiEventType.SHOW_FULLSCREEN_ANIM,
-                new FullscreenAnimDataSource(FullscreenAnims.FULLSCREEN_ANIM.GATE_FLASH,
-                        1, FACING_DIRECTION.NONE, GenericEnums.BLENDING.SCREEN));
-    }
-
-    public Coordinates getAbsoluteCoordinate(Coordinates wall) {
-        return wall.negativeY().getOffset(getCoordinates());
+        return coord;
     }
 
     public Coordinates getAbsoluteCoordinate(int i, int j) {
-        return new AbstractCoordinates(true, i, j).negativeY().getOffset(getCoordinates());
+        return new AbstractCoordinates(true, i, j).getOffset(getCoordinates());
     }
 
     public float getDifficultyCoef() {
-        return data.getFloatValue(PuzzleData.PUZZLE_VALUE.DIFFICULTY_COEF) / 100;
+        float value = data.getFloatValue(PuzzleData.PUZZLE_VALUE.DIFFICULTY_COEF);
+        if (value==0) {
+            return 1f;
+        }
+        return value / 100;
     }
 
     public void decrementCounter() {
@@ -345,10 +287,63 @@ public class Puzzle {
     }
 
     public Coordinates getCenterCoordinates() {
-        return Coordinates.get(getCoordinates().x + getWidth() / 2, getCoordinates().y - getHeight() / 2);
+        return Coordinates.get(getCoordinates().x + getWidth() / 2,
+                getCoordinates().y + getHeight() / 2);
     }
+
 
     public Condition createSolutionCondition() {
         return null;
+    }
+
+    public boolean isMinimizeUI() {
+        return true;
+    }
+
+    public void finished() {
+        handler.afterEndTip();
+    }
+
+    public void complete() {
+        handler.win();
+    }
+
+    public void failed() {
+        handler.failed();
+    }
+
+    public void ended() {
+        handler.ended();
+    }
+
+    public void activate() {
+        handler.started();
+    }
+
+    public PuzzleHandler getHandler() {
+        return handler;
+    }
+
+    public int getTipDelay() {
+        return 0;
+    }
+
+    public String getEnterCinematicScriptKey() {
+        return null;
+    }
+
+    public DC_Game getGame() {
+        return DC_Game.game;
+    }
+
+
+    public List<Trigger> getCustomTriggers() {
+        return handler.customTriggers;
+    }
+
+    public abstract PuzzleEnums.puzzle_type getType() ;
+
+    public String getIntroText() {
+        return  getData().getValue(PuzzleData.PUZZLE_VALUE.TIP_INTRO);
     }
 }

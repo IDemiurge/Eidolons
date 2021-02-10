@@ -6,11 +6,11 @@ import eidolons.system.DC_ConditionMaster;
 import main.content.enums.entity.UnitEnums;
 import main.elements.conditions.Conditions;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.FACING_DIRECTION;
-import main.game.bf.directions.UNIT_DIRECTION;
-import main.game.bf.directions.DirectionMaster;
 import main.game.bf.MovementManager.MOVE_MODIFIER;
 import main.game.bf.MovementManager.MOVE_TEMPLATES;
+import main.game.bf.directions.DirectionMaster;
+import main.game.bf.directions.FACING_DIRECTION;
+import main.game.bf.directions.UNIT_DIRECTION;
 import main.system.math.Formula;
 
 public class SelfMoveEffect extends MoveEffect {
@@ -61,15 +61,13 @@ public class SelfMoveEffect extends MoveEffect {
     @Override
     public Coordinates getCoordinates() {
         BattleFieldObject obj = getObjToMove();
+        origin = obj.getCoordinates();
         FACING_DIRECTION facing =  getFacing();
         if (template != null) {
             // ++ variables
             destination = game.getMovementManager().getTemplateMoveCoordinate(template, facing, obj,
              ref);
         } else if (direction != null) {
-            if (origin == null) {
-                origin = obj.getCoordinates();
-            }
             destination = origin.getAdjacentCoordinate(DirectionMaster.getDirectionByFacing(facing,
              direction));
         } else {
@@ -97,6 +95,11 @@ public class SelfMoveEffect extends MoveEffect {
             destination = ref.getTargetObj().getCoordinates();
         }
         return destination;
+    }
+
+    @Override
+    public Coordinates getDestination() {
+        return super.getDestination();
     }
 
     protected BattleFieldObject getObjToMove() {

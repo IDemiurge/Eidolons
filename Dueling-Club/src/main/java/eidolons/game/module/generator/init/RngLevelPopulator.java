@@ -58,7 +58,7 @@ public class RngLevelPopulator  {
     private void fillOut() {
           requiredFill = 0.8f;
         float current = calculateFill();
-        float dif = 0;
+        float dif;
         while (!checkDone() && ((dif = requiredFill - current) > 0.05f)) {
             Stack<LevelBlock> prioritySpawnLocations = createPrioritySpawnLocations();
             fill(prioritySpawnLocations, dif);
@@ -153,7 +153,7 @@ public class RngLevelPopulator  {
     private void spawnUnitGroup(UNIT_GROUPS group, LevelBlock block, int level) {
         Coordinates at = CoordinatesMaster.getCenterCoordinate(block.getCoordinatesSet());
 
-        String data = UnitGroupMaster.getUnitGroupData(StringMaster.getWellFormattedString(group.name()), level);
+        String data = UnitGroupMaster.getUnitGroupData(StringMaster.format(group.name()), level);
         for (String unitData : data.split(UnitGroupMaster.PAIR_SEPARATOR)) {
             String[] parts = unitData.split(UnitGroupMaster.UNIT_SEPARATOR);
             Coordinates offset = new AbstractCoordinates(parts[0]);

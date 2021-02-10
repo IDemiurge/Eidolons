@@ -62,7 +62,6 @@ public class NavMapParser {
     public static final String DUNGEON = "DNG";
     public static final String DEPTH_METER = "-";
     private static final java.lang.String PREFIX_SEPARATOR = ":";
-    private static StrPathBuilder pathBuilder;
     private static Nested tip;
     private static Stack<NestedLeaf> path;
 
@@ -80,7 +79,7 @@ public class NavMapParser {
         String treeData = formatResTree(data);
         String[] lines = StringMaster.splitLines(treeData);
         int result = 0;
-        pathBuilder = new StrPathBuilder(PathFinder.getResPath());
+            StrPathBuilder pathBuilder = new StrPathBuilder(PathFinder.getResPath());
         while (result >= 0) {
             result = crawlTreeLines(result, lines);
         }

@@ -1,11 +1,13 @@
 package eidolons.game.battlecraft.logic.dungeon.module;
 
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.battlecraft.logic.dungeon.location.Location;
+import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import eidolons.libgdx.anims.Assets;
+import eidolons.game.core.Eidolons;
+import eidolons.libgdx.assets.Assets;
+import eidolons.libgdx.bf.grid.handlers.GridManager;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.game.bf.BattleFieldManager;
@@ -15,13 +17,13 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ModuleLoader extends DungeonHandler<Location> {
+public class ModuleLoader extends DungeonHandler {
 
     private Module loading;
-    private Module last;
 
 
     /*
@@ -42,49 +44,78 @@ public class ModuleLoader extends DungeonHandler<Location> {
     step out
     init vfx
      */
-    public ModuleLoader(DungeonMaster  master) {
+    public ModuleLoader(DungeonMaster master) {
         super(master);
-        GuiEventManager.bind(GuiEventType.GRID_RESET, p -> {
-            loadGdxGrid((Module) p.get());
-        });
+        //ToDo-Cleanup
+        // GuiEventManager.bind(GuiEventType.GRID_RESET, p -> {
+        //     loadGdxGrid((Module) p.get());
+        // });
     }
 
     public void loadGdxGrid(Module module) {
-        ScreenMaster.getScreen().moduleEntered(module,  getObjects(module));
+        ScreenMaster.getScreen().moduleEntered(module, getObjects(module));
     }
 
     private DequeImpl<BattleFieldObject> getObjects(Module module) {
-        module.initObjects();
-        Set<BattleFieldObject> set = game.getBfObjects().stream().filter(obj -> module.getCoordinatesSet().contains(obj.getCoordinates())).collect(Collectors.toSet());
+        Set<BattleFieldObject> set = game.getBfObjects().stream().filter(obj -> module.getCoordinatesSet().
+                contains(obj.getCoordinates())).collect(Collectors.toCollection(LinkedHashSet::new));
         return new DequeImpl<>(set);
     }
 
-    public void loadModuleFull(Module module){
-        last = getMetaMaster().getModuleMaster()
+    public void loadModuleFull(Module module) {
+        Module last = getMetaMaster().getModuleMaster()
                 .getCurrent();
         loading = module;
+        // checkBossModuleInit(module);
+
         initLogicalGrid(module);
-//        freeResources();
-//        initTransitFx();
-//        showLoadScreen();
-//        initMusic();
-//        loadAssets(module);
-        GuiEventManager.trigger(GuiEventType.GRID_RESET, module);
+        //        freeResources();
+        //        initTransitFx();
+        //        showLoadScreen();
+        //        initMusic();
+        //        loadAssets(module);
+        adjustTransitHero(module);
+        if (module.isFirstInit()) {
+            module.initBorderObjects();
+            module.initObjects();
+            if (module.getPlatformData() != null)
+                GuiEventManager.trigger(GuiEventType.INIT_PLATFORMS, module.getPlatformData());
+        }
+        module.setFirstInit(false);
+
+        GridManager.reset();
+        GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, Eidolons.getMainHero());
+    }
+
+    private void adjustTransitHero(Module module) {
+        Eidolons.getMainHero().setModule(module);
     }
 
     public void loadInitial() {
         initLogicalGrid(getModule());
     }
+
     private void initLogicalGrid(Module module) {
-        game.initGrid(module);
-        BattleFieldManager.entered(module.getId() );
+        game.enterModule(module);
+        game.getDungeonMaster().getBuilder().initModuleSize(module);
+        BattleFieldManager.entered(module.getId());
         if (!CoreEngine.isLevelEditor()) {
             spawnEncounters(module);
         }
+        if (module.getData().getValue(LevelStructure.MODULE_VALUE.type).equalsIgnoreCase("boss")) {
+            EidolonsGame.BOSS_FIGHT = true;
+            try {
+                getMetaMaster().initBossModule(module);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+                return ;
+            }
+            // GuiEventManager.trigger(GuiEventType.LOAD_SCOPE, );
+        }
         //TODO
-//        PositionMaster.initDistancesCache(loading.getId(),
-//                getModule().getEffectiveWidth(),
-//                getModule().getEffectiveHeight());
+        //        PositionMaster.initDistancesCache(loading.getId(),
+        //                getModule().getEffectiveWidth(),
+        //                getModule().getEffectiveHeight());
     }
 
     private void spawnEncounters(Module module) {
@@ -93,17 +124,16 @@ public class ModuleLoader extends DungeonHandler<Location> {
     }
 
     private void initMusic() {
-        AmbienceDataSource.AMBIENCE_TEMPLATE template = loading.getVfx();
-        GuiEventManager.trigger(GuiEventType.UPDATE_AMBIENCE, template);
+        AmbienceDataSource.VFX_TEMPLATE template = loading.getVfx();
     }
 
 
     private void loadAssets(Module module) {
         String descriptors = module.getData().getValue(LevelStructure.MODULE_VALUE.assets);
         for (String path : ContainerUtils.openContainer(descriptors, ",")) {
-//            BfObjEnums.SPRITES.valueOf()
-            boolean ktx=false;
-            Assets.loadSprite(path, false, ktx);
+            //            BfObjEnums.SPRITES.valueOf()
+            boolean ktx = false;
+            Assets.loadSprite(path );
         }
     }
 

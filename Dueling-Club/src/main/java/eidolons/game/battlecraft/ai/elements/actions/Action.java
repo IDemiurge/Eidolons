@@ -69,7 +69,7 @@ public class Action {
             String name = ref.getTargetObj().getName();
             if (ref.getTargetObj() instanceof DC_Cell) {
                 name = ref.getTargetObj().getProp("name")
-                        + StringMaster.wrapInBraces(ref.getTargetObj().getCoordinates().toString());
+                        + StringMaster.wrapInBrackets(ref.getTargetObj().getCoordinates().toString());
             }
             return active.getName() + " on " + name;
         }
@@ -158,11 +158,7 @@ public class Action {
     }
 
     public Unit getSource() {
-        try {
-            return (Unit) ref.getSourceObj();
-        } catch (Exception e) {
-            return null;
-        }
+            return active.getOwnerUnit();
     }
 
     public boolean isDummy() {

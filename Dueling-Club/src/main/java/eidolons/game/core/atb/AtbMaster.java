@@ -11,15 +11,16 @@ import main.entity.obj.BuffObj;
  */
 public class AtbMaster {
     public static float getDisplayedReadinessCost(DC_ActiveObj action) {
-        return getReadinessCost(action)/100;
+        return getReadinessCost(action) / 100;
     }
-        public static float getReadinessCost(DC_ActiveObj action) {
-        if (action.isExtraAttackMode()) {
+
+    public static float getReadinessCost(DC_ActiveObj action) {
+        if (action.isPointCostActivation()) {
             return 0;
         }
         return (float) (
-         action.getParamDouble(PARAMS.AP_COST)
-          * AtbController.ATB_READINESS_PER_AP);
+                action.getParamDouble(PARAMS.AP_COST)
+                        * AtbController.ATB_READINESS_PER_AP);
     }
 
     public static float getImmobilizingBuffsMaxDuration(Unit unit) {
@@ -38,8 +39,8 @@ public class AtbMaster {
         float initiativeCost = getReadinessCost(action);
         if (initiativeCost <= 0)
             return 0;
-        action.getOwnerUnit().modifyParameter(PARAMS.C_INITIATIVE,
-         -initiativeCost + "", 0, false);
+        action.getOwnerUnit().modifyParameter(PARAMS.C_ATB,
+                -initiativeCost + "", 0, false);
 
         ((AtbTurnManager) action.getGame().getTurnManager()).getAtbController().processAtbRelevantEvent();
 
@@ -48,10 +49,10 @@ public class AtbMaster {
     }
 
     public static Integer getReadiness(Unit unit) {
-        return unit.getIntParam(PARAMS.C_INITIATIVE);
+        return unit.getIntParam(PARAMS.C_ATB);
     }
 
     public static int getDisplayedAtb(BattleFieldObject obj) {
-      return (int) (obj.getIntParam(PARAMS.C_INITIATIVE) / AtbController.TIME_LOGIC_MODIFIER);
+        return (int) (obj.getIntParam(PARAMS.C_ATB) / AtbController.TIME_LOGIC_MODIFIER);
     }
 }

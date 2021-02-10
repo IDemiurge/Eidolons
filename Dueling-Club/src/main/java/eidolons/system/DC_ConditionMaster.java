@@ -4,16 +4,12 @@ import eidolons.ability.conditions.*;
 import eidolons.ability.conditions.req.CellCondition;
 import eidolons.ability.conditions.req.CostCondition;
 import eidolons.ability.conditions.req.ItemCondition;
-import eidolons.ability.conditions.shortcut.PushableCondition;
-import eidolons.ability.conditions.shortcut.RangeCondition;
-import eidolons.ability.conditions.shortcut.SpaceCondition;
-import eidolons.ability.conditions.shortcut.StdPassiveCondition;
+import eidolons.ability.conditions.shortcut.*;
 import eidolons.ability.conditions.special.*;
 import eidolons.ability.conditions.special.SpellCondition.SPELL_CHECK;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.content.CONTENT_CONSTS.RETAIN_CONDITIONS;
 import main.content.CONTENT_CONSTS.SPECIAL_REQUIREMENTS;
@@ -58,13 +54,6 @@ public class DC_ConditionMaster extends ConditionMaster {
         if (TARGETING_MODIFIERS != null) {
             return getTargetingModConditions(TARGETING_MODIFIERS);
         }
-
-        // TARGETING_MODE TARGETING_MODE = new
-        // EnumMaster<TARGETING_MODE>().retrieveEnumConst(TARGETING_MODE.class,
-        // string) ;
-        // if (TARGETING_MODE!=null) TODO
-        // return ActivesConstructor.getSingleTargeting(obj)
-        // getTargetingModConditions(TARGETING_MODE);
 
         return null;
     }
@@ -201,8 +190,7 @@ public class DC_ConditionMaster extends ConditionMaster {
         if (condition == null) {
             return null;
         }
-        Requirement req = new Requirement(condition, CONST.getText(variables));
-        return req;
+        return new Requirement(condition, CONST.getText(variables));
     }
 
     private static Condition getItemCondition(String slot, String prop, String val, String obj_ref) {
@@ -338,18 +326,14 @@ public class DC_ConditionMaster extends ConditionMaster {
                 c.add(new OrConditions(
                         new PropCondition(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.LOCK.toString(), true),
                         new PropCondition(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.DOOR.toString(), true)));
+                break;
             case ATTACK:
                 c.add(new VisibilityCondition(UNIT_VISION.IN_SIGHT));
-
-//                new NotCondition(new StatusCheckCondition(UnitEnums.STATUS.SNEAKING)
-//TODO igg demo hack
-//                List<FACING_SINGLE> list = new ArrayList<>();
-//                list.add(UnitEnums.FACING_SINGLE.IN_FRONT);
-
                 c.add(new OrConditions(
                         new StatusCheckCondition(KEYS.SOURCE.toString(), UnitEnums.STATUS.DEFENDING),
                          new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT)
-//                        , TODO igg demo hack
+
+//                        , TODO DC Review - do we support these passives?
 //                        new Conditions(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT, UnitEnums.FACING_SINGLE.BEHIND),
 //                                new StringComparison(StringMaster.getValueRef(KEYS.SOURCE,
 //                                        G_PROPS.STANDARD_PASSIVES), UnitEnums.STANDARD_PASSIVES.HIND_REACH + "",
@@ -360,10 +344,8 @@ public class DC_ConditionMaster extends ConditionMaster {
 //                                UnitEnums.STANDARD_PASSIVES.BROAD_REACH + "", false))
 
                 ));
-//                c.add(new NotCondition(new RefCondition(KEYS.TARGET, KEYS.SOURCE)));
                 c.add(ConditionMaster.getAttackConditions());
                 c.add(getClearShotCondition(KEYS.MATCH.name()));
-//                c.add(AirborneRule.getMeleeAttackCondition()); TODO
                 break;
             case GRAVE_CELL:
                 c.add(new GraveCondition());
@@ -387,32 +369,6 @@ public class DC_ConditionMaster extends ConditionMaster {
         return c;
     }
 
-    // c.add(new OrConditions(new FacingCondition(FACING_SINGLE.IN_FRONT),
-    //
-    // new OrConditions(new Conditions(new OrConditions(new FacingCondition(
-    // FACING_SINGLE.IN_FRONT), new FacingCondition(FACING_SINGLE.TO_THE_SIDE)),
-    // new FacingCondition(FACING_SINGLE.BEHIND)),
-    //
-    // new OrConditions(new
-    // StringComparison(StringMaster.getValueRef(KEYS.SOURCE,
-    // G_PROPS.STANDARD_PASSIVES), STANDARD_PASSIVES.HIND_REACH + "", false),
-    // new StringComparison(StringMaster.getValueRef(KEYS.ACTIVE,
-    // G_PROPS.STANDARD_PASSIVES), STANDARD_PASSIVES.HIND_REACH + "",
-    // false))
-    //
-    // ),
-    //
-    // new OrConditions(new Conditions(new OrConditions(new FacingCondition(
-    // FACING_SINGLE.IN_FRONT), new FacingCondition(FACING_SINGLE.TO_THE_SIDE)),
-    //
-    // new OrConditions(new
-    // StringComparison(StringMaster.getValueRef(KEYS.SOURCE,
-    // G_PROPS.STANDARD_PASSIVES), STANDARD_PASSIVES.BROAD_REACH + "", false),
-    // new StringComparison(StringMaster.getValueRef(KEYS.ACTIVE,
-    // G_PROPS.STANDARD_PASSIVES), STANDARD_PASSIVES.BROAD_REACH + "",
-    // false))
-    //
-    // ))));
     public static Condition getRetainConditionsFromTemplate(RETAIN_CONDITIONS template, Ref ref) {
         switch (template) {
             case CASTER_ALIVE:
@@ -513,10 +469,9 @@ public class DC_ConditionMaster extends ConditionMaster {
                 case FACING:
                     return new FacingCondition(FacingMaster.getFacing(str1));
                 case ITEM: {
-                    String slot = str1;
                     String prop = VariableManager.removeVarPart(str2);
                     String val = VariableManager.getVarPart(str2);
-                    return new ItemCondition(KEYS.SOURCE.toString(), slot, prop, val);
+                    return new ItemCondition(KEYS.SOURCE.toString(), str1, prop, val);
                 }
                 case ENEMIES_LEFT:
                     Integer n = Integer.valueOf(str1);
@@ -527,13 +482,8 @@ public class DC_ConditionMaster extends ConditionMaster {
                         }
                     };
 
-                case MAINHERO:
-                    return new CustomCondition() {
-                        @Override
-                        public boolean check(Ref ref) {
-                            return ref.getSourceObj() == Eidolons.getMainHero();
-                        }
-                    };
+                case MAIN_HERO:
+                    return new MainHeroCondition();
             }
         }
         if (result == null) {

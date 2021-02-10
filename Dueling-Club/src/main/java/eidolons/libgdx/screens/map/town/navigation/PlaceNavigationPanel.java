@@ -1,6 +1,6 @@
 package eidolons.libgdx.screens.map.town.navigation;
 
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.gui.panels.ScrollPaneX;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.screens.map.town.navigation.data.Navigable;
@@ -26,9 +26,8 @@ public class PlaceNavigationPanel extends TablePanelX {
     TablePanelX scrolledTable;
     Map<Navigable, NavigationJoint> jointCache = new HashMap<>();
     Set<NavigationJoint> displayed = new LinkedHashSet<>();
-    private NavigationMaster navigationMaster;
-    private Navigable root;
-    private NavigatedPlaceView view;
+    private final NavigationMaster navigationMaster;
+    private final NavigatedPlaceView view;
     private Navigable tip;
 
     public PlaceNavigationPanel(NavigatedPlaceView view) {
@@ -41,8 +40,8 @@ public class PlaceNavigationPanel extends TablePanelX {
         if (root == null) {
             root = MacroGame.getGame().getPlayerParty().getCurrentLocation();
         }
-        this.root = navigationMaster.getNavigable(root);
-        selected(this.root);
+        Navigable root1 = navigationMaster.getNavigable(root);
+        selected(root1);
     }
 
     public void back() {

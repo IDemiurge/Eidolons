@@ -17,7 +17,7 @@ public class BlockCreator {
 
     public void createBlocks(LevelModel model) {
         for (Room room : model.getRoomMap().values()) {
-            LevelBlock block = null;
+            LevelBlock block;
 
             if (model.getMerged() != null) {
                 //TODO

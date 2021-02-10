@@ -1,7 +1,7 @@
 package eidolons.libgdx.gui.tooltips;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 
 import java.util.function.Supplier;
 

@@ -28,7 +28,6 @@ public class BindingDamageEffect extends MicroEffect implements OneshotEffect {
     Boolean spellDmgOnly;
     Boolean physicalDmgOnly;
     DAMAGE_TYPE dmg_type = GenericEnums.DAMAGE_TYPE.PURE;
-    private Conditions conditions;
 
     public BindingDamageEffect(Boolean shareOrRedirect, Formula formula,
                                Boolean spellDmgOnly, Boolean physicalDmgOnly) {
@@ -83,7 +82,7 @@ public class BindingDamageEffect extends MicroEffect implements OneshotEffect {
 		/*
          * ensure there is no deadlock
 		 */
-        conditions = new Conditions();
+        Conditions conditions = new Conditions();
         conditions.add(new NonTriggeredEventCondition());
 
         KEYS OBJ_REF = Ref.KEYS.EVENT_TARGET;

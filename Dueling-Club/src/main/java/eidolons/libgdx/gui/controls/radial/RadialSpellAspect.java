@@ -12,8 +12,7 @@ import java.util.List;
  * Created by JustMe on 12/30/2016.
  */
 public class RadialSpellAspect implements RADIAL_ITEM {
-    private SPELL_ASPECT aspect;
-    private int maxPlainSize = 40;
+    private final SPELL_ASPECT aspect;
 
     public RadialSpellAspect(SPELL_ASPECT aspect) {
         this.aspect = aspect;
@@ -23,6 +22,7 @@ public class RadialSpellAspect implements RADIAL_ITEM {
     public List<RADIAL_ITEM> getItems(Unit source) {
         ArrayList<RADIAL_ITEM> list = new ArrayList<>();
         List<Spell> spells = new ArrayList<>(source.getSpells());
+        int maxPlainSize = 40;
         if (spells.size() < maxPlainSize) {
             spells.forEach(spell -> list.add(new EntityNode(spell)));
             return list;

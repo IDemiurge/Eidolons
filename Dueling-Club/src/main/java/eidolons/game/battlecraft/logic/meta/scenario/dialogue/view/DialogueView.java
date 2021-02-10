@@ -6,20 +6,20 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.cinematic.Cinematics;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SmartTextButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.texture.Images;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 //IDEA zoom into the portrait sometimes! perhaps we can have a Full sprite + scissors? even custom border overlay
 // or flash it with a shader to signify some emotion ... use dif borders
@@ -27,7 +27,7 @@ public class DialogueView extends TablePanelX implements Scene {
     public static final float HEIGHT = 400;
     public static final float WIDTH = 1800;
 
-    private DialogueInputProcessor inputProcessor;
+    private final DialogueInputProcessor inputProcessor;
     DialogueContainer container;
     DialogueHandler handler;
 
@@ -41,7 +41,6 @@ public class DialogueView extends TablePanelX implements Scene {
     private Float timeToRespond;
     private boolean canSkip;
     private boolean autoRespond;
-    private Float speed = 0.5f;
     private boolean paused;
     private boolean timerDisabled;
     private boolean scrollToBottom;
@@ -94,7 +93,7 @@ public class DialogueView extends TablePanelX implements Scene {
         portraitLeft.setUserObject(active);
         portraitRight.setUserObject(listener);
         String text = data.getMessage();
-        if (CoreEngine.isIDE()) {
+        if (Flags.isIDE()) {
             if (SpeechScript.TEST_MODE) {
                 if (data.getSpeech().getScript() != null) {
                     text += "\n" + data.getSpeech().getScript().getScriptText();
@@ -120,14 +119,14 @@ public class DialogueView extends TablePanelX implements Scene {
         int i = 0;
         for (String option : data.getResponses()) {
 //process text, color, ..
-            SmartButton response;
+            SmartTextButton response;
             final int i_ = i++;
             if (option.equals(SpeechDataSource.DEFAULT_RESPONSE)) {
-                response = new SmartButton("Continue", StyleHolder.getDialogueReplyStyle(),
+                response = new SmartTextButton("Continue", StyleHolder.getDialogueReplyStyle(),
                         () -> respond(option, i_), STD_BUTTON.HIGHLIGHT_ALT);
 //                response = new SmartButton(STD_BUTTON.OK, () -> respond(option, i_));
             } else
-                response = new SmartButton(option, StyleHolder.getDialogueReplyStyle(),
+                response = new SmartTextButton(option, StyleHolder.getDialogueReplyStyle(),
                         () -> respond(option, i_), STD_BUTTON.HIGHLIGHT_ALT);
 
             replyBox.add(response).left().row();
@@ -145,7 +144,7 @@ public class DialogueView extends TablePanelX implements Scene {
     }
 
     public boolean space() {
-        if (!CoreEngine.isIDE() || Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT))
+        if (!Flags.isIDE() || Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT))
             if (!isRepliesEnabled()) {
                 paused = !paused;
                 return true;
@@ -180,7 +179,7 @@ public class DialogueView extends TablePanelX implements Scene {
     private boolean respond(String option, int index, boolean allowFinish) {
         autoRespond = false;
         if (getUserObject().speech.isSpoken()) {
-            main.system.auxiliary.log.LogMaster.dev("Already spoken!  " +getUserObject().speech.getFormattedText());
+            main.system.auxiliary.log.LogMaster.devLog("Already spoken!  " +getUserObject().speech.getFormattedText());
             return false;
         }
         if (container != null) {
@@ -213,7 +212,7 @@ public class DialogueView extends TablePanelX implements Scene {
 
             if (next != null) {
                 if (!appendedMessage)
-                    Eidolons.onGdxThread(()-> scroll.append("", "", Images.SEPARATOR_ALT, false).center().setX(getWidth() / 2));
+                    Eidolons.onGdxThread(()-> scroll.append("", "", Images.SEPARATOR_NARROW, false).center().setX(getWidth() / 2));
 
                 boolean finalAppendedMessage = appendedMessage;
                 Eidolons.onGdxThread(()-> update(next, finalAppendedMessage));
@@ -230,8 +229,8 @@ public class DialogueView extends TablePanelX implements Scene {
                             handler.getDialogue().getTimeBetweenScriptsLengthMultiplier();
                     if (time > 0) {
 //                    disableReplies();
-                        main.system.auxiliary.log.LogMaster.dev("autoRespond = true in " + handler.getDialogue().getTimeBetweenScripts());
-                        setTime(new Float(time));
+                        main.system.auxiliary.log.LogMaster.devLog("autoRespond = true in " + handler.getDialogue().getTimeBetweenScripts());
+                        setTime((float) time);
                     }
                 }
                 if (timeToRespond != null)
@@ -313,6 +312,7 @@ public class DialogueView extends TablePanelX implements Scene {
         }
 //        setVisible(true);
         setPosition(-150, 0);
+        Float speed = 0.5f;
         if (speed != null) {
             delta = delta * speed;
         }
@@ -351,7 +351,7 @@ public class DialogueView extends TablePanelX implements Scene {
     private void disableReplies() {
         replyBox.fadeOut();
         replyBox.setTouchable(Touchable.disabled);
-        GdxMaster.setEmptyCursor();
+        // GdxMaster.setEmptyCursor(); //TODO
     }
 
     public boolean isDone() {

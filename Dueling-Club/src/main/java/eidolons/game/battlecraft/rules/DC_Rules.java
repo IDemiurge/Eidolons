@@ -4,12 +4,8 @@ import eidolons.entity.obj.attach.DynamicBuffRules;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer.BUFF_RULE;
-import eidolons.game.battlecraft.logic.battlefield.vision.HearingRule;
-import eidolons.game.battlecraft.logic.battlefield.vision.StealthRule;
-import eidolons.game.battlecraft.rules.action.ActionRule;
-import eidolons.game.battlecraft.rules.action.EngagedRule;
-import eidolons.game.battlecraft.rules.action.StackingRule;
-import eidolons.game.battlecraft.rules.action.WatchRule;
+import eidolons.game.battlecraft.logic.battlefield.vision.advanced.StealthRule;
+import eidolons.game.battlecraft.rules.action.*;
 import eidolons.game.battlecraft.rules.buff.*;
 import eidolons.game.battlecraft.rules.combat.mechanics.BleedingRule;
 import eidolons.game.battlecraft.rules.combat.mechanics.MoraleKillingRule;
@@ -23,7 +19,6 @@ import eidolons.game.battlecraft.rules.counter.generic.DamageCounterRule;
 import eidolons.game.battlecraft.rules.counter.timed.TimedRule;
 import eidolons.game.battlecraft.rules.mechanics.AshAnnihilationRule;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
-import eidolons.game.battlecraft.rules.mechanics.IlluminationRule;
 import eidolons.game.battlecraft.rules.mechanics.WaitRule;
 import eidolons.game.battlecraft.rules.round.*;
 import eidolons.game.core.game.DC_Game;
@@ -38,18 +33,17 @@ public class DC_Rules implements GameRules {
     protected DequeImpl<DC_BuffRule> buffRules = new DequeImpl<>();
     protected DequeImpl<DamageCounterRule> damageRules = new DequeImpl<>();
     private DC_Game game;
-    private DequeImpl<DC_CounterRule> counterRules = new DequeImpl<>();
-    private DequeImpl<RoundRule> roundRules = new DequeImpl<>();
-    private DequeImpl<ActionRule> actionRules = new DequeImpl<>();
-    private DequeImpl<DC_RuleImpl> triggerRules = new DequeImpl<>();
+    private final DequeImpl<DC_CounterRule> counterRules = new DequeImpl<>();
+    private final DequeImpl<RoundRule> roundRules = new DequeImpl<>();
+    private final DequeImpl<ActionRule> actionRules = new DequeImpl<>();
+    private final DequeImpl<DC_RuleImpl> triggerRules = new DequeImpl<>();
 
-    private TimeRule timeRule;
     private WatchRule watchRule;
     private FocusRule focusRule;
-    private MoraleRule moraleRule;
+    private EssenceRule essenceRule;
     private UpkeepRule upkeepRule;
-    private MoraleBuffRule moraleBuffRule;
-    private StaminaBuffRule staminaRule;
+    private EssenceBuffRule essenceBuffRule;
+    private ToughnessBuffRule staminaRule;
     private WeightBuffRule weightRule;
     private FocusBuffRule focusBuffRule;
     private DurabilityRule durabilityRule;
@@ -72,7 +66,6 @@ public class DC_Rules implements GameRules {
     private BlazeRule blazeRule;
     private StackingRule stackingRule;
     private EngagedRule engagedRule;
-    private HearingRule hearingRule;
     private WaterRule waterRule;
     private UnconsciousRule unconsciousRule;
     private GreaseRule greaseRule;
@@ -81,8 +74,7 @@ public class DC_Rules implements GameRules {
     private LavaRule lavaRule;
     private SuffocationRule suffocationRule;
     private AshAnnihilationRule ashAnnihilationRule;
-    private IlluminationRule illuminationRule;
-    private DC_RuleMaster master;
+    private final DC_RuleMaster master;
     private Map<DamageCounterRule, TimedRule> timedRules;
     private DynamicBuffRules dynamicBuffRules;
 
@@ -101,7 +93,6 @@ public class DC_Rules implements GameRules {
         RuleKeeper.init();
         WaitRule.reset();
         dynamicBuffRules = new DynamicBuffRules(game);
-        illuminationRule = new IlluminationRule();
         unconsciousRule = new UnconsciousRule(game);
         watchRule = new WatchRule();
         engagedRule = new EngagedRule(getGame());
@@ -109,7 +100,7 @@ public class DC_Rules implements GameRules {
         ensnareRule = new EnsnaredRule(getGame());
         stealthRule = new StealthRule(getGame());
         stackingRule = new StackingRule(getGame());
-        hearingRule = new HearingRule(getGame());
+        HearingRule hearingRule = new HearingRule(getGame());
         actionRules.add(unconsciousRule);
         actionRules.add(watchRule);
         actionRules.add(stealthRule);
@@ -122,9 +113,9 @@ public class DC_Rules implements GameRules {
         cleaveRule = new CleaveRule(getGame());
 
         focusRule = new FocusRule(getGame());
-        moraleRule = new MoraleRule(getGame());
+        essenceRule = new EssenceRule(getGame());
         roundRules.add(focusRule);
-        roundRules.add(moraleRule);
+        roundRules.add(essenceRule);
 //        roundRules.add( upkeepRule = new UpkeepRule(getGame()) );
 //        roundRules.add( scoutingRule = new ScoutingRule(getGame()));
         roundRules.add(unconsciousRule);
@@ -170,11 +161,9 @@ public class DC_Rules implements GameRules {
         counterRules.add(encaseRule);
         counterRules.add(greaseRule);
 
-
-        timeRule = new TimeRule(getGame());
-        moraleBuffRule = new MoraleBuffRule(getGame());
-        this.buffRules.add(moraleBuffRule);
-        staminaRule = new StaminaBuffRule(getGame());
+        essenceBuffRule = new EssenceBuffRule(getGame());
+        this.buffRules.add(essenceBuffRule);
+        staminaRule = new ToughnessBuffRule(getGame());
         this.buffRules.add(staminaRule);
         weightRule = new WeightBuffRule(getGame());
         this.buffRules.add(weightRule);
@@ -240,10 +229,6 @@ public class DC_Rules implements GameRules {
         return actionRules;
     }
 
-    public TimeRule getTimeRule() {
-        return timeRule;
-    }
-
     public WatchRule getWatchRule() {
         return watchRule;
     }
@@ -252,8 +237,8 @@ public class DC_Rules implements GameRules {
         return focusRule;
     }
 
-    public MoraleRule getMoraleRule() {
-        return moraleRule;
+    public EssenceRule getEssenceRule() {
+        return essenceRule;
     }
 
     public SuffocationRule getSuffocationRule() {
@@ -268,11 +253,11 @@ public class DC_Rules implements GameRules {
         return upkeepRule;
     }
 
-    public MoraleBuffRule getMoraleBuffRule() {
-        return moraleBuffRule;
+    public EssenceBuffRule getEssenceBuffRule() {
+        return essenceBuffRule;
     }
 
-    public StaminaBuffRule getStaminaRule() {
+    public ToughnessBuffRule getStaminaRule() {
         return staminaRule;
     }
 
@@ -388,14 +373,6 @@ public class DC_Rules implements GameRules {
         return triggerRules;
     }
 
-    public IlluminationRule getIlluminationRule() {
-        return illuminationRule;
-    }
-
-    public void setIlluminationRule(IlluminationRule illuminationRule) {
-        this.illuminationRule = illuminationRule;
-    }
-
     public void timePassed(Float time) {
         master.timePassed(time);
     }
@@ -407,7 +384,7 @@ public class DC_Rules implements GameRules {
     public DC_BuffRule getBuffRule(BUFF_RULE rule) {
         switch (rule) {
             case MORALE:
-                return moraleBuffRule;
+                return essenceBuffRule;
             case FOCUS:
                 return focusBuffRule;
             case STAMINA:

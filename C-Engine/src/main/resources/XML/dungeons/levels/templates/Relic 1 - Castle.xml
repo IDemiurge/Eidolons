@@ -1,0 +1,44 @@
+<Floor>
+<DATA>name=Castle Evarinath;cell_type=natural;wall_type=old stone wall;background=img\main\background\moon valley(1).jpg
+</DATA>
+<MODULES>
+
+<Dark_Paths>
+<DATA>
+alt_default_wall=Cave Wall;
+default_wall=Ancient Wall;cell_type=natural;
+name=Dark Paths;width=25;height=45;border_width=2;
+border_type=irregular;width_buffer=3;height_buffer=3;
+</DATA>
+<zones>
+<zone><DATA>name=Dark Paths;</DATA></zone>
+<zone><DATA>name=Wolf Grove;</DATA></zone>
+<zone><DATA>name=Fields of Slaughter;</DATA></zone>
+</zones>
+</Dark_Paths>
+
+
+<Courtyard>
+<DATA>cell_type=cross;wall_type=crumbling wall;
+name=Courtyard;width=35;height=31;border_width=2;
+border_type=wall;width_buffer=3;height_buffer=3;
+</DATA>
+<zones>
+<zone><DATA>name=The Moat;</DATA></zone>
+<zone><DATA>name=Battlements;</DATA></zone>
+<zone><DATA>name=Inner Courtyard;</DATA></zone>
+</zones>
+</Courtyard>
+
+<Citadel>
+<DATA>cell_type=octagonal;wall_type=old stone wall;
+name=Citadel;width=35;height=31;border_width=2;
+border_type=wall;width_buffer=2;height_buffer=2;
+</DATA>
+<zones>
+<zone><DATA>name=Banner Hall;</DATA></zone>
+<zone><DATA>name=Abandoned Tower;</DATA></zone>
+</zones>
+</Citadel>
+
+</MODULES></Floor>

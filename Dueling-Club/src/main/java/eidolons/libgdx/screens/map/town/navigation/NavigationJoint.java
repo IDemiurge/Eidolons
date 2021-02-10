@@ -1,6 +1,6 @@
 package eidolons.libgdx.screens.map.town.navigation;
 
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.gui.panels.ScrollPaneX;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.screens.map.town.navigation.data.Navigable;
@@ -13,7 +13,7 @@ import java.util.List;
  * Created by JustMe on 11/21/2018.
  */
 public class NavigationJoint extends TablePanelX{
-    private TablePanelX childTable;
+    private final TablePanelX childTable;
     ScrollPaneX verticalScroll;
     NavigationPoint rootActor;
     Navigable root;

@@ -20,7 +20,7 @@ public class Garment extends DC_HeroSlotItem {
      * minor armor bonus
      * durability - do they break down? if so, how to split between armor and these?
      */
-    private GARMENT_TYPE garment_type;
+    private final GARMENT_TYPE garment_type;
 
     // TODO GENERATION: material types? noise level...
     public Garment(ObjType type, Player owner, GenericGame game, Ref ref,
@@ -36,9 +36,9 @@ public class Garment extends DC_HeroSlotItem {
 
         switch (garment_type) {
             case BOOTS:
-                modifyParameter(PARAMS.MOVE_AP_PENALTY, penalty_reduction, 0,
+                modifyParameter(PARAMS.MOVE_ATB_COST_MOD, penalty_reduction, 0,
                  true);
-                modifyParameter(PARAMS.MOVE_STA_PENALTY, penalty_reduction, 0,
+                modifyParameter(PARAMS.MOVE_TOU_COST_MOD, penalty_reduction, 0,
                  true);
         }
 

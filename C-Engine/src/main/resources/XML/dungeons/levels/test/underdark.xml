@@ -1,0 +1,29 @@
+<Floor><Plan><MODULES>
+<Main><DATA>origin:0-0;name:Main;width:10;height:10;</DATA>
+<Zones><Zone><DATA>illumination:0;</DATA><Blocks><Block><DATA>zone:0;origin:0-0;width:0;name:COMMON_ROOM block of Zone #0:null with style null, 3blocks;height:0;room_type:COMMON_ROOM;</DATA><Missing></Missing></Block><Block><DATA>zone:0;origin:0-0;width:10;name:COMMON_ROOM block of Zone #0:null with style null, 3blocks;height:10;room_type:COMMON_ROOM;</DATA><Missing>0-0;0-1;0-2;0-3;0-4;0-5;0-6;0-7;0-8;0-9;1-0;1-1;1-2;1-3;1-4;1-5;1-6;1-7;1-8;1-9;2-0;2-1;2-2;2-3;2-4;2-5;2-6;2-7;2-8;2-9;3-0;3-1;3-2;3-3;3-4;3-5;3-6;3-7;3-8;3-9;4-0;4-1;4-2;4-3;4-4;4-5;4-6;4-7;4-8;4-9;5-0;5-1;5-2;5-3;5-4;5-5;5-6;5-7;5-8;5-9;6-0;6-1;6-2;6-3;6-4;6-5;6-6;6-7;6-8;6-9;7-0;7-1;7-2;7-3;7-4;7-5;7-6;7-7;7-8;7-9;8-0;8-1;8-2;8-3;8-4;8-5;8-6;8-7;8-8;8-9;9-0;9-1;9-2;9-3;9-4;9-5;9-6;9-7;9-8;9-9;</Missing></Block><Block><DATA>zone:0;origin:6-2;width:7;name:DEATH_ROOM block of Zone #0:null with style null, 3blocks
+
+X     0| 1| 2| 3| 4| 5| 6| 
+      _____________________
+
+0  |   .  .  .  .  .  .  .
+1  |   .  .  .  #  .  .  .
+2  |   .  .  #  #  #  .  .
+3  |   .  .  .  #  .  .  .
+4  |   .  .  #  #  #  .  .
+5  |   .  .  .  #  .  .  .
+6  |   .  .  #  #  #  .  .
+7  |   .  .  .  #  .  .  .
+8  |   .  .  .  .  .  .  .
+
+      _____________________
+
+X     0| 1| 2| 3| 4| 5| 6| ;height:9;room_type:DEATH_ROOM;</DATA><Missing>6-2;6-3;6-4;6-5;6-6;6-7;6-8;6-9;6-10;7-2;7-3;7-4;7-5;7-6;7-7;7-8;7-9;7-10;8-2;8-3;8-4;8-5;8-6;8-7;8-8;8-9;8-10;9-2;9-3;9-4;9-5;9-6;9-7;9-8;9-9;9-10;10-2;10-3;10-4;10-5;10-6;10-7;10-8;10-9;10-10;11-2;11-3;11-4;11-5;11-6;11-7;11-8;11-9;11-10;12-2;12-3;12-4;12-5;12-6;12-7;12-8;12-9;12-10;</Missing></Block></Blocks></Zone></Zones>
+</Main>
+</MODULES>
+<ID_MAP>0=Bone Wall;1=Stone Wall;2=Stone Wall;3=Stone Wall;4=Stone Wall;5=Stone Wall;6=Stone Wall;7=Stone Wall;8=Stone Wall;9=Stone Wall;11=Stone Wall;12=Stone Wall;13=Stone Wall;29=Stone Wall;14=Stone Wall;15=Stone Wall;16=Stone Wall;17=Stone Wall;18=Stone Wall;20=Stone Wall;21=Stone Wall;22=Stone Wall;23=Stone Wall;24=Stone Wall;25=Stone Wall;26=Stone Wall;27=Stone Wall;28=Waterworks;30=Stone Wall;31=Stone Wall;32=Stone Wall;33=Stone Wall;34=Stone Wall;35=Stone Wall;36=Stone Wall;37=Stone Wall;38=Stone Wall;39=Stone Wall;40=Stone Wall;41=Stone Wall;</ID_MAP>
+<OBJ_IDS>0-0=;1-1=28;6-40=0;8-4=29;8-6=30;8-8=31;9-3=32;9-4=33;9-5=34;9-6=35;9-7=36;9-8=37;9-9=38;9-39=1;9-40=2;9-41=3;9-43=4;9-44=5;9-45=6;10-4=39;10-6=40;10-8=41;10-44=7;11-39=8;11-40=9;11-43=11;11-44=12;12-40=13;12-41=;12-44=14;14-40=15;14-44=16;15-39=17;15-40=18;15-43=20;15-44=21;16-44=22;17-39=23;17-40=24;17-41=25;17-43=26;17-44=27;17-45=;</OBJ_IDS>
+<DATA_MAPS></DATA_MAPS>
+<OVERLAY_DIRECTIONS></OVERLAY_DIRECTIONS>
+<ENCOUNTER_AI_GROUPS></ENCOUNTER_AI_GROUPS><CUSTOM_AI_GROUPS></CUSTOM_AI_GROUPS>
+<TRANSITS><TRANSIT_IDS></TRANSIT_IDS><TRANSIT_ONE_END></TRANSIT_ONE_END></TRANSITS>
+</Plan></Floor>

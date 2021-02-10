@@ -4,6 +4,7 @@ import main.data.filesys.PathFinder;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -11,6 +12,7 @@ import java.io.IOException;
 
 public class GpuTester {
 
+    public static final String FILE_NAME = "gpu info.txt";
     private static Integer dedicatedMemory=2000;
     private static Integer sharedMemory;
     private static boolean measured;
@@ -28,14 +30,18 @@ public class GpuTester {
             CoreEngine.setWeakGpu(true);
         }
 
+        if ( Runtime.getRuntime().availableProcessors()<4 ){
+            CoreEngine.setWeakCpu(true);
+        }
     }
     public static void test() {
-        if (!CoreEngine.isWindows()){
+        if (!Flags.isWindows()){
             return;
         }
         new Thread(() -> {
             try {
-                String filePath = PathFinder.getRootPath() + "/gpu info.txt";
+                String filePath = PathFinder.getRootPath() + "/" +
+                        FILE_NAME;
                 if (!FileManager.isFile(filePath)){
                 // Use "dxdiag /t" variant to redirect output to a given file
                 ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "dxdiag", "/t", filePath);

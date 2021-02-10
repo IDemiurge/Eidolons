@@ -20,20 +20,17 @@ import main.entity.Ref.KEYS;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.entity.ConditionMaster;
 import main.system.math.Formula;
-import main.system.util.Untested;
 
-@Untested
+//Untested
 public class AuraEffect extends MicroEffect implements AttachmentEffect {
     STANDARD_EVENT_TYPE event_type; // ++ UNIT MOVES!!!!
-    private Effect effect;
-    private boolean initialized = false;
+    private final Effect effect;
     private AddTriggerEffect trigger;
-    private boolean notSelf;
-    private Boolean onlyEnemiesOrAllies;
-    private Formula radius;
-    private Boolean continuous;
-    private Condition additionalConditions;
-    private AddBuffEffect auraEffect;
+    private final boolean notSelf;
+    private final Boolean onlyEnemiesOrAllies;
+    private final Formula radius;
+    private final Boolean continuous;
+    private final Condition additionalConditions;
     private boolean on;
 
 	/*
@@ -113,7 +110,7 @@ public class AuraEffect extends MicroEffect implements AttachmentEffect {
              new ConditionalEffect(ConditionMaster
               .getAliveCondition(KEYS.SOURCE),
               new CustomTargetEffect(targeting, buffEffect)));
-            auraEffect = new AddBuffEffect(auraEffects);
+            AddBuffEffect auraEffect = new AddBuffEffect(auraEffects);
             // auraEffect.setTransient(false);
             boolean results = auraEffect.apply(ref);
             if (results) {
@@ -128,6 +125,7 @@ public class AuraEffect extends MicroEffect implements AttachmentEffect {
         // use zoneEffect?
         // if only modifies non-dynamic values, then it's continuous. How to
         // preCheck?
+        boolean initialized = false;
         if (!initialized) {
             init();
         }

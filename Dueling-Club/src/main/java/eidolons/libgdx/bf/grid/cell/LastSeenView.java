@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.rules.VisionEnums;
 
@@ -19,9 +20,9 @@ import main.content.enums.rules.VisionEnums;
  */
 public class LastSeenView extends GenericGridView {
 
-    private GridUnitView parentView;
+    private UnitGridView parentView;
 
-    public LastSeenView(UnitViewOptions o, GridUnitView view) {
+    public LastSeenView(UnitViewOptions o, UnitGridView view) {
         super(view.getUserObject(), o);
         greyedOut = true;
         setParentView(view);
@@ -29,24 +30,25 @@ public class LastSeenView extends GenericGridView {
 
     @Override
     public BattleFieldObject getUserObject() {
+        if (parentView == null) {
+            return null;
+        }
         return parentView.getUserObject();
     }
 
     @Override
     public TextureRegion getDefaultTexture() {
         if (defaultTexture == null) {
-            defaultTexture = TextureCache.getOrCreateR(VisionEnums.OUTLINE_TYPE.UNKNOWN.getImagePath());
+            defaultTexture = TextureCache.getRegionUV(VisionEnums.OUTLINE_TYPE.UNKNOWN.getImagePath());
         }
         return defaultTexture;
     }
 
+    protected boolean isResetOutlineOnHide() {
+        return false;
+    }
     @Override
     protected void setDefaultTexture() {
-    }
-
-    @Override
-    protected void checkResetOutline(float delta) {
-        super.checkResetOutline(delta);
     }
 
     @Override
@@ -93,7 +95,8 @@ public class LastSeenView extends GenericGridView {
         if (getUserObject().isPlayerCharacter())
             return;
 
-        checkResetOutline(Gdx.graphics.getDeltaTime());
+        if ( OutlineMaster.isOutlinesOn())
+            checkResetOutline(Gdx.graphics.getDeltaTime());
         super.draw(batch, parentAlpha);
     }
 
@@ -117,11 +120,11 @@ public class LastSeenView extends GenericGridView {
         //        main.system.auxiliary.log.LogMaster.log(1,this+" action: " +action);
     }
 
-    public GridUnitView getParentView() {
+    public UnitGridView getParentView() {
         return parentView;
     }
 
-    public void setParentView(GridUnitView parentView) {
+    public void setParentView(UnitGridView parentView) {
         this.parentView = parentView;
     }
 }

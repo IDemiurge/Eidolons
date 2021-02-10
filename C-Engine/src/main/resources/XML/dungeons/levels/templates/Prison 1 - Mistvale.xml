@@ -1,0 +1,31 @@
+<Mistvale>
+<Plan><MODULES>
+<Mistvale_Ruins>
+<DATA>name:Mistvale Ruins;width:33;height:35;border_width:2;border_type:wall;width_buffer:5;height_buffer:7;</DATA>
+<zones><zone>name:Desolation;</zone>
+<zone>name:Ravenguard Outpost;</zone></zones>
+</Mistvale_Ruins>
+
+<Old_Sewer>
+<DATA>default_wall:Crumbling Wall;name:Old Sewer;width:27;height:48;border_width:3;border_type:irregular;width_buffer:7;height_buffer:7;</DATA>
+<zones><zone>name:Waterways;</zone>
+<zone>name:Caverns;</zone></zones>
+</Old_Sewer>
+
+<Shadowfang>
+<DATA>default_wall:Old Stone Wall;name:Shadowfang;width:40;height:52;border_width:2;border_type:wall;width_buffer:5;height_buffer:7;</DATA>
+<zones><zone>name:Crematorium;</zone>
+<zone>name:Slaughterhouse;</zone>
+<zone>name:Mortuary;</zone>
+<zone>name:Torture Chamber;</zone>
+<zone>name:Ravenguard Headquarters;</zone>
+</zones>
+</Shadowfang>
+
+<Gallowtown>
+<DATA>default_wall:Grimy Wall;name:Old Sewer;width:27;height:48;border_width:3;border_type:wall;width_buffer:7;height_buffer:7;</DATA>
+<zones><zone>name:Putrid Cells ;</zone>
+<zone>name:Death Row ;</zone>
+<zone>name:Rebel Camp;</zone></zones>
+</Gallowtown>
+</Mistvale>

@@ -5,7 +5,7 @@ import main.content.DC_TYPE;
 import main.elements.conditions.Condition;
 import main.entity.obj.Obj;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class ActionModifyingEffect extends HeroObjectModifyingEffect {
     @Override
     protected List<Obj> getObjectsByName(String objName) {
         Unit hero = (Unit) ref.getSourceObj();
-        if (objName.contains(StringMaster.AND_SEPARATOR)) {
+        if (objName.contains(Strings.VERTICAL_BAR)) {
             List<Obj> list = new ArrayList<>();
             for (String sub : ContainerUtils.open(objName)) {
                 list.add(hero.getAction(sub));

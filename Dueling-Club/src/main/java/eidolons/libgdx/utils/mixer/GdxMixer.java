@@ -13,12 +13,12 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.ScreenUtils;
 import eidolons.libgdx.GDX;
-import main.content.enums.GenericEnums.BLENDING;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.texture.Images;
 import eidolons.system.utils.GdxUtil;
 import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.BLENDING;
 import main.data.filesys.PathFinder;
 import main.system.launch.CoreEngine;
 
@@ -39,16 +39,12 @@ import java.util.function.Supplier;
 public class GdxMixer extends GdxUtil {
 
     private final Supplier<ShaderProgram> shaderProgram;
-    private final BLENDING blending;
     private final ArrayList<Actor> actors;
     private final String pathRoot;
-    private Float[] alpha = new Float[0];
-    private float m_fboScaler = 1.5f;
-    private boolean m_fboEnabled = true;
+    private final Float[] alpha = new Float[0];
     private FrameBuffer fbo = null;
-    private TextureRegion region = null;
     private SpriteBatch batch;
-    private int size;
+    private final int size;
 
     Runnable drawer;
 
@@ -57,7 +53,6 @@ public class GdxMixer extends GdxUtil {
     public GdxMixer(Supplier<ShaderProgram> shaderProgram, BLENDING blending,
                     String pathRoot, int size, Actor... actors) {
         this.shaderProgram = shaderProgram;
-        this.blending = blending;
         this.size = size;
         this.pathRoot = pathRoot;
         this.actors = new ArrayList<>(Arrays.asList(actors));
@@ -76,7 +71,7 @@ public enum MIXER_LAUNCH{
         int size;
         String rootPath;
 
-        new GdxMixer(() -> GrayscaleShader.getGrayscaleShader(), GenericEnums.BLENDING.MULTIPLY,
+        new GdxMixer(GrayscaleShader::getGrayscaleShader, GenericEnums.BLENDING.MULTIPLY,
          Images.EMPTY_ARMOR,
 //         PathFinder.getGeneratorRootPath() + "mixed.png",
          64
@@ -153,14 +148,16 @@ public enum MIXER_LAUNCH{
         int width = Gdx.graphics.getWidth();
         int height = Gdx.graphics.getHeight();
 
+        boolean m_fboEnabled = true;
         if (m_fboEnabled)      // enable or disable the supersampling
         {
             if (fbo == null) {
                 // m_fboScaler increase or decrease the antialiasing quality
+                float m_fboScaler = 1.5f;
                 fbo = FrameBuffer.createFrameBuffer(
                  Format.RGB565, (int) (width * m_fboScaler),
                  (int) (height * m_fboScaler), false);
-                region = new TextureRegion(fbo.getColorBufferTexture());
+                TextureRegion region = new TextureRegion(fbo.getColorBufferTexture());
                 region.flip(false, true);
             }
 

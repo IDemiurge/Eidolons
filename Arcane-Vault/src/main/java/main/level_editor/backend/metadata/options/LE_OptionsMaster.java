@@ -49,7 +49,7 @@ public class LE_OptionsMaster extends OptionsMaster {
 
     @Override
     public String getOptionsPath() {
-        return PathFinder.getXML_PATH() + "options/le.xml";
+        return PathFinder.getXML_PATH() + "options/le full.xml";
     }
 
     public static LE_Options getOptions_() {

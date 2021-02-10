@@ -3,19 +3,19 @@ package eidolons.libgdx.particles.util;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxImageMaster;
-import eidolons.libgdx.anims.Assets;
-import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
+import eidolons.libgdx.anims.AnimEnums;
+import eidolons.libgdx.anims.AnimEnums.ANIM_PART;
+import eidolons.libgdx.assets.Assets;
 import eidolons.libgdx.particles.Emitter.EMITTER_VALS_SCALED;
 import eidolons.libgdx.particles.ParticleEffectX;
 import eidolons.libgdx.particles.util.EmitterPresetMaster.EMITTER_VALUE_GROUP;
 import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.libgdx.texture.TexturePackerLaunch;
-import eidolons.swing.generic.services.dialog.DialogMaster;
-import eidolons.swing.generic.services.dialog.EnumChooser;
 import eidolons.system.utils.GdxUtil;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -24,10 +24,15 @@ import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
 import main.swing.generic.components.editors.ImageChooser;
 import main.system.PathUtils;
-import main.system.auxiliary.*;
+import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
+import main.system.util.DialogMaster;
+import main.system.util.EnumChooser;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -65,10 +70,10 @@ public class EmitterMaster extends GdxUtil {
     };
     private static boolean writeImage = true;
     private static boolean pack = true;
-    private static boolean overwriteImage = false;
-    private static boolean sizeImages = false;
+    private static final boolean overwriteImage = false;
+    private static final boolean sizeImages = true;
     private static boolean test = true;
-    private static Map<VFX_ATLAS, TextureAtlas> atlasMap = new HashMap<>();
+    private static final Map<VFX_ATLAS, TextureAtlas> atlasMap = new HashMap<>();
     private static boolean manualFix;
 
     public static void main(String[] args) {
@@ -146,17 +151,9 @@ public class EmitterMaster extends GdxUtil {
                     try {
                         for (String s : ContainerUtils.openContainer(imagePath, "\n")) {
                             if (!ImageManager.isImage(s)) {
-
+                                continue;
                             }
                             Texture texture = new Texture(s);
-                            if (sizeImages)
-                                if (texture.getHeight() > MAX_IMAGE_SIZE || texture.getWidth() > MAX_IMAGE_SIZE) {
-                                    //                            EmitterPresetMaster.getInstance().getGroupText(data, EMITTER_VALUE_GROUP.Scale);
-                                    int max = Math.max(texture.getHeight(), texture.getWidth());
-                                    int coef = max / MAX_IMAGE_SIZE;
-                                    texture = GdxImageMaster.size(s, texture.getWidth() * coef,
-                                            texture.getHeight() * coef, false);
-                                }
                             list.add(texture);
                         }
                     } catch (Exception e) {
@@ -195,11 +192,26 @@ public class EmitterMaster extends GdxUtil {
                         }
                         imagesDataBuilder.append(imageName).append("\n");
                         if (writeImage) {
+
                             Texture texture = (new Texture(s));
+                            if (sizeImages) {
+                                // float w=widthCache.get(s);
+                                // float w=widthCache.get(s);
+                                if (texture.getHeight() > MAX_IMAGE_SIZE || texture.getWidth() > MAX_IMAGE_SIZE) {
+                                    //                            EmitterPresetMaster.getInstance().getGroupText(data, EMITTER_VALUE_GROUP.Scale);
+                                    int max = Math.max(texture.getHeight(), texture.getWidth());
+                                    int coef = max / MAX_IMAGE_SIZE;
+                                    texture = GdxImageMaster.size(s, texture.getWidth() * coef,
+                                            texture.getHeight() * coef, false);
+                                }
+                            }
                             if (texture.getWidth() > 1000) {
                                 continue;
                             }
                             FileHandle handle = GDX.file(newPath);
+                            Vector2 size = new Vector2();
+                            // EmitterPresetMaster.getInstance().getGroupText(data, EMITTER_VALUE_GROUP.Scale);
+                            // writeImageMap.put(texture, size);
                             if (!handle.exists() || overwriteImage) {
 //                                if (type==VFX_ATLAS.INVERT){
 //                                nice try!
@@ -314,8 +326,8 @@ public class EmitterMaster extends GdxUtil {
     private static String processImageNameDeep(String imageName) {
         String last = StringMaster.getLastPart(imageName, "_");
         while (NumberUtils.isInteger(last)) {
-            int n = NumberUtils.getInteger(last);
-            imageName = StringMaster.cropLast(imageName, "_")
+            int n = NumberUtils.getIntParse(last);
+            imageName = StringMaster.cropAfter(imageName, "_")
                     + n;
             last = StringMaster.getLastPart(imageName, "_");
         }
@@ -462,7 +474,7 @@ public class EmitterMaster extends GdxUtil {
         String spellsPath = "Y:\\Eidolons\\art materials\\psd\\[main]\\spells";
         List<File> imagePool = FileManager.getFilesFromDirectory(spellsPath, false, true);
         imagePool.removeIf(image -> !StringMaster.getFormat(image.getName()).equalsIgnoreCase(".png"));
-        ANIM_PART PART = ANIM_PART.CAST;
+        ANIM_PART PART = AnimEnums.ANIM_PART.CAST;
         for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
             String root = type.getImagePath();
             File current = FileManager.getFile(PathFinder.getImagePath() + root);
@@ -508,11 +520,8 @@ public class EmitterMaster extends GdxUtil {
         String imgName = root.getName();
 
         String base = processImageNameDeep(imgName);
-        if (image.getName().toLowerCase().contains(base.toLowerCase()))
-            return true;
+        return image.getName().toLowerCase().contains(base.toLowerCase());
         //so we'll getVar all the images... isn't it much?
-
-        return false;
     }
 
     public enum VFX_ATLAS {
@@ -523,8 +532,8 @@ public class EmitterMaster extends GdxUtil {
         INVERT, UNIT
     }
 
-    public enum VFX_TEMPLATE {
-        CENTER, SWIRL, FADE, FLOW,
-        MISSILE, WHIRL,
-    }
+    // public enum VFX_TEMPLATE {
+    //     CENTER, SWIRL, FADE, FLOW,
+    //     MISSILE, WHIRL,
+    // }
 }

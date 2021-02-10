@@ -1,13 +1,13 @@
 package eidolons.game.battlecraft.logic.battlefield.vision;
 
-import eidolons.ability.conditions.special.ClearShotCondition;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
+import eidolons.game.core.Eidolons;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
-import main.entity.Ref;
 import main.system.math.PositionMaster;
 
 import java.util.HashMap;
@@ -18,115 +18,96 @@ import java.util.Map;
  */
 public class IlluminationMaster {
 
-    public static final Integer DEFAULT_GLOBAL_ILLUMINATION = 10;
+
+    public static final float SIGHT_RANGE_FACTOR = 2.5f;
     public static final Integer DEFAULT_GLOBAL_ILLUMINATION_NIGHT = 60;
     public static final Integer DEFAULT_GLOBAL_ILLUMINATION_DAY = 90;
     public static final Integer DEFAULT_GLOBAL_ILLUMINATION_UNDERGROUND = 50;
-    private VisionMaster master;
-    private Integer lightEmissionModifier = 100;
-    private Integer globalIllumination = 0;
-    private Integer globalConcealment = 10;
-    private Map<DC_Obj, Integer> cache = new HashMap<>();
+    private final VisionMaster master;
+    private final Integer globalIllumination = 0;
+    private final Map<DC_Obj, Integer> cache = new HashMap<>();
 
     public IlluminationMaster(VisionMaster visionManager) {
         master = visionManager;
-
     }
 
     public Integer getLightEmissionModifier() {
-        Dungeon dungeon = master.getGame().getDungeon();
-        if (dungeon != null) {
-            if (dungeon.getIntParam(PARAMS.LIGHT_EMISSION_MODIFIER) != 0)
-                return dungeon.getIntParam(PARAMS.LIGHT_EMISSION_MODIFIER);
+        Floor floor = master.getGame().getDungeon();
+        if (floor != null) {
+            if (floor.getIntParam(PARAMS.LIGHT_EMISSION_MODIFIER) != 0)
+                return floor.getIntParam(PARAMS.LIGHT_EMISSION_MODIFIER);
         }
+        Integer lightEmissionModifier = 100;
         return lightEmissionModifier;
     }
 
-    public void setLightEmissionModifier(Integer lightEmissionModifier) {
-        this.lightEmissionModifier = lightEmissionModifier;
-    }
-
-    public Integer getGlobalIllumination() {
-        return globalIllumination;
-    }
-
-    public void setGlobalIllumination(Integer globalIllumination) {
-        this.globalIllumination = globalIllumination;
-    }
-
-    public Integer getGlobalConcealment() {
-        return globalConcealment;
-    }
-
-    public void setGlobalConcealment(Integer globalConcealment) {
-        this.globalConcealment = globalConcealment;
-    }
-
-    public Integer getIllumination(DC_Obj target) {
-        return getIllumination(master.getSeeingUnit(), target);
-    }
-
-    public Integer getIllumination(Unit source, DC_Obj target) {
-        Integer illumination = 0;
+    //Light revamp
+    public Integer getVisibleIllumination(Unit source, DC_Obj target) {
+        Integer illumination;
         if (source == master.getSeeingUnit()) {
             illumination = cache.get(target);
             if (illumination != null) {
                 return illumination;
             }
         }
-        Ref ref = new Ref(source);
-        ref.setMatch(target.getId());
         if (
          target.getVisibilityLevel() == VISIBILITY_LEVEL.BLOCKED) {
-            //master.getSightMaster().getClearShotCondition().preCheck(ref)
-//            cache.put(target, -1);
-//            return -1;
             illumination = 0;
         } else
             illumination = target.getIntParam(PARAMS.ILLUMINATION);
-        Dungeon dungeon = source.getGame().getDungeon();
-        illumination += target.getIntParam(PARAMS.LIGHT_EMISSION) / 2;
-        if (dungeon != null) {
-            illumination = Math.max(illumination, dungeon.getGlobalIllumination());
-            globalIllumination = dungeon.getGlobalIllumination() / 5;
-        }
-//universal
-        illumination += globalIllumination;
+
+        //emitters are bright enough already
+        // illumination += target.getIntParam(PARAMS.LIGHT_EMISSION) / 2;
+
+        LevelStruct struct = master.game.getDungeonMaster().getStructMaster().getLowestStruct(target.getCoordinates());
+
+        Integer ambient = struct.getIlluminationValue();
+        illumination += ambient;
+
         if (illumination <= 0)
+        {
+            if (target == Eidolons.getMainHero()) {
+                return 50;
+            }
             return illumination;
+        }
         double ilMod;
+
         double distance = PositionMaster.getExactDistance(source.getCoordinates(), target.getCoordinates());
-        // from 200 to 25 on diff of 8 to -5
-        // def sight range of 5, I'd say
         Integer sight = source.getSightRangeTowards(target);
-//        sight*=2; //TODO NEW
-        double diff = sight - distance;
+        double diff = 1+sight*sight - distance*distance;
 
         if (diff < 0) {
-            ilMod = 100 + diff * 100 / ClearShotCondition.SIGHT_RANGE_FACTOR;
-//             - diff * diff * 2
+            ilMod = 1  / -diff   ;
         } else {
-            ilMod = (100 + (diff * 12)); // + Math.sqrt(diff * 65)));
+            ilMod = (1 + (diff/ 2)); // + Math.sqrt(diff * 65)));
         }
 
-        ilMod = Math.min(ilMod, 300);
-        ilMod = Math.max(ilMod, 1);
+        ilMod = Math.min(ilMod, 5);
+        ilMod = Math.max(ilMod, 0.01f);
 
         // TODO DISTANCE FACTOR?
-        illumination = (int) Math.round(illumination * ilMod / 100);
+        illumination = (int) Math.round(illumination * ilMod  );
+        if (target == Eidolons.getMainHero()) {
+            illumination*=2;
+        }
         if (source == master.getSeeingUnit())
             cache.put(target, illumination);
         return illumination;
     }
 
+
+
+    //TODO
     public Integer getConcealment(Unit source, DC_Obj target) {
         Integer concealment = target.getIntParam(PARAMS.CONCEALMENT);
         concealment += source.getIntParam(PARAMS.CONCEALMENT) / 2; // getOrCreate from
-        Dungeon dungeon = source.getGame().getDungeon();
-        if (dungeon != null) {
-            concealment += dungeon.getIntParam(PARAMS.GLOBAL_CONCEALMENT);
+        Floor floor = source.getGame().getDungeon();
+        if (floor != null) {
+            concealment += floor.getIntParam(PARAMS.GLOBAL_CONCEALMENT);
         }
 
+        Integer globalConcealment = 10;
         concealment += globalConcealment;
 
         Integer cMod = 100;

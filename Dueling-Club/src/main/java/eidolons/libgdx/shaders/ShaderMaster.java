@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class ShaderMaster {
 
-    private static Map<SHADER, ShaderProgram> shaderMap = new HashMap<>();
+    private static final Map<SHADER, ShaderProgram> shaderMap = new HashMap<>();
     private static String defaultVertex;
 
     public static String getDefaultVertex() {
@@ -68,7 +68,6 @@ public class ShaderMaster {
 //             .replace(".", "/")
 //             .replace("target", "src\\main\\java")
 //             .replace("package ", "") + "/data/"
-            ;
         }
         return path;
     }

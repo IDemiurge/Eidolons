@@ -20,8 +20,9 @@ import main.entity.type.ObjType;
 import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.entity.ConditionMaster;
 import main.system.images.ImageManager.BORDER;
 import main.system.math.Formula;
@@ -35,11 +36,10 @@ import java.util.Map;
 
     public static PARAMS[] rankParams = {PARAMS.RANK_XP_MOD, PARAMS.RANK_SD_MOD,
      PARAMS.RANK_FORMULA_MOD};
-    private boolean rankApplied;
     private boolean paramStringParsed;
     private Map<PARAMETER, String> modMap;
     private Map<PARAMETER, String> bonusMap;
-    private int tier;
+    private final int tier;
 
         public DC_FeatObj(ObjType featType, Player originalOwner, GenericGame game, Ref ref) {
         super(featType, originalOwner, game, ref);
@@ -176,8 +176,8 @@ import java.util.Map;
     private void addParamBonuses() {
         float quotientSum = 0;
         for (PARAMETER param : getBonusMap().keySet()) {
-            Integer amount = NumberUtils.getInteger(getBonusMap().get(param), getRef());
-            float d = new Float(amount * getRankTotalFormulaMod()) / 100;
+            Integer amount = NumberUtils.getIntParse(getBonusMap().get(param), getRef());
+            float d = (float) (amount * getRankTotalFormulaMod()) / 100;
 
             if (param.isAttribute()) {
                 quotientSum += d - Math.floor(d);
@@ -192,8 +192,8 @@ import java.util.Map;
 
             if (getOBJ_TYPE_ENUM() == DC_TYPE.CLASSES) {
                 paramName = DC_ContentValsManager.getMainAttributeForClass(this);
-                if (paramName.contains(StringMaster.AND)) {
-                    quotientSum = quotientSum / paramName.split(StringMaster.AND).length;
+                if (paramName.contains(Strings.AND)) {
+                    quotientSum = quotientSum / paramName.split(Strings.AND).length;
                 }
             } else {
                 paramName = ContainerUtils.openContainer(
@@ -208,7 +208,7 @@ import java.util.Map;
 
     private void applyParamMods() {
         for (PARAMETER param : getModMap().keySet()) {
-            Integer amount = NumberUtils.getInteger(modMap.get(param));
+            Integer amount = NumberUtils.getIntParse(modMap.get(param));
             amount += amount * getRankTotalFormulaMod();
             getHero().modifyParamByPercent(param, amount); // TODO feat name for
             // valModMap!
@@ -281,7 +281,7 @@ import java.util.Map;
         setParam(PARAMS.SKILL_DIFFICULTY, getIntParam(PARAMS.SKILL_DIFFICULTY, true));
         modifyParamByPercent(PARAMS.SKILL_DIFFICULTY, sdMod);
 
-        rankApplied = true;
+        boolean rankApplied = true;
     }
 
     public Integer getRankFormulaMod() {

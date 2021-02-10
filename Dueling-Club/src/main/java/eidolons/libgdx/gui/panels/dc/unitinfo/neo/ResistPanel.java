@@ -22,7 +22,7 @@ import static main.system.images.ImageManager.getDamageTypeImagePath;
 
 public class ResistPanel extends TablePanel {
 
-    private Map<DAMAGE_TYPE, ValueContainer> map;
+    private final Map<DAMAGE_TYPE, ValueContainer> map;
 
     public ResistPanel() {
 
@@ -153,7 +153,7 @@ public class ResistPanel extends TablePanel {
 
     @Override
     public void updateAct(float delta) {
-        List<Pair<PARAMETER, String>> source = null;
+        List<Pair<PARAMETER, String>> source;
         if (getUserObject() instanceof ResistSource) {
             source = ((ResistSource) getUserObject()).getMagicResistList();
         } else source = (List<Pair<PARAMETER, String>>) getUserObject();

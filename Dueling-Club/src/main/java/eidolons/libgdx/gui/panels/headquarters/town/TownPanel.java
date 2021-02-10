@@ -20,7 +20,7 @@ import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.NoHitImage;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SmartTextButton;
 import eidolons.libgdx.gui.menu.selection.town.quest.QuestSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.town.shops.ShopSelectionPanel;
 import eidolons.libgdx.gui.panels.TabbedPanel;
@@ -34,8 +34,9 @@ import main.content.enums.DungeonEnums.MAP_BACKGROUND;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
-import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
+import main.system.launch.Flags;
+import main.system.sound.AudioEnums;
+import main.system.sound.AudioEnums.BUTTON_SOUND_MAP;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -54,8 +55,8 @@ public class TownPanel extends TabbedPanel {
     private final QuestSelectionPanel questPanel;
     private final LabelX townName;
     private final Texture headerBg;
-    private final SmartButton okBtn;
-    private final SmartButton hqBtn;
+    private final SmartTextButton okBtn;
+    private final SmartTextButton hqBtn;
     private final Texture frame;
     private String tooltip;
     SpriteAnimation backgroundSprite;
@@ -71,16 +72,16 @@ public class TownPanel extends TabbedPanel {
 
         initContainer();
         addActor(new NoHitImage(frame));
-        addActor(okBtn = new SmartButton("Done", STD_BUTTON.MENU, () -> done()) {
-            protected BUTTON_SOUND_MAP getSoundMap() {
-                return BUTTON_SOUND_MAP.ENTER;
+        addActor(okBtn = new SmartTextButton("Done", STD_BUTTON.MENU, this::done) {
+            public BUTTON_SOUND_MAP getSoundMap() {
+                return AudioEnums.BUTTON_SOUND_MAP.ENTER;
             }
         });
         okBtn.setDisabledRunnable(() -> {
             EUtils.infoPopup(tooltip);
         });
-        addActor(hqBtn = new SmartButton("Hero Screen", STD_BUTTON.MENU, () -> openHq()));
-        okBtn.addListener(new DynamicTooltip(() -> getDoneTooltip()).getController());
+        addActor(hqBtn = new SmartTextButton("Hero Screen", STD_BUTTON.MENU, this::openHq));
+        okBtn.addListener(new DynamicTooltip(this::getDoneTooltip).getController());
         tabTable.setZIndex(Integer.MAX_VALUE);
         headerBg = TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.SAURON_ALT,
          BACKGROUND_NINE_PATCH.TRANSPARENT,
@@ -142,7 +143,7 @@ public class TownPanel extends TabbedPanel {
     }
 
     private boolean isDisabled() {
-        if (CoreEngine.isIDE()) {
+        if (Flags.isIDE()) {
             return false;
         }
         for (Quest quest : getUserObject().getQuests()) {
@@ -254,7 +255,7 @@ public class TownPanel extends TabbedPanel {
 
         @Override
         public String toString() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
     }
 

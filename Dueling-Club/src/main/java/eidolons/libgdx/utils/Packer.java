@@ -14,43 +14,44 @@ import java.io.File;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static main.system.auxiliary.log.LogMaster.log;
 
 /**
  * Created by JustMe on 11/12/2018.
  * <p>
  * copy from dirs with filters?
  * <p>
- * IDEA:
- * why not work in a clean space? and keep the junk elsewhere?!
- * of course some filtering will be required...
+ * IDEA: why not work in a clean space? and keep the junk elsewhere?! of course some filtering will be required...
  */
 public class Packer {
     public static final String[] filteredAll = {
-     ".psd",
-     "desktop.ini",
-     " copy",
-     "(1)",
-     "pregenerated",
+            ".psd",
+            "desktop.ini",
+            " copy",
+            "(1)",
+            "pregenerated",
     };
     public static final String[] imageFiltered = {
-     "generator",
-     "workshop",
+            "generator",
+            "workshop",
     };
 
     public static final String[] xmlFolders = {
-     "duel-club\\types",
-     "dungeons\\levels\\generated"
+            "duel-club\\types",
+            "dungeons\\levels\\generated"
     };
     public static final String[] vfxFolders = {
-     "atlas",
-     "atlases"
+            "atlas",
+            "atlases"
     };
     public static final String[] imageFolders = {
-     "main",
-     "sprites",
-     "vfx",
+            "main",
+            "sprites",
+            "vfx",
     };
     public static final String CORE_UPLOAD = "Y:\\[Eidolons demos]\\upload\\";
     public static final String CORE_TEST = "Y:\\[Eidolons demos]\\packer test\\";
@@ -59,14 +60,12 @@ public class Packer {
     private static final String RES_TREE_FULL = "res tree full.txt";
     boolean test;
     int maxTreeDepth = 5;
-    private String outputRoot;
-    private boolean readTree = true;
-    private boolean updateTree = false;
+    private final String outputRoot;
     private StrPathBuilder pathBuilder;
     private StrPathBuilder lastBuilder;
     private boolean delayed;
     private List<File> toCopy;
-    private List<File> failedFiles;
+    // private List<File> failedFiles;
 
     public Packer(String outputRoot, boolean test) {
         if (test) {
@@ -80,8 +79,8 @@ public class Packer {
 
     public static void main(String[] args) {
         new Packer(
-         ContainerUtils.join("-", Eidolons.NAME, Eidolons.EXTENSION, Eidolons.SUFFIX,
-          CoreEngine.filesVersion) + "/", true).pack();
+                ContainerUtils.join("-", Eidolons.NAME, Eidolons.EXTENSION, Eidolons.SUFFIX,
+                        CoreEngine.filesVersion) + "/", true).pack();
     }
 
     public String createDirectoryTree() {
@@ -97,9 +96,9 @@ public class Packer {
         if (treeDepth > maxTreeDepth)
             return;
         List<File> files = FileManager.getFilesFromDirectory(path, true).stream().filter(
-         file -> file.isDirectory()).sorted(new SortMaster<File>().getSorterByExpression_(
-         file -> -(FileManager.getFilesFromDirectory(file.getPath(), true, false).size())))
-         .collect(Collectors.toList());
+                File::isDirectory).sorted(new SortMaster<File>().getSorterByExpression_(
+                file -> -(FileManager.getFilesFromDirectory(file.getPath(), true, false).size())))
+                .collect(Collectors.toList());
 
         for (File dir : files) {
             //            if (full.contains(dir.getName().toLowerCase()))
@@ -120,10 +119,12 @@ public class Packer {
 
     public void pack() {
         toCopy = new ArrayList<>();
-        failedFiles = new ArrayList<>();
+        // failedFiles = new ArrayList<>();
 
+        boolean updateTree = false;
         if (updateTree)
             FileManager.write(createDirectoryTree(), PathFinder.getResPath() + "res tree.txt");
+        boolean readTree = true;
         if (readTree)
             copyResourceTree();
 
@@ -190,7 +191,7 @@ ____________________
                 recursive = true; //do not stop until depth is again N
                 line = line.replace("*", "");
             }
-            boolean subfoldersOnly=false;
+            boolean subfoldersOnly = false;
             if (isSubfoldersOnly(line)) {
                 subfoldersOnly = true; //do not copy files, just subfolders
                 line = line.replace("%", "");
@@ -243,7 +244,7 @@ ____________________
         //no dirs
         String src = PathFinder.getResPath();
         String dest = "resources/";
-        copyFromRoot(false, src, dest, filesToCopy.toArray(new File[0]), null);
+        copyFromRoot(false, src, dest,outputRoot, filesToCopy.toArray(new File[0]), null);
     }
 
     private int getDepth(String line) {
@@ -304,16 +305,17 @@ ____________________
 
     private void copyFromRoot(boolean recursive, String root, String dest, String[] folders,
                               String[] filteredAll, String... customExceptions) {
-        copyFromRoot(recursive, root, dest,
-         Arrays.stream(folders).map(name -> FileManager.getFile(root + "/" + name))
-          .collect(Collectors.toList()).toArray(new File[folders.length])
-         , filteredAll, customExceptions);
+        copyFromRoot(recursive, root, outputRoot, dest,
+                Arrays.stream(folders).map(name -> FileManager.getFile(root + "/" + name))
+                        .collect(Collectors.toList()).toArray(new File[folders.length])
+                , filteredAll, customExceptions);
     }
 
-    private void copyFromRoot(boolean recursive, String root, String dest, File[] folders,
-                              String[] filteredAll, String... customExceptions) {
+    public static List<File> copyFromRoot(boolean recursive, String root, String outputRoot, String dest, File[] folders,
+                                          String[] filteredAll, String... customExceptions) {
         Path rootPath = null;
         String symbolicLinkRoot = "";
+        List<File> failedFiles = new LinkedList<>();
         try {
             rootPath = Paths.get(new File(root).toURI());
             if (Files.isSymbolicLink(rootPath)) {
@@ -350,8 +352,8 @@ ____________________
                 }
 
                 String suffix = FileManager.formatPath(file.getPath(), true)
-                 .replace(symbolicLinkRoot, "")
-                 .replace(root, "");
+                        .replace(symbolicLinkRoot, "")
+                        .replace(root, "");
                 File output = new File(StrPathBuilder.build(outputRoot + dest + suffix));
                 output.mkdirs();
                 try {
@@ -359,23 +361,20 @@ ____________________
                     Path target = Paths.get(output.toURI());
 
                     Files.copy(src, target, StandardCopyOption.REPLACE_EXISTING);
-                    log("Copied to " + output);
+                    log(1, "Copied to " + output);
                 } catch (InvalidPathException e1) {
                     e1.printStackTrace();
-                    log("Paths failed " + file + "\n" + output);
+                    log(1, "Paths failed " + file + "\n" + output);
                     failedFiles.add(file);
                 } catch (Exception e) {
-                    log("Copy failed from " + file);
+                    log(1, "Copy failed from " + file);
                     failedFiles.add(file);
                 }
             }
 
         }
-
-    }
-
-    private void log(String s) {
-        main.system.auxiliary.log.LogMaster.log(1, s);
+        log(1, "failed files: " + failedFiles);
+        return failedFiles;
     }
 
 

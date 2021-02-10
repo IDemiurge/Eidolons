@@ -153,9 +153,8 @@ public class ActionExecutor extends Executor {
 //                            DC_ConditionMaster.getSelectiveTargetingTemplateConditions(SELECTIVE_TARGETING_TEMPLATES.ATTACK));
                     conditions = ConditionMaster.getFilteredConditions(conditions, DistanceCondition.class);
                     conditions.add(new DistanceCondition("" + maxRange));
-                    SelectiveTargeting selectiveTargeting = new SelectiveTargeting(
+                    return new SelectiveTargeting(
                      SELECTIVE_TARGETING_TEMPLATES.ATTACK, conditions);
-                    return selectiveTargeting;
 
                 }
                 return super.getTargeting();

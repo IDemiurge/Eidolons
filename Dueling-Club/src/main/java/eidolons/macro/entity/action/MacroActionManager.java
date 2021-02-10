@@ -22,7 +22,7 @@ public class MacroActionManager {
     // "Explore Route" => still coming forward at 1/2 speed...
     // "Explore Outskirts" => not moving, just looking for routes/places
 
-    private static Map<String, MacroAction> actionMap = new ConcurrentMap<>();
+    private static final Map<String, MacroAction> actionMap = new ConcurrentMap<>();
 
     private static ObjType type;
 
@@ -205,7 +205,7 @@ public class MacroActionManager {
         }
 
         public String toString() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
 
         public Boolean isCountryPermitted() {
@@ -224,7 +224,7 @@ public class MacroActionManager {
         AMBUSH, TRAVEL;
 
         public String toString() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
 
         public String getImagePath() {

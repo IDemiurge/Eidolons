@@ -26,12 +26,12 @@ public class Room extends RoomModel {
     private FACING_DIRECTION[] exits;
     private FACING_DIRECTION entrance;
     private Coordinates point; //upper-left!!!
-    private Coordinates offset = new AbstractCoordinates(0, 0);
+    private final Coordinates offset = new AbstractCoordinates(0, 0);
     private Coordinates entranceCoordinates;
     private LevelZone zone;
-    private List<Coordinates> exitCoordinates = new ArrayList<>();
-    private List<String> exitCells = new ArrayList<>();
-    private List<FACING_DIRECTION> usedExits = new ArrayList<>();
+    private final List<Coordinates> exitCoordinates = new ArrayList<>();
+    private final List<String> exitCells = new ArrayList<>();
+    private final List<FACING_DIRECTION> usedExits = new ArrayList<>();
     private String entranceCell;
     private boolean sheared;
 
@@ -303,8 +303,7 @@ public class Room extends RoomModel {
         if (list.isEmpty()) {
             return null;
         }
-        FACING_DIRECTION exit = list.get(0);
-        return exit;
+        return list.get(0);
     }
 
     public void resetExitCells() {

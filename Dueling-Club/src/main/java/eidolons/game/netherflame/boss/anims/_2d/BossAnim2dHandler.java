@@ -2,7 +2,8 @@ package eidolons.game.netherflame.boss.anims._2d;
 
 import eidolons.game.netherflame.boss.anims.BossAnimHandler;
 import eidolons.game.netherflame.boss.anims.BossAnims;
-import eidolons.game.netherflame.boss.anims.view.BossPart;
+import eidolons.game.netherflame.boss.anims.old.BossPart;
+import eidolons.game.netherflame.boss.logic.BossCycle;
 import main.game.logic.event.Event;
 
 import java.util.Map;
@@ -29,6 +30,11 @@ public class BossAnim2dHandler implements BossAnimHandler {
 
     @Override
     public void handleEvent(Event event) {
+
+    }
+
+    @Override
+    public void toggleActive(BossCycle.BOSS_TYPE type, boolean active) {
 
     }
 

@@ -4,7 +4,6 @@ import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.ignored.special.media.InfoTextEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
@@ -22,7 +21,7 @@ public class InterruptRule {
     public static Effect getEffect() {
         return new Effects(
                 new InfoTextEffect(KEYS.SOURCE, " has been interrupted!", true),
-                new ModifyValueEffect(PARAMS.C_N_OF_ACTIONS, MOD.MODIFY_BY_PERCENT,
+                new ModifyValueEffect(PARAMS.C_ATB, MOD.MODIFY_BY_PERCENT,
          AP_FORMULA), new ModifyValueEffect(PARAMS.C_FOCUS, MOD.MODIFY_BY_PERCENT,
          FOC_FORMULA));
     }
@@ -43,8 +42,6 @@ public class InterruptRule {
     }
 
     public static void interrupt(Unit target) {
-        if (EidolonsGame.DUEL)
-            return;
         getEffect().apply(Ref.getSelfTargetingRefCopy(target));
         new InterruptEffect().apply(Ref.getSelfTargetingRefCopy(target));
     }

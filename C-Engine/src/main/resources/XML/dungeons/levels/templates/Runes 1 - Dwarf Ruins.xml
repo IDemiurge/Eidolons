@@ -1,0 +1,41 @@
+<Floor>
+<DATA>name=Utmar Hold;cell_type=natural;wall_type=stone wall;background=img\main\background\moon valley(1).jpg
+</DATA>
+<MODULES>
+
+<The_Charred_Gate>
+<DATA>
+wall_type=Jagged Stone Wall;cell_type=natural;
+name=The Charred Gate;width=21;height=53;border_width=2;
+border_type=irregular;width_buffer=3;height_buffer=2;
+</DATA>
+<zones>
+<zone><DATA>name=Leaden Paths;</DATA></zone>
+<zone><DATA>name=Antechamber;</DATA></zone>
+</zones>
+</The_Charred_Gate>
+
+
+<Old_Fort>
+<DATA>cell_type=octagonal;
+name=Old Fort;width=31;height=29;border_width=2;
+border_type=wall;width_buffer=3;height_buffer=2;
+</DATA>
+<zones>
+<zone><DATA>name=Barricades;</DATA></zone>
+<zone><DATA>name=Barracks;</DATA></zone>
+</zones>
+</Old_Fort>
+
+<Halls>
+<DATA>cell_type=star;
+name=Halls;width=31;height=29;border_width=2;
+border_type=wall;width_buffer=3;height_buffer=2;
+</DATA>
+<zones>
+<zone><DATA>name=Treasure Vault;</DATA></zone>
+<zone><DATA>name=Rune Vault;</DATA></zone>
+</zones>
+</Halls>
+
+</MODULES></Floor>

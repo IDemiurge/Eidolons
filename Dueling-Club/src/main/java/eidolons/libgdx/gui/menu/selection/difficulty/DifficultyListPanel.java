@@ -1,7 +1,8 @@
 package eidolons.libgdx.gui.menu.selection.difficulty;
 
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
-import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
+import main.system.sound.AudioEnums;
+import main.system.sound.AudioEnums.BUTTON_SOUND_MAP;
 
 /**
  * Created by JustMe on 2/8/2018.
@@ -12,5 +13,5 @@ public class DifficultyListPanel extends ItemListPanel {
     }
 
     protected BUTTON_SOUND_MAP getButtonSoundMap() {
-        return    BUTTON_SOUND_MAP.SELECTION_SHARP;
+        return    AudioEnums.BUTTON_SOUND_MAP.SELECTION_SHARP;
     } }

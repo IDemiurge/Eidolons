@@ -1,15 +1,13 @@
 package main.system.auxiliary.log;
 
-import lombok.extern.slf4j.Slf4j;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import org.apache.log4j.Priority;
 
 import java.util.logging.Level;
 
-@Slf4j
 public class LogMaster {
     public static final int PRIORITY_VERBOSE = -1;
     public static final int PRIORITY_INFO = 0;
@@ -24,8 +22,7 @@ public class LogMaster {
     public static final String PREFIX_WARNING = "WARNING: ";
     public static final String PREFIX_ERROR = "ERROR: ";
 
-    private static int PRIORITY_LEVEL_LOGGED =
-            CoreEngine.isIDE() ? 1 : CoreEngine.isExe() ? 1 : 0;
+    private static final int PRIORITY_LEVEL_LOGGED = 1;
     public static final int CORE_DEBUG = -1;
     public static final String CORE_DEBUG_PREFIX = "CORE: ";
     public static final int CORE_DEBUG_1 = -100;
@@ -117,6 +114,14 @@ public class LogMaster {
     public static final int SAVE = -39;
     public static final boolean SAVE_ON = true;
 
+    public static final String CAMERA_PREFIX = "CAMERA: ";
+    public static final int CAMERA = -41;
+    public static final boolean CAMERA_ON = true;
+
+    public static final String PLATFORM_PREFIX = "PLATFORM: ";
+    public static final int PLATFORM = -42;
+    public static final boolean PLATFORM_ON = false;
+
     public static final LOG_CHANNEL[] specialLogChannels = {
 
     };
@@ -134,7 +139,7 @@ public class LogMaster {
     public static boolean EVENT_DEBUG_ON = false;
     public static boolean EFFECT_DEBUG_ON = false;
     public static boolean TRIGGER_DEBUG_ON = true;
-    public static boolean PATHING_DEBUG_ON = false;
+    public static boolean PATHING_DEBUG_ON = true;
     public static boolean COMBAT_DEBUG_ON = false;
     public static boolean MAP_GENERATION_DEBUG_ON = false;
     public static boolean CONDITION_DEBUG_ON = false;
@@ -178,11 +183,12 @@ public class LogMaster {
         if (FileLogManager.isFullLoggingConsole()) {
             FileLogManager.stream(FileLogManager.LOG_OUTPUT.FULL, s);
         }
-        if (isConsoleLogging()) {
-//            log.debug(s);
+        if (Flags.isIDE()) {
+            //            log.debug(s);
             System.out.println(s);
         } else {
-            logToFile(s);
+            if (isConsoleLogging())
+                logToFile(s);
         }
     }
 
@@ -191,7 +197,7 @@ public class LogMaster {
     }
 
     private static boolean isConsoleLogging() {
-        return !CoreEngine.isExe();
+        return     Flags.isExe() && !Flags.isMe();
     }
 
     //TODO do these categories!
@@ -206,7 +212,6 @@ public class LogMaster {
     }
 
     public static void log(int priority, String s) {
-
         if (priority < 0) {
             boolean switcher = false;
             String prefix = "";
@@ -409,15 +414,22 @@ public class LogMaster {
         log(PRIORITY_WARNING, PREFIX_WARNING + string);
     }
 
-    public static void dev(String string) {
-        if (CoreEngine.isIDE()) {
+    public static void devLog(String string) {
+        if (Flags.isIDE()) {
             log(PRIORITY_IMPORTANT, PREFIX_DEV + string);
         }
     }
 
+    public static void devLog(LOG_CHANNEL c, String s) {
+        if (Flags.isIDE())
+            if (c.isOn()) {
+                log(c.getPrefix() + s);
+            }
+    }
+
     public static void important(String string) {
         log(PRIORITY_IMPORTANT, PREFIX_IMPORTANT + string);
-        if (!CoreEngine.isIDE()) {
+        if (!Flags.isIDE()) {
             FileLogManager.streamMain(string);
         }
     }
@@ -428,7 +440,7 @@ public class LogMaster {
 
     public static void header(String string) {
         log(PRIORITY_IMPORTANT, "");
-        log(PRIORITY_IMPORTANT, PREFIX_IMPORTANT + StringMaster.wrapInBraces(string));
+        log(PRIORITY_IMPORTANT, PREFIX_IMPORTANT + StringMaster.wrapInBrackets(string));
         log(PRIORITY_IMPORTANT, "");
     }
 

@@ -18,7 +18,7 @@ public class MetaGameHandler<E extends MetaGame> {
         return master;
     }
 
-    public PartyManager<E> getPartyManager() {
+    public PartyManager getPartyManager() {
         return master.getPartyManager();
     }
 
@@ -27,7 +27,7 @@ public class MetaGameHandler<E extends MetaGame> {
     }
 
     public E getMetaGame() {
-        return master.getMetaGame();
+        return (E) master.getMetaGame();
     }
 
     public DC_Game getGame() {

@@ -8,10 +8,10 @@ import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.ItemFactory;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
-import eidolons.macro.entity.shop.ShopMaster;
 import eidolons.game.module.herocreator.HeroManager;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
+import eidolons.macro.entity.shop.ShopMaster;
 import eidolons.system.DC_Formulas;
 import main.content.CONTENT_CONSTS2.SHOP_LEVEL;
 import main.content.C_OBJ_TYPE;
@@ -46,7 +46,7 @@ public class UnitShop {
     private static int goldOriginalAmount;
     private static Unit unit;
     private static HeroManager heroManager;
-    private static boolean canExceed = true; //buyCheapest
+    private static final boolean canExceed = true; //buyCheapest
 
     // MATERIAL[] DEFAULT_MATERIALS_1 = {
     // };
@@ -496,7 +496,7 @@ public class UnitShop {
     private static void equip(Unit unit, DC_HeroItemObj item, ITEM_SLOT slot) {
         if (slot != null) {
             if (!unit.equip(item, slot)) {
-                LogMaster.dev(unit.getName() + " failed to equip "
+                LogMaster.devLog(unit.getName() + " failed to equip "
                         + item.getName());
             }
         } else {
@@ -537,7 +537,7 @@ public class UnitShop {
 
     private static DC_HeroItemObj buy(ObjType type, Unit unit) {
         unit.modifyParameter(PARAMS.GOLD, -type.getIntParam(PARAMS.GOLD_COST));
-        main.system.auxiliary.log.LogMaster.dev(">>>>>>> " + unit + " buys " + type
+        main.system.auxiliary.log.LogMaster.devLog(">>>>>>> " + unit + " buys " + type
                 + " gold remains: " +
                 unit.getIntParam(PARAMS.GOLD));
         return ItemFactory.createItemObj(type, unit.getOwner(), unit.getGame(), unit.getRef(),
@@ -587,7 +587,7 @@ public class UnitShop {
         if (property.isEmpty()) {
             property = DEFAULT_QUALITY_RANGE;
         }
-        if (!property.contains(StringMaster.CONTAINER_SEPARATOR)) {
+        if (!property.contains(Strings.CONTAINER_SEPARATOR)) {
             return property.equalsIgnoreCase(itemProperty);
         }
         QUALITY_LEVEL quality = ItemEnums.QUALITY_LEVEL.valueOf(StringMaster.getEnumFormat(itemProperty));

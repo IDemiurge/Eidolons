@@ -6,12 +6,12 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.game.core.EUtils;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
-import eidolons.game.netherflame.igg.IGG_Demo;
+import eidolons.game.netherflame.additional.IGG_Demo;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SymbolButton;
 import eidolons.libgdx.gui.panels.headquarters.HqActor;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.ValueTable;
@@ -22,9 +22,9 @@ import eidolons.system.text.DescriptionTooltips;
 import main.content.values.parameters.PARAMETER;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.images.ImageManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,14 +35,12 @@ import java.util.List;
 public class HqNewMasteryPanel extends ValueTable<PARAMETER,
         GroupX>
         implements HqActor {
-    private final SmartButton cancelButton;
+    private final SymbolButton cancelButton;
 
     public HqNewMasteryPanel() {
         super(12, DC_ContentValsManager.getMasteries().size());
         setVisible(false);
-        cancelButton = new SmartButton(STD_BUTTON.CANCEL, () -> {
-            fadeOut();
-        });
+        cancelButton = new SymbolButton(STD_BUTTON.CANCEL, this::fadeOut);
         initDefaultBackground();
         GuiEventManager.bind(GuiEventType.SHOW_MASTERY_LEARN, p -> {
             if (p.get() == null) {
@@ -105,7 +103,7 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
         GroupX group = new GroupX();
         group.addActor(container);
 //        group.addActor(overlay);
-        group.addListener(new ValueTooltip("Learn " + datum.getDisplayedName() + StringMaster.NEW_LINE +
+        group.addListener(new ValueTooltip("Learn " + datum.getDisplayedName() + Strings.NEW_LINE +
                 DescriptionTooltips.tooltip(datum)).getController());
         group.addListener(getListener(datum, container));
 
@@ -140,17 +138,15 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
     @Override
     protected PARAMETER[] initDataArray() {
         List<PARAMETER> unlocked = SkillMaster.getUnlockedMasteries(getUserObject().getEntity());
-        if (CoreEngine.isIggDemoRunning()) {
+        if (Flags.isIggDemoRunning()) {
             List<PARAMETER> pool = IGG_Demo.getMasteriesForHero(getUserObject().getEntity().getName());
-            pool.removeIf(p ->
-                    unlocked.contains(p));
+            pool.removeIf(unlocked::contains);
             return pool.toArray(new PARAMETER[0]) ;
         }
         List<PARAMETER> availableMasteries = new ArrayList<>(
                 DC_ContentValsManager.getMasteries());
 
-        availableMasteries.removeIf(p ->
-                unlocked.contains(p));
+        availableMasteries.removeIf(unlocked::contains);
 
         availableMasteries.removeIf(p ->
                 !SkillMaster.isMasteryAvailable(p, getUserObject().getEntity()));

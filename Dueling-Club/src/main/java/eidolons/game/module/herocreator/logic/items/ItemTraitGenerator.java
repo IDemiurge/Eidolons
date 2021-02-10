@@ -110,16 +110,15 @@ public class ItemTraitGenerator {
                  }
              return false;
          }
-        ).collect(Collectors.toList());;
-if (traits!=null ){
+        ).collect(Collectors.toList());
+        if (traits!=null ){
     for (ItemTrait trait : traits) {
         pool.remove(trait.getTemplate());
         //or add up levels?
     }
 }
-        ITEM_TRAIT pick = new RandomWizard<ITEM_TRAIT>().getRandomListItem(pool);
         //while ...
-        return pick;
+        return new RandomWizard<ITEM_TRAIT>().getRandomListItem(pool);
     }
 
     private static ITEM_LEVEL adjustLevelForTraitNumber(int n, ITEM_LEVEL level, int i) {

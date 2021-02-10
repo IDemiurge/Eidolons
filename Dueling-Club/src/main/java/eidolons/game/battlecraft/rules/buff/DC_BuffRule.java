@@ -3,8 +3,8 @@ package eidolons.game.battlecraft.rules.buff;
 import eidolons.ability.effects.attachment.AddBuffEffect;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.DC_RuleImpl;
-import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.COMBAT_RULES;
+import eidolons.game.battlecraft.rules.DC_RuleMaster;
+import eidolons.game.battlecraft.rules.RuleEnums.COMBAT_RULES;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.content.DC_TYPE;
@@ -23,7 +23,7 @@ import main.game.logic.event.EventType;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 import java.util.HashMap;
@@ -36,8 +36,8 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     protected Map<Integer, Conditions> conditionsMap = new HashMap<>();
     protected Unit target;
     Map<Obj, Effect[]> effectCache = new XLinkedMap<>();
-    private Map<Obj, Integer> levelCache = new ConcurrentHashMap<>();
-    private Map<Obj, Boolean> checkCache = new HashMap<>();
+    private final Map<Obj, Integer> levelCache = new ConcurrentHashMap<>();
+    private final Map<Obj, Boolean> checkCache = new HashMap<>();
 
     public DC_BuffRule(GenericGame game) {
         super(game);
@@ -123,12 +123,12 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
                 return ENTRY_TYPE.BLEEDING_RULE;
             case FOCUS:
                 return ENTRY_TYPE.FOCUS_RULE;
-            case MORALE:
+            case ESSENCE:
                 return ENTRY_TYPE.MORALE_RULE;
-            case MORALE_KILL:
+            case ESSENCE_KILL:
                 return ENTRY_TYPE.MORALE_KILL_RULE;
-            case STAMINA:
-                return ENTRY_TYPE.STAMINA_RULE;
+            case TOUGHNESS:
+                return ENTRY_TYPE.TOUGHNESS_RULE;
             case UNCONSCIOUS:
                 return ENTRY_TYPE.UNCONSCIOUS;
             case WEIGHT:
@@ -163,7 +163,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     }
 
     protected String getLogText(Obj obj, Integer level) {
-        return obj.getNameIfKnown() + RuleKeeper.getRuleLogText(getCombatRuleEnum(), level);
+        return obj.getNameIfKnown() + DC_RuleMaster.getRuleLogText(getCombatRuleEnum(), level);
         // return getBuffTypeName() + " applied to " + obj.getName();
     }
 
@@ -210,7 +210,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
 
         // TODO only animate after Buff Level changes!!!
         super.apply(ref);
-        if (CoreEngine.isPhaseAnimsOn())
+        if (Flags.isPhaseAnimsOn())
         {
             //TODO
         }

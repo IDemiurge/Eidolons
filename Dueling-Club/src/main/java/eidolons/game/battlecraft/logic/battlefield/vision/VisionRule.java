@@ -5,30 +5,22 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.battlecraft.rules.mechanics.ConcealmentRule;
-import eidolons.game.battlecraft.rules.mechanics.IlluminationRule;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.netherflame.boss.logic.entity.BossUnit;
-import eidolons.game.netherflame.igg.death.ShadowMaster;
-import eidolons.game.netherflame.igg.death.ShadowVisionMaster;
-import eidolons.system.audio.DC_SoundMaster;
+import eidolons.game.netherflame.main.death.ShadowMaster;
+import eidolons.game.netherflame.main.death.ShadowVisionMaster;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
+import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.obj.Obj;
-import main.game.bf.Coordinates;
-import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.secondary.Bools;
-import main.system.datatypes.DequeImpl;
-import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
-import main.system.sound.SoundMaster;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -45,11 +37,11 @@ public class VisionRule {
 
     public static Boolean getPlayerUnseenMode() {
         if (playerUnseenMode == null) {
-            if (CoreEngine.isFastMode())
-                playerUnseenMode = true;
-            else
-                playerUnseenMode = OptionsMaster.getGameplayOptions().
-                        getBooleanValue(GAMEPLAY_OPTION.GHOST_MODE);
+            // if (CoreEngine.isFastMode())
+            //     playerUnseenMode = true;
+            // else
+            playerUnseenMode = OptionsMaster.getGameplayOptions().
+                    getBooleanValue(GAMEPLAY_OPTION.GHOST_MODE);
         }
         return playerUnseenMode;
     }
@@ -66,41 +58,46 @@ public class VisionRule {
 
 
     public void fullReset(Unit... observers) {
-        BattleFieldObject[][][] array = master.getGame().getMaster().getObjCells();
+        DC_Cell[][] array = master.getGame().getObjMaster().getCells();
         Set<Unit> filteredObserver = new HashSet<>();
         for (Unit observer : observers) {
             if (isObserverResetRequired(observer))
                 filteredObserver.add(observer);
         }
+        int offsetX = master.getGame().getModule().getX();
+        int offsetY = master.getGame().getModule().getY();
+        int x2 = master.getGame().getModule().getX2();
+        int y2 = master.getGame().getModule().getY2();
         for (Unit observer : filteredObserver) {
-            DequeImpl<Coordinates> coordinates =
-                    master.getSightMaster().getVisibleCoordinatesSecondary(observer);
+            //            DequeImpl<Coordinates> coordinates = new DequeImpl(master.getGame().getCoordinates());
+            //                    master.getSightMaster().getVisibleCoordinatesSecondary(observer);
+            // main.system.auxiliary.log.LogMaster.log(1, "Vision Reset for " + observer);
 
-            for (int i = 0; i < array.length; i++) {
-                for (int j = 0; j < array[0].length; j++) {
-                    Set<BattleFieldObject> objects =
-                            master.getGame().getMaster().getObjectsOnCoordinate(
-                                    Coordinates.get(i, j), false);
-//                 master.getGame().getMaster().getObjects(i, j, true);
-                    DC_Cell cell = master.getGame().getCellByCoordinate(Coordinates.get(i, j));
-                    if (cell == null)
+            for (int i = offsetX; i < x2; i++) {
+                for (int j = offsetY; j < y2; j++) {
+                    BattleFieldObject[] objects = master.getGame().getObjMaster().getObjects(
+                            i, j);
+                    if (objects == null) {
+                        objects = master.getGame().getObjMaster().getObjects(
+                                i, j, false);
+                    }
+                    DC_Cell cell = array[i][j];
+
+                    if (!isResetRequired(observer, cell))
                         continue;
 
-                    if (coordinates==null || !coordinates.contains(Coordinates.get(i, j))) {
-                        if (!isResetRequired(observer, cell))
-                            continue;
-                    }
                     if (isGammaResetRequired(observer, cell)) {
                         cell.setGamma(observer, master.getGammaMaster().getGamma(
                                 observer, cell));
                     }
                     master.getSightMaster().resetUnitVision(observer, cell);
+                    //                    log(LOG_CHANNEL.VISIBILITY_DEBUG, cell.getNameAndCoordinate()+
+                    //                            " - Vision reset: " + cell.getVisionInfo());
+
                     for (BattleFieldObject sub : objects) {
                         //check ignore?
-                        if (!coordinates.contains(Coordinates.get(i, j)))
-                            if (!isObjResetRequired(observer, sub))
-                                continue;
-                        resetVision(observer, sub);
+                        if (isObjResetRequired(observer, sub))
+                            resetVision(observer, sub);
 
                     }
                 }
@@ -123,7 +120,7 @@ public class VisionRule {
         controller.getVisibilityLevelMapper().set(observer, sub, visibility(observer, sub));
         controller.getOutlineMapper().set(observer, sub, outline(observer, sub));
         controller.getPlayerVisionMapper().set(observer.getOwner(), sub, playerVision(observer, sub));
-
+        //        log(LOG_CHANNEL.VISIBILITY_DEBUG, sub.getNameAndCoordinate() + " - Vision reset: " + sub.getVisionInfo());
     }
 
     private boolean isObserverResetRequired(Unit observer) {
@@ -133,10 +130,10 @@ public class VisionRule {
         if (observer.isMine()) {
             return true;
         }
-//        if (observer.isPlayerCharacter())
-//            return true;
-//        if (observer.isScion())
-//            return true;
+        //        if (observer.isPlayerCharacter())
+        //            return true;
+        //        if (observer.isScion())
+        //            return true;
         if (observer.isUnconscious())
             return false;
         else if (getPlayerUnseenMode()) {
@@ -152,14 +149,11 @@ public class VisionRule {
     }
 
     private boolean isObjResetRequired(Unit observer, DC_Obj sub) {
-        if (sub instanceof BossUnit) {
-            return true;
-        }
         if (observer == ShadowMaster.getShadowUnit()) {
             return true;
         }
 
-//        if (sub instanceof Unit) TODO I really think enemies don't need to know anything else....
+        //        if (sub instanceof Unit) TODO I really think enemies don't need to know anything else....
         if (!observer.isPlayerCharacter())
             return observer.isHostileTo(sub.getOwner());
 
@@ -177,45 +171,33 @@ public class VisionRule {
     }
 
     public boolean isResetRequired(Unit observer, DC_Obj cell, float dstCoef) {
-
-        //changed position
-        //is close enough
-        //is hostile
-
-        if (observer.isPale() != cell.isPale())
-            return false;
-
-        if (ExplorationMaster.isExplorationOn())
-            if (cell.isResetIgnored()) {
-                return false;
-            }
-        if (cell instanceof BossUnit) {
-            return true;
-        }
-        if (observer.isDead() || observer.isUnconscious())
-            return false;
+        ////TODO should we reset if observer is dead/unc.?
         if (observer.isMine()) {
             if (observer.getGame().isDebugMode()) {
                 return true;
             }
             if (PositionMaster.getExactDistance(observer, cell) >
                     1 + observer.getMaxVisionDistance() * dstCoef) {
-                if (master.getGame().getObjectByCoordinate(cell.getCoordinates()) instanceof Structure) {
-                    Structure o = ((Structure) master.getGame().getObjectByCoordinate(cell.getCoordinates()));
-                    if (o.isWall()) {
-                        return o.isPlayerDetected();
+                if (master.getGame().getGrid().isWallCoordinate(cell.getCoordinates())) {
+                    Boolean aBoolean = observer.getSeenMapper().get(cell);
+                    if (aBoolean == null) {
+                        return false;
                     }
+                    return aBoolean;
+
                 }
                 return false;
             }
             return true;
+        } else {
+
+            if (observer.isUnconscious())
+                return false;
+            if (getPlayerUnseenMode()) {
+                return false;
+            }
+            return !(PositionMaster.getExactDistance(observer, cell) > observer.getMaxVisionDistance() * dstCoef);
         }
-        if (observer.isUnconscious())
-            return false;
-        if (getPlayerUnseenMode()) {
-            return false;
-        }
-        return !(PositionMaster.getExactDistance(observer, cell) > observer.getMaxVisionDistance() * dstCoef);
     }
 
     public VISIBILITY_LEVEL visibility(Unit source, BattleFieldObject object) {
@@ -233,9 +215,6 @@ public class VisionRule {
         //            landmark = ((BattleFieldObject) object).isWall() || ((BattleFieldObject) object).isLandscape();
         //        }
 
-        if (object instanceof BossUnit) {
-            return VISIBILITY_LEVEL.CLEAR_SIGHT;
-        }
         if (source == ShadowMaster.getShadowUnit()) {
             return ShadowVisionMaster.getVisibility(sight, object);
 
@@ -266,12 +245,13 @@ public class VisionRule {
                 }
         }
         return VISIBILITY_LEVEL.UNSEEN;
-        //            TODO case CONCEALED:
-        //                break;
+
 
     }
 
     public PLAYER_VISION playerVision(Unit source, BattleFieldObject object) {
+        if (object.isWall())
+            return PLAYER_VISION.DETECTED;
 
         VISIBILITY_LEVEL visibilityLevel = controller.getVisibilityLevelMapper().
                 get(source, object);
@@ -280,34 +260,36 @@ public class VisionRule {
                 reveal(source, object);
                 return PLAYER_VISION.DETECTED;
             case OUTLINE:
+                alert(source, object);
                 return PLAYER_VISION.UNKNOWN;
-            case CONCEALED:
+            case CONCEALED: //'for of war?'
                 return PLAYER_VISION.KNOWN;
             case BLOCKED:
-                if (source.isMine())
-                    if (object.isWall()) {
-                        if (object.isDetectedByPlayer()) {
-                            return PLAYER_VISION.KNOWN;
-                        } else {
-//                        main.system.auxiliary.log.LogMaster.log(1,"BLOCKED " +
-//                         object + " DETECTED at" +
-//                         object.getCoordinates() );
-                            if (PositionMaster.getExactDistance(object, source) <= 3) {
-                                object.setDetectedByPlayer(true);
-                                return PLAYER_VISION.UNKNOWN;
-                            }
-                        }
-                        break;
+                if (object instanceof Structure)
+                    if (object.isDetected()) {
+                        return PLAYER_VISION.KNOWN;
                     }
+
+                if (source.isMine())
+                    if (PositionMaster.getExactDistance(object, source) <= 3) {
+                        object.setDetectedByPlayer(true);
+                        return PLAYER_VISION.UNKNOWN;
+                    }
+                return PLAYER_VISION.INVISIBLE;
             case UNSEEN:
                 hide(source, object);
+                if (object instanceof Structure)
+                if (object.isDetected()) {
+                    return PLAYER_VISION.KNOWN;
+                }
                 return PLAYER_VISION.INVISIBLE;
             //                case VAGUE_OUTLINE:
             //                    break;
         }
-
+        //TODO why not do Hide?
         return PLAYER_VISION.INVISIBLE;
     }
+
 
     public boolean isDisplayedOnGrid(Unit source, BattleFieldObject object) {
         if (object.isHidden())
@@ -333,65 +315,58 @@ public class VisionRule {
     }
 
     private void reveal(Unit source, BattleFieldObject object) {
-        if (Bools.isTrue(controller.getDetectionMapper()
-                .get(source.getOwner(), object)))
-            return;
         Boolean prev = controller.getDetectionMapper().get(source.getOwner(), object);
         if (Bools.isTrue(prev)) {
             return;
         }
+        if (source == object) {
+            return;
+        }
+        if (source.getOwner() == object.getOwner()) {
+            return;
+        }
         controller.getDetectionMapper().set(source.getOwner(), object, true);
-        if (isDetectionLogged(source, object)) {
-            master.getGame().getLogManager().logReveal(source, object);
-        }
-        if (isDetectionSoundOn(source, object)) {
-            if (source.getGame().isStarted())
-                if (!VisionManager.isCinematicVision())
-//            if (!source.getGame().isFootageMode())
-                    if (RandomWizard.chance(33)) {
-                        DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.ALERT, source);
-                    } else {
-                        DC_SoundMaster.playEffectSound(SoundMaster.SOUNDS.SPOT, source);
-                    }
-        }
+        master.getEngagementHandler().detected(source, object);
+
     }
 
-    private boolean isDetectionSoundOn(Unit source, BattleFieldObject object) {
-        if (source.isPlayerCharacter()) {
-            if (!object.isSneaking())
-                if (!object.isDisabled())
-                    return !object.isAlliedTo(source.getOwner());
+    private void alert(Unit source, BattleFieldObject object) {
+
+        if (object instanceof Structure) {
+            if (object.isLandscape() || object.isWall()) {
+                return;
+            }
+            if (object.checkClassification(UnitEnums.CLASSIFICATIONS.HUMANOID)) {
+                master.getEngagementHandler().alert(source, object);
+            } else if (object.checkClassification(UnitEnums.CLASSIFICATIONS.TALL)) {
+                master.getEngagementHandler().alert(source, object);
+            } else
+                return;
         }
-        return false;
-    }
-
-    private boolean isDetectionLogged(Unit source, BattleFieldObject object) {
-        if (object instanceof Structure)
-            return false;
-
-        if (source != object)
-            if (source.isMine())
-                return source.isHostileTo(object.getOwner());
-        return false;
+        master.getEngagementHandler().alert(source, object);
     }
 
     private void hide(Unit source, BattleFieldObject object) {
         if (Bools.isFalse(controller.getDetectionMapper()
                 .get(source.getOwner(), object)))
             return;
-        if (object.isWall()) {
+        if (object.isWall() || object.isLightEmitter()) {
             return;
         }
+        master.getEngagementHandler().lostSight(source, object);
         controller.getLastSeenMapper().set(source.getOwner(), object,
                 object.getLastCoordinates());
-
+        if (object instanceof Structure) {
+            return;
+        }
         controller.getDetectionMapper().set(source.getOwner(), object, false);
-        if (isDetectionLogged(source, object))
-            master.getGame().getLogManager().logHide(source, object);
     }
 
     public OUTLINE_TYPE outline(Unit source, BattleFieldObject object) {
         if (object.getGame().isSimulation() || object.getGame().isDebugMode()) {
+            return null;
+        }
+        if (object.isWall()) {
             return null;
         }
         if (object instanceof Entrance) {
@@ -415,14 +390,12 @@ public class VisionRule {
             if (ConcealmentRule.isConcealed(source, object)) {
                 return OUTLINE_TYPE.DEEPER_DARKNESS;
             }
-            if (IlluminationRule.isConcealed(source, object)) {
+            if (Illumination.isConcealed(source, object)) {
                 return OUTLINE_TYPE.BLINDING_LIGHT;
             }
             return null;
 
         }
-
-
         return null;
     }
 
@@ -431,18 +404,11 @@ public class VisionRule {
         if (hero.isDead()) {
             return false;
         }
-        if (hero.isScion())
-            return false; //TODO  no new aggro there
-
-//        if (hero.isSneaking()) {
-//            return false;
-//        }
-
         UNIT_VISION vision = unit.getGame().getVisionMaster().getSightMaster().getUnitVisibilityStatus(hero, unit);
         switch (vision) {
 
             case IN_PLAIN_SIGHT:
-                if (!hero.isSneaking())//TODO IGG HACK
+                if (!hero.isSneaking())//TODO DC Review - how does stealth work anyway?
                     return true;
             case IN_SIGHT:
             case CONCEALED:
@@ -451,32 +417,10 @@ public class VisionRule {
             case BLOCKED:
                 return false;
         }
-//        VISIBILITY_LEVEL visibility =    controller.getVisibilityLevelMapper().getVar(unit, hero);
-//        switch (visibility) {
-//            case CLEAR_SIGHT:
-//                break;
-//            case UNSEEN:
-//                if (!isResetRequired(unit, hero, 0.5f))
-//                    return false;
-//            case OUTLINE:
-//            case VAGUE_OUTLINE:
-//            case CONCEALED:
-//                if (!ExplorationMaster.isExplorationOn())
-//                    break;
-//                else
-//                    return false;
-//            case BLOCKED:
-//                return false;
-//        }
-//        if (controller.getVisibilityLevelMapper().getVar(unit, hero) == VISIBILITY_LEVEL.CLEAR_SIGHT
-//         || !ExplorationMaster.isExplorationOn()
-//         &&  controller.getVisibilityLevelMapper().getVar(unit, hero) == VISIBILITY_LEVEL.BLOCKED
-//         ) {
-
         if (hero.isSneaking()) {
             //add chance? not right...
             //                apply spotted?
-            return isResetRequired(unit, hero, 0.25f);//TODO IGG HACK
+            return isResetRequired(unit, hero, 0.25f);
         }
         return isResetRequired(unit, hero, 0.5f);
     }
@@ -498,11 +442,11 @@ public class VisionRule {
                     continue;
                 }
             }
-//            for (Unit observer : master.getGame().getPlayer(true).collectControlledUnits_()) {
+            //            for (Unit observer : master.getGame().getPlayer(true).collectControlledUnits_()) {
             if (PositionMaster.getExactDistance(observer, cell) < observer.getMaxVisionDistance() * dstCoef) {
                 cell.setResetIgnored(false);
             }
-//            }
+            //            }
             for (Unit unit : master.getGame().getUnitsForCoordinates(c.getCoordinates())) {
                 unit.setResetIgnored(cell.isResetIgnored());
             }

@@ -3,14 +3,14 @@ package eidolons.game.battlecraft.rules.combat.attack.extra_attack;
 import eidolons.ability.conditions.VisibilityCondition;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.Spell;
 import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.action.WatchRule;
 import eidolons.game.battlecraft.rules.mechanics.InterruptRule;
 import eidolons.game.core.game.DC_Game;
@@ -70,8 +70,7 @@ public class AttackOfOpportunityRule {
             return false;
         }
 
-        boolean result = checkInterrupted(active);
-        return result;
+        return checkInterrupted(active);
     }
 
     private static boolean checkOverride(DC_ActiveObj active) {
@@ -169,7 +168,7 @@ public class AttackOfOpportunityRule {
 
         if (isOff()) {
             if (!stealthAoO) {
-                if (!VisionManager.checkVisible(unit)) {
+                if (!VisionHelper.checkVisible(unit)) {
                     if (!unit.checkBool(GenericEnums.STD_BOOLS.STEALTHY_AOOS)) {
                         return null;
                     }
@@ -222,7 +221,7 @@ public class AttackOfOpportunityRule {
     }
 
     public static boolean isOff() {
-        return !RuleKeeper.isRuleTestOn(RULE.ATTACK_OF_OPPORTUNITY);
+        return !RuleKeeper.isRuleTestOn(RuleEnums.RULE.ATTACK_OF_OPPORTUNITY);
     }
 
     private static int getAoOMaxDistance(Unit unit, DC_ActiveObj active) {
@@ -250,11 +249,10 @@ public class AttackOfOpportunityRule {
 
     public static List<DC_ActiveObj> getMoveAoOs(Coordinates prevCoordinates,
                                                  Coordinates coordinates, DC_ActiveObj action) {
-        List<DC_ActiveObj> list = new ArrayList<>();
         // TODO
         // if (!getConditions().preCheck(unit)) return;
 
-        return list;
+        return new ArrayList<>();
     }
 
     public static Boolean collisionAoO(DC_ActiveObj active, Unit collidedUnit) {
@@ -471,9 +469,7 @@ if (isOff())
             return false;
         }
         if (attack.canBeTargeted(target.getId())) {
-            if (attack.canBeActivatedAsAttackOfOpportunity(true, target)) {
-                return true;
-            }
+            return attack.canBeActivatedAsAttackOfOpportunity(true, target);
         }
         return false;
     }

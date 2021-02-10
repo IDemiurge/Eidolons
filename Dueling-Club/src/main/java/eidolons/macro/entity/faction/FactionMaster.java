@@ -11,7 +11,6 @@ public class FactionMaster {
      * relations, mercs and companions, special shops/libraries
      */
     static DequeImpl<FactionObj> factions;
-    private static boolean allFactions;
     private static boolean factionsSupported;
 
     public static FactionObj getFaction(String name) {
@@ -24,7 +23,7 @@ public class FactionMaster {
     }
 
     public static void generateFactions(MacroRef ref) {
-        allFactions = ref.getGame().getWorld().getProperty(MACRO_PROPS.FACTIONS).isEmpty();
+        boolean allFactions = ref.getGame().getWorld().getProperty(MACRO_PROPS.FACTIONS).isEmpty();
 
         for (FACTIONS f : FACTIONS.values()) {
 

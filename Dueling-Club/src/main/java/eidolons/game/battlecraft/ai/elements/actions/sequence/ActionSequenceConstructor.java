@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.ai.elements.actions.sequence;
 
-import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
@@ -22,7 +21,7 @@ import eidolons.game.battlecraft.ai.tools.target.ReasonMaster.FILTER_REASON;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
 import eidolons.game.battlecraft.ai.tools.time.TimeLimitMaster;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
-import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
+import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.WEAPON_GROUP;
 import main.content.enums.system.AiEnums;
@@ -35,8 +34,8 @@ import main.game.core.game.Game;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.Chronos;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +43,6 @@ import java.util.List;
 public class ActionSequenceConstructor extends AiHandler {
 
     int defaultDistancePruneFactor = 3;
-    private Game game;
     private Unit unit;
     private List<Coordinates> prioritizedCells;
 
@@ -61,7 +59,7 @@ public class ActionSequenceConstructor extends AiHandler {
         if (ai.getCurrentOrder() != null)
             forced = true;
         for (GOAL_TYPE type : GoalManager.getGoalsForUnit(ai)) {
-            List<ActionSequence> sequences = null;
+            List<ActionSequence> sequences;
             try {
                 Goal goal = new Goal(type, null // ???
                  , ai);
@@ -176,7 +174,7 @@ public class ActionSequenceConstructor extends AiHandler {
 
     private List<ActionSequence> getSequencesWithPathsForAction(Action action, Object arg, Task task) {
         List<ActionSequence> list = new ArrayList<>();
-        game = action.getRef().getGame();
+        Game game = action.getRef().getGame();
         unit = action.getSource();
 
         if (task.getAI().getBehaviorMode() == AiEnums.BEHAVIOR_MODE.PANIC) {
@@ -184,9 +182,8 @@ public class ActionSequenceConstructor extends AiHandler {
         }
         if (task.getType() == AiEnums.GOAL_TYPE.RETREAT) {
             {
-                List<ActionSequence> sequencesFromPaths = getSequencesFromPaths(
+                return getSequencesFromPaths(
                  getPathSequenceConstructor().getRetreatPaths(arg), task, action);
-                return sequencesFromPaths;
             } // TODO
         }
 
@@ -230,17 +227,9 @@ public class ActionSequenceConstructor extends AiHandler {
             return null; // TODO until pathing/cell-pr. is fixed
         }
         if (!task.isForced()) {
-            if (task.getAI().checkMod(AI_MODIFIERS.TRUE_BRUTE)) {
-                return null;
-            }
-
             if (task.getAI().getBehaviorMode() == AiEnums.BEHAVIOR_MODE.BERSERK) {
                 return null;
-            } //if (getAnalyzer().isRanged(task.getAI())) return null ;
-//          TODO   if ((!action.getActive().isRanged() && task.getAI().getType() == AiEnums.AI_TYPE.ARCHER)
-//             || (task.getAI().getType() == AiEnums.AI_TYPE.CASTER && !unit.getSpells().isEmpty())) {
-//                return null;
-//            }
+            }
         }
 
         Unit unit = (Unit) action.getRef().getSourceObj();
@@ -248,9 +237,9 @@ public class ActionSequenceConstructor extends AiHandler {
 
         if (!ListMaster.isNotEmpty(moveActions)) {
             // [QUICK FIX]
-            if (!unit.getAction(DC_ActionManager.STD_ACTIONS.Turn_Anticlockwise.name())
+            if (!unit.getAction(ActionEnums.STD_ACTIONS.Turn_Anticlockwise.name())
              .canBeActivated(action.getRef(), true)
-             && !unit.getAction(DC_ActionManager.STD_ACTIONS.Move.name()).canBeActivated(
+             && !unit.getAction(ActionEnums.STD_ACTIONS.Move.name()).canBeActivated(
              action.getRef(), true)) {
                 return null;
             }

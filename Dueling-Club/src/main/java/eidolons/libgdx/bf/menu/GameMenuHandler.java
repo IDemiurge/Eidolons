@@ -8,7 +8,7 @@ import eidolons.macro.global.persist.Saver;
 import eidolons.system.text.HelpMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 11/24/2017.
@@ -84,8 +84,8 @@ public class GameMenuHandler {
                 GuiEventManager.trigger(GuiEventType.SHOW_ACHIEVEMENTS);
                 GameMenu.menuOpen = false;
                 break;
-            case BACK_TO_TOWN:
-                if (CoreEngine.isMacro()) {
+            case RETREAT:
+                if (Flags.isMacro()) {
                     GuiEventManager.trigger(GuiEventType.SHOW_NAVIGATION_PANEL, null);
                     break;
                 }
@@ -93,10 +93,9 @@ public class GameMenuHandler {
                 Eidolons.onNonGdxThread(()->
                  Eidolons.getGame().getMetaMaster().getTownMaster().tryReenterTown());
                 break;
-            case RETREAT:
-                GameMenu.menuOpen = false;
-                GuiEventManager.trigger(GuiEventType.BATTLE_FINISHED);
-                break;
+                // GameMenu.menuOpen = false;
+                // GuiEventManager.trigger(GuiEventType.BATTLE_FINISHED);
+                // break;
             case RESUME:
             case LAUNCH_GAME:
             case ABOUT:

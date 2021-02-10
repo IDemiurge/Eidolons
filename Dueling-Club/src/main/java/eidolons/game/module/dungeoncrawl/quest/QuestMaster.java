@@ -5,21 +5,22 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
-import eidolons.game.netherflame.igg.event.TipMessageMaster;
-import eidolons.game.netherflame.igg.event.TipMessageSource;
 import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
-import main.content.enums.macro.MACRO_OBJ_TYPES;
+import eidolons.system.text.tips.TipMessageMaster;
+import eidolons.system.text.tips.TipMessageSource;
+import main.content.DC_TYPE;
 import main.content.enums.meta.QuestEnums;
 import main.content.enums.meta.QuestEnums.QUEST_TYPE;
-import main.content.values.properties.MACRO_PROPS;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.auxiliary.Strings;
+import main.system.sound.AudioEnums;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -61,7 +62,7 @@ public class QuestMaster extends MetaGameHandler {
                     } else {
                         questTaken(p.get().toString());
                     }
-                    DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__QUEST_TAKEN);
+                    DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__QUEST_TAKEN);
                 });
         GuiEventManager.bind(GuiEventType.QUEST_CANCELLED,
                 p -> {
@@ -70,7 +71,7 @@ public class QuestMaster extends MetaGameHandler {
                     } else
                         questCancelled(p.get().toString());
 
-                    DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__QUEST_CANCELLED);
+                    DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__QUEST_CANCELLED);
                 });
         GuiEventManager.bind(GuiEventType.QUESTS_UPDATE_REQUIRED,
                 p -> {
@@ -80,7 +81,7 @@ public class QuestMaster extends MetaGameHandler {
                 });
     }
 
-    public static final boolean isPrecreatedQuests() {
+    public static boolean isPrecreatedQuests() {
         return true;
     }
 
@@ -114,7 +115,7 @@ public class QuestMaster extends MetaGameHandler {
     }
 
     public void questTaken(String name, boolean notify) {
-        ObjType type = DataManager.getType(name, MACRO_OBJ_TYPES.QUEST);
+        ObjType type = DataManager.getType(name, DC_TYPE.QUEST);
         Quest quest = null;
         if (isPrecreatedQuests())
             for (Quest q : getQuestsPool()) {
@@ -134,11 +135,11 @@ public class QuestMaster extends MetaGameHandler {
         quests.add(quest);
         startQuests();
         if (type != null) {
-            String txt = type.getName() + StringMaster.NEW_LINE +
-                    StringMaster.NEW_LINE + quest.getProgressText() + StringMaster.NEW_LINE +
+            String txt = type.getName() + Strings.NEW_LINE +
+                    Strings.NEW_LINE + quest.getProgressText() + Strings.NEW_LINE +
                     quest.getDescription();
             if (ExplorationMaster.isExplorationOn())
-                MusicMaster.playMoment(MusicMaster.MUSIC_MOMENT.TOWN);
+                MusicMaster.playMoment(MusicEnums.MUSIC_MOMENT.TOWN);
 
             TipMessageMaster.tip(new TipMessageSource(txt, type.getImagePath(), "Onward!", false, () -> {
             }));
@@ -152,7 +153,7 @@ public class QuestMaster extends MetaGameHandler {
     }
 
     public void startQuests() {
-        quests.removeIf(quest -> quest.isComplete());
+        quests.removeIf(Quest::isComplete);
         quests.forEach(quest -> {
             if (quest instanceof DungeonQuest) {
                 getResolver().questTaken((DungeonQuest) quest);
@@ -180,8 +181,8 @@ public class QuestMaster extends MetaGameHandler {
 
     public Set<ObjType> getQuestTypePool() {
         String filter = getQuestGroupFilter();
-        Set<ObjType> pool = new LinkedHashSet<>(DataManager.getFilteredTypes(MACRO_OBJ_TYPES.QUEST,
-                filter, MACRO_PROPS.QUEST_GROUP));
+        Set<ObjType> pool = new LinkedHashSet<>(DataManager.getFilteredTypes(DC_TYPE.QUEST,
+                filter, G_PROPS.QUEST_GROUP));
 
         pool.removeIf(q -> !checkQuestForLocation(q));
 
@@ -189,7 +190,7 @@ public class QuestMaster extends MetaGameHandler {
     }
 
     protected String getQuestGroupFilter() {
-        return QuestEnums.QUEST_GROUP.SCENARIO + StringMaster.OR + QuestEnums.QUEST_GROUP.RNG;
+        return QuestEnums.QUEST_GROUP.SCENARIO + Strings.OR + QuestEnums.QUEST_GROUP.RNG;
     }
 
     protected boolean checkQuestForLocation(ObjType q) {
@@ -197,17 +198,17 @@ public class QuestMaster extends MetaGameHandler {
 //            ((ScenarioMeta) master.getMetaDataManager().getMetaGame()).getScenario()
 //        }
         QUEST_TYPE type = new EnumMaster<QUEST_TYPE>().retrieveEnumConst(
-                QUEST_TYPE.class, q.getProperty(MACRO_PROPS.QUEST_TYPE));
+                QUEST_TYPE.class, q.getProperty(G_PROPS.QUEST_TYPE));
         switch (type) {
 
             case BOSS:
             case HUNT:
                 break;
             case OBJECTS:
-                if (master.getGame().getDungeonMaster().getDungeonLevel() == null) {
+                if (master.getGame().getDungeonMaster().getFloorWrapper()  == null) {
                     return false;
                 }
-                switch (master.getGame().getDungeonMaster().getDungeonLevel().getMainStyle()) {
+                switch (master.getGame().getDungeonMaster().getFloorWrapper().getStyle()) {
                     case Somber:
                     case Grimy:
                     case Pagan:
@@ -217,10 +218,10 @@ public class QuestMaster extends MetaGameHandler {
                 return false;
             case COMMON_ITEMS:
             case SPECIAL_ITEM:
-                if (master.getGame().getDungeonMaster().getDungeonLevel() == null) {
+                if (master.getGame().getDungeonMaster().getFloorWrapper()  == null) {
                     return false;
                 }
-                switch (master.getGame().getDungeonMaster().getDungeonLevel().getMainStyle()) {
+                switch (master.getGame().getDungeonMaster().getFloorWrapper().getStyle()) {
                     case Somber:
                         return false;
                 }
@@ -254,7 +255,7 @@ public class QuestMaster extends MetaGameHandler {
         updateQuests();
         quest.getReward().award(Eidolons.getMainHero(), true);
         quest.setRewardTaken(true);
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__QUEST_COMPLETED);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__QUEST_COMPLETED);
     }
 
     public Quest getQuest(String string) {

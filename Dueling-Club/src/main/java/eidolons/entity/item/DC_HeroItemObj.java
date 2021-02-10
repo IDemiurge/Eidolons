@@ -20,14 +20,14 @@ import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 
 public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroItem, ChangeableType {
 
     private final ObjType originalType;
     protected boolean equipped;
-    private PARAMETER[] params;
-    private PROPERTY[] props = {G_PROPS.STD_BOOLS};
+    private final PARAMETER[] params;
+    private final PROPERTY[] props = {G_PROPS.STD_BOOLS};
     private CONTAINER container=CONTAINER.UNASSIGNED;
     private Unit originalUnit;
     private ObjType baseType;
@@ -149,7 +149,7 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
         if (getIntParam(PARAMS.C_DURABILITY) <= 0) {
             broken();
         } else {
-            game.getLogManager().log(StringMaster.MESSAGE_PREFIX_INFO + getName() + " loses " + amount + " durability, "
+            game.getLogManager().log(Strings.MESSAGE_PREFIX_INFO + getName() + " loses " + amount + " durability, "
              + getIntParam(PARAMS.C_DURABILITY) + " left");
         }
         return amount;
@@ -194,7 +194,7 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
         }
         kill();
         if (isMine()) {
-        String msg = StringMaster.MESSAGE_PREFIX_ALERT + getHero().getName() + "'s " + getName() + " is broken!";
+        String msg = Strings.MESSAGE_PREFIX_ALERT + getHero().getName() + "'s " + getName() + " is broken!";
         game.getLogManager().log(msg);
         EUtils.showInfoText(msg);
         }

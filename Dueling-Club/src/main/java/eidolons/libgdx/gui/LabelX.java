@@ -10,10 +10,10 @@ import main.system.text.TextWrapper;
  */
 public class LabelX extends VisLabel {
 
-    private boolean wrapped;
-    private float maxWidth;
-    private float wrapCoef = 0.72f;
-    private boolean zigZagLines;
+    protected boolean wrapped;
+    protected float maxWidth;
+    protected float wrapCoef = 0.72f;
+    protected boolean zigZagLines;
 
     public LabelX(CharSequence text, int fontSize) {
         super(text, StyleHolder.getHqLabelStyle(fontSize));
@@ -30,6 +30,10 @@ public class LabelX extends VisLabel {
 
     public LabelX() {
         this("", StyleHolder.getDefaultLabelStyle());
+    }
+
+    public LabelX(LabelStyle style) {
+        this("", style);
     }
 
     @Override

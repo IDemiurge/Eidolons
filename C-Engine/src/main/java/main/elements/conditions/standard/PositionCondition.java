@@ -5,10 +5,18 @@ import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 
+import java.util.function.Supplier;
+
 public class PositionCondition extends MicroCondition {
 
     private Coordinates c;
-    private String key;
+    Supplier<Coordinates> supplier;
+    private final String key;
+
+    public PositionCondition(Supplier<Coordinates> supplier) {
+        this(Ref.KEYS.MATCH.toString());
+        this.supplier = supplier;
+    }
 
     public PositionCondition(String key) {
         this.key = key;
@@ -25,6 +33,9 @@ public class PositionCondition extends MicroCondition {
 
     @Override
     public boolean check(Ref ref) {
+        if (supplier != null) {
+            c = supplier.get();
+        }
         Obj obj = ref.getObj(key);
         if (obj == null) {
             obj = ref.getSourceObj();
@@ -37,11 +48,6 @@ public class PositionCondition extends MicroCondition {
         } else {
             return obj.getCoordinates().equals(c);
         }
-
     }
 
-    public enum POSITION_CONDITIONS {
-        DIAGONAL,
-        ;
-    }
 }

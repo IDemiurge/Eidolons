@@ -1,12 +1,13 @@
 package eidolons.libgdx.bf.mouse;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.GridMaster;
@@ -15,9 +16,11 @@ import eidolons.libgdx.screens.GameScreen;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
 import main.system.datatypes.DequeImpl;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.MathMaster;
+import main.system.sound.AudioEnums;
 import main.system.sound.SoundMaster;
 
 import java.util.ArrayList;
@@ -33,10 +36,10 @@ import static com.badlogic.gdx.Input.Keys.CONTROL_LEFT;
 public abstract class InputController implements InputProcessor {
     protected static final float MARGIN = 300;
     protected static float zoomStep_ = OptionsMaster.getControlOptions().
-            getIntValue(CONTROL_OPTION.ZOOM_STEP) / new Float(100);
+            getIntValue(CONTROL_OPTION.ZOOM_STEP) / 100f;
     protected float zoomStep;
     protected OrthographicCamera camera;
-    protected boolean isLeftClick = false;
+    protected boolean isLeftPressed = false;
     protected boolean alt = false;
     protected boolean ctrl = false;
     protected char lastTyped;
@@ -54,9 +57,9 @@ public abstract class InputController implements InputProcessor {
     private Runnable onInputGdx;
     private Runnable onPassInput;
 
-    private DequeImpl<Runnable> onInputQueue =  (new DequeImpl<>());
-    private DequeImpl<Runnable> onInputGdxQueue =  (new DequeImpl<>());
-    private DequeImpl<Runnable> onPassInputQueue =  (new DequeImpl<>());
+    private final DequeImpl<Runnable> onInputQueue =  (new DequeImpl<>());
+    private final DequeImpl<Runnable> onInputGdxQueue =  (new DequeImpl<>());
+    private final DequeImpl<Runnable> onPassInputQueue =  (new DequeImpl<>());
     protected float defaultZoom;
 
     public static boolean cameraMoved;
@@ -198,9 +201,9 @@ public abstract class InputController implements InputProcessor {
                 return false;
         }
         if (onPassInput != null) {
-            SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.CLICK);
+            SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.CLICK);
 
-            main.system.auxiliary.log.LogMaster.dev("onPassInput.run() ");
+            main.system.auxiliary.log.LogMaster.devLog("onPassInput.run() ");
             onPassInput.run();
             onPassInput = null;
             return true;
@@ -218,12 +221,12 @@ public abstract class InputController implements InputProcessor {
             }
         }
         if (onInputGdx != null) {
-            main.system.auxiliary.log.LogMaster.dev("onInputGdx.run() ");
+            main.system.auxiliary.log.LogMaster.devLog("onInputGdx.run() ");
             onInputGdx.run();
             onInputGdx = null;
         }
         if (onInput != null) {
-            main.system.auxiliary.log.LogMaster.dev("onInput.run() ");
+            main.system.auxiliary.log.LogMaster.devLog("onInput.run() ");
             Eidolons.onNonGdxThread(onInput);
             onInput = null;
         }
@@ -259,7 +262,7 @@ public abstract class InputController implements InputProcessor {
         if (button == LEFT || button == 1) {
             xTouchPos = screenX;
             yTouchPos = screenY;
-            isLeftClick = true;
+            isLeftPressed = true;
         }
         mouseButtonPresed = button;
         outsideClick();
@@ -274,7 +277,7 @@ public abstract class InputController implements InputProcessor {
         mouseInput();
         if (isBlocked())
             return true;
-        isLeftClick = false;
+        isLeftPressed = false;
 
         return false;
     }
@@ -299,7 +302,7 @@ public abstract class InputController implements InputProcessor {
     }
 
     private boolean isManualCameraDisabled() {
-        if (!CoreEngine.isIDE())
+        if (!Flags.isIDE())
             return Cinematics.ON;
         return false;
     }
@@ -309,6 +312,10 @@ public abstract class InputController implements InputProcessor {
     }
 
     protected abstract GameScreen getScreen();
+
+    public boolean isLeftPressed() {
+        return isLeftPressed;
+    }
 
     protected void tryPullCameraY(int screenY) {
         float diffY = (yTouchPos - screenY) * camera.zoom * getDragCoef();
@@ -320,11 +327,13 @@ public abstract class InputController implements InputProcessor {
                 halfHeight - getMargin(),
                 getHeight() - halfHeight + getMargin());
         yTouchPos = screenY;
+
+        Gdx.input.setCursorPosition(Gdx.input.getX(), (int) yTouchPos);
         cameraPosChanged();
     }
 
     protected boolean isFreeDrag() {
-        return false;
+        return true;
     }
 
     protected void tryPullCameraX(int screenX) {
@@ -338,6 +347,7 @@ public abstract class InputController implements InputProcessor {
                 halfWidth - getMargin(),
                 getWidth() - halfWidth + getMargin());
         xTouchPos = screenX;
+        Gdx.input.setCursorPosition((int) xTouchPos,Gdx.input.getY() );
         cameraPosChanged();
     }
 
@@ -347,7 +357,14 @@ public abstract class InputController implements InputProcessor {
 
 
     protected float getMargin() {
-        return MARGIN;
+        return MARGIN ;
+    }
+
+    protected float getOffsetX() {
+        return 0;
+    }
+    protected float getOffsetY() {
+        return 0;
     }
 
     protected abstract float getWidth();
@@ -379,10 +396,10 @@ public abstract class InputController implements InputProcessor {
         return false;
     }
 
-    protected void zoom(int i) {
-        if (!isUnlimitedZoom())
-            if (!checkZoom(i))
-                return;
+    protected boolean zoom(int i) {
+        // if (!isUnlimitedZoom())
+        //     if (!checkZoom(i))
+        //         return false;
         if (!alt && !ctrl) {
             if (i == 1) {
 
@@ -399,8 +416,14 @@ public abstract class InputController implements InputProcessor {
 
         cameraZoomChanged();
         cameraPosChanged();
+        return true;
     }
 
+    private void setZoom(float zoom) {
+        camera.zoom = zoom;
+        cameraZoomChanged();
+        cameraPosChanged();
+    }
     public void cameraZoomChanged() {
         width = GdxMaster.getWidth() * camera.zoom;
         height = GdxMaster.getHeight() * camera.zoom;
@@ -433,7 +456,16 @@ public abstract class InputController implements InputProcessor {
             return false;
         return !(newWidth > getWidth() - x + halfWidth + getMargin());
     }
+    public void centerCam() {
+        camera.position.x = width/2;
+        camera.position.y = height/2;
+        cameraPosChanged();
+    }
 
+    public void maxZoom() {
+        while(zoom(1)){
+        }
+    }
     public boolean isWithinCamera(Actor actor) {
         return isWithinCamera(actor.getX() + actor.getWidth(), actor.getY() + actor.getHeight(), actor.getWidth(), actor.getHeight());
     }
@@ -443,6 +475,12 @@ public abstract class InputController implements InputProcessor {
         return false;
     }
 
+    public boolean isWithinCamera(float x, float y, float width, float height, boolean adjustForRotation) {
+        if (adjustForRotation) {
+            return isWithinCamera(x-width, y-height, 3*width, 3*height);
+        } else
+            return isWithinCamera(x, y, width, height);
+    }
     public boolean isWithinCamera(float x, float y, float width, float height) {
         float xPos = Math.abs(camera.position.x - x) - width;
         if (xPos > halfWidth)
@@ -458,6 +496,12 @@ public abstract class InputController implements InputProcessor {
     public float getXCamPos() {
         return camera.position.x;
     }
+    public float getAbsoluteCursorX () {
+        return camera.position.x +  Gdx.input.getX() - halfWidth;
+    }
+    public float getAbsoluteCursorY () {
+        return camera.position.y +  Gdx.input.getY() - halfHeight;
+    }
 
     public float getYCamPos() {
         return camera.position.y;
@@ -465,12 +509,12 @@ public abstract class InputController implements InputProcessor {
 
     public void onInput(Runnable runnable) {
         onInput = runnable;
-        main.system.auxiliary.log.LogMaster.dev("onInput set ");
+        main.system.auxiliary.log.LogMaster.devLog("onInput set ");
     }
 
     public void onInputGdx(Runnable runnable) {
         onInputGdx = runnable;
-        main.system.auxiliary.log.LogMaster.dev("onInputGdx set ");
+        main.system.auxiliary.log.LogMaster.devLog("onInputGdx set ");
     }
 
     public Runnable getOnInput() {
@@ -482,7 +526,7 @@ public abstract class InputController implements InputProcessor {
     }
 
     public void onInputGdx(Boolean gdx_any_pass, Runnable runnable) {
-        main.system.auxiliary.log.LogMaster.dev(gdx_any_pass + " onInput set ");
+        main.system.auxiliary.log.LogMaster.devLog(gdx_any_pass + " onInput set ");
 
         if (isStackInput()) {
             if (gdx_any_pass == null) {
@@ -527,5 +571,33 @@ public abstract class InputController implements InputProcessor {
 
     public boolean isStackInput() {
         return true;
+    }
+
+    public DIRECTION getMouseBorder() {
+        float mouseBorderBuffer=100*camera.zoom;
+        float min=camera.position.x - halfWidth*camera.zoom + mouseBorderBuffer;
+        if (Gdx.input.getX()<min)
+            return DIRECTION.LEFT;
+        float max=camera.position.x + halfWidth*camera.zoom - mouseBorderBuffer;
+        if (Gdx.input.getX()>=max)
+            return DIRECTION.RIGHT;
+        return null;
+    }
+
+    public void resetZoom() {
+        setZoom(defaultZoom);
+    }
+
+    public int getGridDrawY2(float height) {
+        return (int) Math.max(0, ((height/2+camera.position.y - halfHeight) / 128-2));
+    }
+    public int getGridDrawY1(float height) {
+        return (int)  (( height /2+camera.position.y + halfHeight) / 128 +2 );
+    }
+    public int getGridDrawX1(float width) {
+        return (int) Math.max(0, ((camera.position.x - halfWidth) / 128 -1));
+    }
+    public int getGridDrawX2(float width) {
+        return (int) ((camera.position.x+halfWidth)/128+1);
     }
 }

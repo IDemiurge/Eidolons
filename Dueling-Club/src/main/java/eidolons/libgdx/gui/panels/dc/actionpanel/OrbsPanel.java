@@ -14,17 +14,16 @@ import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.system.text.DescriptionTooltips;
 import main.content.ContentValsManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 /**
  * Created by JustMe on 9/21/2017.
  */
 public class OrbsPanel extends TablePanel {
-    private PARAMS[] params;
-    private OrbElement[] orbs;
+    private final PARAMS[] params;
+    private final OrbElement[] orbs;
 
     public OrbsPanel(PARAMS... params) {
         this.params = params;
@@ -36,7 +35,7 @@ public class OrbsPanel extends TablePanel {
 
     }
 
-    public static void addTooltip(OrbElement el, String name, String val) {
+    public static void addTooltipForValue(OrbElement el, String name, String val) {
         ValueTooltip tooltip = new ValueTooltip();
         String description = DescriptionTooltips.tooltip(el.getParameter());
         ValueContainer container = new VerticalValueContainer(el.getIconRegion(), name + ": " + val, description);
@@ -48,7 +47,7 @@ public class OrbsPanel extends TablePanel {
         el.addListener(new SmartClickListener(el) {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (CoreEngine.isIDE()) {
+                if (Flags.isIDE()) {
                     int perc = 25;
                     if (event.getButton() == 1 || getTapCount() > 1) {
                         perc = -25;
@@ -122,7 +121,7 @@ public class OrbsPanel extends TablePanel {
                 continue;
             }
             if (!disabled)
-                addTooltip(orb, param.getName(), source.getParam(param));
+                addTooltipForValue(orb, param.getName(), source.getParam(param));
         }
     }
 

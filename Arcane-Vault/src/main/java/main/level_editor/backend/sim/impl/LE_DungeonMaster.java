@@ -1,6 +1,6 @@
 package main.level_editor.backend.sim.impl;
 
-import eidolons.game.battlecraft.logic.dungeon.location.Location;
+import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationSpawner;
@@ -33,9 +33,21 @@ public class LE_DungeonMaster extends LocationMaster {
 //    protected Positioner createPositioner() {
 //        return Mockito.mock(Positioner.class);
 //    }
+
+
+    @Override
+    public void loadingDone() {
+        resetColorMap(game.getCoordinates());
+    }
+
     @Override
     protected FloorLoader createFloorLoader() {
         return new LE_FloorLoader(this);
+    }
+
+    @Override
+    protected DC_ObjInitializer createObjInitializer() {
+        return new LE_ObjInitializer(this);
     }
 
     @Override
@@ -65,8 +77,8 @@ public class LE_DungeonMaster extends LocationMaster {
     }
 
     @Override
-    protected FacingAdjuster<Location> createFacingAdjuster() {
-        return new FacingAdjuster<Location>(this) {
+    protected FacingAdjuster createFacingAdjuster() {
+        return new FacingAdjuster(this) {
             @Override
             public FACING_DIRECTION getFacingForUnit(Coordinates c, String typeName) {
                 return FACING_DIRECTION.SOUTH; //TODO
@@ -78,14 +90,8 @@ public class LE_DungeonMaster extends LocationMaster {
         };
     }
 
-    @Override
-    public String getDefaultEntranceType() {
-        return "Dark Portal";
-    }
-
-    @Override
-    public String getDefaultExitType() {
-        return "Dark Portal";
+    public boolean isModuleSizeBased() {
+        return false;
     }
 
     @Override

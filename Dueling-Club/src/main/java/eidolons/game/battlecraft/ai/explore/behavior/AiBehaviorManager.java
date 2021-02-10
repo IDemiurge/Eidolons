@@ -20,25 +20,28 @@ import main.game.logic.action.context.Context;
 import main.system.SortMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.datatypes.DequeImpl;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by JustMe on 10/15/2018.
  */
 public class AiBehaviorManager extends AiHandler {
 
-    public static AI_BEHAVIOR_MODE TESTED = !CoreEngine.isFullFastMode() ? null :
+    public static AI_BEHAVIOR_MODE TESTED = !Flags.isFullFastMode() ? null :
             AI_BEHAVIOR_MODE.GUARD;
     public static final boolean TEST_MODE = TESTED != null;
-    private static UNIT_GROUP_TYPE TESTED_GROUP = !CoreEngine.isFullFastMode() ? null :
+    private static final UNIT_GROUP_TYPE TESTED_GROUP = !Flags.isFullFastMode() ? null :
             EncounterEnums.UNIT_GROUP_TYPE.GUARDS;
     Set<UnitExploreAI> aiSet = new LinkedHashSet<>();
-    private DequeImpl<ActionInput> aiActionQueue = new DequeImpl<>();
-    private Integer maxActiveCount = null;
-    private List<GroupAI> activeGroups = new ArrayList<>();
-    private boolean testMode = false;
+    private final DequeImpl<ActionInput> aiActionQueue = new DequeImpl<>();
+    private final Integer maxActiveCount = null;
+    private final List<GroupAI> activeGroups = new ArrayList<>();
+    private final boolean testMode = false;
     private List<GroupAI> groups;
 
     public AiBehaviorManager(AiMaster master) {
@@ -64,7 +67,7 @@ public class AiBehaviorManager extends AiHandler {
         //            units = units.stream().filter(unit -> unit.isAiControlled()).
         //             sorted(
         //             SortMaster.getObjSorterByExpression(obj -> obj.getCoordinates().
-        //              dst(Eidolons.getMainHero().getCoordinates()))).collect(Collectors.toCollection(LinkedHashSet::new)) ;
+        //              dst(Eidolons.getPlayerCoordinates()))).collect(Collectors.toCollection(LinkedHashSet::new)) ;
         //            for (Unit unit : new HashSet<>(units)) {
         //                units.addAll(unit.getAI().getGroup().getMembers());
         //            }
@@ -73,9 +76,8 @@ public class AiBehaviorManager extends AiHandler {
             groups = new ArrayList<>(getGame().getAiManager().getGroups());
         }
         if (testMode) {
-            Collections.sort(groups,
-                    new SortMaster<GroupAI>().getSorterByExpression_(groupAI -> -groupAI.getLeader().getCoordinates().
-                            dst(Eidolons.getMainHero().getCoordinates())));
+            groups.sort(new SortMaster<GroupAI>().getSorterByExpression_(groupAI -> -groupAI.getLeader().getCoordinates().
+                    dst(Eidolons.getPlayerCoordinates())));
         }
         Integer n = 0;
         for (GroupAI group : new ArrayList<>(groups)) {
@@ -202,7 +204,7 @@ public class AiBehaviorManager extends AiHandler {
 //            behaviors.add(new WanderAi(master, ai));
 //            return behaviors;
 //        }
-        UNIT_GROUP_TYPE t = null;
+        UNIT_GROUP_TYPE t;
 
         if (EidolonsGame.BOSS_FIGHT || EidolonsGame.TUTORIAL_MISSION)
             t = EncounterEnums.UNIT_GROUP_TYPE.GUARDS;
@@ -238,7 +240,6 @@ public class AiBehaviorManager extends AiHandler {
 
 
     public List<AI_BEHAVIOR_MODE> getBehaviors() {
-        List<AI_BEHAVIOR_MODE> list = new ArrayList<>();
         //        if (checkAmbush()) {
         //            list.add(AI_BEHAVIOR_MODE.AMBUSH);
         //        }
@@ -253,6 +254,6 @@ public class AiBehaviorManager extends AiHandler {
         //            list.add(getPassiveBehavior());
         //        }
 
-        return list;
+        return new ArrayList<>();
     }
 }

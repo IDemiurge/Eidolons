@@ -3,15 +3,14 @@ package eidolons.game.battlecraft.ai.tools.path;
 import eidolons.ability.conditions.special.SneakCondition;
 import eidolons.ability.effects.oneshot.move.SelfMoveEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
-import eidolons.game.battlecraft.ai.tools.target.ReasonMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.ability.effects.Effect;
+import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.elements.targeting.FixedTargeting;
@@ -34,11 +33,10 @@ public class PathChoiceMaster {
     protected PathBuilder pathBuilder;
     protected List<DC_ActiveObj> moveActions; // only special here?
     private DC_UnitAction stdMove;
-    private ArrayList<Object> sneakCells;
-    private ArrayList<Object> nonSneakCells;
+    private final ArrayList<Object> sneakCells;
+    private final ArrayList<Object> nonSneakCells;
     private Unit unit;
     private Action targetAction;
-    private Coordinates targetCoordinate;
 
     private boolean firstStep;
 
@@ -52,14 +50,13 @@ public class PathChoiceMaster {
                                  List<DC_ActiveObj> moveActions) {
         this.unit = unit;
         this.targetAction = targetAction;
-        this.targetCoordinate = targetCoordinate;
         this.moveActions = moveActions;
-        stdMove = unit.getAction(DC_ActionManager.STD_ACTIONS.Move.name());
+        stdMove = unit.getAction(ActionEnums.STD_ACTIONS.Move.name());
         return this;
     }
 
 
-    List<Choice> getChoices(ActionPath path, Coordinates c_coordinate, Coordinates targetCoordinate, FACING_DIRECTION c_facing) {
+    List<Choice> getChoices(boolean simplified, ActionPath path, Coordinates c_coordinate, Coordinates targetCoordinate, FACING_DIRECTION c_facing) {
         Chronos.mark("Finding choices for " + path);
         pathBuilder.adjustUnit();
 
@@ -79,20 +76,6 @@ public class PathChoiceMaster {
 
             for (DC_ActiveObj a : moveActions) {
 
-                if (!a.canBeActivated()) {
-                    if (firstStep) {
-                        if (!ReasonMaster.checkReasonCannotActivate(a, PARAMS.C_N_OF_ACTIONS
-                         .getName())) {
-                            continue; // exception for AP TODO
-                        }
-                    }
-                }
-
-                if (path.hasAction(a)) {
-                    if (a.getIntParam(PARAMS.COOLDOWN) >= 0) {
-                        continue;
-                    }
-                }
                 Targeting targeting = a.getTargeting();
                 Collection<Obj> objects = null;
                 if (targeting != null)
@@ -185,14 +168,13 @@ public class PathChoiceMaster {
          UnitEnums.FACING_SINGLE.IN_FRONT, unit, targetCoordinate);
         actions.add(moveAction);
         // resetUnit();// TODO is that right?
-        Choice choice = new Choice(targetCoordinate, c_coordinate, actions
-         .toArray(new Action[0]));
 
-        return choice;
+        return new Choice(targetCoordinate, c_coordinate, actions
+         .toArray(new Action[0]));
     }
 
     private void sortChoices(List<Choice> choices) {
-        Collections.sort(choices, getSorter());
+        choices.sort(getSorter());
 
     }
 
@@ -275,7 +257,7 @@ public class PathChoiceMaster {
         if (sneakCells.contains(c)) {
             return true;
         }
-        unit.setCoordinates(c); // change facing
+        unit.setTempCoordinates(c); // change facing
         // preCheck range
         if (PositionMaster.getDistance(targetAction.getTarget().getCoordinates(), c) > targetAction
          .getActive().getIntParam(PARAMS.RANGE)) {

@@ -92,7 +92,7 @@ public class ItemTraitParser {
         String last = mnemonic.substring(
          mnemonic.length() - 1);
         if (NumberUtils.isInteger(last)) {
-            n = TRAIT_EFFECT_SCALE.values()[NumberUtils.getInteger(last)].coef;
+            n = TRAIT_EFFECT_SCALE.values()[NumberUtils.getIntParse(last)].coef;
             mnemonic = mnemonic.substring(0,
              mnemonic.length() - 1);
             template = new EnumMaster<TRAIT_EFFECT_TEMPLATE>().
@@ -263,11 +263,10 @@ public class ItemTraitParser {
     }
 
     private static String parseBind(PARAMETER p1, PARAMETER p2, float n) {
-        String s = PROPS.PARAMETER_BONUSES.getName() +VALUE_SEPARATOR +
+
+        return PROPS.PARAMETER_BONUSES.getName() +VALUE_SEPARATOR +
          p1.getName() + StringMaster.wrapInParenthesis(
          StringMaster.getValueRef(KEYS.SOURCE, p2) + "*" + getBindCoef(p1, p2, n));
-
-        return s;
     }
 
     private static String getBoostCoef(PARAMETER p1, float n) {

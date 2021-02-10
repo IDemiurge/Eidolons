@@ -3,7 +3,7 @@ package eidolons.entity.obj.attach;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.netherflame.igg.IGG_MetaMaster;
+import eidolons.game.netherflame.main.NF_MetaMaster;
 import main.ability.AbilityObj;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
@@ -15,6 +15,7 @@ import main.data.ability.construct.VariableManager;
 import main.entity.Ref;
 import main.entity.obj.BuffObj;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.images.ImageManager;
 
 import java.util.ArrayList;
@@ -33,10 +34,10 @@ public class DynamicBuffRules {
                 buff.remove();
             }
         }
-        if (unit.isScion()) {
-            if (game.getMetaMaster() instanceof IGG_MetaMaster) {
-                int sfx = game.getMetaMaster().getShadowMaster().getTimeLeft();
-                addDynamicBuff("Shadow of Death", unit, ": " + sfx);
+        if (unit.isShadow()) {
+            if (game.getMetaMaster() instanceof NF_MetaMaster) {
+                //TODO localize
+                addDynamicBuff("Eidolon Shadow", unit, "", "This is what I am now without the Arts");
             }
         }
 
@@ -47,10 +48,6 @@ public class DynamicBuffRules {
                     (unit.getIntParam(PARAMS.DUAL_WIELDING_MASTERY) * 100 / 20) +
                     "% mastery) - use Radial for Dual Attacks");
 
-        }
-        if (unit.getIntParam(PARAMS.FOCUS_FATIGUE) > 0) {
-            addDynamicBuff("Focus Fatigue", unit, StringMaster.wrapInParenthesis(unit.getIntParam(PARAMS.FOCUS_FATIGUE) + "")
-                    , "Base Focus is reduced by ^VAR. Focus always shifts towards Base value over time.");
         }
 
         for (AbilityObj passive : unit.getPassives()) {
@@ -75,7 +72,7 @@ public class DynamicBuffRules {
                     effect.setRef(new Ref()); //TODO
                 }
                 try {
-                    descr += effect.getTooltip() + StringMaster.NEW_LINE;
+                    descr += effect.getTooltip() + Strings.NEW_LINE;
                 } catch (Exception e) {
 //                    main.system.ExceptionMaster.printStackTrace(e);
                 }
@@ -113,7 +110,7 @@ public class DynamicBuffRules {
                 return ImageManager.getMasteryGroupPath(SkillEnums.SKILL_GROUP.DEFENSE.toString());
             case ON_PARRY:
             case ON_PARRY_SELF:
-                return ImageManager.getValueIconPath(PARAMS.N_OF_COUNTERS);
+                return ImageManager.getValueIconPath(PARAMS.EXTRA_ATTACKS);
             case ON_SNEAK_ATTACK:
             case ON_SNEAK_ATTACK_SELF:
             case ON_SNEAK_HIT_SELF:
@@ -132,7 +129,7 @@ public class DynamicBuffRules {
                 return ImageManager.getValueIconPath(PARAMS.MOBILITY_MASTERY);
             case NEW_TURN:
             case END_TURN:
-                return ImageManager.getValueIconPath(PARAMS.N_OF_ACTIONS);
+                return ImageManager.getValueIconPath(PARAMS.INITIATIVE);
         }
         return
                 "ui/content/value icons/effect cases" + VariableManager.removeVarPart(effectsCase.getName());
@@ -149,7 +146,7 @@ public class DynamicBuffRules {
         return addDynamicBuff(name, unit, suffx, null);
     }
 
-    private BuffObj addDynamicBuff(String name, Unit unit, String variableSuffix, String description) {
+    public BuffObj addDynamicBuff(String name, Unit unit, String variableSuffix, String description) {
 
         BuffObj buff = new DC_BuffObj(name, unit, 0);
         if (description != null)

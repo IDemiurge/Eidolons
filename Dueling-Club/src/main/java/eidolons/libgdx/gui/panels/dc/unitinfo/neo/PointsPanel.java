@@ -8,7 +8,7 @@ import eidolons.libgdx.gui.panels.headquarters.hero.HqParamPanel;
  */
 public class PointsPanel extends HqParamPanel{
     public PointsPanel( ) {
-        super(PARAMS.C_N_OF_COUNTERS, PARAMS.N_OF_ACTIONS);
+        super(PARAMS.C_EXTRA_ATTACKS, PARAMS.INITIATIVE);
     }
 
 }

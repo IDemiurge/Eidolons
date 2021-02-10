@@ -3,7 +3,9 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue;
 import com.badlogic.gdx.math.Interpolation;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.*;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.ActorDataSource;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.SpeechDataSource;
 import eidolons.game.core.game.DC_Game;
 import main.data.XLinkedMap;
 import main.entity.Ref;
@@ -27,7 +29,7 @@ public class DialogueHandler {
     GameDialogue dialogue;
     Map<Scene, Speech> map;
     DC_Game game;
-    private List<Scene> list;
+    private final List<Scene> list;
     private ActorDataSource listenerLast;
     private ActorDataSource myActor;
     private ActorDataSource speakerLast;
@@ -41,6 +43,7 @@ public class DialogueHandler {
         this.game = game;
         this.list = scenes;
         this.map = new XLinkedMap<>();
+        if (dialogue != null) {
         Speech line = dialogue.getRoot().getChildren().get(0);
         for (Scene actor : scenes) {
             map.put(actor, line);
@@ -49,7 +52,7 @@ public class DialogueHandler {
         }
         setListenerLast(
                 new ActorDataSource(DialogueActorMaster.getActor(dialogue.getRoot().getData().getActorLeft())));
-
+        }
     }
 
     public GameDialogue getDialogue() {
@@ -132,10 +135,7 @@ public class DialogueHandler {
         if (listener.equals(myActor)) {
             return true;
         }
-        if (listener.getActorName().equalsIgnoreCase("you")) {
-            return true;
-        }
-        return false;
+        return listener.getActorName().equalsIgnoreCase("you");
     }
 
     public ActorDataSource getListenerLast() {
@@ -183,7 +183,7 @@ public class DialogueHandler {
     }
 
     public void setAutoCamera(boolean autoCamera) {
-        main.system.auxiliary.log.LogMaster.dev("autoCamera set " +autoCamera);
+        main.system.auxiliary.log.LogMaster.devLog("autoCamera set " +autoCamera);
         this.autoCamera = autoCamera;
     }
 
@@ -192,11 +192,11 @@ public class DialogueHandler {
             return;
         }
         if (linkedUnit == null) {
-            LogMaster.dev("Null unit for autocamera! "+getSpeakerLast() );
+            LogMaster.devLog("Null unit for autocamera! "+getSpeakerLast() );
             return;
         }
         if (linkedUnit.isMainHero()) {
-            LogMaster.dev("PC for autocamera! "+getSpeakerLast() );
+            LogMaster.devLog("PC for autocamera! "+getSpeakerLast() );
         }
         if (autoCamera) {
             GuiEventManager.triggerWithParams(GuiEventType.CAMERA_PAN_TO_UNIT,

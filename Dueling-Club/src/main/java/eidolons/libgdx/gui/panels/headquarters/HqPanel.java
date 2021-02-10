@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
-import eidolons.game.netherflame.igg.IGG_Images;
+import eidolons.game.netherflame.main.NF_Images;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
@@ -33,7 +33,7 @@ import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import main.content.values.properties.G_PROPS;
 import main.system.GuiEventManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.List;
 
@@ -43,6 +43,7 @@ import static main.system.GuiEventType.RADIAL_MENU_CLOSE;
  * Created by JustMe on 4/13/2018.
  */
 public class HqPanel extends TablePanel implements Blocking {
+// Gdx revamp
 
     HqPartyMembers partyMembers;
     HqHeroViewPanel heroViewPanel;
@@ -68,7 +69,7 @@ public class HqPanel extends TablePanel implements Blocking {
 
     SpriteAnimation bgSprite;
     Image bg = new Image(TextureCache.getOrCreateR(
-            IGG_Images.MAIN_ART.HALL3.getPath()
+            NF_Images.MAIN_ART.HALL3.getPath()
     )); //variants!
 
     @Override
@@ -95,11 +96,11 @@ public class HqPanel extends TablePanel implements Blocking {
 
     public void init() {
 
-        if (!CoreEngine.isActiveTestMode())
+        if (!Flags.isActiveTestMode())
             if (initialized || Eidolons.getGame().isBossFight()) {
                 return; //really?
             }
-        if (!CoreEngine.isLiteLaunch()) {
+        if (!Flags.isLiteLaunch()) {
             bgSprite = SpriteAnimationFactory.getSpriteAnimation(Sprites.BG_DEFAULT, false, false);
             if (bgSprite != null) {
                 bgSprite.setAlpha(0.4f);
@@ -169,7 +170,6 @@ public class HqPanel extends TablePanel implements Blocking {
         }
         addActor(header);
         header.setPosition(130, GdxMaster.getTopY(header) - 75);
-//        header.setPosition(110, 110); // wtff TODO igg demo fix
         header.setVisible(true);
         if (!ScreenMaster.isFullscreen())
             setX(-60);
@@ -179,8 +179,6 @@ public class HqPanel extends TablePanel implements Blocking {
 
     private void addElements() {
         left();
-//        addActor(partyMembers);//TODO .left().colspan(3);
-//        partyMembers.setPosition(20, getHeight() - partyMembers.getHeight());
         row();
 
         add(heroViewPanel).left().padRight(20).width(565);

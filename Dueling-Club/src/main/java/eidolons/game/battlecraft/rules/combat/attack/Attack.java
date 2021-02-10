@@ -37,8 +37,6 @@ public class Attack {
     private BattleFieldObject attacked;
     private boolean countered;
     private Integer damage = DAMAGE_NOT_SET;
-    private Integer remainingDamage;
-    private DAMAGE_TYPE dmg_type;
     private boolean triggered;
     private List<Damage> rawDamage;
     private int damageDealt;
@@ -114,7 +112,6 @@ public class Attack {
     }
 
     public void setDamageType(DAMAGE_TYPE dmg_type) {
-        this.dmg_type = dmg_type;
     }
 
     public DC_WeaponObj getWeapon() {
@@ -300,7 +297,7 @@ public class Attack {
     }
 
     public Integer getRemainingDamage() {
-        remainingDamage = damage - damageDealt;
+        Integer remainingDamage = damage - damageDealt;
         return remainingDamage;
     }
 

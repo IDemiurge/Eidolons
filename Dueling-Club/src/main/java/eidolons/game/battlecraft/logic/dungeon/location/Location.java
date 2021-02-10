@@ -1,13 +1,20 @@
 package eidolons.game.battlecraft.logic.dungeon.location;
 
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import eidolons.game.battlecraft.logic.dungeon.universal.DungeonWrapper;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
+import eidolons.game.battlecraft.logic.dungeon.universal.FloorWrapper;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import eidolons.libgdx.bf.decor.CellData;
+import eidolons.libgdx.bf.decor.DecorData;
+import main.content.DC_TYPE;
+import main.data.DataManager;
+import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
 
@@ -18,18 +25,24 @@ import static main.system.auxiliary.log.LogMaster.log;
 /**
  * Created by JustMe on 5/8/2017.
  */
-public class Location extends DungeonWrapper {
+public class Location extends FloorWrapper {
 
     private Entrance mainEntrance;
     private Entrance mainExit;
     private String entranceData;
     private String exitData;
-    private Map<Coordinates, CellScriptData> textDataMap = new HashMap<>();
-    private Set<Entrance> transits = new LinkedHashSet<>();
+    private Map<Coordinates, CellScriptData> textDataMap = new LinkedHashMap<>();
+    private final Map<Coordinates, DecorData> decorMap = new LinkedHashMap<>();
+    private final Map<Coordinates, CellData> cellMap = new LinkedHashMap<>();
 
-    public Location(DungeonMaster master, Dungeon dungeon) {
-        super(dungeon, master);
+
+    private final Set<Entrance> transits = new LinkedHashSet<>();
+    private boolean initialEdit;
+
+    public Location(DungeonMaster master, Floor floor) {
+        super(floor, master);
         this.master = master;
+        floor.setLocation(this);
     }
 
     @Override
@@ -56,9 +69,17 @@ public class Location extends DungeonWrapper {
         if (StringMaster.isEmpty(data)) {
             return;
         }
-        Integer id = Integer.valueOf(data);
-        Entrance entrance = (Entrance) getGame().getMetaMaster()
-                .getDungeonMaster().getObjByOriginalModuleId(id);
+        Entrance entrance;
+        if (!NumberUtils.isInteger(data)) {
+            Coordinates c = Coordinates.get(data);
+            String defaultEntrance = "The Light";
+            ObjType type = DataManager.getType(defaultEntrance, DC_TYPE.BF_OBJ);
+            entrance = (Entrance) getGame().createObject(type, c, DC_Player.NEUTRAL);
+        } else {
+            Integer id = Integer.valueOf(data);
+            entrance = (Entrance) getGame().getMetaMaster()
+                    .getDungeonMaster().getObjByOriginalModuleId(id);
+        }
 
         if (exit) {
             setMainExit(entrance);
@@ -77,7 +98,7 @@ public class Location extends DungeonWrapper {
 
     @Override
     public DC_Game getGame() {
-        return (DC_Game) super.getGame();
+        return super.getGame();
     }
 
     public Entrance getMainEntrance() {
@@ -141,4 +162,31 @@ public class Location extends DungeonWrapper {
     public void addTransit(Entrance e) {
         transits.add(e);
     }
+
+    public void setInitialEdit(boolean initialEdit) {
+        this.initialEdit = initialEdit;
+    }
+
+    public boolean isInitialEdit() {
+        return initialEdit;
+    }
+
+    public void addTextDataMap(Map<Coordinates, CellScriptData> map) {
+        textDataMap.putAll(map);
+    }
+
+    public Map<Coordinates, CellData> getCellMap() {
+        return cellMap;
+    }
+    public Map<Coordinates, DecorData> getDecorMap() {
+        return decorMap;
+    }
+
+    public void addDecorDataMap(Map<Coordinates, DecorData> map) {
+        decorMap.putAll(map);
+    }
+    public void addCellDataMap(Map<Coordinates, CellData> map) {
+        cellMap.putAll(map);
+    }
+
 }

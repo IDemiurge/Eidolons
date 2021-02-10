@@ -1,6 +1,6 @@
 package eidolons.macro.map;
 
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.libgdx.screens.map.town.navigation.data.Nested;
 import eidolons.libgdx.screens.map.town.navigation.data.NestedLeaf;
 import eidolons.macro.MacroGame;
@@ -21,7 +21,7 @@ import java.util.Set;
 
 public class Place extends MapObj implements Nested<NestedLeaf> {
     protected DequeImpl<Route> routes = new DequeImpl<>();
-    private Dungeon topDungeon;
+    private Floor topFloor;
     private Set<NestedLeaf> nested;
 
     public Place(MacroGame game, ObjType type, MacroRef ref) {
@@ -105,12 +105,12 @@ public class Place extends MapObj implements Nested<NestedLeaf> {
         return 96;
     }
 
-    public Dungeon getTopDungeon() {
-        return topDungeon;
+    public Floor getTopFloor() {
+        return topFloor;
     }
 
-    public void setTopDungeon(Dungeon topDungeon) {
-        this.topDungeon = topDungeon;
+    public void setTopFloor(Floor topFloor) {
+        this.topFloor = topFloor;
     }
 
     public void resetCoordinates() {
@@ -128,10 +128,7 @@ public class Place extends MapObj implements Nested<NestedLeaf> {
 
     public boolean isAvailable() {
         MacroParty party = getGame().getPlayerParty();
-        if (party.getCurrentLocation() == this) {
-            return true;
-        }
-        return false;
+        return party.getCurrentLocation() == this;
     }
 
     public boolean isLinkedToRoute(Route route) {

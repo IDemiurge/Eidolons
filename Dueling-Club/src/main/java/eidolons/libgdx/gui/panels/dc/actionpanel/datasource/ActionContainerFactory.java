@@ -1,18 +1,16 @@
 package eidolons.libgdx.gui.panels.dc.actionpanel.datasource;
 
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
+import eidolons.libgdx.gui.panels.dc.actionpanel.ActionContainer;
 import eidolons.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class ActionContainerFactory {
 
     public static final ActionContainerFactory instance = new ActionContainerFactory();
-    private static Map<DC_ActiveObj, ActionValueContainer> cache = new HashMap<>();
+    private static final ObjectMap<DC_ActiveObj, ActionContainer> cache = new ObjectMap<>();
 
     private ActionContainerFactory() {
         GuiEventManager.bind(GuiEventType. HIGHLIGHT_ACTION, p-> {
@@ -23,9 +21,9 @@ public class ActionContainerFactory {
         });
     }
 
-    public static ActionValueContainer getValueContainer(DC_ActiveObj el, int size) {
-        ActionValueContainer container = cache.get(el);
-        boolean valid = el.canBeManuallyActivated();
+    public static ActionContainer getValueContainer(DC_ActiveObj el, int size) {
+        ActionContainer container = cache.get(el);
+        boolean valid = el.canBeActivated();
         boolean b=false;
         if (container != null) {
 //            container.reset(getImage(el));
@@ -34,7 +32,7 @@ public class ActionContainerFactory {
 //            if (b)
 //                return container;
         }
-            container = new ActionValueContainer(
+            container = new ActionContainer(
                     size, valid, getImage(el)
                     , el::invokeClicked);
 
@@ -52,8 +50,7 @@ public class ActionContainerFactory {
     }
 
     private static String getImage(DC_ActiveObj el) {
-        String image = el.getImagePath();
         //        if (el.can)
-        return image;
+        return el.getImagePath();
     }
 }

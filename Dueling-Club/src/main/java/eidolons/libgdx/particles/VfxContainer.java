@@ -11,7 +11,7 @@ import java.util.Set;
  */
 public class VfxContainer<T extends EmitterActor> extends SpellVfx {
 
-    private Set<T> nested = new LinkedHashSet<>();
+    private final Set<T> nested = new LinkedHashSet<>();
 
     public VfxContainer(String path) {
         super(path);
@@ -28,7 +28,7 @@ public class VfxContainer<T extends EmitterActor> extends SpellVfx {
     @Override
     public void start() {
         super.start();
-        nested.forEach(e->e.start());
+        nested.forEach(EmitterActor::start);
     }
 
     @Override

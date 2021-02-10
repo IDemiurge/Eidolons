@@ -6,12 +6,13 @@ import eidolons.game.battlecraft.ai.elements.generic.AiData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import main.content.DC_TYPE;
 import main.data.xml.XML_Converter;
+import main.game.bf.Coordinates;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.NumberUtils;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.MapBuilder;
 
 import java.util.HashMap;
@@ -24,8 +25,8 @@ import static main.content.enums.EncounterEnums.UNIT_GROUP_TYPE;
 
 public class LE_AiHandler extends LE_Handler implements IAiHandler {
 
-    Map<Integer, AiData> encounterAiMap= new LinkedHashMap<>();
-    Map<BattleFieldObject, AiData> customAiMap= new LinkedHashMap<>();
+    Map<Integer, AiData> encounterAiMap = new LinkedHashMap<>();
+    Map<BattleFieldObject, AiData> customAiMap = new LinkedHashMap<>();
 
     Stack<Map<Integer, AiData>> encounterAiStack = new Stack<>();
     Stack<Map<BattleFieldObject, AiData>> customAiStack = new Stack<>();
@@ -57,6 +58,7 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
 //            putCustom(obj, ai);
 //        }
     }
+
     private void putEncounter(BattleFieldObject obj, AiData ai) {
         encounterAiStack.push(encounterAiMap);
         encounterAiMap = new HashMap<>(encounterAiMap);
@@ -74,7 +76,7 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
 
     public void undone() {
         if (!customAiStack.isEmpty()) {
-        customAiMap = customAiStack.pop();
+            customAiMap = customAiStack.pop();
         }
         if (!encounterAiStack.isEmpty()) {
             encounterAiMap = encounterAiStack.pop();
@@ -107,7 +109,7 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
             text += "+++";
         }
         text += ai.getType();
-        text += "[" +  id + "]";
+        text += "[" + id + "]";
         GuiEventManager.triggerWithParams(GuiEventType.LE_AI_DATA_UPDATE, obj, text);
     }
 
@@ -183,11 +185,11 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
         getModel().getDisplayMode().setShowMetaAi(!getModel().getDisplayMode().isShowMetaAi());
     }
 
-    public String getXml(Function<Integer, Boolean> idFilter) {
+    public String getXml(Function<Integer, Boolean> idFilter, Function<Coordinates, Boolean> coordinateFilter) {
         StringBuilder builder = new StringBuilder();
         for (Integer id : encounterAiMap.keySet()) {
             builder.append(id).append("=");
-            builder.append(encounterAiMap.get(id).toString()).append(StringMaster.AND_SEPARATOR);
+            builder.append(encounterAiMap.get(id).toString()).append(Strings.VERTICAL_BAR);
         }
         String xml = XML_Converter.wrap(FloorLoader.ENCOUNTER_AI_GROUPS, builder.toString());
 
@@ -198,8 +200,8 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
                     builder.append(getIdManager().getId(object)).append(";");
                 }
             }
-            builder.append("=");
-            builder.append(data.toString()).append(StringMaster.AND_SEPARATOR);
+            builder.append(":");
+            builder.append(data.toString()).append(Strings.VERTICAL_BAR);
         }
         xml += XML_Converter.wrap(FloorLoader.CUSTOM_AI_GROUPS, builder.toString());
 
@@ -208,10 +210,9 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
 
     public void initEncounterGroups(String textContent) {
         encounterAiMap =
-                new MapBuilder<>("=", StringMaster.AND_SEPARATOR,
-                        s -> NumberUtils.getInteger(s),
-                        s -> new AiData(s)
-                )
+                new MapBuilder<>(":", Strings.VERTICAL_BAR,
+                        s -> NumberUtils.getIntParse(s),
+                        s -> new AiData(s))
                         .build(textContent);
     }
 }

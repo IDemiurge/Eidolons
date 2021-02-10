@@ -77,6 +77,10 @@ public class DC_BuffObj extends BuffObj {
         super.invokeClicked();
     }
 
+    @Override
+    public boolean isPhysical() {
+        return  !isDispelable();
+    }
 
     @Override
     public boolean isDispelable() {

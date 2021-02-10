@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.battlefield;
 
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.core.master.EffectMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.container.SpecialTargetingEffect;
 import main.game.bf.Coordinates;
@@ -35,13 +35,14 @@ public class CoordinatesMaster {
         }
         return Coordinates.get(true, x, y);
     }
+
     public static Coordinates getFarmostCoordinateInDirection(DIRECTION d,
                                                               List<Coordinates> coordinates) {
         return getFarmostCoordinateInDirection(d, coordinates, true);
     }
 
 
-        public static Coordinates getFarmostCoordinateInDirection(DIRECTION d,
+    public static Coordinates getFarmostCoordinateInDirection(DIRECTION d,
                                                               List<Coordinates> coordinates, final Boolean prefLessMoreMiddle) {
         coordinates = getSortedByProximityToEdge(d, coordinates, prefLessMoreMiddle);
         if (!ListMaster.isNotEmpty(coordinates))
@@ -57,7 +58,7 @@ public class CoordinatesMaster {
         final int x2 = getMaxX(coordinates);
         final int y1 = getMinY(coordinates);
         final int y2 = getMaxY(coordinates);
-        Collections.sort(coordinates, (o1, o2) -> compare_(x1, x2, y1, y2, prefLessMoreMiddle, x_more, y_more, o1, o2));
+        coordinates.sort((o1, o2) -> compare_(x1, x2, y1, y2, prefLessMoreMiddle, x_more, y_more, o1, o2));
         return coordinates;
     }
 
@@ -105,8 +106,8 @@ public class CoordinatesMaster {
                 }
             }
         }
-        float midX = new Float(x1 + x2) / 2;
-        float midY = new Float(y1 + y2) / 2;
+        float midX = (float) (x1 + x2) / 2;
+        float midY = (float) (y1 + y2) / 2;
         if (result == 0) {
             if (prefLessMoreMiddle == null) {
                 if (o1.getY() == o2.getY()) {
@@ -158,13 +159,12 @@ public class CoordinatesMaster {
     }
 
     public static String getCoordinatesStringData(
-     Collection<Coordinates> coordinates) {
+            Collection<Coordinates> coordinates) {
         int x1 = getMinX(coordinates);
         int x2 = getMaxX(coordinates);
         int y1 = getMinY(coordinates);
         int y2 = getMaxY(coordinates);
-        List<Coordinates> exceptions = new ArrayList<>();
-        exceptions.addAll(getCoordinatesWithin(x1, x2, y1, y2));
+        List<Coordinates> exceptions = new ArrayList<>(getCoordinatesWithin(x1, x2, y1, y2));
         return getBoundsString(x1, x2, y1, y2) + " " + exceptions.toString();
     }
 
@@ -190,6 +190,24 @@ public class CoordinatesMaster {
         return corners;
     }
 
+    public static Coordinates getCorner(DIRECTION d, Collection<Coordinates> list) {
+        int x = getMinX(list);
+        int x1 = getMaxX(list);
+        int y = getMinY(list);
+        int y1 = getMaxY(list);
+        switch (d) {
+            case UP_LEFT:
+                return Coordinates.get(x, y);
+            case UP_RIGHT:
+                return Coordinates.get(x1, y);
+            case DOWN_RIGHT:
+                return Coordinates.get(x1, y1);
+            case DOWN_LEFT:
+                return Coordinates.get(x, y1);
+        }
+        return Coordinates.get(x, y);
+    }
+
     public static int[] getMinMaxCoordinates(Collection<Coordinates> list) {
         int x = getMinX(list);
         int x1 = getMaxX(list);
@@ -203,8 +221,8 @@ public class CoordinatesMaster {
         int[] array = new int[4];
         int i = 0;
         for (String s : string.split(";")) {
-            array[i++] = NumberUtils.getInteger(s.split("-")[0].trim().substring(1));
-            array[i++] = NumberUtils.getInteger(s.split("-")[1]);
+            array[i++] = NumberUtils.getIntParse(s.split("-")[0].trim().substring(1));
+            array[i++] = NumberUtils.getIntParse(s.split("-")[1]);
         }
         return array;
     }
@@ -294,6 +312,7 @@ public class CoordinatesMaster {
     public static List<Coordinates> getCoordinatesWithin(int x, int x1, int y, int y1) {
         return getCoordinatesWithin(x, x1, y, y1, false);
     }
+
     public static List<Coordinates> getCoordinatesWithin(int x, int x1, int y, int y1, boolean inclusive) {
         if (inclusive) {
             x--;
@@ -302,15 +321,15 @@ public class CoordinatesMaster {
         List<Coordinates> list = new ArrayList<>();
         for (; x1 > x; x1--) {
             for (int y_ = y1; y_ > y; y_--) {
-                list.add(Coordinates.get(x1, y_));
+                list.add(Coordinates.get(true, x1, y_));
             }
         }
         return list;
     }
 
     public static List<Coordinates> getAdjacentToBothGroups(
-     Collection<Coordinates> coordinatesPool, Collection<Coordinates> coordinates,
-     Collection<Coordinates> coordinates2) {
+            Collection<Coordinates> coordinatesPool, Collection<Coordinates> coordinates,
+            Collection<Coordinates> coordinates2) {
         List<Coordinates> list = new ArrayList<>();
         Set<Coordinates> adjacent1 = new HashSet<>();
         for (Coordinates c : coordinatesPool) {
@@ -433,9 +452,10 @@ public class CoordinatesMaster {
     }
 
     public static int getMinDistanceFromEdge(Coordinates c, int dimension, boolean xOrY) {
-        return xOrY? Math.min(dimension - c.x, c.x):Math.min(dimension - c.y, c.y);
+        return xOrY ? Math.min(dimension - c.x, c.x) : Math.min(dimension - c.y, c.y);
     }
-        public static int getMinDistanceFromEdge(Coordinates c, int w, int h) {
+
+    public static int getMinDistanceFromEdge(Coordinates c, int w, int h) {
         int dstX = Math.min(w - c.x, c.x);
         int dstY = Math.min(h - c.y, c.y);
         return Math.min(dstX, dstY);
@@ -475,11 +495,11 @@ public class CoordinatesMaster {
     }
 
     public static String getStringFromCoordinates(List<Coordinates> list) {
-        String textContent = "";
+        StringBuilder textContent = new StringBuilder();
         for (Coordinates c : list) {
-            textContent += c.toString() + ";";
+            textContent.append(c.toString()).append(";");
         }
-        return textContent;
+        return textContent.toString();
     }
 
     public static Coordinates getClosestValid(Coordinates coordinates) {
@@ -501,25 +521,24 @@ public class CoordinatesMaster {
     }
 
     public static List<Coordinates> getCoordinatesBetween(Coordinates c, Coordinates c2) {
-        List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesWithin(
-                Math.min(c.x, c2.x) , Math.max(c.x, c2.x), Math.min(c.y, c2.y) , Math.max(
+        return CoordinatesMaster.getCoordinatesWithin(
+                Math.min(c.x, c2.x), Math.max(c.x, c2.x), Math.min(c.y, c2.y), Math.max(
                         c.y, c2.y));
-        return coordinates;
     }
-        public static List<Coordinates> getCoordinatesBetweenWithOffset(Coordinates c, Coordinates c2) {
-        List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesWithin(
-         Math.min(c.x, c2.x) - 1, Math.max(c.x, c2.x), Math.min(c.y, c2.y) - 1, Math.max(
-          c.y, c2.y));
-        return coordinates;
+
+    public static List<Coordinates> getCoordinatesBetweenInclusive(Coordinates c, Coordinates c2) {
+        return CoordinatesMaster.getCoordinatesWithin(
+                Math.min(c.x, c2.x), Math.max(c.x, c2.x), Math.min(c.y, c2.y), Math.max(
+                        c.y, c2.y), true);
     }
 
     public static Set<Coordinates> getZoneCoordinates(DC_ActiveObj entity) {
-        Effect effect = EffectFinder.getFirstEffectOfClass(entity,
-         SpecialTargetingEffect.class);
+        Effect effect = EffectMaster.getFirstEffectOfClass(entity,
+                SpecialTargetingEffect.class);
         Set<Coordinates> coordinates = null;
         if (effect != null) {
             SpecialTargetingEffect targetEffect = (SpecialTargetingEffect) effect;
-            coordinates = targetEffect.getCoordinates();
+            coordinates = targetEffect.getAndNullCoordinates();
         }
         return coordinates;
     }
@@ -528,7 +547,7 @@ public class CoordinatesMaster {
         Loop loop = new Loop(20);
         while (loop.continues()) {
             Coordinates c = coordinates.getAdjacentCoordinate(
-             new RandomWizard<DIRECTION>().getRandomEnumConst(DIRECTION.class));
+                    new RandomWizard<DIRECTION>().getRandomEnumConst(DIRECTION.class));
             if (c == null)
                 return c;
         }
@@ -537,21 +556,84 @@ public class CoordinatesMaster {
 
     public static Coordinates getClosestTo(Coordinates coordinates, List<Coordinates> collect) {
         return collect.stream().sorted(new SortMaster<Coordinates>().getSorterByExpression_(
-         c -> (int) -(100 * c.dist(coordinates)))).collect(Collectors.toList()).get(0);
+                c -> (int) -(100 * c.dist(coordinates)))).collect(Collectors.toList()).get(0);
     }
 
     public static Set<Coordinates> getMissingCoordinatesFromRect(Coordinates c, int w, int h,
                                                                  Set<Coordinates> coordinates) {
-      Set <Coordinates> missing = new LinkedHashSet<>();
-        for (int i = c.x; i < c.x+w; i++) {
-            for (int j = c.y; j < c.y+h; j++) {
+        Set<Coordinates> missing = new LinkedHashSet<>();
+        for (int i = c.x; i < c.x + w; i++) {
+            for (int j = c.y; j < c.y + h; j++) {
                 Coordinates c1;
-                if (!coordinates.contains(c1=Coordinates.get(i , j ))) {
+                if (!coordinates.contains(c1 = Coordinates.get(i, j))) {
                     missing.add(c1);
                 }
             }
         }
         return missing;
+    }
+
+    public static Set<Coordinates> squareToDiamondArea(Set<Coordinates> coordinatesSet) {
+        /*
+1 1 1
+1 1 1
+
+what if it is not square but rectangular? ..
+confirm Diagonal on block creation?
+
+merging blocks square-diamond to get a different shape
+
+transform selection
+fix selection
+3x3 - 1
+4x4
+5x5 - 2
+7x7
+         */
+        //just cut corners to the middle
+        // everything that is beyond both middles...
+        int middleX = (getMinX(coordinatesSet) + getMaxX(coordinatesSet)) / 2;
+        int middleY = (getMinY(coordinatesSet) + getMaxY(coordinatesSet)) / 2;
+        // int x =Math.max(0,  getWidth(coordinatesSet)*3/5 - 3);
+        // int y =  Math.max(0, getHeight(coordinatesSet) * 3 / 5 - 3);
+        int m = Math.max(getHeight(coordinatesSet), getWidth(coordinatesSet));
+        int max = (m - 3) / 2 + 1;
+        coordinatesSet.removeIf(c -> {
+            int diffX = c.x - middleX;
+            int diffY = c.y - middleY;
+
+            return Math.abs(diffX) + Math.abs(diffY) > max;
+        });
+        return coordinatesSet;
+    }
+
+    public static Comparator<Coordinates> getSorter(Coordinates coordinates, boolean closestFirst) {
+        return (o1, o2) -> {
+            double v1 = o1.dst_(coordinates);
+            double v2 = o2.dst_(coordinates);
+            if (v1 > v2)
+                return closestFirst ? 1 : -1;
+            if (v1 < v2)
+                return closestFirst ? -1 : 1;
+            return 1;
+        };
+    }
+
+    public static Coordinates[] getInRange(Coordinates c,
+                                           int range) {
+        Set<Coordinates> set = getInRange_(c, range);
+        return set.toArray(new Coordinates[0]);
+    }
+
+    public static Set<Coordinates> getInRange_(Coordinates c, int range) {
+        Set<Coordinates> set = new HashSet<>();
+        set.add(c);
+        for (int i = 0; i < range; i++) {
+            for (Coordinates adj : c.getAdjacentCoordinates()) {
+                set.addAll(getInRange_(adj, i-1));
+            }
+        }
+        return set;
     }
 
     public boolean isOnEdge(Coordinates c, int border) {
@@ -561,27 +643,36 @@ public class CoordinatesMaster {
     public static int getWidth(Collection<Coordinates> list) {
         int x = getMinX(list);
         int x1 = getMaxX(list);
-        return Math.abs(x1 - x)+1;
+        return Math.abs(x1 - x) + 1;
     }
+
     public static int getHeight(Collection<Coordinates> list) {
         int y = getMinY(list);
         int y1 = getMaxY(list);
-        return Math.abs(y1 - y)+1;
+        return Math.abs(y1 - y) + 1;
     }
 
-    public static Coordinates getUpperLeftCornerCoordinates(Set<Coordinates> coordinatesList) {
-        return getCornerCoordinates(coordinatesList).get(0);
+    public static Coordinates getUpperLeftCornerCoordinates(Set<Coordinates> list) {
+        int x = getMinX(list);
+        int y = getMinY(list);
+        return Coordinates.get(x, y);
+    }
+
+    public static Coordinates getBottomLeft(Collection<Coordinates> list) {
+        int x = getMinX(list);
+        int y = getMaxY(list);
+        return Coordinates.get(x, y);
     }
 
     public static float getMinDistanceBetweenGroups(Collection<Coordinates> list, Collection<Coordinates> list2,
                                                     float requiredMin) {
-        float min=Integer.MAX_VALUE;
+        float min = Integer.MAX_VALUE;
         for (Coordinates c : list) {
             for (Coordinates c2 : list2) {
                 double dst = c.dst_(c2);
-                if (dst<min)
-                    min= (float) dst;
-                if (dst<requiredMin)
+                if (dst < min)
+                    min = (float) dst;
+                if (dst < requiredMin)
                     return (float) dst;
             }
 

@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules;
 
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
+import eidolons.game.battlecraft.rules.RuleEnums.RULE;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.elements.conditions.Conditions;
@@ -9,8 +9,8 @@ import main.game.core.game.GenericGame;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.EVENT_TYPE;
 import main.game.logic.event.Rule;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.Arrays;
 
@@ -21,7 +21,7 @@ public abstract class DC_RuleImpl implements Rule {
     protected GenericGame game;
     protected Effect effects;
     protected boolean on = true;
-    private boolean initialized = false;
+    private final boolean initialized = false;
 
 
     public DC_RuleImpl(GenericGame game) {

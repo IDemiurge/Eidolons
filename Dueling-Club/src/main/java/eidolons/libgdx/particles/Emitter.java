@@ -17,15 +17,8 @@ import java.util.Arrays;
  */
 public class Emitter extends ParticleEmitter {
 
-    private boolean particleLogOn;
-
     public Emitter(BufferedReader reader) throws IOException {
         super(reader);
-    }
-
-    public void offsetColor(float offset) {
-//        float[] colors = getColorValue().getColors();
-//        getColorValue().setColors(modifiedColors);
     }
 
     public void toggle(String fieldName) {
@@ -43,12 +36,8 @@ public class Emitter extends ParticleEmitter {
             value.setHigh(f, f);
             value.setLow(f, f);
         } else {
-            Object v = fieldValue;
-//     if (val instanceof )
-            new ReflectionMaster<>().setValue(fieldName, v, this);
+            new ReflectionMaster<>().setValue(fieldName, fieldValue, this);
         }
-
-
     }
 
     private Object getValue(String s) {
@@ -97,10 +86,11 @@ public class Emitter extends ParticleEmitter {
                  - (getY() + p.getY())
                  - DungeonScreen.getInstance().controller.getYCamPos();
                 Float distance = (float) (Math.sqrt(xDiff * xDiff + yDiff * yDiff));
-                if (particleLogOn) {
+                // if (particleLogOn)
+                {
                     LogMaster.log(1,
                      " Mouse x: " + pos.x
-                      + " Mouse y: " + pos.y //fuck that shit
+                      + " Mouse y: " + pos.y
                       + " Particle x: " + (getY() + p.getX())
                       + " Particle y: " + (getY() + p.getY())
                       + " cam x: " + (DungeonScreen.getInstance().controller.getXCamPos())

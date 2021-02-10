@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle;
 
-import eidolons.game.battlecraft.logic.dungeon.puzzle.construction.PuzzleActions;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleElement;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTrigger;
 import eidolons.system.ConditionsUtils;
 import main.data.XLinkedMap;
@@ -13,36 +13,17 @@ import java.util.Map;
 
 public class PuzzleResolution extends PuzzleElement {
 
-    public void addPunishment(PUZZLE_PUNISHMENT punishment, String s) {
+    public void addPunishment(PuzzleEnums.PUZZLE_PUNISHMENT punishment, String s) {
         punishments.put(punishment, s);
     }
-    public void addResolutions(PUZZLE_RESOLUTION resolution, String s) {
+    public void addResolutions(PuzzleEnums.PUZZLE_RESOLUTION resolution, String s) {
         resolutions.put(resolution, s);
     }
 
-    public enum PUZZLE_RESOLUTION {
-        remove_wall,
-        unseal_door,
-        teleport,
-        tip,
-        open_portal
-        ;
-    }
+    Map<PuzzleEnums.PUZZLE_PUNISHMENT, String> punishments;
+    Map<PuzzleEnums.PUZZLE_RESOLUTION, String> resolutions;
 
-    public enum PUZZLE_PUNISHMENT {
-        battle,
-        spell,
-        teleport,
-        death,
-        animate_enemies,
-        tip,
-        ;
-    }
-
-    Map<PUZZLE_PUNISHMENT, String> punishments;
-    Map<PUZZLE_RESOLUTION, String> resolutions;
-
-    PuzzleMaster.PUZZLE_SOLUTION solution;
+    PuzzleEnums.PUZZLE_SOLUTION solution;
 
     public PuzzleResolution(Puzzle puzzle) {
         super(puzzle);
@@ -50,18 +31,18 @@ public class PuzzleResolution extends PuzzleElement {
         resolutions = new XLinkedMap<>();
     }
 
-    public PuzzleMaster.PUZZLE_SOLUTION getSolution() {
+    public PuzzleEnums.PUZZLE_SOLUTION getSolution() {
         return solution;
     }
 
-    public void setSolution(PuzzleMaster.PUZZLE_SOLUTION solution) {
+    public void setSolution(PuzzleEnums.PUZZLE_SOLUTION solution) {
         this.solution = solution;
     }
 
         protected Runnable createPunishAction() {
         //battle?
         return () -> {
-            for (PUZZLE_PUNISHMENT punishment : punishments.keySet()) {
+            for (PuzzleEnums.PUZZLE_PUNISHMENT punishment : punishments.keySet()) {
                 PuzzleActions.punishment(puzzle, punishment, punishments.get(punishment));
             }
         };
@@ -72,7 +53,7 @@ public class PuzzleResolution extends PuzzleElement {
         createActionTriggers();
     }
     protected void createPunishTrigger() {
-        Condition checks = getPunishConditions();
+        Condition checks = getFailConditions();
         if (checks == null) {
             return;
         }
@@ -98,7 +79,7 @@ public class PuzzleResolution extends PuzzleElement {
     protected Condition getSolveConditions() {
         return
                 ConditionsUtils.join(
-                        ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAINHERO),
+                        ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAIN_HERO),
                         ConditionsUtils.forPuzzleSolution(solution, puzzle));
     }
 
@@ -107,7 +88,7 @@ public class PuzzleResolution extends PuzzleElement {
 //        createWinAction();
 //        createRewardAction();
         return () -> {
-            for (PUZZLE_RESOLUTION resolution : resolutions.keySet()) {
+            for (PuzzleEnums.PUZZLE_RESOLUTION resolution : resolutions.keySet()) {
               PuzzleActions.resolution(resolution, puzzle, resolutions.get(resolution));
             }
             puzzle.complete();
@@ -115,11 +96,11 @@ public class PuzzleResolution extends PuzzleElement {
     }
 
     protected Event.EVENT_TYPE getPunishEvent() {
-//TODO
+        //TODO sometimes we should check on other events too...
         return Event.STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE;
     }
 
-    protected Condition getPunishConditions() {
+    protected Condition getFailConditions() {
        return ConditionsUtils.forPuzzlePunishment(puzzle, punishments.keySet());
     }
     

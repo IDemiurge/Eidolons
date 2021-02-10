@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import main.data.filesys.PathFinder;
 
@@ -70,7 +70,7 @@ public class BlackoutOld extends Group {
             dur = 3f;
 
         if (dur instanceof Integer) {
-            dur = Float.valueOf((int) dur);
+            dur = (float) (int) dur;
         }
         image.setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
         addActor(image);

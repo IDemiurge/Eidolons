@@ -9,7 +9,6 @@ import eidolons.game.module.dungeoncrawl.objects.DungeonObj;
 public class LockEffect extends DC_Effect {
 
     String identifier;
-    private boolean key = true;
 
     public LockEffect(String identifier) {
         this.identifier = identifier;
@@ -23,6 +22,7 @@ public class LockEffect extends DC_Effect {
             if (!obj.getName().equalsIgnoreCase(identifier))
                 return false;
         }
+        boolean key = true;
         if (!key) {
             //try
         }

@@ -39,7 +39,6 @@ public class LevelValidator {
     private float minDimensionRatio;
     private float maxSquare;
     private float maxDimension;
-    private DataUnit<LEVEL_REQUIREMENTS> reqs;
     private Traverser traverser;
     private static float sizeGap=SIZE_GAP_DEFAULT;
 
@@ -53,14 +52,13 @@ public class LevelValidator {
 
     public static boolean validateForTester(GenerationStats stats, DungeonLevel level) {
         LevelValidator instance = new LevelValidator();
-        boolean valid = instance.isLevelValid(level);
         //        valid = new Traverser().test(level);
-        return valid;
+        return instance.isLevelValid(level);
     }
 
     private void initRequirements(LevelData data, LevelModel model) {
         this.model = model;
-        this.reqs = data.getReqs();
+        DataUnit<LEVEL_REQUIREMENTS> reqs = data.getReqs();
         minFillRatio = reqs.getFloatValue(LEVEL_REQUIREMENTS.minFillRatio);
         minRooms = reqs.getIntValue(LEVEL_REQUIREMENTS.minRooms);
         maxDimension = reqs.getIntValue(LEVEL_REQUIREMENTS.maxDimension);
@@ -232,7 +230,7 @@ public class LevelValidator {
 
     private boolean checkFillRatio() {
         try {
-            float fillRatio = new Float(model.getOccupiedCells().size()) / (model.getCurrentWidth() * model.getCurrentHeight());
+            float fillRatio = (float) model.getOccupiedCells().size() / (model.getCurrentWidth() * model.getCurrentHeight());
             return fillRatio > minFillRatio;
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);

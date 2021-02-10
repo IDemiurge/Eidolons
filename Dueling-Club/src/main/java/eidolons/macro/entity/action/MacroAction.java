@@ -14,7 +14,7 @@ import main.entity.group.GroupImpl;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 public class MacroAction extends MacroObj implements ActiveObj {
 
@@ -72,7 +72,7 @@ public class MacroAction extends MacroObj implements ActiveObj {
 
             MapActionHandler.partyAction(mpa, ref.getParty());
         }
-        getGame().getLoop().actionInput(null);//new ActionInput(this, new Context(ref)));
+        getGame().getLoop().actionInputManual(null);//new ActionInput(this, new Context(ref)));
         // costs?
         return false;
     }
@@ -94,7 +94,7 @@ public class MacroAction extends MacroObj implements ActiveObj {
     public void clicked() {
         if (!MacroActionManager.isActionsBlocked() && canBeActivated()) {
             MacroActionManager.setActionsBlocked(true);
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ACTIVATE);
+            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.CLICK_ACTIVATE);
             try {
                 activate();
             } catch (Exception e) {

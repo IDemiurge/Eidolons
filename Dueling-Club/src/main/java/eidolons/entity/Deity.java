@@ -9,6 +9,7 @@ import main.data.DataManager;
 import main.data.ability.construct.AbilityConstructor;
 import main.entity.Entity;
 import main.entity.Ref;
+import main.entity.handlers.EntityMaster;
 import main.entity.obj.ActiveObj;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Deity extends Entity {
+    //DC Review
     private List<String> unitPool;
     private ArrayList<Deity> alliedDeities;
     private ArrayList<Deity> friendDeities;
@@ -138,6 +140,11 @@ public class Deity extends Entity {
     }
 
     @Override
+    protected EntityMaster initMaster() {
+        return null;
+    }
+
+    @Override
     public void construct() {
         AbilityConstructor.constructActives(this);
         setConstructed(true);
@@ -148,9 +155,9 @@ public class Deity extends Entity {
     public void init() {
 
         initEmblem();
-        initFriendDeities();
-        initAlliedDeities();
-        initEnemyDeities();
+        // initFriendDeities();
+        // initAlliedDeities();
+        // initEnemyDeities();
         toBase();
         // initUnitPool();
 

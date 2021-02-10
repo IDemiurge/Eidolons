@@ -5,23 +5,19 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.core.atb.AtbMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.GdxColorMaster;
+import eidolons.libgdx.texture.TextureCache;
+import main.content.CONTENT_CONSTS;
 import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
-import main.system.PathUtils;
-import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;
 
-import static eidolons.libgdx.texture.TextureCache.fromAtlas;
-import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
+import static eidolons.libgdx.texture.TextureCache.getRegionUV;
 
 public class UnitViewOptions {
 
-    public static final boolean UNIT_VIEW_ATLAS = false;
     public boolean cellBackground;
     private Runnable runnable;
     private TextureRegion portraitTexture;
@@ -31,15 +27,22 @@ public class UnitViewOptions {
     private int clockValue;
     private Color teamColor;
     private boolean mainHero;
+    private boolean wall;
     private String name;
     private boolean hoverResponsive;
     private String portraitPath;
     private BattleFieldObject obj;
+    private CONTENT_CONSTS.FLIP flip;
 
+    public void setPortraitPath(String portraitPath) {
+        this.portraitPath = portraitPath;
+        portraitTexture = TextureCache.getRegionUV(portraitPath);
+    }
 
     public UnitViewOptions() {
 
     }
+
     public UnitViewOptions(BattleFieldObject obj) {
         createFromGameObject(obj);
     }
@@ -83,34 +86,23 @@ public class UnitViewOptions {
     }
 
     public final void createFromGameObject(BattleFieldObject obj) {
-        if (UNIT_VIEW_ATLAS){
-            String imgPath = obj.getImagePath().replace("main", "unitview");
-            if (obj instanceof Structure) {
-                imgPath = "unitview/objects/" + PathUtils.getLastPathSegment(imgPath);
-            }
-            {
-                this.portraitTexture = fromAtlas(UnitView.getAtlasPath(), imgPath);
-            }
-        }
-        if (portraitTexture == null) {
-
-        }
-        this.portraitTexture = getOrCreateR(obj.getImagePath());
-        this.portraitPath =  (obj.getImagePath());
+        this.portraitTexture = getRegionUV(obj.getImagePath());
+        this.portraitPath = (obj.getImagePath());
         this.name = obj.getName();
         this.obj = obj;
-
-
-
-        this.mainHero =obj.isMine() && obj.isMainHero();
+        this.flip = obj.getFlip();
+        this.mainHero = obj.isMine() && obj.isMainHero();
 
         if (obj instanceof Structure) {
-            if (obj.isLandscape()) {
+
+            if (obj.isWall())
+                wall = true;
+            else if (obj.isLandscape()) {
                 cellBackground = true;
             }
-            if (obj.isWall()) {
-                cellBackground = true;
-            }
+            // if (obj.isWall()) {
+            //     cellBackground = true;
+            // }
             if (obj instanceof Entrance) {
                 cellBackground = true;
             }
@@ -118,59 +110,43 @@ public class UnitViewOptions {
 
         } else if (obj instanceof Unit) {
             this.directionValue = obj.getFacing().getDirection().getDegrees();
-            this.directionPointerTexture = getOrCreateR(
-             StrPathBuilder.build(PathFinder.getUiPath(),
-              "DIRECTION POINTER.png"));
+            this.directionPointerTexture = getRegionUV(
+                    PathFinder.getUiPath() + "DIRECTION POINTER.png");
 
 
-            String emblem = PathFinder.getEmblemAutoFindPath()+ obj.getProperty(G_PROPS.EMBLEM, true);
+            String emblem = PathFinder.getEmblemAutoFindPath() + obj.getProperty(G_PROPS.EMBLEM, true);
             if (obj.isMine()) {
-                emblem =PathFinder.getEmblemAutoFindPath() +"undead.png";
+                emblem = PathFinder.getEmblemAutoFindPath() + "undead.png";
             }
-            if (ImageManager.isImage(emblem)) {
-                this.emblem = getOrCreateR(emblem);
-            } else {
-                emblem = PathFinder.getEmblemAutoFindPath() +
-                 FileManager.findFirstFile(PathFinder.getImagePath() + PathFinder.getEmblemAutoFindPath(),
-                  obj.getSubGroupingKey(), true);
-                if (ImageManager.isImage(emblem))
-                    this.emblem = getOrCreateR(emblem);
-                else
+            this.emblem = getRegionUV(emblem);
+
+            if (TextureCache.isEmptyTexture( this.emblem)){
+                emblem =ImageManager.getEmptyEmblemPath();
+                // PathFinder.getEmblemAutoFindPath() +
+                //         FileManager.findFirstFile(PathFinder.getImagePath() + PathFinder.getEmblemAutoFindPath(),
+                //                 obj.getSubGroupingKey(), true);
+                    this.emblem = getRegionUV(emblem);
+
+                if (TextureCache.isEmptyTexture( this.emblem))
                     emblem = obj.getOwner().getHeroObj().getProperty(G_PROPS.EMBLEM, true);
-                if (UNIT_VIEW_ATLAS){
-                    this.emblem = fromAtlas(UnitView.getAtlasPath(), PathUtils.getLastPathSegment(emblem));
-                } else
-                if (ImageManager.isImage(emblem))
-                    this.emblem = getOrCreateR(emblem);
+                    this.emblem = getRegionUV(emblem);
             }
             if (this.emblem == null)
-                this.emblem = getOrCreateR(ImageManager.getEmptyEmblemPath());
+                this.emblem = getRegionUV(ImageManager.getEmptyEmblemPath());
 
             this.clockValue = AtbMaster.getDisplayedAtb(obj);
         }
-        boolean altColor=false;
+        boolean altColor = false;
 
         if (obj.isMine()) {
             altColor = !obj.isPlayerCharacter();
-        } else {
-            if (EidolonsGame.DUEL) {
-                altColor = false;
-            } else {
-                altColor= !obj.getName().contains("Carnifex");
-            if (obj.getName().contains("Igor"))
-                altColor=false;
-            if (obj.getName().contains("Hollow Reaper"))
-                altColor=false;
-            if (obj.getName().contains("Hollow Defiler"))
-                altColor=false;
-        }
         }
 
         if (obj.getOwner() != null)
             this.teamColor = GdxColorMaster.getColor(
                     altColor ?
                             obj.getOwner().getFlagColorAlt() :
-                    obj.getOwner().getFlagColor());
+                            obj.getOwner().getFlagColor());
         if (this.teamColor == null) {
             this.teamColor = GdxColorMaster.NEUTRAL;
         }
@@ -205,7 +181,15 @@ public class UnitViewOptions {
         this.teamColor = teamColor;
     }
 
+    public CONTENT_CONSTS.FLIP getFlip() {
+        return flip;
+    }
+
     public void setHoverResponsive(boolean hoverResponsive) {
         this.hoverResponsive = hoverResponsive;
+    }
+
+    public boolean isWall() {
+        return wall;
     }
 }

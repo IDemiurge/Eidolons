@@ -34,10 +34,10 @@ import com.bitfire.postprocessing.utils.PingPongBuffer;
 public final class CrtMonitor extends PostProcessorEffect {
 	private PingPongBuffer pingPongBuffer = null;
 	private FrameBuffer buffer = null;
-	private CrtScreen crt;
+	private final CrtScreen crt;
 	private Blur blur;
-	private Combine combine;
-	private boolean doblur;
+	private final Combine combine;
+	private final boolean doblur;
 
 	private boolean blending = false;
 	private int sfactor, dfactor;
@@ -167,7 +167,7 @@ public final class CrtMonitor extends PostProcessorEffect {
 		boolean blendingWasEnabled = PostProcessor.isStateEnabled(GL20.GL_BLEND);
 		Gdx.gl.glDisable(GL20.GL_BLEND);
 
-		Texture out = null;
+		Texture out;
 
 		if (doblur) {
 
@@ -201,5 +201,5 @@ public final class CrtMonitor extends PostProcessorEffect {
 
 		// do combine pass
 		combine.setOutput(dest).setInput(in, out).render();
-	};
+	}
 }

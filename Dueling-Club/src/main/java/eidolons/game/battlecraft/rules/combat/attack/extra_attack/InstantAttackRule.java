@@ -3,11 +3,12 @@ package eidolons.game.battlecraft.rules.combat.attack.extra_attack;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.battlecraft.rules.combat.attack.DC_AttackMaster;
 import eidolons.game.battlecraft.rules.perk.AlertRule;
@@ -34,11 +35,11 @@ import java.util.Set;
 
 public class InstantAttackRule {
     public static boolean checkInstantAttacksInterrupt(DC_ActiveObj action) {
-        if (!RuleKeeper.isRuleOn(RULE.INSTANT_ATTACK)) {
+        if (!RuleKeeper.isRuleOn(RuleEnums.RULE.INSTANT_ATTACK)) {
             return false;
         }
         Boolean retreat_passage_none = canMakeInstantAttackAgainst(action);
-        if (RuleKeeper.isRuleTestOn(RULE.INSTANT_ATTACK)) {
+        if (RuleKeeper.isRuleTestOn(RuleEnums.RULE.INSTANT_ATTACK)) {
             retreat_passage_none = true;
         }
         if (!retreat_passage_none) {
@@ -96,17 +97,24 @@ public class InstantAttackRule {
 
     public static Set<Unit> getPotentialInstantAttackers(DC_ActiveObj action) {
         Set<Unit> set = new HashSet<>();
-        for (Unit unit : action.getGame().getUnits()) {
-            if (!unit.isHostileTo(action.getOwner())) {
-                continue;
+        Coordinates dest = DC_MovementManager
+                .getMovementDestinationCoordinate(action);
+        for (Coordinates adjacentCoordinate : dest.getAdjacentCoordinates()) {
+            for (BattleFieldObject o : action.getGame().getObjectsOnCoordinateNoOverlaying(adjacentCoordinate)) {
+                if (o instanceof Unit) {
+                    Unit unit = (Unit) o;
+                    if (!unit.isHostileTo(action.getOwner())) {
+                        continue;
+                    }
+                    if (unit.isNeutral()) {
+                        continue;
+                    }
+                    if (!unit.canInstantAttack()) {
+                        continue;
+                    }
+                    set.add(unit);
+                }
             }
-            if (unit.isNeutral()) {
-                continue;
-            }
-            if (!unit.canCounter()) {
-                continue;
-            }
-            set.add(unit);
         }
         return set;
 
@@ -209,7 +217,7 @@ public class InstantAttackRule {
         if (!canMakeInstantAttackAgainst(action)) {
             return null;
         }
-        return chooseInstantAttack(action, unit);
+        return checkTargetingForInstantAttack(action, unit);
     }
 
     public static Boolean canMakeInstantAttackAgainst(DC_ActiveObj action) {
@@ -220,42 +228,36 @@ public class InstantAttackRule {
         return unit.canCounter(); // checkAlertCounter - is that right?
     }
 
-    // 3 seconds to choose then automatic! :)
-    public static DC_ActiveObj chooseInstantAttack(DC_ActiveObj action, Unit unit) {
+    public static DC_ActiveObj checkTargetingForInstantAttack(DC_ActiveObj action, Unit unit) {
         int distance = (PositionMaster.getDistance(DC_MovementManager
                 .getMovementDestinationCoordinate(action), unit.getCoordinates()));
         // TODO moving away from same-cell ?
 
         // how to preCheck if jump trajectory intersects with IA range? for (c c :
         // getMovePathCells()){
-        if (unit.getPreferredInstantAttack() != null) {
-            return unit.getPreferredInstantAttack();
-        }
-
-        for (DC_ActiveObj attack : getInstantAttacks(unit)) {
-            if (distance > getAutoAttackRange(attack)) {
-                continue;
+        DC_ActiveObj attack = unit.getPreferredInstantAttack();
+        //TODO when do we even do this? some custom logic!
+        // for (DC_ActiveObj attack : getInstantAttacks(unit)) {
+            if (distance-2 > getAutoAttackRange(attack)) {
+                return null;
             }
             if (!unit.checkPassive(UnitEnums.STANDARD_PASSIVES.HIND_REACH)) {
                 if (!attack.checkPassive(UnitEnums.STANDARD_PASSIVES.BROAD_REACH)) {
                     if (FacingMaster.getSingleFacing(unit, action.getOwnerUnit()) == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
-                        continue;
+                        return null;
                     }
                 }
             }
             if (!attack.checkPassive(UnitEnums.STANDARD_PASSIVES.HIND_REACH)) {
                 if (FacingMaster.getSingleFacing(unit, action.getOwnerUnit()) == UnitEnums.FACING_SINGLE.BEHIND) {
-                    continue;
+                    return null;
                 }
             }
             // TODO PICK OPTIMAL? Consider roll's cost modifier...
             return attack;
-        }
 
-        return null;
     }
 
-    // could be a spell?..
     public static List<DC_ActiveObj> getInstantAttacks(Unit unit) {
         List<DC_ActiveObj> list = new ArrayList<>();
         List<DC_UnitAction> attacks = new ArrayList<>(unit.getActionMap().get(
@@ -265,20 +267,10 @@ public class InstantAttackRule {
             attacks.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK));
         }
         for (DC_UnitAction attack : attacks) {
-
-            if (checkAttackCanBeInstant(attack))
-            // if (attack
-            // .checkProperty(G_PROPS.ACTION_TAGS,
-            // ACTION_TAGS.INSTANT_ATTACK.toString()))
-            {
+            if (checkAttackCanBeInstant(attack)) {
                 list.add(attack);
             }
         }
-        // for (DC_SpellObj s : unit.getSpells()) { haha
-        // if (s.isInstant())
-        // if (s.isMelee())
-        // list.add(s);
-        // }
 
         return list;
     }

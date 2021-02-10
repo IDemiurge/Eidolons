@@ -10,7 +10,7 @@ import eidolons.system.audio.DC_SoundMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
-import main.system.sound.SoundMaster;
+import main.system.sound.AudioEnums;
 import main.system.threading.WaitMaster;
 
 public class TownPortalEffect extends DC_Effect { //TODO make this a subclass!
@@ -25,16 +25,16 @@ public class TownPortalEffect extends DC_Effect { //TODO make this a subclass!
 //                "spell/town portal.txt";
                     DC_ActiveObj action;
                     if (ref.getActive() == null) {
-                        action  =getUnit().getLastAction();
+                        action  = getSourceUnitOrNull().getLastAction();
                     } else {
                         action  = (DC_ActiveObj) ref.getActive();
                     }
                     CustomSpriteAnim anim = new CustomSpriteAnim(action, path) {
                     };
                     anim.setRef(ref);
-                    DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.NEW__TOWN_PORTAL_START);
+                    DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__TOWN_PORTAL_START);
                     anim.setOnDone(p -> {
-                        DC_SoundMaster.playStandardSound(SoundMaster.STD_SOUNDS.NEW__TOWN_PORTAL_DONE);
+                        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__TOWN_PORTAL_DONE);
                         Eidolons.onNonGdxThread(() ->
                                 getGame().getMetaMaster().getTownMaster().tryReenterTown());
                     });
@@ -43,15 +43,9 @@ public class TownPortalEffect extends DC_Effect { //TODO make this a subclass!
 
                 });
 
-        boolean result = (boolean) WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.CONFIRM);
-
-        if (!result)
-            return false;
+        return (boolean) WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.CONFIRM);
 //        GuiEventManager.trigger(GuiEventType.TIP_MESSAGE, new TipMessageSource(
 //                msg, img, btn, false, getRunnable(), getChannel(), true));
-
-
-        return true;
     }
 
     private Runnable getRunnable() {

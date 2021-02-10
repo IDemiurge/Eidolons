@@ -1,7 +1,6 @@
 package eidolons.libgdx.bf.grid.cell;
 
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -9,50 +8,58 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
-import eidolons.entity.obj.unit.Unit;
-import eidolons.libgdx.GdxImageMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.anims.sprite.SpriteMaster;
 import eidolons.libgdx.anims.sprite.SpriteX;
+import eidolons.libgdx.bf.Borderable;
+import eidolons.libgdx.bf.Hoverable;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
-import main.data.filesys.PathFinder;
+import main.content.CONTENT_CONSTS;
 import main.system.GuiEventManager;
-import main.system.PathUtils;
-import main.system.launch.CoreEngine;
 
 import java.util.List;
 
 import static main.system.GuiEventType.TARGET_SELECTION;
 
-public class BaseView extends SuperActor {
+public class BaseView extends SuperActor  implements Hoverable, Borderable {
     protected TextureRegion originalTexture;
     protected TextureRegion originalTextureAlt;
+    protected TextureRegion borderTexture;
     protected FadeImageContainer portrait;
     private Image altPortrait;
-    protected List<SpriteX> overlaySprites;
+    protected List<SpriteX> overlaySprites; //To-Cleanup - could be higher up or local
     protected List<SpriteX> underlaySprites;
-    protected boolean forceTransform;
     protected GroupX spritesContainers;
     protected GroupX spritesContainersUnder;
     protected FadeImageContainer highlight;
     private float expandWidth;
     private float expandHeight;
+    protected CONTENT_CONSTS.FLIP flip;
+    protected boolean forceTransform;
 
     public BaseView(UnitViewOptions o) {
         init(o);
     }
 
     public BaseView(TextureRegion portraitTexture, String path) {
-        init(portraitTexture, path);
+        init(path);
     }
 
     public void init(UnitViewOptions o) {
-        init(o.getPortraitTexture(), o.getPortraitPath());
+        init(o.getPortraitPath());
 
+    }
+
+    @Override
+    public Actor hit(float x, float y, boolean touchable) {
+        if (!touchable)
+            return this;
+        return super.hit(x, y, touchable);
     }
 
     protected void initSprite(UnitViewOptions o) {
@@ -66,20 +73,15 @@ public class BaseView extends SuperActor {
                             }
                         }
                     }
-
             );
             spritesContainersUnder.setZIndex(0);
         }
 
-        underlaySprites = SpriteMaster.getSpriteForUnit(o.getObj(), false);
+        underlaySprites = SpriteMaster.getSpriteForUnit(o.getObj(), false, this);
         if (underlaySprites != null) {
             for (SpriteX spriteX : underlaySprites) {
                 if (isUseSpriteContainer(o.getObj())) {
                     spritesContainersUnder.addActor(spriteX);
-//                    float maxX;
-//                    float maxY;
-//                    spritesContainersUnder.setSize(maxX-minX, maxY);
-//                    spriteX.setOrigin(x, y);
                 } else {
                     addActor(spriteX);
                     spriteX.setZIndex(0);
@@ -104,7 +106,7 @@ public class BaseView extends SuperActor {
                     }
                 }
             });
-        overlaySprites = SpriteMaster.getSpriteForUnit(o.getObj(), true);
+        overlaySprites = SpriteMaster.getSpriteForUnit(o.getObj(), true, this);
         if (overlaySprites != null) {
             for (SpriteX spriteX : overlaySprites) {
                 if (isUseSpriteContainer(o.getObj()))
@@ -121,12 +123,6 @@ public class BaseView extends SuperActor {
                 forceTransform = true;
             }
         }
-
-        //TODO disable hover?
-        /**
-         * fade?
-         * scale?
-         */
     }
 
     public boolean isWithinCameraCheck() {
@@ -134,42 +130,17 @@ public class BaseView extends SuperActor {
     }
 
     protected boolean isUseSpriteContainer(BattleFieldObject obj) {
-        switch (obj.getName()) {
+        switch (obj.getName()) { //To-Cleanup
             case "Ash Vault":
             case "Eldritch Vault":
                 return true;
         }
-        if (obj instanceof Unit) {
-            return false;
-        }
         return false;
     }
 
-    public void init(TextureRegion portraitTexture, String path) {
-        portrait = initPortrait(portraitTexture, path);
+    public void init(String path) {
+        portrait = initPortrait(path);
         addActor(portrait);
-
-        String type = "objects";
-        String name = PathUtils.getLastPathSegment(path);
-        if (path.contains("heroes")) {
-            type = "heroes";
-        }
-        if (path.contains("units")) {
-            type = "units";
-        }
-        if (CoreEngine.isIDE()) {
-
-            FileHandle handle=new FileHandle(PathFinder.getImagePath() + "unitview/" +
-                    type +
-                    "/" +
-                    name);
-            if (!handle.exists())
-            GdxImageMaster.writeImage(handle, portraitTexture);
-        }
-//        ResourceMaster.writeImage(path, "unitviews/" +
-//                type +
-//                "/" +
-//                name);
 
         addListener(new BattleClickListener() {
             @Override
@@ -181,7 +152,6 @@ public class BaseView extends SuperActor {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (button == Input.Buttons.LEFT) {
                     event.handle();
-
                     GuiEventManager.trigger(TARGET_SELECTION, BaseView.this);
                 }
             }
@@ -193,12 +163,20 @@ public class BaseView extends SuperActor {
         return 0;
     }
 
-    protected FadeImageContainer initPortrait(TextureRegion portraitTexture, String path) {
-        originalTexture = processPortraitTexture(portraitTexture, path);
-        return new FadeImageContainer(new Image(originalTexture));
+    //without outline
+    protected FadeImageContainer initPortrait(String path) {
+        FadeImageContainer container = new FadeImageContainer(path);
+        if (flip == CONTENT_CONSTS.FLIP.HOR) {
+            container.setFlipX(true);
+        }
+        if (flip == CONTENT_CONSTS.FLIP.VERT) {
+            container.setFlipY(true);
+        }
+        return container;
     }
 
-    protected TextureRegion processPortraitTexture(TextureRegion texture, String path) {
+    protected TextureRegion processPortraitTexture(String path) {
+        TextureRegion  texture = TextureCache.getRegionUV(path);
         if (TextureCache.isEmptyTexture(texture)) {
             return getPlaceholderPortrait();
         }
@@ -208,14 +186,14 @@ public class BaseView extends SuperActor {
     protected TextureRegion getPlaceholderPortrait() {
         if (getUserObject() instanceof Structure) {
             if (((Structure) getUserObject()).isWall()) {
-                return TextureCache.getOrCreateR(Images.PLACEHOLDER_WALL);
+                return TextureCache.getRegionUV(Images.PLACEHOLDER_WALL);
             }
-            return TextureCache.getOrCreateR(Images.PLACEHOLDER_DECOR);
+            return TextureCache.getRegionUV(Images.PLACEHOLDER_DECOR);
         } else {
-            return TextureCache.getOrCreateR(Images.PLACEHOLDER_UNIT);
+            return TextureCache.getRegionUV(Images.PLACEHOLDER_UNIT);
 
         }
-//        return TextureCache.getOrCreateR(Images.PLACEHOLDER);
+//        return TextureCache.getRegionUV(Images.PLACEHOLDER);
     }
 
     public FadeImageContainer getPortrait() {
@@ -274,11 +252,6 @@ public class BaseView extends SuperActor {
     public void highlight() {
         highlight.setColor(getTeamColor().r, getTeamColor().g, getTeamColor().b, highlight.getColor().a);
         highlight.fadeIn();
-//        fire_light.fadeIn();
-
-        //screen anim
-
-        main.system.auxiliary.log.LogMaster.dev("highlight ");
     }
 
     public void highlightOff() {
@@ -286,6 +259,34 @@ public class BaseView extends SuperActor {
             if (highlight.isVisible()) {
                 highlight.fadeOut();
             }
+        }
+    }
+
+    @Override
+    public TextureRegion getBorder() {
+        return borderTexture;
+    }
+
+    @Override
+    public void setBorder(TextureRegion texture) {
+
+        if (texture == null) {
+            ActionMaster.addFadeOutAction(border, 0.65f, true);
+            borderTexture = null;
+            setTeamColorBorder(false);
+        } else {
+            if (borderTexture==texture) {
+                return ;
+            }
+            if (border != null) {
+                removeActor(border);
+            }
+            addActor(border = new Image(texture));
+            border.getColor().a = 0;
+            ActionMaster.addFadeInAction(border, 0.65f);
+
+            borderTexture = texture;
+            updateBorderSize();
         }
     }
 }

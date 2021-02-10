@@ -2,7 +2,6 @@ package eidolons.game.battlecraft.logic.meta.universal;
 
 import com.badlogic.gdx.Gdx;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
@@ -16,15 +15,15 @@ import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
 import eidolons.macro.FauxMacroGame;
 import eidolons.macro.entity.MacroRef;
 import eidolons.macro.entity.town.Town;
+import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
-import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
 import main.system.threading.Waiter;
 
@@ -34,6 +33,8 @@ import java.util.ArrayList;
  * Created by JustMe on 10/13/2018.
  */
 public class TownMaster extends MetaGameHandler {
+
+    //Macro Review
 
     protected static final java.lang.String DEFAULT_TOWN = "Strangeville"; //"Headquarters"
     ShopManager shopManager;
@@ -74,17 +75,12 @@ public class TownMaster extends MetaGameHandler {
         }
         getMaster().getGame().getLoop().setPaused(true);
         boolean result = enterTown(town, true);
-        if (!CoreEngine.isIggDemoRunning()) // igg demo hack ?
-            getMaster().getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().playerWaits();
-        try {
-            getMaster().getGame().getManager().reset();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+
+        getMaster().getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().playerWaits();
         if (!result) {
             EUtils.infoPopup("Something went wrong in this town...");
             GuiEventManager.trigger(GuiEventType.SHOW_TOWN_PANEL, null);
-//            Eidolons.exitToMenu();
+            //            Eidolons.exitToMenu();
             return;
         }
         getMaster().getGame().getLoop().setPaused(false);
@@ -133,14 +129,14 @@ public class TownMaster extends MetaGameHandler {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-        if (CoreEngine.isFullFastMode()) {
+        if (Flags.isFullFastMode()) {
             new Thread(() -> {
                 GuiEventManager.trigger(GuiEventType.QUEST_TAKEN, "To the Rescue");
                 WaitMaster.WAIT(900);
                 TownPanel.getActiveInstance().done();
             }, " thread").start();
         } else {
-            MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.MAP);
+            MusicMaster.getInstance().scopeChanged(MusicEnums.MUSIC_SCOPE.MAP);
             MusicMaster.getInstance().stopAmbience();
         }
         if (TownPanel.getActiveInstance() == null || !GdxMaster.hasController(Gdx.input.getInputProcessor(), TownPanel.getActiveInstance().getStage())) {
@@ -163,7 +159,7 @@ public class TownMaster extends MetaGameHandler {
         master.getQuestMaster().startQuests();
 
 
-        MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.ATMO);
+        MusicMaster.getInstance().scopeChanged(MusicEnums.MUSIC_SCOPE.ATMO);
         inTown = false;
         town.exited();
         return result;
@@ -201,9 +197,9 @@ public class TownMaster extends MetaGameHandler {
             return;
         }
 
-        Entrance entrance = ((Location) master.getGame().getDungeonMaster().
-                getDungeonWrapper()).getMainEntrance();
-        int dst = Eidolons.getMainHero().getCoordinates().dst(
+        Entrance entrance = master.getGame().getDungeonMaster().
+                getFloorWrapper().getMainEntrance();
+        int dst = Eidolons.getPlayerCoordinates().dst(
                 entrance.getOriginalCoordinates());
         int n = 2 + dst / 8;
         if (master.getMetaDataManager().getMetaGame() instanceof ScenarioMeta) {
@@ -238,6 +234,6 @@ public class TownMaster extends MetaGameHandler {
     }
 
     private boolean isFoodRequired() {
-        return !CoreEngine.isFastMode() && !CoreEngine.isIggDemoRunning();
+        return !Flags.isFastMode() && !Flags.isIggDemoRunning();
     }
 }

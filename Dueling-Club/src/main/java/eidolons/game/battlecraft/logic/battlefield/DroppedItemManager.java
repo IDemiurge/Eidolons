@@ -5,6 +5,7 @@ import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import eidolons.system.ObjUtilities;
 import main.content.enums.entity.ItemEnums;
@@ -25,7 +26,7 @@ public class DroppedItemManager {
 
     private static final List<DC_HeroItemObj> VOID = new ArrayList<>();
     List<DC_HeroItemObj>[][] itemMap;
-    private DC_Game game;
+    private final DC_Game game;
 
     public DroppedItemManager(DC_Game game) {
         this.game = game;
@@ -45,7 +46,10 @@ public class DroppedItemManager {
 
     public void dropDead(Unit unit) {
         if (unit.isSummoned())
-            return ;
+            return;
+        if (ItemMaster.isItemsDisabled()) {
+            return;
+        }
         if (!unit.isRevenant()) {
             unit.unequip(ItemEnums.ITEM_SLOT.ARMOR);
             unit.unequip(ItemEnums.ITEM_SLOT.MAIN_HAND);
@@ -71,10 +75,7 @@ public class DroppedItemManager {
     }
 
     public static boolean canDropItem(DC_HeroItemObj item) {
-        if (item.getProperty(G_PROPS.ITEM_GROUP).equalsIgnoreCase("Keys")) {
-            return false;
-        }
-        return true;
+        return !item.getProperty(G_PROPS.ITEM_GROUP).equalsIgnoreCase("Keys");
     }
 
     private boolean checkLootDrops(DC_HeroItemObj item, Unit unit) {
@@ -88,8 +89,7 @@ public class DroppedItemManager {
         if (unit.isMine()) {
             //check if not original!
             if (item instanceof DC_HeroSlotItem)
-                if (item.getOriginalUnit() == unit)
-                    return false;
+                return item.getOriginalUnit() != unit;
             return true;
         }
         return
@@ -99,7 +99,7 @@ public class DroppedItemManager {
 
     private void destroyItem(DC_HeroItemObj item) {
         item.kill();
-        item.getGame().getState().removeObject(item.getId());
+        game.getStateManager().removeObject(item.getId(), item.getOBJ_TYPE_ENUM());
     }
 
     public boolean checkHasItems(Obj obj) {
@@ -143,7 +143,7 @@ public class DroppedItemManager {
         }
         List<DC_HeroItemObj> list = new ArrayList<>();
         for (String id : ContainerUtils.open(cell.getProperty(PROPS.DROPPED_ITEMS))) {
-            Obj item = game.getObjectById(NumberUtils.getInteger(id));
+            Obj item = game.getObjectById(NumberUtils.getIntParse(id));
             if (item != null) {
                 list.add((DC_HeroItemObj) item);
             }

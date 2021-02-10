@@ -8,9 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.bf.grid.cell.BaseView;
@@ -48,12 +48,14 @@ public class DeathAnim extends ActionAnim {
         unit = (BattleFieldObject) e.getRef().getTargetObj();
         template = getTemplate(getActive(), unit);
         setDuration(2);
+        setRef(e.getRef());
     }
     public DeathAnim(BattleFieldObject obj) {
         super(null, new AnimData());
         unit = obj;
         template = getTemplate(getActive(), unit);
         setDuration(2);
+        // setRef(e.getRef()); //TODO
     }
 
     private static AnimData getDeathAnimData(Event e) {
@@ -124,7 +126,7 @@ public class DeathAnim extends ActionAnim {
 
     @Override
     public Actor getActor() {
-        BaseView actor = ScreenMaster.getDungeonGrid().getViewMap()
+        BaseView actor = ScreenMaster.getGrid().getViewMap()
          .get(unit);
         if (actor != null)
             return actor;
@@ -151,19 +153,16 @@ public class DeathAnim extends ActionAnim {
 //        addSfx();
         //skull / grave?
 
-        unit = (BattleFieldObject) getRef().getTargetObj();
         if (!unit.isDead()){
             main.system.auxiliary.log.LogMaster.log(1,"Screw that Death Anim" +getRef());
             return;
         }
         super.start();
-        main.system.auxiliary.log.LogMaster.log(1,"Death Anim started with \n" +getRef());
         add();
     }
 
     @Override
     public void finished() {
-        main.system.auxiliary.log.LogMaster.log(1,"Death Anim finished with \n" +getRef());
         super.finished();
         getActor().setVisible(false);
         dispose();

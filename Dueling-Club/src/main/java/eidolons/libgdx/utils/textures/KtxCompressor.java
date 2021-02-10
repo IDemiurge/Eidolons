@@ -2,7 +2,7 @@ package eidolons.libgdx.utils.textures;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.tools.ktx.KTXProcessor;
-import eidolons.libgdx.anims.Assets;
+import eidolons.libgdx.assets.Assets;
 import eidolons.system.utils.GdxUtil;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.data.FileManager;
@@ -16,16 +16,13 @@ public class KtxCompressor extends GdxUtil {
     private final String[] args;
     private SpriteBatch spriteBatch;
 
-    private boolean checkRGB=true;
-    private boolean writeKTX=true;
-
     public KtxCompressor(String... args) {
         this.args = args;
     }
 
     private void checkRGB(File file) {
         String contents = FileManager.readFile(file);
-        if (contents.contains(".jpg"))        if (contents.contains("RGBA8888"))
+        if (contents.contains(".jpg")) if (contents.contains("RGBA8888"))
             FileManager.write(contents.replace("RGBA8888", "RGB888"),
                     (file.getPath()));
     }
@@ -38,27 +35,40 @@ public class KtxCompressor extends GdxUtil {
 
     public static void main(String[] args) {
         CoreEngine.systemInit();
+        args = new String[]{
+                 "sprites/boss/knight"
+        };
         new KtxCompressor(args).start();
     }
 
     @Override
     protected void execute() {
         for (String arg : args) {
-            for (File file : FileManager.getFilesFromDirectory(PathFinder.getImagePath() +
-                    PathFinder.getSpritesPath() + arg, false, true)) {
-                if (file.getName().contains(".txt")) {
-                    if (checkRGB)
-                    checkRGB(file);
-                    if (!file.getName().contains("ktx")) {
-                        generateAtlasVersion(file);
-                    }
-                } else {
-                    if (writeKTX)
-                    if (!file.getName().contains(".ktx"))
-                        convert(file.getPath());
+            String path = PathFinder.getImagePath() +
+                      arg;
+            if (FileManager.isFile(path)) {
+                convert(FileManager.getFile(path));
+            } else
+                for (File file : FileManager.getFilesFromDirectory(path, false, true)) {
+                    convert(file);
                 }
-            }
 
+        }
+    }
+
+    private void convert(File file) {
+        if (file.getName().contains(".txt")) {
+            boolean checkRGB = true;
+            if (checkRGB)
+                checkRGB(file);
+            if (!file.getName().contains("ktx")) {
+                generateAtlasVersion(file);
+            }
+        } else {
+            boolean writeKTX = true;
+            if (writeKTX)
+                if (!file.getName().contains(".ktx"))
+                    convert(file.getPath());
         }
     }
 
@@ -77,11 +87,11 @@ public class KtxCompressor extends GdxUtil {
     }
 
     private void toKTX(String path) {
-        main.system.auxiliary.log.LogMaster.dev("toKTX " + path);
+        main.system.auxiliary.log.LogMaster.devLog("toKTX " + path);
         try {
             KTXProcessor.convert(path, Assets.getKtxImgPath(path), false,
                     true, false);
-            main.system.auxiliary.log.LogMaster.dev("toKTX done " + path);
+            main.system.auxiliary.log.LogMaster.devLog("toKTX done " + path);
         } catch (Exception e) {
             e.printStackTrace();
         }

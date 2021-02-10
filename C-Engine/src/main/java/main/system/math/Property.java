@@ -1,18 +1,14 @@
 package main.system.math;
 
 import main.content.ContentValsManager;
-import main.content.values.properties.PROPERTY;
 import main.entity.Ref;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.math.FunctionManager.FUNCTIONS;
 
 public class Property extends DynamicValue {
-    PROPERTY property;
-
     private String string;
-
     private boolean autovar;
-
     private boolean strict;
 
     public Property(String obj_ref, String value_ref) {
@@ -62,7 +58,7 @@ public class Property extends DynamicValue {
         if (entity == null) {
             if (obj_string.equalsIgnoreCase("EVENT")) {
                 Ref REF = ref.getEvent().getRef();
-                if (!value_string.contains(StringMaster.FORMULA_REF_SEPARATOR)
+                if (!value_string.contains(Strings.FORMULA_REF_SEPARATOR)
                  && REF.getValue(value_string) != null) {
                     return REF.getValue(value_string);
                 } else {

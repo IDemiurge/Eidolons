@@ -37,8 +37,7 @@ public class TownDataSource {
     }
 
     public List<TownPlaceActor> getTownPlaces() {
-        List<TownPlaceActor> list = new ArrayList<>();
-        return list;
+        return new ArrayList<>();
     }
 
     public enum TOWN_TYPE {

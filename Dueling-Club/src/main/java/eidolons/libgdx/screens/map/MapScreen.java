@@ -9,9 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.BFDataCreatedEvent;
+import eidolons.libgdx.bf.GridCreateData;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.bf.mouse.MapInputController;
@@ -25,7 +24,7 @@ import eidolons.macro.global.time.MacroTimeMaster;
 import main.data.xml.XML_Reader;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import static main.system.MapEvent.MAP_READY;
 import static main.system.MapEvent.UPDATE_MAP_BACKGROUND;
@@ -50,12 +49,17 @@ public class MapScreen extends GameScreenWithTown {
     }
 
     public static MapScreen getInstance() {
-        if (CoreEngine.isMapEditor())
+        if (Flags.isMapEditor())
             return EditorMapView.getInstance();
         if (instance == null) {
             instance = new MapScreen();
         }
         return instance;
+    }
+
+    @Override
+    protected String getLoadScreenPath() {
+        return null;
     }
 
     public void centerCamera() {
@@ -92,7 +96,7 @@ public class MapScreen extends GameScreenWithTown {
     }
 
     @Override
-    protected GridPanel createGrid(BFDataCreatedEvent param) {
+    protected GridPanel createGrid(GridCreateData param) {
         return null;
     }
 
@@ -147,7 +151,7 @@ public class MapScreen extends GameScreenWithTown {
     }
 
     @Override
-    protected boolean isWaitForInput() {
+    protected boolean isWaitForInputSupported() {
         return false;
     }
     /*
@@ -159,7 +163,7 @@ public class MapScreen extends GameScreenWithTown {
     protected boolean canShowScreen() {
         if (MacroGame.getGame() == null)
             return false;
-        if (!CoreEngine.isMapEditor())
+        if (!Flags.isMapEditor())
             if (!MacroGame.getGame().isStarted())
                 return false;
         return super.canShowScreen();
@@ -169,7 +173,7 @@ public class MapScreen extends GameScreenWithTown {
 //        VignetteShader.getShader().begin();
 //        getBatch().setShader(VignetteShader.getShader());
         if (canShowScreen()) {
-            if (!CoreEngine.isMapEditor()) {
+            if (!Flags.isMapEditor()) {
                 MacroGame.getGame().getRealtimeLoop().act(delta);
                 cameraMan.act(delta);
             }
@@ -180,11 +184,11 @@ public class MapScreen extends GameScreenWithTown {
             guiStage.act(delta);
 
             mapStage.draw();
-            if (Gdx.input.isKeyPressed(Keys.O) || CoreEngine.isMapEditor()) {
+            if (Gdx.input.isKeyPressed(Keys.O) || Flags.isMapEditor()) {
                 objectStage.draw();
             }
-            if (!CoreEngine.isFootageMode())
-            if (Gdx.input.isKeyPressed(Keys.G)|| CoreEngine.isMapEditor() ) {
+            if (!Flags.isFootageMode())
+            if (Gdx.input.isKeyPressed(Keys.G)|| Flags.isMapEditor() ) {
                 guiStage.draw();
             } else {
 //                getBatch().begin();
@@ -207,13 +211,13 @@ public class MapScreen extends GameScreenWithTown {
 
     protected void resetShader() {
 
-        if (batch.getShader() != DarkShader.getDarkShader()) {
-            bufferedShader = batch.getShader();
-            if (isBlocked() || ExplorationMaster.isWaiting()) {
-                batch.setFluctuatingShader(DarkShader.getInstance());
-            } else {
-            }
-        }
+        // if (batch.getShader() != DarkShader.getDarkShader()) {
+            // bufferedShader = batch.getShader();
+            // if (isBlocked() || ExplorationMaster.isWaiting()) {
+            //     batch.setFluctuatingShader(DarkShader.getInstance());
+            // } else {
+            // }
+        // }
 
     }
 
@@ -225,7 +229,7 @@ public class MapScreen extends GameScreenWithTown {
         if (!canShowScreen())
             return false;
 
-        if (CoreEngine.isMapEditor())
+        if (Flags.isMapEditor())
             return false;
         if (getTimeMaster().isPlayerCamping())
             return true;

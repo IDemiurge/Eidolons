@@ -1,6 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.weave.actor;
 
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.panels.headquarters.weave.WeaveHighlightable;
 import eidolons.libgdx.texture.Images;

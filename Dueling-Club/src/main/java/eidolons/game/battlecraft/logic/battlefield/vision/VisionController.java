@@ -46,9 +46,11 @@ public class VisionController {
     DetectionMapper detectionMapper;
     VisibilityLevelMapper visibilityLevelMapper;
     ClearshotMapper clearshotMapper;
+    ClearshotMapper clearshotMapperLight;
     WallObstructionMapper wallObstructionMapper;
     GammaMapper gammaMapper;
     LastSeenMapper lastSeenMapper;
+    SeenMapper seenMapper;
     List<GenericMapper> mappers;
     private StealthMapper stealthMapper;
     private DiagObstructMapper diagObstructMapper;
@@ -65,13 +67,19 @@ public class VisionController {
         mappers.add(stealthMapper = new StealthMapper());
         mappers.add(lastSeenMapper = new LastSeenMapper());
         mappers.add(gammaMapper = new GammaMapper());
-        mappers.add(clearshotMapper = new ClearshotMapper());
+        mappers.add(clearshotMapper = new ClearshotMapper(false));
+        mappers.add(clearshotMapperLight = new ClearshotMapper(true));
         mappers.add(unitVisionMapper = new UnitVisionMapper());
         mappers.add(visibilityLevelMapper = new VisibilityLevelMapper());
         mappers.add(outlineMapper = new OutlineMapper());
         mappers.add(playerVisionMapper = new PlayerVisionMapper());
         mappers.add(detectionMapper = new DetectionMapper());
         mappers.add(wallObstructionMapper = new WallObstructionMapper());
+        mappers.add(seenMapper = new SeenMapper());
+    }
+
+    public SeenMapper getSeenMapper() {
+        return seenMapper;
     }
 
     public LastSeenMapper getLastSeenMapper() {
@@ -118,8 +126,12 @@ public class VisionController {
         return clearshotMapper;
     }
 
+    public ClearshotMapper getClearshotMapperLight() {
+        return clearshotMapperLight;
+    }
+
     public void reset() {
-        mappers.forEach(mapper -> mapper.reset());
+        mappers.forEach(GenericMapper::reset);
     }
 
     public void afterCheck() {

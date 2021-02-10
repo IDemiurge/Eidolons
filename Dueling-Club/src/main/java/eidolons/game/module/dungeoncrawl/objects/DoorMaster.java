@@ -7,7 +7,6 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import eidolons.game.battlecraft.logic.dungeon.universal.DungeonWrapper;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_ACTION;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
@@ -18,9 +17,9 @@ import main.entity.Ref;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.PositionMaster;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +27,7 @@ import java.util.List;
 
 public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
 
-    public <E extends DungeonWrapper> DoorMaster(DungeonMaster<E> dungeonMaster) {
+    public   DoorMaster(DungeonMaster dungeonMaster) {
         super(dungeonMaster);
     }
 
@@ -90,7 +89,7 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
          new Event(STANDARD_EVENT_TYPE.DOOR_CLOSES,
          targetingRef));
         door.setState(DOOR_STATE.CLOSED);
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__CLICK_DISABLED);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__CLICK_DISABLED);
     }
 
     protected boolean checkAction(Unit unit, Door door, DOOR_ACTION sub) {
@@ -103,7 +102,7 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
 //            case LOCK: //TODO
                 return door.getState() == DOOR_STATE.CLOSED;
             case CLOSE:
-                if (door.getGame().getObjectsOnCoordinate(  door.getCoordinates(), true, true, false).size() > 1) {
+                if (door.getGame().getObjectsOnCoordinate(  door.getCoordinates(), true ).size() > 1) {
                     return false;
                 }
                 return isOpen(door);
@@ -137,7 +136,7 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
     @Override
     public DC_UnitAction createAction(DOOR_ACTION sub, Unit unit, DungeonObj obj) {
         return super.createAction(sub, unit,
-         StringMaster.getWellFormattedString(sub.name()) + " Door",
+         StringMaster.format(sub.name()) + " Door",
          obj);
     }
 
@@ -149,7 +148,7 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
         }
         //check intelligence, mastery
         List<DC_ActiveObj> list = new ArrayList<>();
-        DC_UnitAction action = null;
+        DC_UnitAction action;
         for (DOOR_ACTION sub : DOOR_ACTION.values()) {
 
             if (checkAction(unit, (Door) door, sub)) {
@@ -178,7 +177,7 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
     @Override
     public void open(DungeonObj obj, Ref ref) {
         Door door = (Door) obj;
-        if (CoreEngine.isActiveTestMode())
+        if (Flags.isActiveTestMode())
             door.setState(DOOR_STATE.SEALED);
 
         if (door.getState()==DOOR_STATE.SEALED){
@@ -186,13 +185,13 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
             obj.getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.DOOR_IS_UNLOCKED  , ref));
 //            GuiEventManager.trigger(GuiEventType.SINGLE_ANIM, LockKeyAnimation.class, ref);
             door.setState(DOOR_STATE.OPEN);
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__UNLOCK);
+            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__UNLOCK);
             return;
         }
 //        door.setState(DOOR_STATE.OPEN);
         obj.getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.DOOR_OPENS, ref));
         door.setState(DOOR_STATE.OPEN);
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__GATE);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__GATE);
     }
 
 

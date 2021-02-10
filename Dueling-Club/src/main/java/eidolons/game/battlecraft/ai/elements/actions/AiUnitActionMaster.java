@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.ai.elements.actions;
 
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_ActionManager.STD_MODE_ACTIONS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
@@ -74,8 +73,8 @@ public class AiUnitActionMaster {
                 break;
 
             case DEFEND:
-                actions.add(AiActionFactory.getUnitAction(unit, STD_MODE_ACTIONS.Defend.name()));
-                actions.add(AiActionFactory.getUnitAction(unit, STD_MODE_ACTIONS.On_Alert.name()));
+                actions.add(AiActionFactory.getUnitAction(unit, ActionEnums.STD_MODE_ACTIONS.Defend.name()));
+                actions.add(AiActionFactory.getUnitAction(unit, ActionEnums.STD_MODE_ACTIONS.On_Alert.name()));
                 break;
 
             case COWER:
@@ -83,7 +82,7 @@ public class AiUnitActionMaster {
                 break;
             case AMBUSH:
                 if (!checkAddStealth(true, unit, actions)) {
-                    actions.add(AiActionFactory.getUnitAction(unit, STD_MODE_ACTIONS.On_Alert.name()));
+                    actions.add(AiActionFactory.getUnitAction(unit, ActionEnums.STD_MODE_ACTIONS.On_Alert.name()));
                 }
                 break;
             case STALK:
@@ -109,11 +108,11 @@ public class AiUnitActionMaster {
             case PREPARE:
                 actions.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.MODE));
                 if (!unit.isLiving()) {
-                    actions.remove(AiActionFactory.getUnitAction(unit, STD_MODE_ACTIONS.Defend.name()));
+                    actions.remove(AiActionFactory.getUnitAction(unit, ActionEnums.STD_MODE_ACTIONS.Defend.name()));
 
                 }
-                actions.remove(AiActionFactory.getUnitAction(unit, STD_MODE_ACTIONS.Defend.name()));
-                actions.remove(AiActionFactory.getUnitAction(unit, STD_MODE_ACTIONS.On_Alert.name()));
+                actions.remove(AiActionFactory.getUnitAction(unit, ActionEnums.STD_MODE_ACTIONS.Defend.name()));
+                actions.remove(AiActionFactory.getUnitAction(unit, ActionEnums.STD_MODE_ACTIONS.On_Alert.name()));
                 break;
         }
         actions.addAll(ActionFilter.filterActives(type, (unit.getSpells())));
@@ -151,8 +150,7 @@ public class AiUnitActionMaster {
     }
 
     public static List<DC_ActiveObj> getMoveActions(Unit unit) {
-        List<DC_ActiveObj> list = new ArrayList<>();
-        list.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE));
+        List<DC_ActiveObj> list = new ArrayList<>(unit.getActionMap().get(ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE));
         DequeImpl<DC_UnitAction> actionList = unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_MOVE);
         if (ListMaster.isNotEmpty(actionList)) {
             list.addAll(actionList);

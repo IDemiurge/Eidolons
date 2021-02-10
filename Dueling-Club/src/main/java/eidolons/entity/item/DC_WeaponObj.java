@@ -9,7 +9,7 @@ import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.libgdx.anims.anim3d.AnimMaster3d;
+import eidolons.libgdx.assets.Atlases;
 import eidolons.system.DC_Formulas;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.ContentValsManager;
@@ -36,7 +36,6 @@ import java.util.List;
 public class DC_WeaponObj extends DC_HeroSlotItem {
 
     private boolean mainHand;
-    private boolean natural;
     private List<DC_UnitAction> attackActions;
     private DC_QuickItemObj ammo;
     private DC_QuickItemObj lastAmmo;
@@ -79,16 +78,16 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
         if (isMainHand()) {
             getHero().multiplyParamByPercent(PARAMS.ATTACK_MOD, mod, false);
-            getHero().modifyParameter(PARAMS.ATTACK_AP_PENALTY,
-                    getIntParam(PARAMS.ATTACK_AP_PENALTY), false);
-            getHero().modifyParameter(PARAMS.ATTACK_STA_PENALTY,
-                    getIntParam(PARAMS.ATTACK_STA_PENALTY), false);
+            getHero().modifyParameter(PARAMS.ATTACK_ATB_COST_MOD,
+                    getIntParam(PARAMS.ATTACK_ATB_COST_MOD), false);
+            getHero().modifyParameter(PARAMS.ATTACK_TOUGHNESS_COST_MOD,
+                    getIntParam(PARAMS.ATTACK_TOUGHNESS_COST_MOD), false);
         } else {
             getHero().multiplyParamByPercent(PARAMS.OFFHAND_ATTACK_MOD, mod, false);
-            getHero().modifyParameter(PARAMS.OFFHAND_ATTACK_AP_PENALTY,
-                    getIntParam(PARAMS.ATTACK_AP_PENALTY), false);
-            getHero().modifyParameter(PARAMS.OFFHAND_ATTACK_STA_PENALTY,
-                    getIntParam(PARAMS.ATTACK_STA_PENALTY), false);
+            getHero().modifyParameter(PARAMS.OFFHAND_ATTACK_ATB_COST_MOD,
+                    getIntParam(PARAMS.ATTACK_ATB_COST_MOD), false);
+            getHero().modifyParameter(PARAMS.OFFHAND_ATTACK_TOUGHNESS_COST_MOD,
+                    getIntParam(PARAMS.ATTACK_TOUGHNESS_COST_MOD), false);
         }
     }
 
@@ -162,9 +161,9 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         // return true;
         // }
         return checkProperty(G_PROPS.WEAPON_CLASS, StringMaster
-                .getWellFormattedString(ItemEnums.WEAPON_CLASS.DOUBLE.name()))
+                .format(ItemEnums.WEAPON_CLASS.DOUBLE.name()))
                 || checkProperty(G_PROPS.WEAPON_CLASS, StringMaster
-                .getWellFormattedString(ItemEnums.WEAPON_CLASS.TWO_HANDED.name()));
+                .format(ItemEnums.WEAPON_CLASS.TWO_HANDED.name()));
     }
 
     public void applyUnarmedMasteryBonus() {
@@ -207,7 +206,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
     private boolean isDouble() {
         return checkProperty(G_PROPS.WEAPON_CLASS, StringMaster
-                .getWellFormattedString(ItemEnums.WEAPON_CLASS.DOUBLE.name()));
+                .format(ItemEnums.WEAPON_CLASS.DOUBLE.name()));
     }
 
     private PARAMETER getMastery() {
@@ -241,20 +240,15 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
     }
 
     private int getDamageModifier(PARAMS dmgModifier, PARAMS value) {
-        int amount = getIntParam(dmgModifier) * getHero().getIntParam(value) / 100;
-        return (amount);
+        return (getIntParam(dmgModifier) * getHero().getIntParam(value) / 100);
     }
 
     @Override
     public void setRef(Ref ref) {
-        if (!equipped) { // TODO preCheck ref contains *this* ?
+        if (!equipped) { // TODO EA Check  ref contains *this* ?
             // HC unequip bug?
             equipped(ref);
         }
-    }
-
-    public void equippedInReserve(Ref ref) {
-        //TODO igg demo fix
     }
 
     @Override
@@ -387,12 +381,12 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         modifyParameter(PARAMS.ATTACK_MOD, -penalty_reduction, 100, true);
         modifyParameter(PARAMS.DEFENSE_MOD, -penalty_reduction, 100, true);
 
-        modifyParameter(PARAMS.ATTACK_AP_PENALTY, penalty_reduction, 0, true);
-        modifyParameter(PARAMS.ATTACK_STA_PENALTY, penalty_reduction, 0, true);
+        modifyParameter(PARAMS.ATTACK_ATB_COST_MOD, penalty_reduction, 0, true);
+        modifyParameter(PARAMS.ATTACK_TOUGHNESS_COST_MOD, penalty_reduction, 0, true);
 
         penalty_reduction = -getHero().getIntParam(PARAMS.WILLPOWER);
-        modifyParameter(PARAMS.SPELL_FOC_PENALTY, penalty_reduction, 0, true);
-        modifyParameter(PARAMS.SPELL_AP_PENALTY, penalty_reduction, 0, true);
+        modifyParameter(PARAMS.SPELL_FOC_COST_MOD, penalty_reduction, 0, true);
+        modifyParameter(PARAMS.SPELL_ATB_COST_MOD, penalty_reduction, 0, true);
 
     }
 
@@ -423,7 +417,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
             ref.removeValue(KEYS.AMMO);
         } else {
             ref.setID(KEYS.AMMO, ammo.getId());
-            AnimMaster3d.preloadAtlas(ammo.getWrappedWeapon());
+            Atlases.preloadAtlas(ammo.getWrappedWeapon());
         }
         if (ammo != null)
             lastAmmo = ammo;

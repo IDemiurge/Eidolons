@@ -2,15 +2,10 @@ package eidolons.system.hotkey;
 
 import com.badlogic.gdx.Input;
 import eidolons.content.ValueHelper;
-import eidolons.entity.active.DC_ActionManager;
-import eidolons.entity.active.DC_ActionManager.ADDITIONAL_MOVE_ACTIONS;
-import eidolons.entity.active.DC_ActionManager.STD_ACTIONS;
-import eidolons.entity.active.DC_ActionManager.STD_MODE_ACTIONS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_GameManager;
-import eidolons.libgdx.anims.controls.AnimController;
 import eidolons.system.controls.Controller;
 import eidolons.system.controls.Controller.CONTROLLER;
 import eidolons.system.controls.GlobalController;
@@ -19,13 +14,18 @@ import eidolons.system.options.OptionsMaster;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
+import main.content.enums.entity.ActionEnums.ADDITIONAL_MOVE_ACTIONS;
+import main.content.enums.entity.ActionEnums.STD_ACTIONS;
+import main.content.enums.entity.ActionEnums.STD_MODE_ACTIONS;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -52,7 +52,7 @@ public class DC_KeyManager
     //    private Map<String, HOTKEYS> specKeyMap;
     // private Map<Integer, HotKey> keyMap;
     private DC_GameManager mngr;
-    private ACTION_TYPE action_group = ActionEnums.ACTION_TYPE.STANDARD;
+    private final ACTION_TYPE action_group = ActionEnums.ACTION_TYPE.STANDARD;
     private Controller controller;
 
     public DC_KeyManager() {
@@ -82,12 +82,12 @@ public class DC_KeyManager
 
     private void initStdModeHotkeys() {
         int i = 0; //TODO [quick fix] - due to "either camp or defend", one removed always
-        for (STD_MODE_ACTIONS action : STD_MODE_ACTIONS.values()) {
+        for (STD_MODE_ACTIONS action : ActionEnums.STD_MODE_ACTIONS.values()) {
             String key = DataManager.getType(action.toString(), DC_TYPE.ACTIONS).getProperty(
                     G_PROPS.HOTKEY);
             stdModeKeyMap.put(key, i);
             LogMaster.log(LogMaster.CORE_DEBUG, ">> mode hotkey " + key);
-            if (action != STD_MODE_ACTIONS.Defend)
+            if (action != ActionEnums.STD_MODE_ACTIONS.Defend)
                 i++;
 
         }
@@ -96,7 +96,7 @@ public class DC_KeyManager
 
     private void initStdHotkeys() {
         int i = 0;
-        for (STD_ACTIONS action : STD_ACTIONS.values()) {
+        for (STD_ACTIONS action : ActionEnums.STD_ACTIONS.values()) {
             String key = DataManager.getType(action.toString(), DC_TYPE.ACTIONS).getProperty(
                     G_PROPS.HOTKEY);
             stdActionKeyMap.put(key, i);
@@ -104,7 +104,7 @@ public class DC_KeyManager
             i++;
         }
         i = 0;
-        for (ADDITIONAL_MOVE_ACTIONS action : ADDITIONAL_MOVE_ACTIONS.values()) {
+        for (ADDITIONAL_MOVE_ACTIONS action : ActionEnums.ADDITIONAL_MOVE_ACTIONS.values()) {
             String key = DataManager.getType(action.toString(), DC_TYPE.ACTIONS).getProperty(
                     G_PROPS.HOTKEY);
             addMoveActionKeyMap.put(key, i);
@@ -112,14 +112,14 @@ public class DC_KeyManager
             i++;
         }
         customActionKeyMap = new LinkedHashMap<>();
-        customActionKeyMap.put("l", DC_ActionManager.STD_SPEC_ACTIONS.On_Alert.toString());
-        customActionKeyMap.put("v", DC_ActionManager.STD_SPEC_ACTIONS.Wait.toString());
-        customActionKeyMap.put("p", DC_ActionManager.STD_SPEC_ACTIONS.Push.toString());
-        customActionKeyMap.put("u", DC_ActionManager.STD_SPEC_ACTIONS.Pull.toString());
+        customActionKeyMap.put("l", ActionEnums.STD_SPEC_ACTIONS.On_Alert.toString());
+        customActionKeyMap.put("v", ActionEnums.STD_SPEC_ACTIONS.Wait.toString());
+        customActionKeyMap.put("p", ActionEnums.STD_SPEC_ACTIONS.Push.toString());
+        customActionKeyMap.put("u", ActionEnums.STD_SPEC_ACTIONS.Pull.toString());
         customActionKeyMap.put("g",
-                StringMaster.getWellFormattedString(
-                        DC_ActionManager.STD_SPEC_ACTIONS.Toggle_Weapon_Set.toString()));
-        customActionKeyMap.put("h", DC_ActionManager.STD_SPEC_ACTIONS.Search_Mode.toString());
+                StringMaster.format(
+                        ActionEnums.STD_SPEC_ACTIONS.Toggle_Weapon_Set.toString()));
+        customActionKeyMap.put("h", ActionEnums.STD_SPEC_ACTIONS.Search_Mode.toString());
     }
 
     private boolean checkCustomHotkey(KeyEvent e) {
@@ -166,10 +166,13 @@ public class DC_KeyManager
             return; // play random sound!...
         }
 
-
         char CHAR = (e.getKeyChar());
         int keyMod = e.getModifiers();
         //        arrowPressed(e); TODO
+
+        if (Flags.isIDE()){
+            GuiEventManager.trigger(GuiEventType.KEY_TYPED, (int) CHAR);
+        }
         handleKeyTyped(keyMod, CHAR);
     }
 
@@ -203,9 +206,6 @@ public class DC_KeyManager
             case ACTION:
                 return null;
 
-            case ANIM:
-                return AnimController.getInstance();
-
             case RULES:
                 return RuleKeeper.getInstance();
 
@@ -220,7 +220,7 @@ public class DC_KeyManager
             }
         }
 
-        if (!CoreEngine.isJar() && !CoreEngine.isJarlike()) {
+        if (!Flags.isJar()) {  
             if (checkControllerHotkey(keyMod, CHAR)) {
                 return true;
             }
@@ -247,7 +247,7 @@ public class DC_KeyManager
             charString = charString.toLowerCase();
         }
         if (numberChars.indexOf(CHAR) != -1) {
-            index = Integer.valueOf(charString);
+            index = Integer.parseInt(charString);
         }
         if (index == -1) {
             if (stdActionKeyMap.containsKey(charString)) {
@@ -422,11 +422,15 @@ public class DC_KeyManager
     }
 
     public boolean handleKeyDown(int keyCode) {
-        controller.keyDown(keyCode);
-        if (globalController.keyDown(keyCode))
-            return true;
-
-        Character CHAR = getKeyTyped(keyCode);
+        if (controller != globalController) {
+            if (controller.keyDown(keyCode) || globalController.keyDown(keyCode))
+                return true;
+        } else {
+            if (controller.keyDown(keyCode)) {
+                return true;
+            }
+        }
+            Character CHAR = getKeyTyped(keyCode);
         if (CHAR != null) {
             return handleKeyTyped(0, CHAR);
         }

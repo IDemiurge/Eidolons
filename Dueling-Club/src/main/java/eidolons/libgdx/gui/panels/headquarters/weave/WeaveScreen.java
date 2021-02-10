@@ -27,6 +27,10 @@ public class WeaveScreen extends GameScreen {
         return instance;
     }
 
+    @Override
+    protected String getLoadScreenPath() {
+        return null;
+    }
 
     @Override
     protected void preLoad() {
@@ -52,6 +56,7 @@ public class WeaveScreen extends GameScreen {
               new WeaveKeyController());
         return inputController;
     }
+
 
     @Override
     protected void renderMain(float delta) {

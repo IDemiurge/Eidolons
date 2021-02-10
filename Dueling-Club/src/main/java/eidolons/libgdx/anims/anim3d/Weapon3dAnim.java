@@ -1,7 +1,6 @@
 package eidolons.libgdx.anims.anim3d;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -10,21 +9,23 @@ import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.utils.Array;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.game.EidolonsGame;
 import eidolons.libgdx.GdxImageMaster;
-import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.AnimData;
-import eidolons.libgdx.anims.anim3d.AnimMaster3d.PROJECTION;
-import eidolons.libgdx.anims.anim3d.AnimMaster3d.WEAPON_ANIM_CASE;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.std.ActionAnim;
+import eidolons.libgdx.assets.AnimMaster3d;
+import eidolons.libgdx.assets.AssetEnums;
+import eidolons.libgdx.assets.AssetEnums.PROJECTION;
+import eidolons.libgdx.assets.AssetEnums.WEAPON_ANIM_CASE;
+import eidolons.libgdx.assets.Atlases;
 import main.content.enums.GenericEnums;
 import main.entity.Ref;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,17 +68,9 @@ public class Weapon3dAnim extends ActionAnim {
 
     }
 
-    @Override
-    protected Texture getTexture() {
-        if (isValid())
-            return null;
-        return super.getTexture();
-    }
-
     private boolean isValid() {
         if (sprite != null)
-            if (sprite.getRegions().size > 0)
-                return true;
+            return sprite.getRegions().size > 0;
         return false;
     }
 
@@ -98,7 +91,6 @@ public class Weapon3dAnim extends ActionAnim {
         if (isScreen()){
             sprite.setBlending(GenericEnums.BLENDING.SCREEN);
         }
-        if (EidolonsGame.BRIDGE)
         if (isInvertScreen()){
             sprite.setBlending(GenericEnums.BLENDING.INVERT_SCREEN);
         }
@@ -121,7 +113,7 @@ public class Weapon3dAnim extends ActionAnim {
     }
 
     private boolean isScreen() {
-        return AnimMaster3d.JPG_WEAPONS;
+        return false;
     }
 
     protected String getDefaultTexturePath() {
@@ -143,8 +135,8 @@ public class Weapon3dAnim extends ActionAnim {
         subactions.removeIf(a ->
          a.isThrow() ||
           a.getActiveWeapon() != getActive().getActiveWeapon());
-        Array<AtlasRegion> newRegions = AnimMaster3d.getRegions(
-         WEAPON_ANIM_CASE.NORMAL, subactions.get(RandomWizard.getRandomIndex(subactions))
+        Array<AtlasRegion> newRegions = Atlases.getRegions(
+         AssetEnums.WEAPON_ANIM_CASE.NORMAL, subactions.get(RandomWizard.getRandomIndex(subactions))
          , getProjection(ref,getActive()).bool);
 
         newRegions.removeRange(0, newRegions.size / 2);
@@ -168,13 +160,14 @@ public class Weapon3dAnim extends ActionAnim {
 
     protected boolean checkFlipHorizontally() {
         boolean offhand = getActive().isOffhand();
-        boolean flipHor = false;
-        if (getProjection(ref,getActive()) == PROJECTION.HOR) {
-            flipHor = getActive().getOwnerUnit().getFacing() == FACING_DIRECTION.WEST;// PositionMaster.isToTheLeft(activeObj.getOwnerUnit(), targetObj);
+        boolean flipHor;
+        if (getProjection(ref,getActive()) == AssetEnums.PROJECTION.HOR) {
+            flipHor = getActive().getOwnerUnit().getFacing() == FACING_DIRECTION.WEST;
+            // PositionMaster.isToTheLeft(activeObj.getOwnerUnit(), targetObj);
         } else {
-            flipHor = (getProjection(ref,getActive()) == PROJECTION.TO) != offhand;
+            flipHor = (getProjection(ref,getActive()) == AssetEnums.PROJECTION.TO) != offhand;
 //            if (RandomWizard.chance(33))
-//                flipHor = !flipHor; TODO igg demo fix
+//                flipHor = !flipHor; TODO anim Review - is it viable?
         }
         return flipHor;
     }
@@ -187,7 +180,7 @@ public class Weapon3dAnim extends ActionAnim {
             return sprite;
         }
 
-        sprite = createSprite(projection); ;
+        sprite = createSprite(projection);
         if (sprite.getRegions().size == 0) {
             return null;
         }
@@ -196,7 +189,7 @@ public class Weapon3dAnim extends ActionAnim {
     }
 
     protected SpriteAnimation createSprite(PROJECTION projection) {
-        return AnimMaster3d.getSpriteForAction(getDuration(),
+        return Atlases.getSpriteForAction(getDuration(),
                 getActive(), getCase(), projection);
     }
 
@@ -217,11 +210,11 @@ public class Weapon3dAnim extends ActionAnim {
         //        return WEAPON_ANIM_CASE. BLOCKED;
 
         if (getActive().isFailedLast())
-            return WEAPON_ANIM_CASE.MISS;
+            return AssetEnums.WEAPON_ANIM_CASE.MISS;
         //        return WEAPON_ANIM_CASE.PARRY; counter?
 
 
-        return WEAPON_ANIM_CASE.NORMAL;
+        return AssetEnums.WEAPON_ANIM_CASE.NORMAL;
     }
 
     public   PROJECTION getProjection( ) {
@@ -233,8 +226,14 @@ public class Weapon3dAnim extends ActionAnim {
 
     @Override
     public void start(Ref ref) {
+        if (isOn())
+            return;
         initDuration();
         super.start(ref);
+    }
+
+    private boolean isOn() {
+        return !Flags.isLiteLaunch();
     }
 
     @Override
@@ -242,7 +241,7 @@ public class Weapon3dAnim extends ActionAnim {
 //        if (batch instanceof CustomSpriteBatch) {
 //           post=  ((CustomSpriteBatch) batch);
 //        }
-        if (CoreEngine.isFootageMode())
+        if (Flags.isFootageMode())
             return;
         super.draw(batch, parentAlpha);
     }

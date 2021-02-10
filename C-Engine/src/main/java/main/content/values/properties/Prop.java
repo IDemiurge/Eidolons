@@ -1,10 +1,9 @@
 package main.content.values.properties;
 
-import main.content.OBJ_TYPE;
-
 public class Prop implements PROPERTY {
+//Core Review - this is only for Mapping, I could find a way to use original VALUE's
 
-    private PROPERTY property;
+    private final PROPERTY property;
     private boolean dynamic = false;
 
     public Prop(PROPERTY property) {
@@ -14,14 +13,6 @@ public class Prop implements PROPERTY {
 
     public String name() {
         return property.name();
-    }
-
-    public boolean isHighPriority() {
-        return property.isHighPriority();
-    }
-
-    public void setHighPriority(boolean highPriority) {
-        property.setHighPriority(highPriority);
     }
 
     public boolean isWriteToType() {
@@ -60,14 +51,6 @@ public class Prop implements PROPERTY {
         return property.getDefaultValue();
     }
 
-    public boolean isLowPriority() {
-        return property.isLowPriority();
-    }
-
-    public void setLowPriority(boolean lowPriority) {
-        property.setLowPriority(lowPriority);
-    }
-
     @Override
     public boolean isDynamic() {
         return dynamic;
@@ -77,31 +60,24 @@ public class Prop implements PROPERTY {
         this.dynamic = dynamic;
     }
 
-    @Override
-    public boolean isSuperLowPriority() {
-        return property.isSuperLowPriority();
-    }
-
-    @Override
-    public void setSuperLowPriority(boolean superLowPriority) {
-        this.property.setSuperLowPriority(superLowPriority);
-    }
-
     public String getShortName() {
         return property.getShortName();
     }
 
-    public void addSpecialDefault(OBJ_TYPE type, Object value) {
-        property.addSpecialDefault(type, value);
-    }
-
-    public Object getSpecialDefault(OBJ_TYPE type) {
-        return property.getSpecialDefault(type);
-    }
 
     @Override
     public INPUT_REQ getInputReq() {
         return null;
+    }
+
+    @Override
+    public void setDevOnly(boolean devOnly) {
+
+    }
+
+    @Override
+    public boolean isDevOnly() {
+        return false;
     }
 
 }

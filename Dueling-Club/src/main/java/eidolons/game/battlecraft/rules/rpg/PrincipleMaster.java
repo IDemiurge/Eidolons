@@ -121,15 +121,15 @@ public class PrincipleMaster {
         Ref ref = new Ref(type.getGame());
         ref.setID(KEYS.INFO, type.getId());
         for (PARAMS param : map.keySet()) {
-            if (!(param.getName().contains(StringMaster.ALIGNMENT) || param.getName().contains(
-             StringMaster.IDENTITY))) {
+            if (!(param.getName().contains(Strings.ALIGNMENT) || param.getName().contains(
+             Strings.IDENTITY))) {
                 continue;
             }
             String string = map.get(param);
             // string = TextParser.parse(string, ref,
             // TextParser.INFO_PARSING_CODE);
             // Ref.setInfoObject(type); TODO support {n} or is it useless?
-            int amount = NumberUtils.getInteger(TextParser.parse(string, ref,
+            int amount = NumberUtils.getIntParse(TextParser.parse(string, ref,
              TextParser.INFO_PARSING_CODE));
             // if (param.getName().contains(StringMaster.ALIGNMENT)) {
             //

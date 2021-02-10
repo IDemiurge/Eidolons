@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SmartTextButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import main.game.bf.directions.DIRECTION;
 
@@ -39,7 +39,7 @@ public class HideDecorator {
             actor.setTouchable(Touchable.disabled);
             group.setTouchable(Touchable.childrenOnly);
         }
-        SmartButton btn = new SmartButton(style, () -> {
+        SmartTextButton btn = new SmartTextButton(style, () -> {
 
             if (actor.isVisible()) {
                 actor.setTouchable(Touchable.disabled);

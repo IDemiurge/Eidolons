@@ -67,7 +67,7 @@ public class ExitMaster {
 
     public static FACING_DIRECTION[] getExits(EXIT_TEMPLATE exitTemplate, Boolean[] rotated) {
         FACING_DIRECTION[] exits = getExits(exitTemplate);
-        int i = 0;
+        int i;
         if (rotated != null)
             for (Boolean bool : rotated) {
                 i = 0;

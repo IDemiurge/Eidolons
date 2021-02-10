@@ -18,15 +18,11 @@ import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
-import main.elements.Filter;
-import main.elements.conditions.Conditions;
 import main.entity.Entity;
-import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.core.game.GenericGame;
 import main.system.auxiliary.StringMaster;
-import main.system.entity.ConditionMaster;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 
@@ -39,7 +35,9 @@ public class DC_MathManager extends MathMaster {
     }
 
     public static Integer getStartingFocus(Obj obj) {
-        return MathMaster.applyMod(obj.getIntParam(PARAMS.STARTING_FOCUS), obj.getIntParam(PARAMS.ORGANIZATION));
+        return obj.getIntParam(PARAMS.STARTING_FOCUS);
+        // return MathMaster.applyMod(obj.getIntParam(PARAMS.STARTING_FOCUS),
+        //         obj.getIntParam(PARAMS.ORGANIZATION));
     }
 
 
@@ -62,9 +60,8 @@ public class DC_MathManager extends MathMaster {
             max = armor;
         }
 
-        int reduction = 1 + MathMaster.round(max - DC_Formulas.DURABILITY_DAMAGE_THRESHOLD_ARMOR)
+        return 1 + MathMaster.round(max - DC_Formulas.DURABILITY_DAMAGE_THRESHOLD_ARMOR)
          / DC_Formulas.DURABILITY_DAMAGE_FACTOR_ARMOR;
-        return reduction;
     }
 
     private static int getWeaponDurabilityForDamage(int damage, int armor) {
@@ -76,9 +73,8 @@ public class DC_MathManager extends MathMaster {
             max = damage;
         }
 
-        int reduction = 1 + MathMaster.round(max - DC_Formulas.DURABILITY_DAMAGE_THRESHOLD_WEAPON)
+        return 1 + MathMaster.round(max - DC_Formulas.DURABILITY_DAMAGE_THRESHOLD_WEAPON)
          / DC_Formulas.DURABILITY_DAMAGE_FACTOR_WEAPON;
-        return reduction;
 
     }
 
@@ -180,7 +176,6 @@ public class DC_MathManager extends MathMaster {
         String property = hero.getProperty(PROPS.DIVINATION_PARAMETER);
         if (!property.isEmpty()) {
             if (!property.contains("{")) {
-                property = StringMaster.wrapInCurlyBraces(property);
             }
 
             divinationPoolFormula = new Formula(DC_Formulas.DIVINATION_POOL_FORMULA.toString().toLowerCase()
@@ -198,7 +193,6 @@ public class DC_MathManager extends MathMaster {
         return "" + type.getIntParam(PARAMS.POWER) * 10
          // + DC_Formulas
          // .getTotalXpForLevel(type.getIntParam(PARAMS.LEVEL))
-
          ;
     }
 
@@ -207,14 +201,12 @@ public class DC_MathManager extends MathMaster {
     }
 
     public static String getSpellXpCost(ObjType type) {
-
         return "" + (type.getIntParam(PARAMS.SPELL_DIFFICULTY) * DC_Formulas.XP_COST_PER_SPELL_DIFFICULTY);
     }
 
     public static int getLeveledUnitPowerBonus(ObjType type) {
         int level = DC_Formulas.getLevelForXp(type.getIntParam(PARAMS.POWER) * DC_Formulas.POWER_XP_FACTOR);
         // MathManager.getFormulaArg("amount",
-
         return calculateFormula(DC_Formulas.UNIT_LEVEL_POWER_BONUS, level);
 
     }
@@ -224,79 +216,8 @@ public class DC_MathManager extends MathMaster {
     }
 
     @Override
-    public Integer evaluateConcentration(Obj obj) {
-        // if (new PositionCondition(POSITION.ADJACENT_ANY,
-        // true, source, CRYSTAL_CHARACTERISTICS).preCheck(obj.getRef())){
-        // }
-        return DC_Formulas.getFocusConstForConcentration(calculateClaimedObjects(obj, "Crystal"));
-    }
-
-    @Override
-    public Integer evaluateRest(Obj obj) {
-
-        // DC_PARAMS.STAMINA_BONUS
-        return DC_Formulas.getStaminaConstForRest();
-    }
-
-    @Override
-    public Integer evaluateClaimThreshold(Obj obj, String s) {
-        // s?
-        Formula formula = new Formula(DC_Formulas.getCrystalThreshold());
-        if (StringMaster.compare(StringMaster.GATEWAY, obj.getProperty(G_PROPS.BF_OBJECT_TYPE))) {
-            formula = new Formula(DC_Formulas.getGatewayThreshold());
-        }
-        return formula.getInt(obj.getRef());
-    }
-
-    @Override
-    public Integer evaluateClaimOutput(Obj obj, String s) {
-
-        return new Formula(DC_Formulas.getClaimOutput()).getInt(obj.getRef());
-    }
-
-    @Override
-    public Integer evaluateMeditation(Obj obj) {
-        // crystals will have a continuous aura of ESSENCE_BONUS?
-        // ++ no essence upkeep for units that are adjacent to a crystal
-
-        return DC_Formulas.getEssenceConstForMeditation();
-    }
-
-    @Override
     public Integer getStartingEssence(Obj obj) {
         return obj.getIntParam(PARAMS.ESSENCE) * DC_Formulas.STARTING_ESSENCE_PERCENTAGE / 100;
-    }
-
-    @Override
-    public int calculateClaimedObjects(Obj obj, String BF_OBJECT_TYPE) {
-        Conditions conditions = ConditionMaster.getClaimedBfObjConditions(BF_OBJECT_TYPE);
-
-        Ref ref = new Ref(game, obj.getId());
-        int i = new Filter<>(ref, conditions).getObjects().size();
-        PARAMETER param = ContentValsManager.getPARAM("CLAIMED_" + BF_OBJECT_TYPE + "S");
-        obj.setParam(param, i);
-        return i;
-
-    }
-
-    @Override
-    public Integer evaluateSummonEnergyCost(Entity obj, String s) {
-        // 5+5*level +(level^2 -1)
-        Formula formula = new Formula("4+ 5*{SOURCE_LEVEL}+{SOURCE_LEVEL}*{SOURCE_LEVEL}");
-        Integer cost = formula.getInt(obj.getRef());
-        return cost;
-    }
-
-    @Override
-    public Integer calculateEssenceRegenBonus(Obj obj) {
-        calculateClaimedObjects(obj, "Crystal");
-        calculateClaimedObjects(obj, "Gateway");
-
-        int amount = obj.getIntParam(PARAMS.CLAIMED_CRYSTALS) * DC_Formulas.ESS_REGEN_PER_CRYSTAL;
-
-        // TODO matching aspects?
-
-        return amount;
     }
 
 }

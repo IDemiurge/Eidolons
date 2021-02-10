@@ -55,7 +55,7 @@ public final class Hash {
 		long OneEighth = BitsInUnsignedInt / 8;
 		long HighBits = (long)(0xFFFFFFFF) << (BitsInUnsignedInt - OneEighth);
 		long hash = 0;
-		long test = 0;
+		long test;
 
 		for( int i = 0; i < str.length(); i++ ) {
 			hash = (hash << OneEighth) + str.charAt( i );
@@ -73,7 +73,7 @@ public final class Hash {
 
 	public static long ELFHash( String str ) {
 		long hash = 0;
-		long x = 0;
+		long x;
 
 		for( int i = 0; i < str.length(); i++ ) {
 			hash = (hash << 4) + str.charAt( i );

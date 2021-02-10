@@ -5,14 +5,15 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH_PADDING;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SmartTextButton;
 import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.TablePanel;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.images.ImageManager;
-import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
+import main.system.sound.AudioEnums;
+import main.system.sound.AudioEnums.BUTTON_SOUND_MAP;
 
 /**
  * Created by JustMe on 10/5/2018.
@@ -26,8 +27,8 @@ import main.system.sound.SoundMaster.BUTTON_SOUND_MAP;
 public class QuestInfoPanel extends ItemInfoPanel {
     public static final int WIDTH = 920;
     public static final int HEIGHT = 720;
-    private final SmartButton accept;
-    private final SmartButton cancel;
+    private final SmartTextButton accept;
+    private final SmartTextButton cancel;
     private boolean disabled;
     private SelectableItemData chosen;
 
@@ -38,18 +39,18 @@ public class QuestInfoPanel extends ItemInfoPanel {
     public QuestInfoPanel(SelectableItemData o) {
         super(o);
         row();
-        addActor(accept = new SmartButton("Accept Quest",
-         STD_BUTTON.MENU, () -> accept()) {
+        addActor(accept = new SmartTextButton("Accept Quest",
+         STD_BUTTON.MENU, this::accept) {
             @Override
-            protected BUTTON_SOUND_MAP getSoundMap() {
-                return BUTTON_SOUND_MAP.OK;
+            public BUTTON_SOUND_MAP getSoundMap() {
+                return AudioEnums.BUTTON_SOUND_MAP.OK;
             }
         });
-        addActor(cancel = new SmartButton("Cancel Quest",
-         STD_BUTTON.MENU, () -> cancel()) {
+        addActor(cancel = new SmartTextButton("Cancel Quest",
+         STD_BUTTON.MENU, this::cancel) {
             @Override
-            protected BUTTON_SOUND_MAP getSoundMap() {
-                return BUTTON_SOUND_MAP.CANCEL;
+            public BUTTON_SOUND_MAP getSoundMap() {
+                return AudioEnums.BUTTON_SOUND_MAP.CANCEL;
             }
         });
 

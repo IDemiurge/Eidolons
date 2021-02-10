@@ -2,7 +2,7 @@ package eidolons.entity.handlers.active;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
@@ -15,21 +15,14 @@ import main.entity.obj.Obj;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
-import main.system.text.LogEntryNode;
 
 /**
  * Created by JustMe on 2/23/2017.
  */
 public class ActiveLogger extends EntityLogger<DC_ActiveObj> {
 
-    private LogEntryNode entry;
-
     public ActiveLogger(DC_ActiveObj entity, EntityMaster<DC_ActiveObj> entityMaster) {
         super(entity, entityMaster);
-    }
-
-    public LogEntryNode getEntry() {
-        return entry;
     }
 
     public void logCompletion() {
@@ -50,8 +43,6 @@ public class ActiveLogger extends EntityLogger<DC_ActiveObj> {
             }
         } else {
             game.getLogManager().doneLogEntryNode();
-            if (getEntry() != null) {
-            }
         }
     }
 
@@ -63,19 +54,15 @@ public class ActiveLogger extends EntityLogger<DC_ActiveObj> {
 
         boolean logAction = getOwnerObj().getVisibilityLevel() == VISIBILITY_LEVEL.CLEAR_SIGHT
          && !getMaster().getChecker().isAttackAny();
-        entry = null;
         ENTRY_TYPE entryType = ENTRY_TYPE.ACTION;
         if (getMaster().getChecker().getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.MOVE) {
             entryType = ENTRY_TYPE.MOVE;
             logAction = true;
         }
-        if (!getMaster().getChecker().isAttackAny()) {
-            entry = game.getLogManager().newLogEntryNode(entryType, getOwnerObj(), this);
-        }
 
         if (logAction) {
             game.getLogManager().log(">> " + string);
-        } else if (VisionManager.checkVisible(getOwnerObj(), false) && !getMaster().getChecker().isAttackAny()) {
+        } else if (VisionHelper.checkVisible(getOwnerObj(), false) && !getMaster().getChecker().isAttackAny()) {
             String text = " performs an action... ";
             game.getLogManager().log(">> " + getOwnerObj().getNameIfKnown() + text);
         }
@@ -111,12 +98,10 @@ public class ActiveLogger extends EntityLogger<DC_ActiveObj> {
              );
         }
         if (!getEntity().getOwnerObj().isMine())
-            if (!getGame().isDebugMode() &&
-             getEntity().getOwnerObj().getPlayerVisionStatus(false) == PLAYER_VISION.CONCEALED
-             ||
-             getEntity().getOwnerObj().getPlayerVisionStatus(false) == PLAYER_VISION.INVISIBLE
-             )
-                return false;
+            return (getGame().isDebugMode() ||
+                    getEntity().getOwnerObj().getPlayerVisionStatus(false) != PLAYER_VISION.CONCEALED)
+                    &&
+                    getEntity().getOwnerObj().getPlayerVisionStatus(false) != PLAYER_VISION.INVISIBLE;
         return true;
     }
 

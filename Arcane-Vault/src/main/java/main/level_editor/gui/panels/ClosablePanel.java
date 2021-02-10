@@ -32,7 +32,7 @@ public class ClosablePanel extends TablePanelX {
                 if (GdxMaster.getAncestors(toActor).contains(ClosablePanel.this)) {
                     return;
                 }
-                getStage().unfocusAll();
+                getStage().setScrollFocus(null );
             }
         });
     }

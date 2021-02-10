@@ -22,6 +22,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Filter<T extends Entity> extends ReferredElement {
     Conditions conditions;
@@ -32,8 +33,8 @@ public class Filter<T extends Entity> extends ReferredElement {
     private ArrayList<OBJ_TYPE> TYPES;
     private Collection<Integer> dynamicExceptions;
     private HashSet<Obj> filteredSet;
-    private Map<Integer, Condition> conditionDebugCache = new XLinkedMap<>();
     private Set<T> cached;
+    public static boolean pathbuilding;
 
     public Filter() {
     }
@@ -126,6 +127,7 @@ public class Filter<T extends Entity> extends ReferredElement {
 
     public Set<T> getObjects() {
         if (isDebug()) {
+            Map<Obj, Condition> conditionDebugCache = new XLinkedMap<>();
             ArrayList<Obj> list = new ArrayList<>(getFilteredObjectPool());
             Set<Obj> set = new HashSet<>();
             loop:
@@ -133,7 +135,7 @@ public class Filter<T extends Entity> extends ReferredElement {
                 for (Condition c : getConditions()) {
                     if (!match(c, obj.getId())) {
                         if (conditionDebugCache != null)
-                            conditionDebugCache.put(obj.getId(), c);
+                            conditionDebugCache.put(obj, c);
                         continue loop;
                     }
                 }
@@ -142,18 +144,22 @@ public class Filter<T extends Entity> extends ReferredElement {
             return (Set<T>) new HashSet<>(set);
         }
         if (GameState.isResetDone())
-        if (cached!=null) {
-            return cached;
-        }
-        Collection<Obj> pool = getFilteredObjectPool();
-        Set<T> filteredSet = (Set<T>) new HashSet<>(pool);
-        ArrayList<Obj> list = new ArrayList<>(pool);
-        for (Condition c : getConditions()) {
-            for (Obj obj : list) {
-                if (!match(c, obj.getId())) {
-                    filteredSet.remove(obj);
+            if (cached != null) {
+                if (!ref.getSourceObj().isMine() || pathbuilding) {
+                    return cached; //TODO fix it - sometimes it's empty when there are targets!
                 }
             }
+        Collection<Obj> pool = getFilteredObjectPool();
+        Set<T> filteredSet = new HashSet<>();
+        ArrayList<Obj> list = new ArrayList<>(pool);
+        loop:
+        for (Obj obj : list) {
+            for (Condition c : getConditions()) {
+                if (!match(c, obj.getId())) {
+                    continue loop;
+                }
+            }
+            filteredSet.add((T) obj);
         }
         cached = filteredSet;
         return filteredSet;
@@ -162,7 +168,7 @@ public class Filter<T extends Entity> extends ReferredElement {
 
     private boolean isDebug() {
         // TODO Auto-generated method stub
-        return true;
+        return false;
     }
 
     /**
@@ -210,14 +216,16 @@ public class Filter<T extends Entity> extends ReferredElement {
             return getObjectPool();
         }
         if (TYPE != null) {
-            return game.getObjects(TYPE);
+            return game.getObjects(TYPE).stream().filter(obj ->
+                    game.checkModule(obj)).collect(Collectors.toSet());
         }
 
         Set<Obj> filteredSet = new HashSet<>();
         for (OBJ_TYPE TYPE : TYPES) {
             filteredSet.addAll(game.getObjects(TYPE));
         }
-        return filteredSet;
+        return filteredSet.stream().filter(obj ->
+                game.checkModule(obj)).collect(Collectors.toSet());
     }
 
     private boolean matchTYPE(Obj obj) {
@@ -310,7 +318,7 @@ public class Filter<T extends Entity> extends ReferredElement {
             }
 
             if (filterValue instanceof PARAMETER) {
-                if (t.getIntParam((PARAMETER) filterValue) == NumberUtils.getInteger(value)) {
+                if (t.getIntParam((PARAMETER) filterValue) == NumberUtils.getIntParse(value)) {
                     list.add(t);
                 }
             }

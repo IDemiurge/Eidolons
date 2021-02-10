@@ -30,10 +30,10 @@ public final class Bias extends Filter<Bias> {
 		Texture("u_texture0", 0), Bias("u_bias", 0);
 		// @formatter:on
 
-		private String mnemonic;
-		private int elementSize;
+		private final String mnemonic;
+		private final int elementSize;
 
-		private Param (String mnemonic, int elementSize) {
+		Param(String mnemonic, int elementSize) {
 			this.mnemonic = mnemonic;
 			this.elementSize = elementSize;
 		}

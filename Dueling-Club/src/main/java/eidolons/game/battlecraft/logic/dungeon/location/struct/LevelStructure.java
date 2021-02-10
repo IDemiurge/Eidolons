@@ -2,22 +2,24 @@ package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.netherflame.dungeons.QD_Enums;
+import eidolons.libgdx.bf.decor.shard.ShardEnums;
 import eidolons.libgdx.particles.ambi.AmbienceDataSource;
-import eidolons.system.audio.MusicMaster;
+import eidolons.system.audio.MusicEnums;
 import main.content.CONTENT_CONSTS;
-import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
+import main.content.enums.system.MetaEnums;
+import main.system.sound.AudioEnums;
 
 public class LevelStructure {
     public enum EDIT_VALUE_TYPE {
         text,
         number,
         none,
-        enum_const,
+        enum_const, dataUnit,
         multi_enum_const,
         image,
         objType,
-        file,
+        file, coordinates, script,
 
     }
 
@@ -33,32 +35,28 @@ public class LevelStructure {
         id(EDIT_VALUE_TYPE.number),
 
         name(EDIT_VALUE_TYPE.text),
+        background(LevelStructure.EDIT_VALUE_TYPE.file) {
+            @Override
+            public Object getArg() {
+                return "resources/img/main/background";
+            }
+        },
         origin(EDIT_VALUE_TYPE.none),
         width(EDIT_VALUE_TYPE.number),
         height(EDIT_VALUE_TYPE.number),
         illumination(EDIT_VALUE_TYPE.number),
-        wall_type(EDIT_VALUE_TYPE.objType) {
+        cell_variant(EDIT_VALUE_TYPE.number),
+        cell_variant_alt(EDIT_VALUE_TYPE.number),
+        cell_set(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return DC_TYPE.BF_OBJ;
-            }
-        },
-        alt_wall_type(EDIT_VALUE_TYPE.objType) {
-            @Override
-            public Object getArg() {
-                return DC_TYPE.BF_OBJ;
+                return DungeonEnums.CELL_SET.class;
             }
         },
         style(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
                 return DungeonEnums.DUNGEON_STYLE.class;
-            }
-        },
-        cell_type(EDIT_VALUE_TYPE.enum_const) {
-            @Override
-            public Object getArg() {
-                return DungeonEnums.CELL_IMAGE.class;
             }
         },
         color_theme(EDIT_VALUE_TYPE.enum_const) {
@@ -76,18 +74,43 @@ public class LevelStructure {
         ambience(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return MusicMaster.AMBIENCE.class;
+                return MusicEnums.AMBIENCE.class;
             }
         },
         vfx_template(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return AmbienceDataSource.AMBIENCE_TEMPLATE.class;
+                return AmbienceDataSource.VFX_TEMPLATE.class;
+            }
+        },
+
+        music_theme(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return MusicEnums.MUSIC_THEME.class;
+            }
+        },
+        soundscape(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return AudioEnums.SOUNDSCAPE.class;
+            }
+        },
+        shard_type(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return ShardEnums.SHARD_TYPE.class;
+            }
+        },
+        shard_type_alt(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return ShardEnums.SHARD_TYPE.class;
             }
         },
         ;
 
-        private EDIT_VALUE_TYPE type;
+        private final EDIT_VALUE_TYPE type;
 
         ZONE_VALUE(EDIT_VALUE_TYPE type) {
             this.type = type;
@@ -117,28 +140,18 @@ public class LevelStructure {
         width(EDIT_VALUE_TYPE.number),
         height(EDIT_VALUE_TYPE.number),
         illumination(EDIT_VALUE_TYPE.number),
-        wall_type(EDIT_VALUE_TYPE.objType) {
+        cell_variant(EDIT_VALUE_TYPE.number),
+        cell_variant_alt(EDIT_VALUE_TYPE.number),
+        cell_set(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return DC_TYPE.BF_OBJ;
-            }
-        },
-        alt_wall_type(EDIT_VALUE_TYPE.objType) {
-            @Override
-            public Object getArg() {
-                return DC_TYPE.BF_OBJ;
+                return DungeonEnums.CELL_SET.class;
             }
         },
         style(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
                 return DungeonEnums.DUNGEON_STYLE.class;
-            }
-        },
-        cell_type(EDIT_VALUE_TYPE.enum_const) {
-            @Override
-            public Object getArg() {
-                return DungeonEnums.CELL_IMAGE.class;
             }
         },
         color_theme(EDIT_VALUE_TYPE.enum_const) {
@@ -156,13 +169,38 @@ public class LevelStructure {
         ambience(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return MusicMaster.AMBIENCE.class;
+                return MusicEnums.AMBIENCE.class;
             }
         },
         vfx_template(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return AmbienceDataSource.AMBIENCE_TEMPLATE.class;
+                return AmbienceDataSource.VFX_TEMPLATE.class;
+            }
+        },
+
+        music_theme(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return MusicEnums.MUSIC_THEME.class;
+            }
+        },
+        soundscape(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return AudioEnums.SOUNDSCAPE.class;
+            }
+        },
+        shard_type(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return ShardEnums.SHARD_TYPE.class;
+            }
+        },
+        shard_type_alt(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return ShardEnums.SHARD_TYPE.class;
             }
         },
         ;
@@ -192,41 +230,42 @@ public class LevelStructure {
         },
         filepath,
         floor_type,
-
+        location_type( EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return DungeonEnums.LOCATION_TYPE.class;
+            }
+        },
         //additional?
-        lighting,
-        fires_color,
-        default_pillar_type,
-        default_shard_type,
+//        lighting,
+//        fires_color,
+//        default_,
+//        default_shard_type,
         //COMMON
-
+        readiness( EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return MetaEnums.READINESS.class;
+            }
+        },
         name(EDIT_VALUE_TYPE.text),
         origin(EDIT_VALUE_TYPE.none),
         width(EDIT_VALUE_TYPE.number),
         height(EDIT_VALUE_TYPE.number),
         illumination(EDIT_VALUE_TYPE.number),
-        wall_type(EDIT_VALUE_TYPE.objType) {
+
+        cell_variant(EDIT_VALUE_TYPE.number),
+        cell_variant_alt(EDIT_VALUE_TYPE.number),
+        cell_set(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return DC_TYPE.BF_OBJ;
-            }
-        },
-        alt_wall_type(EDIT_VALUE_TYPE.objType) {
-            @Override
-            public Object getArg() {
-                return DC_TYPE.BF_OBJ;
+                return DungeonEnums.CELL_SET.class;
             }
         },
         style(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
                 return DungeonEnums.DUNGEON_STYLE.class;
-            }
-        },
-        cell_type(EDIT_VALUE_TYPE.enum_const) {
-            @Override
-            public Object getArg() {
-                return DungeonEnums.CELL_IMAGE.class;
             }
         },
         color_theme(EDIT_VALUE_TYPE.enum_const) {
@@ -244,17 +283,41 @@ public class LevelStructure {
         ambience(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return MusicMaster.AMBIENCE.class;
+                return MusicEnums.AMBIENCE.class;
             }
         },
         vfx_template(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return AmbienceDataSource.AMBIENCE_TEMPLATE.class;
+                return AmbienceDataSource.VFX_TEMPLATE.class;
             }
         },
-
-        ;
+        music_theme(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return MusicEnums.MUSIC_THEME.class;
+            }
+        },
+        soundscape(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return AudioEnums.SOUNDSCAPE.class;
+            }
+        },
+        shard_type(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return ShardEnums.SHARD_TYPE.class;
+            }
+        },
+        shard_type_alt(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return ShardEnums.SHARD_TYPE.class;
+            }
+        },
+        start_module,
+        module_grid,  cell_spans;
         private EDIT_VALUE_TYPE type;
 
         FLOOR_VALUES() {
@@ -273,16 +336,27 @@ public class LevelStructure {
 
     public enum MODULE_VALUE implements EditableValue { //enough to create a standalone floor
         id(EDIT_VALUE_TYPE.number),
+        readiness( EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return MetaEnums.READINESS.class;
+            }
+        },
         border_width,
         border_type,
 
         width_buffer,
         height_buffer,
 
-        default_pillar_type,
-        default_shard_type,
+//        default_pillar_type,
+//        default_shard_type,
 
-        background,
+        background(LevelStructure.EDIT_VALUE_TYPE.file) {
+            @Override
+            public Object getArg() {
+                return "resources/img/main/background";
+            }
+        },
         tile_map, layer_data,
 
         type(EDIT_VALUE_TYPE.enum_const) {
@@ -309,28 +383,19 @@ public class LevelStructure {
         width(EDIT_VALUE_TYPE.number),
         height(EDIT_VALUE_TYPE.number),
         illumination(EDIT_VALUE_TYPE.number),
-        wall_type(EDIT_VALUE_TYPE.objType) {
+
+        cell_variant(EDIT_VALUE_TYPE.number),
+        cell_variant_alt(EDIT_VALUE_TYPE.number),
+        cell_set(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return DC_TYPE.BF_OBJ;
-            }
-        },
-        alt_wall_type(EDIT_VALUE_TYPE.objType) {
-            @Override
-            public Object getArg() {
-                return DC_TYPE.BF_OBJ;
+                return DungeonEnums.CELL_SET.class;
             }
         },
         style(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
                 return DungeonEnums.DUNGEON_STYLE.class;
-            }
-        },
-        cell_type(EDIT_VALUE_TYPE.enum_const) {
-            @Override
-            public Object getArg() {
-                return DungeonEnums.CELL_IMAGE.class;
             }
         },
         color_theme(EDIT_VALUE_TYPE.enum_const) {
@@ -345,19 +410,44 @@ public class LevelStructure {
                 return CONTENT_CONSTS.COLOR_THEME.class;
             }
         },
+
         ambience(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return MusicMaster.AMBIENCE.class;
+                return MusicEnums.AMBIENCE.class;
             }
         },
         vfx_template(EDIT_VALUE_TYPE.enum_const) {
             @Override
             public Object getArg() {
-                return AmbienceDataSource.AMBIENCE_TEMPLATE.class;
+                return AmbienceDataSource.VFX_TEMPLATE.class;
             }
         },
 
+        music_theme(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return MusicEnums.MUSIC_THEME.class;
+            }
+        },
+        soundscape(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return AudioEnums.SOUNDSCAPE.class;
+            }
+        },
+        shard_type(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return ShardEnums.SHARD_TYPE.class;
+            }
+        },
+        shard_type_alt(EDIT_VALUE_TYPE.enum_const) {
+            @Override
+            public Object getArg() {
+                return ShardEnums.SHARD_TYPE.class;
+            }
+        },
 
         assets;
         private EDIT_VALUE_TYPE editValueType;
@@ -382,10 +472,21 @@ public class LevelStructure {
 
     public enum BORDER_TYPE {
         wall,
-        chism,
-        irregular,
-        wall_and_chism, wall_alt,
+        wall_alt,
+        wall_chism,
+        chism(true),
+        irregular(true), irregular_void(true), irregular_plain(true),
+        ;
         //obj type name for custom
+
+        BORDER_TYPE() {
+        }
+
+        BORDER_TYPE(boolean chance) {
+            this.chance = chance;
+        }
+
+        public boolean chance;
     }
 
     public enum QUEST_DUNGEON_VALUES {

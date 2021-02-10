@@ -13,11 +13,9 @@ public class ChargeRule {
                      .getUnitActionStack(a.getOwnerUnit()).isEmpty()) {
                         return true;
                     }
-                    if (a.getGame().getState()
-                     .getUnitActionStack(a.getOwnerUnit()).peek()
-                     .getActionGroup() != ActionEnums.ACTION_TYPE_GROUPS.MOVE) {
-                        return true;
-                    }
+                    return a.getGame().getState()
+                            .getUnitActionStack(a.getOwnerUnit()).peek()
+                            .getActionGroup() != ActionEnums.ACTION_TYPE_GROUPS.MOVE;
                 }
             }
         }

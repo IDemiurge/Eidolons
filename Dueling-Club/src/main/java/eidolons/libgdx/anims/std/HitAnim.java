@@ -2,13 +2,11 @@ package eidolons.libgdx.anims.std;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.badlogic.gdx.utils.Array;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
@@ -20,9 +18,9 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.DamageFactory;
 import eidolons.libgdx.GdxColorMaster;
-import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.anims.AnimData;
-import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
+import eidolons.libgdx.anims.AnimEnums;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.anims.fullscreen.ScreenshakeMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
@@ -30,7 +28,6 @@ import eidolons.libgdx.anims.text.FloatingText;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.screens.ScreenMaster;
-import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -52,7 +49,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.secondary.Bools;
 import main.system.images.ImageManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import static main.system.GuiEventType.HP_BAR_UPDATE;
 
@@ -64,14 +61,11 @@ public class HitAnim extends ActionAnim {
     private static Boolean bloodOff;
     private static boolean displacementOn = true;
     private SPRITE_TYPE spriteType;
-    private HIT hitType;
-    private String text;
+    private final String text;
     private String imagePath;
     private Color c;
-    private FloatingText floatingText;
     private float originalActorX;
     private float originalActorY;
-    private boolean blood;
     private DAMAGE_TYPE damageType;
 
     public HitAnim(DC_ActiveObj active, AnimData data) {
@@ -105,7 +99,7 @@ public class HitAnim extends ActionAnim {
             damageType = active.getDamageType();
         }
 
-        part = ANIM_PART.IMPACT;
+        part = AnimEnums.ANIM_PART.IMPACT;
     }
 
     @Override
@@ -158,18 +152,18 @@ public class HitAnim extends ActionAnim {
         if (spriteType == null || getRef().getObj(KEYS.BLOCK) instanceof DC_WeaponObj) {
             spriteType = SPRITE_TYPE.SPARKS; //shield!
         }
-        hitType = getHitType(spriteType);
+        HIT hitType = getHitType(spriteType);
         String spritePath = getSpritePath(spriteType, hitType);
         //         + ".png";
         //        SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(spritePath);
         //scale?
-        SmartTextureAtlas atlas =
-                SmartTextureAtlas.getAtlas(PathFinder.getImagePath() + spritePath);
-        if (atlas == null)
-            return;
-        Array<AtlasRegion> regions = atlas.getRegions();
-        SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(regions,
-                getDuration() / regions.size, 1);
+        // SmartTextureAtlas atlas =
+        //         SmartTextureAtlas.getAtlas(PathFinder.getImagePath() + );
+        // if (atlas == null)
+        //     return;
+        // Array<AtlasRegion> regions = atlas.getRegions();
+        SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(spritePath);
+        sprite.setFrameDuration(getDuration() / sprite.getRegions().size);
         float x = RandomWizard.getRandomFloatBetween(-10, 10);
         float y = RandomWizard.getRandomFloatBetween(-10, 10);
         if (spriteType == SPRITE_TYPE.SPARKS) {
@@ -186,14 +180,14 @@ public class HitAnim extends ActionAnim {
 
         if (getRef().getTargetObj() instanceof Unit)
             sprite.setColor(getColorForSprite((Unit) getRef().getTargetObj()));
-        blood = spriteType == SPRITE_TYPE.BLOOD;
+        boolean blood = spriteType == SPRITE_TYPE.BLOOD;
         if (blood)
             if (getBloodOff())
                 return;
         sprites.add(sprite);
     }
 
-    public static final String getSpritePath(SPRITE_TYPE spriteType, HIT hitType) {
+    public static String getSpritePath(SPRITE_TYPE spriteType, HIT hitType) {
         return StrPathBuilder.build(PathFinder.getHitSpritesPath(), spriteType.name(), hitType.spritePath)
                 + ".txt";
     }
@@ -290,7 +284,7 @@ public class HitAnim extends ActionAnim {
 
     @Override
     public Actor getActor() {
-        return ScreenMaster.getDungeonGrid().getViewMap()
+        return ScreenMaster.getGrid().getViewMap()
                 .get(getRef().getTargetObj());
     }
 
@@ -307,7 +301,7 @@ public class HitAnim extends ActionAnim {
         addFadeAnim();
 
         if (getActive() instanceof Spell) {
-            DC_SoundMaster.playAnimStartSound(getActive(), ANIM_PART.IMPACT);
+            DC_SoundMaster.playAnimStartSound(getActive(), AnimEnums.ANIM_PART.IMPACT);
         }
         //        if (textSupplier != null)
         //            floatingText.setText(textSupplier.getVar());
@@ -320,7 +314,7 @@ public class HitAnim extends ActionAnim {
         if (damage == null) {
             damage = DamageFactory.getGenericDamage(damageType, ref.getAmount(), ref);
         }
-        floatingText = FloatingTextMaster.getInstance().getFloatingText(
+        FloatingText floatingText = FloatingTextMaster.getInstance().getFloatingText(
                 active, TEXT_CASES.HIT, text == null ?
                         damage.getAmount()
                         : text);
@@ -436,14 +430,14 @@ public class HitAnim extends ActionAnim {
         }
         getActionTarget().setX(originalActorX);
         getActionTarget().setY(originalActorY);
-        GuiEventManager.trigger(HP_BAR_UPDATE, getActionTarget());
+        GuiEventManager.trigger(HP_BAR_UPDATE, getActionTarget().getUserObject());
         if (getParentAnim() != null)
             getParentAnim().setHpUpdate(false);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (CoreEngine.isFootageMode())
+        if (Flags.isFootageMode())
             return;
         super.draw(batch, parentAlpha);
 

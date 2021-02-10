@@ -71,7 +71,7 @@ public class DialoguePortraitContainer extends TablePanelX {
                 }
             }
         }).row();
-        main.system.auxiliary.log.LogMaster.dev("PORTRAIT INIT " +this);
+        main.system.auxiliary.log.LogMaster.devLog("PORTRAIT INIT " +this);
     }
 
     public static boolean isBlotch() {

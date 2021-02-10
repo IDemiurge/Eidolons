@@ -2,9 +2,9 @@ package eidolons.ability.effects;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.magic.ResistanceRule;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.core.master.EffectMaster;
 import main.ability.Abilities;
 import main.ability.effects.*;
 import main.content.enums.entity.SpellEnums;
@@ -13,15 +13,12 @@ import main.entity.obj.Obj;
 
 public class DC_EffectManager implements EffectManager {
 
-    private DC_Game game;
-
     public DC_EffectManager(DC_Game game) {
-        this.game = game;
     }
 
     @Override
     public void setEffectRefs(Abilities abilities, Ref ref) {
-        Effects effects = EffectFinder.getEffectsFromAbilities(abilities);
+        Effects effects = EffectMaster.getEffectsFromAbilities(abilities);
         for (Effect e : effects) {
             e.setRef(ref);
         }

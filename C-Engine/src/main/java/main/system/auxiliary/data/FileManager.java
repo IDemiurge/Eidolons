@@ -6,7 +6,7 @@ import main.system.PathUtils;
 import main.system.auxiliary.*;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.sound.SoundMaster;
 import org.apache.commons.io.FileUtils;
 import org.w3c.dom.Node;
@@ -16,15 +16,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.zip.Inflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class FileManager {
-    private static List<String> missing = new ArrayList<>();
+    private static final List<String> missing = new ArrayList<>();
+    private static final Map<String, Boolean> fileCheckMap = new HashMap<>();
+    private static final Map<String, Boolean> directoryCheckMap = new HashMap<>();
+    private static final Map<String, List<File>> folderCache = new HashMap<>();
+    private static final Map<String, List<File>> variantCache = new HashMap<>();
 
     public static String readFile(String filePath) {
         File file = getFile(filePath, true, false);
@@ -47,19 +50,19 @@ public class FileManager {
 
     public static String readFile(File file, String lineSeparator) {
         if (!isFile(file)) {
-            if (CoreEngine.isJar()) {
-                if (!CoreEngine.isWindows()) {
+            if (Flags.isJar()) {
+                if (!Flags.isWindows()) {
                     String lowerCase = file.getPath().toLowerCase();
                     if (!lowerCase.equals(file.getPath()))
                         return readFile(FileManager.getFile(file.getPath().toLowerCase()));
 
                 }
                 main.system.auxiliary.log.LogMaster.verbose("Failed to read " + file.getPath());
-//              TODO wtf  try {
-//                    throw new RuntimeException();
-//                } catch (Exception e) {
-//                    main.system.ExceptionMaster.printStackTrace(e);
-//                }
+                //              TODO wtf  try {
+                //                    throw new RuntimeException();
+                //                } catch (Exception e) {
+                //                    main.system.ExceptionMaster.printStackTrace(e);
+                //                }
                 return "";
             }
             if (!PathUtils.fixSlashes(file.getPath()).toLowerCase().contains(PathFinder.getRootPath().toLowerCase()))
@@ -75,7 +78,7 @@ public class FileManager {
         //            charset= Charset.defaultCharset();
         try {
             result = new String(Files.readAllBytes(file.toPath()));
-        } catch (IOException e) {
+        } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
 
@@ -185,7 +188,13 @@ public class FileManager {
     }
 
     public static boolean isFile(String file) {
-        return isFile(FileManager.getFile(file));
+        Boolean result = fileCheckMap.get(file);
+        if (result != null) {
+            return result;
+        }
+        result = isFile(FileManager.getFile(file));
+        fileCheckMap.put(file, result);
+        return result;
     }
 
     public static boolean isFile(File file) {
@@ -199,7 +208,13 @@ public class FileManager {
     }
 
     public static boolean isDirectory(String file) {
-        return isDirectory(FileManager.getFile(file));
+        Boolean result = directoryCheckMap.get(file);
+        if (result != null) {
+            return result;
+        }
+        result = isDirectory(FileManager.getFile(file));
+        directoryCheckMap.put(file, result);
+        return result;
     }
 
     public static boolean isDirectory(File file) {
@@ -228,14 +243,8 @@ public class FileManager {
             if (file.isFile() || file.isDirectory()) {
                 return file;
             }
-//            if (!allowInvalid)
-//            file = getFile(PathFinder.getRootPath() + path, false);
-//            if (file.isFile() || file.isDirectory()) {
-//                return file;
-//            }
-//            file = new File(path);
-            if (!CoreEngine.isActiveTestMode())
-                if (!CoreEngine.isFullFastMode()) {
+            if (!Flags.isActiveTestMode())
+                if (!Flags.isFullFastMode()) {
                     if (!missing.contains(file.getPath())) {
                         main.system.auxiliary.log.LogMaster.verbose("FILE NOT FOUND: " + file);
                         missing.add(file.getPath());
@@ -252,8 +261,11 @@ public class FileManager {
 
     public static String formatPath(String path, boolean force, boolean removeLastSlash) {
         String v = formatPath(path, force);
-        if (removeLastSlash)
-            return v.substring(0, v.length() - 1);
+        if (removeLastSlash) {
+            if (v.endsWith("/")) {
+                return v.substring(0, v.length() - 1);
+            }
+        }
         return v;
     }
 
@@ -279,7 +291,7 @@ public class FileManager {
         if (force) {
             return formatted.toString().toLowerCase();
         }
-        if (!CoreEngine.isWindows()) {
+        if (!Flags.isWindows()) {
 
             return (PathFinder.getRootPath() + formatted.toString().toLowerCase())
                     .replace("%20", " ");
@@ -302,6 +314,32 @@ public class FileManager {
                                                   boolean underslash,
                                                   boolean recursion) {
         return getRandomFilePathVariant("", corePath, format, underslash, recursion);
+    }
+
+    public static String getRandomFilePathVariantSmart(String filename, String dir, String format) {
+        return getRandomFilePathVariantSmart(filename, dir, format, false);
+    }
+
+    public static String getRandomFilePathVariantSmart(String filename, String dir, String format, boolean remove) {
+        String key = (dir + filename).toLowerCase();
+
+        List<File> filtered = variantCache.get(key);
+        if (!ListMaster.isNotEmpty(filtered)) {
+            String finalFilename = filename.toLowerCase();
+            List<File> files = getFilesFromDirectory(dir, false, false, false);
+            filtered = files.stream().filter(file
+                    -> (file.getName().toLowerCase().startsWith(finalFilename))
+                    && file.getName().toLowerCase().endsWith(format))
+                    .collect(Collectors.toList());
+            variantCache.put(key, filtered);
+        }
+        int index = RandomWizard.getRandomIndex(filtered);
+        if (index < 0) {
+            return dir + "/" + filename + format;
+        }
+        if (remove)
+            return filtered.remove(index).getPath();
+        return filtered.get(index).getPath();
     }
 
     public static String getRandomFilePathVariant(String prefixPath, String corePath,
@@ -351,30 +389,23 @@ public class FileManager {
         if (number == 0) {
             key = "";
         }
-
         return corePath + key + format;
     }
 
     public static List<String> getFileNames(List<File> files) {
-
         List<String> list = new ArrayList<>();
-
         for (File file : files) {
             list.add(file.getName());
         }
         return list;
-
     }
 
     public static List<String> getFilePaths(List<File> files) {
-
         List<String> list = new ArrayList<>();
-
         for (File file : files) {
             list.add(file.getAbsolutePath());
         }
         return list;
-
     }
 
     public static String getUniqueVersion(File file) {
@@ -476,7 +507,7 @@ public class FileManager {
     }
 
     public static boolean write(String content, String filepath, boolean formatPath) {
-        if (CoreEngine.isWindows())
+        if (Flags.isWindows())
             if (!filepath.contains(":")) {
                 filepath = PathFinder.getRootPath() + "/" + filepath;
             }
@@ -560,15 +591,31 @@ public class FileManager {
 
     public static List<File> getFilesFromDirectory(String path, boolean allowDirectories,
                                                    boolean subDirectories) {
+        return getFilesFromDirectory(path, allowDirectories, subDirectories, true);
+    }
+
+    public static List<File> getFilesFromDirectory(String path, boolean allowDirectories,
+                                                   boolean subDirectories,
+                                                   boolean cache) {
+        if (!isDirectory(path)) {
+            return new ArrayList<>();
+        }
+        List<File> result = null;
+        if (cache) {
+            result = folderCache.get(path);
+            if (result != null) {
+                return result;
+            }
+        }
         File folder = FileManager.getFile(path);
-        return getFilesFromDirectory(folder, allowDirectories, subDirectories);
+        result = getFilesFromDirectory(folder, allowDirectories, subDirectories);
+        folderCache.put(path, result);
+        return result;
     }
 
     public static List<File> getFilesFromDirectory(File folder, boolean allowDirectories,
                                                    boolean subDirectories) {
-        if (!folder.isDirectory()) {
-            return new ArrayList<>();
-        }
+
         List<File> list = new ArrayList<>();
         for (File f : folder.listFiles()) {
             if (subDirectories) {
@@ -632,6 +679,10 @@ public class FileManager {
         return file.getName();
     }
 
+    public static Path getPath(String s) {
+        return getPath(getFile(s));
+    }
+
     public static Path getPath(File file) {
         return Paths.get(file.toURI());
     }
@@ -645,17 +696,81 @@ public class FileManager {
         return false;
     }
 
-    public static void copy(String from, String to) {
+    public static void copyDir(String from, String to) {
+        try {
+            FileUtils.copyDirectory(getFile(from), getFile(to));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void delete(String s) {
+        delete(getFile(s));
+    }
+
+    public static void delete(File s) {
+        if (s.isDirectory())
+            try {
+                FileUtils.deleteDirectory(s);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        else {
+            s.delete();
+        }
+    }
+
+    public static Boolean copy(String from, String to) {
         Path src = Paths.get(getFile(from).toURI());
-        Path target = Paths.get(getFile(to).toURI());
+        File file = getFile(to);
+        Boolean result = true;
+        if (!file.exists()) {
+            file.mkdirs();
+        } else {
+            result = null;
+        }
+        Path target = Paths.get(file.toURI());
         try {
             Files.copy(src, target, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
+            return false;
         }
+        return result;
+    }
+
+    public static String getFileNameAndFormat(String template) {
+        return (getFile(template).getName());
     }
 
     public static String getFileName(String template) {
         return StringMaster.cropFormat(getFile(template).getName());
+    }
+
+    public static List<File> getSpriteFilesFromDirectory(String suffix) {
+        List<File> files = getFilesFromDirectory(
+                PathFinder.getImagePath() +
+                        PathFinder.getSpritesPath() + suffix, false, true, false);
+        files.removeIf(file -> !StringMaster.getFormat(file.getName()).toLowerCase().contains("txt"));
+        return files;
+    }
+
+    public static void cleanDir(String s) {
+        try {
+            FileUtils.cleanDirectory(getFile(s));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void rename(String path, String newPath) {
+        move(path, newPath);
+    }
+    public static void move(String path, String newPath) {
+        try {
+            Files.move(getPath(path), getPath(newPath));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import main.system.auxiliary.secondary.ReflectionMaster;
 
@@ -17,11 +18,11 @@ public class StageX extends Stage {
 
     @Override
     public Batch getBatch() {
-        return CustomSpriteBatch.getMainInstance();
+        return GdxMaster.getMainBatch();
     }
 
     public StageX(Viewport viewport, Batch batch) {
-        super(viewport, batch);
+        super(viewport, GdxMaster.getMainBatch());
     }
 
     public CustomSpriteBatch getCustomSpriteBatch() {

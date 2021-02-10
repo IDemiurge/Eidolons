@@ -10,7 +10,7 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SymbolButton;
 import eidolons.libgdx.gui.panels.AdjustingVerticalGroup;
 import eidolons.libgdx.gui.panels.dc.actionpanel.BuffPanelSimple;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
@@ -24,7 +24,6 @@ import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.DungeonEnums;
 import main.content.values.properties.G_PROPS;
 import main.system.auxiliary.RandomWizard;
-import main.system.launch.CoreEngine;
 
 /**
  * Created by JustMe on 5/14/2018.
@@ -64,9 +63,6 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
     private final AdjustingVerticalGroup center;
     private final AdjustingVerticalGroup left;
     private final AdjustingVerticalGroup right;
-    private final HqVerticalValueTable mainInfoPanel;
-    private final UnitStatTabs tabs;
-    private final SmartButton btn;
     private final UnitInfoTabs infoTabs;
 
     AvatarPanel avatarPanel;
@@ -77,19 +73,18 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
     BuffPanelSimple buffPanelSimple;
     ResistInfoTabsPanel resistPanel;
     HqTraitsPanel traitsPanel;
-    private ImageContainer black;
+    private final ImageContainer black;
 
     public static boolean isNewUnitInfoPanelWIP() {
-        if (!CoreEngine.isActiveTestMode())
-            return false;
-        return CoreEngine.isIDE();
+            return true;
+//        return CoreEngine.isIDE();
     }
 
     @Override
     public void layout() {
         super.layout();
         center.setY(getHeight() - center.getHeight());
-        center.setY(- 200); //TODO igg demo hack
+        center.setY(- 200); //TODO Gdx revamp - this panel..
         secondWeapon.setY(weapon.getY());
         float max = Math.max(left.getHeight(), right.getHeight());
         left.setY(max - left.getHeight());
@@ -101,8 +96,8 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
         super();
         setSize(WIDTH, HEIGHT);
         setBackground(NinePatchFactory.getHqDrawable());
-        addActor(btn =new SmartButton(ButtonStyled.STD_BUTTON.CANCEL, ()->{
-            close(); }));
+        SymbolButton btn;
+        addActor(btn =new SymbolButton(ButtonStyled.STD_BUTTON.CANCEL, this::close));
         btn.setPosition(getWidth()-64, getHeight()-64);
         black = new ImageContainer(BlackoutOld.path);
 
@@ -119,6 +114,7 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
         add(right).center().padTop(150);//.padTop(weapon.getHeight()/2);
 
         center.addActor(avatarPanel = new AvatarPanel());
+        HqVerticalValueTable mainInfoPanel;
         center.addActor(mainInfoPanel = new HqVerticalValueTable(false, G_PROPS.NAME,
          G_PROPS.RACE,  PARAMS.LEVEL ));
         center.addActor(  new ArmorPanel());
@@ -135,6 +131,7 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
 //                avatarPanel.getWidth() + secondWeapon.getWidth()+86
                 , GDX.top(secondWeapon)+76);
 
+        UnitStatTabs tabs;
         left.addActor(tabs =  new UnitStatTabs(left.getWidth(), getHeight()-weapon.getHeight()-64));
 
           infoTabs = new UnitInfoTabs(center.getWidth(), (getHeight()-400) );
@@ -278,11 +275,10 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
 
     @Override
     public Actor hit(float x, float y, boolean touchable) {
-        Actor actor = super.hit(x, y, touchable);
-//        if (actor == null) {
+        //        if (actor == null) {
 //            return outside;
 //        }
-        return actor;
+        return super.hit(x, y, touchable);
     }
 
     @Override

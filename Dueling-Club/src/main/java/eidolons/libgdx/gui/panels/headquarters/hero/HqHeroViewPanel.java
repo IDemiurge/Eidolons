@@ -10,7 +10,7 @@ import eidolons.libgdx.gui.panels.headquarters.HqElement;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import main.swing.generic.components.G_Panel.VISUALS;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 4/13/2018.
@@ -74,7 +74,7 @@ public class HqHeroViewPanel extends HqElement {
         preview.setImage(dataSource.getFullPreviewImagePath());
         setSize(border.getImageWidth(), border.getImageHeight());
 
-        if (CoreEngine.isLiteLaunch())
+        if (Flags.isLiteLaunch())
             return;
 
         sprite = SpriteAnimationFactory.getSpriteAnimation(dataSource.getSpritePath());

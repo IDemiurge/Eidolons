@@ -16,7 +16,6 @@ public class Texts {
     static {
         init();
     }
-
     //    public static final String TEXT_HEADER_SEPARATOR = "***";
     static Map<String, Map<String, String>> maps;
 
@@ -75,6 +74,9 @@ public class Texts {
         return maps.get(key);
     }
 
+    public static Map<String, String> getTips() {
+        return getTextMap("tips");
+    }
     public static Map<String, String> getComments() {
         return getTextMap("comments");
     }

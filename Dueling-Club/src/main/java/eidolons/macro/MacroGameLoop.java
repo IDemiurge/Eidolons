@@ -20,7 +20,7 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
 
 /**
@@ -29,8 +29,8 @@ import main.system.threading.WaitMaster;
 public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
 
     private static final int REAL_TIME_LOGIC_PERIOD = 350;
-    private MacroTimeMaster timeMaster;
-    private MacroGame macroGame;
+    private final MacroTimeMaster timeMaster;
+    private final MacroGame macroGame;
     private Place lastEnteredPlace;
 
     public MacroGameLoop(MacroGame game) {
@@ -88,7 +88,7 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
     }
 
     @Override
-    public void actionInput(ActionInput actionInput) {
+    public void actionInputManual(ActionInput actionInput) {
         if (isPaused())
             return;
         //check blocked
@@ -112,7 +112,7 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
     }
 
     public void startRealTimeLogic() {
-        new Thread(() -> realTimeLogic(), "Map RT thread").start();
+        new Thread(this::realTimeLogic, "Map RT thread").start();
     }
 
     protected void realTimeLogic() {
@@ -168,8 +168,10 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
         timeMaster.act(delta);
     }
 
+
+
     private boolean isAutoEnterCombat() {
-        return CoreEngine.isFastMode();
+        return Flags.isFastMode();
     }
 
     public boolean tryEnter(Place sub) {
@@ -209,7 +211,7 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
 
 
         String name = type.getName();
-        ScreenData data = new ScreenData(SCREEN_TYPE.BATTLE, name);
+        ScreenData data = new ScreenData(SCREEN_TYPE.DUNGEON, name);
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
         //when loaded, will init DC_Game properly
     }

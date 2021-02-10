@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueDataSource;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
-import eidolons.game.netherflame.igg.story.brief.BriefBackground;
+import eidolons.game.netherflame.main.story.brief.BriefBackground;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.stage.GuiStage;
@@ -22,7 +22,6 @@ public class DialogueContainer extends TablePanelX {
     protected DialogueView current;
     protected List<Scene> toPlay;
     protected Iterator<Scene> iterator;
-    private float bgAlpha = 0.7f;
 
     public DialogueContainer() {
         GuiEventManager.bind(GuiEventType.DIALOGUE_UPDATED, p -> {
@@ -113,6 +112,7 @@ public class DialogueContainer extends TablePanelX {
     public void draw(Batch batch, float parentAlpha) {
         if (bgSprite != null) {
 //            if (bgSprite.getColor().a==1)
+            float bgAlpha = 0.7f;
             bgSprite.setAlpha(bgAlpha * getColor().a);
         }
         bgSprite.draw(batch, parentAlpha);

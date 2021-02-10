@@ -18,6 +18,7 @@ import main.system.MapEvent;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 2/10/2018.
@@ -31,22 +32,23 @@ public class MacroTimeMaster {
     private float time = 0;
     private float lastTimeChecked;
     private float minuteCounter;
-    private float delta;
     private boolean guiDirtyFlag;
     private int lastPeriod;
-    private DAY_TIME[] times = DAY_TIME.values();
+    private final DAY_TIME[] times = DAY_TIME.values();
     private DAY_TIME dayTime;
     private WEATHER weather;
     private GameDate date;
-    private boolean fastforward;
     private boolean playerCamping;
     private float defaultSpeed;
     private DIRECTION windDirection;
     private float timer;
 
     private MacroTimeMaster() {
-        defaultSpeed = new Float(OptionsMaster.getGameplayOptions().
-         getIntValue(GAMEPLAY_OPTION.GAME_SPEED)) / 100;
+        defaultSpeed = (float) OptionsMaster.getGameplayOptions().
+                getIntValue(GAMEPLAY_OPTION.GAME_SPEED) / 100;
+        if (CoreEngine.TEST_LAUNCH) {
+            defaultSpeed*=50;
+        }
         setSpeed(defaultSpeed);
     }
 
@@ -165,7 +167,7 @@ public class MacroTimeMaster {
 
     //after combat or for camping
     public void hoursPassed(int i) {
-        fastforward = true;
+        boolean fastforward = true;
         for (int h = 0; h < i - 1; h++) {
             time += 60;
             timedCheck();
@@ -176,7 +178,7 @@ public class MacroTimeMaster {
     }
 
     public void timedCheck() {
-        delta = time - lastTimeChecked;
+        float delta = time - lastTimeChecked;
         if (delta == 0) return;
         lastTimeChecked = time;
         minuteCounter += delta;
@@ -279,7 +281,7 @@ public class MacroTimeMaster {
     }
 
     private float getMaxSpeed() {
-        if (CoreEngine.isFastMode())
+        if (Flags.isFastMode())
             return 100f;
         return 10f;
     }

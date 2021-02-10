@@ -1,7 +1,8 @@
 package eidolons.libgdx.particles;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
+import eidolons.libgdx.anims.AnimEnums;
+import eidolons.libgdx.anims.AnimEnums.ANIM_PART;
 import eidolons.libgdx.particles.spell.SpellVfx;
 import eidolons.libgdx.particles.spell.SpellVfxPool;
 import main.data.filesys.PathFinder;
@@ -32,7 +33,7 @@ public class PhaseVfx extends SpellVfx {
         super(path_);
         for (ANIM_PART part : parts) {
             if (isRandom()) {
-                String fileName = null;
+                String fileName;
                 //                if (part== ANIM_PART.MISSILE) {
                 //                    fileName =    RandomWizard.getRandomListObject(missileVfx);
                 //                } else
@@ -95,7 +96,7 @@ public class PhaseVfx extends SpellVfx {
             active.hide();
         }
         ANIM_PART part = (ANIM_PART) map.keySet().toArray()[n];
-        if (part.equals(ANIM_PART.IMPACT)) {
+        if (part.equals(AnimEnums.ANIM_PART.IMPACT)) {
             onetime = true;
         }
         active = (SpellVfx) map.values().toArray()[n];

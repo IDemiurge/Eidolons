@@ -33,8 +33,7 @@ public class InkFactory {
         try {
             String jsonData = InkIoMaster.readJson(path);
             Story story = new Story(jsonData);
-            InkDialogue dialogue = new InkDialogue( );
-            return dialogue;
+            return new InkDialogue( );
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }

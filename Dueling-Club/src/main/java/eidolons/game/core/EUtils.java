@@ -1,6 +1,7 @@
 package eidolons.game.core;
 
 import com.badlogic.gdx.math.Vector2;
+import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.screens.SCREEN_TYPE;
@@ -13,7 +14,7 @@ import main.system.EventCallback;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.graphics.FontMaster;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums.STD_SOUNDS;
 import main.system.text.TextWrapper;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -28,9 +29,12 @@ public class EUtils {
     public static void showInfoText(String s) {
         showInfoText(false, s);
     }
+    public static void gameLog(String s) {
+        DC_Game.game.getLogManager().log(s);
+    }
     public static void showInfoText(boolean logged, String s) {
         if (logged){
-            Eidolons.getGame().getLogManager().log(s);
+            gameLog(s);
         }
         GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT, s);
     }
@@ -45,8 +49,8 @@ public class EUtils {
         return GdxMaster.getWidth() / 3 / FontMaster.getDefaultStringWidth("1");
     }
 
-    public static boolean confirm(String text) {
-        return onConfirm(true, text, false, null, true);
+    public static void onConfirm(String text) {
+          onConfirm(true, text, false, null, true);
     }
     public static void infoPopup(String text, boolean wait, boolean onAnotherThread) {
         onConfirm(wait, text, false, null, onAnotherThread);
@@ -133,5 +137,10 @@ public class EUtils {
 
     public static void showInfoTextStyled(GuiStage.LABEL_STYLE style, String s) {
         showInfoText(style + STYLE + s);
+    }
+
+    public static void waitAndRun(int i, Runnable o) {
+        WaitMaster.WAIT(i);
+        Eidolons.onNonGdxThread(o::run);
     }
 }

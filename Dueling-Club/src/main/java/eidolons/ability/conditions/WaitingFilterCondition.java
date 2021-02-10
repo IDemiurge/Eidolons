@@ -28,9 +28,7 @@ public class WaitingFilterCondition extends MicroCondition {
         // return false;
         if (obj instanceof Unit) {
             Unit unit = (Unit) obj;
-            if (canBeWaitedUpon(ref.getSourceObj(), unit)) {
-                return true;
-            }
+            return canBeWaitedUpon(ref.getSourceObj(), unit);
         }
         return false;
     }

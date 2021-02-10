@@ -14,7 +14,7 @@ import main.system.threading.WaitMaster;
 
 import java.util.List;
 
-public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E> {
+public abstract class PartyManager extends MetaGameHandler  {
 
     public static final java.lang.String NEW_HERO_PARTY = "Your Party";
     public static final boolean PRESET_POWER = false;
@@ -88,7 +88,6 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
         }
         hero.setMainHero(true);
         party.setProperty(PROPS.PARTY_MAIN_HERO, hero.getName());
-        Eidolons.setSelectedMainHero(hero.getName());
         Eidolons.setMainHero(hero);
         party.addMember(hero);
 
@@ -124,4 +123,11 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
         this.partyLevel = partyLevel;
     }
 
+    public boolean deathEndsGame() {
+        return true;
+    }
+
+    public boolean heroUnconscious(Unit unit) {
+        return false;
+    }
 }

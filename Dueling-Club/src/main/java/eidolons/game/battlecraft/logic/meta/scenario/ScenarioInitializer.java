@@ -22,7 +22,7 @@ public class ScenarioInitializer extends MetaInitializer<ScenarioMeta> {
     public ScenarioMeta initMetaGame(String data) {
         ObjType type = DataManager.getType(data, DC_TYPE.SCENARIOS);
         if (type == null) {
-            type = DataManager.getType("Hell", DC_TYPE.DUNGEONS);
+            type = DataManager.getType("Hell", DC_TYPE.FLOORS);
             //DataManager.getRandomType( DC_TYPE.SCENARIOS);
         }
 
@@ -35,8 +35,11 @@ public class ScenarioInitializer extends MetaInitializer<ScenarioMeta> {
         }
         //     TODO better solution needed
         //   getMaster().setRngDungeon(type.getGroup().equalsIgnoreCase("Random"));
-        return new ScenarioMeta(
-         new Scenario(type), master);
+        return createMeta(new Scenario(type));
+    }
+
+    protected ScenarioMeta createMeta(Scenario scenario) {
+        return new ScenarioMeta(scenario, master);
     }
 
     private boolean isReverseLevels() {

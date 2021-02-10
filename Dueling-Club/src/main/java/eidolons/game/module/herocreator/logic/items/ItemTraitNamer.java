@@ -3,8 +3,8 @@ package eidolons.game.module.herocreator.logic.items;
 import com.badlogic.gdx.graphics.Color;
 import eidolons.content.DC_CONSTS.ITEM_LEVEL;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.netherflame.igg.soul.eidola.EidolonImbuer;
-import eidolons.game.netherflame.igg.soul.eidola.Soul;
+import eidolons.game.netherflame.main.soul.eidola.EidolonImbuer;
+import eidolons.game.netherflame.main.soul.eidola.Soul;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.TextBuilder;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
@@ -94,7 +94,7 @@ public class ItemTraitNamer {
                 //find custom name!
                 break;
         }
-        return StringMaster.getWellFormattedString(prefix + " " + base + " " + suffix).trim()
+        return StringMaster.format(prefix + " " + base + " " + suffix).trim()
                 .replace("Of", "of");
     }
 
@@ -177,7 +177,7 @@ public class ItemTraitNamer {
 
                 TextBuilder.wrapInColor(
                         getColorForTrait(trait.template),
-                        StringMaster.getWellFormattedString(trait.template.toString()))
+                        StringMaster.format(trait.template.toString()))
                         + StringMaster.wrapInParenthesis(
                         TextBuilder.wrapInColor(
                                 getColorForLevel(trait.level),

@@ -1,27 +1,32 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.generator.model.AbstractCoordinates;
-import eidolons.game.netherflame.igg.pale.PaleAspect;
 import eidolons.libgdx.anims.sprite.SpriteX;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.gui.generic.GroupWithEmitters;
 import eidolons.libgdx.particles.DummyEmitterActor;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.particles.EmitterPools;
+import main.content.enums.GenericEnums;
 import main.data.XLinkedMap;
 import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
+import main.system.ExceptionMaster;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.io.File;
 import java.util.*;
@@ -31,12 +36,13 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
     protected Map<EmitterActor, Vector2> emitters = new XLinkedMap<>();
     protected Coordinates c;
     protected double visionRange;
-    private String spritePath;
+    private final String spritePath;
     protected boolean initialized;
     private boolean flipX;
     String key;
     private boolean hidden;
     private Boolean under;
+    private boolean initRequired;
 
     public GridObject(Coordinates c, String spritePath) {
         this.c = c;
@@ -57,20 +63,16 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
 
     protected abstract double getDefaultVisionRange();
 
-    public boolean checkVisible() {
-//        if (CoreEngine.isIDE()) {
-//            if (CoreEngine.isLiteLaunch())
-//                return true;
-//        }
-        if (isClearshotRequired()) {
+    public double getVisionRange() {
+        return visionRange;
+    }
 
-        }
-        if (PaleAspect.ON) {
-            return true;
-        }
+    public boolean checkVisible() {
+        //        if (isClearshotRequired()) {
+        //        }
         if (CoreEngine.isLevelEditor())
             return true;
-        return !(Eidolons.getGame().getManager().getMainHeroCoordinates().dst_(c) > visionRange);
+        return !(Eidolons.getGame().getManager().getMainHeroCoordinates().dst_(c) > getVisionRange());
     }
 
     public void setKey(String key) {
@@ -82,6 +84,10 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
     }
 
     protected EmitterActor createEmitter(String path, int offsetX, int offsetY) {
+        if (Flags.isMe() && CoreEngine.TEST_LAUNCH)
+            return null;
+        else if (CoreEngine.isWeakGpu())
+            return null;
         path = PathFinder.getVfxAtlasPath() + path;
         EmitterActor emitter = EmitterPools.getEmitterActor(path);
         initEmitter(emitter, offsetX, offsetY);
@@ -97,25 +103,22 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
         }
         emitters.put(emitter, new Vector2(offsetX, offsetY));
         addActor(emitter);
-//        emitter.start();
-//        emitter.setZIndex(1);
         emitter.setPosition(getWidth() / 2 + offsetX, getHeight() / 2 + offsetY);
-
     }
 
-    protected void init() {
+    public void init() {
         getColor().a = 0;
         createEmittersUnder();
         if (isSpriteShown())
-        try {
-            sprite = new SpriteX(spritePath);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+            try {
+                sprite = new SpriteX(spritePath);
+            } catch (Exception e) {
+                ExceptionMaster.printStackTrace(e);
+            }
 
         if (sprite != null) {
             if (sprite.getSprite() == null) {
-                sprite = null; //TODO igg demo fix
+                sprite = null; //TODO EA check
             } else {
                 sprite.setFlipX(flipX);
                 sprite.setFps(getFps());
@@ -124,15 +127,26 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
         }
         createEmittersOver();
 
-        if (!(getParent() instanceof GridObject)) {
-            Vector2 pos = GridMaster.getCenteredPos(
-                    (c));
-            setPosition(pos.x, pos.y);
+        if (!(getParent() instanceof GridObject)) { //not for secondary
+            initPosition();
         }
         initialized = true;
 
         if (sprite != null)
             sprite.act(RandomWizard.getRandomFloatBetween(0, 4));
+    }
+
+    protected void initPosition() {
+        Vector2 pos = GridMaster.getCenteredPos((c));
+        setPosition(pos.x + getOffsetX(), pos.y + getOffsetY());
+    }
+
+    public float getOffsetX() {
+        return 0;
+    }
+
+    public float getOffsetY() {
+        return 0;
     }
 
     private boolean isSpriteShown() {
@@ -231,13 +245,15 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
             super.fadeOut();
         }
         for (EmitterActor emitterActor : emitters.keySet()) {
-            emitterActor.getEffect().getEmitters().forEach(e -> e.allowCompletion());
+            emitterActor.getEffect().getEmitters().forEach(ParticleEmitter::allowCompletion);
         }
     }
 
     @Override
     public void fadeIn() {
-
+        if (sprite != null) {
+            sprite.setVisible(true);
+        }
         if (getColor().a == 0)
             super.fadeIn();
         for (EmitterActor emitterActor : emitters.keySet()) {
@@ -248,6 +264,13 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
                 }
             });
         }
+    }
+
+    public boolean isScreen() {
+        if (sprite == null) {
+            return !emitters.isEmpty();
+        }
+        return sprite.getSprite().getBlending() == GenericEnums.BLENDING.SCREEN;
     }
 
     protected boolean isHideWhenFade() {
@@ -276,11 +299,31 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
         hidden = true;
     }
 
+    public SpriteX getSprite() {
+        return sprite;
+    }
+
     public void setUnder(Boolean under) {
         this.under = under;
     }
 
-    public Boolean getUnder() {
+    public Boolean isUnder() {
         return under;
+    }
+
+    public void removeFromGrid() {
+        GuiEventManager.trigger(GuiEventType.REMOVE_GRID_OBJ, this);
+    }
+
+    public void addToGrid() {
+        GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, this);
+    }
+
+    public boolean isInitRequired() {
+        return initRequired;
+    }
+
+    public void setInitRequired(boolean initRequired) {
+        this.initRequired = initRequired;
     }
 }

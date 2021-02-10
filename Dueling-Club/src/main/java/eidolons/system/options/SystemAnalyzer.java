@@ -5,7 +5,7 @@ import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster.OPTIONS_GROUP;
 import eidolons.system.options.SystemOptions.SYSTEM_OPTION;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.Map;
 
@@ -14,13 +14,11 @@ import java.util.Map;
  */
 public class SystemAnalyzer {
     private static float memoryLevel;
-    private static int CPUs;
-    private static float pcLevel;
     private static float cpuLevel;
 
     public static void analyze() {
         long memory = Runtime.getRuntime().maxMemory();
-        main.system.auxiliary.log.LogMaster.dev("SystemAnalyzer - maxMemory  " + memory);
+        main.system.auxiliary.log.LogMaster.devLog("SystemAnalyzer - maxMemory  " + memory);
         float level = 0.9f;
         if (memory > 3 * (1024e3))
             level = 3f;
@@ -34,8 +32,8 @@ public class SystemAnalyzer {
             level = 1.0f;
         setMemoryLevel(level);
 
-        CPUs = Runtime.getRuntime().availableProcessors();
-        pcLevel = Math.min(CPUs, memoryLevel);
+        int CPUs = Runtime.getRuntime().availableProcessors();
+        float pcLevel = Math.min(CPUs, memoryLevel);
     }
 
     public enum GRAPHICS_LEVEL{
@@ -52,10 +50,10 @@ public class SystemAnalyzer {
         Options gameplay = defaults.get(OPTIONS_GROUP.GAMEPLAY);
         Options sound = defaults.get(OPTIONS_GROUP.SOUND);
 
-        float level = CoreEngine.getMemoryLevel();
+        float level = Flags.getMemoryLevel();
 
 
-        if (CoreEngine.isSuperLite()){
+        if (Flags.isSuperLite()){
             level=1.5f;
         }
         if (level <= 1.0) {

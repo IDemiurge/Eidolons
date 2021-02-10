@@ -1,0 +1,58 @@
+<Floor>
+<DATA>name=Undercity;cell_type=octagonal;wall_type=volcanic wall;background=img\main\background\ironhelm tunnel.png;
+module_grid=1-0|0-1|0-2|0-0;width=54;height=72;
+</DATA>
+<MODULES>
+
+<MODULE>
+<DATA>name=Grand Plaza;
+alt_default_wall=Cave Wall;
+width=21;height=47;border_width=1;
+border_type=wall;width_buffer=3;height_buffer=3;
+</DATA>
+<zones>
+<zone><DATA>name=Hallways;</DATA></zone>
+<zone><DATA>name=Crucible;</DATA></zone>
+<zone><DATA>name=Emporium of Crafts;</DATA></zone>
+</zones>
+</MODULE>
+
+<MODULE>
+<DATA>name=Administration;
+alt_default_wall=Cave Wall;cell_type=star;
+width=25;height=23;border_width=1;
+border_type=wall;width_buffer=3;height_buffer=3;
+</DATA>
+<zones>
+<zone><DATA>name=Audience Chamber;</DATA></zone>
+<zone><DATA>name=Library;</DATA></zone>
+<zone><DATA>name=Governor Office;</DATA></zone>
+</zones>
+</MODULE>
+
+
+<MODULE>
+<DATA>cell_type=cross;wall_type=crumbling wall;
+name=Engineer Strata;width=47;height=19;border_width=1;
+border_type=wall;width_buffer=3;height_buffer=3;
+</DATA>
+<zones>
+<zone><DATA>name=Engine Room;</DATA></zone>
+<zone><DATA>name=Pipeworks;</DATA></zone>
+<zone><DATA>name=Gem Factory;</DATA></zone>
+<zone><DATA>name=Personnel;</DATA></zone>
+</zones>
+</MODULE>
+
+<MODULE>
+<DATA>cell_type=natural;
+name=Power Plant;width=27;height=23;border_width=1;width_buffer=3;height_buffer=3;
+border_type=irregular_void;
+</DATA>
+<zones>
+<zone><DATA>name=Outer Ring;</DATA></zone>
+<zone><DATA>name=Inner Ring;</DATA></zone>
+</zones>
+</MODULE>
+
+</MODULES></Floor>

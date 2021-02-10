@@ -2,8 +2,7 @@ package eidolons.system.file;
 
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.libgdx.anims.anim3d.AnimMaster3d;
-import eidolons.swing.generic.services.dialog.DialogMaster;
+import eidolons.libgdx.assets.AssetEnums;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
@@ -14,6 +13,7 @@ import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
+import main.system.util.DialogMaster;
 
 import java.io.File;
 import java.io.IOException;
@@ -103,8 +103,7 @@ public class BatchRenamer {
     private static void processAE_Dir() {
         String root = DialogMaster.inputText("Root?");
         String rawFolder = root + "/raw";
-        String outputFolder = root;
-        processAE_Dir(rawFolder, outputFolder); //String... frameNames
+        processAE_Dir(rawFolder, root); //String... frameNames
 
     }
     private static void processAE_Dir(String rawFolder, String outputFolder) {
@@ -124,7 +123,7 @@ public class BatchRenamer {
     //could use same AE rename!
     private static void generateAnimFolders(String root, ObjType weaponType) {
         for (String s : ContainerUtils.openContainer(weaponType.getProperty(PROPS.WEAPON_ATTACKS))) {
-            for (AnimMaster3d.PROJECTION projection : AnimMaster3d.PROJECTION.values()) {
+            for (AssetEnums.PROJECTION projection : AssetEnums.PROJECTION.values()) {
                 FileManager.getFile(root + "/" + s + "/" + projection).mkdirs();
             }
         }

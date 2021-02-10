@@ -25,12 +25,11 @@ public class InventoryTransactionManager {
     public static final WAIT_OPERATIONS OPERATION = WAIT_OPERATIONS.DIALOGUE_DONE;
     public static final PROPERTY[] INV_PROPS = {PROPS.QUICK_ITEMS, PROPS.INVENTORY,
      G_PROPS.MAIN_HAND_ITEM, G_PROPS.ARMOR_ITEM, G_PROPS.OFF_HAND_ITEM, PROPS.JEWELRY,};
-    private DC_Game game;
-    private HeroManager heroManager;
+    private final DC_Game game;
     private boolean active;
 
     public InventoryTransactionManager(DC_Game game) {
-        heroManager = new DC_HeroManager(game);
+        HeroManager heroManager = new DC_HeroManager(game);
         CharacterCreator.setDC_HeroManager(heroManager);
         this.game = game;
     }

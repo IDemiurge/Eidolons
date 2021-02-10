@@ -4,7 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.ItemFactory;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
@@ -30,9 +30,9 @@ import main.system.SortMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.MathMaster;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 import java.util.*;
 
@@ -337,15 +337,15 @@ public class ShopItemManager extends EntityHandler<Shop> {
             getIncome(10);
 
         //randomize initial gold!
-        if (!CoreEngine.isMacro()) {
+        if (!Flags.isMacro()) {
             Integer base = Math.max(200, getType().getIntParam(PARAMS.GOLD));
             addParam(PARAMS.GOLD, RandomWizard.getRandomIntBetween(
              base / 3 * 2, base * 3 / 2
             ));
         }
         if (isItemsSortedOnInit()) {
-            Collections.sort(items, SortMaster.getObjSorterByExpression(item ->
-             item.getIntParam(PARAMS.GOLD_COST)));
+            items.sort(SortMaster.getObjSorterByExpression(item ->
+                    item.getIntParam(PARAMS.GOLD_COST)));
         }
     }
 
@@ -380,8 +380,8 @@ public class ShopItemManager extends EntityHandler<Shop> {
         priceCache = new HashMap<>();
         for (String substring : ContainerUtils.openContainer(
          getProperty(MACRO_PROPS.SHOP_CACHED_PRICES))) {
-            int id = Integer.valueOf(VariableManager.removeVarPart(substring));
-            int price = Integer.valueOf(VariableManager.getVar(substring));
+            int id = Integer.parseInt(VariableManager.removeVarPart(substring));
+            int price = Integer.parseInt(VariableManager.getVar(substring));
             priceCacheMax.put(id, price);
         }
     }
@@ -410,8 +410,8 @@ public class ShopItemManager extends EntityHandler<Shop> {
     public void handleDebt(Unit hero) {
         if (playerDebt ==0)
             return;
-        int transferred = 0;
-        boolean ok = false;
+        int transferred;
+        boolean ok;
         boolean gives = false;
         if (playerDebt > 0) {
             transferred = Math.min(Math.abs(playerDebt), hero.getGold());
@@ -422,7 +422,7 @@ public class ShopItemManager extends EntityHandler<Shop> {
             gives = true;
         }
         if (transferred>0){
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__GOLD);
+            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__GOLD);
         } else {
             return;
         }

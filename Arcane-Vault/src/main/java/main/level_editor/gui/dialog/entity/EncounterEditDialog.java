@@ -1,7 +1,7 @@
 package main.level_editor.gui.dialog.entity;
 
-import eidolons.game.battlecraft.logic.battle.encounter.EncounterData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
+import eidolons.game.battlecraft.logic.mission.encounter.EncounterData;
 
 public class EncounterEditDialog extends EntityEditDiag<EncounterData.ENCOUNTER_VALUE, EncounterData> {
     public EncounterEditDialog() {

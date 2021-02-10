@@ -7,7 +7,7 @@ import com.bitfire.postprocessing.PostProcessorEffect;
 import com.bitfire.postprocessing.demo.PostProcessing;
 import com.bitfire.postprocessing.effects.*;
 import com.bitfire.postprocessing.effects.Bloom.Settings;
-import eidolons.game.netherflame.igg.IGG_Images;
+import eidolons.game.netherflame.main.NF_Images;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.Fluctuating;
 import eidolons.libgdx.screens.SCREEN_TYPE;
@@ -44,22 +44,21 @@ public class PostProcessController {
     static PostProcessController instance;
     private final PostFxUpdater updater;
     private final Actor actor;
-    private Map<PostProcessorEffect, Fluctuating> effectMap = new LinkedHashMap<>();
-    private PostProcessing main;
+    private final Map<PostProcessorEffect, Fluctuating> effectMap = new LinkedHashMap<>();
+    private final PostProcessing main;
 
-    private LensFlare2 lens2;
-    private LensFlare  lens1;
-    private Zoomer zoomer;
-    private SaturateFx saturate;
-    private Bloom bloom;
-    private BloomFx bloomBright;
-    private Vignette vignette;
-    private Nfaa nfaa;
-    private BlurFx blur;
-    private MotionBlur motionBlur;
-    private  Curvature curvature;
-    private  CrtMonitor discolor;
-    private CustomPostEffect darken;
+    private final LensFlare2 lens2;
+    private final LensFlare  lens1;
+    private final SaturateFx saturate;
+    private final Bloom bloom;
+    private final BloomFx bloomBright;
+    private final Vignette vignette;
+    private final Nfaa nfaa;
+    private final BlurFx blur;
+    private final MotionBlur motionBlur;
+    private final Curvature curvature;
+    private final CrtMonitor discolor;
+    private final CustomPostEffect darken;
 
     LocalFxProcessor localFxProcessor;
     private boolean off;
@@ -79,6 +78,7 @@ public class PostProcessController {
         addEffect(curvature = new Curvature());
         addEffect(nfaa = new Nfaa(GdxMaster.getWidth(), GdxMaster.getHeight()));
         addEffect(blur = new BlurFx());
+        Zoomer zoomer;
         addEffect(zoomer = main.zoomer, false);
         //TODO
         zoomer.setEnabled(false);
@@ -90,7 +90,7 @@ public class PostProcessController {
         addEffect(lens1 = new LensFlare(GdxMaster.getWidth(), GdxMaster.getHeight()), false);
 
         addEffect(lens2 = new LensFlare2(GdxMaster.getWidth(), GdxMaster.getHeight()), false);
-        lens2.setLensColorTexture(TextureCache.getOrCreate(IGG_Images.PROMO_ART.THE_HALL.getPath()));
+        lens2.setLensColorTexture(TextureCache.getOrCreate(NF_Images.PROMO_ART.THE_HALL.getPath()));
 //TODO this lens could be better....
 
 
@@ -151,7 +151,7 @@ public class PostProcessController {
             case MAP:
             case WEAVE:
             case MAIN_MENU:
-            case BATTLE:
+            case DUNGEON:
                 break;
             case PRE_BATTLE: //hero creation? shops?
                 break;
@@ -178,8 +178,8 @@ public class PostProcessController {
                         POST_PROCESSING_OPTIONS.SHADOW_EFFECT_OFF);
 
 
-        if (OptionsMaster.getPostProcessingOptions().getBooleanValue(
-                PostProcessingOptions.POST_PROCESSING_OPTIONS.ALL_OFF)){
+        if (!OptionsMaster.getPostProcessingOptions().getBooleanValue(
+                PostProcessingOptions.POST_PROCESSING_OPTIONS.ENABLED)){
             for (PostProcessorEffect effect : effectMap.keySet()) {
                 effect.setEnabled(false);
             }

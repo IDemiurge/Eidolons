@@ -1,12 +1,13 @@
 package eidolons.libgdx.gui.panels.headquarters.datasource;
 
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.Deity;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
-import eidolons.entity.active.Spell;
 import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.Spell;
 import eidolons.entity.handlers.bf.unit.*;
 import eidolons.entity.item.*;
 import eidolons.entity.obj.BattleFieldObject;
@@ -16,11 +17,10 @@ import eidolons.entity.obj.attach.HeroClass;
 import eidolons.entity.obj.attach.Perk;
 import eidolons.entity.obj.hero.DC_Attributes;
 import eidolons.entity.obj.hero.DC_Masteries;
-import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.vision.mapper.*;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -78,7 +78,6 @@ import main.system.datatypes.DequeImpl;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -389,7 +388,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public Map<PARAMETER, Integer> getValidParams() {
+    public  Map<PARAMETER, Integer> getValidParams() {
         return getHero().getValidParams();
     }
 
@@ -543,11 +542,6 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public void recalculateInitiative() {
-        getHero().recalculateInitiative();
-    }
-
-    @Override
     public boolean hasBludgeoning() {
         return getHero().hasBludgeoning();
     }
@@ -672,7 +666,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public Map<SPECIAL_EFFECTS_CASE, Effect> getSpecialEffects() {
+    public  Map<SPECIAL_EFFECTS_CASE, Effect> getSpecialEffects() {
         return getHero().getSpecialEffects();
     }
 
@@ -722,7 +716,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public Map<DAMAGE_CASE, List<Damage>> getBonusDamage() {
+    public  Map<DAMAGE_CASE, List<Damage>> getBonusDamage() {
         return getHero().getBonusDamage();
     }
 
@@ -961,7 +955,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public Map<PARAMETER, Integer> getIntegerMap() {
+    public ObjectMap<PARAMETER, Integer> getIntegerMap() {
         return getHero().getIntegerMap();
     }
 
@@ -976,7 +970,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public Map<PARAMETER, Integer> getIntegerMap(boolean base) {
+    public ObjectMap<PARAMETER, Integer> getIntegerMap(boolean base) {
         return getHero().getIntegerMap(base);
     }
 
@@ -1035,10 +1029,6 @@ public class HeroWrapper extends HeroDataModel {
         getHero().setPassives(passives);
     }
 
-    @Override
-    public boolean isDone() {
-        return getHero().isDone();
-    }
 
     @Override
     public boolean isOutsideCombat() {
@@ -1048,11 +1038,6 @@ public class HeroWrapper extends HeroDataModel {
     @Override
     public void getBoolean(VALUE prop, Boolean b) {
         getHero().getBoolean(prop, b);
-    }
-
-    @Override
-    public Boolean getBoolean(String prop) {
-        return getHero().getBoolean(prop);
     }
 
     @Override
@@ -1135,10 +1120,6 @@ public class HeroWrapper extends HeroDataModel {
         return getHero().getGroup();
     }
 
-    @Override
-    public boolean isUnmoved() {
-        return getHero().isUnmoved();
-    }
 
     @Override
     public void afterBuffRuleEffects() {
@@ -1186,7 +1167,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public Map<ACTION_TYPE, DequeImpl<DC_UnitAction>> getActionMap() {
+    public  Map<ACTION_TYPE, DequeImpl<DC_UnitAction>> getActionMap() {
         return getHero().getActionMap();
     }
 
@@ -1326,7 +1307,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public Map<PROPERTY, Map<String, Boolean>> getPropCache(boolean base) {
+    public ObjectMap<PROPERTY, ObjectMap<String, Boolean>> getPropCache(boolean base) {
         return getHero().getPropCache(base);
     }
 
@@ -1511,15 +1492,6 @@ public class HeroWrapper extends HeroDataModel {
         return getHero().canAttack();
     }
 
-    @Override
-    public boolean checkItemGroup(PROPERTY prop, PROPERTY dividingProp, String name, boolean potential, OBJ_TYPE TYPE) {
-        return getHero().checkItemGroup(prop, dividingProp, name, potential, TYPE);
-    }
-
-    @Override
-    public boolean canAttack(DC_UnitModel attacked) {
-        return getHero().canAttack(attacked);
-    }
 
     @Override
     public boolean isSneaking() {
@@ -1958,7 +1930,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public Map<PARAMETER, Map<String, Double>> getModifierMaps() {
+    public ObjectMap<PARAMETER, ObjectMap<String, Double>> getModifierMaps() {
         return getHero().getModifierMaps();
     }
 
@@ -2496,7 +2468,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public Map<DC_ActiveObj, String> getActionModeMap() {
+    public  Map<DC_ActiveObj, String> getActionModeMap() {
         return getHero().getActionModeMap();
     }
 
@@ -2896,13 +2868,8 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public Map<String, String> getCustomPropMap() {
+    public ObjectMap<String, String> getCustomPropMap() {
         return getHero().getCustomPropMap();
-    }
-
-    @Override
-    public void setCustomPropMap(Map<String, String> customPropMap) {
-        getHero().setCustomPropMap(customPropMap);
     }
 
     @Override
@@ -2916,13 +2883,8 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public Map<String, String> getCustomParamMap() {
+    public ObjectMap<String, String> getCustomParamMap() {
         return getHero().getCustomParamMap();
-    }
-
-    @Override
-    public void setCustomParamMap(Map<String, String> customParamMap) {
-        getHero().setCustomParamMap(customParamMap);
     }
 
     @Override
@@ -3035,10 +2997,6 @@ public class HeroWrapper extends HeroDataModel {
         getHero().resetPropertyFromList(prop, list);
     }
 
-    @Override
-    public HashMap<PROPERTY, Map<String, Boolean>> getPropCache() {
-        return getHero().getPropCache();
-    }
 
     @Override
     public int getSumOfParams(PARAMETER... params) {

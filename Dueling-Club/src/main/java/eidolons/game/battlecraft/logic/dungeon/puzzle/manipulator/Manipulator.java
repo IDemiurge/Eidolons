@@ -29,12 +29,12 @@ public class Manipulator extends GridObject {
     float timePeriod;
     int width;
     int height;
-    private int interval;
+    private final int interval;
 
     FloatAction floatAction;
     private float timer;
     private long cycles;
-    private  float rotationTime;
+    private final float rotationTime;
     Puzzle puzzle;
 
     SpriteX underlay;
@@ -67,7 +67,7 @@ public class Manipulator extends GridObject {
     }
 
     @Override
-    protected void init() {
+    public void init() {
         addActor(underlay = new SpriteX(Sprites.HELL_WHEEL));
         underlay.setFps(getFps());
         super.init();

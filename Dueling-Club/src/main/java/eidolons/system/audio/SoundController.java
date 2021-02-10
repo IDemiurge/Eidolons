@@ -5,7 +5,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 /**
  * Created by JustMe on 8/30/2017.
@@ -16,7 +16,7 @@ public class SoundController {
 
     public SoundController(DC_SoundMaster soundMaster) {
         this.soundMaster = soundMaster;
-        GuiEventManager.bind(GuiEventType.INGAME_EVENT_TRIGGERED, p -> {
+        GuiEventManager.bind(GuiEventType.INGAME_EVENT, p -> {
             try {
                 String sound = getEventSound((Event) p.get());
                 if (sound != null)
@@ -60,28 +60,24 @@ public class SoundController {
 
     public String getGraphicEventSound(Object o, GuiEventType e) {
         switch (e) {
-            case CREATE_RADIAL_MENU:
-                return STD_SOUNDS.DIS__OPEN_MENU.getPath();
             case UNIT_MOVED:
 //        return DC_SoundMaster.playMoveSound();
             case MUSIC_PAUSE:
-                return STD_SOUNDS.SLING.getPath();
+                return AudioEnums.STD_SOUNDS.SLING.getPath();
             case GAME_FINISHED:
             case SHOW_INVENTORY:
-                return STD_SOUNDS.OPEN.getPath();
-            case SHOW_UNIT_INFO_PANEL:
-                return STD_SOUNDS.DIS__BOOK_OPEN.getPath();
+                return AudioEnums.STD_SOUNDS.OPEN.getPath();
             case GAME_PAUSED:
-                return STD_SOUNDS.CLOCK.getPath();
+                return AudioEnums.STD_SOUNDS.CLOCK.getPath();
             case GAME_RESUMED:
-                return STD_SOUNDS.DONE2.getPath();
+                return AudioEnums.STD_SOUNDS.DONE2.getPath();
             case SHOW_TARGET_BORDERS:
-                return STD_SOUNDS.CLICK_ACTIVATE.getPath();
+                return AudioEnums.STD_SOUNDS.CLICK_ACTIVATE.getPath();
             case TARGET_SELECTION:
             case GRID_OBJ_HOVER_OFF:
-                return STD_SOUNDS.CLICK_TARGET_SELECTED.getPath();
+                return AudioEnums.STD_SOUNDS.CLICK_TARGET_SELECTED.getPath();
             case GRID_OBJ_HOVER_ON:
-                return STD_SOUNDS.HERO.getPath();
+                return AudioEnums.STD_SOUNDS.HERO.getPath();
         }
         return null;
 
@@ -93,7 +89,7 @@ public class SoundController {
         STANDARD_EVENT_TYPE type = (STANDARD_EVENT_TYPE) e.getType();
         switch (type) {
             case ROUND_ENDS:
-                return STD_SOUNDS.DEATH.getPath();
+                return AudioEnums.STD_SOUNDS.DEATH.getPath();
 //            case UNIT_HAS_FALLEN_UNCONSCIOUS:
 //                if (e.getRef().getSourceObj().isMine())
 //                    return STD_SOUNDS.FAIL.getPath();

@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.ai.tools.group;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import main.entity.type.ObjAtCoordinate;
 import main.game.bf.Coordinates;
 
@@ -10,18 +10,17 @@ import java.util.List;
 
 public class GroupManager {
 
-    private Integer factor = 4;
-
     public void initGroupManually(ObjAtCoordinate oac) {
 
     }
 
-    public void initGroups(Dungeon dungeon) {
+    public void initGroups(Floor floor) {
         // by block if possible?
         // break into blocks if necessary...
         // go thru them, but make groups via adjacency
-        int blockWidth = dungeon.getCellsX() / factor;
-        int blockHeight = dungeon.getCellsY() / factor;
+        Integer factor = 4;
+        int blockWidth = floor.getCellsX() / factor;
+        int blockHeight = floor.getCellsY() / factor;
         List<Unit> units = new ArrayList<>();
 //        GroupAI group = new GroupAI(null);
         // minimum group area...
@@ -35,7 +34,7 @@ public class GroupManager {
                 }
             }
 
-            dungeon.getGame().getUnitsForCoordinates(coordinates);
+            floor.getGame().getUnitsForCoordinates(coordinates);
             // sort(); leader = units.getOrCreate(0);
 
 //			group.setLeader(leader);

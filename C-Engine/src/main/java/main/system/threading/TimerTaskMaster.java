@@ -48,7 +48,7 @@ public class TimerTaskMaster {
 
             };
 
-            newTimer(task, period);
+            timer.schedule(task, period);
 
         } catch (NoSuchMethodException | SecurityException e) {
             main.system.ExceptionMaster.printStackTrace(e);

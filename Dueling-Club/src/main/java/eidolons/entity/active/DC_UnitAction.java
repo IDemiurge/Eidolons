@@ -6,8 +6,8 @@ import eidolons.entity.handlers.active.action.ActionActiveMaster;
 import eidolons.entity.handlers.active.action.ActionExecutor;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.DC_RuleMaster;
+import eidolons.game.core.master.EffectMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.Effect;
 import main.content.enums.entity.ActionEnums;
@@ -21,7 +21,7 @@ import main.entity.type.ObjType;
 import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class DC_UnitAction extends DC_ActiveObj {
 
     public DC_UnitAction(ObjType type, Player owner, GenericGame game, Ref ref) {
         super(type, owner, game, ref);
-        if (type.getType() == DC_ActionManager.DUMMY_ACTION_TYPE) {
+        if (type.getType() == ActionEnums.DUMMY_ACTION_TYPE) {
             dummy = true;
         }
     }
@@ -100,7 +100,7 @@ public class DC_UnitAction extends DC_ActiveObj {
         if (modeEffect != null) {
             return modeEffect;
         }
-        List<Effect> e = EffectFinder.getEffectsOfClass(this, ModeEffect.class);
+        List<Effect> e = EffectMaster.getEffectsOfClass(this, ModeEffect.class);
         if (!e.isEmpty()) {
             modeEffect = (ModeEffect) e.get(0);
         }
@@ -149,12 +149,12 @@ public class DC_UnitAction extends DC_ActiveObj {
     }
 
     public void playActivateSound() {
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_ACTIVATE);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.CLICK_ACTIVATE);
     }
 
     @Override
     public void playCancelSound() {
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.ACTION_CANCELLED);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.ACTION_CANCELLED);
     }
 
     @Override

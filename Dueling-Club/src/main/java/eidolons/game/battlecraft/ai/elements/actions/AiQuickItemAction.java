@@ -5,8 +5,6 @@ import main.entity.Ref;
 
 public class AiQuickItemAction extends Action {
 
-    private DC_QuickItemObj item;
-
     public AiQuickItemAction(DC_QuickItemObj item) {
         this(item, item.getRef());
 
@@ -14,7 +12,6 @@ public class AiQuickItemAction extends Action {
 
     public AiQuickItemAction(DC_QuickItemObj item, Ref ref) {
         super(item.getActive(), ref);
-        this.item = item;
     }
 
 //    @Override

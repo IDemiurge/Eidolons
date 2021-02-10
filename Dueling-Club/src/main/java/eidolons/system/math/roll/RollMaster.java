@@ -16,11 +16,8 @@ import main.data.ability.construct.VariableManager;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
-import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
+import main.system.auxiliary.*;
+import main.system.launch.Flags;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 
@@ -47,9 +44,9 @@ public class RollMaster {
     public static final String STD_DISARM_TRAP = "{source_trap_skill};{target_trap level}";
     //TODO
     public final static String STD_REACTION =
-     StringMaster.getValueRef(KEYS.SOURCE, PARAMS.INITIATIVE_MODIFIER)
+     StringMaster.getValueRef(KEYS.SOURCE, PARAMS.INITIATIVE )
       + ";" +
-      StringMaster.getValueRef(KEYS.TARGET, PARAMS.INITIATIVE_MODIFIER);
+      StringMaster.getValueRef(KEYS.TARGET, PARAMS.INITIATIVE );
 
     public static final String STD_FORCE =
      StringMaster.getValueRefs(KEYS.SOURCE, PARAMS.STRENGTH, PARAMS.WEIGHT)
@@ -191,8 +188,7 @@ public class RollMaster {
         int min2 = MathMaster.applyMod(max2, DEFAULT_MIN_ROLL_PERC);
 
         int proportion = Math.round((min1 + max1) / 2 * 100) / ((min2 + max2) / 2);
-        int perc = 50 + (100 - proportion) / 2;
-        return perc;
+        return 50 + (100 - proportion) / 2;
     }
 
     /**
@@ -217,7 +213,7 @@ public class RollMaster {
         }
         ref.getGame().getLogManager().log(RollMaster.logString);
         ref.getGame().getLogManager().doneLogEntryNode();
-        if (CoreEngine.isPhaseAnimsOn())
+        if (Flags.isPhaseAnimsOn())
         {
             //TODO
         }
@@ -409,13 +405,13 @@ public class RollMaster {
 
     public static Rolls generateRollsFromString(String rollString) {
         boolean or = false;
-        if (rollString.contains(StringMaster.AND_SEPARATOR)) {
+        if (rollString.contains(Strings.VERTICAL_BAR)) {
             or = true;
         }
         Rolls rolls = new Rolls(or);
-        String separator = StringMaster.AND_SEPARATOR;
+        String separator = Strings.VERTICAL_BAR;
         if (!or) {
-            separator = StringMaster.AND;
+            separator = Strings.AND;
         }
         for (String s : ContainerUtils.open(rollString, separator)) {
             String varPart = VariableManager.getVarPart(s);
@@ -426,8 +422,8 @@ public class RollMaster {
             }
             s = s.replace(varPart, "");
             varPart = StringMaster.cropParenthesises(varPart);
-            String success = ContainerUtils.openContainer(varPart, StringMaster.VAR_SEPARATOR).get(0);
-            String fail = ContainerUtils.openContainer(varPart, StringMaster.VAR_SEPARATOR).get(1);
+            String success = ContainerUtils.openContainer(varPart, Strings.VAR_SEPARATOR).get(0);
+            String fail = ContainerUtils.openContainer(varPart, Strings.VAR_SEPARATOR).get(1);
             ROLL_TYPES type = new EnumMaster<ROLL_TYPES>().retrieveEnumConst(ROLL_TYPES.class, s);
             rolls.add(new Roll(type, success, fail));
         }
@@ -460,12 +456,12 @@ public class RollMaster {
     }
 
     public static Boolean makeReactionRoll(Unit unit, DC_ActiveObj action, DC_ActiveObj attack) {
-        String fail = StringMaster.getValueRef(KEYS.TARGET, PARAMS.INITIATIVE_MODIFIER) + "/"
+        String fail = StringMaster.getValueRef(KEYS.TARGET, PARAMS.INITIATIVE) + "/"
          + (1 + action.getIntParam(PARAMS.AP_COST)) + "*"
          + getDexterousModifier(unit, action);
 
-        String success = StringMaster.getValueRef(KEYS.SOURCE, PARAMS.INITIATIVE_MODIFIER) + "/"
-         + (1 + attack.getIntParam(PARAMS.CP_COST)) + "*"
+        String success = StringMaster.getValueRef(KEYS.SOURCE, PARAMS.INITIATIVE) + "/"
+         + (1 + attack.getIntParam(PARAMS.ATK_PTS_COST)) + "*"
          + getVigilanceModifier(unit, action);
         String successTooltip = "to avoid Attack of Opportunity";
 

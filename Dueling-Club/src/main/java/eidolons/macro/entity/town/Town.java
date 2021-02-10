@@ -12,7 +12,8 @@ import eidolons.macro.entity.MacroRef;
 import eidolons.macro.entity.faction.FactionObj;
 import eidolons.macro.entity.shop.Shop;
 import eidolons.macro.map.Place;
-import eidolons.system.audio.MusicMaster.AMBIENCE;
+import eidolons.system.audio.MusicEnums;
+import eidolons.system.audio.MusicEnums.AMBIENCE;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.properties.MACRO_PROPS;
 import main.entity.obj.Obj;
@@ -38,7 +39,7 @@ public class Town extends Place {
 
 
     FactionObj ownerFaction;
-    private boolean readyToInit;
+    private final boolean readyToInit;
     private Set<Quest> quests;
     private Set<DC_HeroItemObj> stash;
 
@@ -155,7 +156,7 @@ public class Town extends Place {
     }
 
     public AMBIENCE getAmbience() {
-        return RandomWizard.random() ? AMBIENCE.SHIP : AMBIENCE.TOWN;
+        return RandomWizard.random() ? MusicEnums.AMBIENCE.SHIP : MusicEnums.AMBIENCE.TOWN;
     }
 
     public Set<DC_HeroItemObj> getStash() {
@@ -197,7 +198,7 @@ public class Town extends Place {
             if (!NumberUtils.isInteger(substring)) {
                 continue;
             }
-            int id = Integer.valueOf(substring);
+            int id = Integer.parseInt(substring);
             Obj item = Eidolons.getGame().getObjectById(id);
             if (item instanceof DC_HeroItemObj)
                 stash.add((DC_HeroItemObj) item);

@@ -9,4 +9,5 @@ public interface LayeredData<T> {
     default Object getLevelLayer() {
         return null;
     }
+
 }

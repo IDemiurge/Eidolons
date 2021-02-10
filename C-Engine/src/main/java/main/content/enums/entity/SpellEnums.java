@@ -3,6 +3,7 @@ package main.content.enums.entity;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.MapMaster;
 import main.system.images.ImageManager;
 
@@ -48,7 +49,7 @@ public class SpellEnums {
     }
 
     public enum SPELL_POOL {
-        MEMORIZED, DIVINED, VERBATIM, SPELLBOOK;
+        MEMORIZED, DIVINED, VERBATIM, SPELLBOOK
     }
 
     public enum SPELL_SUBGROUP {
@@ -197,7 +198,7 @@ public class SpellEnums {
         MUTAGENIC,
         ACIDIC,
         DIRE(" Increases Spellpower by " + SPELL_DIFFICULTY + " and an additional {Mastery}/10%.", 35, 25, " de", "passives;", "AddParam(Spellpower Bonus 10+{Mastery}/2)", "", "", "", "", "Spellpower Bonus;Spellpower Mod", ""
-         + SPELL_DIFFICULTY + StringMaster.UPGRADE_SEPARATOR + "{Mastery}/10"),
+         + SPELL_DIFFICULTY + Strings.UPGRADE_SEPARATOR + "{Mastery}/10"),
         RAGE,
 
         LIFEBLOOD, // append {endurance}*(min(10+{Mastery},{1})/100 to formula
@@ -276,7 +277,7 @@ public class SpellEnums {
              .openContainer(modParams), ContainerUtils.openContainer(modParamValues));
             this.paramBonusMap = new MapMaster<String, String>().constructMap(ContainerUtils
              .openContainer(bonusParams), ContainerUtils.openContainer(bonusParamVals,
-             StringMaster.UPGRADE_SEPARATOR));
+             Strings.UPGRADE_SEPARATOR));
         }
 
         private static String getAddCounterSpecialEffect(String... amount_comma_dmg_type) {
@@ -310,7 +311,7 @@ public class SpellEnums {
             StringBuilder string = new StringBuilder("SpecEffect(" + effectCase + ",");
             for (String s : args) {
                 string.append(abilName).append(StringMaster.wrapInParenthesis(s));
-                string.append(StringMaster.AND_SEPARATOR);
+                string.append(Strings.VERTICAL_BAR);
             }
             string = new StringBuilder(StringMaster.cropLast(string.toString(), 1));
             string.append(")");
@@ -350,7 +351,7 @@ public class SpellEnums {
         }
 
         public String getName() {
-            return StringMaster.getWellFormattedString(toString());
+            return StringMaster.format(toString());
         }
 
         public String getDescription() {
@@ -360,7 +361,7 @@ public class SpellEnums {
         public Image getGlyphImageSelected() {
             if (glyphImageSelected == null) {
                 glyphImageSelected = ImageManager.getImage(PathFinder.getSpellUpgradeGlyphsFolder()
-                 + StringMaster.getWellFormattedString(name()) + " s.png");
+                 + StringMaster.format(name()) + " s.png");
             }
             if (!ImageManager.isValidImage(glyphImageSelected)) {
                 return glyphImage;
@@ -371,7 +372,7 @@ public class SpellEnums {
         public Image getGlyphImageActive() {
             if (glyphImageActive == null) {
                 glyphImageActive = ImageManager.getImage(PathFinder.getSpellUpgradeGlyphsFolder()
-                 + StringMaster.getWellFormattedString(name()) + " a.png");
+                 + StringMaster.format(name()) + " a.png");
             }
             if (!ImageManager.isValidImage(glyphImageSelected)) {
                 return glyphImage;
@@ -382,7 +383,7 @@ public class SpellEnums {
         public Image getGlyphImage() {
             if (glyphImage == null) {
                 glyphImage = ImageManager.getImage(PathFinder.getSpellUpgradeGlyphsFolder()
-                 + StringMaster.getWellFormattedString(name()) + ".png");
+                 + StringMaster.format(name()) + ".png");
             }
             return glyphImage;
         }

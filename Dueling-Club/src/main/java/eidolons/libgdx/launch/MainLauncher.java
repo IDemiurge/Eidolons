@@ -1,22 +1,21 @@
 package eidolons.libgdx.launch;
 
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.netherflame.igg.CustomLaunch;
+import eidolons.game.netherflame.additional.CustomLaunch;
 import eidolons.libgdx.screens.menu.MainMenu;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.test.TestMasterContent;
 import main.data.filesys.PathFinder;
-import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
+import main.system.util.DialogMaster;
 
 import java.util.Stack;
 
@@ -25,70 +24,36 @@ import java.util.Stack;
  */
 public class MainLauncher extends GenericLauncher {
     public static final Stack<Integer> presetNumbers = new Stack<>();
-    public static String BG;
     private static final String LAST_CHOICE_FILE = "xml/last dc.xml";
     public static Integer HERO_INDEX = -1;
-    private static final String FOOTAGE_SEQUENCE =
-                    "ready/ship.xml;" +
-                    "ready/graveyard.xml;" +
-                    "ready/wood.xml;" +
-                    "crawl/cavern.xml;" +
-                    "crawl/Guild Dungeon.xml;" +
-                    "crawl/hell.xml;" +
-                    "crawl/Underdark.xml;" +
-                    "ready/dark castle.xml;" +
-                    "ready/the fortress.xml;" +
-                    "crawl/Ancient Ruins.xml;" +
-                    "crawl/Ravenguard Dungeon.xml;" +
-                    "crawl/Dwarven Halls.xml;" +
-                    "ready/ravenguard sanctum.xml;" +
-
-                    "ready/spire.xml;" +
-                    "ready/mix.xml;" +
-                    "footage/demon circle.xml;" +
-                    "footage/serpentium.xml;" +
-                    "levels/underworld.xml;" +
-                    "modules/bastion.xml;";
+    public static String levelPath;
     private static Stack<String> lastChoiceStack;
     public static boolean presetNumbersOn;
     private static CustomLaunch customLaunch;
 
     public static void main(String[] args) {
-        EidolonsGame.setVar("non_test", true);
-        EidolonsGame.setVar("tutorial", true);
-        GpuTester.test();
+        // EidolonsGame.setVar("non_test", true);
+        // EidolonsGame.setVar("tutorial", true);
+        // GpuTester.test();
         CoreEngine.setSwingOn(false);
 //        if (!CoreEngine.isIDE())
-        CoreEngine.setSafeMode(true);
-        CoreEngine.setIggDemo(true);
-        CoreEngine.setMainGame(true);
-        CoreEngine.setDialogueTest(true);
-//        EidolonsGame.BRIDGE = true;
-//        CoreEngine.setGraphicTestMode(args.length > 0);
-//        CoreEngine.setActiveTestMode(args.length > 0);
-//        CoreEngine.setReverseExit(args.length > 0);
+        Flags.setSafeMode(true);
+        Flags.setIggDemo(true);
+        Flags.setMainGame(true);
+        Flags.setDialogueTest(true);
         if (args.length > 0) {
             PathFinder.init();
             if (args[0].contains("town")) {
                 EidolonsGame.TOWN = true;
             }
-            CoreEngine.TEST_LAUNCH = args[0].endsWith("test");
-            CoreEngine.setFastMode(CoreEngine.TEST_LAUNCH);
+            CoreEngine.TEST_LAUNCH = args[0].contains("test;");
+            System.out.println("TEST LAUNCH =" + CoreEngine.TEST_LAUNCH);
 
-            if (args[0].contains("selectfootage")) {
-                CoreEngine.swingOn = true;
-                CoreEngine.systemInit();
-//                int i = DialogMaster.inputInt(0);
-                String level = ListChooser.chooseString(ContainerUtils.openContainer(FOOTAGE_SEQUENCE));
-                args[0] = args[0] + ";" + level;
+            Flags.setJarlike(args[0].contains("jarlike;"));
+            System.out.println("jarlike =" + Flags.isJarlike());
 
-//                int i = DialogMaster.optionChoice("", FOOTAGE_SEQUENCE.split(";"));
-//                if (i==-1) {
-//                    EidolonsGame.SELECT_SCENARIO=true;
-//                } else
-//                    args[0] = args[0] + "." + i;
+            Flags.setFastMode(CoreEngine.TEST_LAUNCH);
 
-            }
             if (args[0].contains("selecthero")) {
                 HERO_INDEX = DialogMaster.inputInt(0);
                 if (HERO_INDEX == -1) {
@@ -113,26 +78,26 @@ public class MainLauncher extends GenericLauncher {
             if (EidolonsGame.DUEL_TEST) {
                 EidolonsGame.BRIDGE = true;
             }
-            CoreEngine.setLevelTestMode(false);
+            Flags.setLevelTestMode(false);
             args = args[0].split(";");
         }
-        CoreEngine.setSkillTestMode(args.length > 0);
+        Flags.setSkillTestMode(args.length > 0);
 //        CoreEngine.setLiteLaunch(args.length > 0);
 //        CoreEngine.setContentTestMode(args.length > 2);
         if (!EidolonsGame.BOSS_FIGHT)
-            CoreEngine.setLevelTestMode(args.length > 4);
+            Flags.setLevelTestMode(args.length > 4);
 
-        if (!CoreEngine.isIggDemo()) {
-            CoreEngine.setFastMode(args.length > 1);
-            CoreEngine.setFullFastMode(args.length > 3);
+        if (!Flags.isIggDemo()) {
+            Flags.setFastMode(args.length > 1);
+            Flags.setFullFastMode(args.length > 3);
         }
-        if (CoreEngine.isIDE()) {
-            CoreEngine.setJarlike(!CoreEngine.isFastMode());
-            if (CoreEngine.isFastMode())//|| CoreEngine.isActiveTestMode())
+        if (Flags.isIDE()) {
+            // Flags.setJarlike(!Flags.isFastMode());
+            if (Flags.isFastMode())//|| CoreEngine.isActiveTestMode())
                 TestMasterContent.setAddSpells(true);
-            if (CoreEngine.isFullFastMode()) {
+            if (Flags.isFullFastMode()) {
                 TestMasterContent.setAddAllSpells(true);
-                if (CoreEngine.isMe())
+                if (Flags.isMe())
                     OptionsMaster.setOptionsPath("C:\\Users\\justm\\AppData\\Local\\Eidolons\\fast options.xml");
             }
         }
@@ -150,7 +115,7 @@ public class MainLauncher extends GenericLauncher {
 
         for (String command : commands) {
             if (command.contains(MAIN_MENU_ITEM.MAP_PREVIEW.toString())) {
-                CoreEngine.setMapPreview(true);
+                Flags.setMapPreview(true);
             }
         }
 
@@ -172,7 +137,7 @@ public class MainLauncher extends GenericLauncher {
                     MainMenu.getInstance().getHandler().handle(item);
                 } else {
                     if (NumberUtils.isInteger(command)) {
-                        int i = NumberUtils.getInteger(command);
+                        int i = NumberUtils.getIntParse(command);
                         if (i < 0) {
                             i = getLast();
                         }
@@ -185,11 +150,9 @@ public class MainLauncher extends GenericLauncher {
                             EidolonsGame.setVar(p[0], Boolean.valueOf(p[1]));
                         } else {
                             if (command.contains(".") || command.contains("::")) {
-                                if (command.length() < 3) {
-                                    command = FOOTAGE_SEQUENCE.split(";")
-                                            [Integer.valueOf(command.replace(".", ""))];
-                                }
-                                setCustomLaunch(new CustomLaunch(command.replace("_", " ")));
+                                String replace = command.replace("_", " ");
+                                levelPath=replace;
+                                setCustomLaunch(new CustomLaunch(replace));
                             }
                         }
                     }
@@ -204,7 +167,7 @@ public class MainLauncher extends GenericLauncher {
             lastChoiceStack.addAll(ContainerUtils.openContainer(
                     FileManager.readFile(LAST_CHOICE_FILE)));
         }
-        return NumberUtils.getInteger(lastChoiceStack.remove(0));
+        return NumberUtils.getIntParse(lastChoiceStack.remove(0));
     }
 
     public static CustomLaunch getCustomLaunch() {
@@ -214,17 +177,16 @@ public class MainLauncher extends GenericLauncher {
     public static void setCustomLaunch(CustomLaunch customLaunch) {
         main.system.auxiliary.log.LogMaster.important("customLaunch set: " + customLaunch);
         MainLauncher.customLaunch = customLaunch;
-        BG = getBgForLvl(customLaunch.getValue(CustomLaunch.CustomLaunchValue.xml_path));
     }
 
     private static String getBgForLvl(String value) {
         switch (value) {
             case "ready/graveyard.xml":
             case "crawl/Dwarven Halls.xml":
-                CoreEngine.setReverseExit(true);
+                Flags.setReverseExit(true);
                 return null;
             case "ready/ship.xml":
-                CoreEngine.setReverseExit(true);
+                Flags.setReverseExit(true);
 //                    return Sprites.BG_BASTION;
                 return "main/background/ship flip.jpg";
 
@@ -248,9 +210,4 @@ public class MainLauncher extends GenericLauncher {
         return null;
     }
 
-    @Override
-    protected void engineInit() {
-        super.engineInit();
-        DC_Engine.dataInit();
-    }
 }

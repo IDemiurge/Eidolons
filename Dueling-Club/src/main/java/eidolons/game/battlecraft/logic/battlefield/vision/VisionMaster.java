@@ -4,7 +4,10 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.battlecraft.ai.advanced.engagement.EngagementHandler;
+import eidolons.game.battlecraft.logic.battlefield.vision.advanced.HintMaster;
+import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -18,6 +21,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
+import main.system.text.Log;
 
 import java.util.concurrent.ConcurrentLinkedDeque;
 
@@ -26,23 +30,24 @@ import java.util.concurrent.ConcurrentLinkedDeque;
  */
 public class VisionMaster implements GenericVisionManager {
 
-    private final VisionRule visionRule;
+    protected final VisionRule visionRule;
+    private final Illumination illumination;
     ConcurrentLinkedDeque<BattleFieldObject> visibleList = new ConcurrentLinkedDeque<>();
     ConcurrentLinkedDeque<BattleFieldObject> invisibleList = new ConcurrentLinkedDeque<>();
-    private SightMaster sightMaster;
-    private DetectionMaster detectionMaster;
-    private IlluminationMaster illuminationMaster;
-    private VisibilityMaster visibilityMaster;
-    private GammaMaster gammaMaster;
-    private HintMaster hintMaster;
-    private OutlineMaster outlineMaster;
-    private DC_Game game;
-    private boolean fastMode;
-    private boolean firstResetDone;
-    private VisionController visionController;
-    private BattleFieldObject[] visible;
-    private BattleFieldObject[] invisible;
-    private boolean visionDebugMode;
+    protected SightMaster sightMaster;
+    protected DetectionMaster detectionMaster;
+    protected IlluminationMaster illuminationMaster;
+    protected VisibilityMaster visibilityMaster;
+    protected GammaMaster gammaMaster;
+    protected HintMaster hintMaster;
+    protected OutlineMaster outlineMaster;
+    protected DC_Game game;
+    protected boolean fastMode;
+    protected boolean firstResetDone;
+    protected VisionController visionController;
+    protected BattleFieldObject[] visible;
+    protected BattleFieldObject[] invisible;
+    protected boolean visionDebugMode;
 
     public VisionMaster(DC_Game game) {
         this.game = game;
@@ -55,13 +60,14 @@ public class VisionMaster implements GenericVisionManager {
         hintMaster = new HintMaster(this);
         visionController = new VisionController(this);
         visionRule = new VisionRule(this);
-
+        illumination = new Illumination();
     }
 
     @Override
     public boolean isVisionTest() {
-        return true;
+        return false;
     }
+
     public static boolean isNewVision() {
         return true;
     }
@@ -84,18 +90,18 @@ public class VisionMaster implements GenericVisionManager {
             LogMaster.log(1, "***********null active activeUnit for visibility!");
             return;
         }
-//        resetForActiveUnit();
+        //        resetForActiveUnit();
 
-        if (ExplorationMaster.isExplorationOn() &&
-                getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().isPeriodResetRunning()) {
-            LogMaster.verbose("Vision reset skipped by period; time left: " +
-                    getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().getVisibilityResetTimer());
-        } else {
-            getGame().getRules().getIlluminationRule().resetIllumination();
-            getGame().getRules().getIlluminationRule().applyLightEmission();
-        }
+        // if (ExplorationMaster.isExplorationOn() &&
+        //         getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().isPeriodResetRunning()) {
+        //     LogMaster.verbose("Vision reset skipped by period; time left: " +
+        //             getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().getVisibilityResetTimer());
+        //     illumination.resetIllumination(false);
+        // } else {
+        // }
+            illumination.resetIllumination(true);
 
-        visionRule.fullReset(getGame().getMaster().getUnitsArray());
+        visionRule.fullReset(getGame().getObjMaster().getUnitsArray());
         getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().resetVisibilityResetTimer();
 
 
@@ -103,9 +109,9 @@ public class VisionMaster implements GenericVisionManager {
         getActiveUnit().setVisibilityLevel(VISIBILITY_LEVEL.CLEAR_SIGHT);
 
         resetLastKnownCoordinates();
-//        for (Unit sub : game.getUnits()) {
-//            sightMaster.resetSightStatuses(sub);
-//        }
+        //        for (Unit sub : game.getUnits()) {
+        //            sightMaster.resetSightStatuses(sub);
+        //        }
         for (Object sub : getGame().getDungeonMaster().getPlayerManager().getPlayers()) {
             DC_Player player = (DC_Player) sub;
             resetPlayerVision(player);
@@ -113,15 +119,15 @@ public class VisionMaster implements GenericVisionManager {
         triggerGuiEvents();
 
         firstResetDone = true;
-//        visionController.log(getActiveUnit());
+        //        visionController.log(getActiveUnit());
 
-//    try{    getVisionController().logAll();}catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}
-//        getVisionController().log(getActiveUnit(), visibleList.toArray(new DC_Obj[visibleList.size()]));
+        //    try{    getVisionController().logAll();}catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}
+        //        getVisionController().log(getActiveUnit(), visibleList.toArray(new DC_Obj[visibleList.size()]));
         Chronos.logTimeElapsedForMark("VISIBILITY REFRESH", true);
     }
 
 
-    private void resetPlayerVision(DC_Player player) {
+    protected void resetPlayerVision(DC_Player player) {
         for (Obj sub : player.collectControlledUnits()) {
             Unit unit = (Unit) sub;
             if (player.isMe()) //enemy sees all objects always...?
@@ -147,13 +153,13 @@ public class VisionMaster implements GenericVisionManager {
         return visionRule;
     }
 
-    private void resetLastKnownCoordinates() {
+    protected void resetLastKnownCoordinates() {
         //   TODO must communicate with GridPanel
-//        for (Unit u : game.getUnits()) {
-//            if (checkVisible(u)) {
-//                u.setLastKnownCoordinates(u.getCoordinates());
-//            }
-//        }
+        //        for (Unit u : game.getUnits()) {
+        //            if (checkVisible(u)) {
+        //                u.setLastKnownCoordinates(u.getCoordinates());
+        //            }
+        //        }
     }
 
     public void triggerGuiEvents() {
@@ -166,18 +172,18 @@ public class VisionMaster implements GenericVisionManager {
                 visibleList.add(sub);
             else invisibleList.add(sub);
         }
-//        WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
+        //        WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
         if (LOG_CHANNEL.VISIBILITY_DEBUG.isOn()) {
             LogMaster.log(1, ">>>>>> visibleList  = " + visibleList);
             LogMaster.log(1, ">>>>>> invisibleList  = " + invisibleList);
             String string = "";
-            for (BattleFieldObject sub : visibleList) {
-                string += sub + ": \n";
-                string += "getVisibilityLevelForPlayer= " + sub.getVisibilityLevelForPlayer() + "\n";
-                string += "getVisibilityLevel= " + sub.getVisibilityLevel() + "\n";
-                string += "getPlayerVisionStatus= " + sub.getPlayerVisionStatus(true) + "\n";
-                string += "getGamma= " + sub.getGamma() + "\n";
-            }
+            //            for (BattleFieldObject sub : visibleList) {
+            //                string += sub + ": \n";
+            //                string += "getVisibilityLevelForPlayer= " + sub.getVisibilityLevelForPlayer() + "\n";
+            //                string += "getVisibilityLevel= " + sub.getVisibilityLevel() + "\n";
+            //                string += "getPlayerVisionStatus= " + sub.getPlayerVisionStatus(true) + "\n";
+            //                string += "getGamma= " + sub.getGamma() + "\n";
+            //            }
 
             LogMaster.log(1, "***********" +
                     "" + string);
@@ -189,7 +195,7 @@ public class VisionMaster implements GenericVisionManager {
         GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_ON, visibleList);
     }
 
-    private boolean isVisibleOnGrid(BattleFieldObject object) {
+    protected boolean isVisibleOnGrid(BattleFieldObject object) {
         return visionRule.isDisplayedOnGrid(
                 game.getManager().getMainHero(), object);
     }
@@ -200,7 +206,9 @@ public class VisionMaster implements GenericVisionManager {
     }
 
     public void refresh() {
-        LogMaster.log(LogMaster.VISIBILITY_DEBUG, "Refreshing visibility...");
+
+        if (Log.check(Log.LOG_CASE.visibility))
+            LogMaster.log(LogMaster.VISIBILITY_DEBUG, "Refreshing visibility...");
         sightMaster.clearCaches();
         resetVisibilityStatuses();
     }
@@ -325,5 +333,17 @@ public class VisionMaster implements GenericVisionManager {
 
     public void setVisionDebugMode(boolean visionDebugMode) {
         this.visionDebugMode = visionDebugMode;
+    }
+
+    public EngagementHandler getEngagementHandler() {
+        return game.getDungeonMaster().getExplorationMaster().getEngagementHandler();
+    }
+
+    public void applyLight() {
+        illumination.resetIllumination(true);
+    }
+
+    public Illumination getIllumination() {
+        return illumination;
     }
 }

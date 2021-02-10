@@ -2,49 +2,46 @@ package eidolons.game.battlecraft.logic.meta.universal;
 
 import eidolons.content.PROPS;
 import eidolons.game.EidolonsGame;
-import eidolons.game.Simulation;
-import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.module.ModuleMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.intro.IntroFactory;
+import eidolons.game.battlecraft.logic.mission.universal.MissionMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
-import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
-import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
-import eidolons.game.netherflame.igg.death.ShadowMaster;
-import eidolons.game.netherflame.igg.event.GameEventHandler;
-import eidolons.game.netherflame.igg.event.IGG_EventHandler;
+import eidolons.game.netherflame.boss.BossManager;
+import eidolons.game.netherflame.boss.demo.DemoBossManager;
+import eidolons.game.netherflame.main.death.ShadowMaster;
+import eidolons.game.netherflame.main.event.GameEventHandler;
+import eidolons.game.netherflame.main.event.NF_EventHandler;
 import eidolons.libgdx.anims.main.AnimMaster;
+import eidolons.libgdx.gui.overlay.choice.VisualChoiceHandler;
 import eidolons.macro.AdventureInitializer;
 import eidolons.macro.global.persist.Loader;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.FileLogManager;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
-import main.system.launch.CoreEngine;
-
-import static main.system.auxiliary.StringMaster.getWellFormattedString;
-import static main.system.auxiliary.StringMaster.wrapInParenthesis;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 5/7/2017.
  * <p>
- * Does everything TO the *DC_Game
- * It kind of "owns" the Game
+ * Does everything TO the *DC_Game It kind of "owns" the Game
  */
 public abstract class MetaGameMaster<E extends MetaGame> {
 
+    private static final String SOLO_LEVEL = "crawl/a flight[new].xml"; //review this
     protected String data;
-    protected PartyManager<E> partyManager;
+    protected PartyManager partyManager;
     protected MetaInitializer<E> initializer;
     protected MetaDataManager<E> metaDataManager;
 
@@ -71,24 +68,25 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     protected abstract DC_Game createGame();
 
-    protected abstract PartyManager<E> createPartyManager();
+    protected abstract PartyManager createPartyManager();
 
-    protected abstract MetaDataManager<E> createMetaDataManager();
+    protected abstract MetaDataManager createMetaDataManager();
 
     public DialogueActorMaster getDialogueActorMaster() {
         return dialogueManager.getDialogueActorMaster();
     }
 
-    protected abstract MetaInitializer<E> createMetaInitializer();
+    protected abstract MetaInitializer createMetaInitializer();
 
     public void initHandlers() {
         partyManager = createPartyManager();
         initializer = createMetaInitializer();
         metaDataManager = createMetaDataManager();
+        VisualChoiceHandler choiceHandler = new VisualChoiceHandler(this);
 
-        if (CoreEngine.isCombatGame()) {
+        if (Flags.isCombatGame()) {
             lootMaster = createLootMaster();
-            eventHandler = new IGG_EventHandler(this);
+            eventHandler = new NF_EventHandler(this);
             defeatHandler = createDefeatHandler();
             townMaster = createTownMaster();
             dialogueManager = new DialogueManager(this);
@@ -113,9 +111,9 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     public DC_Game init() {
         game = Eidolons.game;
         if (game == null) {
-            Simulation.init(false, this);
+            // Simulation.init(false, this);
             game = createGame();
-            Simulation.setRealGame(game);
+            // Simulation.setRealGame(game);
         }
         game.setMetaMaster(this);
         metaGame = initializer.initMetaGame(data);
@@ -126,7 +124,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         if (partyManager.initPlayerParty() != null) {
             if (isTownEnabled()) {
                 getMetaDataManager().initData();
-                getBattleMaster().getConstructor().init();
+                getMissionMaster().getConstructor().init();
                 if (!getTownMaster().initTownPhase()) {
                     Eidolons.getMainGame().setAborted(true);
                     return game;
@@ -136,7 +134,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
                     Eidolons.getMainGame().setAborted(true);
                     return game;
                 }
-            if (!getBattleMaster().getOptionManager().chooseDifficulty(
+            if (!getMissionMaster().getOptionManager().chooseDifficulty(
                     getMetaGame().isDifficultyReset()))
                 Eidolons.getMainGame().setAborted(true);
         }
@@ -150,24 +148,24 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected boolean isTownEnabled() {
         if (EidolonsGame.TOWN)
             return true;
-        if (CoreEngine.isFullFastMode()) {
+        if (Flags.isFullFastMode()) {
             return false;
         }
-        if (CoreEngine.isMacro()) {
+        if (Flags.isMacro()) {
             return false;
         }
-        return game.getMetaMaster().isRngDungeon() || !CoreEngine.isSafeMode();
+        return game.getMetaMaster().isRngDungeon() || !Flags.isSafeMode();
     }
 
     public boolean isRngQuestsEnabled() {
-        if (CoreEngine.isFullFastMode()) {
+        if (Flags.isFullFastMode()) {
             return false;
         }
         if (!QuestMaster.ON)
             return false;
         if (!isRngDungeon())
             return false;
-        return !CoreEngine.isMacro();
+        return !Flags.isMacro();
     }
 
     public void preStart() {
@@ -184,7 +182,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         //        getIntroFactory().init(this);
     }
 
-    public LootMaster<E> getLootMaster() {
+    public LootMaster getLootMaster() {
         return lootMaster;
     }
 
@@ -196,8 +194,8 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         return dialogueManager;
     }
 
-    public BattleMaster getBattleMaster() {
-        return game.getBattleMaster();
+    public MissionMaster getMissionMaster() {
+        return game.getMissionMaster();
     }
 
     public DialogueFactory getDialogueFactory() {
@@ -212,7 +210,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         return data;
     }
 
-    public E getMetaGame() {
+    public MetaGame getMetaGame() {
         return metaGame;
     }
 
@@ -220,22 +218,22 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         return game;
     }
 
-    public PartyManager<E> getPartyManager() {
+    public PartyManager getPartyManager() {
         return partyManager;
     }
 
-    public MetaInitializer<E> getInitializer() {
+    public MetaInitializer getInitializer() {
         return initializer;
     }
 
-    public MetaDataManager<E> getMetaDataManager() {
+    public MetaDataManager getMetaDataManager() {
         return metaDataManager;
     }
 
     public void next(Boolean outcome) {
 
         String message = (outcome != null) ? "next level!" : "game restarted!";
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
+        SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.MAIN, message);
 
         gameExited();
         game.reinit(outcome == null);
@@ -256,9 +254,8 @@ public abstract class MetaGameMaster<E extends MetaGame> {
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
-        Coordinates.clearCaches();
 
-        FileLogManager.writeStatInfo(game.getBattleMaster().getStatManager().getStats().toString());
+        FileLogManager.writeStatInfo(game.getMissionMaster().getStatManager().getStats().toString());
     }
 
 
@@ -275,7 +272,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
             return
                     type.getGroup().equalsIgnoreCase("Random");
         }
-        type = DataManager.getType(getData(), DC_TYPE.MISSIONS);
+        type = DataManager.getType(getData(), DC_TYPE.FLOORS);
 
         if (type != null) {
             if (type.getName().toLowerCase().contains("boss")) {
@@ -288,27 +285,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     }
 
     public String getDungeonInfo() {
-        if (getDungeonMaster().getDungeonLevel() != null) {
-            StringBuilder info = new StringBuilder(200);
-            DungeonLevel level = getDungeonMaster().getDungeonLevel();
-            info.append("Randomly generated ");
-            info.append(getWellFormattedString(level.getLocationType().toString())).append(" ").append(wrapInParenthesis(getWellFormattedString(level.getSublevelType().toString()))).append("\n");
-
-            LevelBlock block = level.getBlockForCoordinate(Eidolons.getMainHero().getCoordinates());
-            LevelZone zone = block.getZone();
-
-            info.append(getWellFormattedString(block.getRoomType().toString())).append(" ").append(wrapInParenthesis(getWellFormattedString(zone.getStyle().toString()))).append("\n");
-
-            // objective?
-            // units left?
-            // secrets uncovered?
-            //level of illumination, time of day,
-            return info.toString();
-        } else {
-            return getScenarioInfo();
-        }
-
-
+        return getScenarioInfo();
     }
 
     public DefeatHandler getDefeatHandler() {
@@ -342,5 +319,43 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     public ModuleMaster getModuleMaster() {
         return null;
+    }
+
+    public Floor getFloor() {
+        return getMissionMaster().getFloor();
+    }
+
+    BossManager bossManager;
+
+    public void initBossModule(Module module) {
+        bossManager = createBossManager(module);
+    }
+
+    protected BossManager createBossManager(Module module) {
+        return new DemoBossManager(getGame());
+    }
+
+    public void loadingDone() {
+        if (bossManager != null) {
+            try {
+                bossManager.init();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+                return;
+            }
+        }
+    }
+
+    public BossManager getBossManager() {
+        return bossManager;
+    }
+
+    public boolean isSoloLevel() {
+        return  data.equalsIgnoreCase(SOLO_LEVEL);
+    }
+
+    public void combatStarts() {
+        if (bossManager != null)
+                bossManager.battleStarted();
     }
 }

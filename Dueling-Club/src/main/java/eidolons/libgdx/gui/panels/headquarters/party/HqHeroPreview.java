@@ -12,18 +12,16 @@ import main.system.auxiliary.StringMaster;
  * Created by JustMe on 4/16/2018.
  */
 public class HqHeroPreview extends FadeImageContainer {
-    private final HqHeroDataSource data;
     private boolean highlight;
     private ShaderProgram shader;
 
     public HqHeroPreview(HqHeroDataSource sub) {
         super(StringMaster.getAppendedImageFile(sub.getImagePath(), " mini"));
-        this.data = sub;
-//        String path = StringMaster.getAppendedImageFile(sub.getImagePath(), " mini");
+        //        String path = StringMaster.getAppendedImageFile(sub.getImagePath(), " mini");
 //        addActor(new ImageContainer(path));
 //        setSize(128,46);
 
-        if (data.isDead()) {
+        if (sub.isDead()) {
 //            addActor(new ImageContainer(Images.DEAD_HERO_128));
         }
 //        addActor(border = new Image(

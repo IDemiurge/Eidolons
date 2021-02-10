@@ -11,7 +11,7 @@ import main.system.auxiliary.RandomWizard;
  * Created by JustMe on 5/8/2018.
  */
 public class DynamicLayeredActor extends LayeredActor {
-
+//Gdx revamp - this bit of UI could be good if fixed?
 
     protected ACTOR_STATUS status;
     protected ShaderProgram shader;
@@ -124,7 +124,7 @@ public class DynamicLayeredActor extends LayeredActor {
             if (status== ACTOR_STATUS.ACTIVE) {
 //TODO
             } else
-            setShader(null);
+                setShader(null);
         }
     }
 
@@ -150,7 +150,7 @@ public class DynamicLayeredActor extends LayeredActor {
         if (status==ACTOR_STATUS.NORMAL)
             return;
         setStatus(ACTOR_STATUS.NORMAL);
-        //TODO igg demo fix
+        //TODO Gdx fix
 //        playStateAnim();
     }
 

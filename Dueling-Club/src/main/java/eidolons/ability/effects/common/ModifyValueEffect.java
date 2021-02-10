@@ -5,13 +5,14 @@ import eidolons.ability.effects.oneshot.mechanic.ModifyCounterEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.core.master.EffectMaster;
 import main.ability.PassiveAbilityObj;
 import main.ability.effects.Effect;
 import main.ability.effects.ReducedEffect;
 import main.ability.effects.ResistibleEffect;
 import main.content.ContentValsManager;
 import main.content.enums.GenericEnums;
+import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref;
@@ -20,9 +21,10 @@ import main.entity.obj.HeroItem;
 import main.entity.obj.Obj;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.log.LogMaster;
+import main.system.entity.CounterMaster;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -90,8 +92,8 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
     }
 
     public ModifyValueEffect(String sparam, MOD code, Formula formula) {
-        if (sparam.contains(StringMaster.BASE_CHAR)) {
-            sparam = sparam.replace(StringMaster.BASE_CHAR, "");
+        if (sparam.contains(Strings.BASE_CHAR)) {
+            sparam = sparam.replace(Strings.BASE_CHAR, "");
             base = true;
         }
         this.sparam = sparam;
@@ -109,6 +111,9 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
         this(sparam, code, new Formula(formula));
     }
 
+    public ModifyValueEffect(String sparam, MOD code, String formula, String max) {
+        this(sparam, code, new Formula(formula), new Formula(max));
+    }
     @OmittedConstructor
     public ModifyValueEffect() {
     }
@@ -118,6 +123,8 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
         this(p, mod, formula);
         setValueOverMax(valueOverMax);
     }
+
+
 
     private static boolean checkPercentOrConst(String percOrConst) {
         return StringMaster.contains(percOrConst, "mod");
@@ -225,23 +232,23 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
     @Override
     public boolean applyThis() {
         if (modString != null) {
-            return EffectFinder.initParamModEffects(modString, ref).apply(ref);
+            return EffectMaster.initParamModEffects(modString, ref).apply(ref);
         }
         if (param == null) {
-            this.param = ContentValsManager.getPARAM(sparam);
-            if (param == null) {
+            if (sparam.contains(Strings.VERTICAL_BAR)) {
+                params = game.getValueManager().getParamsFromContainer(sparam);
+            } else {
+                this.param = ContentValsManager.getPARAM(sparam);
                 if (param == null) {
-                    this.param = ContentValsManager.getMastery(sparam);
+                    if (param == null) {
+                        this.param = ContentValsManager.getMastery(sparam);
+                    }
                 }
-            }
-
-            if (param == null) {
-                if (ContainerUtils.openContainer(sparam, StringMaster.AND_SEPARATOR).size() > 1) {
-                    params = game.getValueManager().getParamsFromContainer(sparam);
-                } else {
+                if (param == null) {
                     params = game.getValueManager().getValueGroupParams(sparam);
                 }
             }
+
 
         }
         Obj obj = ref.getTargetObj();
@@ -256,8 +263,12 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
         Map<PARAMETER, String> map = new HashMap<>();
 
         if (param == null) {
-            if (params == null) { // TODO
-                return new ModifyCounterEffect(sparam, mod_type, formula.toString()).apply(ref);
+            if (params == null) {
+                UnitEnums.COUNTER counter = CounterMaster.getCounter(sparam, false);
+                if (counter == null) {
+                    return false;
+                }
+                return new ModifyCounterEffect(counter, mod_type, formula.toString()).apply(ref);
             }
             for (PARAMETER p : params) {
                 if (p == null) {
@@ -272,9 +283,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
         // TODO how to determined when formula should be statically parsed?
         // what if some part of the formula depends on the target instead?
 
-        boolean result = modify(obj, map);
-
-        return result;
+        return modify(obj, map);
     }
 
     private boolean modify(Obj obj, Map<PARAMETER, String> map) {
@@ -452,9 +461,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
             }
         }
         if (ref.getObj(KEYS.ABILITY) != null) {
-            if (ref.getObj(KEYS.ABILITY) instanceof PassiveAbilityObj) {
-                return true;
-            }
+            return ref.getObj(KEYS.ABILITY) instanceof PassiveAbilityObj;
         }
 
         return false;
@@ -467,10 +474,8 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
 
         if (ref.getActive() != null) {
             if (ref.getObj(KEYS.BUFF) != null || ref.getActive().getRef().getObj(KEYS.BUFF) != null) {
-                if (ref.getActive().equals(ref.getThisObj())
-                 || ref.getObj(KEYS.BUFF).equals(ref.getThisObj())) {
-                    return true; // only if (?) it is a matter of spell-buff
-                }
+                return ref.getActive().equals(ref.getThisObj())
+                        || ref.getObj(KEYS.BUFF).equals(ref.getThisObj()); // only if (?) it is a matter of spell-buff
             }
         }
         // and

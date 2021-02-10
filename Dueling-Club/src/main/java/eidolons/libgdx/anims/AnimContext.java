@@ -12,20 +12,14 @@ import main.game.logic.event.Event;
  * Created by JustMe on 11/9/2017.
  */
 public class AnimContext extends Context {
-    private Coordinates sourceCoordinate;
-    private Coordinates targetCoordinate;
-    private Effect effect;
-    private Event event;
     private boolean attachToNext;
 
     public AnimContext(Obj source, Obj target, Event event) {
         super(source, target);
-        this.event = event;
     }
 
     public AnimContext(Obj source, Obj target, Effect effect) {
         super(source, target);
-        this.effect = effect;
     }
 
     public AnimContext(Ref ref) {
@@ -34,10 +28,12 @@ public class AnimContext extends Context {
 
     public AnimContext(Obj source, Obj target) {
         super(source, target);
+        Coordinates sourceCoordinate;
         if (source != null)
-            this.sourceCoordinate = source.getCoordinates();
+            sourceCoordinate = source.getCoordinates();
+        Coordinates targetCoordinate;
         if (target != null)
-            this.targetCoordinate = target.getCoordinates();
+            targetCoordinate = target.getCoordinates();
 
     }
 

@@ -10,14 +10,14 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
 import eidolons.game.battlecraft.rules.combat.damage.DamageFactory;
 import eidolons.game.battlecraft.rules.combat.misc.KnockdownRule;
 import eidolons.game.battlecraft.rules.mechanics.InterruptRule;
+import eidolons.game.core.master.EffectMaster;
 import eidolons.system.math.roll.RollMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
@@ -88,76 +88,60 @@ public class ForceRule {
     private static int getAttackerWeightModifier(DC_ActiveObj attack, Obj weapon) {
         return MathMaster.applyMods(
                 attack.getOwnerUnit().getIntParam(PARAMS.WEIGHT) +
-                      2*  weapon.getIntParam(PARAMS.WEIGHT)
+                        2 * weapon.getIntParam(PARAMS.WEIGHT)
                 , weapon.getIntParam(PARAMS.FORCE_MOD_SOURCE_WEIGHT),
                 attack.getIntParam(PARAMS.FORCE_MOD_SOURCE_WEIGHT));
     }
 
     private static int getForceFromSpell(DC_ActiveObj spell) {
-        int force =
-                // new Formula(spell.getProp(PROPS.FO)).getInt(ref);
-                spell.getIntParam(PARAMS.FORCE, true) + spell.getOwnerUnit().getIntParam(PARAMS.SPELLPOWER)
-                        * spell.getIntParam(PARAMS.FORCE_SPELLPOWER_MOD);
-        return force;
+        return spell.getIntParam(PARAMS.FORCE, true) + spell.getOwnerUnit().getIntParam(PARAMS.SPELLPOWER)
+                * spell.getIntParam(PARAMS.FORCE_SPELLPOWER_MOD);
     }
 
-    public static void applyForceEffects(DC_ActiveObj action) {
-        // or spell
-        if (!RuleKeeper.isRuleOn(RULE.FORCE)) {
-            return;
-        }
-        int force = getForce(action, true);
-        if (force == 0) {
-            return;
-        }
-        applyForceEffects(force, action);
-    }
-
-    public static void applyForceEffects(int force, DC_ActiveObj action) {
-        if (!(action.getRef().getTargetObj() instanceof Unit))
-            return;
+    public static void applyForceEffects(int force, DC_ActiveObj action, BattleFieldObject target) {
         if (action.isCounterMode())
             return;
-        Unit target = (Unit) action.getRef().getTargetObj();
         BattleFieldObject source = (BattleFieldObject) action.getRef().getSourceObj();
-        Boolean result = null;
+        Boolean result;
         //TODO DEXTERITY ROLL TO AVOID ALL? ROLL MASS
         if (target instanceof Unit) {
-            if (target.getChecker().checkClassification(UnitEnums.CLASSIFICATIONS.WRAITH)
+            if (((Unit) target).                    getChecker().checkClassification(UnitEnums.CLASSIFICATIONS.WRAITH)
                     ||
-                    (target.getChecker().checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL))) {
+                    (((Unit) target).getChecker().checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL))) {
                 return;
             }
+        } else {
+            applyPush(force, action, source, target);
+            return;
         }
 
         if (target.getIntParam(PARAMS.TOTAL_WEIGHT) < getMinWeightKnock(action)) {
-            result = RollMaster.rollForceKnockdown(target, action, force);
+            result = RollMaster.rollForceKnockdown((Unit) target, action, force);
             if (Bools.isFalse(result)) {
                 result = null; //ALWAYS INTERRUPT AT LEAST
             }
         } else if (target.getIntParam(PARAMS.TOTAL_WEIGHT) > getMaxWeightKnock(action)) {
             result = false;
         } else {
-            result = RollMaster.rollForceKnockdown(target, action, force);
+            result = RollMaster.rollForceKnockdown((Unit) target, action, force);
         }
         if (isTestMode()) {
             result = true;
         }
-
         if (result == null) {
-            InterruptRule.interrupt(target);
+            InterruptRule.interrupt((Unit) target);
         } else if (result) {
-            KnockdownRule.knockdown(target);
+            KnockdownRule.knockdown((Unit) target);
         }
 
-    applyPush(force, action, source, target);
-//        if (action.isSpell()) {
-//            applyDamage(force, action, source, target);
-//        }
-}
+        applyPush(force, action, source, target);
+        //        if (action.isSpell()) {
+        //            applyDamage(force, action, source, target);
+        //        }
+    }
 
     private static boolean isTestMode() {
-        return RuleKeeper.isRuleTestOn(RULE.FORCE);
+        return RuleKeeper.isRuleTestOn(RuleEnums.RULE.FORCE);
         // return true;
     }
 
@@ -175,9 +159,9 @@ public class ForceRule {
         return getForceFromAttack(attack);
     }
 
-
+    //DC revamp
     public static void addForceEffects(DC_ActiveObj action) {
-        if (!RuleKeeper.isRuleOn(RULE.FORCE))
+        if (!RuleKeeper.isRuleOn(RuleEnums.RULE.FORCE))
             return;
         if (!isForceEnabled(action)) {
             return;
@@ -185,9 +169,9 @@ public class ForceRule {
         if (!(action.getRef().getTargetObj() instanceof BattleFieldObject)) {
             return;
         }
-//        BattleFieldObject source = action.getOwnerUnit();
-//        BattleFieldObject target = (BattleFieldObject) action.getRef().getTargetObj();
-//        Damage dmg = getDamageObject(action, source, target);
+        //        BattleFieldObject source = action.getOwnerUnit();
+        //        BattleFieldObject target = (BattleFieldObject) action.getRef().getTargetObj();
+        //        Damage dmg = getDamageObject(action, source, target);
         Effect effects = getForceEffects(action);
         if (effects != null) {
             action.addSpecialEffect(
@@ -197,8 +181,8 @@ public class ForceRule {
             SPECIAL_EFFECTS_CASE CASE = action.isSpell() ? SPECIAL_EFFECTS_CASE.SPELL_IMPACT :
                     SPECIAL_EFFECTS_CASE.ON_ATTACK;
             Effect onCase = action.getSpecialEffects().get(CASE);
-            if (onCase !=null ) {
-                List<Effect> force = EffectFinder.getEffectsOfClass(onCase, ForceEffect.class);
+            if (onCase != null) {
+                List<Effect> force = EffectMaster.getEffectsOfClass(onCase, ForceEffect.class);
                 if (onCase instanceof Effects) {
                     for (Effect effect : force) {
                         ((Effects) onCase).remove(effect);
@@ -210,13 +194,8 @@ public class ForceRule {
                 }
             }
 
-            //TODO igg demo hack - make it unique by class then
         }
 
-        //TODO igg demo hack - source of doubling?
-//        if (dmg != null) {
-//            action.addBonusDamage(action.isSpell() ? DAMAGE_CASE.SPELL : DAMAGE_CASE.ATTACK, dmg);
-//        }
 
     }
 
@@ -234,10 +213,7 @@ public class ForceRule {
                 if (spell.isMissile()) {
                     if (spell.getResistanceType() == RESISTANCE_TYPE.REDUCE_DAMAGE) {
                         if (!DamageCalculator.isPeriodic(ref)) {
-                            if (!ref.isTriggered()) {
-                                return true;
-
-                            }
+                            return !ref.isTriggered();
                         }
                     }
                 }
@@ -250,11 +226,11 @@ public class ForceRule {
     private static Effect getForceEffects(DC_ActiveObj action) {
         String force = String.valueOf(getForce(action));
         KnockdownEffect e = new KnockdownEffect(force);
-//        ForcePushEffect e1 = new ForcePushEffect(force);
-//        InterruptionEffect e2 = new InterruptionEffect(force);
+        //        ForcePushEffect e1 = new ForcePushEffect(force);
+        //        InterruptionEffect e2 = new InterruptionEffect(force);
         Effects effects = new Effects();
-//        if ()
-//            effects.add(e);
+        //        if ()
+        //            effects.add(e);
         effects.add(new ForceEffect(force, action.isAttackAny()));
         return effects;
 
@@ -284,7 +260,7 @@ public class ForceRule {
 
 
     public static int getDamage(DC_ActiveObj action, BattleFieldObject attacker, BattleFieldObject attacked) {
-        if (!RuleKeeper.isRuleOn(RULE.FORCE)) {
+        if (!RuleKeeper.isRuleOn(RuleEnums.RULE.FORCE)) {
             return 0;
         }
         int force = getForceFromAttack(action);
@@ -347,19 +323,21 @@ public class ForceRule {
         Ref ref = attack.getRef().getCopy();
         ref.setTarget(target.getId());
         Coordinates o = target.getCoordinates();
-        new MoveEffect("target", new Formula("" + x_displacement), new Formula("" + y_displacement))
-                .apply(ref);
-        distance = o.dst(target.getCoordinates());
+        if (x_displacement > 0 || y_displacement > 0) {
+            new MoveEffect("target", new Formula("" + x_displacement), new Formula("" + y_displacement))
+                    .apply(ref);
+            distance = o.dst(target.getCoordinates());
+        }
         boolean valid = new ClearShotCondition().check(o, target.getCoordinates());
         if (!valid) {
             target.setCoordinates(o);
-            distance=0;
+            distance = 0;
         }
         if (distance == 0) {
-            int damage = 2*getDamage(force, attack, source, target);
+            int damage = 2 * getDamage(force, attack, source, target);
             attack.getGame().getLogManager().log(attack.getName() + "'s FORCE has slammed " +
-                    ref.getTargetObj().getNameIfKnown() + " against an obstacle!"  );
-            new DealDamageEffect(new Formula(""+damage), DAMAGE_TYPE.BLUDGEONING).apply(ref);
+                    ref.getTargetObj().getNameIfKnown() + " against an obstacle!");
+            new DealDamageEffect(new Formula("" + damage), DAMAGE_TYPE.BLUDGEONING).apply(ref);
         } else {
 
             attack.getGame().getLogManager().log(attack.getName() + "'s FORCE has pushed " +
@@ -392,16 +370,16 @@ public class ForceRule {
         ref.setTarget(target.getId());
         attack.getGame().getLogManager().log(attack.getName() + "'s FORCE is dealing " +
                 damage + " damage to " +
-                ref.getTargetObj().getNameIfKnown() );
+                ref.getTargetObj().getNameIfKnown());
         new DealDamageEffect(new Formula(damage + ""), GenericEnums.DAMAGE_TYPE.BLUDGEONING).apply(ref);
     }
 
 
     private static int getPushDistance(int force, BattleFieldObject target) {
         int distance = Math.round(force * PUSH_DISTANCE_COEFFICIENT /
-                (1 + 2*target.getIntParam(PARAMS.TOTAL_WEIGHT)));
+                (1 + 2 * target.getIntParam(PARAMS.TOTAL_WEIGHT)));
         LogMaster.log(1, "getPushDistance = " + force + "/10/"
-                + 2*target.getIntParam(PARAMS.TOTAL_WEIGHT) + " = (max ==2) " + distance);
+                + 2 * target.getIntParam(PARAMS.TOTAL_WEIGHT) + " = (max ==2) " + distance);
         distance = MathMaster.getMinMax(distance, 0, 2);
         return distance;
     }

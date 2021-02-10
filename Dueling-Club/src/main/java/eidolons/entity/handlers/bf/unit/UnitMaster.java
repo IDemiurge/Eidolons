@@ -2,10 +2,12 @@
 package eidolons.entity.handlers.bf.unit;
 
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.game.DC_Game;
 import main.entity.handlers.EntityAnimator;
 import main.entity.handlers.EntityHandler;
 import main.entity.handlers.EntityLogger;
 import main.entity.handlers.EntityMaster;
+import main.game.logic.generic.ActionManager;
 
 /**
  * Created by JustMe on 2/26/2017.
@@ -24,6 +26,16 @@ public class UnitMaster extends EntityMaster<Unit> {
     protected EntityAnimator<Unit> createEntityAnimator() {
 //        return new UnitAnimator(getUnit(), this);
         return null;
+    }
+
+    @Override
+    public ActionManager getActionManager() {
+        return getGame().getActionManager();
+    }
+
+    @Override
+    public DC_Game getGame() {
+        return (DC_Game) super.getGame();
     }
 
     @Override

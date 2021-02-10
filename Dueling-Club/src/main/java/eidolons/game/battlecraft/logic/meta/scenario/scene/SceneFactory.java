@@ -9,13 +9,13 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueView;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.SpeechDataSource;
 import eidolons.game.core.Eidolons;
-import eidolons.game.netherflame.igg.story.brief.BriefScene;
-import eidolons.game.netherflame.igg.story.brief.BriefingData;
-import eidolons.game.netherflame.igg.story.brief.BriefingView;
+import eidolons.game.netherflame.main.story.brief.BriefScene;
+import eidolons.game.netherflame.main.story.brief.BriefingData;
+import eidolons.game.netherflame.main.story.brief.BriefingView;
 import main.data.dialogue.DataString.SPEECH_VALUE;
 import main.data.dialogue.SpeechData;
+import main.system.auxiliary.Refactor;
 import main.system.auxiliary.StringMaster;
-import main.system.util.Refactor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ import java.util.function.Supplier;
  */
 @Deprecated
 public class SceneFactory implements Supplier<List<Scene>> {
-    private String data;
+    private final String data;
     private boolean dialogue;
 
     public SceneFactory(String testData) {

@@ -4,7 +4,7 @@ import eidolons.ability.effects.DC_Effect;
 import eidolons.ability.effects.attachment.AddBuffEffect;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.core.master.EffectMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.content.ContentValsManager;
@@ -41,7 +41,7 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
     protected String objName;
     protected DC_TYPE type;
     protected MOD code = MOD.MODIFY_BY_CONST;
-    protected boolean buff = true;
+    protected boolean buff;
     protected String buffName = "@";
     protected Conditions conditions;
     protected Map<PARAMETER, String> map;
@@ -144,9 +144,9 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
             // modString, PARAMETER.class);
             Effects modEffects = new Effects();
             if (map != null) {
-                EffectFinder.initParamModEffects(modEffects, map, ref);
+                EffectMaster.initParamModEffects(modEffects, map, ref);
             } else if (propMap != null) {
-                EffectFinder.initPropModEffects(modEffects, propMap, ref);
+                EffectMaster.initPropModEffects(modEffects, propMap, ref);
             }
 
             applied = true;

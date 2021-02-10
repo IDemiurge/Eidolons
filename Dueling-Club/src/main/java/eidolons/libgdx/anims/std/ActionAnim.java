@@ -7,11 +7,10 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.AnimData;
-import eidolons.libgdx.anims.construct.AnimConstructor;
+import eidolons.libgdx.anims.AnimEnums;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.bf.grid.cell.GridCellContainer;
 import eidolons.libgdx.screens.ScreenMaster;
-import eidolons.libgdx.texture.TextureCache;
 import main.ability.Ability;
 import main.entity.Entity;
 import main.system.GuiEventManager;
@@ -35,10 +34,11 @@ public class ActionAnim extends Anim {
                       ANIM_MOD[] anim_mods) {
         super(active, animData);
         mods = anim_mods;
-        this.textureSupplier = () -> TextureCache.getOrCreate(imagePath.get());
+        //TODO Anim Review
+        // this.textureSupplier = () -> TextureCache.getOrCreate(imagePath.get());
     }
 
-    public ActionAnim(Entity active, AnimData params, AnimConstructor.ANIM_PART part) {
+    public ActionAnim(Entity active, AnimData params, AnimEnums.ANIM_PART part) {
         super(active, params, part);
     }
 
@@ -92,7 +92,7 @@ public class ActionAnim extends Anim {
     }
 
     public Actor getActor() {
-        return ScreenMaster.getDungeonGrid().getViewMap()
+        return ScreenMaster.getGrid().getViewMap()
          .get(getActive().getOwnerUnit());
     }
 

@@ -1,7 +1,7 @@
 package eidolons.game.module.dungeoncrawl.explore;
 
 import eidolons.ability.conditions.special.RestCondition;
-import eidolons.content.DC_ContentValsManager;
+import eidolons.content.ContentConsts;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
@@ -12,7 +12,6 @@ import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;
 import eidolons.game.battlecraft.rules.round.RoundRule;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.atb.AtbController;
-import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
@@ -25,8 +24,9 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.NumberUtils;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.MathMaster;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -39,20 +39,18 @@ import static main.system.GuiEventType.ACTION_PANEL_UPDATE;
  */
 public class ExplorationTimeMaster extends ExplorationHandler {
     public static final float secondsPerAP = 5f;
-    private static final float REGEN_MODIFIER = 0.2f;
+    private static final float REGEN_MODIFIER = 0.1f;
     private float time = 0;
     private float lastTimeChecked;
     private float round_delta = 0;
     private float ai_delta = 0;
-    private float delta;
     private boolean guiDirtyFlag;
-    private static float defaultSpeed = new Float(OptionsMaster.getGameplayOptions().
-            getIntValue(GAMEPLAY_OPTION.GAME_SPEED)) / 100;
+    private static float defaultSpeed = (float) OptionsMaster.getGameplayOptions().
+            getIntValue(GAMEPLAY_OPTION.GAME_SPEED) / 100;
     private static float speed = defaultSpeed;
-    private float visibilityResetPeriod = 1.25f;
+    private final float visibilityResetPeriod = 1.25f;
     private float visibilityResetTimer = visibilityResetPeriod;
     private float ignore_reset_delta;
-    private float ignore_reset_period = 5.5f;
 
     public static void setDefaultSpeed(float daSpeed) {
         defaultSpeed = daSpeed;
@@ -117,6 +115,9 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 
     }
 
+    public static float getSpeed() {
+        return speed;
+    }
     public Boolean playerRests(float timeInSeconds) {
         return playerWaits(timeInSeconds, true);
     }
@@ -126,11 +127,10 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     public Boolean playerWaits(float timeInSeconds, boolean rest) {
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__ENTER);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__ENTER);
         if (wait(timeInSeconds, rest))
             return false;
-        Boolean result = (Boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.WAIT_COMPLETE);
-        return result;
+        return (Boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.WAIT_COMPLETE);
     }
 
     private boolean wait(float timeInSeconds, boolean rest) {
@@ -186,14 +186,14 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     public void checkTimedEvents() {
-        delta = time - lastTimeChecked;
+        float delta = time - lastTimeChecked;
         if (delta == 0) return;
         lastTimeChecked = time;
         round_delta += delta;
         ai_delta += delta;
         ignore_reset_delta += delta;
 
-    if (!CoreEngine.isActiveTestMode())
+    if (!Flags.isActiveTestMode())
         if (AiBehaviorManager.isNewAiOn()) {
             boolean aiActs = master.getAiMaster().getExploreAiManager().getBehaviorManager().update();
             master.getAiMaster().setAiActs(aiActs);
@@ -206,8 +206,11 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     private void processTimedEffects() {
+        getGame().getMovementManager().checkContinueMove();
         guiDirtyFlag = false;
 
+        float ignore_reset_period = 5.5f;
+        if (isResetIgnoreSetterOn())
         if (ignore_reset_delta> ignore_reset_period) {
             master.getGame().getVisionMaster().getVisionRule().resetIgnore();
             ignore_reset_delta=0;
@@ -237,8 +240,11 @@ public class ExplorationTimeMaster extends ExplorationHandler {
             guiDirtyFlag = false;
         }
 
-        GuiEventManager.trigger(ACTION_PANEL_UPDATE, //igg demo hack
-                new PanelActionsDataSource(Eidolons.getMainHero()));
+        GuiEventManager.trigger(ACTION_PANEL_UPDATE );
+    }
+
+    private boolean isResetIgnoreSetterOn() {
+        return false;
     }
 
     private void checkParamBuffs() {
@@ -260,10 +266,8 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     private float getRoundEffectPeriod() {
-        if (DC_Engine.isAtbMode()) {
-            return 5; //TODO igg demo hack
-        }
-        return 10;
+        //DC Review
+            return 5;
     }
 
     private void processEndOfRoundEffects() {
@@ -298,9 +302,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     private void processCounterRules() {
-        master.getGame().getRules().getDamageRules().forEach(rule -> {
-            rule.newTurn();
-        });
+        master.getGame().getRules().getDamageRules().forEach(DC_CounterRule::newTurn);
         master.getGame().getRules().getCounterRules().forEach(rule -> {
             rule.newTurn(); // ???
             master.getGame().getUnits().forEach(unit -> {
@@ -333,7 +335,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         //TODO
         float last = unit.getAI().getExplorationTimeOfRegenEffects();
         float delta = time - last;
-        for (PARAMETER param : DC_ContentValsManager.REGENERATED_PARAMS) {
+        for (PARAMETER param : ContentConsts.REGENERATED_PARAMS) {
             int value = getParamRestoration(delta, param,
                     unit.getParamFloat(ContentValsManager.getRegenParam(param))
             );
@@ -382,11 +384,11 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     private int getParamRestoration(float delta, PARAMETER param, float modifier) {
-        return Math.round(modifier * delta * getRegenModifier() * getRegenModifier(param) + getRegenBonus(param));
+        return Math.round(modifier * delta * getRegenModifier() * getRegenModifier(param) );
     }
 
     private float getRegenModifier() {
-        if (CoreEngine.isTestingMode())
+        if (CoreEngine.TEST_LAUNCH)
             return REGEN_MODIFIER * 5;
         return REGEN_MODIFIER;
     }
@@ -394,7 +396,6 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     private float getRegenModifier(PARAMETER param) {
         if (param instanceof PARAMS) {
             switch ((PARAMS) param) {
-                case STAMINA:
                 case ESSENCE:
                     return 1f;
                 case FOCUS:
@@ -404,16 +405,6 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         return 1f;
     }
 
-    private float getRegenBonus(PARAMETER param) {
-        if (param instanceof PARAMS) {
-            switch ((PARAMS) param) {
-                case STAMINA:
-                case ESSENCE:
-                    return 1f;
-            }
-        }
-        return 0f;
-    }
 
     public float getTime() {
         return time;
@@ -432,7 +423,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
             return;
         int defaultWaitTime = OptionsMaster.getGameplayOptions().getIntValue(
                 GAMEPLAY_OPTION.DEFAULT_WAIT_TIME);
-        if (CoreEngine.isFastMode()) {
+        if (Flags.isFastMode()) {
             defaultWaitTime *= 100;
         }
         wait(defaultWaitTime, false);

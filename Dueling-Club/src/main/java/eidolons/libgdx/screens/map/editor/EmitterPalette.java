@@ -4,18 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.kotcrab.vis.ui.layout.HorizontalFlowGroup;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TabbedPanel;
-import eidolons.libgdx.particles.util.EmitterMaster;
 import eidolons.libgdx.particles.ParticleEffectX;
+import eidolons.libgdx.particles.util.EmitterMaster;
 import eidolons.libgdx.screens.map.editor.EditorControlPanel.MAP_EDITOR_MOUSE_MODE;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
@@ -84,7 +84,7 @@ public class EmitterPalette extends TabbedPanel {
             boolean bg = presets.get(sub).size() < 55;
             for (File preset : presets.get(sub)) {
                 ValueContainer label = //textButton?
-                 new ValueContainer(new Label(preset.getName(), style));
+                 new ValueContainer(new LabelX(preset.getName(), style));
                 NinePatch patch = NinePatchFactory.getLightPanelFilledSmall();
                 patch.scale(0.7f, 0.7f);
                 if (bg)

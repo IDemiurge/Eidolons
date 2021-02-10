@@ -9,6 +9,7 @@ import eidolons.game.module.herocreator.logic.UnitLevelManager;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.MathMaster;
 
 public class UnitTrainingMaster {
@@ -27,11 +28,13 @@ public class UnitTrainingMaster {
     }
 
     public static void train(Unit unit) {
+        if (CoreEngine.isLevelEditor())
+            return;
         if (CoreEngine.TEST_LAUNCH)
             return;
-        if (CoreEngine.isFullFastMode())
+        if (Flags.isFullFastMode())
             return;
-        if (CoreEngine.isFastMode()) {
+        if (Flags.isFastMode()) {
             if (isSpellsOn()) {
                 try {
                     UnitLibrary.learnSpellsForUnit(unit);

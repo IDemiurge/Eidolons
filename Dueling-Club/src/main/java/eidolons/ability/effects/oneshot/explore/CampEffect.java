@@ -52,8 +52,6 @@ public class CampEffect extends DC_Effect {
          "70", true));
         restorationEffects.add(new ModifyValueEffect(PARAMS.C_ESSENCE, MOD.SET_TO_PERCENTAGE,
          "100", true));
-        restorationEffects.add(new ModifyValueEffect(PARAMS.C_STAMINA, MOD.SET_TO_PERCENTAGE,
-         "125", true));
         restorationEffects.add(new ModifyValueEffect(PARAMS.C_TOUGHNESS, MOD.SET_TO_PERCENTAGE,
          "100", true));
         for (Unit sub : allies) {

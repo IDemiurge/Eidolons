@@ -4,7 +4,7 @@ import eidolons.ability.effects.DC_Effect;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.core.master.EffectMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.elements.conditions.Condition;
@@ -18,8 +18,7 @@ import main.system.datatypes.DequeImpl;
 import main.system.math.Formula;
 import main.system.math.PositionMaster;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Collection;
 
 public class SpectrumEffect extends DC_Effect {
     protected static final String X = "x";
@@ -38,7 +37,7 @@ public class SpectrumEffect extends DC_Effect {
     int defaultSidePenalty = 1;
     // String reductionForDistance = "(x)/distance+sqrt(x)";
     String reductionForDistance = "-(x)/10*(2+distance*1.5)"; // *sqrt(distance)
-    private Set<Coordinates> cache;
+    private Collection<Coordinates> cached;
 
     public SpectrumEffect(Effect effects, String rangeFormula, Boolean circular) {
         if (effects != null)
@@ -73,7 +72,7 @@ public class SpectrumEffect extends DC_Effect {
     }
 
     public void resetCache() {
-        cache = null;
+        cached = null;
     }
 
     public boolean applyThis() {
@@ -101,14 +100,14 @@ public class SpectrumEffect extends DC_Effect {
         } else {
             sidePenalty = 1;
         }
-        Set<Coordinates> coordinates = null;
+        Collection<Coordinates> coordinates = null;
         if (isCoordinatesCached()) {
-            coordinates = cache;
+            coordinates = cached;
         }
         if (coordinates == null)
             coordinates =
              getCoordinates(sidePenalty, backwardRange, facing);
-        cache = coordinates;
+        cached = coordinates;
 
 
         //        main.system.auxiliary.log.LogMaster.log(1, this + " applied on " + coordinates);
@@ -125,8 +124,7 @@ public class SpectrumEffect extends DC_Effect {
             // DC_Cell))
             // continue;
             DequeImpl<? extends Obj> objects = new DequeImpl<>(getGame().getObjectsOnCoordinate(
-               c, false, true, applyThrough));
-
+               c, false ));
             if (applyThrough) {
                 DC_Cell cell = getGame().getCellByCoordinate(c);
                 if (cell != null) {
@@ -186,11 +184,11 @@ public class SpectrumEffect extends DC_Effect {
         return false;
     }
 
-    private Set<Coordinates> getCoordinates(Integer sidePenalty, Integer backwardRange, FACING_DIRECTION facing) {
-        return new HashSet<>(getGame().getVisionMaster().getSightMaster()
+    private Collection<Coordinates> getCoordinates(Integer sidePenalty, Integer backwardRange, FACING_DIRECTION facing) {
+        return  getGame().getVisionMaster().getSightMaster()
          .getSpectrumCoordinates(
           range, sidePenalty, backwardRange, bfObj,
-          vision, facing));
+          vision, facing);
     }
 
     // public Object getAppliedEffects() {
@@ -199,7 +197,7 @@ public class SpectrumEffect extends DC_Effect {
     // }
     protected void initEffects() {
         ref.setID(KEYS.INFO, ref.getId(KEYS.ACTIVE));
-        effects = EffectFinder.initParamModEffects(paramString, ref);
+        effects = EffectMaster.initParamModEffects(paramString, ref);
     }
 
     public String getRangeFormula() {
@@ -242,7 +240,7 @@ public class SpectrumEffect extends DC_Effect {
         this.reductionForDistanceModifier = reductionForDistance;
     }
 
-    public Set<Coordinates> getCache() {
-        return cache;
+    public Collection<Coordinates> getCache() {
+        return cached;
     }
 }

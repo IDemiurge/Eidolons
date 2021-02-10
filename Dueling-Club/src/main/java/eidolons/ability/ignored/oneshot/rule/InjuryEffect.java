@@ -3,20 +3,18 @@ package eidolons.ability.ignored.oneshot.rule;
 import eidolons.ability.effects.DC_Effect;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.core.master.EffectMaster;
 import main.ability.effects.Effects;
 import main.ability.effects.OneshotEffect;
 import main.content.CONTENT_CONSTS2.INJURY;
 import main.content.CONTENT_CONSTS2.INJURY_TYPE;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.util.Untested;
 
-@Untested
+//Untested
 public class InjuryEffect extends DC_Effect implements OneshotEffect {
 
     private INJURY template;
-    private boolean random;
     private boolean old;
     private INJURY_TYPE type;
 
@@ -26,7 +24,7 @@ public class InjuryEffect extends DC_Effect implements OneshotEffect {
     }
 
     public InjuryEffect() {
-        random = true;
+        boolean random = true;
     }
 
     public InjuryEffect(INJURY template, Boolean old) {
@@ -55,8 +53,8 @@ public class InjuryEffect extends DC_Effect implements OneshotEffect {
         }
         // preCheck applicable
         getTarget().addProperty(PROPS.INJURIES,
-         StringMaster.getWellFormattedString(injury.toString()));
-        Effects effects = EffectFinder.initParamModEffects(injury.getModString(), ref);
+         StringMaster.format(injury.toString()));
+        Effects effects = EffectMaster.initParamModEffects(injury.getModString(), ref);
         // TODO ++ PROPS
         if (mod != 100) {
             effects.appendFormulaByMod(mod);

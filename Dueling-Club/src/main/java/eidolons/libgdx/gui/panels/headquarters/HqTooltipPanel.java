@@ -1,7 +1,10 @@
 package eidolons.libgdx.gui.panels.headquarters;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
@@ -122,10 +125,7 @@ public class HqTooltipPanel extends TablePanelX {
 //        tooltip.pack();
         tooltip.removeBackground();
 
-        if (inner.getHeight() < 300) {
-            scrollPane.setForceScroll(false, false);
-        } else
-            scrollPane.setForceScroll(false, true);
+        scrollPane.setForceScroll(false, !(inner.getHeight() < 300));
 
         scrollPane.setScrollY(inner.getHeight() / 4 + RandomWizard.getRandomInt(12 + (int)
                 (tooltip.getHeight() / 3)));
@@ -152,7 +152,7 @@ public class HqTooltipPanel extends TablePanelX {
 //                        (inner.getHeight() / 3)));
                 scrollPane.updateVisualScroll();
 //            }
-            scrollPane.layout(); //TODO igg demo fix good that it works, but why do I have to do this?
+            scrollPane.layout(); //TODO Gdx Review - good that it works, but why do I have to do this?
         }
         }
 

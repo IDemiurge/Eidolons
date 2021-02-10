@@ -12,9 +12,9 @@ import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.attach.DC_BuffObj;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.GameFactory;
 import eidolons.game.core.game.GameFactory.GAME_SUBCLASS;
@@ -36,12 +36,12 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
+import main.entity.type.TypeBuilder;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.data.DataUnitFactory;
-import main.system.launch.TypeBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -96,7 +96,7 @@ public class Loader {
 
         List<String> objectNodes = XmlNodeMaster.getNodeList(
          XmlNodeMaster.findNode(saveData, Saver.OBJ_NODE)).stream().map
-         (node -> XML_Converter.getStringFromXML(node)).collect(Collectors.toList());
+         (XML_Converter::getStringFromXML).collect(Collectors.toList());
         List<Obj> objects = createObjects(objectNodes);
         initializeObjects(objects);
     }
@@ -170,7 +170,7 @@ public class Loader {
                          substring.split("=")[1]);
                     }
                 String ownerName = null;
-                DC_Player owner = game.getBattleMaster().getPlayerManager().
+                DC_Player owner = game.getMissionMaster().getPlayerManager().
                  getPlayer(ownerName); //property?
                 if (owner == null) {
                     owner = DC_Player.NEUTRAL;
@@ -180,7 +180,7 @@ public class Loader {
 
                 object.getPropMap().putAll(props);
                 object.getParamMap().putAll(params);
-                object.setId(NumberUtils.getInteger(props.get(G_PROPS.ID)));
+                object.setId(NumberUtils.getIntParse(props.get(G_PROPS.ID)));
                 objects.add(object);
                 init(object);
 

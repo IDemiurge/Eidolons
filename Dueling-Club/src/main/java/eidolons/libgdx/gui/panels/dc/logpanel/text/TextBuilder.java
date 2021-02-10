@@ -139,8 +139,8 @@ public class TextBuilder {
     }
 
     public static String wrapInColor(Color color, String s) {
-        return StringMaster.wrapInBraces("#" + GdxColorMaster.toStringForLog(color))
-                + s + StringMaster.wrapInBraces("");
+        return StringMaster.wrapInBrackets("#" + GdxColorMaster.toStringForLog(color))
+                + s + StringMaster.wrapInBrackets("");
     }
 
     public void startColor(String colorRGBA) {

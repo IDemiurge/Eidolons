@@ -1,14 +1,15 @@
 package eidolons.libgdx.anims.anim3d;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.anim3d.AnimMaster3d.PROJECTION;
-import eidolons.libgdx.anims.anim3d.AnimMaster3d.WEAPON_ANIM_CASE;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
+import eidolons.libgdx.assets.AssetEnums;
+import eidolons.libgdx.assets.AssetEnums.PROJECTION;
+import eidolons.libgdx.assets.AssetEnums.WEAPON_ANIM_CASE;
+import eidolons.libgdx.assets.Atlases;
 import main.game.bf.Coordinates;
 
 /**
@@ -36,8 +37,8 @@ public class Ready3dAnim extends Weapon3dAnim {
         main.system.auxiliary.log.LogMaster.log(1, this + " projection : " + projection);
         sprite = projectionsMap.get(projection);
         if (sprite == null)
-            sprite = AnimMaster3d.getSpriteForAction(getDuration(),
-             getActive(),  WEAPON_ANIM_CASE.READY, projection);
+            sprite = Atlases.getSpriteForAction(getDuration(),
+             getActive(),  AssetEnums.WEAPON_ANIM_CASE.READY, projection);
 
         if (sprite == null)
             main.system.auxiliary.log.LogMaster.log(1, this + " null sprite  ");
@@ -46,11 +47,6 @@ public class Ready3dAnim extends Weapon3dAnim {
 
         projectionsMap.put(projection, sprite);
         return sprite;
-    }
-
-    @Override
-    protected Texture getTexture() {
-        return null;
     }
 
     @Override
@@ -112,6 +108,6 @@ public class Ready3dAnim extends Weapon3dAnim {
 
     @Override
     protected WEAPON_ANIM_CASE getCase() {
-        return WEAPON_ANIM_CASE.READY;
+        return AssetEnums.WEAPON_ANIM_CASE.READY;
     }
 }

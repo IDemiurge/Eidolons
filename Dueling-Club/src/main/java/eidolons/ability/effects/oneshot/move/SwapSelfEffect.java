@@ -19,11 +19,10 @@ public class SwapSelfEffect extends SelfMoveEffect {
             main.system.ExceptionMaster.printStackTrace(e);
             return false;
         }
-        boolean result = game.getMovementManager().move(ref.getSourceObj(), c,
+        //      TODO   getGame() .getGrid()
+//         .addUnitObj(ref.getTargetObj());
+        return game.getMovementManager().move(ref.getSourceObj(), c,
          free, MOVE_MODIFIER.DISPLACEMENT, ref);
-        getGame() .getGrid()
-         .addUnitObj(ref.getTargetObj());
-        return result;
     }
 
     @Override

@@ -3,12 +3,10 @@ package eidolons.libgdx.bf;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.libgdx.GdxColorMaster;
-import eidolons.libgdx.anims.ActionMaster;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.content.enums.GenericEnums;
@@ -17,19 +15,96 @@ import main.content.enums.GenericEnums;
  * Created by JustMe on 8/17/2017.
  */
 public abstract class SuperActor extends Fluctuating implements
-       CachedIgnoreActor, Borderable {
+        CachedIgnoreActor, TeamColored {
     protected Image border = null;
-    protected TextureRegion borderTexture;
     protected boolean teamColorBorder;
     protected Color teamColor;
     protected float scaledWidth = 1;
     protected float scaledHeight = 1;
     protected boolean hovered;
     protected boolean active;
-    protected int blendDstFunc, blendSrcFunc, blendDstFuncAlpha, blendSrcFuncAlpha;
+    //    protected int blendDstFunc, blendSrcFunc, blendDstFuncAlpha, blendSrcFuncAlpha;
     protected boolean withinCamera;
     protected Runnable actionManger;
     private boolean hoverResponsive;
+
+
+    // private boolean customDrawParams;
+    // private boolean normalDrawDisabled;
+    protected float screenOverlay;
+    protected Color customColor;
+    private boolean screenEnabled;
+
+
+    @Override
+    public void act(float delta) {
+        //        if (isIgnored())
+        //            return; do it in implementations!
+        // if (isTransform()) {
+        //     if (isTransformDisabled())
+        //         setTransform(false);
+        // } else {
+        //     if (!isTransformDisabled())
+        //         setTransform(true);
+        // }
+        super.act(delta);
+        alphaFluctuation(delta);
+
+        if (actionManger != null) {
+            actionManger.run();
+        }
+    }
+
+    @Override
+    public void setFluctuatingAlphaPeriod(int fluctuatingAlphaPeriod) {
+        super.setFluctuatingAlphaPeriod(fluctuatingAlphaPeriod);
+
+    }
+
+    @Override
+    protected void sizeChanged() {
+        super.sizeChanged();
+        if (getScaledHeight()!=1) {
+            setTransform(true);
+        } else
+        if (getScaledWidth()!=1) {
+            setTransform(true);
+        } else
+            setTransform(getRotation()%360!=0);
+    }
+
+    public float getScreenOverlay() {
+        return screenOverlay;
+    }
+
+    public void setScreenOverlay(float screenOverlay) {
+        this.screenOverlay = screenOverlay;
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        //     TODO EA Check
+        //      if (!customDrawParams)
+        //            super.draw(batch, parentAlpha);
+        //        else {
+        //            if (!normalDrawDisabled)
+        if (!screenEnabled)
+            super.draw(batch, parentAlpha);
+        else if (screenOverlay > 0.01f) {
+            // Color c = getColor();
+            // if (customColor != null) {
+            //     setColor(customColor);
+            // }
+            float a = getColor().a;
+            getColor().a = screenOverlay;
+            // ((CustomSpriteBatch) batch).setBlending(GenericEnums.BLENDING.SCREEN); //could do other blends too
+            super.draw(batch, parentAlpha);
+            getColor().a = a;
+            // ((CustomSpriteBatch) batch).resetBlending();
+            // setColor(c);
+        }
+        //        }
+    }
 
     public SuperActor() {
     }
@@ -38,34 +113,6 @@ public abstract class SuperActor extends Fluctuating implements
         setAlphaTemplate(alphaTemplate);
     }
 
-    @Override
-    public TextureRegion getBorder() {
-        return borderTexture;
-    }
-
-    @Override
-    public void setBorder(TextureRegion texture) {
-
-        //        alphaGrowing = false;
-        //        fluctuatingAlpha = 0.75f;
-
-        if (texture == null) {
-            ActionMaster.addFadeOutAction(border, 0.65f, true);
-            //            border = null;
-            borderTexture = null;
-            setTeamColorBorder(false);
-        } else {
-            if (border != null) {
-                removeActor(border);
-            }
-            addActor(border = new Image(texture));
-            border.getColor().a = 0;
-            ActionMaster.addFadeInAction(border, 0.65f);
-
-            borderTexture = texture;
-            updateBorderSize();
-        }
-    }
 
     protected void alphaFluctuation(float delta) {
         if (isTeamColorBorder())
@@ -102,25 +149,25 @@ public abstract class SuperActor extends Fluctuating implements
     protected boolean isIgnored() {
         if (!isVisible())
             return true;
-        //        if (getColor().a == 0)
-        //            return true; TODO why was this here?.. not to draw?
         return !isWithinCamera();
     }
 
     public boolean isWithinCameraCheck() {
         return getController().isWithinCamera(this);
     }
-        public boolean isWithinCamera() {
 
-        if (!InputController.cameraMoved )
-            return withinCamera;
+    public boolean isWithinCamera() {
+
         if (isCachedPosition()) {
+            if (!InputController.cameraMoved)
+                return withinCamera;
             withinCamera = isWithinCameraCheck();
-            return withinCamera;
+                 return withinCamera;
         }
         return isWithinCameraCheck();
 
     }
+
     @Override
     public boolean isCachedPosition() {
         return false;
@@ -132,46 +179,28 @@ public abstract class SuperActor extends Fluctuating implements
 
     @Override
     public void addAction(Action action) {
-        if (getActions().size>50) {
-            getActions().clear(); //TODO igg demo hack
+        if (getActions().size > 50) {
+            getActions().clear(); //TODO EA check hack
         }
         if (!getActions().contains(action, true))
             super.addAction(action);
     }
 
-    protected void restoreBlendingFuncData(Batch batch) {
-        batch.setBlendFunctionSeparate(
-         blendSrcFunc,
-         blendDstFunc,
-         blendSrcFuncAlpha,
-         blendDstFuncAlpha);
-    }
+    //    protected void restoreBlendingFuncData(Batch batch) {
+    //        batch.setBlendFunctionSeparate(
+    //         blendSrcFunc,
+    //         blendDstFunc,
+    //         blendSrcFuncAlpha,
+    //         blendDstFuncAlpha);
+    //    }
+    //
+    //    protected void storeBlendingFuncData(Batch batch) {
+    //        blendDstFunc = batch.getBlendDstFunc();
+    //        blendSrcFunc = batch.getBlendSrcFunc();
+    //        blendDstFuncAlpha = batch.getBlendDstFuncAlpha();
+    //        blendSrcFuncAlpha = batch.getBlendSrcFuncAlpha();
+    //    }
 
-    protected void storeBlendingFuncData(Batch batch) {
-        blendDstFunc = batch.getBlendDstFunc();
-        blendSrcFunc = batch.getBlendSrcFunc();
-        blendDstFuncAlpha = batch.getBlendDstFuncAlpha();
-        blendSrcFuncAlpha = batch.getBlendSrcFuncAlpha();
-    }
-
-    @Override
-    public void act(float delta) {
-        //        if (isIgnored())
-        //            return; do it in implementations!
-        if (isTransform()) {
-            if (isTransformDisabled())
-                setTransform(false);
-        } else {
-            if (!isTransformDisabled())
-                setTransform(true);
-        }
-        super.act(delta);
-        alphaFluctuation(delta);
-
-        if (actionManger != null) {
-            actionManger.run();
-        }
-    }
 
     public void setActionManger(Runnable actionManger) {
         this.actionManger = actionManger;
@@ -229,8 +258,6 @@ public abstract class SuperActor extends Fluctuating implements
     }
 
     public boolean isActive() {
-        if (active)
-            return active;
         return active;
     }
 
@@ -244,6 +271,10 @@ public abstract class SuperActor extends Fluctuating implements
 
     public void setHoverResponsive(boolean hoverResponsive) {
         this.hoverResponsive = hoverResponsive;
+    }
+
+    public void setScreenEnabled(boolean screenEnabled) {
+        this.screenEnabled = screenEnabled;
     }
 
 }

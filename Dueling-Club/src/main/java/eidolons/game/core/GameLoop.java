@@ -4,12 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.combat.misc.ChargeRule;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
@@ -36,7 +36,8 @@ import main.system.auxiliary.log.SpecialLogger;
 import main.system.auxiliary.secondary.Bools;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.launch.Flags;
+import main.system.sound.AudioEnums;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -50,7 +51,7 @@ import static main.system.GuiEventType.ACTIVE_UNIT_SELECTED;
 /**
  * Created by JustMe on 3/23/2017.
  */
-public class GameLoop {
+public abstract class GameLoop {
 
     protected Lock lock = new ReentrantLock();
     protected Condition waiting = lock.newCondition();
@@ -72,6 +73,8 @@ public class GameLoop {
     private boolean firstActionDone;
     private DC_ActiveObj lastAction;
     private DC_ActiveObj lastActionEvent;
+    private boolean logicWaiting;
+    private boolean visualLock;
 
     public GameLoop(DC_Game game) {
         this.game = game;
@@ -115,7 +118,7 @@ public class GameLoop {
         setExited(false);
 
         if (game.getLoop() == this)
-            SpecialLogger.getInstance().appendSpecialLog(
+            SpecialLogger.getInstance().appendAnalyticsLog(
                     SPECIAL_LOG.EXCEPTIONS, "game loop exits without new loop running!");
     }
 
@@ -128,9 +131,7 @@ public class GameLoop {
                 ExceptionMaster.printStackTrace(e);
             }
         }
-        thread = new Thread(() -> {
-            start();
-        }, getThreadName());
+        thread = new Thread(this::start, getThreadName());
 
         thread.start();
         LogMaster.log(1, "Game Loop started " + this);
@@ -146,6 +147,11 @@ public class GameLoop {
     protected boolean roundLoop() {
         game.getStateManager().newRound();
         while (true) {
+            if (isVisualLock()){
+                setLogicWaiting(true);
+                lock();
+            }
+            setVisualLock(true);
             if (stopped) {
                 lock();
             }
@@ -173,20 +179,20 @@ public class GameLoop {
                 break;
             }
             if (!started) {
-                VisionManager.refresh();
+                VisionHelper.refresh();
                 started = true;
             }
-            if (RuleKeeper.isRuleOn(RuleKeeper.RULE.INTENTS))
-            try {
-                getGame().getAiManager().getActionManager().initIntents();
-            } catch (Exception e) {
-                ExceptionMaster.printStackTrace(e);
-            }
-            Chronos.mark(activeUnit+"'s action");
+            if (RuleKeeper.isRuleOn(RuleEnums.RULE.INTENTS))
+                try {
+                    getGame().getAiManager().getActionManager().initIntents();
+                } catch (Exception e) {
+                    ExceptionMaster.printStackTrace(e);
+                }
+            Chronos.mark(activeUnit + "'s action");
             result = makeAction();
-            Chronos.logTimeElapsedForMark(activeUnit+"'s action");
+            Chronos.logTimeElapsedForMark(activeUnit + "'s action");
             if (!aftermath)
-                if (game.getBattleMaster().getOutcomeManager().checkOutcomeClear()) {
+                if (game.getMissionMaster().getOutcomeManager().checkOutcomeClear()) {
                     return false;
                 }
             if (result == null) {
@@ -211,12 +217,12 @@ public class GameLoop {
     protected Boolean makeAction() {
         if (exited)
             return true;
-//TODO refactor - extract
+        //TODO refactor - extract
         if (!game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.UNIT_TURN_READY, getActiveUnit().getRef()))) {
             return false;
         }
-        Boolean result = null;
-        ActionInput action = null;
+        Boolean result;
+        ActionInput action;
         boolean channeling = false;
         if (!playerActionQueue.isEmpty()) {
             action = (playerActionQueue.removeLast());
@@ -225,21 +231,22 @@ public class GameLoop {
             channeling = true;
         } else if (activeUnit.isAiControlled()) {
             //SHOWCASE SECURITY
-//            try {
+            //            try {
+            GuiEventManager.trigger(GuiEventType.WAITING_ON);
             action = (waitForAI());
             AI_Manager.setOff(false);
-
             waitForAnimations(action);
+            GuiEventManager.trigger(GuiEventType.WAITING_OFF);
 
-//            } catch (Exception e) {
-//                AI_Manager.setOff(true);
-//                if (!aiFailNotified) {
-//                    main.system.auxiliary.log.LogMaster.log(1, ("AI failed!!!!"));
-//                    aiFailNotified = true;
-//                    return false;
-//                }
-//                main.system.ExceptionMaster.printStackTrace(e);
-//            }
+            //            } catch (Exception e) {
+            //                AI_Manager.setOff(true);
+            //                if (!aiFailNotified) {
+            //                    main.system.auxiliary.log.LogMaster.log(1, ("AI failed!!!!"));
+            //                    aiFailNotified = true;
+            //                    return false;
+            //                }
+            //                main.system.ExceptionMaster.printStackTrace(e);
+            //            }
         } else {
             action = (waitForPlayerInput());
         }
@@ -249,7 +256,7 @@ public class GameLoop {
         result =
                 activateAction(action);
 
-//        waitForAnimations(action);
+        //        waitForAnimations(action);
         if (exited)
             return true;
         waitForPause();
@@ -296,14 +303,11 @@ public class GameLoop {
     }
 
     protected Boolean checkEndRound(ActionInput input) {
-        int timeCost = input.getAction().getHandler().getTimeCost();
-        Boolean endTurn = getGame().getRules().getTimeRule().
-                actionComplete(input.getAction(), timeCost);
-        if (!endTurn) {
-            game.getManager().reset();
-            if (ChargeRule.checkRetainUnitTurn(input.getAction())) {
-                endTurn = null;
-            }
+        Boolean endTurn = false;
+
+        game.getManager().reset();
+        if (ChargeRule.checkRetainUnitTurn(input.getAction())) {
+            endTurn = null;
         }
 
         if (Bools.isTrue(endTurn)) {
@@ -335,7 +339,7 @@ public class GameLoop {
         if (aiAction == null)
             failed = true;
         else if (!aiAction.getActive().isChanneling())
-            if (!aiAction.getSource().isBoss() || EidolonsGame.DUEL || aiAction.isOrder()) //TODO boss fix
+            if ( aiAction.isOrder()) //TODO AI check
                 if (!aiAction.canBeTargeted()) {
                     {
                         LogMaster.log(1, "**************** AI CANNOT TARGET THE activatingAction!!! " + activatingAction);
@@ -372,16 +376,16 @@ public class GameLoop {
     }
 
     public void setPaused(boolean paused, boolean logged, boolean manual) {
-        if (!ExplorationMaster.isExplorationOn())
-        {
-            EUtils.showInfoText("Cannot pause in combat");
-            return;
-        }
+        // if (!ExplorationMaster.isExplorationOn())
+        // {
+        //     EUtils.showInfoText("Cannot pause in combat");
+        //     return;
+        // }
         if (!game.isStarted()) {
             return;
         }
         if (logged)
-            if (CoreEngine.isIDE())
+            if (Flags.isIDE())
                 game.getLogManager().log(paused ? "Game paused" : "Game resumed");
         if (paused)
             GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT, "Game Paused");
@@ -391,9 +395,9 @@ public class GameLoop {
         Fluctuating.setAlphaFluctuationOn(!paused);
         int vol = manual ? 100 : 50;
         if (paused) {
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__PAUSE, vol, 0);
+            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__PAUSE, vol, 0);
         } else {
-            DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__RESUME, vol, 0);
+            DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__RESUME, vol, 0);
             WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_RESUMED, true);
         }
     }
@@ -403,7 +407,13 @@ public class GameLoop {
         playerActionQueue.add(actionInput);
     }
 
-    public void actionInput(ActionInput actionInput) {
+    public  void actionInput(ActionInput actionInput) {
+    }
+    public void actionInput(ActionInput actionInput, boolean wait) {
+    }
+    public void actionInput_(ActionInput actionInput) {
+    }
+    public void actionInputManual(ActionInput actionInput) {
         if (AI_Manager.isRunning())
             EUtils.showInfoText(RandomWizard.random() ? "The enemy has the initiative!" : "The enemy has initiative...");
         if (isPaused()) {
@@ -444,9 +454,9 @@ public class GameLoop {
                 return false;
         }
         Coordinates c = game.getPlayer(true).getHeroObj().getCoordinates();
-        Location location = (Location) game.getDungeonMaster().getDungeonWrapper();
-//        game.getDungeonMaster().getDungeonLevel().getExitCoordinates()
-//        IGG_XmlMaster.getEntrancesData()
+        Location location = game.getDungeonMaster().getFloorWrapper();
+        //        game.getDungeonMaster().getDungeonLevel().getExitCoordinates()
+        //        IGG_XmlMaster.getEntrancesData()
 
 
         if (location.getMainExit() != null)
@@ -454,9 +464,9 @@ public class GameLoop {
                 //check party
                 return true;
             }
-        if (CoreEngine.isIDE())
+        if (Flags.isIDE())
             if (!Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT))
-                if (game.isDebugMode() || (CoreEngine.isLevelTestMode() && !Eidolons.getMainHero().getLastCoordinates().equals(c)))
+                if (game.isDebugMode() || (Flags.isLevelTestMode() && !Eidolons.getMainHero().getLastCoordinates().equals(c)))
                     if (location.getMainEntrance() != null)
                         return location.getMainEntrance().getCoordinates().equals(c);
         return false;
@@ -490,7 +500,7 @@ public class GameLoop {
             if (this instanceof ExploreGameLoop) {
 
             } else {
-                actionInput(null);
+                actionInputManual(null);
             }
         }
     }
@@ -580,4 +590,24 @@ public class GameLoop {
     public DC_ActiveObj getLastActionEvent() {
         return lastActionEvent;
     }
+
+    public boolean isLogicWaiting() {
+        return logicWaiting;
+    }
+
+    public void setLogicWaiting(boolean logicWaiting) {
+        this.logicWaiting = logicWaiting;
+    }
+    public boolean isVisualLock() {
+        return visualLock;
+    }
+
+    public void setVisualLock(boolean visualLock) {
+        this.visualLock = visualLock;
+        if (!visualLock){
+            if (isLogicWaiting())
+                signal();
+        }
+    }
+
 }

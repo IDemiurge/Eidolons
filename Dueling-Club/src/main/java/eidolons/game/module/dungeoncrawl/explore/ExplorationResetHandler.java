@@ -26,12 +26,12 @@ public class ExplorationResetHandler extends ExplorationHandler {
     }
 
     public void resetAll() {
-        master.getGame().getMaster().clearCaches();
+        master.getGame().getObjMaster().clearCaches();
 
 //        master.getGame().getStateManager().checkTriggers();
 
         //position-based effects?
-        master.getGame().getRules().getIlluminationRule().resetIllumination();
+        master.getGame().getVisionMaster().getIllumination().removeIllumination();
 //        IlluminationRule.applyLightEmission(master.game);
 
 //        checkCounterRules();
@@ -67,10 +67,7 @@ public class ExplorationResetHandler extends ExplorationHandler {
                 unit.getCoordinates());
         //TODO visible?
         //stealth: when is *that* check made?
-        if (distance > enemy.getSightRangeTowards(unit)) {
-            return false;
-        }
-        return true;
+        return !(distance > enemy.getSightRangeTowards(unit));
     }
 
     public boolean isResetNotRequired() {

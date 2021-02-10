@@ -4,11 +4,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.ScrollPanel;
 import eidolons.libgdx.gui.panels.TabbedPanel;
+import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.map.editor.EditorControlPanel.MAP_EDITOR_MOUSE_MODE;
 import eidolons.libgdx.screens.map.editor.EditorInfoPanel.EditorInfoTab;
 import eidolons.libgdx.screens.map.editor.EditorPalette.EDITOR_PALETTE;
@@ -28,7 +28,6 @@ import java.util.Map;
  */
 public class EditorInfoPanel extends TabbedPanel<EditorInfoTab> {
     Map<Object, Actor> elementMap = new HashMap<>();
-    private Actor selected;
 
     public EditorInfoPanel() {
         init();
@@ -100,7 +99,6 @@ public class EditorInfoPanel extends TabbedPanel<EditorInfoTab> {
     }
 
     private void selected(Object o, Actor element_) {
-        selected = element_;
     }
 
     //centerOnSelected

@@ -1,8 +1,7 @@
 package main.game.bf.directions;
 
-/**
- * Created by Giskard on 6/9/2018.
- */
+import main.system.auxiliary.EnumMaster;
+
 public enum DIRECTION {
     UP(false, 90, true, null, false),
     DOWN(false, 270, true, null, true),
@@ -25,7 +24,7 @@ public enum DIRECTION {
     };
     public Boolean growX;
     public Boolean growY;
-    private boolean vertical;
+    private final boolean vertical;
     private boolean diagonal;
     private int degrees;
 
@@ -36,6 +35,10 @@ public enum DIRECTION {
         this.growY = growY;
         this.diagonal = diagonal;
         this.degrees = degrees;
+    }
+
+    public static DIRECTION get(String val) {
+      return new EnumMaster<DIRECTION>().retrieveEnumConst(DIRECTION.class, val);
     }
 
     public DIRECTION getXDirection() {

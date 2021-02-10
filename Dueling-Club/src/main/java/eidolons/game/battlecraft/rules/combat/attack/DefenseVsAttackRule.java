@@ -4,8 +4,9 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.RuleEnums;
+import eidolons.game.battlecraft.rules.RuleEnums.RULE;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.action.WatchRule;
 import eidolons.game.battlecraft.rules.perk.FlyingRule;
 import eidolons.game.core.EUtils;
@@ -212,7 +213,7 @@ public class DefenseVsAttackRule {
 
         chance = Math.min(100, chance);
         if (action.getGame().getCombatMaster().isChancesOff()) {
-            RULE rule = (critOrDodge) ? RULE.CRITICAL_ATTACK : RULE.DODGE;
+            RULE rule = (critOrDodge) ? RuleEnums.RULE.CRITICAL_ATTACK : RuleEnums.RULE.DODGE;
             if (RuleKeeper.isRuleTestOn(rule) || chance > 50)
                 chance = 100;
             else chance = 0;
@@ -234,18 +235,18 @@ public class DefenseVsAttackRule {
             attack += -defense;
             defense = 1;
         }
-        float advantage = new Float(new Float(attack) / new Float(defense));
+        float advantage = (float) attack / (float) defense;
         if (Math.abs(advantage) < 1) {
-            advantage = new Float(new Float(defense) / new Float(attack));
+            advantage = (float) defense / (float) attack;
         }
         Float chance;
         if (crit) {
-            chance = new Float(Math.min(DC_Formulas.ATTACK_PROPORTION_CRIT_MAX, Math
-                    .sqrt(DC_Formulas.ATTACK_PROPORTION_CRIT_SQRT_BASE_MULTIPLIER * advantage)));
+            chance = (float) Math.min(DC_Formulas.ATTACK_PROPORTION_CRIT_MAX, Math
+                    .sqrt(DC_Formulas.ATTACK_PROPORTION_CRIT_SQRT_BASE_MULTIPLIER * advantage));
         } else {
-            chance = new Float(Math.min(DC_Formulas.DEFENSE_PROPORTION_CRIT_MAX, Math
+            chance = (float) Math.min(DC_Formulas.DEFENSE_PROPORTION_CRIT_MAX, Math
                     .sqrt(DC_Formulas.DEFENSE_PROPORTION_CRIT_SQRT_BASE_MULTIPLIER
-                            * advantage)));
+                            * advantage));
         }
         return chance;
     }

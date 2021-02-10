@@ -6,7 +6,6 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.Animation;
 import eidolons.libgdx.anims.CompositeAnim;
-import eidolons.libgdx.anims.controls.AnimController;
 import eidolons.libgdx.anims.sprite.FadeSprite;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import main.game.logic.event.Event;
@@ -30,11 +29,8 @@ public class AnimDrawMaster extends Group {
     private FadeSprite fadeTest;
     private boolean drawing;
     private boolean drawingPlayer;
-    private Boolean parallelDrawing;
-    private AnimController controller;
 
     public AnimDrawMaster(AnimMaster animMaster) {
-        controller = new AnimController();
     }
 
 
@@ -43,7 +39,6 @@ public class AnimDrawMaster extends Group {
     }
 
     public void setParallelDrawing(Boolean parallelDrawing) {
-        this.parallelDrawing = parallelDrawing;
     }
 
     public boolean isDrawing() {
@@ -154,7 +149,7 @@ public class AnimDrawMaster extends Group {
                 tryDrawAnimation(batch, a);
             }
 
-            leadQueue.removeIf((CompositeAnim anim) -> anim.isFinished());
+            leadQueue.removeIf(CompositeAnim::isFinished);
         }
 
         super.draw(batch, parentAlpha);
@@ -204,9 +199,7 @@ public class AnimDrawMaster extends Group {
     public void cleanUp() {
         if (leadAnimation != null)
             leadAnimation.finished();
-        leadQueue.forEach(a -> {
-            a.finished();
-        });
+        leadQueue.forEach(CompositeAnim::finished);
         leadAnimation = null;
         leadQueue.clear();
     }
@@ -235,7 +228,7 @@ public class AnimDrawMaster extends Group {
 
 //        if (FADE_SPRITE_TEST) {
 //            try {
-//                Coordinates c = Eidolons.getMainHero().getCoordinates();
+//                Coordinates c = Eidolons.getPlayerCoordinates();
 //                SpriteAnimation animation = SpriteAnimationFactory.getSpriteAnimation("sprite shadow.png");
 //                addActor(fadeTest = new FadeSprite(animation));
 //                fadeTest.setBlending(BLENDING.SCREEN);

@@ -2,22 +2,13 @@ package eidolons.ability;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.rules.round.FocusRule;
-import eidolons.game.core.Eidolons;
 import eidolons.system.DC_ConditionMaster;
-import main.elements.conditions.NumericCondition;
 import main.elements.conditions.Requirement;
 import main.elements.costs.*;
 import main.entity.Entity;
-import main.entity.Ref;
-import main.entity.Ref.KEYS;
-import main.entity.obj.Obj;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
-import main.system.auxiliary.secondary.InfoMaster;
-import main.system.launch.CoreEngine;
+import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
 
 import java.util.ArrayList;
@@ -31,14 +22,7 @@ public class DC_CostsFactory {
 
     public static Costs getCostsForSpell(DC_ActiveObj spell, boolean isSpell) {
         List<Cost> costs = new ArrayList<>();
-        Cost cost = null;
-
-        if (!DC_Engine.isAtbMode()) {
-            cost = getCost(spell, PARAMS.AP_COST, PARAMS.C_N_OF_ACTIONS);
-            if (cost != null) {
-                costs.add(cost);
-            }
-        }
+        Cost cost;
 
         cost = getCost(spell, PARAMS.ENERGY_COST, PARAMS.C_ENERGY);
         if (cost != null) {
@@ -49,34 +33,31 @@ public class DC_CostsFactory {
         // if (cost != null)
         // costs.add(cost);
 
-        cost = getCost(spell, PARAMS.CP_COST, PARAMS.C_N_OF_COUNTERS);
+        cost = getCost(spell, PARAMS.ATK_PTS_COST, PARAMS.C_EXTRA_ATTACKS);
+        if (cost != null) {
+            costs.add(cost);
+        }
+        cost = getCost(spell, PARAMS.MOVE_PTS_COST, PARAMS.C_EXTRA_MOVES);
         if (cost != null) {
             costs.add(cost);
         }
 
-        // cost = getCost(spell, PARAMS.MP_COST, PARAMS.C_N_OF_MOVES);
-        // if (cost != null)
-        // costs.add(cost);
-
+        cost = getCost(spell, PARAMS.SF_COST, PARAMS.C_SOULFORCE);
+        if (cost != null) {
+            costs.add(cost);
+        }
         cost = getCost(spell, PARAMS.ESS_COST, PARAMS.C_ESSENCE);
         if (cost != null) {
             costs.add(cost);
         }
-        cost = getCost(spell, PARAMS.STA_COST, PARAMS.C_STAMINA);
+        cost = getCost(spell, PARAMS.TOU_COST, PARAMS.C_TOUGHNESS);
         if (cost != null) {
             costs.add(cost);
         }
-        if (FocusRule.isFatigueOn()) {
-            cost = getCost(spell, PARAMS.FOC_COST, PARAMS.FOCUS_FATIGUE, true);
-            if (cost != null) {
-                costs.add(cost);
-            }
-        } else {
             cost = getCost(spell, PARAMS.FOC_COST, PARAMS.C_FOCUS);
             if (cost != null) {
                 costs.add(cost);
             }
-        }
         cost = getCost(spell, PARAMS.ENDURANCE_COST, PARAMS.C_ENDURANCE);
         if (cost != null) {
             costs.add(cost);
@@ -92,13 +73,6 @@ public class DC_CostsFactory {
         if (!StringMaster.isEmptyOrZero(s))
             requirements = new CostRequirements(new Payment(
                     PARAMS.C_FOCUS, new Formula(s)));
-
-//        if (!DC_Engine.isAtbMode())
-        if (!CoreEngine.isSafeMode()) // TODO igg hack
-            requirements.add(new Requirement(
-                    new NumericCondition("1", StringMaster.getValueRef(KEYS.ACTIVE,
-                            PARAMS.C_COOLDOWN)),
-                    InfoMaster.COOLDOWN_REASON));
 
         addSpecialRequirements(requirements, spell);
 
@@ -134,7 +108,7 @@ public class DC_CostsFactory {
         Formula formula;
 
         boolean var;
-        int amount = NumberUtils.getInteger(paramValue);
+        int amount = NumberUtils.getIntParse(paramValue);
         if (amount == 0) {
             return null;
         }
@@ -144,27 +118,7 @@ public class DC_CostsFactory {
         formula = new Formula(amount + "");
         var = false;
 
-        Cost cost =
-                (pay_param != PARAMS.FOCUS_FATIGUE) ? new CostImpl(new Payment(pay_param, formula)) :
-                        new CostImpl(new Payment(pay_param, formula) {
-                            @Override
-                            public boolean pay(Obj payee, Ref ref) {
-                                if (add) {
-                                    if (payee == Eidolons.getMainHero()) {
-                                        payee.getGame().getLogManager().log(payee + "'s " +
-                                                pay_param.getName() + " is now " +
-                                                payee.getIntParam(PARAMS.FOCUS_FATIGUE));
-                                    }
-                                }
-                                return super.pay(payee, ref);
-                            }
-                        }, cost_param) {
-                            @Override
-                            public boolean canBePaid(Ref REF, boolean noAlt) {
-                                return true;
-                            }
-
-                        };
+        Cost cost = new CostImpl(new Payment(pay_param, formula) , cost_param)  ;
         cost.setVariable(var);
         return cost;
     }

@@ -10,7 +10,7 @@ import java.awt.*;
 
 public class VisibilityMaster {
 
-    private VisionMaster master;
+    private final VisionMaster master;
 
     public VisibilityMaster(VisionMaster visionMaster) {
         master = visionMaster;
@@ -24,8 +24,7 @@ public class VisibilityMaster {
     }
 
     public String getImagePath(OUTLINE_TYPE type, DC_Obj unit) {
-        String outlinePath =  type.getImagePath();
-        String image = (outlinePath );
+        String image = (type.getImagePath());
         if (!ImageManager.isImage(image)) {
             image = (  type.getImagePath() );
         }
@@ -64,9 +63,7 @@ public class VisibilityMaster {
             return getVisibility(outline);
         }
         VISIBILITY_LEVEL visibilityLevel = getVisibility(target.getOutlineType());
-        if (!target.isOutsideCombat() && target instanceof Unit) {
-            return visibilityLevel;
-        }
+        target.isOutsideCombat();
         return visibilityLevel;
     }
 

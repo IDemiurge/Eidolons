@@ -12,13 +12,13 @@ import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.DamageDealer;
 import eidolons.game.battlecraft.rules.combat.damage.DamageFactory;
 import eidolons.game.battlecraft.rules.combat.misc.CleaveRule;
-import eidolons.game.battlecraft.rules.combat.misc.InjuryRule;
 import eidolons.game.battlecraft.rules.mechanics.CoatingRule;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.master.EffectMaster;
 import eidolons.libgdx.anims.AnimContext;
+import eidolons.libgdx.anims.main.ActionAnimMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
@@ -32,18 +32,16 @@ import main.entity.Ref.KEYS;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.event.EventMaster;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.log.LogMaster;
-import main.system.launch.CoreEngine;
-import main.system.sound.SoundMaster.SOUNDS;
+import main.system.launch.Flags;
+import main.system.sound.AudioEnums;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 public class DC_AttackMaster {
-    private ParryRule parryRule;
-    private CounterAttackRule counterRule;
-    private DC_Game game;
+    private final ParryRule parryRule;
+    private final CounterAttackRule counterRule;
+    private final DC_Game game;
 
     // private static boolean precalc;
 
@@ -103,9 +101,10 @@ public class DC_AttackMaster {
                            Effect onKill, boolean offhand, boolean counter) {
         return attack(attack, ref, free, canCounter, onHit, onKill, offhand, counter, false);
     }
-        private Boolean attack(Attack attack, Ref ref, boolean free, boolean canCounter,
-        Effect onHit,
-        Effect onKill, boolean offhand, boolean counter, boolean preview) {
+
+    private Boolean attack(Attack attack, Ref ref, boolean free, boolean canCounter,
+                           Effect onHit,
+                           Effect onKill, boolean offhand, boolean counter, boolean preview) {
         ENTRY_TYPE type = ENTRY_TYPE.ATTACK;
         boolean extraAttack = true;
         if (attack.getAction().isCounterMode()) {
@@ -117,9 +116,9 @@ public class DC_AttackMaster {
         } else {
             extraAttack = false;
         }
-//        LogEntryNode entry = game.getLogManager().newLogEntryNode(type,
-//         attack.getAttacker().getName(), attack.getAttackedUnit().getName(), attack.getAction());
-        Boolean result = null;
+        //        LogEntryNode entry = game.getLogManager().newLogEntryNode(type,
+        //         attack.getAttacker().getName(), attack.getAttackedUnit().getName(), attack.getAction());
+        Boolean result;
         if (!extraAttack) {
             Unit guard = (Unit) GuardRule.checkTargetChanged(attack.getAction());
             if (guard != null) {
@@ -139,32 +138,27 @@ public class DC_AttackMaster {
             result = attackNow(attack, ref, free, canCounter, onHit, onKill, offhand, counter);
             boolean countered = false;
             if (result == null) { // first strike
-                game.getLogManager().log(attack.getAttacker() + ": First Strike Counter-Attack!");
+                game.getLogManager().log(attack.getAttacked() + ": First Strike Counter-Attack!");
                 DC_ActiveObj action = counterRule.tryFindCounter(attack, false);
                 if (action != null) {
                     AttackEffect effect = EffectMaster.getAttackEffect(action);
-                    GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES, new ActionInput(attack.getAction(), new AnimContext(attack.getAttacker(),
-                            attack.getAttacked())));
-                    waitForAttackAnimation(effect.getAttack());
+                    addAndWaitAttackAnimation(effect.getAttack());
 
                     counterRule.counterWith(attack.getAction(), action);
 
                     attackNow(attack, ref, free, false, onHit, onKill, offhand, counter);
                     countered = true;
-                } else
-                {
-                    GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES, new ActionInput(attack.getAction(), new AnimContext(attack.getAttacker(),
-                            attack.getAttacked())));
+                } else {
+                    addAndWaitAttackAnimation(attack);
                     game.getLogManager().log(LogMaster.LOG.GAME_INFO, attack.getAttacked().getNameIfKnown()
                             + " fails to counter-attack against " +
-                            action.getOwnerUnit());
+                            attack.getAttacker());
                     attackNow(attack, ref, free, false, onHit, onKill, offhand, counter);
                 }
                 result = true;
 
             } else {
-                GuiEventManager.trigger(GuiEventType.ACTION_RESOLVES, new ActionInput(attack.getAction(), new AnimContext(attack.getAttacker(),
-                        attack.getAttacked())));
+                addAndWaitAttackAnimation(attack);
             }
             if ((!countered) || attack.getAttacker().hasDoubleCounter()) {
                 if (canCounter) {
@@ -218,21 +212,15 @@ public class DC_AttackMaster {
         if (attack.isSneak()) {
             if (attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.SNEAK_IMMUNE)) {
                 attack.setSneak(false);
-                log(StringMaster.MESSAGE_PREFIX_INFO + attacked.getName()
+                log(Strings.MESSAGE_PREFIX_INFO + attacked.getName()
                         + " is immune to Sneak Attacks!");
             } else {
-                log(StringMaster.MESSAGE_PREFIX_ALERT + attacker.getNameIfKnown()
+                log(Strings.MESSAGE_PREFIX_ALERT + attacker.getNameIfKnown()
                         + " makes a Sneak Attack against " + attacked.getName());
             }
         }
-        if (attack.isSneak()) {
-            if (!attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.VIGILANCE))
-                canCounter = false;
-        }
         if (canCounter) {
-            if (!attacked.canCounter(action, attack.isSneak())) {
-                canCounter = false;
-            }
+            canCounter = attacked.canCounter(action, attack.isSneak());
         }
 
         LogMaster.log(LogMaster.ATTACKING_DEBUG, attacker.getNameIfKnown() + " attacks "
@@ -256,7 +244,7 @@ public class DC_AttackMaster {
             //TODO interrupted!
             return false;
         }
-        DC_SoundMaster.playEffectSound(SOUNDS.ATTACK, attacker); // TODO revamp
+        DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.ATTACK, attacker); // TODO revamp
 
         if (action.isRanged()) {
             DC_SoundMaster.playRangedAttack(getAttackWeapon(ref, offhand));
@@ -288,11 +276,11 @@ public class DC_AttackMaster {
                     boolean parried = parryRule.tryParry(attack);
                     if (parried) {
                         attack.setParried(true);
-//                    if (
-//                     EventMaster.fireStandard(STANDARD_EVENT_TYPE.ATTACK_DODGED, ref)) {
+                        //                    if (
+                        //                     EventMaster.fireStandard(STANDARD_EVENT_TYPE.ATTACK_DODGED, ref)) {
                         attacked.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_PARRY, attacker, ref);
                         attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_PARRY_SELF, attacked, ref);
-//                    }
+                        //                    }
                         return true;
                     }
                     dodged = DefenseVsAttackRule.checkDodgedOrCrit(attack);
@@ -308,13 +296,13 @@ public class DC_AttackMaster {
                 if (attacker.isDead()) {
                     return true; // ???
                 }
-//            if (attacked.isDead()) {  // now in unit.kill()
-//                if (onKill != null) {
-//                    onKill.apply(ref);
-//                }
-//                attacked.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_DEATH, attacker, ref);
-//                return true;
-//            }
+                //            if (attacked.isDead()) {  // now in unit.kill()
+                //                if (onKill != null) {
+                //                    onKill.apply(ref);
+                //                }
+                //                attacked.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_DEATH, attacker, ref);
+                //                return true;
+                //            }
             } else {
                 if (dodged) {
                     attack.setDodged(true);
@@ -339,10 +327,10 @@ public class DC_AttackMaster {
                     return true;
                 } else {
                     if (attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.CRITICAL_IMMUNE)) {
-                        log(StringMaster.MESSAGE_PREFIX_INFO + attacked.getName()
+                        log(Strings.MESSAGE_PREFIX_INFO + attacked.getName()
                                 + " is immune to Critical Hits!");
                     } else {
-                        log(StringMaster.MESSAGE_PREFIX_ALERT + attacker.getNameIfKnown()
+                        log(Strings.MESSAGE_PREFIX_ALERT + attacker.getNameIfKnown()
                                 + " scores a critical hit on " + attacked.getName());
                         attack.setCritical(true);
 
@@ -360,8 +348,8 @@ public class DC_AttackMaster {
             final_amount = calculator.calculateFinalDamage();
         }
         // TODO different for multiDamageType
-        if (CoreEngine.isPhaseAnimsOn()) {
-//         TODO    PhaseAnimator.getInstance().initAttackAnimRawDamage(attack);
+        if (Flags.isPhaseAnimsOn()) {
+            //         TODO    PhaseAnimator.getInstance().initAttackAnimRawDamage(attack);
         }
 
         ref.setAmount(final_amount);
@@ -371,7 +359,7 @@ public class DC_AttackMaster {
         }
         ref.setAmount(final_amount);
 
-        DAMAGE_TYPE dmg_type =  action.getActiveWeapon().getDamageType(); //ref.getDamageType();
+        DAMAGE_TYPE dmg_type = action.getActiveWeapon().getDamageType(); //ref.getDamageType();
 
         if (attack.isCritical()) {
             if (attacker.checkPassive(UnitEnums.STANDARD_PASSIVES.CLEAVING_CRITICALS)) {
@@ -441,7 +429,7 @@ public class DC_AttackMaster {
             return true;
         }
 
-//        ForceRule.addForceEffects(action); now in executor.resolve() for all actions
+        //        ForceRule.addForceEffects(action); now in executor.resolve() for all actions
 
         Damage damageObj = DamageFactory.getDamageForAttack(
                 dmg_type, ref, final_amount
@@ -472,14 +460,14 @@ public class DC_AttackMaster {
 
             attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_SNEAK_ATTACK, attacked, ref);
             attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_SNEAK_ATTACK_SELF, attacker, ref);
-        if (attack.isCritical()){
+            if (attack.isCritical()) {
 
-            attacked.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_SNEAK_CRIT_HIT, attacker, ref);
-            attacked.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_SNEAK_CRIT_SELF, attacked, ref);
+                attacked.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_SNEAK_CRIT_HIT, attacker, ref);
+                attacked.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_SNEAK_CRIT_SELF, attacked, ref);
 
-            attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_SNEAK_CRIT, attacked, ref);
-            attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_SNEAK_CRIT_SELF, attacker, ref);
-        }
+                attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_SNEAK_CRIT, attacked, ref);
+                attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_SNEAK_CRIT_SELF, attacker, ref);
+            }
         }
 
 
@@ -491,7 +479,6 @@ public class DC_AttackMaster {
         }
 
         if (attackedUnit != null) {
-            InjuryRule.applyInjuryRule(action);
             if (attack.isCritical()) {
                 checkEffectsInterrupt(attacker, attacker, SPECIAL_EFFECTS_CASE.ON_CRIT_SELF, ref,
                         offhand);
@@ -502,20 +489,20 @@ public class DC_AttackMaster {
                 checkEffectsInterrupt(attacker, attackedUnit, SPECIAL_EFFECTS_CASE.ON_CRIT_HIT, ref, offhand);
             }
         }
-//        if (attacked.isDead()) { TODO in unit.kill()
-//            if (onKill != null) {
-//                onKill.apply(ref);
-//            }
-//            attacked.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_DEATH, attacker, ref); // e.g.
-//            // retribution
-//            if (attacker.isDead()) {
-//                attack.setLethal(true);
-//                return true;
-//            }
-//            // attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_KILL,
-//            // attacker, ref); // already applied in DC_UnitObj.kill()
-//
-//        }
+        //        if (attacked.isDead()) { TODO in unit.kill()
+        //            if (onKill != null) {
+        //                onKill.apply(ref);
+        //            }
+        //            attacked.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_DEATH, attacker, ref); // e.g.
+        //            // retribution
+        //            if (attacker.isDead()) {
+        //                attack.setLethal(true);
+        //                return true;
+        //            }
+        //            // attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_KILL,
+        //            // attacker, ref); // already applied in DC_UnitObj.kill()
+        //
+        //        }
 
         // if (canCounter)
         // if ((!countered) || attacker.hasDoubleCounter())
@@ -552,23 +539,18 @@ public class DC_AttackMaster {
             }
         }
         if (attack.isDodged()) {
-            if (!EventMaster.fireStandard(STANDARD_EVENT_TYPE.ATTACK_DODGED, ref)) {
-                return true;
-            }
+            return !EventMaster.fireStandard(STANDARD_EVENT_TYPE.ATTACK_DODGED, ref);
         }
-//         ATTACK_BLOCKED,
-//         ATTACK_MISSED,
+        //         ATTACK_BLOCKED,
+        //         ATTACK_MISSED,
         return false;
     }
 
     private boolean checkEffectsInterrupt(BattleFieldObject target, Unit source,
                                           SPECIAL_EFFECTS_CASE case_type, Ref REF, boolean offhand) {
         source.applySpecialEffects(case_type, target, REF, offhand);
-        if (target.isDead()) {
-            return true;
-        }
+        return target.isDead();
         // if (attacker)
-        return false;
     }
 
     private boolean checkDeathEffects(Unit source, Unit target, Effect onKill, Ref ref,
@@ -584,14 +566,17 @@ public class DC_AttackMaster {
     }
 
 
-    private void waitForAttackAnimation(Attack attack) {
-//        if (attack.getAnimation() != null) { TODO is it required now??
-//            if (attack.getAnimation().isStarted()) {
-//                while (!attack.getAnimation().isFinished()) {
-//                    WaitMaster.WAIT(80);
-//                }
-//            }
-//        }
+    private void addAndWaitAttackAnimation(Attack attack) {
+        ActionAnimMaster.animate(new ActionInput(attack.getAction(),
+                new AnimContext(attack.getAttacker(),
+                        attack.getAttacked())));
+        //        if (attack.getAnimation() != null) { TODO is it required now??
+        //            if (attack.getAnimation().isStarted()) {
+        //                while (!attack.getAnimation().isFinished()) {
+        //                    WaitMaster.WAIT(80);
+        //                }
+        //            }
+        //        }
     }
 
 }

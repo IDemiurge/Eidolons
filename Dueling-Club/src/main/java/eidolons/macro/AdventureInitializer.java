@@ -11,7 +11,7 @@ import eidolons.macro.map.Region;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class AdventureInitializer {
     private static String scenario = "Mistfall";
     private static MetaGameMaster metaMaster;
     private static boolean load;
-    private static boolean testMode =false;
+    private static final boolean testMode =false;
 
     public static void setScenario(String scenario) {
         AdventureInitializer.scenario = scenario;
@@ -32,13 +32,12 @@ public class AdventureInitializer {
 
     public static void newAdventureGame(String data) {
         if (data==null ){
-            data =scenario; //single option for now....
         } else
         {
             load = true;
         }
-//    TODO     metaMaster = new AdventureMetaMaster(scenario, load);
-        if (!CoreEngine.isMapEditor()) {
+//         metaMaster = new AdventureMetaMaster(scenario, load);
+        if (!Flags.isMapEditor()) {
             metaMaster.init();
             if (metaMaster.getPartyManager().getParty() == null)
                 return;
@@ -46,7 +45,7 @@ public class AdventureInitializer {
             metaMaster.getPartyManager().gameStarted();
         }
         game = new MacroGame();
-        if (!CoreEngine.isMapEditor()) {
+        if (!Flags.isMapEditor()) {
             Eidolons.getMainHero().reset();
             MacroEngine.init();
             game.start(true);
@@ -92,7 +91,7 @@ public class AdventureInitializer {
     }
 
     public static boolean isEditMode() {
-        return CoreEngine.isMapEditor();
+        return Flags.isMapEditor();
     }
 
 
@@ -109,7 +108,7 @@ public class AdventureInitializer {
     }
 
     public static void launchAdventureGame(String data) {
-        CoreEngine.setMacro(true);
+        Flags.setMacro(true);
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, new ScreenData(
          SCREEN_TYPE.MAP, data));
     }

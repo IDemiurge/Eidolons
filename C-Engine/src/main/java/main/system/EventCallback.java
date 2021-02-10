@@ -1,5 +1,7 @@
 package main.system;
 
+import com.badlogic.gdx.Screen;
+
 /**
  * Created with IntelliJ IDEA.
  * Date: 04.11.2016
@@ -8,4 +10,6 @@ package main.system;
  */
 public interface EventCallback {
     void call(EventCallbackParam obj);
+
+    default Screen getScreen(){ return null;}
 }

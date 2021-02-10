@@ -17,9 +17,8 @@ public class ModMaster {
     }
 
     public static int getFinalBonusForAction(DC_ActiveObj dc_activeObj, PARAMS bonus) {
-        Integer value = dc_activeObj.getIntParam(bonus)
+        return dc_activeObj.getIntParam(bonus)
          + dc_activeObj.getActiveWeapon().getIntParam(bonus)
          + dc_activeObj.getOwnerUnit().getIntParam(bonus);
-        return value;
     }
 }

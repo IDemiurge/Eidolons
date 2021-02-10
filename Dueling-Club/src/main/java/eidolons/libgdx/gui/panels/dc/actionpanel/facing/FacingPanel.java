@@ -4,17 +4,24 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.datasource.FullUnitDataSource;
+import eidolons.libgdx.gui.generic.GearCluster;
 import eidolons.libgdx.gui.generic.GroupX;
+import eidolons.libgdx.gui.generic.btn.ButtonStyled;
+import eidolons.libgdx.gui.generic.btn.SymbolButton;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
 import main.data.filesys.PathFinder;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.game.logic.action.context.Context;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
@@ -25,85 +32,99 @@ import main.system.auxiliary.StrPathBuilder;
 public class FacingPanel extends TablePanel {
 
     private static final String ROTATE_BACKGROUND = StrPathBuilder.build(
-     PathFinder.getComponentsPath(), "dc", "facing",
-     "BACKGROUND.png");
-    boolean sneaking;
+            PathFinder.getComponentsPath(), "dc", "facing",
+            "BACKGROUND.png");
+    private final GearCluster gears;
     FadeImageContainer face;
     GroupX background;
     private FullUnitDataSource dataSource;
     private FACING_DIRECTION facing;
-//    private static final String FACE_BACKGROUND = StrPathBuilder.build(
-//     PathFinder.getComponentsPath(),  "dc", "facing",
-//     "FACE_BACKGROUND.png");
-//    private final ImageContainer faceBackground;
-//    private  GearCluster gearsClockwise;
-//    private  GearCluster gearsAntiClockwise;
+    //    private static final String FACE_BACKGROUND = StrPathBuilder.build(
+    //     PathFinder.getComponentsPath(),  "dc", "facing",
+    //     "FACE_BACKGROUND.png");
+    //    private final ImageContainer faceBackground;
+
+    private final SymbolButton btnTurnClockwise;
+    private final SymbolButton btnTurnAntiClockwise;
+    boolean sneaking;
 
 
     public FacingPanel() {
         GuiEventManager.bind(GuiEventType.UPDATE_MAIN_HERO,
-         p -> {
-            if (p.get()==null )
-                setUserObject(new FullUnitDataSource(Eidolons.getMainHero()));
-                else
-             setUserObject(new FullUnitDataSource((Unit) p.get()));
-         });
+                p -> {
+                    if (p.get() == null)
+                        setUserObject(new FullUnitDataSource(Eidolons.getMainHero()));
+                    else
+                        setUserObject(new FullUnitDataSource((Unit) p.get()));
+                });
+        addActor(gears = new GearCluster(0.65f));
         addActor(background = new GroupX());
         TextureRegion texture = TextureCache.getOrCreateR(ROTATE_BACKGROUND);
         background.addActor(new Image(texture));
         background.setSize(
-         texture.getRegionWidth(),
-         texture.getRegionHeight());
+                texture.getRegionWidth(),
+                texture.getRegionHeight());
 
         background.setOrigin(background.getWidth() / 2, background.getHeight() / 2);
 
         addActor(face = new FadeImageContainer());
         face.setPosition(24, 8);
-        face.setFadeDuration(getAnimationDuration()/1.5f);
-        addListener(new SmartClickListener(this){
+        face.setFadeDuration(getAnimationDuration() / 1.5f);
+        //TODO into smartbutton
+        face.addListener(new SmartClickListener(this) {
             @Override
             protected boolean isBattlefield() {
                 return true;
             }
+
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-//                DungeonScreen.getInstance().getCameraMan().centerCameraOn(DC_Game.game.getManager().getMainHero());
+                //                DungeonScreen.getInstance().getCameraMan().centerCameraOn(DC_Game.game.getManager().getMainHero());
 
-                GuiEventManager.triggerWithParams(GuiEventType.CAMERA_PAN_TO_UNIT, Eidolons.getMainHero() , 2f);
+                GuiEventManager.triggerWithParams(GuiEventType.CAMERA_PAN_TO_UNIT, Eidolons.getMainHero(), 2f);
                 DungeonScreen.getInstance().getController().inputPass();
                 return super.touchDown(event, x, y, pointer, button);
             }
         });
-//        background.addActor(gearsClockwise = new GearCluster(0.35f));
-//        background. addActor(gearsAntiClockwise = new GearCluster(0.35f));
-//        gearsClockwise.addListener(getGearListener(true));
-//         addListener(new HoverListener((Boolean enter) -> {
-//            if (enter) {
-//                gearsClockwise.setZIndex(Integer.MAX_VALUE);
-//                gearsAntiClockwise.setZIndex(Integer.MAX_VALUE);
-//            } else {
-//                gearsClockwise.setZIndex(0);
-//                gearsAntiClockwise.setZIndex(0);
-//                ActorMaster.addScaleAction(gearsAntiClockwise, 0.5f, 0.5f);
-//            }
-//        }
-//         ));
+        background.addActor(btnTurnClockwise =
+                new SymbolButton(ButtonStyled.STD_BUTTON.UP, () -> turn(true)));
+        btnTurnClockwise.setNoClickCheck(true);
+        btnTurnClockwise.setFlipY(true);
+        background.addActor(btnTurnAntiClockwise = new SymbolButton(ButtonStyled.STD_BUTTON.UP, () -> turn(false)));
+        btnTurnAntiClockwise.setNoClickCheck(true);
+        float center = GdxMaster.centerWidth(btnTurnAntiClockwise);
+        float top = background.getHeight() - btnTurnAntiClockwise.getHeight();
+        btnTurnAntiClockwise.setPosition(center, top);
+        btnTurnClockwise.setPosition(center, -top / 2);
+
+        // btnTurnClockwise.setScale(0.5f);
+        // btnTurnAntiClockwise.setScale(0.5f);
     }
 
-//    private EventListener getGearListener(boolean clockwise) {
-//        return new ClickListener() {
-//            @Override
-//            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-////                GuiEventManager
-//                WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
-//                 new ActionInput(dataSource.getTurnAction(clockwise),
-//                  new Context(dataSource.getEntity().getRef())));
-//                GearCluster gear = clockwise ? gearsClockwise : gearsAntiClockwise;
-//                gear.activeWork(0.25f, 0.5f);
-//                return super.touchDown(event, x, y, pointer, button);
-//            }
-//        };
-//    }
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        btnTurnClockwise.setNoClickCheck(true);
+        btnTurnAntiClockwise.setNoClickCheck(true);
+        float center = GdxMaster.centerWidth(btnTurnAntiClockwise);
+        float top = background.getHeight() - btnTurnAntiClockwise.getHeight();
+        btnTurnAntiClockwise.setPosition(center, -top / 2 + btnTurnAntiClockwise.getWidth() - 12);
+        btnTurnClockwise.setPosition(center, top - btnTurnAntiClockwise.getWidth() + 12);
+    }
+
+    private void move(boolean forward) {
+        DC_Game.game.getLoop().actionInputManual(
+                new ActionInput(dataSource.getEntity().getAction(forward? "Move" : "Move Back"),
+                        new Context(dataSource.getEntity().getRef())));
+        gears.activeWork(0.25f, 0.5f);
+    }
+        private void turn(boolean clockwise) {
+        DC_Game.game.getLoop().actionInputManual(
+                new ActionInput(dataSource.getTurnAction(clockwise),
+                        new Context(dataSource.getEntity().getRef())));
+        gears.activeWork(0.25f, 0.5f);
+    }
+
 
     @Override
     public void updateAct(float delta) {
@@ -116,8 +137,8 @@ public class FacingPanel extends TablePanel {
         }
         if (animated) {
             ActionMaster.addRotateByAction(background,
-             facing.getDirection().getDegrees(),
-             dataSource.getFacing().getDirection().getDegrees());
+                    facing.getDirection().getDegrees(),
+                    dataSource.getFacing().getDirection().getDegrees());
         } else {
             background.setRotation(dataSource.getFacing().getDirection().getDegrees());
         }
@@ -125,10 +146,6 @@ public class FacingPanel extends TablePanel {
         facing = dataSource.getFacing();
     }
 
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-    }
 
     private float getAnimationDuration() {
         return 0.85f;
@@ -136,6 +153,6 @@ public class FacingPanel extends TablePanel {
 
     private String getImage(FACING_DIRECTION facing) {
         return StrPathBuilder.build(PathFinder.getComponentsPath(),
-         "dc", "facing", "face " + facing.toString() + ".png");
+                "dc", "facing", "face " + facing.toString() + ".png");
     }
 }

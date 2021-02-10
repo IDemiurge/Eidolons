@@ -9,19 +9,20 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.StringBuilder;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.generic.ImageContainer;
+import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.HqTooltipPanel;
 import org.apache.commons.lang3.StringUtils;
 
 public class ValueContainer extends TablePanelX implements AbstractValueContainer {
     protected Cell<ImageContainer> imageContainer;
-    protected Cell<Label> nameContainer;
-    protected Cell<Label> valueContainer;
+    protected Cell<LabelX> nameContainer;
+    protected Cell<LabelX> valueContainer;
     private LabelStyle style = StyleHolder.getDefaultLabelStyle();
     private float imageScaleX;
     private float imageScaleY;
-    private Label valueLabel;
-    private Label nameLabel;
+    private LabelX valueLabel;
+    private LabelX nameLabel;
 
     protected ValueContainer() {
 
@@ -65,29 +66,35 @@ public class ValueContainer extends TablePanelX implements AbstractValueContaine
         setStyle(style);
     }
 
-    public ValueContainer(Label actor) {
+    public ValueContainer(LabelX actor) {
         this(actor, null);
     }
 
-    public ValueContainer(Label nameLabel, Label valueLabel) {
+    public ValueContainer(LabelX nameLabel, LabelX valueLabel) {
         this.nameLabel = nameLabel;
         this.valueLabel = valueLabel;
         init(null, null, null);
     }
 
-    public Cell<Label> getNameContainer() {
+    public Cell<LabelX> getNameContainer() {
+        if (nameContainer == null) {
+            initNameContainer("");
+        }
         return nameContainer;
     }
 
-    public Cell<Label> getValueContainer() {
+    public Cell<LabelX> getValueContainer() {
+        if (valueContainer == null) {
+            initValueContainer("");
+        }
         return valueContainer;
     }
 
-    public Label getValueLabel() {
+    public LabelX getValueLabel() {
         return valueLabel;
     }
 
-    public Label getNameLabel() {
+    public LabelX getNameLabel() {
         return nameLabel;
     }
 
@@ -103,65 +110,71 @@ public class ValueContainer extends TablePanelX implements AbstractValueContaine
     }
 
     protected void init(TextureRegion texture, String name, String value) {
-        imageContainer = addElement(null);
         setName(name);
+
         if (texture != null) {
-            imageContainer.setActor(new ImageContainer(new Image(texture)))
-                    .height(texture.getRegionHeight())
-                    .width(texture.getRegionWidth())
-                    .center()
-            ;
+            initImageContainer(texture);
         } else {
-            imageContainer.fill(false).expand(0, 0);
+            // imageContainer.fill(false).expand(0, 0);
         }
 
+        if (name != null) {
+            initNameContainer(name);
+        }
+
+        if (value != null) {
+            initValueContainer(value);
+        }
+
+        initSize();
+    }
+
+    private void initImageContainer(TextureRegion texture) {
+        imageContainer = addElement(null);
+        imageContainer.setActor(new ImageContainer(new Image(texture)))
+                .height(texture.getRegionHeight())
+                .width(texture.getRegionWidth())
+                .center();
         if (isVertical()) {
             row();
         }
+    }
 
+    private void initNameContainer(String name) {
         this.nameContainer = addElement(null);
         if (isVertical()) {
             row();
         }
-
-        if (name != null) {
-            setName(name);
-            nameLabel = new Label(name, style);
-        }
-        nameContainer.setActor(
-                nameLabel
-        ).padRight(12);
-
+        nameLabel = new LabelX(name, style);
+        nameContainer.setActor(nameLabel).padRight(12);
+    }
+    private void initValueContainer(String value) {
         valueContainer = addElement(null);
 
         if (isVertical()) {
             row();
         }
-
-        if (value != null) {
-            valueLabel = new Label(value, style) {
-                @Override
-                public float getMaxWidth() {
-                    return super.getPrefWidth();
+        valueLabel = new LabelX(value, style) {
+            @Override
+            public float getMaxWidth() {
+                if (this.wrapped) {
+                    return super.getMaxWidth();
                 }
+                return super.getPrefWidth();
+            }
 
-                @Override
-                public float getMinWidth() {
-                    return super.getPrefWidth();
-                }
+            @Override
+            public float getMinWidth() {
+                return super.getPrefWidth();
+            }
 
-                @Override
-                public float getPrefWidth() {
-                    return Math.min(HqTooltipPanel.INNER_WIDTH - 50, super.getPrefWidth());
-                }
-            };
-
-        }
+            @Override
+            public float getPrefWidth() {
+                return Math.min(HqTooltipPanel.INNER_WIDTH - 50, super.getPrefWidth());
+            }
+        };
         valueContainer.setActor(
                 valueLabel).growX().fillX();
-
-
-        initSize();
     }
 
     protected void initSize() {
@@ -216,7 +229,7 @@ public class ValueContainer extends TablePanelX implements AbstractValueContaine
                 text.replace("Chance", "");
                 if (valueContainer.getActor() != null) {
                     if (valueContainer.getActor() instanceof Label) {
-                        final Label actor = valueContainer.getActor();
+                        final LabelX actor = valueContainer.getActor();
                         actor.getText().append("%");
                     }
                 }
@@ -246,14 +259,14 @@ public class ValueContainer extends TablePanelX implements AbstractValueContaine
     }
 
     public void setNameAlignment(int align) {
-        if (nameContainer.getActor() != null) {
+        if (getNameContainer().getActor() != null) {
             nameContainer.getActor().setAlignment(align);
             nameContainer.align(align);
         }
     }
 
     public void setValueAlignment(int align) {
-        if (valueContainer.getActor() != null) {
+        if (getValueContainer().getActor() != null) {
             valueContainer.getActor().setAlignment(align);
             valueContainer.align(align);
         }
@@ -277,7 +290,7 @@ public class ValueContainer extends TablePanelX implements AbstractValueContaine
 
     @Override
     protected boolean isVisibleEffectively() {
-        return true; //TODO igg demo hack performance
+        return true; //TODO performance fix
     }
 
     public float getImageScaleX() {
@@ -341,6 +354,9 @@ public class ValueContainer extends TablePanelX implements AbstractValueContaine
     }
 
     public Cell<ImageContainer> getImageContainer() {
+        // if (imageContainer == null) {
+        //     initImageContainer(null );
+        // }
         return imageContainer;
     }
 
@@ -378,6 +394,17 @@ public class ValueContainer extends TablePanelX implements AbstractValueContaine
     @Override
     public void layout() {
         super.layout();
+    }
+
+    public void wrapText(float maxWidth) {
+        if (getNameLabel() != null) {
+            getNameLabel().setMaxWidth(maxWidth);
+            getNameLabel().setWrap(true);
+        }
+        if (getValueLabel() != null) {
+            getValueLabel().setMaxWidth(maxWidth);
+            getValueLabel().setWrap(true);
+        }
     }
 }
 

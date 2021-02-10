@@ -4,8 +4,8 @@ import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.std.HitAnim;
 import eidolons.libgdx.anims.std.sprite.CustomSpriteAnim;
@@ -18,7 +18,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 /**
@@ -35,7 +35,7 @@ public class ParryRule {
     protected boolean tryParry(Attack attack) {
         // TODO could return and Integer for dmg reduction or -1 if all
         // absorbed!
-        if (!RuleKeeper.isRuleTestOn(RULE.PARRYING)) {
+        if (!RuleKeeper.isRuleTestOn(RuleEnums.RULE.PARRYING)) {
             if (!canParry(attack)) {
                 return false;
             }
@@ -57,7 +57,7 @@ public class ParryRule {
              + " from " + attack.getAttacker().getNameIfKnown()
              + StringMaster.wrapInParenthesis(chanceRounded + "%"));
             game.getLogManager().doneLogEntryNode();
-            if (!RuleKeeper.isRuleTestOn(RULE.PARRYING)) {
+            if (!RuleKeeper.isRuleTestOn(RuleEnums.RULE.PARRYING)) {
                 return false;
             }
 
@@ -103,7 +103,7 @@ public class ParryRule {
         durabilityLost = durabilityLost * mod / 100;
         attacker.getActiveWeapon(attack.isOffhand()).reduceDurability(durabilityLost);
 
-        if (CoreEngine.isPhaseAnimsOn()) {
+        if (Flags.isPhaseAnimsOn()) {
             //TODO
         }
         GuiEventManager.trigger(GuiEventType.CUSTOM_ANIMATION, new CustomSpriteAnim(attack.getAction(), HitAnim.getSpritePath(HitAnim.SPRITE_TYPE.SPARKS,
@@ -121,14 +121,13 @@ public class ParryRule {
         float chance = DefenseVsAttackRule.getProportionBasedChance(attackValue, defenseValue, false);
         chance += attack.getAttackedUnit().getIntParam(PARAMS.PARRY_CHANCE);
         chance += -attack.getAttacker().getIntParam(PARAMS.PARRY_PENETRATION);
-        Integer chanceRounded = Math.round(chance);
-        return chanceRounded;
+        return Math.round(chance);
     }
 
     // precalculateRawDamageForDisplay
     private boolean canParry(Attack attack) {
 
-        if (CoreEngine.isRuleTestMode())
+        if (Flags.isRuleTestMode())
             return true;
 
         Unit attackedUnit = (Unit) attack.getAttackedUnit();

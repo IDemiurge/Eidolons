@@ -1,9 +1,9 @@
 package eidolons.libgdx.gui.panels.dc.menus.outcome;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager.PLAYER_STATS;
-import eidolons.game.battlecraft.logic.battle.universal.stats.PlayerStats;
-import eidolons.game.battlecraft.logic.battle.universal.stats.UnitStats;
+import eidolons.game.battlecraft.logic.mission.universal.stats.MissionStatManager.PLAYER_STATS;
+import eidolons.game.battlecraft.logic.mission.universal.stats.PlayerStats;
+import eidolons.game.battlecraft.logic.mission.universal.stats.UnitStats;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.gui.generic.ValueContainer;
@@ -26,12 +26,11 @@ public class OutcomeDatasource {
     }
 
     public List<ValueContainer> getPlayerStatsContainers() {
-        return Arrays.stream(getDisplayedPlayerStats()).map(stat ->
-         getPlayerStatsContainer(stat)).collect(Collectors.toList());
+        return Arrays.stream(getDisplayedPlayerStats()).map(this::getPlayerStatsContainer).collect(Collectors.toList());
     }
 
     private ValueContainer getPlayerStatsContainer(PLAYER_STATS stat) {
-        return new ValueContainer(StringMaster.getWellFormattedString(stat.toString()), getPlayerStat(stat) + "");
+        return new ValueContainer(StringMaster.format(stat.toString()), getPlayerStat(stat) + "");
     }
 
     private PLAYER_STATS[] getDisplayedPlayerStats() {
@@ -40,11 +39,11 @@ public class OutcomeDatasource {
     }
 
     public UnitStats getHeroStats() {
-        return game.getBattleMaster().getStatManager().
+        return game.getMissionMaster().getStatManager().
          getStats().getUnitStats(Eidolons.getMainHero());
     }
         private PlayerStats getPlayerStats() {
-        return game.getBattleMaster().getStatManager().
+        return game.getMissionMaster().getStatManager().
          getStats().getPlayerStats(game.getPlayer(true));
     }
 
@@ -70,13 +69,13 @@ public class OutcomeDatasource {
 
 
     public Integer getGlory() {
-        return game.getBattleMaster().getStatManager().getStats().getGlory();
+        return game.getMissionMaster().getStatManager().getStats().getGlory();
     }
 
     public Boolean getOutcome() {
 
         //null for surrender?
-        return game.getBattleMaster().getOutcomeManager().getOutcome();
+        return game.getMissionMaster().getOutcomeManager().getOutcome();
     }
 
     public List<TextureRegion> getStatUnitsPortraits() {

@@ -8,4 +8,5 @@ public interface EventType {
         return false;
     }
 
+    default boolean isScreenCheck(){ return  false;}
 }

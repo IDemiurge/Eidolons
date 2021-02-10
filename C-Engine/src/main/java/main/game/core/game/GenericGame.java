@@ -5,8 +5,8 @@ import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
-import main.entity.type.BuffType;
 import main.entity.type.ObjType;
+import main.entity.type.impl.BuffType;
 import main.game.bf.BattleFieldGrid;
 import main.game.bf.BattleFieldManager;
 import main.game.bf.Coordinates;
@@ -115,7 +115,7 @@ public abstract class GenericGame extends Game {
 
 
     public void remove(Obj obj) {
-        state.removeObject(obj.getId());
+        state.manager.removeObject(obj.getId());
 
     }
 
@@ -125,4 +125,8 @@ public abstract class GenericGame extends Game {
 
 
     public abstract BattleFieldGrid getGrid();
+
+    public boolean isWall(Coordinates c) {
+        return false;
+    }
 }

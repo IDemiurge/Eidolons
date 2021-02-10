@@ -60,7 +60,7 @@ public class QD_Assembler {
         }
         String preset = dungeonData.getValue(DungeonProperty.preset_floors);
         for(String substring: ContainerUtils.openContainer( preset )){
-            Integer index = NumberUtils.getInteger(VariableManager.getVar(substring));
+            Integer index = NumberUtils.getIntParse(VariableManager.getVar(substring));
             String s = VariableManager.removeVarPart(substring);
             QD_Floor  module = QD_XmlModelReader.getOrCreateFloorFromXml(s);
             floors.put(index, module);
@@ -86,7 +86,7 @@ public class QD_Assembler {
 
         String preset = data.getValue(FloorProperty.preset_modules);
         for(String substring: ContainerUtils.openContainer( preset )){
-            Integer index = NumberUtils.getInteger(VariableManager.getVar(substring));
+            Integer index = NumberUtils.getIntParse(VariableManager.getVar(substring));
             String s = VariableManager.removeVarPart(substring);
             QD_Module  module = QD_XmlModelReader.getOrCreateModuleFromXml(s);
             modules.put(index, module);
@@ -108,7 +108,7 @@ public class QD_Assembler {
         QD_Picker picker = new QD_Picker(random, i, max, attempt, data, previous, next);
 
         LinkedList<QD_Module> sorted = new LinkedList<>(pool);
-        sorted.removeIf(module ->  picker.check(module));
+        sorted.removeIf(picker::check);
         sorted.sort(picker);
 
 

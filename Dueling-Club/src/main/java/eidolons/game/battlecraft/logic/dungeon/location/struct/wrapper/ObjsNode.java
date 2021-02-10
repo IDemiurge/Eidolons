@@ -20,7 +20,7 @@ public class ObjsNode  implements LayeredData<ObjNode>{
         this.block = block;
         objs= DC_Game.game.getBfObjects().stream().filter(obj->
               obj.getOBJ_TYPE_ENUM()!= DC_TYPE.ENCOUNTERS   && isWithinBlock(obj)).map(
-                obj-> new ObjNode(obj)).collect(Collectors.toCollection(LinkedHashSet::new));
+                ObjNode::new).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     @Override

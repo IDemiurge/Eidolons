@@ -3,19 +3,18 @@ package eidolons.game.core.master.combat;
 import eidolons.entity.active.ActionInitializer;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battlefield.DC_GraveyardManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.rules.combat.attack.DC_AttackMaster;
 import eidolons.game.battlecraft.rules.combat.damage.ArmorMaster;
 import eidolons.game.core.GenericTurnManager;
-import eidolons.game.core.PtsTurnManager;
 import eidolons.game.core.atb.AtbTurnManager;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.game.bf.GraveyardManager;
 import main.game.bf.MovementManager;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 6/2/2017.
@@ -28,18 +27,18 @@ public class CombatMaster {
     protected GenericTurnManager turnManager;
     protected MovementManager movementManager;
     protected GraveyardManager graveyardManager;
-    private DC_ActionManager actionManager;
+    private final DC_ActionManager actionManager;
     private boolean chancesOff;
     private boolean diceAverage;
     private boolean rollsAverage;
     private boolean fullManualControl;
 
     public CombatMaster(DC_Game game) {
-        armorMaster = new ArmorMaster(false);
-        armorSimulator = new ArmorMaster(true);
+        armorMaster = new ArmorMaster(false, game);
+        armorSimulator = new ArmorMaster(true, game);
         attackMaster = new DC_AttackMaster(game);
         actionManager = new ActionInitializer(game);
-        turnManager = DC_Engine.isAtbMode() ? new AtbTurnManager(game) : new PtsTurnManager(game);
+        turnManager =  new AtbTurnManager(game) ;
         movementManager = new DC_MovementManager(game);
         graveyardManager = new DC_GraveyardManager(game);
 
@@ -104,7 +103,10 @@ public class CombatMaster {
     }
 
     public boolean isFullManualControl() {
-        return OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.MANUAL_CONTROL);
+        if (Flags.isIDE()) {
+            return true;
+        }
+        return  OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.MANUAL_CONTROL);
     }
 
 

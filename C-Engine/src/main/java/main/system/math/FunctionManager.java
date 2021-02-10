@@ -28,8 +28,10 @@ public class FunctionManager {
 
     public static String evaluateFunction(Ref ref_, String func) {
         ref = ref_;
-        func = func.replace("[", "").replace("]", "");
-        String arguments[];
+        func = func.substring(1, func.length()-1);
+        // func = func.replace("[", "").replace("]", "");
+
+        String[] arguments;
         String funcName;
         if (func.contains("(")) {
             arguments = func
@@ -89,13 +91,7 @@ public class FunctionManager {
     }
 
     public static int getSum(String s, Set<Obj> objs) {
-        Formula formula = new Formula("{SOURCE_" + s + "}");
-        int result = 0;
-        for (Obj obj : objs) {
-            result += formula.getInt(obj.getRef());
-        }
-        return result;
-
+        return new FuncMaster<Obj>().total(objs, obj -> obj.getIntParam(s));
     }
 
     public static Collection<FUNCTIONS> getFunctionList() {
@@ -227,9 +223,8 @@ public class FunctionManager {
             @Override
             public Object evaluate(List<Object> values) {
                 Obj obj1 = (Obj) values.get(0);
-
-                Integer integer = Math.round(PositionMaster.getDistance(obj1,
-                 (Obj) values.get(1)));
+                Integer integer =  PositionMaster.getDistance(obj1,
+                 (Obj) values.get(1), true);
                 boolean shortDiags;
                 try {
                     shortDiags = obj1.getRef().getObj(KEYS.ACTIVE)
@@ -318,7 +313,8 @@ public class FunctionManager {
             public Object evaluate(String s_arg, Ref ref) {
                 return s_arg;
             }
-        }, COORDINATE{
+        },
+        COORDINATE{
             public Object evaluate(String s_arg, Ref ref) {
                 return new Coordinates(s_arg);
             }

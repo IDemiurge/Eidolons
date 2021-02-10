@@ -1,13 +1,13 @@
 package eidolons.entity.handlers.active;
 
 import eidolons.content.DC_ContentValsManager;
+import eidolons.content.DC_ValueManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.mechanics.TerrainRule;
 import eidolons.game.battlecraft.rules.perk.FlyingRule;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.system.CustomValueManager;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TAGS;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
@@ -107,7 +107,7 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
     protected void addCustomMod(CUSTOM_VALUE_TEMPLATE template, String string, PARAMETER param,
                                 boolean percent) {
 
-        String value_ref = CustomValueManager.getCustomValueName(template, param.getName(), string);
+        String value_ref = DC_ValueManager.getCustomValueName(template, param.getName(), string);
         int amount = getOwnerObj().getCounter(value_ref);
         if (amount == 0) {
             return;
@@ -130,25 +130,26 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
         }
 
         Unit ownerObj = getOwnerObj();
-        Integer sta = ownerObj.getIntParam(PARAMS.STAMINA_PENALTY);
-        Integer ap = ownerObj.getIntParam(PARAMS.AP_PENALTY);
-        Integer ess = ownerObj.getIntParam(PARAMS.ESSENCE_PENALTY);
-        Integer foc = ownerObj.getIntParam(PARAMS.FOCUS_PENALTY);
-        Integer cp = ownerObj.getIntParam(PARAMS.CP_PENALTY);
+        //param revamp
+        Integer sta = ownerObj.getIntParam(PARAMS.TOUGHNESS_COST_MOD);
+        Integer ap = ownerObj.getIntParam(PARAMS.ATB_COST_MOD);
+        Integer ess = ownerObj.getIntParam(PARAMS.ESSENCE_COST_MOD);
+        Integer foc = ownerObj.getIntParam(PARAMS.FOCUS_COST_MOD);
+        Integer cp = ownerObj.getIntParam(PARAMS.ATK_PTS_COST_MOD);
         if (getHandler().isCounterMode()) {
-            ap = MathMaster.applyModIfNotZero(ap, ownerObj.getIntParam(PARAMS.COUNTER_CP_PENALTY));
+            ap = MathMaster.applyModIfNotZero(ap, ownerObj.getIntParam(PARAMS.COUNTER_PTS_COST_MOD));
             sta = MathMaster.applyModIfNotZero(sta, ownerObj
-             .getIntParam(PARAMS.COUNTER_STAMINA_PENALTY));
+             .getIntParam(PARAMS.COUNTER_TOUGHNESS_COST_MOD));
         }
         if (getHandler().isInstantMode()) {
-            ap = MathMaster.applyModIfNotZero(ap, ownerObj.getIntParam(PARAMS.INSTANT_CP_PENALTY));
+            ap = MathMaster.applyModIfNotZero(ap, ownerObj.getIntParam(PARAMS.INSTANT_PTS_COST_MOD));
             sta = MathMaster.applyModIfNotZero(sta, ownerObj
-             .getIntParam(PARAMS.INSTANT_STAMINA_PENALTY));
+             .getIntParam(PARAMS.INSTANT_TOUGHNESS_COST_MOD));
         }
         if (getHandler().isAttackOfOpportunityMode()) {
-            ap = MathMaster.applyModIfNotZero(ap, ownerObj.getIntParam(PARAMS.AOO_CP_PENALTY));
+            ap = MathMaster.applyModIfNotZero(ap, ownerObj.getIntParam(PARAMS.AOO_PTS_COST_MOD));
             sta = MathMaster.applyModIfNotZero(sta, ownerObj
-             .getIntParam(PARAMS.AOO_STAMINA_PENALTY));
+             .getIntParam(PARAMS.AOO_TOUGHNESS_COST_MOD));
         }
         switch (getEntity().getActionGroup()) {
             case ATTACK:
@@ -156,11 +157,11 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
                 // StringMaster
                 // .getWellFormattedString(ACTION_TAGS.OFF_HAND + ""));
                 if (getEntity().isOffhand()) {
-                    ap += ownerObj.getIntParam(PARAMS.OFFHAND_ATTACK_AP_PENALTY, false);
-                    sta += ownerObj.getIntParam(PARAMS.OFFHAND_ATTACK_STA_PENALTY, false);
+                    ap += ownerObj.getIntParam(PARAMS.OFFHAND_ATTACK_ATB_COST_MOD, false);
+                    sta += ownerObj.getIntParam(PARAMS.OFFHAND_ATTACK_TOUGHNESS_COST_MOD, false);
                 } else {
-                    ap += ownerObj.getIntParam(PARAMS.ATTACK_AP_PENALTY, false);
-                    sta += ownerObj.getIntParam(PARAMS.ATTACK_STA_PENALTY, false);
+                    ap += ownerObj.getIntParam(PARAMS.ATTACK_ATB_COST_MOD, false);
+                    sta += ownerObj.getIntParam(PARAMS.ATTACK_TOUGHNESS_COST_MOD, false);
                 }
                 if (getEntity().isThrow()) {
                     sta += 25 * (EnumMaster.getEnumConstIndex(WEAPON_SIZE.class, getOwnerObj()
@@ -171,27 +172,28 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
             case MOVE:
                 FlyingRule.checkAddMoveCostReductions(ownerObj);
                 TerrainRule.addMoveCost(getEntity());
-                sta += ownerObj.getIntParam(PARAMS.MOVE_STA_PENALTY, false);
-                ap += ownerObj.getIntParam(PARAMS.MOVE_AP_PENALTY, false);
+                sta += ownerObj.getIntParam(PARAMS.MOVE_TOU_COST_MOD, false);
+                ap += ownerObj.getIntParam(PARAMS.MOVE_ATB_COST_MOD, false);
                 break;
             case SPELL:
-                ap += ownerObj.getIntParam(PARAMS.SPELL_AP_PENALTY, false);
-                sta += ownerObj.getIntParam(PARAMS.SPELL_STA_PENALTY, false);
-                ess += ownerObj.getIntParam(PARAMS.SPELL_ESS_PENALTY, false);
-                foc += ownerObj.getIntParam(PARAMS.SPELL_FOC_PENALTY, false);
+                ap += ownerObj.getIntParam(PARAMS.SPELL_ATB_COST_MOD, false);
+                sta += ownerObj.getIntParam(PARAMS.SPELL_TOU_COST_MOD, false);
+                ess += ownerObj.getIntParam(PARAMS.SPELL_ESS_COST_MOD, false);
+                foc += ownerObj.getIntParam(PARAMS.SPELL_FOC_COST_MOD, false);
 
                 break;
             case TURN:
-                ap += ownerObj.getIntParam(PARAMS.MOVE_AP_PENALTY, false);
+                ap += ownerObj.getIntParam(PARAMS.MOVE_ATB_COST_MOD, false);
                 break;
             case HIDDEN:
-                ap += ownerObj.getIntParam(PARAMS.ATTACK_AP_PENALTY, false);
-                sta += ownerObj.getIntParam(PARAMS.ATTACK_STA_PENALTY, false);
+                ap += ownerObj.getIntParam(PARAMS.ATTACK_ATB_COST_MOD, false);
+                sta += ownerObj.getIntParam(PARAMS.ATTACK_TOUGHNESS_COST_MOD, false);
                 break;
 
         }
-        getEntity().modifyParamByPercent(PARAMS.CP_COST, cp, true);
-        getEntity().modifyParamByPercent(PARAMS.STA_COST, sta, true);
+        getEntity().modifyParamByPercent(PARAMS.ATK_PTS_COST, cp, true);
+        // getEntity().modifyParamByPercent(PARAMS.MP_COST, cp, true);
+        getEntity().modifyParamByPercent(PARAMS.TOU_COST, sta, true);
         getEntity().modifyParamByPercent(PARAMS.AP_COST, ap, true);
         getEntity().modifyParamByPercent(PARAMS.ESS_COST, ess, true);
         if (foc!=0)

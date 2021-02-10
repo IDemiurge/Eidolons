@@ -16,9 +16,6 @@ import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 public class KnockdownRule {
 
     private static final String DEFENSE_FORMULA = "-50";
-    //to getVar up
-    String STA_COST = "4*weight-Strength*3";
-    String AP_COST = "4*weight-Strength*3 *dex";
 
     // add trigger
     /*
@@ -40,8 +37,7 @@ public class KnockdownRule {
 
     public static void knockdown(Unit target) {
         Effects e = new Effects();
-        target.getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.KNOCKDOWN, target);
-        e.add(new ModifyValueEffect(PARAMS.C_N_OF_ACTIONS, MOD.MODIFY_BY_CONST, "-3"));
+        e.add(new ModifyValueEffect(PARAMS.C_ATB, MOD.MODIFY_BY_CONST, "-3"));
         e.add(new ModifyValueEffect(PARAMS.C_FOCUS, MOD.MODIFY_BY_CONST, "-15"));
         (e).apply(Ref.getSelfTargetingRefCopy(target));
 

@@ -4,14 +4,15 @@ import eidolons.content.data.BfObjData;
 import eidolons.content.data.EntityData;
 import eidolons.content.data.UnitData;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.battlecraft.logic.battle.encounter.EncounterData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
-import eidolons.game.battlecraft.logic.dungeon.universal.data.DataMap;
+import eidolons.game.battlecraft.logic.mission.encounter.EncounterData;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
+import main.content.enums.DungeonEnums;
 import main.data.xml.XML_Converter;
 import main.data.xml.XmlStringBuilder;
 import main.entity.type.ObjType;
+import main.game.bf.Coordinates;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.system.auxiliary.data.MapMaster;
@@ -46,7 +47,7 @@ public class LE_EntityHandler extends LE_Handler {
     }
 
     @Override
-    public String getXml(Function<Integer, Boolean> idFilter) {
+    public String getXml(Function<Integer, Boolean> idFilter, Function<Coordinates, Boolean> coordinateFilter) {
 
         String xml =
                 dataMap.keySet().stream().filter(id -> idFilter.apply(id)).
@@ -62,16 +63,16 @@ public class LE_EntityHandler extends LE_Handler {
     }
 
     @Override
-    public String getDataMapString(Function<Integer, Boolean> idFilter) {
+    public String getDataMapString(Function<Integer, Boolean> idFilter, Function<Coordinates, Boolean> coordinateFilter) {
         XmlStringBuilder builder = new XmlStringBuilder();
-        builder.append(getMapXml(idFilter, encounterDataMap, DataMap.encounters));
-        builder.append(getMapXml(idFilter, dataMap, DataMap.custom_types));
+        builder.append(getMapXml(idFilter, encounterDataMap, DungeonEnums.DataMap.encounters));
+        builder.append(getMapXml(idFilter, dataMap, DungeonEnums.DataMap.custom_types));
         return builder.toString();
     }
 
     private String getMapXml(Function<Integer, Boolean> idFilter,
                              Map<Integer, ? extends DataUnit> encounterDataMap,
-                             DataMap encounters) {
+                             DungeonEnums.DataMap encounters) {
         XmlStringBuilder builder = new XmlStringBuilder();
 
         for (Integer integer : encounterDataMap.keySet()) {

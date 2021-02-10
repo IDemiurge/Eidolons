@@ -363,4 +363,8 @@ public class AbilityObj extends Obj implements Ability, ActiveObj, Interruptable
         }
         return abilityGroup;
     }
+
+    public boolean isPhysical() {
+        return true;
+    }
 }

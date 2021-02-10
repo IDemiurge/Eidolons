@@ -166,7 +166,7 @@ public class Requirements implements Condition {
     }
 
     @Override
-    public boolean isTrue() {
+    public Boolean isTrue() {
         return false;
     }
 

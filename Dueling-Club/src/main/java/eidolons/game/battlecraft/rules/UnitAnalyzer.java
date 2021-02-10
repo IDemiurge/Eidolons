@@ -24,24 +24,7 @@ public class UnitAnalyzer {
     }
 
     public static boolean checkOffhand(Unit unit) {
-        if (unit.getActiveWeapon(true) == null) {
-            return false;
-        }
-        return true;
-        //old rule - no offhand natural attack for  twohanded
-//        if (unit.getMainWeapon() == null) {
-//            return true;
-//        }
-//        return !unit.getMainWeapon().isTwoHanded();
-
-        // if (checkDualNaturalWeapons(unit))
-        // return true;
-        // if (unit.getOffhandWeapon() == null)
-        // return false;
-        // if (unit.getOffhandWeapon().isRanged() ||
-        // unit.getOffhandWeapon().isMagical())
-        // return false;
-        // return (unit.getOffhandWeapon().isWeapon());
+        return unit.getActiveWeapon(true) != null;
     }
 
     public static boolean isFlying(Entity u) {
@@ -67,9 +50,7 @@ public class UnitAnalyzer {
 
     public static boolean checkDualNaturalWeapons(Unit unit) {
         if (unit.getMainWeapon() == null && unit.getOffhandWeapon() == null) {
-            if (unit.getNaturalWeapon(false) != null && unit.getNaturalWeapon(true) != null) {
-                return true;
-            }
+            return unit.getNaturalWeapon(false) != null && unit.getNaturalWeapon(true) != null;
         }
         return false;
     }

@@ -9,22 +9,21 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import eidolons.libgdx.GdxMaster;
-import main.content.enums.GenericEnums.BLENDING;
 import eidolons.libgdx.bf.datasource.SpriteData;
 import eidolons.libgdx.screens.CustomSpriteBatch;
 import eidolons.libgdx.texture.TextureManager;
-import main.system.ExceptionMaster;
+import main.content.enums.GenericEnums.BLENDING;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
-import main.system.auxiliary.log.LogMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.Arrays;
 
 /**
  * Created by PC on 10.11.2016.
  */
-public class SpriteAnimation extends Animation<TextureRegion> {
+public class SpriteAnimation extends Animation<TextureRegion> implements Blended{
     final static float defaultFrameDuration = 0.025f;
     private TextureAtlas atlas;
     private float originalFps;
@@ -58,6 +57,9 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     private Runnable onCycle;
     private int lastCycle;
     private SpriteData data;
+    private float pauseBetweenCycles;
+    private float pauseBetweenCyclesRandomness=0.5f;
+    private float pauseTimer;
 
     public void setBackAndForth(boolean backAndForth) {
         this.backAndForth = backAndForth;
@@ -144,34 +146,41 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     public void act(float delta) {
+        if (pauseTimer>0) {
+            pauseTimer-=delta;
+            return ;
+        }
         stateTime += delta;
     }
 
     public boolean draw(Batch batch) {
 
-        if (CoreEngine.isFootageMode())
+        if (Flags.isFootageMode())
             return false;
 
         if (!isCustomAct()) {
             act(Gdx.graphics.getDeltaTime());
+        }
+        if (pauseTimer>0) {
+            return false;
         }
         if (frameNumber == 0)
             return false;
 
         boolean resetBlending = false;
         if (blending != null)
-//            if (batch instanceof CustomSpriteBatch)
+        //            if (batch instanceof CustomSpriteBatch)
         {
-//                if ((((CustomSpriteBatch) batch).getBlending() != blending))
+            //                if ((((CustomSpriteBatch) batch).getBlending() != blending))
             {
                 ((CustomSpriteBatch) batch).setBlending(blending);
-                resetBlending = true;
+                resetBlending = blending==BLENDING.INVERT_SCREEN;
             }
         }
         boolean result = drawThis(batch);
 
         if (resetBlending)
-//            if (batch instanceof CustomSpriteBatch)
+        //            if (batch instanceof CustomSpriteBatch)
         {
             ((CustomSpriteBatch) batch).resetBlending();
         }
@@ -184,12 +193,17 @@ public class SpriteAnimation extends Animation<TextureRegion> {
             checkReverse();
             lastCycle = cycles;
             cycles = (int) (stateTime / lifecycleDuration);
-            if (cycles > lastCycle) {
+            if (checkCycle()) {
                 if (onCycle != null) {
                     onCycle.run();
                 }
+                if (pauseBetweenCycles>0){
+                    pauseTimer =
+                    RandomWizard.randomize(pauseBetweenCycles, pauseBetweenCyclesRandomness);
+                    return false;
+                }
             }
-            lifecycle = stateTime % lifecycleDuration / lifecycleDuration;
+            lifecycle = stateTime % lifecycleDuration / lifecycleDuration; //% of completion!
 
         }
         updateSpeed();
@@ -208,27 +222,32 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         float alpha = this.alpha;
         drawTextureRegion(batch, currentFrame, alpha, offsetX, offsetY);
 
-        try {
-            for (int i = 1; i < getTrailingFramesNumber(); ) {
-
-                TextureRegion frame = getOffsetFrame(stateTime, -i);
-                if (frame == null) {
-                    LogMaster.log(1, stateTime + " null");
-                    return true;
-                }
-                i++;
-                alpha = 3f / (i * i);
-                if (alpha > 0.1f)
-                    drawTextureRegion(batch, currentFrame, alpha, offsetX, offsetY);
-                else
-                    return true;
-            }
-        } catch (Exception e) {
-            ExceptionMaster.printStackTrace(e);
-        }
+        // try {
+        //     for (int i = 1; i < getTrailingFramesNumber(); ) {
+        //
+        //         TextureRegion frame = getOffsetFrame(stateTime, -i);
+        //         if (frame == null) {
+        //             LogMaster.log(1, stateTime + " null");
+        //             return true;
+        //         }
+        //         i++;
+        //         alpha = 3f / (i * i);
+        //         if (alpha > 0.1f)
+        //             drawTextureRegion(batch, currentFrame, alpha, offsetX, offsetY);
+        //         else
+        //             return true;
+        //     }
+        // } catch (Exception e) {
+        //     ExceptionMaster.printStackTrace(e);
+        // }
         return true;
     }
 
+    protected boolean checkCycle() {
+        return cycles > lastCycle;
+    }
+
+    @Override
     public BLENDING getBlending() {
         return blending;
     }
@@ -266,13 +285,12 @@ public class SpriteAnimation extends Animation<TextureRegion> {
 
         sprite.setAlpha(alpha);
         sprite.setSize(currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
-        if (getScale() != null){
+        if (getScale() != null) {
             sprite.setScale(getScale());
-            sprite.setPosition((int) (x + offsetX - getScale()*currentFrame.getRegionWidth() / 2), y
+            sprite.setPosition((int) (x + offsetX - getScale() * currentFrame.getRegionWidth() / 2), y
                     + (int) (offsetY
-                    - getScale()*currentFrame.getRegionHeight() / 2));
-        }
-        else {
+                    - getScale() * currentFrame.getRegionHeight() / 2));
+        } else {
             sprite.setPosition((int) (x + offsetX - currentFrame.getRegionWidth() / 2), y
                     + (int) (offsetY
                     - currentFrame.getRegionHeight() / 2));
@@ -280,14 +298,14 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         sprite.setRotation(rotation);
         sprite.setOrigin(originX, originY);
 
-//        if (color != null)
+        //        if (color != null)
         sprite.setColor(color);
         if (!batch.isDrawing()) {
             batch.begin();
         }
-//        if (batch instanceof CustomSpriteBatch) {
-//            ((CustomSpriteBatch) batch).setBlending(blending);
-//        }
+        //        if (batch instanceof CustomSpriteBatch) {
+        //            ((CustomSpriteBatch) batch).setBlending(blending);
+        //        }
         sprite.draw(batch);
 
     }
@@ -309,7 +327,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
                 case playMode:
                     break;
                 case blending:
-                    setBlending( new EnumMaster<BLENDING>().retrieveEnumConst(BLENDING.class, data.getValue(spriteValue)));
+                    setBlending(new EnumMaster<BLENDING>().retrieveEnumConst(BLENDING.class, data.getValue(spriteValue)));
                     break;
                 case fps:
                     setFps(f);
@@ -433,7 +451,12 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     public TextureRegion getCurrentFrame() {
-        return getKeyFrame(stateTime, looping);
+        if (regions.size < 0)
+            return null;
+        // if (getKeyFrames().length > 0) { //TODO
+            return getKeyFrame(stateTime, looping);
+        // }
+        // return null;
     }
 
     public int getCurrentFrameNumber() {
@@ -565,7 +588,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     }
 
     public void setSpeed(float speed) {
-        setFps(Math.round(originalFps / speed));
+        setFps(Math.round(originalFps * speed));
         this.speed = speed;
     }
 
@@ -594,6 +617,17 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         return 0;
     }
 
+    @Override
+    public TextureRegion[] getKeyFrames() {
+        if (regions == null) {
+            return new TextureRegion[0];
+        }
+        if (regions.size == 0) {
+            return new TextureRegion[0];
+        }
+        return super.getKeyFrames();
+    }
+
     public void centerOnScreen() {
         setOffsetX((GdxMaster.getWidth() - getWidth()) / 2 + getWidth() / 2);
         setOffsetY((GdxMaster.getHeight() - getHeight()) / 2 + getHeight() / 2);
@@ -602,7 +636,7 @@ public class SpriteAnimation extends Animation<TextureRegion> {
     public void centerOnParent(Actor actor) {
         Vector2 pos = new Vector2(actor.getX(), actor.getY());
         actor.localToStageCoordinates(pos);
-//        pos2= actor.getStage().stageToScreenCoordinates(pos2);
+        //        pos2= actor.getStage().stageToScreenCoordinates(pos2);
         setX(pos.x);
         setY(pos.y);
         setOffsetX(Math.abs(actor.getWidth() - getWidth()) / 2 + getWidth() / 2);
@@ -647,13 +681,15 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         return onCycle;
     }
 
-
-
-    public enum SPRITE_BEHAVIOR {
-        FREEZE_WHEN_LOOPS_DONE,
-    }
-
     public TextureAtlas getAtlas() {
         return atlas;
+    }
+
+    public void setPauseBetweenCyclesRandomness(float pauseBetweenCyclesRandomness) {
+        this.pauseBetweenCyclesRandomness = pauseBetweenCyclesRandomness;
+    }
+
+    public void setPauseBetweenCycles(float pauseBetweenCycles) {
+        this.pauseBetweenCycles = pauseBetweenCycles;
     }
 }

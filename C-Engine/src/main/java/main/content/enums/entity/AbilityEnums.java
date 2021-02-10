@@ -28,15 +28,19 @@ public class AbilityEnums {
 
         SELF, SINGLE, MULTI,
 
-        DOUBLE, TRIPPLE, CELL,
+        WAVE(true),
+        SPRAY(true),
+        NOVA(true),
+        BLAST(true),
 
-        RAY,
-        RAY_AUTO,
-        THREE_RAY_AUTO,
-        // TODO ARGS - N_OF_JUMPS ETC???
-        WAVE,
-        NOVA,
-        BLAST,
+        RAY(true),
+        RAY_AUTO(true),
+        THREE_RAY_AUTO(true),
+
+        CROSS(true),
+        STAR(true),
+
+        DOUBLE, TRIPPLE, CELL,
         CORPSE,
         TRAP,
         BF_OBJ,
@@ -49,7 +53,6 @@ public class AbilityEnums {
         ALL_ALLIES,
         BOLT_ANY,
         BOLT_UNITS,
-        SPRAY,
         // GLOBAL_NOT_SELF,
         MY_WEAPON,
         MY_ARMOR,
@@ -60,7 +63,15 @@ public class AbilityEnums {
         ANY_ITEM,
         ANY_WEAPON,
         ANY_ARMOR, FRONT_RANGE, UNOBSTRUCTED_SHOT,
+;
+        boolean shaped;
 
+        TARGETING_MODE(boolean shaped) {
+            this.shaped = shaped;
+        }
+
+        TARGETING_MODE() {
+        }
     }
 
     public enum TARGETING_MODIFIERS {

@@ -9,6 +9,7 @@ import com.kotcrab.vis.ui.widget.MenuItem;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.StyleHolder;
 import main.level_editor.LevelEditor;
+import main.level_editor.backend.brush.BrushShape;
 import main.level_editor.backend.brush.LE_BrushType;
 import main.level_editor.backend.handlers.LE_MenuHandler;
 import main.system.auxiliary.StringMaster;
@@ -26,7 +27,7 @@ public class MenuPanel extends MenuBar {
             if (value.subFuncs.length == 0) {
                 continue;
             }
-            Menu menu = new Menu(value.name(), style);
+            Menu menu = new Menu(StringMaster.format(value.name()), style);
 
             addMenu(menu);
             for (LE_MenuHandler.FUNCTION_BUTTONS subFunc : value.subFuncs) {
@@ -46,8 +47,30 @@ public class MenuPanel extends MenuBar {
             item.setStyle(btnStyle);
             brushMenu.addItem(item);
         }
+        addMenu(brushMenu = new Menu("Shape", style));
+        for (BrushShape value :  BrushShape.values()) {
+            MenuItem item = new MenuItem(value.name());
+            item.addListener(createBrushShapeItemListener(value));
+            item.setStyle(btnStyle);
+            brushMenu.addItem(item);
+        }
 
+    }
 
+    private EventListener createBrushShapeItemListener(BrushShape value) {
+        return event -> {
+            if (event instanceof InputEvent) {
+                switch (((InputEvent) event).getType()) {
+                    case touchDown:
+                        LevelEditor.getCurrent().getManager().getModelManager()
+                                .getModel().setBrushMode(true);
+                        LevelEditor.getCurrent().getManager().getModelManager()
+                                .getModel().getBrush().setShape(value);
+                        return true;
+                }
+            }
+            return false;
+        };
     }
 
     private EventListener createBrushItemListener(LE_BrushType value) {
@@ -55,6 +78,8 @@ public class MenuPanel extends MenuBar {
             if (event instanceof InputEvent) {
                 switch (((InputEvent) event).getType()) {
                     case touchDown:
+                        LevelEditor.getCurrent().getManager().getModelManager()
+                                .getModel().setBrushMode(true);
                         LevelEditor.getCurrent().getManager().getModelManager()
                                 .getModel().getBrush().setBrushType(value);
                         return true;
@@ -72,7 +97,7 @@ public class MenuPanel extends MenuBar {
             Menu menu = new Menu(TabbedControlPanel.getTitleFromClass(panel.getClazz()), style);
             addMenu(menu);
             for (Method method : panel.getClazz().getMethods()) {
-                MenuItem item = new MenuItem(StringMaster.getWellFormattedString(method.getName()));
+                MenuItem item = new MenuItem(StringMaster.format(method.getName()));
                 item.addListener(createItemListener(item, method, panel.getHandler()));
                 menu.addItem(item);
                 item.setStyle(btnStyle);
@@ -120,7 +145,7 @@ public class MenuPanel extends MenuBar {
     }
 
     private MenuItem createMenuItem(LE_MenuHandler.FUNCTION_BUTTONS subFunc) {
-        MenuItem item = new MenuItem(subFunc.name());
+        MenuItem item = new MenuItem( StringMaster.format(subFunc.name()));
         return item;
     }
 

@@ -4,7 +4,6 @@ import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.Deity;
-import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.handlers.bf.unit.UnitCalculator;
@@ -12,7 +11,6 @@ import eidolons.entity.handlers.bf.unit.UnitChecker;
 import eidolons.entity.handlers.bf.unit.UnitInitializer;
 import eidolons.entity.handlers.bf.unit.UnitResetter;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.game.DC_Game;
@@ -20,12 +18,11 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.bf.Rotatable;
 import eidolons.system.text.ToolTipMaster;
 import main.content.DC_TYPE;
-import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.HeroEnums.RACE;
 import main.content.enums.entity.UnitEnums.IMMUNITIES;
-import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.content.enums.rules.VisionEnums.VISION_MODE;
 import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
@@ -41,19 +38,19 @@ import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.images.ImageManager;
 import main.system.math.MathMaster;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import javax.swing.*;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static main.system.GuiEventType.INITIATIVE_CHANGED;
 import static main.system.GuiEventType.SHOW_MODE_ICON;
 
 public abstract class DC_UnitModel extends BattleFieldObject implements Rotatable {
@@ -65,11 +62,14 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     protected Deity deity;
     protected UnitAI unitAI;
-    private ImageIcon emblem;
-    private DC_ActiveObj preferredInstantAttack;
-    private DC_ActiveObj preferredCounterAttack;
-    private DC_ActiveObj preferredAttackOfOpportunity;
-    private DC_ActiveObj preferredAttackAction;
+    protected ImageIcon emblem;
+    protected DC_ActiveObj preferredInstantAttack;
+    protected DC_ActiveObj preferredCounterAttack;
+    protected DC_ActiveObj preferredAttackOfOpportunity;
+    protected DC_ActiveObj preferredAttackAction;
+    protected Boolean unconscious;
+    private FACING_DIRECTION tempFacing;
+    private Coordinates tempCoordinates;
 
     public DC_UnitModel(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -94,14 +94,14 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
         if (getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT) {
             //!VisionManager.checkVisible(this)) {
-//        if (getActivePlayerVisionStatus() == PLAYER_VISION.UNKNOWN) {
+            //        if (getActivePlayerVisionStatus() == PLAYER_VISION.UNKNOWN) {
             // if (isHuge())
             // return "Something huge";
             // if (isSmall())
             // return "Something small";
             return "Something " + getGame().getVisionMaster().getHintMaster().getHintsString(this);
         }
-//        return StringMaster.getWellFormattedString(getVisibilityLevel().toString()); //"Someone or something";
+        //        return StringMaster.getWellFormattedString(getVisibilityLevel().toString()); //"Someone or something";
 
         return getName();
     }
@@ -124,7 +124,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
                     actionTargetingTooltip = ToolTipMaster.getActionTargetingTooltip(this, action);
                 } catch (Exception e) {
                     if (!action.isBroken()) {
-                        main.system.ExceptionMaster.printStackTrace(e);
+                        ExceptionMaster.printStackTrace(e);
                     } else {
                         action.setBroken(true);
                     }
@@ -150,7 +150,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         if (vision_mode == null) {
             String name = getProperty(PROPS.VISION_MODE);
             if (StringMaster.isEmpty(name)) {
-                vision_mode = VisionEnums.VISION_MODE.NORMAL_VISION;
+                vision_mode = VISION_MODE.NORMAL_VISION;
             } else {
                 vision_mode = new EnumMaster<VISION_MODE>().retrieveEnumConst(VISION_MODE.class,
                         name);
@@ -185,41 +185,18 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     @Override
     public void newRound() {
+
         if (!new Event(STANDARD_EVENT_TYPE.UNIT_NEW_ROUND_BEING_STARTED, ref).fire()) {
             return;
         }
-        // setMode(STD_MODES.NORMAL); just don't.
-        if (game.getState().getRound() > -1) // ???
-            getResetter().regenerateToughness();
-        if (!DC_Engine.isAtbMode())
-            getResetter().resetActions();
-
+        // if (game.getState().getRound() > -1) // ???
+        //     getResetter().regenerateToughness();
+        resetDynamicParam(PARAMS.C_EXTRA_MOVES);
+        resetDynamicParam(PARAMS.C_EXTRA_ATTACKS);
+        resetDynamicParam(PARAMS.C_TOUGHNESS);
         regen();
 
         new Event(STANDARD_EVENT_TYPE.UNIT_NEW_ROUND_STARTED, ref).fire();
-    }
-
-
-    public void recalculateInitiative() {
-
-        final int before = getIntParam(PARAMS.C_INITIATIVE);
-        final int initiative = getCalculator().calculateInitiative(true);
-
-        setParam(PARAMS.C_INITIATIVE, initiative, true);
-
-        int baseInitiative = getCalculator().calculateInitiative(false);
-        setParam(PARAMS.INITIATIVE, baseInitiative, true);
-
-        resetPercentage(PARAMS.INITIATIVE);
-
-        final int after = getIntParam(PARAMS.C_INITIATIVE);
-
-        if (before - after != 0) {
-            GuiEventManager.trigger(
-                    INITIATIVE_CHANGED,
-                    new ImmutablePair<>(this, after)
-            );
-        }
     }
 
 
@@ -227,8 +204,9 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         String action = getProperty(PROPS.DEFAULT_INSTANT_ATTACK_ACTION);
         if (!action.isEmpty()) {
             preferredInstantAttack = getAction(action);
+            return preferredInstantAttack;
         }
-        return preferredInstantAttack;
+        return getAttackOfType(ActionEnums.ATTACK_TYPE.QUICK_ATTACK);
     }
 
     public void setPreferredInstantAttack(DC_ActiveObj preferredInstantAttack) {
@@ -240,8 +218,21 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         String action = getProperty(PROPS.DEFAULT_COUNTER_ATTACK_ACTION);
         if (!action.isEmpty()) {
             preferredCounterAttack = getAction(action);
+            return preferredCounterAttack;
         }
-        return preferredCounterAttack;
+        return getAttackOfType(ActionEnums.ATTACK_TYPE.QUICK_ATTACK);
+    }
+
+    public DC_ActiveObj getAttackOfType(ActionEnums.ATTACK_TYPE type) {
+        for (DC_UnitAction subAction : getAttack().getSubActions()) {
+            if (subAction.getChecker().checkAttackType(type)) {
+                return subAction;
+            }
+        }
+        LogMaster.log(1, "No action of type " +
+                type +
+                " found for " + getName());
+        return getAttack().getSubActions().get(0);
     }
 
     public void setPreferredCounterAttack(DC_ActiveObj preferredCounterAttack) {
@@ -253,8 +244,9 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         String action = getProperty(PROPS.DEFAULT_ATTACK_OF_OPPORTUNITY_ACTION);
         if (!action.isEmpty()) {
             preferredAttackOfOpportunity = getAction(action);
+            return preferredAttackOfOpportunity;
         }
-        return preferredAttackOfOpportunity;
+        return getAttackOfType(ActionEnums.ATTACK_TYPE.QUICK_ATTACK);
     }
 
     public void setPreferredAttackOfOpportunity(DC_ActiveObj preferredAttackOfOpportunity) {
@@ -272,9 +264,9 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     }
 
     public boolean turnStarted() {
-//        if (!game.fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_TURN_READY, ref))) {
-//            return false;
-//        }
+        //        if (!game.fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_TURN_READY, ref))) {
+        //            return false;
+        //        }
         return canActNow();
 
     }
@@ -302,6 +294,10 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     public void setMode(MODE mode) {
         if (this.mode == mode) return;
+        if (getEntity().isUnconscious()) {
+            this.mode = STD_MODES.UNCONSCIOUS;
+            return;
+        }
         if (getBuff("Channeling") != null) {
             if (mode != STD_MODES.CHANNELING) {
                 return;
@@ -312,24 +308,25 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         if (mode == null) {
             removeProperty(G_PROPS.MODE, "");
         } else {
-            setProperty(G_PROPS.MODE, StringMaster.getWellFormattedString(mode.toString()));
+            setProperty(G_PROPS.MODE, StringMaster.format(mode.toString()));
         }
         if (mode == null || STD_MODES.NORMAL.equals(mode)) {
             GuiEventManager.triggerWithParams(SHOW_MODE_ICON, this, null);
         } else {
             GuiEventManager.triggerWithParams(SHOW_MODE_ICON, this, mode.getImagePath());
-            EUtils.showInfoText(
-                    StringMaster.getWellFormattedString(mode.getBuffName()) + "...");
+            if (isMainHero())
+                EUtils.showInfoText(
+                        StringMaster.format(mode.getBuffName()) + "...");
         }
     }
 
 
     public DC_UnitAction getAttack() {
-        return getAction(DC_ActionManager.ATTACK);
+        return getAction(ActionEnums.ATTACK);
     }
 
     public DC_UnitAction getOffhandAttack() {
-        return getAction(DC_ActionManager.OFFHAND_ATTACK);
+        return getAction(ActionEnums.OFFHAND_ATTACK);
     }
 
     public FACING_DIRECTION getFacingOrNull() {
@@ -448,7 +445,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         if (dmg_type == null) {
             String name = getProperty(PROPS.DAMAGE_TYPE);
             if (StringMaster.isEmpty(name)) {
-                dmg_type = GenericEnums.DAMAGE_TYPE.PHYSICAL;
+                dmg_type = DAMAGE_TYPE.PHYSICAL;
             } else {
                 dmg_type = new EnumMaster<DAMAGE_TYPE>().retrieveEnumConst(DAMAGE_TYPE.class, name);
             }
@@ -486,10 +483,6 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     public boolean canAttack() {
         return getChecker().canAttack();
-    }
-
-    public boolean canAttack(DC_UnitModel attacked) {
-        return getChecker().canAttack(attacked);
     }
 
     public boolean canCounter() {
@@ -530,7 +523,10 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     }
 
     public boolean isUnconscious() {
-        return getChecker().isUnconscious();
+        if (unconscious != null) {
+            return unconscious;
+        }
+        return unconscious = getChecker().isUnconscious();
     }
 
     public boolean canAct() {
@@ -604,5 +600,51 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     public MODE getModeFinal() {
         return mode;
+    }
+
+    public void setTempFacing(FACING_DIRECTION tempFacing) {
+        this.tempFacing = tempFacing;
+    }
+    public void initTempFacing() {
+        setTempFacing(super.getFacing());
+    }
+    public void removeTempFacing() {
+        this.tempFacing = null;
+    }
+
+
+    public void setTempCoordinates(Coordinates tempCoordinates) {
+        this.tempCoordinates = tempCoordinates;
+    }
+    public void initTempCoordinates() {
+        setTempCoordinates(super.getCoordinates());
+    }
+    public void removeTempCoordinates() {
+        this.tempCoordinates = null;
+    }
+
+    @Override
+    public void setCoordinates(Coordinates coordinates) {
+        super.setCoordinates(coordinates);
+    }
+
+    @Override
+    public Coordinates getCoordinates() {
+        if (tempCoordinates!=null) {
+            return tempCoordinates;
+        }
+        return super.getCoordinates();
+    }
+
+    @Override
+    public FACING_DIRECTION getFacing() {
+        if (tempFacing != null) {
+            return tempFacing;
+        }
+        return super.getFacing();
+    }
+
+    public boolean checkCanDoFreeMove(DC_ActiveObj activeObj) {
+        return getChecker().checkCanDoFreeMove(activeObj);
     }
 }

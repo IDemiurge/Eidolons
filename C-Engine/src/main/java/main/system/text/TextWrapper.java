@@ -3,6 +3,7 @@ package main.system.text;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import main.entity.Ref;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.List;
 public class TextWrapper {
 
     public static String[] wrapIntoArray(String text, int wrapLength) {
-        return WordUtils.wrap(text, wrapLength, StringMaster.NEW_LINE, true).split(StringMaster.NEW_LINE);
+        return WordUtils.wrap(text, wrapLength, Strings.NEW_LINE, true).split(Strings.NEW_LINE);
     }
 
     public static List<String> wrap(String text, int wrapLength) {
@@ -25,16 +26,16 @@ public class TextWrapper {
         }
         text = TextParser.parse(text, ref);
 
-        if (text.contains(StringMaster.NEW_LINE)) {
+        if (text.contains(Strings.NEW_LINE)) {
             ArrayList<String> list = new ArrayList<>();
-            for (String subString : text.split(StringMaster.NEW_LINE)) {
+            for (String subString : text.split(Strings.NEW_LINE)) {
                 list.addAll(Arrays.asList(WordUtils.wrap(subString, wrapLength,
-                 StringMaster.NEW_LINE, true).split(StringMaster.NEW_LINE)));
+                 Strings.NEW_LINE, true).split(Strings.NEW_LINE)));
             }
             return list;
         }
         return new ArrayList<>(Arrays.asList(WordUtils.wrap(text, wrapLength,
-         StringMaster.NEW_LINE, true).split(StringMaster.NEW_LINE)));
+         Strings.NEW_LINE, true).split(Strings.NEW_LINE)));
     }
 
     public static String wrapWithNewLine(String text, int wrapLength) {
@@ -44,7 +45,7 @@ public class TextWrapper {
         for (int j = 0; j < list.size(); j++) {
             String sub = list.get(j);
             if (j != list.size() - 1)
-                result.append(sub).append(StringMaster.NEW_LINE);
+                result.append(sub).append(Strings.NEW_LINE);
             else result.append(sub);
         }
         return result.toString();
@@ -63,7 +64,7 @@ public class TextWrapper {
 
             if (substring.length()>maxLength)
                 substring = wrapWithNewLine(substring, maxLength);
-            newText.append(substring).append(StringMaster.NEW_LINE);
+            newText.append(substring).append(Strings.NEW_LINE);
         }
 
         if (zigZagLines) {
@@ -74,7 +75,7 @@ public class TextWrapper {
 //                if (i++%2==1){
 //                    n = n / 2;
 //                }
-                newTextZiggy.append(StringMaster.getWhiteSpaces(n)).append(substring).append(StringMaster.NEW_LINE);
+                newTextZiggy.append(StringMaster.getWhiteSpaces(n)).append(substring).append(Strings.NEW_LINE);
             }
             return newTextZiggy.substring(0, newTextZiggy.length()-1);
         }

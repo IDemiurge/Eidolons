@@ -3,8 +3,8 @@ package main.utilities.search;
 import main.content.OBJ_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.util.DialogMaster;
 
 import java.util.ArrayList;
 import java.util.List;

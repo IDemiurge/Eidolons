@@ -13,9 +13,7 @@ import main.content.VALUE;
  */
 public class HqScrolledValuePanel extends HqElement {
 
-    private ScrollPanel scroll;
-    private HqVerticalValueTable valueTable2;
-    private HqVerticalValueTable valueTable;
+    private final ScrollPanel scroll;
 
     public HqScrolledValuePanel() {
         this(500, 230);
@@ -23,8 +21,8 @@ public class HqScrolledValuePanel extends HqElement {
 
     public HqScrolledValuePanel(float w, float h) {
         setSize(w, h);
-        valueTable = new StatsListPanel(getValuesOne());
-        valueTable2 = new StatsListPanel(getValuesTwo());
+        HqVerticalValueTable valueTable = new StatsListPanel(getValuesOne());
+        HqVerticalValueTable valueTable2 = new StatsListPanel(getValuesTwo());
         valueTable.setSize(w / 2, h);
         valueTable2.setSize(w / 2, h);
         TablePanelX<Actor> table = new TablePanelX<>();

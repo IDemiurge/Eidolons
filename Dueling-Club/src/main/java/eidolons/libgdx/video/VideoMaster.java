@@ -22,7 +22,6 @@ public class VideoMaster {
     private CameraInputController inputController;
     private Music audio;
     private boolean videoAvailable = true;
-    private boolean available = true;
 
     public VideoPlayer getPlayer() {
         return player;
@@ -107,6 +106,7 @@ public class VideoMaster {
     }
 
     public boolean isAvailable() {
+        boolean available = true;
         return available;
     }
 

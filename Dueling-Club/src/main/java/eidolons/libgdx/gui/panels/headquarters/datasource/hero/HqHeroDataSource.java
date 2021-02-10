@@ -39,6 +39,16 @@ public class HqHeroDataSource extends EntityDataSource<HeroDataModel>
         unitDataSource = new UnitDataSource(entity);
     }
 
+    @Override
+    public List<ValueContainer> getBuffs(boolean body) {
+        return unitDataSource.getBuffs(body);
+    }
+
+    @Override
+    public List<ValueContainer> getAbilities(boolean body) {
+        return unitDataSource.getAbilities(body);
+    }
+
     public UnitDataSource getUnitDataSource() {
         return unitDataSource;
     }
@@ -134,16 +144,6 @@ public class HqHeroDataSource extends EntityDataSource<HeroDataModel>
     }
 
     @Override
-    public String getStamina() {
-        return unitDataSource.getStamina();
-    }
-
-    @Override
-    public String getMorale() {
-        return unitDataSource.getMorale();
-    }
-
-    @Override
     public String getEssence() {
         return unitDataSource.getEssence();
     }
@@ -183,14 +183,6 @@ public class HqHeroDataSource extends EntityDataSource<HeroDataModel>
         return unitDataSource.getCounterPoints();
     }
 
-    @Override
-    public ValueContainer getActionPoints() {
-        return unitDataSource.getActionPoints();
-    }
-
-    public VerticalValueContainer getParamContainer(PARAMETER parameter) {
-        return unitDataSource.getParamContainer(parameter);
-    }
 
     @Override
     public VerticalValueContainer getResistance() {
@@ -200,10 +192,6 @@ public class HqHeroDataSource extends EntityDataSource<HeroDataModel>
     @Override
     public VerticalValueContainer getDefense() {
         return unitDataSource.getDefense();
-    }
-
-    public VerticalValueContainer getValueContainer(PARAMETER param, String string) {
-        return unitDataSource.getValueContainer(param, string);
     }
 
     @Override
@@ -219,16 +207,6 @@ public class HqHeroDataSource extends EntityDataSource<HeroDataModel>
     @Override
     public VerticalValueContainer getArmor() {
         return unitDataSource.getArmor();
-    }
-
-    @Override
-    public List<ValueContainer> getBuffs() {
-        return unitDataSource.getBuffs();
-    }
-
-    @Override
-    public List<ValueContainer> getAbilities() {
-        return unitDataSource.getAbilities();
     }
 
     @Override
@@ -321,11 +299,11 @@ public class HqHeroDataSource extends EntityDataSource<HeroDataModel>
     }
 
     public List<VALUE> getStatsValueList(VALUE[][] paramsGeneral) {
-        return unitDataSource.getStatsValueList(paramsGeneral);
+        return UnitDataSource.getStatsValueList(paramsGeneral);
     }
 
     public List<VALUE> getStatsValues() {
-        return unitDataSource.getStatsValues();
+        return UnitDataSource.getStatsValues();
     }
 
 }

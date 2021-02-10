@@ -84,10 +84,7 @@ public class Blackout {
     }
 
     public boolean isOpaque() {
-        if (blackout>=0.999f) {
-            return true;
-        }
-        return false;
+        return blackout >= 0.999f;
     }
 
     public static class BlackSprite extends Sprite {
@@ -113,7 +110,7 @@ public class Blackout {
         if (dur>=1000) {
             dur = dur/1000;
         }
-        main.system.auxiliary.log.LogMaster.dev(toString() + " Blackout NEW to " + to);
+        main.system.auxiliary.log.LogMaster.devLog(toString() + " Blackout NEW to " + to);
         blackoutAction.setDuration(dur);
         if (!whiteout)
             blackoutAction.setInterpolation(Interpolation.fade);
@@ -133,7 +130,7 @@ public class Blackout {
 
         if (blackoutAction.getTime() >= blackoutAction.getDuration()) {
             if (blackoutBack) {
-                main.system.auxiliary.log.LogMaster.dev("Blackout new BACK;"  + " blackout=="+blackout);
+                main.system.auxiliary.log.LogMaster.devLog("Blackout new BACK;"  + " blackout=="+blackout);
                 blackoutAction.setStart( (blackout));
                 blackoutAction.setEnd(0);
                 blackoutAction.restart();

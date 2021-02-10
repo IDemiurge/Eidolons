@@ -20,7 +20,8 @@ import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SmartTextButton;
+import eidolons.libgdx.gui.generic.btn.SymbolButton;
 import eidolons.libgdx.gui.panels.AdjustingVerticalGroup;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
@@ -39,7 +40,7 @@ import main.system.GuiEventManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.sound.AudioEnums;
 import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -55,7 +56,7 @@ public class ContainerPanel extends TablePanel implements Blocking {
     protected InventorySlotsPanel containerSlotsPanel;
     protected FadeImageContainer portrait;
     protected FadeImageContainer container;
-    protected SmartButton mainButton;
+    protected SmartTextButton mainButton;
     protected LabelX heroLabel;
     protected LabelX containerLabel;
     protected ValueContainer weightLabel;
@@ -208,8 +209,8 @@ public class ContainerPanel extends TablePanel implements Blocking {
         lower.add(lowerRight).right();
         if (isButtonRequired()) {
             lower.row();
-            mainButton = new SmartButton(
-             getButtonText(), StyleHolder.getHqTextButtonStyle(20), () -> mainButton(), STD_BUTTON.MENU);
+            mainButton = new SmartTextButton(
+             getButtonText(), StyleHolder.getHqTextButtonStyle(20), this::mainButton, STD_BUTTON.MENU);
             lower.add(mainButton).colspan(2).right().fillX().growX();
         }
         return addElement(lower).pad(0, 30, 20, 20);
@@ -220,7 +221,7 @@ public class ContainerPanel extends TablePanel implements Blocking {
 
         TablePanelX filters = new TablePanelX<>();
         for (ITEM_FILTERS filter : ITEM_FILTERS.values()) {
-            filters.add(new SmartButton(getButtonStyle(filter),
+            filters.add(new SymbolButton(getButtonStyle(filter),
              () -> {
                  EUtils.showInfoText("Filters are under construction...");
                  //                 try {
@@ -344,7 +345,7 @@ public class ContainerPanel extends TablePanel implements Blocking {
     public void close() {
         getStageWithClosable().closeClosable(this);
         WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, true);
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__TAB);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__TAB);
 
     }
 

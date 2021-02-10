@@ -1,16 +1,16 @@
 package eidolons.libgdx.audio;
 
 import com.badlogic.gdx.math.Vector2;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
+import eidolons.game.module.cinematic.Cinematics;
 import eidolons.libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SoundOptions.SOUND_OPTION;
 import main.content.CONTENT_CONSTS;
 import main.entity.obj.Obj;
+import main.system.sound.AudioEnums.SOUNDS;
 import main.system.sound.Player;
 import main.system.sound.SoundFx;
-import main.system.sound.SoundMaster.SOUNDS;
 
 import java.util.Stack;
 

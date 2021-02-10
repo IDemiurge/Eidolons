@@ -1,6 +1,6 @@
 package eidolons.ability.effects.oneshot.mechanic;
 
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.core.master.EffectMaster;
 import eidolons.system.math.roll.RollMaster;
 import eidolons.system.math.roll.Rolls;
 import main.ability.effects.*;
@@ -9,6 +9,7 @@ import main.data.ability.construct.VariableManager;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 
 // auto-wrap in this? 
 /*
@@ -155,8 +156,8 @@ public class RollEffect extends MicroEffect implements OneshotEffect, ContainerE
             elseEffect = new Effects();
         }
         for (String s : ContainerUtils.open(elseAbilityName,
-         StringMaster.AND_SEPARATOR)) {
-            ((Effects) effect).addAll(EffectFinder
+         Strings.VERTICAL_BAR)) {
+            ((Effects) effect).addAll(EffectMaster
              .getEffectsFromAbilityType(VariableManager.getVarType(s,
               false, ref)));
         }
@@ -170,8 +171,8 @@ public class RollEffect extends MicroEffect implements OneshotEffect, ContainerE
         if (effect == null) {
             effect = new Effects();
             for (String s : ContainerUtils.open(abilityName,
-             StringMaster.AND_SEPARATOR)) {
-                ((Effects) effect).addAll(EffectFinder
+             Strings.VERTICAL_BAR)) {
+                ((Effects) effect).addAll(EffectMaster
                  .getEffectsFromAbilityType(VariableManager.getVarType(
                   s, false, ref)));
             }

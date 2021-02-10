@@ -1,20 +1,31 @@
 package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
+import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import eidolons.game.battlecraft.logic.dungeon.universal.data.DataMap;
+import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import eidolons.libgdx.bf.decor.CellData;
+import eidolons.libgdx.bf.decor.DecorData;
+import eidolons.libgdx.bf.grid.GridPanel;
+import eidolons.libgdx.screens.ScreenMaster;
 import main.content.DC_TYPE;
+import main.content.enums.DungeonEnums;
 import main.data.DataManager;
 import main.data.xml.XmlNodeMaster;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.data.DataUnit;
@@ -24,9 +35,11 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static main.content.CONTENT_CONSTS.FLIP;
+import static main.content.CONTENT_CONSTS.MARK;
 import static main.system.auxiliary.log.LogMaster.log;
 
-public class FloorLoader extends DungeonHandler<Location> {
+public class FloorLoader extends DungeonHandler {
     //nodes
     public static final String TRANSITS = "TRANSITS";
     public static final String OVERLAY_DIRECTIONS = "OVERLAY_DIRECTIONS";
@@ -52,6 +65,8 @@ public class FloorLoader extends DungeonHandler<Location> {
     public static final String MAIN_ENTRANCE = "MAIN_ENTRANCE";
     public static final String MAIN_EXIT = "MAIN_EXIT";
     public static final String SCRIPT_DATA = "SCRIPT_DATA";
+    public static final String PLATFORM_DATA = "PLATFORM_DATA";
+    public static final String DECOR_DATA = "DECOR";
     private String entranceData = "";
 
     public FloorLoader(DungeonMaster master) {
@@ -70,6 +85,15 @@ public class FloorLoader extends DungeonHandler<Location> {
     public void processModuleSubNode(Node node, Location location, Module module) {
         log(LOG_CHANNEL.BUILDING, "Module Sub Node: " + node.getNodeName());
         switch (node.getNodeName()) {
+            case DECOR_DATA:
+                location.addDecorDataMap(buildDecorMap(node.getTextContent()));
+                break;
+            case PLATFORM_DATA:
+                initPlatformData(module, node.getTextContent());
+                break;
+            case SCRIPT_DATA:
+                location.addTextDataMap(buildCellMap(node.getTextContent()));
+                break;
             case CUSTOM_TYPE_DATA:
                 Map<Integer, ObjType> idTypeMap = module.getIdTypeMap();
                 Map<Integer, Map<String, String>> customTypesData = MapMaster.createDataMap(node.getTextContent());
@@ -83,12 +107,16 @@ public class FloorLoader extends DungeonHandler<Location> {
                 }
                 break;
             case BORDERS:
-                getObjInitializer().processBorderObjects(module, node);
+                if (isModuleObjInitRequired(module)) {
+                    getObjInitializer().processBorderObjects(module, node.getTextContent());
+                } else {
+                    module.setBorderObjectsData(node.getTextContent());
+                }
                 break;
             case OBJ_NODE_NEW:
                 module.setObjectsData(node.getTextContent());
-                if (module.isInitialModule()) {
-                    module.initObjects();
+                if (isModuleObjInitRequired(module)) {
+                    initObjects(module);
                 }
 
                 break;
@@ -111,10 +139,10 @@ public class FloorLoader extends DungeonHandler<Location> {
                 processTransitsNode(node.getTextContent());
                 break;
             case MAIN_ENTRANCE:
-                location.setEntranceData(node.getTextContent());
+                addMainEntrance(location, node.getTextContent(), false);
                 break;
             case MAIN_EXIT:
-                location.setExitData(node.getTextContent());
+                addMainEntrance(location, node.getTextContent(), true);
                 break;
             case ID_MAP:
                 module.getIdTypeMap().putAll(processIdTypesMap(node.getTextContent()));
@@ -125,11 +153,24 @@ public class FloorLoader extends DungeonHandler<Location> {
                 initEncounterGroups(node.getTextContent());
                 break;
             case CUSTOM_AI_GROUPS:
-//             TODO    getMaster().getGame().getAiManager().getGroupHandler()
-//                        .initCustomGroups(node.getTextContent());
+                //             TODO    getMaster().getGame().getAiManager().getGroupHandler()
+                //                        .initCustomGroups(node.getTextContent());
                 break;
         }
 
+    }
+
+
+    protected void initPlatformData(Module module, String textContent) {
+        module.setPlatformData(textContent);
+    }
+
+    protected void initObjects(Module module) {
+        module.initObjects();
+    }
+
+    protected boolean isModuleObjInitRequired(Module module) {
+        return module.isStartModule();
     }
 
     public void processNode(Node node, Location location) {
@@ -142,22 +183,27 @@ public class FloorLoader extends DungeonHandler<Location> {
                 data.apply();
                 log(LOG_CHANNEL.BUILDING, "Location after data applies: " +
                         location);
-                if (location.getWidth() > 0 && location.getHeight() > 0) {
-                    getBuilder().initWidthAndHeight(location);
+                if (!master.isModuleSizeBased()) {
+                    if (!location.isInitialEdit()) {
+                        getBuilder().initLocationSize(location);
+                    }
+                } else {
+                    Coordinates.initCache(location.getWidth(), location.getHeight());
                 }
                 break;
             case MODULES:
+                Module.ID = 0;
                 getStructureBuilder().build(node, location);
                 checkModuleRemap(false, location);
                 break;
             case DATA_MAPS:
-                Map<DataMap, Map<Integer, String>> map = new LinkedHashMap<>();
+                Map<DungeonEnums.DataMap, Map<Integer, String>> map = new LinkedHashMap<>();
                 for (Node sub : XmlNodeMaster.getNodeList(node)) {
                     Map<Integer, String> submap = new LinkedHashMap<>();
                     for (Node idNode : XmlNodeMaster.getNodeList(node)) {
                         submap.put(Integer.valueOf(idNode.getNodeName()), sub.getTextContent());
                     }
-                    map.put(DataMap.valueOf(sub.getNodeName()), submap);
+                    map.put(DungeonEnums.DataMap.valueOf(sub.getNodeName()), submap);
 
                 }
                 master.setDataMaps(map);
@@ -182,9 +228,18 @@ public class FloorLoader extends DungeonHandler<Location> {
 
     protected void initTransits(Location location) {
         for (String substring : ContainerUtils.openContainer(entranceData)) {
-            Integer id = NumberUtils.getInteger(substring.split("->")[0]);
+            Integer id = NumberUtils.getIntParse(substring.split("->")[0]);
             Coordinates c = Coordinates.get(substring.split("->")[1]);
             processTransitPair(id, c, location);
+        }
+    }
+
+    public void addMainEntrance(Location location, String text,
+                                boolean exit) {
+        if (exit) {
+            location.setExitData(text);
+        } else {
+            location.setEntranceData(text);
         }
     }
 
@@ -214,8 +269,13 @@ public class FloorLoader extends DungeonHandler<Location> {
             ObjType type = DataManager.getType(typeName, DC_TYPE.BF_OBJ);
             if (type == null) {
                 type = DataManager.getType(typeName, DC_TYPE.ENCOUNTERS);
-            } else if (type == null) {
+            }
+            if (type == null) {
                 type = DataManager.getType(typeName, DC_TYPE.UNITS);
+            }
+            if (type == null) {
+                main.system.auxiliary.log.LogMaster.log(1, typeName + " - NO SUCH TYPE FOR ID !");
+                continue;
             }
             String ids = content.split("=")[1];
             for (String substring : ContainerUtils.openContainer(ids, ",")) {
@@ -245,5 +305,95 @@ public class FloorLoader extends DungeonHandler<Location> {
         location.initMainEntrance();
         //TODO may not be initialized??
         location.initMainExit();
+        processTextMap(location);
     }
+
+    protected void processTextMap(Location location) {
+        getMaster().getPortalMaster().init(location.getTextDataMap());
+        getMaster().initPuzzles(location.getTextDataMap());
+        getBattleMaster().getScriptManager().parseDungeonScripts(location.getTextDataMap());
+
+    }
+
+    public void loadingDone() {
+        initMarks(master.getFloorWrapper().getTextDataMap());
+        initDecor(master.getFloorWrapper().getDecorMap());
+        initCells(master.getFloorWrapper().getCellMap());
+    }
+
+
+    protected void initDecor(Map<Coordinates, DecorData> decorMap) {
+        GridPanel dungeonGrid = ScreenMaster.getGrid();
+        if (dungeonGrid != null)
+            Eidolons.onGdxThread(() -> {
+                dungeonGrid.initDecor(decorMap);
+            });
+        else
+            GuiEventManager.trigger(GuiEventType.CELL_DECOR_INIT, decorMap);
+    }
+
+    protected Map<Coordinates, CellScriptData> buildCellMap(String textContent) {
+        Map<Coordinates, CellScriptData> map = new HashMap<>();
+        for (String substring : ContainerUtils.openContainer(textContent, Strings.VERTICAL_BAR)) {
+            String[] split = substring.split("=");
+            if (split.length < 2)
+                continue;
+            Coordinates c = Coordinates.get(split[0]);
+            map.put(c, new CellScriptData(split[1]));
+        }
+        initFlipMap(map);
+        return map;
+    }
+
+    protected Map<Coordinates, DecorData> buildDecorMap(String textContent) {
+        Map<Coordinates, DecorData> map = new LinkedHashMap<>();
+        for (String substring : ContainerUtils.openContainer(textContent, Strings.VERTICAL_BAR)) {
+            int index = substring.indexOf("=");
+            if (index < 0)
+                continue;
+            Coordinates c = Coordinates.get(substring.substring(0, index));
+            map.put(c, new DecorData(substring.substring(index + 1)));
+        }
+        return map;
+    }
+
+    protected void initFlipMap(Map<Coordinates, CellScriptData> map) {
+        getMaster().getGame().getFlipMap().putAll(createFlipMap(map));
+    }
+
+    private void initCells(Map<Coordinates, CellData> cellDataMap) {
+        for (Coordinates coordinates : cellDataMap.keySet()) {
+            CellData data = cellDataMap.get(coordinates);
+            DC_Cell cell = getGame().getCellByCoordinate(coordinates);
+            data.apply(cell);
+        }
+    }
+
+    protected void initMarks(Map<Coordinates, CellScriptData> textDataMap) {
+        for (Coordinates coordinates : textDataMap.keySet()) {
+            String string = textDataMap.get(coordinates).getValue(CellScriptData.CELL_SCRIPT_VALUE.marks);
+            for (String substring : ContainerUtils.openContainer(string)) {
+                MARK mark = new EnumMaster<MARK>().retrieveEnumConst(MARK.class, substring);
+                DC_Cell cell = getGame().getCellByCoordinate(coordinates);
+                cell.getMarks().add(mark);
+                if (mark == MARK._void) {
+                    cell.setVOID(true);
+                }
+            }
+        }
+    }
+
+
+    protected Map<Coordinates, FLIP> createFlipMap(Map<Coordinates, CellScriptData> textDataMap) {
+        Map<Coordinates, FLIP> map = new HashMap<>();
+        for (Coordinates coordinates : textDataMap.keySet()) {
+            String value = textDataMap.get(coordinates).getValue(CellScriptData.CELL_SCRIPT_VALUE.flip);
+            if (!value.isEmpty()) {
+                FLIP flip = FLIP.valueOf(value.toUpperCase());
+                map.put(coordinates, flip);
+            }
+        }
+        return map;
+    }
+
 }

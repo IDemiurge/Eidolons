@@ -4,7 +4,10 @@ import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.EffectsAndAbilitiesSource;
 
 public class BuffPanelSimple extends TablePanel {
-    public BuffPanelSimple() {
+    private final boolean body;
+
+    public BuffPanelSimple(boolean body) {
+        this.body = body;
         left().bottom();
     }
 
@@ -15,14 +18,14 @@ public class BuffPanelSimple extends TablePanel {
         final EffectsAndAbilitiesSource source =
          (EffectsAndAbilitiesSource) getUserObject();
 
-        source.getBuffs().forEach(el -> {
+        source.getAbilities(body).forEach(el -> {
             el.overrideImageSize(32, 32);
             add(el).left().bottom();
         });
-
-        source.getAbilities().forEach(el -> {
+        source.getBuffs(body).forEach(el -> {
             el.overrideImageSize(32, 32);
             add(el).left().bottom();
         });
     }
+
 }

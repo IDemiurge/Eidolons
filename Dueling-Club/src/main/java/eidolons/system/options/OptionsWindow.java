@@ -20,7 +20,7 @@ import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneAdapter;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.Options.OPTION;
@@ -30,8 +30,8 @@ import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.FontMaster.FONT;
-import main.system.launch.CoreEngine;
-import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.launch.Flags;
+import main.system.sound.AudioEnums;
 
 import java.util.Map;
 
@@ -131,7 +131,7 @@ public class OptionsWindow extends VisWindow {
             public void switchedTab(Tab tab) {
                 content.clearChildren();
                 content.add(tab.getContentTable()).expand().top().left();
-                DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__TAB);
+                DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__TAB);
             }
         });
 
@@ -196,7 +196,7 @@ public class OptionsWindow extends VisWindow {
     }
 
     private void ok() {
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__OK);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__OK);
         Gdx.app.log("Options", "ok");
         apply();
         close();
@@ -209,7 +209,7 @@ public class OptionsWindow extends VisWindow {
     }
 
     private void apply() {
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__CLICK);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__CLICK);
         Gdx.app.log("Options", "apply");
         OptionsMaster.getInstance().cacheOptions();
         for (OptionsTab tab : tabs) {
@@ -223,7 +223,7 @@ public class OptionsWindow extends VisWindow {
     }
 
     private void cancel() {
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.NEW__CLICK_DISABLED);
+        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__CLICK_DISABLED);
         Gdx.app.log("Options", "cancel");
         OptionsMaster.getInstance().resetToCached();
         close();
@@ -236,7 +236,7 @@ public class OptionsWindow extends VisWindow {
 
         public OptionsTab(OPTIONS_GROUP group) {
             super(false, false);
-            this.title = StringMaster.getWellFormattedString(group.toString());
+            this.title = StringMaster.format(group.toString());
             Options options = optionsMap.get(group);
             content = new Table();
             content.defaults().pad(GdxMaster.adjustSize(8));
@@ -254,7 +254,7 @@ public class OptionsWindow extends VisWindow {
                 if (option.isHidden())
                     continue;
                 if (option.isDevOnly())
-                    if (!CoreEngine.isIDE())
+                    if (!Flags.isIDE())
                         continue;
                 VisLabel label = new VisLabel(option.getName());
                 content.add(label).left();

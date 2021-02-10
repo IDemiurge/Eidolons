@@ -5,12 +5,10 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.system.options.OptionsMaster;
-import eidolons.system.options.SystemOptions;
+import eidolons.game.netherflame.main.death.ShadowMaster;
 import main.content.values.parameters.PARAMETER;
 import main.data.StringMap;
 import main.game.bf.directions.FACING_DIRECTION;
-import main.system.launch.CoreEngine;
 
 import java.util.Map;
 
@@ -27,8 +25,7 @@ public class EidolonsGame {
     public static boolean SELECT_SCENARIO;
     public static boolean FOOTAGE;
     public static boolean DUEL_TEST;
-    public static boolean IDE = CoreEngine.isIDE();
-
+    // public static boolean IDE = Flags.isIDE();
 
     public static boolean BOSS_FIGHT;
     public static boolean TUTORIAL_MISSION;
@@ -44,13 +41,16 @@ public class EidolonsGame {
     public static boolean TUTORIAL;
     public static boolean PUZZLES;
     public static boolean TOWN;
-    private static Map<String, Boolean> varMap = new StringMap<>();
-    private static Map<String, Boolean> actionMap = new StringMap<>();
+    private static final Map<String, Boolean> varMap = new StringMap<>();
+    private static final Map<String, Boolean> actionMap = new StringMap<>();
 
-    public static final void reset() {
+    //convenience fields
+    public static String lvlPath;
+
+    public static void reset() {
     }
 
-    public static final void set(String field, boolean val) {
+    public static void set(String field, boolean val) {
         setVar(field, val);
         try {
             EidolonsGame.class.getField(field.toUpperCase()).set(null, val);
@@ -70,7 +70,7 @@ public class EidolonsGame {
 
     }
 
-    public static final boolean get(String field) {
+    public static boolean get(String field) {
         try {
             return (boolean) EidolonsGame.class.getField(field.toUpperCase()).get(null);
         } catch (Exception e) {
@@ -119,17 +119,10 @@ public class EidolonsGame {
     }
 
     public static boolean isAltControlPanel() {
-        return BRIDGE;
+        return ShadowMaster.isShadowAlive();
     }
 
     public static FACING_DIRECTION getPresetFacing(Unit unit) {
-        if (BRIDGE) {
-
-            if (OptionsMaster.getSystemOptions().getBooleanValue(SystemOptions.SYSTEM_OPTION.TESTER_VERSION)) {
-                return FACING_DIRECTION.EAST;
-            }
-            return FACING_DIRECTION.NORTH;
-        }
         return null;
     }
 
@@ -138,7 +131,7 @@ public class EidolonsGame {
     }
 
     public static boolean isLordPanelEnabled() {
-        return !BRIDGE;
+        return false;
     }
 
 
@@ -149,10 +142,6 @@ public class EidolonsGame {
         meditate,
 
 
-    }
-
-    public static boolean isSpellsEnabled() {
-        return CoreEngine.isIDE() && !EidolonsGame.DUEL;
     }
 
     public static boolean isParamBlocked(PARAMETER parameter) {

@@ -1,10 +1,13 @@
 package eidolons.ability.targeting;
 
 import eidolons.system.DC_ConditionMaster;
+import main.content.DC_TYPE;
+import main.elements.Filter;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.targeting.AutoTargeting;
 import main.entity.Ref;
+import main.entity.obj.Obj;
 import main.system.auxiliary.EnumMaster;
 
 public class TemplateAutoTargeting extends AutoTargeting {
@@ -47,5 +50,17 @@ public class TemplateAutoTargeting extends AutoTargeting {
             return false;
         }
         return super.equals(obj);
+    }
+
+    @Override
+    public Filter<Obj> getFilter() {
+        Filter<Obj> filter = super.getFilter();
+        switch (template) {
+            case PARTY:
+                filter.setTYPE(DC_TYPE.PARTY);
+                break;
+                //TODO
+        }
+        return filter;
     }
 }

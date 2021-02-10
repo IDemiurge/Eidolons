@@ -1,13 +1,12 @@
 package eidolons.game.battlecraft.logic.meta.scenario;
 
-import eidolons.game.battlecraft.logic.battle.mission.MissionBattleMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.ModuleMaster;
 import eidolons.game.battlecraft.logic.meta.universal.*;
+import eidolons.game.battlecraft.logic.mission.quest.QuestMissionMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.ScenarioGame;
-import eidolons.game.netherflame.igg.death.IGG_DefeatHandler;
-import eidolons.libgdx.launch.ScenarioLauncher;
+import eidolons.game.netherflame.main.death.NF_DefeatHandler;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
 import main.system.GuiEventManager;
@@ -16,7 +15,7 @@ import main.system.GuiEventType;
 /**
  * Created by JustMe on 5/13/2017.
  */
-public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
+public class ScenarioMetaMaster<T extends ScenarioMeta> extends MetaGameMaster<T> {
 
     public ScenarioMetaMaster(String data) {
         super(data);
@@ -34,6 +33,11 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
     }
 
     @Override
+    public ScenarioMeta getMetaGame() {
+        return (ScenarioMeta) super.getMetaGame();
+    }
+
+    @Override
     public void gameExited() {
         super.gameExited();
     }
@@ -47,19 +51,18 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
         if (outcome != null)
             if (outcome) {
                 if (getMetaGame().isFinalLevel()) {
-                    getBattleMaster().getOutcomeManager().victory();
+                    getMissionMaster().getOutcomeManager().victory();
                     return;
                 }
 
                 super.next(outcome);
-                ScenarioLauncher.missionIndex++;
+                ScenarioMetaDataManager.missionIndex++;
 
             }
         getMetaDataManager().setMissionName(null);
         getMetaDataManager().initData();
-        ScreenData data = new ScreenData(SCREEN_TYPE.BATTLE, getMissionName());
+        ScreenData data = new ScreenData(SCREEN_TYPE.DUNGEON, getMissionName());
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
-        GuiEventManager.trigger(GuiEventType.DISPOSE_TEXTURES );
 
         if (restart) {
             Eidolons.mainGame.getMetaMaster().getMetaGame().setRestarted(true);
@@ -90,7 +93,7 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
 
     @Override
     protected DefeatHandler createDefeatHandler() {
-        return new IGG_DefeatHandler(this);
+        return new NF_DefeatHandler(this);
     }
 
     @Override
@@ -99,7 +102,7 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
     }
 
     @Override
-    protected PartyManager<ScenarioMeta> createPartyManager() {
+    protected PartyManager createPartyManager() {
         return new ScenarioPartyManager(this);
     }
 
@@ -119,8 +122,8 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
     }
 
     @Override
-    public MissionBattleMaster getBattleMaster() {
-        return (MissionBattleMaster) super.getBattleMaster();
+    public QuestMissionMaster getMissionMaster() {
+        return (QuestMissionMaster) super.getMissionMaster();
     }
 
     @Override

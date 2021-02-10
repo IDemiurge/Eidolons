@@ -6,17 +6,17 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import eidolons.macro.MacroGame;
-import eidolons.macro.global.time.GameDate;
-import eidolons.macro.global.time.TimeMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SmartTextButton;
 import eidolons.libgdx.gui.tooltips.DynamicTooltip;
 import eidolons.libgdx.texture.TextureCache;
+import eidolons.macro.MacroGame;
+import eidolons.macro.global.time.GameDate;
+import eidolons.macro.global.time.TimeMaster;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.data.filesys.PathFinder;
 import main.swing.PointX;
@@ -69,14 +69,18 @@ public class MapTimePanel extends GroupX {
     PointX speedUpBtnPoint = new PointX(178, 59);
     PointX speedDownBtnPoint = new PointX(110, 59);
     PointX controlsPoint = new PointX(71, 23);
-    SmartButton pauseButton;
+    SmartTextButton pauseButton;
     MoonActor activeMoon;
-    private SmartButton speedUpBtn;
-    private SmartButton speedDownBtn;
+    private SmartTextButton speedUpBtn;
+    private SmartTextButton speedDownBtn;
     private Image labelBg;
 
     public MapTimePanel() {
-        init();
+        try {
+            init();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
     }
 
     public String getPath() {
@@ -85,27 +89,27 @@ public class MapTimePanel extends GroupX {
 
     public void init() {
         setSize((355)
-         , (203));
+                , (203));
 
         speedUpBtn =
-         new SmartButton(
-          "", STD_BUTTON.SPEED_UP, () -> {
-             MacroGame.getGame().getLoop().getTimeMaster().speedUp();
-         });
+                new SmartTextButton(
+                        "", STD_BUTTON.SPEED_UP, () -> {
+                    MacroGame.getGame().getLoop().getTimeMaster().speedUp();
+                });
         speedDownBtn =
-         new SmartButton(
-          "", STD_BUTTON.SPEED_DOWN, () -> {
-             MacroGame.getGame().getLoop().getTimeMaster().speedDown();
-         });
+                new SmartTextButton(
+                        "", STD_BUTTON.SPEED_DOWN, () -> {
+                    MacroGame.getGame().getLoop().getTimeMaster().speedDown();
+                });
         pauseButton =
-         new SmartButton(
-          "", STD_BUTTON.PAUSE, () -> {
-             MacroGame.getGame().getLoop().togglePaused();
-             MacroGame.getGame().getLoop().getTimeMaster().resetSpeed();
-         });
+                new SmartTextButton(
+                        "", STD_BUTTON.PAUSE, () -> {
+                    MacroGame.getGame().getLoop().togglePaused();
+                    MacroGame.getGame().getLoop().getTimeMaster().resetSpeed();
+                });
 
         float moonSize = GdxMaster.adjustSize(SIZE);
-        addListener(new DynamicTooltip(() -> getDateString()).getController());
+        addListener(new DynamicTooltip(this::getDateString).getController());
         //display DatePanel?
         for (MOON moon : MOON.values()) {
             MoonActor container = new MoonActor(moon);
@@ -172,19 +176,19 @@ public class MapTimePanel extends GroupX {
         labelBg.setPosition(GdxMaster.adjustPos(true, timeLabelBgPoint.x), GdxMaster.adjustPos(false, timeLabelBgPoint.y));
 
         pauseButton.setPosition(GdxMaster.adjustPos(true, pauseBtnPoint.x),
-         GdxMaster.adjustPos(false, pauseBtnPoint.y));
+                GdxMaster.adjustPos(false, pauseBtnPoint.y));
         speedUpBtn.setPosition(GdxMaster.adjustPos(true, speedUpBtnPoint.x),
-         GdxMaster.adjustPos(false, speedUpBtnPoint.y));
+                GdxMaster.adjustPos(false, speedUpBtnPoint.y));
         speedDownBtn.setPosition(GdxMaster.adjustPos(true, speedDownBtnPoint.x),
-         GdxMaster.adjustPos(false, speedDownBtnPoint.y));
+                GdxMaster.adjustPos(false, speedDownBtnPoint.y));
         weave.setPosition(GdxMaster.adjustPos(true, controlsPoint.x), GdxMaster.adjustPos(false, controlsPoint.y));
 //        weave.setPosition(GdxMaster.adjustPos(true, controlsPoint.x), GdxMaster.adjustPos(false, controlsPoint.y));
         timeLabel.setPosition(GdxMaster.adjustPos(true, timeLabelPoint.x),
-         GdxMaster.adjustPos(false, timeLabelPoint.y));
+                GdxMaster.adjustPos(false, timeLabelPoint.y));
         sun.setPosition(GdxMaster.adjustPos(true, sunPoint.x),
-         GdxMaster.adjustPos(false, sunPoint.y));
+                GdxMaster.adjustPos(false, sunPoint.y));
         undersun.setPosition(GdxMaster.adjustPos(true, sunPoint.x),
-         GdxMaster.adjustPos(false, sunPoint.y));
+                GdxMaster.adjustPos(false, sunPoint.y));
     }
 
     private void resetZIndices() {
@@ -197,10 +201,7 @@ public class MapTimePanel extends GroupX {
 
     public void update(DAY_TIME time) {
 
-        if (time.isNight())
-            weave.setImage(getPath() + "weave.png");
-        else
-            weave.setImage(getPath() + "weave.png");
+        weave.setImage(getPath() + "weave.png");
 
         if (time.isNight())
             mainCircle.setImage(getPath() + StrPathBuilder.build("circle", "night.png"));
@@ -208,7 +209,7 @@ public class MapTimePanel extends GroupX {
             mainCircle.setImage(getPath() + StrPathBuilder.build("circle", "day.png"));
 //        mainCircle.setImage(getPath() + StrPathBuilder.build("circle", time.toString() + ".png"));
         setSize(GdxMaster.adjustSize(mainCircle.getWidth())
-         , GdxMaster.adjustSize(mainCircle.getHeight()));
+                , GdxMaster.adjustSize(mainCircle.getHeight()));
 
         mainCircle.setOrigin(mainCircle.getWidth() / 2, mainCircle.getHeight() * 2);
 
@@ -229,7 +230,7 @@ public class MapTimePanel extends GroupX {
             addActor(displayedMoons[i]);
             int offset = 7;
             displayedMoons[i].setPosition(GdxMaster.adjustPos(true, points[i].x - offset),
-             GdxMaster.adjustPos(false, points[i].y - offset));
+                    GdxMaster.adjustPos(false, points[i].y - offset));
             i++;
         }
         MOON m = TimeMaster.getDate().getMonth().getActiveMoon(time.isNight());
@@ -249,7 +250,7 @@ public class MapTimePanel extends GroupX {
 //        initPositions();
 //        setDebug(false, true);
         float deltaX = delta +
-         (delta / 5 * MacroGame.getGame().getLoop().getTimeMaster().getSpeed());
+                (delta / 5 * MacroGame.getGame().getLoop().getTimeMaster().getSpeed());
 
         for (MoonActor moon : displayedMoons) {
             if (moon == null)
@@ -303,35 +304,34 @@ public class MapTimePanel extends GroupX {
 
         GameDate date;
 //        getPhase();
-        String string = "";
-        return string;
+        return "";
     }
 
     private MOON[] getDisplayedMoons() {
         switch (MacroGame.getGame().getTime()) {
             case MORNING:
                 return new MOON[]{
-                 HAVEN, TEMPEST, RIME,
+                        HAVEN, TEMPEST, RIME,
                 };
             case MIDDAY:
                 return new MOON[]{
-                 FAE, HAVEN, TEMPEST,
+                        FAE, HAVEN, TEMPEST,
                 };
             case DUSK:
                 return new MOON[]{
-                 FEL, FAE, HAVEN,
+                        FEL, FAE, HAVEN,
                 };
             case NIGHTFALL:
                 return new MOON[]{
-                 SHADE, FEL, FAE,
+                        SHADE, FEL, FAE,
                 };
             case MIDNIGHT:
                 return new MOON[]{
-                 RIME, SHADE, FEL,
+                        RIME, SHADE, FEL,
                 };
             case DAWN:
                 return new MOON[]{
-                 TEMPEST, RIME, SHADE
+                        TEMPEST, RIME, SHADE
                 };
         }
         return new MOON[0];

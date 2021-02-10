@@ -1,23 +1,27 @@
 package eidolons.libgdx.anims.sprite;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.libgdx.bf.Fluctuating;
-import eidolons.libgdx.gui.generic.GroupX;
+import com.badlogic.gdx.utils.Align;
+import eidolons.libgdx.bf.SuperActor;
+import eidolons.libgdx.bf.generic.Flippable;
 import eidolons.libgdx.shaders.ShaderDrawer;
 import eidolons.libgdx.shaders.ShaderMaster;
 import main.content.enums.GenericEnums;
+import main.system.auxiliary.RandomWizard;
 
 
-public class SpriteX extends GroupX {
+public class SpriteX extends SuperActor implements Flippable, Blended {
 
+    public static final boolean TEST_MODE = true;
     SpriteAnimation sprite;
-    Fluctuating f;
 
     float acceleration;
     float pauseAfterCycle;
+    float pauseAfterCycleRandomness;
     float speedRandomness;
 
     float offsetRangeX;
@@ -36,10 +40,24 @@ public class SpriteX extends GroupX {
         this(path, null, null);
     }
 
-    public SpriteX(String path, SPRITE_TEMPLATE template, GenericEnums.ALPHA_TEMPLATE alphaTemplate) {
+    public SpriteX(SPRITE_TEMPLATE template, GenericEnums.ALPHA_TEMPLATE alphaTemplate, SpriteAnimation sprite
+    ) {
+        this(null, template, alphaTemplate, GenericEnums.BLENDING.NORMAL);
+        this.sprite = sprite;
+        initSprite();
+
+    }
+
+    public SpriteX(String path, GenericEnums.BLENDING blending, GenericEnums.ALPHA_TEMPLATE alpha) {
+        this(path, null, alpha, blending);
+    }
+
+    public SpriteX(String path, SPRITE_TEMPLATE template,
+                   GenericEnums.ALPHA_TEMPLATE alphaTemplate, GenericEnums.BLENDING blending) {
         if (alphaTemplate != null) {
-            f = new Fluctuating(alphaTemplate);
+            setAlphaTemplate(alphaTemplate);
         }
+        boolean reverse = false;
         if (template != null) {
             acceleration = template.acceleration;
             pauseAfterCycle = template.pauseAfterCycle;
@@ -47,13 +65,34 @@ public class SpriteX extends GroupX {
             offsetRangeY = template.offsetRangeY;
             scaleRange = template.scaleRange;
             speedRandomness = template.speedRandomness;
+            if (template.canBeReverse)
+                reverse = RandomWizard.random();
         }
         if (path != null) {
             sprite = SpriteAnimationFactory.getSpriteAnimation(path, true, false);
-            sprite.setCustomAct(true);
-            sprite.setLoops(0);
-            sprite.setLooping(true);
+            sprite.setBlending(blending);
+            if (reverse)
+                sprite.setPlayMode(Animation.PlayMode.LOOP_REVERSED);
+            initSprite();
         }
+        if (template != null) {
+            float s = RandomWizard.getRandomFloatBetween(1 - scaleRange, 1);
+            setScale(s);
+            if (template.fps > 0) {
+                sprite.setFps(template.fps);
+            }
+        }
+    }
+
+
+    private void initSprite() {
+        sprite.setCustomAct(true);
+        sprite.setLoops(0);
+        sprite.setLooping(true);
+        setOrigin(Align.center);
+
+        sprite.setPauseBetweenCycles(pauseAfterCycle);
+        sprite.setPauseBetweenCyclesRandomness(pauseAfterCycleRandomness);
     }
 
     @Override
@@ -83,8 +122,18 @@ public class SpriteX extends GroupX {
         if (sprite == null) {
             return;
         }
+        if (isAlphaFluctuationOn()) {
+            alphaFluctuation(this , delta);
+            sprite.setAlpha(getColor().a);
+        }
+        setTransform(false);
         sprite.act(delta);
         super.act(delta);
+    }
+
+    @Override
+    public boolean isAlphaFluctuationOn() {
+        return alphaTemplate != null;
     }
 
     @Override
@@ -93,12 +142,11 @@ public class SpriteX extends GroupX {
             return;
         }
         if (shader != null)
-        if (parentAlpha!= ShaderDrawer.SUPER_DRAW)
-        {
-            ShaderDrawer.drawWithCustomShader(this, batch,
-                    shader, true);
-            return;
-        }
+            if (parentAlpha != ShaderDrawer.SUPER_DRAW) {
+                ShaderDrawer.drawWithCustomShader(this, batch,
+                        shader, true);
+                return;
+            }
 
         super.draw(batch, parentAlpha);
 
@@ -112,14 +160,16 @@ public class SpriteX extends GroupX {
         sprite.setFlipX(flipX);
         sprite.setFlipY(flipY);
         sprite.setColor(getColor());
-        sprite.setAlpha(parentAlpha);
+        if (!isAlphaFluctuationOn())
+            sprite.setAlpha(parentAlpha);
+
         done = !sprite.draw(batch);
-//        sprite.setFlipX(true);
-//        debug();
-//        Gdx.gl20.glDisable(GL_BLEND);
-//        Gdx.gl20.glDisable(GL_LINE_SMOOTH);
-//        Gdx.gl20.glDisable(GL_POINT_SMOOTH);
-//        Gdx.gl20.glDisable(GL_POLYGON_SMOOTH);
+        //        sprite.setFlipX(true);
+        //        debug();
+        //        Gdx.gl20.glDisable(GL_BLEND);
+        //        Gdx.gl20.glDisable(GL_LINE_SMOOTH);
+        //        Gdx.gl20.glDisable(GL_POINT_SMOOTH);
+        //        Gdx.gl20.glDisable(GL_POLYGON_SMOOTH);
     }
 
     public boolean draw(Batch batch) {
@@ -133,6 +183,10 @@ public class SpriteX extends GroupX {
             return 0;
         }
         return sprite.getWidth();
+    }
+
+    public void setPauseAfterCycleRandomness(float pauseAfterCycleRandomness) {
+        this.pauseAfterCycleRandomness = pauseAfterCycleRandomness;
     }
 
     @Override
@@ -180,7 +234,7 @@ public class SpriteX extends GroupX {
     }
 
     public void setFps(int i) {
-        if (i==0){
+        if (i == 0) {
             return;
         }
         this.fps = i;
@@ -192,6 +246,7 @@ public class SpriteX extends GroupX {
     public void setFlipX(boolean flipX) {
         this.flipX = flipX;
     }
+
     public void setFlipY(boolean flipY) {
         this.flipY = flipY;
     }
@@ -204,11 +259,28 @@ public class SpriteX extends GroupX {
         getSprite().setOnCycle(o);
     }
 
+    @Override
+    public GenericEnums.BLENDING getBlending() {
+        return sprite.getBlending();
+    }
+
 
     public enum SPRITE_TEMPLATE {
-//        WITCH_FLAME,
-
+        //        WITCH_FLAME,
+        THUNDER(11f, 0.35f, true, 22),
+        THUNDER2(11f, 0.23f, false, 32),
         ;
+
+        SPRITE_TEMPLATE(float pauseAfterCycle) {
+            this.pauseAfterCycle = pauseAfterCycle;
+        }
+
+        SPRITE_TEMPLATE(float pauseAfterCycle, float scaleRange, boolean reverse, int fps) {
+            this.pauseAfterCycle = pauseAfterCycle;
+            this.scaleRange = scaleRange;
+            this.canBeReverse = reverse;
+            this.fps = fps;
+        }
 
         SPRITE_TEMPLATE(float pauseAfterCycle, float speedRandomness, float acceleration, float offsetRangeX, float offsetRangeY, float scaleRange) {
             this.pauseAfterCycle = pauseAfterCycle;
@@ -219,14 +291,14 @@ public class SpriteX extends GroupX {
             this.scaleRange = scaleRange;
         }
 
+        public boolean canBeReverse;
+        public int fps;
         float pauseAfterCycle;
-
         float speedRandomness;
-
         float acceleration;
-
         float offsetRangeX;
         float offsetRangeY;
         float scaleRange;
     }
+
 }

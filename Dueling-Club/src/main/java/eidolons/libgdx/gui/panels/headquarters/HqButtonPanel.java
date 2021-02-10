@@ -1,45 +1,33 @@
 package eidolons.libgdx.gui.panels.headquarters;
 
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SmartTextButton;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 4/25/2018.
  */
 public class HqButtonPanel extends HqElement {
     public HqButtonPanel() {
-        if (!CoreEngine.isJar()) {
-            add(new SmartButton("Level Up", STD_BUTTON.MENU, () -> {
-                levelUp();
-            }));
-            add(new SmartButton("Save Type", STD_BUTTON.MENU, () -> {
-                saveType();
-            }));
-            add(new SmartButton("Save as New", STD_BUTTON.MENU, () -> {
-                saveTypeNew();
-            }));
+        if (!Flags.isJar()) {
+            add(new SmartTextButton("Level Up", STD_BUTTON.MENU, this::levelUp));
+            add(new SmartTextButton("Save Type", STD_BUTTON.MENU, this::saveType));
+            add(new SmartTextButton("Save as New", STD_BUTTON.MENU, this::saveTypeNew));
         }
 
-            add(new SmartButton("View Info", STD_BUTTON.MENU, () -> {
-                viewInfo();
-            }));
+            add(new SmartTextButton("View Info", STD_BUTTON.MENU, this::viewInfo));
 
 
         if (!HqDataMaster.isSimulationOff())
-        add(new SmartButton("Undo All", STD_BUTTON.MENU, () -> {
-            undoAll();
-        }));
+        add(new SmartTextButton("Undo All", STD_BUTTON.MENU, this::undoAll));
 
 
-        add(new SmartButton("Done", STD_BUTTON.MENU, () -> {
-            saveAndExit();
-        }));
+        add(new SmartTextButton("Done", STD_BUTTON.MENU, this::saveAndExit));
     }
 
     @Override

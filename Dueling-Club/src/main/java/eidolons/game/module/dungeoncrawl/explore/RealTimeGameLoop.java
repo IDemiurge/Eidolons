@@ -7,4 +7,6 @@ public interface RealTimeGameLoop {
     void end();
 
     void act(float delta);
+
+    void setVisualLock(boolean b);
 }

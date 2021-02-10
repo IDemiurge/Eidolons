@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.ai.tools.target;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
@@ -10,6 +11,7 @@ import eidolons.game.battlecraft.ai.elements.goal.GoalManager;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.battlecraft.ai.tools.target.ReasonMaster.FILTER_REASON;
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.master.EffectMaster;
 import main.ability.Ability;
 import main.ability.effects.Effect;
 import main.ability.effects.container.SpecialTargetingEffect;
@@ -35,11 +37,11 @@ public class TargetingMaster extends AiHandler {
     }
 
     public static Targeting getZoneEffect(DC_ActiveObj active) {
-        List<Effect> zoneEffects = EffectFinder.getEffectsOfClass(active,
-         SpecialTargetingEffect.class);
+        List<Effect> zoneEffects = EffectMaster.getEffectsOfClass(active,
+                SpecialTargetingEffect.class);
         if (!zoneEffects.isEmpty()) {
             SpecialTargetingEffect zoneEffect = (SpecialTargetingEffect) zoneEffects
-             .get(0);
+                    .get(0);
             zoneEffect.setRef(active.getRef());
             zoneEffect.initTargeting();
             return zoneEffect.getTargeting();
@@ -103,9 +105,10 @@ public class TargetingMaster extends AiHandler {
     }
 
     public static boolean isValidTargetingCell(Action targetAction, Coordinates c, Unit unit) {
-
+        // TODO this could be better done
+        //AI FIX!
         return unit.getGame().getBattleFieldManager()
-         .canMoveOnto(targetAction.getSource(), c);
+                .canMoveOnto(targetAction.getSource(), c);
     }
 
 
@@ -123,6 +126,9 @@ public class TargetingMaster extends AiHandler {
             return false;
         }
         List<FILTER_REASON> reasons = ReasonMaster.getReasonsCannotTarget(action);
+        if (AI_Manager.MELEE_HACK)
+        if (!reasons.contains(FILTER_REASON.DISTANCE))
+            return true;
         // boolean visionRemoved = false;
         // if (reasons.contains(FILTER_REASON.FACING)
         // && !reasons.contains(FILTER_REASON.DISTANCE))
@@ -132,17 +138,15 @@ public class TargetingMaster extends AiHandler {
         // visionRemoved = true;
         // }
         // }
-//        if (action.getActive().isMelee()) {
+        //        if (action.getActive().isMelee()) {
         if (reasons.size() == 1) // what about DISTANCE?
         {
-            if (reasons.get(0) == (FILTER_REASON.FACING)) {
-                // if (!visionRemoved)
-                // main.system.auxiliary.LogMaster.log(1, "!!!");
-                // else
-                return true;
-            }
+            // if (!visionRemoved)
+            // main.system.auxiliary.LogMaster.log(1, "!!!");
+            // else
+            return reasons.get(0) == (FILTER_REASON.FACING);
         }
-//        }
+        //        }
 
         return false;
     }
@@ -150,7 +154,7 @@ public class TargetingMaster extends AiHandler {
     public static Integer selectTargetForAction(DC_ActiveObj a) {
         /*
          * getOrCreate possible targets init goal type prioritize
-		 */
+         */
         GOAL_TYPE type = GoalManager.getGoalFromAction(a);
 
         Obj target = null;
@@ -165,16 +169,16 @@ public class TargetingMaster extends AiHandler {
         if (a.getOwnerUnit().getAI().getStandingOrders() != null) {
             return Eidolons.getMainHero().getId();
         } else
-        for (Obj obj : objects) {
-            ActionSequence sequence = new ActionSequence(type, new Action(a, obj));
-            sequence.setAi(a.getOwnerUnit().getUnitAI());
-            sequence.setType(type);
-            int priority = DC_PriorityManager.getPriority(sequence);
-            if (priority > max_priority) {
-                target = obj;
-                max_priority = priority;
+            for (Obj obj : objects) {
+                ActionSequence sequence = new ActionSequence(type, new Action(a, obj));
+                sequence.setAi(a.getOwnerUnit().getUnitAI());
+                sequence.setType(type);
+                int priority = DC_PriorityManager.getPriority(sequence);
+                if (priority > max_priority) {
+                    target = obj;
+                    max_priority = priority;
+                }
             }
-        }
         if (target == null) {
             return null;
         }

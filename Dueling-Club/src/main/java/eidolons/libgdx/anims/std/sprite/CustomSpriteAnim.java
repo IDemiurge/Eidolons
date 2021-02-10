@@ -27,6 +27,14 @@ public class CustomSpriteAnim extends ActionAnim {
     }
 
     @Override
+    public void initPosition() {
+        if (origin!=null) {
+            return;
+        }
+        super.initPosition();
+    }
+
+    @Override
     protected void resetSprites() {
         sprites = new ArrayList<>();
         if (sprite == null) {

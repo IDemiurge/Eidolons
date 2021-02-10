@@ -2,11 +2,11 @@ package eidolons.entity.obj;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.bf.GridMaster;
-import main.content.CONTENT_CONSTS;
+import eidolons.libgdx.bf.decor.wall.WallMaster;
+import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.values.parameters.G_PARAMS;
@@ -23,26 +23,37 @@ import main.game.logic.battle.player.Player;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
-import main.system.graphics.GuiManager;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import static main.content.CONTENT_CONSTS.COLOR_THEME;
+import static main.content.CONTENT_CONSTS.MARK;
 
 public class DC_Cell extends DC_Obj implements Cell {
 
     private static ObjType EMPTY_CELL_TYPE;
+    private final Floor floor;
     private boolean playerHasSeen;
     private boolean VOID;
 
-    DungeonEnums.CELL_IMAGE cellType;
-    int cellVariant;
-    CONTENT_CONSTS.COLOR_THEME colorTheme;
+    private DungeonEnums.CELL_SET cellSet;
+    private int cellVariant=1; //pack
+    private int cellVersion=1; //particular cell file
+    private COLOR_THEME colorTheme;
 
-    String overlayPath;
-    float overlayRotation;
+    private float overlayRotation;
     private String overlayData;
 
-    public DC_Cell(boolean b, int i, int j, DC_Game game) {
-        this(i, j ,game);
-        setVOID(b);
-    }
+    BattleFieldObject[] overlayingObjects;
+    BattleFieldObject[] objects;
+    BattleFieldObject[] nonOverlaying;
+    private boolean objectsModified;
+
+    private Set<MARK> marks;
+    private boolean artPuzzleCell;
+    private boolean unitsHaveMovedHere;
+
 
     @Override
     protected void preInit(Game game, ObjType type, Player owner, Ref ref) {
@@ -53,35 +64,49 @@ public class DC_Cell extends DC_Obj implements Cell {
         type.checkBuild();
         this.owner = owner;
         this.setOriginalOwner(owner);
-        getPropMap().put(G_PROPS.NAME , type.getName());
+        getPropMap().put(G_PROPS.NAME, type.getName());
         setOriginalName(type.getName());
 
         master = initMaster();
         setRef(ref); //create ref branch
     }
 
-    @Override
-    public void setCoordinates(Coordinates coordinates) {
-    }
 
-    @Override
-    public Coordinates getCoordinates() {
-        return super.getCoordinates();
-    }
-
-    public DC_Cell(ObjType t, int i, int j, DC_Game game, Ref ref, Dungeon dungeon) {
+    public DC_Cell(ObjType t, int i, int j, DC_Game game, Ref ref, Floor floor) {
         super(t, Player.NEUTRAL, game, ref);
         this.x = i;
         this.y = j;
+        this.floor = floor;
         this.coordinates = Coordinates.get(x, y);
         addDynamicValues();
-        setImage(dungeon.getCellImagePath(i, j));
-        cellVariant=(dungeon.getCellVariant(i, j));
-        cellType=(dungeon.getCellType(i, j));
+        resetCell(false);
     }
 
-    public DC_Cell(int i, int j, DC_Game game, Ref ref, Dungeon dungeon) {
-        this(getEMPTY_CELL_TYPE(), i, j, game, ref, dungeon);
+    public String getDefaultImgPath() {
+        return WallMaster.getCellImage(getCoordinates(), getCellVersion());
+    }
+
+    public void resetCell() {
+        resetCell(true);
+    }
+
+    public void resetCell(boolean gdx) {
+        if (cellSet == null) {
+            cellSet = (floor.getCellType(x, y));
+        }
+        setImage(getDefaultImgPath());
+        if (gdx) {
+            GuiEventManager.trigger(GuiEventType.CELL_RESET, this);
+        }
+
+    }
+
+    public void setCellSet(DungeonEnums.CELL_SET cellSet) {
+        this.cellSet = cellSet;
+    }
+
+    public DC_Cell(int i, int j, DC_Game game, Ref ref, Floor floor) {
+        this(getEMPTY_CELL_TYPE(), i, j, game, ref, floor);
     }
 
     public DC_Cell(int x, int y, DC_Game game) {
@@ -95,30 +120,22 @@ public class DC_Cell extends DC_Obj implements Cell {
     public static ObjType getEMPTY_CELL_TYPE() {
         if (EMPTY_CELL_TYPE == null)
             EMPTY_CELL_TYPE = DataManager.getType(StringMaster.STD_TYPE_NAMES.Cell.toString(),
-             "terrain");
+                    DC_TYPE.TERRAIN);
         return EMPTY_CELL_TYPE;
     }
 
-    public void setCellType(DungeonEnums.CELL_IMAGE cellType) {
-        this.cellType = cellType;
-        resetCell();
+    @Override
+    public void setCoordinates(Coordinates coordinates) {
+        //do not remove
     }
 
 
-    public DungeonEnums.CELL_IMAGE getCellType() {
-        return cellType;
+    public DungeonEnums.CELL_SET getCellSet() {
+        return cellSet;
     }
 
     public int getCellVariant() {
         return cellVariant;
-    }
-
-    public String getOverlayPath() {
-        return overlayPath;
-    }
-
-    public void setOverlayPath(String overlayPath) {
-        this.overlayPath = overlayPath;
     }
 
     public float getOverlayRotation() {
@@ -129,20 +146,16 @@ public class DC_Cell extends DC_Obj implements Cell {
         this.overlayRotation = overlayRotation;
     }
 
-    public CONTENT_CONSTS.COLOR_THEME getColorTheme() {
+    public COLOR_THEME getColorTheme() {
         return colorTheme;
     }
 
-    private void resetCell() {
-        setImage(GridMaster.getImagePath(getCellType(), getCellVariant()));
-        GuiEventManager.trigger(GuiEventType.CELL_RESET, this);
-    }
 
     public void setCellVariant(int cellVariant) {
         this.cellVariant = cellVariant;
     }
 
-    public void setColorTheme(CONTENT_CONSTS.COLOR_THEME colorTheme) {
+    public void setColorTheme(COLOR_THEME colorTheme) {
         this.colorTheme = colorTheme;
     }
 
@@ -158,9 +171,10 @@ public class DC_Cell extends DC_Obj implements Cell {
         return super.toString() + " at " + getCoordinates();
     }
 
+    //could be useful for Pillars or such
     public DIRECTION getBorderSide() {
-        if (getX() + 1 == GuiManager.getCurrentLevelCellsX()) {
-            if (getY() + 1 == GuiManager.getCurrentLevelCellsY()) {
+        if (getX() + 1 == Coordinates.getFloorWidth()) {
+            if (getY() + 1 == Coordinates.getFloorHeight()) {
                 return DIRECTION.DOWN_RIGHT;
             }
             if (getY() == 0) {
@@ -168,11 +182,11 @@ public class DC_Cell extends DC_Obj implements Cell {
             }
             return DIRECTION.RIGHT;
         }
-        if (getY() + 1 == GuiManager.getCurrentLevelCellsY()) {
+        if (getY() + 1 == Coordinates.getFloorHeight()) {
             if (getX() == 0) {
                 return DIRECTION.DOWN_LEFT;
             }
-            if (getX() + 1 == GuiManager.getCurrentLevelCellsX()) {
+            if (getX() + 1 == Coordinates.getFloorWidth()) {
                 return DIRECTION.DOWN_RIGHT;
             }
             return DIRECTION.DOWN;
@@ -181,13 +195,13 @@ public class DC_Cell extends DC_Obj implements Cell {
             if (getX() == 0) {
                 return DIRECTION.UP_LEFT;
             }
-            if (getX() + 1 == GuiManager.getCurrentLevelCellsX()) {
+            if (getX() + 1 == Coordinates.getFloorWidth()) {
                 return DIRECTION.UP_RIGHT;
             }
             return DIRECTION.UP;
         }
         if (getX() == 0) {
-            if (getY() + 1 == GuiManager.getCurrentLevelCellsY()) {
+            if (getY() + 1 == Coordinates.getFloorHeight()) {
                 return DIRECTION.DOWN_LEFT;
             }
             if (getY() == 0) {
@@ -196,6 +210,13 @@ public class DC_Cell extends DC_Obj implements Cell {
             return DIRECTION.LEFT;
         }
         return null;
+    }
+
+    public Set<MARK> getMarks() {
+        if (marks == null) {
+            marks = new HashSet<>();
+        }
+        return marks;
     }
 
     public boolean isBorderCell() {
@@ -207,34 +228,34 @@ public class DC_Cell extends DC_Obj implements Cell {
     }
 
     public void toBase() {
-//        super.toBase();
+        //        super.toBase();
         name = getProp("Name")
-         + StringMaster.wrapInParenthesis(StringMaster
-         .getWellFormattedString(getProperty(PROPS.VISIBILITY_STATUS)));
+                + StringMaster.wrapInParenthesis(StringMaster
+                .format(getProperty(PROPS.VISIBILITY_STATUS)));
     }
 
     public String getToolTip() {
         String text = "";
         if (getIntParam(PARAMS.LIGHT_EMISSION) != 0) {
-            text += StringMaster.getWellFormattedString("LIGHT_EMISSION - ")
-             + getParam(PARAMS.LIGHT_EMISSION);
+            text += StringMaster.format("LIGHT_EMISSION - ")
+                    + getParam(PARAMS.LIGHT_EMISSION);
         }
         if (getIntParam(PARAMS.ILLUMINATION) != 0) {
-            text += StringMaster.getWellFormattedString(", ILLUMINATION - ")
-             + getParam(PARAMS.ILLUMINATION);
+            text += StringMaster.format(", ILLUMINATION - ")
+                    + getParam(PARAMS.ILLUMINATION);
         }
         if (getIntParam(PARAMS.CONCEALMENT) != 0) {
-            text += StringMaster.getWellFormattedString(", CONCEALMENT - ")
-             + getParam(PARAMS.CONCEALMENT);
+            text += StringMaster.format(", CONCEALMENT - ")
+                    + getParam(PARAMS.CONCEALMENT);
         }
 
-        if (!VisionManager.checkDetected(this)) {
+        if (!VisionHelper.checkDetected(this)) {
             return "?";
         }
 
         if (getGame().getGraveyardManager().checkForCorpses(this)) {
             return getGame().getGraveyardManager().getRipString(this)
-             + StringMaster.wrapInParenthesis(text);
+                    + StringMaster.wrapInParenthesis(text);
 
         }
         return super.getToolTip() + StringMaster.wrapInParenthesis(text);
@@ -305,5 +326,80 @@ public class DC_Cell extends DC_Obj implements Cell {
 
     public void setOverlayData(String overlayData) {
         this.overlayData = overlayData;
+    }
+
+    public BattleFieldObject[] getObjects(Boolean overlayingIncluded_not_only) {
+        if (overlayingIncluded_not_only == null) {
+            return overlayingObjects;
+        }
+        return overlayingIncluded_not_only ? objects : nonOverlaying;
+    }
+
+    public void setObjects(BattleFieldObject[] objects,
+                           Boolean overlayingIncluded_not_only) {
+        if (overlayingIncluded_not_only == null) {
+            setOverlayingObjects(objects);
+        } else if (overlayingIncluded_not_only) {
+            setObjects(objects);
+        } else {
+            setNonOverlaying(objects);
+        }
+    }
+
+    public void setOverlayingObjects(BattleFieldObject[] overlayingObjects) {
+        this.overlayingObjects = overlayingObjects;
+    }
+
+    public void setObjects(BattleFieldObject[] objects) {
+        this.objects = objects;
+    }
+
+    public void setNonOverlaying(BattleFieldObject[] nonOverlaying) {
+        this.nonOverlaying = nonOverlaying;
+    }
+
+    public void resetObjectArrays() {
+        setObjects(null);
+        setOverlayingObjects(null);
+        setNonOverlaying(null);
+    }
+
+    public boolean isObjectsModified() {
+        return objectsModified;
+    }
+
+    public void setObjectsModified(boolean objectsModified) {
+        this.objectsModified = objectsModified;
+    }
+
+    public boolean hasMark(MARK mark) {
+        if (marks == null) {
+            return false;
+        }
+        return marks.contains(mark);
+    }
+
+    public void setArtPuzzleCell(boolean artPuzzleCell) {
+        this.artPuzzleCell = artPuzzleCell;
+    }
+
+    public boolean isArtPuzzleCell() {
+        return artPuzzleCell;
+    }
+
+    public void setCellVersion(int cellVersion) {
+        this.cellVersion = cellVersion;
+    }
+
+    public int getCellVersion() {
+        return cellVersion;
+    }
+
+    public boolean isUnitsHaveMovedHere() {
+        return unitsHaveMovedHere;
+    }
+
+    public void setUnitsHaveMovedHere(boolean unitsHaveMovedHere) {
+        this.unitsHaveMovedHere = unitsHaveMovedHere;
     }
 }

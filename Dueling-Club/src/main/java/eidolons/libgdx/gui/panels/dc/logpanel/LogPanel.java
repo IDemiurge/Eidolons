@@ -2,13 +2,14 @@ package eidolons.libgdx.gui.panels.dc.logpanel;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.core.Eidolons;
-import eidolons.game.netherflame.igg.IGG_Demo;
+import eidolons.game.netherflame.additional.IGG_Demo;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.panels.ScrollPanel;
@@ -26,7 +27,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.ColorManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -93,10 +94,10 @@ public class LogPanel extends ScrollTextWrapper {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-//        if (DungeonScreen.getInstance().getController().isWithinCamera(this)) {
-//            return;
-//        }  if it worked, could boost performance a bit when rolled out...
-        if (HqPanel.getActiveInstance()!=null) {
+        //        if (DungeonScreen.getInstance().getController().isWithinCamera(this)) {
+        //            return;
+        //        }  if it worked, could boost performance a bit when rolled out...
+        if (HqPanel.getActiveInstance() != null) {
             return;
         }
         super.draw(batch, parentAlpha);
@@ -119,9 +120,9 @@ public class LogPanel extends ScrollTextWrapper {
 
     public void bind() {
         GuiEventManager.bind(getCallbackEvent(), p -> {
-            Actor toAdd = null;
-            if (p.get() == Images.SEPARATOR_ALT) {
-                toAdd = new ImageContainer(Images.SEPARATOR_ALT);
+            Actor toAdd;
+            if (p.get() == Images.SEPARATOR_NARROW) {
+                toAdd = new ImageContainer(Images.SEPARATOR_NARROW);
                 scrollPanel.addElement(toAdd).center();
                 return;
             } else if (p.get() == null) {
@@ -157,17 +158,21 @@ public class LogPanel extends ScrollTextWrapper {
             float imageOffset = 0;
             Image img = null;
             if (image != null) {
-                img = new Image(TextureCache.getOrCreate(image));
-                img.setSize(Math.min(img.getWidth(), 32),
-                        Math.min(img.getHeight(), 32));
-                imageOffset = img.getWidth();
+                TextureRegion orCreateR = TextureCache.getOrCreateR(image);
+                if (TextureCache.isEmptyTexture(orCreateR)) {
+                    img = new Image(orCreateR);
+                    img.setSize(Math.min(img.getWidth(), 32),
+                            Math.min(img.getHeight(), 32));
+                    img.pack();
+                    imageOffset = img.getWidth();
+                }
             }
             LogMessage message = builder.build(getWidth() - offsetX - imageOffset);
             message.setFillParent(false);
             toAdd = message;
-            if (image != null) {
+            if (img != null) {
                 TablePanelX<Actor> table = new TablePanelX<>(
-//                        getWidth() - offsetX, Math.max(message.getHeight(), img.getHeight())
+                        //                        getWidth() - offsetX, Math.max(message.getHeight(), img.getHeight())
                 );
                 table.defaults().space(2).pad(5).padLeft(7);
                 table.add(img);
@@ -176,7 +181,7 @@ public class LogPanel extends ScrollTextWrapper {
                 toAdd = table;
             }
 
-            if (image != null) {
+            if (img != null) {
                 scrollPanel.addElement(toAdd).padLeft(16).center();
             } else if (align == Align.center) {
                 scrollPanel.addElement(toAdd).center().padLeft(28);
@@ -204,7 +209,7 @@ public class LogPanel extends ScrollTextWrapper {
         for (String word : words) {
 
             Color c = getColor(previous, word);
-            Pair<String, Color> pair = new ImmutablePair<>(word+" ", c);
+            Pair<String, Color> pair = new ImmutablePair<>(word + " ", c);
             list.add(pair);
             previous = word;
         }
@@ -215,22 +220,20 @@ public class LogPanel extends ScrollTextWrapper {
         switch (word) {
             case "Glory":
                 return Color.ORANGE;
-            case "Torment":
+            case "Eidolon Shadow":
                 return Color.PURPLE;
         }
         word = word.replace(".", "");
         if (previous == null) {
-            previous = word;
-        } else
-        previous = previous.replace(".", "");
-        if (Eidolons.MAIN_HERO != null)
-        if (StringMaster.containsWord( Eidolons.MAIN_HERO.getName(), word)
-        ) {
-            if (CoreEngine.isIggDemoRunning()) {
-                return GdxColorMaster.lighter((IGG_Demo.getHeroColor(Eidolons.getMainHero().getName())));
-            }
-            return GdxColorMaster.lighter(GdxColorMaster.getColor(Eidolons.getMainHero().getOwner().getFlagColor().getColor()));
         }
+        if (Eidolons.MAIN_HERO != null)
+            if (StringMaster.containsWord(Eidolons.MAIN_HERO.getName(), word)
+            ) {
+                if (Flags.isIggDemoRunning()) {
+                    return GdxColorMaster.lighter((IGG_Demo.getHeroColor(Eidolons.getMainHero().getName())));
+                }
+                return GdxColorMaster.lighter(GdxColorMaster.getColor(Eidolons.getMainHero().getOwner().getFlagColor().getColor()));
+            }
         for (Unit unit : AggroMaster.getLastAggroGroup()) {
             if (StringMaster.containsWord(unit.getName(), (word))) {
                 return GdxColorMaster.lighter(GdxColorMaster.getColor(unit.getOwner().getFlagColor().getColor()));
@@ -239,13 +242,10 @@ public class LogPanel extends ScrollTextWrapper {
         }
         for (GenericEnums.DAMAGE_TYPE damage_type : GenericEnums.DAMAGE_TYPE.values()) {
             if (word.startsWith("("))
-            if (word.endsWith(")"))
-            if (StringMaster.cropParenthesises(word).equalsIgnoreCase(damage_type.getName())){
-                return GdxColorMaster.getDamageTypeColor(damage_type);
-            }
-        }
-        if (previous.equalsIgnoreCase("something") || word.equalsIgnoreCase("something")) {
-            return GdxColorMaster.GREY;
+                if (word.endsWith(")"))
+                    if (StringMaster.cropParenthesises(word).equalsIgnoreCase(damage_type.getName())) {
+                        return GdxColorMaster.getDamageTypeColor(damage_type);
+                    }
         }
         return GdxColorMaster.PALE_GOLD;
     }
@@ -268,12 +268,12 @@ public class LogPanel extends ScrollTextWrapper {
     }
 
     protected String getBgPath() {
-//        return new StrPathBuilder().build_("ui",
-//         "components",
-//         "dc",
-//         "dialog",
-//         "log"
-//         , "log background.png");
+        //        return new StrPathBuilder().build_("ui",
+        //         "components",
+        //         "dc",
+        //         "dialog",
+        //         "log"
+        //         , "log background.png");
         return null;
     }
 

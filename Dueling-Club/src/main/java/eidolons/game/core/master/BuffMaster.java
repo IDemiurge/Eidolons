@@ -1,5 +1,6 @@
 package eidolons.game.core.master;
 
+import eidolons.ability.effects.EmptyEffect;
 import eidolons.ability.effects.attachment.AddBuffEffect;
 import eidolons.ability.effects.common.ModifyPropertyEffect;
 import eidolons.content.PARAMS;
@@ -7,13 +8,13 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.attach.DC_BuffObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.round.UpkeepRule;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
+import main.content.enums.system.MetaEnums;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.elements.conditions.Condition;
@@ -23,10 +24,9 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.Attachment;
 import main.entity.obj.BuffObj;
 import main.entity.obj.Obj;
-import main.entity.type.BuffType;
 import main.entity.type.ObjType;
+import main.entity.type.impl.BuffType;
 import main.game.logic.battle.player.Player;
-import main.system.GuiEventManager;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.ArrayList;
@@ -34,7 +34,6 @@ import java.util.Collection;
 import java.util.List;
 
 import static main.entity.obj.BuffObj.DUMMY_BUFF_TYPE;
-import static main.system.GuiEventType.UPDATE_BUFFS;
 
 public class BuffMaster extends Master {
     public BuffMaster(DC_Game game) {
@@ -67,9 +66,7 @@ public class BuffMaster extends Master {
     public static boolean checkBuffDispelable(BuffObj buff) {
         if (buff.getBuffType() == GenericEnums.BUFF_TYPE.SPELL) {
             if (!buff.isPermanent()) {
-                if (!buff.checkBool(GenericEnums.STD_BOOLS.NON_DISPELABLE)) {
-                    return true;
-                }
+                return !buff.checkBool(GenericEnums.STD_BOOLS.NON_DISPELABLE);
             }
         }
 
@@ -78,7 +75,7 @@ public class BuffMaster extends Master {
 
     public static List<ObjType> getBuffsFromSpell(DC_ActiveObj spell) {
         List<ObjType> buffTypes = new ArrayList<>();
-        for (Effect e : EffectFinder.getEffectsOfClass(spell.getAbilities(),
+        for (Effect e : EffectMaster.getEffectsOfClass(spell.getAbilities(),
                 AddBuffEffect.class)) {
             ObjType buffType = ((AddBuffEffect) e).getBuffTypeLazily();
 
@@ -97,6 +94,24 @@ public class BuffMaster extends Master {
             type.setName(name);
         }
         return type;
+    }
+
+    public   void applyStdBuff(MetaEnums.STD_BUFF_NAME buffName, BattleFieldObject entity) {
+        //switch to get effects?
+
+        BuffType type = (BuffType) DataManager.getType(buffName.getName(), DC_TYPE.BUFFS);
+        Effect fx = getEffects(buffName);
+        double dur=0;
+        BuffObj buff= createBuff(type, null, entity.getOwner(), new Ref(entity), fx, dur, null);
+        entity.addBuff(buff);
+    }
+
+    private Effect getEffects(MetaEnums.STD_BUFF_NAME buffName) {
+        switch (buffName) {
+            case Disabled:
+                return EffectMaster.getDisablingEffect();
+        }
+        return null;
     }
 
     public void atbTimeElapsed(Float time) {
@@ -118,7 +133,6 @@ public class BuffMaster extends Master {
         for (Attachment attachment : game.getState().getAttachments()) {
             attachment.checkRetainCondition();
         }
-
     }
 
     public void addAttachment(Attachment attachment, Obj basis) {
@@ -137,11 +151,13 @@ public class BuffMaster extends Master {
             return;
         }
         for (Effect e : attachment.getEffects()) {
-            // e.apply(basis.getRef()); // how to add retain conditions?
-            // else
-            // if (!(e instanceof AttachmentEffect))
             getState().addEffect(e);
         }
+    }
+    //TODO core refactor - fix these params..
+    public BuffObj createBuff(BuffType type, Ref ref, double dur) {
+        return createBuff(type, (Obj) ref.getActive(), ref.getSourceObj().getOwner(), ref,
+                null, dur, null);
     }
 
     public BuffObj createBuff(BuffType type, Obj active, Player player, Ref ref, Effect effect,
@@ -177,7 +193,9 @@ public class BuffMaster extends Master {
         } else {
             // preCheck cache
         }
-
+        if (effect == null) {
+            effect = new EmptyEffect(); //TODO core Review
+        }
         buff = new DC_BuffObj(type, player, getGame(), ref, effect, duration, retainCondition);
         buff.setActive(active);
 
@@ -211,7 +229,6 @@ public class BuffMaster extends Master {
         game.getState().addObject(buff);
         addAttachment(buff, basis);
         UpkeepRule.addUpkeep(buff);
-        GuiEventManager.trigger(UPDATE_BUFFS, buff);
     }
 
     public BuffObj createCustomBuff(String s, BattleFieldObject unit) {

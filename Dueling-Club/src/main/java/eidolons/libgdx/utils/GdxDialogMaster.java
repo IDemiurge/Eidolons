@@ -12,13 +12,13 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 public class GdxDialogMaster {
     private static final WAIT_OPERATIONS OPERATION = WAIT_OPERATIONS.TEXT_INPUT;
 
-    public static String inputText(String hint, String text) {
-        return inputText("Input text", hint, text);
+    public static String inputText(boolean script,String hint, String text) {
+        return inputText(script,"Input text", hint, text);
     }
 
-    public static String inputText(String title, String hint, String text) {
+    public static String inputText(boolean script, String title, String hint, String text) {
 //            else
-            Gdx.app.postRunnable(() -> textInput(new TextInputListener() {
+            Gdx.app.postRunnable(() -> textInput(script, new TextInputListener() {
                                                      @Override
                                                      public void input(String text) {
                                                          WaitMaster.receiveInput(OPERATION, text);
@@ -32,13 +32,25 @@ public class GdxDialogMaster {
              , title, text, hint
             ));
 
-        String input = (String) WaitMaster.waitForInput(OPERATION);
-        return input;
+        return (String) WaitMaster.waitForInput(OPERATION);
     }
 
-    private static void textInput(TextInputListener textInputListener, String title,
+    private static void textInput(boolean script, TextInputListener textInputListener, String title,
                                   String text, String hint) {
-            ScreenMaster.getScreen().getGuiStage().textInput(textInputListener, title,
+            ScreenMaster.getScreen().getGuiStage().textInput(script, textInputListener, title,
              text, hint);
     }
+
+    public static String inputText(String s, String lastScript) {
+       return  inputText(false, s, lastScript);
+    }
+
+    public static String inputScript(String s, String lastScript) {
+        return  inputText(true, s, lastScript);
+    }
+
+    // public static String inputScript(String s, String stringValue) {
+    //     ScreenMaster.getScreen().getGuiStage().textInput(script, textInputListener, title,
+    //             text, hint);
+    // }
 }

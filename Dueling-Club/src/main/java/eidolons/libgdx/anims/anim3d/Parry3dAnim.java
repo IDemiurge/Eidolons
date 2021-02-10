@@ -8,11 +8,9 @@ import eidolons.libgdx.anims.sprite.SpriteAnimation;
  * Created by JustMe on 5/30/2018.
  */
 public class Parry3dAnim extends Weapon3dAnim{
-    private final DC_WeaponObj parryWeapon;
 
     public Parry3dAnim(DC_WeaponObj parryWeapon, DC_ActiveObj attack) {
         super(null );
-        this.  parryWeapon = parryWeapon;
     }
 
     @Override

@@ -1,9 +1,8 @@
 package eidolons.libgdx.screens.menu;
 
 
-import eidolons.game.netherflame.igg.story.IggActChoicePanel;
+import eidolons.game.netherflame.main.story.IggActChoicePanel;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.gui.menu.selection.rng.RngSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.saves.SaveSelectionPanel;
@@ -23,7 +22,7 @@ import java.util.List;
  * Created by JustMe on 11/28/2017.
  */
 public class AnimatedMenuScreen extends ScreenWithVideoLoader {
-
+//Gdx Review - double init?
     MainMenu mainMenu;
 
     public AnimatedMenuScreen() {
@@ -38,18 +37,12 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
         GuiEventManager.bind(GuiEventType.BRIEFING_FINISHED, p -> {
             mainMenu.setVisible(true);
         });
-//        getOverlayStage().clear(); TODO igg demo fix why needed??
         mainMenu = MainMenu.getInstance();
         mainMenu.setVisible(true);
         getOverlayStage().addActor(mainMenu);
         mainMenu.setPosition(
                 GdxMaster.centerWidth(mainMenu)
                 , GdxMaster.centerHeight(mainMenu));
-//        if (CoreEngine.isIDE()) {
-//            if (Eidolons.getResolution() != RESOLUTION._1920x1080) {
-//                mainMenu.setPosition(0, (float) (Eidolons.getResolutionDimensions().getHeight() - mainMenu.getHeight() - 100));
-//            }
-//        }
     }
 
     @Override
@@ -59,7 +52,7 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
         getOverlayStage().setActive(true);
     }
 
-    protected boolean isWaitForInput() {
+    protected boolean isWaitForInputSupported() {
         return false;
     }
 
@@ -151,13 +144,10 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
 
     @Override
     protected void preLoad() {
-
         super.preLoad();
-//        if (isvo)
-
         try {
-            Assets.preloadMenu();
-            setLoadingAtlases(true);
+            //TODO remove?
+            setLoadingFinalAtlases(true);
             GdxMaster.setLoadingCursor();
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
@@ -169,7 +159,6 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
         super.dispose();
         getOverlayStage().setActive(false);
     }
-
 
     @Override
     protected void renderLoader(float delta) {
@@ -192,4 +181,9 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
     }
 
 
+    @Override
+    protected String getLoadScreenPath() {
+        return (loaded) ? "main/art/MAIN_MENU.jpg"
+                : "ui/main/logo fullscreen.png";
+    }
 }

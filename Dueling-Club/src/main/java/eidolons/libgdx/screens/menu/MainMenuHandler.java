@@ -1,8 +1,6 @@
 package eidolons.libgdx.screens.menu;
 
-import eidolons.game.EidolonsGame;
 import eidolons.game.core.Eidolons;
-import eidolons.game.netherflame.igg.IGG_Launcher;
 import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
 import eidolons.macro.AdventureInitializer;
@@ -19,7 +17,7 @@ import main.system.GuiEventType;
 import main.system.SortMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.List;
 
@@ -62,7 +60,7 @@ public class MainMenuHandler {
                 MainLauncher.presetNumbers.add(0, n);
             }
         }
-        CoreEngine.setMacro(false);
+        Flags.setMacro(false);
         GuiEventManager.trigger(GuiEventType.SHOW_SELECTION_PANEL, scenarioTypes);
         return null;
     }
@@ -90,16 +88,16 @@ public class MainMenuHandler {
         return getScenarioTypes(getScenarioGroup(false));
     }
 
-    private static String getScenarioGroup(Boolean rng_beta_demo) {
-        if (rng_beta_demo==null )
-            return "Demo";
+    private static String getScenarioGroup(Boolean test) {
+        // if (test==null )
+        //     return "Demo";
         //        return "Crawl";
-        return rng_beta_demo ? "Random" : "Beta";
+        return test ? "Test" : "Quest";
     }
 
     public static List<ObjType> getScenarioTypes(String scenarioGroup) {
         return DataManager.getTypesGroup(DC_TYPE.SCENARIOS,
-         StringMaster.getWellFormattedString(scenarioGroup));
+         StringMaster.format(scenarioGroup));
     }
 
     private void startDemo() {
@@ -107,25 +105,28 @@ public class MainMenuHandler {
     }
     public Boolean handle(MAIN_MENU_ITEM item) {
         switch (item) {
-            case DEMO:
-                EidolonsGame.DEMO=true;
-                IGG_Launcher.start(()-> startDemo());
-                return null ;
-            case NEXT_SCENARIO:
-                return startMicro(getScenarioTypes(),
-                 false);
+            case TEST_MODE:
+                return startMicro(getScenarioTypes(getScenarioGroup(true)),
+                        null );
+            // case CAMPAIGN:
+            //     EidolonsGame.DEMO=true;
+            //     IGG_Launcher.start(()-> startDemo());
+            //     return null ;
             case PLAY:
                 if (item.getItems().length>0) {
                     break;
                 }
             case RANDOM_SCENARIO:
-                return startMicro(getScenarioTypes(getScenarioGroup(true)),
+                return startMicro(getScenarioTypes(getScenarioGroup(false)),
                  true);
             case SELECT_SCENARIO:
-//                EidolonsGame.EXTENDED_DEMO=true;
-            case CUSTOM_LAUNCH:
-                return startMicro(getScenarioTypes(),
-                 null);
+                return startMicro(getScenarioTypes(getScenarioGroup(false)),
+                        null  );
+            // case CUSTOM_DUNGEON:
+            //     return startMicro(getScenarioTypes(),
+            //      null);
+
+
             case MAP_PREVIEW:
                 AdventureInitializer.launchAdventureGame(null);
                 return null;
@@ -134,7 +135,7 @@ public class MainMenuHandler {
                     Loader.load();
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
-                    CoreEngine.setMacro(false);
+                    Flags.setMacro(false);
                     Eidolons.exitToMenu();
                 }
                 break;

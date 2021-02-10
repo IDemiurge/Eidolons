@@ -4,7 +4,9 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.core.state.DC_GameState;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.objects.ContainerObj;
 import eidolons.game.module.dungeoncrawl.objects.Door;
@@ -12,6 +14,7 @@ import eidolons.game.module.dungeoncrawl.objects.InteractiveObj;
 import eidolons.game.module.dungeoncrawl.objects.LockObj;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.game.netherflame.boss.logic.entity.BossUnit;
+import main.content.CONTENT_CONSTS;
 import main.content.DC_TYPE;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
@@ -21,6 +24,7 @@ import main.entity.EntityCheckMaster;
 import main.entity.Ref;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
+import main.game.bf.Coordinates;
 import main.game.logic.battle.player.Player;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -51,17 +55,16 @@ public class ObjCreator extends Master {
                 }
             }
         }
-        if (!CoreEngine.isLevelEditor())
-            if (!CoreEngine.isArcaneVault())
-                type = checkTypeSubstitution(type, ref);
+        if (!CoreEngine.isArcaneVault())
+            type = checkTypeSubstitution(type, ref);
 
-        BattleFieldObject obj = null;
+        BattleFieldObject obj;
 
         if (type.checkProperty(G_PROPS.BF_OBJECT_GROUP, BfObjEnums.BF_OBJECT_GROUP.ENTRANCE.toString())) {
             obj = new Entrance(x, y, type, game);
         } else if (type.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
             obj = newStructure(type, x, y, owner, ref);
-            game.getMaster().clearCache(obj.getCoordinates());
+            game.getObjMaster().clearCache(obj.getCoordinates());
         } else {
             if (EntityCheckMaster.isBoss(type)) {
                 obj = new BossUnit(type, x, y, owner, getGame(), ref);
@@ -69,9 +72,17 @@ public class ObjCreator extends Master {
                 obj = new Unit(type, x, y, owner, getGame(), ref);
         }
         //if (WaitMaster.getCompleteOperations().contains(WAIT_OPERATIONS.DUNGEON_SCREEN_READY))
-        GuiEventManager.trigger(GuiEventType.UNIT_CREATED, obj);
+        if (!EntityCheckMaster.isBoss(type)) {
+            GuiEventManager.triggerWithMinDelayBetween(GuiEventType.UNIT_CREATED, obj, 500);
+        }
         game.getState().addObject(obj);
-
+        if (game.isStarted()) {
+            Coordinates coordinates = Coordinates.get(x, y);
+            game.getObjMaster().clearCache(coordinates);
+            game.getCellByCoordinate(coordinates).resetObjectArrays();
+            getGame().getVisionMaster().getIllumination().setResetRequired(true);
+            DC_GameState.gridChanged=true;
+        }
         initObject(obj, type);
 
         if (getGame().getMetaMaster().isRngQuestsEnabled())
@@ -87,6 +98,14 @@ public class ObjCreator extends Master {
                 }
             }
 
+        if (CoreEngine.isLevelEditor()) {
+            Module module = getGame().getMetaMaster().getModuleMaster().getModule(obj.getCoordinates());
+            obj.setModule(module);
+        } else if (getGame().getModule() != null) {
+            obj.setModule(getGame().getModule());
+        }
+        CONTENT_CONSTS.FLIP flip = game.getFlipMap().get(obj.getCoordinates());
+        obj.setFlip(flip);
         return obj;
 
     }
@@ -113,32 +132,35 @@ public class ObjCreator extends Master {
         if (CoreEngine.isLevelEditor()) {
             return false;
         }
-        if (obj.isPlayerCharacter()) {
-            return true;
-        }
-        if (!getGame().getMetaMaster().getModuleMaster().isWithinModule(obj.getCoordinates()))
-            return false;
+        return obj.isPlayerCharacter();
+        //        if (!getGame().getMetaMaster().getModuleMaster().isWithinModule(obj.getCoordinates()))
+        //            return false;
 
         //TODO check distance
-        return false;
 
     }
 
     private ObjType checkTypeSubstitution(ObjType type, Ref ref) {
+        if (CoreEngine.isLevelEditor()) {
+            if (type.getName().contains("Wall Placeholder")) {
+                if (type.getName().contains("Alt"))
+                    return DataManager.getType("Wall Alt", DC_TYPE.BF_OBJ);
+                return DataManager.getType("Wall", DC_TYPE.BF_OBJ);
+            }
+            return type;
+        }
         if (!type.getName().split(" ")[0].equalsIgnoreCase(PLACEHOLDER)) {
             return type;
         }
         String unitGroup = type.getProperty(
-                type.getOBJ_TYPE_ENUM().getSubGroupingKey()
-                //         G_PROPS.UNIT_GROUP
-        );
+                type.getOBJ_TYPE_ENUM().getSubGroupingKey());
         List<ObjType> list = DataManager.getTypesSubGroup(type.getOBJ_TYPE_ENUM(), unitGroup);
 
         String group = type.getGroup();
         if (!group.isEmpty()) {
             list.removeIf(t -> !t.getGroup().equalsIgnoreCase(group));
         }
-        //power constraints
+        //power constraints?
 
         if (list.isEmpty())
             return type;
@@ -149,28 +171,36 @@ public class ObjCreator extends Master {
 
     private BattleFieldObject newStructure(ObjType type, int x, int y, Player owner,
                                            Ref ref) {
+
+        //TODO no more overlaying obj decor!!!
+        if (EntityCheckMaster.isOverlaying(type)) {
+            return new InteractiveObj(type, x, y);
+        }
         BF_OBJECT_GROUP group = new EnumMaster<BF_OBJECT_GROUP>().retrieveEnumConst(BF_OBJECT_GROUP.class,
                 type.getProperty(G_PROPS.BF_OBJECT_GROUP));
-        if (group != null) {
-            switch (group) {
-                case DUNGEON:
-                    break;
+        if (!CoreEngine.isLevelEditor())
+            if (group != null) {
+                switch (group) {
+                    case DUNGEON:
+                        break;
 
-                case KEY:
-                case HANGING:
-                    return new InteractiveObj(type, x, y);
-                case DOOR:
-                    return new Door(type, x, y, owner, getGame(), ref);
-                case LOCK:
-                    return new LockObj(type, x, y, owner, getGame(), ref);
-                case TREASURE:
-                case CONTAINER:
-                case GRAVES:
-                case REMAINS:
-                case INTERIOR:
-                    return new ContainerObj(type, x, y);
+                    case KEY:
+                    case HANGING:
+                        return new InteractiveObj(type, x, y);
+                    case DOOR:
+                        return new Door(type, x, y, owner, getGame(), ref);
+                    case LOCK:
+                        return new LockObj(type, x, y, owner, getGame(), ref);
+                    case TREASURE:
+                    case CONTAINER:
+                    case GRAVES:
+                    case REMAINS:
+                    case INTERIOR:
+                        return new ContainerObj(type, x, y);
+                }
             }
-        }
+
+
 
         return new Structure(type, x, y, owner, getGame(), ref);
     }

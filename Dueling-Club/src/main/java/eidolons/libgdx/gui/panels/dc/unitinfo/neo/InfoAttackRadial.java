@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.libgdx.gui.controls.radial.RadialValueContainer;
+import eidolons.libgdx.gui.controls.radial.RadialContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.panels.dc.actionpanel.weapon.QuickAttackRadial;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.ActionTooltip;
@@ -50,7 +50,7 @@ public class InfoAttackRadial extends QuickAttackRadial {
     }
 
     @Override
-    protected void setCurrentNode(RadialValueContainer node) {
+    protected void setCurrentNode(RadialContainer node) {
         super.setCurrentNode(node);
     }
 
@@ -91,10 +91,10 @@ public class InfoAttackRadial extends QuickAttackRadial {
     }
 
     @Override
-    protected List<RadialValueContainer> createNodes(Unit source, List<? extends ActiveObj> attacks) {
-        List<RadialValueContainer> list = super.createNodes(source, attacks);
+    protected List<RadialContainer> createNodes(Unit source, List<? extends ActiveObj> attacks) {
+        List<RadialContainer> list = super.createNodes(source, attacks);
         int i=0;
-        for (RadialValueContainer node : list) {
+        for (RadialContainer node : list) {
             ActiveObj a = attacks.get(i++);
             processNode(node, a);
         }
@@ -104,7 +104,7 @@ public class InfoAttackRadial extends QuickAttackRadial {
         return list;
     }
 
-    public void processNode(RadialValueContainer node, ActiveObj a){
+    public void processNode(RadialContainer node, ActiveObj a){
         ActionTooltip tooltip = new ActionTooltip((DC_ActiveObj) a);
         node.clearListeners();
         node.addListener(tooltip.getController());
@@ -140,8 +140,8 @@ public class InfoAttackRadial extends QuickAttackRadial {
     protected int getSpectrumDegrees() {
         return 150;
     }
-    private RadialValueContainer createSlotNode() {
-      return   new RadialValueContainer(TextureCache.getOrCreateR(STD_BUTTON.CIRCLE.getPath()), ()->{
+    private RadialContainer createSlotNode() {
+      return   new RadialContainer(TextureCache.getOrCreateR(STD_BUTTON.CIRCLE.getPath()), ()->{
         });
     }
 

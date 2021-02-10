@@ -1,17 +1,15 @@
 package eidolons.game.module.dungeoncrawl.explore;
 
 import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
-import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
-import eidolons.game.battlecraft.logic.battlefield.vision.StealthRule;
+import eidolons.game.battlecraft.logic.battlefield.vision.advanced.StealthRule;
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.master.EffectMaster;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.entity.SpellEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
-import main.entity.obj.ActiveObj;
 import main.entity.obj.BuffObj;
 
 import java.util.ArrayList;
@@ -30,7 +28,7 @@ public class ExploreCleaner extends ExplorationHandler {
             return;
         }
         if (activeObj.getActionGroup() == ACTION_TYPE_GROUPS.MODE) {
-            ModeEffect e = (ModeEffect) EffectFinder.getFirstEffectOfClass(activeObj, ModeEffect.class);
+            ModeEffect e = (ModeEffect) EffectMaster.getFirstEffectOfClass(activeObj, ModeEffect.class);
             if (e != null)
                 if (e.getMode() == unit.getMode())
                     return;
@@ -41,7 +39,7 @@ public class ExploreCleaner extends ExplorationHandler {
     public void cleanUpAfterBattle() {
         for (Unit unit : new ArrayList<>(Eidolons.getGame().getUnits())) {
             {
-                if (unit.isScion()) {
+                if (unit.isShadow()) {
                     unit.kill(); //TODO lazy..
                     return;
                 }
@@ -51,28 +49,14 @@ public class ExploreCleaner extends ExplorationHandler {
                         unit.removeFromGame();
                     }
                 }
-                if (unit.isPlayerCharacter()) {
-                    if (unit.getIntParam(PARAMS.FOCUS_FATIGUE)>0) {
-                        unit.  getGame().getLogManager().log(unit+ "'s focus fatigue is reset "+
-                                unit.getIntParam(PARAMS.FOCUS_FATIGUE) );
-                    }
-                }
-                unit.setParam(PARAMS.FOCUS_FATIGUE, 0);
-                unit.resetDynamicParam(PARAMS.C_N_OF_ACTIONS);
                 removeMode(unit);
                 BuffObj buff = unit.getBuff(StealthRule.SPOTTED);
                 if (buff != null)
                     buff.remove();
-                cleanUpActions(unit);
             }
         }
     }
 
-    private void cleanUpActions(Unit unit) {
-        for (ActiveObj activeObj : unit.getActives()) {
-            activeObj.setParam(PARAMS.C_COOLDOWN, activeObj.getIntParam(PARAMS.COOLDOWN, false));
-        }
-    }
 
     private void removeMode(Unit unit) {
         if (unit.getMode() != null)

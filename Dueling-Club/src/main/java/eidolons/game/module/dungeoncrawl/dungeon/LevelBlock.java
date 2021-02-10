@@ -3,8 +3,10 @@ package eidolons.game.module.dungeoncrawl.dungeon;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.ObjNode;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.ObjsNode;
+import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.generator.init.RngXmlMaster;
@@ -28,7 +30,7 @@ import java.util.stream.Collectors;
 /**
  * Created by JustMe on 7/20/2018.
  */
-public class LevelBlock extends LevelStruct<LevelBlock, Object> {
+public class LevelBlock extends LevelStruct<LevelBlock, LevelBlock> {
 
     private ROOM_TYPE roomType;
     private RoomModel model;
@@ -52,7 +54,6 @@ public class LevelBlock extends LevelStruct<LevelBlock, Object> {
         this.origin = coordinates;
         this.zone = zone;
         id = ID++;
-
     }
 
     @Override
@@ -67,7 +68,7 @@ public class LevelBlock extends LevelStruct<LevelBlock, Object> {
         }
             LinkedHashSet<LayeredData> objs = DC_Game.game.getBfObjects().stream().filter(
                     obj -> isWithinBlock(obj) && obj.getOBJ_TYPE_ENUM() == DC_TYPE.ENCOUNTERS).map(
-                    obj -> new ObjNode(obj)).collect(Collectors.toCollection(LinkedHashSet::new));
+                    ObjNode::new).collect(Collectors.toCollection(LinkedHashSet::new));
             objs.add(new ObjsNode(this));
             return objs;
     }
@@ -87,7 +88,7 @@ public class LevelBlock extends LevelStruct<LevelBlock, Object> {
     }
 
     @Override
-    protected LevelStruct getParent() {
+    public LevelStruct getParent() {
         return zone;
     }
 
@@ -97,12 +98,13 @@ public class LevelBlock extends LevelStruct<LevelBlock, Object> {
 
     public void setRoomType(ROOM_TYPE roomType) {
         this.roomType = roomType;
+        getData().setValue(LevelStructure.BLOCK_VALUE.room_type, roomType.toString());
     }
 
     @Override
     public String toString() {
         if (tileMap == null) {
-            return getRoomType() + " block of " + zone;
+            return getRoomType() + " block N" +id;
         }
         return getRoomType() + " block of " + zone
                 + "\n" + tileMap.toString();
@@ -151,7 +153,7 @@ public class LevelBlock extends LevelStruct<LevelBlock, Object> {
     }
 
     public void setCoordinates(Collection<Coordinates> coordinatesList) {
-        coordinatesList.removeIf(c -> c == null);
+        coordinatesList.removeIf(Objects::isNull);
         this.coordinatesSet = new LinkedHashSet<>(coordinatesList);
 
     }
@@ -234,6 +236,9 @@ public class LevelBlock extends LevelStruct<LevelBlock, Object> {
         return model;
     }
 
+    public Module getModule() {
+        return getZone().getModule();
+    }
 
 
     public void setData(BlockData data) {

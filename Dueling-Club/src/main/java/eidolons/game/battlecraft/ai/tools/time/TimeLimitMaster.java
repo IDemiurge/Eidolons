@@ -7,20 +7,21 @@ import eidolons.system.options.OptionsMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
+import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 
 public class TimeLimitMaster {
     public static final long CRITICAL_FAIL_FACTOR = 10;
-    private static double TIME_LIMIT_FACTOR = 5;
-    private static int AI_TIME_LIMIT_MIN = 3000;
+    private static final double TIME_LIMIT_FACTOR = 5;
+    private static final int AI_TIME_LIMIT_MIN = 3000;
     private static final int AI_TIME_LIMIT_MAX = 7000;
-    private static int AI_TIME_LIMIT_PER_POWER = 150;
-    private static int AI_TIME_LIMIT_MIN_EXPLORE = 500;
-    private static int AI_TIME_LIMIT_PER_POWER_EXPLORE = 15;
-    private static int ACTION_TIME_LIMIT = 3000;
-    private static int PATH_TIME_LIMIT = 2000;
-    private static int CELL_PATH_TIME_LIMIT = 500;
-    private static int PATH_STEP_TIME_LIMIT = 250;
+    private static final int AI_TIME_LIMIT_PER_POWER = 150;
+    private static final int AI_TIME_LIMIT_MIN_EXPLORE = 500;
+    private static final int AI_TIME_LIMIT_PER_POWER_EXPLORE = 15;
+    private static final int ACTION_TIME_LIMIT = 3000;
+    private static final int PATH_TIME_LIMIT = 2000;
+    private static final int CELL_PATH_TIME_LIMIT = 500;
+    private static final int PATH_STEP_TIME_LIMIT = 250;
     private static Float timeLimitMod;
 
     public TimeLimitMaster(UnitAI ai) {
@@ -56,7 +57,7 @@ public class TimeLimitMaster {
     }
 
     public static Long getTimeLimitMetric(METRIC metric) {
-        return new Long(Math.round(getTimeLimitMetricBase(metric) * TIME_LIMIT_FACTOR));
+        return Math.round(getTimeLimitMetricBase(metric) * TIME_LIMIT_FACTOR);
     }
 
     public static int getTimeLimitMetricBase(METRIC metric) {
@@ -74,6 +75,9 @@ public class TimeLimitMaster {
     }
 
     public static boolean checkTimeLimit(METRIC metric, String string) {
+        if (CoreEngine.TEST_LAUNCH) {
+            return true;
+        }
         boolean result = Chronos.getTimeElapsedForMark(string) < TimeLimitMaster
          .getTimeLimitMetric(metric);
         if (!result) {
@@ -96,6 +100,9 @@ public class TimeLimitMaster {
     }
 
     public static boolean checkTimeLimitForAi(UnitAI ai) {
+        if (OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.AI_DEBUG)
+                || CoreEngine.TEST_LAUNCH)
+            return true;
         if (getTimeLimitForAi(ai) > getMarkForAi(ai))
             return true;
         LogMaster.log(1, "*********** TIME ELAPSED FOR  "
@@ -125,7 +132,7 @@ public class TimeLimitMaster {
 
     public static float getTimeLimitMod() {
         if (timeLimitMod==null )
-            timeLimitMod =new Float( OptionsMaster.getGameplayOptions().getIntValue(GAMEPLAY_OPTION.AI_TIME_LIMIT_MOD))/100;
+            timeLimitMod = (float) OptionsMaster.getGameplayOptions().getIntValue(GAMEPLAY_OPTION.AI_TIME_LIMIT_MOD) /100;
         return timeLimitMod;
     }
 

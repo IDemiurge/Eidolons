@@ -10,9 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH_PADDING;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.gui.NinePatchFactory;
-import main.system.launch.CoreEngine;
+import eidolons.libgdx.gui.generic.btn.FlipDrawable;
+import main.system.launch.Flags;
 
 import java.util.function.Supplier;
 
@@ -26,6 +27,10 @@ public class TablePanel<T extends Actor> extends Table {
     public TablePanel() {
     }
 
+    @Override
+    public String toString() {
+        return getUserObject()+" -\n"+super.toString();
+    }
 
     public void removeBackground() {
         background(new EmptyDrawable());
@@ -49,7 +54,7 @@ public class TablePanel<T extends Actor> extends Table {
 
     @Override
     public Table debugAll() {
-        if (!CoreEngine.isIDE()) {
+        if (!Flags.isIDE()) {
             return this;
         }
         return super.debugAll();
@@ -57,7 +62,7 @@ public class TablePanel<T extends Actor> extends Table {
 
     @Override
     public Table debug() {
-        if (!CoreEngine.isIDE()) {
+        if (!Flags.isIDE()) {
             return this;
         }
         return super.debug();
@@ -158,6 +163,12 @@ public class TablePanel<T extends Actor> extends Table {
                 final TextureRegion region = drawable.getRegion();
                 if (region != null)
                     setSize(region.getRegionWidth(), region.getRegionHeight());
+            } else {
+                if (background instanceof FlipDrawable) {
+                    setSize(
+                            background.getMinWidth(),
+                            background.getMinHeight());
+                }
             }
         super.setBackground(background);
     }

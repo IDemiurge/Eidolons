@@ -7,14 +7,14 @@ import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.cinematic.Cinematics;
 import eidolons.libgdx.anims.Anim;
+import eidolons.libgdx.anims.AnimEnums;
+import eidolons.libgdx.anims.AnimEnums.ANIM_PART;
 import eidolons.libgdx.anims.CompositeAnim;
-import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
 import eidolons.libgdx.anims.construct.AnimResourceFinder;
 import eidolons.libgdx.audio.SoundPlayer;
 import eidolons.libgdx.bf.GridMaster;
@@ -44,7 +44,8 @@ import main.system.PathUtils;
 import main.system.auxiliary.*;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
+import main.system.sound.AudioEnums;
 import main.system.sound.Player;
 import main.system.sound.SoundMaster;
 
@@ -54,8 +55,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
 
-import static eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART.CAST;
-import static eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART.IMPACT;
+import static eidolons.libgdx.anims.AnimEnums.ANIM_PART.CAST;
+import static eidolons.libgdx.anims.AnimEnums.ANIM_PART.IMPACT;
 
 //import main.game.logic.battle.player.Player;
 
@@ -70,12 +71,11 @@ public class DC_SoundMaster extends SoundMaster {
             G_PROPS.SPELL_TYPE,
     };
     private static SoundPlayer soundPlayer;
-    private SoundController controller;
-    private DungeonScreen screen;
+    private final DungeonScreen screen;
 
     public DC_SoundMaster(DungeonScreen screen) {
         this.screen = screen;
-        controller = new SoundController(this);
+        SoundController controller = new SoundController(this);
     }
 
     public static void playRangedAttack(DC_WeaponObj weapon) {
@@ -96,7 +96,7 @@ public class DC_SoundMaster extends SoundMaster {
 
     public static void playTurnSound(BattleFieldObject unit) {
 //         setPositionFor(unit.getCoordinates());
-        getSoundPlayer().play(STD_SOUNDS.LAMP.getPath());
+        getSoundPlayer().play(AudioEnums.STD_SOUNDS.LAMP.getPath());
 
         playMoveSound(unit);
     }
@@ -115,7 +115,7 @@ public class DC_SoundMaster extends SoundMaster {
 //        unit.getGame().getDungeon().isSurface()
         if (unit.isPale() || unit.isImmaterial()) {
             if (!unit.isMine()) {
-                getPlayer().playEffectSound(SOUNDS.ALERT, unit);
+                getPlayer().playEffectSound(AudioEnums.SOUNDS.ALERT, unit);
             } else
                 getPlayer().playRandomSoundFromFolder(
                         "std/move pale/");
@@ -200,7 +200,7 @@ public class DC_SoundMaster extends SoundMaster {
 
     }
 
-    public static String getEffectSoundName(SOUNDS sound_type) {
+    public static String getEffectSoundName(AudioEnums.SOUNDS sound_type) {
         switch (sound_type) {
             case TAUNT:
             case THREAT:
@@ -214,7 +214,7 @@ public class DC_SoundMaster extends SoundMaster {
         return sound_type.name();
     }
 
-    public static void playEffectSound(SOUNDS sound_type, Obj obj) {
+    public static void playEffectSound(AudioEnums.SOUNDS sound_type, Obj obj) {
         setPositionFor(obj.getCoordinates());
         getPlayer().playEffectSound(sound_type, obj);
     }
@@ -297,10 +297,10 @@ public class DC_SoundMaster extends SoundMaster {
     public static void playSoundForModeToggle(boolean on_off, DC_ActiveObj action, String mode) {
         // STD_ACTION_MODES
         if (on_off) {
-            getPlayer().playStandardSound(STD_SOUNDS.ON_OFF);
+            getPlayer().playStandardSound(AudioEnums.STD_SOUNDS.ON_OFF);
         }// soundPlayer.playStandardSound(STD_SOUNDS.CHAIN);
         else {
-            getPlayer().playStandardSound(STD_SOUNDS.ButtonDown);
+            getPlayer().playStandardSound(AudioEnums.STD_SOUNDS.ButtonDown);
         }
 
     }
@@ -405,16 +405,16 @@ public class DC_SoundMaster extends SoundMaster {
         switch (part) {
             case PRECAST:
                 ChannelingRule.playChannelingSound(activeObj, activeObj.getOwnerUnit().getGender() == GENDER.FEMALE);
-                getPlayer().playEffectSound(SOUNDS.PRECAST, activeObj);
+                getPlayer().playEffectSound(AudioEnums.SOUNDS.PRECAST, activeObj);
                 break;
             case CAST:
-                getPlayer().playEffectSound(SOUNDS.CAST, activeObj);
+                getPlayer().playEffectSound(AudioEnums.SOUNDS.CAST, activeObj);
                 break;
             case RESOLVE:
-                getPlayer().playEffectSound(SOUNDS.RESOLVE, activeObj);
+                getPlayer().playEffectSound(AudioEnums.SOUNDS.RESOLVE, activeObj);
                 break;
             case MISSILE:
-                getPlayer().playEffectSound(SOUNDS.EFFECT, activeObj);
+                getPlayer().playEffectSound(AudioEnums.SOUNDS.EFFECT, activeObj);
                 break;
             case IMPACT:
                 playImpact(activeObj);
@@ -431,7 +431,7 @@ public class DC_SoundMaster extends SoundMaster {
     public static void preconstructEffectSounds() {
         for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
             Spell active = new Spell(type, DC_Player.NEUTRAL, DC_Game.game, new Ref());
-            for (ANIM_PART part : ANIM_PART.values()) {
+            for (ANIM_PART part : AnimEnums.ANIM_PART.values()) {
                 preconstructSpell(active, part);
             }
         }
@@ -550,7 +550,7 @@ public class DC_SoundMaster extends SoundMaster {
     }
 
     private static String getActionEffectSoundPath(Spell spell, ANIM_PART part) {
-        if (CoreEngine.isIggDemo()) {
+        if (Flags.isIggDemo()) {
             return getSpellSound(spell, part);
         }
 
@@ -609,7 +609,7 @@ public class DC_SoundMaster extends SoundMaster {
                     activeObj.getIntParam(PARAMS.DAMAGE_LAST_AMOUNT) - activeObj.getIntParam(PARAMS.DAMAGE_LAST_DEALT)
             );
         } else {
-            getPlayer().playEffectSound(SOUNDS.IMPACT, activeObj);
+            getPlayer().playEffectSound(AudioEnums.SOUNDS.IMPACT, activeObj);
         }
 //        AudioMaster.getInstance().playRandomSound();
     }
@@ -625,7 +625,6 @@ public class DC_SoundMaster extends SoundMaster {
     }
 
     public static void playDamageSound(GenericEnums.DAMAGE_TYPE damageType) {
-       if (!EidolonsGame.DUEL)
          playRandomSoundVariant(PathFinder.getSoundsetsPath() + "damage/" + damageType.getName(), true);
     }
 
@@ -637,7 +636,7 @@ public class DC_SoundMaster extends SoundMaster {
         if (value.contains(".")) {
             String[] parts = value.split(Pattern.quote("."));
             SOUNDSET set = new EnumMaster<SOUNDSET>().retrieveEnumConst(SOUNDSET.class, parts[0]);
-            SOUNDS type = new EnumMaster<SOUNDS>().retrieveEnumConst(SOUNDS.class, parts[1]);
+            AudioEnums.SOUNDS type = new EnumMaster<AudioEnums.SOUNDS>().retrieveEnumConst(AudioEnums.SOUNDS.class, parts[1]);
             playEffectSound(type, set, (int) (volume * 100), 0);
         } else {
             if (value.contains("/")) {
@@ -645,7 +644,7 @@ public class DC_SoundMaster extends SoundMaster {
             } else
 //            new EnumMaster<SOUND_CUE>().retrieveEnumConst(SOUND_CUE.class, value);
             {
-                main.system.auxiliary.log.LogMaster.dev("Sound cue played: " + PathFinder.getSoundCuesPath() + value + ".mp3");
+                main.system.auxiliary.log.LogMaster.devLog("Sound cue played: " + PathFinder.getSoundCuesPath() + value + ".mp3");
                 String path = PathFinder.getSoundCuesPath() + value + ".mp3";
              if (random){
                  DC_SoundMaster.playRandomSoundVariant(path, true, (int) (volume * 100), 0);

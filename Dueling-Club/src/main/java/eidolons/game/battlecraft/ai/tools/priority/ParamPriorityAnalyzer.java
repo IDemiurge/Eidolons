@@ -30,12 +30,11 @@ public class ParamPriorityAnalyzer extends AiHandler {
             case FORTITUDE:
             case SPIRIT:
                 return 100;
-            case C_N_OF_ACTIONS:
-                return 50;
-            case C_N_OF_COUNTERS:
+            case C_EXTRA_MOVES:
+            case C_EXTRA_ATTACKS:
                 return 120;
-            case N_OF_ACTIONS:
-            case N_OF_COUNTERS:
+            case INITIATIVE:
+            case EXTRA_ATTACKS:
                 return 150;
 
             case DETECTION:
@@ -43,41 +42,30 @@ public class ParamPriorityAnalyzer extends AiHandler {
             case C_ENDURANCE:
             case ATTACK_MOD:
             case DEFENSE_MOD:
-            case C_INITIATIVE_BONUS:
                 return 2;
             case ENDURANCE:
             case ATTACK:
             case DEFENSE:
             case CONCEALMENT:
-            case C_MORALE:
             case C_TOUGHNESS:
                 return 3;
             case TOUGHNESS:
-            case MORALE:
             case ARMOR:
                 return 5;
-            case C_STAMINA:
-                return 8;
             case C_FOCUS:
-                return 6;
-            case C_ESSENCE:
-                return 4;
-            case C_INITIATIVE:
-                return 2f * AtbController.TIME_TO_READY/ AtbController.TIME_LOGIC_MODIFIER;
-            case RESISTANCE:
-                return 4;
-            case BASE_DAMAGE:
-                return 2.5f;
-            case DAMAGE_BONUS:
-                return 2.5f;
-            case DAMAGE_MOD:
-                return 2.5f;
-            case STAMINA:
-                return 12;
-            case FOCUS:
-                return 9;
             case ESSENCE:
                 return 6;
+            case C_ESSENCE:
+            case RESISTANCE:
+                return 4;
+            case C_ATB:
+                return 2f * AtbController.ATB_TO_READY / AtbController.TIME_LOGIC_MODIFIER;
+            case BASE_DAMAGE:
+            case DAMAGE_MOD:
+            case DAMAGE_BONUS:
+                return 2.5f;
+            case FOCUS:
+                return 9;
 
             case STRENGTH:
             case VITALITY:
@@ -118,9 +106,7 @@ public class ParamPriorityAnalyzer extends AiHandler {
             case ATTACK_MOD:
             case DEFENSE_MOD:
                 return 75;
-            case C_STAMINA:
             case C_FOCUS:
-            case C_MORALE:
             case C_ESSENCE:
                 return 25;
 
@@ -144,19 +130,9 @@ public class ParamPriorityAnalyzer extends AiHandler {
     public static boolean isParamIgnored(PARAMETER param, DC_Obj target) {
         if (param instanceof PARAMS) {
             switch ((PARAMS) param) {
-                case C_STAMINA:
-                    if (target instanceof Unit) {
-                        return ParamAnalyzer.isStaminaIgnore((Unit) target);
-                    }
-                    return false;
                 case C_FOCUS:
                     if (target instanceof Unit) {
                         return ParamAnalyzer.isFocusIgnore((Unit) target);
-                    }
-                    return false;
-                case C_MORALE:
-                    if (target instanceof Unit) {
-                        return ParamAnalyzer.isMoraleIgnore((Unit) target);
                     }
                     return false;
                 case C_ESSENCE:
@@ -165,13 +141,7 @@ public class ParamPriorityAnalyzer extends AiHandler {
                     }
                     return false;
 
-                case C_N_OF_ACTIONS:
-                    if (target instanceof Unit) {
-                        Unit heroObj = (Unit) target;
-                        return heroObj.isImmobilized();
-                    }
-                    return false;
-                case C_N_OF_COUNTERS:
+                case C_EXTRA_ATTACKS:
                     if (target instanceof Unit) {
                         Unit heroObj = (Unit) target;
                         return !heroObj.canCounter();

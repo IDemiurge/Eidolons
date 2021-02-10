@@ -38,7 +38,9 @@ public class ExplorePartyMaster extends ExplorationHandler {
     }
 
     public void reset() {
-        companions = initCompanions();
+        //TODO DC Review - minions?
+        if (companions == null)
+            companions = initCompanions();
         mainHero = initMainHero();
         if (mainHero == null) {
             return;
@@ -46,7 +48,7 @@ public class ExplorePartyMaster extends ExplorationHandler {
         lastPosition = mainHero.getCoordinates();
         for (Unit unit : companions) {
             unit.getAI().setAutoFollow(
-             checkAttached(unit)
+                    checkAttached(unit)
             );
 
         }
@@ -55,7 +57,7 @@ public class ExplorePartyMaster extends ExplorationHandler {
 
     protected DequeImpl<Unit> initCompanions() {
         DequeImpl<Unit> companions = new DequeImpl<>(getAllies());
-        companions.removeIf(unit -> unit.isMainHero());
+        companions.removeIf(Unit::isMainHero);
         return companions;
     }
 
@@ -89,28 +91,28 @@ public class ExplorePartyMaster extends ExplorationHandler {
             if (goal != null) {
                 master.getGame().getAiManager().setUnit(unit);
                 List<ActionSequence> sequences = master.getGame().getAiManager().
-                 getActionSequenceConstructor().
-                 createActionSequencesForGoal(goal, unit.getAI());
+                        getActionSequenceConstructor().
+                        createActionSequencesForGoal(goal, unit.getAI());
                 if (!sequences.isEmpty()) {
                     ActionSequence sequence = master.getGame().getAiManager().getPriorityManager().
-                     chooseByPriority(sequences);
+                            chooseByPriority(sequences);
                     unit.getAI().setStandingOrders(sequence);
                 }
             }
         }
-//        if (mainHero.getMode()!=null ){
-//        }
+        //        if (mainHero.getMode()!=null ){
+        //        }
     }
 
     public void leaderActionDone(ActionInput input) {
         lastAction = input;
         updateRequired = true;
-//        DC_ActiveObj active = input.getAction();
-//        if (active.isMove() || active.isSpell()) {
-//            checkFollow();
-//        } else {
-//
-//        }
+        //        DC_ActiveObj active = input.getAction();
+        //        if (active.isMove() || active.isSpell()) {
+        //            checkFollow();
+        //        } else {
+        //
+        //        }
     }
 
     public Goal getNewGoal(DC_ActiveObj active, UnitAI ai) {
@@ -171,8 +173,8 @@ public class ExplorePartyMaster extends ExplorationHandler {
     }
 
     protected boolean isFollowOn(Unit sub) {
-//        if (sub.getAI().isDetached())
-//            return false;
+        //        if (sub.getAI().isDetached())
+        //            return false;
         return true;
     }
 

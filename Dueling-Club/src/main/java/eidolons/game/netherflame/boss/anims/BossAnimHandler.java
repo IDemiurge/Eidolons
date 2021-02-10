@@ -1,7 +1,9 @@
 package eidolons.game.netherflame.boss.anims;
 
 import eidolons.game.netherflame.boss.BOSS_PART;
-import eidolons.game.netherflame.boss.anims.view.BossPart;
+import eidolons.game.netherflame.boss.anims.old.BossPart;
+import eidolons.game.netherflame.boss.anims.old.PartAnim;
+import eidolons.game.netherflame.boss.logic.BossCycle;
 import main.game.logic.event.Event;
 
 public interface BossAnimHandler {
@@ -13,4 +15,6 @@ public interface BossAnimHandler {
 
         return null;
     }
+
+    void toggleActive(BossCycle.BOSS_TYPE type, boolean active);
 }

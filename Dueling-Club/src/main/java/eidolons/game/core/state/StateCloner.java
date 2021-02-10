@@ -2,8 +2,8 @@ package eidolons.game.core.state;
 
 import eidolons.content.DC_ContentValsManager;
 import eidolons.entity.active.DC_QuickItemAction;
-import eidolons.entity.active.Spell;
 import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_ArmorObj;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
@@ -59,7 +59,7 @@ public class StateCloner {
     public DC_GameState clone(DC_GameState state) {
 //game's fields - units, structures - ???
         game.setCloningMode(true);
-        DC_GameState clone = null;
+        DC_GameState clone;
         try {
             Chronos.mark("clone");
             clone = new DC_GameState(game);
@@ -188,10 +188,9 @@ public class StateCloner {
         for (Effect e : abilities.getEffects()) {
             effects.add(cloneEffect(e));
         }
-        Ability ability = (abilities instanceof ActiveAbility) ?
+        return (abilities instanceof ActiveAbility) ?
          new ActiveAbility(abilities.getTargeting(), effects) : new PassiveAbility(
          abilities.getTargeting(), effects);
-        return ability;
     }
 
     private void cloneTriggers(DC_GameState state, DC_GameState clone) {
@@ -260,8 +259,7 @@ public class StateCloner {
                 return new Party(e.getType(), ((Party) e).getLeader());
 
             case DEITIES:
-            case ARCADES:
-            case DUNGEONS:
+            case FLOORS:
             case ENCOUNTERS:
                 break;
         }

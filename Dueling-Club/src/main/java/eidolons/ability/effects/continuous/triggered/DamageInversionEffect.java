@@ -25,21 +25,17 @@ public class DamageInversionEffect extends MicroEffect implements
     Boolean restoreToughness = false;
     Boolean restoreToughnessAboveBase = false;
     Boolean restoreEnduranceAboveBase = true;
-    private Boolean spell;
-    private Boolean physical;
 
-    private MOD code;
-    private Conditions conditions = new Conditions(new RefCondition(
+    private final MOD code;
+    private final Conditions conditions = new Conditions(new RefCondition(
      KEYS.EVENT_TARGET, KEYS.SOURCE, false));
 
-    private STANDARD_EVENT_TYPE event_type;
+    private final STANDARD_EVENT_TYPE event_type;
 
     // public DamageInversionEffect( condition) {
 
     public DamageInversionEffect(Boolean physical, Boolean spell,
                                  Formula formula) {
-        this.spell = spell;
-        this.physical = physical;
 
         conditions.add(new DamageTypeCondition(physical));
         event_type = (physical) ? STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_PHYSICAL_DAMAGE

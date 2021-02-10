@@ -3,11 +3,10 @@ package eidolons.libgdx.shaders;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.libgdx.screens.ScreenMaster;
 import main.system.launch.CoreEngine;
-
-import java.util.HashMap;
-import java.util.Map;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 5/17/2018.
@@ -15,7 +14,7 @@ import java.util.Map;
 public class ShaderDrawer {
     public static final float SUPER_DRAW = 100;
     public static final int MAX_ITEM_GROUPS = 4;
-    private static Map<Actor, Runnable> map = new HashMap<>();
+    private static final ObjectMap<Actor, Runnable> map = new ObjectMap<>(9000);
 
     public static void drawWithCustomShader(Actor actor, Batch batch,
                                             ShaderProgram shader) {
@@ -48,11 +47,11 @@ public class ShaderDrawer {
     public static void drawWithCustomShader(Actor actor, Batch batch,
                                             ShaderProgram shader, boolean nullMeansOriginal
     ) {
-        if (CoreEngine.TEST_LAUNCH) {
-            actor.draw(batch, ShaderDrawer.SUPER_DRAW);
-            return;
-        }
-        if (CoreEngine.isIDE())
+        // if (CoreEngine.TEST_LAUNCH) {
+        //     actor.draw(batch, ShaderDrawer.SUPER_DRAW);
+        //     return;
+        // }
+        if (Flags.isIDE())
             if (shader!=null && !shader.isCompiled())
             {
                 drawWithCustomShader(actor, batch, null , false, true);

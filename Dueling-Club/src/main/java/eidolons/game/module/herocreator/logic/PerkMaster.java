@@ -72,11 +72,10 @@ public class PerkMaster {
     }
 
     private static List<ObjType> getCustomPerks(Entity c1) {
-        List<ObjType> list = DataManager.getTypes(DC_TYPE.PERKS).stream().filter(
+        return DataManager.getTypes(DC_TYPE.PERKS).stream().filter(
                 t -> t.getProperty(PROPS.PERK_FOR_CLASSES)
                         .toLowerCase(). contains(c1.getName().toLowerCase())
         ).collect(Collectors.toList());
-        return list;
     }
 
     private static boolean isPerkProhibited(ObjType type, Unit hero) {
@@ -113,11 +112,8 @@ public class PerkMaster {
         CLASS_PERK_GROUP group =
          new EnumMaster<CLASS_PERK_GROUP>().retrieveEnumConst(CLASS_PERK_GROUP.class,
           heroClass.getProperty(PROPS.CLASS_PERK_GROUP));
-        if (substring.contains(StringMaster.getWellFormattedString(
-         group.toString()).toLowerCase())) {
-            return true;
-        }
-        return false;
+        return substring.contains(StringMaster.format(
+                group.toString()).toLowerCase());
     }
 
     public static List<Perk> getPerks(Unit hero, int tier) {

@@ -182,7 +182,6 @@ public class AreaManager {
     public static int getTotalPower(Area area) {
         Integer mod = area.getIntParam(MACRO_PARAMS.DANGER_MOD);
         if (mod == 0) {
-            mod = MINIMUM_TOTAL_POWER_MOD;
         }
 //        return EncounterMaster.getMinCreepWavePower() * mod / 100;
         return 0;
@@ -219,8 +218,7 @@ public class AreaManager {
             // higher probability for non-bosses?
             String waveName = new RandomWizard<ObjType>().getRandomListItem(
              pool).getName();
-            MacroGroup macroGroup = new MacroGroup(waveName, area);
-            return macroGroup;
+            return new MacroGroup(waveName, area);
         }
         return null;
     }

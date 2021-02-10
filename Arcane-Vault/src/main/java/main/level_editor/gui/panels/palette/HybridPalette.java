@@ -24,7 +24,7 @@ public class HybridPalette extends ClosablePanel implements TabbedPaneListener {
     private Tab lastSelected;
 
     public enum PALETTE {
-        encounters, obj, unit, custom, blocks,  //groups
+        encounters, obj, unit, decor, custom, blocks,  //groups
     }
 
     private final TablePanelX<Actor> table;
@@ -38,6 +38,9 @@ public class HybridPalette extends ClosablePanel implements TabbedPaneListener {
 
         reload();
 
+        GuiEventManager.bind(GuiEventType.LE_DESELECT, p -> {
+            palette.getTree().deselect();
+        });
         GuiEventManager.bind(GuiEventType.LE_PALETTE_RESELECT, p -> {
             palette.getTree().reselect();
         });

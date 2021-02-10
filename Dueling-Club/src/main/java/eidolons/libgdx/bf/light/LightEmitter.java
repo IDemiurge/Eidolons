@@ -2,16 +2,15 @@ package eidolons.libgdx.bf.light;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.ability.effects.common.LightEmittingEffect;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.cinematic.Cinematics;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
 import eidolons.libgdx.anims.sprite.FadeSprite;
 import eidolons.libgdx.bf.SuperActor;
@@ -19,6 +18,7 @@ import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.grid.cell.OverlayView;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.bf.overlays.OverlayingMaster;
+import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
@@ -49,19 +49,19 @@ public class LightEmitter extends SuperActor {
     private static final boolean TEST_MODE = false;
     private final float OFFSET_Y = 14;
     private final LightEmittingEffect effect;
-    private Map<DIRECTION, FadeImageContainer> rays = new XLinkedMap<>();
-    private boolean overlaying;
-    private int gridX, gridY;
+    private final Map<DIRECTION, FadeImageContainer> rays = new XLinkedMap<>();
+    private final boolean overlaying;
+    private final int gridX;
+    private final int gridY;
     private DIRECTION direction;
-    private FadeImageContainer center;
+    private final FadeImageContainer center;
     private int freeRays = 2;
-    private FloatActionLimited alphaAction = (FloatActionLimited) ActionMaster.getAction(FloatActionLimited.class);
+    private final FloatActionLimited alphaAction = (FloatActionLimited) ActionMaster.getAction(FloatActionLimited.class);
     private FadeImageContainer overlay;
-    private LIGHT_RAY type;
+    private final LIGHT_RAY type;
     private float baseAlpha;
-    private Boolean withinCamera;
+    private boolean withinCamera;
     private boolean alphaChanging;
-    private boolean off;
 
 
     public LightEmitter(BattleFieldObject obj, LightEmittingEffect effect) {
@@ -72,17 +72,12 @@ public class LightEmitter extends SuperActor {
         this.type = LIGHT_RAY.WHITE;
         this.effect = effect;
         String imagePath = StrPathBuilder.build(PathFinder.getShadeCellsPath(),
-//                "rays", type.name(),
+                //                "rays", type.name(),
                 "center" + (overlaying ? " overlaying.png"
                         : ".png"));
-        if (isSpriteCenterLight()) {
-            imagePath= StrPathBuilder.build(PathFinder.getShadeCellsPath(),
-                    "light",  "atlas.txt");
-            center = new FadeSprite(imagePath);
-        } else {
-            TextureAtlas.AtlasRegion region = ShadeLightCell.getShadowMapAtlas().findRegionFromFullPath(imagePath);
-            center = new FadeImageContainer(new Image(region));
-        }
+        imagePath = StrPathBuilder.build(PathFinder.getShadeCellsPath(),
+                "light", "atlas.txt");
+        center = new FadeSprite(imagePath);
         setSize(128, 128);
         if (isAddCenterLight()) {
             addActor(center);
@@ -189,7 +184,7 @@ public class LightEmitter extends SuperActor {
             if (overlaying) {
                 Dimension dim = OverlayingMaster.getOffsetsForOverlaying(direction,
                         64,
-                        64 );
+                        64);
                 x = (float) dim.getWidth() + 32;
                 y = (float) dim.getHeight() + 32;
             }
@@ -228,7 +223,7 @@ public class LightEmitter extends SuperActor {
     }
 
     private boolean isDynamicUpdates() {
-        return false;
+        return true;
     }
 
     @Override
@@ -240,7 +235,7 @@ public class LightEmitter extends SuperActor {
         if (effect.getCache() != null)
             if (!effect.getCache().contains(c))
                 return false;
-        for (BattleFieldObject obj : DC_Game.game.getObjectsAt(c)) {
+        for (BattleFieldObject obj : DC_Game.game.getObjectsNoOverlaying(c)) {
             if (obj.isWall()) {
                 return false;
             }
@@ -249,7 +244,6 @@ public class LightEmitter extends SuperActor {
     }
 
     public void setOff(boolean off) {
-        this.off = off;
         if (off) {
             alphaAction.setEnd(0);
         } else {
@@ -261,14 +255,14 @@ public class LightEmitter extends SuperActor {
     @Override
     public void act(float delta) {
 
-//        if (getUserObject().checkStatus(UnitEnums.STATUS.OFF)) {
-//            alphaAction.setEnd(0);
-//            off = true;
-//        } else {
-//            if (off){
-//                off=false;
-//            }
-//        }
+        //        if (getUserObject().checkStatus(UnitEnums.STATUS.OFF)) {
+        //            alphaAction.setEnd(0);
+        //            off = true;
+        //        } else {
+        //            if (off){
+        //                off=false;
+        //            }
+        //        }
 
         boolean b = alphaAction.getTime() < alphaAction.getDuration();
         boolean changed = b != alphaChanging;
@@ -280,12 +274,12 @@ public class LightEmitter extends SuperActor {
         rotate(delta);
         if (alphaChanging) {
             getColor().a = alphaAction.getValue();
-//            setAlpha(alphaAction.getValue(), changed);
+            //            setAlpha(alphaAction.getValue(), changed);
         }
     }
 
     protected boolean isIgnored() {
-        if (!InputController.cameraMoved )
+        if (!InputController.cameraMoved)
             return !withinCamera;
         withinCamera = getController().isWithinCamera(this);
         return !withinCamera;
@@ -302,27 +296,27 @@ public class LightEmitter extends SuperActor {
         String imagePath = StrPathBuilder.build(PathFinder.getShadeCellsPath(),
                 "rays", rayType.name(), direction + (overlaying ? " overlaying.png"
                         : ".png"));
-        TextureRegion texture =  ShadeLightCell.getShadowMapAtlas().findRegionFromFullPath(imagePath);
-//        if (texture.getRegionWidth() == 64) {
-//            DIRECTION d = DIRECTION.DOWN;
-//            if (direction.isDiagonal()) {
-//                d = DIRECTION.DOWN_LEFT;
-//            }
-//            if (!direction.isVertical()) {
-//                d = DIRECTION.RIGHT;
-//            }
-//            String existing = StrPathBuilder.build(PathFinder.getShadeCellsPath(),
-//                    "rays", rayType.name(),
-//                    d + (overlaying ? " overlaying.png"
-//                            : ".png"));
-//            texture = ShadeLightCell.getShadowMapAtlas().findRegionFromFullPath(imagePath);
+        TextureRegion texture = TextureCache.getOrCreateR(imagePath, false, null);
+        //        if (texture.getRegionWidth() == 64) {
+        //            DIRECTION d = DIRECTION.DOWN;
+        //            if (direction.isDiagonal()) {
+        //                d = DIRECTION.DOWN_LEFT;
+        //            }
+        //            if (!direction.isVertical()) {
+        //                d = DIRECTION.RIGHT;
+        //            }
+        //            String existing = StrPathBuilder.build(PathFinder.getShadeCellsPath(),
+        //                    "rays", rayType.name(),
+        //                    d + (overlaying ? " overlaying.png"
+        //                            : ".png"));
+        //            texture = ShadeLightCell.getShadowMapAtlas().findRegionFromFullPath(imagePath);
 
-//            if (direction.isDiagonal()) {
-//                GdxImageMaster.flip(existing, !d.isVertical(), d.isVertical(), true, imagePath);
-//            }
-//            texture = GdxImageMaster.flip(existing, d.isGrowX() == direction.isGrowX(),
-//                    d.isGrowY() == direction.isGrowY(), true, imagePath);
-//        }
+        //            if (direction.isDiagonal()) {
+        //                GdxImageMaster.flip(existing, !d.isVertical(), d.isVertical(), true, imagePath);
+        //            }
+        //            texture = GdxImageMaster.flip(existing, d.isGrowX() == direction.isGrowX(),
+        //                    d.isGrowY() == direction.isGrowY(), true, imagePath);
+        //        }
         Image image = new Image(texture);
 
         FadeImageContainer ray = new LightRay(image);
@@ -392,7 +386,7 @@ public class LightEmitter extends SuperActor {
     }
 
     public enum LIGHT_RAY {
-          FIRE, MOON, SUN, WHITE, MAGIC, SHADOW
+        FIRE, MOON, SUN, WHITE, MAGIC, SHADOW
     }
 
     @Override
@@ -419,7 +413,7 @@ public class LightEmitter extends SuperActor {
         @Override
         public boolean isAlphaFluctuationOn() {
             return true;
-//            return alphaAction.getTime() >= alphaAction.getDuration();
+            //            return alphaAction.getTime() >= alphaAction.getDuration();
         }
     }
 

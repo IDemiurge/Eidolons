@@ -11,7 +11,7 @@ public class RevealEffect extends DC_Effect {
     @Override
     public boolean applyThis() {
         Coordinates c = getRef().getTargetObj().getCoordinates();
-        for (BattleFieldObject object : getGame().getObjectsOnCoordinate(c)) {
+        for (BattleFieldObject object : getGame().getObjectsOnCoordinateNoOverlaying(c)) {
                 object.setDetectedByPlayer(true);
                 object.setDetectedByPlayer(true);
             object.setVisibilityLevel(VisionEnums.VISIBILITY_LEVEL.CLEAR_SIGHT);

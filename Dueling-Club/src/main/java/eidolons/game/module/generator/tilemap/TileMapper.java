@@ -14,7 +14,7 @@ import main.data.XLinkedMap;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -25,15 +25,12 @@ import java.util.regex.Pattern;
  */
 public class TileMapper {
     private static boolean loggingOff;
-    private TileConverter converter;
-    private LevelModel model;
-    private LevelData data;
-    private ROOM_CELL DEFAULT_CELL = ROOM_CELL.WALL;
+    private final LevelModel model;
+    private final ROOM_CELL DEFAULT_CELL = ROOM_CELL.WALL;
 
     public TileMapper(LevelModel model, LevelData data) {
         this.model = model;
-        this.data = data;
-        this.converter = new TileConverter(model, data);
+        TileConverter converter = new TileConverter(model, data);
     }
 
     public static void print(LevelModel model) {
@@ -111,7 +108,7 @@ public class TileMapper {
             try {
                 cells[point.x][point.y] = val;
             } catch (Exception e) {
-                if (!CoreEngine.isMacro())
+                if (!Flags.isMacro())
                     main.system.ExceptionMaster.printStackTrace(e);
             }
         }
@@ -144,7 +141,7 @@ public class TileMapper {
         StringBuilder columnsBuilder = new StringBuilder("\nX     ");
         for (int x = 0; x < cells.length; x++) {
             columnsBuilder.append(x + 1).append(RngXmlMaster.TILEMAP_ROW_SEPARATOR);
-            if (x < 10) columnsBuilder.append(" ");
+            if (x < 9) columnsBuilder.append(" ");
             separatorBuilder.append("___");
         }
         columns = columnsBuilder.toString();
@@ -153,7 +150,7 @@ public class TileMapper {
         for (int y = 0; y < cells[0].length; y++) {
 
             if (decorate)
-                if (y < 10)
+                if (y < 9)
                     stringBuilder1.append(y + 1).append("  | ");
                 else
                     stringBuilder1.append(y + 1).append(" | ");
@@ -279,11 +276,11 @@ public class TileMapper {
     public static String[] getLinesFromCells(String[][] cells) {
         String[] lines = new String[cells[0].length];
         for (int y = 0; y < cells[0].length; y++) {
-            String line = "";
+            StringBuilder line = new StringBuilder();
             for (int x = 0; x < cells.length; x++) {
-                line += cells[x][y];
+                line.append(cells[x][y]);
             }
-            lines[y] = line;
+            lines[y] = line.toString();
         }
         //does rotation!
 //        for (String[] column : cells) {

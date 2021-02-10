@@ -1,5 +1,7 @@
 package eidolons.game.module.dungeoncrawl.explore;
 
+import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.handlers.active.Activator;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.EUtils;
@@ -16,11 +18,13 @@ import eidolons.system.options.OptionsMaster;
 import main.elements.targeting.SelectiveTargeting;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -32,6 +36,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     protected MacroTimeMaster macroTimeMaster;
     protected ExplorationMaster master;
     protected boolean resetRequired;
+    private float blockTimer;
 
     public ExploreGameLoop(DC_Game game) {
         super(game);
@@ -57,7 +62,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                 WaitMaster.waitForInput(getOperationToWaitFor());//, 2000);
             getGdxScreen().setRealTimeGameLoop(this);
         }
-        if (!CoreEngine.isJUnit()) {
+        if (!Flags.isJUnit()) {
             //            if (realTimeThread == null)
             startRealTimeThread();
 
@@ -125,7 +130,6 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         if (playerActionQueue.isEmpty()) {
             if (!master.getAiMaster().isAiActs()) {
                 lock();
-
             }
         }
         if (resetRequired) {
@@ -142,40 +146,53 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         //             activateAction(data);
         //        }
         if (playerActionQueue.isEmpty()) {
-            game.getMovementManager().promptContinuePath(activeUnit);
+            game.getMovementManager().checkContinueMove(); //why here?
             return null;
         }
+        ActionInput playerAction = playerActionQueue.removeFirst();
 
         GuiEventManager.trigger(GuiEventType.ACTIVE_UNIT_SELECTED, getActiveUnit());
         master.getAiMaster().reset();
         master.getResetter().setResetNeeded(true);
         //recheck?!
-        ActionInput playerAction = playerActionQueue.removeLast();
-
         if (checkActionInputValid(playerAction)) {
-            game.getMovementManager().cancelAutomove(activeUnit);
-            //TODO igg demo fix
-            Eidolons.onThisOrNonGdxThread(() ->
-                    activateAction(playerAction)
-            );
-            waitForAnimations(playerAction);
-            boolean result = playerAction.getAction().getHandler().isResult();
-            master.getActionHandler().playerActionActivated(playerAction.getAction(), result);
-            master.getTimeMaster().setGuiDirtyFlag(true);
-            master.getPartyMaster().leaderActionDone(playerAction);
-
-            getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().killVisibilityResetTimer();
-
+            if (playerAction.getAction().isTurn()) {
+                playerAction(playerAction);
+            } else
+                playerAction(playerAction);
+            if (!CoreEngine.TEST_LAUNCH)
+                if (playerAction.isAuto()) {
+                    float coef=0.2f;
+                    blockTimer =coef* ExplorationActionHandler.calcBlockingTime(playerAction.getAction());
+                    lock();
+                }
+        } else {
+            return exited;
         }
         waitForPause();
         return exited;
+    }
+
+    //To-Cleanup - some old stuff here
+    protected void playerAction(ActionInput playerAction) {
+        //TODO - quick fix for firstMove in void maze..
+        getGame().getDungeonMaster().getPuzzleMaster().playerActionDone(playerAction.getAction());
+
+        activateAction(playerAction);
+        waitForAnimations(playerAction);
+        boolean result = playerAction.getAction().getHandler().isResult();
+        master.getActionHandler().playerActionActivated(playerAction.getAction(), result);
+        master.getTimeMaster().setGuiDirtyFlag(true);
+        master.getPartyMaster().leaderActionDone(playerAction); //for members to follow or so..
+        getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().killVisibilityResetTimer(); //still relevant?
+
     }
 
     protected boolean handleAi() {
         if (master.getAiMaster().isAiActs()) {
             DequeImpl<ActionInput> queue = getAiActionQueue();
             while (!queue.isEmpty()) {
-//            while (queue.size()>3) {
+                //            while (queue.size()>3) {
                 //sort? change display?
                 // active unit?
                 try {
@@ -235,37 +252,52 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         return OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.MAX_ANIM_WAIT_TIME);
     }
 
-
+    //Gdx Review
     protected boolean isMustWaitForAnim(ActionInput action) {
-        return ScreenMaster.getDungeonGrid()
+        return ScreenMaster.getGrid()
                 .getViewMap().get(activeUnit).getActions().size > 0 || AnimMaster.getInstance().isDrawingPlayer();
     }
 
     @Override
     public void queueActionInput(ActionInput actionInput) {
-        if (playerActionQueue.size() > 0)
+        if (playerActionQueue.size() > 0) {
+            main.system.auxiliary.log.LogMaster.log(1, actionInput + " won't be done; playerActionQueue=  " + playerActionQueue);
             return;
-        //        if (actionQueue.contains(actionInput))
-        //            return;
-        //        if (actionQueue.size() > 0) {
-        //            new Thread(() -> {
-        //                Loop loop = new Loop(20);
-        //                while (loop.continues()) {
-        //                    WaitMaster.WAIT(100);
-        //                    if (actionQueue.isEmpty()) {
-        //                        //check validity
-        //                        tryAddPlayerActions(actionInput);
-        //                        break;
-        //                    }
-        //                }
-        //
-        //            }, "Player ActionInput Thread").start();
-        //        } else
+        }
+        blockTimer = ExplorationActionHandler.calcBlockingTime(actionInput.getAction());
         tryAddPlayerActions(actionInput);
     }
 
     @Override
+    public void actionInputManual(ActionInput actionInput) {
+        game.getMovementManager().cancelAutomove(activeUnit);
+        actionInput(actionInput);
+    }
+
+    @Override
     public void actionInput(ActionInput actionInput) {
+        actionInput(actionInput, false);
+    }
+
+    public void actionInput(ActionInput actionInput, boolean waitForTimer) {
+        if (blockTimer > 0) { //override?
+            if (waitForTimer)
+                WaitMaster.WAIT((int) (blockTimer * 1000));
+            else {
+                notReady(actionInput.getAction());
+                return;
+            }
+        }
+        actionInput_(actionInput);
+    }
+
+    private void notReady(DC_ActiveObj action) {
+        Activator.cannotActivate_(action, "Not ready! (" +
+                NumberUtils.formatFloat(2, blockTimer) +
+                "s.)");
+    }
+
+    public void actionInput_(ActionInput actionInput) {
         if (isStopped()) {
             main.system.auxiliary.log.LogMaster.log(1, "action input in stopped ");
             return;
@@ -289,7 +321,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 
     }
 
-    protected void tryAddPlayerActions(ActionInput actionInput) {
+    public void tryAddPlayerActions(ActionInput actionInput) {
         playerActionQueue.add(actionInput);
     }
 
@@ -302,7 +334,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         if (ExplorationMaster.isExplorationOn()) //TODO refactor!
             super.loopExited();
         else {
-            SpecialLogger.getInstance().appendSpecialLog(
+            SpecialLogger.getInstance().appendAnalyticsLog(
                     SPECIAL_LOG.EXCEPTIONS, "Explore game loop failed to exit");
         }
 
@@ -319,14 +351,14 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
             if (exited)
                 return false;
             if (result != null) {
-                if (game.getBattleMaster().getOutcomeManager().checkOutcomeClear()) {
+                if (game.getMissionMaster().getOutcomeManager().checkOutcomeClear()) {
                     break;
                 }
-                    if (checkNextFloor()) {
-                        game.getBattleMaster().getOutcomeManager().next();
-                        game.getVisionMaster().refresh();
-                        break;
-                    }
+                if (checkNextFloor()) {
+                    game.getMissionMaster().getOutcomeManager().next();
+                    game.getVisionMaster().refresh();
+                    break;
+                }
                 if (result) {
                     break;
                 }
@@ -351,6 +383,13 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     public void act(float delta) {
         if (isPaused())
             return;
+        if (blockTimer > 0) {
+            blockTimer -= delta;
+            if (blockTimer <= 0) {
+                signal();
+            }
+        }
+
         master.getTimeMaster().act(delta);
         //        macroTimeMaster.setSpeed(master.getTimeMaster().getTime());
         macroTimeMaster.act(delta); //
@@ -360,4 +399,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         return master.getTimeMaster().getTime();
     }
 
+    public void clearPlayerActions() {
+        playerActionQueue.clear();
+    }
 }

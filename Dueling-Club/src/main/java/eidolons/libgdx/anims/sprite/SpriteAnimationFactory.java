@@ -1,21 +1,22 @@
 package eidolons.libgdx.anims.sprite;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxImageMaster;
-import eidolons.libgdx.anims.Assets;
-import eidolons.libgdx.anims.anim3d.AnimMaster3d;
+import eidolons.libgdx.assets.Assets;
+import eidolons.libgdx.assets.Atlases;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.Sprites;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
-import java.util.HashMap;
-import java.util.Map;
+import static main.system.auxiliary.log.LogMaster.important;
+import static main.system.auxiliary.log.LogMaster.log;
 
 /**
  * Created by JustMe on 3/6/2017.
@@ -23,27 +24,18 @@ import java.util.Map;
 public class SpriteAnimationFactory {
     public final static float defaultFrameDuration = 0.025f;
     public final static float fps30 = 0.033f;
-    static Map<String, SpriteAnimation> cache = new HashMap<>();
+    static ObjectMap<String, SpriteAnimation> cache = new ObjectMap<>(350);
     public static Array<AtlasRegion> dummySpriteRegions;
-    private static boolean singleFrameSpriteMode = false;
-    private static boolean testMode = false;
+    private static final boolean testMode = false;
 
     public static void init() {
         dummySpriteRegions = new Array();
-        if (CoreEngine.isIDE() && testMode)
+        //TODO into base-ui
+        if (Flags.isIDE() && testMode)
             dummySpriteRegions.add(new AtlasRegion(TextureCache.getOrCreate(Images.EMPTY_SKULL), 0, 0, 128, 128));
         else {
             dummySpriteRegions.add(new AtlasRegion(TextureCache.getOrCreate(Images.REALLY_EMPTY_32), 0, 0, 128, 128));
         }
-    }
-
-    //    public static SpriteAnimation getSpriteFromAtlas(String key, String atlasPath) {
-//        //TODO
-//        return getSpriteAnimation(key, true);
-//    }
-
-    private static String getSingleFrameSpritePath(String key) {
-        return SingleSpriteGenerator.getPath(key);
     }
 
 
@@ -58,9 +50,6 @@ public class SpriteAnimationFactory {
     public static SpriteAnimation getSpriteAnimation(String key, boolean useDefault, Boolean useCache_orNullIfOnlyCached) {
         return getSpriteAnimation(key, useDefault, useCache_orNullIfOnlyCached, false);
     }
-//    private static SpriteAnimation getSpriteAnimation(String key, boolean useDefault, Boolean useCache_orNullIfOnlyCached) {
-//        return getSpriteAnimation(key, useDefault, useCache_orNullIfOnlyCached, false);
-//    }
 
     public static SpriteAnimation getSpriteAnimation(String key, boolean useDefault, Boolean useCache_orNullIfOnlyCached
             , boolean ktx) {
@@ -71,9 +60,6 @@ public class SpriteAnimationFactory {
         }
         if (!Assets.checkSprite(key)) {
             return getDefaultSprite(key);
-        }
-        if (singleFrameSpriteMode) {
-            key = getSingleFrameSpritePath(key);
         }
 
         if (!key.contains(".")) {
@@ -98,38 +84,36 @@ public class SpriteAnimationFactory {
                 || texturePath.toLowerCase().endsWith(".txt")) {
             texturePath = GdxImageMaster.appendImagePath(texturePath);
 
-//            boolean ktx = Assets.isKtx(texturePath);
             if (ktx) {
                 Assets.loadedKtxAtlas(texturePath);
                 texturePath = Assets.getKtxAtlasPath(texturePath);
             }
-            TextureAtlas atlas = null;
-            try {
-                atlas = AnimMaster3d.getOrCreateAtlas(texturePath);
-
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-                main.system.auxiliary.log.LogMaster.important("CRITICAL: No atlas for path - " + key);
-                main.system.auxiliary.log.LogMaster.important("Setting Lite Mode... ");
-                CoreEngine.setLiteLaunch(true);
-//          TODO really?
-//           OptionsMaster.getGraphicsOptions().setValue(GraphicsOptions.GRAPHIC_OPTION.LITE_MODE, true);
-//                OptionsMaster.saveOptions();
-                return getDefaultSprite(key);
+            TextureAtlas atlas;
+            SpriteAnimation animation = null;
+            if (isAtlasesFromMain()) {
+                Array<AtlasRegion> regions = Atlases.getAtlasRegions(texturePath);
+                if (regions != null)
+                    if (regions.size > 0) {
+                        animation = new SpriteAnimation(fps30, true, regions);
+                    }
             }
-            if (atlas == null) {
-                main.system.auxiliary.log.LogMaster.important("CRITICAL: No atlas for path - " + key);
-                return getDefaultSprite(key);
+            if (animation == null) {
+                atlas = Atlases.getOrCreateAtlas(texturePath);
+                if (atlas == null) {
+                    important("CRITICAL: No atlas for path - " + key);
+                    return getDefaultSprite(key);
+                }
+                if (animation == null) {
+                    animation = new SpriteAnimation(fps30, false, atlas);
+                }
             }
-            SpriteAnimation a = new SpriteAnimation(fps30, false, atlas);
-            cache.put(
-                    key.toLowerCase(), a);
-            return a;
+            cache.put(                    key.toLowerCase(), animation);
+            return animation;
         } else if (!ImageManager.isImage(texturePath)) {
             if (useDefault) {
                 return getDefaultSprite(key);
             } else {
-                main.system.auxiliary.log.LogMaster.log(1, "****NO SPRITE FOUND "
+                log(1, "****NO SPRITE FOUND "
                         + texturePath);
                 return null;
             }
@@ -139,13 +123,16 @@ public class SpriteAnimationFactory {
         return a;
     }
 
+    private static boolean isAtlasesFromMain() {
+        return TextureCache.atlasesOn;
+    }
+
     public static SpriteAnimation getDefaultSprite(String key) {
-        main.system.auxiliary.log.LogMaster.important("Sprite replaced by default: " + key);
+        important("Sprite replaced by default: " + key);
         SpriteAnimation spriteAnimation = new SpriteAnimation(fps30, false, dummySpriteRegions);
         spriteAnimation.setDefault(true);
         return spriteAnimation;
     }
-
 
 
     public static SpriteAnimation getSpriteAnimation(String path,
@@ -164,41 +151,6 @@ public class SpriteAnimationFactory {
         return s;
     }
 
-    public static SpriteAnimation getSpriteAnimation(boolean singleSprite, String path
-    ) {
-        return getSpriteAnimation(true, singleSprite, path);
-    }
-
-    public static SpriteAnimation getSpriteAnimation(boolean useCache, boolean singleSprite, String path
-    ) {
-        SpriteAnimation anim = useCache ? cache.get(path.toLowerCase()) : null;
-        if (anim != null)
-            return anim;
-//        if (Showcase.isRunning())
-        try {
-            anim = new SpriteAnimation(defaultFrameDuration, false, 1, path, null, singleSprite);
-        } catch (Exception e) {
-            //TODO don't try, check!
-            main.system.auxiliary.log.LogMaster.log(1,
-                    "*********NO SPRITES FOUND getSpriteAnimation " + path);
-            return null;
-//                    TODO what should be default?
-//                     getSpriteAnimation(ImageManager.getEmptyItemIconPath(false), false);
-        }
-        cache.put(path.toLowerCase(), anim);
-        return anim;
-    }
-
-    public static SpriteAnimation getSpriteAnimation(float frameDuration, boolean looping, int loops,
-                                                     String path,
-                                                     Texture texture
-            , boolean singleSprite) {
-//        if (!ImageManager.isImage(path)) {
-//            path = ImageManager.getEmptyItemIconPath(false);
-//        }
-        return new SpriteAnimation(defaultFrameDuration, looping, loops, path, null, singleSprite);
-
-    }
 
     public static Array<AtlasRegion> getSpriteRegions(boolean backAndForth, TextureAtlas atlas) {
         Array<AtlasRegion> regions = atlas.getRegions();
@@ -219,4 +171,7 @@ public class SpriteAnimationFactory {
         cache.remove(path);
     }
 
+    public static void preload(String s) {
+        Eidolons.onGdxThread(() -> getSpriteAnimation(TextureCache.getTexturePath(s)));
+    }
 }

@@ -5,9 +5,9 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.advanced.companion.Order;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.cinematic.Cinematics;
 import eidolons.libgdx.texture.Images;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.entity.DataModel;
@@ -20,6 +20,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.LogMaster;
@@ -34,21 +35,28 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static main.content.enums.GenericEnums.*;
+import static main.content.enums.GenericEnums.DAMAGE_TYPE;
 
 public class DC_LogManager extends LogManager {
 
-
+    //EA check - use images in log more
     public static final String ALIGN_CENTER = "<center>";
     public static final String IMAGE_SEPARATOR = "[img==]";
     public static final String UNIT_TURN_PREFIX = "Active: ";
-    private int logLevel = 1;
-    private List<String> fullEntryList = new ArrayList<>();
+    private final List<String> fullEntryList = new ArrayList<>();
 
     public DC_LogManager(Game game) {
         super(game);
     }
 
+    @Override
+    public void newLogEntryNode(ENTRY_TYPE type, Object... args) {
+
+    }
+
+    @Override
+    public void doneLogEntryNode() {
+    }
     /*
      * Do I need to have information levels? What is the best way to access the
      * log and control its filtering?
@@ -56,7 +64,7 @@ public class DC_LogManager extends LogManager {
 
     public void logCounterModified(DataModel entity, String name, int modValue) {
         Integer value = entity.getCounter(name);
-        name = StringMaster.getWellFormattedString(name);
+        name = StringMaster.format(name);
         LOGGING_DETAIL_LEVEL detail = LOGGING_DETAIL_LEVEL.ESSENTIAL;
         if (!entity.isMine()) {
             if (entity instanceof BattleFieldObject) {
@@ -76,9 +84,10 @@ public class DC_LogManager extends LogManager {
 
     }
 
+
     public void logOrderFailed(Order order, Unit unit) {
         String entry = unit.getName() + " has failed to obey " + order.toString();
-        entry = StringMaster.MESSAGE_PREFIX_PROCEEDING + entry;
+        entry = Strings.MESSAGE_PREFIX_PROCEEDING + entry;
         LogMaster.log(1, entry);
     }
 
@@ -88,21 +97,21 @@ public class DC_LogManager extends LogManager {
         // UNIT_TO_PLAYER_VISION.UNKNOWN)
         // name = "A unit";
         String entry = name + " has moved to a new position at " + c.toString();
-        entry = StringMaster.MESSAGE_PREFIX_PROCEEDING + entry;
+        entry = Strings.MESSAGE_PREFIX_PROCEEDING + entry;
         LogMaster.log(1, entry);
         if (!obj.isMine())
             if (obj.getActivePlayerVisionStatus() == PLAYER_VISION.INVISIBLE) {
                 return;
             }
         if (obj == Eidolons.getMainHero()) {
-            DIRECTION relative = DirectionMaster.getRelativeDirection(Eidolons.getMainHero().getCoordinates(),
-                    Eidolons.getMainHero().getLastCoordinates());
-            int dst = Eidolons.getMainHero().getCoordinates().dst(Eidolons.getMainHero().getLastCoordinates());
+            DIRECTION relative = DirectionMaster.getRelativeDirection( Eidolons.getMainHero().getLastCoordinates()
+                    ,Eidolons.getPlayerCoordinates()                   );
+            int dst = Eidolons.getPlayerCoordinates().dst(Eidolons.getMainHero().getLastCoordinates());
             String gamelog = name + " has moved [" + relative.toString().toLowerCase() + "] "
                     +StringMaster.wrapInParenthesis(""+dst);
             log(gamelog);
         } else {
-            int dst = Eidolons.getMainHero().getCoordinates().dst(obj.getCoordinates());
+            int dst = Eidolons.getPlayerCoordinates().dst(obj.getCoordinates());
             String gamelog = name + " has moved to a new position at [" + dst + "] distance";
             log(gamelog);
         }
@@ -153,8 +162,8 @@ public class DC_LogManager extends LogManager {
         });
         text.delete(text.length() - 2, text.length());
         String message = text.toString();
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.COMBAT, message);
+        SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.MAIN, message);
+        SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.COMBAT, message);
         log(message);
     }
 
@@ -166,8 +175,8 @@ public class DC_LogManager extends LogManager {
         });
         text.delete(text.length() - 2, text.length());
         String message = text.toString();
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.COMBAT, message);
+        SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.MAIN, message);
+        SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.COMBAT, message);
         log(message);
     }
 
@@ -270,8 +279,8 @@ public class DC_LogManager extends LogManager {
 
     public boolean log(LOGGING_DETAIL_LEVEL log, String entry) {
 //    TODO     fullEntryList.add(entry);
-        main.system.auxiliary.log.LogMaster.log(0, log + " Game log: " + entry);
         int i = EnumMaster.getEnumConstIndex(LOGGING_DETAIL_LEVEL.class, log);
+        int logLevel = 1;
         if (logLevel < i)
             return false;
 
@@ -279,21 +288,6 @@ public class DC_LogManager extends LogManager {
     }
 
 
-    public void logHide(Unit source, BattleFieldObject object) {
-        LOGGING_DETAIL_LEVEL level = LOGGING_DETAIL_LEVEL.FULL;
-        if (source.isPlayerCharacter()) {
-            level = LOGGING_DETAIL_LEVEL.ESSENTIAL;
-        }
-        log(level, source + " loses sight of " + object.getName());
-    }
-
-    public void logReveal(Unit source, BattleFieldObject object) {
-        LOGGING_DETAIL_LEVEL level = LOGGING_DETAIL_LEVEL.FULL;
-        if (source.isPlayerCharacter()) {
-            level = LOGGING_DETAIL_LEVEL.ESSENTIAL;
-        }
-        log(level, source + " spots " + object.getName());
-    }
 
 
 }

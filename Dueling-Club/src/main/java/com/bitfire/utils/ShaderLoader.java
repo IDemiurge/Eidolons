@@ -43,8 +43,7 @@ public final class ShaderLoader {
         String vpSrc = Gdx.files.internal(BasePath + vertexFileName + ".vertex").readString();
         String fpSrc = Gdx.files.internal(BasePath + fragmentFileName + ".fragment").readString();
 
-        ShaderProgram program = ShaderLoader.fromString(vpSrc, fpSrc, vertexFileName, fragmentFileName, defines);
-        return program;
+        return ShaderLoader.fromString(vpSrc, fpSrc, vertexFileName, fragmentFileName, defines);
     }
 
     public static ShaderProgram fromString(String vertex, String fragment, String vertexName, String fragmentName) {

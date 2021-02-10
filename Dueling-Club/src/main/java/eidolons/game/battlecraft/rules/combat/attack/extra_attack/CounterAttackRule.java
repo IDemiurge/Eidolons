@@ -2,8 +2,8 @@ package eidolons.game.battlecraft.rules.combat.attack.extra_attack;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
@@ -50,7 +50,7 @@ public class CounterAttackRule {
         if (!attack.isRanged())
             if (attack.getAttackedUnit() != null)
                 if (!attack.isCounter() &&
-                        (RuleKeeper.isRuleTestOn(RULE.COUNTER_ATTACK) ||
+                        (RuleKeeper.isRuleTestOn(RuleEnums.RULE.COUNTER_ATTACK) ||
                                 (attack.isCanCounter() &&
                                         //           attack.getAttackedUnit().
                                         canCounter((Unit) attack.getAttackedUnit(), attack.getAction())))

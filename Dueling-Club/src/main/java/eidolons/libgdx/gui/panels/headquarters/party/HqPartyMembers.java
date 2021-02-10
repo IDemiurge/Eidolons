@@ -20,7 +20,7 @@ public class HqPartyMembers extends HqPartyElement {
     public HqPartyMembers(HqPanel panel, boolean vertical) {
         this.panel = panel;
         this.vertical = vertical;
-        bg = new Image(TextureCache.getOrCreate(Images.PARTY_BACKGROUND_COLS));
+        bg = new Image(TextureCache.getOrCreateR(Images.PARTY_BACKGROUND_COLS));
         setFixedMinSize(true);
     }
 

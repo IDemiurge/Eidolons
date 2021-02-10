@@ -111,8 +111,7 @@ public class IntegrityRule {
                     break;
             }
         }
-        int bonus = DC_Formulas.calculateFormula(formula, amount);
-        return bonus;
+        return DC_Formulas.calculateFormula(formula, amount);
     }
 
     public static void resetIntegrity(Unit hero) {
@@ -130,8 +129,7 @@ public class IntegrityRule {
         PARAMETER identity_param = DC_ContentValsManager.getIdentityParamForPrinciple(principle);
         Integer degree = hero.getIntParam(identity_param);
         Integer amount = hero.getIntParam(alignment_param);
-        int product = getIntegrityProduct(degree, amount);
-        return product;
+        return getIntegrityProduct(degree, amount);
     }
 
     private static int getIntegrityProduct(Integer degree, Integer amount) {
@@ -332,14 +330,12 @@ public class IntegrityRule {
 
     public static ALIGNMENT_LEVEL getAlignmentLevel(PRINCIPLES principle, Entity hero) {
         Integer amount = hero.getIntParam(DC_ContentValsManager.getAlignmentForPrinciple(principle));
-        ALIGNMENT_LEVEL alignmentLevel = getAlignmentLevel(amount);
-        return alignmentLevel;
+        return getAlignmentLevel(amount);
     }
 
     public static IDENTITY_LEVEL getIdentityLevel(PRINCIPLES principle, Entity hero) {
         Integer amount = hero.getIntParam(DC_ContentValsManager.getAlignmentForPrinciple(principle));
-        IDENTITY_LEVEL identityLevel = getIdentityLevel(amount);
-        return identityLevel;
+        return getIdentityLevel(amount);
     }
 
     public static VALUE_LEVEL getLevel(Integer amount, VALUE_LEVEL[] levels) {

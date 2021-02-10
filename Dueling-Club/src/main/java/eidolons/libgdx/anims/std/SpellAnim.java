@@ -8,7 +8,7 @@ import eidolons.entity.active.Spell;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.libgdx.anims.AnimData;
-import eidolons.libgdx.anims.construct.AnimConstructor;
+import eidolons.libgdx.anims.AnimEnums;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
@@ -41,7 +41,7 @@ public class SpellAnim extends ActionAnim {
 
     SPELL_ANIMS template;
 
-    public SpellAnim(Entity active, AnimData params, SPELL_ANIMS template, AnimConstructor.ANIM_PART part) {
+    public SpellAnim(Entity active, AnimData params, SPELL_ANIMS template, AnimEnums.ANIM_PART part) {
         super(active, params, part);
         this.template = template;
     }
@@ -49,7 +49,7 @@ public class SpellAnim extends ActionAnim {
     @Override
     protected void initEmitters() {
         //TODO use template!
-//        if (!ListMaster.isNotEmpty(emitterList) || CoreEngine.isActiveTestMode())
+        //        if (!ListMaster.isNotEmpty(emitterList) || CoreEngine.isActiveTestMode())
         {
             String vfx = data.getValue(AnimData.ANIM_VALUES.PARTICLE_EFFECTS);
             if (StringMaster.isEmpty(vfx) || isVfxOverridden(getActive(), getPart())) {
@@ -57,7 +57,7 @@ public class SpellAnim extends ActionAnim {
                         getOverriddenVfx(getActive(), getPart());
                 main.system.auxiliary.log.LogMaster.verbose(getActive() + " gets an OVERRIDE VFX: " + vfx);
             }
-            setEmitterList(SpellVfxPool.getEmitters(vfx));
+            setEmitterList(SpellVfxPool.getEmitters(vfx, 1));
         }
     }
 
@@ -65,12 +65,12 @@ public class SpellAnim extends ActionAnim {
     protected void resetSprites() {
         super.resetSprites();
         if (!emitterList.isEmpty()) {
-            sprites.removeIf(sprite -> SpriteAnimationFactory.isDefault(sprite));
+            sprites.removeIf(SpriteAnimationFactory::isDefault);
         }
 
     }
 
-    public static final String getOverriddenVfx(DC_ActiveObj active, AnimConstructor.ANIM_PART part) {
+    public static String getOverriddenVfx(DC_ActiveObj active, AnimEnums.ANIM_PART part) {
         //could be a bit randomized too!
         // enum for vfx after all?
 
@@ -100,7 +100,7 @@ public class SpellAnim extends ActionAnim {
         return data;
     }
 
-    private static String getForGroup(SpellEnums.SPELL_GROUP group, AnimConstructor.ANIM_PART part) {
+    private static String getForGroup(SpellEnums.SPELL_GROUP group, AnimEnums.ANIM_PART part) {
         String path = StrPathBuilder.build(part.getPartPath(), group, part.getPartPath());
         if (FileManager.isFile(PathFinder.getRootPath() + PathFinder.getSpellVfxPath() + path)) {
             return path;
@@ -116,7 +116,7 @@ public class SpellAnim extends ActionAnim {
         }
         switch (group) {
             case FIRE:
-                if (part == AnimConstructor.ANIM_PART.CAST) {
+                if (part == AnimEnums.ANIM_PART.CAST) {
                     int i = RandomWizard.getRandomInt(4) + 1;
                     if (i == 1) {
                         return "cast/destruction center5";
@@ -124,14 +124,14 @@ public class SpellAnim extends ActionAnim {
                     return "cast/destruction center5";
                 }
 
-                if (part == AnimConstructor.ANIM_PART.AFTEREFFECT) {
+                if (part == AnimEnums.ANIM_PART.AFTEREFFECT) {
                     if (RandomWizard.chance(66))
                         return "flow/fire flow";
                     return "flow/fire flow3";
                 }
                 break;
             case SAVAGE:
-                if (part == AnimConstructor.ANIM_PART.CAST) {
+                if (part == AnimEnums.ANIM_PART.CAST) {
                     int i = RandomWizard.getRandomInt(2) + 1;
                     if (i == 1) {
                         return "cast/savage center";
@@ -214,7 +214,7 @@ public class SpellAnim extends ActionAnim {
                 }
                 break;
             case WITCHERY:
-                if (part == AnimConstructor.ANIM_PART.CAST) {
+                if (part == AnimEnums.ANIM_PART.CAST) {
                     int i = RandomWizard.getRandomInt(2) + 1;
                     if (i == 1) {
                         return "cast/witchery center";
@@ -223,16 +223,16 @@ public class SpellAnim extends ActionAnim {
                 }
                 break;
             case SHADOW:
-//                "breath"
+                //                "breath"
 
-                if (part == AnimConstructor.ANIM_PART.MISSILE) {
-//                    if (RandomWizard.chance(66))
-//                        return "missile/shadow missile3";
-//                    if (RandomWizard.chance(66))
-//                        return "missile/dark writhe";
-//                    return "missile/shadow missile2";
+                if (part == AnimEnums.ANIM_PART.MISSILE) {
+                    //                    if (RandomWizard.chance(66))
+                    //                        return "missile/shadow missile3";
+                    //                    if (RandomWizard.chance(66))
+                    //                        return "missile/dark writhe";
+                    //                    return "missile/shadow missile2";
                 }
-                if (part == AnimConstructor.ANIM_PART.CAST) {
+                if (part == AnimEnums.ANIM_PART.CAST) {
                     int i = RandomWizard.getRandomInt(2) + 1;
                     if (i == 1) {
                         return "cast/shadow center";
@@ -241,7 +241,7 @@ public class SpellAnim extends ActionAnim {
                 }
                 break;
             case PSYCHIC:
-                if (part == AnimConstructor.ANIM_PART.CAST) {
+                if (part == AnimEnums.ANIM_PART.CAST) {
                     int i = RandomWizard.getRandomInt(6) + 1;
                     if (i == 1) {
                         return "cast/witchery circle slow";
@@ -345,7 +345,7 @@ public class SpellAnim extends ActionAnim {
         return null;
     }
 
-    private static String getForName(AnimConstructor.ANIM_PART part, String name) {
+    private static String getForName(AnimEnums.ANIM_PART part, String name) {
         switch (name) {
             case "Burst of Rage":
             case "Shadow Fury":
@@ -353,7 +353,7 @@ public class SpellAnim extends ActionAnim {
                     case CAST:
                         return "shape/nova waves";
                     case PRECAST:
-//                        return getCircleVfx(group);
+                        //                        return getCircleVfx(group);
                     case MISSILE:
                         return "";
                 }
@@ -365,7 +365,7 @@ public class SpellAnim extends ActionAnim {
         return null;
     }
 
-    private boolean isVfxOverridden(DC_ActiveObj active, AnimConstructor.ANIM_PART part) {
+    private boolean isVfxOverridden(DC_ActiveObj active, AnimEnums.ANIM_PART part) {
         return getOverriddenVfx(active, part) != null;
     }
 
@@ -377,34 +377,34 @@ public class SpellAnim extends ActionAnim {
         for (SpellVfx e : getEmitterList()) {
             for (ParticleEmitter emitter : e.getEffect().getEmitters()) {
                 if (e.getSpeed() == 1f)
-                    e.setSpeed(MathUtils.lerp(getDefaultVfxSpeed(part), AnimMaster.getAnimationSpeedFactor(),
+                    e.setSpeed(MathUtils.lerp(getDefaultVfxSpeed(part), AnimMaster.speedMod(),
                             0.3f));
                 if (max < emitter.duration / e.getSpeed())
                     max = emitter.duration / e.getSpeed();
 
             }
         }
-//        for (SpellVfx e : getEmitterList()) {
-//            for (ParticleEmitter emitter : e.getEffect().getEmitters()) {
-//                if (max < emitter.duration)
-//                    max = emitter.duration;
-//                e.setSpeed(AnimMaster.getAnimationSpeedFactor());
-//            }
-//        }
+        //        for (SpellVfx e : getEmitterList()) {
+        //            for (ParticleEmitter emitter : e.getEffect().getEmitters()) {
+        //                if (max < emitter.duration)
+        //                    max = emitter.duration;
+        //                e.setSpeed(AnimMaster.getAnimationSpeedFactor());
+        //            }
+        //        }
         for (SpriteAnimation e : getSprites()) {
             if (max < e.getFrameDuration() * e.getFrameNumber())
                 max = e.getFrameDuration() * e.getFrameNumber();
-//            e.setSpeed(AnimMaster.getAnimationSpeedFactor());
+            //            e.setSpeed(AnimMaster.getAnimationSpeedFactor());
         }
 
         if (getActive() instanceof Spell) {
             if (((Spell) getActive()).isChannelingNow()) {
-                main.system.auxiliary.log.LogMaster.dev(" ANIM FOR ChannelingNow " + getActive());
+                main.system.auxiliary.log.LogMaster.devLog(" ANIM FOR ChannelingNow " + getActive());
                 switch (getPart()) {
                     case CAST:
-                        main.system.auxiliary.log.LogMaster.dev(" ANIM FOR ChannelingNow duration =" + max);
+                        main.system.auxiliary.log.LogMaster.devLog(" ANIM FOR ChannelingNow duration =" + max);
                         if (getActive().getOwnerUnit().isPlayerCharacter()) {
-                        getEmitterList().forEach(e -> e.getEffect().setAlpha(0.74f));
+                            getEmitterList().forEach(e -> e.getEffect().setAlpha(0.74f));
                         }
                         setDuration(max);
                         return;
@@ -413,7 +413,7 @@ public class SpellAnim extends ActionAnim {
             setDuration(0);
         }
 
-        main.system.auxiliary.log.LogMaster.dev("Spell anim duration set: " + max);
+        main.system.auxiliary.log.LogMaster.devLog("Spell anim duration set: " + max);
         setDuration(
                 Math.min(DEFAULT_MAX_ANIM_DURATION, max));
     }
@@ -434,10 +434,10 @@ public class SpellAnim extends ActionAnim {
         return reslt;
     }
 
-    private float getDefaultVfxSpeed(AnimConstructor.ANIM_PART part) {
+    private float getDefaultVfxSpeed(AnimEnums.ANIM_PART part) {
         switch (part) {
-//            case CAST:
-//                return 1.18f;
+            //            case CAST:
+            //                return 1.18f;
         }
         return 1f;
     }
@@ -453,11 +453,17 @@ public class SpellAnim extends ActionAnim {
     }
 
     public enum SPELL_ANIMS {
+        STAR(activeObj -> 4),
+        CROSS(activeObj -> 4),
         RAY(activeObj -> 1),
         RAY_AUTO(activeObj -> 1),
         BLAST(active -> (active.getIntParam(G_PARAMS.RADIUS) == 0) ? 1 :
                 active.getRef().getTargetObj().getCoordinates().
                         getAdjacentCoordinates().size()),
+        RECTANGLE(active -> active.getIntParam(G_PARAMS.RADIUS)),
+        WAVE(active -> active.getIntParam(G_PARAMS.RADIUS)),
+        RING(activeObj -> 8),
+        NOVA(activeObj -> activeObj.getOwnerUnit().getCoordinates().getAdjacentCoordinates().size()),
         SPRAY(300, 0, active -> {
             Set<Coordinates> set = active.getOwnerUnit().getCoordinates().
                     getAdjacentCoordinates();
@@ -465,19 +471,12 @@ public class SpellAnim extends ActionAnim {
                     FacingMaster.getSingleFacing(active.getOwnerUnit().getFacing(),
                             active.getOwnerUnit().getCoordinates(), coordinates) != UnitEnums.FACING_SINGLE.IN_FRONT);
             return set.size();
-        }
-        ) {
-            @Override
+        }) {
             public int getAdditionalDistance(DC_ActiveObj active) {
-                if (active.getOwnerUnit().getFacing().isVertical()) {
-                    return GridMaster.CELL_H;
-                }
+                if (active.getOwnerUnit().getFacing().isVertical()) return GridMaster.CELL_H;
                 return GridMaster.CELL_W;
             }
         },
-        WAVE(active -> active.getIntParam(G_PARAMS.RADIUS)),
-        RING(activeObj -> 8),
-        NOVA(activeObj -> activeObj.getOwnerUnit().getCoordinates().getAdjacentCoordinates().size()),
         ;
 
         public int speed;

@@ -48,7 +48,7 @@ public class LevelZone extends LevelStruct<LevelBlock, LevelBlock> {
     }
 
     @Override
-    protected Module getParent() {
+    public Module getParent() {
         return getModule();
     }
 

@@ -24,7 +24,7 @@ public class DC_HeroManager extends HeroManager {
 
     @Override
     protected int addJewelryItem(Unit hero, Entity type) {
-        DC_HeroItemObj item = null;
+        DC_HeroItemObj item;
         if (type instanceof DC_JewelryObj) {
             item = (DC_HeroItemObj) type;
         } else {

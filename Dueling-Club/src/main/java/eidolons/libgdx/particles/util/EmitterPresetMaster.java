@@ -7,10 +7,7 @@ import eidolons.libgdx.particles.EmitterPools;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
 import main.system.PathUtils;
-import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.NumberUtils;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -33,9 +30,8 @@ public class EmitterPresetMaster {
     public static String value_separator = ": ";
     private static EmitterPresetMaster instance;
     private static boolean spriteEmitterTest;
-    private static Map<EmitterActor, String> mods = new HashMap<>();
-    private Map<String, String> map = new HashMap<>();
-    private String lowHighMinMax = "lowMin lowMax highMin highMax";
+    private static final Map<EmitterActor, String> mods = new HashMap<>();
+    private final Map<String, String> map = new HashMap<>();
 
     public EmitterPresetMaster() {
         instance = this;
@@ -171,9 +167,8 @@ public class EmitterPresetMaster {
 
         if (spriteEmitterTest) {
             //            effect.getEmitters().forEach(e -> {
-            String randomPath = FileManager.getRandomFile(PathFinder.getSpritesPathFull() +
+            return FileManager.getRandomFile(PathFinder.getSpritesPathFull() +
                     "impact/").getPath();
-            return randomPath;
             //        ((Emitter) e).offset(20, "scale");
             //        e.setImagePath(randomPath);
             //        e.setPremultipliedAlpha(false);
@@ -192,7 +187,7 @@ public class EmitterPresetMaster {
     }
 
     public String getImagePath(String path) {
-        String imgPath = null;
+        String imgPath;
         //        if (imagePathMap != null) {
         //            imgPath = imagePathMap.getVar(path.toLowerCase());
         //            if (imgPath != null)
@@ -202,8 +197,8 @@ public class EmitterPresetMaster {
         if (StringMaster.isEmpty(imgPath)) {
             imgPath = getValueFromGroup(path, EMITTER_VALUE_GROUP.Image_Paths, null);
         }
-        if (imgPath.contains(StringMaster.NEW_LINE)) {
-            imgPath = imgPath.split(StringMaster.NEW_LINE)[0];
+        if (imgPath.contains(Strings.NEW_LINE)) {
+            imgPath = imgPath.split(Strings.NEW_LINE)[0];
         }
         //        if (imgPath.contains("\n")) {
         //            imgPath = imgPath.split("\n")[0];
@@ -288,11 +283,11 @@ public class EmitterPresetMaster {
         String text = getGroupText(data, group);
         List<Pair<String, String>> entryList = getGroupEntries(text);
         for (Pair<String, String> p : entryList) {
+            String lowHighMinMax = "lowMin lowMax highMin highMax";
             if (lowHighMinMax.contains(p.getKey())) {
                 double newValue = NumberUtils.getDouble(p.getValue()) + offset;
                 text = text.replace(p.getKey() + value_separator + p.getValue(),
-                        p.getKey() + value_separator + String.valueOf(
-                                newValue));
+                        p.getKey() + value_separator + newValue);
             }
         }
         data = data.replace(getGroupText(data, group), text);
@@ -346,8 +341,7 @@ public class EmitterPresetMaster {
         }
         if (valuePart == null)
             return null;
-        String text = valuePart.split("- ")[0];
-        return text;
+        return valuePart.split("- ")[0];
     }
 
     public String getModifiedData(String data, EMITTER_VALUE_GROUP image_path, String newVal) {
@@ -422,10 +416,10 @@ public class EmitterPresetMaster {
         PremultipliedAlpha,
         Percentage_Of_Lagging_Particles, Image_Paths, Options;
         private boolean container;
-        private String name;
+        private final String name;
 
         EMITTER_VALUE_GROUP() {
-            name = StringMaster.getWellFormattedString(name());
+            name = StringMaster.format(name());
         }
 
         EMITTER_VALUE_GROUP(Boolean container) {

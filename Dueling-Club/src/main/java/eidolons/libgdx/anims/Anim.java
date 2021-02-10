@@ -7,12 +7,12 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Cinematics;
+import eidolons.game.module.cinematic.Cinematics;
 import eidolons.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import eidolons.libgdx.anims.ANIM_MODS.CONTINUOUS_ANIM_MODS;
 import eidolons.libgdx.anims.ANIM_MODS.OBJ_ANIMS;
 import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
-import eidolons.libgdx.anims.construct.AnimConstructor.ANIM_PART;
+import eidolons.libgdx.anims.AnimEnums.ANIM_PART;
 import eidolons.libgdx.anims.main.AnimMaster;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
@@ -23,11 +23,9 @@ import eidolons.libgdx.particles.EmitterPools;
 import eidolons.libgdx.particles.spell.SpellMultiplicator;
 import eidolons.libgdx.particles.spell.SpellVfx;
 import eidolons.libgdx.particles.spell.SpellVfxPool;
-import eidolons.libgdx.texture.TextureCache;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
-import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.EventCallback;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
@@ -35,12 +33,12 @@ import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.images.ImageManager;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.*;
-import java.util.function.Supplier;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static main.system.auxiliary.log.LogMaster.ANIM_DEBUG;
 import static main.system.auxiliary.log.LogMaster.log;
@@ -60,7 +58,6 @@ public class Anim extends Group implements Animation {
     protected List<SpriteAnimation> sprites;
     protected int lightEmission; // its own lightmap?
     protected Color color;
-    protected Supplier<Texture> textureSupplier;
     protected float time = 0;
     protected float duration = 0;
     protected float offsetX = 0;
@@ -112,7 +109,6 @@ public class Anim extends Group implements Animation {
             ref = new Ref();
         } else
             this.ref = active.getRef().getCopy();
-        textureSupplier = () -> getTexture();
         reset();
         if (data.getIntValue(ANIM_VALUES.FRAME_DURATION) > 0) {
             frameDuration = data.getIntValue(ANIM_VALUES.FRAME_DURATION) / 100f;
@@ -173,7 +169,7 @@ public class Anim extends Group implements Animation {
     }
 
     public boolean tryDraw(Batch batch) {
-        if (CoreEngine.isFootageMode())
+        if (Flags.isFootageMode())
             return false;
         return draw(batch);
     }
@@ -220,7 +216,7 @@ public class Anim extends Group implements Animation {
         if (isDrawTexture() && getActions().size == 0) {
             draw(batch, alpha);
         }
-
+        if (sprites != null)
         sprites.forEach(s -> {
             s.draw(batch);
         });
@@ -304,39 +300,11 @@ public class Anim extends Group implements Animation {
             getX();
         }
         super.draw(batch, parentAlpha);
-
-        if (!isDrawTexture()) {
-            return;
-        }
-//        Texture currentFrame = textureSupplier.getVar();
-//        if (currentFrame != null) {
-//            setWidth(currentFrame.getWidth());
-//            setHeight(currentFrame.getHeight());
-//        }
-        Texture texture = getTexture();
-
-        if (texture == null) {
-            return;
-        }
-        if (isDone() || !isRunning()) {
-            return;
-        }
-        Color color = batch.getColor();
-        batch.setColor(new Color(1, 1, 1, 1));
-        float w = Math.min(64, this.getWidth());
-        float h = Math.min(64, this.getHeight());
-        batch.draw((texture), this.getX(), getY(), this.getOriginX(),
-                this.getOriginY(), w, h, this.getScaleX(), this.getScaleY(),
-                this.getRotation(), 0, 0,
-                texture.getWidth(), texture.getHeight(), flipX, flipY);
-
-        batch.setColor(color);
     }
 
     @Override
     public void reset() {
         time = 0;
-        //        time = -delay; TODO
         setOffsetX(0);
         setOffsetY(0);
         alpha = 1f;
@@ -347,7 +315,6 @@ public class Anim extends Group implements Animation {
     }
 
     protected void resetSprites() {
-        //TODO
         if (sprites == null) {
             sprites = new ArrayList<>();
         } else {
@@ -362,9 +329,9 @@ public class Anim extends Group implements Animation {
     }
 
     protected void initEmitters() {
-        if (emitterList == null) {
+        if (emitterList == null || emitterList .isEmpty()) {
             if (data.getValue(ANIM_VALUES.PARTICLE_EFFECTS) != null) {
-                setEmitterList(SpellVfxPool.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS)));
+                setEmitterList(SpellVfxPool.getEmitters(data.getValue(ANIM_VALUES.PARTICLE_EFFECTS), 1));
             }
         }
     }
@@ -404,7 +371,7 @@ public class Anim extends Group implements Animation {
     }
 
     private boolean isContinuous(ANIM_PART part) {
-        return part==ANIM_PART.MISSILE;
+        return part== AnimEnums.ANIM_PART.MISSILE;
     }
 
     protected void initDuration() {
@@ -471,30 +438,7 @@ public class Anim extends Group implements Animation {
     //        setDuration(getOrigin().dst(getDestination())/new Vector2(getSpeedX(), getSpeedY()).len());
 
     protected boolean isSpeedSupported() {
-        return part == ANIM_PART.MISSILE;
-    }
-
-    public String getTexturePath() {
-        if (active == null || Cinematics.ON)
-            return "";
-        return active.getImagePath();
-    }
-
-    protected Texture getTexture() {
-        if (texture == null) {
-            if (ImageManager.isImage(getTexturePath())) {
-                texture = TextureCache.getOrCreateNonEmpty(getTexturePath());
-            } else {
-                texture = TextureCache.getOrCreateNonEmpty(getDefaultTexturePath());
-            }
-        }
-        return texture;
-
-    }
-
-    protected String getDefaultTexturePath() {
-        return
-                VISUALS.QUESTION.getImgPath();
+        return part == AnimEnums.ANIM_PART.MISSILE;
     }
 
     @Override
@@ -546,10 +490,7 @@ public class Anim extends Group implements Animation {
     }
 
     protected boolean isDrawTexture() {
-        if (Cinematics.ON) {
-            return false;
-        }
-        return true;
+        return !Cinematics.ON;
     }
 
     public Float getSpeedX() {
@@ -596,7 +537,7 @@ public class Anim extends Group implements Animation {
             e.getEffect().dispose();
 
         });
-        sprites.forEach(s -> s.dispose());
+        sprites.forEach(SpriteAnimation::dispose);
     }
 
     public void initPosition() {
@@ -624,11 +565,18 @@ public class Anim extends Group implements Animation {
     }
 
     public Coordinates getOriginCoordinates() {
-
         return getRef().getSourceObj().getCoordinates();
 
     }
 
+    public void setOrigin(Vector2 origin) {
+        this.origin = origin;
+    }
+
+    public void setOrigin(Coordinates origin) {
+        this.origin = GridMaster
+                .getCenteredPos(origin);
+    }
     public Coordinates getDestinationCoordinates() {
         if (forcedDestination != null) {
             return forcedDestination;
@@ -786,14 +734,6 @@ public class Anim extends Group implements Animation {
         this.sprites = sprites;
     }
 
-    public Supplier<Texture> getTextureSupplier() {
-        return textureSupplier;
-    }
-
-    public void setTextureSupplier(Supplier<Texture> textureSupplier) {
-        this.textureSupplier = textureSupplier;
-    }
-
     @Override
     public float getTime() {
         return time;
@@ -804,7 +744,7 @@ public class Anim extends Group implements Animation {
     }
 
     public void setDuration(float duration) {
-        float mod = 1 / (AnimMaster.getAnimationSpeedFactor());
+        float mod = 1 / (AnimMaster.speedMod());
         if (mod > 0)
             this.duration = duration * mod;
         else {
@@ -817,7 +757,7 @@ public class Anim extends Group implements Animation {
             pixelsPerSecond = data.getIntValue(ANIM_VALUES.MISSILE_SPEED);
         } else
             pixelsPerSecond = getDefaultSpeed();
-        float mod = new Float(AnimMaster.getAnimationSpeedFactor());
+        float mod = AnimMaster.speedMod();
         if (mod > 0)
             return pixelsPerSecond * mod;
         return pixelsPerSecond;

@@ -13,9 +13,9 @@ import main.entity.Ref;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.Refactor;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster.CONDITION_TEMPLATES;
-import main.system.util.Refactor;
 
 import java.util.List;
 
@@ -26,10 +26,7 @@ public class ScriptParser {
     public static final boolean TEST_MODE = false;//CoreEngine.isLiteLaunch() ;
 
     public static Conditions parseConditions(String conditionPart) {
-        Conditions c = DC_ConditionMaster.toConditions(conditionPart);
-        if (c != null)
-            return c;
-        return null;
+        return DC_ConditionMaster.toConditions(conditionPart);
     }
 
     public static STANDARD_EVENT_TYPE getEventByShortcut(String text) {
@@ -154,7 +151,7 @@ public class ScriptParser {
         STANDARD_EVENT_TYPE event_type = parseEvent(processedPart);
         script = StringMaster.cropFirstSegment(script, ScriptSyntax.PART_SEPARATOR);
         Conditions conditions = new Conditions();
-        Condition defaultCondition = null;
+        Condition defaultCondition;
         defaultCondition = getDefaultCondition(event_type, VariableManager.getVars(processedPart));
         if (defaultCondition != null) {
             defaultCondition.setXml(XML_Converter.wrap("ScriptedCondition",
@@ -187,7 +184,7 @@ public class ScriptParser {
 
         boolean isRemove = true;
 //        if (contains("cyclic"))remove = false;
-        Ability abilities = null;
+        Ability abilities;
         Ref ref = new Ref(game); // TODO Global
         script = StringMaster.getLastPart(script, ScriptSyntax.PART_SEPARATOR);
         String funcPart = VariableManager.removeVarPart(script);

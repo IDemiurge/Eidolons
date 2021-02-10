@@ -9,13 +9,14 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import eidolons.ability.effects.common.LightEmittingEffect;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
-import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
 import eidolons.libgdx.GdxColorMaster;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.sub.GridElement;
@@ -29,7 +30,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.math.PositionMaster;
+import main.system.launch.CoreEngine;
 
 import java.util.*;
 
@@ -42,12 +43,12 @@ public class ShadowMap extends GroupX implements GridElement {
 
     protected int cols;
     protected int rows;
-    private int x1, x2, y1, y2;
+    private int x1,  y1 ;
 
     private static final Color DEFAULT_COLOR = new Color(1, 0.9f, 0.7f, 1);
     private static boolean on = true;
-    private GridPanel grid;
-    private Map<SHADE_CELL, ShadeLightCell[][]> cells = new LinkedHashMap<>();
+    private final GridPanel grid;
+    private final Map<SHADE_CELL, ShadeLightCell[][]> cells = new LinkedHashMap<>();
     private List<LightEmitter>[][] emitters;
 
     public ShadowMap(GridPanel grid) {
@@ -75,23 +76,30 @@ public class ShadowMap extends GroupX implements GridElement {
         return 0.8f;
     }
 
-    public static Color getLightColor(BattleFieldObject userObject) {
+    public static Color getLightColor(Object userObject) {
+        if (userObject instanceof DC_Obj) {
+            DC_Obj obj = (DC_Obj) userObject;
+            CONTENT_CONSTS.COLOR_THEME colorTheme = null;
+            if (userObject != null && !obj.getProperty
+                    (PROPS.COLOR_THEME).isEmpty()) {
+                colorTheme = new EnumMaster<CONTENT_CONSTS.COLOR_THEME>().
+                        retrieveEnumConst(CONTENT_CONSTS.COLOR_THEME.class, obj.getProperty
+                                (PROPS.COLOR_THEME, true));
+            }
 
-        CONTENT_CONSTS.COLOR_THEME colorTheme = null;
-        if (userObject != null) {
-            colorTheme = new EnumMaster<CONTENT_CONSTS.COLOR_THEME>().
-                    retrieveEnumConst(CONTENT_CONSTS.COLOR_THEME.class, userObject.getProperty
-                            (PROPS.COLOR_THEME, true));
-        }
-        if (colorTheme == null) {
-            Dungeon obj = Eidolons.game.getDungeon();
-//            colorTheme = obj.getColorTheme();
-        }
+            if (colorTheme == null) {
+                LevelStruct lowestStruct = obj.getGame().getDungeonMaster().getStructMaster().
+                        getLowestStruct(obj.getCoordinates());
+                colorTheme =
+                        lowestStruct.getColorTheme();
 
-        Color c = null;
-        if (colorTheme != null)
-            c = GdxColorMaster.getColorForTheme(colorTheme);
-        if (c != null) return c;
+            }
+
+            Color c = null;
+            if (colorTheme != null)
+                c = GdxColorMaster.getColorForTheme(colorTheme);
+            if (c != null) return c;
+        }
         return DEFAULT_COLOR;
     }
 
@@ -100,61 +108,85 @@ public class ShadowMap extends GroupX implements GridElement {
         if (!on)
             return;
         setTransform(false);
-        super.draw(batch, parentAlpha);
+            for (ShadeLightCell[][] value : cells.values()) {
+                for (int x = grid.drawX1; x < grid.drawX2; x++) {
+                    for (int y = grid.drawY1; y < grid.drawY2; y++) {
+                        ShadeLightCell cell = value[x][y];
+                        if (cell != null) {
+                            cell.draw(batch, 1);
+                        }
+                    }
+                }
+            }
     }
 
     @Override
     public void act(float delta) {
         if (!on)
             return;
-        super.act(delta);
 
-        //TODO module fix - only act from x1 to x2
+        setY(-(y1) * 128); //ToDo-Cleanup
+
+            for (ShadeLightCell[][] value : cells.values()) {
+                for (int x = grid.drawX1; x < grid.drawX2; x++) {
+                    for (int y = grid.drawY1; y < grid.drawY2; y++) {
+                        ShadeLightCell cell = value[x][y];
+                        if (cell != null) {
+                            cell.act(delta);
+                        }
+                    }
+                }
+            }
     }
 
     @Override
     public void setModule(Module module) {
+        if (!CoreEngine.isLevelEditor()){
         x1 = module.getOrigin().x;
         y1 = module.getOrigin().y;
+        }
         cols = module.getEffectiveWidth();
         rows = module.getEffectiveHeight();
-        x2 = cols + module.getOrigin().x;
-        y2 = rows + module.getOrigin().y;
+        //cache cells/emitters for modules?
         try {
             init();
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
+        offset(x1 * 128, grid.getGdxY_ForModule(y1-1) * 128); //TODO is that right?
     }
 
     private void init() {
+        clearChildren();
         for (SHADE_CELL type : SHADE_CELL_VALUES) {
-//            if (type == VOID) {
-//                if (EidolonsGame.BOSS_FIGHT)
-//                    continue;
-//            }
-            getCells().put(type, new ShadeLightCell[grid.getCols()][grid.getRows()]);
-            emitters = new List[grid.getCols()][grid.getRows()];
+            getCells().put(type, new ShadeLightCell[grid.getModuleCols()][grid.getModuleRows()]);
+            emitters = new List[grid.getModuleCols()][grid.getModuleRows()];
 
-            for (int x = 0; x < grid.getCols(); x++) {
-                for (int y = 0; y < grid.getRows(); y++) {
-                    if (grid.getCells()[x][y] == null) {
+            for (int x = 0; x < grid.getModuleCols() ; x++) {
+                for (int y = 0; y < grid.getModuleRows(); y++) {
+                    DC_Cell cellObj = grid.getCells()[x1 + x][y1 + y].getUserObject();
+                    if (cellObj.isVOID()) {
                         if (type != VOID)
                             continue;
                     } else if (type == VOID)
                         continue;
                     if (type != LIGHT_EMITTER) {
-                        ShadeLightCell cell = new ShadeLightCell(type);
-                        getCells(type)[x][y] = cell;
-                        addShadowMapElement(cell, x, y, type.defaultAlpha);
+                        if (getCells(type)[x][y] != null) {
+                            //TODO
+                        } else {
+                            ShadeLightCell cell = new ShadeLightCell(type, cellObj);
+                            getCells(type)[x][y] = cell;
+                            addShadowMapElement(cell, x, y, type.defaultAlpha);
+                        }
                     } else {
-
+                        if (!isLightEmittersOn())
+                            continue;
                         if (emitters[x][y] == null) {
                             emitters[x][y] = new ArrayList<>();
                         }
-                        Coordinates c = Coordinates.get(x, grid.getGdxY(y));
+                        Coordinates c = Coordinates.get(x, (y));
                         Set<BattleFieldObject> objects = DC_Game.game.getOverlayingObjects(c);
-                        objects.addAll(DC_Game.game.getObjectsAt(c));
+                        objects.addAll(DC_Game.game.getObjectsNoOverlaying(c));
                         if (objects.isEmpty()) {
                             continue;
                         }
@@ -165,7 +197,7 @@ public class ShadowMap extends GroupX implements GridElement {
                                 continue;
                             LightEmittingEffect effect = null;
                             try {
-                                effect = DC_Game.game.getRules().getIlluminationRule().
+                                effect = DC_Game.game.getVisionMaster().getIllumination().
                                         getLightEmissionEffect(obj);
                             } catch (Exception e) {
                                 main.system.ExceptionMaster.printStackTrace(e);
@@ -187,12 +219,17 @@ public class ShadowMap extends GroupX implements GridElement {
 
     }
 
+    private boolean isLightEmittersOn() {
+        return true;
+    }
+
     private void addShadowMapElement(Group element, int x, int y, float defaultAlpha) {
-        addActor(element);
         float offsetX = (GridMaster.CELL_W - element.getWidth()) / 2;
         float offsetY = (GridMaster.CELL_H - element.getHeight()) / 2;
 
-        element.setPosition(x * GridMaster.CELL_W + offsetX, y * GridMaster.CELL_H + offsetY);
+        element.setPosition(x * GridMaster.CELL_W + offsetX,
+                grid.getGdxY_ForModule(y)
+                        * GridMaster.CELL_H + offsetY);
 
         element.setColor(1, 1, 1, defaultAlpha);
         element.addListener(new EventListener() {
@@ -206,7 +243,7 @@ public class ShadowMap extends GroupX implements GridElement {
     private LightEmitter getEmitterForObj(BattleFieldObject obj) {
         LightEmitter emitter = null;
         Coordinates c = obj.getBufferedCoordinates();
-        List<LightEmitter> list = emitters[c.x][grid.getGdxY(c.y)];
+        List<LightEmitter> list = emitters[c.x][(c.y)];
 
         for (LightEmitter lightEmitter : list) {
             if (lightEmitter.getUserObject() == obj) {
@@ -221,7 +258,7 @@ public class ShadowMap extends GroupX implements GridElement {
         GuiEventManager.bind(GuiEventType.RESET_LIGHT_EMITTER, p -> {
             BattleFieldObject obj = (BattleFieldObject) p.get();
             LightEmitter emitter = getEmitterForObj(obj);
-//            emitter.setTeamColor(color);
+            //            emitter.setTeamColor(color);
             emitter.reset();
 
         });
@@ -229,14 +266,14 @@ public class ShadowMap extends GroupX implements GridElement {
 
             BattleFieldObject obj = (BattleFieldObject) p.get();
             Coordinates c = obj.getBufferedCoordinates();
-            List<LightEmitter> list = emitters[c.x][grid.getGdxY(c.y)];
+            List<LightEmitter> list = emitters[c.x][(c.y)];
 
             LightEmitter emitter = getEmitterForObj(obj);
 
             list.remove(emitter);
 
             Coordinates c1 = obj.getCoordinates();
-            list = emitters[c1.x][grid.getRows() - grid.getGdxY(c1.y)];
+            list = emitters[c1.x][(c1.y)];
 
             list.add(emitter);
 
@@ -250,7 +287,7 @@ public class ShadowMap extends GroupX implements GridElement {
         });
         GuiEventManager.bind(GuiEventType.UPDATE_SHADOW_MAP, p -> {
             update();
-//            main.system.auxiliary.log.LogMaster.log(1, "MANUAL SHADOW MAP UPDATE ");
+            //            main.system.auxiliary.log.LogMaster.log(1, "MANUAL SHADOW MAP UPDATE ");
         });
 
     }
@@ -260,12 +297,12 @@ public class ShadowMap extends GroupX implements GridElement {
         if (!isOn())
             return;
         for (SHADE_CELL type : SHADE_CELL_VALUES) {
-            for (int x = 0; x < grid.getCols(); x++) {
-                for (int y = 0; y < grid.getRows(); y++) {
-//                    if (type == VOID) {
-//                        if (EidolonsGame.BOSS_FIGHT)
-//                            continue;
-//                    }
+            for (int x = 0; x < grid.getModuleCols(); x++) {
+                for (int y = 0; y < grid.getModuleRows(); y++) {
+                    //                    if (type == VOID) {
+                    //                        if (EidolonsGame.BOSS_FIGHT)
+                    //                            continue;
+                    //                    }
                     ShadeLightCell[][] cells = getCells(type);
                     if (cells.length <= x || cells[0].length <= y) {
                         continue;
@@ -278,29 +315,10 @@ public class ShadowMap extends GroupX implements GridElement {
                             }
                         }
                         float alpha = DC_Game.game.getVisionMaster().
-                                getGammaMaster().getAlphaForShadowMapCell(x, PositionMaster.getLogicalY(y), type);
+                                getGammaMaster().getAlphaForShadowMapCell(x, y, type);
                         if (Math.abs(cell.getBaseAlpha() - alpha) > 0.1f) {
                             cell.setBaseAlpha(alpha);
-
-                            //                        if (type == LIGHT_EMITTER)
-                            //                            cell.setColor(1, 1, 1, alpha); //was this the reason for the light-glitches?
                         }
-                    }
-                    if (type == SHADE_CELL.LIGHT_EMITTER) {
-                        //                        cell.adjustPosition(x, y);
-                        List<LightEmitter> list = emitters[x][y];
-                        if (list == null)
-                            continue; //for void
-                        for (LightEmitter lightEmitter : list) {
-                            float alpha = DC_Game.game.getVisionMaster().
-                                    getGammaMaster().getLightEmitterAlpha(x, PositionMaster.getLogicalY(y));
-                            if (Math.abs(lightEmitter.getBaseAlpha() - alpha) > 0.1f)
-                                lightEmitter.setBaseAlpha(alpha);
-
-                            lightEmitter.update();
-                        }
-
-
                     }
 
                 }
@@ -334,10 +352,7 @@ public class ShadowMap extends GroupX implements GridElement {
     public static final SHADE_CELL[] SHADE_CELL_VALUES = {
             VOID,
             GAMMA_SHADOW,
-            GAMMA_LIGHT,
-            LIGHT_EMITTER,
-            BLACKOUT,
-            HIGLIGHT
+            HIGHLIGHT
     };
 
     public static ALPHA_TEMPLATE getTemplateForShadeLight(SHADE_CELL type) {
@@ -353,7 +368,7 @@ public class ShadowMap extends GroupX implements GridElement {
             case CONCEALMENT:
             case BLACKOUT:
                 break;
-            case HIGLIGHT:
+            case HIGHLIGHT:
                 return GenericEnums.ALPHA_TEMPLATE.SHADE_CELL_HIGHLIGHT;
         }
         return GenericEnums.ALPHA_TEMPLATE.HIGHLIGHT_MAP;
@@ -366,12 +381,12 @@ public class ShadowMap extends GroupX implements GridElement {
         LIGHT_EMITTER(0, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "light emitter.png")),
         CONCEALMENT(0.5f, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "concealment.png")),
         BLACKOUT(0, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "blackout.png")),
-        HIGLIGHT(0, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "highlight.png")),
+        HIGHLIGHT(0, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "highlight.png")),
         VOID(0, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "void.png")),
         ;
 
         public float defaultAlpha;
-        private String texturePath;
+        private final String texturePath;
 
         SHADE_CELL(float alpha, String texturePath) {
             defaultAlpha = alpha;

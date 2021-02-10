@@ -6,29 +6,42 @@ import eidolons.libgdx.texture.Sprites;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.BfObjEnums.CUSTOM_OBJECT;
 import main.game.bf.Coordinates;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 public class Veil extends GridObject {
 
-    private final boolean pale;
-    private final boolean enter;
-    Puzzle puzzle;
-//link to puzzle
-    public Veil(Puzzle puzzle, Coordinates c, boolean pale, boolean enter) {
-        super(c, pale ? CUSTOM_OBJECT.LIGHT.spritePath : Sprites.LIGHT_VEIL);
-        this.pale = pale;
+    protected final boolean black;
+    protected final boolean enter;
+    protected Puzzle puzzle;
+
+    //link to puzzle
+    public Veil(Puzzle puzzle, Coordinates c, boolean black, boolean enter) {
+        this(black ? CUSTOM_OBJECT.GATE.spritePath : Sprites.LIGHT_VEIL, puzzle, c,
+                black, enter);
+    }
+
+    public Veil(String path, Puzzle puzzle, Coordinates c, boolean black, boolean enter) {
+        super(c, path);
+        this.black = black;
         this.enter = enter;
         this.puzzle = puzzle;
+        GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, this);
     }
 
     @Override
-    protected void init() {
+    public void init() {
         super.init();
-        sprite.setBlending(GenericEnums.BLENDING.SCREEN);
+        if (black)
+            sprite.setBlending(GenericEnums.BLENDING.INVERT_SCREEN);
+        else
+            sprite.setBlending(GenericEnums.BLENDING.SCREEN);
 
     }
+
     @Override
     protected int getFps() {
-        return pale? 14: 20;
+        return black ? 17 : 20;
     }
 
     @Override
@@ -36,8 +49,8 @@ public class Veil extends GridObject {
         if (puzzle.isActive()) {
             return !enter;
         }
-        if (!enter){
-            return  false;
+        if (!enter) {
+            return false;
         }
         return super.checkVisible();
     }
@@ -54,7 +67,8 @@ public class Veil extends GridObject {
 
     @Override
     protected void createEmittersUnder() {
-        createEmitter("unit/black soul bleed 3", 0, 64);
+        if (black)
+            createEmitter("unit/black soul bleed 3", 0, 64);
     }
 
     @Override
@@ -65,15 +79,15 @@ public class Veil extends GridObject {
     @Override
     protected void createEmittersOver() {
         //TODO soul direction
-//        createEmitter("spell/shape/soul dissipation", -32, 32);
-//        createEmitter("spell/shape/soul dissipation pale", 32, 32);
-//        createEmitter("unit/black soul bleed 3", 0, 64);
-//        createEmitter("unit/chaotic dark", 0, 32);
+        //        createEmitter("spell/shape/soul dissipation", -32, 32);
+        //        createEmitter("spell/shape/soul dissipation pale", 32, 32);
+        //        createEmitter("unit/black soul bleed 3", 0, 64);
+        //        createEmitter("unit/chaotic dark", 0, 32);
 
-//        createEmitter("unit/black soul bleed 3", 64, 64);
-//        createEmitter("unit/chaotic dark", 32, 32);
-//        createEmitter("unit/black soul bleed 3", -64, 64);
-//        createEmitter("unit/chaotic dark", -32, 32);
+        //        createEmitter("unit/black soul bleed 3", 64, 64);
+        //        createEmitter("unit/chaotic dark", 32, 32);
+        //        createEmitter("unit/black soul bleed 3", -64, 64);
+        //        createEmitter("unit/chaotic dark", -32, 32);
 
     }
 

@@ -13,14 +13,14 @@ import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.bf.GridMaster;
 import main.content.enums.entity.UnitEnums;
-import main.content.enums.system.AiEnums;
 import main.content.mode.STD_MODES;
 import main.entity.Ref;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.Bools;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 2/25/2017.
@@ -42,7 +42,7 @@ public class Activator extends ActiveHandler {
     }
 
     public boolean canBeActivated(Ref ref, boolean first) {
-        if (CoreEngine.isActiveTestMode()) {
+        if (Flags.isActiveTestMode()) {
             return true;
         }
         if (getGame().getCombatMaster().isActionBlocked(getAction()))
@@ -56,30 +56,20 @@ public class Activator extends ActiveHandler {
             return false;
         }
 
-
-        if (!getEntity().isMine()) //TODO igg demo hack
+        if (!getEntity().isMine()) //TODO EA check - no recheck for enemies?
             if (!first) {//|| broken) {
                 if (canActivate != null) {
 
                     return canActivate;
                 }
             }
-//     TODO req string   if (ExplorationMaster.isExplorationOn()) {
-//            if (getChecker().checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.COMBAT_ONLY.toString())) {
-//                return false;
-//            }
-//            if (getChecker().checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.COMBAT_ONLY.toString())) {
-//                return false;
-//            }
-//        }
         if (getChecker().checkStatus(UnitEnums.STATUS.BLOCKED)) {
             return false;
         }
-        // toBase();
+
         boolean result = false;
         try {
             getInitializer().initCosts(); // TODO ++ preCheck if there are any targets
-
             result = getAction().getCosts().canBePaid(ref);
             broken = false;
         } catch (Exception e) {
@@ -105,19 +95,6 @@ public class Activator extends ActiveHandler {
     }
 
     public boolean canBeManuallyActivated() {
-        //TODO igg demo hack critical
-        if (getEntity().getOwnerUnit().getName().contains("Gorr ")) {
-            if (getEntity().getOwnerUnit().getBehaviorMode() == AiEnums.BEHAVIOR_MODE.BERSERK) {
-//                GuiEventManager.trigger(GuiEventType.)
-                try {
-                    getGame().getLoop().actionInput(null);
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
-//                new ActionInput());
-                return false;
-            }
-        }
         if (getChecker().isBlocked()) {
             return false;
         }
@@ -139,17 +116,19 @@ public class Activator extends ActiveHandler {
     }
 
     public static void cannotActivate_(DC_ActiveObj e, String reason) {
-        LogMaster.log(1, "Cannot Activate " +
-                e.getName() +
-                ": " + reason);
+        TEXT_CASES CASE = TEXT_CASES.DEFAULT;
+        if (!StringMaster.isEmpty(e.getCosts().getReasonsString())) {
+            reason = e.getCosts().getReasonsString();
+            CASE = TEXT_CASES.REQUIREMENT;
+        }
+        LogMaster.log(1, "Cannot Activate " + e.getName() + ": " + reason);
         if (!e.getOwnerUnit().isMine())
             if (e.getOwnerUnit().isAiControlled())
                 return;
         EUtils.showInfoText(e.getCosts().getReasonsString());
 
         FloatingText f = FloatingTextMaster.getInstance().getFloatingText(e,
-                TEXT_CASES.REQUIREMENT,
-                e.getCosts().getReasonsString());
+                CASE,               reason);
         f.setDisplacementY(100);
         f.setDuration(3);
         Vector2 c = GridMaster.getCenteredPos(e

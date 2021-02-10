@@ -159,9 +159,7 @@ public abstract class DC_CounterRule {
     }
 
     public boolean checkApplies(BattleFieldObject unit) {
-        if (unit.isDead())
-            return false;
-        return true;
+        return !unit.isDead();
     }
 
     public boolean check(BattleFieldObject unit) {

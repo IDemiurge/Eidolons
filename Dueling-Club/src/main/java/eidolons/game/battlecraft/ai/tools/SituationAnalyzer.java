@@ -11,8 +11,8 @@ import eidolons.game.battlecraft.ai.tools.priority.ParamPriorityAnalyzer;
 import main.content.enums.system.AiEnums;
 import main.entity.Entity;
 import main.entity.obj.ActiveObj;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.List;
 
@@ -124,8 +124,8 @@ public class SituationAnalyzer extends AiHandler {
         }
         return 0;
     }
-
+@Deprecated
     public int getTimeModifier() {
-        return getGame().getRules().getTimeRule().getTimePercentageRemaining();
+        return 1;
     }
 }

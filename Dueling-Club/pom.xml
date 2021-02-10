@@ -10,7 +10,7 @@
     </properties>
 
 
-    <version>1.0-SNAPSHOT</version>
+    <version>0.5</version>
 
     <parent>
         <groupId>eidolons</groupId>
@@ -48,6 +48,34 @@
                                 </goals>
                                 <configuration>
                                     <executable>${basedir}/rm_symlinks.cmd</executable>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+
+        <profile>
+            <id>exe</id>
+            <properties>
+                <prj.build.type>dev</prj.build.type>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <executions>
+                            <execution>
+                                <id>jpackage exe</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${basedir}/jpackage.cmd</executable>
                                 </configuration>
                             </execution>
                         </executions>
@@ -167,11 +195,6 @@
             <version>0.5.1</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.kotcrab.vis</groupId>
-            <artifactId>vis-runtime</artifactId>
-            <version>0.3.2</version>
-        </dependency>
 
         <dependency>
             <groupId>com.kotcrab.vis</groupId>
@@ -266,6 +289,18 @@
             <artifactId>gdx-video-desktop</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.tommyettinger/colorful -->
+        <dependency>
+            <groupId>com.github.tommyettinger</groupId>
+            <artifactId>colorful</artifactId>
+            <version>0.2.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.tommyettinger/libgdx-utils -->
+        <dependency>
+            <groupId>com.github.tommyettinger</groupId>
+            <artifactId>libgdx-utils</artifactId>
+            <version>0.13.6</version>
+        </dependency>
 
 
         <!--<dependency>-->
@@ -280,9 +315,38 @@
             <!--<scope>test</scope>-->
         <!--</dependency>-->
 
+        <!-- https://mvnrepository.com/artifact/com.melloware/jintellitype -->
+
+
     </dependencies>
     <build>
+
+
         <plugins>
+<!--            <plugin>-->
+<!--                <groupId>org.codehaus.mojo</groupId>-->
+<!--                <artifactId>buildnumber-maven-plugin</artifactId>-->
+<!--                <version>1.4</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>buildnumber</id>-->
+<!--                        <phase>validate</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>create</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--                <configuration>-->
+<!--                    <format>{0,number}</format>-->
+<!--                    <items>-->
+<!--                        <item>buildNumber</item>-->
+<!--                    </items>-->
+<!--                    <doCheck>false</doCheck>-->
+<!--                    <doUpdate>false</doUpdate>-->
+<!--                    <revisionOnScmFailure>unknownbuild</revisionOnScmFailure>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>

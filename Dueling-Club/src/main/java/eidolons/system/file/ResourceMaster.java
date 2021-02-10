@@ -6,10 +6,11 @@ import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.XLinkedMap;
+import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.PathUtils;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
@@ -36,9 +37,9 @@ public class ResourceMaster {
     private static final String USED_FOLDER = "entity";
     static boolean setProperty = true;
     static boolean useFirstEntityIfOverlap = true;
-    private static String folderName = "gen";
-    private static Map<String, ObjType> map = new XLinkedMap<>();
-    private static boolean writeUnused = false;
+    private static final String folderName = "gen";
+    private static final Map<String, ObjType> map = new XLinkedMap<>();
+    private static final boolean writeUnused = false;
 
     public static void updateImagePaths() {
 
@@ -78,7 +79,7 @@ public class ResourceMaster {
         if (!writeUnused)
             return;
         for (File f : FileManager.getFilesFromDirectory
-         (ImageManager.getImageFolderPath() + "mini\\", false,
+         (PathFinder.getImagePath() + "mini\\", false,
           true)) {
             try {
                 if (!ImageManager.isImageFile(f.getName())) {
@@ -88,7 +89,7 @@ public class ResourceMaster {
                 main.system.ExceptionMaster.printStackTrace(e);
                 continue;
             }
-            if (map.get(f.getPath().replace(ImageManager.getImageFolderPath(), "")) == null) {
+            if (map.get(f.getPath().replace(PathFinder.getImagePath(), "")) == null) {
                 try {
                     writeToUnused(f, getImage(f));
                 } catch (Exception e) {
@@ -100,12 +101,12 @@ public class ResourceMaster {
 
     private static void writeToUnused(File f, Image image) {
         List<String> segments = PathUtils.getPathSegments(f.getPath().replace(
-         ImageManager.getImageFolderPath(), ""));
+         PathFinder.getImagePath(), ""));
         String pathPart = segments.get(1) + "\\";
         if (!segments.get(2).contains(".")) {
             pathPart += segments.get(2) + "\\";
         }
-        File outputfile = FileManager.getFile(ImageManager.getImageFolderPath() + folderName +
+        File outputfile = FileManager.getFile(PathFinder.getImagePath() + folderName +
          UNUSED_FOLDER + pathPart
          + "\\" + f.getName());
 
@@ -133,7 +134,7 @@ public class ResourceMaster {
 
 
         String oldPath = type.getProperty(imgProp);
-        if (oldPath.contains(StringMaster.FORMULA_REF_OPEN_CHAR))
+        if (oldPath.contains(Strings.FORMULA_REF_OPEN_CHAR))
             return; // variable value!
 
         String path = getNewImagePath(imgProp, type);
@@ -161,8 +162,8 @@ public class ResourceMaster {
         for (String path : map.keySet()) {
             if (PathUtils.getLastPathSegment(oldPath).equals(
              PathUtils.getLastPathSegment(path))) {
-                File f1 = FileManager.getFile(ImageManager.getImageFolderPath() + oldPath);
-                File f2 = FileManager.getFile(ImageManager.getImageFolderPath() + path);
+                File f1 = FileManager.getFile(PathFinder.getImagePath() + oldPath);
+                File f2 = FileManager.getFile(PathFinder.getImagePath() + path);
                 if (f1.length() == f2.length()) {
                     oldPath = path;
                     break;
@@ -176,7 +177,7 @@ public class ResourceMaster {
         writeImage(oldPath, path, false);
     }
     public static void writeImage(String oldPath, String path  , boolean overwrite) {
-        File outputfile = FileManager.getFile(ImageManager.getImageFolderPath() + path);
+        File outputfile = FileManager.getFile(PathFinder.getImagePath() + path);
         BufferedImage bufferedImage = ImageManager.getBufferedImage(oldPath);
         if (!ImageManager.isValidImage(bufferedImage)) {
             throw new RuntimeException();
@@ -225,4 +226,7 @@ public class ResourceMaster {
         return "png";
     }
 
+    public static boolean isWriteViewImgOnInit() {
+        return false;
+    }
 }

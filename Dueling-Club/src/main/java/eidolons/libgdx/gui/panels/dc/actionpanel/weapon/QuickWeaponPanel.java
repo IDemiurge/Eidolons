@@ -8,13 +8,13 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.EidolonsGame;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.EUtils;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.controls.Clicker;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.generic.btn.SymbolButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.SlotItemTooltip;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponTooltip;
@@ -23,7 +23,6 @@ import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import main.data.filesys.PathFinder;
 import main.game.logic.action.context.Context;
 import main.system.EventType;
-import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
 import org.apache.commons.lang3.tuple.Pair;
@@ -41,12 +40,13 @@ public class QuickWeaponPanel extends TablePanelX {
     protected ImageContainer background;
     protected WeaponDataSource dataSource;
     protected WeaponDataSource dataSourceAlt;
-    protected SmartButton toggleUnarmed;
+    protected SymbolButton toggleUnarmed;
     protected boolean unarmed;
     protected QuickAttackRadial radial;
     protected boolean offhand;
 
     public QuickWeaponPanel(boolean offhand) {
+        super(100, 100);
         this.offhand = offhand;
         addActor(
                 background = new ImageContainer(
@@ -70,7 +70,7 @@ public class QuickWeaponPanel extends TablePanelX {
         background.setPosition(10, 10);
         weapon.setPosition(WEAPON_POS_X, 0);
         weapon.setFadeDuration(0.2f);
-        addActor(toggleUnarmed = new SmartButton(STD_BUTTON.UNARMED));
+        addActor(toggleUnarmed = new SymbolButton(STD_BUTTON.UNARMED));
         toggleUnarmed.setVisible(false);
         //TODO useless for now?
         pack();
@@ -135,7 +135,7 @@ public class QuickWeaponPanel extends TablePanelX {
 
         toggleUnarmed.clearListeners();
         if (dataSourceAlt != null) {
-            toggleUnarmed.addListener(new Clicker(() -> toggleUnarmed()));
+            toggleUnarmed.addListener(new Clicker(this::toggleUnarmed));
             toggleUnarmed.addListener(
                     new ScaleAndTextTooltip(toggleUnarmed, () -> (unarmed
                             ? dataSource.getName() : dataSourceAlt.getName()))
@@ -209,10 +209,11 @@ public class QuickWeaponPanel extends TablePanelX {
                     return false;
                 }
                 if (button == 1) {
-                    GuiEventManager.trigger(GuiEventType.RADIAL_MENU_CLOSE);
-                    GuiEventManager.trigger(
-                            getOpenEvent(),
-                            dataSource.getWeapon());
+                    // GuiEventManager.trigger(GuiEventType.RADIAL_MENU_CLOSE);
+                    radial.openMenu();
+                    // GuiEventManager.trigger(
+                    //         getOpenEvent(),
+                    //         dataSource.getWeapon());
 
                 } else {
                     if (radial.isVisible())
@@ -240,7 +241,7 @@ public class QuickWeaponPanel extends TablePanelX {
                         return false;
                     }
                     attack.setAutoSelectionOn(true);
-                    getActiveWeaponDataSource().getWeapon().getGame().getLoop().actionInput(
+                    getActiveWeaponDataSource().getWeapon().getGame().getLoop().actionInputManual(
                             new ActionInput(attack
                                     , new Context(getDataSource().getOwnerObj(), null))
                     );

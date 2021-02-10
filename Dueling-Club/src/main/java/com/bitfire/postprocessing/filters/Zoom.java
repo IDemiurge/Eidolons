@@ -26,10 +26,10 @@ public final class Zoom extends Filter<Zoom> {
 		Texture("u_texture0", 0), OffsetX("offset_x", 0), OffsetY("offset_y", 0), Zoom("zoom", 0), ;
 		// @formatter:on
 
-		private String mnemonic;
-		private int elementSize;
+		private final String mnemonic;
+		private final int elementSize;
 
-		private Param (String mnemonic, int arrayElementSize) {
+		Param(String mnemonic, int arrayElementSize) {
 			this.mnemonic = mnemonic;
 			this.elementSize = arrayElementSize;
 		}

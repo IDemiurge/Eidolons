@@ -7,14 +7,14 @@ import main.game.bf.Coordinates;
 /**
  * Created by JustMe on 5/10/2017.
  */
-public class LocationPositioner extends Positioner<Location> {
+public class LocationPositioner extends Positioner  {
 
-    public LocationPositioner(DungeonMaster<Location> master) {
+    public LocationPositioner(DungeonMaster master) {
         super(master);
     }
 
     @Override
     public Coordinates getPlayerSpawnCoordinates() {
-        return getDungeon().getDefaultPlayerSpawnCoordinates();
+        return getFloorWrapper().getDefaultPlayerSpawnCoordinates();
     }
 }

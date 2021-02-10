@@ -14,11 +14,11 @@ import eidolons.content.PARAMS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.game.core.Eidolons;
-import eidolons.game.netherflame.igg.soul.eidola.EidolonImbuer;
+import eidolons.game.netherflame.main.soul.eidola.EidolonImbuer;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.ActionMaster;
+import eidolons.libgdx.anims.actions.ActionMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.UiMaster;
@@ -240,7 +240,7 @@ public class InvItemActor extends ItemActor {
         if (model == null) {
             if (cellType != null)
                 addListener(new ValueTooltip(
-                 StringMaster.getWellFormattedString(cellType.toString()) +
+                 StringMaster.format(cellType.toString()) +
                   " slot").getController());
         } else {
             String vals = InventoryFactory.getTooltipsVals(model);

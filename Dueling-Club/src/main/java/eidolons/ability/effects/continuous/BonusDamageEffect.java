@@ -19,13 +19,12 @@ import main.system.math.Formula;
  */
 public class BonusDamageEffect extends DC_Effect {
     Condition conditions;
-    private DAMAGE_TYPE type;
-    private Formula formula;
-    private Formula radiusFormula;
-    private boolean percentage;
-    private DAMAGE_CASE CASE;
-    private Damage damage;
-    private boolean fromRaw;
+    private final DAMAGE_TYPE type;
+    private final Formula formula;
+    private final Formula radiusFormula;
+    private final boolean percentage;
+    private final DAMAGE_CASE CASE;
+    private final boolean fromRaw;
 
     public BonusDamageEffect(String type,
                              String formula) {
@@ -69,7 +68,7 @@ public class BonusDamageEffect extends DC_Effect {
 
 
     public Damage getDamage() {
-        damage = DamageFactory.getDamageForBonusEffect(this);
+        Damage damage = DamageFactory.getDamageForBonusEffect(this);
         return damage;
     }
 

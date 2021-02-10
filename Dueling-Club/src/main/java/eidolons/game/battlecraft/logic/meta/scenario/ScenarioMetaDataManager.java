@@ -3,7 +3,6 @@ package eidolons.game.battlecraft.logic.meta.scenario;
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.meta.universal.MetaDataManager;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
-import eidolons.libgdx.launch.ScenarioLauncher;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 
@@ -11,6 +10,7 @@ import main.system.auxiliary.StringMaster;
  * Created by JustMe on 5/14/2017.
  */
 public class ScenarioMetaDataManager extends MetaDataManager<ScenarioMeta> {
+    public static int missionIndex = 0;
     private String missionName;
 
     public ScenarioMetaDataManager(MetaGameMaster scenarioMetaMaster) {
@@ -18,7 +18,7 @@ public class ScenarioMetaDataManager extends MetaDataManager<ScenarioMeta> {
     }
 
     public String getDataPath() {
-        return getMaster().getBattleMaster().getMissionResourceFolderPath();
+        return getMaster().getMissionMaster().getMissionResourceFolderPath();
     }
 
     @Override
@@ -46,25 +46,9 @@ public class ScenarioMetaDataManager extends MetaDataManager<ScenarioMeta> {
         getMetaGame().setMissions(ContainerUtils.openContainer(getMetaGame().getScenario().
                 getProperty(PROPS.SCENARIO_MISSIONS)));
         if (StringMaster.isEmpty(missionName)) {
-            int missionIndex = (ScenarioLauncher.missionIndex);
-
             getMetaGame().setMissionIndex(missionIndex);
-
             setMissionName(ContainerUtils.openContainer(getMetaGame().getScenario().
                     getProperty(PROPS.SCENARIO_MISSIONS)).get(missionIndex));
-
-
-            if (getGame().getMetaMaster().isRngDungeon()) {
-                try {
-                    setMissionPath(ContainerUtils.openContainer(getMetaGame().getScenario().
-                            getProperty(PROPS.SCENARIO_PATHS)).get(missionIndex));
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
-            }
-            else {
-//        TODO    missionName = getMissionName();  DataManager.getType(missionName, DC_TYPE.MISSIONS).getProperty(PROPS.MISSION_FILE_PATH);
-            }
         } else {
             getMetaGame().setMissionIndex(ContainerUtils.openContainer(getMetaGame().getScenario().
                     getProperty(PROPS.SCENARIO_MISSIONS)).indexOf(missionName));

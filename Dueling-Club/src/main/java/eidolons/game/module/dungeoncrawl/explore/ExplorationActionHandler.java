@@ -3,6 +3,7 @@ package eidolons.game.module.dungeoncrawl.explore;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.atb.AtbMaster;
 import main.content.values.parameters.PARAMETER;
 import main.elements.costs.Cost;
 import main.elements.costs.Costs;
@@ -17,36 +18,41 @@ import java.util.List;
  * Created by JustMe on 9/10/2017.
  */
 public class ExplorationActionHandler extends ExplorationHandler {
-    private static List<PARAMETER> ignoredCosts = Arrays.asList(new PARAMETER[]{
-     PARAMS.AP_COST,
+    private static final List<PARAMETER> ignoredCosts = Arrays.asList(new PARAMETER[]{
+            PARAMS.AP_COST,
     });
-    private static String STA_MODIFIER = "0.5";
-    private static String FOC_MODIFIER = "0.5";
+    private static final String STA_MODIFIER = "0.5";
+    private static final String FOC_MODIFIER = "0.5";
 
     public ExplorationActionHandler(ExplorationMaster master) {
         super(master);
     }
 
     public static boolean isActivationEnabledByExploration() {
-//searchMode - why not? some alternative? time? food/torch...
-        //restoration modes? keep restoring until <?>
-        // full restoration mode
-        // auto-pathing
-
         return false;
+    }
+
+    public static float calcBlockingTime(DC_ActiveObj action) {
+        float coef = 1f;
+        if (action.isAttackAny()) {
+            coef = 2f;
+        }
+        coef /= action.getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().getSpeed();
+        return AtbMaster.getReadinessCost(action) / 10000 * coef;
+
     }
 
     private static void adjustCosts(Costs costs) {
         costs.getCosts().removeIf(cost ->
-         ignoredCosts.contains(cost.getCostParam())
+                ignoredCosts.contains(cost.getCostParam())
         );
-//        for (PARAMETER p :     modifiedCosts) {
-//            Cost sub = costs.getCost(p);
-//            String modifier=  modifiedCosts.getVar(p);
-//            sub.getPayment().getAmountFormula().append("*"+modifier);
-//        }
+        //        for (PARAMETER p :     modifiedCosts) {
+        //            Cost sub = costs.getCost(p);
+        //            String modifier=  modifiedCosts.getVar(p);
+        //            sub.getPayment().getAmountFormula().append("*"+modifier);
+        //        }
 
-        Cost sub = costs.getCost(PARAMS.STA_COST);
+        Cost sub = costs.getCost(PARAMS.TOU_COST);
         if (sub != null)
             sub.getPayment().getAmountFormula().append("*" + STA_MODIFIER);
         sub = costs.getCost(PARAMS.FOC_COST);
@@ -55,10 +61,10 @@ public class ExplorationActionHandler extends ExplorationHandler {
     }
 
     public void playerActionActivated(DC_ActiveObj activeObj, Boolean result) {
-        WaitMaster.receiveInput(WAIT_OPERATIONS.PLAYER_ACTION_FINISHED, result );
-//        int time = getTimeForAction(activeObj);
-//        DequeImpl<UnitAI> aiList = master.getAiMaster().getActiveUnitAIs();
-//        aiList.forEach(ai -> ai.setExplorationTimePassed(ai.getExplorationTimePassed() - time));
+        WaitMaster.receiveInput(WAIT_OPERATIONS.PLAYER_ACTION_FINISHED, result);
+        //        int time = getTimeForAction(activeObj);
+        //        DequeImpl<UnitAI> aiList = master.getAiMaster().getActiveUnitAIs();
+        //        aiList.forEach(ai -> ai.setExplorationTimePassed(ai.getExplorationTimePassed() - time));
     }
 
     public boolean isActivationDisabledByExploration(DC_ActiveObj action) {
@@ -70,8 +76,7 @@ public class ExplorationActionHandler extends ExplorationHandler {
     }
 
     public List<DC_ActiveObj> getExplorationActions(Unit unit) {
-        List<DC_ActiveObj> list = new ArrayList<>();
-        return list;
+        return new ArrayList<>();
     }
 
     public void payCosts(DC_ActiveObj entity) {
