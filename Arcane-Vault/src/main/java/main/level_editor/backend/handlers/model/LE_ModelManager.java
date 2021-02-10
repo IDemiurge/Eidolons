@@ -1,7 +1,7 @@
 package main.level_editor.backend.handlers.model;
 
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.libgdx.bf.datasource.GraphicData;
+import eidolons.content.consts.GraphicData;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;

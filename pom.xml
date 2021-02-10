@@ -40,7 +40,10 @@
     <modules>
         <module>Arcane-Vault</module>
         <module>C-Engine</module>
-        <module>Dueling-Club</module>
+        <module>DungeonCraft</module>
+        <module>Netherflame-Arena</module>
+        <module>Netherflame-Campaign</module>
+        <module>LibGdx-Core</module>
         <!--<module>resources</module>-->
     </modules>
 

@@ -2,7 +2,7 @@ package main.level_editor.backend.handlers.selection;
 
 import eidolons.game.core.EUtils;
 import eidolons.game.module.generator.model.RoomModel;
-import eidolons.libgdx.bf.datasource.GraphicData;
+import eidolons.content.consts.GraphicData;
 import main.content.enums.GenericEnums;
 import main.entity.EntityCheckMaster;
 import main.entity.type.ObjType;

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>eidolons-parent</artifactId>
+        <groupId>eidolons</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>LibGdx-Core</artifactId>
+
+    <properties>
+        <maven.compiler.source>15</maven.compiler.source>
+        <maven.compiler.target>15</maven.compiler.target>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>eidolons</groupId>
+            <artifactId>battlecraft-core</artifactId>
+            <version>1.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>eidolons</groupId>
+            <artifactId>eidolons</artifactId>
+            <version>0.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eidolons</groupId>
+            <artifactId>Netherflame-Arena</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>eidolons</groupId>
+            <artifactId>Netherflame-Campaign</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eidolons</groupId>
+            <artifactId>eidolons</artifactId>
+            <version>0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.kotcrab.vis</groupId>
+            <artifactId>vis-ui</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-backend-lwjgl</artifactId>
+            <version>1.9.7</version>
+        </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-ai</artifactId>
+            <version>1.8.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-box2d</artifactId>
+            <version>${libgdx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-box2d-platform</artifactId>
+            <classifier>natives-desktop</classifier>
+            <version>${libgdx.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-tools</artifactId>
+            <version>${libgdx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-freetype-platform</artifactId>
+            <classifier>natives-desktop</classifier>
+            <version>${libgdx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-platform</artifactId>
+            <classifier>natives-desktop</classifier>
+            <version>${libgdx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-freetype</artifactId>
+            <version>${libgdx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>es.e-ucm.com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-video</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>es.e-ucm.com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-video-desktop</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.tommyettinger/colorful -->
+        <dependency>
+            <groupId>com.github.tommyettinger</groupId>
+            <artifactId>colorful</artifactId>
+            <version>0.2.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.tommyettinger/libgdx-utils -->
+        <dependency>
+            <groupId>com.github.tommyettinger</groupId>
+            <artifactId>libgdx-utils</artifactId>
+            <version>0.13.6</version>
+        </dependency>
+    </dependencies>
+    <build>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>libgdx.launch.MainLauncher</mainClass>
+                            <!--<mainClass>eidolons.test.frontend.ScenarioLauncher</mainClass>-->
+                            <!--<mainClass>eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner</mainClass>-->
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,7 +1,7 @@
 package main.level_editor.gui.panels.palette.table;
 
 import com.badlogic.gdx.math.Vector2;
-import eidolons.libgdx.bf.datasource.GraphicData;
+import eidolons.content.consts.GraphicData;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.headquarters.creation.selection.SelectableImageItem;

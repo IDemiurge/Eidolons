@@ -20,7 +20,7 @@ import eidolons.game.module.generator.LevelData;
 import eidolons.game.module.generator.model.RoomModel;
 import eidolons.game.module.generator.model.RoomTemplateMaster;
 import eidolons.game.module.generator.tilemap.TilesMaster;
-import eidolons.libgdx.GdxColorMaster;
+import eidolons.content.consts.GdxColorMaster;
 import eidolons.libgdx.bf.grid.handlers.GridManager;
 import eidolons.libgdx.utils.GdxDialogMaster;
 import eidolons.system.text.NameMaster;

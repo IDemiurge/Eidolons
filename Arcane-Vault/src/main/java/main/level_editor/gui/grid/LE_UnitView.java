@@ -3,7 +3,7 @@ package main.level_editor.gui.grid;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.libgdx.GdxColorMaster;
+import eidolons.content.consts.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.grid.cell.CellBorderManager;
 import eidolons.libgdx.bf.grid.cell.UnitGridView;
