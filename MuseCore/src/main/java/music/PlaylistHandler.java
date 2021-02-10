@@ -28,10 +28,12 @@ public class PlaylistHandler {
         dark, //8
         warmup, //9
         rpg, //10
+       metal, //11
+       finest //12
     }
 
     public static void playRandom(PLAYLIST_TYPE type) {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 12; i++) {
             List<File> fileList = cache.get(type);
             if (!ListMaster.isNotEmpty(fileList)) {
                 String path = ROOT_PATH_PICK + type;
@@ -48,7 +50,7 @@ public class PlaylistHandler {
         int randomIndex = RandomWizard.getRandomIndex(fileList);
         try {
             File file = fileList.remove(randomIndex);
-            File properFile = FileManager.getFile(ROOT_PATH + file.getName());
+            File properFile = !isRootPathAlways()? file : FileManager.getFile(ROOT_PATH + file.getName());
             Desktop.getDesktop().open(properFile);
             System.out.println("-- Playing" +
                     properFile.getPath() +
@@ -58,6 +60,10 @@ public class PlaylistHandler {
             e.printStackTrace();
         }
 
+        return false;
+    }
+
+    private static boolean isRootPathAlways() {
         return false;
     }
 }

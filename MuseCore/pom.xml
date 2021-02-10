@@ -10,18 +10,6 @@
     <properties>
         <maven.compiler.release>11</maven.compiler.release>
     </properties>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>6</source>
-                    <target>6</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
     <dependencies>
         <dependency>
             <groupId>eidolons</groupId>
@@ -35,7 +23,16 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-    <plugins>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>6</source>
+                    <target>6</target>
+                </configuration>
+            </plugin>
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-shade-plugin</artifactId>
@@ -68,4 +65,5 @@
             </configuration>
         </plugin>
     </plugins>
+    </build>
 </project>

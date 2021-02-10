@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
-    <artifactId>battlecraft-parent</artifactId>
+    <artifactId>eidolons-parent</artifactId>
     <groupId>eidolons</groupId>
     <version>1.0-SNAPSHOT</version>
   </parent>
@@ -114,7 +114,7 @@
                   <goal>exec</goal>
                 </goals>
                 <configuration>
-                  <executable>C:\code\eidolons\Dueling-Club/ln.cmd</executable>
+                  <executable>C:\code\Eidolons\Dueling-Club/ln.cmd</executable>
                 </configuration>
               </execution>
               <execution>
@@ -124,7 +124,7 @@
                   <goal>exec</goal>
                 </goals>
                 <configuration>
-                  <executable>C:\code\eidolons\Dueling-Club/rm_symlinks.cmd</executable>
+                  <executable>C:\code\Eidolons\Dueling-Club/rm_symlinks.cmd</executable>
                 </configuration>
               </execution>
             </executions>

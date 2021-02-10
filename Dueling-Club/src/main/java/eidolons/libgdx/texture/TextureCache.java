@@ -40,7 +40,7 @@ import static main.system.auxiliary.log.LogMaster.important;
 import static main.system.auxiliary.log.LogMaster.log;
 
 public class TextureCache {
-    public static final boolean atlasesOn = !CoreEngine.TEST_LAUNCH || Flags.isJar();
+    public static final boolean atlasesOn =false;// !CoreEngine.TEST_LAUNCH || Flags.isJar();
     public static final boolean fullLog = Flags.isJarlike() || Flags.isJar();
     private static final Lock creationLock = new ReentrantLock();
     private static final ObjectMap<String, TextureRegion> regionCache = new ObjectMap<>(1300);

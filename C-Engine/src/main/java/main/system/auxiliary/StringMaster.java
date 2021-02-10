@@ -1160,6 +1160,16 @@ public class StringMaster {
         return s.replaceAll(WHITESPACE_CODE, " ");
     }
 
+    public static int firstIndexOfAny(String s, String anyFrom) {
+        for (char c : anyFrom.toCharArray()) {
+            int i = s.indexOf("" + c);
+            if (i>=0) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
 
     public enum STD_TYPE_NAMES {
         Cell

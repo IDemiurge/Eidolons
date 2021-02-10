@@ -42,9 +42,15 @@ public class MuseCore implements NativeKeyListener {
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
         if ((ALT & nativeKeyEvent.getModifiers()) != 0) {
             if (nativeKeyEvent.getKeyCode() > 58) {
-                if (nativeKeyEvent.getKeyCode() <= 58 + PlaylistHandler.PLAYLIST_TYPE.values().length) {
+                boolean F11_12=(nativeKeyEvent.getKeyCode() == 87 || nativeKeyEvent.getKeyCode() == 88) ;
+                if (
+                        F11_12|| //F11 F12
+                        nativeKeyEvent.getKeyCode() <= 58 + PlaylistHandler.PLAYLIST_TYPE.values().length) {
                     try {
                         int index = nativeKeyEvent.getKeyCode() - 59;
+                        if (F11_12) {
+                            index = nativeKeyEvent.getKeyCode()-77;
+                        }
                         if (index==3) {
                             return ; //ALT F4!
                         }
