@@ -1,6 +1,6 @@
 package eidolons.game.netherflame.main;
 
-import eidolons.libgdx.texture.Sprites;
+import eidolons.content.consts.Sprites;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
 

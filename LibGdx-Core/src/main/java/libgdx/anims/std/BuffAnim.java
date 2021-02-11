@@ -1,11 +1,11 @@
 package libgdx.anims.std;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import eidolons.content.consts.VisualEnums;
 import libgdx.anims.ANIM_MODS.ANIM_MOD;
 import libgdx.anims.ANIM_MODS.CONTINUOUS_ANIM_MODS;
 import libgdx.anims.AnimData;
 import libgdx.anims.AnimData.ANIM_VALUES;
-import libgdx.anims.AnimEnums;
 import libgdx.anims.sprite.SpriteAnimation;
 import main.content.enums.system.MetaEnums.STD_BUFF_NAME;
 import main.data.filesys.PathFinder;
@@ -32,7 +32,7 @@ public class BuffAnim extends ActionAnim {
         mods = new ANIM_MOD[]{
                 CONTINUOUS_ANIM_MODS.PENDULUM_ALPHA
         };
-        part = AnimEnums.ANIM_PART.AFTEREFFECT;
+        part = VisualEnums.ANIM_PART.AFTEREFFECT;
         // textureSupplier = () -> TextureCache.getOrCreate(buff.getImagePath());
 
         //setPlayContinuous(buff.checkBool());

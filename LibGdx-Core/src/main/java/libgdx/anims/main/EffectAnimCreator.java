@@ -3,14 +3,14 @@ package libgdx.anims.main;
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.oneshot.DealDamageEffect;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
-import libgdx.GdxColorMaster;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.anims.*;
 import libgdx.anims.ANIM_MODS.ANIM_MOD;
 import libgdx.anims.ANIM_MODS.OBJ_ANIMS;
-import eidolons.libgdx.anims.*;
 import libgdx.anims.AnimData.ANIM_VALUES;
-import libgdx.anims.AnimEnums.ANIM_PART;
+import eidolons.content.consts.VisualEnums.ANIM_PART;
 import libgdx.anims.std.ActionAnim;
 import libgdx.anims.std.HitAnim;
 import libgdx.bf.GridMaster;
@@ -67,7 +67,7 @@ public class EffectAnimCreator {
         if (target != null) {
             anim.setForcedDestination(target.getCoordinates());
         }
-        anim.setPart(AnimEnums.ANIM_PART.MISSILE); //TODO gotta be some way to generalize this
+        anim.setPart(VisualEnums.ANIM_PART.MISSILE); //TODO gotta be some way to generalize this
         anim.setMaster(AnimMaster.getInstance());
         return anim;
     }
@@ -186,7 +186,7 @@ public class EffectAnimCreator {
 
     public static ANIM_PART getPartToAttachTo(Effect effect) {
         //        if (e instanceof  DealDamageEffect)
-        return AnimEnums.ANIM_PART.IMPACT;
+        return VisualEnums.ANIM_PART.IMPACT;
 
         //        return ANIM_PART.AFTEREFFECT;
 

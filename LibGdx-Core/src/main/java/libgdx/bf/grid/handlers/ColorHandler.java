@@ -1,12 +1,15 @@
 package libgdx.bf.grid.handlers;
 
 import com.badlogic.gdx.graphics.Color;
+import eidolons.content.consts.libgdx.GdxColorMaster;
+import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMapDataSource;
 import eidolons.game.core.game.DC_Game;
-import libgdx.GdxColorMaster;
 import libgdx.bf.grid.GridPanel;
 import libgdx.bf.light.ShadeLightCell;
 import libgdx.bf.light.ShadowMap;
 import main.game.bf.Coordinates;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.launch.Flags;
 
 public class ColorHandler extends GridHandler{
@@ -15,6 +18,9 @@ public class ColorHandler extends GridHandler{
     public ColorHandler(GridPanel grid) {
         super(grid);
         GridManager gridManager = grid.getGridManager();
+
+        GuiEventManager.bind(GuiEventType.BF_OBJ_RESET, p ->
+                colorMap = new ColorMap((ColorMapDataSource) p.get()));
     }
 
     public static boolean isStaticColors() {
@@ -36,27 +42,38 @@ public class ColorHandler extends GridHandler{
         }
         return 1 - cell.getColor().a;
     }
+    ColorMap colorMap;
+
+    public void act(float delta) {
+        if ( getColorMap() != null) {
+            getColorMap().act(delta);
+        }
+    }
+
+    public ColorMap getColorMap() {
+        return colorMap;
+    }
 
     public Color getBaseColor(Coordinates c) {
-        if (DC_Game.game.getColorMap().getBase().get(c) == null) {
+        if (DC_Game.game.getColorMapDS().getBase().get(c) == null) {
             return GdxColorMaster.get(Color.BLACK);
         }
-        return GdxColorMaster.get(DC_Game.game.getColorMap().getBase().get(c));
+        return GdxColorMaster.get(DC_Game.game.getColorMapDS().getBase().get(c));
     }
 
     public Color getOrigColor(Coordinates c) {
-        return GdxColorMaster.get(DC_Game.game.getColorMap().getOriginal().get(c));
+        return GdxColorMaster.get(DC_Game.game.getColorMapDS().getOriginal().get(c));
     }
 //TODO optimization - into array?
     public Color getColor(Coordinates c) {
-        if (!DC_Game.game.getColorMap().getOutput().containsKey(c)) {
-            return DC_Game.game.getColorMap().getOriginal().get(c);
+        if (! getColorMap().getOutput().containsKey(c)) {
+            return  getColorMap().getOriginal().get(c);
             // return GdxColorMaster.get(GdxColorMaster.NULL_COLOR);
         }
         // if (CoreEngine.isLevelEditor()) {
         //     return GdxColorMaster.get(GdxColorMaster.NULL_COLOR);
         // }
-        return GdxColorMaster.get(DC_Game.game.getColorMap().getOutput().get(c));
+        return GdxColorMaster.get( getColorMap().getOutput().get(c));
         // return cell.getColor();
     }
 }

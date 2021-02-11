@@ -1,6 +1,6 @@
 package main.level_editor.gui.top;
 
-import eidolons.libgdx.gui.panels.TablePanelX;
+import libgdx.gui.panels.TablePanelX;
 import main.level_editor.backend.handlers.LE_MenuHandler;
 
 public class ModesPanel extends TablePanelX {

@@ -14,15 +14,9 @@ import eidolons.game.battlecraft.logic.mission.universal.MissionMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
-import eidolons.game.netherflame.boss.BossManager;
-import eidolons.game.netherflame.boss.demo.DemoBossManager;
 import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.game.eidolon.event.GameEventHandler;
 import eidolons.game.eidolon.event.NF_EventHandler;
-import eidolons.libgdx.anims.main.AnimMaster;
-import eidolons.libgdx.gui.overlay.choice.VisualChoiceHandler;
-import eidolons.macro.AdventureInitializer;
-import eidolons.macro.global.persist.Loader;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
@@ -48,7 +42,6 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected E metaGame;
     protected DC_Game game;
     protected DialogueManager dialogueManager;
-    protected TownMaster townMaster;
     protected DefeatHandler defeatHandler;
     protected LootMaster<E> lootMaster;
 
@@ -82,22 +75,17 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         partyManager = createPartyManager();
         initializer = createMetaInitializer();
         metaDataManager = createMetaDataManager();
-        VisualChoiceHandler choiceHandler = new VisualChoiceHandler(this);
+        // VisualChoiceHandler choiceHandler = new VisualChoiceHandler(this);
 
         if (Flags.isCombatGame()) {
             lootMaster = createLootMaster();
             eventHandler = new NF_EventHandler(this);
             defeatHandler = createDefeatHandler();
-            townMaster = createTownMaster();
             dialogueManager = new DialogueManager(this);
             if (dialogueManager.isPreloadDialogues()) {
                 getDialogueFactory().init(this);
             }
         }
-    }
-
-    protected TownMaster createTownMaster() {
-        return new TownMaster(this);
     }
 
     protected LootMaster<E> createLootMaster() {
@@ -119,16 +107,10 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         metaGame = initializer.initMetaGame(data);
         preStart();
 
-        if (AdventureInitializer.isLoad())
-            Loader.loadCharacters();
         if (partyManager.initPlayerParty() != null) {
             if (isTownEnabled()) {
                 getMetaDataManager().initData();
                 getMissionMaster().getConstructor().init();
-                if (!getTownMaster().initTownPhase()) {
-                    Eidolons.getMainGame().setAborted(true);
-                    return game;
-                }
             } else if (isRngQuestsEnabled() || isCustomQuestsEnabled())
                 if (!getQuestMaster().initQuests()) {
                     Eidolons.getMainGame().setAborted(true);
@@ -249,11 +231,12 @@ public abstract class MetaGameMaster<E extends MetaGame> {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         if (game.isStarted())
-            try {
-                AnimMaster.getInstance().getDrawer().cleanUp();
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
+            //TODO gdx sync
+            // try {
+            //     AnimMaster.getInstance().getDrawer().cleanUp();
+            // } catch (Exception e) {
+            //     main.system.ExceptionMaster.printStackTrace(e);
+            // }
 
         FileLogManager.writeStatInfo(game.getMissionMaster().getStatManager().getStats().toString());
     }
@@ -304,10 +287,6 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         getQuestMaster().startQuests();
     }
 
-    public TownMaster getTownMaster() {
-        return townMaster;
-    }
-
     public GameEventHandler getEventHandler() {
         return eventHandler;
     }
@@ -325,37 +304,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         return getMissionMaster().getFloor();
     }
 
-    BossManager bossManager;
-
-    public void initBossModule(Module module) {
-        bossManager = createBossManager(module);
-    }
-
-    protected BossManager createBossManager(Module module) {
-        return new DemoBossManager(getGame());
-    }
-
-    public void loadingDone() {
-        if (bossManager != null) {
-            try {
-                bossManager.init();
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-                return;
-            }
-        }
-    }
-
-    public BossManager getBossManager() {
-        return bossManager;
-    }
-
     public boolean isSoloLevel() {
         return  data.equalsIgnoreCase(SOLO_LEVEL);
-    }
-
-    public void combatStarts() {
-        if (bossManager != null)
-                bossManager.battleStarted();
     }
 }

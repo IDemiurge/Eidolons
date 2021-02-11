@@ -3,7 +3,10 @@ package libgdx.screens.dungeon;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import eidolons.content.consts.GridCreateData;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.EUtils;
@@ -12,7 +15,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import libgdx.GdxMaster;
 import libgdx.assets.Assets;
-import libgdx.bf.GridCreateData;
+import libgdx.audio.DC_Playback;
 import libgdx.bf.grid.DC_GridPanel;
 import libgdx.bf.grid.GridPanel;
 import libgdx.bf.mouse.DungeonInputController;
@@ -21,15 +24,11 @@ import libgdx.gui.panels.headquarters.HqPanel;
 import libgdx.gui.panels.headquarters.town.TownPanel;
 import libgdx.particles.EmitterPools;
 import libgdx.particles.ambi.ParticleManager;
-import libgdx.screens.SCREEN_TYPE;
-import libgdx.screens.ScreenData;
 import libgdx.shaders.DarkShader;
 import libgdx.shaders.GrayscaleShader;
 import libgdx.stage.BattleGuiStage;
 import libgdx.stage.GridStage;
 import libgdx.stage.GuiStage;
-import eidolons.macro.MacroGame;
-import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
@@ -39,12 +38,11 @@ import main.system.datatypes.DequeImpl;
 import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
+import org.lwjgl.opengl.GL11;
 
-import static com.badlogic.gdx.graphics.GL20.GL_NICEST;
 import static eidolons.system.audio.MusicEnums.MUSIC_SCOPE.ATMO;
 import static main.system.GuiEventType.BATTLE_FINISHED;
 import static main.system.GuiEventType.UPDATE_SHADOW_MAP;
-import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Created with IntelliJ IDEA. Date: 21.10.2016 Time: 23:55 To change this template use File | Settings | File
@@ -56,6 +54,7 @@ public class DungeonScreen extends GameScreenWithTown {
     private boolean blocked;
     private boolean firstShow;
     private boolean gridFirstDraw;
+    private DC_Playback soundPlayback;
 
     public static DungeonScreen getInstance() {
         return instance;
@@ -123,7 +122,7 @@ public class DungeonScreen extends GameScreenWithTown {
         super.afterLoad();
         controller = new DungeonInputController(getCamera());
 
-        soundMaster = new DC_SoundMaster(this);
+        soundPlayback = new DC_Playback(this);
 
         MusicMaster.getInstance().scopeChanged(ATMO);
 
@@ -148,13 +147,6 @@ public class DungeonScreen extends GameScreenWithTown {
         GuiEventManager.bind(BATTLE_FINISHED, param -> {
             DC_Game.game.getLoop().stop(); //cleanup on real exit
             DC_Game.game.getMetaMaster().gameExited();
-            if (MacroGame.getGame() != null) {
-                GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
-                        new ScreenData(SCREEN_TYPE.MAP));
-
-                MacroGame.getGame().getLoop().combatFinished();
-                main.system.auxiliary.log.LogMaster.log(1, " returning to the map...");
-            }
         });
     }
 
@@ -243,7 +235,7 @@ public class DungeonScreen extends GameScreenWithTown {
 
 
             try {
-                soundMaster.doPlayback(delta);
+                soundPlayback.doPlayback(delta);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }

@@ -4,12 +4,11 @@ import eidolons.ability.ActionGenerator;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.content.consts.libgdx.GdxUtils;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.rpg.PrincipleMaster;
 import eidolons.game.module.herocreator.logic.HeroCreator;
-import eidolons.libgdx.gui.panels.dc.inventory.InventoryFactory;
 import eidolons.system.DC_Formulas;
-import eidolons.system.content.ContentGenerator;
 import eidolons.system.math.DC_MathManager;
 import main.AV_DataManager;
 import main.ability.AE_Manager;
@@ -109,10 +108,9 @@ public class AvModelHandler {
     }
 
     private static void updateSpells() {
-        for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
-            ContentGenerator.generateSpellParams(type);
-
-        }
+        // for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
+            // ContentGenerator.generateSpellParams(type);
+        // }
     }
 
     private static void checkAdjustIcon(OBJ_TYPE obj_type) {
@@ -120,13 +118,13 @@ public class AvModelHandler {
             if (obj_type instanceof DC_TYPE) {
                 switch (((DC_TYPE) obj_type)) {
                     case WEAPONS:
-                        type.setImage(InventoryFactory.getWeaponIconPath(type));
+                        type.setImage(GdxUtils.getWeaponIconPath(type));
                         break;
                     case ARMOR:
-                        type.setImage(InventoryFactory.getArmorIconPath(type));
+                        type.setImage(GdxUtils.getArmorIconPath(type));
                         break;
                     case JEWELRY:
-                        type.setImage(InventoryFactory.getItemIconPath(type));
+                        type.setImage(GdxUtils.getItemIconPath(type));
                         break;
                 }
             }
@@ -157,9 +155,9 @@ public class AvModelHandler {
         checkPrincipleProcessing(obj_type);
         checkAdjustIcon(obj_type);
 
-        if (obj_type == DC_TYPE.PARTY) {
-            ContentGenerator.adjustParties();
-        }
+        // if (obj_type == DC_TYPE.PARTY) {
+        //     ContentGenerator.adjustParties();
+        // }
         if (obj_type == DC_TYPE.SPELLS) {
             updateSpells();
         }

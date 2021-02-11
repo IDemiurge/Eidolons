@@ -4,11 +4,11 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.gui.NinePatchFactory;
-import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SmartTextButton;
-import eidolons.libgdx.gui.panels.TablePanelX;
-import eidolons.libgdx.gui.utils.TextInputPanel;
+import libgdx.gui.NinePatchFactory;
+import libgdx.gui.generic.btn.ButtonStyled;
+import libgdx.gui.generic.btn.SmartTextButton;
+import libgdx.gui.panels.TablePanelX;
+import libgdx.gui.utils.TextInputPanel;
 import main.level_editor.backend.LE_Manager;
 import main.system.auxiliary.ContainerUtils;
 

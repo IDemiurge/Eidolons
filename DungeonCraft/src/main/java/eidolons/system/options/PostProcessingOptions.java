@@ -1,6 +1,6 @@
 package eidolons.system.options;
 
-import eidolons.libgdx.shaders.post.PostFxUpdater.FX_TEST_MODE;
+import libgdx.shaders.post.PostFxUpdater.FX_TEST_MODE;
 import eidolons.system.options.PostProcessingOptions.POST_PROCESSING_OPTIONS;
 
 /**

@@ -17,7 +17,7 @@ import eidolons.game.battlecraft.rules.round.RoundRule;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import eidolons.system.text.DC_LogManager;
 import main.ability.AbilityObj;
 import main.ability.effects.Effect;

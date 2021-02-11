@@ -14,7 +14,7 @@ import libgdx.gui.RollDecorator;
 import libgdx.gui.panels.TablePanel;
 import libgdx.screens.map.layers.LightLayer;
 import libgdx.screens.map.obj.PartyActor;
-import eidolons.libgdx.screens.map.ui.*;
+import libgdx.screens.map.ui.*;
 import libgdx.screens.map.ui.time.MapTimePanel;
 import libgdx.shaders.VignetteShader;
 import libgdx.stage.GuiStage;

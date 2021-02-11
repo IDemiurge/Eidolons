@@ -4,7 +4,7 @@ import eidolons.content.PROPS;
 import eidolons.entity.obj.attach.HeroClass;
 import eidolons.game.module.herocreator.logic.HeroClassMaster;
 import libgdx.gui.panels.headquarters.tabs.tree.HtNode;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.EventType;

@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import libgdx.GDX;
 import libgdx.bf.generic.ImageContainer;
 import libgdx.shaders.GrayscaleShader;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import eidolons.system.utils.GdxUtil;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.BLENDING;

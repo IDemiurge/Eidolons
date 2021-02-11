@@ -15,7 +15,6 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActor;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueContainer;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.mission.quest.CombatScriptExecutor;
 import eidolons.game.battlecraft.logic.mission.quest.CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION;
@@ -24,24 +23,24 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.dungeons.generator.model.AbstractCoordinates;
 import eidolons.game.module.herocreator.logic.spells.SpellMaster;
-import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.SimpleAnim;
-import eidolons.libgdx.anims.actions.ActionMaster;
-import eidolons.libgdx.anims.fullscreen.FullscreenAnimDataSource;
-import eidolons.libgdx.anims.fullscreen.FullscreenAnims.FULLSCREEN_ANIM;
-import eidolons.libgdx.anims.fullscreen.Screenshake;
-import eidolons.libgdx.anims.main.AnimMaster;
-import eidolons.libgdx.anims.std.DeathAnim;
-import eidolons.libgdx.audio.SoundPlayer;
+import libgdx.GdxMaster;
+import libgdx.anims.SimpleAnim;
+import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.fullscreen.FullscreenAnimDataSource;
+import libgdx.anims.fullscreen.FullscreenAnims.FULLSCREEN_ANIM;
+import libgdx.anims.fullscreen.Screenshake;
+import libgdx.anims.main.AnimMaster;
+import libgdx.anims.std.DeathAnim;
+import libgdx.audio.SoundPlayer;
 import eidolons.content.consts.GraphicData;
 import eidolons.content.consts.SpriteData;
-import eidolons.libgdx.bf.grid.cell.BaseView;
-import eidolons.libgdx.particles.ParticlesSprite.PARTICLES_SPRITE;
-import eidolons.libgdx.particles.spell.SpellVfxMaster;
-import eidolons.libgdx.screens.ScreenMaster;
-import eidolons.libgdx.screens.dungeon.DungeonScreen;
-import eidolons.libgdx.shaders.post.PostFxUpdater.POST_FX_TEMPLATE;
-import eidolons.libgdx.stage.camera.MotionData;
+import libgdx.bf.grid.cell.BaseView;
+import libgdx.particles.ParticlesSprite.PARTICLES_SPRITE;
+import libgdx.particles.spell.SpellVfxMaster;
+import libgdx.screens.ScreenMaster;
+import libgdx.screens.dungeon.DungeonScreen;
+import libgdx.shaders.post.PostFxUpdater.POST_FX_TEMPLATE;
+import libgdx.stage.camera.MotionData;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
@@ -61,12 +60,14 @@ import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.Bools;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
@@ -86,8 +87,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Predicate;
 
 import static eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript.SCRIPT.*;
-import static eidolons.libgdx.bf.GridMaster.getCameraCenter;
-import static eidolons.libgdx.bf.GridMaster.getCenteredPos;
+import static libgdx.bf.GridMaster.getCameraCenter;
+import static libgdx.bf.GridMaster.getCenteredPos;
 import static main.system.auxiliary.log.LogMaster.important;
 
 public class SpeechExecutor {
@@ -96,7 +97,7 @@ public class SpeechExecutor {
     protected final DialogueManager dialogueManager;
     protected final ExecutorHelper helper;
     protected  DialogueHandler handler; //gdx Review - don't want to depend..
-    protected  DialogueContainer container;
+    protected  DialogueContainerAdapter container;
     protected  MetaGameMaster master;
     protected int waitOnEachLine;
     protected boolean waiting;
@@ -278,9 +279,9 @@ public class SpeechExecutor {
                 break;
             case MOVE:
                 unit = getUnit(value);
-                main.system.auxiliary.log.LogMaster.devLog("MOVING: " + unit.getNameAndCoordinate());
+                LogMaster.devLog("MOVING: " + unit.getNameAndCoordinate());
                 unit.setCoordinates((getCoordinate(vars.get(0))));
-                main.system.auxiliary.log.LogMaster.devLog("MOVED: " + unit.getNameAndCoordinate());
+                LogMaster.devLog("MOVED: " + unit.getNameAndCoordinate());
 
                 GuiEventManager.trigger(GuiEventType.UNIT_MOVED, unit);
                 if (isVisionRefreshRequired()) {
@@ -458,13 +459,13 @@ public class SpeechExecutor {
             case WAIT_ANIMS:
                 Predicate<Float> p = delta -> {
                     if (!AnimMaster.getInstance().isDrawing()) {
-                        main.system.auxiliary.log.LogMaster.devLog("Anims waiting unlocked! ");
+                        LogMaster.devLog("Anims waiting unlocked! ");
                         return true;
                     }
-                    main.system.auxiliary.log.LogMaster.devLog("Anims waiting... ");
+                    LogMaster.devLog("Anims waiting... ");
                     return false;
                 };
-                main.system.auxiliary.log.LogMaster.devLog("Anims wait locked! ");
+                LogMaster.devLog("Anims wait locked! ");
                 if (NumberUtils.isInteger(value)) {
                     WaitMaster.waitForCondition(p, Integer.valueOf(value));
                 } else
@@ -497,14 +498,14 @@ public class SpeechExecutor {
                 Lock lock = new ReentrantLock();
                 Condition waiting = lock.newCondition();
                 GdxMaster.onInput(() -> {
-                            main.system.auxiliary.log.LogMaster.devLog("Scripts Unlocking..");
+                            LogMaster.devLog("Scripts Unlocking..");
                             lock.lock();
                             waiting.signal();
                             lock.unlock();
                         },
                         bool ? null : false, bool);
 
-                main.system.auxiliary.log.LogMaster.devLog("Scripts locked!");
+                LogMaster.devLog("Scripts locked!");
                 Timer timer = TimerTaskMaster.newTimer(new TimerTask() {
                     @Override
                     public void run() {
@@ -521,7 +522,7 @@ public class SpeechExecutor {
                     e.printStackTrace();
                 }
                 timer.cancel();
-                main.system.auxiliary.log.LogMaster.devLog("Scripts Unlocked!");
+                LogMaster.devLog("Scripts Unlocked!");
 
                 if (vars.size() > 1) {
                     execute(WAIT, vars.get(1));
@@ -617,7 +618,7 @@ public class SpeechExecutor {
             case FULLSCREEN:
                 FULLSCREEN_ANIM anim = new EnumMaster<FULLSCREEN_ANIM>().retrieveEnumConst(FULLSCREEN_ANIM.class, value);
                 FullscreenAnimDataSource data = new FullscreenAnimDataSource(anim, 1f,
-                        FACING_DIRECTION.NORTH, GenericEnums.BLENDING.SCREEN);
+                        FACING_DIRECTION.NORTH, BLENDING.SCREEN);
 
                 //invert?
                 //flip?
@@ -671,7 +672,7 @@ public class SpeechExecutor {
             case SCRIPT:
                 String d = Texts.getScript(value);
                 if (d != null) {
-                    main.system.auxiliary.log.LogMaster.important("Nested script: " + d);
+                    important("Nested script: " + d);
                     if (!vars.isEmpty() || bool) {
                         Eidolons.onNonGdxThread(() ->
                                 new SpeechScript(d, master).execute());
@@ -688,7 +689,7 @@ public class SpeechExecutor {
                 COMBAT_SCRIPT_FUNCTION func = new EnumMaster<COMBAT_SCRIPT_FUNCTION>().
                         retrieveEnumConst(COMBAT_SCRIPT_FUNCTION.class, VariableManager.removeVarPart(value));
                 if (func == null) {
-                    main.system.auxiliary.log.LogMaster.devLog("NO SUCH SCRIPT or function: " + value);
+                    LogMaster.devLog("NO SUCH SCRIPT or function: " + value);
                 }
                 master.getMissionMaster().getScriptManager().execute(func, Eidolons.getMainHero().getRef(),
                         vars.toArray(new String[0]));
@@ -776,7 +777,7 @@ public class SpeechExecutor {
                 try {
                     DC_SoundMaster.playKeySound(value, volume, random);
                 } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
+                    ExceptionMaster.printStackTrace(e);
                 } finally {
                     SoundPlayer.cinematicSoundOverride = false;
                 }
@@ -1008,7 +1009,7 @@ public class SpeechExecutor {
                     waitOnEachLine = getWaitTime(Integer.valueOf(value), vars);
                 break;
             case TIME:
-                container.getCurrent().setTime(new Float(Integer.valueOf(value)));
+                container. setTime(new Float(Integer.valueOf(value)));
                 break;
             case ABS:
                 WAIT((Integer.valueOf(value)));
@@ -1030,8 +1031,8 @@ public class SpeechExecutor {
             case NEXT:
                 //                container.getCurrent().disableTimer();
                 //                WaitMaster.doAfterWait(getWaitTime(Integer.valueOf(value), vars), () -> container.getCurrent().tryNext());
-                container.getCurrent().disableTimer();
-                container.getCurrent().setTime(new Float(getNextTime(Integer.valueOf(value), vars)));
+                container. disableTimer();
+                container. setTime(new Float(getNextTime(Integer.valueOf(value), vars)));
                 break;
             case DIALOGUE:
                 switch (value) {
@@ -1117,11 +1118,11 @@ public class SpeechExecutor {
     }
 
     protected void resume() {
-        container.getCurrent().resume();
+        container.resume();
     }
 
     protected void pause() {
-        container.getCurrent().pause();
+        container.pause();
     }
 
 
@@ -1161,9 +1162,9 @@ public class SpeechExecutor {
         }
         if (alpha != null) {
             if (ui_bg_both == null) {
-                ActionMaster.addAlphaAction(container, dur, alpha);
+                container.fade(dur, alpha);
             } else
-                ActionMaster.addAlphaAction(ui_bg_both ? container.getCurrent() : container.getBgSprite(), dur, alpha);
+                container.fadeBg(dur, alpha);
         }
     }
 

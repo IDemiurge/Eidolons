@@ -1,7 +1,6 @@
 package eidolons.game.core;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
@@ -12,30 +11,17 @@ import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.core.game.DC_GameObjMaster;
 import eidolons.game.core.state.DC_StateManager;
 import eidolons.game.module.herocreator.logic.party.Party;
-import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.bf.menu.GameMenu;
-import eidolons.libgdx.gui.panels.headquarters.town.TownPanel;
-import eidolons.libgdx.launch.GenericLauncher;
-import eidolons.libgdx.screens.SCREEN_TYPE;
-import eidolons.libgdx.screens.ScreenData;
-import eidolons.libgdx.screens.ScreenMaster;
-import eidolons.libgdx.screens.load.ScreenLoader;
-import eidolons.libgdx.screens.menu.MainMenu;
-import eidolons.macro.MacroGame;
-import eidolons.macro.entity.town.Town;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
+import eidolons.system.libgdx.GdxAdapter;
+import eidolons.system.libgdx.GdxStatic;
 import eidolons.system.test.Debugger;
 import main.game.bf.Coordinates;
 import main.game.core.game.Game;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.log.FileLogManager;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
-import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
 import main.system.sound.AudioEnums;
 
@@ -93,11 +79,7 @@ public class Eidolons {
     }
 
     public static Coordinates getPlayerCoordinates() {
-        if (CoreEngine.isLevelEditor()) {
-            return GridMaster.getCameraCenter();
-        } else {
-            return getMainHero().getCoordinates();
-        }
+        return getMainHero().getCoordinates();
     }
 
     public static Unit getMainHero() {
@@ -123,7 +105,6 @@ public class Eidolons {
 
     public static void gameExited() {
         //        DC_Game toFinilize = game;
-        ScreenLoader.setFirstInitDone(false);
         game.getMetaMaster().gameExited();
 
         SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.MAIN,
@@ -134,27 +115,11 @@ public class Eidolons {
         DC_Game.game = null;
         Game.game = null;
 
-        //        try{toFinilize.finilize();}catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}
-    }
-
-    public static GenericLauncher getLauncher() {
-        return ScreenMaster.launcher;
-    }
-
-    public static void setLauncher(GenericLauncher launcher) {
-        ScreenMaster.launcher = launcher;
     }
 
     public static Party getParty() {
         if (party == null)
-            if (Flags.isMacro()) {
-                if (MacroGame.game == null) {
-                    return null;
-                }
-                return MacroGame.game.getPlayerParty().getParty();
-            } else {
-                return getGame().getMetaMaster().getPartyManager().getParty();
-            }
+            return getGame().getMetaMaster().getPartyManager().getParty();
         return party;
     }
 
@@ -170,10 +135,6 @@ public class Eidolons {
         Eidolons.battleRunning = battleRunning;
     }
 
-    public static MacroGame getMacroGame() {
-        return MacroGame.game;
-    }
-
     public static void restart() {
         new Thread(() -> {
             getGame().getMetaMaster().getMissionMaster().
@@ -186,23 +147,19 @@ public class Eidolons {
     }
 
     public static void exitToMenu() {
+
         Flags.setIggDemoRunning(false);
         DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__ENTER);
         try {
             DC_Game.game.getMetaMaster().gameExited();
-            if (MacroGame.game != null) {
-                if (MacroGame.game.getLoop() != null) {
-                    MacroGame.game.getLoop().setExited(true);
-                }
+            // if (MacroGame.game != null) {
+            //     if (MacroGame.game.getLoop() != null) {
+            //         MacroGame.game.getLoop().setExited(true);
+            //     }
+            // }
 
-            }
-
-            ScreenMaster.getScreen().reset();
+            GdxAdapter.getInstance().getGdxApp().exited();
             gameExited();
-            MainMenu.getInstance().setCurrentItem(null);
-            GameMenu.menuOpen = false;
-            TownPanel.setActiveInstance(null);
-            GdxMaster.setInputProcessor(new InputAdapter());
             showMainMenu();
             MusicMaster.getInstance().scopeChanged(MusicEnums.MUSIC_SCOPE.MENU);
         } catch (Exception e) {
@@ -213,9 +170,7 @@ public class Eidolons {
     }
 
     public static void showMainMenu() {
-        GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
-                new ScreenData(SCREEN_TYPE.MAIN_MENU, "Loading..."));
-
+        GdxAdapter.getInstance().getGdxApp().showMainMenu();
         ScenarioMetaDataManager.missionIndex = 0;
     }
 
@@ -246,13 +201,13 @@ public class Eidolons {
     }
 
     public static void onThisOrNonGdxThread(Runnable o) {
-        if (GdxMaster.isLwjglThread()) {
+        if (GdxStatic.isLwjglThread()) {
             onNonGdxThread(o);
         } else o.run();
     }
 
     public static void onThisOrGdxThread(Runnable o) {
-        if (!GdxMaster.isLwjglThread()) {
+        if (!GdxStatic.isLwjglThread()) {
             Gdx.app.postRunnable(o);
         } else o.run();
     }
@@ -290,9 +245,6 @@ public class Eidolons {
         Eidolons.scope = scope;
     }
 
-    public static Town getTown() {
-        return getGame().getMetaMaster().getTownMaster().getTown();
-    }
 
     public static void tryIt(Runnable o) {
         try {

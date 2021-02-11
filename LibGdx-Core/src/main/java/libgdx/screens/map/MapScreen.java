@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import eidolons.game.core.Eidolons;
 import libgdx.GdxMaster;
-import libgdx.bf.GridCreateData;
+import eidolons.content.consts.GridCreateData;
 import libgdx.bf.grid.GridPanel;
 import libgdx.bf.mouse.InputController;
 import libgdx.bf.mouse.MapInputController;

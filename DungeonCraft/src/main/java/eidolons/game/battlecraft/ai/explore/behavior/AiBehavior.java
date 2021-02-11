@@ -15,7 +15,7 @@ import eidolons.game.battlecraft.ai.tools.path.ActionPath;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
+import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;

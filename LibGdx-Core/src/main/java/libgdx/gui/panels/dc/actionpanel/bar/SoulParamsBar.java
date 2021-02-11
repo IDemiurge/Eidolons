@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
-import libgdx.GdxColorMaster;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.screens.CustomSpriteBatch;
 import libgdx.texture.Sprites;
 import main.content.enums.GenericEnums;

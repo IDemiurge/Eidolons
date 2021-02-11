@@ -3,7 +3,7 @@ package boss.anims.old;
 import boss.BOSS_PART;
 import boss.anims.BossAnimHandler;
 import boss.anims.BossAnims;
-import eidolons.libgdx.gui.generic.GroupX;
+import libgdx.gui.generic.GroupX;
 
 import java.util.LinkedHashSet;
 import java.util.Set;

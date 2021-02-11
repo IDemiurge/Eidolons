@@ -2,7 +2,7 @@ package eidolons.content.values;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.libgdx.anims.AnimEnums;
+import libgdx.anims.AnimEnums;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;

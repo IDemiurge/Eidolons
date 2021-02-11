@@ -8,7 +8,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.struct.Entrance;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
-import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
+import libgdx.bf.light.ShadowMap.SHADE_CELL;
 import main.content.CONTENT_CONSTS;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.game.bf.Coordinates;

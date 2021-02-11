@@ -6,7 +6,7 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.particles.spell.SpellVfxMaster;
+import libgdx.particles.spell.SpellVfxMaster;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;

@@ -16,10 +16,11 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.kotcrab.vis.ui.building.utilities.Alignment;
-import eidolons.libgdx.bf.mouse.GlobalInputController;
-import eidolons.libgdx.gui.panels.TablePanel;
-import eidolons.libgdx.screens.*;
-import eidolons.libgdx.screens.dungeon.DungeonScreen;
+import eidolons.content.consts.VisualEnums;
+import libgdx.bf.mouse.GlobalInputController;
+import libgdx.gui.panels.TablePanel;
+import libgdx.screens.*;
+import libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
 import main.data.filesys.PathFinder;
@@ -57,7 +58,7 @@ public class GdxMaster {
     private static boolean cursorSet;
     private static boolean stackRunnables;
     private static Runnable stackRunnable;
-    private static CURSOR cursor;
+    private static VisualEnums.CURSOR cursor;
     private static CustomSpriteBatch batch;
     private static boolean keyInputBlocked;
 
@@ -488,7 +489,7 @@ public class GdxMaster {
         Gdx.input.setCursorPosition(x, y);
     }
 
-    public static void setCursorType(CURSOR cursor) {
+    public static void setCursorType(VisualEnums.CURSOR cursor) {
         if (GdxMaster.cursor == cursor) {
             return;
         }
@@ -498,19 +499,19 @@ public class GdxMaster {
     }
 
     public static void setDefaultCursor() {
-        setCursorType(CURSOR.DEFAULT);
+        setCursorType(VisualEnums.CURSOR.DEFAULT);
     }
 
     public static void setLoadingCursor() {
         if (Flags.isIDE()) {
             return;
         }
-        setCursorType(CURSOR.LOADING);
+        setCursorType(VisualEnums.CURSOR.LOADING);
     }
 
 
     public static void setTargetingCursor() {
-        setCursorType(CURSOR.TARGETING);
+        setCursorType(VisualEnums.CURSOR.TARGETING);
     }
 
     public static boolean isVisibleEffectively(Actor a) {
@@ -635,45 +636,6 @@ public class GdxMaster {
         return 0;
     }
 
-    public enum CURSOR {
-        DEFAULT(PathFinder.getCursorPath()),
-        TARGETING(32, 32, PathFinder.getTargetingCursorPath()),
-        LOADING(PathFinder.getLoadingCursorPath()),
-        WAITING(PathFinder.getLoadingCursorPath()),
-        ATTACK(PathFinder.getAttackCursorPath()),
-        ATTACK_SNEAK(2, 60, PathFinder.getSneakAttackCursorPath()),
-        SPELL,
-        DOOR_OPEN,
-        LOOT,
-        INTERACT,
-        EXAMINE,
-
-        NO, EMPTY,
-        ;
-        int x, y;
-        private String filePath;
-
-        CURSOR(int x, int y, String filePath) {
-            this.x = x;
-            this.y = y;
-            this.filePath = filePath;
-        }
-
-        CURSOR(String filePath) {
-            this.filePath = filePath;
-        }
-
-        CURSOR() {
-        }
-
-        public String getFilePath() {
-            return filePath;
-        }
-
-        public void setFilePath(String filePath) {
-            this.filePath = filePath;
-        }
-    }
     //    protected static void setAttackTargetingCursor() {
     //        Pixmap pm = new Pixmap(GDX.file(PathFinder.getTargetingCursorPath()));
     //        Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 0, 0));

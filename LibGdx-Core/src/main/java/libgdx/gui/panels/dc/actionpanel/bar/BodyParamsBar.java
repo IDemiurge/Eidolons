@@ -3,7 +3,7 @@ package libgdx.gui.panels.dc.actionpanel.bar;
 import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
-import libgdx.GdxColorMaster;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import main.content.values.parameters.PARAMETER;
 
 import java.util.function.Supplier;

@@ -3,7 +3,7 @@ package main.handlers.gen;
 import eidolons.content.PARAMS;
 import eidolons.content.ValuePages;
 import eidolons.system.content.BfObjPropGenerator;
-import eidolons.system.content.ContentGenerator;
+import eidolons.system.utils.content.ContentGenerator;
 import main.content.DC_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;

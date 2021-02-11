@@ -1,8 +1,8 @@
 package libgdx.gui.panels.headquarters.creation;
 
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.gui.menu.selection.ItemListPanel;
+import libgdx.GdxMaster;
+import libgdx.gui.menu.selection.ItemListPanel;
 import libgdx.GdxMaster;
 import main.content.enums.GenericEnums.ASPECT;
 import main.system.auxiliary.EnumMaster;

@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import libgdx.GdxColorMaster;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.bf.mouse.InputController;
 import libgdx.screens.ScreenMaster;
 import main.content.enums.GenericEnums;

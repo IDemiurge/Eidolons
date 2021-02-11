@@ -2,7 +2,6 @@ package eidolons.system.test;
 
 import eidolons.content.PROPS;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import main.content.DC_TYPE;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;

@@ -3,7 +3,7 @@ package libgdx.anims.sprite;
 import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.BattleFieldObject;
-import libgdx.GdxColorMaster;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.bf.grid.cell.BaseView;
 import libgdx.texture.Sprites;
 import main.content.enums.GenericEnums;

@@ -1,7 +1,7 @@
 package main.level_editor.gui.top;
 
-import eidolons.libgdx.GDX;
-import eidolons.libgdx.gui.panels.TablePanelX;
+import libgdx.GDX;
+import libgdx.gui.panels.TablePanelX;
 import main.level_editor.gui.panels.control.MenuPanel;
 import main.level_editor.gui.screen.LE_Screen;
 

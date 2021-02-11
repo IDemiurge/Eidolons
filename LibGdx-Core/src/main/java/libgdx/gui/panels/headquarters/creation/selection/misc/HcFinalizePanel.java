@@ -6,7 +6,7 @@ import libgdx.gui.panels.headquarters.creation.HcElement;
 import libgdx.gui.panels.headquarters.creation.HcHeroModel;
 import libgdx.gui.panels.headquarters.creation.HeroCreationMaster;
 import libgdx.gui.panels.headquarters.creation.selection.DescriptionScroll;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import libgdx.gui.generic.btn.ButtonStyled;
 import main.content.values.properties.PROPERTY;
 

@@ -2,9 +2,9 @@ package boss.demo.knight;
 
 import boss.anims.generic.BossSpriteVisual;
 import boss.logic.entity.BossUnit;
-import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
-import eidolons.libgdx.assets.Assets;
-import eidolons.libgdx.texture.Sprites;
+import libgdx.anims.sprite.SpriteAnimationFactory;
+import libgdx.assets.Assets;
+import libgdx.texture.Sprites;
 import main.system.launch.CoreEngine;
 
 public class AriusBodyActive extends BossSpriteVisual {

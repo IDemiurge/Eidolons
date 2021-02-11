@@ -3,10 +3,10 @@ package main.level_editor.gui.top;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.kotcrab.vis.ui.layout.HorizontalFlowGroup;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.gui.NinePatchFactory;
-import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SymbolButton;
-import eidolons.libgdx.gui.panels.TablePanelX;
+import libgdx.gui.NinePatchFactory;
+import libgdx.gui.generic.btn.ButtonStyled;
+import libgdx.gui.generic.btn.SymbolButton;
+import libgdx.gui.panels.TablePanelX;
 import main.level_editor.LevelEditor;
 
 public class LE_ButtonStripe extends HorizontalFlowGroup {

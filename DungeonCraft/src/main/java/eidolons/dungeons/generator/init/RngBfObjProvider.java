@@ -1,8 +1,8 @@
 package eidolons.dungeons.generator.init;
 
 import eidolons.dungeons.generator.GeneratorEnums;
-import eidolons.libgdx.bf.overlays.map.WallMap;
-import eidolons.libgdx.particles.ambi.AttachEmitterManager;
+import libgdx.bf.overlays.map.WallMap;
+import libgdx.particles.ambi.AttachEmitterManager;
 import main.content.enums.DungeonEnums;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.entity.BfObjEnums.*;

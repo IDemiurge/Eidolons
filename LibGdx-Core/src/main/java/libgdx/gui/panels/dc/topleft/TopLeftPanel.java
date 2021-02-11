@@ -4,7 +4,7 @@ import libgdx.GdxMaster;
 import libgdx.bf.generic.ImageContainer;
 import libgdx.gui.generic.GroupX;
 import libgdx.gui.panels.dc.topleft.atb.AtbPanel;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 
 public class TopLeftPanel extends GroupX {
 

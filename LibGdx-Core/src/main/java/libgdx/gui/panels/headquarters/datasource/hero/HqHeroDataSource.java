@@ -5,7 +5,7 @@ import eidolons.content.PARAMS;
 import libgdx.gui.datasource.EntityDataSource;
 import libgdx.gui.generic.ValueContainer;
 import libgdx.gui.generic.VerticalValueContainer;
-import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.*;
+import libgdx.gui.panels.dc.unitinfo.datasource.*;
 import libgdx.gui.panels.dc.unitinfo.datasource.*;
 import libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import libgdx.texture.Sprites;

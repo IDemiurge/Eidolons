@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.EidolonsGame;
-import libgdx.GdxColorMaster;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.gui.panels.dc.actionpanel.bar.DualParamBar;
 import libgdx.screens.dungeon.DungeonScreen;
 import libgdx.texture.Textures;

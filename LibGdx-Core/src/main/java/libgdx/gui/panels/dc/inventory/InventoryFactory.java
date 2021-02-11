@@ -4,22 +4,18 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.content.PARAMS;
 import eidolons.content.consts.VisualEnums;
+import eidolons.content.consts.libgdx.GdxUtils;
 import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import libgdx.texture.TextureCache;
 import main.content.DC_TYPE;
-import main.data.DataManager;
-import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.system.auxiliary.NumberUtils;
-import main.system.auxiliary.StrPathBuilder;
-import main.system.images.ImageManager;
 import main.system.text.TextParser;
 
 import java.util.ArrayList;
@@ -37,67 +33,6 @@ public class InventoryFactory {
         this.handler = inventoryClickHandler;
     }
 
-    public static String getArmorIconPath(Entity entity) {
-        return getItemIconPath(entity);
-    }
-
-    public static String getItemIconPath(Entity entity) {
-        if (entity == null) {
-            return "";
-        }
-        DC_TYPE TYPE = (DC_TYPE) entity.getOBJ_TYPE_ENUM();
-        String basePath = "";
-        switch (TYPE) {
-            case ARMOR:
-                basePath = PathFinder.getArmorIconPath();
-                break;
-            case WEAPONS:
-                basePath = PathFinder.getWeaponIconPath();
-                break;
-            case JEWELRY:
-                basePath = PathFinder.getJewelryIconPath();
-                break;
-        }
-        String typeName = entity.getName();
-
-
-        if (entity instanceof DC_HeroSlotItem) {
-            DC_HeroSlotItem item = ((DC_HeroSlotItem) entity);
-            typeName = item.getBaseTypeName();
-            boolean versioned=false;
-            if (TYPE.getName().contains("Crossbow")){
-                typeName = "Crossbow";
-            }
-            if (TYPE == DC_TYPE.ARMOR ) {
-                versioned =true;
-            }
-            if (item instanceof DC_WeaponObj) {
-                versioned=((DC_WeaponObj) item).isAmmo();
-            }
-            if (versioned){
-                int durability = DataManager.getType(item.getBaseTypeName(),
-                 item.getOBJ_TYPE_ENUM()).getIntParam(PARAMS.DURABILITY);
-                float perc = (float) durability / item.getIntParam(PARAMS.C_DURABILITY);
-
-                if (perc < 0.75f) {
-                    typeName += " 2";
-                }
-                if (perc < 1.25f) {
-                    typeName += " 1";
-                }
-        }
-        }
-
-        String path = StrPathBuilder.build(basePath,
-         typeName + ".png");
-        if (!ImageManager.isImage(path))
-            path = entity.getImagePath();
-        return path;
-    }
-
-    public static String getWeaponIconPath(Entity entity) {
-        return getItemIconPath(entity);
-    }
 
     public static String getTooltipsVals(Entity entity) {
         String text = "";

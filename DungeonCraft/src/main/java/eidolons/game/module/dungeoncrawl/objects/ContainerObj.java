@@ -2,7 +2,7 @@ package eidolons.game.module.dungeoncrawl.objects;
 
 import eidolons.content.PROPS;
 import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
+import libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import main.entity.type.ObjType;
 import main.system.datatypes.DequeImpl;
 

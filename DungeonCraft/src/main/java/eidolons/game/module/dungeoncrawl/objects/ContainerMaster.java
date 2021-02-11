@@ -13,14 +13,13 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster.CONTAINER_ACTION;
+import eidolons.game.module.dungeoncrawl.objects.vendor.GoldMaster;
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
-import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerDataSource;
-import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
-import eidolons.libgdx.gui.panels.headquarters.datasource.GoldMaster;
+import eidolons.system.libgdx.GdxAdapter;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
@@ -102,9 +101,8 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     public static boolean loot(Unit unit, DC_Obj obj) {
         unit.getGame().getInventoryManager().setOperationsPool(5);
 
-        Pair<InventoryDataSource, ContainerDataSource> param =
-                new ImmutablePair<>(new InventoryDataSource(unit), new ContainerDataSource(obj, unit));
-        GuiEventManager.trigger(GuiEventType.SHOW_LOOT_PANEL, param);
+
+        GdxAdapter.getInstance().getDataSourceApi().showLootPanel(obj, unit);
 
         if (getSpecialSound(obj) != null) {
             DC_SoundMaster.playStandardSound(getSpecialSound(obj));

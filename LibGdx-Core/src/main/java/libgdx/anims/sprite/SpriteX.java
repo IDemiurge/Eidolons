@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
+import eidolons.content.consts.VisualEnums;
 import libgdx.bf.SuperActor;
 import libgdx.bf.generic.Flippable;
 import libgdx.shaders.ShaderDrawer;
@@ -40,7 +41,7 @@ public class SpriteX extends SuperActor implements Flippable, Blended {
         this(path, null, null);
     }
 
-    public SpriteX(SPRITE_TEMPLATE template, GenericEnums.ALPHA_TEMPLATE alphaTemplate, SpriteAnimation sprite
+    public SpriteX(VisualEnums.SPRITE_TEMPLATE template, GenericEnums.ALPHA_TEMPLATE alphaTemplate, SpriteAnimation sprite
     ) {
         this(null, template, alphaTemplate, GenericEnums.BLENDING.NORMAL);
         this.sprite = sprite;
@@ -52,7 +53,7 @@ public class SpriteX extends SuperActor implements Flippable, Blended {
         this(path, null, alpha, blending);
     }
 
-    public SpriteX(String path, SPRITE_TEMPLATE template,
+    public SpriteX(String path, VisualEnums.SPRITE_TEMPLATE template,
                    GenericEnums.ALPHA_TEMPLATE alphaTemplate, GenericEnums.BLENDING blending) {
         if (alphaTemplate != null) {
             setAlphaTemplate(alphaTemplate);
@@ -264,41 +265,5 @@ public class SpriteX extends SuperActor implements Flippable, Blended {
         return sprite.getBlending();
     }
 
-
-    public enum SPRITE_TEMPLATE {
-        //        WITCH_FLAME,
-        THUNDER(11f, 0.35f, true, 22),
-        THUNDER2(11f, 0.23f, false, 32),
-        ;
-
-        SPRITE_TEMPLATE(float pauseAfterCycle) {
-            this.pauseAfterCycle = pauseAfterCycle;
-        }
-
-        SPRITE_TEMPLATE(float pauseAfterCycle, float scaleRange, boolean reverse, int fps) {
-            this.pauseAfterCycle = pauseAfterCycle;
-            this.scaleRange = scaleRange;
-            this.canBeReverse = reverse;
-            this.fps = fps;
-        }
-
-        SPRITE_TEMPLATE(float pauseAfterCycle, float speedRandomness, float acceleration, float offsetRangeX, float offsetRangeY, float scaleRange) {
-            this.pauseAfterCycle = pauseAfterCycle;
-            this.speedRandomness = speedRandomness;
-            this.acceleration = acceleration;
-            this.offsetRangeX = offsetRangeX;
-            this.offsetRangeY = offsetRangeY;
-            this.scaleRange = scaleRange;
-        }
-
-        public boolean canBeReverse;
-        public int fps;
-        float pauseAfterCycle;
-        float speedRandomness;
-        float acceleration;
-        float offsetRangeX;
-        float offsetRangeY;
-        float scaleRange;
-    }
 
 }

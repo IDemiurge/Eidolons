@@ -7,7 +7,7 @@ import libgdx.bf.generic.FadeImageContainer;
 import libgdx.gui.panels.headquarters.weave.WeaveHighlightable;
 import libgdx.gui.panels.headquarters.weave.model.WeaveDataNode;
 import libgdx.gui.tooltips.SmartClickListener;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import main.system.images.ImageManager;
 
 /**

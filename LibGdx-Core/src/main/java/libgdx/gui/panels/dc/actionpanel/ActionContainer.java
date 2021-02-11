@@ -21,7 +21,7 @@ import libgdx.gui.generic.ValueContainer;
 import libgdx.screens.dungeon.DungeonScreen;
 import libgdx.shaders.DarkShader;
 import libgdx.shaders.GrayscaleShader;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import main.system.images.ImageManager.BORDER;

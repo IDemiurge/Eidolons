@@ -1,9 +1,5 @@
 package eidolons.game.battlecraft.logic.meta.universal;
 
-import eidolons.macro.entity.shop.Shop;
-
-import java.util.List;
-
 /**
  * Created by JustMe on 5/8/2017.
  * <p>

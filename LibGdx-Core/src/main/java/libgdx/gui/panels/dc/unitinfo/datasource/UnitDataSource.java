@@ -11,7 +11,7 @@ import libgdx.StyleHolder;
 import libgdx.gui.UiMaster;
 import libgdx.gui.generic.ValueContainer;
 import libgdx.gui.generic.VerticalValueContainer;
-import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.*;
+import libgdx.gui.panels.dc.unitinfo.tooltips.*;
 import libgdx.gui.panels.dc.unitinfo.tooltips.*;
 import libgdx.gui.tooltips.Tooltip;
 import libgdx.gui.tooltips.ValueTooltip;

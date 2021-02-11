@@ -29,7 +29,7 @@ import libgdx.bf.Borderable;
 import libgdx.bf.GridMaster;
 import libgdx.bf.TargetRunnable;
 import libgdx.bf.decor.shard.ShardVisuals;
-import eidolons.libgdx.bf.grid.cell.*;
+import libgdx.bf.grid.cell.*;
 import libgdx.bf.grid.moving.PlatformCell;
 import libgdx.bf.overlays.GridOverlaysManager;
 import libgdx.gui.generic.GroupX;

@@ -3,7 +3,7 @@ package libgdx.gui.panels.dc.actionpanel;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
-import libgdx.GdxColorMaster;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.StyleHolder;
 import libgdx.gui.LabelX;
 import libgdx.gui.generic.btn.SymbolButton;

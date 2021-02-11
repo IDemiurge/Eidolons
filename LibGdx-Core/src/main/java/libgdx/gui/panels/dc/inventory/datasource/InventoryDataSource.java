@@ -4,7 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.libgdx.gui.panels.dc.inventory.*;
+import libgdx.gui.panels.dc.inventory.*;
 import libgdx.gui.panels.dc.inventory.InvItemActor;
 import libgdx.gui.panels.dc.inventory.InventoryClickHandler;
 import eidolons.content.consts.VisualEnums.CELL_TYPE;

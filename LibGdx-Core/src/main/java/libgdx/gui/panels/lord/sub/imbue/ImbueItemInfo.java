@@ -14,7 +14,7 @@ import libgdx.gui.panels.TablePanelX;
 import libgdx.gui.panels.dc.unitinfo.tooltips.ArmorTooltip;
 import libgdx.gui.panels.dc.unitinfo.tooltips.SlotItemTooltip;
 import libgdx.gui.panels.dc.unitinfo.tooltips.WeaponTooltip;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 
 public class ImbueItemInfo extends TablePanelX {
 

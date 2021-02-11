@@ -2,9 +2,9 @@ package libgdx.gui.panels.headquarters;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import eidolons.libgdx.bf.generic.FadeImageContainer;
-import eidolons.libgdx.gui.generic.GroupX;
-import eidolons.libgdx.gui.tooltips.SmartClickListener;
+import libgdx.bf.generic.FadeImageContainer;
+import libgdx.gui.generic.GroupX;
+import libgdx.gui.tooltips.SmartClickListener;
 import libgdx.gui.generic.GroupX;
 import libgdx.gui.tooltips.SmartClickListener;
 import main.entity.DataModel;

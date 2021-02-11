@@ -3,15 +3,16 @@ package eidolons.game.battlecraft.logic.battlefield.vision;
 import com.badlogic.gdx.graphics.Color;
 import eidolons.ability.effects.common.LightEmittingEffect;
 import eidolons.content.PARAMS;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMap;
+import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMapDataSource;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.state.DC_GameState;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.content.consts.GdxColorMaster;
+import eidolons.system.libgdx.GdxStatic;
 import main.content.enums.GenericEnums;
 import main.entity.EntityCheckMaster;
 import main.entity.Ref;
@@ -33,7 +34,7 @@ public class Illumination {
     private static final boolean BASE_ILLUMINATION = true;
     private static boolean applied;
     private final Map<Obj, LightEmittingEffect> effectCache = new HashMap<>();
-    private ColorMap.Light heroLight;
+    private ColorMapDataSource.LightDS heroLight;
     private boolean resetRequired;
     private final Set<Obj> illuminatedObjs=new LinkedHashSet<>();
 
@@ -50,7 +51,7 @@ public class Illumination {
             return;
         }
         illuminatedObjs.clear();
-        Set<ColorMap.Light> set = new LinkedHashSet<>();
+        Set<ColorMapDataSource.LightDS> set = new LinkedHashSet<>();
         for (Obj obj : DC_Game.game.getStructures()) {
             if (isOutsideBoundaries(obj))
                 continue;
@@ -64,7 +65,7 @@ public class Illumination {
         if (isHeroLightOn()){
         Map<Coordinates, Float> lerp;
         if (heroLight == null) {
-            heroLight = new ColorMap.Light(GdxColorMaster.PALE_GOLD, lerp = new ConcurrentHashMap<>(), GenericEnums.ALPHA_TEMPLATE.GRID_LIGHT);
+            heroLight = new ColorMapDataSource.LightDS(GdxColorMaster.PALE_GOLD, lerp = new ConcurrentHashMap<>(), GenericEnums.ALPHA_TEMPLATE.GRID_LIGHT);
         } else {
             lerp = heroLight.lerp;
         }
@@ -90,7 +91,8 @@ public class Illumination {
         lerp.put(coordinates, 0.9f);
         set.add(heroLight);
         }
-        DC_Game.game.getColorMap().setEmitters(set);
+        DC_Game.game.getColorMapDS().setEmitters(set);
+        GdxStatic.illuminationUpdated(set);
         applied = true;
     }
 

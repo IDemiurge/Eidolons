@@ -7,10 +7,10 @@ import com.bitfire.postprocessing.PostProcessorEffect;
 import com.bitfire.postprocessing.demo.PostProcessing;
 import com.bitfire.postprocessing.effects.*;
 import com.bitfire.postprocessing.effects.Bloom.Settings;
+import eidolons.content.consts.VisualEnums;
 import eidolons.game.netherflame.main.NF_Images;
 import libgdx.GdxMaster;
 import libgdx.bf.Fluctuating;
-import libgdx.screens.SCREEN_TYPE;
 import libgdx.shaders.ShaderMaster.SHADER;
 import libgdx.shaders.post.fx.BloomFx;
 import libgdx.shaders.post.fx.BlurFx;
@@ -99,7 +99,7 @@ public class PostProcessController {
         addFluctuationForEffect(this.discolor = main.crt);
         addFluctuationForEffect(this.bloom = main.bloom);
 
-        initFxForScreen(SCREEN_TYPE.MAIN_MENU);
+        initFxForScreen(VisualEnums.SCREEN_TYPE.MAIN_MENU);
         if (PostProcessController.isTestMode()) {
             bloom.setEnabled(true);
             bloom.setBlurAmount(0.24f);
@@ -146,7 +146,7 @@ public class PostProcessController {
         return instance;
     }
 
-    private void initFxForScreen(SCREEN_TYPE screen_type) {
+    private void initFxForScreen(VisualEnums.SCREEN_TYPE screen_type) {
         switch (screen_type) {
             case MAP:
             case WEAVE:

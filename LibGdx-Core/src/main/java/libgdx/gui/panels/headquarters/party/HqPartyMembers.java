@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import libgdx.gui.panels.headquarters.HqPanel;
 import libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import libgdx.gui.tooltips.SmartClickListener;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import libgdx.texture.TextureCache;
 
 /**

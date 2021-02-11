@@ -1,11 +1,11 @@
 package eidolons.system.text.tips;
 
+import eidolons.content.consts.Images;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.tutorial.TutorialManager;
 import eidolons.game.battlecraft.logic.mission.quest.CombatScriptExecutor;
 import eidolons.game.core.Eidolons;
 import eidolons.game.netherflame.main.NF_Images;
-import eidolons.libgdx.texture.Images;
 import main.data.DataManager;
 import main.system.threading.WaitMaster;
 
@@ -76,25 +76,6 @@ public enum TIP implements TextEvent {
     First_death(false, "", ""),
     HERO_LEVEL_UP(false, "", ""),
 
-    //HERO
-    TRAP_GORR(false, NF_Images.HERO_ART.GORR_128.getPath(),
-            "") {
-        public void run() {
-            TutorialManager.NEXT_HERO = IGG_Demo.HERO_GORR;
-        }
-    },
-    TRAP_GWYNN(false, NF_Images.HERO_ART.GWYN_128.getPath(),
-            "") {
-        public void run() {
-            TutorialManager.NEXT_HERO = IGG_Demo.HERO_DARK_ELF;
-        }
-    },
-    TRAP_GRIMBART(false, NF_Images.HERO_ART.GRIMBART_128.getPath(),
-            "") {
-        public void run() {
-            TutorialManager.NEXT_HERO = IGG_Demo.HERO_GRIMBART;
-        }
-    },
     //TUTORIAL
     TUTORIAL_START(false, NF_Images.BRIEF_ART.APHOLON_SMALL.getPath(),
             "The Transformation has taken a heavy toll on me. Without Apholon and its thousand trapped souls, it is my own soul that must be bled to keep Eidolons from disintegrating. \n" +

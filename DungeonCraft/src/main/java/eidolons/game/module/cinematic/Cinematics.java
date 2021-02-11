@@ -1,8 +1,8 @@
 package eidolons.game.module.cinematic;
 
 import com.badlogic.gdx.math.Interpolation;
-import eidolons.libgdx.anims.fullscreen.Screenshake;
-import eidolons.libgdx.stage.camera.MotionData;
+import libgdx.anims.fullscreen.Screenshake;
+import libgdx.stage.camera.MotionData;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 

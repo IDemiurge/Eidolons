@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.SnapshotArray;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import libgdx.GdxColorMaster;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.bf.GridMaster;
 import libgdx.gui.generic.GroupX;
 import libgdx.particles.EmitterActor;

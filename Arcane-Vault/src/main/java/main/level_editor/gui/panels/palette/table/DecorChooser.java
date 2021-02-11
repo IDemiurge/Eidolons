@@ -2,12 +2,12 @@ package main.level_editor.gui.panels.palette.table;
 
 import com.badlogic.gdx.math.Vector2;
 import eidolons.content.consts.GraphicData;
-import eidolons.libgdx.gui.menu.selection.ItemListPanel;
-import eidolons.libgdx.gui.panels.TablePanel;
-import eidolons.libgdx.gui.panels.headquarters.creation.selection.SelectableImageItem;
-import eidolons.libgdx.gui.panels.headquarters.creation.selection.SelectionImageTable;
-import eidolons.libgdx.gui.tooltips.Tooltip;
-import eidolons.libgdx.gui.tooltips.ValueTooltip;
+import libgdx.gui.menu.selection.ItemListPanel;
+import libgdx.gui.panels.TablePanel;
+import libgdx.gui.panels.headquarters.creation.selection.SelectableImageItem;
+import libgdx.gui.panels.headquarters.creation.selection.SelectionImageTable;
+import libgdx.gui.tooltips.Tooltip;
+import libgdx.gui.tooltips.ValueTooltip;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.metadata.options.LE_OptionsMaster;
 

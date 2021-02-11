@@ -8,8 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.utils.Array;
+import eidolons.content.consts.libgdx.GdxUtils;
 import eidolons.entity.active.DC_ActiveObj;
-import libgdx.GdxImageMaster;
 import libgdx.anims.AnimData;
 import libgdx.anims.actions.ActionMaster;
 import libgdx.anims.sprite.SpriteAnimation;
@@ -73,7 +73,7 @@ public class Weapon3dAnim extends ActionAnim {
     }
 
     public String getTexturePath() {
-        return GdxImageMaster.getAttackActionPath(getActive(), getActive().getActiveWeapon());
+        return GdxUtils.getAttackActionPath(getActive(), getActive().getActiveWeapon());
     }
 
     @Override
@@ -116,7 +116,7 @@ public class Weapon3dAnim extends ActionAnim {
 
     protected String getDefaultTexturePath() {
         return StringMaster.getAppendedImageFile(
-         GdxImageMaster.
+         GdxUtils.
           getAttackActionPath(getActive()), " 64");
     }
 

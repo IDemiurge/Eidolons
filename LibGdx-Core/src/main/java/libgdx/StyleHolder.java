@@ -14,10 +14,10 @@ import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.Menu;
 import com.kotcrab.vis.ui.widget.MenuItem;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
+import eidolons.content.consts.VisualEnums;
 import libgdx.assets.AssetEnums;
 import libgdx.gui.NinePatchFactory;
 import libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import libgdx.stage.GuiStage;
 import libgdx.texture.TextureCache;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.NumberUtils;
@@ -518,7 +518,7 @@ public class StyleHolder {
         return hugeStyle;
     }
 
-    public static LabelStyle getStyle(GuiStage.LABEL_STYLE style) {
+    public static LabelStyle getStyle(VisualEnums.LABEL_STYLE style) {
         return getSizedColoredLabelStyle(style.font, style.size, style.color);
     }
 

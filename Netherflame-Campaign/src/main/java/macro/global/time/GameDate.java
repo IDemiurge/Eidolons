@@ -1,6 +1,6 @@
 package macro.global.time;
 
-import eidolons.libgdx.screens.map.ui.time.MapTimePanel.MOON;
+import libgdx.screens.map.ui.time.MapTimePanel.MOON;
 import eidolons.macro.global.time.GameDate.TIME_UNITS;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.system.auxiliary.EnumMaster;
@@ -8,7 +8,7 @@ import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.data.DataUnit;
 
-import static eidolons.libgdx.screens.map.ui.time.MapTimePanel.MOON.*;
+import static libgdx.screens.map.ui.time.MapTimePanel.MOON.*;
 
 /**
  * months?

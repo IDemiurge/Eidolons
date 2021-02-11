@@ -3,11 +3,11 @@ package libgdx.anims.std;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import libgdx.anims.ANIM_MODS.ANIM_MOD;
 import libgdx.anims.Anim;
 import libgdx.anims.AnimData;
-import libgdx.anims.AnimEnums;
 import libgdx.anims.main.AnimMaster;
 import libgdx.bf.grid.cell.GridCellContainer;
 import libgdx.screens.ScreenMaster;
@@ -38,7 +38,7 @@ public class ActionAnim extends Anim {
         // this.textureSupplier = () -> TextureCache.getOrCreate(imagePath.get());
     }
 
-    public ActionAnim(Entity active, AnimData params, AnimEnums.ANIM_PART part) {
+    public ActionAnim(Entity active, AnimData params, VisualEnums.ANIM_PART part) {
         super(active, params, part);
     }
 

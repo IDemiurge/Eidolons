@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
-import eidolons.libgdx.gui.panels.TablePanelX;
+import libgdx.gui.panels.TablePanelX;
 
 public class TabbedPaneX extends TabbedPane {
 

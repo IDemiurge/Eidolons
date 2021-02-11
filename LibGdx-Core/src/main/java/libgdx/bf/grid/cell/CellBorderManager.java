@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import libgdx.bf.Borderable;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.sound.AudioEnums;

@@ -6,7 +6,7 @@ import main.system.GuiEventType;
 import java.util.List;
 
 public class PuzzleEvents extends GdxEventHandler{
-
+//split global event handlers into groups - ?
     public void init(){
         GuiEventManager.bind(GuiEventType.PUZZLE_VEIL , p-> {
             List list = (List) p.get();

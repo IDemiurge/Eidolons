@@ -4,7 +4,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.core.EUtils;
-import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import eidolons.game.module.dungeoncrawl.struct.Entrance;
 import main.content.CONTENT_CONSTS;
 import main.data.xml.XML_Converter;
 import main.entity.obj.Obj;

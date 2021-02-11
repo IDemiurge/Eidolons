@@ -1,8 +1,8 @@
 package main.level_editor.gui.dialog;
 
 import com.badlogic.gdx.math.Vector2;
-import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.gui.generic.btn.SmartTextButton;
+import libgdx.StyleHolder;
+import libgdx.gui.generic.btn.SmartTextButton;
 import main.system.threading.WaitMaster;
 
 import java.util.Collection;

@@ -11,7 +11,7 @@ import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.cinematic.CinematicLib;
 import eidolons.game.module.cinematic.Cinematics;
-import eidolons.game.module.cinematic.flight.FlightHandler;
+import libgdx.bf.grid.moving.flight.FlightHandler;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.game.netherflame.main.lord.EidolonLord;

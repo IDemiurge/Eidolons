@@ -6,8 +6,8 @@ import eidolons.content.PARAMS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.libgdx.anims.text.FloatingTextMaster;
-import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
+import libgdx.anims.text.FloatingTextMaster;
+import libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.ability.effects.Effects;
 import main.entity.Ref;
 

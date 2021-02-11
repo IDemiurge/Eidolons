@@ -4,10 +4,10 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.logic.HeroCreator;
-import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationSequence.HERO_CREATION_ITEM;
-import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
-import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
-import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
+import libgdx.gui.panels.headquarters.creation.HeroCreationSequence.HERO_CREATION_ITEM;
+import libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
+import libgdx.gui.panels.headquarters.datasource.HqDataMaster;
+import libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
@@ -33,7 +33,7 @@ import static main.system.threading.WaitMaster.waitForInput;
  * use
  */
 public class HeroCreationMaster {
-
+//TODO gdx sync - move back to DC!
 
     public static final boolean NEW_ON_LAUNCH = false;
     public static final boolean TEST_MODE = false;

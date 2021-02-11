@@ -3,7 +3,7 @@ package libgdx.bf.grid.cell;
 import com.badlogic.gdx.graphics.Color;
 import eidolons.game.battlecraft.logic.battlefield.vision.colormap.LightConsts;
 import eidolons.game.battlecraft.logic.battlefield.vision.colormap.LightHandler;
-import libgdx.GdxColorMaster;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 
 public interface Colored {
 

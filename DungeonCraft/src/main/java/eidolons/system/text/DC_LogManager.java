@@ -8,7 +8,7 @@ import eidolons.game.battlecraft.ai.advanced.companion.Order;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.cinematic.Cinematics;
-import eidolons.libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.entity.DataModel;
 import main.entity.Ref;

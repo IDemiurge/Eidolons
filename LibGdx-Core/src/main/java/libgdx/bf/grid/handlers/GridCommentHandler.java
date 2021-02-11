@@ -28,7 +28,7 @@ import libgdx.gui.generic.NoHitGroup;
 import libgdx.gui.panels.dc.logpanel.text.TextBuilder;
 import libgdx.gui.tooltips.SmartClickListener;
 import libgdx.stage.camera.MotionData;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import libgdx.texture.Sprites;
 import libgdx.texture.TextureCache;
 import eidolons.system.options.ControlOptions;

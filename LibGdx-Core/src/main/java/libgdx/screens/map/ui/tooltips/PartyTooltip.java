@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import eidolons.content.consts.VisualEnums;
 import eidolons.game.battlecraft.ai.tools.priority.ThreatAnalyzer;
-import libgdx.GdxColorMaster;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.StyleHolder;
 import libgdx.gui.NinePatchFactory;
 import libgdx.gui.generic.HorGroup;

@@ -5,7 +5,7 @@ import eidolons.puzzle.gridobj.Veil;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.*;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.cinematic.flight.FlightData;
+import libgdx.bf.grid.moving.flight.FlightData;
 import eidolons.game.module.dungeoncrawl.struct.LevelBlock;
 import eidolons.dungeons.generator.model.AbstractCoordinates;
 import eidolons.system.text.DescriptionTooltips;

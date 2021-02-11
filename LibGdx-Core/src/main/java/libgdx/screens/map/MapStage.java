@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import libgdx.bf.generic.ImageContainer;
-import eidolons.libgdx.screens.map.layers.*;
+import libgdx.screens.map.layers.*;
 import libgdx.texture.TextureCache;
 import eidolons.macro.MacroGame;
 import libgdx.screens.map.layers.MapAlphaLayers;

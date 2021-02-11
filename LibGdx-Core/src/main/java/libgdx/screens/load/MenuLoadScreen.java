@@ -1,7 +1,7 @@
 package libgdx.screens.load;
 
+import eidolons.content.consts.VisualEnums;
 import libgdx.assets.AssetEnums;
-import libgdx.screens.SCREEN_TYPE;
 import main.system.launch.Flags;
 
 public class MenuLoadScreen extends LoadScreen {
@@ -21,7 +21,7 @@ public class MenuLoadScreen extends LoadScreen {
     };
 
     public MenuLoadScreen() {
-        super("ui/main/logo fullscreen.png", SCREEN_TYPE.MAIN_MENU,
+        super("ui/main/logo fullscreen.png", VisualEnums.SCREEN_TYPE.MAIN_MENU,
                 Flags.isJarlike()
                         ? Flags.isLiteLaunch() ? atlases_lite : atlasesJar
                         : atlases);

@@ -1,13 +1,10 @@
 package eidolons.game.core;
 
 import com.badlogic.gdx.math.Vector2;
+import eidolons.content.consts.VisualEnums;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.gui.tooltips.ValueTooltip;
-import eidolons.libgdx.screens.SCREEN_TYPE;
-import eidolons.libgdx.screens.ScreenData;
-import eidolons.libgdx.screens.ScreenMaster;
-import eidolons.libgdx.stage.GuiStage;
+import eidolons.system.libgdx.GdxEvents;
+import eidolons.system.libgdx.GdxStatic;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.GenericEnums;
 import main.system.EventCallback;
@@ -41,12 +38,12 @@ public class EUtils {
 
     public static void showTextTooltip(String description) {
         description = TextWrapper.wrapWithNewLine(description, getDefaultTextWrapLength());
-        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, new ValueTooltip(description));
+        GdxEvents.tooltip(description);
 
     }
 
     private static int getDefaultTextWrapLength() {
-        return GdxMaster.getWidth() / 3 / FontMaster.getDefaultStringWidth("1");
+        return GdxStatic.getWidth() / 3 / FontMaster.getDefaultStringWidth("1");
     }
 
     public static void onConfirm(String text) {
@@ -71,7 +68,7 @@ public class EUtils {
                 WaitMaster.receiveInput(WAIT_OPERATIONS.CONFIRM, true);
             }, onAnotherThread);
 
-            if (!GdxMaster.isLwjglThread())
+            if (!GdxStatic.isLwjglThread())
             if (WaitMaster.getWaiters().get(WAIT_OPERATIONS.CONFIRM) != null) {
                 WaitMaster.waitForInput(WAIT_OPERATIONS.CONFIRM);
                 return (boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.CONFIRM);
@@ -118,10 +115,6 @@ public class EUtils {
         GuiEventManager.triggerWithParams(GuiEventType.SHOW_VFX, preset, new Vector2(x, y));
     }
 
-    public static void switchScreen(ScreenData screenData) {
-        GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, screenData);
-    }
-
     public static void bind(GuiEventType eventType, EventCallback callback) {
         GuiEventManager.bind(eventType, callback);
     }
@@ -130,17 +123,12 @@ public class EUtils {
         GuiEventManager.trigger(eventType, param);
     }
 
-    public static void switchBackScreen() {
-        SCREEN_TYPE type = ScreenMaster.getPreviousScreenType();
-        switchScreen(new ScreenData(type));
-    }
-
-    public static void showInfoTextStyled(GuiStage.LABEL_STYLE style, String s) {
-        showInfoText(style + STYLE + s);
-    }
-
     public static void waitAndRun(int i, Runnable o) {
         WaitMaster.WAIT(i);
         Eidolons.onNonGdxThread(o::run);
+    }
+
+    public static void showInfoTextStyled(VisualEnums.LABEL_STYLE style, String s) {
+        showInfoText(style + STYLE + s);
     }
 }

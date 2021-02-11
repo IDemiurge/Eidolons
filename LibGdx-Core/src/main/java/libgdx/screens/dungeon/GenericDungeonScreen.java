@@ -2,6 +2,7 @@ package libgdx.screens.dungeon;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -9,9 +10,9 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.cinematic.Cinematics;
-import libgdx.GdxColorMaster;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.GdxMaster;
-import libgdx.bf.GridCreateData;
+import eidolons.content.consts.GridCreateData;
 import libgdx.bf.GridMaster;
 import libgdx.bf.grid.GridPanel;
 import libgdx.bf.mouse.InputController;
@@ -28,6 +29,7 @@ import main.system.auxiliary.log.Chronos;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
+import org.lwjgl.opengl.GL11;
 
 import static com.badlogic.gdx.graphics.GL20.GL_NICEST;
 import static main.system.GuiEventType.UPDATE_GUI;

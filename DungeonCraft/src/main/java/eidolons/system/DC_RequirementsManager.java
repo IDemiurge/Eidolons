@@ -12,7 +12,7 @@ import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.HeroManager;
 import eidolons.game.module.herocreator.logic.HeroClassMaster;
-import eidolons.libgdx.gui.panels.headquarters.HqMaster;
+import libgdx.gui.panels.headquarters.HqMaster;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;

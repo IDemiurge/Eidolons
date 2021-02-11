@@ -1,8 +1,8 @@
 package libgdx.anims.std;
 
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.libgdx.anims.ANIM_MODS.ANIM_MOD;
-import eidolons.libgdx.anims.AnimData;
+import libgdx.anims.ANIM_MODS.ANIM_MOD;
+import libgdx.anims.AnimData;
 
 import java.util.function.Supplier;
 

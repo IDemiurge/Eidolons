@@ -2,44 +2,27 @@ package eidolons.system.audio;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.content.consts.VisualEnums.ANIM_PART;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
-import eidolons.game.battlecraft.rules.magic.ChannelingRule;
-import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.cinematic.Cinematics;
-import eidolons.libgdx.anims.Anim;
-import eidolons.libgdx.anims.AnimEnums;
-import eidolons.libgdx.anims.AnimEnums.ANIM_PART;
-import eidolons.libgdx.anims.CompositeAnim;
-import eidolons.libgdx.anims.construct.AnimResourceFinder;
-import eidolons.libgdx.audio.SoundPlayer;
-import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.screens.dungeon.DungeonScreen;
-import eidolons.system.content.ContentGenerator;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SoundOptions.SOUND_OPTION;
+import eidolons.system.utils.content.ContentGenerator;
 import main.content.CONTENT_CONSTS.SOUNDSET;
 import main.content.ContentValsManager;
-import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.HeroEnums;
-import main.content.enums.entity.HeroEnums.GENDER;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
-import main.data.DataManager;
 import main.data.filesys.PathFinder;
-import main.entity.Ref;
 import main.entity.obj.Obj;
-import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.PathUtils;
 import main.system.auxiliary.*;
 import main.system.auxiliary.data.FileManager;
@@ -55,27 +38,16 @@ import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
 
-import static eidolons.libgdx.anims.AnimEnums.ANIM_PART.CAST;
-import static eidolons.libgdx.anims.AnimEnums.ANIM_PART.IMPACT;
-
-//import main.game.logic.battle.player.Player;
-
 public class DC_SoundMaster extends SoundMaster {
+    private static  Player soundPlayer;
 
-    public static final PROPERTY[] propsExact = {
-            G_PROPS.NAME, G_PROPS.SPELL_SUBGROUP,
-            G_PROPS.SPELL_GROUP, G_PROPS.ASPECT,
-    };
-    public static final PROPERTY[] props = {
-            PROPS.DAMAGE_TYPE,
-            G_PROPS.SPELL_TYPE,
-    };
-    private static SoundPlayer soundPlayer;
-    private final DungeonScreen screen;
+    public static  Player getSoundPlayer( ) {
+        return soundPlayer;
+    }
 
-    public DC_SoundMaster(DungeonScreen screen) {
-        this.screen = screen;
+    public DC_SoundMaster(Player s) {
         SoundController controller = new SoundController(this);
+        soundPlayer= s;
     }
 
     public static void playRangedAttack(DC_WeaponObj weapon) {
@@ -231,8 +203,7 @@ public class DC_SoundMaster extends SoundMaster {
     private static void setPositionFor(Coordinates c) {
         if (getSoundPlayer() != null)
             try {
-                getSoundPlayer().setPosition(
-                        GridMaster.getCenteredPos(c));
+                getSoundPlayer().setPositionFor(c);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -361,105 +332,12 @@ public class DC_SoundMaster extends SoundMaster {
         getPlayer().play(file);
     }
 
-    public static void bindEvents() {
-        //TODO ON SEPARATE THREAD!!!!
-        GuiEventManager.bind(GuiEventType.ANIMATION_STARTED, p -> {
-            Anim anim = (Anim) p.get();
-            DC_ActiveObj activeObj = (DC_ActiveObj) anim.getActive();
-            try {
-                playAnimStartSound(activeObj, anim.getPart());
-            } catch (Exception e) {
-//                main.system.ExceptionMaster.printStackTrace(e);
-            }
-        });
-        GuiEventManager.bind(GuiEventType.COMPOSITE_ANIMATION_STARTED, p -> {
-            CompositeAnim anim = (CompositeAnim) p.get();
-            DC_ActiveObj activeObj = (DC_ActiveObj) anim.getActive();
-            try {
-                playActionStartSound(activeObj);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-        });
-    }
-
-    private static void playActionStartSound(DC_ActiveObj activeObj) {
-        //TODO
-    }
-
-    public static void playAnimStartSound(DC_ActiveObj activeObj, ANIM_PART part) {
-        if (activeObj instanceof Spell)
-            switch (part) {
-                case PRECAST:
-                case CAST:
-                case RESOLVE:
-                case MISSILE:
-                case IMPACT:
-                case AFTEREFFECT:
-                    playNow(getActionEffectSoundPath((Spell) activeObj, part), 200, 0);
-                    return;
-            }
-        if (activeObj.isMove()) {
-            return;
-        }
-        switch (part) {
-            case PRECAST:
-                ChannelingRule.playChannelingSound(activeObj, activeObj.getOwnerUnit().getGender() == GENDER.FEMALE);
-                getPlayer().playEffectSound(AudioEnums.SOUNDS.PRECAST, activeObj);
-                break;
-            case CAST:
-                getPlayer().playEffectSound(AudioEnums.SOUNDS.CAST, activeObj);
-                break;
-            case RESOLVE:
-                getPlayer().playEffectSound(AudioEnums.SOUNDS.RESOLVE, activeObj);
-                break;
-            case MISSILE:
-                getPlayer().playEffectSound(AudioEnums.SOUNDS.EFFECT, activeObj);
-                break;
-            case IMPACT:
-                playImpact(activeObj);
-                break;
-            case AFTEREFFECT:
-                break;
-        }
-    }
-
     public static void playNow(String sound) {
         getPlayer().playNow(sound);
     }
 
-    public static void preconstructEffectSounds() {
-        for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
-            Spell active = new Spell(type, DC_Player.NEUTRAL, DC_Game.game, new Ref());
-            for (ANIM_PART part : AnimEnums.ANIM_PART.values()) {
-                preconstructSpell(active, part);
-            }
-        }
-    }
 
-    private static void preconstructSpell(Spell spell, ANIM_PART part) {
-        String file = AnimResourceFinder.findResourceForSpell(spell,
-                part.toString(), "", true,
-                getSpellSoundPath(), false);
-        if (file == null) {
-            file = AnimResourceFinder.findResourceForSpell(spell,
-                    part.toString(), "", false,
-                    getSpellSoundPath(), true);
-        }
-        if (file == null) {
-            file = getActionEffectSoundPath(spell, part);
-        }
-        if (file == null) {
-            return;
-        }
-        file = file.replace(PathFinder.getSoundPath().toLowerCase(), "");
-        PROPERTY prop = getProp(part);
-        if (prop == null)
-            return;
-        spell.getType().setProperty(prop, file);
-    }
-
-    private static PROPERTY getProp(ANIM_PART part) {
+    public static PROPERTY getProp(ANIM_PART part) {
         return ContentValsManager.findPROP("SOUND_" + part);
     }
 
@@ -508,7 +386,7 @@ public class DC_SoundMaster extends SoundMaster {
     }
 
     private static String getSpellSound(Spell spell, ANIM_PART part) {
-        if (part != IMPACT) {
+        if (part !=ANIM_PART. IMPACT) {
             return "";
         } //TODO
         if (!spell.getProperty("anim_sound_"+part.getPartPath()).isEmpty()) {
@@ -517,7 +395,7 @@ public class DC_SoundMaster extends SoundMaster {
         if (Cinematics.ON) {
             return "";
         }
-        if (part== CAST) {
+        if (part== ANIM_PART.CAST) {
             return getSpellSoundPath() +
                     spell.getProperty(G_PROPS.CUSTOM_SOUNDSET);
         }
@@ -549,7 +427,7 @@ public class DC_SoundMaster extends SoundMaster {
         return parsed;
     }
 
-    private static String getActionEffectSoundPath(Spell spell, ANIM_PART part) {
+    public static String getActionEffectSoundPath(Spell spell, ANIM_PART part) {
         if (Flags.isIggDemo()) {
             return getSpellSound(spell, part);
         }
@@ -598,11 +476,11 @@ public class DC_SoundMaster extends SoundMaster {
         return null;
     }
 
-    private static String getSpellSoundPath() {
+    public static String getSpellSoundPath() {
         return getPath() + "soundsets/spells/";
     }
 
-    private static void playImpact(DC_ActiveObj activeObj) {
+    public static void playImpact(DC_ActiveObj activeObj) {
         if (activeObj.isAttackAny()) {
             playAttackImpactSound(activeObj.getActiveWeapon(), activeObj.getOwnerUnit(), (Unit) activeObj.getRef().getTargetObj(),
                     activeObj.getIntParam(PARAMS.DAMAGE_LAST_DEALT),
@@ -614,13 +492,8 @@ public class DC_SoundMaster extends SoundMaster {
 //        AudioMaster.getInstance().playRandomSound();
     }
 
-    public static SoundPlayer getSoundPlayer() {
-        return soundPlayer;
-    }
 
-    private static main.system.sound.Player getPlayer() {
-        if (soundPlayer == null)
-            return new Player();
+    public static main.system.sound.Player getPlayer() {
         return soundPlayer;
     }
 
@@ -664,9 +537,4 @@ public class DC_SoundMaster extends SoundMaster {
     }
 
 
-    public void doPlayback(float delta) {
-        if (soundPlayer == null)
-            soundPlayer = new SoundPlayer(screen);
-        soundPlayer.doPlayback(delta);
-    }
 }

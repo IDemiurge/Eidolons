@@ -1,7 +1,6 @@
 package libgdx.stage;
 
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -12,7 +11,6 @@ import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueContainer;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -22,7 +20,6 @@ import eidolons.game.netherflame.main.lord.EidolonLord;
 import libgdx.controls.Controller;
 import libgdx.controls.GlobalController;
 import libgdx.gui.panels.lord.LordPanel;
-import libgdx.GdxColorMaster;
 import libgdx.GdxMaster;
 import libgdx.anims.actions.ActionMaster;
 import libgdx.bf.Fluctuating;
@@ -59,7 +56,6 @@ import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.log.FileLogManager;
-import main.system.graphics.FontMaster;
 import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
@@ -547,33 +543,6 @@ public abstract class GuiStage extends GenericGuiStage implements StageWithClosa
         tipMessageWindow.setPosition(GdxMaster.centerWidth(tipMessageWindow),
                 GdxMaster.centerHeight(tipMessageWindow));
 
-    }
-
-    public enum LABEL_STYLE {
-        AVQ_SMALL(17, FontMaster.FONT.AVQ),
-        AVQ_MED(20, FontMaster.FONT.AVQ),
-        AVQ_LARGE(24, FontMaster.FONT.AVQ),
-
-        MORPH_SMALL(14, FontMaster.FONT.METAMORPH),
-        MORPH_MED(16, FontMaster.FONT.METAMORPH),
-        MORPH_LARGE(20, FontMaster.FONT.METAMORPH),
-
-
-        ;
-
-        public int size;
-        public FontMaster.FONT font;
-        public Color color;
-
-        LABEL_STYLE(int size, FontMaster.FONT font) {
-            this(size, font, GdxColorMaster.getDefaultTextColor());
-        }
-
-        LABEL_STYLE(int size, FontMaster.FONT font, Color color) {
-            this.size = size;
-            this.font = font;
-            this.color = color;
-        }
     }
 
 

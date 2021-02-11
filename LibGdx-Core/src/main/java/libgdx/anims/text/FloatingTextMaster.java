@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import eidolons.ability.effects.common.ModifyStatusEffect;
 import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.FacingEntity;
@@ -16,12 +17,11 @@ import eidolons.game.battlecraft.rules.combat.damage.MultiDamage;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.master.EffectMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import libgdx.GdxColorMaster;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
 import libgdx.anims.Anim;
-import libgdx.anims.AnimEnums;
-import libgdx.anims.AnimEnums.ANIM_PART;
+import eidolons.content.consts.VisualEnums.ANIM_PART;
 import libgdx.anims.Animation;
 import libgdx.anims.CompositeAnim;
 import libgdx.bf.GridMaster;
@@ -466,9 +466,9 @@ public class FloatingTextMaster {
     private ANIM_PART getPart(TEXT_CASES aCase) {
         switch (aCase) {
             case COSTS:
-                return AnimEnums.ANIM_PART.MISSILE;
+                return VisualEnums.ANIM_PART.MISSILE;
         }
-        return AnimEnums.ANIM_PART.IMPACT;
+        return VisualEnums.ANIM_PART.IMPACT;
     }
 
     public void createFloatingText(TEXT_CASES CASE, String arg, Entity entity) {

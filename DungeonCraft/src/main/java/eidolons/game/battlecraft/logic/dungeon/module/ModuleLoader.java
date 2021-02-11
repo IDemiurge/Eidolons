@@ -2,15 +2,13 @@ package eidolons.game.battlecraft.logic.dungeon.module;
 
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.EidolonsGame;
+
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.assets.Assets;
-import eidolons.libgdx.bf.grid.handlers.GridManager;
-import eidolons.libgdx.particles.ambi.AmbienceDataSource;
-import eidolons.libgdx.screens.ScreenMaster;
+import eidolons.system.libgdx.GdxAdapter;
+
 import main.game.bf.BattleFieldManager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -54,7 +52,7 @@ public class ModuleLoader extends DungeonHandler {
     }
 
     public void loadGdxGrid(Module module) {
-        ScreenMaster.getScreen().moduleEntered(module, getObjects(module));
+        GdxAdapter.getInstance().getDungeonScreen().moduleEntered(module, getObjects(module));
     }
 
     private DequeImpl<BattleFieldObject> getObjects(Module module) {
@@ -84,7 +82,7 @@ public class ModuleLoader extends DungeonHandler {
         }
         module.setFirstInit(false);
 
-        GridManager.reset();
+        GuiEventManager.trigger(GuiEventType.GRID_RESET );
         GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, Eidolons.getMainHero());
     }
 
@@ -103,16 +101,16 @@ public class ModuleLoader extends DungeonHandler {
         if (!CoreEngine.isLevelEditor()) {
             spawnEncounters(module);
         }
-        if (module.getData().getValue(LevelStructure.MODULE_VALUE.type).equalsIgnoreCase("boss")) {
-            EidolonsGame.BOSS_FIGHT = true;
-            try {
-                getMetaMaster().initBossModule(module);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-                return ;
-            }
-            // GuiEventManager.trigger(GuiEventType.LOAD_SCOPE, );
-        }
+        // if (module.getData().getValue(LevelStructure.MODULE_VALUE.type).equalsIgnoreCase("boss")) {
+        //     EidolonsGame.BOSS_FIGHT = true;
+        //     try {
+        //         getMetaMaster().initBossModule(module);
+        //     } catch (Exception e) {
+        //         main.system.ExceptionMaster.printStackTrace(e);
+        //         return ;
+        //     }
+        //     // GuiEventManager.trigger(GuiEventType.LOAD_SCOPE, );
+        // }
         //TODO
         //        PositionMaster.initDistancesCache(loading.getId(),
         //                getModule().getEffectiveWidth(),
@@ -132,9 +130,10 @@ public class ModuleLoader extends DungeonHandler {
     private void loadAssets(Module module) {
         String descriptors = module.getData().getValue(LevelStructure.MODULE_VALUE.assets);
         for (String path : ContainerUtils.openContainer(descriptors, ",")) {
+            //TODO gdx Review 2021
             //            BfObjEnums.SPRITES.valueOf()
-            boolean ktx = false;
-            Assets.loadSprite(path );
+            // boolean ktx = false;
+            // Assets.loadSprite(path );
         }
     }
 

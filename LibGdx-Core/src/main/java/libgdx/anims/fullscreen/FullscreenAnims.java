@@ -7,21 +7,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.content.PARAMS;
 import eidolons.content.consts.VisualEnums;
+import eidolons.content.consts.libgdx.GdxUtils;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.GdxImageMaster;
-import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.actions.ActionMaster;
-import eidolons.libgdx.anims.sprite.SpriteAnimation;
-import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
-import eidolons.libgdx.assets.Assets;
-import eidolons.content.consts.SpriteData;
-import eidolons.libgdx.gui.generic.GroupX;
-import eidolons.libgdx.gui.generic.NoHitImage;
-import eidolons.libgdx.texture.TextureCache;
-import libgdx.GdxImageMaster;
 import libgdx.GdxMaster;
+import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.sprite.SpriteAnimation;
+import libgdx.anims.sprite.SpriteAnimationFactory;
 import libgdx.assets.Assets;
+import eidolons.content.consts.SpriteData;
+import libgdx.gui.generic.GroupX;
+import libgdx.gui.generic.NoHitImage;
 import libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
@@ -249,7 +245,7 @@ public class FullscreenAnims extends GroupX {
 
                 String path = PathFinder.getImagePath() + getCorePath() + type;
                 path = FileManager.getRandomFilePathVariant(path, ".png");
-                path = GdxImageMaster.cropImagePath(path);
+                path = GdxUtils.cropImagePath(path);
                 //TODO Anim Review
                 Image img = new NoHitImage(TextureCache.getOrCreateR(path));
                 //                group.addActor(img);

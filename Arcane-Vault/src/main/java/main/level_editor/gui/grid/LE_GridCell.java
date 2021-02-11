@@ -10,12 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.content.consts.GdxColorMaster;
-import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.bf.generic.FadeImageContainer;
-import eidolons.libgdx.bf.grid.cell.GridCellContainer;
-import eidolons.libgdx.gui.LabelX;
+import eidolons.content.consts.libgdx.GdxColorMaster;
+import libgdx.GdxMaster;
+import libgdx.StyleHolder;
+import libgdx.bf.generic.FadeImageContainer;
+import libgdx.bf.grid.cell.GridCellContainer;
+import libgdx.gui.LabelX;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.display.LE_DisplayMode;
@@ -81,7 +81,7 @@ public class LE_GridCell extends GridCellContainer {
 
     @Override
     public void act(float delta) {
-        if (DC_Game.game.getColorMap() == null) {
+        if (DC_Game.game.getColorMapDS() == null) {
             return;
         }
         try {

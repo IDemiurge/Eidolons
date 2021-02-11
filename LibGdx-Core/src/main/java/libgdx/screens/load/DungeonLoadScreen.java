@@ -1,8 +1,8 @@
 package libgdx.screens.load;
 
+import eidolons.content.consts.VisualEnums;
 import libgdx.assets.AssetEnums;
 import libgdx.gui.generic.GearCluster;
-import libgdx.screens.SCREEN_TYPE;
 
 import static libgdx.assets.AssetEnums.ATLAS.UI_DC;
 
@@ -15,7 +15,7 @@ public class DungeonLoadScreen extends LoadScreen{
     GearCluster gears;
 
     public DungeonLoadScreen(String backgroundPath ) {
-        super(backgroundPath, SCREEN_TYPE.DUNGEON, atlasesToLoad);
+        super(backgroundPath, VisualEnums.SCREEN_TYPE.DUNGEON, atlasesToLoad);
     }
 
     @Override

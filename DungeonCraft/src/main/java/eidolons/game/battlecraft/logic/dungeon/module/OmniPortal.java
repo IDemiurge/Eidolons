@@ -2,9 +2,9 @@ package eidolons.game.battlecraft.logic.dungeon.module;
 
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SmartTextButton;
-import eidolons.libgdx.gui.panels.TablePanelX;
+import libgdx.gui.generic.btn.ButtonStyled;
+import libgdx.gui.generic.btn.SmartTextButton;
+import libgdx.gui.panels.TablePanelX;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;

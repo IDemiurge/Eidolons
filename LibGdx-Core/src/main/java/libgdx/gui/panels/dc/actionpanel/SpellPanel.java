@@ -2,7 +2,7 @@ package libgdx.gui.panels.dc.actionpanel;
 
 import libgdx.gui.generic.ValueContainer;
 import libgdx.gui.panels.dc.actionpanel.datasource.SpellDataSource;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 
 import java.util.List;
 

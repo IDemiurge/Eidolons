@@ -9,7 +9,7 @@ import libgdx.StyleHolder;
 import libgdx.bf.generic.ImageContainer;
 import libgdx.gui.generic.ValueContainer;
 import libgdx.gui.panels.TablePanelX;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 

@@ -5,11 +5,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
+import eidolons.content.consts.VisualEnums;
 import eidolons.game.battlecraft.DC_Engine;
 import libgdx.GDX;
 import libgdx.GdxImageMaster;
-import libgdx.anims.AnimEnums;
-import libgdx.anims.AnimEnums.ANIM_PART;
+import eidolons.content.consts.VisualEnums.ANIM_PART;
 import libgdx.assets.Assets;
 import libgdx.particles.Emitter.EMITTER_VALS_SCALED;
 import libgdx.particles.ParticleEffectX;
@@ -473,7 +473,7 @@ public class EmitterMaster extends GdxUtil {
         String spellsPath = "Y:\\Eidolons\\art materials\\psd\\[main]\\spells";
         List<File> imagePool = FileManager.getFilesFromDirectory(spellsPath, false, true);
         imagePool.removeIf(image -> !StringMaster.getFormat(image.getName()).equalsIgnoreCase(".png"));
-        ANIM_PART PART = AnimEnums.ANIM_PART.CAST;
+        ANIM_PART PART = VisualEnums.ANIM_PART.CAST;
         for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
             String root = type.getImagePath();
             File current = FileManager.getFile(PathFinder.getImagePath() + root);

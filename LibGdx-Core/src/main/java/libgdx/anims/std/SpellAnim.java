@@ -3,21 +3,16 @@ package libgdx.anims.std;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.math.MathUtils;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.libgdx.anims.AnimData;
-import eidolons.libgdx.anims.AnimEnums;
-import eidolons.libgdx.anims.main.AnimMaster;
-import eidolons.libgdx.anims.sprite.SpriteAnimation;
-import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
-import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.particles.spell.SpellVfx;
-import eidolons.libgdx.particles.spell.SpellVfxPool;
+import libgdx.anims.AnimData;
 import libgdx.anims.main.AnimMaster;
 import libgdx.anims.sprite.SpriteAnimation;
 import libgdx.anims.sprite.SpriteAnimationFactory;
+import libgdx.bf.GridMaster;
 import libgdx.particles.spell.SpellVfx;
 import libgdx.particles.spell.SpellVfxPool;
 import main.content.enums.entity.SpellEnums;
@@ -46,7 +41,7 @@ public class SpellAnim extends ActionAnim {
 
     SPELL_ANIMS template;
 
-    public SpellAnim(Entity active, AnimData params, SPELL_ANIMS template, AnimEnums.ANIM_PART part) {
+    public SpellAnim(Entity active, AnimData params, SPELL_ANIMS template, VisualEnums.ANIM_PART part) {
         super(active, params, part);
         this.template = template;
     }
@@ -75,7 +70,7 @@ public class SpellAnim extends ActionAnim {
 
     }
 
-    public static String getOverriddenVfx(DC_ActiveObj active, AnimEnums.ANIM_PART part) {
+    public static String getOverriddenVfx(DC_ActiveObj active, VisualEnums.ANIM_PART part) {
         //could be a bit randomized too!
         // enum for vfx after all?
 
@@ -105,7 +100,7 @@ public class SpellAnim extends ActionAnim {
         return data;
     }
 
-    private static String getForGroup(SpellEnums.SPELL_GROUP group, AnimEnums.ANIM_PART part) {
+    private static String getForGroup(SpellEnums.SPELL_GROUP group, VisualEnums.ANIM_PART part) {
         String path = StrPathBuilder.build(part.getPartPath(), group, part.getPartPath());
         if (FileManager.isFile(PathFinder.getRootPath() + PathFinder.getSpellVfxPath() + path)) {
             return path;
@@ -121,7 +116,7 @@ public class SpellAnim extends ActionAnim {
         }
         switch (group) {
             case FIRE:
-                if (part == AnimEnums.ANIM_PART.CAST) {
+                if (part == VisualEnums.ANIM_PART.CAST) {
                     int i = RandomWizard.getRandomInt(4) + 1;
                     if (i == 1) {
                         return "cast/destruction center5";
@@ -129,14 +124,14 @@ public class SpellAnim extends ActionAnim {
                     return "cast/destruction center5";
                 }
 
-                if (part == AnimEnums.ANIM_PART.AFTEREFFECT) {
+                if (part == VisualEnums.ANIM_PART.AFTEREFFECT) {
                     if (RandomWizard.chance(66))
                         return "flow/fire flow";
                     return "flow/fire flow3";
                 }
                 break;
             case SAVAGE:
-                if (part == AnimEnums.ANIM_PART.CAST) {
+                if (part == VisualEnums.ANIM_PART.CAST) {
                     int i = RandomWizard.getRandomInt(2) + 1;
                     if (i == 1) {
                         return "cast/savage center";
@@ -219,7 +214,7 @@ public class SpellAnim extends ActionAnim {
                 }
                 break;
             case WITCHERY:
-                if (part == AnimEnums.ANIM_PART.CAST) {
+                if (part == VisualEnums.ANIM_PART.CAST) {
                     int i = RandomWizard.getRandomInt(2) + 1;
                     if (i == 1) {
                         return "cast/witchery center";
@@ -230,14 +225,14 @@ public class SpellAnim extends ActionAnim {
             case SHADOW:
                 //                "breath"
 
-                if (part == AnimEnums.ANIM_PART.MISSILE) {
+                if (part == VisualEnums.ANIM_PART.MISSILE) {
                     //                    if (RandomWizard.chance(66))
                     //                        return "missile/shadow missile3";
                     //                    if (RandomWizard.chance(66))
                     //                        return "missile/dark writhe";
                     //                    return "missile/shadow missile2";
                 }
-                if (part == AnimEnums.ANIM_PART.CAST) {
+                if (part == VisualEnums.ANIM_PART.CAST) {
                     int i = RandomWizard.getRandomInt(2) + 1;
                     if (i == 1) {
                         return "cast/shadow center";
@@ -246,7 +241,7 @@ public class SpellAnim extends ActionAnim {
                 }
                 break;
             case PSYCHIC:
-                if (part == AnimEnums.ANIM_PART.CAST) {
+                if (part == VisualEnums.ANIM_PART.CAST) {
                     int i = RandomWizard.getRandomInt(6) + 1;
                     if (i == 1) {
                         return "cast/witchery circle slow";
@@ -350,7 +345,7 @@ public class SpellAnim extends ActionAnim {
         return null;
     }
 
-    private static String getForName(AnimEnums.ANIM_PART part, String name) {
+    private static String getForName(VisualEnums.ANIM_PART part, String name) {
         switch (name) {
             case "Burst of Rage":
             case "Shadow Fury":
@@ -370,7 +365,7 @@ public class SpellAnim extends ActionAnim {
         return null;
     }
 
-    private boolean isVfxOverridden(DC_ActiveObj active, AnimEnums.ANIM_PART part) {
+    private boolean isVfxOverridden(DC_ActiveObj active, VisualEnums.ANIM_PART part) {
         return getOverriddenVfx(active, part) != null;
     }
 
@@ -439,7 +434,7 @@ public class SpellAnim extends ActionAnim {
         return reslt;
     }
 
-    private float getDefaultVfxSpeed(AnimEnums.ANIM_PART part) {
+    private float getDefaultVfxSpeed(VisualEnums.ANIM_PART part) {
         switch (part) {
             //            case CAST:
             //                return 1.18f;

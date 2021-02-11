@@ -3,7 +3,7 @@ package libgdx.gui.panels.headquarters.weave.actor;
 import libgdx.anims.actions.ActionMaster;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.gui.panels.headquarters.weave.WeaveHighlightable;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 
 /**
  * Created by JustMe on 6/25/2018.

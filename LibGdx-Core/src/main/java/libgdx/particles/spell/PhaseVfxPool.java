@@ -1,7 +1,7 @@
 package libgdx.particles.spell;
 
 import com.badlogic.gdx.utils.Pool;
-import libgdx.anims.AnimEnums.ANIM_PART;
+import eidolons.content.consts.VisualEnums.ANIM_PART;
 import libgdx.particles.PhaseVfx;
 
 import java.util.HashMap;

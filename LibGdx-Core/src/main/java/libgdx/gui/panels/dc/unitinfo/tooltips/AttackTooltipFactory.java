@@ -12,7 +12,7 @@ import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.battlecraft.rules.combat.attack.DC_AttackMaster;
 import eidolons.game.battlecraft.rules.combat.attack.SneakRule;
 import eidolons.game.battlecraft.rules.perk.RangeRule;
-import libgdx.GdxColorMaster;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.gui.NinePatchFactory;
 import libgdx.gui.generic.ValueContainer;
 import libgdx.gui.panels.TablePanelX;

@@ -16,9 +16,6 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.netherflame.main.NF_Images;
 import eidolons.game.netherflame.main.NF_Meta;
 import eidolons.game.netherflame.main.NF_MetaMaster;
-import eidolons.libgdx.anims.main.AnimMaster;
-import eidolons.libgdx.anims.std.sprite.ShadowAnimation;
-import eidolons.libgdx.shaders.post.PostFxUpdater;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.GameplayOptions;
 import eidolons.system.options.OptionsMaster;
@@ -35,7 +32,7 @@ import main.system.sound.AudioEnums;
 import main.system.threading.WaitMaster;
 
 import static eidolons.system.text.tips.TIP.*;
-
+@Deprecated
 public class ShadowMaster extends MetaGameHandler<NF_Meta> {
 
     private static final boolean TEST_MODE = false;
@@ -94,11 +91,12 @@ public class ShadowMaster extends MetaGameHandler<NF_Meta> {
             return;
         summonActive = true;
         getGame().getLoop().setPaused(true);
-        AnimMaster.waitForAnimations(null);
-        DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__SHADOW_FALL);
-        ShadowAnimation anim = new ShadowAnimation(true, (Entity) event.getRef().getActive(),
-                () -> afterFall(event));
-        GuiEventManager.trigger(GuiEventType.CUSTOM_ANIMATION, anim);
+        //TODO Gdx sync
+        // AnimMaster.waitForAnimations(null);
+        // DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__SHADOW_FALL);
+        // ShadowAnimation anim = new ShadowAnimation(true, (Entity) event.getRef().getActive(),
+        //         () -> afterFall(event));
+        // GuiEventManager.trigger(GuiEventType.CUSTOM_ANIMATION, anim);
 
     }
 
@@ -174,16 +172,17 @@ public class ShadowMaster extends MetaGameHandler<NF_Meta> {
         if (!shadowAlive)
             return;
         LogMaster.log(1, "SHADOW: victory ");
-        AnimMaster.waitForAnimations(null);
 
-        ShadowAnimation anim = new ShadowAnimation(false, (Entity) event.getRef().getActive(),
-                () -> afterVictory(event)) {
-            @Override
-            protected Animation.PlayMode getPlayMode() {
-                return Animation.PlayMode.REVERSED;
-            }
-        };
-        GuiEventManager.trigger(GuiEventType.CUSTOM_ANIMATION, anim);
+        //TODO Gdx sync
+        // AnimMaster.waitForAnimations(null);
+        // ShadowAnimation anim = new ShadowAnimation(false, (Entity) event.getRef().getActive(),
+        //         () -> afterVictory(event)) {
+        //     @Override
+        //     protected Animation.PlayMode getPlayMode() {
+        //         return Animation.PlayMode.REVERSED;
+        //     }
+        // };
+        // GuiEventManager.trigger(GuiEventType.CUSTOM_ANIMATION, anim);
 
     }
 
@@ -202,7 +201,7 @@ public class ShadowMaster extends MetaGameHandler<NF_Meta> {
 
         shade.getGame().getLoop().setPaused(true);
 
-        AnimMaster.waitForAnimations(null);
+        // AnimMaster.waitForAnimations(null);
         String msg = outOfTime ? DEATH_SHADE_TIME.getMessage() : DEATH_SHADE
                 .getMessage();
         String btn = "Onward!";
@@ -249,12 +248,13 @@ public class ShadowMaster extends MetaGameHandler<NF_Meta> {
         //horrid sound!
         DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__SHADOW_SUMMON);
 
-        ShadowAnimation anim = new ShadowAnimation(false, (Entity) event.getRef().getActive(),
-                () -> {
-                    GuiEventManager.trigger(GuiEventType.POST_PROCESSING, PostFxUpdater.POST_FX_TEMPLATE.UNCONSCIOUS);
-                    DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__DREAD);
-                });
-        GuiEventManager.trigger(GuiEventType.CUSTOM_ANIMATION, anim);
+        //TODO Gdx sync
+        // ShadowAnimation anim = new ShadowAnimation(false, (Entity) event.getRef().getActive(),
+        //         () -> {
+        //             GuiEventManager.trigger(GuiEventType.POST_PROCESSING, PostFxUpdater.POST_FX_TEMPLATE.UNCONSCIOUS);
+        //             DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__DREAD);
+        //         });
+        // GuiEventManager.trigger(GuiEventType.CUSTOM_ANIMATION, anim);
         shadowAlive = true;
         summonActive = false;
     }

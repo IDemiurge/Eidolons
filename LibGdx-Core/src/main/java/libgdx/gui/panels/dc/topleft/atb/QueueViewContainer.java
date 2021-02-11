@@ -11,7 +11,7 @@ import libgdx.anims.sprite.SpriteAnimation;
 import libgdx.anims.sprite.SpriteAnimationFactory;
 import libgdx.anims.sprite.SpriteX;
 import libgdx.bf.grid.cell.QueueView;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import libgdx.texture.TextureCache;
 
 class QueueViewContainer extends Container<QueueView> {

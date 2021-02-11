@@ -4,7 +4,7 @@ import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import libgdx.GdxImageMaster;
 import libgdx.gui.panels.headquarters.tabs.tree.HtNode;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import main.content.enums.entity.SkillEnums.MASTERY;
 import main.entity.Entity;
 import main.entity.type.ObjType;

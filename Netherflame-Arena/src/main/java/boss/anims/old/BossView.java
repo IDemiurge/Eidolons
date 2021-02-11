@@ -3,9 +3,9 @@ package boss.anims.old;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import eidolons.libgdx.bf.generic.FadeImageContainer;
-import eidolons.libgdx.bf.grid.cell.UnitViewOptions;
-import eidolons.libgdx.bf.grid.cell.UnitViewSprite;
+import libgdx.bf.generic.FadeImageContainer;
+import libgdx.bf.grid.cell.UnitViewOptions;
+import libgdx.bf.grid.cell.UnitViewSprite;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 

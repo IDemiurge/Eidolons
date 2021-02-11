@@ -4,11 +4,11 @@ import boss.anims.BossAnims;
 import boss.anims.generic.BossVisual;
 import boss.logic.entity.BossUnit;
 import com.badlogic.gdx.utils.Align;
-import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.generic.BlendImageContainer;
-import eidolons.libgdx.bf.generic.FadeImageContainer;
-import eidolons.libgdx.particles.EmitterActor;
-import eidolons.libgdx.texture.Images;
+import libgdx.GdxMaster;
+import libgdx.bf.generic.BlendImageContainer;
+import libgdx.bf.generic.FadeImageContainer;
+import libgdx.particles.EmitterActor;
+import eidolons.content.consts.Images;
 import main.content.enums.GenericEnums;
 
 public class AriusVessel extends BossVisual {

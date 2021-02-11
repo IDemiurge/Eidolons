@@ -2,12 +2,14 @@ package libgdx.audio;
 
 import com.badlogic.gdx.math.Vector2;
 import eidolons.game.module.cinematic.Cinematics;
+import libgdx.bf.GridMaster;
 import libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SoundOptions.SOUND_OPTION;
 import main.content.CONTENT_CONSTS;
 import main.entity.obj.Obj;
+import main.game.bf.Coordinates;
 import main.system.sound.AudioEnums.SOUNDS;
 import main.system.sound.Player;
 import main.system.sound.SoundFx;
@@ -19,7 +21,7 @@ import java.util.Stack;
  */
 public class SoundPlayer extends Player {
     Stack<SoundFx> playQueue = new Stack();
-//    List<SoundFx> playing = new ArrayList<>();
+    //    List<SoundFx> playing = new ArrayList<>();
 
     DungeonScreen dungeonScreen;
     private Vector2 position;
@@ -32,18 +34,18 @@ public class SoundPlayer extends Player {
     }
 
 
-
     public enum SOUND_TYPE {
         VOICE,
     }
 
-    public void playEffectSound(final SOUNDS sound_type, final Obj obj ) {
+    public void playEffectSound(final SOUNDS sound_type, final Obj obj) {
         if (Cinematics.ON) {
             if (!cinematicSoundOverride)
                 return;
         }
-        super.playEffectSound(sound_type, obj );
+        super.playEffectSound(sound_type, obj);
     }
+
     public void playEffectSound(final SOUNDS sound_type, final Obj obj, int volumePercentage) {
         if (Cinematics.ON) {
             if (!cinematicSoundOverride)
@@ -51,7 +53,6 @@ public class SoundPlayer extends Player {
         }
         super.playEffectSound(sound_type, obj, volumePercentage);
     }
-
 
 
     protected SOUND_TYPE getSoundType(SOUNDS sound_type) {
@@ -100,7 +101,7 @@ public class SoundPlayer extends Player {
 
     @Override
     public int getVolume() {
-//        OptionsMaster.getVar
+        //        OptionsMaster.getVar
         return super.getVolume();
     }
 
@@ -118,6 +119,11 @@ public class SoundPlayer extends Player {
         playQueue.add(sound);
     }
 
+    @Override
+    public void play(String path, Coordinates c, float vol) {
+        Vector2 v = GridMaster.getCenteredPos(c);
+        playQueue.add(new SoundFx(path, vol, 0, v));
+    }
     public void setPosition(Vector2 position) {
         this.position = position;
     }
@@ -126,15 +132,15 @@ public class SoundPlayer extends Player {
         if (playQueue.isEmpty()) {
         } else {
             if (isWaitBetweenSounds())
-            if (waitTime >= 0) {
-                waitTime -= delta;
-                return;
-            }
+                if (waitTime >= 0) {
+                    waitTime -= delta;
+                    return;
+                }
 
             SoundFx soundFx = playQueue.pop();
-//                playing.add(sound);
-//                if (sound.getDelay()!=0)
-//                    sound.setDelay( - delta);
+            //                playing.add(sound);
+            //                if (sound.getDelay()!=0)
+            //                    sound.setDelay( - delta);
             if (dungeonScreen != null)
                 if (soundFx.getOrigin() != null) {
                     float x = dungeonScreen.controller.getXCamPos();
@@ -166,5 +172,10 @@ public class SoundPlayer extends Player {
     @Override
     public void setVolume(int volume) {
         super.setVolume(volume);
+    }
+
+    @Override
+    public void setPositionFor(Coordinates c) {
+        setPosition(GridMaster.getCenteredPos(c));
     }
 }

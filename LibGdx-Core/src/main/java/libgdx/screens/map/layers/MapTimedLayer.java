@@ -3,7 +3,7 @@ package libgdx.screens.map.layers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import eidolons.libgdx.screens.map.MapScreen;
+import libgdx.screens.map.MapScreen;
 import eidolons.macro.MacroGame;
 import eidolons.macro.global.time.MacroTimeMaster;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;

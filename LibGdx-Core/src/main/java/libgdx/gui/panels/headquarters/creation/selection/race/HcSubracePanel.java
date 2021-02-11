@@ -3,7 +3,7 @@ package libgdx.gui.panels.headquarters.creation.selection.race;
 import eidolons.content.DC_ContentValsManager;
 import libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import libgdx.gui.panels.headquarters.creation.selection.SelectionImageTable;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.enums.entity.HeroEnums.RACE;

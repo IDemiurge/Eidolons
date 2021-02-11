@@ -40,6 +40,7 @@ import main.system.launch.Flags;
 
 import java.util.function.Function;
 
+import static libgdx.screens.ScreenMaster.getGrid;
 import static main.system.GuiEventType.*;
 
 public abstract class GridCell extends BlockableGroup implements Borderable, Colored {
@@ -247,7 +248,7 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
                 "\n gamma=" + DC_Game.game.getVisionMaster().getGammaMaster().
                 getGammaForCell(getGridX(), getGridY())
                 + "\n color = "
-                + cell.getGame().getColorMap().getOutput().get(cell.getCoordinates());
+                + getGrid().getColorMap ().getOutput().get(cell.getCoordinates());
     }
 
     protected boolean isCoordinatesShown() {

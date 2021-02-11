@@ -8,7 +8,7 @@ import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.puzzle.gridobj.GridObject;
-import libgdx.GdxColorMaster;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.anims.actions.ActionMaster;
 import libgdx.anims.actions.RotateByActionLimited;
 import libgdx.anims.sprite.SpriteX;

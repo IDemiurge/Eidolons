@@ -31,7 +31,7 @@ import com.bitfire.postprocessing.filters.Combine;
 import com.bitfire.postprocessing.filters.CrtScreen.Effect;
 import com.bitfire.postprocessing.filters.CrtScreen.RgbMode;
 import com.bitfire.postprocessing.filters.RadialBlur;
-import eidolons.libgdx.shaders.post.fx.BloomFx;
+import libgdx.shaders.post.fx.BloomFx;
 
 /**
  * Encapsulates postprocessing functionalities

@@ -1,10 +1,10 @@
 package libgdx.anims.main;
 
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
 import libgdx.anims.Anim;
-import libgdx.anims.AnimEnums;
-import libgdx.anims.AnimEnums.ANIM_PART;
+import eidolons.content.consts.VisualEnums.ANIM_PART;
 import libgdx.anims.anim3d.Potion3dAnim;
 import libgdx.anims.std.DeathAnim;
 import libgdx.anims.std.DoorAnimation;
@@ -69,9 +69,9 @@ public class EventAnimCreator {
     public static ANIM_PART getPartToAttachTo(Event event) {
         switch (((STANDARD_EVENT_TYPE) event.getType())) {
             case UNIT_HAS_BEEN_KILLED:
-                return AnimEnums.ANIM_PART.AFTEREFFECT;
+                return VisualEnums.ANIM_PART.AFTEREFFECT;
         }
-        return AnimEnums.ANIM_PART.IMPACT;
+        return VisualEnums.ANIM_PART.IMPACT;
     }
 
 }

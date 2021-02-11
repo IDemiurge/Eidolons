@@ -31,8 +31,8 @@ public class ScreenMaster {
     public static VisualEnums.RESOLUTION resolution;
     public static ScreenViewport mainViewport;
     public static GenericLauncher launcher;
-    private static SCREEN_TYPE screenType;
-    private static SCREEN_TYPE previousScreenType;
+    private static VisualEnums.SCREEN_TYPE screenType;
+    private static VisualEnums.SCREEN_TYPE previousScreenType;
 
     public static LwjglApplication getApplication() {
         return application;
@@ -183,17 +183,17 @@ public class ScreenMaster {
         }
     }
 
-    public static void screenSet(SCREEN_TYPE type) {
+    public static void screenSet(VisualEnums.SCREEN_TYPE type) {
         if (screenType != null)
             previousScreenType = screenType;
         screenType = type;
     }
 
-    public static SCREEN_TYPE getScreenType() {
+    public static VisualEnums.SCREEN_TYPE getScreenType() {
         return screenType;
     }
 
-    public static SCREEN_TYPE getPreviousScreenType() {
+    public static VisualEnums.SCREEN_TYPE getPreviousScreenType() {
         return previousScreenType;
     }
 

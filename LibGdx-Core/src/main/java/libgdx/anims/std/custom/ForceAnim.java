@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import eidolons.entity.active.DC_ActiveObj;
-import libgdx.anims.AnimEnums.ANIM_PART;
+import eidolons.content.consts.VisualEnums.ANIM_PART;
 import libgdx.anims.anim3d.Weapon3dAnim;
 import libgdx.anims.sprite.SpriteAnimation;
 import libgdx.anims.sprite.SpriteAnimationFactory;

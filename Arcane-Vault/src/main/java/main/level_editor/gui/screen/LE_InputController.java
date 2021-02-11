@@ -1,7 +1,7 @@
 package main.level_editor.gui.screen;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import eidolons.libgdx.bf.mouse.DungeonInputController;
+import libgdx.bf.mouse.DungeonInputController;
 import main.level_editor.backend.struct.level.LE_Floor;
 
 public class LE_InputController extends DungeonInputController {

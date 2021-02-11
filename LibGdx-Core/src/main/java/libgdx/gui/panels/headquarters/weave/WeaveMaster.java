@@ -1,8 +1,8 @@
 package libgdx.gui.panels.headquarters.weave;
 
-import eidolons.game.core.EUtils;
+import eidolons.content.consts.VisualEnums;
+import eidolons.system.libgdx.GdxStatic;
 import libgdx.gui.panels.headquarters.weave.WeaveSpace.WEAVE_VIEW_MODE;
-import libgdx.screens.SCREEN_TYPE;
 import libgdx.screens.ScreenData;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -14,7 +14,7 @@ public class WeaveMaster {
 
     public static void openWeave() {
         try {
-            EUtils.switchScreen(new ScreenData(SCREEN_TYPE.WEAVE, ""));
+            GdxStatic.switchScreen(new ScreenData(VisualEnums.SCREEN_TYPE.WEAVE, ""));
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }

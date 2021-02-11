@@ -1,7 +1,6 @@
 package eidolons.game.module.dungeoncrawl.quest;
 
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
-import eidolons.libgdx.gui.menu.selection.town.quest.QuestSelectionPanel;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
@@ -21,6 +20,7 @@ import java.util.List;
  */
 public class QuestSelector extends QuestHandler {
 
+    public static final WaitMaster.WAIT_OPERATIONS WAIT_OPERATION = WaitMaster.WAIT_OPERATIONS.CUSTOM_SELECT;
 
     public QuestSelector(QuestMaster questMaster) {
         super(questMaster);
@@ -44,7 +44,7 @@ public class QuestSelector extends QuestHandler {
 
             String result =
              (Flags.isFastMode()) ? DataManager.getRandomType(DC_TYPE.QUEST).getName()
-              : (String) WaitMaster.waitForInput(QuestSelectionPanel.WAIT_OPERATION);
+              : (String) WaitMaster.waitForInput( WAIT_OPERATION);
             if (result == null) {
                 return list;
             }

@@ -8,7 +8,7 @@ import libgdx.bf.generic.FadeImageContainer;
 import libgdx.gui.generic.GroupX;
 import libgdx.gui.generic.NoHitImage;
 import libgdx.gui.panels.TablePanelX;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 
 public class ImbueSoulSlots extends TablePanelX {
     ImbuePanel imbuePanel;

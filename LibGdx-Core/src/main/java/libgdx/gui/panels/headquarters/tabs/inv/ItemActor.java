@@ -2,7 +2,7 @@ package libgdx.gui.panels.headquarters.tabs.inv;
 
 import eidolons.entity.item.DC_HeroItemObj;
 import libgdx.gui.panels.headquarters.HqSlotActor;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 
 /**
  * Created by JustMe on 4/18/2018.

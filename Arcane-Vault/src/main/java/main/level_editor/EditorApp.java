@@ -1,15 +1,15 @@
 package main.level_editor;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import eidolons.content.consts.VisualEnums;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.GDX;
-import eidolons.libgdx.launch.GenericLauncher;
-import eidolons.libgdx.screens.SCREEN_TYPE;
-import eidolons.libgdx.screens.ScreenData;
-import eidolons.libgdx.screens.ScreenMaster;
-import eidolons.libgdx.screens.ScreenWithLoader;
-import eidolons.libgdx.screens.load.ScreenLoader;
+import libgdx.GDX;
+import libgdx.launch.GenericLauncher;
+import libgdx.screens.ScreenData;
+import libgdx.screens.ScreenMaster;
+import libgdx.screens.ScreenWithLoader;
+import libgdx.screens.load.ScreenLoader;
 import main.data.filesys.PathFinder;
 import main.level_editor.backend.struct.level.LE_Floor;
 import main.level_editor.gui.screen.LE_Screen;
@@ -60,7 +60,7 @@ public class EditorApp extends GenericLauncher {
                 //        } else
                 {
                     LE_WaitingScreen newScreen =LE_WaitingScreen.getInstance();
-                    ScreenData meta = new ScreenData(SCREEN_TYPE.EDITOR_WELCOME, "Welcome!");
+                    ScreenData meta = new ScreenData(VisualEnums.SCREEN_TYPE.EDITOR_WELCOME, "Welcome!");
                     newScreen.initLoadingStage(meta);
                     setScreen(newScreen);
                 }

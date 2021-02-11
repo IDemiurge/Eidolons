@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.logic.dungeon.universal;
 import com.badlogic.gdx.graphics.Color;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
-import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMap;
+import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMapDataSource;
 import eidolons.game.battlecraft.logic.battlefield.vision.colormap.LightConsts;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.TransitHandler;
@@ -25,7 +25,7 @@ import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.*;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
-import eidolons.content.consts.GdxColorMaster;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import main.content.enums.DungeonEnums;
 import main.game.bf.Coordinates;
 import main.system.ExceptionMaster;
@@ -69,7 +69,7 @@ public abstract class DungeonMaster {
     private final ModuleLoader moduleLoader;
     private final PlaceholderResolver placeholderResolver;
     private final TransitHandler transitHandler;
-    private ColorMap colorMap;
+    private ColorMapDataSource colorMapDataSource;
 
 
     public DungeonMaster(DC_Game game) {
@@ -181,7 +181,7 @@ public abstract class DungeonMaster {
             }
             map.put(coordinate, new Color(c.r, c.g, c.b, a));
         }
-        colorMap = new ColorMap(map);
+        colorMapDataSource = new ColorMapDataSource(map);
     }
 
     private float getLerp(int size, int dst) {
@@ -386,8 +386,8 @@ public abstract class DungeonMaster {
         return awakener;
     }
 
-    public ColorMap getColorMap() {
-        return colorMap;
+    public ColorMapDataSource getColorMap() {
+        return colorMapDataSource;
     }
 
     public void loadingDone() {

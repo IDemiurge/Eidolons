@@ -8,7 +8,7 @@ import libgdx.StyleHolder;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.gui.LabelX;
 import libgdx.gui.generic.GroupX;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;

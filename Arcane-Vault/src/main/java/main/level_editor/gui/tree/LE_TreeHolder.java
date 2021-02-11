@@ -1,8 +1,8 @@
 package main.level_editor.gui.tree;
 
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.gui.NinePatchFactory;
+import libgdx.StyleHolder;
+import libgdx.gui.NinePatchFactory;
 import main.level_editor.gui.panels.ClosablePanel;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;

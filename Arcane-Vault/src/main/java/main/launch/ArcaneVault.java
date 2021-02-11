@@ -5,7 +5,7 @@ import eidolons.game.Simulation;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
-import eidolons.system.content.ContentGenerator;
+import eidolons.system.utils.content.ContentGenerator;
 import eidolons.system.content.PlaceholderGenerator;
 import eidolons.system.utils.XmlCleaner;
 import main.AV_DataManager;

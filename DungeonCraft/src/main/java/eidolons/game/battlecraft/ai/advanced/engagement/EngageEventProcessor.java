@@ -1,11 +1,9 @@
 package eidolons.game.battlecraft.ai.advanced.engagement;
 
-import com.badlogic.gdx.math.Vector2;
 import com.google.inject.internal.util.ImmutableList;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.libgdx.bf.GridMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.rules.VisionEnums.ENGAGEMENT_LEVEL;
 import main.content.enums.rules.VisionEnums.PLAYER_STATUS;
@@ -14,7 +12,6 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
 import main.system.sound.AudioEnums;
-import main.system.sound.SoundFx;
 import main.system.text.LogManager;
 
 import static main.system.auxiliary.log.LogMaster.log;
@@ -105,11 +102,8 @@ public class EngageEventProcessor {
             game.getLogManager().log((LogManager.LOGGING_DETAIL_LEVEL) event.arg, event.logMsg);
         }
         if (event.soundPath != null) {
-            Vector2 v = GridMaster.getCenteredPos(event.c);
             float vol = 1f;
-            float delay = 0f;
-            SoundFx sound = new SoundFx(event.soundPath, vol, delay, v);
-            DC_SoundMaster.getSoundPlayer().playNow(sound);
+            DC_SoundMaster.getSoundPlayer().play(event.soundPath, event.c, vol);
         }
         if (event.popupText != null) {
             popup(event.popupText);

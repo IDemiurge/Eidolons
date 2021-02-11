@@ -5,7 +5,7 @@ import libgdx.GDX;
 import libgdx.GdxMaster;
 import libgdx.gui.panels.headquarters.HqElement;
 import libgdx.gui.panels.headquarters.HqMaster;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import libgdx.texture.TextureCache;
 
 /**

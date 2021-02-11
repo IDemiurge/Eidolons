@@ -7,7 +7,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
-import eidolons.game.battlecraft.logic.dungeon.module.BridgeMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner.SPAWN_MODE;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitGroupMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
@@ -27,7 +26,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
 import eidolons.game.netherflame.main.misc.PaleAspect;
-import eidolons.libgdx.bf.grid.handlers.GridCommentHandler;
+import eidolons.system.libgdx.GdxAdapter;
 import eidolons.system.text.Texts;
 import eidolons.system.text.tips.TipMessageMaster;
 import main.content.DC_TYPE;
@@ -57,7 +56,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static eidolons.libgdx.bf.grid.handlers.GridCommentHandler.removeSequentialKey;
 import static main.system.threading.WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE;
 
 /**
@@ -234,12 +232,20 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
         return true;
     }
 
+    public static final String ESOTERICA_QUEST = "Secret Scripture";
+    public static String getEsotericaKey(int req) {
+        int n= RandomWizard.getRandomIntBetween(1,3, true);
+        //        if (req<=1) {
+        //            n=1;
+        //        }
+        return "Esoterica comment_"+n;
+    }
     private boolean doEsoterica(Ref ref, String[] args) {
 
-        int n = getGame().getMetaMaster().getQuestMaster().getQuest(BridgeMaster.ESOTERICA_QUEST).getNumberAchieved();
+        int n = getGame().getMetaMaster().getQuestMaster().getQuest(ESOTERICA_QUEST).getNumberAchieved();
         int req = Integer.parseInt(args[1]);
         if (req > n) {
-            String text = BridgeMaster.getEsotericaKey(req);
+            String text = getEsotericaKey(req);
             doComment(Eidolons.getMainHero(), text);
             return false;
         }
@@ -375,14 +381,14 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
         }
         //        GuiEventManager.trigger(GuiEventType.SHOW_COMMENT_PORTRAIT, img, text, c);
 
-        GridCommentHandler.instance.comment_(img, text, c);
-        Eidolons.getGame().getLogManager().log(name + " :" + removeSequentialKey(text));
+        text = GdxAdapter.getInstance().getEventsAdapter().comment(img, text, c);
+        Eidolons.getGame().getLogManager().log(name + " :" +  (text));
         return true;
     }
 
     public static boolean doComment(Unit unit, String key, Vector2 at) {
         //        GuiEventManager.trigger(GuiEventType.SHOW_COMMENT_PORTRAIT, unit, key, at);
-        GridCommentHandler.instance.comment_(unit, key, at);
+         GdxAdapter.getInstance().getEventsAdapter().comment_(unit, key, at);
         return true;
     }
 

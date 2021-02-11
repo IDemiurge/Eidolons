@@ -1,7 +1,7 @@
 package main.level_editor.gui.dialog.struct;
 
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
-import eidolons.libgdx.bf.decor.DecorData;
+import eidolons.content.consts.DecorData;
 import main.system.threading.WaitMaster;
 
 public class DecorEditor extends DataEditDialog< DecorData.DECOR_LEVEL , DecorData> {

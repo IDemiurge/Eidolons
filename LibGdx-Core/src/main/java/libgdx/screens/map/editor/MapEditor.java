@@ -1,8 +1,8 @@
 package libgdx.screens.map.editor;
 
 import com.badlogic.gdx.Gdx;
+import eidolons.content.consts.VisualEnums;
 import libgdx.launch.GenericLauncher;
-import libgdx.screens.SCREEN_TYPE;
 import libgdx.screens.ScreenData;
 import main.data.xml.XML_Reader;
 import main.system.GuiEventManager;
@@ -35,7 +35,7 @@ public class MapEditor extends GenericLauncher {
 
         WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
         Gdx.app.postRunnable(() -> GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
-         new ScreenData(SCREEN_TYPE.MAP, arg)));
+         new ScreenData(VisualEnums.SCREEN_TYPE.MAP, arg)));
     }
 
     public static void main(String[] args) {

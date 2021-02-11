@@ -7,24 +7,15 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Pixmap.Blending;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.content.consts.libgdx.GdxUtils;
 import libgdx.anims.sprite.SpriteAnimation;
 import libgdx.assets.AssetEnums;
-import libgdx.gui.panels.dc.inventory.InventoryFactory;
 import libgdx.gui.panels.dc.topleft.atb.AtbPanel;
 import libgdx.texture.TextureCache;
-import main.content.DC_TYPE;
-import main.content.enums.entity.ActionEnums;
-import main.content.values.properties.G_PROPS;
-import main.data.DataManager;
 import main.data.filesys.PathFinder;
-import main.entity.type.ObjType;
 import main.system.PathUtils;
-import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
-import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
 
@@ -182,7 +173,7 @@ public class GdxImageMaster extends LwjglApplication {
     }
 
     public static Texture createSized(String path, Texture texture, int size, boolean write) {
-        String newPath = getSizedImagePath(path, size);
+        String newPath = GdxUtils.getSizedImagePath(path, size);
 
         FileHandle handle = GDX.file(
                 PathFinder.getImagePath() +
@@ -213,18 +204,6 @@ public class GdxImageMaster extends LwjglApplication {
         }
     }
 
-    public static String getSizedImagePath(String path, int size) {
-        return getSizedImagePath(path, size, null);
-    }
-
-    public static String getSizedImagePath(String path, int size, String cropSuffix) {
-        path = FileManager.formatPath(path);
-        if (cropSuffix != null) {
-            path = StringMaster.cropSuffix(path, cropSuffix);
-        }
-        return StringMaster.cropFormat(path) + " sized " + size + StringMaster.getFormat(path);
-    }
-
     public static void writeImage(FileHandle handle, Pixmap pixmap) {
         PixmapIO.writePNG(handle, pixmap);
     }
@@ -246,7 +225,7 @@ public class GdxImageMaster extends LwjglApplication {
     }
 
     public static TextureRegion round(String path, boolean write, String customPath) {
-        path = cropImagePath(path);
+        path = GdxUtils.cropImagePath(path);
         if (!customPath.isEmpty()) {
             path = customPath;
         }
@@ -349,7 +328,7 @@ public class GdxImageMaster extends LwjglApplication {
     }
 
     public static String getRoundedPath(String path) {
-        path = cropImagePath(path);
+        path = GdxUtils.cropImagePath(path);
         return StringMaster.cropFormat(path) + " rounded.png";
     }
 
@@ -385,71 +364,6 @@ public class GdxImageMaster extends LwjglApplication {
         pixmap.drawPixmap(pixmap2, x, y, 0, 0, width, height);
     }
 
-    public static String appendImagePath(String s) {
-        s = cropImagePath(s);
-        return PathFinder.getImagePath().toLowerCase() + "/" + s;
-    }
-
-    public static String cropImagePath(String s) {
-        s = FileManager.formatPath(s, true, true);
-        return s.replace(PathFinder.getImagePath().toLowerCase(), "");
-    }
-
-    public static String getAttackActionPath(DC_ActiveObj obj) {
-        return getAttackActionPath(obj, obj.getActiveWeapon());
-    }
-
-    public static String getAttackActionPath(DC_ActiveObj obj, DC_WeaponObj weapon) {
-        return (!obj.isStandardAttack() || obj.isThrow()) ? InventoryFactory.getWeaponIconPath(weapon)
-                : getStandardAttackIcon(obj);
-        //            if (obj.isOffhand()){
-        //                Texture texture = GdxImageMaster.flip(path, true, false, true);
-        //                return new TextureRegion(texture);
-        //            }
-    }
-
-    private static String getStandardAttackIcon(DC_ActiveObj obj) {
-        DC_WeaponObj weapon = obj.getActiveWeapon();
-        return getStandardAttackIcon(obj.getType(), weapon.getType());
-    }
-
-    private static String getStandardAttackIcon(String baseType, String weaponGroup,
-                                                ObjType action) {
-        return StrPathBuilder.build("main", "actions", "standard attack",
-                weaponGroup,
-                baseType,
-                action.getName().replace(ActionEnums.OFFHAND, "").replace(" ", "_") + ".png");
-    }
-
-    private static String getStandardAttackIcon(ObjType action, ObjType weapon) {
-        String baseType = weapon.getProperty(G_PROPS.BASE_TYPE);
-        String weaponGroup = weapon.getProperty(G_PROPS.WEAPON_GROUP);
-        String path = getStandardAttackIcon(baseType, weaponGroup, action);
-
-
-        if (!ImageManager.isImage(path)) {
-            path = path.replace("_", "");
-            if (!ImageManager.isImage(path))
-                path = findClosestIcon(action, weapon).replace("_", "");
-        }
-        return path;
-    }
-
-
-    private static String findClosestIcon(ObjType action, ObjType weapon) {
-        String path;
-        String subgroup = weapon.getSubGroupingKey();
-        String baseType;
-        String weaponGroup = weapon.getProperty(G_PROPS.WEAPON_GROUP);
-        for (ObjType sub : DataManager.getTypesSubGroup(DC_TYPE.WEAPONS, subgroup)) {
-            baseType = sub.getName();
-            path = getStandardAttackIcon(baseType, weaponGroup, action);
-            if (ImageManager.isImage(path)) {
-                return path;
-            }
-        }
-        return weapon.getImagePath();
-    }
 
     /*
     could be a batch job for util to init all existing sprite-atlases and create these singles
@@ -463,21 +377,4 @@ public class GdxImageMaster extends LwjglApplication {
         // writeImage(handle, frame);
     }
 
-    public static boolean isRoundedPath(String name) {
-        return name.contains(" rounded");
-    }
-
-    public static boolean isSizedPath(String name) {
-        return name.contains(" sized ");
-    }
-
-    public static boolean isGeneratedFile(String path) {
-        if (path.contains("sized")) {
-            return true;
-        }
-        if (path.contains("rounded")) {
-            return true;
-        }
-        return path.contains(" Copy");
-    }
 }

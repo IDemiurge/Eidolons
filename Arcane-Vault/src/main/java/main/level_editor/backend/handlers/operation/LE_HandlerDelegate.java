@@ -1,7 +1,7 @@
 package main.level_editor.backend.handlers.operation;
 
 import eidolons.content.consts.VisualEnums;
-import eidolons.libgdx.bf.grid.handlers.GridAnimHandler;
+import libgdx.bf.grid.handlers.GridAnimHandler;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.gui.screen.LE_Screen;

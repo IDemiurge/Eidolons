@@ -2,12 +2,12 @@ package eidolons.game.netherflame.main.story.brief;
 
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
-import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.generic.FadeImageContainer;
-import eidolons.libgdx.screens.ScreenData;
-import eidolons.libgdx.screens.ScreenWithLoader;
-import eidolons.libgdx.stage.StageX;
-import eidolons.libgdx.stage.UiStage;
+import libgdx.GdxMaster;
+import libgdx.bf.generic.FadeImageContainer;
+import libgdx.screens.ScreenData;
+import libgdx.screens.ScreenWithLoader;
+import libgdx.stage.StageX;
+import libgdx.stage.UiStage;
 import main.system.EventCallbackParam;
 
 /**

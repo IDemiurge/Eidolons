@@ -1,6 +1,5 @@
 package eidolons.content.consts;
 
-import libgdx.bf.datasource.GraphicData;
 import main.system.auxiliary.ContainerUtils;
 import main.system.data.DataUnit;
 

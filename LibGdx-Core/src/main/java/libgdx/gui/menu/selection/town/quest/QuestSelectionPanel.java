@@ -21,7 +21,6 @@ import static eidolons.game.module.dungeoncrawl.quest.QuestMaster.isPrecreatedQu
  * Created by JustMe on 10/5/2018.
  */
 public class QuestSelectionPanel extends PlaceSelectionPanel {
-    public static final WAIT_OPERATIONS WAIT_OPERATION = WAIT_OPERATIONS.CUSTOM_SELECT;
     Supplier<List<? extends Entity>> dataSupplier;
 
     public QuestSelectionPanel() {

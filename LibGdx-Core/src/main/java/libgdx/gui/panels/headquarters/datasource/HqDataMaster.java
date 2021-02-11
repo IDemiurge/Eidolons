@@ -14,6 +14,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.DroppedItemManager;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.dungeoncrawl.objects.vendor.GoldMaster;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import eidolons.game.module.herocreator.logic.PointMaster;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;

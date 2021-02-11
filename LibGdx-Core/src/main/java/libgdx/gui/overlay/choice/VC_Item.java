@@ -11,7 +11,7 @@ import libgdx.bf.datasource.GraphicData;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.bf.generic.ImageContainer;
 import libgdx.gui.LabelX;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.sound.AudioEnums;

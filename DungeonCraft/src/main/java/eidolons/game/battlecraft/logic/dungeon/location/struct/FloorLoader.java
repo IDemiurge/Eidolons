@@ -9,10 +9,8 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.struct.Entrance;
-import eidolons.libgdx.bf.decor.CellData;
-import eidolons.libgdx.bf.decor.DecorData;
-import eidolons.libgdx.bf.grid.GridPanel;
-import eidolons.libgdx.screens.ScreenMaster;
+import eidolons.content.consts.CellData;
+import eidolons.content.consts.DecorData;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
 import main.data.DataManager;
@@ -323,12 +321,13 @@ public class FloorLoader extends DungeonHandler {
 
 
     protected void initDecor(Map<Coordinates, DecorData> decorMap) {
-        GridPanel dungeonGrid = ScreenMaster.getGrid();
-        if (dungeonGrid != null)
-            Eidolons.onGdxThread(() -> {
-                dungeonGrid.initDecor(decorMap);
-            });
-        else
+        //TODO gdx Review 2021
+        // GridPanel dungeonGrid = ScreenMaster.getGrid();
+        // if (dungeonGrid != null)
+        //     Eidolons.onGdxThread(() -> {
+        //         dungeonGrid.initDecor(decorMap);
+        //     });
+        // else
             GuiEventManager.trigger(GuiEventType.CELL_DECOR_INIT, decorMap);
     }
 

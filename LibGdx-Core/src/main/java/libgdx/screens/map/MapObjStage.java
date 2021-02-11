@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import libgdx.anims.actions.ActionMaster;
 import libgdx.particles.EmitterActor;
 import libgdx.screens.map.editor.EditorManager;
-import eidolons.libgdx.screens.map.obj.*;
+import libgdx.screens.map.obj.*;
 import eidolons.macro.entity.party.MacroParty;
 import eidolons.macro.map.Place;
 import eidolons.macro.map.travel.MapWanderAi;

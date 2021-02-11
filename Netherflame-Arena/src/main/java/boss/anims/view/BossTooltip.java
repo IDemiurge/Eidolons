@@ -1,7 +1,7 @@
 package boss.anims.view;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.libgdx.gui.tooltips.UnitViewTooltip;
+import libgdx.gui.tooltips.UnitViewTooltip;
 
 public class BossTooltip extends UnitViewTooltip {
     public BossTooltip(Actor view) {

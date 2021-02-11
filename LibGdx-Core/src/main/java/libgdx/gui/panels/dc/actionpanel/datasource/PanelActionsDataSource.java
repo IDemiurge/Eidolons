@@ -8,7 +8,7 @@ import libgdx.gui.UiMaster;
 import libgdx.gui.generic.ValueContainer;
 import libgdx.gui.panels.dc.actionpanel.ActionContainer;
 import libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
-import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.*;
+import libgdx.gui.panels.dc.unitinfo.datasource.*;
 import libgdx.gui.panels.dc.unitinfo.datasource.*;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.system.auxiliary.data.ListMaster;

@@ -3,7 +3,7 @@ package macro.map.travel;
 import macro.MacroGame;
 import macro.map.Place;
 import macro.map.Route;
-import eidolons.libgdx.screens.map.editor.MapPointMaster;
+import libgdx.screens.map.editor.MapPointMaster;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;

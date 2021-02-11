@@ -7,7 +7,7 @@ import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.atb.AtbMaster;
 import eidolons.game.module.dungeoncrawl.struct.Entrance;
-import libgdx.GdxColorMaster;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.texture.TextureCache;
 import main.content.CONTENT_CONSTS;
 import main.content.values.properties.G_PROPS;

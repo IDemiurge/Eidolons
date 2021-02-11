@@ -1,2 +1,2 @@
-java -jar packr.jar --platform windows64 --jdk "C:\Program Files\Java\java-14-openjdk-jre-14.0.1-1" --executable eidolons-0.5 --classpath C:\steamworks\sdk\tools\ContentBuilder\content\windows\eidolons-0.5.jar --mainclass eidolons.libgdx.launch.MainLauncher --vmargs Xmx2G --minimizejre soft --output out-win
+java -jar packr.jar --platform windows64 --jdk "C:\Program Files\Java\java-14-openjdk-jre-14.0.1-1" --executable eidolons-0.5 --classpath C:\steamworks\sdk\tools\ContentBuilder\content\windows\eidolons-0.5.jar --mainclass libgdx.launch.MainLauncher --vmargs Xmx2G --minimizejre soft --output out-win
 	 PAUSE

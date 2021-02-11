@@ -2,12 +2,12 @@ package libgdx.gui.generic.btn;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import eidolons.libgdx.bf.generic.ImageContainer;
-import eidolons.libgdx.gui.tooltips.SmartClickListener;
-import eidolons.libgdx.texture.Images;
-import eidolons.libgdx.texture.TextureCache;
+import libgdx.bf.generic.ImageContainer;
 import libgdx.gui.tooltips.SmartClickListener;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
+import libgdx.texture.TextureCache;
+import libgdx.gui.tooltips.SmartClickListener;
+import eidolons.content.consts.Images;
 import libgdx.texture.TextureCache;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;

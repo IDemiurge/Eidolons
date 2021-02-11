@@ -4,7 +4,6 @@ import eidolons.content.PROPS;
 import eidolons.game.core.master.ObjCreator;
 import eidolons.dungeons.generator.GeneratorEnums;
 import eidolons.dungeons.generator.init.RngBfObjProvider;
-import eidolons.libgdx.bf.overlays.map.WallMap;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
 import main.content.enums.GenericEnums;
@@ -71,7 +70,7 @@ public class PlaceholderGenerator {
                     indestructible=true;
             }
             if(indestructible){
-                ObjType newType = new ObjType(type.getName() + WallMap.v(true), type);
+                ObjType newType = new ObjType(type.getName() + StringMaster.wall(true), type);
             newType.addProperty(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.INVULNERABLE.name());
             newType.addProperty(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.INDESTRUCTIBLE.name());
             DataManager.addType(newType);

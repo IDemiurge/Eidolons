@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.scenario;
 
+import eidolons.content.consts.VisualEnums;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.ModuleMaster;
 import eidolons.game.battlecraft.logic.meta.universal.*;
@@ -7,8 +8,8 @@ import eidolons.game.battlecraft.logic.mission.quest.QuestMissionMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.ScenarioGame;
 import eidolons.game.netherflame.main.death.NF_DefeatHandler;
-import eidolons.libgdx.screens.SCREEN_TYPE;
-import eidolons.libgdx.screens.ScreenData;
+import libgdx.screens.SCREEN_TYPE;
+import libgdx.screens.ScreenData;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -61,7 +62,7 @@ public class ScenarioMetaMaster<T extends ScenarioMeta> extends MetaGameMaster<T
             }
         getMetaDataManager().setMissionName(null);
         getMetaDataManager().initData();
-        ScreenData data = new ScreenData(SCREEN_TYPE.DUNGEON, getMissionName());
+        ScreenData data = new ScreenData(VisualEnums.SCREEN_TYPE.DUNGEON, getMissionName());
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
 
         if (restart) {

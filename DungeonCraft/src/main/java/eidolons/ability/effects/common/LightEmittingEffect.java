@@ -3,7 +3,7 @@ package eidolons.ability.effects.common;
 import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PARAMS;
 import eidolons.game.battlecraft.logic.battlefield.vision.Illumination;
-import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMap;
+import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMapDataSource;
 import main.ability.effects.Effect;
 import main.ability.effects.EffectImpl;
 import main.ability.effects.Effects;
@@ -25,7 +25,7 @@ public class LightEmittingEffect extends SpectrumEffect {
     private final GenericEnums.ALPHA_TEMPLATE flicker;
     private final Color color;
     private final Illumination illumination;
-    private ColorMap.Light light;
+    private ColorMapDataSource.LightDS light;
 
     public LightEmittingEffect(String formula, Boolean circular, Color color,
                                GenericEnums.ALPHA_TEMPLATE flicker,
@@ -54,9 +54,9 @@ public class LightEmittingEffect extends SpectrumEffect {
         return true;
     }
 
-    public ColorMap.Light createAndApplyLight() {
+    public ColorMapDataSource.LightDS createAndApplyLight() {
         if (light == null) {
-            light = new ColorMap.Light(color, map = new HashMap<>(), flicker);
+            light = new ColorMapDataSource.LightDS(color, map = new HashMap<>(), flicker);
         }
         apply();
         return light;

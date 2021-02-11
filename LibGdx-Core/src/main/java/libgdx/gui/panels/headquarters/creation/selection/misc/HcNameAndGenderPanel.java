@@ -9,7 +9,7 @@ import libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import libgdx.gui.panels.TablePanelX;
 import libgdx.gui.panels.headquarters.creation.HeroCreationMaster;
 import libgdx.gui.panels.headquarters.creation.selection.SelectionTable;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import eidolons.system.text.NameMaster;
 import libgdx.gui.generic.btn.ButtonStyled;
 import main.content.values.properties.G_PROPS;

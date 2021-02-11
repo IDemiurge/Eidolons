@@ -5,7 +5,7 @@ import libgdx.gui.generic.GroupX;
 import libgdx.gui.panels.headquarters.weave.Weave;
 import libgdx.gui.panels.headquarters.weave.WeaveTree;
 import libgdx.gui.panels.headquarters.weave.model.WeaveDataNode;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import libgdx.texture.TextureCache;
 
 import java.util.HashMap;

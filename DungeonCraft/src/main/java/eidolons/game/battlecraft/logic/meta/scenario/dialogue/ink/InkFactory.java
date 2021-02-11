@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue.ink;
 import com.bladecoder.ink.runtime.Story;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.ink.InkEnums.INK_DIALOGUE_TEMPLATE;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.SpeechDataSource;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.SpeechDataSource;
 import main.data.dialogue.SpeechData;
 
 /**

@@ -1,7 +1,7 @@
 package main.level_editor.gui.stage;
 
-import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.gui.tooltips.ToolTipManager;
+import libgdx.GdxMaster;
+import libgdx.gui.tooltips.ToolTipManager;
 
 public class LE_TooltipManager extends ToolTipManager {
     public LE_TooltipManager(LE_GuiStage guiStage) {

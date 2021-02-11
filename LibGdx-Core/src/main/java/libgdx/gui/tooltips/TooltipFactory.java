@@ -15,7 +15,7 @@ import libgdx.gui.NinePatchFactory;
 import libgdx.gui.generic.ValueContainer;
 import libgdx.gui.panels.TablePanel;
 import libgdx.gui.panels.TablePanelX;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import libgdx.texture.TextureCache;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;

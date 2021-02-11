@@ -1,10 +1,11 @@
 package libgdx.gui.tooltips;
 
 import com.badlogic.gdx.Gdx;
+import eidolons.content.consts.VisualEnums;
+import eidolons.content.consts.libgdx.GdxUtils;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
-import libgdx.GdxImageMaster;
 import libgdx.GdxMaster;
 import libgdx.anims.actions.ActionMaster;
 import libgdx.bf.generic.FadeImageContainer;
@@ -18,7 +19,7 @@ public class CursorDecorator extends NoHitGroup {
     private static CursorDecorator instance;
     GearCluster gears;
     GearCluster smallGears;
-    private GdxMaster.CURSOR cursorType;
+    private VisualEnums.CURSOR cursorType;
     private boolean waiting;
 
     private CursorDecorator() {
@@ -47,13 +48,13 @@ public class CursorDecorator extends NoHitGroup {
         setPosition(x, y);
     }
 
-    private void setCursorType(GdxMaster.CURSOR type) {
+    private void setCursorType(VisualEnums.CURSOR type) {
         if (this.cursorType == type) {
             return;
         }
         this.cursorType = type;
         cursor.setImage(
-                GdxImageMaster.cropImagePath(type.getFilePath()));
+                GdxUtils.cropImagePath(type.getFilePath()));
     }
 
     public void waitingDone() {
@@ -92,10 +93,10 @@ public class CursorDecorator extends NoHitGroup {
         }
         //check special - interactive, ...
         Unit hero = Eidolons.getMainHero();
-        GdxMaster.CURSOR type = GdxMaster.CURSOR.ATTACK;
+        VisualEnums.CURSOR type = VisualEnums.CURSOR.ATTACK;
         boolean hostile = object.getOwner().isHostileTo(hero.getOwner());
         if (hostile) {
-            type = GdxMaster.CURSOR.ATTACK_SNEAK;
+            type = VisualEnums.CURSOR.ATTACK_SNEAK;
         } else {
 
         }

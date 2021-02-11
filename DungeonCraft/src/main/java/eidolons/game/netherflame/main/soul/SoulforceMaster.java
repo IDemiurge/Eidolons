@@ -11,7 +11,6 @@ import eidolons.game.netherflame.main.NF_PartyManager;
 import eidolons.game.netherflame.main.death.ChainHero;
 import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.game.netherflame.main.lord.EidolonLord;
-import eidolons.libgdx.gui.overlay.choice.VC_DataSource;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 
@@ -102,7 +101,7 @@ public class SoulforceMaster extends MetaGameHandler {
         return 20 + Eidolons.getMainHero().getLevel() * 2;
     }
 
-    public Set<ChainHero> getHeroesCanRespawn(VC_DataSource.VC_OPTION chosen) {
+    public Set<ChainHero> getHeroesCanRespawn() {//VC_DataSource.VC_OPTION chosen) {
         if (getGame().getMetaMaster().getPartyManager() instanceof NF_PartyManager) {
             return ((NF_PartyManager) getGame().getMetaMaster().getPartyManager()).getParty().getHeroes();
         }

@@ -20,7 +20,7 @@ import libgdx.screens.ScreenWithAssets;
 import libgdx.screens.ScreenWithLoader;
 import libgdx.screens.dungeon.DungeonScreen;
 import libgdx.screens.load.ScreenLoader;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import libgdx.texture.TextureCache;
 import libgdx.utils.GdxTimeMaster;
 import libgdx.video.VideoMaster;

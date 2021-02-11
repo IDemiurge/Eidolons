@@ -10,6 +10,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.struct.LevelBlock;
 import eidolons.system.ConditionsUtils;
+import eidolons.system.libgdx.GdxAdapter;
 import eidolons.system.libgdx.GdxEvents;
 import main.content.enums.GenericEnums;
 import main.data.ability.construct.VariableManager;
@@ -62,13 +63,13 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
             Coordinates c = puzzle.getEntranceCoordinates();
 
             if (!isAreaEnter()) {
-                GdxEvents.veil(c, false, true);
+                GdxAdapter.getInstance().getEventsAdapter().veil(c, false, true);
             }
             if (isPointExit())
                 if (!puzzleData.getValue(PuzzleData.PUZZLE_VALUE.EXIT).isEmpty()) {
                     c = puzzle.getExitCoordinates();
                     if (c != null) {
-                        GdxEvents.veil(c, false, false);
+                        GdxAdapter.getInstance().getEventsAdapter().veil(c, false, false);
                     }
                 }
         }

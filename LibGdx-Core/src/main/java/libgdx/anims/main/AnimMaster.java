@@ -2,6 +2,7 @@ package libgdx.anims.main;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.DC_Obj;
@@ -14,9 +15,8 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.netherflame.boss.logic.entity.BossUnit;
-import eidolons.libgdx.anims.*;
 import libgdx.anims.*;
-import libgdx.anims.AnimEnums.ANIM_PART;
+import eidolons.content.consts.VisualEnums.ANIM_PART;
 import libgdx.anims.construct.AnimConstructor;
 import libgdx.anims.sprite.SpriteAnimation;
 import libgdx.anims.std.sprite.CustomSpriteAnim;
@@ -87,7 +87,7 @@ public class AnimMaster extends Group {
     }
 
     public static boolean isSmoothStop(Anim anim) {
-        return anim.getPart() != ANIM_PART.CAST; //TODO anim Review - was it too long? on vfx side..
+        return anim.getPart() != VisualEnums.ANIM_PART.CAST; //TODO anim Review - was it too long? on vfx side..
 
     }
 

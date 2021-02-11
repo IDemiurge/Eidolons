@@ -29,7 +29,7 @@ import libgdx.gui.tooltips.SmartClickListener;
 import libgdx.gui.tooltips.ValueTooltip;
 import libgdx.stage.Blocking;
 import libgdx.stage.StageWithClosable;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import libgdx.texture.TextureCache;
 import eidolons.system.audio.DC_SoundMaster;
 import libgdx.gui.generic.btn.ButtonStyled;

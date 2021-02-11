@@ -2,6 +2,7 @@ package libgdx.utils;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import eidolons.content.consts.libgdx.GdxUtils;
 import libgdx.GdxImageMaster;
 import libgdx.anims.sprite.SpriteAnimation;
 import libgdx.anims.sprite.SpriteAnimationFactory;
@@ -30,7 +31,7 @@ public class SpriteCutter extends GdxUtil {
     protected void execute() {
         CoreEngine.systemInit();
         for (File file : FileManager.getFilesFromDirectory(PathFinder.getSpritesPathFull()+"/to cut/", false, true)) {
-            SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(GdxImageMaster.cropImagePath(file.getPath()));
+            SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(GdxUtils.cropImagePath(file.getPath()));
             int i=0;
             for (TextureRegion region : sprite.getKeyFrames()) {
                 FileHandle handle= getHandle(region.getRegionWidth() + "_" +region.getRegionHeight(), file, i++);

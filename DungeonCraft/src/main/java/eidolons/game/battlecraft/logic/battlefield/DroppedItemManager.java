@@ -6,7 +6,7 @@ import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
-import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
+import libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import eidolons.system.ObjUtilities;
 import main.content.enums.entity.ItemEnums;
 import main.content.values.properties.G_PROPS;

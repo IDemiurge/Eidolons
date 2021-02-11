@@ -2,7 +2,7 @@ package eidolons.system.utils.file;
 
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.libgdx.assets.AssetEnums;
+import libgdx.assets.AssetEnums;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;

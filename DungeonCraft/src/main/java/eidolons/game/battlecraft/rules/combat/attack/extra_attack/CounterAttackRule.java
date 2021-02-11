@@ -6,7 +6,7 @@ import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.anims.text.FloatingTextMaster;
+import libgdx.anims.text.FloatingTextMaster;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
 import main.game.logic.event.Event;

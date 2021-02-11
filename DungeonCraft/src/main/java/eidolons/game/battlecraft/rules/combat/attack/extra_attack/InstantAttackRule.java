@@ -14,7 +14,7 @@ import eidolons.game.battlecraft.rules.combat.attack.DC_AttackMaster;
 import eidolons.game.battlecraft.rules.perk.AlertRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.master.EffectMaster;
-import eidolons.libgdx.anims.text.FloatingTextMaster;
+import libgdx.anims.text.FloatingTextMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;

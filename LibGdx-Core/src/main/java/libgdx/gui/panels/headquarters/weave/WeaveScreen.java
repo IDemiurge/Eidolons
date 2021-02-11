@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.gui.panels.headquarters.weave.ui.WeaveUi;
 import libgdx.screens.GameScreen;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 
 /**
  * Created by JustMe on 6/4/2018.

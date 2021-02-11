@@ -13,6 +13,7 @@ import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
+import main.game.bf.Coordinates;
 import main.system.PathUtils;
 import main.system.auxiliary.*;
 import main.system.auxiliary.data.FileManager;
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
 
 import static main.system.auxiliary.log.LogMaster.log;
 
-public class Player {
+public abstract class Player {
     public static final String ALT = "_ALT";
     private static final String SOUNDSETS = "/soundsets/";
     private static final String FORMAT = ".mp3";
@@ -557,6 +558,8 @@ public class Player {
         return volume;
     }
 
+    public abstract void play(String path, Coordinates c, float vol);
+
     public void setVolume(int volume) {
         this.volume = volume;
     }
@@ -700,6 +703,8 @@ public class Player {
         // clip.open(audioStream2);
         return clip;
     }
+
+    public abstract void setPositionFor(Coordinates c);
 
 
     // VOLUME CONTROL TO BE ADDED TODO

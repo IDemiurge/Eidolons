@@ -14,7 +14,7 @@ import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.action.WatchRule;
 import eidolons.game.battlecraft.rules.mechanics.InterruptRule;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.anims.text.FloatingTextMaster;
+import libgdx.anims.text.FloatingTextMaster;
 import eidolons.system.math.roll.RollMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.ActionEnums;

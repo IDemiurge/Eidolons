@@ -12,7 +12,7 @@ import libgdx.gui.generic.GroupX;
 import libgdx.gui.generic.NoHitGroup;
 import libgdx.gui.generic.btn.FlipDrawable;
 import libgdx.particles.EmitterActor;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;

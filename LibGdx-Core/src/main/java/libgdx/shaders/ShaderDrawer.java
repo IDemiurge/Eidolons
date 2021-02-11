@@ -13,7 +13,6 @@ import main.system.launch.Flags;
  */
 public class ShaderDrawer {
     public static final float SUPER_DRAW = 100;
-    public static final int MAX_ITEM_GROUPS = 4;
     private static final ObjectMap<Actor, Runnable> map = new ObjectMap<>(9000);
 
     public static void drawWithCustomShader(Actor actor, Batch batch,

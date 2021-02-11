@@ -7,7 +7,7 @@ import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.action.ActionRule;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.anims.text.FloatingTextMaster;
+import libgdx.anims.text.FloatingTextMaster;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.content.enums.GenericEnums;

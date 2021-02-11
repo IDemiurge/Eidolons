@@ -1,10 +1,9 @@
 package libgdx.gui.panels.headquarters.tabs.inv;
 
-import eidolons.game.core.Eidolons;
+import eidolons.content.consts.Images;
 import libgdx.bf.generic.ImageContainer;
 import libgdx.gui.NinePatchFactory;
 import libgdx.gui.panels.TablePanelX;
-import libgdx.texture.Images;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +41,7 @@ public class StashPanel extends TablePanelX{
         header.add(new ImageContainer(Images.STASH_LANTERN)).row();
         add(header).top();
 
-        int size = Eidolons.getTown().getStashSize();
+        int size = 20;
         List<Integer> dividers=    new ArrayList<>() ;
         for (int i = 2; i <= size/2; i++) {
             if (size%i==0)

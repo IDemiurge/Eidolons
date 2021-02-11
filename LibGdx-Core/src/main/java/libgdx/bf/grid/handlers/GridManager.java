@@ -2,6 +2,7 @@ package libgdx.bf.grid.handlers;
 
 import com.badlogic.gdx.graphics.Color;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMapDataSource;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import libgdx.bf.decor.pillar.PillarManager;
@@ -51,12 +52,6 @@ public class GridManager {
         return colorHandler.getColor(c);
     }
 
-    public void act(float delta) {
-        if (DC_Game.game.getColorMap() != null) {
-            DC_Game.game.getColorMap().act(delta);
-        }
-    }
-
     public GridManager(GridPanel gridPanel) {
         this.gridPanel = gridPanel;
         // customDraw = !CoreEngine.isLevelEditor();
@@ -68,6 +63,7 @@ public class GridManager {
         handlers.add(animHandler = new GridAnimHandler(gridPanel));
         handlers.add(eventHandler = new GridEventHandler(gridPanel));
         handlers.add(platformHandler = new PlatformHandler(gridPanel));
+
 
         GuiEventManager.bind(GuiEventType.BF_OBJ_RESET, p -> reset((BattleFieldObject) p.get()));
         // GuiEventManager.bind(GuiEventType.UPDATE_WALL_MAP , p-> reset());
@@ -150,6 +146,10 @@ public class GridManager {
                         view.resetHpBar();
     }
 
+    public ColorHandler getColorHandler() {
+        return colorHandler;
+    }
+
     public PillarManager getPillarManager() {
         return pillarManager;
     }
@@ -184,5 +184,9 @@ public class GridManager {
 
     public void setResetting(boolean resetting) {
         this.resetting = resetting;
+    }
+
+    public void act(float delta) {
+        colorHandler.act(delta);
     }
 }

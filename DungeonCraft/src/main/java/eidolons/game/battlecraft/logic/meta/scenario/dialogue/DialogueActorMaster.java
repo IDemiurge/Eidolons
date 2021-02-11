@@ -1,9 +1,9 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue;
 
+import eidolons.content.consts.Images;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
-import eidolons.libgdx.texture.Images;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.data.DataManager;

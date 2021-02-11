@@ -1,8 +1,8 @@
 package libgdx.particles;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import libgdx.anims.AnimEnums;
-import libgdx.anims.AnimEnums.ANIM_PART;
+import eidolons.content.consts.VisualEnums;
+import eidolons.content.consts.VisualEnums.ANIM_PART;
 import libgdx.particles.spell.SpellVfx;
 import libgdx.particles.spell.SpellVfxPool;
 import main.data.filesys.PathFinder;
@@ -96,7 +96,7 @@ public class PhaseVfx extends SpellVfx {
             active.hide();
         }
         ANIM_PART part = (ANIM_PART) map.keySet().toArray()[n];
-        if (part.equals(AnimEnums.ANIM_PART.IMPACT)) {
+        if (part.equals(VisualEnums.ANIM_PART.IMPACT)) {
             onetime = true;
         }
         active = (SpellVfx) map.values().toArray()[n];

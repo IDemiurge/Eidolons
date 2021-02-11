@@ -4,11 +4,11 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import eidolons.content.consts.libgdx.GdxUtils;
 import eidolons.game.core.Eidolons;
-import libgdx.GdxImageMaster;
 import libgdx.assets.Assets;
 import libgdx.assets.Atlases;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import libgdx.texture.Sprites;
 import libgdx.texture.TextureCache;
 import main.system.auxiliary.data.FileManager;
@@ -82,7 +82,7 @@ public class SpriteAnimationFactory {
         String texturePath = key;
         if (texturePath.toLowerCase().endsWith(".atlas")
                 || texturePath.toLowerCase().endsWith(".txt")) {
-            texturePath = GdxImageMaster.appendImagePath(texturePath);
+            texturePath = GdxUtils.appendImagePath(texturePath);
 
             if (ktx) {
                 Assets.loadedKtxAtlas(texturePath);

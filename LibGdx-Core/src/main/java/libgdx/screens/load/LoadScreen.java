@@ -1,6 +1,7 @@
 package libgdx.screens.load;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import eidolons.content.consts.VisualEnums;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
 import libgdx.assets.AssetEnums;
@@ -8,7 +9,6 @@ import libgdx.assets.Assets;
 import libgdx.assets.Atlases;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.screens.CustomSpriteBatch;
-import libgdx.screens.SCREEN_TYPE;
 import libgdx.screens.ScreenData;
 import libgdx.screens.ScreenWithAssets;
 import libgdx.texture.TextureCache;
@@ -28,13 +28,13 @@ public abstract class LoadScreen extends ScreenWithAssets {
     protected final Label loadLabel;
     protected final Label infoLabel;
     protected final CustomSpriteBatch batch;
-    protected final SCREEN_TYPE toLoad;
+    protected final VisualEnums.SCREEN_TYPE toLoad;
     private final AssetEnums.ATLAS[] atlasesToLoad;
 
     private int ticks;
     private boolean loadStarted;
 
-    public LoadScreen(String backgroundPath, SCREEN_TYPE toLoad, AssetEnums.ATLAS... atlasesToLoad) {
+    public LoadScreen(String backgroundPath, VisualEnums.SCREEN_TYPE toLoad, AssetEnums.ATLAS... atlasesToLoad) {
 
         this.toLoad = toLoad;
         this.atlasesToLoad = atlasesToLoad;

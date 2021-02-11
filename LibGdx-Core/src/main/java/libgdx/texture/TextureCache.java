@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ObjectMap;
+import eidolons.content.consts.libgdx.GdxUtils;
 import libgdx.GDX;
 import libgdx.GdxImageMaster;
 import libgdx.GdxMaster;
@@ -86,7 +87,7 @@ public class TextureCache {
     }
 
     public static String getTexturePath(String s) {
-        return GdxImageMaster.appendImagePath(s);
+        return GdxUtils.appendImagePath(s);
     }
 
     private static void init() {
@@ -131,7 +132,7 @@ public class TextureCache {
         if (!Flags.isIDE())
             if (fullLog) log(1, atlas + " - TextureRegion request: " + path);
         if (atlasesOn && !overrideNoAtlas) {
-            String name = GdxImageMaster.cropImagePath(StringMaster.cropFormat(path));
+            String name = GdxUtils.cropImagePath(StringMaster.cropFormat(path));
             // if (!atlasMissingTextures.contains(path))
             {
                 if (atlas == null) {
@@ -297,7 +298,7 @@ public class TextureCache {
             if (orig.getRegionHeight() == imageSize &&
                     orig.getRegionWidth() == imageSize)
                 return orig;
-            String path2 = GdxImageMaster.getSizedImagePath(path, imageSize);
+            String path2 = GdxUtils.getSizedImagePath(path, imageSize);
             TextureRegion region = getOrCreateR(path2, false, null);
             if (isEmptyTexture(region)) {
                 return getOrCreateR(path);

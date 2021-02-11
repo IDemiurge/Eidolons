@@ -8,7 +8,7 @@ import libgdx.gui.generic.btn.SymbolButton;
 import libgdx.gui.panels.ScrollPaneX;
 import libgdx.gui.panels.headquarters.HqElement;
 import libgdx.gui.panels.headquarters.HqMaster;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import eidolons.system.text.tips.TIP;
 import eidolons.system.text.tips.TipMessageMaster;
 

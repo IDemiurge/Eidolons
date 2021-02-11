@@ -1,13 +1,14 @@
 package main.level_editor.backend.metadata.decor;
 
+import boss.demo.knight.AriusVessel;
+import eidolons.content.consts.DecorData;
+import eidolons.content.consts.DecorData.DECOR_LEVEL;
+import eidolons.content.consts.libgdx.GdxUtils;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import eidolons.game.core.Eidolons;
-import eidolons.game.netherflame.boss.demo.knight.AriusVessel;
-import eidolons.libgdx.GdxImageMaster;
 import eidolons.content.consts.GraphicData;
 import eidolons.content.consts.GraphicData.GRAPHIC_VALUE;
-import eidolons.libgdx.bf.decor.DecorData;
-import eidolons.libgdx.screens.ScreenMaster;
+import libgdx.screens.ScreenMaster;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
@@ -25,7 +26,6 @@ import main.system.threading.WaitMaster;
 import java.io.File;
 import java.util.*;
 
-import static eidolons.libgdx.bf.decor.DecorData.DECOR_LEVEL;
 
 public class LE_DecorHandler extends CellDataHandler<DecorData> implements IDecorHandler {
 
@@ -81,7 +81,7 @@ public class LE_DecorHandler extends CellDataHandler<DecorData> implements IDeco
     private List<GraphicData> createDecorList(List<String> fileNames, boolean sprite) {
         List<GraphicData> items = new ArrayList<>();
         for (String file : fileNames) {
-            String path = GdxImageMaster.cropImagePath(file);
+            String path = GdxUtils.cropImagePath(file);
             //just use name?
             GraphicData data = new GraphicData("");
             data.setValue(sprite ? GRAPHIC_VALUE.sprite : GRAPHIC_VALUE.texture, path);

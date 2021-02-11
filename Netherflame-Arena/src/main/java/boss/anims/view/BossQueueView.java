@@ -4,9 +4,9 @@ import boss.anims.generic.BossVisual;
 import boss.logic.entity.BossUnit;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.content.consts.GdxColorMaster;
-import eidolons.libgdx.bf.grid.cell.QueueView;
-import eidolons.libgdx.bf.grid.cell.UnitViewOptions;
-import eidolons.libgdx.bf.overlays.bar.HpBar;
+import libgdx.bf.grid.cell.QueueView;
+import libgdx.bf.grid.cell.UnitViewOptions;
+import libgdx.bf.overlays.bar.HpBar;
 
 public class BossQueueView extends QueueView {
     private final BossVisual parent;

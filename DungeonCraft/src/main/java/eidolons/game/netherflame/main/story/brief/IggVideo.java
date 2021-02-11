@@ -9,8 +9,8 @@ import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.video.VideoPlayer;
 import com.badlogic.gdx.video.VideoPlayerCreator;
-import eidolons.libgdx.GDX;
-import eidolons.libgdx.GdxMaster;
+import libgdx.GDX;
+import libgdx.GdxMaster;
 import main.data.filesys.PathFinder;
 
 import java.io.FileNotFoundException;

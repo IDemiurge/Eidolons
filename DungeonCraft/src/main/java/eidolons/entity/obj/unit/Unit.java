@@ -138,16 +138,15 @@ public class Unit extends DC_UnitModel implements FacingEntity {
 
     public Unit(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
-        if (isHero() && !(this instanceof HeroDataModel)) {
+        if (isHero() ) { //&& !(this instanceof HeroDataModel)
             String message = this + " hero created " + getId();
-            if (ScreenLoader.isInitRunning()) {
-                if (Eidolons.MAIN_HERO != null) {
-                    message += " SECOND TIME!...";
-                    Eidolons.MAIN_HERO.removeFromGame();
-
-                    addProperty(true, PROPS.INVENTORY, "Jade Key");
-                }
-            }
+            // if (ScreenLoader.isInitRunning()) {
+            //     if (Eidolons.MAIN_HERO != null) {
+            //         message += " SECOND TIME!...";
+            //         Eidolons.MAIN_HERO.removeFromGame();
+            //         addProperty(true, PROPS.INVENTORY, "Jade Key");
+            //     }
+            // }
             SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.MAIN, message);
             setName(getName().replace(" IGG", ""));
 
@@ -579,7 +578,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         if (getInventory() == null) {
             return false;
         }
-        return getInventory().size() >= InventorySlotsPanel.COLUMNS * InventorySlotsPanel.ROWS;
+        return getInventory().size() >=DC_CONSTS.MAX_INV_ITEMS;
     }
 
     public boolean isQuickSlotsFull() {

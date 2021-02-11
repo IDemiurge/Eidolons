@@ -3,9 +3,9 @@ package main.level_editor.gui.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import eidolons.libgdx.bf.generic.FadeImageContainer;
-import eidolons.libgdx.screens.ScreenData;
-import eidolons.libgdx.screens.ScreenWithLoader;
+import libgdx.bf.generic.FadeImageContainer;
+import libgdx.screens.ScreenData;
+import libgdx.screens.ScreenWithLoader;
 import main.system.EventCallbackParam;
 
 public class LE_WaitingScreen extends ScreenWithLoader {

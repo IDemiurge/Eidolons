@@ -12,14 +12,14 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.grid.VoidHandle
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.cinematic.CinematicLib;
 import eidolons.game.module.cinematic.Cinematics;
-import eidolons.libgdx.anims.fullscreen.FullscreenAnimDataSource;
-import eidolons.libgdx.anims.fullscreen.FullscreenAnims;
-import eidolons.libgdx.anims.fullscreen.Screenshake;
-import eidolons.libgdx.assets.Assets;
-import eidolons.libgdx.bf.grid.DC_GridPanel;
-import eidolons.libgdx.particles.ParticlesSprite;
-import eidolons.libgdx.particles.ParticlesSprites;
-import eidolons.libgdx.screens.ScreenMaster;
+import libgdx.anims.fullscreen.FullscreenAnimDataSource;
+import libgdx.anims.fullscreen.FullscreenAnims;
+import libgdx.anims.fullscreen.Screenshake;
+import libgdx.assets.Assets;
+import libgdx.bf.grid.DC_GridPanel;
+import libgdx.particles.ParticlesSprite;
+import libgdx.particles.ParticlesSprites;
+import libgdx.screens.ScreenMaster;
 import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
@@ -34,7 +34,7 @@ import static main.system.GuiEventType.SHOW_FULLSCREEN_ANIM;
 
 public class VoidMazeHandler extends MazeHandler<VoidMaze> {
 
-    protected VoidHandler voidHandler;
+    protected IVoidGdxHandler voidHandler;
     float collapsePeriod;
     protected int actions;
     protected final Set<GridObject> holes = new LinkedHashSet<>();

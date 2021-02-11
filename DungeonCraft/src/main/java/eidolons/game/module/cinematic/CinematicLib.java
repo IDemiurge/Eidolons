@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Interpolation;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.ScriptLib;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.anims.fullscreen.Screenshake;
+import libgdx.anims.fullscreen.Screenshake;
 import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
 import main.system.GuiEventManager;

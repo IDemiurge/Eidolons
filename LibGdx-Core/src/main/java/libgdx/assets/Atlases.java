@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.content.PARAMS;
+import eidolons.content.consts.libgdx.GdxUtils;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.item.DC_WeaponObj;
@@ -85,7 +86,7 @@ public class Atlases {
         boolean oneFrame = false;
         if (isUseOneFrameVersion(texturePath)) {
             oneFrame = true;
-            texturePath = StringMaster.getAppendedFile(getOneFramePath(texturePath), " img");
+            texturePath = StringMaster.getAppendedFile(GdxUtils.getOneFramePath(texturePath), " img");
         }
         AssetEnums.ATLAS atlas = AtlasGen.getAtlasForPath(texturePath);
         return getAtlasRegions(texturePath,
@@ -95,7 +96,7 @@ public class Atlases {
 
     public static Array<TextureAtlas.AtlasRegion> getAtlasRegions(String texturePath, AssetEnums.ATLAS atlas) {
         texturePath =
-                GdxImageMaster.cropImagePath(StringMaster.cropFormat(texturePath));
+                GdxUtils.cropImagePath(StringMaster.cropFormat(texturePath));
 
         Array<TextureAtlas.AtlasRegion> regions = atlasRegionsCache.get(texturePath);
         if (regions != null) {
@@ -435,7 +436,7 @@ public class Atlases {
         try {
             // if (Flags.isIDE() || Flags.isJarlike())
             if (isUseOneFrameVersion(path)) {
-                String p = getOneFramePath(path);
+                String p = GdxUtils.getOneFramePath(path);
                 if (new FileHandle(p).exists()) {
                     // log(1, "One-frame atlas used:\n" + p);
                     return getOrCreateAtlas(p, true);
@@ -450,7 +451,7 @@ public class Atlases {
             }
             //MEGA-HACK - ONE FRAME GENERATION
             //TODO we could also do something like halving frames, in the future...
-            String p = getOneFramePath(path);
+            String p = GdxUtils.getOneFramePath(path);
             TextureAtlas.AtlasRegion region = atlas.getRegions().get(atlas.getRegions().size / 2);//use mid frame
             String imgName =
                     StringMaster.cropFormat(PathUtils.getLastPathSegment(path)) + " img.png";
@@ -495,16 +496,6 @@ public class Atlases {
         // return !CellDecorLayer.spriteTest && !MaskTest.spriteMaskTest && CoreEngine.TEST_LAUNCH;
     }
 
-    public static String getOneFrameImagePath(String path) {
-        return PathFinder.getImagePath() + "gen/one_frame/" +
-                StringMaster.cropFormat(path) + " img.png";
-    }
-
-    private static String getOneFramePath(String path) {
-        return PathFinder.getImagePath() + "gen/one_frame/" +
-                GdxImageMaster.cropImagePath(path);
-    }
-
     public static String getDefaultAtlasTxtContents(String fileName, String textureName, String atlasSize, String size) {
         return "\n" +
                 fileName +
@@ -529,7 +520,7 @@ public class Atlases {
 
     public static TextureAtlas getOrCreateAtlas(String path, boolean cache) {
         if (!new FileHandle(path).exists()) {
-            path = GdxImageMaster.appendImagePath(path);
+            path = GdxUtils.appendImagePath(path);
             if (!new FileHandle(path).exists()) {
                 important("CRITICAL: No atlas for path - " + path);
                 return null;

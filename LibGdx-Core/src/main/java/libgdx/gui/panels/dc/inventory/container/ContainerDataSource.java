@@ -7,7 +7,7 @@ import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.dungeoncrawl.objects.ContainerObj;
-import libgdx.GdxColorMaster;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.gui.panels.dc.inventory.InvItemActor;
 import libgdx.gui.panels.dc.inventory.InventoryClickHandler;
 import eidolons.content.consts.VisualEnums.CELL_TYPE;

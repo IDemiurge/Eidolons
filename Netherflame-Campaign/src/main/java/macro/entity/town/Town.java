@@ -6,7 +6,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.game.module.herocreator.logic.party.Party;
-import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
+import libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import macro.MacroGame;
 import macro.entity.MacroRef;
 import macro.entity.faction.FactionObj;

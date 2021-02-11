@@ -20,7 +20,9 @@ public class GdxAdapter {
     GdxApi gdxApp;
     GdxManagerApi manager; // helper funcs
     GdxEvents events;
+    GdxEventAdapter eventsAdapter;
     GdxAudio audio;
+    DataSourceApi dataSourceApi;
     GdxOptions options;
 
     private static GdxAdapter instance;
@@ -35,11 +37,7 @@ public class GdxAdapter {
         return instance;
     }
 
-    public void setInstance(GdxAdapter instance) {
-        this.instance = instance;
-    }
-
-    public static void onInputGdx(Runnable r) {
+    public static void onInputGdx_(Runnable r) {
         instance.onInputGdx(r);
     }
 
@@ -86,6 +84,26 @@ public class GdxAdapter {
         this.audio = audio;
     }
 
+    public void setMap(ScreenApi map) {
+        this.map = map;
+    }
+
+    public void setDungeon(ScreenApi dungeon) {
+        this.dungeon = dungeon;
+    }
+
+    public void setEventsAdapter(GdxEventAdapter eventsAdapter) {
+        this.eventsAdapter = eventsAdapter;
+    }
+
+    public void setDataSourceApi(DataSourceApi dataSourceApi) {
+        this.dataSourceApi = dataSourceApi;
+    }
+
+    public void setOptions(GdxOptions options) {
+        this.options = options;
+    }
+
     public ScreenApi getDungeonScreen() {
         return dungeon;
     }
@@ -98,6 +116,10 @@ public class GdxAdapter {
 
     public ControllerApi getController() {
         return controller;
+    }
+
+    public GdxEventAdapter getEventsAdapter() {
+        return eventsAdapter;
     }
 
     public GdxApi getGdxApp() {
@@ -127,4 +149,9 @@ public class GdxAdapter {
     public void inputPass() {
         getInstance().getController().inputPass();
     }
+
+    public DataSourceApi getDataSourceApi() {
+        return dataSourceApi;
+    }
+
 }

@@ -13,7 +13,7 @@ import main.system.GuiEventType;
 import java.util.List;
 import java.util.Map;
 
-import static eidolons.libgdx.bf.GridMaster.getCenteredPos;
+import static libgdx.bf.GridMaster.getCenteredPos;
 
 
 public class LayerInitializer extends DungeonHandler {

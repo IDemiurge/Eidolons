@@ -7,12 +7,13 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import eidolons.content.consts.VisualEnums;
 import eidolons.game.module.cinematic.Cinematics;
 import libgdx.anims.ANIM_MODS.ANIM_MOD;
 import libgdx.anims.ANIM_MODS.CONTINUOUS_ANIM_MODS;
 import libgdx.anims.ANIM_MODS.OBJ_ANIMS;
 import libgdx.anims.AnimData.ANIM_VALUES;
-import libgdx.anims.AnimEnums.ANIM_PART;
+import eidolons.content.consts.VisualEnums.ANIM_PART;
 import libgdx.anims.main.AnimMaster;
 import libgdx.anims.sprite.SpriteAnimation;
 import libgdx.anims.sprite.SpriteAnimationFactory;
@@ -371,7 +372,7 @@ public class Anim extends Group implements Animation {
     }
 
     private boolean isContinuous(ANIM_PART part) {
-        return part== AnimEnums.ANIM_PART.MISSILE;
+        return part== VisualEnums.ANIM_PART.MISSILE;
     }
 
     protected void initDuration() {
@@ -438,7 +439,7 @@ public class Anim extends Group implements Animation {
     //        setDuration(getOrigin().dst(getDestination())/new Vector2(getSpeedX(), getSpeedY()).len());
 
     protected boolean isSpeedSupported() {
-        return part == AnimEnums.ANIM_PART.MISSILE;
+        return part == VisualEnums.ANIM_PART.MISSILE;
     }
 
     @Override

@@ -2,7 +2,7 @@ package libgdx.bf;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import libgdx.GdxColorMaster;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.gui.generic.GroupX;
 import libgdx.utils.GdxTimeMaster;
 import main.content.enums.GenericEnums;

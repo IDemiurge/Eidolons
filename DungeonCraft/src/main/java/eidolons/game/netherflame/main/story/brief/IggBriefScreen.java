@@ -1,6 +1,6 @@
 package eidolons.game.netherflame.main.story.brief;
 
-import eidolons.libgdx.stage.UiStage;
+import libgdx.stage.UiStage;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 

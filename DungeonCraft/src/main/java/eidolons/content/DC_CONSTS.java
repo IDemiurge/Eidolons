@@ -14,6 +14,8 @@ import main.system.auxiliary.StringMaster;
 
 public class DC_CONSTS {
 
+    public static final int MAX_INV_ITEMS = 30;
+
     public enum CONCOCTION_LEVEL {
         CHEAP(50, 40, "", ItemEnums.QUALITY_LEVEL.INFERIOR),
         NORMAL(100, 100, "1", ItemEnums.QUALITY_LEVEL.NORMAL),

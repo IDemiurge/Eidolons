@@ -12,7 +12,7 @@ import libgdx.bf.generic.Flippable;
 import libgdx.bf.generic.ImageContainer;
 import libgdx.gui.generic.NoHitImageX;
 import libgdx.particles.EmitterActor;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;

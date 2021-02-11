@@ -1,6 +1,6 @@
 package eidolons.system.text.tips;
 
-import eidolons.libgdx.GdxMaster;
+import libgdx.GdxMaster;
 import main.system.threading.WaitMaster;
 
 import static main.system.threading.WaitMaster.WAIT_OPERATIONS.CONFIRM;

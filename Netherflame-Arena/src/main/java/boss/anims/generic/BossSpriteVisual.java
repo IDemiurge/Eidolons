@@ -4,8 +4,9 @@ import boss.logic.entity.BossUnit;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import boss.anims.BossAnims;
 import boss.anims.view.SmartSprite;
-import eidolons.libgdx.anims.sprite.SpriteX;
-import eidolons.libgdx.assets.Atlases;
+import eidolons.content.consts.VisualEnums;
+import libgdx.anims.sprite.SpriteX;
+import libgdx.assets.Atlases;
 import main.content.enums.GenericEnums;
 
 public abstract class BossSpriteVisual extends BossVisual {
@@ -32,7 +33,7 @@ public abstract class BossSpriteVisual extends BossVisual {
         return true;
     }
 
-    protected SpriteX.SPRITE_TEMPLATE getTemplate() {
+    protected VisualEnums.SPRITE_TEMPLATE getTemplate() {
         return null;
     }
 

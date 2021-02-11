@@ -6,7 +6,7 @@ import libgdx.anims.actions.ActionMaster;
 import libgdx.bf.generic.ImageContainer;
 import libgdx.gui.LabelX;
 import libgdx.gui.generic.NoHitGroup;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 
 public class LargeText extends NoHitGroup {
 

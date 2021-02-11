@@ -6,7 +6,7 @@ import libgdx.gui.panels.headquarters.HqSlotActor;
 import libgdx.shaders.DarkGrayscaleShader;
 import libgdx.shaders.DarkShader;
 import libgdx.shaders.ShaderDrawer;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
 

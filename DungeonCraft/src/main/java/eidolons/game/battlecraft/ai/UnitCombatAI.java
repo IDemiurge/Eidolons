@@ -7,7 +7,7 @@ import eidolons.game.battlecraft.ai.advanced.companion.CompanionMaster;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.tools.AiExecutor;
-import eidolons.libgdx.gui.panels.dc.topleft.atb.INTENT_ICON;
+import libgdx.gui.panels.dc.topleft.atb.INTENT_ICON;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;

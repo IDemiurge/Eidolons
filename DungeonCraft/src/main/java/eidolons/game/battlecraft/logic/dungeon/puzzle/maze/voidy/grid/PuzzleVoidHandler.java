@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.grid;
 
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.bf.grid.DC_GridPanel;
-import eidolons.libgdx.bf.grid.cell.GridCell;
+import libgdx.bf.grid.DC_GridPanel;
+import libgdx.bf.grid.cell.GridCell;
 import main.entity.Ref;
 import main.game.logic.event.Event;
 

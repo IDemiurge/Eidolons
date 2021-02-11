@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
+import eidolons.content.consts.libgdx.GdxUtils;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
-import libgdx.GdxImageMaster;
 import libgdx.anims.actions.ActionMaster;
 import libgdx.anims.actions.FloatActionLimited;
 import libgdx.bf.generic.SuperContainer;
@@ -74,7 +74,7 @@ public class ShadeLightCell extends SuperContainer {
     }
 
     private static TextureRegion getTexture(ShadowMap.SHADE_CELL type) {
-            return TextureCache.getRegionUV(GdxImageMaster.cropImagePath(getTexturePath(type)));
+            return TextureCache.getRegionUV(GdxUtils.cropImagePath(getTexturePath(type)));
     }
 
     private static String getTexturePath(ShadowMap.SHADE_CELL type) {

@@ -1,6 +1,5 @@
 package eidolons.game.module.dungeoncrawl.objects;
 
-import eidolons.ability.ignored.dialog.TownPortalEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
@@ -187,7 +186,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         }
         if (obj.getName().equalsIgnoreCase("gateway glyph")) {
             //TODO make real
-            new TownPortalEffect().apply(new Ref(unit));
+            // new TownPortalEffect().apply(new Ref(unit));
             return true;
         }
         return false;

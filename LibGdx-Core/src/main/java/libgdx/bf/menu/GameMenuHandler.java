@@ -4,11 +4,9 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import libgdx.bf.menu.GameMenu.GAME_MENU_ITEM;
-import eidolons.macro.global.persist.Saver;
 import eidolons.system.text.HelpMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.Flags;
 
 /**
  * Created by JustMe on 11/24/2017.
@@ -77,25 +75,13 @@ public class GameMenuHandler {
 //                break;
 
             case SAVE:
-                GameMenu.menuOpen = false;
-                Saver.save();
+                // GameMenu.menuOpen = false;
+                // Saver.save();
                 break;
             case ACHIEVEMENTS:
                 GuiEventManager.trigger(GuiEventType.SHOW_ACHIEVEMENTS);
                 GameMenu.menuOpen = false;
                 break;
-            case RETREAT:
-                if (Flags.isMacro()) {
-                    GuiEventManager.trigger(GuiEventType.SHOW_NAVIGATION_PANEL, null);
-                    break;
-                }
-                GameMenu.menuOpen = false;
-                Eidolons.onNonGdxThread(()->
-                 Eidolons.getGame().getMetaMaster().getTownMaster().tryReenterTown());
-                break;
-                // GameMenu.menuOpen = false;
-                // GuiEventManager.trigger(GuiEventType.BATTLE_FINISHED);
-                // break;
             case RESUME:
             case LAUNCH_GAME:
             case ABOUT:

@@ -1,11 +1,11 @@
 package eidolons.game.battlecraft.logic.dungeon.location;
 
+import eidolons.game.battlecraft.EngineLauncher;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonInitializer;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.launch.CustomLaunch;
-import eidolons.libgdx.launch.MainLauncher;
 import main.entity.type.ObjType;
 
 /**
@@ -22,10 +22,11 @@ public class LocationInitializer extends DungeonInitializer {
             String data =
                     Eidolons.getGame().getMetaMaster().getMetaDataManager().getSoloDungeonPath();
             if (data == null) {
-                if (MainLauncher.getCustomLaunch() != null) {
+                CustomLaunch customLaunch = EngineLauncher.getInstance().getCustomLaunch();
+                if (customLaunch != null) {
                     main.system.auxiliary.log.LogMaster.important("*******Custom Launch xml path: " +
-                            MainLauncher.getCustomLaunch().getValue(CustomLaunch.CustomLaunchValue.xml_path));
-                    data = MainLauncher.getCustomLaunch().getValue(CustomLaunch.CustomLaunchValue.xml_path);
+                            customLaunch.getValue(CustomLaunch.CustomLaunchValue.xml_path));
+                    data = customLaunch.getValue(CustomLaunch.CustomLaunchValue.xml_path);
                 }
             }
             if (data != null) {

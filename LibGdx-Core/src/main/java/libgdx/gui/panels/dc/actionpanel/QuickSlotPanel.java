@@ -3,7 +3,7 @@ package libgdx.gui.panels.dc.actionpanel;
 import libgdx.gui.generic.ValueContainer;
 import libgdx.gui.panels.TablePanel;
 import libgdx.gui.panels.dc.actionpanel.datasource.ActiveQuickSlotsDataSource;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import libgdx.texture.TextureCache;
 
 import java.util.List;

@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.rules.combat.attack;
 
 import eidolons.content.PARAMS;
+import eidolons.content.consts.VisualEnums.LABEL_STYLE;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
@@ -10,7 +11,6 @@ import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.action.WatchRule;
 import eidolons.game.battlecraft.rules.perk.FlyingRule;
 import eidolons.game.core.EUtils;
-import eidolons.libgdx.stage.GuiStage;
 import eidolons.system.DC_Formulas;
 import eidolons.system.math.roll.RollMaster;
 import main.content.enums.GenericEnums;
@@ -157,10 +157,10 @@ public class DefenseVsAttackRule {
             action.getGame().getLogManager().
                     log(msg);
             if (crit) {
-                EUtils.showInfoTextStyled(GuiStage.LABEL_STYLE.AVQ_LARGE, attacker.getName()+ ": Critical hit!");
+                EUtils.showInfoTextStyled(LABEL_STYLE.AVQ_LARGE, attacker.getName()+ ": Critical hit!");
                 return false;
             } else {
-                EUtils.showInfoTextStyled(GuiStage.LABEL_STYLE.AVQ_LARGE, attacked.getName()+ ": Dodge!");
+                EUtils.showInfoTextStyled(LABEL_STYLE.AVQ_LARGE, attacked.getName()+ ": Dodge!");
                 return true;
             }
         }

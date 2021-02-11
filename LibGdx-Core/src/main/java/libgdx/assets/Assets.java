@@ -13,7 +13,6 @@ import libgdx.anims.sprite.SpriteAnimationFactory;
 import libgdx.audio.SoundPlayer;
 import libgdx.particles.EmitterPools;
 import libgdx.particles.util.EmitterMaster;
-import libgdx.screens.SCREEN_TYPE;
 import libgdx.screens.ScreenWithLoader;
 import libgdx.texture.SmartTextureAtlas;
 import libgdx.texture.Sprites;
@@ -76,7 +75,7 @@ public class Assets {
         // Atlases.preloadAtlas(AssetEnums.ATLAS.UI_BASE);
     }
 
-    public static void loadAtlasesForScreen(ScreenWithLoader screen, SCREEN_TYPE type) {
+    public static void loadAtlasesForScreen(ScreenWithLoader screen, VisualEnums.SCREEN_TYPE type) {
 
         switch (type) {
             case DUNGEON:

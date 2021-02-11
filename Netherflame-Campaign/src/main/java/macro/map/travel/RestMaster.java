@@ -2,7 +2,7 @@ package macro.map.travel;
 
 import macro.MacroGame;
 import macro.entity.party.MacroParty;
-import eidolons.libgdx.screens.map.MapScreen;
+import libgdx.screens.map.MapScreen;
 import main.content.CONTENT_CONSTS2.MACRO_STATUS;
 import main.content.values.properties.MACRO_PROPS;
 

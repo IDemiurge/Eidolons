@@ -2,7 +2,8 @@ package main.level_editor.backend.functions.advanced;
 
 import eidolons.content.consts.GraphicData;
 import eidolons.content.consts.VisualEnums;
-import eidolons.libgdx.bf.grid.GridPanel;
+import libgdx.bf.grid.GridPanel;
+import libgdx.bf.grid.handlers.GridAnimHandler;
 import main.level_editor.LevelEditor;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -13,7 +14,7 @@ public class LE_GridAnimTester extends GridAnimHandler {
 
         GuiEventManager.bind(GuiEventType.CHOOSE_GRID_ANIM, p -> {
             animated = findView(LevelEditor.getManager().getSelectionHandler().getObject());
-            VisualEnums.VIEW_ANIM view_anim = (VIEW_ANIM) p.get();
+            VisualEnums.VIEW_ANIM view_anim = (VisualEnums.VIEW_ANIM) p.get();
             GraphicData data = new GraphicData("dur:1;interpolation:fade");
             switch (view_anim) {
                 case displace:

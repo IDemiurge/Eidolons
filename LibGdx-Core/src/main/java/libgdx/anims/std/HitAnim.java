@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import eidolons.content.PROPS;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_WeaponObj;
@@ -17,9 +18,8 @@ import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.DamageFactory;
-import libgdx.GdxColorMaster;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.anims.AnimData;
-import libgdx.anims.AnimEnums;
 import libgdx.anims.actions.ActionMaster;
 import libgdx.anims.fullscreen.ScreenshakeMaster;
 import libgdx.anims.sprite.SpriteAnimation;
@@ -98,7 +98,7 @@ public class HitAnim extends ActionAnim {
             damageType = active.getDamageType();
         }
 
-        part = AnimEnums.ANIM_PART.IMPACT;
+        part = VisualEnums.ANIM_PART.IMPACT;
     }
 
     @Override
@@ -300,7 +300,7 @@ public class HitAnim extends ActionAnim {
         addFadeAnim();
 
         if (getActive() instanceof Spell) {
-            DC_SoundMaster.playAnimStartSound(getActive(), AnimEnums.ANIM_PART.IMPACT);
+            DC_SoundMaster.playAnimStartSound(getActive(), VisualEnums.ANIM_PART.IMPACT);
         }
         //        if (textSupplier != null)
         //            floatingText.setText(textSupplier.getVar());

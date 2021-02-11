@@ -11,7 +11,7 @@ import libgdx.gui.panels.ScrollPanel;
 import libgdx.gui.panels.TablePanelX;
 import libgdx.gui.panels.dc.logpanel.text.Message;
 import libgdx.gui.panels.dc.logpanel.text.TextBuilder;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import libgdx.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;

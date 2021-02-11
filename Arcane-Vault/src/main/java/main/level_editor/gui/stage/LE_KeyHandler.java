@@ -3,7 +3,7 @@ package main.level_editor.gui.stage;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import eidolons.game.core.EUtils;
-import eidolons.libgdx.GdxMaster;
+import libgdx.GdxMaster;
 import eidolons.system.controls.GlobalController;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;

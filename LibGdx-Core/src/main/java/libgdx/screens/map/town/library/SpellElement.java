@@ -1,11 +1,11 @@
 package libgdx.screens.map.town.library;
 
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.Spell;
 import libgdx.anims.AnimData;
 import libgdx.anims.AnimData.ANIM_VALUES;
-import libgdx.anims.AnimEnums;
-import libgdx.anims.AnimEnums.ANIM_PART;
+import eidolons.content.consts.VisualEnums.ANIM_PART;
 import libgdx.anims.construct.AnimConstructor;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.gui.panels.headquarters.HqSlotActor;
@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public class SpellElement extends HqSlotActor<Spell> {
 
-    ANIM_PART vfxType= AnimEnums.ANIM_PART.CAST;
+    ANIM_PART vfxType= VisualEnums.ANIM_PART.CAST;
     SpellVfx activeVfx;
     Map<ANIM_PART, SpellVfx> vfxMap;
     //some are kind of one-shot, right? 
@@ -85,7 +85,7 @@ public void setVfxPart(ANIM_PART part){
     }
 
     private void initVfx() {
-        AnimData data = AnimConstructor.getStandardData(model, AnimEnums.ANIM_PART.CAST, 1);
+        AnimData data = AnimConstructor.getStandardData(model, VisualEnums.ANIM_PART.CAST, 1);
         String path = data.getValue(ANIM_VALUES.PARTICLE_EFFECTS);
         SpellVfxPool.getEmitterActor(path);
     }

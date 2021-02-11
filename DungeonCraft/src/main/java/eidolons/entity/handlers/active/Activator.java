@@ -1,24 +1,15 @@
 package eidolons.entity.handlers.active;
 
-import com.badlogic.gdx.math.Vector2;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.rules.action.WatchRule;
-import eidolons.game.core.EUtils;
-import eidolons.libgdx.anims.text.FloatingText;
-import eidolons.libgdx.anims.text.FloatingTextMaster;
-import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
-import eidolons.libgdx.bf.GridMaster;
+import eidolons.system.libgdx.GdxAdapter;
 import main.content.enums.entity.UnitEnums;
 import main.content.mode.STD_MODES;
 import main.entity.Ref;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
-import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.Bools;
 import main.system.launch.Flags;
 
@@ -116,26 +107,8 @@ public class Activator extends ActiveHandler {
     }
 
     public static void cannotActivate_(DC_ActiveObj e, String reason) {
-        TEXT_CASES CASE = TEXT_CASES.DEFAULT;
-        if (!StringMaster.isEmpty(e.getCosts().getReasonsString())) {
-            reason = e.getCosts().getReasonsString();
-            CASE = TEXT_CASES.REQUIREMENT;
-        }
-        LogMaster.log(1, "Cannot Activate " + e.getName() + ": " + reason);
-        if (!e.getOwnerUnit().isMine())
-            if (e.getOwnerUnit().isAiControlled())
-                return;
-        EUtils.showInfoText(e.getCosts().getReasonsString());
+        GdxAdapter.getInstance().getEventsAdapter().cannotActivate(e, reason);
 
-        FloatingText f = FloatingTextMaster.getInstance().getFloatingText(e,
-                CASE,               reason);
-        f.setDisplacementY(100);
-        f.setDuration(3);
-        Vector2 c = GridMaster.getCenteredPos(e
-                .getOwnerUnit().getCoordinates());
-        f.setX(c.x);
-        f.setY(c.y);
-        GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, f);
     }
 
     public DC_UnitAction getModeAction() {

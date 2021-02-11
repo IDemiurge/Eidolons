@@ -5,7 +5,7 @@ import com.bitfire.postprocessing.PostProcessorEffect;
 import com.bitfire.postprocessing.filters.CustomFilter;
 import com.bitfire.postprocessing.filters.Filter;
 import com.bitfire.postprocessing.utils.PingPongBuffer;
-import eidolons.libgdx.shaders.ShaderMaster.SHADER;
+import libgdx.shaders.ShaderMaster.SHADER;
 
 /**
  * Created by JustMe on 12/3/2018.

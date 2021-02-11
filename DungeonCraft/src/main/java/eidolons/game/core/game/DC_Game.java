@@ -19,7 +19,7 @@ import eidolons.game.battlecraft.logic.battlefield.DC_BattleFieldManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.logic.battlefield.DroppedItemManager;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
-import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMap;
+import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMapDataSource;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
@@ -933,7 +933,7 @@ public class DC_Game extends GenericGame {
     public void setBossFight(boolean bossFight) {
     }
 
-    public ColorMap getColorMap() {
+    public ColorMapDataSource getColorMapDS() {
         if (dungeonMaster == null) {
             return null;
         }

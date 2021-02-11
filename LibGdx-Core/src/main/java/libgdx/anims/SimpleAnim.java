@@ -2,6 +2,7 @@ package libgdx.anims;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
+import eidolons.content.consts.VisualEnums;
 import eidolons.game.core.Eidolons;
 import libgdx.anims.sprite.SpriteX;
 import libgdx.bf.GridMaster;
@@ -159,7 +160,7 @@ public class SimpleAnim implements Animation {
     }
 
     @Override
-    public AnimEnums.ANIM_PART getPart() {
+    public VisualEnums.ANIM_PART getPart() {
         return null;
     }
 

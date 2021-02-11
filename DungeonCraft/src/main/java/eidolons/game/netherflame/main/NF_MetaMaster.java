@@ -5,14 +5,12 @@ import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.battlecraft.logic.meta.universal.DefeatHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaInitializer;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
-import eidolons.game.battlecraft.logic.meta.universal.TownMaster;
 import eidolons.game.core.game.ScenarioGame;
 import eidolons.game.netherflame.NF_Game;
 import eidolons.game.netherflame.main.death.NF_DefeatHandler;
 import eidolons.game.eidolon.event.NF_EventHandler;
 import eidolons.game.netherflame.main.misc.SoloPartyManager;
 import eidolons.game.netherflame.main.soul.SoulforceMaster;
-import eidolons.game.netherflame.main.story.IGG_TownMaster;
 
 /*
 custom party rules
@@ -74,10 +72,7 @@ public class NF_MetaMaster extends ScenarioMetaMaster<NF_Meta> {
     }
 
 
-    @Override
-    protected TownMaster createTownMaster() {
-        return new IGG_TownMaster(this);
-    }
+
 
     @Override
     protected boolean isTownEnabled() {

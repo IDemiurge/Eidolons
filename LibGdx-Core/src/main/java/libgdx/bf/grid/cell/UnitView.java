@@ -19,7 +19,7 @@ import libgdx.bf.overlays.bar.HpBar;
 import libgdx.gui.tooltips.Tooltip;
 import libgdx.shaders.GrayscaleShader;
 import libgdx.shaders.ShaderDrawer;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import libgdx.texture.TextureCache;
 import main.content.CONTENT_CONSTS;
 import main.content.enums.GenericEnums;

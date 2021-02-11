@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.core.EUtils;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -73,10 +74,10 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
                 hideTooltip(infoTooltip, 1f);
             } else {
                 String text = p.get().toString();
-                GuiStage.LABEL_STYLE style = null;
+                VisualEnums.LABEL_STYLE style = null;
                 if (text.contains(EUtils.STYLE)) {
                     String[] parts = text.split(EUtils.STYLE);
-                    style = new EnumMaster<GuiStage.LABEL_STYLE>().retrieveEnumConst(GuiStage.LABEL_STYLE.class, parts[0]);
+                    style = new EnumMaster<VisualEnums.LABEL_STYLE>().retrieveEnumConst(VisualEnums.LABEL_STYLE.class, parts[0]);
                     text = parts[1];
                 }
 
@@ -207,7 +208,7 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
         showTooltip(null, action, s, tooltip, dur);
     }
 
-    protected void showTooltip(GuiStage.LABEL_STYLE style, boolean action, String s, LabelX tooltip, float dur) {
+    protected void showTooltip(VisualEnums.LABEL_STYLE style, boolean action, String s, LabelX tooltip, float dur) {
 
         infoTooltip.setVisible(true);
         actionTooltip.setVisible(true);

@@ -6,7 +6,7 @@ import eidolons.content.consts.VisualEnums;
 import eidolons.content.consts.libgdx.WallMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.colormap.LightHandler;
 import eidolons.game.core.game.DC_Game;
-import libgdx.GdxColorMaster;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.bf.decor.wall.WallMaster;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.bf.grid.GridPanel;

@@ -38,7 +38,6 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
 
     public InputController controller;
     protected ChainedStage dialogsStage = null;
-    protected DC_SoundMaster soundMaster;
     protected ShaderProgram bufferedShader;
     protected Float speed;
     protected TextureRegion backTexture;

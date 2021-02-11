@@ -4,7 +4,7 @@ import boss.BOSS_PART;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import boss.anims.BossAnimHandler;
 import boss.anims.BossAnims;
-import eidolons.libgdx.gui.generic.GroupX;
+import libgdx.gui.generic.GroupX;
 
 import java.util.Queue;
 

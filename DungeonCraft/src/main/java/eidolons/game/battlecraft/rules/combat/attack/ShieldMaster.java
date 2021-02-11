@@ -5,11 +5,11 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_WeaponObj;
-import eidolons.libgdx.anims.sprite.SpriteAnimation;
-import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
-import eidolons.libgdx.assets.AnimMaster3d;
-import eidolons.libgdx.assets.AssetEnums;
-import eidolons.libgdx.assets.Atlases;
+import libgdx.anims.sprite.SpriteAnimation;
+import libgdx.anims.sprite.SpriteAnimationFactory;
+import libgdx.assets.AnimMaster3d;
+import libgdx.assets.AssetEnums;
+import libgdx.assets.Atlases;
 import main.system.auxiliary.RandomWizard;
 
 public class ShieldMaster {

@@ -1,6 +1,8 @@
 package libgdx.launch;
 
+import arena.launch.EngineLauncherArena;
 import eidolons.game.EidolonsGame;
+import eidolons.game.battlecraft.EngineLauncher;
 import eidolons.game.core.launch.CustomLaunch;
 import libgdx.screens.menu.MainMenu;
 import eidolons.system.options.OptionsMaster;
@@ -28,7 +30,6 @@ public class MainLauncher extends GenericLauncher {
     public static String levelPath;
     private static Stack<String> lastChoiceStack;
     public static boolean presetNumbersOn;
-    private static CustomLaunch customLaunch;
 
     public static void main(String[] args) {
         // EidolonsGame.setVar("non_test", true);
@@ -40,6 +41,10 @@ public class MainLauncher extends GenericLauncher {
         Flags.setIggDemo(true);
         Flags.setMainGame(true);
         Flags.setDialogueTest(true);
+
+        EngineLauncher engineLauncher = createEngineLauncher();
+
+
         if (args.length > 0) {
             PathFinder.init();
             if (args[0].contains("town")) {
@@ -151,13 +156,18 @@ public class MainLauncher extends GenericLauncher {
                             if (command.contains(".") || command.contains("::")) {
                                 String replace = command.replace("_", " ");
                                 levelPath=replace;
-                                setCustomLaunch(new CustomLaunch(replace));
+
+                                engineLauncher.setCustomLaunch(new CustomLaunch(replace));
                             }
                         }
                     }
                 }
             }
         }
+    }
+
+    private static EngineLauncher createEngineLauncher() {
+        return new EngineLauncherArena();
     }
 
     private static int getLast() {
@@ -169,14 +179,6 @@ public class MainLauncher extends GenericLauncher {
         return NumberUtils.getIntParse(lastChoiceStack.remove(0));
     }
 
-    public static CustomLaunch getCustomLaunch() {
-        return customLaunch;
-    }
-
-    public static void setCustomLaunch(CustomLaunch customLaunch) {
-        main.system.auxiliary.log.LogMaster.important("customLaunch set: " + customLaunch);
-        MainLauncher.customLaunch = customLaunch;
-    }
 
 
     @Override

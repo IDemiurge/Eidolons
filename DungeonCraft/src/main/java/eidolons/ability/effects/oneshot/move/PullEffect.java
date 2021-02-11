@@ -1,7 +1,7 @@
 package eidolons.ability.effects.oneshot.move;
 
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.libgdx.bf.overlays.OverlayingMaster;
+import libgdx.bf.overlays.OverlayingMaster;
 import main.entity.EntityCheckMaster;
 import main.entity.Ref;
 import main.game.bf.Coordinates;

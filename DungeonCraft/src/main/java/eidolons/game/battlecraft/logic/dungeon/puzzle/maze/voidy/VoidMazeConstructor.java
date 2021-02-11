@@ -8,8 +8,8 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzleConstructor
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.module.dungeoncrawl.struct.LevelBlock;
-import eidolons.libgdx.assets.Assets;
-import eidolons.libgdx.particles.ParticlesSprite;
+import libgdx.assets.Assets;
+import libgdx.particles.ParticlesSprite;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.NotCondition;

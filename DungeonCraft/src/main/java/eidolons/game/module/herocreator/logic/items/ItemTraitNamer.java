@@ -5,7 +5,7 @@ import eidolons.content.DC_CONSTS.ITEM_LEVEL;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.netherflame.main.soul.eidola.EidolonImbuer;
 import eidolons.game.netherflame.main.soul.eidola.Soul;
-import eidolons.libgdx.gui.panels.dc.logpanel.text.TextBuilder;
+import libgdx.gui.panels.dc.logpanel.text.TextBuilder;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;

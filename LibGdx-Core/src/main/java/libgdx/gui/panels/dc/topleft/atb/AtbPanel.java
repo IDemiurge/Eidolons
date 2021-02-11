@@ -20,7 +20,7 @@ import libgdx.gui.generic.btn.SmartTextButton;
 import libgdx.gui.panels.TablePanelX;
 import libgdx.gui.panels.dc.topleft.ClockPanel;
 import libgdx.screens.ScreenMaster;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;

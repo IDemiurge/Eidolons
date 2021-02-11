@@ -1,6 +1,7 @@
 package libgdx.screens.load;
 
 import com.badlogic.gdx.Screen;
+import eidolons.content.consts.VisualEnums;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
@@ -12,7 +13,6 @@ import libgdx.GdxMaster;
 import libgdx.assets.Assets;
 import libgdx.gui.panels.headquarters.weave.WeaveScreen;
 import libgdx.launch.GenericLauncher;
-import libgdx.screens.SCREEN_TYPE;
 import libgdx.screens.ScreenData;
 import libgdx.screens.ScreenMaster;
 import libgdx.screens.ScreenWithLoader;
@@ -50,7 +50,7 @@ public class ScreenLoader {
     }
 
     public void screenInit() {
-        ScreenData data = new ScreenData(SCREEN_TYPE.MAIN_MENU, "Loading...");
+        ScreenData data = new ScreenData(VisualEnums.SCREEN_TYPE.MAIN_MENU, "Loading...");
         if (isFirstLoadingScreenShown()) {
             Assets.preloadMenu();
             genericLauncher.setScreen(new MenuLoadScreen());
@@ -127,7 +127,7 @@ public class ScreenLoader {
             case MAIN_MENU:
                 setInitRunning(false);
                 GuiEventManager.trigger(SCREEN_LOADED,
-                        new ScreenData(SCREEN_TYPE.MAIN_MENU));
+                        new ScreenData(VisualEnums.SCREEN_TYPE.MAIN_MENU));
                 break;
             default:
                 GuiEventManager.trigger(SCREEN_LOADED,

@@ -1,8 +1,8 @@
 package libgdx.anims.main;
 
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import libgdx.anims.Anim;
-import libgdx.anims.AnimEnums;
 import libgdx.anims.CompositeAnim;
 import libgdx.anims.std.DeathAnim;
 import libgdx.anims.text.FloatingTextMaster;
@@ -95,7 +95,7 @@ public class EventAnimMaster {
                 }
 
             if (parentAnim.getMap().isEmpty())
-                parentAnim.add(AnimEnums.ANIM_PART.AFTEREFFECT, anim);
+                parentAnim.add(VisualEnums.ANIM_PART.AFTEREFFECT, anim);
             else
                 parentAnim.addEventAnim(anim, event); //TODO}
             return true;

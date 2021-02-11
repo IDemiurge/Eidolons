@@ -29,7 +29,7 @@ import com.bitfire.postprocessing.effects.CustomPostEffect;
 import com.bitfire.postprocessing.effects.Zoomer;
 import com.bitfire.postprocessing.utils.PingPongBuffer;
 import com.bitfire.utils.ItemsManager;
-import eidolons.libgdx.shaders.post.fx.SaturateFx;
+import libgdx.shaders.post.fx.SaturateFx;
 
 /** Provides a way to capture the rendered scene to an off-screen buffer and to apply a chain of effects on it before rendering to
  * screen.

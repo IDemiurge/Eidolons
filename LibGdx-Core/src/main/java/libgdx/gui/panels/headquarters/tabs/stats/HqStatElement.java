@@ -16,7 +16,7 @@ import libgdx.gui.generic.btn.SmartTextButton;
 import libgdx.gui.panels.headquarters.HqElement;
 import libgdx.gui.tooltips.SmartClickListener;
 import libgdx.gui.tooltips.ValueTooltip;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import libgdx.texture.TextureCache;
 import eidolons.system.text.DescriptionTooltips;
 import libgdx.gui.generic.btn.ButtonStyled;

@@ -1,6 +1,6 @@
 package eidolons.game.netherflame.main.story.brief;
 
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.Scene;
 
 public class BriefScene implements Scene {
     BriefingData data;

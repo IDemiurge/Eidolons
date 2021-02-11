@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneListener;
-import eidolons.libgdx.gui.panels.TablePanelX;
+import libgdx.gui.panels.TablePanelX;
 import main.level_editor.gui.panels.control.impl.*;
 import main.system.auxiliary.StringMaster;
 

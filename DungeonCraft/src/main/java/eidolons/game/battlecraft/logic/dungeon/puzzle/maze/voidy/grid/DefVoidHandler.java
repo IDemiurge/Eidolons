@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.grid;
 
 import eidolons.entity.obj.DC_Cell;
-import eidolons.libgdx.bf.grid.DC_GridPanel;
+import libgdx.bf.grid.DC_GridPanel;
 import main.content.CONTENT_CONSTS;
 
 public class DefVoidHandler extends VoidHandler{

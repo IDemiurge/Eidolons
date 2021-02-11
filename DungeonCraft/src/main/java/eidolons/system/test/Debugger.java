@@ -3,7 +3,7 @@ package eidolons.system.test;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.libgdx.bf.grid.cell.BaseView;
+import libgdx.bf.grid.cell.BaseView;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 

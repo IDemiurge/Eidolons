@@ -6,17 +6,13 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.CombatLoop;
 import eidolons.game.netherflame.main.NF_MetaMaster;
 import eidolons.game.netherflame.main.NF_PartyManager;
-import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.gui.overlay.choice.VC_DataSource;
-import eidolons.libgdx.gui.overlay.choice.VisualChoiceHandler;
+import eidolons.system.libgdx.GdxStatic;
 import eidolons.system.text.tips.TipMessageMaster;
 import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.threading.WaitMaster;
 
-import static eidolons.libgdx.gui.overlay.choice.VC_DataSource.VC_OPTION;
-import static eidolons.libgdx.gui.overlay.choice.VC_DataSource.VC_TYPE;
 
 public class NF_DefeatHandler extends DefeatHandler {
 
@@ -37,18 +33,19 @@ public class NF_DefeatHandler extends DefeatHandler {
         //TODO deal with the corpse loot!!!
         getGame().getLoop().setPaused(true);
 
-        if (VisualChoiceHandler.isOn()) {
-            GuiEventManager.triggerWithParams(GuiEventType.VISUAL_CHOICE,
-                    new VC_DataSource(VC_TYPE.death));
-        VC_OPTION o = (VC_OPTION) WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.VISUAL_CHOICE);
-        switch (o) {
-            case ashen_rebirth:
-            case fiery_rebirth:
-                return false;
-            case dissolution:
-                return true;
-        }
-        }
+        //TODO gdx Review 2021
+        // if (VisualChoiceHandler.isOn()) {
+        //     GuiEventManager.triggerWithParams(GuiEventType.VISUAL_CHOICE,
+        //             new VC_DataSource(VC_TYPE.death));
+        // VC_OPTION o = (VC_OPTION) WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.VISUAL_CHOICE);
+        // switch (o) {
+        //     case ashen_rebirth:
+        //     case fiery_rebirth:
+        //         return false;
+        //     case dissolution:
+        //         return true;
+        // }
+        // }
         //Boolean result
         if (getGame().getLoop() instanceof CombatLoop) {
             ((CombatLoop) getGame().getLoop()).endCombat();
@@ -72,7 +69,7 @@ public class NF_DefeatHandler extends DefeatHandler {
         getPartyManager().getParty().death();
         getPartyManager().respawn(newHero);
 
-        GdxMaster.setDefaultCursor();
+        GdxStatic.setDefaultCursor();
         GuiEventManager.trigger(GuiEventType.UPDATE_GUI);
 
 

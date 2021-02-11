@@ -5,7 +5,6 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.libgdx.bf.grid.handlers.GridManager;
 import io.vertx.core.impl.ConcurrentHashSet;
 import main.data.XList;
 import main.entity.Ref;
@@ -13,6 +12,8 @@ import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.core.game.GameObjMaster;
 import main.game.logic.battle.player.Player;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.SortMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -313,7 +314,7 @@ public class DC_GameObjMaster extends GameObjMaster {
             getStructures().add((Structure) obj);
             if (game.isStarted()) {
                 if (((BattleFieldObject) obj).isWall()) {
-                    GridManager.reset();
+                    GuiEventManager.trigger(GuiEventType.GRID_RESET );
                 }
                 if (CoreEngine.isLevelEditor()) //otherwise will be done on state reset()
                     if (((BattleFieldObject) obj).isLightEmitter()) {

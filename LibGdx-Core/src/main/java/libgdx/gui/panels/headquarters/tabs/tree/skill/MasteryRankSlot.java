@@ -1,7 +1,7 @@
 package libgdx.gui.panels.headquarters.tabs.tree.skill;
 
 import libgdx.gui.panels.headquarters.tabs.tree.HtNode;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import eidolons.system.text.DescriptionTooltips;
 import main.content.ContentValsManager;
 import main.content.enums.entity.SkillEnums.MASTERY;

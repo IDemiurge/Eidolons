@@ -39,6 +39,10 @@ public class Obj extends Entity {
         super(type, owner, game, ref);
     }
 
+    public Obj(ObjType type) {
+        super(type, Player.NEUTRAL, Game.game, new Ref());
+    }
+
     protected void cloneType() {
         type = new ObjType(type);
         game.initType(type);

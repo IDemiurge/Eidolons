@@ -3,7 +3,6 @@ package eidolons.content.consts.libgdx;
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.core.game.DC_Game;
-import libgdx.bf.decor.pillar.Pillars;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 

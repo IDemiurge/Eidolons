@@ -3,18 +3,15 @@ package libgdx.assets.utils;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import eidolons.libgdx.GdxImageMaster;
-import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.assets.AssetEnums;
-import eidolons.libgdx.bf.grid.cell.QueueView;
-import eidolons.libgdx.gui.panels.dc.topleft.atb.AtbPanel;
-import eidolons.libgdx.texture.TextureCache;
-import eidolons.libgdx.texture.TexturePackerLaunch;
-import eidolons.system.utils.GdxUtil;
+import eidolons.content.consts.libgdx.GdxUtils;
 import libgdx.GdxImageMaster;
 import libgdx.GdxMaster;
+import libgdx.assets.AssetEnums;
+import libgdx.bf.grid.cell.QueueView;
+import libgdx.gui.panels.dc.topleft.atb.AtbPanel;
 import libgdx.texture.TextureCache;
 import libgdx.texture.TexturePackerLaunch;
+import eidolons.system.utils.GdxUtil;
 import main.data.filesys.PathFinder;
 import main.system.PathUtils;
 import main.system.auxiliary.StringMaster;
@@ -24,8 +21,6 @@ import main.system.auxiliary.secondary.Bools;
 import main.system.threading.WaitMaster;
 
 import java.io.File;
-
-import static eidolons.libgdx.GdxImageMaster.*;
 
 public class AtlasGen extends GdxUtil {
 
@@ -160,18 +155,18 @@ public class AtlasGen extends GdxUtil {
         for (File file : FileManager.getFilesFromDirectory(
                 root + folder, false, true)) {
             String path = file.getPath();
-            if (GdxImageMaster.isGeneratedFile(path)) {
+            if (GdxUtils.isGeneratedFile(path)) {
                 continue;
             }
             if (cropSuffix!=null ){
                 FileManager.rename(path, path =StringMaster.cropSuffix(path, cropSuffix));
             }
             FileHandle handle = new FileHandle(
-                    atlas.prefix + "/" + GdxImageMaster.getSizedImagePath(PathUtils.cropPath(path,
+                    atlas.prefix + "/" + GdxUtils.getSizedImagePath(PathUtils.cropPath(path,
                             root), size,cropSuffix));
             if (!OVERWRITE && handle.exists()) continue;
             String orig = root +
-                    GdxImageMaster.getSizedImagePath(path, size);
+                    GdxUtils.getSizedImagePath(path, size);
             if (FileManager.isFile(orig)) {
                 if (Bools.isTrue(FileManager.copy(orig, handle.toString())))
                     LogMaster.log(1, size + " sized copied   " + handle);
@@ -189,7 +184,7 @@ public class AtlasGen extends GdxUtil {
             for (File file : FileManager.getFilesFromDirectory(
                     root +
                             roundedFolder, false, true)) {
-                if (GdxImageMaster.isGeneratedFile(file.getName())) {
+                if (GdxUtils.isGeneratedFile(file.getName())) {
                     continue;
                 }
                 FileHandle handle = new FileHandle(
@@ -218,10 +213,10 @@ public class AtlasGen extends GdxUtil {
 
         for (File file : FileManager.getFilesFromDirectory(
                 out, false, true)) {
-            if (GdxImageMaster.isRoundedPath(file.getName())) {
+            if (GdxUtils.isRoundedPath(file.getName())) {
                 continue;
             }
-            if (GdxImageMaster.isSizedPath(file.getName())) {
+            if (GdxUtils.isSizedPath(file.getName())) {
                 continue;
             }
             String path =  PathUtils.cropPath(file.getPath(), out);
@@ -249,7 +244,7 @@ public class AtlasGen extends GdxUtil {
 
 
     public static AssetEnums.ATLAS getAtlasForPath(String path) {
-        path = GdxImageMaster.cropImagePath(path);
+        path = GdxUtils.cropImagePath(path);
         String root = PathUtils.cropLastPathSegment(path);
         for (AssetEnums.ATLAS atlas : AssetEnums.ATLAS.values()) {
             if (check(atlas, root))
@@ -308,7 +303,7 @@ public class AtlasGen extends GdxUtil {
         log(true, "Copying atlas images from: " + atlasImgFolder);
 
         for (File file : FileManager.getFilesFromDirectory(atlasImgFolder, false, true)) {
-            String path = GdxImageMaster.cropImagePath(file.getPath());
+            String path = GdxUtils.cropImagePath(file.getPath());
             String formatted = path.replaceFirst(pref, "");
             AssetEnums.ATLAS atlas = getAtlasForPath(formatted);
             if (atlas == null) {

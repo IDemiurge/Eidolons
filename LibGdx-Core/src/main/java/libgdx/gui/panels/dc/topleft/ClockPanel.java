@@ -14,7 +14,7 @@ import libgdx.bf.generic.ImageContainer;
 import libgdx.gui.generic.GearCluster;
 import libgdx.gui.generic.GroupX;
 import libgdx.gui.panels.dc.clock.ClockActor;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import main.system.graphics.FontMaster;
 
 public class ClockPanel extends GroupX {

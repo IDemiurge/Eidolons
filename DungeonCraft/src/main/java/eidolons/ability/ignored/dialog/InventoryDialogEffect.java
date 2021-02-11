@@ -4,7 +4,7 @@ import eidolons.ability.InventoryTransactionManager;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
+import libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.game.logic.event.Event;

@@ -4,7 +4,7 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleHandler;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.ManipulatorPuzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
-import eidolons.libgdx.shaders.post.PostFxUpdater;
+import libgdx.shaders.post.PostFxUpdater;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 

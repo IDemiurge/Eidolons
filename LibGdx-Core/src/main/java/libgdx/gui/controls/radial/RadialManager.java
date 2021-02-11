@@ -3,6 +3,7 @@ package libgdx.gui.controls.radial;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ObjectMap;
+import eidolons.content.consts.libgdx.GdxUtils;
 import eidolons.entity.active.*;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
@@ -15,7 +16,6 @@ import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj;
-import libgdx.GdxImageMaster;
 import libgdx.anims.text.FloatingTextMaster;
 import libgdx.gui.generic.ValueContainer;
 import libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
@@ -56,11 +56,11 @@ public class RadialManager {
     public static TextureRegion getTextureForActive(DC_ActiveObj obj, DC_Obj target) {
         if (obj.isAttackAny()) {
             DC_WeaponObj weapon = obj.getActiveWeapon();
-            String path = GdxImageMaster.getAttackActionPath(obj, weapon);
+            String path = GdxUtils.getAttackActionPath(obj, weapon);
             TextureRegion texture = TextureCache.getOrCreateR(path);
             if (texture.getRegionWidth() > 64) {
                 for (DC_UnitAction attackAction : weapon.getAttackActions()) {
-                    TextureRegion t = TextureCache.getOrCreateR(GdxImageMaster.getAttackActionPath(attackAction, weapon));
+                    TextureRegion t = TextureCache.getOrCreateR(GdxUtils.getAttackActionPath(attackAction, weapon));
                     if (texture.getRegionWidth() > 64)
                         continue;
                     texture = t;

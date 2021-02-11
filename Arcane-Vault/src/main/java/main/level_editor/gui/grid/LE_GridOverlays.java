@@ -9,19 +9,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
-import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
-import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.grid.GridPanel;
-import eidolons.libgdx.bf.grid.cell.GridCellContainer;
-import eidolons.libgdx.bf.grid.moving.PlatformController;
-import eidolons.libgdx.bf.overlays.GridOverlaysManager;
+import eidolons.game.module.dungeoncrawl.struct.LevelBlock;
+import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
+import libgdx.GdxMaster;
+import libgdx.bf.grid.GridPanel;
+import libgdx.bf.grid.cell.GridCellContainer;
+import libgdx.bf.grid.moving.PlatformController;
+import libgdx.bf.overlays.GridOverlaysManager;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.display.LE_DisplayMode;
 import main.system.math.PositionMaster;
 
-import static eidolons.libgdx.bf.overlays.GridOverlaysManager.OVERLAY.*;
+import static libgdx.bf.overlays.GridOverlaysManager.OVERLAY.*;
 
 public class LE_GridOverlays extends GridOverlaysManager {
     private LE_DisplayMode mode;

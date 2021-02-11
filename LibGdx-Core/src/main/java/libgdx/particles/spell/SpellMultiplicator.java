@@ -5,10 +5,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import eidolons.content.PROPS;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import libgdx.anims.Anim;
-import libgdx.anims.AnimEnums;
 import libgdx.anims.actions.ActionMaster;
 import libgdx.anims.construct.AnimConstructor;
 import libgdx.anims.std.SpellAnim;
@@ -63,7 +63,7 @@ public class SpellMultiplicator implements Runnable {
         //        if (anim.getPart() == AnimConstructor.ANIM_PART.IMPACT) {
         //            return true;
         //        }
-        if (anim.getPart() != AnimEnums.ANIM_PART.MISSILE) {
+        if (anim.getPart() != VisualEnums.ANIM_PART.MISSILE) {
             return false;
         }
         if (anim instanceof SpellAnim) {
@@ -308,7 +308,7 @@ public class SpellMultiplicator implements Runnable {
         }
         MoveByAction action = ActionMaster.getMoveByAction(getOrigin(), v, actor, (int) speed);
 
-        if (anim.getPart() == AnimEnums.ANIM_PART.IMPACT) {
+        if (anim.getPart() == VisualEnums.ANIM_PART.IMPACT) {
             duration = 1f / 100;
             action.setDuration(duration);
         } else {

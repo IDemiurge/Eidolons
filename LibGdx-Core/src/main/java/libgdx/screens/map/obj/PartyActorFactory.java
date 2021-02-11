@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.macro.entity.party.MacroParty;
 import eidolons.macro.map.MapVisionMaster.MAP_OBJ_INFO_LEVEL;
-import libgdx.GdxColorMaster;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.screens.map.ui.tooltips.PartyTooltip;
 import libgdx.texture.TextureCache;
 

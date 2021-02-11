@@ -1,10 +1,12 @@
 package main.level_editor.backend.display;
 
+import eidolons.content.consts.VisualEnums;
+import eidolons.content.consts.VisualEnums.FULLSCREEN_ANIM;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.screens.ScreenMaster;
-import eidolons.libgdx.screens.dungeon.GenericDungeonScreen;
+import libgdx.screens.ScreenMaster;
+import libgdx.screens.dungeon.GenericDungeonScreen;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS;
@@ -15,7 +17,6 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.MapEvent;
 
-import static eidolons.libgdx.anims.fullscreen.FullscreenAnims.FULLSCREEN_ANIM;
 
 public class LE_DisplayHandler extends LE_Handler implements IDisplayHandler {
     MACRO_CONTENT_CONSTS.DAY_TIME time = MACRO_CONTENT_CONSTS.DAY_TIME.DAWN;

@@ -3,9 +3,9 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.intro.IntroFactory;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.line.DialogueLineFormatter;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.DialogueContainerAdapter;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechExecutor;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.DialogueContainer;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.view.Scene;
+
 import eidolons.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
@@ -40,7 +40,7 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
     protected DialogueFactory dialogueFactory;
     protected IntroFactory introFactory;
     protected DialogueActorMaster dialogueActorMaster;
-    private DialogueContainer container;
+    private DialogueContainerAdapter container;
 
     public DialogueManager(MetaGameMaster master) {
         super(master);
@@ -146,7 +146,9 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
         GuiEventManager.trigger(DIALOG_SHOW,
          new DialogueHandler(this, dialogue, getGame(), list));
     }
-
+    public static boolean isBlotch() {
+        return true;
+    }
     public static boolean isRunning() {
         return running;
     }
@@ -163,11 +165,11 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
         return new DialogueFactory();
     }
 
-    public void setContainer(DialogueContainer container) {
+    public void setContainer(DialogueContainerAdapter container) {
         this.container = container;
     }
 
-    public DialogueContainer getContainer() {
+    public DialogueContainerAdapter getContainer() {
         return container;
     }
 }

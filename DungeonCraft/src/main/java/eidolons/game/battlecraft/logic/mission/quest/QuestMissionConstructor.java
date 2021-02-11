@@ -6,9 +6,9 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VAL
 import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.battlecraft.logic.mission.universal.MissionConstructor;
 import eidolons.game.battlecraft.logic.mission.universal.MissionMaster;
-import eidolons.libgdx.gui.utils.FileChooserX;
-import eidolons.libgdx.launch.MainLauncher;
-import eidolons.libgdx.screens.dungeon.DungeonScreen;
+import libgdx.gui.utils.FileChooserX;
+import libgdx.launch.MainLauncher;
+import libgdx.screens.dungeon.DungeonScreen;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;

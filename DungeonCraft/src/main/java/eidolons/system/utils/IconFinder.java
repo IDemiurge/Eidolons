@@ -1,7 +1,7 @@
 package eidolons.system.utils;
 
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.libgdx.gui.panels.dc.inventory.InventoryFactory;
+import libgdx.gui.panels.dc.inventory.InventoryFactory;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.xml.XML_Writer;

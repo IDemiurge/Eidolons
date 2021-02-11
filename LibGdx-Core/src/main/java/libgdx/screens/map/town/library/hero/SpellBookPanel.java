@@ -7,7 +7,7 @@ import libgdx.gui.panels.headquarters.HqMaster;
 import libgdx.gui.panels.headquarters.tabs.spell.MemorizedContainer;
 import libgdx.gui.panels.headquarters.tabs.spell.SpellbookContainer;
 import libgdx.gui.panels.headquarters.tabs.spell.VerbatimContainer;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 
 /**
  * Created by JustMe on 11/21/2018.

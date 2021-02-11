@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import eidolons.content.consts.libgdx.GdxUtils;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -23,7 +24,7 @@ import libgdx.gui.generic.btn.ButtonStyled;
 import libgdx.gui.panels.dc.topleft.atb.AtbPanel;
 import libgdx.gui.tooltips.SmartClickListener;
 import libgdx.gui.tooltips.UnitViewTooltipFactory;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import libgdx.texture.TextureCache;
 import main.content.CONTENT_CONSTS;
 import main.content.enums.GenericEnums;
@@ -35,7 +36,7 @@ import main.system.launch.Flags;
 
 import java.util.function.Supplier;
 
-import static libgdx.GdxImageMaster.getSizedImagePath;
+import static eidolons.content.consts.libgdx.GdxUtils.getSizedImagePath;
 import static main.system.GuiEventType.ADD_OR_UPDATE_INITIATIVE;
 
 /**
@@ -79,7 +80,7 @@ public class QueueView extends UnitView {
     }
 
     public static String getProperViewPath(String path) {
-        return                GdxImageMaster.getRoundedPath(GdxImageMaster.getSizedImagePath(path, AtbPanel.imageSize));
+        return                GdxImageMaster.getRoundedPath(GdxUtils.getSizedImagePath(path, AtbPanel.imageSize));
     }
 
     @Override
@@ -324,7 +325,7 @@ public class QueueView extends UnitView {
                 GdxImageMaster.size( (path),
                         AtbPanel.imageSize, true);
             }
-            return GdxImageMaster.round(path, Flags.isIDE(),  GdxImageMaster.getSizedImagePath(path, AtbPanel.imageSize));
+            return GdxImageMaster.round(path, Flags.isIDE(),  GdxUtils.getSizedImagePath(path, AtbPanel.imageSize));
         // }
         // TextureRegion region = TextureCache.getRegionUV(path);
         // GdxImageMaster.round(path, true, "");

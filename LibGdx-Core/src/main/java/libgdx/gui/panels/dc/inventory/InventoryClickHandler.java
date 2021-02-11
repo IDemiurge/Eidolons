@@ -1,7 +1,7 @@
 package libgdx.gui.panels.dc.inventory;
 
 import eidolons.content.consts.VisualEnums;
-import libgdx.texture.Images;
+import eidolons.content.consts.Images;
 import main.entity.Entity;
 
 public interface InventoryClickHandler {

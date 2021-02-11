@@ -26,7 +26,7 @@ import eidolons.game.core.master.EffectMaster;
 import eidolons.game.core.state.DC_GameState;
 import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
 import eidolons.game.module.dungeoncrawl.explore.ExploreGameLoop;
-import eidolons.libgdx.screens.ScreenMaster;
+import libgdx.screens.ScreenMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.system.AiEnums;

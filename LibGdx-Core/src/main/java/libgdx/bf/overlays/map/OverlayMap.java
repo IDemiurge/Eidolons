@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.google.inject.internal.util.ImmutableList;
 import eidolons.game.battlecraft.logic.battlefield.vision.colormap.LightConsts;
-import libgdx.GdxColorMaster;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.bf.GridMaster;
 import libgdx.bf.SuperActor;
 import libgdx.bf.grid.GridPanel;

@@ -1,7 +1,7 @@
 package main.level_editor.gui.panels.control;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.libgdx.gui.panels.TablePanelX;
+import libgdx.gui.panels.TablePanelX;
 
 public class ControlPanelHolder extends TablePanelX {
 

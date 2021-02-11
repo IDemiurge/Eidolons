@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.battlefield.vision.advanced;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.libgdx.bf.grid.cell.UnitGridView;
+import libgdx.bf.grid.cell.UnitGridView;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 
 /**

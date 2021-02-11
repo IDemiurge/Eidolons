@@ -7,7 +7,7 @@ import com.kotcrab.vis.ui.widget.Menu;
 import com.kotcrab.vis.ui.widget.MenuBar;
 import com.kotcrab.vis.ui.widget.MenuItem;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.StyleHolder;
+import libgdx.StyleHolder;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.brush.BrushShape;
 import main.level_editor.backend.brush.LE_BrushType;

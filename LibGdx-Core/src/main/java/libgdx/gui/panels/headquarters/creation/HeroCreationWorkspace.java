@@ -13,7 +13,7 @@ import libgdx.gui.panels.TablePanelX;
 import libgdx.gui.panels.headquarters.HqElement;
 import libgdx.gui.panels.headquarters.creation.preview.HcPreview;
 import libgdx.gui.panels.headquarters.creation.selection.HcDeitySelectionPanel;
-import eidolons.libgdx.gui.panels.headquarters.creation.selection.misc.*;
+import libgdx.gui.panels.headquarters.creation.selection.misc.*;
 import libgdx.gui.panels.headquarters.creation.selection.race.HcRaceSelectPanel;
 import libgdx.gui.panels.headquarters.creation.selection.skillset.HcSkillsetPanel;
 import libgdx.gui.panels.headquarters.creation.selection.misc.*;

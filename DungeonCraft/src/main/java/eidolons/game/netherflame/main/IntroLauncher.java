@@ -2,7 +2,7 @@ package eidolons.game.netherflame.main;
 
 import eidolons.game.EidolonsGame;
 import eidolons.game.netherflame.main.story.brief.BriefingData;
-import eidolons.libgdx.texture.Sprites;
+import eidolons.content.consts.Sprites;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SystemOptions;
 import eidolons.system.text.DescriptionTooltips;

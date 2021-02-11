@@ -1,16 +1,18 @@
 package libgdx.gui.panels.headquarters.tabs.spell;
 
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.Spell;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.master.SpellMaster;
 import eidolons.game.module.herocreator.HeroManager;
 import libgdx.gui.panels.headquarters.datasource.HqDataMaster;
-import libgdx.stage.GuiStage;
 import libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static eidolons.content.consts.VisualEnums.*;
 
 /**
  * Created by JustMe on 4/17/2018.
@@ -50,7 +52,7 @@ public class SpellbookContainer extends HqSpellContainer {
             if (HqSpellMaster.canMemorize(spell))
                 HqDataMaster.operation(getUserObject(), HeroDataModel.HERO_OPERATION.SPELL_MEMORIZED, spell);
             else {
-                EUtils.showInfoTextStyled(GuiStage.LABEL_STYLE.AVQ_SMALL, "Cannot memorize " + spell.getName());
+                EUtils.showInfoTextStyled(LABEL_STYLE.AVQ_SMALL, "Cannot memorize " + spell.getName());
             }
         }
     }
@@ -67,7 +69,7 @@ public class SpellbookContainer extends HqSpellContainer {
                 EUtils.onConfirm("Learn " + spell + " for " + HeroManager.getCost(spell, Eidolons.getMainHero()) + " Experience Points?", true, () ->
                         HqDataMaster.operation(getUserObject(), HeroDataModel.HERO_OPERATION.SPELL_LEARNED, spell));
             } else {
-                EUtils.showInfoTextStyled(GuiStage.LABEL_STYLE.AVQ_SMALL, "Cannot learn " + spell.getName() + ":\n " +
+                EUtils.showInfoTextStyled(LABEL_STYLE.AVQ_SMALL, "Cannot learn " + spell.getName() + ":\n " +
                         spell.getGame().getRequirementsManager().check(Eidolons.getMainHero(), spell));
             }
         } else {
@@ -77,7 +79,7 @@ public class SpellbookContainer extends HqSpellContainer {
                         + " Experience Points?", true, () ->
                         HqDataMaster.operation(getUserObject(), HeroDataModel.HERO_OPERATION.SPELL_EN_VERBATIM, spell));
             } else
-                EUtils.showInfoTextStyled(GuiStage.LABEL_STYLE.AVQ_SMALL, "Cannot learn En Verbatim " + spell.getName());
+                EUtils.showInfoTextStyled(LABEL_STYLE.AVQ_SMALL, "Cannot learn En Verbatim " + spell.getName());
         }
     }
 

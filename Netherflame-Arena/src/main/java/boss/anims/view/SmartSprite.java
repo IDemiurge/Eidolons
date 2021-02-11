@@ -1,7 +1,7 @@
 package boss.anims.view;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import eidolons.libgdx.anims.sprite.SpriteAnimation;
+import libgdx.anims.sprite.SpriteAnimation;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;

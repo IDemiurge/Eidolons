@@ -1,17 +1,46 @@
 package eidolons.content.consts;
 
 import com.badlogic.gdx.graphics.Color;
+import eidolons.content.PARAMS;
+import eidolons.content.PROPS;
 import eidolons.content.consts.libgdx.GdxColorMaster;
+import eidolons.content.consts.libgdx.GdxUtils;
+import main.content.VALUE;
 import main.content.enums.GenericEnums;
 import main.content.mode.MODE;
 import main.content.mode.STD_MODES;
 import main.data.filesys.PathFinder;
 import main.system.EventType;
 import main.system.GuiEventType;
+import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.data.FileManager;
+import main.system.graphics.FontMaster;
 
 import static main.content.enums.GenericEnums.VFX.*;
 
 public class VisualEnums {
+    public static final VALUE[] anim_vals = {
+            PROPS.ANIM_SPRITE_PRECAST,
+            PROPS.ANIM_SPRITE_CAST,
+            PROPS.ANIM_SPRITE_RESOLVE,
+            PROPS.ANIM_SPRITE_MAIN,
+            PROPS.ANIM_SPRITE_IMPACT,
+            PROPS.ANIM_SPRITE_AFTEREFFECT,
+            PROPS.ANIM_MISSILE_SPRITE,
+            PROPS.ANIM_MODS_SPRITE,
+
+            PROPS.ANIM_MISSILE_VFX,
+            PROPS.ANIM_VFX_PRECAST,
+            PROPS.ANIM_VFX_CAST,
+            PROPS.ANIM_VFX_RESOLVE,
+            PROPS.ANIM_VFX_MAIN,
+            PROPS.ANIM_VFX_IMPACT,
+            PROPS.ANIM_VFX_AFTEREFFECT,
+            PROPS.ANIM_MODS_VFX,
+            PARAMS.ANIM_SPEED,
+            PARAMS.ANIM_FRAME_DURATION,
+    };
+
     public enum SHARD_OVERLAY {
         MIST,
         DARKNESS,
@@ -475,5 +504,252 @@ public class VisualEnums {
             return super.toString().toLowerCase();
         }
 
+    }
+
+    public enum SCREEN_TYPE {
+      EDITOR, DUNGEON, PRE_BATTLE, MAIN_MENU, WEAVE, BRIEFING, CINEMATIC, MAP, EDITOR_WELCOME
+    }
+
+    public enum LABEL_STYLE {
+        AVQ_SMALL(17, FontMaster.FONT.AVQ),
+        AVQ_MED(20, FontMaster.FONT.AVQ),
+        AVQ_LARGE(24, FontMaster.FONT.AVQ),
+
+        MORPH_SMALL(14, FontMaster.FONT.METAMORPH),
+        MORPH_MED(16, FontMaster.FONT.METAMORPH),
+        MORPH_LARGE(20, FontMaster.FONT.METAMORPH),
+
+
+        ;
+
+        public int size;
+        public FontMaster.FONT font;
+        public Color color;
+
+        LABEL_STYLE(int size, FontMaster.FONT font) {
+            this(size, font, GdxColorMaster.getDefaultTextColor());
+        }
+
+        LABEL_STYLE(int size, FontMaster.FONT font, Color color) {
+            this.size = size;
+            this.font = font;
+            this.color = color;
+        }
+    }
+
+    public enum FLY_OBJ_TYPE {
+        cloud(0.04f, GenericEnums.ALPHA_TEMPLATE.CLOUD, true, false, 0f),
+        cloud_large(0.03f, GenericEnums.ALPHA_TEMPLATE.CLOUD_HEAVY, true, false, 0.5f){
+            @Override
+            public String toString() {
+                return "cloud";
+            }
+        },
+        thunder(0.03f, null , true, true, 0f, true, SPRITE_TEMPLATE.THUNDER),
+        thunder2(0.03f, null, false, false, 0f, true, SPRITE_TEMPLATE.THUNDER2),
+        thunder3(0.03f, null, false, false, 0f, true, SPRITE_TEMPLATE.THUNDER2),
+        //linked with texture?
+        isle(0.5f, GenericEnums.ALPHA_TEMPLATE.CLOUD, true, false, 0f),
+        stars(2.5f, GenericEnums.ALPHA_TEMPLATE.SUN, true, true, 0f),
+        wraith(0.2f, GenericEnums.ALPHA_TEMPLATE.CLOUD, true, false, 0f),
+        smoke(0.3f, GenericEnums.ALPHA_TEMPLATE.CLOUD, true, false, 0f),
+        black_smoke(0.3f, GenericEnums.ALPHA_TEMPLATE.CLOUD, true, false, 0f),
+        // star_field,
+        // cloud_field, //this would require some alpha tricks!
+        //
+        comet_pale(2.5f,
+                missile_pale, missile_pale, missile_arcane, missile_nether_nox),
+        comet_bright(3f,
+                missile_warp, missile_death, missile_chaos, missile_arcane_pink),
+        mist(2f, MIST_WHITE3, MIST_WHITE2, MIST_TRUE2, MIST_WIND),
+        cinders(3f, CINDERS3, CINDERS2, CINDERS),
+
+        debris(0.4f, GenericEnums.ALPHA_TEMPLATE.CLOUD, true, false, 0f),
+        light(0.3f, GenericEnums.ALPHA_TEMPLATE.CLOUD, true, false, 0f), //sprite?
+        ;
+
+        private   String directory;
+        private   String fileName;
+        FLY_OBJ_TYPE host;
+        public float angleRange;
+        private String path;
+        GenericEnums.BLENDING blending;
+        boolean scaling;
+        GenericEnums.VFX[] vfx;
+        private Color hue;
+        private float baseAlpha;
+
+        FLY_OBJ_TYPE(float speedFactor, GenericEnums.VFX... vfx) {
+            this.vfx = vfx;
+            this.speedFactor = speedFactor;
+        }
+
+        FLY_OBJ_TYPE(float speedFactor, GenericEnums.ALPHA_TEMPLATE alpha,
+                     boolean flipX, boolean flipY, float weightFactor) {
+            this(speedFactor, alpha, flipX, flipY, weightFactor, false, null);
+        }
+
+        FLY_OBJ_TYPE(float speedFactor, GenericEnums.ALPHA_TEMPLATE alpha,
+                     boolean flipX, boolean flipY, float weightFactor, boolean sprite, SPRITE_TEMPLATE template) {
+            this.directory =sprite ?  PathFinder.getSpritesPath() + "fly objs/" :  PathFinder.getFlyObjPath();
+            this.fileName = toString();
+            this. path = sprite ? directory+ fileName + ".txt"
+                                : directory+ fileName + ".png";
+
+            this.speedFactor = speedFactor;
+            this.alpha = alpha;
+            this.flipX = flipX;
+            this.flipY = flipY;
+            this.weightFactor = weightFactor;
+            spriteTemplate = template;
+        }
+
+        public float speedFactor;
+        public GenericEnums.ALPHA_TEMPLATE alpha;
+        public SPRITE_TEMPLATE spriteTemplate;
+        boolean flipX;
+        boolean flipY;
+        float weightFactor; //TODO revamp; now its just scale boost
+
+        public String getPathVariant() {
+            if (vfx != null) {
+                return vfx[RandomWizard.getRandomInt(vfx.length)].getPath();
+            }
+            if (path.endsWith(".txt")) {
+                return path;
+            }
+            return GdxUtils.cropImagePath(FileManager.getRandomFilePathVariantSmart(fileName,    directory, ".png"));
+        }
+
+        static {
+            cloud_large.setBaseAlpha(0.89f);
+            cloud_large.angleRange = 13;
+            cloud.setBaseAlpha(0.89f);
+            cloud.angleRange = 3;
+
+            thunder.setHost(cloud_large);
+            thunder2.setHost(cloud_large);
+            thunder3.setHost(cloud_large);
+        }
+        public void setHost(FLY_OBJ_TYPE host) {
+            this.host = host;
+        }
+
+        public boolean isHued() {
+            return baseAlpha != 0f;
+        }
+
+        public float getBaseAlpha() {
+            return baseAlpha;
+        }
+
+        public void setBaseAlpha(float baseAlpha) {
+            this.baseAlpha = baseAlpha;
+        }
+    }
+
+    public enum SPRITE_TEMPLATE {
+        //        WITCH_FLAME,
+        THUNDER(11f, 0.35f, true, 22),
+        THUNDER2(11f, 0.23f, false, 32),
+        ;
+
+        SPRITE_TEMPLATE(float pauseAfterCycle) {
+            this.pauseAfterCycle = pauseAfterCycle;
+        }
+
+        SPRITE_TEMPLATE(float pauseAfterCycle, float scaleRange, boolean reverse, int fps) {
+            this.pauseAfterCycle = pauseAfterCycle;
+            this.scaleRange = scaleRange;
+            this.canBeReverse = reverse;
+            this.fps = fps;
+        }
+
+        SPRITE_TEMPLATE(float pauseAfterCycle, float speedRandomness, float acceleration, float offsetRangeX, float offsetRangeY, float scaleRange) {
+            this.pauseAfterCycle = pauseAfterCycle;
+            this.speedRandomness = speedRandomness;
+            this.acceleration = acceleration;
+            this.offsetRangeX = offsetRangeX;
+            this.offsetRangeY = offsetRangeY;
+            this.scaleRange = scaleRange;
+        }
+
+        public boolean canBeReverse;
+        public int fps;
+        float pauseAfterCycle;
+        float speedRandomness;
+        float acceleration;
+        float offsetRangeX;
+        float offsetRangeY;
+        float scaleRange;
+    }
+
+    public enum CURSOR {
+        DEFAULT(PathFinder.getCursorPath()),
+        TARGETING(32, 32, PathFinder.getTargetingCursorPath()),
+        LOADING(PathFinder.getLoadingCursorPath()),
+        WAITING(PathFinder.getLoadingCursorPath()),
+        ATTACK(PathFinder.getAttackCursorPath()),
+        ATTACK_SNEAK(2, 60, PathFinder.getSneakAttackCursorPath()),
+        SPELL,
+        DOOR_OPEN,
+        LOOT,
+        INTERACT,
+        EXAMINE,
+
+        NO, EMPTY,
+        ;
+        int x, y;
+        private String filePath;
+
+        CURSOR(int x, int y, String filePath) {
+            this.x = x;
+            this.y = y;
+            this.filePath = filePath;
+        }
+
+        CURSOR(String filePath) {
+            this.filePath = filePath;
+        }
+
+        CURSOR() {
+        }
+
+        public String getFilePath() {
+            return filePath;
+        }
+
+        public void setFilePath(String filePath) {
+            this.filePath = filePath;
+        }
+    }
+
+    public enum ANIM_PART {
+        PRECAST(2F), //channeling
+        CAST(2.5f),
+        RESOLVE(2),
+        MISSILE(3) {
+            @Override
+            public String getPartPath() {
+                return
+                        "missile";
+            }
+        }, //flying missile
+        IMPACT(1),
+        AFTEREFFECT(2.5f);
+
+        public String getPartPath() {
+            return super.toString();
+        }
+
+        private final float defaultDuration;
+
+        ANIM_PART(float defaultDuration) {
+            this.defaultDuration = defaultDuration;
+        }
+
+        public float getDefaultDuration() {
+            return defaultDuration;
+        }
     }
 }

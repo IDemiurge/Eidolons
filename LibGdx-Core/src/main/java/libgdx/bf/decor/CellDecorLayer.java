@@ -3,7 +3,7 @@ package libgdx.bf.decor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
-import libgdx.GdxColorMaster;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.bf.datasource.GraphicData;
 import libgdx.bf.grid.GridLayer;
 import libgdx.bf.grid.GridPanel;

@@ -1,6 +1,6 @@
 package main.launch;
 
-import eidolons.system.content.ContentGenerator;
+import eidolons.system.utils.content.ContentGenerator;
 import eidolons.system.file.ResourceMaster;
 import eidolons.system.utils.TypeStringProcessor;
 import main.content.DC_TYPE;

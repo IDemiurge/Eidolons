@@ -8,9 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.kotcrab.vis.ui.widget.VisTree;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.gui.NinePatchFactory;
-import eidolons.libgdx.gui.generic.ValueContainer;
+import libgdx.StyleHolder;
+import libgdx.gui.NinePatchFactory;
+import libgdx.gui.generic.ValueContainer;
 import main.data.tree.DataNode;
 import main.system.graphics.FontMaster;
 

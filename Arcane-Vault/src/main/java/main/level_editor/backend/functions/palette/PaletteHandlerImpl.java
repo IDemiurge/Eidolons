@@ -10,7 +10,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.module.generator.GeneratorEnums;
 import eidolons.game.module.generator.model.RoomTemplateMaster;
 import eidolons.game.module.generator.tilemap.TileMapper;
-import eidolons.libgdx.utils.GdxDialogMaster;
+import libgdx.utils.GdxDialogMaster;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.data.DataManager;

@@ -1,11 +1,11 @@
 package libgdx.gui.menu.selection.scenario;
 
+import eidolons.content.consts.VisualEnums;
 import eidolons.game.netherflame.main.IntroLauncher;
 import libgdx.gui.menu.selection.ItemListPanel;
 import libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import libgdx.gui.menu.selection.SelectableItemDisplayer;
 import libgdx.gui.menu.selection.SelectionPanel;
-import libgdx.screens.SCREEN_TYPE;
 import libgdx.screens.ScreenData;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -62,7 +62,7 @@ public class ScenarioSelectionPanel extends SelectionPanel {
 
     protected void scenarioChosen(ObjType type) {
         main.system.auxiliary.log.LogMaster.log(1,"*** Scenario chosen: " +type);
-        ScreenData screenData = new ScreenData(SCREEN_TYPE.DUNGEON, type.getName());
+        ScreenData screenData = new ScreenData(VisualEnums.SCREEN_TYPE.DUNGEON, type.getName());
         if (IntroLauncher.isDemo(type))
             screenData.setParam(new EventCallbackParam(type));
 

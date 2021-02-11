@@ -24,7 +24,7 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.cinematic.Cinematics;
-import eidolons.game.module.cinematic.flight.FlightHandler;
+import libgdx.bf.grid.moving.flight.FlightHandler;
 import eidolons.game.module.dungeoncrawl.struct.Entrance;
 import libgdx.anims.actions.ActionMaster;
 import libgdx.anims.actions.FadeOutAction;
@@ -32,6 +32,7 @@ import libgdx.bf.GridMaster;
 import libgdx.bf.decor.CellDecor;
 import libgdx.bf.decor.CellDecorLayer;
 import libgdx.bf.decor.shard.ShardVisuals;
+import libgdx.bf.grid.handlers.ColorMap;
 import libgdx.bf.grid.handlers.GridManager;
 import libgdx.bf.grid.moving.PlatformCell;
 import libgdx.bf.grid.moving.PlatformData;
@@ -1120,7 +1121,10 @@ it sort of broke at some point - need to investigate!
                 restoreVoid(coordinates.x, coordinates.y, true);
             }
         });
-        GuiEventManager.bind(removePrevious, CELLS_MASS_SET_VOID, obj -> {
+        GuiEventManager.bind(removePrevious, GRID_RESET_MAPS, obj -> {
+            resetMaps();
+        });
+            GuiEventManager.bind(removePrevious, CELLS_MASS_SET_VOID, obj -> {
             Collection<Coordinates> c = (Collection<Coordinates>) obj.get();
             for (Coordinates coordinates : c) {
                 setVoid(coordinates.x, coordinates.y, false);
@@ -1541,6 +1545,10 @@ it sort of broke at some point - need to investigate!
             }
 
         }
+    }
+
+    public ColorMap getColorMap() {
+        return gridManager.getColorHandler().getColorMap();
     }
 }
 

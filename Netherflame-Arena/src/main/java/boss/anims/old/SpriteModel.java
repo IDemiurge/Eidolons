@@ -2,8 +2,8 @@ package boss.anims.old;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
-import eidolons.libgdx.anims.sprite.SpriteAnimation;
-import eidolons.libgdx.gui.generic.GroupX;
+import libgdx.anims.sprite.SpriteAnimation;
+import libgdx.gui.generic.GroupX;
 
 /**
  * controls the main SpriteAnimation for the boss

@@ -1,17 +1,9 @@
 package eidolons.content.consts;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.utils.Array;
+import eidolons.content.consts.libgdx.GdxColorMaster;
+import eidolons.content.consts.libgdx.GdxUtils;
 import eidolons.system.libgdx.GdxStatic;
-import libgdx.GdxColorMaster;
-import libgdx.GdxImageMaster;
-import libgdx.assets.AssetEnums;
-import libgdx.assets.Atlases;
-import libgdx.particles.util.EmitterPresetMaster;
-import libgdx.texture.Images;
-import libgdx.texture.Sprites;
-import libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.system.PathUtils;
@@ -105,12 +97,11 @@ public class GraphicData extends DataUnit<GraphicData.GRAPHIC_VALUE> {
             path = getSpritePath();
             if (!StringMaster.isEmpty(path)) {
                 //atlas Review - what's this?
-                return GdxImageMaster.cropImagePath(Atlases.getOneFrameImagePath(path));
+                return GdxUtils.cropImagePath(GdxUtils.getOneFrameImagePath(path));
             }
         }
         if (!getVfxPath().isEmpty()) {
-            return EmitterPresetMaster.getInstance().getImagePath(getVfxPath());
-
+            return GdxStatic.getVfxImgPath(getVfxPath());
         }
         return path;
     }
@@ -127,25 +118,7 @@ public class GraphicData extends DataUnit<GraphicData.GRAPHIC_VALUE> {
     }
 
     public String getSpritePath() {
-        String path = getValue(GraphicData.GRAPHIC_VALUE.sprite);
-        Array<TextureAtlas.AtlasRegion> atlasRegions = new Array();
-
-        if (TextureCache.atlasesOn)
-            atlasRegions = Atlases.getAtlasRegions(path,
-                    Atlases.isUseOneFrameVersion(path)
-                            ? AssetEnums.ATLAS.SPRITES_ONEFRAME
-                            : AssetEnums.ATLAS.SPRITES_GRID);
-
-        if (atlasRegions.size < 1)
-        if (TextureCache.atlasesOn  || !FileManager.isFile(PathFinder.getImagePath() + path))
-        {
-            // if (TextureCache.isImage(PathFinder.getSpritesPathFull() + path + ".png")) {
-            //     path = PathFinder.getTexturesPath() + path + ".png";
-            // } else
-            // TODO sprite list via recursion on /..cells!
-            path = Sprites.getByName(path);
-        }
-        return path;
+        return         GdxStatic.getSpritePath(getValue(GraphicData.GRAPHIC_VALUE.sprite));
     }
 
     public String getVfxPath() {

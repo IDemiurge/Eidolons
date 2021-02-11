@@ -7,7 +7,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.core.EUtils;
-import eidolons.libgdx.anims.text.FloatingTextMaster;
+import libgdx.anims.text.FloatingTextMaster;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.RandomWizard;

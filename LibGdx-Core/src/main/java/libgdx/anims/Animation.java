@@ -1,7 +1,7 @@
 package libgdx.anims;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import libgdx.anims.AnimEnums.ANIM_PART;
+import eidolons.content.consts.VisualEnums.ANIM_PART;
 import libgdx.anims.main.AnimMaster;
 import libgdx.particles.spell.SpellVfx;
 import main.entity.Entity;

@@ -1,8 +1,8 @@
 package eidolons.game.netherflame.main.story.brief;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import eidolons.libgdx.bf.generic.FadeImageContainer;
-import eidolons.libgdx.gui.panels.TablePanelX;
+import libgdx.bf.generic.FadeImageContainer;
+import libgdx.gui.panels.TablePanelX;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 

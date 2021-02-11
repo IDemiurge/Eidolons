@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.game.module.generator.model.RoomModel;
 import eidolons.game.module.generator.tilemap.TileMapper;
-import eidolons.libgdx.gui.NinePatchFactory;
+import libgdx.gui.NinePatchFactory;
 import main.level_editor.LevelEditor;
 
 import java.util.Collection;

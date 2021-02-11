@@ -5,10 +5,10 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import boss.anims.BossAnims;
 import boss.anims.view.BossQueueView;
-import eidolons.libgdx.bf.grid.cell.QueueView;
-import eidolons.libgdx.gui.generic.GroupX;
-import eidolons.libgdx.gui.panels.dc.topleft.atb.AtbPanel;
-import eidolons.libgdx.gui.tooltips.SmartClickListener;
+import libgdx.bf.grid.cell.QueueView;
+import libgdx.gui.generic.GroupX;
+import libgdx.gui.panels.dc.topleft.atb.AtbPanel;
+import libgdx.gui.tooltips.SmartClickListener;
 import main.game.bf.Coordinates;
 import main.system.launch.CoreEngine;
 

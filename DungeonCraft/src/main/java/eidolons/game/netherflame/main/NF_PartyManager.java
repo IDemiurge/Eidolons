@@ -13,8 +13,7 @@ import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.game.netherflame.main.death.HeroChain;
 import eidolons.game.netherflame.main.hero.ChainParty;
 import eidolons.game.netherflame.main.lord.EidolonLord;
-import eidolons.libgdx.assets.Assets;
-import eidolons.libgdx.launch.MainLauncher;
+import eidolons.system.libgdx.GdxStatic;
 import eidolons.system.DC_Formulas;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -72,7 +71,7 @@ public class NF_PartyManager extends ScenarioPartyManager {
         if (party == null) {
             party = createParty(type, selectedHero);
             //gdx review
-            Eidolons.onGdxThread(() -> Assets.preloadHero(party.getLeader()));
+            GdxStatic.preloadAssets(party.getLeader());
             Eidolons.setParty(party);
             party.toBase();
         }
@@ -170,12 +169,6 @@ public class NF_PartyManager extends ScenarioPartyManager {
             return super.chooseHero(members);
         if (EidolonsGame.PUZZLES) {
             return TutorialManager.NEXT_HERO;
-        }
-        if (EidolonsGame.FOOTAGE) {
-            if (MainLauncher.HERO_INDEX != null) {
-                return members.get(MainLauncher.HERO_INDEX);
-            }
-            return new RandomWizard<String>().getRandomListItem(members);
         }
         if (!EidolonsGame.TUTORIAL_MISSION) {
             Collections.shuffle(members);

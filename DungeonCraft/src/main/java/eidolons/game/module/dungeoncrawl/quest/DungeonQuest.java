@@ -1,7 +1,6 @@
 package eidolons.game.module.dungeoncrawl.quest;
 
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
-import eidolons.macro.entity.town.Town;
 import main.content.enums.DungeonEnums.DUNGEON_STYLE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.meta.QuestEnums.QUEST_GROUP;
