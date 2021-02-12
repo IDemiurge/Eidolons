@@ -19,6 +19,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.netherflame.main.lord.EidolonLord;
 import libgdx.controls.Controller;
 import libgdx.controls.GlobalController;
+import libgdx.gui.panels.dialogue.DialogueContainer;
 import libgdx.gui.panels.lord.LordPanel;
 import libgdx.GdxMaster;
 import libgdx.anims.actions.ActionMaster;
@@ -45,7 +46,7 @@ import libgdx.texture.TextureCache;
 import eidolons.system.options.OptionsMaster;
 import libgdx.gui.menu.OptionsWindow;
 import eidolons.system.text.tips.TipMessageSource;
-import eidolons.system.text.tips.TipMessageWindow;
+import libgdx.gui.panels.generic.TipMessageWindow;
 import libgdx.screens.ScreenMaster;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
@@ -133,6 +134,14 @@ public abstract class GuiStage extends GenericGuiStage implements StageWithClosa
         if (controller == null) {
             controller = new GlobalController();
         }
+    }
+
+    private Controller getControllerInstance(Controller.CONTROLLER c) {
+        switch (c) {
+            case ACTION -> {
+            }
+        }
+        return globalController;
     }
 
     @Override
@@ -632,17 +641,6 @@ public abstract class GuiStage extends GenericGuiStage implements StageWithClosa
     }
 
 
-    private boolean checkControllerHotkey(int keyMod, char e) {
-        if (e == 'T') {
-            selectController();
-            return true;
-        }
-        //        if (e == 'G') {
-        //            toggleGlobalController();
-        //            return true;
-        //        }
-        return false;
-    }
     public static Controller.CONTROLLER DEFAULT_CONTROLLER = Controller.CONTROLLER.DEBUG;
     GlobalController globalController = new GlobalController();
     private Controller controller;
@@ -650,18 +648,19 @@ public abstract class GuiStage extends GenericGuiStage implements StageWithClosa
     protected boolean handleKeyTyped(char character) {
 
         if (globalController != null) {
-            if (globalController.charTyped(CHAR)) {
+            if (globalController.charTyped(character)) {
                 return true;
             }
         }
         if (!Flags.isJar()) {
-            if (checkControllerHotkey(keyMod, CHAR)) {
-                return true;
-            }
+            //TODO gdx Review
+            // if (checkControllerHotkey(keyMod, character)) {
+            //     return true;
+            // }
 
             if (controller != null) {
                 try {
-                    if (controller.charTyped(CHAR)) {
+                    if (controller.charTyped(character)) {
                         return true;
                     }
                 } catch (Exception e) {

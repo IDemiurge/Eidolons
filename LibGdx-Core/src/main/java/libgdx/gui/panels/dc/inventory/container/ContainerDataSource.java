@@ -30,7 +30,7 @@ public class ContainerDataSource implements InventoryTableDataSource {
     protected InventoryFactory factory;
     protected Obj obj;
     protected ContainerClickHandler handler;
-    protected ContainerPanel.ITEM_FILTERS filter;
+    protected VisualEnums.ITEM_FILTERS filter;
 
     public ContainerDataSource(Obj obj, Unit unit) {
         this.obj = obj;
@@ -56,7 +56,7 @@ public class ContainerDataSource implements InventoryTableDataSource {
     }
 
     @Override
-    public void setFilter(ContainerPanel.ITEM_FILTERS filter) {
+    public void setFilter(VisualEnums.ITEM_FILTERS filter) {
         this.filter = filter;
     }
 

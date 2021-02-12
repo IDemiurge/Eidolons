@@ -1,8 +1,9 @@
 package main.utilities.gdx;
 
-import eidolons.content.consts.libgdx.GdxUtils;
+import eidolons.content.consts.libgdx.GdxStringUtils;
+import eidolons.utils.GdxUtil;
 import libgdx.anims.sprite.SpriteAnimationFactory;
-import eidolons.system.utils.GdxUtil;
+
 import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
 
@@ -20,7 +21,7 @@ public class OneFrameGenerator extends GdxUtil {
         // FileManager.getFilesFromDirectory()
         //sort?
         for (File file : FileManager.getSpriteFilesFromDirectory("")) {
-            String path = GdxUtils.cropImagePath(file.getPath());
+            String path = GdxStringUtils.cropImagePath(file.getPath());
             if (!checkPath(path)) {
                 continue;
             }

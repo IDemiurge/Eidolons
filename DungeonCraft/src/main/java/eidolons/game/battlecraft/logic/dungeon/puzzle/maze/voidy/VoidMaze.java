@@ -1,10 +1,10 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy;
 
+import eidolons.content.consts.VisualEnums;
+import eidolons.content.data.FlightData;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleHandler;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
-import libgdx.bf.grid.moving.flight.FlightData;
-import libgdx.bf.grid.moving.flight.FlightHandler;
 import eidolons.dungeons.generator.GeneratorEnums;
 import eidolons.dungeons.generator.model.RoomModel;
 import main.content.enums.GenericEnums;
@@ -167,7 +167,7 @@ public class VoidMaze extends MazePuzzle {
         // String s = "";
         //getData().getValue() construct!
         // return new FlightData(s);
-        return new FlightData(FlightHandler.FLIGHT_ENVIRON.voidmaze.data);
+        return new FlightData(VisualEnums.FLIGHT_ENVIRON.voidmaze.data);
     }
 
     public int getMinExitDst() {

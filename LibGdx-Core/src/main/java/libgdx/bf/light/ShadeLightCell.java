@@ -6,7 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
-import eidolons.content.consts.libgdx.GdxUtils;
+import eidolons.content.consts.VisualEnums;
+import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
@@ -40,11 +41,11 @@ public class ShadeLightCell extends SuperContainer {
     private final float width;
     private final float height;
     FloatActionLimited alphaAction = (FloatActionLimited) ActionMaster.getAction(FloatActionLimited.class);
-    private final ShadowMap.SHADE_CELL type;
+    private final VisualEnums.SHADE_CELL type;
     private Float originalX;
     private Float originalY;
 
-    public ShadeLightCell(ShadowMap.SHADE_CELL type, Object arg) {
+    public ShadeLightCell(VisualEnums.SHADE_CELL type, Object arg) {
         super(new Image(getTexture(type)));
         this.type = type;
         randomize();
@@ -73,11 +74,11 @@ public class ShadeLightCell extends SuperContainer {
         super.setTransform(transform);
     }
 
-    private static TextureRegion getTexture(ShadowMap.SHADE_CELL type) {
-            return TextureCache.getRegionUV(GdxUtils.cropImagePath(getTexturePath(type)));
+    private static TextureRegion getTexture(VisualEnums.SHADE_CELL type) {
+            return TextureCache.getRegionUV(GdxStringUtils.cropImagePath(getTexturePath(type)));
     }
 
-    private static String getTexturePath(ShadowMap.SHADE_CELL type) {
+    private static String getTexturePath(VisualEnums.SHADE_CELL type) {
         String variant = null;
         switch (type) {
             //                    TODO varied enough already?
@@ -115,7 +116,7 @@ public class ShadeLightCell extends SuperContainer {
     private void randomize() {
 
 
-        if (type == ShadowMap.SHADE_CELL.GAMMA_SHADOW || type == ShadowMap.SHADE_CELL.VOID) {
+        if (type == VisualEnums.SHADE_CELL.GAMMA_SHADOW || type == VisualEnums.SHADE_CELL.VOID) {
             int rotation = 90 * RandomWizard.getRandomInt(4);
             getContent().setOrigin(Align.center);
             getContent().setRotation(rotation);
@@ -176,13 +177,13 @@ public class ShadeLightCell extends SuperContainer {
     @Override
     public boolean isAlphaFluctuationOn() {
         if (!alphaFluctuationOn) {
-            if (type == ShadowMap.SHADE_CELL.LIGHT_EMITTER || type == ShadowMap.SHADE_CELL.GAMMA_LIGHT)
+            if (type == VisualEnums.SHADE_CELL.LIGHT_EMITTER || type == VisualEnums.SHADE_CELL.GAMMA_LIGHT)
                 return false;
         }
         if (getActions().size > 0) {
             return false;
         }
-        if (type == ShadowMap.SHADE_CELL.VOID) {
+        if (type == VisualEnums.SHADE_CELL.VOID) {
             return false;
         }
         return alphaFluctuation;

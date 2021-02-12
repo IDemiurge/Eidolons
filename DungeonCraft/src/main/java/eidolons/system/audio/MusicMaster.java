@@ -9,7 +9,6 @@ import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.cinematic.Cinematics;
-import libgdx.video.VideoMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SoundOptions.SOUND_OPTION;
 import main.data.XLinkedMap;
@@ -212,9 +211,10 @@ public class MusicMaster {
     }
 
     public static boolean isOn() {
-        if (VideoMaster.player!=null )
-        if (VideoMaster.player.isPlaying())
-            return false;
+        //TODO gdx sync
+        // if (VideoMaster.player!=null )
+        // if (VideoMaster.player.isPlaying())
+        //     return false;
         if (getInstance().scope!= MusicEnums.MUSIC_SCOPE.MENU && DialogueManager.isRunning()) {
             return false;
         }

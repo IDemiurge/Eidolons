@@ -20,7 +20,7 @@ import libgdx.gui.tooltips.DynamicTooltip;
 import libgdx.gui.tooltips.SmartClickListener;
 import libgdx.shaders.GrayscaleShader;
 import libgdx.texture.TextureCache;
-import libgdx.gui.panels.headquarters.datasource.HeroDataModel;
+import eidolons.system.libgdx.datasource.HeroDataModel;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;

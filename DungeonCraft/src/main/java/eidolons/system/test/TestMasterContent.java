@@ -6,7 +6,6 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import libgdx.particles.spell.SpellVfxMaster;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
@@ -416,14 +415,9 @@ public class TestMasterContent {
 
     private static void addAllSpells(ObjType type) {
         StringBuilder builder = new StringBuilder(DataManager.getTypes(DC_TYPE.SPELLS).size() * 10);
-        if (SpellVfxMaster.TEST_MODE) {
-            for (String s : ContainerUtils.openContainer(SpellVfxMaster.VFX_TEST_SPELLS)) {
-                builder.append(s).append(";");
-            }
-        } else
-            for (ObjType s : DataManager.getTypes(DC_TYPE.SPELLS)) {
-                builder.append(s.getName()).append(";");
-            }
+        for (ObjType s : DataManager.getTypes(DC_TYPE.SPELLS)) {
+            builder.append(s.getName()).append(";");
+        }
         type.addProperty(PROPS.VERBATIM_SPELLS, builder.toString(), true);
     }
 

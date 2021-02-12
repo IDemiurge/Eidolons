@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.rules.combat.attack.extra_attack;
 
 import eidolons.content.PARAMS;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.BattleFieldObject;
@@ -14,7 +15,7 @@ import eidolons.game.battlecraft.rules.combat.attack.DC_AttackMaster;
 import eidolons.game.battlecraft.rules.perk.AlertRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.master.EffectMaster;
-import libgdx.anims.text.FloatingTextMaster;
+import eidolons.system.libgdx.GdxStatic;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
@@ -144,7 +145,7 @@ public class InstantAttackRule {
         ref.setTarget(action.getOwnerUnit().getId());
         game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.ATTACK_INSTANT, ref));
 
-        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.ATTACK_INSTANT,
+         GdxStatic.floatingText( VisualEnums.TEXT_CASES.ATTACK_INSTANT,
                 "Instant Attack!", attack.getOwnerUnit());
 
         INSTANT_ATTACK_TYPE type = getInstantAttackType(unit, action);

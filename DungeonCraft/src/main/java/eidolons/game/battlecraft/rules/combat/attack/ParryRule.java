@@ -2,15 +2,14 @@ package eidolons.game.battlecraft.rules.combat.attack;
 
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.core.game.DC_Game;
-import libgdx.anims.std.HitAnim;
-import libgdx.anims.std.sprite.CustomSpriteAnim;
-import libgdx.anims.text.FloatingTextMaster;
 import eidolons.system.DC_Formulas;
+import eidolons.system.libgdx.GdxStatic;
 import main.content.enums.entity.ItemEnums;
 import main.entity.Ref;
 import main.game.logic.event.Event;
@@ -61,7 +60,7 @@ public class ParryRule {
                 return false;
             }
 
-            FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.ATTACK_PARRIED,
+            GdxStatic.floatingText( VisualEnums.TEXT_CASES.ATTACK_PARRIED,
                     "Parry!", attack.getAttacked());
         }
         Unit attacked = (Unit) attack.getAttackedUnit();
@@ -79,7 +78,7 @@ public class ParryRule {
 
         game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.ATTACK_PARRIED, ref));
 
-        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.ATTACK_PARRIED,
+        GdxStatic.floatingText( VisualEnums.TEXT_CASES.ATTACK_PARRIED,
                 "Counter Attack!", attacked);
 
         game.getLogManager().log(attack.getAttackedUnit().getName() + " parries " + attack.getAction().getName() + " from "
@@ -106,8 +105,9 @@ public class ParryRule {
         if (Flags.isPhaseAnimsOn()) {
             //TODO
         }
-        GuiEventManager.trigger(GuiEventType.CUSTOM_ANIMATION, new CustomSpriteAnim(attack.getAction(), HitAnim.getSpritePath(HitAnim.SPRITE_TYPE.SPARKS,
-                HitAnim.HIT.SLICE)));
+        //TODO gdx sync
+        // GuiEventManager.trigger(GuiEventType.CUSTOM_ANIMATION, new CustomSpriteAnim(attack.getAction(), HitAnim.getSpritePath(HitAnim.SPRITE_TYPE.SPARKS,
+        //         HitAnim.HIT.SLICE)));
 
         // game.getLogManager().doneLogEntryNode(); ???
         return true;

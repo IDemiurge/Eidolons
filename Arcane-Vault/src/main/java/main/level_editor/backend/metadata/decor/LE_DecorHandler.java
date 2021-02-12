@@ -3,7 +3,7 @@ package main.level_editor.backend.metadata.decor;
 import boss.demo.knight.AriusVessel;
 import eidolons.content.consts.DecorData;
 import eidolons.content.consts.DecorData.DECOR_LEVEL;
-import eidolons.content.consts.libgdx.GdxUtils;
+import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import eidolons.game.core.Eidolons;
 import eidolons.content.consts.GraphicData;
@@ -81,7 +81,7 @@ public class LE_DecorHandler extends CellDataHandler<DecorData> implements IDeco
     private List<GraphicData> createDecorList(List<String> fileNames, boolean sprite) {
         List<GraphicData> items = new ArrayList<>();
         for (String file : fileNames) {
-            String path = GdxUtils.cropImagePath(file);
+            String path = GdxStringUtils.cropImagePath(file);
             //just use name?
             GraphicData data = new GraphicData("");
             data.setValue(sprite ? GRAPHIC_VALUE.sprite : GRAPHIC_VALUE.texture, path);

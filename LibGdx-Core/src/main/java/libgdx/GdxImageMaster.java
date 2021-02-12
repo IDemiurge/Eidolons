@@ -7,7 +7,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Pixmap.Blending;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import eidolons.content.consts.libgdx.GdxUtils;
+import eidolons.content.consts.libgdx.GdxStringUtils;
 import libgdx.anims.sprite.SpriteAnimation;
 import libgdx.assets.AssetEnums;
 import libgdx.gui.panels.dc.topleft.atb.AtbPanel;
@@ -173,7 +173,7 @@ public class GdxImageMaster extends LwjglApplication {
     }
 
     public static Texture createSized(String path, Texture texture, int size, boolean write) {
-        String newPath = GdxUtils.getSizedImagePath(path, size);
+        String newPath = GdxStringUtils.getSizedImagePath(path, size);
 
         FileHandle handle = GDX.file(
                 PathFinder.getImagePath() +
@@ -225,7 +225,7 @@ public class GdxImageMaster extends LwjglApplication {
     }
 
     public static TextureRegion round(String path, boolean write, String customPath) {
-        path = GdxUtils.cropImagePath(path);
+        path = GdxStringUtils.cropImagePath(path);
         if (!customPath.isEmpty()) {
             path = customPath;
         }
@@ -328,7 +328,7 @@ public class GdxImageMaster extends LwjglApplication {
     }
 
     public static String getRoundedPath(String path) {
-        path = GdxUtils.cropImagePath(path);
+        path = GdxStringUtils.cropImagePath(path);
         return StringMaster.cropFormat(path) + " rounded.png";
     }
 

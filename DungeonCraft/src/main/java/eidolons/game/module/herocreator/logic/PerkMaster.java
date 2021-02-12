@@ -2,9 +2,9 @@ package eidolons.game.module.herocreator.logic;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.attach.Perk;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.system.utils.PerkGenerator.PERK_TYPE;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums.CLASS_PERK_GROUP;
 import main.content.enums.entity.HeroEnums.PERK_PARAM;
@@ -49,7 +49,7 @@ public class PerkMaster {
         for (ObjType type : DataManager.getTypes(DC_TYPE.PERKS)) {
             if (isPerkProhibited(type, hero))
                 continue;
-            if (!type.getProperty(G_PROPS.GROUP).equalsIgnoreCase(PERK_TYPE.PARAMETER.toString())) {
+            if (!type.getProperty(G_PROPS.GROUP).equalsIgnoreCase(VisualEnums.PERK_TYPE.PARAMETER.toString())) {
                 if (checkCustomPerkReqs(type, hero, c1, c2))
                     list.add(type);
             } else

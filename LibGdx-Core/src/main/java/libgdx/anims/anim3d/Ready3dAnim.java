@@ -3,10 +3,10 @@ package libgdx.anims.anim3d;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import libgdx.GdxMaster;
 import libgdx.anims.sprite.SpriteAnimation;
-import libgdx.assets.AssetEnums;
 import libgdx.assets.Atlases;
 import main.game.bf.Coordinates;
 
@@ -31,12 +31,12 @@ public class Ready3dAnim extends Weapon3dAnim {
 
     @Override
     protected SpriteAnimation get3dSprite() {
-        AssetEnums.PROJECTION projection = getProjection(getRef(), getActive());
+        VisualEnums.PROJECTION projection = getProjection(getRef(), getActive());
         main.system.auxiliary.log.LogMaster.log(1, this + " projection : " + projection);
         sprite = projectionsMap.get(projection);
         if (sprite == null)
             sprite = Atlases.getSpriteForAction(getDuration(),
-             getActive(),  AssetEnums.WEAPON_ANIM_CASE.READY, projection);
+             getActive(),  VisualEnums.WEAPON_ANIM_CASE.READY, projection);
 
         if (sprite == null)
             main.system.auxiliary.log.LogMaster.log(1, this + " null sprite  ");
@@ -105,7 +105,7 @@ public class Ready3dAnim extends Weapon3dAnim {
     }
 
     @Override
-    protected AssetEnums.WEAPON_ANIM_CASE getCase() {
-        return AssetEnums.WEAPON_ANIM_CASE.READY;
+    protected VisualEnums.WEAPON_ANIM_CASE getCase() {
+        return VisualEnums.WEAPON_ANIM_CASE.READY;
     }
 }

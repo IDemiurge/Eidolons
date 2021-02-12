@@ -26,7 +26,6 @@ import eidolons.game.core.master.EffectMaster;
 import eidolons.game.core.state.DC_GameState;
 import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
 import eidolons.game.module.dungeoncrawl.explore.ExploreGameLoop;
-import libgdx.screens.ScreenMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.system.AiEnums;
@@ -426,13 +425,14 @@ public class DC_MovementManager implements MovementManager {
             }
         cell.setObjectsModified(true);
         cell.setUnitsHaveMovedHere(true);
-        if (obj.isPlayerCharacter()) {
-            LevelStruct struct = game.getDungeonMaster().getStructMaster().getLowestStruct(obj.getCoordinates());
-            String background = struct.getPropagatedValue("background");
-            if (!ScreenMaster.getScreen().getBackgroundPath().equalsIgnoreCase(background)) {
-                GuiEventManager.trigger(GuiEventType.UPDATE_DUNGEON_BACKGROUND, background);
-            }
-        }
+        //TODO gdx sync - probably fine if we
+        // if (obj.isPlayerCharacter()) {
+        //     LevelStruct struct = game.getDungeonMaster().getStructMaster().getLowestStruct(obj.getCoordinates());
+        //     String background = struct.getPropagatedValue("background");
+        //     if (!ScreenMaster.getScreen().getBackgroundPath().equalsIgnoreCase(background)) {
+        //         GuiEventManager.trigger(GuiEventType.UPDATE_DUNGEON_BACKGROUND, background);
+        //     }
+        // }
         if (REF.isQuiet())
             return true;
         Event event = new Event(STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING, REF);

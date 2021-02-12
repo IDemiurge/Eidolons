@@ -1,14 +1,15 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.art;
 
+import eidolons.content.consts.VisualEnums;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleHandler;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.ManipulatorPuzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
-import libgdx.shaders.post.PostFxUpdater;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
 public class ArtPuzzle extends ManipulatorPuzzle {
+
 
     @Override
     protected PuzzleHandler createHandler() {
@@ -41,7 +42,7 @@ public class ArtPuzzle extends ManipulatorPuzzle {
     @Override
     public void activate() {
         super.activate();
-        GuiEventManager.trigger(GuiEventType.POST_PROCESSING, PostFxUpdater.POST_FX_TEMPLATE.MOSAIC);
+        GuiEventManager.trigger(GuiEventType.POST_PROCESSING, VisualEnums.POST_FX_TEMPLATE.MOSAIC);
     }
 
     protected int getRotateChance() {

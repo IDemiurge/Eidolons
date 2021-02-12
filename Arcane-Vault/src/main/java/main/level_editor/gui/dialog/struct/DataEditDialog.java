@@ -3,7 +3,7 @@ package main.level_editor.gui.dialog.struct;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
-import eidolons.game.module.generator.model.AbstractCoordinates;
+import eidolons.dungeons.generator.model.AbstractCoordinates;
 import libgdx.gui.utils.FileChooserX;
 import libgdx.utils.GdxDialogMaster;
 import main.game.bf.Coordinates;

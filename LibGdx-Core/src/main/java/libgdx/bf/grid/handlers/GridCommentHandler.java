@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.content.consts.VisualEnums;
+import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.entity.obj.unit.DummyUnit;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
@@ -26,11 +27,10 @@ import libgdx.bf.grid.GridPanel;
 import libgdx.bf.grid.cell.BaseView;
 import libgdx.gui.generic.GroupX;
 import libgdx.gui.generic.NoHitGroup;
-import libgdx.gui.panels.dc.logpanel.text.TextBuilder;
 import libgdx.gui.tooltips.SmartClickListener;
 import libgdx.stage.camera.MotionData;
 import eidolons.content.consts.Images;
-import libgdx.texture.Sprites;
+import eidolons.content.consts.Sprites;
 import libgdx.texture.TextureCache;
 import eidolons.system.options.ControlOptions;
 import eidolons.system.options.OptionsMaster;
@@ -178,7 +178,7 @@ public class GridCommentHandler extends GridHandler{
     }
 
     public static String parseColors(String text) {
-        return TextBuilder.parseColors(text);
+        return GdxStringUtils.parseColors(text);
     }
 
     private boolean isSequentialComment(String text) {

@@ -4,7 +4,7 @@ import libgdx.gui.generic.btn.SmartTextButton;
 import libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
 import libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import libgdx.gui.generic.btn.ButtonStyled;
-import libgdx.gui.panels.headquarters.datasource.HeroDataModel;
+import eidolons.system.libgdx.datasource.HeroDataModel;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.launch.Flags;

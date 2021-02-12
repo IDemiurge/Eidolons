@@ -2,6 +2,7 @@ package libgdx.gui.panels.dc.unitinfo.tooltips;
 
 import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PARAMS;
+import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
@@ -17,7 +18,6 @@ import libgdx.gui.NinePatchFactory;
 import libgdx.gui.generic.ValueContainer;
 import libgdx.gui.panels.TablePanelX;
 import libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSourceImpl;
-import libgdx.gui.panels.dc.logpanel.text.TextBuilder;
 import libgdx.gui.panels.dc.unitinfo.old.MultiValueContainer;
 import libgdx.gui.tooltips.Tooltip;
 import libgdx.gui.tooltips.ValueTooltip;
@@ -116,7 +116,7 @@ public class AttackTooltipFactory {
                 break;
         }
 
-        text = TextBuilder.wrapInColor(color, text);
+        text = GdxStringUtils.wrapInColor(color, text);
         ValueContainer container = new ValueContainer(text, pic);
 
         container.addListener(new ValueTooltip(tooltip).getController());

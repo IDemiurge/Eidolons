@@ -6,7 +6,6 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.attach.DC_HeroAttachedObj;
 import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.netherflame.boss.logic.entity.BossUnit;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
@@ -47,7 +46,7 @@ public class FacingCondition extends ConditionImpl {
             return false;
         }
         BattleFieldObject obj1 = (BattleFieldObject) ref.getSourceObj();
-        if (obj1 instanceof BossUnit){
+        if (obj1.isBoss()) {
             return true;
         }
         if (facing != null) {

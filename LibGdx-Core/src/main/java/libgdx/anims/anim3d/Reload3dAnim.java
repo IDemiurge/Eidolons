@@ -1,7 +1,7 @@
 package libgdx.anims.anim3d;
 
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
-import libgdx.assets.AssetEnums;
 
 /**
  * Created by JustMe on 9/20/2017.
@@ -12,8 +12,8 @@ public class Reload3dAnim extends Weapon3dAnim {
     }
 
     @Override
-    protected AssetEnums.WEAPON_ANIM_CASE getCase() {
-        return AssetEnums.WEAPON_ANIM_CASE.RELOAD;
+    protected VisualEnums.WEAPON_ANIM_CASE getCase() {
+        return VisualEnums.WEAPON_ANIM_CASE.RELOAD;
     }
 
     @Override
@@ -22,7 +22,7 @@ public class Reload3dAnim extends Weapon3dAnim {
     }
 
     @Override
-    public AssetEnums.PROJECTION getProjection() {
+    public VisualEnums.PROJECTION getProjection() {
         return super.getProjection(null , getActive());
     }
 }

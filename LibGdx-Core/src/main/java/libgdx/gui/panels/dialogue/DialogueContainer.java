@@ -7,7 +7,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.Scene;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.DialogueContainerAdapter;
-import eidolons.game.netherflame.main.story.brief.BriefBackground;
+import libgdx.anims.fullscreen.BriefBackground;
 import libgdx.anims.actions.ActionMaster;
 import libgdx.gui.panels.TablePanelX;
 import libgdx.shaders.ShaderDrawer;

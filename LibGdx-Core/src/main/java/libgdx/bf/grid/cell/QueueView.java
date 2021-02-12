@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import eidolons.content.consts.libgdx.GdxUtils;
+import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -36,7 +36,7 @@ import main.system.launch.Flags;
 
 import java.util.function.Supplier;
 
-import static eidolons.content.consts.libgdx.GdxUtils.getSizedImagePath;
+import static eidolons.content.consts.libgdx.GdxStringUtils.getSizedImagePath;
 import static main.system.GuiEventType.ADD_OR_UPDATE_INITIATIVE;
 
 /**
@@ -80,7 +80,7 @@ public class QueueView extends UnitView {
     }
 
     public static String getProperViewPath(String path) {
-        return                GdxImageMaster.getRoundedPath(GdxUtils.getSizedImagePath(path, AtbPanel.imageSize));
+        return                GdxImageMaster.getRoundedPath(GdxStringUtils.getSizedImagePath(path, AtbPanel.imageSize));
     }
 
     @Override
@@ -325,7 +325,7 @@ public class QueueView extends UnitView {
                 GdxImageMaster.size( (path),
                         AtbPanel.imageSize, true);
             }
-            return GdxImageMaster.round(path, Flags.isIDE(),  GdxUtils.getSizedImagePath(path, AtbPanel.imageSize));
+            return GdxImageMaster.round(path, Flags.isIDE(),  GdxStringUtils.getSizedImagePath(path, AtbPanel.imageSize));
         // }
         // TextureRegion region = TextureCache.getRegionUV(path);
         // GdxImageMaster.round(path, true, "");

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.backends.lwjgl.audio.OpenALSound;
 import com.badlogic.gdx.files.FileHandle;
 import main.system.auxiliary.TimeMaster;
 
@@ -25,9 +24,10 @@ public class PreloadedMusic implements Music {
         this.path = path;
         FileHandle file = Gdx.files.getFileHandle(path, FileType.Absolute);
         this.sound = Gdx.audio.newSound(file);
-        if (sound instanceof OpenALSound) {
-            duration = ((OpenALSound) sound).duration() * 1000;
-        }
+        //TODO gdx sync important!
+        // if (sound instanceof OpenALSound) {
+        //     duration = ((OpenALSound) sound).duration() * 1000;
+        // }
     }
 
     @Override

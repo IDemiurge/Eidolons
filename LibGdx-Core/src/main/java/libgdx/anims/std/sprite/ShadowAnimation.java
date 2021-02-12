@@ -1,7 +1,7 @@
 package libgdx.anims.std.sprite;
 
 import eidolons.game.core.Eidolons;
-import libgdx.texture.Sprites;
+import eidolons.content.consts.Sprites;
 import main.entity.Entity;
 
 public class ShadowAnimation extends CustomSpriteAnim {

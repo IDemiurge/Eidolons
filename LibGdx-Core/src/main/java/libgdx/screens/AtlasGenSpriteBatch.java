@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FileTextureData;
 import com.badlogic.gdx.math.Affine2;
 import com.kotcrab.vis.ui.VisUI;
-import eidolons.content.consts.libgdx.GdxUtils;
+import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.game.core.EUtils;
 import libgdx.GdxImageMaster;
 import libgdx.assets.Atlases;
@@ -69,7 +69,7 @@ public class AtlasGenSpriteBatch extends CustomSpriteBatchImpl {
         for (String atlasMissingTexture : TextureCache.atlasMissingTextures) {
             // atlasMissingTexture.contains""
             atlasMissingTexture = PathFinder.getImagePath() +
-                    GdxUtils.cropImagePath(atlasMissingTexture);
+                    GdxStringUtils.cropImagePath(atlasMissingTexture);
             String path = getOutputPath(atlasMissingTexture);
             if (Bools.isTrue(FileManager.copy(atlasMissingTexture, path)))
                 list.add(atlasMissingTexture);
@@ -126,7 +126,7 @@ public class AtlasGenSpriteBatch extends CustomSpriteBatchImpl {
 
     private String getOutputPath(String path) {
         return PathFinder.getImagePath() + "atlas img/" +
-                GdxUtils.cropImagePath(path);
+                GdxStringUtils.cropImagePath(path);
 
     }
 

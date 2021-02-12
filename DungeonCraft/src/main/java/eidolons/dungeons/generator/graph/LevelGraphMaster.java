@@ -224,13 +224,6 @@ public class LevelGraphMaster {
 
     private List<LevelGraphNode> getNodesForZone(LevelZone zone) {
         int radius = 4; //dijkstra?
-        switch (zone.getType()) {
-            case GeneratorEnums.ZONE_TYPE.BOSS_AREA:
-            case GeneratorEnums.ZONE_TYPE.ENTRANCE:
-            case GeneratorEnums.ZONE_TYPE.MAIN_AREA:
-            case GeneratorEnums.ZONE_TYPE.OUTSKIRTS:
-                break;
-        }
         List<LevelGraphNode> list = new ArrayList<>();
         for (GraphPath graphPath : graph.getPaths()) {
             for (LevelGraphNode node : graphPath.getNodes().values()) {

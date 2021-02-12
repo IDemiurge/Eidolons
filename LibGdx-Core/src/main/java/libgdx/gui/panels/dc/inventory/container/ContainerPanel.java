@@ -218,7 +218,7 @@ public class ContainerPanel extends TablePanel implements Blocking {
         TablePanelX middle = new TablePanelX<>();
 
         TablePanelX filters = new TablePanelX<>();
-        for (ITEM_FILTERS filter : ITEM_FILTERS.values()) {
+        for (VisualEnums.ITEM_FILTERS filter : VisualEnums.ITEM_FILTERS.values()) {
             filters.add(new SymbolButton(getButtonStyle(filter),
              () -> {
                  EUtils.showInfoText("Filters are under construction...");
@@ -303,7 +303,7 @@ public class ContainerPanel extends TablePanel implements Blocking {
         return SHOW_LOOT_PANEL;
     }
 
-    protected void applyFilter(ITEM_FILTERS filter) {
+    protected void applyFilter(VisualEnums.ITEM_FILTERS filter) {
 
         InventoryDataSource dataSource =
          (InventoryDataSource) getUserObject();
@@ -319,7 +319,7 @@ public class ContainerPanel extends TablePanel implements Blocking {
         setUserObject(dataSource);
     }
 
-    protected ButtonStyled.STD_BUTTON getButtonStyle(ITEM_FILTERS filter) {
+    protected ButtonStyled.STD_BUTTON getButtonStyle(VisualEnums.ITEM_FILTERS filter) {
         return new EnumMaster<ButtonStyled.STD_BUTTON>().retrieveEnumConst(ButtonStyled.STD_BUTTON.class, "ITEM_" + filter.name());
     }
 
@@ -348,12 +348,4 @@ public class ContainerPanel extends TablePanel implements Blocking {
     }
 
 
-    public enum ITEM_FILTERS {
-        ALL,
-        WEAPONS,
-        ARMOR,
-        USABLE,
-        JEWELRY,
-        QUEST
-    }
 }

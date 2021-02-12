@@ -3,7 +3,6 @@ package libgdx.bf.grid;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.puzzle.gridobj.GridObject;
-import eidolons.puzzle.gridobj.Manipulator;
 import libgdx.bf.grid.cell.BaseView;
 import libgdx.bf.grid.cell.OverlayView;
 import libgdx.gui.generic.GroupWithEmitters;
@@ -21,14 +20,12 @@ public class GridSubParts {
     public ObjectMap<Obj, BaseView> viewMap= new ObjectMap<>(500);
     public Array<GroupWithEmitters> emitterGroups = new Array<>(true, 125);
     public List<OverlayView> overlays = new ArrayList<>();
-    public Manipulator[][] manipulators;
     public Set<GridObject>[][] gridObjects ;
     public GroupX[][] customOverlayingObjects;
     public GroupX[][] customOverlayingObjectsTop;
     public GroupX[][] customOverlayingObjectsUnder;
 
     public GridSubParts(int width  , int height) {
-        manipulators=new Manipulator[width][height];
         gridObjects =new LinkedHashSet[width][height];
         customOverlayingObjects =new GroupX[width][height] ;
         customOverlayingObjectsTop=new GroupX[width][height] ;

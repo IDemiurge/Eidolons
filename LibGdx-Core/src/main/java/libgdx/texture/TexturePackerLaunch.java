@@ -3,6 +3,7 @@ package libgdx.texture;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
+import eidolons.content.consts.libgdx.GdxStringUtils;
 import libgdx.assets.AssetEnums;
 import main.data.filesys.PathFinder;
 import main.swing.generic.components.editors.lists.ListChooser;
@@ -22,7 +23,6 @@ import java.util.List;
  * Created by PC on 03.11.2016.
  */
 public class TexturePackerLaunch {
-    public static final String ATLAS_EXTENSION = ".txt";
     public static  boolean FAST = false;
 
     public static String WORKSPACE_PATH = PathFinder.getImagePath() + PathFinder.getWeaponAnimPath() + "workspace//";
@@ -177,7 +177,7 @@ public class TexturePackerLaunch {
         settings.maxWidth = (int) Math.pow(2, 12);
         //        settings.maxHeight = (int) Math.pow(2, 13);
         //        settings.maxWidth = (int) Math.pow(2, 13);
-        settings.atlasExtension = ATLAS_EXTENSION;
+        settings.atlasExtension = GdxStringUtils.ATLAS_EXTENSION;
         boolean TRIM = false;
         if (!atlasGen)
             TRIM = DialogMaster.confirm("Trip empty space?");

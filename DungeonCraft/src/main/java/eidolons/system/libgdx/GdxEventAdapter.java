@@ -1,6 +1,6 @@
 package eidolons.system.libgdx;
 
-import com.badlogic.gdx.math.Vector2;
+import eidolons.system.libgdx.wrapper.Vector2;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import main.game.bf.Coordinates;

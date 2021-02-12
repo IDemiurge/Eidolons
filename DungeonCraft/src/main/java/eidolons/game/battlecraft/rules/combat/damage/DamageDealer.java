@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.rules.combat.damage;
 
 import eidolons.content.PARAMS;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.item.DC_WeaponObj;
@@ -12,10 +13,8 @@ import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.core.master.EffectMaster;
 import eidolons.game.module.dungeoncrawl.struct.Entrance;
-import libgdx.anims.text.FloatingTextMaster;
-import libgdx.bf.overlays.bar.HpBar;
-import libgdx.screens.ScreenMaster;
 import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.libgdx.GdxStatic;
 import main.ability.effects.container.SpecialTargetingEffect;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.GenericEnums.STD_BOOLS;
@@ -60,7 +59,7 @@ public class DamageDealer {
         if (checkDamageImmune(damage))
         {
             if (!isBonusDamage)
-             FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
+              GdxStatic.floatingText( VisualEnums.TEXT_CASES.REQUIREMENT,
                      "Ineffective!",  damage.getTarget());
             DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.LAUGH, damage.getTarget());
             return 0;
@@ -95,7 +94,6 @@ public class DamageDealer {
      */
     private static int dealBonusDamage(MultiDamage multiDamage, int dealt) {
         int bonus = 0;
-        FloatingTextMaster.getInstance();
         for (Damage bonusDamage : multiDamage.getAdditionalDamage()) {
             bonusDamage.setAction(multiDamage.getAction());
             bonusDamage.setRef(multiDamage.getRef());
@@ -463,9 +461,7 @@ public class DamageDealer {
         }
 
         if (!CoreEngine.isGraphicsOff())
-            if (HpBar.isResetOnLogicThread())
-                ScreenMaster.getGrid().getGridManager().getEventHandler().
-                        checkHpBarReset(attacked);
+                GdxStatic.                        checkHpBarReset(attacked);
 
         return damageDealt;
     }

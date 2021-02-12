@@ -16,8 +16,7 @@ import libgdx.gui.panels.dc.inventory.datasource.QuickSlotDataSource;
 import libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import libgdx.gui.panels.headquarters.datasource.HqDataMasterDirect;
 import libgdx.texture.TextureCache;
-import eidolons.macro.entity.shop.Shop;
-import libgdx.gui.panels.dc.inventory.container.ContainerPanel;
+import eidolons.game.battlecraft.logic.meta.universal.shop.Shop;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.*;
@@ -66,7 +65,7 @@ public class ShopDataSource extends ContainerDataSource
     }
 
     @Override
-    public void setFilter(ContainerPanel.ITEM_FILTERS filter) {
+    public void setFilter(VisualEnums.ITEM_FILTERS filter) {
     }
 
     public InventoryDataSource getInvDataSource() {

@@ -1,25 +1,17 @@
 package eidolons.system.libgdx.datasource;
 
-import libgdx.gui.panels.dialogue.DialogueView;
 import main.system.EventCallbackParam;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Supplier;
 
 import static eidolons.content.consts.VisualEnums.SCREEN_TYPE;
 
 public class ScreenData {
     private SCREEN_TYPE type;
     private String name; //
-    private Supplier<List<DialogueView>> dialogScenariosFactory;
-    private List<DialogueView> dialogViews;
     private EventCallbackParam param;
 
     public ScreenData(SCREEN_TYPE type, String name) {
         this.type = type;
         this.name = name;
-        this.dialogViews = new ArrayList<>();
     }
 
     public ScreenData(SCREEN_TYPE type, EventCallbackParam param) {
@@ -32,25 +24,10 @@ public class ScreenData {
         this.param = new EventCallbackParam(data);
     }
 
-    public ScreenData(SCREEN_TYPE type, String name, Supplier<List<DialogueView>> factory) {
-        this.type = type;
-        this.name = name;
-        this.dialogScenariosFactory = factory;
-    }
 
-    public ScreenData(ScreenData screenData, Supplier<List<DialogueView>> factory) {
-        this(screenData.type, screenData.name, factory);
-    }
 
     public ScreenData(SCREEN_TYPE type) {
         this.type = type;
-    }
-
-    public List<DialogueView> getDialogViews() {
-        if (dialogViews == null) {
-            dialogViews = dialogScenariosFactory.get();
-        }
-        return dialogViews;
     }
 
     public Object getParameter() {

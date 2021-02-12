@@ -2,7 +2,7 @@ package eidolons.content.values;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import libgdx.anims.AnimEnums;
+import eidolons.content.consts.VisualEnums;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -30,7 +30,7 @@ public class ValuePages {
             G_PROPS.RACE, G_PROPS.MODE, G_PROPS.STATUS, G_PROPS.STANDARD_PASSIVES,};
     public static final VALUE[] DC_SPELLS_HEADER = {G_PROPS.ASPECT, G_PROPS.SPELL_TYPE,
             G_PROPS.SPELL_GROUP, G_PROPS.TARGETING_MODE, G_PROPS.SPELL_TAGS,};
-    public static final VALUE[] ANIM_VALUES = AnimEnums.anim_vals;
+    public static final VALUE[] ANIM_VALUES = VisualEnums.anim_vals;
 
     public static final VALUE[] SPELLS_UPGRADES = {PROPS.SPELL_UPGRADES,};
     public static final VALUE[] UNITS_HEADER = {G_PROPS.ASPECT, G_PROPS.DEITY,

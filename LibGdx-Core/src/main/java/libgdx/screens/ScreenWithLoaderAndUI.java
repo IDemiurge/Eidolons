@@ -1,8 +1,8 @@
 package libgdx.screens;
 
-import eidolons.game.netherflame.main.story.brief.IggBriefScreen;
 import libgdx.gui.menu.selection.SelectionPanel;
 import libgdx.gui.menu.selection.manual.ManualPanel;
+import libgdx.gui.panels.generic.story.IggBriefScreen;
 import libgdx.stage.UiStage;
 
 /**

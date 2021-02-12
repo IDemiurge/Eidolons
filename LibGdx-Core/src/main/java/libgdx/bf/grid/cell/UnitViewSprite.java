@@ -3,6 +3,7 @@ package libgdx.bf.grid.cell;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import eidolons.content.consts.VisualEnums;
 import eidolons.game.netherflame.boss.anims.old.SpriteModel;
 import eidolons.game.netherflame.boss.logic.entity.BossUnit;
 import libgdx.anims.sprite.SpriteAnimationFactory;
@@ -12,7 +13,6 @@ import libgdx.particles.EmitterActor;
 import libgdx.particles.EmitterPools;
 import libgdx.shaders.DarkShader;
 import libgdx.shaders.ShaderDrawer;
-import libgdx.bf.light.ShadowMap;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 
@@ -99,7 +99,7 @@ public abstract class UnitViewSprite extends UnitGridView {
 
         initEmitters();
 
-        addActor(glow = new FadeImageContainer(ShadowMap.SHADE_CELL.LIGHT_EMITTER.getTexturePath()));
+        addActor(glow = new FadeImageContainer(VisualEnums.SHADE_CELL.LIGHT_EMITTER.getTexturePath()));
         glow.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.HIGHLIGHT);
         super.init(arrowTexture, arrowRotation,  emblem);
         glow.setScale(getWidth() / glow.getWidth());

@@ -455,7 +455,7 @@ public class DC_GameManager extends GameManager {
             GdxAdapter.inputPass();
         } catch (Exception e) {
             ExceptionMaster.printStackTrace(e);
-            GuiEventManager.triggerWithParams(ADD_FLOATING_TEXT, VisualEnums.TEXT_CASES.REQUIREMENT,
+           GdxStatic.floatingText(VisualEnums.TEXT_CASES.REQUIREMENT,
                     "Disabled!", getMainHero());
         }
     }

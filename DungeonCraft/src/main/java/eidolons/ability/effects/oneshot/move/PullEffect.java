@@ -1,7 +1,6 @@
 package eidolons.ability.effects.oneshot.move;
 
 import eidolons.entity.obj.BattleFieldObject;
-import libgdx.bf.overlays.OverlayingMaster;
 import main.entity.EntityCheckMaster;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
@@ -16,10 +15,10 @@ public class PullEffect extends SelfMoveEffect {
 
     @Override
     public boolean apply(Ref ref) {
-        if (EntityCheckMaster.isOverlaying(ref.getTargetObj())) {
-           OverlayingMaster.moveOverlaying(getTarget(),getSource(), false);
-            return true;
-        }
+        // if (EntityCheckMaster.isOverlaying(ref.getTargetObj())) {
+        //    OverlayingMaster.moveOverlaying(getTarget(),getSource(), false);
+        //     return true;
+        // }
         return super.apply(ref);
     }
 

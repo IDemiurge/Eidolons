@@ -5,7 +5,7 @@ import libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import libgdx.gui.menu.selection.SelectableItemDisplayer;
 import libgdx.gui.menu.selection.SelectionPanel;
 import libgdx.gui.menu.selection.manual.ManualArticles.MANUAL_ARTICLE;
-import libgdx.texture.Sprites;
+import eidolons.content.consts.Sprites;
 import eidolons.system.text.TextMaster;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;

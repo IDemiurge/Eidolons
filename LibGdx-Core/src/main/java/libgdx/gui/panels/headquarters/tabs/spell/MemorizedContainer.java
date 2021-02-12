@@ -3,7 +3,7 @@ package libgdx.gui.panels.headquarters.tabs.spell;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.Spell;
 import libgdx.gui.panels.headquarters.datasource.HqDataMaster;
-import libgdx.gui.panels.headquarters.datasource.HeroDataModel;
+import eidolons.system.libgdx.datasource.HeroDataModel;
 
 import java.util.List;
 import java.util.stream.Collectors;

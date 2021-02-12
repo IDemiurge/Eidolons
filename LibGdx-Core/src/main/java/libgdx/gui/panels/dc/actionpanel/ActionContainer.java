@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.entity.handlers.active.Activator;
@@ -13,7 +14,6 @@ import eidolons.game.EidolonsGame;
 import libgdx.GdxMaster;
 import libgdx.anims.actions.ActionMaster;
 import libgdx.bf.generic.FadeImageContainer;
-import libgdx.bf.light.ShadowMap.SHADE_CELL;
 import libgdx.bf.mouse.BattleClickListener;
 import libgdx.gui.UiMaster;
 import libgdx.gui.controls.radial.RadialMenu;
@@ -32,7 +32,7 @@ public class ActionContainer extends ValueContainer {
 //Gdx Review - are they all they could be? Used quite widely..
 
     protected static TextureRegion lightUnderlay = TextureCache.getOrCreateR(
-            SHADE_CELL.LIGHT_EMITTER.getTexturePath());
+            VisualEnums.SHADE_CELL.LIGHT_EMITTER.getTexturePath());
     static TextureRegion overlay = TextureCache.getOrCreateR
             (BORDER.NEO_INFO_SELECT_HIGHLIGHT_SQUARE_64.getImagePath());
     private static ActionContainer lastPressed;

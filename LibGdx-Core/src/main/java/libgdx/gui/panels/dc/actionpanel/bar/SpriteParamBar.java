@@ -13,7 +13,7 @@ import libgdx.gui.generic.VerticalValueContainer;
 import libgdx.gui.tooltips.DynamicTooltip;
 import libgdx.gui.tooltips.ValueTooltip;
 import libgdx.screens.CustomSpriteBatch;
-import libgdx.texture.Sprites;
+import eidolons.content.consts.Sprites;
 import libgdx.texture.TextureCache;
 import eidolons.system.text.DescriptionTooltips;
 import main.content.enums.GenericEnums;

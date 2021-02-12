@@ -5,7 +5,7 @@ import boss.logic.entity.BossUnit;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import libgdx.anims.sprite.SpriteAnimationFactory;
 import libgdx.assets.Assets;
-import libgdx.texture.Sprites;
+import eidolons.content.consts.Sprites;
 import main.system.launch.CoreEngine;
 
 public class AriusBodyPassive extends BossSpriteVisual {

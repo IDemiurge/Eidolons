@@ -1,6 +1,6 @@
 package eidolons.system.text.tips;
 
-import libgdx.GdxMaster;
+import eidolons.system.libgdx.GdxStatic;
 import main.system.threading.WaitMaster;
 
 import static main.system.threading.WaitMaster.WAIT_OPERATIONS.CONFIRM;
@@ -16,8 +16,8 @@ public class TipMessageSource {
     Runnable[] btnRun;
     private boolean optional;
     private boolean nonGdxThread=true;
-    float width = GdxMaster.getWidth() / 3;
-    float height = GdxMaster.getHeight() / 3;
+    float width = GdxStatic.getWidth() / 3;
+    float height = GdxStatic.getHeight() / 3;
 
 
     public TipMessageSource(String message, String soundPath, String image, String button, boolean optional, Runnable r) {

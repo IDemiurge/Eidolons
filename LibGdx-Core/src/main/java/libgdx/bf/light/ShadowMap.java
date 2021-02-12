@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import eidolons.ability.effects.common.LightEmittingEffect;
 import eidolons.content.PROPS;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
@@ -24,17 +25,15 @@ import libgdx.gui.generic.GroupX;
 import main.content.CONTENT_CONSTS;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.ALPHA_TEMPLATE;
-import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StrPathBuilder;
 import main.system.launch.CoreEngine;
 
 import java.util.*;
 
-import static libgdx.bf.light.ShadowMap.SHADE_CELL.*;
+import static eidolons.content.consts.VisualEnums.SHADE_CELL.*;
 
 /**
  * Created by JustMe on 8/16/2017.
@@ -48,7 +47,7 @@ public class ShadowMap extends GroupX implements GridElement {
     private static final Color DEFAULT_COLOR = new Color(1, 0.9f, 0.7f, 1);
     private static boolean on = true;
     private final GridPanel grid;
-    private final Map<SHADE_CELL, ShadeLightCell[][]> cells = new LinkedHashMap<>();
+    private final Map<VisualEnums.SHADE_CELL, ShadeLightCell[][]> cells = new LinkedHashMap<>();
     private List<LightEmitter>[][] emitters;
 
     public ShadowMap(GridPanel grid) {
@@ -158,7 +157,7 @@ public class ShadowMap extends GroupX implements GridElement {
 
     private void init() {
         clearChildren();
-        for (SHADE_CELL type : SHADE_CELL_VALUES) {
+        for (VisualEnums.SHADE_CELL type : SHADE_CELL_VALUES) {
             getCells().put(type, new ShadeLightCell[grid.getModuleCols()][grid.getModuleRows()]);
             emitters = new List[grid.getModuleCols()][grid.getModuleRows()];
 
@@ -296,7 +295,7 @@ public class ShadowMap extends GroupX implements GridElement {
     public void update() {
         if (!isOn())
             return;
-        for (SHADE_CELL type : SHADE_CELL_VALUES) {
+        for (VisualEnums.SHADE_CELL type : SHADE_CELL_VALUES) {
             for (int x = 0; x < grid.getModuleCols(); x++) {
                 for (int y = 0; y < grid.getModuleRows(); y++) {
                     //                    if (type == VOID) {
@@ -327,15 +326,15 @@ public class ShadowMap extends GroupX implements GridElement {
         }
     }
 
-    public Map<SHADE_CELL, ShadeLightCell[][]> getCells() {
+    public Map<VisualEnums.SHADE_CELL, ShadeLightCell[][]> getCells() {
         return cells;
     }
 
-    public ShadeLightCell[][] getCells(SHADE_CELL type) {
+    public ShadeLightCell[][] getCells(VisualEnums.SHADE_CELL type) {
         return cells.get(type);
     }
 
-    public void setZtoMax(SHADE_CELL sub) {
+    public void setZtoMax(VisualEnums.SHADE_CELL sub) {
         ShadeLightCell[][] array = getCells().get(sub);
         for (int x = 0; x < array.length; x++) {
             for (int y = 0; y < array[x].length; y++) {
@@ -349,13 +348,13 @@ public class ShadowMap extends GroupX implements GridElement {
 
     }
 
-    public static final SHADE_CELL[] SHADE_CELL_VALUES = {
+    public static final VisualEnums.SHADE_CELL[] SHADE_CELL_VALUES = {
             VOID,
             GAMMA_SHADOW,
             HIGHLIGHT
     };
 
-    public static ALPHA_TEMPLATE getTemplateForShadeLight(SHADE_CELL type) {
+    public static ALPHA_TEMPLATE getTemplateForShadeLight(VisualEnums.SHADE_CELL type) {
         switch (type) {
             case VOID:
                 return null;
@@ -374,30 +373,6 @@ public class ShadowMap extends GroupX implements GridElement {
         return GenericEnums.ALPHA_TEMPLATE.HIGHLIGHT_MAP;
     }
 
-
-    public enum SHADE_CELL {
-        GAMMA_SHADOW(0.75f, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "shadow neu.png")),
-        GAMMA_LIGHT(0, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "light.png")),
-        LIGHT_EMITTER(0, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "light emitter.png")),
-        CONCEALMENT(0.5f, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "concealment.png")),
-        BLACKOUT(0, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "blackout.png")),
-        HIGHLIGHT(0, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "highlight.png")),
-        VOID(0, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "void.png")),
-        ;
-
-        public float defaultAlpha;
-        private final String texturePath;
-
-        SHADE_CELL(float alpha, String texturePath) {
-            defaultAlpha = alpha;
-            this.texturePath = texturePath;
-        }
-
-        public String getTexturePath() {
-            return texturePath;
-        }
-
-    }
 
 }
 

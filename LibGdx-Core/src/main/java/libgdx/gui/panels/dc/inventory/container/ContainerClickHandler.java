@@ -13,7 +13,7 @@ import libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import libgdx.gui.panels.dc.inventory.shop.ShopClickHandler;
 import libgdx.gui.panels.headquarters.datasource.GoldMaster;
 import libgdx.gui.panels.headquarters.datasource.HqDataMaster;
-import libgdx.gui.panels.headquarters.datasource.HeroDataModel;
+import eidolons.system.libgdx.datasource.HeroDataModel;
 import main.content.DC_TYPE;
 import main.content.enums.entity.BfObjEnums.BF_OBJ_SUB_TYPES_REMAINS;
 import main.data.DataManager;

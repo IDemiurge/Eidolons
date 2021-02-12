@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 
 import static main.system.auxiliary.log.LogMaster.log;
 
-public abstract class Player {
+public class Player {
     public static final String ALT = "_ALT";
     private static final String SOUNDSETS = "/soundsets/";
     private static final String FORMAT = ".mp3";
@@ -558,7 +558,9 @@ public abstract class Player {
         return volume;
     }
 
-    public abstract void play(String path, Coordinates c, float vol);
+    public void play(String path, Coordinates c, float vol) {
+
+    }
 
     public void setVolume(int volume) {
         this.volume = volume;
@@ -704,9 +706,13 @@ public abstract class Player {
         return clip;
     }
 
-    public abstract void setPositionFor(Coordinates c);
+    public void setPositionFor(Coordinates c) {
 
-    public abstract void setCinematicSoundOverride(boolean b);
+    }
+
+    public void setCinematicSoundOverride(boolean b) {
+
+    }
 
 
     // VOLUME CONTROL TO BE ADDED TODO

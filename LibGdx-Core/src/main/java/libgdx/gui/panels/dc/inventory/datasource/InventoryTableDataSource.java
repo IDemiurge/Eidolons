@@ -5,7 +5,7 @@ import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import libgdx.gui.panels.dc.inventory.InvItemActor;
 import libgdx.gui.panels.dc.inventory.InventoryClickHandler;
 import eidolons.content.consts.VisualEnums.CELL_TYPE;
-import libgdx.gui.panels.dc.inventory.container.ContainerPanel.ITEM_FILTERS;
+import eidolons.content.consts.VisualEnums.ITEM_FILTERS;
 
 import java.util.ArrayList;
 import java.util.Collection;

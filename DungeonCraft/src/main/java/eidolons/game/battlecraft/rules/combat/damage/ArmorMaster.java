@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.rules.combat.damage;
 import eidolons.ability.effects.oneshot.DealDamageEffect;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_ArmorObj;
@@ -14,24 +15,18 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.combat.attack.DefenseVsAttackRule;
-import eidolons.game.battlecraft.rules.combat.attack.ShieldMaster;
 import eidolons.game.core.game.DC_Game;
-import libgdx.anims.sprite.SpriteAnimation;
-import libgdx.anims.text.FloatingTextMaster;
 import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.libgdx.GdxStatic;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.Ref.KEYS;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.launch.Flags;
 import main.system.math.MathMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
-
-import java.util.function.Supplier;
 
 //  DC Revamp - 2 armor layers and more digestible code
 public class ArmorMaster {
@@ -298,13 +293,13 @@ public class ArmorMaster {
                 //                 durabilityLost, damage, damage_type, shield));
             }
 
-            FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.COUNTER_ATTACK,
+             GdxStatic.floatingText( VisualEnums.TEXT_CASES.COUNTER_ATTACK,
                     "Shield block!", attacked);
-            Integer finalBlockValue = blockValue;
-            DC_WeaponObj finalShield = shield;
-            // TODO gdx Review - why didn't this ever work?
-            GuiEventManager.trigger(GuiEventType.SHOW_SPRITE_SUPPLIER,
-                    (Supplier<SpriteAnimation>) () -> ShieldMaster.getSprite(finalShield, action, finalBlockValue));
+            // Integer finalBlockValue = blockValue;
+            // DC_WeaponObj finalShield = shield;
+            // TODO gdx sync Review - why didn't this ever work?
+            // GuiEventManager.trigger(GuiEventType.SHOW_SPRITE_SUPPLIER,
+            //         (Supplier<SpriteAnimation>) () -> ShieldMaster.getSprite(finalShield, action, finalBlockValue));
 
             message = attacked.getName() + " uses " + shield.getName() + " to block" + "" + " "
                     + blockValue + " out of " + damage + " " + damage_type + " damage from " +

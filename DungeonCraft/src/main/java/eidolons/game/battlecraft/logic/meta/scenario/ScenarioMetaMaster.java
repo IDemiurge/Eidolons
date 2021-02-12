@@ -8,6 +8,7 @@ import eidolons.game.battlecraft.logic.mission.quest.QuestMissionMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.ScenarioGame;
 import eidolons.game.netherflame.main.death.NF_DefeatHandler;
+import eidolons.system.libgdx.datasource.ScreenData;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 

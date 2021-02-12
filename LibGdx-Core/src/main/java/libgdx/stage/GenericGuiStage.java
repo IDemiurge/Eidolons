@@ -23,7 +23,7 @@ import libgdx.gui.tooltips.CursorDecorator;
 import libgdx.gui.tooltips.ToolTipManager;
 import libgdx.gui.utils.TextInputPanel;
 import libgdx.shaders.ShaderDrawer;
-import eidolons.system.text.tips.TipMessageWindow;
+import libgdx.gui.panels.generic.TipMessageWindow;
 import main.content.enums.GenericEnums;
 import main.entity.Entity;
 import main.system.GuiEventManager;

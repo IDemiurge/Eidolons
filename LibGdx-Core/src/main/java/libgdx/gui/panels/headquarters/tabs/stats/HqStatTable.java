@@ -8,7 +8,7 @@ import libgdx.gui.panels.TablePanel;
 import libgdx.gui.panels.headquarters.ValueTable;
 import libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
-import libgdx.gui.panels.headquarters.datasource.HeroDataModel;
+import eidolons.system.libgdx.datasource.HeroDataModel;
 import main.content.values.parameters.PARAMETER;
 
 /**

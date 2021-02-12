@@ -11,7 +11,6 @@ import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.rules.action.WatchRule;
 import eidolons.game.battlecraft.rules.perk.RangeRule;
 import eidolons.system.DC_Formulas;
-import eidolons.system.graphics.DC_ImageMaster;
 import main.content.ContentValsManager;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
@@ -753,7 +752,8 @@ public class AttackCalculator {
         public Image getImage(Object... values) {
             if (imagePath == null) {
                 try {
-                    return DC_ImageMaster.getImageDynamic(this, values);
+                    //???
+                    // return DC_ImageMaster.getImageDynamic(this, values);
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                     return ImageManager.getImage(ImageManager.getEmptyListIconSmall());

@@ -1,6 +1,8 @@
 package eidolons.game.battlecraft.logic.dungeon.location.layer;
 
-import com.badlogic.gdx.math.Vector2;
+import eidolons.system.libgdx.GdxAdapter;
+import eidolons.system.libgdx.GdxStatic;
+import eidolons.system.libgdx.wrapper.Vector2;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
@@ -12,9 +14,6 @@ import main.system.GuiEventType;
 
 import java.util.List;
 import java.util.Map;
-
-import static libgdx.bf.GridMaster.getCenteredPos;
-
 
 public class LayerInitializer extends DungeonHandler {
 
@@ -47,7 +46,7 @@ public class LayerInitializer extends DungeonHandler {
         for (Coordinates coordinates : layer.getVfxMap().keySet()) {
 
             for (GenericEnums.VFX vfx : layer.getVfxMap().get(coordinates)) {
-                Vector2 vector = getCenteredPos(coordinates);
+                Vector2 vector = GdxStatic.getCenteredPos(coordinates);
 
                 if (on) {
                     GuiEventManager.triggerWithParams(GuiEventType.ADD_AMBI_VFX, vfx, vector);

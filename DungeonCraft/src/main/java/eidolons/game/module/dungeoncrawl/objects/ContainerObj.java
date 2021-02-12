@@ -1,13 +1,15 @@
 package eidolons.game.module.dungeoncrawl.objects;
 
 import eidolons.content.PROPS;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.item.DC_HeroItemObj;
-import libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import main.entity.type.ObjType;
 import main.system.datatypes.DequeImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static eidolons.content.consts.VisualEnums.CONTAINER.*;
 
 /**
  * Created by JustMe on 11/16/2017.
@@ -27,7 +29,7 @@ public class ContainerObj extends DungeonObj {
         items = new ArrayList<>(
          getInitializer().initContainedItems(PROPS.INVENTORY,
           new DequeImpl<>(), false));
-        items.forEach(itemObj -> itemObj.setContainer(CONTAINER.CONTAINER));
+        items.forEach(itemObj -> itemObj.setContainer(CONTAINER));
         itemsInitialized = true;
 
 

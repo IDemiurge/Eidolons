@@ -2,7 +2,7 @@ package main.level_editor.gui.dialog;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.kotcrab.vis.ui.VisUI;
-import eidolons.game.module.generator.tilemap.TileMap;
+import eidolons.dungeons.generator.tilemap.TileMap;
 import libgdx.StyleHolder;
 import libgdx.gui.NinePatchFactory;
 import libgdx.gui.panels.TablePanelX;

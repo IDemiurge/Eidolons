@@ -7,7 +7,6 @@ import libgdx.GdxMaster;
 import libgdx.anims.fullscreen.Screenshake;
 import libgdx.gui.panels.headquarters.town.TownPanel;
 import libgdx.stage.GuiStage;
-import eidolons.macro.entity.town.Town;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -89,18 +88,19 @@ public abstract class GameScreenWithTown extends GenericDungeonScreen {
 
         } else {
             loading = true;
-            Town town = (Town) p.get();
-            if (townPanel == null || TownPanel.TEST_MODE) {
-                overlayStage.addActor(townPanel = new TownPanel());
-            } else {
-                townPanel.fadeIn();
-                townPanel.entered();
-            }
-            try {
-                townPanel.setUserObject(town); //  // TODO
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
+            //TODO macro Review
+            // Town town = (Town) p.get();
+            // if (townPanel == null || TownPanel.TEST_MODE) {
+            //     overlayStage.addActor(townPanel = new TownPanel());
+            // } else {
+            //     townPanel.fadeIn();
+            //     townPanel.entered();
+            // }
+            // try {
+            //     townPanel.setUserObject(town); //  // TODO
+            // } catch (Exception e) {
+            //     main.system.ExceptionMaster.printStackTrace(e);
+            // }
 
             overlayStage.setActive(true);
             GdxMaster.setDefaultCursor();

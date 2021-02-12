@@ -1,13 +1,12 @@
 package libgdx.gui.panels.headquarters.tabs.spell;
 
-import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.Spell;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.master.SpellMaster;
 import eidolons.game.module.herocreator.HeroManager;
 import libgdx.gui.panels.headquarters.datasource.HqDataMaster;
-import libgdx.gui.panels.headquarters.datasource.HeroDataModel;
+import eidolons.system.libgdx.datasource.HeroDataModel;
 
 import java.util.ArrayList;
 import java.util.List;

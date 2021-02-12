@@ -1,7 +1,7 @@
 package libgdx.anims.anim3d;
 
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
-import libgdx.assets.AssetEnums;
 import main.entity.Ref;
 
 /**
@@ -17,12 +17,12 @@ public class Potion3dAnim extends Weapon3dAnim {
     }
 
     @Override
-    public AssetEnums.PROJECTION getProjection(Ref ref, DC_ActiveObj active) {
-        return AssetEnums.PROJECTION.HOR;
+    public VisualEnums.PROJECTION getProjection(Ref ref, DC_ActiveObj active) {
+        return VisualEnums.PROJECTION.HOR;
     }
 
     @Override
-    protected AssetEnums.WEAPON_ANIM_CASE getCase() {
-        return AssetEnums.WEAPON_ANIM_CASE.POTION;
+    protected VisualEnums.WEAPON_ANIM_CASE getCase() {
+        return VisualEnums.WEAPON_ANIM_CASE.POTION;
     }
 }

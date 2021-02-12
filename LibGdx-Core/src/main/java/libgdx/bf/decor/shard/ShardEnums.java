@@ -1,7 +1,7 @@
 package libgdx.bf.decor.shard;
 
 import eidolons.content.consts.VisualEnums;
-import eidolons.content.consts.libgdx.GdxUtils;
+import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.GenericEnums;
@@ -150,7 +150,7 @@ public class ShardEnums {
         if (file == null) {
             return null;
         }
-        return GdxUtils.cropImagePath(file);
+        return GdxStringUtils.cropImagePath(file);
     }
 
     public static String getForegroundTexturePath(Object arg, VisualEnums.SHARD_OVERLAY overlay) {
@@ -169,7 +169,7 @@ public class ShardEnums {
         if (file == null) {
             return null;
         }
-        return GdxUtils.cropImagePath(file);
+        return GdxStringUtils.cropImagePath(file);
     }
 
 }

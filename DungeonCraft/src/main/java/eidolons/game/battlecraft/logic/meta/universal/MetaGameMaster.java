@@ -2,7 +2,6 @@ package eidolons.game.battlecraft.logic.meta.universal;
 
 import eidolons.content.PROPS;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.module.ModuleMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
@@ -16,10 +15,11 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
 import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.game.eidolon.event.GameEventHandler;
-import eidolons.game.eidolon.event.NF_EventHandler;
+import eidolons.system.libgdx.GdxBeans;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
+import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.FileLogManager;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
@@ -48,6 +48,8 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected GameEventHandler eventHandler;
 
     ShadowMaster shadowMaster = new ShadowMaster(this);
+    private GdxBeans gdxBeans;
+    private QuestMaster questMaster;
 
     public ShadowMaster getShadowMaster() {
         return shadowMaster;
@@ -79,13 +81,20 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
         if (Flags.isCombatGame()) {
             lootMaster = createLootMaster();
-            eventHandler = new NF_EventHandler(this);
+            questMaster = createQuestMaster();
+            eventHandler = createEventHandler( );
             defeatHandler = createDefeatHandler();
             dialogueManager = new DialogueManager(this);
             if (dialogueManager.isPreloadDialogues()) {
                 getDialogueFactory().init(this);
             }
         }
+    }
+    protected QuestMaster createQuestMaster() {
+        return new QuestMaster(this);
+    }
+    protected GameEventHandler createEventHandler() {
+        return null;
     }
 
     protected LootMaster<E> createLootMaster() {
@@ -228,7 +237,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         try {
             GuiEventManager.cleanUp();
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
         }
         if (game.isStarted())
             //TODO gdx sync
@@ -280,7 +289,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     }
 
     public QuestMaster getQuestMaster() {
-        return townMaster.getQuestMaster();
+        return questMaster ;
     }
 
     public void reinit() {
@@ -306,5 +315,13 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     public boolean isSoloLevel() {
         return  data.equalsIgnoreCase(SOLO_LEVEL);
+    }
+
+    public GdxBeans getGdxBeans() {
+        return gdxBeans;
+    }
+
+    public void setGdxBeans(GdxBeans gdxBeans) {
+        this.gdxBeans = gdxBeans;
     }
 }

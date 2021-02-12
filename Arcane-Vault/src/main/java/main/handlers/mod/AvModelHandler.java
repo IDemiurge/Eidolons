@@ -4,7 +4,7 @@ import eidolons.ability.ActionGenerator;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.content.consts.libgdx.GdxUtils;
+import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.rpg.PrincipleMaster;
 import eidolons.game.module.herocreator.logic.HeroCreator;
@@ -118,13 +118,13 @@ public class AvModelHandler {
             if (obj_type instanceof DC_TYPE) {
                 switch (((DC_TYPE) obj_type)) {
                     case WEAPONS:
-                        type.setImage(GdxUtils.getWeaponIconPath(type));
+                        type.setImage(GdxStringUtils.getWeaponIconPath(type));
                         break;
                     case ARMOR:
-                        type.setImage(GdxUtils.getArmorIconPath(type));
+                        type.setImage(GdxStringUtils.getArmorIconPath(type));
                         break;
                     case JEWELRY:
-                        type.setImage(GdxUtils.getItemIconPath(type));
+                        type.setImage(GdxStringUtils.getItemIconPath(type));
                         break;
                 }
             }

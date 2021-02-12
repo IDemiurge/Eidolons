@@ -1,12 +1,15 @@
 package eidolons.dungeons.generator.pregeneration;
 
 import eidolons.dungeons.generator.*;
+import eidolons.dungeons.generator.GeneratorEnums;
+import eidolons.dungeons.generator.LevelData;
+import eidolons.dungeons.generator.LevelDataMaker;
+import eidolons.dungeons.generator.LevelGenerator;
+import eidolons.dungeons.generator.LevelValidator;
 import eidolons.dungeons.generator.test.GenerationStats;
 import eidolons.dungeons.generator.test.LevelStats;
 import eidolons.game.module.dungeoncrawl.struct.DungeonLevel;
-import eidolons.game.module.generator.*;
 import eidolons.dungeons.generator.tilemap.TileMapper;
-import eidolons.macro.generation.ScenarioGenerator;
 import eidolons.system.text.NameMaster;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
@@ -338,7 +341,9 @@ public class Pregenerator implements Runnable {
     public static void saveLevel(DungeonLevel level) {
 
         String stringData = level.toXml();
-        String name = ScenarioGenerator.getLevelName(level.getLocationType(), level.getSublevelType()) + ".xml";
+        String name =
+                 level.getLocationType() + " " +
+                level.getSublevelType() + ".xml";
         if (customPrefix!=null ){
             name = customPrefix+name;
         }

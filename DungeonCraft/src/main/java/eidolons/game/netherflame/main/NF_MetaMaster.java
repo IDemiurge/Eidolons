@@ -6,6 +6,7 @@ import eidolons.game.battlecraft.logic.meta.universal.DefeatHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaInitializer;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
 import eidolons.game.core.game.ScenarioGame;
+import eidolons.game.eidolon.event.GameEventHandler;
 import eidolons.game.netherflame.NF_Game;
 import eidolons.game.netherflame.main.death.NF_DefeatHandler;
 import eidolons.game.eidolon.event.NF_EventHandler;
@@ -37,6 +38,9 @@ public class NF_MetaMaster extends ScenarioMetaMaster<NF_Meta> {
         soulforceMaster = new SoulforceMaster(this);
         eventHandler = new NF_EventHandler(this);
 
+    }
+    protected GameEventHandler createEventHandler() {
+        return new NF_EventHandler(this);
     }
 
     public SoulforceMaster getSoulforceMaster() {

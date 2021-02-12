@@ -1,7 +1,6 @@
 package eidolons.ability.effects.oneshot.move;
 
 import eidolons.entity.obj.BattleFieldObject;
-import libgdx.bf.overlays.OverlayingMaster;
 import main.entity.EntityCheckMaster;
 import main.game.bf.MovementManager;
 import main.game.bf.directions.FACING_DIRECTION;
@@ -15,10 +14,11 @@ public class PushEffect extends SelfMoveEffect {
 
     @Override
     public boolean applyThis() {
-        if (EntityCheckMaster.isOverlaying(ref.getTargetObj())) {
-            OverlayingMaster.moveOverlaying(getTarget(),getSource(), true);
-            return true;
-        }
+        //TODO gdx sync
+        // if (EntityCheckMaster.isOverlaying(ref.getTargetObj())) {
+            // OverlayingMaster.moveOverlaying(getTarget(),getSource(), true);
+        //     return true;
+        // }
         return super.applyThis();
     }
 

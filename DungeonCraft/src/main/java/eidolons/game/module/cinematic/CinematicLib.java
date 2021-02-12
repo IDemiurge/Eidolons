@@ -1,10 +1,10 @@
 package eidolons.game.module.cinematic;
 
 import com.badlogic.gdx.math.Interpolation;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.ScriptLib;
 import eidolons.game.core.Eidolons;
-import libgdx.anims.fullscreen.Screenshake;
 import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
 import main.system.GuiEventManager;
@@ -100,7 +100,7 @@ COMBAT_ENDS,
                 doZoom(1f, 2.25f, Interpolation.pow2In);
                 break;
             case VOID_MAZE_FAIL:
-                doShake(Screenshake.ScreenShakeTemplate.HARD, 2, null);
+                doShake( VisualEnums.ScreenShakeTemplate.HARD, 2, null);
                 doZoom(0.21f, 2.25f, Interpolation.pow2In);
                 // ScreenMaster.getGrid().getGridManager().getAnimHandler().doFall(Eidolons.getMainHero());
                 break;

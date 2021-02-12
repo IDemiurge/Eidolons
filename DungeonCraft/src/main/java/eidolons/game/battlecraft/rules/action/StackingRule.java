@@ -18,8 +18,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster;
 import eidolons.game.netherflame.main.misc.PaleAspect;
-import libgdx.bf.grid.moving.PlatformController;
-import libgdx.screens.ScreenMaster;
+import eidolons.system.libgdx.GdxAdapter;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
@@ -307,16 +306,7 @@ public class StackingRule implements ActionRule {
     }
 
     private Boolean checkPlatform(Entity unit, Coordinates c) {
-        if (ScreenMaster.getGrid() == null) {
-            return null;
-        }
-        PlatformController platformController =
-                ScreenMaster.getGrid().getPlatformHandler().get(c);
-        if (platformController != null)
-            if (platformController.canEnter(unit)) {
-                return true;
-            }
-        return null;
+        return GdxAdapter.getInstance().getGridManager().checkPlatform(unit, c);
     }
 
     @Override

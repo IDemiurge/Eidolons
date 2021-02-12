@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle;
 
 import eidolons.entity.obj.DC_Cell;
-import eidolons.puzzle.gridobj.Manipulator;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleElement;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTrigger;
@@ -95,14 +94,10 @@ public class PuzzleRules extends PuzzleElement {
     public void setBase(PuzzleEnums.PUZZLE_ACTION_BASE base) {
         this.base = base;
     }
-
-    public void manipulatorActs(Manipulator manipulator) {
-
-        DC_Cell cell = DC_Game.game.getCellByCoordinate(Eidolons.getPlayerCoordinates());
-
-        cell.setOverlayRotation(cell.getOverlayRotation() + 90);
-
-        GuiEventManager.trigger(GuiEventType.CELL_RESET, cell);
-
-    }
+//TODO gdx sync
+    // public void manipulatorActs(Manipulator manipulator) {
+    //     DC_Cell cell = DC_Game.game.getCellByCoordinate(Eidolons.getPlayerCoordinates());
+    //     cell.setOverlayRotation(cell.getOverlayRotation() + 90);
+    //     GuiEventManager.trigger(GuiEventType.CELL_RESET, cell);
+    // }
 }

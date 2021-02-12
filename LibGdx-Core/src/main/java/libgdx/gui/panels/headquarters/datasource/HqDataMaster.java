@@ -18,6 +18,7 @@ import eidolons.game.module.dungeoncrawl.objects.vendor.GoldMaster;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import eidolons.game.module.herocreator.logic.PointMaster;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
+import eidolons.system.libgdx.datasource.HeroDataModel;
 import libgdx.gui.panels.headquarters.HqMaster;
 import libgdx.gui.panels.headquarters.HqPanel;
 import libgdx.gui.panels.headquarters.creation.HcHeroModel;
@@ -26,7 +27,7 @@ import libgdx.gui.panels.headquarters.creation.HeroCreationPanel;
 import libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import libgdx.gui.panels.headquarters.tabs.spell.HqSpellMaster;
 import libgdx.gui.panels.headquarters.town.TownPanel;
-import eidolons.macro.entity.shop.Shop;
+import eidolons.game.battlecraft.logic.meta.universal.shop.Shop;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.math.DC_MathManager;
 import eidolons.system.text.NameMaster;
@@ -351,25 +352,26 @@ public class HqDataMaster {
     public void applyItemOperation(Unit hero, HeroDataModel.HERO_OPERATION operation, Object... args) {
         DC_HeroItemObj item = getItem(hero, args[0]);
         switch (operation) {
-            case STASH:
-                item = (DC_HeroItemObj) args[0];
-                if (hero.removeFromInventory(item))
-                    Eidolons.getTown().addToStash(item);
-                break;
-            case UNSTASH:
-                item = (DC_HeroItemObj) args[0];
-                if (Eidolons.getTown().removeFromStash(item))
-                    hero.addItemToInventory(item, true);
-                break;
+            //TODO macro update
+            // case STASH:
+            //     item = (DC_HeroItemObj) args[0];
+            //     if (hero.removeFromInventory(item))
+            //         Eidolons.getTown().addToStash(item);
+            //     break;
+            // case UNSTASH:
+            //     item = (DC_HeroItemObj) args[0];
+            //     if (Eidolons.getTown().removeFromStash(item))
+            //         hero.addItemToInventory(item, true);
+            //     break;
             case SELL:
             case BUY:
                 item = (DC_HeroItemObj) args[0]; //TODO fix?
                 Shop shop = (Shop) args[1];
                 if (operation == HeroDataModel.HERO_OPERATION.SELL) {
-                    if (!hero.removeFromInventory(item)) {
-                        if (!Eidolons.getTown().removeFromStash(item))
-                            return;
-                    }
+                    // if (!hero.removeFromInventory(item)) {
+                    //     if (!Eidolons.getTown().removeFromStash(item))
+                    //         return;
+                    // }
                     shop.sellItemTo(item, hero);
 //                    hero.modifyParameter(PARAMS.GOLD, price); all gold is handled by ShopItemManager!
                 } else {

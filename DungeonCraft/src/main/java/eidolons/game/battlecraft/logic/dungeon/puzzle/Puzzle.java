@@ -1,11 +1,9 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle;
 
-import eidolons.puzzle.gridobj.Manipulator;
-import eidolons.puzzle.gridobj.Veil;
+import eidolons.content.data.FlightData;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.*;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import libgdx.bf.grid.moving.flight.FlightData;
 import eidolons.game.module.dungeoncrawl.struct.LevelBlock;
 import eidolons.dungeons.generator.model.AbstractCoordinates;
 import eidolons.system.text.DescriptionTooltips;
@@ -40,8 +38,6 @@ public abstract class Puzzle {
     protected boolean failed;
     protected Coordinates coordinates;
 
-    protected Veil veil;
-    protected Veil exitVeil;
     protected LevelBlock block;
     protected String title;
 
@@ -99,13 +95,6 @@ public abstract class Puzzle {
     public void createTrigger(PuzzleTrigger.PUZZLE_TRIGGER type, Event.EVENT_TYPE event, Condition checks, Runnable action) {
         log(1, ">> Puzzle createTrigger :" + event + " " + checks);
         triggers.add(new PuzzleTrigger(this, type, event, checks, action));
-    }
-
-
-    public void manipulatorActs(Manipulator manipulator) {
-        for (PuzzleRules rule : rules) {
-            rule.manipulatorActs(manipulator);
-        }
     }
 
     public PuzzleQuest getQuest() {

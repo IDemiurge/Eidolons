@@ -1,12 +1,12 @@
 package libgdx.bf.grid.handlers;
 
 import com.badlogic.gdx.graphics.Color;
+import eidolons.content.consts.VisualEnums;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMapDataSource;
 import eidolons.game.core.game.DC_Game;
 import libgdx.bf.grid.GridPanel;
 import libgdx.bf.light.ShadeLightCell;
-import libgdx.bf.light.ShadowMap;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -33,10 +33,10 @@ public class ColorHandler extends GridHandler{
 
 
     public Float getLightness(Coordinates c) {
-        if (grid.getShadowMap().getCells(ShadowMap.SHADE_CELL.GAMMA_SHADOW) == null) {
+        if (grid.getShadowMap().getCells(VisualEnums.SHADE_CELL.GAMMA_SHADOW) == null) {
             return 1f;
         }
-        ShadeLightCell cell = grid.getShadowMap().getCells(ShadowMap.SHADE_CELL.GAMMA_SHADOW)[c.x][c.y];
+        ShadeLightCell cell = grid.getShadowMap().getCells(VisualEnums.SHADE_CELL.GAMMA_SHADOW)[c.x][c.y];
         if (cell == null) {
             return 0f;
         }

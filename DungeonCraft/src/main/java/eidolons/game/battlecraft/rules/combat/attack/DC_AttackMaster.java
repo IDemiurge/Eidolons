@@ -17,9 +17,8 @@ import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.master.EffectMaster;
-import libgdx.anims.AnimContext;
-import libgdx.anims.main.ActionAnimMaster;
 import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.libgdx.GdxAdapter;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.enums.GenericEnums;
@@ -29,6 +28,7 @@ import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.event.EventMaster;
@@ -567,9 +567,11 @@ public class DC_AttackMaster {
 
 
     private void addAndWaitAttackAnimation(Attack attack) {
-        ActionAnimMaster.animate(new ActionInput(attack.getAction(),
-                new AnimContext(attack.getAttacker(),
-                        attack.getAttacked())));
+        //TODO gdx sync
+        // GdxAdapter.getInstance().getAnimsApi.animate(new ActionInput(attack.getAction(),
+        //         new Context(attack.getAttacker(),
+        //                 attack.getAttacked())));
+
         //        if (attack.getAnimation() != null) { TODO is it required now??
         //            if (attack.getAnimation().isStarted()) {
         //                while (!attack.getAnimation().isFinished()) {

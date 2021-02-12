@@ -2,28 +2,39 @@ package libgdx.adapters;
 
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Awakener;
+import eidolons.puzzle.voidy.VoidHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.GdxSpeechActions;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript;
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
 import libgdx.anims.SimpleAnim;
+import libgdx.anims.actions.ActionMaster;
 import libgdx.anims.fullscreen.Screenshake;
 import libgdx.anims.main.AnimMaster;
 import libgdx.bf.GridMaster;
+import libgdx.bf.grid.DC_GridPanel;
 import libgdx.bf.grid.cell.BaseView;
 import libgdx.screens.ScreenMaster;
 import libgdx.screens.dungeon.DungeonScreen;
 import libgdx.stage.camera.MotionData;
+import main.content.enums.EncounterEnums;
 import main.content.enums.entity.BfObjEnums;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.List;
 import java.util.function.Predicate;
 
+import static eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript.SCRIPT.CAMERA_SET;
 import static eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript.SCRIPT.LINKED_OBJ;
 
 public class SpeechActionsImpl implements GdxSpeechActions {
@@ -48,15 +59,15 @@ public class SpeechActionsImpl implements GdxSpeechActions {
     public void doShake(String value, List<String> vars) {
             float intensity = Float.valueOf(value);
             float dur = Float.valueOf(vars.get(0));
-            Screenshake.ScreenShakeTemplate temp = Screenshake.ScreenShakeTemplate.MEDIUM;
+            VisualEnums.ScreenShakeTemplate temp = VisualEnums.ScreenShakeTemplate.MEDIUM;
             if (intensity < 30) {
-                temp = Screenshake.ScreenShakeTemplate.SLIGHT;
+                temp = VisualEnums.ScreenShakeTemplate.SLIGHT;
             }
             if (intensity > 60) {
-                temp = Screenshake.ScreenShakeTemplate.HARD;
+                temp = VisualEnums.ScreenShakeTemplate.HARD;
             }
             if (intensity > 110) {
-                temp = Screenshake.ScreenShakeTemplate.BRUTAL;
+                temp = VisualEnums.ScreenShakeTemplate.BRUTAL;
             }
             Boolean vert = null;
             if (vars.size() > 1) {
@@ -84,14 +95,16 @@ public class SpeechActionsImpl implements GdxSpeechActions {
             if (!zoom) {
                 switch (value) {
                     case "me":
-                        v = getCenteredPos(Eidolons.getPlayerCoordinates());
+                        v =GridMaster.getCenteredPos(Eidolons.getPlayerCoordinates());
                         break;
                     case "orig":
                         v = new Vector2(0, 0);
                         break;
                 }
                 if (v == null) {
-                    v = getCenteredPos(getCoordinate(value));
+                    v = GridMaster.getCenteredPos(
+                            DC_Game.game.getMetaMaster().getDialogueManager().
+                                    getSpeechExecutor().getCoordinate(value));
                 }
             }
             float duration = 0f;
@@ -158,4 +171,39 @@ public class SpeechActionsImpl implements GdxSpeechActions {
                     x);
         }
     }
+
+    @Override
+    public void execute(SpeechScript.SCRIPT speechAction, String value, List<String> vars) {
+        VoidHandler voidHandler = ((DC_GridPanel) ScreenMaster.getGrid()).getVoidHandler();
+            boolean bool = false;
+            switch (speechAction) {
+                case RAISE:
+                    bool = true;
+                case COLLAPSE:
+                    List<Coordinates> list = CoordinatesMaster.getCoordinatesFromString(value);
+                    Coordinates origin = DC_Game.game.getMetaMaster().getDialogueManager().getSpeechExecutor().getCoordinate(vars.get(0));
+                    Float speed=1f;
+                    if (vars.size()>1) {
+                        speed = NumberUtils.getFloat(vars.get(1));
+                    }
+                    voidHandler.toggle(bool, origin , list, speed);
+                    break;
+
+                case AUTO_RAISE_ON:
+                    voidHandler.toggleAuto();
+                    break;
+                case AWAKEN:
+                    LevelStruct struct = DC_Game.game.getDungeonMaster().getStructMaster().
+                            findBlockByName(vars.get(0));
+                    EncounterEnums.UNIT_GROUP_TYPE
+                            ai = new EnumMaster<EncounterEnums.UNIT_GROUP_TYPE>().
+                            retrieveEnumConst(EncounterEnums.UNIT_GROUP_TYPE.class, (vars.get(1)));
+
+                    Awakener.awaken_type type = new EnumMaster<Awakener.awaken_type>().retrieveEnumConst(
+                            Awakener.awaken_type.class, (value));
+
+                    DC_Game.game.getDungeonMaster().getAwakener().awaken(struct, ai, type);
+                    break;
+            }
+        }
 }

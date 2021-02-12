@@ -1,6 +1,7 @@
 package libgdx.assets;
 
 import com.badlogic.gdx.math.Vector2;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.item.DC_QuickItemObj;
@@ -142,22 +143,22 @@ public class AnimMaster3d {
         AnimMaster3d.fps = fps;
     }
 
-    public static AssetEnums.PROJECTION getProjectionByFacing(FACING_DIRECTION facing) {
+    public static VisualEnums.PROJECTION getProjectionByFacing(FACING_DIRECTION facing) {
         if (!facing.isVertical())
-            return AssetEnums.PROJECTION.HOR;
-        return facing == main.game.bf.directions.FACING_DIRECTION.NORTH ? AssetEnums.PROJECTION.TO : AssetEnums.PROJECTION.FROM;
+            return VisualEnums.PROJECTION.HOR;
+        return facing == main.game.bf.directions.FACING_DIRECTION.NORTH ? VisualEnums.PROJECTION.TO : VisualEnums.PROJECTION.FROM;
     }
 
-    public static AssetEnums.PROJECTION getProjection(Ref ref, DC_ActiveObj active) {
+    public static VisualEnums.PROJECTION getProjection(Ref ref, DC_ActiveObj active) {
         if (ref.getTargetObj() == null || ref == null)
             return getProjectionByFacing(active.getOwnerUnit().getFacing());
         Boolean b =
                 PositionMaster.isAboveOr(ref.getSourceObj(), ref.getTargetObj());
         if (active.getOwnerUnit().getCoordinates().equals(ref.getTargetObj().getCoordinates()))
             b = active.getOwnerUnit().isMine();
-        AssetEnums.PROJECTION projection = AssetEnums.PROJECTION.HOR;
+        VisualEnums.PROJECTION projection = VisualEnums.PROJECTION.HOR;
         if (b != null)
-            projection = b ? AssetEnums.PROJECTION.FROM : AssetEnums.PROJECTION.TO;
+            projection = b ? VisualEnums.PROJECTION.FROM : VisualEnums.PROJECTION.TO;
         return projection;
     }
 

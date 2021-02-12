@@ -1,5 +1,6 @@
 package libgdx.anims.fullscreen;
 
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.core.Eidolons;
@@ -27,15 +28,15 @@ public class ScreenshakeMaster {
             intensity += 20;
         }
 
-        Screenshake.ScreenShakeTemplate template = Screenshake.ScreenShakeTemplate.SLIGHT;
+        VisualEnums.ScreenShakeTemplate template = VisualEnums.ScreenShakeTemplate.SLIGHT;
         if (intensity > 80) {
-            template = Screenshake.ScreenShakeTemplate.BRUTAL;
+            template = VisualEnums.ScreenShakeTemplate.BRUTAL;
         }
         if (intensity > 40) {
-            template = Screenshake.ScreenShakeTemplate.HARD;
+            template = VisualEnums.ScreenShakeTemplate.HARD;
         }
         if (intensity > 20) {
-            template = Screenshake.ScreenShakeTemplate.MEDIUM;
+            template = VisualEnums.ScreenShakeTemplate.MEDIUM;
         }
 
         GuiEventManager.trigger(GuiEventType.CAMERA_SHAKE, new Screenshake(0.25f+intensity/100, vertical, template));

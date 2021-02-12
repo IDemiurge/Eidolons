@@ -24,6 +24,7 @@ import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.system.libgdx.datasource.HeroDataModel;
 import main.ability.AbilityObj;
 import main.ability.PassiveAbilityObj;
 import main.ability.effects.Effect;

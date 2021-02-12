@@ -14,9 +14,9 @@ import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj;
 import eidolons.dungeons.generator.model.AbstractCoordinates;
 import eidolons.game.netherflame.main.misc.PaleAspect;
-import libgdx.anims.main.AnimMaster;
 import eidolons.content.consts.Sprites;
 import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.libgdx.GdxAdapter;
 import eidolons.system.text.tips.TipMessageMaster;
 import main.content.enums.EncounterEnums;
 import main.entity.Ref;
@@ -153,15 +153,17 @@ public class PuzzleActions extends PuzzleElement {
     }
 
     private static void teleport(Puzzle puzzle, String data) {
+
         if (data.isEmpty()) {
             data = puzzle.getEntranceCoordinates().toString();
         }
         Coordinates c = (new AbstractCoordinates(true, data));
-
-        AnimMaster.getInstance().spriteAnim(Sprites.PORTAL_CLOSE,
-                Eidolons.getMainHero().getCoordinates(), p ->
-                        AnimMaster.getInstance().spriteAnim(Sprites.PORTAL_OPEN,
-                                c), null);
+        //TODO gdx sync
+        // GdxAdapter.getAnims()
+        // AnimMaster.getInstance().spriteAnim(Sprites.PORTAL_CLOSE,
+        //         Eidolons.getMainHero().getCoordinates(), p ->
+        //                 AnimMaster.getInstance().spriteAnim(Sprites.PORTAL_OPEN,
+        //                         c), null);
         Eidolons.getGame().getMissionMaster().getScriptManager().execute(
                 CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION.REPOSITION,
                 Ref.getSelfTargetingRefCopy(Eidolons.getMainHero()), c.toString());

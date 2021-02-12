@@ -8,7 +8,7 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.netherflame.main.NF_MetaMaster;
-import eidolons.game.netherflame.main.story.brief.IggBriefScreenOld;
+import libgdx.gui.panels.generic.story.IggBriefScreenOld;
 import libgdx.GdxMaster;
 import libgdx.assets.Assets;
 import libgdx.gui.panels.headquarters.weave.WeaveScreen;

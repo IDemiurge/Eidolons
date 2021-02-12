@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import eidolons.content.consts.VisualEnums;
+import eidolons.content.consts.VisualEnums.VFX_ATLAS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
@@ -12,10 +13,9 @@ import libgdx.anims.construct.AnimConstructor;
 import libgdx.anims.sprite.SpriteAnimationFactory;
 import libgdx.audio.SoundPlayer;
 import libgdx.particles.EmitterPools;
-import libgdx.particles.util.EmitterMaster;
 import libgdx.screens.ScreenWithLoader;
 import libgdx.texture.SmartTextureAtlas;
-import libgdx.texture.Sprites;
+import eidolons.content.consts.Sprites;
 import libgdx.texture.TextureCache;
 import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
@@ -38,6 +38,8 @@ import main.system.launch.Flags;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static eidolons.content.consts.libgdx.GdxStringUtils.getVfxAtlasPathFull;
 
 /**
  * Created by JustMe on 12/1/2017.
@@ -149,19 +151,19 @@ public class Assets {
     }
 
 
-    private static void preloadEmitters(EmitterMaster.VFX_ATLAS... atlases) {
+    private static void preloadEmitters(VFX_ATLAS... atlases) {
 
         EmitterPools.init(get().getManager());
         if (EmitterPools.isPreloaded()) {
             Chronos.mark("preload EmitterPools");
-            for (EmitterMaster.VFX_ATLAS value : atlases) {
+            for (VFX_ATLAS value : atlases) {
                 switch (value) {
                     case SPELL:
                     case AMBIENCE:
                     case INVERT:
-                        get().getManager().load(EmitterMaster.getVfxAtlasPathFull(value), TextureAtlas.class);
-                        // get().getManager().finishLoadingAsset(EmitterMaster.getVfxAtlasPathFull(value));
-                        // EmitterMaster.getAtlas(value);
+                        get().getManager().load(getVfxAtlasPathFull(value), TextureAtlas.class);
+                        // get().getManager().finishLoadingAsset(getVfxAtlasPathFull(value));
+                        // getAtlas(value);
                         break;
                 }
             }
@@ -188,7 +190,7 @@ public class Assets {
     public static void preloadHero(Unit hero) {
         //gdx review
         if (hero.getName().contains("Anphis")) {
-            preloadEmitters(EmitterMaster.VFX_ATLAS.SPELL);
+            preloadEmitters(VFX_ATLAS.SPELL);
         }
         AnimConstructor.preconstruct(hero);
     }

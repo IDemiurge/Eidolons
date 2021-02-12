@@ -12,7 +12,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.HeroManager;
 import libgdx.anims.text.FloatingTextMaster;
 import libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
-import libgdx.gui.panels.headquarters.datasource.HeroDataModel;
+import eidolons.system.libgdx.datasource.HeroDataModel;
 import libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import libgdx.screens.ScreenMaster;
 import main.content.DC_TYPE;
@@ -386,7 +386,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 
     public void refreshPanel() {
         GuiEventManager.trigger(GuiEventType.UPDATE_INVENTORY_PANEL);
-        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY,  new InventoryDataSource(hero) );
+        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY,  hero);
     }
 
     @Override

@@ -1,6 +1,9 @@
 package eidolons.system.libgdx.api;
 
+import eidolons.system.libgdx.wrapper.Vector2;
+import main.entity.Entity;
 import main.entity.obj.Obj;
+import main.game.bf.Coordinates;
 import main.game.logic.event.Event;
 
 public interface GdxManagerApi {
@@ -19,4 +22,6 @@ public interface GdxManagerApi {
     boolean isEventDisplayable(Event event);
 
     boolean isEventAnimated(Event event);
+
+
 }

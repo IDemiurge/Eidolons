@@ -1,6 +1,6 @@
 package eidolons.game.core;
 
-import com.badlogic.gdx.math.Vector2;
+import eidolons.system.libgdx.wrapper.Vector2;
 import eidolons.content.consts.VisualEnums;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.libgdx.GdxEvents;

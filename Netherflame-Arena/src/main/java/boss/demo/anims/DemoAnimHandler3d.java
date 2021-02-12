@@ -7,7 +7,7 @@ import boss.anims.generic.BossVisual;
 import boss.logic.BossCycle;
 import com.badlogic.gdx.Input;
 import boss.BossManager;
-import libgdx.texture.Sprites;
+import eidolons.content.consts.Sprites;
 
 public class DemoAnimHandler3d extends BossAnim3dHandler {
     public DemoAnimHandler3d(BossManager manager) {

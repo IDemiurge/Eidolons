@@ -10,8 +10,8 @@ import libgdx.gui.panels.dc.inventory.InventoryClickHandler;
 import eidolons.content.consts.VisualEnums.CELL_TYPE;
 import libgdx.gui.panels.dc.inventory.InventoryFactory;
 import libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
-import libgdx.gui.panels.dc.inventory.container.ContainerPanel.ITEM_FILTERS;
-import libgdx.gui.panels.headquarters.datasource.HeroDataModel;
+import eidolons.content.consts.VisualEnums.ITEM_FILTERS;
+import eidolons.system.libgdx.datasource.HeroDataModel;
 import libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import main.system.auxiliary.data.ListMaster;
 

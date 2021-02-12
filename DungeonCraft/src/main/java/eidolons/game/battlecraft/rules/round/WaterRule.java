@@ -7,7 +7,6 @@ import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.action.ActionRule;
 import eidolons.game.core.game.DC_Game;
-import libgdx.anims.text.FloatingTextMaster;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.content.enums.GenericEnums;
@@ -21,7 +20,7 @@ import main.entity.obj.ActiveObj;
 import main.system.math.Formula;
 
 import java.util.Set;
-
+@Deprecated
 public class WaterRule extends RoundRule implements ActionRule {
 
     private static final float SWIM_FACTOR = 0.25f;
@@ -64,9 +63,10 @@ public class WaterRule extends RoundRule implements ActionRule {
             if (bridged) {
                 //                if (girth >= 1000-obj.getIntParam(PARAMS.GIRTH))
                 return false;
-            } else
-                FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
-                        obj.getName() + " falls into " + waterObj.getName(), obj);
+            }
+            // else
+            //      GdxStatic.floatingText( VisualEnums.TEXT_CASES.REQUIREMENT,
+            //             obj.getName() + " falls into " + waterObj.getName(), obj);
             return true;
         }
         return bridged;
@@ -78,7 +78,7 @@ public class WaterRule extends RoundRule implements ActionRule {
         //        obj.getGame().getManager().isSelecting()
         //        if (manualCheck) {
         //            if (EidolonsGame.BRIDGE_CROSSED)
-        //        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
+        //         GdxStatic.floatingText( VisualEnums.TEXT_CASES.REQUIREMENT,
         //                "Won't touch that"
         //                "Too deep to cross!"
         //                , obj);

@@ -12,7 +12,6 @@ import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.HeroManager;
 import eidolons.game.module.herocreator.logic.HeroClassMaster;
-import libgdx.gui.panels.headquarters.HqMaster;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
@@ -91,10 +90,10 @@ public class DC_RequirementsManager implements RequirementsManager {
     @Override
     public Requirements getRequirements(Entity type, int mode) {
 
-        if (HqMaster.isDisabled(type)) {
-            Requirements req = new Requirements();
-            req.add(new Requirement(new ImpossibleCondition(), "Not available yet, sorry!"));
-        }
+        // if (HqMaster.isDisabled(type)) {
+        //     Requirements req = new Requirements();
+        //     req.add(new Requirement(new ImpossibleCondition(), "Not available yet, sorry!"));
+        // }
         Map<Entity, Requirements> map = getReqMap(mode);
         if (map != null) {
             if (map.get(type) != null) // TODO

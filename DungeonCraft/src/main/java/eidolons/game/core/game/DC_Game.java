@@ -133,9 +133,6 @@ public class DC_Game extends GenericGame {
     protected MusicMaster musicMaster;
     protected DC_BattleFieldGrid grid;
 
-    @Refactor
-    public Town town; //TODO
-
     protected DC_GameObjMaster paleMaster;
 
     public DC_Game() {
@@ -304,7 +301,7 @@ public class DC_Game extends GenericGame {
 
         getDungeonMaster().getModuleLoader().loadInitial();
         getDungeonMaster().loadingDone();
-        getMetaMaster().loadingDone();
+        // getMetaMaster().loadingDone();
         if (AI_ON) {
             aiManager.init();
             dungeonMaster.getExplorationMaster().getAiMaster().getExploreAiManager().initialize();
@@ -406,7 +403,6 @@ public class DC_Game extends GenericGame {
 
         musicMaster.scopeChanged(MusicEnums.MUSIC_SCOPE.BATTLE);
 
-        metaMaster.combatStarts();
     }
 
 

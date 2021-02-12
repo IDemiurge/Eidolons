@@ -6,7 +6,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.screens.CustomSpriteBatch;
-import libgdx.texture.Sprites;
+import eidolons.content.consts.Sprites;
 import main.content.enums.GenericEnums;
 import main.content.values.parameters.PARAMETER;
 

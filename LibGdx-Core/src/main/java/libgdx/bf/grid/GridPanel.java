@@ -15,15 +15,17 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.content.consts.DecorData;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battlefield.vision.advanced.LastSeenMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.cinematic.Cinematics;
+import eidolons.puzzle.gridobj.GridObject;
+import eidolons.puzzle.gridobj.LinkedGridObject;
 import libgdx.bf.grid.moving.flight.FlightHandler;
 import eidolons.game.module.dungeoncrawl.struct.Entrance;
 import libgdx.anims.actions.ActionMaster;
@@ -104,7 +106,6 @@ public abstract class GridPanel extends GroupX {
     protected GridCellContainer[][] cells;
     protected ObjectMap<Obj, BaseView> viewMap;
 
-    protected Manipulator[][] manipulators;
     protected Set<GridObject>[][] gridObjects;
     protected GroupX[][] customOverlayingObjects;
     protected GroupX[][] customOverlayingObjectsTop;
@@ -212,7 +213,6 @@ it sort of broke at some point - need to investigate!
 
         viewMap = container.viewMap;
         emitterGroups = container.emitterGroups;
-        manipulators = container.manipulators;
         customOverlayingObjectsUnder = container.customOverlayingObjectsUnder;
         customOverlayingObjectsTop = container.customOverlayingObjectsTop;
         customOverlayingObjects = container.customOverlayingObjects;
@@ -584,7 +584,7 @@ it sort of broke at some point - need to investigate!
                 if (((UnitGridView) view).getLastSeenView() != null) {
                     BattleFieldObject obj = ((UnitGridView) view).getUserObject();
 
-                    LastSeenMaster.resetLastSeen((UnitGridView) view,
+                    GridMaster.resetLastSeen((UnitGridView) view,
                             obj, !visible);
                     if (obj.getLastSeenOutline() == null) {
                         (((UnitGridView) view).getLastSeenView()).setOutlinePathSupplier(
@@ -720,7 +720,7 @@ it sort of broke at some point - need to investigate!
         cell.addActor(uv);
         GuiEventManager.trigger(UNIT_VIEW_MOVED, uv);
         if (uv.getLastSeenView() != null) {
-            if (LastSeenMaster.isUpdateRequired(object))
+            if (GridMaster.isUpdateRequired(object))
                 cell.addActor(uv.getLastSeenView());
         }
         if (overlayManager != null)
@@ -947,7 +947,6 @@ it sort of broke at some point - need to investigate!
         }
         /////////////////
         draw(customOverlayingObjectsTop, batch);
-        draw(manipulators, batch);
 
 
         // ************* Step 8
@@ -975,8 +974,8 @@ it sort of broke at some point - need to investigate!
 
 
         // ************* Step 10
-        for (BossVisual visual : bossVisuals)
-            visual.draw(batch, 1f);
+        // for (BossVisual visual : bossVisuals)
+        //     visual.draw(batch, 1f);
 
         ((CustomSpriteBatch) batch).resetBlending();
     }
@@ -1087,16 +1086,17 @@ it sort of broke at some point - need to investigate!
 
     protected void bindEvents() {
         boolean removePrevious = !CoreEngine.isLevelEditor();
-        GuiEventManager.bind(ADD_BOSS_VIEW, obj -> {
-            BossVisual visual = (BossVisual) obj.get();
-            ////TODO how to manage it z?
-            addActor(visual);
-            bossVisuals.add(visual);
-            visual.setPosition(visual.getCoordinates().getX() * 128,
-                    getGdxY_ForModule(visual.getCoordinates().getY()) * 128);
-            //centering?
-            // CellDecorLayer layer = decorMap.get(level);
-        });
+        //TODO boss Review
+        // GuiEventManager.bind(ADD_BOSS_VIEW, obj -> {
+        //     BossVisual visual = (BossVisual) obj.get();
+        //     ////TODO how to manage it z?
+        //     addActor(visual);
+        //     bossVisuals.add(visual);
+        //     visual.setPosition(visual.getCoordinates().getX() * 128,
+        //             getGdxY_ForModule(visual.getCoordinates().getY()) * 128);
+        //     //centering?
+        //     // CellDecorLayer layer = decorMap.get(level);
+        // });
 
         GuiEventManager.bind(removePrevious, CELL_RESET_VOID, obj -> {
             Coordinates c = (Coordinates) obj.get();
@@ -1207,14 +1207,6 @@ it sort of broke at some point - need to investigate!
                 }
             }
             getCustomOverlayingObjects()[c.x][c.y] = (object);
-        });
-        GuiEventManager.bind(removePrevious, INIT_MANIPULATOR, (obj) -> {
-            Manipulator manipulator = (Manipulator) obj.get();
-            addActor(manipulator);
-            Coordinates c = manipulator.getCoordinates();
-            manipulators[c.x][c.y] = (manipulator);
-            manipulator.setPosition(c.x * 128,
-                    ((c.y * 128)));
         });
         GuiEventManager.bind(removePrevious, INIT_CELL_OVERLAY, (obj) -> {
             DC_Cell cell;

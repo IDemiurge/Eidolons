@@ -1,7 +1,7 @@
 package libgdx.anims.anim3d;
 
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
-import libgdx.assets.AssetEnums;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
 
@@ -26,7 +26,7 @@ public class Ranged3dAnim extends Weapon3dAnim {
     }
 
     @Override
-    protected AssetEnums.WEAPON_ANIM_CASE getCase() {
-        return AssetEnums.WEAPON_ANIM_CASE.NORMAL;
+    protected VisualEnums.WEAPON_ANIM_CASE getCase() {
+        return VisualEnums.WEAPON_ANIM_CASE.NORMAL;
     }
 }

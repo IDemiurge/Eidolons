@@ -4,7 +4,6 @@ import eidolons.ability.InventoryTransactionManager;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.game.logic.event.Event;
@@ -40,8 +39,7 @@ public class InventoryDialogEffect extends DialogEffect {
         getGame().getInventoryManager().setOperationsPool(operations);
 //        CharacterCreator.getHeroManager().addHero(getSource());
 
-        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY,
-         new InventoryDataSource(hero));
+        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, hero);
         if (ExplorationMaster.isExplorationOn())
         {
             firePickupEvents(before);

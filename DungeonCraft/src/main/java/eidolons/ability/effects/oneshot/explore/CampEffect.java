@@ -3,11 +3,11 @@ package eidolons.ability.effects.oneshot.explore;
 import eidolons.ability.effects.DC_Effect;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.obj.unit.Unit;
-import libgdx.anims.text.FloatingTextMaster;
-import libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
+import eidolons.system.libgdx.GdxStatic;
 import main.ability.effects.Effects;
 import main.entity.Ref;
 
@@ -42,7 +42,7 @@ public class CampEffect extends DC_Effect {
             //remove
         }
         if (allies.isEmpty()) {
-            FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.REQUIREMENT, "You need food supplies to camp!", ref.getSourceObj());
+            GdxStatic.floatingText( VisualEnums. TEXT_CASES.REQUIREMENT, "You need food supplies to camp!", ref.getSourceObj());
             return false;
         }
         Effects restorationEffects = new Effects();

@@ -10,7 +10,7 @@ import libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import macro.MacroGame;
 import macro.entity.MacroRef;
 import macro.entity.faction.FactionObj;
-import eidolons.macro.entity.shop.Shop;
+import eidolons.game.battlecraft.logic.meta.universal.shop.Shop;
 import eidolons.macro.map.Place;
 import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicEnums.AMBIENCE;

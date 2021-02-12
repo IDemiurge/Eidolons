@@ -1,6 +1,6 @@
 package libgdx.anims;
 
-import libgdx.assets.AssetEnums;
+import eidolons.content.consts.VisualEnums;
 import main.entity.Entity;
 
 /**
@@ -9,8 +9,8 @@ import main.entity.Entity;
 public class WeaponAnimDataSource {
     Entity action;
     Entity weapon;
-    AssetEnums.PROJECTION projection;
-    AssetEnums.WEAPON_ANIM_CASE CASE;
+    VisualEnums.PROJECTION projection;
+    VisualEnums.WEAPON_ANIM_CASE CASE;
 
 
 }

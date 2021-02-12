@@ -5,7 +5,7 @@ import eidolons.content.PROPS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.bf.grid.cell.BaseView;
-import libgdx.texture.Sprites;
+import eidolons.content.consts.Sprites;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.BfObjEnums;
 import main.system.auxiliary.ContainerUtils;

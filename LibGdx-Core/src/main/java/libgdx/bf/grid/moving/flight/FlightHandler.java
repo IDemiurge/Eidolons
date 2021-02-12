@@ -3,6 +3,7 @@ package libgdx.bf.grid.moving.flight;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.content.consts.VisualEnums;
+import eidolons.content.data.FlightData;
 import libgdx.gui.generic.GroupX;
 import libgdx.screens.CustomSpriteBatch;
 import libgdx.shaders.ShaderDrawer;
@@ -14,6 +15,8 @@ import main.system.launch.Flags;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import static eidolons.content.data.FlightData.*;
+
 public class FlightHandler extends GroupX {
     private boolean on;
 
@@ -23,20 +26,6 @@ public class FlightHandler extends GroupX {
 
     public void setOn(boolean on) {
         this.on = on;
-    }
-
-    public enum FLIGHT_ENVIRON {
-        astral("objs_over:mist(20),comet_bright(10),comet_pale(20),mist(10),;" +
-                "objs_under:stars(15);" +
-                "angle:30;"),
-        voidmaze("objs_under:cloud(500),thunder3(40),thunder(11);hue:cloud;" +
-                "angle:30;"),
-        ;
-        public String data;
-
-        FLIGHT_ENVIRON(String data) {
-            this.data = data;
-        }
     }
 
     public static final String TEST_DATA =
@@ -98,20 +87,20 @@ public class FlightHandler extends GroupX {
 
     public void startFlight(String s, boolean cinematic) {
         FlightData data = new FlightData(s);
-        CinematicPlatform platform = new CinematicPlatform(data.getFloatValue(FlightData.FLIGHT_VALUE.angle));
+        CinematicPlatform platform = new CinematicPlatform(data.getFloatValue(FLIGHT_VALUE.angle));
 
-        String value = data.getValue(FlightData.FLIGHT_VALUE.objs_under);
+        String value = data.getValue(FLIGHT_VALUE.objs_under);
         initObjsMap(platform, value, true, cinematic, data.getHue());
-        value = data.getValue(FlightData.FLIGHT_VALUE.objs_over);
+        value = data.getValue(FLIGHT_VALUE.objs_over);
         initObjsMap(platform, value, false, cinematic, data.getHue());
 
         if (Flags.isIDE())
             if (cinematic) {
                 // act(10f);
-                // String value = data.getValue(FlightData.FLIGHT_VALUE.camera_shake);
-                // value = data.getValue(FlightData.FLIGHT_VALUE.soundscape);
-                // value = data.getValue(FlightData.FLIGHT_VALUE.camera_displace);
-                // value = data.getValue(FlightData.FLIGHT_VALUE.trail);
+                // String value = data.getValue(FLIGHT_VALUE.camera_shake);
+                // value = data.getValue(FLIGHT_VALUE.soundscape);
+                // value = data.getValue(FLIGHT_VALUE.camera_displace);
+                // value = data.getValue(FLIGHT_VALUE.trail);
             }
         on = true;
         //transit between flights?

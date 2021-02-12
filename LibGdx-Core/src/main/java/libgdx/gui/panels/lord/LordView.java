@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import libgdx.anims.sprite.SpriteAnimation;
 import libgdx.anims.sprite.SpriteAnimationFactory;
 import libgdx.gui.panels.TablePanelX;
-import libgdx.texture.Sprites;
+import eidolons.content.consts.Sprites;
 
 public class LordView extends TablePanelX {
     private final SpriteAnimation sprite;

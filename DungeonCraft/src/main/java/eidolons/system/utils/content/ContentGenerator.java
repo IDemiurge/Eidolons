@@ -4,14 +4,12 @@ import eidolons.content.DC_ContentValsManager;
 import eidolons.content.DescriptionMaster;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.module.dungeoncrawl.objects.InteractiveObjMaster;
-import libgdx.GdxImageMaster;
-import libgdx.bf.overlays.map.WallMap;
 import eidolons.content.consts.Images;
-import libgdx.texture.TextureCache;
 import eidolons.system.utils.file.ResourceMaster;
 import main.content.CONTENT_CONSTS.OBJECT_ARMOR_TYPE;
 import main.content.DC_TYPE;
@@ -128,7 +126,7 @@ public class ContentGenerator {
             String newImage = FileManager.getRandomFilePath(
                     folder.getPath());
             if (ImageManager.isImage(newImage)) {
-                newImage = GdxImageMaster.cropImagePath(newImage);
+                newImage = GdxStringUtils.cropImagePath(newImage);
                 type.setImage(newImage);
             }
         }
@@ -148,7 +146,7 @@ public class ContentGenerator {
 
         for (File file : FileManager.getFilesFromDirectory(vfxFolder, false)) {
             if (props.length == 1) {
-                String vfxPath = GdxImageMaster.cropImagePath(file.getPath());
+                String vfxPath = GdxStringUtils.cropImagePath(file.getPath());
                 vfxPath = PathUtils.cropFirstPathSegment(vfxPath);
                 name = type.getName() + " " + StringMaster.getLastPart(props[0].name(), "_") + " " + PathUtils.getLastPathSegment(vfxPath);
                 ObjType newType = new ObjType(name, type);
@@ -396,7 +394,7 @@ public class ContentGenerator {
 
             String name = PathUtils.getLastPathSegment(type.getImagePath());
             String newRoot = "sprites/bf/hanging/" + folder + "/" + name;
-            if (!TextureCache.isImage(newRoot)) {
+            if (!GdxStringUtils.isImage(newRoot)) {
                 continue;
             }
             type.setImage(newRoot);
@@ -472,7 +470,7 @@ public class ContentGenerator {
             if (type.checkBool(STD_BOOLS.INDESTRUCTIBLE) ||
                     type.checkBool(STD_BOOLS.FAUX))
                 continue;
-            ObjType newType = new ObjType(type.getName() + WallMap.v(null), type);
+            ObjType newType = new ObjType(type.getName() + StringMaster.wall(null), type);
             newType.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.FAUX.name());
             DataManager.addType(newType);
             newType.setGenerated(false);

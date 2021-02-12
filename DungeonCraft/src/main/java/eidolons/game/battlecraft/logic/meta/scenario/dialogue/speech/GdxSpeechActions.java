@@ -22,4 +22,6 @@ public interface GdxSpeechActions {
     void doSpriteAnim(boolean bool, String value, Runnable onDone, Coordinates c, Coordinates dest, Boolean sequential);
 
     void doZoom(String value, List<String> vars);
+
+    void execute(SpeechScript.SCRIPT speechAction, String value, List<String> vars);
 }

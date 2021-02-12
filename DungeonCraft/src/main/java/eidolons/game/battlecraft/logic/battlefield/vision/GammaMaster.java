@@ -1,5 +1,7 @@
 package eidolons.game.battlecraft.logic.battlefield.vision;
 
+import eidolons.content.consts.VisualEnums;
+import eidolons.content.consts.VisualEnums.SHADE_CELL;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
@@ -8,7 +10,6 @@ import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.struct.Entrance;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
-import libgdx.bf.light.ShadowMap.SHADE_CELL;
 import main.content.CONTENT_CONSTS;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.game.bf.Coordinates;

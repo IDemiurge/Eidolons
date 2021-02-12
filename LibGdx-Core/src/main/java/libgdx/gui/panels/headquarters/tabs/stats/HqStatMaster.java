@@ -1,6 +1,6 @@
 package libgdx.gui.panels.headquarters.tabs.stats;
 
-import libgdx.gui.panels.headquarters.datasource.HeroDataModel;
+import eidolons.system.libgdx.datasource.HeroDataModel;
 import libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import main.content.values.parameters.PARAMETER;
 

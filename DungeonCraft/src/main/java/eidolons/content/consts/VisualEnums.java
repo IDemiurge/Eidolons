@@ -1,12 +1,13 @@
 package eidolons.content.consts;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import eidolons.ability.effects.common.ModifyStatusEffect;
 import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.consts.libgdx.GdxColorMaster;
-import eidolons.content.consts.libgdx.GdxUtils;
+import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.core.master.EffectMaster;
 import main.content.VALUE;
@@ -20,6 +21,7 @@ import main.system.EventType;
 import main.system.GuiEventType;
 import main.system.Producer;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.graphics.FontMaster;
@@ -628,7 +630,7 @@ public class VisualEnums {
             if (path.endsWith(".txt")) {
                 return path;
             }
-            return GdxUtils.cropImagePath(FileManager.getRandomFilePathVariantSmart(fileName,    directory, ".png"));
+            return GdxStringUtils.cropImagePath(FileManager.getRandomFilePathVariantSmart(fileName,    directory, ".png"));
         }
 
         static {
@@ -934,5 +936,126 @@ public class VisualEnums {
         GenericEnums.ALPHA_TEMPLATE fluctuation;
         int eachNisFlipX = 0;
         public int duration;
+    }
+
+    public enum SHADE_CELL {
+        GAMMA_SHADOW(0.75f, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "shadow neu.png")),
+        GAMMA_LIGHT(0, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "light.png")),
+        LIGHT_EMITTER(0, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "light emitter.png")),
+        CONCEALMENT(0.5f, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "concealment.png")),
+        BLACKOUT(0, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "blackout.png")),
+        HIGHLIGHT(0, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "highlight.png")),
+        VOID(0, StrPathBuilder.build(PathFinder.getShadeCellsPath(), "void.png")),
+        ;
+
+        public float defaultAlpha;
+        private final String texturePath;
+
+        SHADE_CELL(float alpha, String texturePath) {
+            defaultAlpha = alpha;
+            this.texturePath = texturePath;
+        }
+
+        public String getTexturePath() {
+            return texturePath;
+        }
+
+    }
+
+    public enum FLIGHT_ENVIRON {
+        astral("objs_over:mist(20),comet_bright(10),comet_pale(20),mist(10),;" +
+                "objs_under:stars(15);" +
+                "angle:30;"),
+        voidmaze("objs_under:cloud(500),thunder3(40),thunder(11);hue:cloud;" +
+                "angle:30;"),
+        ;
+        public String data;
+
+        FLIGHT_ENVIRON(String data) {
+            this.data = data;
+        }
+    }
+
+    public enum VFX_ATLAS {
+        AMBIENCE,
+        SPELL,
+        MAP,
+        MISC,
+        INVERT, UNIT
+    }
+
+    public enum PROJECTION {
+        FROM(true), TO(false), HOR(null),
+        ;
+        public Boolean bool;
+
+        PROJECTION(Boolean bool) {
+            this.bool = bool;
+        }
+    }
+
+    public enum WEAPON_ANIM_CASE {
+        NORMAL,
+        MISSILE_MISS,
+        MISSILE,
+        MISS,
+        READY,
+        PARRY,
+        BLOCKED,
+        RELOAD,
+        POTION,
+        ;
+
+        public boolean isMissile() {
+            return this == WEAPON_ANIM_CASE.MISSILE || this == WEAPON_ANIM_CASE.MISSILE_MISS;
+        }
+
+        public boolean isMiss() {
+            return this == WEAPON_ANIM_CASE.MISS || this == WEAPON_ANIM_CASE.MISSILE_MISS;
+        }
+    }
+
+    public enum ScreenShakeTemplate {
+        SLIGHT(25, 15),
+        MEDIUM(30, 25),
+        HARD(35, 35),
+        BRUTAL(40, 45),
+
+        VERTICAL(50, 35),
+        HORIZONTAL(50, 35),
+        ;
+        int duration = 5; // In seconds, make longer if you want more variation
+        int frequency; // hertz
+        float amplitude; // how much you want to shake
+        boolean falloff = true; // if the shake should decay as it expires
+
+        ScreenShakeTemplate(int frequency, float amplitude) {
+            this.frequency = frequency;
+            this.amplitude = amplitude;
+        }
+    }
+
+    public enum ITEM_FILTERS {
+        ALL,
+        WEAPONS,
+        ARMOR,
+        USABLE,
+        JEWELRY,
+        QUEST
+    }
+
+    public enum PERK_ABILITY {
+        Consume_Magic, Arcane_Fury, Mark_Sorcerer,
+    }
+
+    public enum PERK_PARAM_COMBO {
+        //        MAGIC_RESISTANCES(5, 15, 30, false, "Relentless"),
+        //        PHYSICAL_RESISTANCES(5, 15, 30, false, "Relentless"),
+
+    }
+
+    public enum PERK_TYPE {
+        MASTERY, ATTRIBUTE, PARAMETER, ABILITY, PASSIVE,
+        //
     }
 }

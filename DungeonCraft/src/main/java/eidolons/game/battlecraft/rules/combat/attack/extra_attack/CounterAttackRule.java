@@ -1,12 +1,13 @@
 package eidolons.game.battlecraft.rules.combat.attack.extra_attack;
 
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.core.game.DC_Game;
-import libgdx.anims.text.FloatingTextMaster;
+import eidolons.system.libgdx.GdxStatic;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
 import main.game.logic.event.Event;
@@ -73,7 +74,7 @@ public class CounterAttackRule {
         game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.ATTACK_COUNTER, ref));
 
 
-        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.COUNTER_ATTACK,
+        GdxStatic.floatingText( VisualEnums.TEXT_CASES.COUNTER_ATTACK,
                 "Counter Attack!", attacked);
 
         Unit target = action.getOwnerUnit();

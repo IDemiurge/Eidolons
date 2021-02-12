@@ -1,6 +1,6 @@
 package main.level_editor.gui.dialog.struct;
 
-import eidolons.content.consts.libgdx.GdxUtils;
+import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.system.audio.MusicEnums;
@@ -66,7 +66,7 @@ public class FloorEditDialog extends DataEditDialog<LevelStructure.FLOOR_VALUES,
 
     protected Object formatFilePath(DataTable.DataPair item, Object value) {
         String path = FileManager.formatPath(value.toString(), true, true);
-        return GdxUtils.cropImagePath(path);
+        return GdxStringUtils.cropImagePath(path);
     }
 
     @Override

@@ -1,7 +1,9 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech;
 
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.Vector2;
+import eidolons.system.libgdx.GdxStatic;
+import eidolons.system.libgdx.datasource.FullscreenAnimDataSource;
+import eidolons.system.libgdx.wrapper.Vector2;
 import eidolons.content.consts.VisualEnums;
 import eidolons.content.consts.VisualEnums.FULLSCREEN_ANIM;
 import eidolons.entity.active.DC_ActiveObj;
@@ -72,15 +74,12 @@ import java.util.function.Predicate;
 
 import static eidolons.content.consts.VisualEnums.*;
 import static eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript.SCRIPT.*;
-import static libgdx.bf.GridMaster.getCameraCenter;
-import static libgdx.bf.GridMaster.getCenteredPos;
 import static main.system.auxiliary.log.LogMaster.important;
 
 public class SpeechExecutor {
 
     protected static final boolean ABORT_ON_EXCEPTION = false;
     protected final DialogueManager dialogueManager;
-    protected final ExecutorHelper helper;
     protected DialogueHandler handler; //gdx Review - don't want to depend..
     protected DialogueContainerAdapter container;
     protected MetaGameMaster master;
@@ -99,9 +98,7 @@ public class SpeechExecutor {
     public SpeechExecutor(MetaGameMaster master, DialogueManager dialogueManager) {
         this.master = master;
         this.dialogueManager = dialogueManager;
-        helper = new ExecutorHelper(this);
-        gdxActions =
-                master.getGdxFacade().createGdxActions();
+        gdxActions = master.getGdxBeans().createGdxActions();
     }
 
     public static void run(String s) {
@@ -166,7 +163,7 @@ public class SpeechExecutor {
             case AWAKEN:
             case RAISE:
             case COLLAPSE:
-                helper.execute(speechAction, value, vars);
+                gdxActions.execute(speechAction, value, vars);
                 break;
 
             case RESET:
@@ -581,7 +578,7 @@ public class SpeechExecutor {
                         }
                     };
                 }
-                gdxActions.doSpriteAnim(bool, value, onDone, c, dest,sequential);
+                gdxActions.doSpriteAnim(bool, value, onDone, c, dest, sequential);
 
                 break;
             case FULLSCREEN:
@@ -797,7 +794,7 @@ public class SpeechExecutor {
                 // });
                 break;
             case SHAKE:
-               gdxActions.doShake(value, vars);
+                gdxActions.doShake(value, vars);
                 break;
             case PORTAL:
                 switch (value) {
@@ -823,7 +820,7 @@ public class SpeechExecutor {
                     }
                     //TODO test
                     if (bool) {
-                        c = getCameraCenter();
+                        c = GdxStatic.getCameraCenter();
                     } else
                         c = Eidolons.getPlayerCoordinates().getOffset(c1);
                     if (c1 != null) {
@@ -834,9 +831,9 @@ public class SpeechExecutor {
                 } else {
                     Vector2 offset = null;
                     if (vars.size() > 1) {
-                        offset = getCenteredPos(getCoordinate(vars.get(1), true));
+                        offset = GdxStatic.getCenteredPos(getCoordinate(vars.get(1), true));
                         if (getCoordinate(vars.get(1), true).dst(unit.getCoordinates()) > 10) {
-                            offset = getCenteredPos(getCoordinate(vars.get(1), true)
+                            offset = GdxStatic.getCenteredPos(getCoordinate(vars.get(1), true)
                                     .getOffset(unit.getCoordinates()));
                         }
                     }
@@ -887,7 +884,7 @@ public class SpeechExecutor {
                 break;
             case CAMERA_SET:
             case CAMERA:
-                doCamera(value, vars, speechAction);
+                gdxActions.doCamera(value, vars, speechAction);
                 break;
             case UNFREEZE:
                 execute(BUFF_REMOVE, value + StringMaster.wrapInParenthesis("Disabled"));
@@ -1120,7 +1117,7 @@ public class SpeechExecutor {
         }
         if (alpha != null) {
             if (ui_bg_both == null) {
-                container.fade(dur, alpha);
+                container.fade(dur, alpha, ui_bg_both);
             } else
                 container.fadeBg(dur, alpha);
         }
@@ -1204,7 +1201,7 @@ public class SpeechExecutor {
         return unit;
     }
 
-    protected Coordinates getCoordinate(String value) {
+    public Coordinates getCoordinate(String value) {
         return getCoordinate(value, false);
     }
 

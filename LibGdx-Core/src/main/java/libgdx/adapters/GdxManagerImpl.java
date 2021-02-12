@@ -5,7 +5,6 @@ import com.badlogic.gdx.utils.Array;
 import eidolons.content.consts.Sprites;
 import eidolons.content.consts.VisualEnums;
 import eidolons.system.libgdx.api.GdxManagerApi;
-import libgdx.anims.main.AnimMaster;
 import libgdx.anims.main.EventAnimCreator;
 import libgdx.anims.text.FloatingTextMaster;
 import libgdx.assets.AssetEnums;
@@ -75,4 +74,5 @@ public class GdxManagerImpl implements GdxManagerApi {
     public boolean isEventAnimated(Event event) {
         return EventAnimCreator.isEventAnimated(event);
     }
+
 }

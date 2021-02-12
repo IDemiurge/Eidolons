@@ -3,8 +3,6 @@ package eidolons.dungeons.generator.model;
 import eidolons.dungeons.generator.GeneratorEnums;
 import eidolons.dungeons.generator.tilemap.TileMapper;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
-import eidolons.game.module.generator.GeneratorEnums.EXIT_TEMPLATE;
-import eidolons.game.module.generator.tilemap.TileMapper;
 import main.system.auxiliary.data.ArrayMaster;
 
 import java.io.Serializable;

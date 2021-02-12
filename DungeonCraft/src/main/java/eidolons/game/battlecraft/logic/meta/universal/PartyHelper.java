@@ -132,7 +132,7 @@ public class PartyHelper {
 
             ObjType type = hero.getType();
 
-            eidolons.macro.global.persist.Saver.prepareType(type);
+            // eidolons.macro.global.persist.Saver.prepareType(type);
 
             xmlBuilder.append(XML_Writer.getTypeXML(type, new StringBuilder(XML_Writer.STR_CAPACITY)));
             names.append(hero.getName()).append(Strings.CONTAINER_SEPARATOR);

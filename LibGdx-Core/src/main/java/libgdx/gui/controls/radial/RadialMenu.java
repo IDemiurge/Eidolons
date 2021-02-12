@@ -19,7 +19,7 @@ import libgdx.gui.tooltips.ValueTooltip;
 import libgdx.screens.CustomSpriteBatch;
 import libgdx.stage.Closable;
 import libgdx.stage.StageWithClosable;
-import libgdx.texture.Sprites;
+import eidolons.content.consts.Sprites;
 import libgdx.texture.TextureCache;
 import eidolons.system.audio.SoundController;
 import eidolons.system.audio.SoundController.SOUND_EVENT;

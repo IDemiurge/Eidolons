@@ -11,7 +11,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.HeroManager;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
-import eidolons.macro.entity.shop.ShopMaster;
+import eidolons.game.battlecraft.logic.meta.universal.shop.ShopMaster;
 import eidolons.system.DC_Formulas;
 import main.content.CONTENT_CONSTS2.SHOP_LEVEL;
 import main.content.C_OBJ_TYPE;

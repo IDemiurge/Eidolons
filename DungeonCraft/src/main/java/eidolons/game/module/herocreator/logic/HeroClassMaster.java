@@ -2,13 +2,12 @@ package eidolons.game.module.herocreator.logic;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.attach.HeroClass;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
-import libgdx.gui.panels.headquarters.HqMaster;
-import libgdx.gui.panels.headquarters.datasource.HeroDataModel;
-import libgdx.texture.TextureCache;
+import eidolons.system.libgdx.datasource.HeroDataModel;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums.CLASS_GROUP;
@@ -85,9 +84,9 @@ public class HeroClassMaster {
                 || (tier>0 && !hasRootTreeClass(hero, type)) //TODO hasEmptyClassSlot(hero) ||
         );
 //        ContentFilter
-        if (tier>0) {
-        HqMaster.filterContent(list);
-        }
+//         if (tier>0) {
+//         HqMaster.filterContent(list);
+//         }
         //just check same root tree!
 
         return list;
@@ -151,13 +150,13 @@ public class HeroClassMaster {
     }
         public static String getImgPath(Entity data) {
         String  path = "gen/class/64/" + data.getName() + ".png";
-        if (TextureCache.isImage(path))
+        if (GdxStringUtils.isImage(path))
             return path;
         return (data.getImagePath());
     }
     public static String getImgPathRadial(Entity data) {
         String  path = "gen/class/96/" + data.getName() + ".png";
-        if (TextureCache.isImage(path))
+        if (GdxStringUtils.isImage(path))
             return path;
         return (data.getImagePath());
 //        String path =GdxImageMaster.getRoundedPathNew(data.getName() + ".png");

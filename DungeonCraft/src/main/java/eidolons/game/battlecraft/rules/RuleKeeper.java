@@ -4,7 +4,6 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
-import eidolons.system.controls.Controller;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.data.XLinkedMap;
@@ -16,7 +15,7 @@ import main.system.launch.Flags;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RuleKeeper implements Controller {
+public class RuleKeeper  {
 
     private static final RuleEnums.RULE[] RULES_BEING_TESTED = {
 //            RULE.PARRYING,
@@ -247,31 +246,31 @@ public class RuleKeeper implements Controller {
         RuleKeeper.instance = instance;
     }
 
-
-    @Override
-    public boolean charTyped(char c) {
-        switch (c) {
-            case 's':
-                RuleEnums.RULE_SCOPE scope = new EnumMaster<RuleEnums.RULE_SCOPE>().selectEnum(RuleEnums.RULE_SCOPE.class);
-                if (scope != null) {
-                    setScope(scope);
-                }
-                return true;
-            case 'r':
-                clearOverrides();
-            case 'f':
-            case 'n':
-                RuleEnums.RULE rule = new EnumMaster<RuleEnums.RULE>().selectEnum(RuleEnums.RULE.class);
-                setOverride(rule, c == 'n');
-                return true;
-            case 'F':
-            case 'N':
-                RuleEnums.RULE_GROUP group = new EnumMaster<RuleEnums.RULE_GROUP>().selectEnum(RuleEnums.RULE_GROUP.class);
-                setOverride(group, c == 'N');
-                return true;
-        }
-        return false;
-    }
+//TODO gdx sync
+    // @Override
+    // public boolean charTyped(char c) {
+    //     switch (c) {
+    //         case 's':
+    //             RuleEnums.RULE_SCOPE scope = new EnumMaster<RuleEnums.RULE_SCOPE>().selectEnum(RuleEnums.RULE_SCOPE.class);
+    //             if (scope != null) {
+    //                 setScope(scope);
+    //             }
+    //             return true;
+    //         case 'r':
+    //             clearOverrides();
+    //         case 'f':
+    //         case 'n':
+    //             RuleEnums.RULE rule = new EnumMaster<RuleEnums.RULE>().selectEnum(RuleEnums.RULE.class);
+    //             setOverride(rule, c == 'n');
+    //             return true;
+    //         case 'F':
+    //         case 'N':
+    //             RuleEnums.RULE_GROUP group = new EnumMaster<RuleEnums.RULE_GROUP>().selectEnum(RuleEnums.RULE_GROUP.class);
+    //             setOverride(group, c == 'N');
+    //             return true;
+    //     }
+    //     return false;
+    // }
 
     private void clearOverrides() {
         overrideMap.clear();

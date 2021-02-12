@@ -14,7 +14,7 @@ import libgdx.bf.generic.FadeImageContainer;
 import libgdx.gui.ScissorMaster;
 import libgdx.screens.CustomSpriteBatch;
 import libgdx.shaders.ShaderDrawer;
-import libgdx.texture.Sprites;
+import eidolons.content.consts.Sprites;
 import main.content.enums.GenericEnums;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;

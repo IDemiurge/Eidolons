@@ -3,6 +3,7 @@ package libgdx.controls;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.content.PARAMS;
+import eidolons.content.consts.VisualEnums;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.core.EUtils;
@@ -11,7 +12,6 @@ import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.cinematic.CinematicLib;
 import eidolons.game.module.cinematic.Cinematics;
-import libgdx.bf.grid.moving.flight.FlightHandler;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.game.netherflame.main.lord.EidolonLord;
@@ -259,7 +259,7 @@ public class GlobalController implements Controller {
                 return true;
             case Keys.F8:
                 GuiEventManager.trigger(GuiEventType.FLIGHT_START,
-                        FlightHandler.FLIGHT_ENVIRON.voidmaze.data +
+                        VisualEnums.FLIGHT_ENVIRON.voidmaze.data +
                                 "angle:120;");
                 return true;
         }

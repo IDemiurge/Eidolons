@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.rules.combat.attack.extra_attack;
 
 import eidolons.ability.conditions.VisibilityCondition;
 import eidolons.content.PROPS;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.active.Spell;
@@ -14,7 +15,7 @@ import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.action.WatchRule;
 import eidolons.game.battlecraft.rules.mechanics.InterruptRule;
 import eidolons.game.core.game.DC_Game;
-import libgdx.anims.text.FloatingTextMaster;
+import eidolons.system.libgdx.GdxStatic;
 import eidolons.system.math.roll.RollMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.ActionEnums;
@@ -388,7 +389,7 @@ if (isOff())
         ref.setTarget(action.getOwnerUnit().getId());
         game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.ATTACK_OF_OPPORTUNITY, ref));
 
-        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.ATTACK_OF_OPPORTUNITY,
+         GdxStatic.floatingText( VisualEnums.TEXT_CASES.ATTACK_OF_OPPORTUNITY,
                 "Attack of Opportunity!", attack.getOwnerUnit());
 
         return false; // interrupts when?

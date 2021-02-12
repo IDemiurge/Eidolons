@@ -1,12 +1,12 @@
 package eidolons.game.battlecraft.logic.battlefield;
 
 import eidolons.content.PROPS;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
-import libgdx.gui.panels.dc.inventory.InventoryClickHandler.CONTAINER;
 import eidolons.system.ObjUtilities;
 import main.content.enums.entity.ItemEnums;
 import main.content.values.properties.G_PROPS;
@@ -166,7 +166,7 @@ public class DroppedItemManager {
         game.getCellByCoordinate(c).addProperty(PROPS.DROPPED_ITEMS,
                 "" + item.getId());
         item.setCoordinates(c);
-        item.setContainer(CONTAINER.UNASSIGNED);
+        item.setContainer(VisualEnums.CONTAINER.UNASSIGNED);
     }
 
     public boolean pickUp(Obj cell, DC_HeroItemObj item) {

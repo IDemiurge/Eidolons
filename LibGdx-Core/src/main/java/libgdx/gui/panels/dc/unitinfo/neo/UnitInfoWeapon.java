@@ -6,7 +6,7 @@ import libgdx.gui.panels.dc.actionpanel.weapon.QuickAttackRadial;
 import libgdx.gui.panels.dc.actionpanel.weapon.QuickWeaponPanel;
 import libgdx.gui.panels.dc.actionpanel.weapon.WeaponDataSource;
 import libgdx.gui.panels.dc.unitinfo.tooltips.WeaponTooltip;
-import libgdx.gui.panels.headquarters.datasource.HeroDataModel;
+import eidolons.system.libgdx.datasource.HeroDataModel;
 import libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 

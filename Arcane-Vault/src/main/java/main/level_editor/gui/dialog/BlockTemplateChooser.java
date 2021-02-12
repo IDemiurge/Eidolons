@@ -4,8 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import eidolons.game.module.generator.model.RoomModel;
-import eidolons.game.module.generator.tilemap.TileMapper;
+import eidolons.dungeons.generator.model.RoomModel;
+import eidolons.dungeons.generator.tilemap.TileMapper;
 import libgdx.gui.NinePatchFactory;
 import main.level_editor.LevelEditor;
 

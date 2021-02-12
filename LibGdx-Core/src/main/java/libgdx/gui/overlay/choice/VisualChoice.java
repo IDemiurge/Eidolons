@@ -16,7 +16,7 @@ import libgdx.gui.generic.btn.SymbolButton;
 import libgdx.gui.panels.TablePanelX;
 import libgdx.stage.OverlayPanel;
 import eidolons.content.consts.Images;
-import libgdx.texture.Sprites;
+import eidolons.content.consts.Sprites;
 import libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import main.system.GuiEventManager;

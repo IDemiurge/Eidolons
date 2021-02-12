@@ -13,7 +13,6 @@ import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.InteractiveObj;
 import eidolons.game.module.dungeoncrawl.objects.LockObj;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
-import eidolons.game.netherflame.boss.logic.entity.BossUnit;
 import main.content.CONTENT_CONSTS;
 import main.content.DC_TYPE;
 import main.content.enums.entity.BfObjEnums;
@@ -66,10 +65,7 @@ public class ObjCreator extends Master {
             obj = newStructure(type, x, y, owner, ref);
             game.getObjMaster().clearCache(obj.getCoordinates());
         } else {
-            if (EntityCheckMaster.isBoss(type)) {
-                obj = new BossUnit(type, x, y, owner, getGame(), ref);
-            } else
-                obj = new Unit(type, x, y, owner, getGame(), ref);
+            obj = new Unit(type, x, y, owner, getGame(), ref);
         }
         //if (WaitMaster.getCompleteOperations().contains(WAIT_OPERATIONS.DUNGEON_SCREEN_READY))
         if (!EntityCheckMaster.isBoss(type)) {
@@ -81,7 +77,7 @@ public class ObjCreator extends Master {
             game.getObjMaster().clearCache(coordinates);
             game.getCellByCoordinate(coordinates).resetObjectArrays();
             getGame().getVisionMaster().getIllumination().setResetRequired(true);
-            DC_GameState.gridChanged=true;
+            DC_GameState.gridChanged = true;
         }
         initObject(obj, type);
 
@@ -199,7 +195,6 @@ public class ObjCreator extends Master {
                         return new ContainerObj(type, x, y);
                 }
             }
-
 
 
         return new Structure(type, x, y, owner, getGame(), ref);

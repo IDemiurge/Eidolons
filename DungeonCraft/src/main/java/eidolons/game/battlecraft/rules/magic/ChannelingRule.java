@@ -9,8 +9,6 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.ActionInput;
-import libgdx.anims.AnimContext;
-import libgdx.anims.main.ActionAnimMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.mode.STD_MODES;
 import main.data.filesys.PathFinder;
@@ -113,7 +111,8 @@ public class ChannelingRule {
         result &= modeEffect.apply(REF);
         modeEffect.getAddBuffEffect().getBuff().setDuration(0);
 
-        ActionAnimMaster.animate( new ActionInput(spell, new AnimContext(REF)));
+        //TODO gdx sync
+        // ActionAnimMaster.animate( new ActionInput(spell, new AnimContext(REF)));
         return result;
 
     }

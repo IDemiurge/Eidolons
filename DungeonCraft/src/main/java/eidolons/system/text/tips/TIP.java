@@ -102,7 +102,7 @@ public enum TIP implements TextEvent {
     UNCONSCIOUS(false,
             // "My avatar is failing. But it is not over yet, there is life still in this shell!
             // All I need is time... !"),
-            IGG_Demo.IMAGE_KESERIM,
+            Images.DEMIURGE,
             "This shell is waning. Time to put off the mask. The pain will be legendary... " +
                     "I will have to be quick, kill every foe before my avatar crumbles. "
 

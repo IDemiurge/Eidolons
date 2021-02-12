@@ -1,7 +1,7 @@
 package eidolons.system.utils;
 
+import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.game.battlecraft.DC_Engine;
-import libgdx.gui.panels.dc.inventory.InventoryFactory;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.xml.XML_Writer;
@@ -16,7 +16,7 @@ public class IconFinder {
     public static void main(String[] args) {
         DC_Engine.mainMenuInit();
         for (ObjType sub : DataManager.getTypes(DC_TYPE.WEAPONS)) {
-            String icon= InventoryFactory.getWeaponIconPath(sub);
+            String icon= GdxStringUtils.getWeaponIconPath(sub);
             sub.setImage(icon);
         }
         for (ObjType sub : DataManager.getTypes(DC_TYPE.ACTIONS)) {

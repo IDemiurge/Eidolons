@@ -3,17 +3,17 @@ package libgdx.anims.std.custom;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.content.consts.VisualEnums.ANIM_PART;
 import libgdx.anims.anim3d.Weapon3dAnim;
 import libgdx.anims.sprite.SpriteAnimation;
 import libgdx.anims.sprite.SpriteAnimationFactory;
-import libgdx.assets.AssetEnums;
 import libgdx.particles.PhaseVfx;
 import libgdx.particles.VfxContainer;
 import libgdx.particles.spell.SpellVfx;
 import libgdx.particles.spell.VfxShaper;
-import libgdx.texture.Sprites;
+import eidolons.content.consts.Sprites;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.RandomWizard;
@@ -86,7 +86,7 @@ public class ForceAnim extends Weapon3dAnim {
     }
 
     @Override
-    protected SpriteAnimation createSprite(AssetEnums.PROJECTION projection) {
+    protected SpriteAnimation createSprite(VisualEnums.PROJECTION projection) {
         SpriteAnimation atlas = SpriteAnimationFactory.getSpriteAnimation(getSpritePath());
 
         Array<TextureAtlas.AtlasRegion> regions;

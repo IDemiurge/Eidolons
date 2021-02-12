@@ -1,7 +1,6 @@
 package eidolons.system.options;
 
 import eidolons.content.consts.VisualEnums;
-import libgdx.shaders.post.PostFxUpdater.FX_TEST_MODE;
 import eidolons.system.options.PostProcessingOptions.POST_PROCESSING_OPTIONS;
 
 /**

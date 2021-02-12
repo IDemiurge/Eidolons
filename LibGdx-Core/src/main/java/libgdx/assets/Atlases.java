@@ -6,7 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.content.PARAMS;
-import eidolons.content.consts.libgdx.GdxUtils;
+import eidolons.content.consts.VisualEnums;
+import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.item.DC_WeaponObj;
@@ -20,7 +21,6 @@ import libgdx.assets.utils.AtlasGen;
 import libgdx.gui.panels.dc.actionpanel.bar.SpriteParamBar;
 import libgdx.texture.SmartTextureAtlas;
 import libgdx.texture.TextureCache;
-import libgdx.texture.TexturePackerLaunch;
 import main.content.enums.entity.ItemEnums;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
@@ -86,7 +86,7 @@ public class Atlases {
         boolean oneFrame = false;
         if (isUseOneFrameVersion(texturePath)) {
             oneFrame = true;
-            texturePath = StringMaster.getAppendedFile(GdxUtils.getOneFramePath(texturePath), " img");
+            texturePath = StringMaster.getAppendedFile(GdxStringUtils.getOneFramePath(texturePath), " img");
         }
         AssetEnums.ATLAS atlas = AtlasGen.getAtlasForPath(texturePath);
         return getAtlasRegions(texturePath,
@@ -96,7 +96,7 @@ public class Atlases {
 
     public static Array<TextureAtlas.AtlasRegion> getAtlasRegions(String texturePath, AssetEnums.ATLAS atlas) {
         texturePath =
-                GdxUtils.cropImagePath(StringMaster.cropFormat(texturePath));
+                GdxStringUtils.cropImagePath(StringMaster.cropFormat(texturePath));
 
         Array<TextureAtlas.AtlasRegion> regions = atlasRegionsCache.get(texturePath);
         if (regions != null) {
@@ -152,8 +152,8 @@ public class Atlases {
     }
 
     public static String getAtlasFileKeyForAction(Boolean projection,
-                                                  DC_ActiveObj activeObj, AssetEnums.WEAPON_ANIM_CASE aCase) {
-        if (aCase == AssetEnums.WEAPON_ANIM_CASE.POTION)
+                                                  DC_ActiveObj activeObj, VisualEnums.WEAPON_ANIM_CASE aCase) {
+        if (aCase == VisualEnums.WEAPON_ANIM_CASE.POTION)
             return getPotionKey(activeObj);
         DC_WeaponObj weapon = activeObj.getActiveWeapon();
         String actionName;
@@ -241,13 +241,13 @@ public class Atlases {
                 PathFinder.getWeaponAnimPath(), "atlas",
                 weapon.getWeaponType().toString().replace("_", " ")
                 , groupName, name
-                + TexturePackerLaunch.ATLAS_EXTENSION);
+                + GdxStringUtils.ATLAS_EXTENSION);
         return s.toString();
     }
 
     public static SpriteAnimation getSpriteForAction(float duration,
                                                      DC_ActiveObj activeObj,
-                                                     AssetEnums.WEAPON_ANIM_CASE aCase, AssetEnums.PROJECTION projection) {
+                                                     VisualEnums.WEAPON_ANIM_CASE aCase, VisualEnums.PROJECTION projection) {
         return getSpriteForAction(duration, activeObj,
                 aCase, projection.bool);
     }
@@ -271,7 +271,7 @@ public class Atlases {
 
     public static SpriteAnimation getSpriteForAction(float duration,
                                                      DC_ActiveObj activeObj,
-                                                     AssetEnums.WEAPON_ANIM_CASE aCase,
+                                                     VisualEnums.WEAPON_ANIM_CASE aCase,
                                                      Boolean projection) {
         // loops,
 
@@ -297,7 +297,7 @@ public class Atlases {
                 getSpriteAnimation(regions, frameDuration, loops);
     }
 
-    public static Array<TextureAtlas.AtlasRegion> getRegions(AssetEnums.WEAPON_ANIM_CASE aCase, DC_ActiveObj activeObj, Boolean projection) {
+    public static Array<TextureAtlas.AtlasRegion> getRegions(VisualEnums.WEAPON_ANIM_CASE aCase, DC_ActiveObj activeObj, Boolean projection) {
         String name = getAtlasFileKeyForAction(projection, activeObj, aCase);
 
         TextureAtlas atlas = getAtlas(activeObj, aCase);
@@ -339,7 +339,7 @@ public class Atlases {
                                                                     Boolean projection,
                                                                     DC_ActiveObj activeObj,
                                                                     boolean searchOtherWeaponOrAction) {
-        String name = getAtlasFileKeyForAction(projection, activeObj, AssetEnums.WEAPON_ANIM_CASE.NORMAL);
+        String name = getAtlasFileKeyForAction(projection, activeObj, VisualEnums.WEAPON_ANIM_CASE.NORMAL);
         List<Entity> types;
         if (searchOtherWeaponOrAction) {
             types = Arrays.stream(DataManager.getBaseWeaponTypes()).
@@ -363,9 +363,9 @@ public class Atlases {
 
     }
 
-    private static TextureAtlas getAtlas(DC_ActiveObj activeObj, AssetEnums.WEAPON_ANIM_CASE aCase
+    private static TextureAtlas getAtlas(DC_ActiveObj activeObj, VisualEnums.WEAPON_ANIM_CASE aCase
     ) {
-        if (aCase == AssetEnums.WEAPON_ANIM_CASE.POTION) {
+        if (aCase == VisualEnums.WEAPON_ANIM_CASE.POTION) {
             return getOrCreateAtlas(getPotionAtlasPath(activeObj));
         }
         DC_WeaponObj weapon = activeObj.getActiveWeapon();
@@ -436,7 +436,7 @@ public class Atlases {
         try {
             // if (Flags.isIDE() || Flags.isJarlike())
             if (isUseOneFrameVersion(path)) {
-                String p = GdxUtils.getOneFramePath(path);
+                String p = GdxStringUtils.getOneFramePath(path);
                 if (new FileHandle(p).exists()) {
                     // log(1, "One-frame atlas used:\n" + p);
                     return getOrCreateAtlas(p, true);
@@ -451,7 +451,7 @@ public class Atlases {
             }
             //MEGA-HACK - ONE FRAME GENERATION
             //TODO we could also do something like halving frames, in the future...
-            String p = GdxUtils.getOneFramePath(path);
+            String p = GdxStringUtils.getOneFramePath(path);
             TextureAtlas.AtlasRegion region = atlas.getRegions().get(atlas.getRegions().size / 2);//use mid frame
             String imgName =
                     StringMaster.cropFormat(PathUtils.getLastPathSegment(path)) + " img.png";
@@ -520,7 +520,7 @@ public class Atlases {
 
     public static TextureAtlas getOrCreateAtlas(String path, boolean cache) {
         if (!new FileHandle(path).exists()) {
-            path = GdxUtils.appendImagePath(path);
+            path = GdxStringUtils.appendImagePath(path);
             if (!new FileHandle(path).exists()) {
                 important("CRITICAL: No atlas for path - " + path);
                 return null;

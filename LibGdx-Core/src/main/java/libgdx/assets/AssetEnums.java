@@ -65,35 +65,4 @@ public class AssetEnums {
         //filter? Or manual gen?
 
     }
-
-    public enum PROJECTION {
-        FROM(true), TO(false), HOR(null),
-        ;
-        public Boolean bool;
-
-        PROJECTION(Boolean bool) {
-            this.bool = bool;
-        }
-    }
-
-    public enum WEAPON_ANIM_CASE {
-        NORMAL,
-        MISSILE_MISS,
-        MISSILE,
-        MISS,
-        READY,
-        PARRY,
-        BLOCKED,
-        RELOAD,
-        POTION,
-        ;
-
-        public boolean isMissile() {
-            return this == WEAPON_ANIM_CASE.MISSILE || this == WEAPON_ANIM_CASE.MISSILE_MISS;
-        }
-
-        public boolean isMiss() {
-            return this == WEAPON_ANIM_CASE.MISS || this == WEAPON_ANIM_CASE.MISSILE_MISS;
-        }
-    }
 }

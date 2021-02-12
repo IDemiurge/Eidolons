@@ -21,7 +21,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionRule;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.grid.VoidHandler;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.VoidMazeHandler;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -376,7 +376,7 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
 
     protected String getInfoText(DC_Obj obj) {
         StringBuilder builder = new StringBuilder();
-        if (!VoidHandler.TEST_MODE) {
+        if (!VoidMazeHandler.TEST_MODE) {
             if (obj instanceof DC_Cell) {
                 builder.append(ListMaster.toStringList(((DC_Cell) obj).getMarks())).append("\n");
             }

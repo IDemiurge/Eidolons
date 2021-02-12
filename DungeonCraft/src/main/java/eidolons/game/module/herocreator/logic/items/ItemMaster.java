@@ -1,8 +1,8 @@
 package eidolons.game.module.herocreator.logic.items;
 
+import eidolons.content.consts.VisualEnums.ITEM_FILTERS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_QuickItemObj;
-import libgdx.gui.panels.dc.inventory.container.ContainerPanel.ITEM_FILTERS;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.ItemEnums;

@@ -3,7 +3,7 @@ package libgdx.gui.panels.headquarters.tabs.tree.skill;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import libgdx.gui.panels.headquarters.tabs.tree.SlotSelectionRadialMenu;
-import libgdx.gui.panels.headquarters.datasource.HeroDataModel;
+import eidolons.system.libgdx.datasource.HeroDataModel;
 import main.entity.type.ObjType;
 import main.system.EventType;
 import main.system.GuiEventType;

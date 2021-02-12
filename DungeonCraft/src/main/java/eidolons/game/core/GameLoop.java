@@ -268,7 +268,8 @@ public abstract class GameLoop {
     }
 
     protected void waitForAnimations(ActionInput action) {
-        AnimMaster.waitForAnimations(action);
+        //TODO gdx sync
+        // AnimMaster.waitForAnimations(action);
     }
 
 

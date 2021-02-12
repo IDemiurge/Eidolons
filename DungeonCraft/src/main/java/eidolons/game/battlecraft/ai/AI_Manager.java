@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.ai;
 
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
@@ -13,9 +14,7 @@ import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.battlecraft.ai.tools.priority.PriorityManager;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.netherflame.boss.ai.BossAi;
-import libgdx.anims.text.FloatingTextMaster;
-import libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
+import eidolons.system.libgdx.GdxStatic;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
@@ -31,7 +30,6 @@ public class AI_Manager extends AiMaster {
     private static boolean running;
     private static boolean off;
     private static final List<DC_ActiveObj> brokenActions = new ArrayList<>();
-    protected BossAi bossAi;
 
     public AI_Manager(DC_Game game) {
         super(game);
@@ -92,9 +90,6 @@ public class AI_Manager extends AiMaster {
     }
 
     public Action getAction(Unit unit) {
-        if (unit.isBoss()) {
-            return getBossAi().getAction(unit);
-        }
         if (unit.isMine()) {
             unit.getQuickItemActives();
         }
@@ -130,8 +125,7 @@ public class AI_Manager extends AiMaster {
                 getMessageBuilder().append("Task: ").append(action.getTaskDescription());
                 if (!CoreEngine.isGraphicsOff()) {
                     if (game.isDebugMode())
-                        FloatingTextMaster.getInstance().
-                                createFloatingText(TEXT_CASES.BATTLE_COMMENT,
+                        GdxStatic.floatingText( VisualEnums.TEXT_CASES.BATTLE_COMMENT,
                                         getMessageBuilder().toString(), getUnit());
                 }
             } catch (Exception e) {
@@ -176,10 +170,6 @@ public class AI_Manager extends AiMaster {
 
     public TaskManager getTaskManager() {
         return taskManager;
-    }
-
-    protected BossAi getBossAi() {
-        return getGame().getMetaMaster().getBossManager().getAi();
     }
 
     public List<GroupAI> getGroups() {

@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.rules.combat.misc;
 
 import eidolons.content.PARAMS;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
@@ -9,7 +10,7 @@ import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.core.game.DC_Game;
-import libgdx.anims.text.FloatingTextMaster;
+import eidolons.system.libgdx.GdxStatic;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
@@ -140,7 +141,7 @@ public class CleaveRule {
         boolean result = source.getGame().getAttackMaster().attack(attack);
 //       GuiEventManager.trigger(GuiEventType. ADD_FLOATING_TEXT)
         // "dodged" or alive...
-        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.ATTACK_CRITICAL, "Cleave!", currentTarget);
+        GdxStatic.floatingText(VisualEnums.TEXT_CASES.ATTACK_CRITICAL, "Cleave!", currentTarget);
         if (result) {
             result = !currentTarget.isDead();
         }

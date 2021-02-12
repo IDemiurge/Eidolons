@@ -3,6 +3,7 @@ package libgdx.bf;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.module.cinematic.Cinematics;
@@ -13,6 +14,7 @@ import libgdx.bf.grid.cell.GridCellContainer;
 import libgdx.bf.grid.cell.UnitGridView;
 import libgdx.screens.ScreenMaster;
 import libgdx.screens.dungeon.DungeonScreen;
+import main.content.enums.rules.VisionEnums;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StrPathBuilder;
 
@@ -197,5 +199,39 @@ public class GridMaster {
         return
                 Coordinates.getLimited((Math.round(x / CELL_W)),
                         grid.getGdxY_ForModule(Math.round(y / CELL_H)));
+    }
+
+    public static boolean isUpdateRequired(BattleFieldObject object) {
+        if (object.isDetectedByPlayer())
+            return object.getUnitVisionStatus() == VisionEnums.UNIT_VISION.IN_SIGHT
+                    || object.getUnitVisionStatus() == VisionEnums.UNIT_VISION.IN_PLAIN_SIGHT;
+        return false;
+    }
+
+    public static void resetLastSeen(UnitGridView view,
+                                     BattleFieldObject obj, boolean visible) {
+        if (obj instanceof Unit){
+            obj.isPlayerCharacter();
+        }
+        if (obj.isDead() || obj.isHidden())
+            view.getLastSeenView().fadeOut();
+        else
+        if (visible  )
+        {
+            view.getLastSeenView().remove();
+            view.getParent().addActor(view.getLastSeenView());
+            view.getLastSeenView().fadeIn();
+        }
+        else
+        {
+            view.getLastSeenView().fadeOut();
+        }
+
+        Float time = obj.getGame().getLoop().getTime();
+        obj.setLastSeenTime(time);
+        obj.setLastSeenFacing(obj.getFacing());
+        obj.setLastSeenOutline(obj.getOutlineTypeForPlayer());
+        //        main.system.auxiliary.log.LogMaster.log(1, obj.getOutlineTypeForPlayer()+ "LSV RESET FOR " + obj +
+        //         time);
     }
 }

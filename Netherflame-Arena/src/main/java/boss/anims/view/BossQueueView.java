@@ -3,10 +3,7 @@ package boss.anims.view;
 import boss.anims.generic.BossVisual;
 import boss.logic.entity.BossUnit;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.content.consts.GdxColorMaster;
-import libgdx.bf.grid.cell.QueueView;
-import libgdx.bf.grid.cell.UnitViewOptions;
-import libgdx.bf.overlays.bar.HpBar;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 
 public class BossQueueView extends QueueView {
     private final BossVisual parent;

@@ -284,7 +284,7 @@ public class ShopItemManager extends EntityHandler<Shop> {
     private int getCostMod(Unit unit) {
         Integer reduction = getIntParam(PARAMS.GOLD_COST_REDUCTION) ;
         reduction+= reduction*(getIntParam(MACRO_PARAMS.REPUTATION)-100) /100  ;
-        reduction+= reduction*(getEntity().getTown().getReputation()-100)/100;
+        // reduction+= reduction*(getEntity().getTown().getReputation()-100)/100;
 
         reduction-=reduction*( unit.getIntParam(PARAMS.GOLD_COST_REDUCTION)) /100  ;
 
@@ -432,7 +432,7 @@ public class ShopItemManager extends EntityHandler<Shop> {
         if (!ok) {
             if (!gives) {
                 addInterest(hero);
-                getEntity().getTown().reputationImpact(-15);
+                // getEntity().getTown().reputationImpact(-15);
             }
         }
         //reputation impact?!

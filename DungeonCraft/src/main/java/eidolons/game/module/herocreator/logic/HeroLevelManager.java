@@ -1,11 +1,11 @@
 package eidolons.game.module.herocreator.logic;
 
 import eidolons.content.PARAMS;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
 import eidolons.game.module.herocreator.CharacterCreator;
-import libgdx.anims.text.FloatingTextMaster;
-import libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
+import eidolons.system.libgdx.GdxStatic;
 import eidolons.system.DC_Formulas;
 import main.content.ContentValsManager;
 import main.content.VALUE;
@@ -30,7 +30,7 @@ public class HeroLevelManager {
         levelUp(hero, null);
         if (hero.isDead())
             return; //for ChainParty
-        FloatingTextMaster.getInstance().createFloatingText(
+         GdxStatic.floatingText( VisualEnums.
                 TEXT_CASES.LEVEL_UP, "Level Up!", hero);
         EUtils.showInfoText(hero.getName() + "is now Level " + hero.getLevel());
         EUtils.playSound(AudioEnums.STD_SOUNDS.LEVEL_UP);
@@ -156,14 +156,14 @@ public class HeroLevelManager {
 
     public static void addGold(Unit hero, int gold) {
         hero.modifyParameter(PARAMS.GOLD, gold);
-        FloatingTextMaster.getInstance().createFloatingText(
+         GdxStatic.floatingText( VisualEnums.
          TEXT_CASES.GOLD, gold + " gold", hero);
         EUtils.showInfoText("Gold gained: " + gold);
     }
 
     public static void addXp(Unit hero, int xp) {
         hero.xpGained(xp);
-        FloatingTextMaster.getInstance().createFloatingText(
+         GdxStatic.floatingText( VisualEnums.
          TEXT_CASES.XP, xp + " xp", hero);
 
         //      TODO   EUtils.showVFX(new EnumMaster<EMITTER_PRESET>().getRandomEnumConst(EMITTER_PRESET.class),

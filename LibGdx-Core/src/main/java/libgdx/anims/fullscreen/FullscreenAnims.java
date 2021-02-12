@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.content.PARAMS;
 import eidolons.content.consts.VisualEnums;
-import eidolons.content.consts.libgdx.GdxUtils;
+import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.Eidolons;
 import libgdx.GdxMaster;
@@ -245,7 +245,7 @@ public class FullscreenAnims extends GroupX {
 
                 String path = PathFinder.getImagePath() + getCorePath() + type;
                 path = FileManager.getRandomFilePathVariant(path, ".png");
-                path = GdxUtils.cropImagePath(path);
+                path = GdxStringUtils.cropImagePath(path);
                 //TODO Anim Review
                 Image img = new NoHitImage(TextureCache.getOrCreateR(path));
                 //                group.addActor(img);

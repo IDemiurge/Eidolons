@@ -14,7 +14,6 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.StructMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureBuilder;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.module.ModuleLoader;
-import eidolons.game.battlecraft.logic.dungeon.module.PortalMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Awakener;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
@@ -57,7 +56,7 @@ public abstract class DungeonMaster {
     private InteractiveObjMaster interactiveMaster;
     private final TrapMaster trapMaster;
     private PuzzleMaster puzzleMaster;
-    private final PortalMaster portalMaster;
+    private final IPortalMaster portalMaster;
     private final LayerManager layerManager;
     private final StructMaster structMaster;
     private final FloorLoader floorLoader;
@@ -75,7 +74,7 @@ public abstract class DungeonMaster {
     public DungeonMaster(DC_Game game) {
         this.game = game;
         trapMaster = new TrapMaster(this);
-        portalMaster = new PortalMaster(this);
+        portalMaster = game.getMetaMaster().getGdxBeans().createPortalMaster(this);
         initializer = createInitializer();
         spawner = createSpawner();
         layerManager = createLayerManager();
@@ -307,7 +306,7 @@ public abstract class DungeonMaster {
         return trapMaster;
     }
 
-    public PortalMaster getPortalMaster() {
+    public IPortalMaster getPortalMaster() {
         return portalMaster;
     }
 

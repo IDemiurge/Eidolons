@@ -3,6 +3,7 @@ package libgdx.anims.fullscreen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import eidolons.content.consts.VisualEnums;
 
 import java.util.Random;
 
@@ -26,27 +27,7 @@ public class Screenshake {
     private float origDur;
     Interpolation interpolation = Interpolation.fade;
 
-    public enum ScreenShakeTemplate {
-        SLIGHT(25, 15),
-        MEDIUM(30, 25),
-        HARD(35, 35),
-        BRUTAL(40, 45),
-
-        VERTICAL(50, 35),
-        HORIZONTAL(50, 35),
-        ;
-        int duration = 5; // In seconds, make longer if you want more variation
-        int frequency; // hertz
-        float amplitude; // how much you want to shake
-        boolean falloff = true; // if the shake should decay as it expires
-
-        ScreenShakeTemplate(int frequency, float amplitude) {
-            this.frequency = frequency;
-            this.amplitude = amplitude;
-        }
-    }
-
-    public Screenshake(float shakeDuration, Boolean vertical, ScreenShakeTemplate template) {
+    public Screenshake(float shakeDuration, Boolean vertical, VisualEnums.ScreenShakeTemplate template) {
         this.shakeDuration = shakeDuration;
         duration = template.duration;
 //        duration =fullDuration!=0 ? fullDuration: template.duration;

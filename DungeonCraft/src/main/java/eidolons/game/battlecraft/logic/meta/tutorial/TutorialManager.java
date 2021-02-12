@@ -8,7 +8,7 @@ import java.util.List;
 
 public class TutorialManager {
     public static final List<String> messages=    new ArrayList<>() ;
-    public static String NEXT_HERO= IGG_Demo.HERO_KESERIM_SLEEPLESS;
+    public static String NEXT_HERO= "Anphis val Keserim";
 
     public static void init(){
         for (TextEvent tutorialTip : TipMessageMaster.tutorialTips) {

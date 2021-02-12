@@ -2,6 +2,7 @@ package libgdx.gui.panels.headquarters.datasource;
 
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
+import eidolons.system.libgdx.datasource.HeroDataModel;
 import libgdx.gui.panels.headquarters.HqPanel;
 import libgdx.gui.panels.headquarters.town.TownPanel;
 

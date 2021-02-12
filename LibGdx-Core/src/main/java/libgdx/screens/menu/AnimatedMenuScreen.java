@@ -1,7 +1,6 @@
 package libgdx.screens.menu;
 
 
-import eidolons.game.netherflame.main.story.IggActChoicePanel;
 import libgdx.GdxMaster;
 import libgdx.gui.menu.selection.SelectionPanel;
 import libgdx.gui.menu.selection.rng.RngSelectionPanel;
@@ -94,18 +93,18 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
                 }
             };
         }
-        if (isDemoScenario(list)) {
-            return new IggActChoicePanel(() -> (List<? extends Entity>) p.get()) {
-                @Override
-                public void closed(Object selection) {
-                    if (selection == null) {
-                        if (mainMenu != null)
-                            mainMenu.setVisible(true);
-                    }
-                    super.closed(selection);
-                }
-            };
-        }
+        // if (isDemoScenario(list)) {
+        //     return new IggActChoicePanel(() -> (List<? extends Entity>) p.get()) {
+        //         @Override
+        //         public void closed(Object selection) {
+        //             if (selection == null) {
+        //                 if (mainMenu != null)
+        //                     mainMenu.setVisible(true);
+        //             }
+        //             super.closed(selection);
+        //         }
+        //     };
+        // }
         if (isRngScenario(list)) {
             return new RngSelectionPanel(() -> (List<? extends Entity>) p.get()) {
                 @Override

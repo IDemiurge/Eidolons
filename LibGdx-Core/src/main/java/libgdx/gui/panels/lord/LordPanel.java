@@ -23,7 +23,7 @@ import libgdx.stage.Blocking;
 import libgdx.stage.ConfirmationPanel;
 import libgdx.stage.StageWithClosable;
 import eidolons.content.consts.Images;
-import libgdx.texture.Sprites;
+import eidolons.content.consts.Sprites;
 import libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;

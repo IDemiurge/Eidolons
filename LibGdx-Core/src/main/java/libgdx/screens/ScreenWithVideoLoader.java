@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.netherflame.main.hero.IggHeroSelectionPanel;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
 import libgdx.gui.menu.selection.SelectionPanel;
@@ -204,8 +203,6 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
                 return new QuestSelectionPanel(() -> (List<? extends Entity>) iterator.next());
             }
         }
-        if (Flags.isIggDemoRunning())
-            return new IggHeroSelectionPanel(() -> (List<? extends Entity>) p.get());
         return new HeroSelectionPanel(() -> (List<? extends Entity>) p.get());
 
     }

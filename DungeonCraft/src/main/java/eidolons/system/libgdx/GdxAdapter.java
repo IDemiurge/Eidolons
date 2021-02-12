@@ -17,9 +17,9 @@ public class GdxAdapter {
     ScreenApi dungeon;
     ScreenApi screen; //our real screens will impl this interface
     ControllerApi controller; //apart from dungeon controller, ...?
-    GdxApi gdxApp;
-    GdxManagerApi manager; // helper funcs
-    GdxEvents events;
+    GdxApi gdxApp; //global stuff
+    GdxManagerApi manager; // general helper funcs
+    GridManagerApi gridManager; // grid funcs
     GdxEventAdapter eventsAdapter;
     GdxAudio audio;
     DataSourceApi dataSourceApi;
@@ -48,6 +48,9 @@ public class GdxAdapter {
         manager.onInputGdx(r);
     }
 
+    public static void inputPass() {
+        getInstance().getController().inputPass();
+    }
     /*
         Fluctuating.setAlphaFluctuationOn(!paused)
         DungeonScreen.getInstance().getController().inputPass() - via interface
@@ -61,7 +64,13 @@ public class GdxAdapter {
          */
 
 
+    public GridManagerApi getGridManager() {
+        return gridManager;
+    }
 
+    public void setGridManager(GridManagerApi gridManager) {
+        this.gridManager = gridManager;
+    }
 
     public void setScreen(ScreenApi screen) {
         this.screen = screen;
@@ -79,9 +88,6 @@ public class GdxAdapter {
         this.manager = manager;
     }
 
-    public void setEvents(GdxEvents events) {
-        this.events = events;
-    }
 
     public void setAudio(GdxAudio audio) {
         this.audio = audio;
@@ -93,10 +99,6 @@ public class GdxAdapter {
 
     public void setDungeon(ScreenApi dungeon) {
         this.dungeon = dungeon;
-    }
-
-    public void setEventsAdapter(GdxEventAdapter eventsAdapter) {
-        this.eventsAdapter = eventsAdapter;
     }
 
     public void setDataSourceApi(DataSourceApi dataSourceApi) {
@@ -133,9 +135,6 @@ public class GdxAdapter {
         return manager;
     }
 
-    public GdxEvents getEvents() {
-        return events;
-    }
 
     public GdxAudio getAudio() {
         return audio;
@@ -149,9 +148,6 @@ public class GdxAdapter {
         return getInstance().getOptionsApi();
     }
 
-    public static void inputPass() {
-        getInstance().getController().inputPass();
-    }
 
     public DataSourceApi getDataSourceApi() {
         return dataSourceApi;

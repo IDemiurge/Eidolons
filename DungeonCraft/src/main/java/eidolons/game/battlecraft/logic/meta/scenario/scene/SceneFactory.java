@@ -5,13 +5,11 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaste
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.ActorDataSource;
-import libgdx.gui.panels.dialogue.DialogueView;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.Scene;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.SpeechDataSource;
 import eidolons.game.core.Eidolons;
 import eidolons.game.netherflame.main.story.brief.BriefScene;
 import eidolons.game.netherflame.main.story.brief.BriefingData;
-import eidolons.game.netherflame.main.story.brief.BriefingView;
 import main.data.dialogue.DataString.SPEECH_VALUE;
 import main.data.dialogue.SpeechData;
 import main.system.auxiliary.Refactor;
@@ -49,25 +47,26 @@ public class SceneFactory implements Supplier<List<Scene>> {
 
     public static List<Scene> getScenesLinear(List<Speech> fullData) {
         List<Scene> list = new ArrayList<>();
-        for (Speech speech : fullData) {
-            SpeechData data = speech.getData();
-            if (isBriefingTest()) {
-                list.add(new BriefingView(new BriefScene(
-                        new BriefingData(
-                                data.getValue(SPEECH_VALUE.SPRITE),
-                                data.getValue(SPEECH_VALUE.BACKGROUND),
-                                data.getValue(SPEECH_VALUE.MESSAGE), false
-                        ))));
-            } else {
-                DialogueActor actor1 = DialogueActorMaster.getActor(data.getActorLeft());
-                DialogueActor actor2 =StringMaster.isEmpty(  data.getActorRight()) ? null : DialogueActorMaster.getActor(data.getActorRight());
-
-                list.add(new DialogueView(new SpeechDataSource(speech, new ActorDataSource(actor1),
-                        new ActorDataSource(actor2))));
-            }
-//                    new PlainDialogueView(time, skippable, backTexture, message,portraitTexture)
-
-        }
+        //TODO gdx sync
+//         for (Speech speech : fullData) {
+//             SpeechData data = speech.getData();
+//             if (isBriefingTest()) {
+//                 list.add(new BriefingView(new BriefScene(
+//                         new BriefingData(
+//                                 data.getValue(SPEECH_VALUE.SPRITE),
+//                                 data.getValue(SPEECH_VALUE.BACKGROUND),
+//                                 data.getValue(SPEECH_VALUE.MESSAGE), false
+//                         ))));
+//             } else {
+//                 DialogueActor actor1 = DialogueActorMaster.getActor(data.getActorLeft());
+//                 DialogueActor actor2 =StringMaster.isEmpty(  data.getActorRight()) ? null : DialogueActorMaster.getActor(data.getActorRight());
+//
+//                 list.add(new DialogueView(new SpeechDataSource(speech, new ActorDataSource(actor1),
+//                         new ActorDataSource(actor2))));
+//             }
+// //                    new PlainDialogueView(time, skippable, backTexture, message,portraitTexture)
+//
+//         }
         return list;
     }
 

@@ -116,33 +116,6 @@ public class TextBuilder {
         return this;
     }
 
-    public static final String COLOR = "#";
-
-    public static String parseColors(String text) {
-        StringBuilder resultBuilder = new StringBuilder();
-        for (String s : text.split(COLOR)) {
-            String key = VariableManager.getVar(s);
-            if (!key.isEmpty()) {
-            Color color = GdxColorMaster.getColorByName(key);
-            if (color != null) {
-                resultBuilder.append(wrapInColor(color, s));
-                continue;
-            }
-            }
-            resultBuilder.append(s);
-        }
-        String result = resultBuilder.toString();
-        if (result.isEmpty()) {
-            return text;
-        }
-        return result;
-    }
-
-    public static String wrapInColor(Color color, String s) {
-        return StringMaster.wrapInBrackets("#" + GdxColorMaster.toStringForLog(color))
-                + s + StringMaster.wrapInBrackets("");
-    }
-
     public void startColor(String colorRGBA) {
         sb.append("[");
         if (!colorRGBA.startsWith("#")) {

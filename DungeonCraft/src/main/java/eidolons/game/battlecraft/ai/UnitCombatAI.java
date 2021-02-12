@@ -1,13 +1,13 @@
 package eidolons.game.battlecraft.ai;
 
 import eidolons.content.PROPS;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
 import eidolons.game.battlecraft.ai.advanced.companion.CompanionMaster;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.tools.AiExecutor;
-import libgdx.gui.panels.dc.topleft.atb.INTENT_ICON;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static eidolons.content.consts.VisualEnums.*;
 import static eidolons.game.battlecraft.ai.UnitAI.DEFAULT_VERBATIM_MOD;
 
 /**

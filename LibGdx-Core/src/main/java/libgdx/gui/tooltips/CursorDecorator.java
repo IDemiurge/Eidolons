@@ -2,7 +2,7 @@ package libgdx.gui.tooltips;
 
 import com.badlogic.gdx.Gdx;
 import eidolons.content.consts.VisualEnums;
-import eidolons.content.consts.libgdx.GdxUtils;
+import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
@@ -54,7 +54,7 @@ public class CursorDecorator extends NoHitGroup {
         }
         this.cursorType = type;
         cursor.setImage(
-                GdxUtils.cropImagePath(type.getFilePath()));
+                GdxStringUtils.cropImagePath(type.getFilePath()));
     }
 
     public void waitingDone() {

@@ -3,14 +3,13 @@ package eidolons.game.module.herocreator.logic.skills;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.attach.HeroClass;
 import eidolons.entity.obj.attach.Perk;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.HeroManager;
-import libgdx.GdxImageMaster;
-import libgdx.texture.TextureCache;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.SkillEnums.MASTERY;
@@ -362,10 +361,11 @@ public class SkillMaster {
 
     public static String getSkillImgPath(Entity left) {
         String path = "main/skills/gen/64/" + left.getName() + ".png";
-        if (TextureCache.isImage(path))
+        if (GdxStringUtils.isImage(path))
             return path;
-        GdxImageMaster.size(left.getImagePath(), 64, true);
-        return GdxImageMaster.getSizedImagePath(left.getImagePath(), 64);
+        //TODO gdx sync
+        // GdxImageMaster.size(left.getImagePath(), 64, true);
+        return GdxStringUtils.getSizedImagePath(left.getImagePath(), 64);
     }
 
     public static boolean isDataAnOpenSlot(Triple<DC_FeatObj, MASTERY, MASTERY> data) {

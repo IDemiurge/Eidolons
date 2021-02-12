@@ -3,7 +3,6 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleConstructor;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleRules;
-import eidolons.puzzle.gridobj.Manipulator;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
@@ -49,14 +48,6 @@ public abstract class ManipulatorPuzzleConstructor<T extends ManipulatorPuzzle> 
 
     protected abstract int getBaseCounters(PuzzleEnums.PUZZLE_ACTION_BASE base);
 
-
-    protected void initManipulator(Puzzle puzzle,
-                                   Coordinates c, String data) {
-        GuiEventManager.trigger(GuiEventType.INIT_MANIPULATOR, new Manipulator(puzzle,
-                Manipulator.Manipulator_template.rotating_cross,
-                c, data));
-    }
-
     protected Puzzle setupPuzzle(Puzzle puzzle, Map<Coordinates, CellScriptData> setupData) {
             // if (data.contains("manip(")) {
             //     initManipulator(puzzle, Coordinates.get(VariableManager.removeVarPart(data)),
@@ -66,7 +57,6 @@ public abstract class ManipulatorPuzzleConstructor<T extends ManipulatorPuzzle> 
          * we could skip this for now and do direct init!
          *
          * maybe just bind via shortcuts, to be generalized later
-         *
          */
         return puzzle;
     }

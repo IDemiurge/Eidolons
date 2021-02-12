@@ -2,7 +2,7 @@ package macro.entity.town;
 
 import macro.MacroGame;
 import macro.entity.MacroRef;
-import eidolons.macro.entity.shop.Shop;
+import eidolons.game.battlecraft.logic.meta.universal.shop.Shop;
 import main.content.CONTENT_CONSTS2.SHOP_LEVEL;
 import main.content.CONTENT_CONSTS2.SHOP_MODIFIER;
 import main.content.CONTENT_CONSTS2.SHOP_TYPE;

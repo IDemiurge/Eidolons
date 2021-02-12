@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.ability.InventoryTransactionManager;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import libgdx.StyleHolder;
@@ -110,8 +111,8 @@ public class CombatInventory extends TablePanel implements Blocking {
             }
         });
         GuiEventManager.bind(SHOW_INVENTORY, (obj) -> {
-            final Object param = obj.get();
-            show(param);
+            Unit unit = (Unit) obj.get();
+            show(new InventoryDataSource((unit)));
         });
         GuiEventManager.bind(UPDATE_INVENTORY_PANEL, (obj) -> {
             setUserObject(getUserObject());

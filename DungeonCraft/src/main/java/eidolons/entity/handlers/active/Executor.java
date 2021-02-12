@@ -267,8 +267,9 @@ public class Executor extends ActiveHandler {
 
         GuiEventManager.trigger(GuiEventType.ACTION_BEING_RESOLVED, getAction());
         getAction().initAnimRefs(getRef());
-        if (!input.getAction().isAttackAny())
-            ActionAnimMaster.animate(input);
+        //TODO gdx sync - did it ever do anything?
+        // if (!input.getAction().isAttackAny())
+        //     ActionAnimMaster.animate(input);
 
         if (getAction().getAbilities() != null) {
             try {

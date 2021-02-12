@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.mission.quest;
 
-import com.badlogic.gdx.math.Vector2;
+import eidolons.system.libgdx.wrapper.Vector2;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;

@@ -2,8 +2,7 @@ package eidolons.content.consts;
 
 import com.badlogic.gdx.graphics.Color;
 import eidolons.content.consts.libgdx.GdxColorMaster;
-import eidolons.content.consts.libgdx.GdxUtils;
-import eidolons.system.libgdx.GdxStatic;
+import eidolons.content.consts.libgdx.GdxStringUtils;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.system.PathUtils;
@@ -97,11 +96,11 @@ public class GraphicData extends DataUnit<GraphicData.GRAPHIC_VALUE> {
             path = getSpritePath();
             if (!StringMaster.isEmpty(path)) {
                 //atlas Review - what's this?
-                return GdxUtils.cropImagePath(GdxUtils.getOneFrameImagePath(path));
+                return GdxStringUtils.cropImagePath(GdxStringUtils.getOneFrameImagePath(path));
             }
         }
         if (!getVfxPath().isEmpty()) {
-            return GdxStatic.getVfxImgPath(getVfxPath());
+            return GdxStringUtils.getVfxImgPath(getVfxPath());
         }
         return path;
     }
@@ -109,7 +108,7 @@ public class GraphicData extends DataUnit<GraphicData.GRAPHIC_VALUE> {
     public String getTexturePath() {
         String path = getValue(GRAPHIC_VALUE.texture);
         if (!ImageManager.isImageFile(path)) {
-            if (GdxStatic.isImage(PathFinder.getTexturesPath() + path + ".png")) {
+            if (GdxStringUtils.isImage(PathFinder.getTexturesPath() + path + ".png")) {
                 path = PathFinder.getTexturesPath() + path + ".png";
             } else
                 path = Images.getByName(path);
@@ -118,7 +117,7 @@ public class GraphicData extends DataUnit<GraphicData.GRAPHIC_VALUE> {
     }
 
     public String getSpritePath() {
-        return         GdxStatic.getSpritePath(getValue(GraphicData.GRAPHIC_VALUE.sprite));
+        return         GdxStringUtils.getSpritePath(getValue(GraphicData.GRAPHIC_VALUE.sprite));
     }
 
     public String getVfxPath() {

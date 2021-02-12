@@ -2,8 +2,8 @@ package libgdx.gui.panels.headquarters.weave;
 
 import eidolons.content.consts.VisualEnums;
 import eidolons.system.libgdx.GdxStatic;
+import eidolons.system.libgdx.datasource.ScreenData;
 import libgdx.gui.panels.headquarters.weave.WeaveSpace.WEAVE_VIEW_MODE;
-import libgdx.screens.ScreenData;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 

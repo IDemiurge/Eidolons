@@ -2,12 +2,13 @@ package eidolons.game.module.dungeoncrawl.objects;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.core.EUtils;
-import libgdx.anims.text.FloatingTextMaster;
+import eidolons.system.libgdx.GdxStatic;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.RandomWizard;
@@ -50,7 +51,7 @@ public class KeyMaster {
         if (getKey(unit, "Master Key") != null) {
             return true;
         }
-        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
+         GdxStatic.floatingText( VisualEnums.TEXT_CASES.REQUIREMENT,
                 "" + type + " is required to unlock this",
                 door);
         return false;

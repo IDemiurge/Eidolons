@@ -2,10 +2,10 @@ package eidolons.game.module.herocreator.logic.items;
 
 import com.badlogic.gdx.graphics.Color;
 import eidolons.content.DC_CONSTS.ITEM_LEVEL;
+import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.netherflame.main.soul.eidola.EidolonImbuer;
 import eidolons.game.netherflame.main.soul.eidola.Soul;
-import libgdx.gui.panels.dc.logpanel.text.TextBuilder;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;
@@ -175,11 +175,11 @@ public class ItemTraitNamer {
     private static String getDescription(ItemTrait trait) {
         String text =
 
-                TextBuilder.wrapInColor(
+                GdxStringUtils.wrapInColor(
                         getColorForTrait(trait.template),
                         StringMaster.format(trait.template.toString()))
                         + StringMaster.wrapInParenthesis(
-                        TextBuilder.wrapInColor(
+                        GdxStringUtils.wrapInColor(
                                 getColorForLevel(trait.level),
                                 trait.level.toString()));
 

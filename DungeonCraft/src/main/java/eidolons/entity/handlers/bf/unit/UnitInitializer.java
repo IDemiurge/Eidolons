@@ -376,7 +376,9 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     }
 
     private DC_HeroItemObj getLoadedItem(G_PROPS prop) {
-        return Loader.getLoadedItem(getEntity(), prop);
+        //TODO macro Review
+        // return Loader.getLoadedItem(getEntity(), prop);
+        return null;
     }
 
     private DC_HeroItemObj createItem(PROPERTY prop, ObjType type) {
