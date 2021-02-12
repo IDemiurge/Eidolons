@@ -41,6 +41,9 @@ public class GdxAdapter {
         instance.onInputGdx(r);
     }
 
+    public static void onInput(Runnable o, Boolean aBoolean, boolean bool) {
+    }
+
     public void onInputGdx(Runnable r) {
         manager.onInputGdx(r);
     }
@@ -146,7 +149,7 @@ public class GdxAdapter {
         return getInstance().getOptionsApi();
     }
 
-    public void inputPass() {
+    public static void inputPass() {
         getInstance().getController().inputPass();
     }
 

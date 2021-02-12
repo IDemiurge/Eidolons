@@ -2,7 +2,7 @@ package libgdx.particles;
 
 import libgdx.anims.actions.ActionMaster;
 import libgdx.gui.generic.GroupX;
-import libgdx.particles.ParticlesSprite.PARTICLES_SPRITE;
+import eidolons.content.consts.VisualEnums.PARTICLES_SPRITE;
 import main.data.XLinkedMap;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;

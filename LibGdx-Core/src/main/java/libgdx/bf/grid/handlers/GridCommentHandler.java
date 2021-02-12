@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.ObjectMap;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.unit.DummyUnit;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
@@ -159,7 +160,7 @@ public class GridCommentHandler extends GridHandler{
         }
 
         return FloatingTextMaster.getInstance().createFloatingText
-                (FloatingTextMaster.TEXT_CASES.BATTLE_COMMENT, text, new DummyUnit() {
+                (VisualEnums.TEXT_CASES.BATTLE_COMMENT, text, new DummyUnit() {
                     @Override
                     public FACING_DIRECTION getFacing() {
                         return facingDirection;

@@ -74,8 +74,6 @@ public abstract class GameManager implements GenericGameManager {
 
     public abstract void objClicked(Obj obj);
 
-    public abstract void win(Player winningPlayer);
-
     public abstract void buffCreated(BuffObj buff, Obj basis);
 
     public abstract boolean endRound();

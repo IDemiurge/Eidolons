@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.EidolonsGame;
 import eidolons.game.core.ActionInput;
@@ -228,14 +229,14 @@ public class QuickWeaponPanel extends TablePanelX {
 //                        attack = null; TODO wrong place
 //                    }
                     if (attack == null) {
-                        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
+                        FloatingTextMaster.getInstance().createFloatingText(VisualEnums.TEXT_CASES.REQUIREMENT,
                                 "Cannot attack with this!",
                                 getDataSource().getOwnerObj());
                         return false;
                     }
                     if (attack.getValidSubactions().isEmpty()) {
 
-                        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
+                        FloatingTextMaster.getInstance().createFloatingText(VisualEnums.TEXT_CASES.REQUIREMENT,
                                 "Cannot make any attack with this!",
                                 attack.getOwnerUnit());
                         return false;

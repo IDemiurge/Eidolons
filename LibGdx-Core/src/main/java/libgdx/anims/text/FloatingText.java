@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import eidolons.content.consts.VisualEnums;
 import libgdx.StyleHolder;
 import libgdx.anims.actions.ActionMaster;
 import libgdx.anims.actions.WaitAction;
@@ -51,7 +52,7 @@ public class FloatingText extends GroupX {
     private float offsetX;
     private float offsetY;
     private Predicate stayFullCondition;
-    private FloatingTextMaster.TEXT_CASES aCase;
+    private VisualEnums.TEXT_CASES aCase;
     private float maxWidth = 700;
 
     public FloatingText(String text, Color c) {
@@ -338,11 +339,11 @@ public class FloatingText extends GroupX {
         this.offsetY = offsetY;
     }
 
-    public void setCase(FloatingTextMaster.TEXT_CASES aCase) {
+    public void setCase(VisualEnums.TEXT_CASES aCase) {
         this.aCase = aCase;
     }
 
-    public FloatingTextMaster.TEXT_CASES getCase() {
+    public VisualEnums.TEXT_CASES getCase() {
         return aCase;
     }
 }

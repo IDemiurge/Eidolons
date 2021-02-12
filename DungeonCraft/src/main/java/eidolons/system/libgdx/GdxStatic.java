@@ -10,6 +10,8 @@ import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMapDataS
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import main.data.filesys.PathFinder;
+import main.entity.obj.Obj;
+import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.data.FileManager;
@@ -60,6 +62,22 @@ public class GdxStatic {
     public static void setDefaultCursor() {
         GdxAdapter.getInstance().getGdxApp().setDefaultCursor();
     }
+
+    public static void setTargetingCursor() {
+        GdxAdapter.getInstance().getGdxApp().setTargetingCursor();
+    }
+    public static void checkHpBarReset(Obj sourceObj) {
+GdxAdapter.getInstance().getManager().checkHpBarReset(sourceObj);
+    }
+
+    public static boolean isEventDisplayable(Event event) {
+        return GdxAdapter.getInstance().getManager().isEventDisplayable(event);
+    }
+
+    public static boolean isEventAnimated(Event event) {
+        return GdxAdapter.getInstance().getManager().isEventAnimated(event);
+    }
+
 
     /*
     GdxImageMaster.cropImagePath

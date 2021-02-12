@@ -56,6 +56,7 @@ public enum GuiEventType implements EventType {
     SHOW_LOOT_PANEL,
     SHOW_TOOLTIP,
     ADD_FLOATING_TEXT,
+    CREATE_FLOATING_TEXT,
     ACTION_PANEL_UPDATE,
 
     EFFECT_APPLIED,

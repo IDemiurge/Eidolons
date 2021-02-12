@@ -34,4 +34,9 @@ public class ApiAdapter implements GdxApi {
     public void setDefaultCursor() {
         GdxMaster.setDefaultCursor();
     }
+
+    @Override
+    public void setTargetingCursor() {
+        GdxMaster.setTargetingCursor();
+    }
 }

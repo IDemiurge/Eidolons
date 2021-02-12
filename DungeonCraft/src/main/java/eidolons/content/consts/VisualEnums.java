@@ -1,20 +1,30 @@
 package eidolons.content.consts;
 
 import com.badlogic.gdx.graphics.Color;
+import eidolons.ability.effects.common.ModifyStatusEffect;
+import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import eidolons.content.consts.libgdx.GdxUtils;
+import eidolons.entity.active.DC_ActiveObj;
+import eidolons.game.core.master.EffectMaster;
 import main.content.VALUE;
 import main.content.enums.GenericEnums;
 import main.content.mode.MODE;
 import main.content.mode.STD_MODES;
 import main.data.filesys.PathFinder;
+import main.elements.costs.Cost;
+import main.game.logic.event.Event;
 import main.system.EventType;
 import main.system.GuiEventType;
+import main.system.Producer;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.graphics.FontMaster;
+
+import java.util.List;
 
 import static main.content.enums.GenericEnums.VFX.*;
 
@@ -751,5 +761,178 @@ public class VisualEnums {
         public float getDefaultDuration() {
             return defaultDuration;
         }
+    }
+
+    public enum TEXT_CASES {
+        DEFAULT,
+        REQUIREMENT,
+        CANNOT_ACTIVATE,
+
+        BONUS_DAMAGE,
+        ATTACK_CRITICAL,
+        ATTACK_SNEAK,
+
+        ATTACK_DODGED,
+        ATTACK_BLOCKED,
+        ATTACK_PARRIED,
+        ATTACK_MISSED,
+
+        ATTACK_OF_OPPORTUNITY,
+        COUNTER_ATTACK,
+        ATTACK_INSTANT,
+
+        ROLL,
+        PARAM_MOD,
+        COSTS(true, (e) -> {
+            DC_ActiveObj a = (DC_ActiveObj) e.getRef().getActive();
+            List<Cost> costs = a.getCosts().getCosts();
+            costs.removeIf(c -> c.getPayment().getLastPaid() == 0
+                    //            getAmountFormula().toString().isEmpty()
+            );
+            return costs.toArray();
+        }),
+        STATUS(
+                false, (e) -> {
+            ModifyStatusEffect ef = (ModifyStatusEffect)
+                    EffectMaster.getFirstEffectOfClass((DC_ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
+            //                if (ef==null )
+            return ef.getValue().split(";");
+        }),
+        MODE(
+                false, (e) -> {
+            ModeEffect ef = (ModeEffect)
+                    EffectMaster.getFirstEffectOfClass((DC_ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
+            return new Object[]{
+                    ef.getMode()
+            };
+        }),
+
+        BATTLE_COMMENT,
+
+        HIT {
+            @Override
+            public Object[] getArgs(Event e) {
+                return new Object[]{
+                        e.getRef().getAmount()
+                };
+            }
+        }, DURABILITY_LOSS, ANNIHILATED,
+        XP,
+        GOLD,
+        LEVEL_UP;
+        public boolean atOrigin;
+        String name = StringMaster.format(name());
+        private Producer<Event, Object[]> argProducer;
+
+        TEXT_CASES() {
+
+        }
+
+        TEXT_CASES(boolean atOrigin, Producer<Event, Object[]> producer) {
+            this.atOrigin = atOrigin;
+            this.argProducer = producer;
+        }
+
+        public String getText() {
+            return name;
+        }
+
+        public Object[] getArgs(Event e) {
+            if (argProducer == null) {
+                return new Object[]{
+                        StringMaster.format(e.getType().toString())
+                };
+            }
+            return argProducer.produce(e);
+        }
+    }
+
+    public enum FX_TEST_MODE {
+        CRITICAL_ALL,
+        HIGH_ALL,
+        MIXED_1,
+        MIXED_2,
+        LOW_ALL,
+
+        STA,
+        STA2,
+        STA3,
+        FOC,
+        FOC2,
+        FOC3,
+        MOR,
+        MOR2,
+        MOR3,
+        WOU,
+        WOU2,
+    }
+
+    public enum POST_FX_FACTOR {
+        DISCOLOR,
+        FADE_COLOR,
+        BLUR,
+        LENS,
+        BLOOM,
+        DARKEN,
+        LIGHTEN,
+        BLOODY, //red vignette
+        MOTION_BLUR,
+        //burn, disease,
+        // night sight ,
+        DISTORT, SMOOTH, LENS2
+    }
+
+    public enum POST_FX_TEMPLATE {
+        DIZZY,
+        FATIGUE,
+        ENERGIZED,
+        FEAR,
+        INSPIRED, UNCONSCIOUS(),
+
+        PALE_ASPECT, MAZE(), MOSAIC();
+
+        public final POST_FX_FACTOR[] factors;
+
+        POST_FX_TEMPLATE(POST_FX_FACTOR... factors) {
+            this.factors = factors;
+        }
+    }
+
+    public enum PARTICLES_SPRITE {
+        ASH(false, "sprites/particles/snow.txt", GenericEnums.BLENDING.INVERT_SCREEN,
+                12, 2, GenericEnums.ALPHA_TEMPLATE.OVERLAYS),
+        ASH_THICK(false, "sprites/particles/snow.txt", GenericEnums.BLENDING.INVERT_SCREEN,
+                14, 3, GenericEnums.ALPHA_TEMPLATE.OVERLAYS),
+//        MIST(true, "sprites/particles/mist.txt", GenericEnums.BLENDING.SCREEN,
+//                10, 2, null),
+//        BLACK_MIST(true, "sprites/particles/mist.txt", GenericEnums.BLENDING.INVERT_SCREEN,
+//                10, 2, GenericEnums.ALPHA_TEMPLATE.OVERLAYS),
+        SNOW(false, "sprites/particles/snow.txt", GenericEnums.BLENDING.SCREEN,
+                14, 2, GenericEnums.ALPHA_TEMPLATE.OVERLAYS),
+        SNOW_THICK(false, "sprites/particles/snow.txt", GenericEnums.BLENDING.SCREEN,
+                15, 3, GenericEnums.ALPHA_TEMPLATE.OVERLAYS),
+        ;
+
+
+        PARTICLES_SPRITE(boolean flipping, String path, GenericEnums.BLENDING blending, int fps, int overlap, GenericEnums.ALPHA_TEMPLATE fluctuation) {
+            this.flipping = flipping;
+            this.path = path;
+            this.blending = blending;
+            this.fps = fps;
+            this.overlap = overlap;
+            this.fluctuation = fluctuation;
+        }
+
+        public boolean reverse;
+        public boolean flipping;
+        public String path;
+        public GenericEnums.BLENDING blending;
+        int fps;
+        int overlap;
+        boolean changeFps;
+
+        GenericEnums.ALPHA_TEMPLATE fluctuation;
+        int eachNisFlipX = 0;
+        public int duration;
     }
 }

@@ -14,12 +14,15 @@ import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS;
+import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.MapEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static libgdx.bf.GridMaster.getCenteredPos;
 
 /**
  * Created by JustMe on 1/8/2017.
@@ -86,7 +89,11 @@ public class ParticleManager extends GroupX {
         GuiEventManager.bind(GuiEventType.ADD_AMBI_VFX, p -> {
             List l = (List) p.get();
             GenericEnums.VFX vfx = (GenericEnums.VFX) l.get(0);
-            Vector2 v = (Vector2) l.get(1);
+            Vector2 v = null;
+            if (l.get(1) instanceof Coordinates) {
+                v = getCenteredPos(((Coordinates) l.get(1)));
+            } else
+                v = (Vector2) l.get(1);
             Ambience ambi;
             addActor(ambi = new Ambience(vfx));
             ambi.setPosition(v.x, v.y);
@@ -156,7 +163,7 @@ public class ParticleManager extends GroupX {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (!isAmbienceOn()) {
-            return ;
+            return;
         }
         super.draw(batch, parentAlpha);
         if (batch instanceof CustomSpriteBatch) {

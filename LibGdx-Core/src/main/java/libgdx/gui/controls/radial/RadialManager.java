@@ -3,6 +3,7 @@ package libgdx.gui.controls.radial;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ObjectMap;
+import eidolons.content.consts.VisualEnums;
 import eidolons.content.consts.libgdx.GdxUtils;
 import eidolons.entity.active.*;
 import eidolons.entity.item.DC_QuickItemObj;
@@ -492,7 +493,7 @@ public class RadialManager {
                 Eidolons.getGame().getLoop().actionInputManual(
                         new ActionInput(active, context));
             } else {
-                FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.CANNOT_ACTIVATE, "", active);
+                FloatingTextMaster.getInstance().createFloatingText(VisualEnums.TEXT_CASES.CANNOT_ACTIVATE, "", active);
             }
 
         };

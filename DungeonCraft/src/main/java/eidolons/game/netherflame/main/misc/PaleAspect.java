@@ -1,5 +1,6 @@
 package eidolons.game.netherflame.main.misc;
 
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
@@ -9,7 +10,6 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.logic.spells.SpellMaster;
 import eidolons.game.netherflame.main.death.ChainHero;
 import eidolons.game.netherflame.main.lord.EidolonLord;
-import libgdx.shaders.post.PostFxUpdater;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.game.bf.Coordinates;
@@ -48,7 +48,7 @@ public class PaleAspect {
 
     public static void enterPale() {
         d = 0;
-        GuiEventManager.trigger(GuiEventType.POST_PROCESSING, PostFxUpdater.POST_FX_TEMPLATE.PALE_ASPECT);
+        GuiEventManager.trigger(GuiEventType.POST_PROCESSING,  VisualEnums.POST_FX_TEMPLATE.PALE_ASPECT);
         getAvatar();
             for (ChainHero hero : EidolonLord.lord.getChain().getHeroes()) {
                 shadowLeapToLocation(hero.getUnit(), true);

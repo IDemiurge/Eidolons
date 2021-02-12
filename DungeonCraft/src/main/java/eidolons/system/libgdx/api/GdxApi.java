@@ -6,4 +6,6 @@ public interface GdxApi {
     void showMainMenu();
 
     void setDefaultCursor();
+
+    void setTargetingCursor();
 }

@@ -1,16 +1,19 @@
 package libgdx.anims;
 
+import eidolons.content.consts.VisualEnums;
 import eidolons.game.core.Eidolons;
 import libgdx.anims.text.FloatingText;
 import libgdx.gui.generic.GroupX;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
 import libgdx.anims.text.FloatingTextMaster;
+import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.datatypes.DequeImpl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by JustMe on 5/27/2018.
@@ -24,6 +27,13 @@ public class FloatingTextLayer extends GroupX {
     }
 
     public void bindEvents() {
+        GuiEventManager.bind(GuiEventType.CREATE_FLOATING_TEXT, p -> {
+            List list = (List) p.get();
+            VisualEnums.TEXT_CASES aCASE= (VisualEnums.TEXT_CASES) list.get(0);
+            String text=list.get(1).toString();
+            Entity entity= (Entity) list.get(2);
+            FloatingTextMaster.getInstance().createFloatingText(aCASE, text, entity);
+        });
         GuiEventManager.bind(GuiEventType.ADD_FLOATING_TEXT, p -> {
             FloatingText floatingText = (FloatingText) p.get();
             if (queued.contains(floatingText))

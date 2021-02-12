@@ -62,7 +62,7 @@ public class PostProcessController {
 
     LocalFxProcessor localFxProcessor;
     private boolean off;
-    private Map<FloatAction, PostFxUpdater.POST_FX_FACTOR> actionMap;
+    private Map<FloatAction, VisualEnums.POST_FX_FACTOR> actionMap;
 
     public PostProcessController() {
         main = new PostProcessing();
@@ -117,7 +117,7 @@ public class PostProcessController {
     private void bindEvents() {
         GuiEventManager.bind(GuiEventType.POST_PROCESS_FX_ANIM, p -> {
             List args = (List) p.get();
-            PostFxUpdater.POST_FX_FACTOR fx = (PostFxUpdater.POST_FX_FACTOR) args.get(0);
+            VisualEnums.POST_FX_FACTOR fx = (VisualEnums.POST_FX_FACTOR) args.get(0);
             FloatAction action= (FloatAction) args.get(1);
             actionMap.put(action, fx);
 

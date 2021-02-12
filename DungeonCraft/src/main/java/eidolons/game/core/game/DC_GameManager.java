@@ -1,5 +1,6 @@
 package eidolons.game.core.game;
 
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.BattleFieldObject;
@@ -16,16 +17,8 @@ import eidolons.game.core.state.DC_GameState;
 import eidolons.game.core.state.DC_StateManager;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.netherflame.main.death.ShadowMaster;
-import libgdx.GdxMaster;
-import libgdx.anims.construct.AnimConstructor;
-import libgdx.anims.main.AnimMaster;
-import libgdx.anims.main.EventAnimCreator;
-import libgdx.anims.text.FloatingTextMaster;
-import libgdx.bf.TargetRunnable;
-import libgdx.bf.grid.handlers.GridManager;
-import libgdx.bf.overlays.bar.HpBar;
-import libgdx.screens.ScreenMaster;
-import libgdx.screens.dungeon.DungeonScreen;
+import eidolons.system.libgdx.GdxAdapter;
+import eidolons.system.libgdx.GdxStatic;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.PassiveAbilityObj;
 import main.ability.effects.Effect;
@@ -190,7 +183,7 @@ public class DC_GameManager extends GameManager {
             updateGraphics();
             resetWallMap();
             if (wallResetRequired)
-                GridManager.reset();
+                GuiEventManager.trigger(GRID_RESET_MAPS);
             return;
         }
         GameState.setResetDone(false);
@@ -202,7 +195,7 @@ public class DC_GameManager extends GameManager {
 
         resetWallMap();
         if (wallResetRequired)
-            GridManager.reset();
+            GuiEventManager.trigger(GRID_RESET_MAPS);
 
         VisionHelper.refresh();
 
@@ -338,7 +331,7 @@ public class DC_GameManager extends GameManager {
                 t.invokeClicked();
             }
         });
-        GdxMaster.setTargetingCursor();
+        GdxStatic.setTargetingCursor();
         GuiEventManager.trigger(SELECT_MULTI_OBJECTS, p);
 
         for (Obj obj : new ArrayList<>(selectingSet)) {
@@ -362,7 +355,7 @@ public class DC_GameManager extends GameManager {
         setSelecting(true);
 
         Integer id = selectAwait();
-        GdxMaster.setDefaultCursor();
+        GdxStatic.setDefaultCursor();
 
         if (id == null) {
             if (ref.getTarget() != null) {
@@ -453,29 +446,20 @@ public class DC_GameManager extends GameManager {
         if (action != null) {
             action.invokeClicked();
         }
-        DungeonScreen.getInstance().getController().inputPass();
+        GdxAdapter.inputPass();
     }
 
     public void activateMyAction(int index, ACTION_TYPE group) {
         try {
             getActiveObj().getActionMap().get(group).get(index).invokeClicked();
-            DungeonScreen.getInstance().getController().inputPass();
+            GdxAdapter.inputPass();
         } catch (Exception e) {
             ExceptionMaster.printStackTrace(e);
-            FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
+            GuiEventManager.triggerWithParams(ADD_FLOATING_TEXT, VisualEnums.TEXT_CASES.REQUIREMENT,
                     "Disabled!", getMainHero());
         }
     }
 
-
-    @Override
-    public void win(Player winningPlayer) {
-        if (winningPlayer.isMe()) {
-        } else {
-
-        }
-
-    }
 
     @Override
     public boolean effectApplies(EffectImpl effect) {
@@ -572,14 +556,15 @@ public class DC_GameManager extends GameManager {
             return false;
         }
         if (event.getRef().getSourceObj() != null) {
-            if (!AnimMaster.isAnimationOffFor(event.getRef().getSourceObj(), null))
-                if (AnimMaster.isPreconstructEventAnims()) if (AnimMaster.isOn()) {
-                    try {
-                        AnimConstructor.preconstruct(event);
-                    } catch (Exception e) {
-                        ExceptionMaster.printStackTrace(e);
-                    }
-                }
+            //TODO gdx sync - did it ever work well?
+            // if (!AnimMaster.isAnimationOffFor(event.getRef().getSourceObj(), null))
+            //     if (AnimMaster.isPreconstructEventAnims()) if (AnimMaster.isOn()) {
+            //         try {
+            //             AnimConstructor.preconstruct(event);
+            //         } catch (Exception e) {
+            //             ExceptionMaster.printStackTrace(e);
+            //         }
+            //     }
         } else {
             event.getRef().getSourceObj(); //TODO debug this
         }
@@ -595,14 +580,13 @@ public class DC_GameManager extends GameManager {
     }
 
     private void checkDefaultEventTriggers(Event event) {
-        if (HpBar.isResetOnLogicThread())
+        // if (HpBar.isResetOnLogicThread())
             if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_ENTERED_COMBAT ||
-
                     event.getType().name().startsWith("PARAM_MODIFIED")
                             && GuiEventManager.isBarParam(event.getType().getArg())) {
 
                 try {
-                    ScreenMaster.getGrid().getGridManager().getEventHandler().
+                        GdxStatic.
                             checkHpBarReset(event.getRef().getSourceObj());
                 } catch (NullPointerException e) {
                 } catch (Exception e) {
@@ -617,9 +601,9 @@ public class DC_GameManager extends GameManager {
         if (GuiEventManager.checkEventIsGuiHandled(event))
             GuiEventManager.trigger(INGAME_EVENT, event);
         else {
-            if (FloatingTextMaster.getInstance().isEventDisplayable(event)) {
+            if (GdxStatic.isEventDisplayable(event)) {
                 GuiEventManager.trigger(INGAME_EVENT, event);
-            } else if (EventAnimCreator.isEventAnimated(event))
+            } else if (GdxStatic.isEventAnimated(event))
                 GuiEventManager.trigger(INGAME_EVENT, event);
         }
     }
@@ -693,5 +677,9 @@ public class DC_GameManager extends GameManager {
 
     public boolean getWallResetRequired() {
         return wallResetRequired;
+    }
+
+    public static interface TargetRunnable {
+        void run(DC_Obj target);
     }
 }

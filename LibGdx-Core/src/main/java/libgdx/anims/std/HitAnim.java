@@ -314,7 +314,7 @@ public class HitAnim extends ActionAnim {
             damage = DamageFactory.getGenericDamage(damageType, ref.getAmount(), ref);
         }
         FloatingText floatingText = FloatingTextMaster.getInstance().getFloatingText(
-                active, FloatingTextMaster.TEXT_CASES.HIT, text == null ?
+                active, VisualEnums.TEXT_CASES.HIT, text == null ?
                         damage.getAmount()
                         : text);
         floatingText.setImageSupplier(() -> imagePath);

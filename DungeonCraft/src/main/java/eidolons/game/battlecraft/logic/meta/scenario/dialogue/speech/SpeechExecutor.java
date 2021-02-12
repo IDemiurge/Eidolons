@@ -2,15 +2,14 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech;
 
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import eidolons.content.consts.VisualEnums;
+import eidolons.content.consts.VisualEnums.FULLSCREEN_ANIM;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.puzzle.gridobj.CinematicGridObject;
-import eidolons.puzzle.gridobj.GridObject;
-import eidolons.puzzle.gridobj.LinkedGridObject;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActor;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
@@ -23,24 +22,9 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.dungeons.generator.model.AbstractCoordinates;
 import eidolons.game.module.herocreator.logic.spells.SpellMaster;
-import libgdx.GdxMaster;
-import libgdx.anims.SimpleAnim;
-import libgdx.anims.actions.ActionMaster;
-import libgdx.anims.fullscreen.FullscreenAnimDataSource;
-import libgdx.anims.fullscreen.FullscreenAnims.FULLSCREEN_ANIM;
-import libgdx.anims.fullscreen.Screenshake;
-import libgdx.anims.main.AnimMaster;
-import libgdx.anims.std.DeathAnim;
-import libgdx.audio.SoundPlayer;
+import eidolons.system.libgdx.GdxAdapter;
 import eidolons.content.consts.GraphicData;
 import eidolons.content.consts.SpriteData;
-import libgdx.bf.grid.cell.BaseView;
-import libgdx.particles.ParticlesSprite.PARTICLES_SPRITE;
-import libgdx.particles.spell.SpellVfxMaster;
-import libgdx.screens.ScreenMaster;
-import libgdx.screens.dungeon.DungeonScreen;
-import libgdx.shaders.post.PostFxUpdater.POST_FX_TEMPLATE;
-import libgdx.stage.camera.MotionData;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
@@ -86,6 +70,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Predicate;
 
+import static eidolons.content.consts.VisualEnums.*;
 import static eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript.SCRIPT.*;
 import static libgdx.bf.GridMaster.getCameraCenter;
 import static libgdx.bf.GridMaster.getCenteredPos;
@@ -96,9 +81,9 @@ public class SpeechExecutor {
     protected static final boolean ABORT_ON_EXCEPTION = false;
     protected final DialogueManager dialogueManager;
     protected final ExecutorHelper helper;
-    protected  DialogueHandler handler; //gdx Review - don't want to depend..
-    protected  DialogueContainerAdapter container;
-    protected  MetaGameMaster master;
+    protected DialogueHandler handler; //gdx Review - don't want to depend..
+    protected DialogueContainerAdapter container;
+    protected MetaGameMaster master;
     protected int waitOnEachLine;
     protected boolean waiting;
     protected boolean running;
@@ -109,11 +94,14 @@ public class SpeechExecutor {
     protected SpeechScript lastScript;
     protected SpeechScript lt;
 
+    GdxSpeechActions gdxActions;
 
     public SpeechExecutor(MetaGameMaster master, DialogueManager dialogueManager) {
         this.master = master;
         this.dialogueManager = dialogueManager;
         helper = new ExecutorHelper(this);
+        gdxActions =
+                master.getGdxFacade().createGdxActions();
     }
 
     public static void run(String s) {
@@ -143,7 +131,7 @@ public class SpeechExecutor {
             handler = container.getHandler();
         }
         if (handler == null) {
-            handler= new FauxDialogueHandler();
+            handler = new FauxDialogueHandler();
         }
         value = value.trim().toLowerCase();
         String full = value;
@@ -180,7 +168,7 @@ public class SpeechExecutor {
             case COLLAPSE:
                 helper.execute(speechAction, value, vars);
                 break;
-                
+
             case RESET:
                 master.getGame().getManager().reset();
                 break;
@@ -451,20 +439,19 @@ public class SpeechExecutor {
             case TRIGGER:
                 master.getMissionMaster().getScriptManager().parseScripts(full);
                 break;
+
+            case WAIT_PASS:
+                bool = true;
+                if (!vars.isEmpty()) {
+                    max = Integer.valueOf(vars.get(0));
+                }
             case WAIT_FOR_NO_COMMENTS:
                 max = Integer.valueOf(value);
                 WaitMaster.waitForCondition(delta ->
-                        DungeonScreen.getInstance().getGridPanel().getActiveCommentSprites().isEmpty(), max);
+                        gdxActions.getNoCommentsCondition(), max);
                 break;
             case WAIT_ANIMS:
-                Predicate<Float> p = delta -> {
-                    if (!AnimMaster.getInstance().isDrawing()) {
-                        LogMaster.devLog("Anims waiting unlocked! ");
-                        return true;
-                    }
-                    LogMaster.devLog("Anims waiting... ");
-                    return false;
-                };
+                Predicate<Float> p = gdxActions.getNoAnimsCondition();
                 LogMaster.devLog("Anims wait locked! ");
                 if (NumberUtils.isInteger(value)) {
                     WaitMaster.waitForCondition(p, Integer.valueOf(value));
@@ -477,11 +464,6 @@ public class SpeechExecutor {
                 //                } else
                 //                    execute(WAIT_FOR, WaitMaster.WAIT_OPERATIONS.ANIMATION_FINISHED.toString());
                 break;
-            case WAIT_PASS:
-                bool = true;
-                if (!vars.isEmpty()) {
-                    max = Integer.valueOf(vars.get(0));
-                }
             case WAIT_INPUT:
                 //                DungeonScreen.getInstance().getController().onInput(() -> {
                 //                    WaitMaster.WAIT_OPERATIONS operation = WaitMaster.WAIT_OPERATIONS.INPUT;
@@ -497,7 +479,7 @@ public class SpeechExecutor {
                 }
                 Lock lock = new ReentrantLock();
                 Condition waiting = lock.newCondition();
-                GdxMaster.onInput(() -> {
+                GdxAdapter.onInput(() -> {
                             LogMaster.devLog("Scripts Unlocking..");
                             lock.lock();
                             waiting.signal();
@@ -533,7 +515,7 @@ public class SpeechExecutor {
                 }
                 break;
             case PASS:
-                DungeonScreen.getInstance().getController().inputPass();
+                GdxAdapter.inputPass();
                 break;
 
             case WAIT_FOR:
@@ -558,12 +540,12 @@ public class SpeechExecutor {
                 break;
             case AMBI_VFX:
                 GenericEnums.VFX vfx = new EnumMaster<GenericEnums.VFX>().retrieveEnumConst(GenericEnums.VFX.class, value);
-                Vector2 vector = getCenteredPos(getCoordinate(vars.get(0)));
-                GuiEventManager.triggerWithParams(GuiEventType.ADD_AMBI_VFX, vfx, vector);
+                GuiEventManager.triggerWithParams(GuiEventType.ADD_AMBI_VFX, vfx, getCoordinate(vars.get(0)));
                 break;
             case VFX:
                 bool = true;
-                value = SpellVfxMaster.checkAlias(value);
+                //TODO gdx sync
+                // value = SpellVfxMaster.checkAlias(value);
             case SPRITE:
                 String script = null;
                 Boolean sequential = null;
@@ -599,23 +581,11 @@ public class SpeechExecutor {
                         }
                     };
                 }
-                SimpleAnim simpleAnim = new SimpleAnim(
-                        bool ? value : "",
-                        bool ? "" : value, onDone);
-                Vector2 v = getCenteredPos(c);
-                simpleAnim.setOrigin(v);
-                //                simpleAnim.setBlending(b);
-                //                simpleAnim.setFps(f);
-                if (dest != null) {
-                    Vector2 v2 = getCenteredPos(dest);
-                    simpleAnim.setDest(v2);
-                }
-                if (sequential == null) {
-                    simpleAnim.setParallel(true);
-                }
-                AnimMaster.onCustomAnim(simpleAnim);
+                gdxActions.doSpriteAnim(bool, value, onDone, c, dest,sequential);
+
                 break;
             case FULLSCREEN:
+
                 FULLSCREEN_ANIM anim = new EnumMaster<FULLSCREEN_ANIM>().retrieveEnumConst(FULLSCREEN_ANIM.class, value);
                 FullscreenAnimDataSource data = new FullscreenAnimDataSource(anim, 1f,
                         FACING_DIRECTION.NORTH, BLENDING.SCREEN);
@@ -769,7 +739,7 @@ public class SpeechExecutor {
             case SOUND_VARIANT:
                 random = true;
             case SOUND:
-                SoundPlayer.cinematicSoundOverride = true;
+                DC_SoundMaster.getPlayer().setCinematicSoundOverride(true);
                 volume = 1f;
                 if (vars.size() > 0) {
                     volume = Float.valueOf(vars.get(0));
@@ -779,7 +749,7 @@ public class SpeechExecutor {
                 } catch (Exception e) {
                     ExceptionMaster.printStackTrace(e);
                 } finally {
-                    SoundPlayer.cinematicSoundOverride = false;
+                    DC_SoundMaster.getPlayer().setCinematicSoundOverride(false);
                 }
                 break;
             case VAR_INTEGER:
@@ -820,13 +790,14 @@ public class SpeechExecutor {
                 break;
 
             case PORTRAIT_ANIM:
+                //TODO
                 //animate the portait displayed in UI?
-                AnimMaster.onCustomAnim(value, true, 1, () -> {
-                    //                    handler.continues();
-                });
+                // AnimMaster.onCustomAnim(value, true, 1, () -> {
+                //     //                    handler.continues();
+                // });
                 break;
             case SHAKE:
-                doShake(value, vars);
+               gdxActions.doShake(value, vars);
                 break;
             case PORTAL:
                 switch (value) {
@@ -887,17 +858,16 @@ public class SpeechExecutor {
                 PARTICLES_SPRITE type = new EnumMaster<PARTICLES_SPRITE>().retrieveEnumConst(PARTICLES_SPRITE.class, value);
                 GuiEventManager.triggerWithParams(GuiEventType.SET_PARTICLES_ALPHA, type, alpha);
                 break;
-            case AUTOCAMERA:
-                handler.setAutoCamera(!value.equalsIgnoreCase("off"));
-                break;
             case ZOOM:
                 //                if (vars.size() < 2) {
                 //                    vars.add("swing");
                 //                }
-                MotionData motion =
-                        getMotionData(value, vars, true);
-                GuiEventManager.trigger(GuiEventType.CAMERA_ZOOM, motion);
+                gdxActions.doZoom(value, vars);
                 break;
+            case AUTOCAMERA:
+                handler.setAutoCamera(!value.equalsIgnoreCase("off"));
+                break;
+
 
             case DIALOGUE_AFTER:
                 String finalValue = value;
@@ -959,19 +929,7 @@ public class SpeechExecutor {
                 } else if (speechAction == REMOVE_GRID_OBJ) {
                     GuiEventManager.triggerWithParams(GuiEventType.REMOVE_GRID_OBJ, value, c);
                 } else {
-                    GridObject x;
-                    obj = new EnumMaster<CUSTOM_OBJECT>().retrieveEnumConst(CUSTOM_OBJECT.class, value);
-                    if (speechAction == LINKED_OBJ) {
-                        BaseView view = ScreenMaster.getGrid().getViewMap().get(unit);
-                        x = new LinkedGridObject(view, obj, c);
-                        x.setUnder(under);
-                        GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, x);
-                    } else {
-                        x = new CinematicGridObject(c, obj);
-                        x.setUnder(under);
-                        GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ,
-                                x);
-                    }
+                    gdxActions.doGridObj(speechAction, unit, c, under);
                 }
 
                 break;
@@ -1009,7 +967,7 @@ public class SpeechExecutor {
                     waitOnEachLine = getWaitTime(Integer.valueOf(value), vars);
                 break;
             case TIME:
-                container. setTime(new Float(Integer.valueOf(value)));
+                container.setTime(new Float(Integer.valueOf(value)));
                 break;
             case ABS:
                 WAIT((Integer.valueOf(value)));
@@ -1031,8 +989,8 @@ public class SpeechExecutor {
             case NEXT:
                 //                container.getCurrent().disableTimer();
                 //                WaitMaster.doAfterWait(getWaitTime(Integer.valueOf(value), vars), () -> container.getCurrent().tryNext());
-                container. disableTimer();
-                container. setTime(new Float(getNextTime(Integer.valueOf(value), vars)));
+                container.disableTimer();
+                container.setTime(new Float(getNextTime(Integer.valueOf(value), vars)));
                 break;
             case DIALOGUE:
                 switch (value) {
@@ -1180,8 +1138,6 @@ public class SpeechExecutor {
                 case "addAction":
                 case "removeAction":
                     break;
-
-
                 case "remove":
                     unit.kill(unit, false, true);
                     GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL, unit);
@@ -1202,7 +1158,8 @@ public class SpeechExecutor {
                     //                    unit.kill(unit, false, false);
                     unit.kill(unit, false, true);
                     if (unit instanceof Unit) {
-                        new DeathAnim(unit).startAsSingleAnim(Ref.getSelfTargetingRefCopy(unit));
+                        //TODO gdx sync
+                        // new DeathAnim(unit).startAsSingleAnim(Ref.getSelfTargetingRefCopy(unit));
                     }
                     if (value.equalsIgnoreCase("replace"))
                         if (vars.size() > 0) {
@@ -1224,75 +1181,6 @@ public class SpeechExecutor {
 
     }
 
-    protected void doShake(String value, List<String> vars) {
-        float intensity = Float.valueOf(value);
-        float dur = Float.valueOf(vars.get(0));
-        Screenshake.ScreenShakeTemplate temp = Screenshake.ScreenShakeTemplate.MEDIUM;
-        if (intensity < 30) {
-            temp = Screenshake.ScreenShakeTemplate.SLIGHT;
-        }
-        if (intensity > 60) {
-            temp = Screenshake.ScreenShakeTemplate.HARD;
-        }
-        if (intensity > 110) {
-            temp = Screenshake.ScreenShakeTemplate.BRUTAL;
-        }
-        Boolean vert = null;
-        if (vars.size() > 1) {
-
-            //
-
-            vert = vars.get(1).equalsIgnoreCase("vert");
-        }
-        GuiEventManager.trigger(GuiEventType.CAMERA_SHAKE, new Screenshake(dur, vert, temp));
-
-    }
-
-    protected void doCamera(String value, List<String> vars, SpeechScript.SCRIPT speechAction) {
-        MotionData motionData = getMotionData(value, vars, false);
-        if (speechAction == CAMERA_SET) {
-            GuiEventManager.trigger(GuiEventType.CAMERA_SET_TO, motionData.dest);
-            return;
-        }
-        GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO, motionData);
-    }
-
-    protected MotionData getMotionData(String value, List<String> vars, boolean zoom) {
-        Vector2 v = null;
-        if (!zoom) {
-            switch (value) {
-                case "me":
-                    v = getCenteredPos(Eidolons.getPlayerCoordinates());
-                    break;
-                case "orig":
-                    v = new Vector2(0, 0);
-                    break;
-            }
-            if (v == null) {
-                v = getCenteredPos(getCoordinate(value));
-            }
-        }
-        float duration = 0f;
-        if (vars.size() > 0) {
-            try {
-                duration = Float.valueOf(vars.get(0));
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-        }
-        Interpolation interpolation = null;
-        if (vars.size() > 1) {
-            interpolation = ActionMaster.getInterpolation(vars.get(1));
-        }
-        if (zoom) {
-            //        new CameraMan.MotionData(Float.valueOf(value) / 100, Float.valueOf(vars.getVar(0)) / 1000, Interpolation.swing);
-            if (duration >= 500) {
-                duration = duration / 1000;
-            }
-            return new MotionData(Float.valueOf(value) / 100, duration, interpolation);
-        }
-        return new MotionData(v, duration, interpolation);
-    }
 
     protected BattleFieldObject getUnit(String value) {
         value = value.trim();

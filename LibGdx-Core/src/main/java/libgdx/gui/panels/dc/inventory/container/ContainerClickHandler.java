@@ -77,7 +77,7 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
         }
         DC_HeroItemObj item = (DC_HeroItemObj) cellContents;
         if (!GoldMaster.isGoldPack(item) && hero.isInventoryFull()) {
-            FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.DEFAULT,
+            FloatingTextMaster.getInstance().createFloatingText(VisualEnums.TEXT_CASES.DEFAULT,
                     "Inventory is full!", hero);
             EUtils.showInfoText("Inventory is full!");
             return false;
@@ -110,7 +110,7 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
             if (item == null)
                 continue;
             if (hero.isInventoryFull()) {
-                FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.DEFAULT,
+                FloatingTextMaster.getInstance().createFloatingText(VisualEnums.TEXT_CASES.DEFAULT,
                         "Inventory is full!", hero);
                 EUtils.showInfoText("Inventory is full!");
                 return;

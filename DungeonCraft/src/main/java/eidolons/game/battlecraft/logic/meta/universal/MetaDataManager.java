@@ -2,7 +2,6 @@ package eidolons.game.battlecraft.logic.meta.universal;
 
 import eidolons.game.battlecraft.EngineLauncher;
 import eidolons.game.core.launch.CustomLaunch;
-import libgdx.launch.MainLauncher;
 
 /**
  * Created by JustMe on 5/8/2017.

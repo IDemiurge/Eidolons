@@ -5,12 +5,17 @@ import com.badlogic.gdx.utils.Array;
 import eidolons.content.consts.Sprites;
 import eidolons.content.consts.VisualEnums;
 import eidolons.system.libgdx.api.GdxManagerApi;
+import libgdx.anims.main.AnimMaster;
+import libgdx.anims.main.EventAnimCreator;
+import libgdx.anims.text.FloatingTextMaster;
 import libgdx.assets.AssetEnums;
 import libgdx.assets.Atlases;
 import libgdx.particles.util.EmitterPresetMaster;
 import libgdx.screens.ScreenMaster;
 import libgdx.texture.TextureCache;
 import main.data.filesys.PathFinder;
+import main.entity.obj.Obj;
+import main.game.logic.event.Event;
 import main.system.auxiliary.data.FileManager;
 
 public class GdxManagerImpl implements GdxManagerApi {
@@ -54,5 +59,20 @@ public class GdxManagerImpl implements GdxManagerApi {
     @Override
     public String getVfxImgPath(String vfxPath) {
         return                EmitterPresetMaster.getInstance().getImagePath(vfxPath);
+    }
+
+    @Override
+    public void checkHpBarReset(Obj sourceObj) {
+        ScreenMaster.getGrid().getGridManager().getEventHandler().checkHpBarReset(sourceObj);
+    }
+
+    @Override
+    public boolean isEventDisplayable(Event event) {
+        return FloatingTextMaster.isEventDisplayable(event);
+    }
+
+    @Override
+    public boolean isEventAnimated(Event event) {
+        return EventAnimCreator.isEventAnimated(event);
     }
 }

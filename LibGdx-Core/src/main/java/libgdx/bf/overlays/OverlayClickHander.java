@@ -1,5 +1,6 @@
 package libgdx.bf.overlays;
 
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -28,7 +29,7 @@ public class OverlayClickHander {
                         }
                         Eidolons.activateMainHeroAction(ActionEnums.PICK_UP);
                     } else {
-                        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
+                        FloatingTextMaster.getInstance().createFloatingText(VisualEnums.TEXT_CASES.REQUIREMENT,
                          "Move onto this cell to pick up items", Eidolons.getMainHero());
                     }
                 }

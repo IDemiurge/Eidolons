@@ -11,13 +11,6 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.HeroManager;
 import libgdx.anims.text.FloatingTextMaster;
-import libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
-import libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
-import libgdx.gui.panels.headquarters.datasource.HeroDataModel;
-import libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
-import libgdx.gui.panels.headquarters.datasource.HqDataMaster;
-import libgdx.screens.ScreenMaster;
-import libgdx.anims.text.FloatingTextMaster;
 import libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import libgdx.gui.panels.headquarters.datasource.HqDataMaster;
@@ -112,7 +105,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 
     protected boolean checkCanAddInventory() {
         if (hero.isInventoryFull()) {
-            FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.DEFAULT,
+            FloatingTextMaster.getInstance().createFloatingText(VisualEnums.TEXT_CASES.DEFAULT,
                     "Inventory is full!", hero);
             EUtils.showInfoText("Inventory is full!");
             return false;

@@ -706,6 +706,8 @@ public abstract class Player {
 
     public abstract void setPositionFor(Coordinates c);
 
+    public abstract void setCinematicSoundOverride(boolean b);
+
 
     // VOLUME CONTROL TO BE ADDED TODO
     // main.system.auxiliary.LogMaster.verbose( "playing - " + sound +

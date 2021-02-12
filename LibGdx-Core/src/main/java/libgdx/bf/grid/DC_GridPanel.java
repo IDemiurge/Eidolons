@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.ObjectMap;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
@@ -17,6 +18,7 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.grid.VoidHandle
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.InteractiveObj;
 import eidolons.game.netherflame.boss.anims.generic.BossVisual;
@@ -27,7 +29,6 @@ import libgdx.anims.main.AnimMaster;
 import libgdx.anims.text.FloatingTextMaster;
 import libgdx.bf.Borderable;
 import libgdx.bf.GridMaster;
-import libgdx.bf.TargetRunnable;
 import libgdx.bf.decor.shard.ShardVisuals;
 import libgdx.bf.grid.cell.*;
 import libgdx.bf.grid.moving.PlatformCell;
@@ -38,7 +39,6 @@ import libgdx.screens.dungeon.DungeonScreen;
 import libgdx.shaders.GrayscaleShader;
 import libgdx.shaders.ShaderDrawer;
 import eidolons.system.text.HelpMaster;
-import libgdx.bf.grid.cell.*;
 import libgdx.texture.TextureCache;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.entity.obj.Obj;
@@ -354,10 +354,10 @@ public class DC_GridPanel extends GridPanel {
         });
 
         GuiEventManager.bind(SELECT_MULTI_OBJECTS, obj -> {
-            Pair<Set<BattleFieldObject>, TargetRunnable> p =
-                    (Pair<Set<BattleFieldObject>, TargetRunnable>) obj.get();
+            Pair<Set<BattleFieldObject>, DC_GameManager.TargetRunnable> p =
+                    (Pair<Set<BattleFieldObject>, DC_GameManager.TargetRunnable>) obj.get();
             if (p.getLeft().isEmpty()) {
-                FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
+                FloatingTextMaster.getInstance().createFloatingText(VisualEnums.TEXT_CASES.REQUIREMENT,
                         "No targets available!",
                         Eidolons.getGame().getManager().getControlledObj());
                 GdxMaster.setDefaultCursor();

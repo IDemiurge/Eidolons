@@ -26,12 +26,13 @@ public class SoundPlayer extends Player {
     DungeonScreen dungeonScreen;
     private Vector2 position;
     private float waitTime = 0;
-    public static boolean cinematicSoundOverride; //TODO refactor
+    private boolean cinematicSoundOverride; //TODO refactor
 
     public SoundPlayer(DungeonScreen dungeonScreen) {
         this.dungeonScreen = dungeonScreen;
 
     }
+
 
 
     public enum SOUND_TYPE {
@@ -161,6 +162,9 @@ public class SoundPlayer extends Player {
         //pause sounds
     }
 
+    public void setCinematicSoundOverride(boolean cinematicSoundOverride) {
+        this.cinematicSoundOverride = cinematicSoundOverride;
+    }
     private boolean isWaitBetweenSounds() {
         return false;
     }

@@ -2,10 +2,10 @@ package libgdx.particles;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import eidolons.content.consts.VisualEnums;
 import libgdx.anims.sprite.SpriteX;
 import libgdx.bf.Fluctuating;
 import libgdx.gui.generic.GroupX;
-import main.content.enums.GenericEnums;
 import main.data.XLinkedMap;
 import main.system.auxiliary.RandomWizard;
 
@@ -15,48 +15,10 @@ public class ParticlesSprite extends GroupX {
     static {
     }
 
-    public enum PARTICLES_SPRITE {
-        ASH(false, "sprites/particles/snow.txt", GenericEnums.BLENDING.INVERT_SCREEN,
-                12, 2, GenericEnums.ALPHA_TEMPLATE.OVERLAYS),
-        ASH_THICK(false, "sprites/particles/snow.txt", GenericEnums.BLENDING.INVERT_SCREEN,
-                14, 3, GenericEnums.ALPHA_TEMPLATE.OVERLAYS),
-//        MIST(true, "sprites/particles/mist.txt", GenericEnums.BLENDING.SCREEN,
-//                10, 2, null),
-//        BLACK_MIST(true, "sprites/particles/mist.txt", GenericEnums.BLENDING.INVERT_SCREEN,
-//                10, 2, GenericEnums.ALPHA_TEMPLATE.OVERLAYS),
-        SNOW(false, "sprites/particles/snow.txt", GenericEnums.BLENDING.SCREEN,
-                14, 2, GenericEnums.ALPHA_TEMPLATE.OVERLAYS),
-        SNOW_THICK(false, "sprites/particles/snow.txt", GenericEnums.BLENDING.SCREEN,
-                15, 3, GenericEnums.ALPHA_TEMPLATE.OVERLAYS),
-        ;
-
-
-        PARTICLES_SPRITE(boolean flipping, String path, GenericEnums.BLENDING blending, int fps, int overlap, GenericEnums.ALPHA_TEMPLATE fluctuation) {
-            this.flipping = flipping;
-            this.path = path;
-            this.blending = blending;
-            this.fps = fps;
-            this.overlap = overlap;
-            this.fluctuation = fluctuation;
-        }
-
-        public boolean reverse;
-        public boolean flipping;
-        public String path;
-        public GenericEnums.BLENDING blending;
-        int fps;
-        int overlap;
-        boolean changeFps;
-
-        GenericEnums.ALPHA_TEMPLATE fluctuation;
-        int eachNisFlipX = 0;
-        public int duration;
-    }
-
-    PARTICLES_SPRITE type;
+    VisualEnums.PARTICLES_SPRITE type;
     Map<SpriteX, Fluctuating> map = new XLinkedMap<>();
 
-    public ParticlesSprite(PARTICLES_SPRITE type) {
+    public ParticlesSprite(VisualEnums.PARTICLES_SPRITE type) {
         this.type = type;
         init();
     }

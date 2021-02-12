@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
 import com.bitfire.postprocessing.PostProcessorEffect;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
@@ -25,14 +26,14 @@ import static eidolons.game.battlecraft.ai.tools.ParamAnalyzer.BUFF_RULE_STATUS.
  * Created by JustMe on 12/5/2018.
  */
 public class PostFxUpdater {
-    public static final POST_FX_FACTOR[] vals = POST_FX_FACTOR.values();
+    public static final VisualEnums.POST_FX_FACTOR[] vals = VisualEnums.POST_FX_FACTOR.values();
     PostProcessController controller;
-    private final Map<POST_FX_FACTOR, FloatAction> fxMap = new LinkedHashMap<>();
+    private final Map<VisualEnums.POST_FX_FACTOR, FloatAction> fxMap = new LinkedHashMap<>();
 
     public static Boolean heroFxOff;
     public static Boolean shadowFxOff;
     Actor actor;
-    private POST_FX_TEMPLATE template;
+    private VisualEnums.POST_FX_TEMPLATE template;
 
     public PostFxUpdater(PostProcessController controller, Actor actor) {
         this.controller = controller;
@@ -40,7 +41,7 @@ public class PostFxUpdater {
         bindEvents();
     }
 
-    public void apply(POST_FX_FACTOR factor, float coef) {
+    public void apply(VisualEnums.POST_FX_FACTOR factor, float coef) {
         FloatAction prev = fxMap.get(factor);
         if (prev != null) {
             prev.setStart(prev.getValue());
@@ -55,7 +56,7 @@ public class PostFxUpdater {
         fxMap.put(factor, prev);
     }
 
-    private float getDuration(float coef, POST_FX_FACTOR factor) {
+    private float getDuration(float coef, VisualEnums.POST_FX_FACTOR factor) {
         return 5f;
     }
 
@@ -69,7 +70,7 @@ public class PostFxUpdater {
 //            PostProcessingOptions options = (PostProcessingOptions) p.getVar();
 //            update(options);
             fxMap.clear();
-            template = (POST_FX_TEMPLATE) p.get();
+            template = (VisualEnums.POST_FX_TEMPLATE) p.get();
             main.system.auxiliary.log.LogMaster.log(1, ">>>>>>>>>>>>>>  Post processing template : " + template);
 //            bloom.setEnabled(true);
 //            vignette.setEnabled(true);
@@ -125,7 +126,7 @@ public class PostFxUpdater {
         applyFactors();
     }
 
-    private void applyTemplate(POST_FX_TEMPLATE template) {
+    private void applyTemplate(VisualEnums.POST_FX_TEMPLATE template) {
         switch (template) {
             case DIZZY:
             case INSPIRED:
@@ -134,15 +135,15 @@ public class PostFxUpdater {
                 break;
             case FEAR:
                 //dunno why but it looks dope
-                apply(POST_FX_FACTOR.FADE_COLOR, 0.0f);
-                apply(POST_FX_FACTOR.BLOOM, 0f);
-                apply(POST_FX_FACTOR.LENS, 0.0f);
-                apply(POST_FX_FACTOR.BLUR, 0.0f);
+                apply(VisualEnums.POST_FX_FACTOR.FADE_COLOR, 0.0f);
+                apply(VisualEnums.POST_FX_FACTOR.BLOOM, 0f);
+                apply(VisualEnums.POST_FX_FACTOR.LENS, 0.0f);
+                apply(VisualEnums.POST_FX_FACTOR.BLUR, 0.0f);
                 break;
             case MAZE:
             case PALE_ASPECT:
-                apply(POST_FX_FACTOR.FADE_COLOR, 0.8f);
-                apply(POST_FX_FACTOR.BLUR, 0.1f);
+                apply(VisualEnums.POST_FX_FACTOR.FADE_COLOR, 0.8f);
+                apply(VisualEnums.POST_FX_FACTOR.BLUR, 0.1f);
                 break;
             case MOSAIC:
 //                apply(POST_FX_FACTOR.BLOOM, 0.1f);
@@ -153,11 +154,11 @@ public class PostFxUpdater {
                 if (shadowFxOff == true) {
                     return;
                 }
-                apply(POST_FX_FACTOR.FADE_COLOR, 0.8f);
+                apply(VisualEnums.POST_FX_FACTOR.FADE_COLOR, 0.8f);
 //                apply(POST_FX_FACTOR.DISCOLOR, 0.5f);
-                apply(POST_FX_FACTOR.BLOOM, 1.05f);
-                apply(POST_FX_FACTOR.LENS, 0.3f);
-                apply(POST_FX_FACTOR.BLUR, 0.5f);
+                apply(VisualEnums.POST_FX_FACTOR.BLOOM, 1.05f);
+                apply(VisualEnums.POST_FX_FACTOR.LENS, 0.3f);
+                apply(VisualEnums.POST_FX_FACTOR.BLUR, 0.5f);
                 break;
         }
     }
@@ -173,26 +174,26 @@ public class PostFxUpdater {
         switch (rule) {
             case STAMINA:
                 if (status == CRITICAL) {
-                    apply(POST_FX_FACTOR.FADE_COLOR, 1);
-                    apply(POST_FX_FACTOR.BLUR, 0.5f);
+                    apply(VisualEnums.POST_FX_FACTOR.FADE_COLOR, 1);
+                    apply(VisualEnums.POST_FX_FACTOR.BLUR, 0.5f);
 //                    apply(POST_FX_FACTOR.DARKEN, 0.7f);
                 } else if (status == LOW) {
-                    apply(POST_FX_FACTOR.FADE_COLOR, 0.7f);
+                    apply(VisualEnums.POST_FX_FACTOR.FADE_COLOR, 0.7f);
 //                    apply(POST_FX_FACTOR.DARKEN, 0.9f);
-                    apply(POST_FX_FACTOR.SMOOTH, 1.2f);
-                    apply(POST_FX_FACTOR.BLUR, 0.2f);
+                    apply(VisualEnums.POST_FX_FACTOR.SMOOTH, 1.2f);
+                    apply(VisualEnums.POST_FX_FACTOR.BLUR, 0.2f);
                 } else if (status == HIGH) {
 //                    apply(POST_FX_FACTOR.LIGHTEN, 1.2f);
-                    apply(POST_FX_FACTOR.SMOOTH, 1.2f);
+                    apply(VisualEnums.POST_FX_FACTOR.SMOOTH, 1.2f);
                 }
                 break;
             case MORALE:
                 if (status == CRITICAL) {
-                    apply(POST_FX_FACTOR.BLUR, 1);
-                    apply(POST_FX_FACTOR.DISCOLOR, 1);
+                    apply(VisualEnums.POST_FX_FACTOR.BLUR, 1);
+                    apply(VisualEnums.POST_FX_FACTOR.DISCOLOR, 1);
                 } else if (status == LOW) {
-                    apply(POST_FX_FACTOR.BLUR, 0.6f);
-                    apply(POST_FX_FACTOR.FADE_COLOR, 0.6f);
+                    apply(VisualEnums.POST_FX_FACTOR.BLUR, 0.6f);
+                    apply(VisualEnums.POST_FX_FACTOR.FADE_COLOR, 0.6f);
                 } else if (status == HIGH) {
 //                    apply(POST_FX_FACTOR.BLOOM, 1.21f);
 //                    apply(POST_FX_FACTOR.LIGHTEN, 1.2f);
@@ -204,13 +205,13 @@ public class PostFxUpdater {
             case FOCUS:
                 if (status == CRITICAL) {
 //                    apply(POST_FX_FACTOR.DISTORT, 1);
-                    apply(POST_FX_FACTOR.BLUR, 0.6f);
-                    apply(POST_FX_FACTOR.MOTION_BLUR, 0.6f);
+                    apply(VisualEnums.POST_FX_FACTOR.BLUR, 0.6f);
+                    apply(VisualEnums.POST_FX_FACTOR.MOTION_BLUR, 0.6f);
                 } else if (status == LOW) {
-                    apply(POST_FX_FACTOR.BLUR, 0.4f);
-                    apply(POST_FX_FACTOR.MOTION_BLUR, 0.4f);
+                    apply(VisualEnums.POST_FX_FACTOR.BLUR, 0.4f);
+                    apply(VisualEnums.POST_FX_FACTOR.MOTION_BLUR, 0.4f);
                 } else if (status == HIGH) {
-                    apply(POST_FX_FACTOR.LENS2, 1.2f);
+                    apply(VisualEnums.POST_FX_FACTOR.LENS2, 1.2f);
 //                    apply(POST_FX_FACTOR.SMOOTH, 1.2f);
 //                    apply(POST_FX_FACTOR.DISTORT, -0.31f);
                 }
@@ -218,10 +219,10 @@ public class PostFxUpdater {
 
             case WOUNDS:
                 if (status == CRITICAL) {
-                    apply(POST_FX_FACTOR.BLOODY, 1);
+                    apply(VisualEnums.POST_FX_FACTOR.BLOODY, 1);
 //                    apply(POST_FX_FACTOR.DISCOLOR, 1);
                 } else if (status == LOW) {
-                    apply(POST_FX_FACTOR.BLOODY, 0.6f);
+                    apply(VisualEnums.POST_FX_FACTOR.BLOODY, 0.6f);
 //                    apply(POST_FX_FACTOR.DISCOLOR, 0.6f);
                 }
                 break;
@@ -229,8 +230,8 @@ public class PostFxUpdater {
     }
 
     private void applyTest(String value) {
-        FX_TEST_MODE mode = new EnumMaster<FX_TEST_MODE>().
-                retrieveEnumConst(FX_TEST_MODE.class, value);
+        VisualEnums.FX_TEST_MODE mode = new EnumMaster<VisualEnums.FX_TEST_MODE>().
+                retrieveEnumConst(VisualEnums.FX_TEST_MODE.class, value);
         if (mode != null)
             switch (mode) {
                 case CRITICAL_ALL:
@@ -269,7 +270,7 @@ public class PostFxUpdater {
 
     private void applyFactors() {
 
-        for (POST_FX_FACTOR fxFactor : vals) {
+        for (VisualEnums.POST_FX_FACTOR fxFactor : vals) {
             PostProcessorEffect effect = getEffect(fxFactor);
             if (effect == null) {
                 continue;
@@ -290,7 +291,7 @@ public class PostFxUpdater {
 //                fxMap.remove(POST_FX_FACTOR.FADE_COLOR);
 //                fxMap.remove(POST_FX_FACTOR.SMOOTH);
 //            }
-    private PostProcessorEffect getEffect(POST_FX_FACTOR fxFactor) {
+    private PostProcessorEffect getEffect(VisualEnums.POST_FX_FACTOR fxFactor) {
         switch (fxFactor) {
 
             case DISTORT:
@@ -321,54 +322,4 @@ public class PostFxUpdater {
         return null;
     }
 
-    public enum FX_TEST_MODE {
-        CRITICAL_ALL,
-        HIGH_ALL,
-        MIXED_1,
-        MIXED_2,
-        LOW_ALL,
-
-        STA,
-        STA2,
-        STA3,
-        FOC,
-        FOC2,
-        FOC3,
-        MOR,
-        MOR2,
-        MOR3,
-        WOU,
-        WOU2,
-    }
-
-    public enum POST_FX_FACTOR {
-        DISCOLOR,
-        FADE_COLOR,
-        BLUR,
-        LENS,
-        BLOOM,
-        DARKEN,
-        LIGHTEN,
-        BLOODY, //red vignette
-        MOTION_BLUR,
-        //burn, disease,
-        // night sight ,
-        DISTORT, SMOOTH, LENS2
-    }
-
-    public enum POST_FX_TEMPLATE {
-        DIZZY,
-        FATIGUE,
-        ENERGIZED,
-        FEAR,
-        INSPIRED, UNCONSCIOUS(),
-
-        PALE_ASPECT, MAZE(), MOSAIC();
-
-        public final POST_FX_FACTOR[] factors;
-
-        POST_FX_TEMPLATE(POST_FX_FACTOR... factors) {
-            this.factors = factors;
-        }
-    }
 }

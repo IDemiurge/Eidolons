@@ -5,8 +5,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import eidolons.ability.effects.common.ModifyStatusEffect;
-import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.DC_Obj;
@@ -15,7 +13,6 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.MultiDamage;
 import eidolons.game.core.Eidolons;
-import eidolons.game.core.master.EffectMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.GdxMaster;
@@ -39,7 +36,6 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.Producer;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.FontMaster.FONT;
@@ -47,7 +43,6 @@ import main.system.images.ImageManager;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -71,7 +66,7 @@ public class FloatingTextMaster {
         return instance;
     }
 
-    private Color getColor(TEXT_CASES aCase, Object arg) {
+    private Color getColor(VisualEnums.TEXT_CASES aCase, Object arg) {
         switch (aCase) {
             case BONUS_DAMAGE:
                 Damage damage = (Damage) arg;
@@ -114,7 +109,7 @@ public class FloatingTextMaster {
         return Color.RED;
     }
 
-    private String getImage(Entity active, TEXT_CASES aCase, Object arg) {
+    private String getImage(Entity active, VisualEnums.TEXT_CASES aCase, Object arg) {
         if (EidolonsGame.FOOTAGE) {
 
             switch (aCase) {
@@ -154,7 +149,7 @@ public class FloatingTextMaster {
         return null;
     }
 
-    private String getText(Entity active, TEXT_CASES aCase, Object arg) {
+    private String getText(Entity active, VisualEnums.TEXT_CASES aCase, Object arg) {
         if (EidolonsGame.FOOTAGE) {
             switch (aCase) {
                 //                case COSTS:
@@ -200,7 +195,7 @@ public class FloatingTextMaster {
         return getCase(e) != null;
     }
 
-    private static TEXT_CASES getCase(Event e) {
+    private static VisualEnums.TEXT_CASES getCase(Event e) {
         //        TEXT_CASES CASE =null ;
         //        new EnumMaster<TEXT_CASES>().retrieveEnumConst(TEXT_CASES.class, e.getType().toString());
         //        if (CASE != null) {
@@ -209,13 +204,13 @@ public class FloatingTextMaster {
         if (e.getType() instanceof STANDARD_EVENT_TYPE) {
             switch ((STANDARD_EVENT_TYPE) e.getType()) {
                 case UNIT_HAS_BEEN_ANNIHILATED:
-                    return TEXT_CASES.ANNIHILATED;
+                    return VisualEnums.TEXT_CASES.ANNIHILATED;
                 case DURABILITY_LOST:
-                    return TEXT_CASES.DURABILITY_LOSS;
+                    return VisualEnums.TEXT_CASES.DURABILITY_LOSS;
                 case UNIT_ACQUIRES_STATUS:
-                    return TEXT_CASES.STATUS;
+                    return VisualEnums.TEXT_CASES.STATUS;
                 case UNIT_CHANGES_MODE:
-                    return TEXT_CASES.MODE;
+                    return VisualEnums.TEXT_CASES.MODE;
 
 
                 case COSTS_HAVE_BEEN_PAID:
@@ -232,30 +227,30 @@ public class FloatingTextMaster {
                             return null;
                     }
 
-                    return TEXT_CASES.COSTS;
+                    return VisualEnums.TEXT_CASES.COSTS;
                 case ATTACK_CRITICAL:
-                    return TEXT_CASES.ATTACK_CRITICAL;
+                    return VisualEnums.TEXT_CASES.ATTACK_CRITICAL;
                 case ATTACK_DODGED:
-                    return TEXT_CASES.ATTACK_DODGED;
+                    return VisualEnums.TEXT_CASES.ATTACK_DODGED;
                 case ATTACK_SNEAK:
-                    return TEXT_CASES.ATTACK_SNEAK;
+                    return VisualEnums.TEXT_CASES.ATTACK_SNEAK;
                 case ATTACK_INSTANT:
-                    return TEXT_CASES.ATTACK_INSTANT;
+                    return VisualEnums.TEXT_CASES.ATTACK_INSTANT;
                 case ATTACK_COUNTER:
-                    return TEXT_CASES.COUNTER_ATTACK;
+                    return VisualEnums.TEXT_CASES.COUNTER_ATTACK;
                 case ATTACK_OF_OPPORTUNITY:
-                    return TEXT_CASES.ATTACK_OF_OPPORTUNITY;
+                    return VisualEnums.TEXT_CASES.ATTACK_OF_OPPORTUNITY;
                 case ATTACK_PARRIED:
-                    return TEXT_CASES.ATTACK_PARRIED;
+                    return VisualEnums.TEXT_CASES.ATTACK_PARRIED;
                 case ACTION_MISSED:
-                    return TEXT_CASES.ATTACK_MISSED;
+                    return VisualEnums.TEXT_CASES.ATTACK_MISSED;
             }
         }
         return null;
     }
 
     public void addFloatingTextForEventAnim(Event e, CompositeAnim compositeAnim) {
-        TEXT_CASES CASE = getCase(e);
+        VisualEnums.TEXT_CASES CASE = getCase(e);
         if (CASE == null) {
             return;
         }
@@ -280,7 +275,7 @@ public class FloatingTextMaster {
         }
     }
 
-    public FloatingText getFloatingText(Entity active, TEXT_CASES CASE, Object arg) {
+    public FloatingText getFloatingText(Entity active, VisualEnums.TEXT_CASES CASE, Object arg) {
         String text = getText(active, CASE, arg);
         if (text == null) {
             text = "";
@@ -305,7 +300,7 @@ public class FloatingTextMaster {
         return floatingText;
     }
 
-    public static float getOffsetY(TEXT_CASES aCase, Object arg) {
+    public static float getOffsetY(VisualEnums.TEXT_CASES aCase, Object arg) {
         switch (aCase) {
             case BATTLE_COMMENT:
                 return -228;
@@ -313,7 +308,7 @@ public class FloatingTextMaster {
         return 0;
     }
 
-    public static float getOffsetX(TEXT_CASES aCase, Object arg) {
+    public static float getOffsetX(VisualEnums.TEXT_CASES aCase, Object arg) {
         switch (aCase) {
             case BATTLE_COMMENT:
                 return -228;
@@ -321,7 +316,7 @@ public class FloatingTextMaster {
         return 0;
     }
 
-    public static float getFadeIn(TEXT_CASES aCase, Object arg) {
+    public static float getFadeIn(VisualEnums.TEXT_CASES aCase, Object arg) {
         switch (aCase) {
             case BATTLE_COMMENT:
                 return 3.7f;
@@ -329,7 +324,7 @@ public class FloatingTextMaster {
         return 0;
     }
 
-    public static float getStayFull(TEXT_CASES aCase, Object arg) {
+    public static float getStayFull(VisualEnums.TEXT_CASES aCase, Object arg) {
         switch (aCase) {
             case BATTLE_COMMENT:
                 return 6 + (float) arg.toString().length() / 40;
@@ -338,7 +333,7 @@ public class FloatingTextMaster {
     }
 
 
-    private LabelStyle getFontStyle(TEXT_CASES aCase, Object arg) {
+    private LabelStyle getFontStyle(VisualEnums.TEXT_CASES aCase, Object arg) {
         int size = 21;
         switch (aCase) {
             case BATTLE_COMMENT:
@@ -380,7 +375,7 @@ public class FloatingTextMaster {
     }
 
     private FloatingText addFloatingText(DC_ActiveObj active,
-                                         TEXT_CASES CASE, Object arg, Animation animation, float delay) {
+                                         VisualEnums.TEXT_CASES CASE, Object arg, Animation animation, float delay) {
         Anim anim;
         if (animation instanceof Anim) {
             anim = ((Anim) animation);
@@ -416,7 +411,7 @@ public class FloatingTextMaster {
         return floatingText;
     }
 
-    private float getDisplacementY(TEXT_CASES aCase) {
+    private float getDisplacementY(VisualEnums.TEXT_CASES aCase) {
 
         switch (aCase) {
             case BATTLE_COMMENT:
@@ -425,7 +420,7 @@ public class FloatingTextMaster {
         return DEFAULT_DISPLACEMENT_Y;
     }
 
-    private float getDisplacementX(TEXT_CASES aCase) {
+    private float getDisplacementX(VisualEnums.TEXT_CASES aCase) {
         switch (aCase) {
             case BATTLE_COMMENT:
                 return 0;
@@ -437,7 +432,7 @@ public class FloatingTextMaster {
                         : DEFAULT_DISPLACEMENT_X;
     }
 
-    public static float getDefaultDuration(TEXT_CASES aCase, Object arg) {
+    public static float getDefaultDuration(VisualEnums.TEXT_CASES aCase, Object arg) {
         switch (aCase) {
             case REQUIREMENT:
                 return 14;
@@ -457,13 +452,13 @@ public class FloatingTextMaster {
                 FloatingText floatingText = addFloatingText(
                         (DC_ActiveObj) damage.getRef()
                                 .getObj(KEYS.ACTIVE),
-                        TEXT_CASES.BONUS_DAMAGE, bonus, anim, delay);
+                        VisualEnums.TEXT_CASES.BONUS_DAMAGE, bonus, anim, delay);
                 delay += floatingText.getDuration() / 2;
             }
         }
     }
 
-    private ANIM_PART getPart(TEXT_CASES aCase) {
+    private ANIM_PART getPart(VisualEnums.TEXT_CASES aCase) {
         switch (aCase) {
             case COSTS:
                 return VisualEnums.ANIM_PART.MISSILE;
@@ -471,7 +466,7 @@ public class FloatingTextMaster {
         return VisualEnums.ANIM_PART.IMPACT;
     }
 
-    public void createFloatingText(TEXT_CASES CASE, String arg, Entity entity) {
+    public void createFloatingText(VisualEnums.TEXT_CASES CASE, String arg, Entity entity) {
         if (ScreenMaster.getGrid() == null) {
             main.system.auxiliary.log.LogMaster.devLog("Cannot do float text w/o grid: " + arg);
             return;
@@ -489,12 +484,12 @@ public class FloatingTextMaster {
 
     }
 
-    private FloatingText createFloatingText(TEXT_CASES CASE, String arg, Entity entity,
+    private FloatingText createFloatingText(VisualEnums.TEXT_CASES CASE, String arg, Entity entity,
                                             Stage atCursorStage) {
         return createFloatingText(CASE, arg, entity, atCursorStage, null, null, null, true);
     }
 
-    public FloatingText createFloatingText(TEXT_CASES CASE, String arg, Entity entity,
+    public FloatingText createFloatingText(VisualEnums.TEXT_CASES CASE, String arg, Entity entity,
                                            Stage atCursorStage, Vector2 at, LabelStyle overrideFont, AtomicBoolean waiterFlag, boolean autoShow) {
         FloatingText text = null;
         try {
@@ -571,7 +566,7 @@ public class FloatingTextMaster {
             return;
         }
         FloatingText text = getFloatingText(active,
-                TEXT_CASES.PARAM_MOD,
+                VisualEnums.TEXT_CASES.PARAM_MOD,
                 new ImmutablePair<>(pair.getKey(), amount));
         Obj obj = active.getRef().getTargetObj();
         if (obj == null)
@@ -586,89 +581,5 @@ public class FloatingTextMaster {
         GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, text);
     }
 
-
-    public enum TEXT_CASES {
-        DEFAULT,
-        REQUIREMENT,
-        CANNOT_ACTIVATE,
-
-        BONUS_DAMAGE,
-        ATTACK_CRITICAL,
-        ATTACK_SNEAK,
-
-        ATTACK_DODGED,
-        ATTACK_BLOCKED,
-        ATTACK_PARRIED,
-        ATTACK_MISSED,
-
-        ATTACK_OF_OPPORTUNITY,
-        COUNTER_ATTACK,
-        ATTACK_INSTANT,
-
-        ROLL,
-        PARAM_MOD,
-        COSTS(true, (e) -> {
-            DC_ActiveObj a = (DC_ActiveObj) e.getRef().getActive();
-            List<Cost> costs = a.getCosts().getCosts();
-            costs.removeIf(c -> c.getPayment().getLastPaid() == 0
-                    //            getAmountFormula().toString().isEmpty()
-            );
-            return costs.toArray();
-        }),
-        STATUS(
-                false, (e) -> {
-            ModifyStatusEffect ef = (ModifyStatusEffect)
-                    EffectMaster.getFirstEffectOfClass((DC_ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
-            //                if (ef==null )
-            return ef.getValue().split(";");
-        }),
-        MODE(
-                false, (e) -> {
-            ModeEffect ef = (ModeEffect)
-                    EffectMaster.getFirstEffectOfClass((DC_ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
-            return new Object[]{
-                    ef.getMode()
-            };
-        }),
-
-        BATTLE_COMMENT,
-
-        HIT {
-            @Override
-            public Object[] getArgs(Event e) {
-                return new Object[]{
-                        e.getRef().getAmount()
-                };
-            }
-        }, DURABILITY_LOSS, ANNIHILATED,
-        XP,
-        GOLD,
-        LEVEL_UP;
-        public boolean atOrigin;
-        String name = StringMaster.format(name());
-        private Producer<Event, Object[]> argProducer;
-
-        TEXT_CASES() {
-
-        }
-
-        TEXT_CASES(boolean atOrigin, Producer<Event, Object[]> producer) {
-            this.atOrigin = atOrigin;
-            this.argProducer = producer;
-        }
-
-        public String getText() {
-            return name;
-        }
-
-        public Object[] getArgs(Event e) {
-            if (argProducer == null) {
-                return new Object[]{
-                        StringMaster.format(e.getType().toString())
-                };
-            }
-            return argProducer.produce(e);
-        }
-    }
 
 }

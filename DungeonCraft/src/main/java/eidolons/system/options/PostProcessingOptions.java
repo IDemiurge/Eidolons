@@ -1,5 +1,6 @@
 package eidolons.system.options;
 
+import eidolons.content.consts.VisualEnums;
 import libgdx.shaders.post.PostFxUpdater.FX_TEST_MODE;
 import eidolons.system.options.PostProcessingOptions.POST_PROCESSING_OPTIONS;
 
@@ -36,7 +37,7 @@ static {
 //        TEST_BLOOM_COEF(100, 0, 200),
 //        TEST_BLUR_COEF(100, 0, 200),
 //        TEST_SATURATE_COEF(100, 0, 200),
-        TEST_MODE(FX_TEST_MODE.values()),
+        TEST_MODE(VisualEnums.FX_TEST_MODE.values()),
         ;
         private Boolean exclusive;
         private Integer min;
