@@ -6,6 +6,9 @@ import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Awakener;
+import eidolons.puzzle.gridobj.CinematicGridObject;
+import eidolons.puzzle.gridobj.GridObject;
+import eidolons.puzzle.gridobj.LinkedGridObject;
 import eidolons.puzzle.voidy.VoidHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.GdxSpeechActions;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript;
@@ -156,7 +159,7 @@ public class SpeechActionsImpl implements GdxSpeechActions {
     }
 
     @Override
-    public void doGridObj(SpeechScript.SCRIPT speechAction, BattleFieldObject unit, Coordinates c, Boolean under) {
+    public void doGridObj(SpeechScript.SCRIPT speechAction, BattleFieldObject unit, Coordinates c, Boolean under, String value, BfObjEnums.CUSTOM_OBJECT obj) {
         GridObject x;
         obj = new EnumMaster<BfObjEnums.CUSTOM_OBJECT>().retrieveEnumConst(BfObjEnums.CUSTOM_OBJECT.class, value);
         if (speechAction == LINKED_OBJ) {

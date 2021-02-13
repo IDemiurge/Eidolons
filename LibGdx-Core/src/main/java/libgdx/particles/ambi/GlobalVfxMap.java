@@ -8,6 +8,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
 import eidolons.content.consts.libgdx.GdxColorMaster;
+import eidolons.system.libgdx.datasource.AmbienceDataSource;
 import libgdx.GdxMaster;
 import libgdx.bf.grid.cell.UnitGridView;
 import libgdx.gui.generic.GroupX;
@@ -26,7 +27,7 @@ import java.util.*;
  */
 public class GlobalVfxMap extends GroupX {
 
-    Map<DAY_TIME, Map<EmitterMap, AmbienceDataSource>> caches = new HashMap<>();
+    final Map<DAY_TIME, Map<EmitterMap, AmbienceDataSource>> caches = new HashMap<>();
     Map<Coordinates, Color> colorMap = new HashMap<>();
     private final List<EmitterMap> maps = new ArrayList<>();
     private Integer emitterCountControlCoef;

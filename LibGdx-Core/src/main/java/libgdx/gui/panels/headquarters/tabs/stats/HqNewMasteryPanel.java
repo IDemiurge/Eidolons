@@ -137,11 +137,6 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
     @Override
     protected PARAMETER[] initDataArray() {
         List<PARAMETER> unlocked = SkillMaster.getUnlockedMasteries(getUserObject().getEntity());
-        if (Flags.isIggDemoRunning()) {
-            List<PARAMETER> pool = IGG_Demo.getMasteriesForHero(getUserObject().getEntity().getName());
-            pool.removeIf(unlocked::contains);
-            return pool.toArray(new PARAMETER[0]) ;
-        }
         List<PARAMETER> availableMasteries = new ArrayList<>(
                 DC_ContentValsManager.getMasteries());
 

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import eidolons.content.consts.libgdx.GdxColorMaster;
-import libgdx.bf.datasource.GraphicData;
+import eidolons.content.consts.GraphicData;
 import libgdx.bf.grid.GridLayer;
 import libgdx.bf.grid.GridPanel;
 import main.game.bf.Coordinates;

@@ -1,13 +1,14 @@
 package com.bitfire.postprocessing.filters;
 
-import eidolons.libgdx.shaders.GrayscaleShader;
-import eidolons.libgdx.shaders.ShaderMaster.SHADER;
+import libgdx.shaders.GrayscaleShader;
+import libgdx.shaders.ShaderMaster;
 
 /**
  * Created by JustMe on 12/3/2018.
  */
 public class CustomFilter extends Filter<Filter> {
-    public CustomFilter(SHADER shader) {
+
+    public CustomFilter(ShaderMaster.SHADER shader) {
         super(GrayscaleShader.getGrayscaleShader());
     }
 

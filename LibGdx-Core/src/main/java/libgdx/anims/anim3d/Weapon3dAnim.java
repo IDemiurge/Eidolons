@@ -86,10 +86,10 @@ public class Weapon3dAnim extends ActionAnim {
         sprite.setSpeed(speedMod);
         sprite.setScale(getSpriteScale());
         sprite.setFlipX(checkFlipHorizontally());
-        if (isScreen()){
+        if (isScreen()) {
             sprite.setBlending(GenericEnums.BLENDING.SCREEN);
         }
-        if (isInvertScreen()){
+        if (isInvertScreen()) {
             sprite.setBlending(GenericEnums.BLENDING.INVERT_SCREEN);
         }
         if (!isRandomized()) {
@@ -105,8 +105,8 @@ public class Weapon3dAnim extends ActionAnim {
     }
 
     protected boolean isInvertScreen() {
-//        getActive().getActiveWeapon().checkSingleProp()
-//        return !getActive().getOwnerUnit().isMine();
+        //        getActive().getActiveWeapon().checkSingleProp()
+        //        return !getActive().getOwnerUnit().isMine();
         return false;
     }
 
@@ -116,8 +116,8 @@ public class Weapon3dAnim extends ActionAnim {
 
     protected String getDefaultTexturePath() {
         return StringMaster.getAppendedImageFile(
-         GdxStringUtils.
-          getAttackActionPath(getActive()), " 64");
+                GdxStringUtils.
+                        getAttackActionPath(getActive()), " 64");
     }
 
     private boolean isRandomized() {
@@ -131,11 +131,11 @@ public class Weapon3dAnim extends ActionAnim {
         List<DC_ActiveObj> subactions = new ArrayList<>(getActive().getParentAction().getSubActions());
         subactions.remove(getActive());
         subactions.removeIf(a ->
-         a.isThrow() ||
-          a.getActiveWeapon() != getActive().getActiveWeapon());
+                a.isThrow() ||
+                        a.getActiveWeapon() != getActive().getActiveWeapon());
         Array<AtlasRegion> newRegions = Atlases.getRegions(
-         VisualEnums.WEAPON_ANIM_CASE.NORMAL, subactions.get(RandomWizard.getRandomIndex(subactions))
-         , getProjection(ref,getActive()).bool);
+                VisualEnums.WEAPON_ANIM_CASE.NORMAL, subactions.get(RandomWizard.getRandomIndex(subactions))
+                , getProjection(ref, getActive()).bool);
 
         newRegions.removeRange(0, newRegions.size / 2);
 
@@ -159,19 +159,19 @@ public class Weapon3dAnim extends ActionAnim {
     protected boolean checkFlipHorizontally() {
         boolean offhand = getActive().isOffhand();
         boolean flipHor;
-        if (getProjection(ref,getActive()) == VisualEnums.PROJECTION.HOR) {
+        if (getProjection(ref, getActive()) == VisualEnums.PROJECTION.HOR) {
             flipHor = getActive().getOwnerUnit().getFacing() == FACING_DIRECTION.WEST;
             // PositionMaster.isToTheLeft(activeObj.getOwnerUnit(), targetObj);
         } else {
-            flipHor = (getProjection(ref,getActive()) == VisualEnums.PROJECTION.TO) != offhand;
-//            if (RandomWizard.chance(33))
-//                flipHor = !flipHor; TODO anim Review - is it viable?
+            flipHor = (getProjection(ref, getActive()) == VisualEnums.PROJECTION.TO) != offhand;
+            //            if (RandomWizard.chance(33))
+            //                flipHor = !flipHor; TODO anim Review - is it viable?
         }
         return flipHor;
     }
 
     protected SpriteAnimation get3dSprite() {
-        VisualEnums.PROJECTION projection = getProjection(ref,getActive());
+        VisualEnums.PROJECTION projection = getProjection(ref, getActive());
 
         sprite = projectionsMap.get(projection);
         if (sprite != null) {
@@ -193,12 +193,12 @@ public class Weapon3dAnim extends ActionAnim {
 
     @Override
     public Vector2 getOffsetOrigin() {
-        switch (getProjection(ref,getActive())) {
-            case VisualEnums.PROJECTION.FROM:
+        switch (getProjection(ref, getActive())) {
+            case FROM:
                 return new Vector2(0, 32);
-            case VisualEnums.PROJECTION.TO:
+            case TO:
                 return new Vector2(0, -32);
-            case VisualEnums.PROJECTION.HOR:
+            case HOR:
                 return new Vector2(32, 0);
         }
         return super.getOffsetOrigin();
@@ -215,9 +215,10 @@ public class Weapon3dAnim extends ActionAnim {
         return VisualEnums.WEAPON_ANIM_CASE.NORMAL;
     }
 
-    public VisualEnums.PROJECTION getProjection( ) {
+    public VisualEnums.PROJECTION getProjection() {
         return getProjection(getRef(), getActive());
     }
+
     public VisualEnums.PROJECTION getProjection(Ref ref, DC_ActiveObj active) {
         return AnimMaster3d.getProjection(ref, active);
     }
@@ -236,9 +237,9 @@ public class Weapon3dAnim extends ActionAnim {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-//        if (batch instanceof CustomSpriteBatch) {
-//           post=  ((CustomSpriteBatch) batch);
-//        }
+        //        if (batch instanceof CustomSpriteBatch) {
+        //           post=  ((CustomSpriteBatch) batch);
+        //        }
         if (Flags.isFootageMode())
             return;
         super.draw(batch, parentAlpha);

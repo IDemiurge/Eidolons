@@ -127,6 +127,10 @@ public class GdxAdapter {
         return eventsAdapter;
     }
 
+    public void setEventsAdapter(GdxEventAdapter eventsAdapter) {
+        this.eventsAdapter = eventsAdapter;
+    }
+
     public GdxApi getGdxApp() {
         return gdxApp;
     }

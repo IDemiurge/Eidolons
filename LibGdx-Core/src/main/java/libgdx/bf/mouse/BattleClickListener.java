@@ -6,13 +6,11 @@ import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.game.core.Eidolons;
-import eidolons.game.netherflame.main.soul.panel.LordPanel;
 import libgdx.gui.panels.headquarters.HqPanel;
+import libgdx.gui.panels.lord.LordPanel;
 import libgdx.screens.ScreenMaster;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.OptionsMaster;
-import libgdx.gui.panels.headquarters.HqPanel;
-import libgdx.screens.ScreenMaster;
 
 /**
  * Created by JustMe on 8/31/2017.

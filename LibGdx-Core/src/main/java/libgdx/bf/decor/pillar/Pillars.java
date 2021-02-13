@@ -6,6 +6,8 @@ import main.game.bf.directions.DIRECTION;
 
 import static eidolons.content.consts.VisualEnums.PILLAR.*;
 import static main.game.bf.directions.DIRECTION.*;
+import static main.game.bf.directions.DIRECTION.DOWN;
+import static main.game.bf.directions.DIRECTION.RIGHT;
 
 public class Pillars {
     public static final DIRECTION prefHor = RIGHT;

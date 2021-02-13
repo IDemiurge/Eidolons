@@ -2,7 +2,7 @@ package macro.map.travel;
 
 import macro.MacroGame;
 import macro.entity.party.MacroParty;
-import libgdx.screens.map.MapScreen;
+import libgdx.map.MapScreen;
 import main.content.CONTENT_CONSTS2.MACRO_STATUS;
 import main.content.values.properties.MACRO_PROPS;
 

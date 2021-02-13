@@ -1,8 +1,8 @@
 package macro.map.travel;
 
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import libgdx.screens.map.MapObjStage;
-import libgdx.screens.map.obj.PartyActor;
+import libgdx.map.MapObjStage;
+import libgdx.map.obj.PartyActor;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.MapMaster;
 

@@ -10,6 +10,7 @@ import eidolons.content.consts.VisualEnums;
 import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.Eidolons;
+import eidolons.system.libgdx.datasource.FullscreenAnimDataSource;
 import libgdx.GdxMaster;
 import libgdx.anims.actions.ActionMaster;
 import libgdx.anims.sprite.SpriteAnimation;
@@ -153,7 +154,7 @@ public class FullscreenAnims extends GroupX {
         String path =
 //                FileManager.getRandomFilePathVariant(
 //                PathFinder.getImagePath()+
-                dataSource.type.getSpritePath();
+                dataSource.getType().getSpritePath();
         if (Assets.get().getManager().isLoaded(path)){
             main.system.auxiliary.log.LogMaster.devLog("No fullscreen anim preloaded for " +path);
             return;
@@ -162,7 +163,7 @@ public class FullscreenAnims extends GroupX {
 
         sprite.setCustomAct(true);
         sprite.setBlending(dataSource.getBlending());
-        float intensity = dataSource.intensity;
+        float intensity = dataSource.getIntensity();
         float alpha = Math.min(1, RandomWizard.getRandomFloatBetween(intensity * 2, intensity * 3));
         int fps = RandomWizard.getRandomIntBetween(11, 14);
         sprite.setFps(fps);
@@ -182,8 +183,8 @@ public class FullscreenAnims extends GroupX {
         spriteList.add(sprite);
 
         main.system.auxiliary.log.LogMaster.devLog("Fullscreen anim added: " +path);
-        if (dataSource.type.color != null) {
-            sprite.setColor(dataSource.type.color);
+        if (dataSource.getType().color != null) {
+            sprite.setColor(dataSource.getType().color);
         }
 
         sprite.setLoops(dataSource.getLoops());

@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputEvent.Type;
 import libgdx.GdxMaster;
 import libgdx.stage.ConfirmationPanel;
 import eidolons.system.audio.DC_SoundMaster;
@@ -20,7 +21,7 @@ public interface SmartButton extends EventListener {
         if (!(e instanceof InputEvent)) return false;
         InputEvent event = (InputEvent) e;
         AudioEnums.STD_SOUNDS sound = null;
-        if (event.getType() == InputEvent.Type.touchUp) {
+        if (event.getType() == Type.touchUp) {
             if (!isCheckClickArea() || event.getPointer() == -1 //programmatic
                     || GdxMaster.isWithin(event.getTarget(), new Vector2(event.getStageX(), event.getStageY()), true)) {
                 if (!isDisabled()) {
@@ -37,14 +38,14 @@ public interface SmartButton extends EventListener {
         } else {
             if (getSoundMap() != null)
                 switch (event.getType()) {
-                    case Type.touchDown:
+                    case touchDown:
                         if (isDisabled()) {
                             sound = getSoundMap().disabled;
                         } else {
                             sound = getSoundMap().down;
                         }
                         break;
-                    case Type.enter:
+                    case enter:
                         sound = getSoundMap().hover;
                         break;
                 }

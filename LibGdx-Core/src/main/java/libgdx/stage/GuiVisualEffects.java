@@ -5,15 +5,14 @@ import eidolons.content.consts.VisualEnums;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
+import eidolons.system.libgdx.datasource.AmbienceDataSource;
 import libgdx.GdxMaster;
 import libgdx.bf.decor.shard.ShardEnums;
 import libgdx.bf.generic.SuperContainer;
 import libgdx.gui.generic.GroupX;
 import libgdx.gui.panels.headquarters.HqPanel;
 import libgdx.particles.EmitterActor;
-import libgdx.particles.ambi.AmbienceDataSource;
 import libgdx.screens.CustomSpriteBatch;
-import libgdx.screens.map.layers.LightLayer;
 import libgdx.shaders.VignetteShader;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -32,7 +31,6 @@ import java.util.List;
  * Created by JustMe on 3/16/2018.
  */
 public class GuiVisualEffects extends GroupX {
-    LightLayer lightLayer;
     private SuperContainer vignette;
     private List<EmitterActor> emitters;
     private int emitterTypesCount;
@@ -219,7 +217,6 @@ public class GuiVisualEffects extends GroupX {
 
     public void resized() {
         setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
-        lightLayer.setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
         vignette.setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
     }
 
@@ -283,7 +280,6 @@ public class GuiVisualEffects extends GroupX {
     public void resetZIndices() {
         if (Flags.isMapEditor())
             return;
-        lightLayer.setZIndex(0);
         vignette.setZIndex(0);
 
     }

@@ -327,26 +327,10 @@ public class OptionsMaster {
         return value;
     }
 
-    public static void applyOptions() {
-
+    public static void applyOptionsGdx() {
         applyGraphicsOptions(getGraphicsOptions());
         applySoundOptions(getSoundOptions());
-        applyGameplayOptions(getGameplayOptions());
         applyControlOptions(getControlOptions());
-        applySystemOptions(getSystemOptions());
-
-        if (GdxStatic.isLwjglThread()) {
-            // try {
-            //     PostProcessController.getInstance().update(getPostProcessingOptions());
-            // } catch (Exception e) {
-            //     ExceptionMaster.printStackTrace(e);
-            // }
-        }
-        //TODO gdx sync
-        // if (!GdxMaster.isGuiReady())
-        //     return;
-        // if (AnimMaster.getInstance() == null)
-        //     return;
         if (GdxStatic.isLwjglThread()) {
             applyAnimOptions(getAnimOptions());
         } else
@@ -354,7 +338,16 @@ public class OptionsMaster {
             {
                 applyAnimOptions(getAnimOptions());
             });
+    }
 
+    public static void applyOptionsDC() {
+        applyGameplayOptions(getGameplayOptions());
+        applySystemOptions(getSystemOptions());
+    }
+
+    public static void applyOptions() {
+        applyOptionsDC();
+        applyOptionsGdx();
         if (CoreEngine.TEST_LAUNCH) {
             Flags.setFullFastMode(true);
             Flags.setSuperLite(true);
@@ -533,7 +526,7 @@ public class OptionsMaster {
 
         initFlags();
         try {
-            applyOptions();
+            applyOptionsDC();
             initialized = true;
         } catch (Exception e) {
             ExceptionMaster.printStackTrace(e);

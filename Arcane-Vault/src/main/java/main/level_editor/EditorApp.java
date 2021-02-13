@@ -6,7 +6,7 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.Eidolons;
 import libgdx.GDX;
 import libgdx.launch.GenericLauncher;
-import libgdx.screens.ScreenData;
+import eidolons.system.libgdx.datasource.ScreenData;
 import libgdx.screens.ScreenMaster;
 import libgdx.screens.ScreenWithLoader;
 import libgdx.screens.load.ScreenLoader;

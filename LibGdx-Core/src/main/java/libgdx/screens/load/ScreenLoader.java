@@ -13,14 +13,11 @@ import libgdx.GdxMaster;
 import libgdx.assets.Assets;
 import libgdx.gui.panels.headquarters.weave.WeaveScreen;
 import libgdx.launch.GenericLauncher;
-import libgdx.screens.ScreenData;
+import eidolons.system.libgdx.datasource.ScreenData;
 import libgdx.screens.ScreenMaster;
 import libgdx.screens.ScreenWithLoader;
 import libgdx.screens.dungeon.DungeonScreen;
-import libgdx.screens.map.MapScreen;
-import libgdx.screens.map.layers.BlackoutOld;
 import libgdx.screens.menu.AnimatedMenuScreen;
-import eidolons.macro.AdventureInitializer;
 import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.options.OptionsMaster;
@@ -94,9 +91,8 @@ public class ScreenLoader {
     }
 
     public void triggerLoaded(ScreenData data) {
-        important( "triggerLoaded " + data.getName());
-        if (BlackoutOld.isOnNewScreen())
-            GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK);
+        important("triggerLoaded " + data.getName());
+        // GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK);
 
         switch (data.getType()) {
             //TODO refactor THIS
@@ -117,7 +113,7 @@ public class ScreenLoader {
                         return;
                     }
 
-                    GuiEventManager.trigger(GuiEventType.UPDATE_LOAD_STATUS, "Loading dungeon..." );
+                    GuiEventManager.trigger(GuiEventType.UPDATE_LOAD_STATUS, "Loading dungeon...");
                     initScenario(data, data.getName());
                     GuiEventManager.trigger(GuiEventType.UPDATE_LOAD_STATUS, "Dungeon loaded - " + EidolonsGame.lvlPath);
                     firstInitDone = true;
@@ -136,10 +132,9 @@ public class ScreenLoader {
     }
 
     public void loadScreen(EventCallbackParam param) {
-        ScreenData newMeta= (ScreenData) param.get();
-        important( newMeta.getType()+ " loadScreen()" );
-        if (BlackoutOld.isOnNewScreen())
-            GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK);
+        ScreenData newMeta = (ScreenData) param.get();
+        important(newMeta.getType() + " loadScreen()");
+        // GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK);
         if (newMeta != null) {
             switch (newMeta.getType()) {
                 case WEAVE:
@@ -147,7 +142,7 @@ public class ScreenLoader {
                     break;
                 case DUNGEON:
                     //TODO PITCH FIX - GET INSTANCE!
-                    GuiEventManager.trigger(GuiEventType.UPDATE_LOAD_STATUS, "Loading game screen..." );
+                    GuiEventManager.trigger(GuiEventType.UPDATE_LOAD_STATUS, "Loading game screen...");
                     switchScreen(DungeonScreen::new, newMeta);
                     Eidolons.setScope(Eidolons.SCOPE.BATTLE);
                     break;
@@ -155,12 +150,13 @@ public class ScreenLoader {
                 case CINEMATIC:
                     switchScreen(IggBriefScreenOld::new, newMeta);
                     break;
-                case MAP:
-                    Eidolons.setScope(Eidolons.SCOPE.MAP);
-                    switchScreen(MapScreen::getInstance, newMeta);
-                    if (newMeta.getName() != null)
-                        AdventureInitializer.setScenario(newMeta.getName());
-                    break;
+                //TODO macro Review
+                // case MAP:
+                //     Eidolons.setScope(Eidolons.SCOPE.MAP);
+                //     switchScreen(MapScreen::getInstance, newMeta);
+                //     if (newMeta.getName() != null)
+                //         AdventureInitializer.setScenario(newMeta.getName());
+                //     break;
                 case PRE_BATTLE:
                     break;
                 case MAIN_MENU:
@@ -214,7 +210,7 @@ public class ScreenLoader {
     }
 
     protected boolean isFirstLoadingScreenShown() {
-        return !CoreEngine.TEST_LAUNCH  || (!Flags.isIDE());
+        return !CoreEngine.TEST_LAUNCH || (!Flags.isIDE());
     }
 
 }

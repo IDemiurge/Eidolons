@@ -3,8 +3,7 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech;
 import com.badlogic.gdx.math.Interpolation;
 import eidolons.system.libgdx.GdxStatic;
 import eidolons.system.libgdx.datasource.FullscreenAnimDataSource;
-import eidolons.system.libgdx.wrapper.Vector2;
-import eidolons.content.consts.VisualEnums;
+import eidolons.system.libgdx.wrapper.VectorGdx;
 import eidolons.content.consts.VisualEnums.FULLSCREEN_ANIM;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
@@ -829,7 +828,7 @@ public class SpeechExecutor {
                     String portrait = ImageManager.getBlotch(objType);
                     CombatScriptExecutor.doComment(objType.getName(), portrait, c, value);
                 } else {
-                    Vector2 offset = null;
+                    VectorGdx offset = null;
                     if (vars.size() > 1) {
                         offset = GdxStatic.getCenteredPos(getCoordinate(vars.get(1), true));
                         if (getCoordinate(vars.get(1), true).dst(unit.getCoordinates()) > 10) {
@@ -926,7 +925,7 @@ public class SpeechExecutor {
                 } else if (speechAction == REMOVE_GRID_OBJ) {
                     GuiEventManager.triggerWithParams(GuiEventType.REMOVE_GRID_OBJ, value, c);
                 } else {
-                    gdxActions.doGridObj(speechAction, unit, c, under);
+                    gdxActions.doGridObj(speechAction, unit, c, under, value, obj);
                 }
 
                 break;

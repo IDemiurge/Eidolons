@@ -1,6 +1,5 @@
 package libgdx.launch;
 
-import arena.launch.EngineLauncherArena;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.EngineLauncher;
 import eidolons.game.core.launch.CustomLaunch;
@@ -167,7 +166,7 @@ public class MainLauncher extends GenericLauncher {
     }
 
     private static EngineLauncher createEngineLauncher() {
-        return new EngineLauncherArena();
+        return new EngineLauncher();
     }
 
     private static int getLast() {

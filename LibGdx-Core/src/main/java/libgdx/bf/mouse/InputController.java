@@ -1,6 +1,7 @@
 package libgdx.bf.mouse;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -261,7 +262,7 @@ public abstract class InputController implements InputProcessor {
         mouseInput();
         if (isBlocked())
             return true;
-        if (button == Buttons.LEFT || button == 1) {
+        if (button == Input.Buttons.LEFT || button == 1) {
             xTouchPos = screenX;
             yTouchPos = screenY;
             isLeftPressed = true;
@@ -294,7 +295,7 @@ public abstract class InputController implements InputProcessor {
             return false;
         if (isManualCameraDisabled())
             return false;
-        if (mouseButtonPresed == Buttons.LEFT) {
+        if (mouseButtonPresed == Input.Buttons.LEFT) {
             tryPullCameraX(screenX);
             tryPullCameraY(screenY);
             cameraStop();

@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.netherflame.boss.anims.view.BossQueueView;
 import libgdx.anims.actions.ActionMaster;
 import libgdx.bf.generic.ImageContainer;
 import libgdx.bf.grid.cell.QueueView;
@@ -262,8 +261,6 @@ public class AtbPanel extends GroupX {
                 if (view == null)
                     continue;
                 if (view.getActor() == null)
-                    continue;
-                if (view.getActor() instanceof BossQueueView)
                     continue;
                 removeView((sub.id));
             }

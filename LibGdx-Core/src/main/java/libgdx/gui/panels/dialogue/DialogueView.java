@@ -181,15 +181,15 @@ public class DialogueView extends TablePanelX implements Scene {
 
     private boolean respond(String option, int index, boolean allowFinish) {
         autoRespond = false;
-        if (getUserObject().speech.isSpoken()) {
-            main.system.auxiliary.log.LogMaster.devLog("Already spoken!  " +getUserObject().speech.getFormattedText());
+        if (getUserObject().getSpeech().isSpoken()) {
+            main.system.auxiliary.log.LogMaster.devLog("Already spoken!  " + getUserObject().getSpeech().getFormattedText());
             return false;
         }
         if (container != null) {
 //            container.respond(option);
             ActorDataSource actor = getUserObject().getSpeakerActor();
             SpeechDataSource next =
-                    handler.lineSpoken(getUserObject().speech, index);
+                    handler.lineSpoken(getUserObject().getSpeech(), index);
 
             boolean appendedMessage = false;
             if (next!=null)

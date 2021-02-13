@@ -4,7 +4,6 @@ import libgdx.gui.menu.selection.ItemListPanel;
 import libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import libgdx.gui.menu.selection.SelectableItemDisplayer;
 import libgdx.gui.menu.selection.hero.HeroSelectionPanel;
-import eidolons.macro.AdventureInitializer;
 import main.entity.Entity;
 
 import java.util.List;
@@ -24,7 +23,7 @@ public class SaveSelectionPanel extends HeroSelectionPanel {
             return;
         }
         super.done();
-        AdventureInitializer.load(listPanel.getCurrentItem().getName());
+        // AdventureInitializer.load(listPanel.getCurrentItem().getName());
 
     }
 

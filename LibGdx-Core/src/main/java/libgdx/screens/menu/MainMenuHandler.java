@@ -2,8 +2,6 @@ package libgdx.screens.menu;
 
 import eidolons.game.core.Eidolons;
 import libgdx.launch.MainLauncher;
-import eidolons.macro.AdventureInitializer;
-import eidolons.macro.global.persist.Loader;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.DC_TYPE;
@@ -125,19 +123,19 @@ public class MainMenuHandler {
             //     return startMicro(getScenarioTypes(),
             //      null);
 
-
-            case MAP_PREVIEW:
-                AdventureInitializer.launchAdventureGame(null);
-                return null;
-            case LOAD:
-                try {
-                    Loader.load();
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                    Flags.setMacro(false);
-                    Eidolons.exitToMenu();
-                }
-                break;
+//TODO macro Review
+            // case MAP_PREVIEW:
+            //     AdventureInitializer.launchAdventureGame(null);
+            //     return null;
+            // case LOAD:
+            //     try {
+            //         Loader.load();
+            //     } catch (Exception e) {
+            //         main.system.ExceptionMaster.printStackTrace(e);
+            //         Flags.setMacro(false);
+            //         Eidolons.exitToMenu();
+            //     }
+            //     break;
             case OPTIONS:
                 OptionsMaster.init();
                 menu.openOptionsMenu();

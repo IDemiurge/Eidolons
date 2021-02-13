@@ -8,7 +8,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import libgdx.gui.utils.FileChooserX;
-import libgdx.screens.ScreenData;
+import eidolons.system.libgdx.datasource.ScreenData;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;

@@ -1,24 +1,16 @@
 package eidolons.system.libgdx;
 
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.utils.Array;
-import eidolons.content.consts.GraphicData;
-import eidolons.content.consts.Sprites;
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMapDataSource;
-import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
 import eidolons.system.libgdx.datasource.ScreenData;
-import eidolons.system.libgdx.wrapper.Vector2;
-import main.data.filesys.PathFinder;
+import eidolons.system.libgdx.wrapper.VectorGdx;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.data.FileManager;
 
 import java.util.Set;
 
@@ -79,7 +71,7 @@ GdxAdapter.getInstance().getManager().checkHpBarReset(sourceObj);
         return GdxAdapter.getInstance().getGridManager().getCameraCenter();
     }
 
-    public static Vector2 getCenteredPos(Coordinates coordinate) {
+    public static VectorGdx getCenteredPos(Coordinates coordinate) {
         return GdxAdapter.getInstance().getGridManager(). getCenteredPos(coordinate);
     }
 

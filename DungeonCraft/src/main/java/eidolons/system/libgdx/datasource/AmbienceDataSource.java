@@ -21,8 +21,8 @@ public class AmbienceDataSource {
 
 
     private final ObjectMap<String, Integer> map = new ObjectMap<>(12);
-    Color colorHue;
-    boolean shadow;
+    public Color colorHue;
+    public boolean shadow;
     private List<String> emitters;
 
 

@@ -21,7 +21,6 @@ import libgdx.particles.ParticleEffectX;
 import libgdx.particles.ambi.EmitterMap;
 import libgdx.particles.ambi.ParticleManager;
 import libgdx.screens.ScreenMaster;
-import libgdx.screens.map.layers.LightLayer;
 import libgdx.stage.GuiVisualEffects;
 import libgdx.stage.camera.CameraOptions;
 import main.system.auxiliary.EnumMaster;
@@ -74,7 +73,7 @@ public class GdxOptionsImpl implements GdxOptions {
     public void applyControlOption(ControlOptions options) {
         CameraOptions.update(options);
 
-        GdxAdapter.getOptions().applyControlOption(options);
+        // GdxAdapter.getOptions().applyControlOption(options);
 
         for (Object sub : options.getValues().keySet()) {
             new EnumMaster<ControlOptions.CONTROL_OPTION>().
@@ -113,9 +112,6 @@ public class GdxOptionsImpl implements GdxOptions {
             //                break;
             case AMBIENCE_DENSITY:
                 EmitterMap.setGlobalShowChanceCoef(Integer.valueOf(value));
-                break;
-            case ADDITIVE_LIGHT:
-                LightLayer.setAdditive(bool);
                 break;
             case PERFORMANCE_BOOST:
                 Fluctuating.fluctuatingAlphaPeriodGlobal = (Integer.parseInt(value)) / 10;

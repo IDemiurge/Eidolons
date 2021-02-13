@@ -15,6 +15,7 @@ import com.kotcrab.vis.ui.widget.Menu;
 import com.kotcrab.vis.ui.widget.MenuItem;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
 import eidolons.content.consts.VisualEnums;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.assets.AssetEnums;
 import libgdx.gui.NinePatchFactory;
 import libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;

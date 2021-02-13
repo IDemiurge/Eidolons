@@ -1,5 +1,6 @@
 package macro.entity.town;
 
+import eidolons.entity.Town;
 import macro.MacroGame;
 import macro.entity.MacroRef;
 import eidolons.game.battlecraft.logic.meta.universal.shop.Shop;

@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import eidolons.system.libgdx.datasource.ScreenData;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
 import libgdx.anims.sprite.SpriteAnimation;

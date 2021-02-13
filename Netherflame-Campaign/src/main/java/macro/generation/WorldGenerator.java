@@ -2,7 +2,7 @@ package macro.generation;
 
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.logic.party.Party;
-import libgdx.screens.map.town.navigation.data.NavigationMaster;
+import libgdx.map.town.navigation.data.NavigationMaster;
 import macro.MacroGame;
 import eidolons.macro.entity.MacroRef;
 import eidolons.macro.entity.faction.Faction;

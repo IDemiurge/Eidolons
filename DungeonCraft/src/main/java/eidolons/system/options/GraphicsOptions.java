@@ -80,11 +80,6 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
             public boolean isDevOnly() {
                 return true;
             }
-        }, ADDITIVE_LIGHT(false) {
-            @Override
-            public boolean isDevOnly() {
-                return true;
-            }
         },
         LIGHT_OVERLAYS_OFF(false),
         UI_ATLAS(true) {

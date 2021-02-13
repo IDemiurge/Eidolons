@@ -4,13 +4,19 @@ import com.google.inject.internal.util.ImmutableList;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleHandler;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.IVoidGdxHandler;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.VoidMaze;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.VoidMazeHandler;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleElement;
 import eidolons.game.core.Eidolons;
+import eidolons.puzzle.gridobj.GridObject;
+import eidolons.puzzle.gridobj.Veil;
 import libgdx.GdxMaster;
 import libgdx.bf.grid.DC_GridPanel;
 import libgdx.bf.grid.GridPanel;
 import libgdx.bf.grid.cell.GridCell;
+import libgdx.screens.ScreenMaster;
 import main.content.CONTENT_CONSTS;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -20,6 +26,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.MapMaster;
+import org.apache.poi.hpsf.wellknown.PropertyIDMap;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -62,7 +69,7 @@ Accelerating collapse
 
 
  */
-public   class VoidHandler implements IVoidGdxHandler {
+public   class VoidHandler extends PuzzleElement<VoidMaze> implements IVoidGdxHandler {
 
     protected  GridPanel gridPanel;
     protected  Set<BattleFieldObject> autoRaise = new LinkedHashSet<>();
@@ -78,6 +85,7 @@ public   class VoidHandler implements IVoidGdxHandler {
     protected final Set<GridObject> holes = new LinkedHashSet<>();
 
     public VoidHandler(DC_GridPanel gridPanel) {
+        super(null);
         this.gridPanel = gridPanel;
         animator = createAnimator();
     }
@@ -108,7 +116,7 @@ public   class VoidHandler implements IVoidGdxHandler {
 
         ScreenMaster.getDungeonGrid().setCustomVoidHandler(null);
 
-        voidHandler.toggleAutoOff(Eidolons.getMainHero());
+        toggleAutoOff(Eidolons.getMainHero());
     }
 
     public void toggleAuto(Unit obj) {
@@ -259,6 +267,11 @@ public   class VoidHandler implements IVoidGdxHandler {
         this.unmark = unmark;
     }
 
+    @Override
+    public void setPuzzle(VoidMaze puzzle) {
+        this.puzzle=puzzle;
+    }
+
     public void setRaiseOneMax(boolean raiseOneMax) {
         this.raiseOneMax = raiseOneMax;
     }
@@ -291,11 +304,11 @@ public   class VoidHandler implements IVoidGdxHandler {
 
     @Override
     public void initVisuals() {
-        for (Coordinates c : getPuzzle().falseExits) {
+        for (Coordinates c : getPuzzle().getFalseExits()) {
             /*
             false exits are revealed as black holes upon approach!
              */
-            Veil blackhole = new Veil(getPuzzle(), getAbsoluteCoordinate(c), true, true) {
+            Veil blackhole = new Veil( getAbsoluteCoordinate(c), true, true) {
                 protected boolean visible;
 
                 @Override
@@ -319,7 +332,7 @@ public   class VoidHandler implements IVoidGdxHandler {
                 public void init() {
                     super.init();
                     //this is the false exit that will disappear when we approach...
-                    holes.add(new Veil(getPuzzle(), c, false, false) {
+                    holes.add(new Veil(  c, false, false) {
                         @Override
                         public boolean checkVisible() {
                             if (!puzzle.isActive()) {
@@ -336,8 +349,51 @@ public   class VoidHandler implements IVoidGdxHandler {
             holes.add(blackhole);
         }
         Coordinates c = getExitCoordinates();
-        Veil veil;
-        puzzle.setExitVeil(veil = new Veil(puzzle, c, false, false));
+        Veil veil  = new Veil(  c, false, false);
         GuiEventManager.trigger(GuiEventType.ADD_GRID_OBJ, veil);
+    }
+
+    public Set<BattleFieldObject> getAutoRaise() {
+        return autoRaise;
+    }
+
+    public Map<GridCell, DIRECTION> getRaised() {
+        return raised;
+    }
+
+    public Map<GridCell, DIRECTION> getCollapsed() {
+        return collapsed;
+    }
+
+    public float getCollapsePeriod() {
+        return collapsePeriod;
+    }
+
+    public float getCollapseDelay() {
+        return collapseDelay;
+    }
+
+    public boolean isCanDropHero() {
+        return canDropHero;
+    }
+
+    public boolean isUnmark() {
+        return unmark;
+    }
+
+    public boolean isRaiseOneMax() {
+        return raiseOneMax;
+    }
+
+    public boolean isCollapseDown() {
+        return collapseDown;
+    }
+
+    public VoidAnimator getAnimator() {
+        return animator;
+    }
+
+    public Set<GridObject> getHoles() {
+        return holes;
     }
 }

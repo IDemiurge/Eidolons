@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import eidolons.content.consts.DecorData;
 import eidolons.content.consts.GraphicData;
 import eidolons.content.consts.Sprites;
+import eidolons.content.consts.libgdx.WallMaster;
 import eidolons.entity.obj.BattleFieldObject;
 import libgdx.bf.decor.CellDecor;
 import libgdx.bf.decor.DecorFactory;

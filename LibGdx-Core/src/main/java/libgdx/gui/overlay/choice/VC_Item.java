@@ -7,7 +7,7 @@ import libgdx.GdxMaster;
 import libgdx.StyleHolder;
 import libgdx.anims.actions.ActionMaster;
 import libgdx.bf.SuperActor;
-import libgdx.bf.datasource.GraphicData;
+import eidolons.content.consts.GraphicData;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.bf.generic.ImageContainer;
 import libgdx.gui.LabelX;

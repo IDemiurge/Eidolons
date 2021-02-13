@@ -2,12 +2,12 @@ package libgdx.bf.decor;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
+import eidolons.content.consts.GraphicData;
+import eidolons.content.consts.SpriteData;
 import eidolons.game.core.game.DC_Game;
 import libgdx.GdxMaster;
 import libgdx.anims.sprite.SpriteX;
 import libgdx.assets.AssetEnums;
-import libgdx.bf.datasource.GraphicData;
-import libgdx.bf.datasource.SpriteData;
 import libgdx.bf.generic.Flippable;
 import libgdx.bf.generic.ImageContainer;
 import libgdx.gui.generic.NoHitImageX;

@@ -4,9 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.content.consts.VisualEnums;
-import eidolons.game.netherflame.boss.anims.old.SpriteModel;
-import eidolons.game.netherflame.boss.logic.entity.BossUnit;
-import libgdx.anims.sprite.SpriteAnimationFactory;
+import eidolons.entity.obj.unit.Unit;
 import libgdx.bf.GridMaster;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.particles.EmitterActor;
@@ -29,14 +27,13 @@ public abstract class UnitViewSprite extends UnitGridView {
     private float width;
     private FadeImageContainer glow;
     private Map<EmitterActor, Vector2> emitters;
-    SpriteModel spriteModel;
 
     public UnitViewSprite(UnitViewOptions o) {
         super(o);
 //        GuiEventManager.bind(GuiEventType.ACTIVE_UNIT_SELECTED , p-> );
 //        GuiEventManager.bind(GuiEventType.ACTION_RESOLVES , p-> );
-        addActor(spriteModel = new SpriteModel(
-                SpriteAnimationFactory.getSpriteAnimation(getSpritePath()), getName()));
+//         addActor(spriteModel = new SpriteModel(
+//                 SpriteAnimationFactory.getSpriteAnimation(getSpritePath()), getName()));
         setUserObject(o.getObj());
 
 //        spriteModel.setBlending(getBlending());
@@ -64,8 +61,8 @@ public abstract class UnitViewSprite extends UnitGridView {
     }
 
     @Override
-    public BossUnit getUserObject() {
-        return (BossUnit) super.getUserObject();
+    public Unit getUserObject() {
+        return ( Unit) super.getUserObject();
     }
 
     @Override
@@ -123,10 +120,10 @@ public abstract class UnitViewSprite extends UnitGridView {
 
     @Override
     public void act(float delta) {
-        if (spriteModel != null) {
-            spriteModel.setPos(
-                    GridMaster.getCenteredPos(getUserObject().getOriginalCoordinates()));
-        }
+        // if (spriteModel != null) {
+        //     spriteModel.setPos(
+        //             GridMaster.getCenteredPos(getUserObject().getOriginalCoordinates()));
+        // }
 
         glow.setRotation(glow.getRotation() + 5 * delta);
         super.act(delta);
@@ -184,11 +181,6 @@ public abstract class UnitViewSprite extends UnitGridView {
     public float getWidth() {
         return width;
     }
-
-    public SpriteModel getSpriteModel() {
-        return spriteModel;
-    }
-
 
     @Override
     protected void initQueueView(UnitViewOptions o) {

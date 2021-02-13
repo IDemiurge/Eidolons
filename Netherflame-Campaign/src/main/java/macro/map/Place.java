@@ -1,8 +1,8 @@
 package macro.map;
 
 import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
-import libgdx.screens.map.town.navigation.data.Nested;
-import libgdx.screens.map.town.navigation.data.NestedLeaf;
+import libgdx.map.town.navigation.data.Nested;
+import libgdx.map.town.navigation.data.NestedLeaf;
 import macro.MacroGame;
 import macro.entity.MacroRef;
 import macro.entity.MapObj;

@@ -120,7 +120,7 @@ public class DialoguePortraitContainer extends TablePanelX {
 
         setImage(StringMaster.getAppendedImageFile(dataSource.getActorImage(),
                 dataSource.getImageSuffix()));
-        nameLabel.setText(dataSource.actorName);
+        nameLabel.setText(dataSource.getActorName());
 //        esteem.setValueText(actor.getEsteem());
     }
 

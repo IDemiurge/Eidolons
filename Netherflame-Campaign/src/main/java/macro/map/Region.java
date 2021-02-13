@@ -4,7 +4,7 @@ import macro.MacroGame;
 import macro.entity.MacroRef.MACRO_KEYS;
 import macro.entity.MacroObj;
 import macro.entity.party.MacroParty;
-import macro.entity.town.Town;
+import eidolons.entity.Town;
 import eidolons.macro.map.area.Area;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.properties.MACRO_PROPS;

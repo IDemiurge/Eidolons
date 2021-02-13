@@ -14,13 +14,12 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.netherflame.boss.logic.entity.BossUnit;
 import libgdx.anims.*;
 import eidolons.content.consts.VisualEnums.ANIM_PART;
 import libgdx.anims.construct.AnimConstructor;
 import libgdx.anims.sprite.SpriteAnimation;
 import libgdx.anims.std.sprite.CustomSpriteAnim;
-import libgdx.bf.datasource.GraphicData;
+import eidolons.content.consts.GraphicData;
 import libgdx.bf.grid.cell.BaseView;
 import libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
@@ -170,11 +169,6 @@ public class AnimMaster extends Group {
 //        minTime
         int minTime = maxTime / 2;
 
-        if (action.getContext().getSourceObj() instanceof BossUnit) {
-            maxTime = 2000;
-            minTime = maxTime;
-        }
-
         String show = "Wait " +
                 action.getAction().getOwnerUnit().getNameIfKnown() +
                 "..";
@@ -295,7 +289,6 @@ public class AnimMaster extends Group {
 
 
     public void bindEvents() {
-        DC_SoundMaster.bindEvents();
         floatTextLayer.bindEvents();
         GuiEventManager.bind(GuiEventType.MOUSE_HOVER, p -> {
             if (!isOn()) {

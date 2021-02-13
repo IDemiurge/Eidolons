@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.content.consts.VisualEnums;
 import eidolons.game.core.Eidolons;
+import libgdx.Adapter;
 import libgdx.GdxEvents;
 import libgdx.GdxMaster;
 import libgdx.assets.Assets;
@@ -59,6 +60,7 @@ public abstract class GenericLauncher extends Game {
     @Override
     public void create() {
         instance = this;
+        new Adapter().init();
         TextureCache.getInstance();
         GdxMaster.setLoadingCursor();
         //move
@@ -106,7 +108,7 @@ public abstract class GenericLauncher extends Game {
                 getConf()));
         if (!CoreEngine.isLevelEditor())
             OptionsMaster.applyGraphicsOptions();
-        Eidolons.setLauncher(this);
+        // Eidolons.setLauncher(this);
     }
 
 

@@ -9,8 +9,8 @@ import main.game.bf.directions.FACING_DIRECTION;
  * Created by JustMe on 12/1/2018.
  */
 public class FullscreenAnimDataSource {
-
     FULLSCREEN_ANIM type;
+
     float intensity;
     FACING_DIRECTION from;
     private GenericEnums.BLENDING blending = GenericEnums.BLENDING.SCREEN;

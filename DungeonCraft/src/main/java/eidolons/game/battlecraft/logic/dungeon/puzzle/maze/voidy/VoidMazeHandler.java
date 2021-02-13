@@ -9,6 +9,7 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazeHandler;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.cinematic.CinematicLib;
 import eidolons.game.module.cinematic.Cinematics;
+import eidolons.system.libgdx.GdxAdapter;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -64,7 +65,9 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
     }
 
     protected void beforeTip() {
-        getVoidHandler();
+        GdxAdapter.getInstance().getGridManager().
+                // getPuzzlesAdapter()
+                initVoidHandler(this);
         setup.reset(); //show EXITS
         if (isFirstAttempt()) {
             //for now, we can just assume it's somewhere ABOVE...
@@ -124,12 +127,6 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
     }
 
     private IVoidGdxHandler getVoidHandler() {
-        //TODO gdx sync important
-        // DC_GridPanel gridPanel = ScreenMaster.getDungeonGrid();
-        // if (voidHandler == null) {
-        //     voidHandler = new PuzzleVoidHandler(gridPanel);
-        // }
-        // gridPanel.setCustomVoidHandler(voidHandler);
         return voidHandler;
     }
 
@@ -162,6 +159,11 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
         collapsing = false;
         voidHandler.ended();
 
+    }
+
+    public void setVoidHandler(IVoidGdxHandler voidHandler) {
+        this.voidHandler = voidHandler;
+        voidHandler.setPuzzle(getPuzzle());
     }
 
     @Override

@@ -299,9 +299,6 @@ public class HitAnim extends ActionAnim {
         getActions().clear();
         addFadeAnim();
 
-        if (getActive() instanceof Spell) {
-            DC_SoundMaster.playAnimStartSound(getActive(), VisualEnums.ANIM_PART.IMPACT);
-        }
         //        if (textSupplier != null)
         //            floatingText.setText(textSupplier.getVar());
 

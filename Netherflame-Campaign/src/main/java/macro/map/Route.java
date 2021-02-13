@@ -5,7 +5,7 @@ import macro.MacroGame;
 import macro.AdventureInitializer;
 import macro.entity.MacroRef;
 import macro.entity.party.MacroParty;
-import macro.entity.town.Town;
+import eidolons.entity.Town;
 import eidolons.macro.map.area.Area;
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
 import main.content.values.parameters.MACRO_PARAMS;

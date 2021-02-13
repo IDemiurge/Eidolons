@@ -1,7 +1,7 @@
 package macro.map.area;
 
 import eidolons.content.PARAMS;
-import libgdx.screens.map.MapScreen;
+import libgdx.map.MapScreen;
 import macro.AdventureInitializer;
 import macro.global.time.TimeMaster;
 import macro.map.MacroCoordinates;

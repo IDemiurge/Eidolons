@@ -13,16 +13,16 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzle;
-import eidolons.puzzle.voidy.DefVoidHandler;
-import eidolons.puzzle.voidy.VoidHandler;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.InteractiveObj;
-import eidolons.game.netherflame.boss.anims.generic.BossVisual;
 import eidolons.game.netherflame.main.death.ShadowMaster;
+import eidolons.puzzle.voidy.DefVoidHandler;
+import eidolons.puzzle.voidy.VoidHandler;
+import eidolons.system.text.HelpMaster;
 import libgdx.GdxMaster;
 import libgdx.anims.actions.ActionMaster;
 import libgdx.anims.main.AnimMaster;
@@ -38,7 +38,6 @@ import libgdx.gui.panels.headquarters.HqPanel;
 import libgdx.screens.dungeon.DungeonScreen;
 import libgdx.shaders.GrayscaleShader;
 import libgdx.shaders.ShaderDrawer;
-import eidolons.system.text.HelpMaster;
 import libgdx.texture.TextureCache;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.entity.obj.Obj;
@@ -288,19 +287,7 @@ public class DC_GridPanel extends GridPanel {
             GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
                 Pair<Unit, Pair<Integer, Float>> p = (Pair<Unit, Pair<Integer, Float>>) obj.get();
                 UnitGridView uv = (UnitGridView) viewMap.get(p.getLeft());
-                QueueView initiativeQueueUnitView = null;
-                if (uv == null) {
-                    for (BossVisual bossVisual : bossVisuals) {
-                        if (bossVisual.getUnit() == p.getLeft()) {
-                            initiativeQueueUnitView = bossVisual.getQueueView();
-                            break;
-                        }
-                    }
-                    // addUnitView(p.getLeft());
-                    // uv = (UnitGridView) viewMap.get(p.getLeft());
-                } else {
-                    initiativeQueueUnitView = uv.getInitiativeQueueUnitView();
-                }
+                QueueView initiativeQueueUnitView = uv.getInitiativeQueueUnitView();
 
                 initiativeQueueUnitView.setTimeTillTurn(p.getRight().getRight());
                 initiativeQueueUnitView.updateInitiative(p.getRight().getLeft());

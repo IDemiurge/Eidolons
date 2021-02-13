@@ -1,6 +1,6 @@
 package eidolons.game.core;
 
-import eidolons.system.libgdx.wrapper.Vector2;
+import eidolons.system.libgdx.wrapper.VectorGdx;
 import eidolons.content.consts.VisualEnums;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.libgdx.GdxEvents;
@@ -107,12 +107,12 @@ public class EUtils {
         DC_SoundMaster.playStandardSound(sound);
     }
 
-    public static void showVFX(GenericEnums.VFX preset, Vector2 v) {
+    public static void showVFX(GenericEnums.VFX preset, VectorGdx v) {
         GuiEventManager.triggerWithParams(GuiEventType.SHOW_VFX, preset, v);
     }
 
     public static void showVFX(GenericEnums.VFX preset, int x, int y) {
-        GuiEventManager.triggerWithParams(GuiEventType.SHOW_VFX, preset, new Vector2(x, y));
+        GuiEventManager.triggerWithParams(GuiEventType.SHOW_VFX, preset, new VectorGdx(x, y));
     }
 
     public static void bind(GuiEventType eventType, EventCallback callback) {

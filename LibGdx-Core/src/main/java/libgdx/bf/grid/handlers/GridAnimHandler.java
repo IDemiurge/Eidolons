@@ -13,7 +13,7 @@ import libgdx.anims.actions.ActionMaster;
 import libgdx.anims.actions.RotateByActionLimited;
 import libgdx.anims.sprite.SpriteX;
 import libgdx.bf.SuperActor;
-import libgdx.bf.datasource.GraphicData;
+import eidolons.content.consts.GraphicData;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.bf.grid.GridPanel;
 import libgdx.bf.grid.cell.BaseView;

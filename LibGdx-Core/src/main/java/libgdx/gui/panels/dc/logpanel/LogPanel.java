@@ -228,9 +228,6 @@ public class LogPanel extends ScrollTextWrapper {
         if (Eidolons.MAIN_HERO != null)
             if (StringMaster.containsWord(Eidolons.MAIN_HERO.getName(), word)
             ) {
-                if (Flags.isIggDemoRunning()) {
-                    return GdxColorMaster.lighter((IGG_Demo.getHeroColor(Eidolons.getMainHero().getName())));
-                }
                 return GdxColorMaster.lighter(GdxColorMaster.getColor(Eidolons.getMainHero().getOwner().getFlagColor().getColor()));
             }
         for (Unit unit : AggroMaster.getLastAggroGroup()) {

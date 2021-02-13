@@ -2,10 +2,12 @@ package libgdx.adapters;
 
 import com.badlogic.gdx.math.Interpolation;
 import eidolons.content.consts.VisualEnums;
+import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.VoidMazeHandler;
 import eidolons.system.libgdx.api.GridManagerApi;
-import eidolons.system.libgdx.wrapper.Vector2;
+import eidolons.system.libgdx.wrapper.VectorGdx;
 import libgdx.anims.fullscreen.Screenshake;
 import libgdx.bf.GridMaster;
+import libgdx.bf.grid.DC_GridPanel;
 import libgdx.bf.grid.moving.PlatformController;
 import libgdx.particles.ParticlesSprites;
 import libgdx.screens.ScreenMaster;
@@ -41,14 +43,19 @@ public class GridManagerApiImpl implements GridManagerApi {
     }
 
     @Override
+    public void initVoidHandler(VoidMazeHandler voidMazeHandler) {
+        voidMazeHandler.setVoidHandler(((DC_GridPanel) ScreenMaster.getGrid()).getVoidHandler());
+    }
+
+    @Override
     public void doParticles(VisualEnums.PARTICLES_SPRITE sprite, float v) {
         ParticlesSprites.doParticles(sprite, v);
     }
 
     @Override
-    public Vector2 getCenteredPos(Coordinates coordinate) {
+    public VectorGdx getCenteredPos(Coordinates coordinate) {
         com.badlogic.gdx.math.Vector2 v = GridMaster.getCenteredPos(coordinate);
-        return new Vector2(v.x, v.y);
+        return new VectorGdx(v.x, v.y);
     }
 
     @Override

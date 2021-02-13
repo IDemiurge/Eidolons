@@ -6,7 +6,7 @@ import eidolons.content.consts.VisualEnums;
 import eidolons.game.core.Eidolons;
 import libgdx.anims.sprite.SpriteX;
 import libgdx.bf.GridMaster;
-import libgdx.bf.datasource.GraphicData;
+import eidolons.content.consts.GraphicData;
 import libgdx.particles.spell.SpellVfx;
 import libgdx.particles.spell.SpellVfxPool;
 import main.content.enums.GenericEnums;

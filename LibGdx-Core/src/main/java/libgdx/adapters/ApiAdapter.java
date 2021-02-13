@@ -3,6 +3,7 @@ package libgdx.adapters;
 import com.badlogic.gdx.InputAdapter;
 import eidolons.content.consts.VisualEnums;
 import eidolons.system.libgdx.api.GdxApi;
+import eidolons.system.libgdx.datasource.ScreenData;
 import libgdx.GdxMaster;
 import libgdx.bf.menu.GameMenu;
 import libgdx.gui.panels.headquarters.town.TownPanel;
@@ -27,7 +28,7 @@ public class ApiAdapter implements GdxApi {
     @Override
     public void showMainMenu() {
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
-                new  ScreenData(VisualEnums.SCREEN_TYPE.MAIN_MENU, "Loading..."));
+                new ScreenData(VisualEnums.SCREEN_TYPE.MAIN_MENU, "Loading..."));
     }
 
     @Override

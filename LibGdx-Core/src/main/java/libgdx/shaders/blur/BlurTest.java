@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import libgdx.shaders.ShaderMaster;
 import libgdx.shaders.ShaderMaster.SHADER;
 import libgdx.texture.TextureCache;
+import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.opengl.GL11.*;
 

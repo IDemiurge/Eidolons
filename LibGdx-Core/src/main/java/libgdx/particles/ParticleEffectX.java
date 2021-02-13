@@ -5,8 +5,9 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.utils.Array;
+import eidolons.content.consts.VisualEnums;
+import eidolons.content.consts.VisualEnums.VFX_ATLAS;
 import libgdx.particles.Emitter.EMITTER_VALS_SCALED;
-import libgdx.particles.util.EmitterMaster;
 import libgdx.particles.util.EmitterPresetMaster;
 import main.data.filesys.PathFinder;
 import main.system.PathUtils;
@@ -127,8 +128,8 @@ public class ParticleEffectX extends ParticleEffect {
     }
 
     private TextureAtlas getEmitterAtlas() {
-        EmitterMaster.VFX_ATLAS type = EmitterMaster.getAtlasType(path);
-        if (type == EmitterMaster.VFX_ATLAS.SPELL) {
+        VFX_ATLAS type = EmitterMaster.getAtlasType(path);
+        if (type ==  VFX_ATLAS.SPELL) {
             spell = true;
         }
         return EmitterMaster.getAtlas(type);

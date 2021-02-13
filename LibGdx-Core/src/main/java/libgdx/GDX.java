@@ -1,9 +1,11 @@
 package libgdx;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.kotcrab.vis.ui.VisUI;
 import eidolons.content.consts.VisualEnums;
+import eidolons.system.libgdx.wrapper.VectorGdx;
 import main.data.filesys.PathFinder;
 import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.EnumMaster;
@@ -127,4 +129,8 @@ public class GDX {
         }
         return actor.isVisible();
     }
+
+    public static Vector2 vector(VectorGdx at) {
+        return new Vector2(at.x, at.y);
+}
 }

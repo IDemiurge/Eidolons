@@ -25,20 +25,20 @@ import java.util.*;
  * Created by JustMe on 5/21/2017.
  */
 public class ShopDataSource extends ContainerDataSource
- implements
+        implements
         QuickSlotDataSource,
         InventoryTableDataSource,
         EquipDataSource {
     private static final int SIZE = 24;
     private static final Map<Shop, ShopClickHandler> handlerCache = new HashMap<>();
-    Shop shop;
-    InventoryDataSource invDataSource;
-    private final Set<DC_HeroItemObj> stash;
+    private Shop shop;
+    private InventoryDataSource invDataSource;
+    private Set<DC_HeroItemObj> stash;
 
     public ShopDataSource(Shop shop, Unit unit) {
         super(shop, unit);
         this.shop = shop;
-        stash = shop.getTown().getStash();
+        // stash = shop.getTown().getStash();
         items = new ArrayList<>(shop.getItems());
         invDataSource = new InventoryDataSource(unit) {
             @Override
@@ -84,13 +84,13 @@ public class ShopDataSource extends ContainerDataSource
 
     public List<InvItemActor> getShopSlots() {
         ListMaster.fillWithNullElements(items
-         , SIZE);
+                , SIZE);
         return factory.getList(items, VisualEnums.CELL_TYPE.CONTAINER);
     }
 
     public List<InvItemActor> getStashSlots() {
         ListMaster.fillWithNullElements(items
-         , SIZE);
+                , SIZE);
         return factory.getList(stash, VisualEnums.CELL_TYPE.STASH);
     }
 
@@ -108,6 +108,7 @@ public class ShopDataSource extends ContainerDataSource
     public InvItemActor offWeaponReserve() {
         return invDataSource.offWeaponReserve();
     }
+
     public Shop getShop() {
         return shop;
     }
@@ -145,7 +146,7 @@ public class ShopDataSource extends ContainerDataSource
 
     public String getPricesInfo() {
         return shop.getPrice(100, invDataSource.getUnit(), true) +
-         "%";
+                "%";
     }
 
     public ValueContainer getName() {
@@ -166,15 +167,15 @@ public class ShopDataSource extends ContainerDataSource
 
     public String getDebtTooltip() {
         return "You owe this shop " +
-         shop.getMaxDebt() +
-         ". You can have  maximum credit of " +
-         ", and the shop would repay you a debt of up to " +
-         -shop.getMinBalance();
+                shop.getMaxDebt() +
+                ". You can have  maximum credit of " +
+                ", and the shop would repay you a debt of up to " +
+                -shop.getMinBalance();
     }
 
     public String getDebtInfo() {
         if (shop.getDebt() < 0)
-            return  shop.getDebt() + "/" + (shop.getMinBalance());
+            return shop.getDebt() + "/" + (shop.getMinBalance());
         return shop.getDebt() + "/" + (shop.getMaxDebt());
     }
 }

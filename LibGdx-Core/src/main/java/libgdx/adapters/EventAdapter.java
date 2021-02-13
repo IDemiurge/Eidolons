@@ -6,6 +6,8 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
 import eidolons.system.libgdx.GdxEventAdapter;
+import eidolons.system.libgdx.wrapper.VectorGdx;
+import libgdx.GDX;
 import libgdx.anims.text.FloatingText;
 import libgdx.anims.text.FloatingTextMaster;
 import libgdx.bf.GridMaster;
@@ -55,14 +57,14 @@ public class EventAdapter implements GdxEventAdapter {
     }
 
     @Override
-    public void comment_(Unit unit, String key, Vector2 at) {
-        GridCommentHandler.instance.comment_( unit, key, at);
-    }
-
-    @Override
     public String comment(String img, String text, Coordinates c) {
         GridCommentHandler.instance.comment_(img, text, c);
         return
                 GridCommentHandler.removeSequentialKey(  text );
+    }
+
+    @Override
+    public void comment_(Unit unit, String key, VectorGdx at) {
+        GridCommentHandler.instance.comment_( unit, key, GDX.vector(at));
     }
 }

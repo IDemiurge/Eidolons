@@ -281,7 +281,7 @@ public class VisualEnums {
      * Created by JustMe on 8/31/2017.
      */
     public enum RESOLUTION {
-    //    _1366x768,
+        //    _1366x768,
         _1600x900,
         _1680x1050,
         _1920x1200,
@@ -289,11 +289,11 @@ public class VisualEnums {
         _2560x1080,
         _2560x1440,
         _2560x1600,
-    //    _2560x1200,
+        //    _2560x1200,
         _3440x1440,
         _3140x2160,
-    //    _3840x2160,
-    //    _5120x2880,
+        //    _3840x2160,
+        //    _5120x2880,
         ;
     }
 
@@ -316,7 +316,7 @@ public class VisualEnums {
         WHEEL,
 
         ;
-        GenericEnums.BLENDING blending;
+        public GenericEnums.BLENDING blending;
         protected String path;
 
         INTENT_ICON() {
@@ -336,7 +336,7 @@ public class VisualEnums {
             if (mode instanceof STD_MODES) {
                 switch (((STD_MODES) mode)) {
                     case CHANNELING:
-                        return  CHANNELING;
+                        return CHANNELING;
                     case STEALTH:
                         break;
                     case ALERT:
@@ -347,11 +347,11 @@ public class VisualEnums {
                     case MEDITATION:
                         return PREPARE;
                     case DEFENDING:
-                        return  DEFEND;
+                        return DEFEND;
                     case WAITING:
-                        return  WAIT;
-                        default:
-                            return WHEEL;
+                        return WAIT;
+                    default:
+                        return WHEEL;
                 }
             }
             return null;
@@ -363,7 +363,7 @@ public class VisualEnums {
         }
     }
 
-    public static   enum CONTAINER {
+    public static enum CONTAINER {
         INVENTORY,
         STASH,
         SHOP,
@@ -372,7 +372,7 @@ public class VisualEnums {
         UNASSIGNED,
     }
 
-    public static   enum CELL_TYPE {
+    public static enum CELL_TYPE {
         WEAPON_MAIN(Images.EMPTY_WEAPON_MAIN),
         WEAPON_OFFHAND(Images.EMPTY_WEAPON_OFFHAND),
         ARMOR(Images.EMPTY_ARMOR),
@@ -381,10 +381,7 @@ public class VisualEnums {
         QUICK_SLOT(Images.EMPTY_QUICK_ITEM),
         INVENTORY(Images.EMPTY_ITEM),
         CONTAINER(Images.EMPTY_LIST_ITEM),
-        STASH(Images.EMPTY_LIST_ITEM)
-        , WEAPON_MAIN_RESERVE(Images.EMPTY_WEAPON_MAIN)
-        , WEAPON_OFFHAND_RESERVE(Images.EMPTY_WEAPON_OFFHAND)
-        ;
+        STASH(Images.EMPTY_LIST_ITEM), WEAPON_MAIN_RESERVE(Images.EMPTY_WEAPON_MAIN), WEAPON_OFFHAND_RESERVE(Images.EMPTY_WEAPON_OFFHAND);
 
 
         private String slotImagePath;
@@ -437,7 +434,7 @@ public class VisualEnums {
             this.color = color;
         }
 
-        Color color;
+        public Color color;
 
         public String getSpritePath() {
             return PathFinder.getSpritesPath() + "fullscreen/" + (toString().replace("_", " ")) + ".txt";
@@ -471,7 +468,8 @@ public class VisualEnums {
         EVEN(GdxColorMaster.YELLOW, 100),
         MODERATE(GdxColorMaster.BLUE, 75),
         EASY(GdxColorMaster.GREEN, 50),
-        EFFORTLESS(GdxColorMaster.WHITE, 25),;
+        EFFORTLESS(GdxColorMaster.WHITE, 25),
+        ;
         public final Color color;
         public final int powerPercentage;
 
@@ -519,7 +517,7 @@ public class VisualEnums {
     }
 
     public enum SCREEN_TYPE {
-      EDITOR, DUNGEON, PRE_BATTLE, MAIN_MENU, WEAVE, BRIEFING, CINEMATIC, MAP, EDITOR_WELCOME
+        EDITOR, DUNGEON, PRE_BATTLE, MAIN_MENU, WEAVE, BRIEFING, CINEMATIC, MAP, EDITOR_WELCOME
     }
 
     public enum LABEL_STYLE {
@@ -551,13 +549,13 @@ public class VisualEnums {
 
     public enum FLY_OBJ_TYPE {
         cloud(0.04f, GenericEnums.ALPHA_TEMPLATE.CLOUD, true, false, 0f),
-        cloud_large(0.03f, GenericEnums.ALPHA_TEMPLATE.CLOUD_HEAVY, true, false, 0.5f){
+        cloud_large(0.03f, GenericEnums.ALPHA_TEMPLATE.CLOUD_HEAVY, true, false, 0.5f) {
             @Override
             public String toString() {
                 return "cloud";
             }
         },
-        thunder(0.03f, null , true, true, 0f, true, SPRITE_TEMPLATE.THUNDER),
+        thunder(0.03f, null, true, true, 0f, true, SPRITE_TEMPLATE.THUNDER),
         thunder2(0.03f, null, false, false, 0f, true, SPRITE_TEMPLATE.THUNDER2),
         thunder3(0.03f, null, false, false, 0f, true, SPRITE_TEMPLATE.THUNDER2),
         //linked with texture?
@@ -580,16 +578,16 @@ public class VisualEnums {
         light(0.3f, GenericEnums.ALPHA_TEMPLATE.CLOUD, true, false, 0f), //sprite?
         ;
 
-        private   String directory;
-        private   String fileName;
-        FLY_OBJ_TYPE host;
+        public  String directory;
+        public  String fileName;
+        public FLY_OBJ_TYPE host;
         public float angleRange;
-        private String path;
-        GenericEnums.BLENDING blending;
-        boolean scaling;
-        GenericEnums.VFX[] vfx;
-        private Color hue;
-        private float baseAlpha;
+        public String path;
+        public  GenericEnums.BLENDING blending;
+        public  boolean scaling;
+        public  GenericEnums.VFX[] vfx;
+        public  Color hue;
+        public  float baseAlpha;
 
         FLY_OBJ_TYPE(float speedFactor, GenericEnums.VFX... vfx) {
             this.vfx = vfx;
@@ -603,10 +601,10 @@ public class VisualEnums {
 
         FLY_OBJ_TYPE(float speedFactor, GenericEnums.ALPHA_TEMPLATE alpha,
                      boolean flipX, boolean flipY, float weightFactor, boolean sprite, SPRITE_TEMPLATE template) {
-            this.directory =sprite ?  PathFinder.getSpritesPath() + "fly objs/" :  PathFinder.getFlyObjPath();
+            this.directory = sprite ? PathFinder.getSpritesPath() + "fly objs/" : PathFinder.getFlyObjPath();
             this.fileName = toString();
-            this. path = sprite ? directory+ fileName + ".txt"
-                                : directory+ fileName + ".png";
+            this.path = sprite ? directory + fileName + ".txt"
+                    : directory + fileName + ".png";
 
             this.speedFactor = speedFactor;
             this.alpha = alpha;
@@ -619,9 +617,9 @@ public class VisualEnums {
         public float speedFactor;
         public GenericEnums.ALPHA_TEMPLATE alpha;
         public SPRITE_TEMPLATE spriteTemplate;
-        boolean flipX;
-        boolean flipY;
-        float weightFactor; //TODO revamp; now its just scale boost
+        public boolean flipX;
+        public boolean flipY;
+        public float weightFactor; //TODO revamp; now its just scale boost
 
         public String getPathVariant() {
             if (vfx != null) {
@@ -630,7 +628,7 @@ public class VisualEnums {
             if (path.endsWith(".txt")) {
                 return path;
             }
-            return GdxStringUtils.cropImagePath(FileManager.getRandomFilePathVariantSmart(fileName,    directory, ".png"));
+            return GdxStringUtils.cropImagePath(FileManager.getRandomFilePathVariantSmart(fileName, directory, ".png"));
         }
 
         static {
@@ -643,6 +641,7 @@ public class VisualEnums {
             thunder2.setHost(cloud_large);
             thunder3.setHost(cloud_large);
         }
+
         public void setHost(FLY_OBJ_TYPE host) {
             this.host = host;
         }
@@ -688,12 +687,12 @@ public class VisualEnums {
 
         public boolean canBeReverse;
         public int fps;
-        float pauseAfterCycle;
-        float speedRandomness;
-        float acceleration;
-        float offsetRangeX;
-        float offsetRangeY;
-        float scaleRange;
+        public float pauseAfterCycle;
+        public float speedRandomness;
+        public float acceleration;
+        public float offsetRangeX;
+        public float offsetRangeY;
+        public float scaleRange;
     }
 
     public enum CURSOR {
@@ -711,7 +710,7 @@ public class VisualEnums {
 
         NO, EMPTY,
         ;
-        int x, y;
+       public int x, y;
         private String filePath;
 
         CURSOR(int x, int y, String filePath) {
@@ -905,10 +904,10 @@ public class VisualEnums {
                 12, 2, GenericEnums.ALPHA_TEMPLATE.OVERLAYS),
         ASH_THICK(false, "sprites/particles/snow.txt", GenericEnums.BLENDING.INVERT_SCREEN,
                 14, 3, GenericEnums.ALPHA_TEMPLATE.OVERLAYS),
-//        MIST(true, "sprites/particles/mist.txt", GenericEnums.BLENDING.SCREEN,
-//                10, 2, null),
-//        BLACK_MIST(true, "sprites/particles/mist.txt", GenericEnums.BLENDING.INVERT_SCREEN,
-//                10, 2, GenericEnums.ALPHA_TEMPLATE.OVERLAYS),
+        //        MIST(true, "sprites/particles/mist.txt", GenericEnums.BLENDING.SCREEN,
+        //                10, 2, null),
+        //        BLACK_MIST(true, "sprites/particles/mist.txt", GenericEnums.BLENDING.INVERT_SCREEN,
+        //                10, 2, GenericEnums.ALPHA_TEMPLATE.OVERLAYS),
         SNOW(false, "sprites/particles/snow.txt", GenericEnums.BLENDING.SCREEN,
                 14, 2, GenericEnums.ALPHA_TEMPLATE.OVERLAYS),
         SNOW_THICK(false, "sprites/particles/snow.txt", GenericEnums.BLENDING.SCREEN,
@@ -929,12 +928,11 @@ public class VisualEnums {
         public boolean flipping;
         public String path;
         public GenericEnums.BLENDING blending;
-        int fps;
-        int overlap;
-        boolean changeFps;
-
-        GenericEnums.ALPHA_TEMPLATE fluctuation;
-        int eachNisFlipX = 0;
+        public int fps;
+        public int overlap;
+        public boolean changeFps;
+        public GenericEnums.ALPHA_TEMPLATE fluctuation;
+        public int eachNisFlipX = 0;
         public int duration;
     }
 
@@ -1024,10 +1022,10 @@ public class VisualEnums {
         VERTICAL(50, 35),
         HORIZONTAL(50, 35),
         ;
-        int duration = 5; // In seconds, make longer if you want more variation
-        int frequency; // hertz
-        float amplitude; // how much you want to shake
-        boolean falloff = true; // if the shake should decay as it expires
+        public int duration = 5; // In seconds, make longer if you want more variation
+        public int frequency; // hertz
+        public float amplitude; // how much you want to shake
+        public boolean falloff = true; // if the shake should decay as it expires
 
         ScreenShakeTemplate(int frequency, float amplitude) {
             this.frequency = frequency;

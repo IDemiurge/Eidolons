@@ -16,4 +16,6 @@ public interface IVoidGdxHandler {
     void setCanDropHero(boolean b);
 
     void setUnmark(boolean b);
+
+    void setPuzzle(VoidMaze puzzle);
 }

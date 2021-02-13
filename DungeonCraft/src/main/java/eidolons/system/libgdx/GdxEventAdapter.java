@@ -1,6 +1,6 @@
 package eidolons.system.libgdx;
 
-import eidolons.system.libgdx.wrapper.Vector2;
+import eidolons.system.libgdx.wrapper.VectorGdx;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import main.game.bf.Coordinates;
@@ -13,5 +13,5 @@ public interface GdxEventAdapter {
 
     String comment(String img, String text, Coordinates c);
 
-    void comment_(Unit unit, String key, Vector2 at);
+    void comment_(Unit unit, String key, VectorGdx at);
 }

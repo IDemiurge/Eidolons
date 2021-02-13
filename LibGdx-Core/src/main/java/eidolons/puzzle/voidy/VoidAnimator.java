@@ -1,16 +1,20 @@
-package eidolons.puzzle.maze.voidy.grid;
+package eidolons.puzzle.voidy;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
 import eidolons.puzzle.gridobj.CinematicGridObject;
 import eidolons.puzzle.gridobj.GridObject;
+import eidolons.puzzle.voidy.VoidHandler;
 import libgdx.anims.actions.ActionMaster;
 import libgdx.anims.main.AnimMaster;
 import libgdx.anims.sprite.SpriteAnimation;
 import libgdx.anims.sprite.SpriteAnimationFactory;
 import libgdx.anims.std.HitAnim;
 import libgdx.anims.std.sprite.CustomSpriteAnim;
+import libgdx.bf.GridMaster;
 import libgdx.bf.grid.cell.GridCell;
 import eidolons.system.audio.DC_SoundMaster;
+import libgdx.bf.grid.handlers.GridManager;
+import libgdx.screens.ScreenMaster;
 import main.content.enums.entity.BfObjEnums;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -44,7 +48,7 @@ public class VoidAnimator {
         float dur = 1 * speed;
         float x = cell.getGridX() * 128;
         float y =
-                handler.gridPanel.getGdxY_ForModule(cell.getGridY()) * 128;
+                ScreenMaster.getGrid().getGdxY_ForModule(cell.getGridY()) * 128;
         // float x1 = x - (scale - actor.getScaleX()) * actor.getWidth() / 2;
         // float y1 = y - (scale - actor.getScaleY()) * actor.getHeight() / 2;
         //TODO IDEA: Maybe scaling from SLICE could look nice? basically, scaling only on one axis. Depending on facing...
@@ -52,7 +56,7 @@ public class VoidAnimator {
         float offsetY = 0;
         if (!raiseOrCollapse) {
             from = from.flip();
-            if (handler.collapseDown) if (from.growX == null) from = DIRECTION.DOWN;
+            if (handler.isCollapseDown()) if (from.growX == null) from = DIRECTION.DOWN;
             else from = from.growX ? DIRECTION.DOWN_RIGHT : DIRECTION.DOWN_LEFT;
         }
         //cell will move in a way to 'arrive' at where we are raising 'from'
@@ -151,19 +155,19 @@ public class VoidAnimator {
         ActionMaster.addAfter(cell, () -> {
 
             if (raiseOrCollapse) {
-                handler.raised.put(cell, direction);
-                handler.collapsed.remove(cell);
+                handler.getRaised().put(cell, direction);
+                handler.getCollapsed().remove(cell);
                 if (handler.isLogged())
                     log(1, cell.getUserObject().getNameAndCoordinate() +
                             cell.getColor().a + " was raised; raised cells: " + handler.raised.size());
             } else {
-                handler.collapsed.put(cell, direction);
-                handler.raised.remove(cell);
+                handler.getCollapsed().put(cell, direction);
+                handler.getRaised().remove(cell);
                 cell.setPosition(x, y);
 
                 if (handler.isLogged())
                     log(1, cell.getUserObject().getNameAndCoordinate() +
-                            cell.getColor().a + " had collapsed and been reset; collapsed cells: " + handler.collapsed.size());
+                            cell.getColor().a + " had collapsed and been reset; collapsed cells: " + handler.getCollapsed().size());
             }
 
 

@@ -6,7 +6,7 @@ import libgdx.gui.menu.selection.ItemListPanel;
 import libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import libgdx.gui.menu.selection.SelectableItemDisplayer;
 import libgdx.gui.menu.selection.SelectionPanel;
-import libgdx.screens.ScreenData;
+import eidolons.system.libgdx.datasource.ScreenData;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.Entity;

@@ -120,7 +120,7 @@ public class ShopClickHandler extends ContainerClickHandler {
                         case QUICK_SLOTS:
                             return OPERATIONS.UNEQUIP_QUICK_SLOT;
                         case INVENTORY:
-                        case VisualEnums.CONTAINER:
+                        case  CONTAINER:
                             return null;
                         case STASH:
                             return OPERATIONS.UNSTASH;
@@ -174,8 +174,8 @@ public class ShopClickHandler extends ContainerClickHandler {
     protected boolean canDoOperation(OPERATIONS operation, Entity type, Object arg) {
         DC_HeroItemObj item = (DC_HeroItemObj) type;
         switch (operation) {
-            case STASH:
-                return !Eidolons.getTown().isStashFull();
+            // case STASH:
+            //     return !Eidolons.getTown().isStashFull();
             case UNSTASH:
                 return checkCanAddInventory();
             case SELL:

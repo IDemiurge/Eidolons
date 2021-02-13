@@ -9,7 +9,7 @@ import libgdx.assets.Assets;
 import libgdx.assets.Atlases;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.screens.CustomSpriteBatch;
-import libgdx.screens.ScreenData;
+import eidolons.system.libgdx.datasource.ScreenData;
 import libgdx.screens.ScreenWithAssets;
 import libgdx.texture.TextureCache;
 import libgdx.texture.Textures;

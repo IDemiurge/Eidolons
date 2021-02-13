@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.mission.quest;
 
-import eidolons.system.libgdx.wrapper.Vector2;
+import eidolons.system.libgdx.wrapper.VectorGdx;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
@@ -386,7 +386,7 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
         return true;
     }
 
-    public static boolean doComment(Unit unit, String key, Vector2 at) {
+    public static boolean doComment(Unit unit, String key, VectorGdx at) {
         //        GuiEventManager.trigger(GuiEventType.SHOW_COMMENT_PORTRAIT, unit, key, at);
          GdxAdapter.getInstance().getEventsAdapter().comment_(unit, key, at);
         return true;

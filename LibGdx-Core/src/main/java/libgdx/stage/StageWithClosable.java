@@ -6,7 +6,6 @@ import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import libgdx.gui.generic.GroupX;
-import eidolons.macro.MacroGame;
 import eidolons.system.audio.DC_SoundMaster;
 import main.system.sound.AudioEnums;
 
@@ -54,10 +53,6 @@ public interface StageWithClosable {
                     if (DC_Game.game.getLoop() != null) {
                         DC_Game.game.getLoop().setPaused(true, false);
                         return;
-                    }
-                if (MacroGame.game != null)
-                    if (MacroGame.game.getLoop() != null) {
-                        MacroGame.game.getLoop().setPaused(true);
                     }
             }
         if (this instanceof BattleGuiStage) {

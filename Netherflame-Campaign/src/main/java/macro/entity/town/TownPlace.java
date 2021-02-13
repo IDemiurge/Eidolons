@@ -1,5 +1,6 @@
 package macro.entity.town;
 
+import eidolons.entity.Town;
 import macro.MacroGame;
 import macro.entity.MacroObj;
 import eidolons.macro.entity.town.Tavern.TOWN_PLACE_TYPE;

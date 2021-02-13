@@ -11,12 +11,15 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.content.PARAMS;
+import eidolons.content.consts.Images;
 import eidolons.content.consts.VisualEnums;
+import eidolons.content.consts.VisualEnums.CELL_TYPE;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.dungeoncrawl.objects.vendor.GoldMaster;
 import eidolons.game.netherflame.main.soul.eidola.EidolonImbuer;
-import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
 import libgdx.anims.actions.ActionMaster;
@@ -26,18 +29,14 @@ import libgdx.gui.UiMaster;
 import libgdx.gui.generic.GroupX;
 import libgdx.gui.generic.NoHitImage;
 import libgdx.gui.menu.selection.town.shops.ShopPanel;
-import eidolons.content.consts.VisualEnums.CELL_TYPE;
 import libgdx.gui.panels.dc.inventory.container.ContainerPanel;
 import libgdx.gui.panels.dc.inventory.datasource.InventoryTableDataSource;
 import libgdx.gui.panels.dc.inventory.shop.ShopDataSource;
-import libgdx.gui.panels.headquarters.datasource.GoldMaster;
 import libgdx.gui.panels.headquarters.tabs.inv.ItemActor;
 import libgdx.gui.tooltips.SmartClickListener;
 import libgdx.gui.tooltips.ValueTooltip;
 import libgdx.stage.DragManager;
-import eidolons.content.consts.Images;
 import libgdx.texture.TextureCache;
-import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.ItemEnums;
 import main.entity.obj.Obj;
@@ -107,12 +106,12 @@ public class InvItemActor extends ItemActor {
     protected FadeImageContainer createBackground() {
         if (model != null) {
             switch (model.getOBJ_TYPE_ENUM()) {
-                case DC_TYPE.JEWELRY:
-                case DC_TYPE.ITEMS:
+                case  JEWELRY:
+                case  ITEMS:
                     return new FadeImageContainer(Images.ITEM_BACKGROUND_GOLD);
-                case DC_TYPE.WEAPONS:
+                case  WEAPONS:
                     return new FadeImageContainer(Images.ITEM_BACKGROUND_STEEL);
-                case DC_TYPE.ARMOR:
+                case ARMOR:
                     return new FadeImageContainer(Images.ITEM_BACKGROUND_STONE);
             }
         }

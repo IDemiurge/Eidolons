@@ -463,8 +463,8 @@ public class GlobalController implements Controller {
                         .playerWaits();
                 return true;
             case 'O': {
-
-                OptionsWindow.getInstance().open(OptionsMaster.getInstance().getOptionsMap(), stage);
+                //TODO gdx fix
+                // OptionsWindow.getInstance().open(OptionsMaster.getInstance().getOptionsMap(), stage);
                 break;
             }
             case 'S': {

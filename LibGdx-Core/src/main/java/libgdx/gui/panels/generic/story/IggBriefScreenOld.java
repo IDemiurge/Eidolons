@@ -2,12 +2,11 @@ package libgdx.gui.panels.generic.story;
 
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import eidolons.system.libgdx.datasource.ScreenData;
 import libgdx.anims.fullscreen.BriefBackground;
-import eidolons.game.netherflame.main.story.brief.BriefText;
 import eidolons.game.netherflame.main.story.brief.BriefingData;
 import libgdx.GdxMaster;
 import libgdx.bf.generic.FadeImageContainer;
-import libgdx.screens.ScreenData;
 import libgdx.screens.ScreenWithLoader;
 import libgdx.stage.StageX;
 import libgdx.stage.UiStage;

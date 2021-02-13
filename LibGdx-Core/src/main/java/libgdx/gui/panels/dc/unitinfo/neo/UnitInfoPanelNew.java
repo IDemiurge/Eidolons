@@ -16,13 +16,13 @@ import libgdx.gui.panels.dc.actionpanel.BuffPanelSimple;
 import libgdx.gui.panels.headquarters.HqElement;
 import libgdx.gui.panels.headquarters.hero.HqTraitsPanel;
 import libgdx.gui.panels.headquarters.hero.HqVerticalValueTable;
-import libgdx.screens.map.layers.BlackoutOld;
 import libgdx.shaders.ShaderDrawer;
 import libgdx.stage.Blocking;
 import libgdx.stage.StageWithClosable;
 import libgdx.texture.TextureCache;
 import main.content.enums.DungeonEnums;
 import main.content.values.properties.G_PROPS;
+import main.data.filesys.PathFinder;
 import main.system.auxiliary.RandomWizard;
 
 /**
@@ -99,7 +99,7 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
         SymbolButton btn;
         addActor(btn =new SymbolButton(ButtonStyled.STD_BUTTON.CANCEL, this::close));
         btn.setPosition(getWidth()-64, getHeight()-64);
-        black = new ImageContainer(BlackoutOld.path);
+        black = new ImageContainer(PathFinder.getMacroUiPath() + "blackout.jpg");
 
         center = new AdjustingVerticalGroup(WIDTH/3, 0.75f);
           left = new AdjustingVerticalGroup(WIDTH/3, 0.25f);

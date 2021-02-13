@@ -1,6 +1,7 @@
 package libgdx.gui.panels.lord;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import eidolons.content.consts.GraphicData;
 import eidolons.game.netherflame.main.lord.EidolonLord;
 import libgdx.GdxMaster;
 import libgdx.anims.SimpleAnim;
@@ -9,7 +10,6 @@ import libgdx.anims.actions.FloatActionLimited;
 import libgdx.anims.sprite.SpriteX;
 import libgdx.bf.Fluctuating;
 import libgdx.bf.SuperActor;
-import libgdx.bf.datasource.GraphicData;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.gui.ScissorMaster;
 import libgdx.screens.CustomSpriteBatch;

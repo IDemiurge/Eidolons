@@ -3,7 +3,7 @@ package macro;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
 import libgdx.screens.SCREEN_TYPE;
-import libgdx.screens.ScreenData;
+import eidolons.system.libgdx.datasource.ScreenData;
 import eidolons.macro.entity.party.MacroParty;
 import eidolons.macro.global.persist.Loader;
 import eidolons.macro.map.Place;
