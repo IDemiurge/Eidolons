@@ -15,33 +15,16 @@ import main.system.datatypes.WeightMap;
 import javax.swing.*;
 import java.util.*;
 
-public class C3QueryManager  extends C3Handler {
-    WeightMap<C3Enums.QueryCategory> categoriesWeightMap;
-    Map<C3Enums.QueryCategory, Map<String, List<String>>> queryTextMap;
+import static data.C3Enums.*;
 
-    public C3QueryManager(C3Manager manager, WeightMap<C3Enums.QueryCategory> categoriesWeightMap, Map<C3Enums.QueryCategory, Map<String, List<String>>> queryTextMap) {
+public class C3QueryManager extends C3Handler {
+    WeightMap<QueryCategory> categoriesWeightMap;
+    Map<QueryCategory, Map<String, List<String>>> queryTextMap;
+
+    public C3QueryManager(C3Manager manager, WeightMap<QueryCategory> categoriesWeightMap, Map<QueryCategory, Map<String, List<String>>> queryTextMap) {
         super(manager);
         this.categoriesWeightMap = categoriesWeightMap;
         this.queryTextMap = queryTextMap;
-    }
-
-
-    public C3_Query createRandomQuery() {
-        C3Enums.QueryMode mode = C3Enums.QueryMode.normal;
-        C3Enums.QueryCategory category = getCategory(mode);
-        String sub = getSubcategory(category);
-        String text = getQueryText(category, sub);
-        return new C3_Query(category, sub, text);
-    }
-
-    private String getQueryText(C3Enums.QueryCategory category, String sub) {
-        for (Map<String, List<String>> value : queryTextMap.values()) {
-            List<String> list = value.get(sub.toLowerCase(Locale.ROOT));
-            if (list != null) {
-                return list.get(RandomWizard.getRandomIndex(list));
-            }
-        }
-        return "No valid queries for this category!";
     }
 
     public void persist() {
@@ -49,28 +32,53 @@ public class C3QueryManager  extends C3Handler {
     }
 
     public void querySucceeded(C3_Query query) {
-        C3Enums.QueryCategory key = query.category;
+        QueryCategory key = query.getCategory();
         Integer decremented = categoriesWeightMap.get(key);
         categoriesWeightMap.put(key, decremented);
-        queryTextMap.get(query.subCategory).remove(query.text);
+        queryTextMap.get(query.getSubCategory()).remove(query.getText());
         persist();
     }
 
-    private String getSubcategory(C3Enums.QueryCategory category) {
+    public C3_Query createRandomQuery() {
+        QueryMode mode = QueryMode.normal;
+        QueryCategory category = getCategory(mode);
+        return createQuery(category);
+    }
+
+    public C3_Query createQuery() {
+        QueryCategory category = new EnumMaster<QueryCategory>().selectEnum(QueryCategory.class);
+        return createQuery(category);
+    }
+
+    private C3_Query createQuery(QueryCategory category) {
+        String sub = getSubcategory(category);
+        String text = getQueryText(category, sub);
+        return new C3_Query(category, sub, text);
+    }
+
+    private String getQueryText(QueryCategory category, String sub) {
+        Map<String, List<String>> subcateg = queryTextMap.get(category);
+        List<String> list = subcateg.get(sub.toLowerCase(Locale.ROOT));
+        if (list != null) {
+            return list.get(RandomWizard.getRandomIndex(list));
+        }
+        return "No valid queries for " + category + "::" + sub + "!";
+    }
+
+    private String getSubcategory(QueryCategory category) {
         return category.subcategories[RandomWizard.getRandomInt(category.subcategories.length)];
     }
 
-    private C3Enums.QueryCategory getCategory(C3Enums.QueryMode mode) {
-
-        return C3Enums.QueryCategory.CS;
+    private QueryCategory getCategory(QueryMode mode) {
+        return   categoriesWeightMap.getRandomByWeight();
     }
 
     public void addQuery() {
-        Object[] vals = C3Enums.QueryCategory.values();
+        Object[] vals = QueryCategory.values();
         Object input = JOptionPane.showInputDialog(null, "Query category?", "Input", JOptionPane.QUESTION_MESSAGE, null, vals, vals[0]);
         if (input == null)
             return;
-        C3Enums.QueryCategory category = (C3Enums.QueryCategory) input;
+        QueryCategory category = (QueryCategory) input;
         vals = category.subcategories;
         input = JOptionPane.showInputDialog(null, "Query subcategory?", "Input", JOptionPane.QUESTION_MESSAGE, null, vals, vals[0]);
         if (input == null)
