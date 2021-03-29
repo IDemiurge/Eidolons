@@ -11,7 +11,7 @@ import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.action.WatchRule;
 import eidolons.game.battlecraft.rules.perk.FlyingRule;
 import eidolons.game.core.EUtils;
-import eidolons.system.DC_Formulas;
+import eidolons.content.DC_Formulas;
 import eidolons.system.math.roll.RollMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;

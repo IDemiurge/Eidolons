@@ -14,7 +14,7 @@ import eidolons.game.netherflame.main.death.HeroChain;
 import eidolons.game.netherflame.main.hero.ChainParty;
 import eidolons.game.netherflame.main.lord.EidolonLord;
 import eidolons.system.libgdx.GdxStatic;
-import eidolons.system.DC_Formulas;
+import eidolons.content.DC_Formulas;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
@@ -22,7 +22,6 @@ import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.RandomWizard;
 import main.system.threading.WaitMaster;
 
 import java.util.Collections;

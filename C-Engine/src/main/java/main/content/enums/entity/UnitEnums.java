@@ -113,7 +113,7 @@ public final class UnitEnums {
                 return true;
             }
         },
-        Mutagenic,
+        Mutagen,
         Zen,
         Loyalty,
         Demon_Debt {

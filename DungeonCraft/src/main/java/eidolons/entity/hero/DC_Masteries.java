@@ -1,10 +1,10 @@
-package eidolons.entity.obj.hero;
+package eidolons.entity.hero;
 
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.system.DC_Formulas;
+import eidolons.content.DC_Formulas;
 import main.ability.effects.Effect.MOD;
 import main.content.ContentValsManager;
 import main.content.enums.entity.SkillEnums.MASTERY;

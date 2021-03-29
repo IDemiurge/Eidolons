@@ -18,6 +18,7 @@ import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
+import main.system.util.DialogMaster;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
@@ -532,14 +533,23 @@ public class EnumMaster<T> {
         };
     }
 
-    public T selectEnum(Class<T> class1) {
+    public T selectEnumViaList(Class<T> class1) {
         return retrieveEnumConst(class1, ListChooser.chooseEnum(class1));
     }
-
-    // public T selectEnum() {
-    // new EnumMaster<ENUM>().retrieveEnumConst(ENUM.class, string );
-    // return null;
-    // }
+    public T selectEnum(Class<T> class1) {
+        Object option = DialogMaster.getChosenOption("Select one", getEnumConstants(class1));
+        if (option == null) {
+            return null;
+        }
+        return retrieveEnumConst(class1, option.toString());
+    }
+    public T selectEnum(Class<T> class1, Collection<T> filtered) {
+        Object option = DialogMaster.getChosenOption("Select one", filtered);
+        if (option == null) {
+            return null;
+        }
+        return retrieveEnumConst(class1, option.toString());
+    }
 
     public T retrieveEnumFromEntityProp(Class<T> CLASS, Entity entity) {
         String string = entity.getProperty(ContentValsManager.findPROP(CLASS.getSimpleName()));

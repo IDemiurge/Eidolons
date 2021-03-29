@@ -4,7 +4,7 @@ import eidolons.content.DC_ContentValsManager.ATTRIBUTE;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.values.ValuePages;
-import eidolons.system.DC_Formulas;
+import eidolons.content.DC_Formulas;
 import eidolons.system.math.DC_MathManager;
 import main.content.ContentValsManager;
 import main.content.enums.entity.SkillEnums.MASTERY;

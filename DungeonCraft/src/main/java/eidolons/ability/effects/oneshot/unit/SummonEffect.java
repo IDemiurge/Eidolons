@@ -10,7 +10,7 @@ import eidolons.game.battlecraft.rules.magic.SummoningSicknessRule;
 import eidolons.game.battlecraft.rules.round.UpkeepRule;
 import eidolons.game.core.EUtils;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
-import eidolons.system.DC_Formulas;
+import eidolons.content.DC_Formulas;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.OneshotEffect;

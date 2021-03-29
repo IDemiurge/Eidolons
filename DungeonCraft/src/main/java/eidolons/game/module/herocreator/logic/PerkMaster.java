@@ -8,6 +8,7 @@ import eidolons.entity.obj.unit.Unit;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums.CLASS_PERK_GROUP;
 import main.content.enums.entity.HeroEnums.PERK_PARAM;
+import main.content.enums.entity.NewRpgEnums;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
@@ -15,6 +16,7 @@ import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.data.DataUnit;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,6 +26,31 @@ import java.util.stream.Collectors;
  */
 public class PerkMaster {
 
+    public static class PerkData extends DataUnit<NewRpgEnums.PERK_VALUES> {
+        public PerkData(String text) {
+            super(text);
+        }
+
+        public String getPerk(int tier) {
+            return values.get("perks_" + tier);
+        }
+
+        public String getQuirk(int tier) {
+            return values.get("quirks_" + tier);
+        }
+
+        public String getAdditionalPerk(int tier) {
+            return values.get("add_perks_" + tier);
+        }
+    }
+
+    public static boolean isAdditionalPerkSlotAvailable(Unit hero, int tier, int slot) {
+        return getPerkData(hero).getQuirk(tier).isEmpty();
+    }
+
+    private static PerkData getPerkData(Unit hero) {
+        return new PerkData(hero.getProperty(PROPS.PERKS));
+    }
 
     public static List<ObjType> getAvailablePerks(Unit hero, int tier,
                                                   Entity c1, Entity c2) {
@@ -35,14 +62,14 @@ public class PerkMaster {
             return list;
 
         CLASS_PERK_GROUP group1 =
-         new EnumMaster<CLASS_PERK_GROUP>().retrieveEnumConst(CLASS_PERK_GROUP.class,
-          c1.getProperty(PROPS.CLASS_PERK_GROUP));
+                new EnumMaster<CLASS_PERK_GROUP>().retrieveEnumConst(CLASS_PERK_GROUP.class,
+                        c1.getProperty(PROPS.CLASS_PERK_GROUP));
         CLASS_PERK_GROUP group2 =
-         new EnumMaster<CLASS_PERK_GROUP>().retrieveEnumConst(CLASS_PERK_GROUP.class,
-          c2.getProperty(PROPS.CLASS_PERK_GROUP));
+                new EnumMaster<CLASS_PERK_GROUP>().retrieveEnumConst(CLASS_PERK_GROUP.class,
+                        c2.getProperty(PROPS.CLASS_PERK_GROUP));
 
         Set<PERK_PARAM> paramPerks =
-         new LinkedHashSet<>(Arrays.asList(group1.getParamPerks()));
+                new LinkedHashSet<>(Arrays.asList(group1.getParamPerks()));
         paramPerks.addAll(Arrays.asList(group2.getParamPerks()));
 
         main:
@@ -56,7 +83,7 @@ public class PerkMaster {
                 for (PERK_PARAM sub : paramPerks) {
                     if (type.getIntParam(PARAMS.CIRCLE) == tier)
                         if (type.getProperty(PROPS.PERK_PARAM).
-                         equalsIgnoreCase(sub.toString())) {
+                                equalsIgnoreCase(sub.toString())) {
                             list.add(type);
                             continue main;
                         }
@@ -74,7 +101,7 @@ public class PerkMaster {
     private static List<ObjType> getCustomPerks(Entity c1) {
         return DataManager.getTypes(DC_TYPE.PERKS).stream().filter(
                 t -> t.getProperty(PROPS.PERK_FOR_CLASSES)
-                        .toLowerCase(). contains(c1.getName().toLowerCase())
+                        .toLowerCase().contains(c1.getName().toLowerCase())
         ).collect(Collectors.toList());
     }
 
@@ -110,8 +137,8 @@ public class PerkMaster {
         substring = substring.toLowerCase();
         if (substring.contains(heroClass.getName().toLowerCase())) return true;
         CLASS_PERK_GROUP group =
-         new EnumMaster<CLASS_PERK_GROUP>().retrieveEnumConst(CLASS_PERK_GROUP.class,
-          heroClass.getProperty(PROPS.CLASS_PERK_GROUP));
+                new EnumMaster<CLASS_PERK_GROUP>().retrieveEnumConst(CLASS_PERK_GROUP.class,
+                        heroClass.getProperty(PROPS.CLASS_PERK_GROUP));
         return substring.contains(StringMaster.format(
                 group.toString()).toLowerCase());
     }

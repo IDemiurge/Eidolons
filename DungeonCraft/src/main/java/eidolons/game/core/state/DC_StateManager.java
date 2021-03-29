@@ -473,7 +473,6 @@ public class DC_StateManager extends StateManager {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-
     }
 
     public void newRound() {
@@ -513,6 +512,8 @@ public class DC_StateManager extends StateManager {
             }
             //            getGameManager().refreshAll();
         }
+
+        getState().increaseChaosLevel();
         game.getTurnManager().newRound();
         //        getGameManager().reset();
 

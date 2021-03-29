@@ -3,6 +3,8 @@ package eidolons.entity.active;
 import eidolons.ability.ActionGenerator;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.entity.active.spaces.ActiveSpaceManager;
+import eidolons.entity.active.spaces.IActiveSpaceManager;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.attach.DC_FeatObj;
@@ -53,9 +55,11 @@ public class DC_ActionManager implements ActionManager {
     protected static ArrayList<ObjType> orderObjTypes;
     protected GenericGame game;
     protected HashMap<Entity, Map<String, ActiveObj>> actionsCache = new HashMap<>();
+    private IActiveSpaceManager spaceManager;
 
     public DC_ActionManager(GenericGame game) {
         this.game = game;
+        spaceManager = new ActiveSpaceManager();
     }
 
     public static void init() {
@@ -666,4 +670,7 @@ public class DC_ActionManager implements ActionManager {
     }
 
 
+    public IActiveSpaceManager getSpaceManager() {
+        return spaceManager;
+    }
 }

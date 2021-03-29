@@ -4,7 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.system.DC_Formulas;
+import eidolons.content.DC_Formulas;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;

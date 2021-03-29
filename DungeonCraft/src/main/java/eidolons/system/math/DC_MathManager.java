@@ -9,7 +9,7 @@ import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.herocreator.logic.PointMaster;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
-import eidolons.system.DC_Formulas;
+import eidolons.content.DC_Formulas;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
@@ -61,12 +61,12 @@ public class DC_MathManager extends MathMaster {
         }
 
         return 1 + MathMaster.round(max - DC_Formulas.DURABILITY_DAMAGE_THRESHOLD_ARMOR)
-         / DC_Formulas.DURABILITY_DAMAGE_FACTOR_ARMOR;
+                / DC_Formulas.DURABILITY_DAMAGE_FACTOR_ARMOR;
     }
 
     private static int getWeaponDurabilityForDamage(int damage, int armor) {
         if (armor < DC_Formulas.DURABILITY_DAMAGE_THRESHOLD_WEAPON) {
-            armor= DC_Formulas.DURABILITY_DAMAGE_THRESHOLD_WEAPON;
+            armor = DC_Formulas.DURABILITY_DAMAGE_THRESHOLD_WEAPON;
         }
         int max = armor;
         if (damage < armor) {
@@ -74,7 +74,7 @@ public class DC_MathManager extends MathMaster {
         }
 
         return 1 + MathMaster.round(max - DC_Formulas.DURABILITY_DAMAGE_THRESHOLD_WEAPON)
-         / DC_Formulas.DURABILITY_DAMAGE_FACTOR_WEAPON;
+                / DC_Formulas.DURABILITY_DAMAGE_FACTOR_WEAPON;
 
     }
 
@@ -92,7 +92,7 @@ public class DC_MathManager extends MathMaster {
         }
         if (type == GenericEnums.DAMAGE_TYPE.PHYSICAL) {
             return MathMaster.getAverage(attacked.getIntParam(PARAMS.SLASHING_RESISTANCE),
-             attacked.getIntParam(PARAMS.PIERCING_RESISTANCE), attacked.getIntParam(PARAMS.SLASHING_RESISTANCE));
+                    attacked.getIntParam(PARAMS.PIERCING_RESISTANCE), attacked.getIntParam(PARAMS.SLASHING_RESISTANCE));
         }
         // AETHER/ASTRAL -> average of all elemental/astral TODO
         if (type == GenericEnums.DAMAGE_TYPE.PURE) {
@@ -108,19 +108,23 @@ public class DC_MathManager extends MathMaster {
     }
 
     public static int getBuyAttributeXpCost(Entity hero) {
-        return DC_Formulas.BUY_ATTRIBUTE_XP_COST + hero.getIntParam(PARAMS.ATTR_BOUGHT_WITH_XP);
+        // return DC_Formulas.BUY_ATTRIBUTE_XP_COST + hero.getIntParam(PARAMS.ATTR_BOUGHT_WITH_XP);
+        return 0;
     }
 
     public static int getBuyAttributeGoldCost(Entity hero) {
-        return DC_Formulas.BUY_ATTRIBUTE_GOLD_COST + 2 * hero.getIntParam(PARAMS.ATTR_BOUGHT_WITH_GOLD);
+        // return DC_Formulas.BUY_ATTRIBUTE_GOLD_COST + 2 * hero.getIntParam(PARAMS.ATTR_BOUGHT_WITH_GOLD);
+        return 0;
     }
 
     public static int getBuyMasteryGoldCost(Entity hero) {
-        return DC_Formulas.BUY_MASTERY_GOLD_COST + 2 * hero.getIntParam(PARAMS.MASTERY_BOUGHT_WITH_GOLD);
+        // return DC_Formulas.BUY_MASTERY_GOLD_COST + 2 * hero.getIntParam(PARAMS.MASTERY_BOUGHT_WITH_GOLD);
+        return 0;
     }
 
     public static int getBuyMasteryXpCost(Entity hero) {
-        return DC_Formulas.BUY_MASTERY_XP_COST + hero.getIntParam(PARAMS.MASTERY_BOUGHT_WITH_XP);
+        // return DC_Formulas.BUY_MASTERY_XP_COST + hero.getIntParam(PARAMS.MASTERY_BOUGHT_WITH_XP);
+        return 0;
     }
 
     public static int getBuyCost(boolean attr, boolean gold, Entity hero) {
@@ -179,7 +183,7 @@ public class DC_MathManager extends MathMaster {
             }
 
             divinationPoolFormula = new Formula(DC_Formulas.DIVINATION_POOL_FORMULA.toString().toLowerCase()
-             .replace("{charisma}", hero.getProperty(PROPS.DIVINATION_PARAMETER)));
+                    .replace("{charisma}", hero.getProperty(PROPS.DIVINATION_PARAMETER)));
         }
         return divinationPoolFormula.getInt(hero.getRef());
     }
@@ -191,9 +195,9 @@ public class DC_MathManager extends MathMaster {
 
     public static String getUnitXP(ObjType type) {
         return "" + type.getIntParam(PARAMS.POWER) * 10
-         // + DC_Formulas
-         // .getTotalXpForLevel(type.getIntParam(PARAMS.LEVEL))
-         ;
+                // + DC_Formulas
+                // .getTotalXpForLevel(type.getIntParam(PARAMS.LEVEL))
+                ;
     }
 
     public static int getParamPercentage(Unit unit, PARAMETER p) {

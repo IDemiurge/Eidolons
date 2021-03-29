@@ -1,7 +1,6 @@
 package eidolons.content;
 
 import eidolons.game.battlecraft.rules.action.StackingRule;
-import eidolons.system.DC_Formulas;
 import eidolons.system.math.DC_MathManager;
 import eidolons.system.text.DescriptionTooltips;
 import main.content.C_OBJ_TYPE;
@@ -790,8 +789,17 @@ could have other params - sf discounts,
     INTEREST_MOD(null, "", false, 0, "chars", "units"),
 
     SUMMON_ATB(null, "", false, 0), GRID_WIDTH(null, "", false, 1, "boss"), GRID_HEIGHT(null, "", false, 1, "boss"),
-    FREE_MOVE_BONUS(null, "", false, 0, "units", "chars");
+    FREE_MOVE_BONUS(null, "", false, 0, "units", "chars"),
 
+    //TODO
+    SWITCH_AS_FOCUS_COST_MOD(),
+    SWITCH_AS_ATB_COST_MOD(),
+
+    MASTERY_RANKS_UNSPENT,
+    CLASS_RANKS_UNSPENT,
+    SPELL_POINTS ,
+    SKILL_POINTS
+    ;
 
     boolean writeToType;
     Color color;

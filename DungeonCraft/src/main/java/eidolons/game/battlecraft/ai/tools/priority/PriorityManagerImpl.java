@@ -45,7 +45,7 @@ import eidolons.game.battlecraft.rules.combat.attack.extra_attack.AttackOfOpport
 import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
 import eidolons.game.core.master.BuffMaster;
 import eidolons.game.core.master.EffectMaster;
-import eidolons.system.DC_Formulas;
+import eidolons.content.DC_Formulas;
 import eidolons.system.math.DC_CounterMaster;
 import eidolons.system.math.roll.RollMaster;
 import main.ability.effects.Effect;

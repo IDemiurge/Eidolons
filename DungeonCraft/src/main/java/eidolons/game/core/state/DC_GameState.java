@@ -18,6 +18,7 @@ import java.util.Stack;
 public class DC_GameState extends MicroGameState {
     public static boolean gridChanged;
     private Map<Unit, Stack<DC_ActiveObj>> unitActionStack;
+    private int chaosLevel;
 
 
     public DC_GameState(GenericGame game) {
@@ -73,5 +74,16 @@ public class DC_GameState extends MicroGameState {
     public void restore() {
         // TODO Auto-generated method stub
 
+    }
+
+    public int getChaosLevel() {
+        return chaosLevel;
+    }
+
+    public void increaseChaosLevel() {
+        chaosLevel++;
+    }
+    public void setChaosLevel(int chaosLevel) {
+        this.chaosLevel = chaosLevel;
     }
 }

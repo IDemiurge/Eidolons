@@ -6,8 +6,8 @@ public class EngineLauncher {
     private static EngineLauncher instance;
     private CustomLaunch customLaunch;
 
-    public EngineLauncher() {
-        instance = this;
+    private EngineLauncher() {
+        
     }
 
     public   CustomLaunch getCustomLaunch() {
@@ -20,6 +20,9 @@ public class EngineLauncher {
     }
 
     public static EngineLauncher getInstance() {
+        if (instance == null) {
+            instance = new EngineLauncher();
+        }
         return instance;
     }
 }

@@ -9,7 +9,7 @@ import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
-import eidolons.system.DC_Formulas;
+import eidolons.content.DC_Formulas;
 import main.ability.ActiveAbility;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;

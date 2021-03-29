@@ -25,10 +25,7 @@ public class SkillEnums {
         PSYCHIC_MASTERY,
         SHADOW_MASTERY,
         WITCHERY_MASTERY,
-        FIRE_MASTERY,
-        AIR_MASTERY,
-        WATER_MASTERY,
-        EARTH_MASTERY,
+
         REDEMPTION_MASTERY,
         BENEDICTION_MASTERY,
         CELESTIAL_MASTERY,
@@ -45,11 +42,14 @@ public class SkillEnums {
         BLOOD_MAGIC_MASTERY,
         NECROMANCY_MASTERY,
 
-        ELEMENTAL_MASTERY,
+        TRANSMUTATION_MASTERY,
         SAVAGE_MASTERY,
         SYLVAN_MASTERY,
 
-        VOID_MASTERY,
+        FIRE_MASTERY,
+        AIR_MASTERY,
+        WATER_MASTERY,
+        EARTH_MASTERY,
 
         WIZARDRY_MASTERY,
         SPELLCRAFT_MASTERY,

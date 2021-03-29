@@ -1,6 +1,7 @@
-package eidolons.system;
+package eidolons.content;
 
 import eidolons.content.PARAMS;
+import eidolons.entity.hero.AttributeConsts;
 import main.entity.Entity;
 import main.entity.Ref.KEYS;
 import main.system.auxiliary.Loop;
@@ -10,6 +11,7 @@ import main.system.math.MathMaster;
 
 public class DC_Formulas {
 
+    //TODO refactor into enums with vals - so that we can customize via config files etc
     public static final Integer STARTING_FOCUS = 25;
     public static final Integer STARTING_ESSENCE_PERCENTAGE = 50;
     public static final float DEFENSE_DMG_DECREASE = 1.5f;
@@ -22,7 +24,6 @@ public class DC_Formulas {
     public static final float DEFENSE_PROPORTION_CRIT_MAX = 50;
     public static final float ATTACK_PROPORTION_CRIT_SQRT_BASE_MULTIPLIER = 50;
     public static final float ATTACK_PROPORTION_CRIT_MAX = 25;
-    public static final int POWER_XP_FACTOR = 10;
     public static final int ATTR_POINTS_PER_LEVEL_BONUS = 1;
     public static final int MASTERY_POINTS_PER_LEVEL_BONUS = 2;
     public static final int INFINITE_VALUE = 100;
@@ -30,15 +31,14 @@ public class DC_Formulas {
     public static final int DURABILITY_DAMAGE_FACTOR_ARMOR = 20;
     public static final int DURABILITY_DAMAGE_THRESHOLD_WEAPON = 5;
     public static final int DURABILITY_DAMAGE_FACTOR_WEAPON = 15;
-    public static final int BUY_ATTRIBUTE_XP_COST = 35;
-    public static final int BUY_ATTRIBUTE_GOLD_COST = 50;
-    public static final int BUY_MASTERY_GOLD_COST = 35;
-    public static final int BUY_MASTERY_XP_COST = 25;
     public static final Integer MASTERY_POINTS_FOR_CIRCLE = 5;
+
     public static final Formula DIVINATION_POOL_FORMULA = new Formula("4+"
      + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.DIVINATION_CAP) + " /2+(2+"
      + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.DIVINATION_MASTERY) + " /3)*"
     ).getAppendedByModifier(StringMaster.getValueRef(KEYS.SOURCE, PARAMS.DIVINATION_POOL_MOD));
+
+    public static final int POWER_XP_FACTOR = 10;
     public static final String UNIT_LEVEL_POWER_BONUS = "({AMOUNT}+1)*5+({AMOUNT})*({AMOUNT})";
     public static final Formula SUMMONED_UNIT_XP = new Formula(
      "min(45*{Mastery}*{active_spell_difficulty}/5,15*({Mastery}+{Spellpower})*{active_spell_difficulty}/10)");
@@ -48,7 +48,6 @@ public class DC_Formulas {
     public static final int DEFAULT_CRITICAL_FACTOR = 75;
     public static final int DEFAULT_PARRY_DURABILITY_DAMAGE_MOD = 50;
     public static final float KNOWLEDGE_ANY_SPELL_FACTOR = 2.0f;
-    public static final int DEFAULT_CADENCE_STA_MOD = -35;
     public static final int DEFAULT_CADENCE_AP_MOD = -25;
     public static final int SINGLE_HAND_ATTACK_BONUS = 10;
     public static final int SINGLE_HAND_DEFENSE_BONUS = 10;
@@ -96,12 +95,6 @@ public class DC_Formulas {
     private static final String ATTACK_FROM_MASTERY_FORMULA = "{AMOUNT}+{AMOUNT}*{AMOUNT}/50";
     private static final String DAMAGE_FROM_TWOHANDED_MASTERY_FORMULA = "{AMOUNT}/2+{AMOUNT}*{AMOUNT}/70";
 
-    private static final String TOUGHNESS_FROM_STRENGTH_FORMULA = "{AMOUNT}*"
-     + TOUGHNESS_STR_MODIFIER + "+max(0, ({AMOUNT}*{AMOUNT} -"
-     + TOUGHNESS_STR_SQUARE_BARRIER + "))*" + TOUGHNESS_STR_SQUARE_MODIFIER;
-    private static final String ENDURANCE_FROM_VITALITY_FORMULA = "{AMOUNT}*"
-     + ENDURANCE_VIT_MODIFIER + "+max(0, ({AMOUNT}*{AMOUNT} -"
-     + ENDURANCE_VIT_SQUARE_BARRIER + "))*" + ENDURANCE_VIT_SQUARE_MODIFIER;
     private static final String ESS_WIS_FORMULA = "{AMOUNT}*" + ESS_WIS_MODIFIER
      + "+max(0, ({AMOUNT}*{AMOUNT} -" + ESS_WIS_SQUARE_BARRIER + "))*"
      + ESS_WIS_SQUARE_MODIFIER;
@@ -137,7 +130,7 @@ public class DC_Formulas {
     }
 
     public static int getEnduranceFromVitality(int amount) {
-        return calculateFormula(ENDURANCE_FROM_VITALITY_FORMULA, amount) / 5 * 5;
+        return (int) (AttributeConsts.VIT_END_BONUS * amount);
     }
 
     public static int getEssenceFromWisdom(int amount) {
@@ -326,5 +319,12 @@ public class DC_Formulas {
 
     public static int getSoulforceForLordLevel(int lordLevel) {
         return 100+25*lordLevel;
+    }
+
+    public static int calculateAccuracyRating(int defense, int attack) {
+        return (int) ((attack-defense)/Math.sqrt(defense)*2+20);
+    }
+    public static int calculateAccuracyRatingSpell(int resist, int penetration) {
+        return (int) ((penetration-resist)/Math.sqrt(resist)*2+50);
     }
 }

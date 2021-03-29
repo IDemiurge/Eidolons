@@ -29,6 +29,7 @@ import main.content.enums.DungeonEnums;
 import main.game.bf.Coordinates;
 import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.launch.Flags;
 import main.system.math.MathMaster;
 
@@ -56,7 +57,7 @@ public abstract class DungeonMaster {
     private InteractiveObjMaster interactiveMaster;
     private final TrapMaster trapMaster;
     private PuzzleMaster puzzleMaster;
-    private final IPortalMaster portalMaster;
+    private IPortalMaster portalMaster;
     private final LayerManager layerManager;
     private final StructMaster structMaster;
     private final FloorLoader floorLoader;
@@ -74,7 +75,6 @@ public abstract class DungeonMaster {
     public DungeonMaster(DC_Game game) {
         this.game = game;
         trapMaster = new TrapMaster(this);
-        portalMaster = game.getMetaMaster().getGdxBeans().createPortalMaster(this);
         initializer = createInitializer();
         spawner = createSpawner();
         layerManager = createLayerManager();
@@ -130,6 +130,7 @@ public abstract class DungeonMaster {
     }
 
     public void init() {
+        portalMaster = game.getMetaMaster().getGdxBeans().createPortalMaster(this);
         if (floorWrapper == null)
             floorWrapper = initDungeon();
         //TODO remove this!
@@ -181,6 +182,7 @@ public abstract class DungeonMaster {
             map.put(coordinate, new Color(c.r, c.g, c.b, a));
         }
         colorMapDataSource = new ColorMapDataSource(map);
+        GuiEventManager.trigger(GuiEventType.COLORMAP_RESET, colorMapDataSource);
     }
 
     private float getLerp(int size, int dst) {

@@ -1,12 +1,12 @@
 package eidolons.entity.obj.unit;
 
 import eidolons.content.*;
-import eidolons.content.consts.VisualEnums;
 import eidolons.content.values.ValuePages;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.active.Spell;
+import eidolons.entity.active.spaces.UnitActiveSpaces;
 import eidolons.entity.handlers.bf.unit.*;
 import eidolons.entity.item.*;
 import eidolons.entity.obj.BattleFieldObject;
@@ -15,8 +15,8 @@ import eidolons.entity.obj.KeyResolver;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.attach.HeroClass;
 import eidolons.entity.obj.attach.Perk;
-import eidolons.entity.obj.hero.DC_Attributes;
-import eidolons.entity.obj.hero.DC_Masteries;
+import eidolons.entity.hero.DC_Attributes;
+import eidolons.entity.hero.DC_Masteries;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
@@ -32,7 +32,7 @@ import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.game.netherflame.main.hero.ChainParty;
 import eidolons.game.netherflame.main.lord.EidolonLord;
-import eidolons.system.DC_Formulas;
+import eidolons.content.DC_Formulas;
 import eidolons.system.utils.content.ContentGenerator;
 import eidolons.system.test.Debugger;
 import eidolons.system.test.TestMasterContent;
@@ -60,7 +60,6 @@ import main.content.enums.system.MetaEnums;
 import main.content.mode.STD_MODES;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
-import main.content.values.properties.MACRO_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.ability.construct.AbilityConstructor;
 import main.entity.Entity;
@@ -100,11 +99,13 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     protected DC_WeaponObj secondWeapon;
     protected DC_WeaponObj reserveMainWeapon;
     protected DC_WeaponObj reserveOffhandWeapon;
-    // protected Footwear boots;
-    // protected Helmet helmet;
-    // protected Gloves gloves;
-    // protected Cloak cloak;]
+
     protected DC_ArmorObj armor;
+    //TODO
+    protected DC_ArmorObj innerArmor;
+    // protected Helmet helmet;
+    // protected Cloak cloak;]
+
     protected DequeImpl<DC_FeatObj> skills;
     protected DequeImpl<HeroClass> classes;
     protected DequeImpl<Perk> perks;
@@ -116,6 +117,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     protected DC_Attributes attrs;
 
     protected List<Spell> spells;
+    protected UnitActiveSpaces activeSpaces;
     protected boolean initialized;
     protected List<Spell> spellbook;
     protected boolean itemsInitialized;
@@ -522,6 +524,10 @@ public class Unit extends DC_UnitModel implements FacingEntity {
             spells = new ArrayList<>();
         }
         return spells;
+    }
+
+    public UnitActiveSpaces getActiveSpaces() {
+        return activeSpaces;
     }
 
     public void setSpells(List<Spell> spells) {

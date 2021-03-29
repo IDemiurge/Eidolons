@@ -14,7 +14,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.master.EffectMaster;
 import eidolons.game.module.herocreator.logic.spells.SpellMaster;
-import eidolons.system.DC_Formulas;
+import eidolons.content.DC_Formulas;
 import main.ability.effects.Effect;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentValsManager;

@@ -3,6 +3,7 @@ package main.elements.costs;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
+import main.entity.obj.Obj;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.ContainerUtils;
@@ -267,4 +268,8 @@ public class Costs extends CostImpl {
 
     }
 
+    public boolean canBePaid(Obj unit) {
+        return        canBePaid(unit.getRef());
+
+    }
 }

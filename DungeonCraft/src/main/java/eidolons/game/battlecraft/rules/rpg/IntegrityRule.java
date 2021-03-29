@@ -4,7 +4,7 @@ import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.values.ValuePages;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.system.DC_Formulas;
+import eidolons.content.DC_Formulas;
 import main.content.ContentValsManager;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;

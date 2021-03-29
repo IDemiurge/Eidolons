@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.rules.combat.attack;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.system.DC_Formulas;
+import eidolons.content.DC_Formulas;
 import main.system.math.MathMaster;
 
 /**

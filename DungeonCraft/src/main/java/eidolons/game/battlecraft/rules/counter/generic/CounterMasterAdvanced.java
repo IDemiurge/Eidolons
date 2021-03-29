@@ -155,7 +155,7 @@ public class CounterMasterAdvanced {
                 break;
             case Bleeding:
             case Time_Warped:
-            case Mutagenic:
+            case Mutagen:
             case Magnetized:
             case Haze:
             case Poison:

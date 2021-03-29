@@ -42,6 +42,7 @@ public class DC_AttackMaster {
     private final ParryRule parryRule;
     private final CounterAttackRule counterRule;
     private final DC_Game game;
+    private final NF_AccuracyMaster accuracyMaster;
 
     // private static boolean precalc;
 
@@ -52,6 +53,7 @@ public class DC_AttackMaster {
         this.game = game;
         counterRule = new CounterAttackRule(game);
         parryRule = new ParryRule(game);
+        accuracyMaster = new NF_AccuracyMaster(game);
     }
 
     public static Attack getAttackFromAction(DC_ActiveObj attackAction) {

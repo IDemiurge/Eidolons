@@ -6,7 +6,7 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.system.DC_Formulas;
+import eidolons.content.DC_Formulas;
 import eidolons.system.math.DC_MathManager;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;

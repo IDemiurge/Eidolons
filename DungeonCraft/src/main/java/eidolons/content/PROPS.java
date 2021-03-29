@@ -31,19 +31,19 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     SCENARIO_TYPE(null, false, "scenarios"),
     SCENARIO_MISSIONS(null, true, "scenarios"),
     SCENARIO_PARTY(null, false, "scenarios"),
-    DIFFICULTY(null, false, "scenarios", "dungeons", "chars" ),
+    DIFFICULTY(null, false, "scenarios", "dungeons", "chars"),
 
     BRIEFING_DATA(null, false, "dungeons"),
     LOADING_SCREEN(null, false, "dungeons"),
-    FLOOR_TEMPLATE_PATH(null, false, "dungeons"  ),
+    FLOOR_TEMPLATE_PATH(null, false, "dungeons"),
     FLOOR_FILE_PATH(null, false, "dungeons"),
     FLOOR_SCRIPTS(null, true, "dungeons"),
 
     DUNGEON_TAGS(null, true, "dungeons"),
-    MAP_BACKGROUND(null, false, "dungeons", "area" ),
+    MAP_BACKGROUND(null, false, "dungeons", "area"),
 
     // TODO remove useless props... (just disabled for now)
-    COLOR_THEME(null, false, "bf obj", "dungeons" ),
+    COLOR_THEME(null, false, "bf obj", "dungeons"),
     ALT_COLOR_THEME(null, false, "dungeons"),
 
     SUBDUNGEON_TYPE(null, false, "dungeons"),
@@ -128,9 +128,9 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     SPECIAL_ABILITIES("SPECIAL_ABILITIES", true, "chars", "units"),
     SKILL_REQUIREMENTS("Skill REQ", true, "spells", "skills", "classes"),
     SKILL_OR_REQUIREMENTS("Skill OR REQ", true, "spells", "skills", "classes"),
-//    TREE_NODE_GROUP(null, false, "spells", "skills", "classes"),
-//    LINK_VARIANT(null, false, "spells", "skills", "classes"),
-//    TREE_NODE_PRIORITY(null, false, "spells", "skills", "classes"),
+    //    TREE_NODE_GROUP(null, false, "spells", "skills", "classes"),
+    //    LINK_VARIANT(null, false, "spells", "skills", "classes"),
+    //    TREE_NODE_PRIORITY(null, false, "spells", "skills", "classes"),
 
     CLASSES("Classes", true, "chars"),
     CLASSES_TIER_1("Classes", true, "chars"),
@@ -396,8 +396,11 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     CUSTOM_OBJECT(null, false, "units", "chars", "bf obj"),
     PLACEHOLDER_DATA(null, false, "units", "bf obj"),
     PLACEHOLDER_SYMBOL(null, false, "units", "bf obj"),
-    LINKED_UNIT(null, false, "units", "bf obj");
-
+    LINKED_UNIT(null, false, "units", "bf obj"),
+    MEMORIZED_SPACES(null, true, "units", "chars"),
+    VERBATIM_SPACES(null, true, "units", "chars"),
+    ACTIVE_SPACES(null, true, "units", "chars"),
+    ;
 
     boolean writeToType;
     INPUT_REQ inputReq;
@@ -602,6 +605,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     public boolean isDevOnly() {
         return devOnly;
     }
+
     @Override
     public String getIconPath() {
         return iconPath;

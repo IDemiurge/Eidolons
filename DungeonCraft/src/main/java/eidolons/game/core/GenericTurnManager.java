@@ -1,5 +1,6 @@
 package eidolons.game.core;
 
+import eidolons.content.DC_CONSTS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.mechanics.WaitRule;
 import eidolons.game.core.game.DC_Game;
@@ -134,6 +135,10 @@ public abstract class GenericTurnManager implements TurnManager {
             } else {
                 DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.FIGHT);
             }
+        }
+
+        if (getGame().getState().getRound() > DC_CONSTS.CHAOS_LEVEL_STARTS_AT){
+            getGame().getState().increaseChaosLevel();
         }
     }
 

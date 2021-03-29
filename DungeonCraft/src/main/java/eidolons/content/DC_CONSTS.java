@@ -15,6 +15,9 @@ import main.system.auxiliary.StringMaster;
 public class DC_CONSTS {
 
     public static final int MAX_INV_ITEMS = 30;
+    public static final int AS_SWITCH_ATB_BASE = 5;
+    public static final int AS_SWITCH_FOCUS_BASE = 3;
+    public static final int CHAOS_LEVEL_STARTS_AT = 3;
 
     public enum CONCOCTION_LEVEL {
         CHEAP(50, 40, "", ItemEnums.QUALITY_LEVEL.INFERIOR),

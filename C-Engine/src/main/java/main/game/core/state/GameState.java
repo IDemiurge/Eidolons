@@ -197,4 +197,8 @@ public abstract class GameState {
     public void setCloned(boolean cloned) {
         this.cloned = cloned;
     }
+
+    public void increaseChaosLevel() {
+
+    }
 }

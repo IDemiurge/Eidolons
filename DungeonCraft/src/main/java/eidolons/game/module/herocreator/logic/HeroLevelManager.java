@@ -6,7 +6,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.system.libgdx.GdxStatic;
-import eidolons.system.DC_Formulas;
+import eidolons.content.DC_Formulas;
 import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;

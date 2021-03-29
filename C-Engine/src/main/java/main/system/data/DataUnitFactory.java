@@ -45,8 +45,9 @@ public class DataUnitFactory<E extends DataUnit> {
 
     }
 
-    public void setValueNames(Object... valueNames) {
+    public DataUnitFactory<E> setValueNames(Object... valueNames) {
         this.valueNames = valueNames;
+        return this;
     }
 
     public DataUnitFactory<E> setValues(String... values) {
@@ -77,10 +78,10 @@ public class DataUnitFactory<E extends DataUnit> {
         int i = 0;
         for (Object o : valueNames) {
             builder.append(getKeyValueString(format, o, values[i]));
-            builder.append(o.toString());
-            builder.append(getPairSeparator(format));
-            builder.append(values[i]);
-            builder.append(getSeparator(format));
+            // builder.append(o.toString());
+            // builder.append(getPairSeparator(format));
+            // builder.append(values[i]);
+            // builder.append(getSeparator(format));
             i++;
         }
         return builder.toString();

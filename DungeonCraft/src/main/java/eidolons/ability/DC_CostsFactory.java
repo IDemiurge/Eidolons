@@ -54,10 +54,10 @@ public class DC_CostsFactory {
         if (cost != null) {
             costs.add(cost);
         }
-            cost = getCost(spell, PARAMS.FOC_COST, PARAMS.C_FOCUS);
-            if (cost != null) {
-                costs.add(cost);
-            }
+        cost = getCost(spell, PARAMS.FOC_COST, PARAMS.C_FOCUS);
+        if (cost != null) {
+            costs.add(cost);
+        }
         cost = getCost(spell, PARAMS.ENDURANCE_COST, PARAMS.C_ENDURANCE);
         if (cost != null) {
             costs.add(cost);
@@ -98,29 +98,30 @@ public class DC_CostsFactory {
 
     }
 
-    public static Cost getCost(Entity obj, PARAMS cost_param, PARAMS pay_param) {
-        return getCost(obj, cost_param, pay_param, false);
+    public static Cost getCost(Entity active, PARAMS cost_param, PARAMS pay_param) {
+        return getCost(active, cost_param, pay_param, false);
     }
 
-    public static Cost getCost(Entity obj, PARAMS cost_param, PARAMS pay_param, boolean add) {
-
-        String paramValue = obj.getParam(cost_param);
+    public static Cost getCost(int amount, PARAMS cost_param, PARAMS pay_param, boolean add) {
         Formula formula;
-
         boolean var;
-        int amount = NumberUtils.getIntParse(paramValue);
-        if (amount == 0) {
-            return null;
-        }
         if (add) {
             amount = -amount;
         }
         formula = new Formula(amount + "");
         var = false;
 
-        Cost cost = new CostImpl(new Payment(pay_param, formula) , cost_param)  ;
+        Cost cost = new CostImpl(new Payment(pay_param, formula), cost_param);
         cost.setVariable(var);
         return cost;
+    }
+
+    public static Cost getCost(Entity active, PARAMS cost_param, PARAMS pay_param, boolean add) {
+        int amount = active.getIntParam(cost_param);
+        if (amount == 0) {
+            return null;
+        }
+        return getCost(amount, cost_param, pay_param, add);
     }
 
     // public final PARAMETER[] STANDARD_SPELL_COSTS_TEMPLATE = {
