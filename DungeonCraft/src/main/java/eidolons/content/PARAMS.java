@@ -147,13 +147,7 @@ public enum PARAMS implements PARAMETER {
     // MASTERY_REQ =
     // LEVEL_REQ
 
-    XP_COST("Xp cost", "Experience cost", false, 0, "classes", "actions"),
-    TOTAL_XP("Experience", "Experience points", false, 100, "units", "chars", "perks", "mission"),
     POWER("Power", "Power points", false, 10, "units", "chars", "perks", "bf obj"),
-    XP("Experience remaining", "Experience remaining", true, 100, "units", "chars", "perks"),
-
-    // XP_TOTAL("Experience", "Experience points", false, 0, "chars", "unit"),
-    // XP_SPENT("Experience", "Experience points", true, 0, "chars", "unit"),
 
     BASE_STRENGTH(null, Descriptions.Strength, false, 0, "units", "chars", "perks"),
     BASE_VITALITY(null, Descriptions.Vitality, false, 0, "units", "chars", "perks"),
@@ -231,8 +225,17 @@ public enum PARAMS implements PARAMETER {
     CHAOS_DURABILITY_MOD(true, "Cold", "", false, 0),
     PSIONIC_DURABILITY_MOD(true, "Cold", "", false, 0),
 
+    //TODO saving throws revamp
+    GRIT,
+    // willpower/spellpower
+    WIT,
+    // intelligence/knowledge
     SPIRIT(null, "", false, 3, "units", "chars", "perks"),
+    //charisma/wisdom
     FORTITUDE(null, "", false, 5, "units", "chars", "perks"),
+    // vit/str
+    REFLEX(),
+    // agi/dex
 
     ENDURANCE_REGEN("End. Regen.", "", false, 0, "units", "chars", "perks", "bf obj"), // Color.GREEN.brighter()),
     SPELL_ARMOR(null, "", false, 0, "units", "chars", "bf obj"),
@@ -423,32 +426,15 @@ public enum PARAMS implements PARAMETER {
 
     SAVAGE_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
 
-    XP_GAIN_MOD(true, null, "Experience points", false, 100, "units", "chars", "perks"),
-    XP_LEVEL_MOD(true, null, "Experience points", false, 100, "units", "chars", "perks"),
-
-    MASTERY_BOUGHT_WITH_XP(null, "", false, 0, ""),
-    MASTERY_BOUGHT_WITH_GOLD(null, "", false, 0, ""),
-    ATTR_BOUGHT_WITH_XP(null, "", false, 0, ""),
-    ATTR_BOUGHT_WITH_GOLD(null, "", false, 0, ""),
-
-    XP_COST_REDUCTION("Experience", "Experience cost", false, 0, "units", "chars", "perks"),
-    XP_COST_REDUCTION_VERBATIM_SPELLS("Experience", "Experience cost", false, 0, "units", "chars", "perks"),
-    XP_COST_REDUCTION_LEARNED_SPELLS("Experience", "Experience cost", false, 0, "units", "chars", "perks"),
-    XP_COST_REDUCTION_SKILLS("Experience", "Experience cost", false, 0, "units", "chars", "perks"),
-    XP_COST_REDUCTION_MASTERIES("Experience", "Experience cost", false, 0, "units", "chars", "perks"),
-    // unlocking
-
     ATTR_POINTS("Attribute points", "Attribute points", true, 0, "units", "chars", "perks"),
     ATTR_POINTS_PER_LEVEL("Attribute points", "Attribute points", false, 0, "units", "chars", "perks"),
-    MASTERY_POINTS_PER_LEVEL("MASTERY points", "MASTERY points", false, 0, "units", "chars", "perks"),
+    MASTERY_RANKS_PER_LEVEL("MASTERY points", "MASTERY points", false, 0, "units", "chars", "perks"),
     MASTERY_POINTS("MASTERY points", "MASTERY points", true, 0, "units", "chars", "perks"),
     // TRADING?
 
     RANK("", "", true, 0, "classes"),
     RANK_MAX("", "", false, 0, "classes"),
     RANK_REQUIREMENT("", "", false, 0, "classes"),
-    RANK_XP_MOD(true, "", "", false, 50, "classes"),
-    RANK_SD_MOD(true, "", "", false, 25, "classes"),
     RANK_FORMULA_MOD(true, "", "", false, 25, "classes"),
     //    TREE_LINK_OFFSET_X("", "", false, 0, "classes"),
     //    TREE_LINK_OFFSET_Y("", "", false, 0, "classes"),
@@ -605,7 +591,7 @@ public enum PARAMS implements PARAMETER {
     CADENCE_FOCUS_BOOST(null, "", false, 0, "actions", "units", "chars", "perks"),
     CADENCE_BONUS(null, "", false, 0),
     CADENCE_RETAINMENT_CHANCE(null, "", false, 0, "actions", "units", "chars", "perks"),
-    CADENCE_STA_MOD(true, null, "", false, DC_Formulas.DEFAULT_CADENCE_STA_MOD, "units", "chars", "perks"),
+    CADENCE_TOU_MOD(true, null, "", false, DC_Formulas.DEFAULT_CADENCE_TOU_MOD, "units", "chars", "perks"),
     CADENCE_AP_MOD(true, null, "", false, DC_Formulas.DEFAULT_CADENCE_AP_MOD, "units", "chars", "perks"),
     CADENCE_DAMAGE_MOD(true, null, "", false, 0, "units", "chars", "perks"),
     CADENCE_DEFENSE_MOD(true, null, "", false, 0, "units", "chars", "perks"),
@@ -795,11 +781,18 @@ could have other params - sf discounts,
     SWITCH_AS_FOCUS_COST_MOD(),
     SWITCH_AS_ATB_COST_MOD(),
 
+    MASTERY_RANKS,
     MASTERY_RANKS_UNSPENT,
+    CLASS_RANKS,
     CLASS_RANKS_UNSPENT,
     SPELL_POINTS ,
-    SKILL_POINTS
-    ;
+    SPELL_POINTS_UNSPENT ,
+    SKILL_POINTS,
+    SKILL_POINTS_UNSPENT,
+
+    WEIGHT_PENALTY_REDUCTION(  ),
+    DEITY_EFFECTS_MOD,
+    MASTERY_SCORE_MOD( );
 
     boolean writeToType;
     Color color;

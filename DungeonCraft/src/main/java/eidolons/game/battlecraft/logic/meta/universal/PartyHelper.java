@@ -54,18 +54,6 @@ public class PartyHelper {
         if (hero.getGame().isSimulation()) {
             CharacterCreator.partyMemberAdded(hero);
         }
-        if (hero.getIntParam(PARAMS.LEVEL) < getParty().getIntParam(PARAMS.LEVEL)) {
-            // DC_SoundMaster.playStandardSound(STD_SOUNDS.LEVEL_UP); why not have
-            // some fun with this loop...
-            Loop.startLoop(10);
-            while (!Loop.loopEnded()
-             && hero.getIntParam(PARAMS.LEVEL) < getParty().getIntParam(PARAMS.LEVEL)) {
-                if (hero.getGame().isSimulation()) {
-                    DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.LEVEL_UP);
-                }
-                HeroLevelManager.levelUp(hero);
-            }
-        }
     }
 
     public static Party newParty(Unit hero) {
@@ -312,21 +300,6 @@ public class PartyHelper {
 
     public static void addMember(String heroName) {
         addMember(HeroCreator.initHero(heroName));
-    }
-
-    // only from DC
-    public static void levelUp() {
-        getParty().getGame().setSimulation(true);
-        getParty().modifyParameter(PARAMS.LEVEL, 1, true);
-        try {
-            for (Unit hero : getParty().getMembers()) {
-                HeroLevelManager.levelUp(hero, true);
-            }
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        } finally {
-            getParty().getGame().setSimulation(false);
-        }
     }
 
     public static Party initParty(String last) {

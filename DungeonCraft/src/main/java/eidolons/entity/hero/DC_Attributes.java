@@ -4,16 +4,13 @@ import eidolons.content.DC_ContentValsManager;
 import eidolons.content.DC_ContentValsManager.ATTRIBUTE;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.system.DC_ConditionMaster;
 import eidolons.content.DC_Formulas;
-import main.content.ContentValsManager;
 import main.content.values.parameters.PARAMETER;
 import main.system.auxiliary.StringMaster;
-import main.system.math.MathMaster;
 
-public class DC_Attributes {
+import static eidolons.content.values.DC_ValueManager.VALUE_GROUP.*;
 
+public class DC_Attributes  {
     private final Unit hero;
 
     public DC_Attributes(Unit hero) {
@@ -24,210 +21,97 @@ public class DC_Attributes {
         return hero.getIntParam(attr.getParameter());
     }
 
-    private void applyPostAttribute() {
-        // int n = hero.getIntParam(PARAMS.SPIRIT);
-        // for (PARAMETER param : DC_ValueManager.VALUE_GROUP.ASTRAL_RESISTANCES.getParams()) {
-        //     hero.modifyParameter(param, n );
-        // }
-        // n = hero.getIntParam(PARAMS.FORTITUDE);
-        // for (PARAMETER param : DC_ValueManager.VALUE_GROUP.ASTRAL_RESISTANCES.getParams()) {
-        //     hero.modifyParameter(param, n );
-        // }
-        //        hero.modifyParameter(param, n);
-    }
-
     public void apply() {
-        // main.system.auxiliary.LogMaster.log(1, "before: " +
-        // hero.getModifierMaps());
         for (ATTRIBUTE attr : DC_ContentValsManager.getAttributeEnums()) {
             applyAttr(attr);
         }
-        applyPostAttribute();
-        // main.system.auxiliary.LogMaster.log(1, "after: " +
-        // hero.getModifierMaps());
     }
 
-    private void applyAttrAfter25(ATTRIBUTE attr, int val) {
-        switch (attr) {
-            case STRENGTH:
-                hero.modifyParameter(PARAMS.WEIGHT_PENALTY_REDUCTION, val * AttributeConsts.STR_PENALTY_REDUCTION);
-                break;
-            case VITALITY:
-                break;
-            case AGILITY:
-                break;
-            case DEXTERITY:
-                break;
-            case WILLPOWER:
-                break;
-            case INTELLIGENCE:
-                break;
-            case WISDOM:
-                break;
-            case KNOWLEDGE:
-                break;
-            case SPELLPOWER:
-                break;
-            case CHARISMA:
-                break;
-        }
+    private void mod(int amount, float modifier, ATTRIBUTE attr, PARAMETER... params) {
+        float result = (modifier * amount);
+        mod(result, attr, params);
     }
-    private void applyAttrBefore25(ATTRIBUTE attr, int val) {
-        switch (attr) {
-            case STRENGTH:
-                break;
-            case VITALITY:
-                break;
-            case AGILITY:
-                break;
-            case DEXTERITY:
-                break;
-            case WILLPOWER:
-                break;
-            case INTELLIGENCE:
-                break;
-            case WISDOM:
-                break;
-            case KNOWLEDGE:
-                break;
-            case SPELLPOWER:
-                break;
-            case CHARISMA:
-                break;
+    private void mod(float amount,  ATTRIBUTE attr, PARAMETER... params) {
+        String modifierKey = StringMaster.format(attr.toString());
+        for (PARAMETER param : params) {
+            hero.modifyParameter(param, amount, modifierKey);
         }
     }
 
     private void applyAttr(ATTRIBUTE attr) {
         int amount = getAttrValue(attr);
-        String modifierKey = StringMaster.format(attr.toString());
-
-        Map<PARAMETER,
-
-        if (amount > 25) {
-            applyAttrAfter25(attr, amount - 25);
-        }
-
-        applyAttrBefore25(attr, Math.min(25, amount));
+        int before25 = Math.min(25, amount);
         switch (attr) {
             case STRENGTH:
-                if (hero.isHero()) {
-                    hero.modifyParameter(PARAMS.TOUGHNESS,
-                            DC_Formulas.getToughnessFromStrengthHero(amount), "Strength");
-                } else {
-                    hero.modifyParameter(PARAMS.TOUGHNESS,
-                            DC_Formulas.getToughnessFromStrength(amount), "Strength");
-                }
-                // damage modifier
-                // reduces heavy item penalties
-                //
-
-                hero.modifyParameter(PARAMS.CARRYING_CAPACITY, DC_Formulas
-                        .getCarryingCapacityFromStrength(amount), "Strength");
+                // + damage modifier
+                mod(amount, AttributeConsts.STR_TOU_BONUS, attr, PARAMS.TOUGHNESS);
+                mod(amount, AttributeConsts.STR_FORTITUDE_BONUS, attr, PARAMS.FORTITUDE);
+                mod(before25, AttributeConsts.B25_STR_CARRY_CAPACITY, attr, PARAMS.CARRYING_CAPACITY);
+                mod(amount - 25, AttributeConsts.A25_STR_PENALTY_REDUCTION, attr, PARAMS.WEIGHT_PENALTY_REDUCTION);
 
                 break;
             case VITALITY:
-                hero.modifyParameter(PARAMS.FORTITUDE,
-                        DC_Formulas.getFortitudeFromVitality(amount), modifierKey);
+                mod(amount, AttributeConsts.VIT_END_BONUS, attr, PARAMS.TOUGHNESS);
+                mod(amount, AttributeConsts.VIT_FORTITUDE_BONUS, attr, PARAMS.FORTITUDE);
+                mod(before25, AttributeConsts.B25_VIT_ELEMENTAL_RESIST, attr, ELEMENTAL_RESISTANCES.getParams());
+                mod(amount - 25, AttributeConsts.A25_VIT_END_REGEN, attr, PARAMS.ENDURANCE_REGEN);
 
-                if (!hero.isHero()) {
-                    hero.modifyParameter(PARAMS.TOUGHNESS,
-                            DC_Formulas.getToughnessFromVitality(amount), modifierKey);
-                }
-
-                hero.modifyParameter(PARAMS.ENDURANCE,
-                        DC_Formulas.getEnduranceFromVitality(amount), modifierKey);
-
-                hero.modifyParameter(PARAMS.REST_BONUS, DC_Formulas
-                        .getRestBonusFromVitality(amount), modifierKey);
-
-                if (RuleKeeper.isHeroEnduranceRegenOn() || !hero.isHero())
-                    if (DC_ConditionMaster.checkLiving(hero)) {
-                        hero.modifyParameter(PARAMS.ENDURANCE_REGEN, DC_Formulas
-                                .getEnduranceRegenFromVitality(amount), modifierKey);
-                    }
-                hero.modifyParameter(PARAMS.TOUGHNESS_RECOVERY, amount / 5, false);
-                hero.modifyParameter(PARAMS.TOUGHNESS_RETAINMENT, amount / 5, false);
-                break;
             case AGILITY:
-                hero.modifyParameter(PARAMS.ATTACK, DC_Formulas.getAttackFromAgi(amount),
-                        modifierKey);
-
-                hero.modifyParameter(PARAMS.EXTRA_ATTACKS, DC_Formulas.getCountersFromAgi(amount),
-                        modifierKey);
-                hero.modifyParameter(PARAMS.ATTACK_ATB_COST_MOD, -amount / 2, modifierKey);
-                hero.modifyParameter(PARAMS.OFFHAND_ATTACK_ATB_COST_MOD, -amount / 2, modifierKey);
-
+                // + damage modifier
+                mod(amount, AttributeConsts.AGI_ATK_BONUS, attr, PARAMS.ATTACK);
+                mod(DC_Formulas.getCountersFromAgi(amount), attr, PARAMS.EXTRA_ATTACKS);
+                mod(amount, AttributeConsts.AGI_REFLEX_BONUS, attr, PARAMS.REFLEX);
+                mod(before25, AttributeConsts.B25_AGI_ARMOR_PENETRATION, attr, PARAMS.ARMOR_PENETRATION);
+                mod(amount - 25, AttributeConsts.A25_AGI_INITIATIVE , attr, PARAMS.INITIATIVE);
                 break;
 
             case DEXTERITY:
-
-                hero.modifyParameter(PARAMS.DEFENSE, DC_Formulas.getDefFromDex(amount), modifierKey);
-
-                Float apBoost = (float) (amount + hero.getParamDouble(PARAMS.AGILITY));
-                int bonus = DC_Formulas.getActsFromDexAndAgility(MathMaster
-                        .round(apBoost));
-                hero.modifyParameter(PARAMS.INITIATIVE, bonus, modifierKey);
-
-                hero.modifyParameter(PARAMS.STEALTH, amount / 2, modifierKey);
-                hero.modifyParameter(PARAMS.NOISE, -amount / 2, modifierKey);
-
-                hero.modifyParameter(PARAMS.MOVE_ATB_COST_MOD, -amount / 2, modifierKey);
-                hero.modifyParameter(PARAMS.EXTRA_MOVES, DC_Formulas.getExtraMovesFromDex(amount));
+                mod(DC_Formulas.getExtraMovesFromDex(amount), attr, PARAMS.EXTRA_MOVES);
+                mod(amount, AttributeConsts.DEX_DEF_BONUS, attr, PARAMS.DEFENSE);
+                mod(amount, AttributeConsts.DEX_REFLEX_BONUS, attr, PARAMS.REFLEX);
+                mod(before25, AttributeConsts.B25_DEX_INITIATIVE , attr, PARAMS.INITIATIVE);
+                mod(amount - 25, AttributeConsts.A25_DEX_STEALTH, attr, PARAMS.STEALTH);
                 break;
-
             case WILLPOWER:
-                hero.modifyParameter(PARAMS.RESISTANCE, DC_Formulas.getResistanceFromWill(amount),
-                        modifierKey);
-
-
-                hero.modifyParameter(PARAMS.SPIRIT, DC_Formulas.getSpiritFromWill(amount),
-                        modifierKey);
-                hero.modifyParameter(PARAMS.STARTING_FOCUS, DC_Formulas
-                        .getStartingFocusFromWill(amount), modifierKey);
-                hero.modifyParameter(PARAMS.INTERRUPT_DAMAGE, DC_Formulas
-                        .getStartingFocusFromWill(amount), modifierKey);
-
-                hero.modifyParameter(PARAMS.FOCUS_RESTORATION, amount, modifierKey);
-                hero.modifyParameter(PARAMS.FOCUS_RETAINMENT, amount, modifierKey);
-                hero.modifyParameter(PARAMS.ESSENCE_RESTORATION, amount, modifierKey);
-                hero.modifyParameter(PARAMS.ESSENCE_RETAINMENT, amount, modifierKey);
-
-                hero.modifyParameter(PARAMS.CONCENTRATION_BONUS, (amount / 2), modifierKey);
-
+                mod(amount, AttributeConsts.WIL_RES_BONUS, attr, ASTRAL_AND_ELEMENTAL_RESISTANCES.getParams());
+                mod(amount, AttributeConsts.WIL_GRIT_BONUS, attr, PARAMS.GRIT);
+                mod(before25, AttributeConsts.B25_WIL_FOC_BONUS , attr,PARAMS.STARTING_FOCUS);
+                //TODO
+                // mod(amount - 25, AttributeConsts.A25_WIL_FOC_BONUS , attr,PARAMS.STARTING_FOCUS);
                 break;
-
+            case SPELLPOWER:
+                // power of spells! damage modifier for <?>
+                mod(amount, AttributeConsts.SP_GRIT_BONUS, attr, PARAMS.GRIT);
+                mod(before25, AttributeConsts.B25_SP_PENETRATION , attr,PARAMS.RESISTANCE_PENETRATION);
+                //TODO
+                // mod(amount - 25, AttributeConsts.A25_INT_MASTERY_MOD  , attr, PARAMS.MASTERY_SCORE_MOD);
+                break;
             case INTELLIGENCE:
-                hero.modifyParameter(PARAMS.MEMORIZATION_CAP, DC_Formulas.getMemoryFromInt(amount),
-                        modifierKey);
-                hero.modifyParameter(PARAMS.XP_GAIN_MOD, amount, modifierKey);
-                hero.modifyParameter(PARAMS.XP_LEVEL_MOD, amount, modifierKey);
-                hero.modifyParameter(PARAMS.DURATION_MOD, amount, modifierKey);
+                //memorize cap
+                // + damage modifier
+                mod(amount, AttributeConsts.INT_WIT_BONUS, attr, PARAMS.WIT);
+                mod(before25, AttributeConsts.B25_INT_PENETRATION  , attr, PARAMS.RESISTANCE_PENETRATION );
+                mod(amount - 25, AttributeConsts.A25_INT_MASTERY_MOD  , attr, PARAMS.MASTERY_SCORE_MOD);
                 break;
             case KNOWLEDGE:
-
-                hero.modifyParameter(PARAMS.XP_COST_REDUCTION, amount, modifierKey);
-                // hero.modifyParameter(PARAMS.XP_GAIN_MOD, amount,
-                // StringMaster.getWellFormattedString(attr.toString()));
-                // hero.modifyParameter(PARAMS.XP_LEVEL_MOD, amount,
-                // StringMaster.getWellFormattedString(attr.toString()));
+                //verbatim transcribe cap
+                mod(amount, AttributeConsts.KN_WIT_BONUS, attr, PARAMS.WIT);
+                mod(before25, AttributeConsts.B25_KN_ASTRAL_RES  , attr, ASTRAL_RESISTANCES.getParams() );
+                mod(amount - 25, AttributeConsts.A25_KN_PENETRATION  , attr, PARAMS.RESISTANCE_PENETRATION );
                 break;
             case WISDOM:
-                hero.modifyParameter(PARAMS.ESSENCE, amount * 5);
-                hero.modifyParameter(PARAMS.ESSENCE, DC_Formulas.getEssenceFromWisdom(amount),
-                        modifierKey);
-                hero.modifyParameter(PARAMS.DETECTION, amount / 2, modifierKey);
-                hero.modifyParameter(PARAMS.PERCEPTION, amount / 2, modifierKey);
-                hero.modifyParameter(PARAMS.MEDITATION_BONUS, (amount), modifierKey);
-                break;
+                mod(amount, AttributeConsts.WIS_ESSENCE_BONUS, attr, PARAMS.ESSENCE);
+                mod(amount, AttributeConsts.WIS_PERCEPTION_BONUS, attr, PARAMS.PERCEPTION);
+                mod(amount, AttributeConsts.WIS_SPIRIT_BONUS, attr, PARAMS.SPIRIT );
+                mod(amount - 25, AttributeConsts.B25_WIS_ELEMENTAL_RES , attr, ELEMENTAL_RESISTANCES.getParams());
+                mod(before25, AttributeConsts.A25_WIS_DETECTION, attr, PARAMS.DETECTION);
+
             case CHARISMA:
-                hero.modifyParameter(PARAMS.DIVINATION_CAP, (amount), modifierKey);
-                hero.modifyParameter(ContentValsManager.getMasteryScore(PARAMS.LEADERSHIP_MASTERY),
-                        (amount), modifierKey);
-
-                hero.modifyParameter(PARAMS.GOLD_COST_REDUCTION, 2 * (amount), modifierKey);
-
-                break;
-            default:
+                //divination cap
+                mod(amount, AttributeConsts.CHA_SPIRIT_BONUS, attr, PARAMS.SPIRIT );
+                mod(amount, AttributeConsts.CHA_DEITY_BONUS, attr, PARAMS.DEITY_EFFECTS_MOD);
+                mod(amount - 25, AttributeConsts.B25_CHA_DISCOUNT , attr, PARAMS.GOLD_COST_REDUCTION);
+                mod(before25, AttributeConsts.A25_CHA_ASTRAL_RES , attr, ASTRAL_RESISTANCES.getParams());
                 break;
 
         }

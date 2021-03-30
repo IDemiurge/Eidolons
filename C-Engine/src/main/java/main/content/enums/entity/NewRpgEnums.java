@@ -56,4 +56,24 @@ public class NewRpgEnums {
         quirks_5,
         add_perks_5,
     }
+
+    public enum DeadeyeType {
+        decapitate,
+        knockout,
+        overwhelm,
+        heartseeker,
+        maim,
+        cleave,
+        displace,
+    }
+
+    public enum HitType {
+        critical_miss,
+        miss,
+        graze,
+        hit,
+        critical_hit,
+        deadeye,
+        ;
+    }
 }

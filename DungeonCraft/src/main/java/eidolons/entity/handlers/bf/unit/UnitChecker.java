@@ -1,16 +1,21 @@
 package eidolons.entity.handlers.bf.unit;
 
 import eidolons.content.PARAMS;
+import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.AI_Manager;
+import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.core.game.DC_Game;
+import main.content.CONTENT_CONSTS2;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
 import main.content.enums.entity.UnitEnums.IMMUNITIES;
 import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.enums.entity.UnitEnums.STATUS;
+import main.content.enums.system.AiEnums;
 import main.content.mode.STD_MODES;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -446,4 +451,24 @@ public class UnitChecker extends EntityChecker<Unit> {
         return getEntity().getMode() == STD_MODES.ALERT;
     }
 
+    public boolean checkAiMod(CONTENT_CONSTS2.AI_MODIFIERS aiMod) {
+        if (AI_Manager.BRUTE_AI_MODE) {
+            if (aiMod == CONTENT_CONSTS2.AI_MODIFIERS.TRUE_BRUTE) {
+                UnitAI ai = getEntity().getUnitAI();
+                if (ai == null) {
+                    return true;
+                }
+                if (ai.getType() != AiEnums.AI_TYPE.SNEAK) {
+                    if (ai.getType() != AiEnums.AI_TYPE.CASTER) {
+                        if (ai.getType() != AiEnums.AI_TYPE.ARCHER) {
+                            if (getEntity().getSpells().isEmpty()) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return checkProperty(PROPS.AI_MODIFIERS, aiMod.toString());
+    }
 }

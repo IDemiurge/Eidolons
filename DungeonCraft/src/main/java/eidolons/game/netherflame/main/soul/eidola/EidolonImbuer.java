@@ -13,7 +13,7 @@ import eidolons.game.module.herocreator.logic.items.ItemTraitNamer;
 import eidolons.game.module.herocreator.logic.items.ItemTraitParser;
 import eidolons.game.module.herocreator.logic.items.ItemTraits.EIDOLON_ASPECT;
 import eidolons.game.module.herocreator.logic.items.ItemTraits.ITEM_TRAIT;
-import eidolons.game.netherflame.main.lord.EidolonLord;
+import eidolons.game.netherflame.lord.EidolonLord;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.Entity;

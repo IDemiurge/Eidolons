@@ -457,7 +457,7 @@ public class UnitResetter extends EntityResetter<Unit> {
             getEntity().resetPercentages();
         }
 
-        getCalculator().calculatePower();
+        getCalculator().getPower();
         getCalculator().calculateWeight();
         getCalculator().calculateRemainingMemory();
 

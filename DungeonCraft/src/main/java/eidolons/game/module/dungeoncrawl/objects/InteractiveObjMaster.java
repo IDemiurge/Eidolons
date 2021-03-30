@@ -236,7 +236,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         obj.getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.INTERACTIVE_OBJ_MAGIC_USED, ref));
         if (RandomWizard.chance(80)) {
             EUtils.showInfoText("Ancient lore has lessons to teach you...");
-            HeroLevelManager.addXp(unit, RandomWizard.getRandomIntBetween(5, 5 * unit.getLevel()));
+            // HeroLevelManager.addXp(unit, RandomWizard.getRandomIntBetween(5, 5 * unit.getLevel()));
             return;
         }
         String name = RandomWizard.getRandomListObject(ListMaster.toStringList(

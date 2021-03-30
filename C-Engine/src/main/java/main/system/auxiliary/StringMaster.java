@@ -1180,6 +1180,12 @@ public class StringMaster {
         return indestructible_nullForSecret ? INDESTRUCTIBLE : "";
     }
 
+    public static String curOutOfMax(String cur, String max) {
+        return wrapInBrackets(
+                new StringBuilder().append(cur).append("/").
+                        append(max).toString());
+    }
+
 
     public enum STD_TYPE_NAMES {
         Cell

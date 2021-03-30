@@ -188,15 +188,15 @@ public class MissionStatManager<E extends DungeonSequence> extends MissionHandle
             modifyPlayerStat(PLAYER_STATS.ALLY_ENEMIES_KILLED,
                     killer.getOwner(), 1);
             modifyPlayerStat(PLAYER_STATS.ALLY_ENEMIES_KILLED_POWER,
-                    killer.getOwner(), killed.calculatePower());
+                    killer.getOwner(), killed.getPower());
             modifyUnitStat(COMBAT_STATS.ENEMIES_KILLED, killer, 1);
-            modifyUnitStat(COMBAT_STATS.ENEMIES_KILLED_POWER, killer, killed.calculatePower());
+            modifyUnitStat(COMBAT_STATS.ENEMIES_KILLED_POWER, killer, killed.getPower());
         }
 
         modifyPlayerStat(PLAYER_STATS.ALLIES_DIED,
                 killed.getOwner(), 1);
         modifyPlayerStat(PLAYER_STATS.ALLIES_DIED_POWER,
-                killed.getOwner(), killed.calculatePower());
+                killed.getOwner(), killed.getPower());
         if (killed.isHero())
             modifyPlayerStat(PLAYER_STATS.ALLY_HEROES_DIED,
                     killed.getOwner(), 1);

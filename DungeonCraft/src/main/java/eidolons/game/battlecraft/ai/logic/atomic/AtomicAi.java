@@ -450,7 +450,7 @@ public class AtomicAi extends AiHandler {
         //     if (ai.checkMod(AI_MODIFIERS.COWARD)) {
         //         threat *= 2;
         //     }
-        //     return threat > ai.getUnit().calculatePower();
+        //     return threat > ai.getUnit().getPower();
         //
         // }
         return null;

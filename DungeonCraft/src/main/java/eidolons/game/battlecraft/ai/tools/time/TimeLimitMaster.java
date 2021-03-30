@@ -116,10 +116,10 @@ public class TimeLimitMaster {
 
     public static long getTimeLimitForAi(UnitAI ai) {
         if (ExplorationMaster.isExplorationOn()) {
-            return (long) (Math.max(AI_TIME_LIMIT_MIN_EXPLORE, ai.getUnit().calculatePower() *
+            return (long) (Math.max(AI_TIME_LIMIT_MIN_EXPLORE, ai.getUnit().getPower() *
                          AI_TIME_LIMIT_PER_POWER_EXPLORE) * getTimeLimitMod());
         }
-        return (long) (MathMaster.getMinMax(  ai.getUnit().calculatePower() * AI_TIME_LIMIT_PER_POWER,
+        return (long) (MathMaster.getMinMax(  ai.getUnit().getPower() * AI_TIME_LIMIT_PER_POWER,
          AI_TIME_LIMIT_MIN, AI_TIME_LIMIT_MAX)
                  * getTimeLimitMod())
          ;

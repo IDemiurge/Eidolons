@@ -60,7 +60,7 @@ public class CompanionMaster {
     private static int getWeight(AI_TYPE v, Unit hero) {
         switch (v) {
             case NORMAL:
-                return hero.calculatePower();
+                return hero.getPower();
             case BRUTE:
                 return hero.getSumOfParams(PARAMS.ATTACK,
                  PARAMS.OFF_HAND_ATTACK, PARAMS.STRENGTH,

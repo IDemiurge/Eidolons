@@ -20,7 +20,6 @@ public class ChainParty extends Party {
     private final String leaderName;
     Set<Unit> deadHeroes = new LinkedHashSet<>();
     Set<ChainHero> heroes = new LinkedHashSet<>();
-    private int totalXp; //during this run; TODO - will it work with transits?
     private int goldStashed;
 
     Set<DC_HeroItemObj> stash = new LinkedHashSet<>(); //TODO
@@ -113,17 +112,6 @@ public class ChainParty extends Party {
         return hero.isLeader();
     }
 
-    /**
-     * grant this amount to newly spawned heroes
-     * the dead heroes will also receive it here
-     * @param xp
-     */
-    public void xpGained(int xp) {
-        totalXp += xp;
-        for (Unit deadHero : deadHeroes) {
-            deadHero.xpGained(xp);
-        }
-    }
 
     public void death() {
          lastHero = getLeader();

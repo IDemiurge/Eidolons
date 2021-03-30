@@ -9,6 +9,8 @@ import eidolons.entity.active.Spell;
 import eidolons.entity.active.spaces.UnitActiveSpaces;
 import eidolons.entity.handlers.bf.unit.*;
 import eidolons.entity.item.*;
+import eidolons.entity.item.garment.Garment;
+import eidolons.entity.item.garment.HeadGarment;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.KeyResolver;
@@ -31,7 +33,7 @@ import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.game.netherflame.main.hero.ChainParty;
-import eidolons.game.netherflame.main.lord.EidolonLord;
+import eidolons.game.netherflame.lord.EidolonLord;
 import eidolons.content.DC_Formulas;
 import eidolons.system.utils.content.ContentGenerator;
 import eidolons.system.test.Debugger;
@@ -101,10 +103,9 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     protected DC_WeaponObj reserveOffhandWeapon;
 
     protected DC_ArmorObj armor;
-    //TODO
     protected DC_ArmorObj innerArmor;
-    // protected Helmet helmet;
-    // protected Cloak cloak;]
+    protected HeadGarment headGarment;
+    protected Garment garment;
 
     protected DequeImpl<DC_FeatObj> skills;
     protected DequeImpl<HeroClass> classes;
@@ -134,13 +135,13 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     private DC_ActiveObj lastAction;
     private boolean shadow;
     private boolean actorLinked; //for dialogue
-    private boolean movePointsOn=true;
+    private boolean movePointsOn = true;
     private boolean extraAtkPointsOn;
     private int freeMovesDone;
 
     public Unit(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
-        if (isHero() ) { //&& !(this instanceof HeroDataModel)
+        if (isHero()) { //&& !(this instanceof HeroDataModel)
             String message = this + " hero created " + getId();
             // if (ScreenLoader.isInitRunning()) {
             //     if (Eidolons.MAIN_HERO != null) {
@@ -500,8 +501,27 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         return weapon;
     }
 
+    public DC_ArmorObj getArmor(boolean inner) {
+        return inner ? innerArmor : armor;
+    }
+
     public DC_ArmorObj getArmor() {
+        if (armor == null) {
+            return innerArmor;
+        }
         return armor;
+    }
+
+    public DC_ArmorObj getInnerArmor() {
+        return innerArmor;
+    }
+
+    public Garment getGarment() {
+        return garment;
+    }
+
+    public HeadGarment getHeadwear() {
+        return headGarment;
     }
 
     public void setArmor(DC_ArmorObj armor) {
@@ -584,7 +604,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         if (getInventory() == null) {
             return false;
         }
-        return getInventory().size() >=DC_CONSTS.MAX_INV_ITEMS;
+        return getInventory().size() >= DC_CONSTS.MAX_INV_ITEMS;
     }
 
     public boolean isQuickSlotsFull() {
@@ -1109,24 +1129,9 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         return false;
     }
 
-    public boolean checkAiMod(AI_MODIFIERS trueBrute) {
-        if (AI_Manager.BRUTE_AI_MODE) {
-            if (trueBrute == AI_MODIFIERS.TRUE_BRUTE) {
-                if (getUnitAI() == null) {
-                    return true;
-                }
-                if (getUnitAI().getType() != AI_TYPE.SNEAK) {
-                    if (getUnitAI().getType() != AI_TYPE.CASTER) {
-                        if (getUnitAI().getType() != AI_TYPE.ARCHER) {
-                            if (getSpells().isEmpty()) {
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return checkProperty(PROPS.AI_MODIFIERS, trueBrute.toString());
+    public boolean checkAiMod(AI_MODIFIERS aiMod) {
+        return getChecker().checkAiMod(aiMod);
+
     }
 
 
@@ -1437,9 +1442,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         return getCalculator().calculateUsedMemory();
     }
 
-    public int calculatePower() {
-        return getCalculator().calculatePower();
-    }
+
 
     public int calculateWeight() {
         return getCalculator().calculateWeight();
@@ -1695,16 +1698,6 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         this.shadow = shadow;
     }
 
-    public void xpGained(int xp) {
-        if (!isDead())
-            if (Eidolons.getParty() instanceof ChainParty) {
-                ((ChainParty) Eidolons.getParty()).xpGained(xp);
-            }
-        modifyParameter(PARAMS.XP, xp);
-        modifyParameter(PARAMS.TOTAL_XP, xp, true);
-        HeroLevelManager.checkLevelUp(this);
-    }
-
     public void applyBuffRules() {
         getResetter().applyBuffRules();
     }
@@ -1844,9 +1837,10 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         return freeMovesDone;
     }
 
-    public void freeMoveDone(   ) {
+    public void freeMoveDone() {
         this.freeMovesDone++;
     }
+
     public void setFreeMovesDone(int freeMovesDone) {
         this.freeMovesDone = freeMovesDone;
     }

@@ -120,7 +120,7 @@ public class MetaGoalMaster extends AiHandler {
     }
 
     private int getThreatProtectionMod(UnitAI ai, Unit target) {
-        return 20 + target.calculatePower();
+        return 20 + target.getPower();
     }
 
     private Integer getModForSameArgTask(GOAL_TYPE type, META_GOAL_TYPE metaGoalType) {

@@ -3,6 +3,7 @@ package eidolons.entity.hero;
 import eidolons.content.DC_Calculator;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
+import main.entity.Entity;
 
 public class NF_ProgressionMaster {
     /*
@@ -13,7 +14,7 @@ public class NF_ProgressionMaster {
 
      */
 
-    public void levelUp(Unit unit){
+    public static void levelUp(Unit unit){
         int level = unit.getLevel();
         int mstr = DC_Calculator.getMasteryRanks(unit, level);
         unit.modifyParameter(PARAMS.MASTERY_RANKS_UNSPENT, mstr);
@@ -29,4 +30,7 @@ public class NF_ProgressionMaster {
     }
 
 
+    public static int getMasteryRanksForLevelUp(Entity hero) {
+        return hero.getIntParam(PARAMS.HERO_LEVEL)+1;
+    }
 }

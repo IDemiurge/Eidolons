@@ -124,10 +124,10 @@ public class AddSpecialEffects extends MicroEffect {
                 event = Event.STANDARD_EVENT_TYPE.COMBAT_STARTS;
                 //TODO combat end / start
                 break;
-            case  NEW_TURN:
+            case NEW_ROUND:
                 event = Event.STANDARD_EVENT_TYPE.UNIT_NEW_ROUND_STARTED;
                 break;
-            case  END_TURN:
+            case END_ROUND:
                 event = Event.STANDARD_EVENT_TYPE.ROUND_ENDS;
                 //TODO combat end / start
                 break;

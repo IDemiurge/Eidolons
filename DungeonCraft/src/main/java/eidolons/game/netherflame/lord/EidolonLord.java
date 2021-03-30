@@ -1,4 +1,4 @@
-package eidolons.game.netherflame.main.lord;
+package eidolons.game.netherflame.lord;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
@@ -6,15 +6,20 @@ import eidolons.game.core.EUtils;
 import eidolons.game.netherflame.main.death.HeroChain;
 import eidolons.game.netherflame.main.soul.eidola.Soul;
 import eidolons.game.netherflame.main.soul.eidola.SoulMaster;
+import eidolons.game.netherflame.soulflux.Card;
 import main.entity.LightweightEntity;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
+import java.util.List;
+
 public class EidolonLord extends LightweightEntity {
 
     public static EidolonLord lord;
     HeroChain chain;
+
+    List<Card> globalDeck;
 
     public EidolonLord(ObjType type) {
         super(type);

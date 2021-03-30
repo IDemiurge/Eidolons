@@ -66,7 +66,7 @@ public class EncounterAdjuster extends MissionHandler {
         groups = 0;
         unitGroups = new LinkedList<>();
         // map?
-        base_power = calculatePower(encounter.getTypes(), false);
+        base_power = getPower(encounter.getTypes(), false);
 
         if (target_power == null || target_power == 0) {
             initPower();
@@ -156,7 +156,7 @@ public class EncounterAdjuster extends MissionHandler {
                 C_OBJ_TYPE.UNITS_CHARS);
         if (groups >= MAX_GROUPS)
             return false;
-        if (checkPowerExceeding(power + calculatePower(types, true))) {
+        if (checkPowerExceeding(power + getPower(types, true))) {
             if (shrunk_or_extended == null)
                 return addGroup(true);
             if (!shrunk_or_extended)
@@ -241,7 +241,7 @@ public class EncounterAdjuster extends MissionHandler {
         return true;
     }
 
-    public int calculatePower(Collection<ObjType> unitTypes, boolean addLevelUps) {
+    public int getPower(Collection<ObjType> unitTypes, boolean addLevelUps) {
         int power = 0;
         for (ObjType type : unitTypes) {
             power += type.getIntParam(PARAMS.POWER);
@@ -252,7 +252,7 @@ public class EncounterAdjuster extends MissionHandler {
     }
 
     private boolean checkPowerAdjustmentNeeded() {
-        int power = calculatePower(DataManager.toTypeList(getTypeMap()), false);
+        int power = getPower(DataManager.toTypeList(getTypeMap()), false);
         if (getTargetPower() <= power)
             return false;
         float diff = (getTargetPower() - power) * 100 / getTargetPower();

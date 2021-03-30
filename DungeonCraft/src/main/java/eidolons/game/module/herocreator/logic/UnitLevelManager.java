@@ -30,7 +30,6 @@ public class UnitLevelManager {
         ObjType newType = (generateType) ? new ObjType(baseType) : baseType;
         // change name? TODO reinit
         // game.initType(heroType);
-        awardXP(newType, levelUps);
         awardGold(newType, levelUps);
         // preCheck max level and transitions
         for (int i = 0; i < levelUps; i++) {
@@ -57,10 +56,7 @@ public class UnitLevelManager {
         int i = type.getIntParam(PARAMS.UNIT_LEVEL);
         // TODO award xp for 1 level HERE!
 
-        checkBuyPoint(type);
-
         upMasteries(type, i);
-
         // buy attr points?
         // upPlanItems(type, i, true);
         // upPlanItems(type, i, false);
@@ -74,14 +70,6 @@ public class UnitLevelManager {
         // special PER LEVEL? >> as PASSIVES?
     }
 
-    private static void checkBuyPoint(ObjType type) {
-        if (StringMaster.isEmpty(type.getProperty(PROPS.SPELL_PLAN))) {
-            if (StringMaster.isEmpty(type.getProperty(PROPS.XP_PLAN))) {
-                buyPoints(false, type);
-            }
-        }
-
-    }
 
     private static void upParams(ObjType newType, int i) {
         for (PARAMETER p : ContentValsManager.getPerLevelParams()) {
@@ -96,7 +84,7 @@ public class UnitLevelManager {
 
     public static void up(Entity newType, int i, boolean attrs) {
         PARAMS perLevel = (attrs) ? PARAMS.ATTR_POINTS_PER_LEVEL
-         : PARAMS.MASTERY_POINTS_PER_LEVEL;
+         : PARAMS.MASTERY_RANKS_PER_LEVEL;
         Integer attrsPerLevel = newType.getIntParam(perLevel);
         if (attrsPerLevel <= 0) {
             int forLevel = newType.getLevel()
@@ -219,38 +207,6 @@ public class UnitLevelManager {
         return progression;
     }
 
-    public static ObjType awardXP(ObjType newType, int levelUps) {
-        return awardXP(newType, levelUps, true);
-    }
-
-    public static ObjType awardXP(ObjType newType, int n, boolean fromLevel) {
-        if (fromLevel) {
-            int totalXp = DC_Formulas.getTotalXpForLevel(newType
-             .getIntParam(PARAMS.LEVEL) + n);
-            // int addedXp = totalXp
-            // - DC_Formulas.getTotalXpForLevel(newType
-            // .getIntParam(PARAMS.LEVEL));
-            // award XP constant? no - a leveled unit will concur with std
-            // numbers
-            // non-leveled will have xp per power
-            // newType.modifyParameter(PARAMS.XP, addedXp); //let's say we add
-            // dynamic xp in DC_UnitObj method
-            newType.setParam(PARAMS.TOTAL_XP, totalXp);
-        } else {
-            // newType.modifyParameter(PARAMS.XP, n);
-            // newType.modifyParameter(PARAMS.TOTAL_XP, n);
-            int levelUps = DC_Formulas.getLevelForXp(newType
-             .getIntParam(PARAMS.TOTAL_XP) + n)
-             - newType.getIntParam(PARAMS.LEVEL);
-            if (levelUps <= 0) {
-                return newType;
-            }
-            return getLeveledType(newType, levelUps, true);
-        }
-        return newType;
-
-    }
-
     private static  void awardGold(ObjType newType, int levelUps) {
         int gold = DC_Formulas.getGoldForLevel(newType
          .getIntParam(PARAMS.LEVEL) + levelUps);
@@ -258,77 +214,17 @@ public class UnitLevelManager {
 
     }
 
-    private static  void upPlanItems(ObjType newType, int i, boolean xp) {
-        List<String> array = ContainerUtils.openContainer(newType
-         .getProperty((xp) ? PROPS.GOLD_PLAN : PROPS.XP_PLAN));
-        boolean success = false;
-        for (String item : array) { // getOrCreate all the xp items next in line while
-            // there is xp to spend
-            if (!checkItem(newType, item, xp)) {
-                continue;
-            }
-            if (!tryAward(newType, item, xp)) {
-                break;
-            } else {
-                success = true;
-            }
-        }
-        if (!success) {
-            buyPoints(!xp, newType);
-        }
-    }
 
-    public static void buyPoints(boolean gold, Entity type) {
-        buyPoints(true, gold, type);
-    }
 
-    public static void buyPoints(boolean attrs, boolean gold, Entity type) {
-        boolean result = true;
-        while (result) {
-            result = buyPoint(attrs, gold, type);
-        }
-    }
 
-    public static boolean buyPoint(boolean attr, boolean gold, Entity type) {
-        PARAMS cost_param = (gold) ? PARAMS.GOLD : PARAMS.XP;
-        PARAMS param = (attr) ? PARAMS.ATTR_POINTS : PARAMS.MASTERY_POINTS;
-
-        PARAMS buyParam = (attr) ? (gold) ? PARAMS.ATTR_BOUGHT_WITH_GOLD
-         : PARAMS.ATTR_BOUGHT_WITH_XP
-         : (gold) ? PARAMS.MASTERY_BOUGHT_WITH_GOLD
-         : PARAMS.MASTERY_BOUGHT_WITH_XP;
-
-        int amount = DC_MathManager.getBuyCost(attr, gold, type);
-
-        if (((gold) ? type.getIntParam(PARAMS.GOLD) : type
-         .getIntParam(PARAMS.XP)) < amount) {
-            return false;
-        }
-
-        type.modifyParameter(cost_param, -amount);
-        type.modifyParameter(param, 1);
-        type.modifyParameter(buyParam, 1);
-        return true;
-    }
-
-    private static  boolean tryAward(ObjType newType, String item, boolean xp) {
-        Integer xpRemaining = newType.getIntParam(PARAMS.TOTAL_XP);
-        XpItem nextItem = getXpItem(item);
-        if (nextItem.getXpCost() <= xpRemaining) {
-            award(newType, nextItem);
-            return true;
-        }
-        return false;
-    }
-
-    private static  void award(ObjType newType, XpItem nextItem) {
+    private static  void award(ObjType newType, PtsItem nextItem) {
         newType.addProperty(nextItem.getProperty(), nextItem.getName());
-        newType.modifyParameter(PARAMS.TOTAL_XP, -nextItem.getXpCost());
+        newType.modifyParameter(nextItem.getPoolProperty() , -nextItem.getPointCost());
 
     }
 
-    private static  XpItem getXpItem(String item) {
-        return new XpItem(item);
+    private static PtsItem getXpItem(String item) {
+        return new PtsItem(item);
     }
 
     private static  boolean checkItem(ObjType newType, String item, boolean xp) {

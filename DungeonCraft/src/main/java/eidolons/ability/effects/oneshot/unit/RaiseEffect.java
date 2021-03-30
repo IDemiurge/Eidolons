@@ -36,13 +36,13 @@ public class RaiseEffect extends SummonEffect {
     // skills
     // :)
 
-    private static final String XP_FACTOR = "-0.75"; // soul?
+    private static final String POWER_FACTOR = "-0.75"; // soul?
 
     boolean preserveItems;
     private RAISE_TYPE raiseType;
     private RAISE_MODIFIER raiseMod;
 
-    private Obj corpse;
+    private Unit corpse;
 
     private boolean humanoid;
 
@@ -77,11 +77,11 @@ public class RaiseEffect extends SummonEffect {
     @Override
     protected Formula getXpFormula(Obj spell) {
         // TODO perhaps related to the corpse? Limit max xp by corpse's xp, e.g.
-        return super.getXpFormula(spell).getAppendedByFactor(XP_FACTOR);
+        return super.getXpFormula(spell).getAppendedByFactor(POWER_FACTOR);
     }
 
     public void initCorpse() {
-        corpse = ref.getGame().getGraveyardManager()
+        corpse = (Unit) ref.getGame().getGraveyardManager()
          .getTopDeadUnit(ref.getTargetObj().getCoordinates());
         if (corpse != null) {
             humanoid = corpse.checkProperty(G_PROPS.CLASSIFICATIONS, ""
@@ -91,7 +91,7 @@ public class RaiseEffect extends SummonEffect {
 
     @Override
     public boolean applyThis() {
-        corpse = ref.getGame().getGraveyardManager()
+        corpse = (Unit) ref.getGame().getGraveyardManager()
          .destroyTopCorpse(ref.getTargetObj().getCoordinates());
 
         humanoid = corpse.checkProperty(G_PROPS.CLASSIFICATIONS, ""
@@ -268,7 +268,7 @@ public class RaiseEffect extends SummonEffect {
         return raiseMod;
     }
 
-    public Obj getCorpse() {
+    public Unit getCorpse() {
         return corpse;
     }
 

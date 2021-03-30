@@ -838,45 +838,6 @@ public class ItemGenerator implements GenericItemGenerator {
         Chronos.logTimeElapsedForMark("ITEM_GENERATION");
     }
 
-    private void generateGarments() {
-        generateBoots();
-        generateGloves();
-        generateHelmets();
-        generateCloaks();
-
-    }
-
-    private void generateCloaks() {
-        List<MATERIAL> materials = new ArrayList<>();
-        materials.addAll(Arrays.asList(DEFAULT_MATERIALS_CLOTH));
-        materials.addAll(Arrays.asList(DEFAULT_MATERIALS_SKINS));
-        for (ObjType type : DataManager
-         .getTypesSubGroup(DC_TYPE.GARMENT, ItemEnums.GARMENT_TYPE.BOOTS + "")) {
-            for (QUALITY_LEVEL q : ItemEnums.QUALITY_LEVEL.values()) {
-                for (MATERIAL m : materials) {
-                    // generateItem_(quality, material, type)
-
-                }
-            }
-
-        }
-
-    }
-
-    private void generateHelmets() {
-        // TODO Auto-generated method stub
-
-    }
-
-    private void generateGloves() {
-        // TODO Auto-generated method stub
-
-    }
-
-    private void generateBoots() {
-        // TODO Auto-generated method stub
-
-    }
 
     private void generateArmor() {
 

@@ -7,6 +7,7 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.action.StackingRule;
+import eidolons.game.battlecraft.rules.combat.attack.accuracy.NF_AccuracyMaster;
 import eidolons.game.battlecraft.rules.combat.attack.extra_attack.CounterAttackRule;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.DamageDealer;
@@ -14,11 +15,9 @@ import eidolons.game.battlecraft.rules.combat.damage.DamageFactory;
 import eidolons.game.battlecraft.rules.combat.misc.CleaveRule;
 import eidolons.game.battlecraft.rules.mechanics.CoatingRule;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
-import eidolons.game.core.ActionInput;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.master.EffectMaster;
 import eidolons.system.audio.DC_SoundMaster;
-import eidolons.system.libgdx.GdxAdapter;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.enums.GenericEnums;
@@ -28,7 +27,6 @@ import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.event.EventMaster;
@@ -285,7 +283,7 @@ public class DC_AttackMaster {
                         //                    }
                         return true;
                     }
-                    dodged = DefenseVsAttackRule.checkDodgedOrCrit(attack);
+                    dodged = DefenseAttackCalculator.checkDodgedOrCrit(attack);
                 }
 
         // BEFORE_ATTACK,

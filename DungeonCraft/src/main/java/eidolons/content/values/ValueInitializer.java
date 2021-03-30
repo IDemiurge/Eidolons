@@ -58,7 +58,6 @@ public class ValueInitializer {
         ESSENCE.setColor(ColorManager.ESSENCE);
 
         GLORY.setDynamic(true);
-        XP.setWriteToType(true);
         GLORY.setWriteToType(true);
         GOLD.setWriteToType(true);
         ATTR_POINTS.setWriteToType(true);
@@ -70,9 +69,6 @@ public class ValueInitializer {
         DC_TYPE.ITEMS.setParam(PARAMS.GOLD);
         DC_TYPE.WEAPONS.setParam(PARAMS.GOLD);
         DC_TYPE.UNITS.setParam(PARAMS.GOLD);
-        DC_TYPE.SKILLS.setParam(PARAMS.XP);
-        DC_TYPE.SPELLS.setParam(PARAMS.XP);
-        DC_TYPE.CLASSES.setParam(PARAMS.XP);
 
         STRENGTH.setAttr(true);
         VITALITY.setAttr(true);

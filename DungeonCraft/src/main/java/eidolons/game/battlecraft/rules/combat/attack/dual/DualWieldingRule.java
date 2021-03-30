@@ -37,8 +37,6 @@ public class DualWieldingRule {
     public static final String MAIN_HAND = ActionEnums.ACTION_TAGS.MAIN_HAND.toString();
     public static final String OFF_HAND = ActionEnums.ACTION_TAGS.OFF_HAND.toString();
     private static final G_PROPS PROP = G_PROPS.ACTION_TAGS;
-    // private static final String DEFAULT_STA_REDUCTION = "-25";
-    // private static final String DEFAULT_AP_REDUCTION = "-33";
     public static final String buffTypeNameOffHand = StringMaster.format(MetaEnums.STD_BUFF_NAME.Off_Hand_Cadence.name());
     public static final String buffTypeNameMainHand = StringMaster.format(MetaEnums.STD_BUFF_NAME.Main_Hand_Cadence.name());
     private static final Formula DURATION = new Formula("1");
@@ -128,9 +126,9 @@ public class DualWieldingRule {
 
         valueEffect.appendFormulaByMod(100 + weapon.getIntParam(PARAMS.CADENCE_BONUS));
         effects.add(valueEffect);
-        cadence = unit.getParam(PARAMS.CADENCE_STA_MOD);
+        cadence = unit.getParam(PARAMS.CADENCE_TOU_MOD);
         if (cadence.isEmpty()) {
-            cadence = DC_Formulas.DEFAULT_CADENCE_STA_MOD + "";
+            cadence = DC_Formulas.DEFAULT_CADENCE_TOU_MOD + "";
         }
         valueEffect = new ModifyValueEffect(
          PARAMS.ATTACK_TOUGHNESS_COST_MOD,

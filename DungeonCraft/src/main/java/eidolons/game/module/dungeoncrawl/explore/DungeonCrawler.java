@@ -17,8 +17,6 @@ public class DungeonCrawler {
 
 
     public static void secretFound(Obj wall, Unit hero) {
-        HeroLevelManager.addXp(hero, hero.getLevel() * 25 + 25 +
-         RandomWizard.getRandomInt(100));
         GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
          "A false wall? Interesting...");
 

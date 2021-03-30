@@ -64,27 +64,6 @@ public class DeathMaster extends Master {
 
     }
 
-    private void checkXpGranted(Obj killed, Obj killer) {
-        if (killed == killer)
-            return;
-        if (killed instanceof Unit) {
-            if (!((Unit) killed).isHostileTo((DC_Player) killer.getOwner())) {
-                return;
-            }
-        } else {
-            if (killed.checkBool(STD_BOOLS.FAUX)) {
-                if (EntityCheckMaster.isWall(killed)) {
-                    DungeonCrawler.secretFound(killed, (Unit) killer);
-                }
-            }
-            return;
-        }
-        Unit unit = (Unit) killed;
-
-        HeroLevelManager.addXpForKill(unit, (Unit) killer);
-
-    }
-
     public void unitDies(DC_ActiveObj activeObj, Obj _killed, Obj _killer, boolean leaveCorpse, boolean quietly) {
         unitDies(activeObj, _killed, _killer, leaveCorpse, quietly, false);
     }
@@ -118,8 +97,6 @@ public class DeathMaster extends Master {
 
 
         }
-        if (!quietly)
-            checkXpGranted(_killed, _killer);
         SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.MAIN, message);
         _killed.setDead(true);
 

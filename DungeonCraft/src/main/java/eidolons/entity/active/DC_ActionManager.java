@@ -3,8 +3,8 @@ package eidolons.entity.active;
 import eidolons.ability.ActionGenerator;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.spaces.ActiveSpaceManager;
-import eidolons.entity.active.spaces.IActiveSpaceManager;
+import eidolons.entity.active.spaces.ActiveSpaceInitializer;
+import eidolons.entity.active.spaces.IActiveSpaceInitializer;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.attach.DC_FeatObj;
@@ -55,11 +55,11 @@ public class DC_ActionManager implements ActionManager {
     protected static ArrayList<ObjType> orderObjTypes;
     protected GenericGame game;
     protected HashMap<Entity, Map<String, ActiveObj>> actionsCache = new HashMap<>();
-    private IActiveSpaceManager spaceManager;
+    private IActiveSpaceInitializer spaceManager;
 
     public DC_ActionManager(GenericGame game) {
         this.game = game;
-        spaceManager = new ActiveSpaceManager();
+        spaceManager = new ActiveSpaceInitializer();
     }
 
     public static void init() {
@@ -256,6 +256,9 @@ public class DC_ActionManager implements ActionManager {
         return (DC_UnitAction) getAction(typeName, entity, false);
     }
 
+    public DC_ActiveObj getOrCreateActionOrSpell(String typeName, Entity entity) {
+        return  getAction(typeName, entity, false);
+    }
     public DC_ActiveObj getAction(String typeName, Entity entity, boolean onlyIfAlreadyPresent) {
 
         typeName = typeName.trim();
@@ -670,7 +673,7 @@ public class DC_ActionManager implements ActionManager {
     }
 
 
-    public IActiveSpaceManager getSpaceManager() {
+    public IActiveSpaceInitializer getSpaceManager() {
         return spaceManager;
     }
 }

@@ -175,7 +175,7 @@ public class LootMaster<E extends MetaGame> extends MetaGameHandler<E> {
     }
 
     private int evaluateLootValue(Unit enemy) {
-        return enemy.calculatePower();
+        return enemy.getPower();
     }
 
     private String getLootFromEnemy(Unit enemy) {

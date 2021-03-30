@@ -2,21 +2,23 @@ package eidolons.entity.active.spaces;
 
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
 import main.content.enums.entity.NewRpgEnums;
 import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
-public class ActiveSpaceManager implements IActiveSpaceManager {
-
+public class ActiveSpaceInitializer implements IActiveSpaceInitializer {
     public static final PROPS[] activeSpaceProps = {
             PROPS.MEMORIZED_SPACES,
             PROPS.VERBATIM_SPACES,
             PROPS.ACTIVE_SPACES,
     };
+    public static final int MAX_SLOTS = 6;
 
     @Override
     public UnitActiveSpaces createActiveSpaces(Unit unit) {
@@ -37,24 +39,30 @@ public class ActiveSpaceManager implements IActiveSpaceManager {
     private ActiveSpace createSpace(int i, Unit unit, UnitActiveSpaces spaces, ActiveSpaceData data) {
         NewRpgEnums.ACTIVE_SPACE_TYPE type = data.getType();
         // mods = getGlobalMods(unit, type); //TODO
-        List<DC_ActiveObj> actives = createActives(unit, data.getActives());
-        ActiveSpace space = new ActiveSpace(i, data.getName(), type, data.getMode(), actives);
+        Map<Integer, DC_ActiveObj> actives = createActives(unit, data);
+        ActiveSpace space = new ActiveSpace(i, data.getName(), unit, type, data.getMode(), actives);
         return space;
-
     }
 
-    private List<DC_ActiveObj> createActives(Unit unit, String value) {
-        List<DC_ActiveObj> actions = new ArrayList<>();
-        for (String name : ContainerUtils.openContainer(value)) {
-            DC_UnitAction action = unit.getGame().getActionManager().getOrCreateAction(name, unit);
-            actions.add(action);
+    private Map<Integer, DC_ActiveObj> createActives(Unit unit, ActiveSpaceData value) {
+        Map<Integer, DC_ActiveObj> actions = new LinkedHashMap<>();
+        for (int i = 0; i < MAX_SLOTS; i++) {
+            String name = value.getActive(i);
+            if (StringMaster.isEmpty(name)) {
+                continue;
+            }
+            DC_ActiveObj action = unit.getGame().getActionManager().getOrCreateActionOrSpell(name, unit);
+            actions.put(i, action);
         }
         return actions;
     }
 
+    public void update(ActiveSpace space, ActiveSpaceData data) {
+        space.setActivesMap(createActives(space.getOwner(), data));
+    }
 
-    public ActiveSpace.ActiveSpaceMeta createMeta(ActiveSpace  space) {
-        ActiveSpace.ActiveSpaceMeta meta= new ActiveSpace.ActiveSpaceMeta(space.getName(), NewRpgEnums.ACTIVE_SPACE_SKIN.lite, false, false);
+    public ActiveSpace.ActiveSpaceMeta createMeta(ActiveSpace space) {
+        ActiveSpace.ActiveSpaceMeta meta = new ActiveSpace.ActiveSpaceMeta(space.getName(), NewRpgEnums.ACTIVE_SPACE_SKIN.lite, false, false);
         return meta;
     }
 }

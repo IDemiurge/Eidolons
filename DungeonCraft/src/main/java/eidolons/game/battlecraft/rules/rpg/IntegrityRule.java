@@ -26,7 +26,7 @@ public class IntegrityRule {
         if (INTEGRITY_MODIFIED_VALUES == null) {
             INTEGRITY_MODIFIED_VALUES = new PARAMETER[]{
              ContentValsManager.getMasteryScore(PARAMS.LEADERSHIP_MASTERY),
-             ContentValsManager.getMasteryScore(PARAMS.DIVINATION_MASTERY), PARAMS.XP_LEVEL_MOD,
+             ContentValsManager.getMasteryScore(PARAMS.DIVINATION_MASTERY),
              PARAMS.GOLD_COST_REDUCTION, PARAMS.SPIRIT, PARAMS.FOCUS_RESTORATION,
              PARAMS.FOCUS_RETAINMENT, PARAMS.STARTING_FOCUS,
              // + Organization

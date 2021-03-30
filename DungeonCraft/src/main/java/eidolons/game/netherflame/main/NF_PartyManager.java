@@ -12,7 +12,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.game.netherflame.main.death.HeroChain;
 import eidolons.game.netherflame.main.hero.ChainParty;
-import eidolons.game.netherflame.main.lord.EidolonLord;
+import eidolons.game.netherflame.lord.EidolonLord;
 import eidolons.system.libgdx.GdxStatic;
 import eidolons.content.DC_Formulas;
 import main.content.DC_TYPE;

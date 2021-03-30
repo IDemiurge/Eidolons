@@ -77,11 +77,9 @@ public class DC_MathManager extends MathMaster {
                 / DC_Formulas.DURABILITY_DAMAGE_FACTOR_WEAPON;
 
     }
-
     public static int getDurabilityForDamage(int damage, int armor, DC_HeroItemObj item) {
         // armor penetration
         // action ref
-
         return 0;
     }
 
@@ -107,42 +105,6 @@ public class DC_MathManager extends MathMaster {
         return attacked.getIntParam(DC_ContentValsManager.getDamageTypeResistance(type));
     }
 
-    public static int getBuyAttributeXpCost(Entity hero) {
-        // return DC_Formulas.BUY_ATTRIBUTE_XP_COST + hero.getIntParam(PARAMS.ATTR_BOUGHT_WITH_XP);
-        return 0;
-    }
-
-    public static int getBuyAttributeGoldCost(Entity hero) {
-        // return DC_Formulas.BUY_ATTRIBUTE_GOLD_COST + 2 * hero.getIntParam(PARAMS.ATTR_BOUGHT_WITH_GOLD);
-        return 0;
-    }
-
-    public static int getBuyMasteryGoldCost(Entity hero) {
-        // return DC_Formulas.BUY_MASTERY_GOLD_COST + 2 * hero.getIntParam(PARAMS.MASTERY_BOUGHT_WITH_GOLD);
-        return 0;
-    }
-
-    public static int getBuyMasteryXpCost(Entity hero) {
-        // return DC_Formulas.BUY_MASTERY_XP_COST + hero.getIntParam(PARAMS.MASTERY_BOUGHT_WITH_XP);
-        return 0;
-    }
-
-    public static int getBuyCost(boolean attr, boolean gold, Entity hero) {
-        if (attr) {
-            return (gold) ? getBuyAttributeGoldCost(hero) : getBuyAttributeXpCost(hero);
-        }
-        return (gold) ? getBuyMasteryGoldCost(hero) : getBuyMasteryXpCost(hero);
-
-    }
-
-    public static int getMasteriesUnlocked(Entity entity) {
-        return SkillMaster.getUnlockedMasteries(entity).size();
-    }
-
-    public static int getMasteryDiscount(Entity entity) {
-        return entity.getIntParam(PARAMS.FREE_MASTERIES);
-    }
-
     public static int getFreeMasteryPoints(Unit hero, PARAMETER masteryParam) {
         return getMasteryPoints(hero, masteryParam) - calculateUsedMasteryPoints(hero, masteryParam);
     }
@@ -166,46 +128,8 @@ public class DC_MathManager extends MathMaster {
 
     }
 
-    public static int getSkillXpCost(Integer skillDifficulty) {
-        return DC_Formulas.calculateFormula(DC_Formulas.XP_COST_PER_SKILL_DIFFICULTY, skillDifficulty);
-
-    }
-
-    public static int getMaxDivinationSD(Unit hero) {
-        return DC_Formulas.DIVINATION_MAX_SD_FORMULA.getInt(hero.getRef());
-    }
-
-    public static int getDivinationPool(Unit hero) {
-        Formula divinationPoolFormula = DC_Formulas.DIVINATION_POOL_FORMULA;
-        String property = hero.getProperty(PROPS.DIVINATION_PARAMETER);
-        if (!property.isEmpty()) {
-            if (!property.contains("{")) {
-            }
-
-            divinationPoolFormula = new Formula(DC_Formulas.DIVINATION_POOL_FORMULA.toString().toLowerCase()
-                    .replace("{charisma}", hero.getProperty(PROPS.DIVINATION_PARAMETER)));
-        }
-        return divinationPoolFormula.getInt(hero.getRef());
-    }
-
-    public static int getUnitPower(Entity unit) {
-        return DC_Formulas.getPowerFromUnitXP(unit.getIntParam(PARAMS.TOTAL_XP));
-
-    }
-
-    public static String getUnitXP(ObjType type) {
-        return "" + type.getIntParam(PARAMS.POWER) * 10
-                // + DC_Formulas
-                // .getTotalXpForLevel(type.getIntParam(PARAMS.LEVEL))
-                ;
-    }
-
     public static int getParamPercentage(Unit unit, PARAMETER p) {
         return unit.getIntParam(ContentValsManager.getPercentageParam(p));
-    }
-
-    public static String getSpellXpCost(ObjType type) {
-        return "" + (type.getIntParam(PARAMS.SPELL_DIFFICULTY) * DC_Formulas.XP_COST_PER_SPELL_DIFFICULTY);
     }
 
     public static int getLeveledUnitPowerBonus(ObjType type) {
@@ -213,10 +137,6 @@ public class DC_MathManager extends MathMaster {
         // MathManager.getFormulaArg("amount",
         return calculateFormula(DC_Formulas.UNIT_LEVEL_POWER_BONUS, level);
 
-    }
-
-    public static int getLevelForPower(Integer power) {
-        return DC_Formulas.getLevelForXp(power * DC_Formulas.POWER_XP_FACTOR);
     }
 
     @Override

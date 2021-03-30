@@ -9,7 +9,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.logic.spells.SpellMaster;
 import eidolons.game.netherflame.main.death.ChainHero;
-import eidolons.game.netherflame.main.lord.EidolonLord;
+import eidolons.game.netherflame.lord.EidolonLord;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.game.bf.Coordinates;

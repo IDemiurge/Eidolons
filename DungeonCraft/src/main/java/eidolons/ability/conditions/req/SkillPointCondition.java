@@ -9,7 +9,7 @@ import main.content.values.properties.G_PROPS;
 import main.elements.conditions.MicroCondition;
 import main.entity.Entity;
 import main.entity.Ref;
-
+@Deprecated
 public class SkillPointCondition extends MicroCondition {
 
     private int pointsRequired;
@@ -37,9 +37,6 @@ public class SkillPointCondition extends MicroCondition {
             masteryParam = ContentValsManager.getMastery(match.getProperty(G_PROPS.MASTERY));
         }
         Integer amount = match.getIntParam(PARAMS.SKILL_DIFFICULTY);
-        if (rank) {
-            amount = amount * match.getIntParam(PARAMS.RANK_SD_MOD) / 100;
-        }
         pointsRequired = amount
          - DC_MathManager
          .getFreeMasteryPoints((Unit) ref.getSourceObj(), masteryParam);

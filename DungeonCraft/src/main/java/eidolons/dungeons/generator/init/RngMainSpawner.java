@@ -297,7 +297,7 @@ public class RngMainSpawner {
                 }
 
 
-                if (calculatePowerFill(block) > getMaxPowerFill(block))
+                if (getPowerFill(block) > getMaxPowerFill(block))
                     continue blocks;
                 float powerCoef = getPowerCoef(block, groupType);
                 UNIT_GROUP group = getUnitGroup(level.getLocationType(), block.getZone(), groupType);
@@ -380,13 +380,13 @@ public class RngMainSpawner {
                     if (blocks.isEmpty())
                         continue;
                     float requiredFill = 0.8f;
-                    float current = calculatePowerFill(zone);
+                    float current = getPowerFill(zone);
                     UNIT_GROUP group = getUnitGroup(level.getLocationType(), zone, groupType);
                     for (LevelBlock block : blocks) {
                         if ((requiredFill < current)) {
                             continue zones;
                         }
-                        current = calculatePowerFill(zone);
+                        current = getPowerFill(zone);
                         float powerCoef = getPowerCoef(block, groupType);
                         spawnForGroup(block, groupType, group, powerCoef);
                         if (checkDone()) {
@@ -399,7 +399,7 @@ public class RngMainSpawner {
     }
 
     private boolean checkDone() {
-        return calculatePowerFill() >
+        return getPowerFill() >
                 POWER_FILL_COEF *
                         data.getFloatValue(GeneratorEnums.LEVEL_VALUES.POWER_PER_SQUARE_MAX_MOD) / 100;
     }
@@ -410,29 +410,29 @@ public class RngMainSpawner {
                         .filter(block -> block.getZone() == zone)
                         .filter(block -> isBlockForGroup(block, groupType)).sorted(
                         new SortMaster<LevelBlock>().getSorterByExpression_(block ->
-                                (int) (-100 * calculatePowerFill(block) + RandomWizard.getRandomIntBetween(0, 5))))
+                                (int) (-100 * getPowerFill(block) + RandomWizard.getRandomIntBetween(0, 5))))
                         .collect(Collectors.toList());
     }
 
-    private float calculatePowerFill() {
+    private float getPowerFill() {
         int n = 0;
         for (LevelZone levelZone : level.getZones()) {
-            n += calculatePowerFill(levelZone);
+            n += getPowerFill(levelZone);
         }
         n = n / level.getZones().size();
         return n;
     }
 
-    private float calculatePowerFill(LevelZone zone) {
+    private float getPowerFill(LevelZone zone) {
         int n = 0;
         for (LevelBlock block : zone.getSubParts()) {
-            n += calculatePowerFill(block);
+            n += getPowerFill(block);
         }
         n = n / (1 + zone.getSubParts().size());
         return n;
     }
 
-    private float calculatePowerFill(LevelBlock block) {
+    private float getPowerFill(LevelBlock block) {
         //power per square max
         float coef = (float) Math.sqrt(block.getWidth() * block.getHeight()) / 10
                 + getPowerFillCoef(block.getRoomType());

@@ -600,12 +600,12 @@ public abstract class DataModel {
         return value.toString();
     }
 
-    public boolean modifyParameter(PARAMETER param, int amount, Integer minMax, boolean quietly,
+    public boolean modifyParameter(PARAMETER param, Number amount, Integer minMax, boolean quietly,
                                    String modifierKey) {
         return modifyParameter(param, amount + "", minMax, quietly, modifierKey);
     }
 
-    public boolean modifyParameter(PARAMETER param, int amount, Integer minMax, boolean quietly) {
+    public boolean modifyParameter(PARAMETER param, Number amount, Integer minMax, boolean quietly) {
         return modifyParameter(param, amount + "", minMax, quietly, null);
     }
 
@@ -725,7 +725,7 @@ public abstract class DataModel {
         return modifierMaps;
     }
 
-    public boolean modifyParameter(PARAMETER param, int amount, Integer minMax, String modifierKey) {
+    public boolean modifyParameter(PARAMETER param, Number amount, Integer minMax, String modifierKey) {
         return modifyParameter(param, amount, minMax, false, modifierKey);
     }
 
@@ -745,11 +745,11 @@ public abstract class DataModel {
 
     }
 
-    public boolean modifyParameter(PARAMETER param, int amount, String modifierKey) {
+    public boolean modifyParameter(PARAMETER param, Number amount, String modifierKey) {
         return modifyParameter(param, amount, null, false, modifierKey);
     }
 
-    public boolean modifyParameter(PARAMETER param, int amount) {
+    public boolean modifyParameter(PARAMETER param, Number amount) {
         return modifyParameter(param, amount, null, null);
 
     }
@@ -797,6 +797,10 @@ public abstract class DataModel {
 
     public boolean modifyParamByPercent(PARAMETER param,
                                         int perc, boolean base) {
+        return modifyParamByPercent(param, perc, base, null);
+    }
+    public boolean modifyParamByPercent(PARAMETER param,
+                                        int perc, boolean base ,String modifierString) {
         if (perc == 0 || getIntParam(param, base) == 0) {
             return false;
         }
@@ -806,11 +810,9 @@ public abstract class DataModel {
         if (perc > -1000 && perc < 0) {
             perc = MathMaster.getFullPercent(perc);
         }
-        // int mod = MathManager.getFractionValue(getIntParam(param, base),
-        // perc);
         float mod = MathMaster.getFractionValueFloat(getIntParam(param, base), perc);
 
-        return modifyParameter(param, "" + mod, null, false);
+        return modifyParameter(param, "" + mod, null, false, modifierString);
 
     }
 

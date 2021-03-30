@@ -14,7 +14,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.combat.attack.DefenseVsAttackRule;
+import eidolons.game.battlecraft.rules.combat.attack.DefenseAttackCalculator;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.libgdx.GdxStatic;
@@ -361,14 +361,14 @@ public class ArmorMaster {
             return RandomWizard.getRandomIntBetween(minimum, covered);
         }
 
-        int attack = DefenseVsAttackRule.getAttackValue(offhand, attacker, attacked, action); // sneak?
+        int attack = DefenseAttackCalculator.getAttackValue(offhand, attacker, attacked, action); // sneak?
         int defense;
         int def_coef = 100;
         int atk_coef = 100;
         if (shield) {
             defense = 10 + 2 * attacked.getIntParam(PARAMS.SHIELD_MASTERY);
         } else {
-            defense = DefenseVsAttackRule.getDefenseValue(attacker, attacked, action);
+            defense = DefenseAttackCalculator.getDefenseValue(attacker, attacked, action);
             def_coef += attacked.getIntParam(PARAMS.ARMORER_MASTERY);
             defense += attacked.getIntParam(PARAMS.ARMORER_MASTERY);
         }

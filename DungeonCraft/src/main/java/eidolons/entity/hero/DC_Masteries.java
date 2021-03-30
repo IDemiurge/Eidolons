@@ -11,6 +11,7 @@ import main.content.enums.entity.SkillEnums.MASTERY;
 import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
 import main.entity.Ref;
+import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +28,8 @@ public class DC_Masteries {
 
     public List<PARAMETER> getHighest(int i) {
         List<PARAMETER> list = new ArrayList<>(
-         DC_ContentValsManager.getMasteryParams());
-//        SortMaster.sortByParameter(hero, list, true);
+                DC_ContentValsManager.getMasteryParams());
+        //        SortMaster.sortByParameter(hero, list, true);
         return list.subList(0, i);
     }
 
@@ -49,54 +50,41 @@ public class DC_Masteries {
             return;
         }
         switch (mastery) {
-            case TACTICS_MASTERY:
-            case LEADERSHIP_MASTERY: {
-                // boostParameter((amount), PARAMS.ORGANIZATION,
-                // MODVAL_TYPE.MODIFY_BY_CONST);
-                break;
-
-            }
             case MARKSMANSHIP_MASTERY:
-
-                boostParameter(amount, PARAMS.THROW_ATTACK_MOD, MOD.MODIFY_BY_CONST);
-                break;// boostParameter((amount), PARAMS.BATTLE_SPIRIT,
+                mod(mastery, amount, PARAMS.THROW_ATTACK_MOD, MOD.MODIFY_BY_CONST);
+                break;// mod(mastery,(amount), PARAMS.BATTLE_SPIRIT,
             case ARMORER_MASTERY: {
-
-                boostParameter(-(amount), PARAMS.DURABILITY_SELF_DAMAGE_MOD,
-                 MOD.MODIFY_BY_CONST);
+                mod(mastery, -(amount), PARAMS.DURABILITY_SELF_DAMAGE_MOD, MOD.MODIFY_BY_CONST);
                 break;
             }
-
             case DEFENSE_MASTERY:
-                boostParameter(
-                 DC_Formulas.getDefenseFromDefenseMastery(amount),
-                 PARAMS.DEFENSE, MOD.MODIFY_BY_CONST);
-                // boostParameter(DC_Formulas.getDefenseModFromDefenseMastery(amount),
-                // PARAMS.DEFENSE, MODVAL_TYPE.MODIFY_BY_CONST);
+                mod(mastery,
+                        DC_Formulas.getDefenseFromDefenseMastery(amount), PARAMS.DEFENSE, MOD.MODIFY_BY_CONST);
                 break;
             case DUAL_WIELDING_MASTERY:
-                boostParameter(amount, PARAMS.OFFHAND_ATTACK_MOD,
-                 MOD.MODIFY_BY_CONST);
-                boostParameter(amount, PARAMS.OFFHAND_DAMAGE_MOD,
-                 MOD.MODIFY_BY_CONST);
+                mod(mastery, amount, PARAMS.OFFHAND_ATTACK_MOD,
+                        MOD.MODIFY_BY_CONST);
+                mod(mastery, amount, PARAMS.OFFHAND_DAMAGE_MOD,
+                        MOD.MODIFY_BY_CONST);
+
                 if (hero.checkDualWielding()) {
-                    boostParameter(-amount / 2, PARAMS.ATTACK_ATB_COST_MOD,
-                     MOD.MODIFY_BY_CONST);
-                    boostParameter(-amount / 2,
-                     PARAMS.OFFHAND_ATTACK_ATB_COST_MOD,
-                     MOD.MODIFY_BY_CONST);
+                    mod(mastery, -amount / 2, PARAMS.ATTACK_ATB_COST_MOD,
+                            MOD.MODIFY_BY_CONST);
+                    mod(mastery, -amount / 2,
+                            PARAMS.OFFHAND_ATTACK_ATB_COST_MOD,
+                            MOD.MODIFY_BY_CONST);
                 }
                 break;
             case DETECTION_MASTERY:
-                boostParameter(amount, PARAMS.DETECTION,
+                mod(mastery, amount, PARAMS.DETECTION,
                         MOD.MODIFY_BY_CONST);
-                boostParameter( amount/2, PARAMS.PERCEPTION,
+                mod(mastery, amount / 2, PARAMS.PERCEPTION,
                         MOD.MODIFY_BY_CONST);
                 break;
             case STEALTH_MASTERY:
-                boostParameter(amount, PARAMS.STEALTH,
+                mod(mastery, amount, PARAMS.STEALTH,
                         MOD.MODIFY_BY_CONST);
-                boostParameter(-amount/2, PARAMS.NOISE,
+                mod(mastery, -amount / 2, PARAMS.NOISE,
                         MOD.MODIFY_BY_CONST);
                 break;
 
@@ -105,7 +93,7 @@ public class DC_Masteries {
                 hero.modifyParamByPercent(PARAMS.STRENGTH, amount);
                 break;
             case MEDITATION_BONUS:
-                boostParameter(amount/5, PARAMS.MEDITATION_BONUS,
+                mod(mastery, amount / 5, PARAMS.MEDITATION_BONUS,
                         MOD.MODIFY_BY_CONST);
                 break;
             case DISCIPLINE_MASTERY:
@@ -123,26 +111,31 @@ public class DC_Masteries {
 
                 break;
             case WIZARDRY_MASTERY:
-                hero.modifyParamByPercent(PARAMS.KNOWLEDGE, amount);
-                hero.modifyParamByPercent(PARAMS.INTELLIGENCE, amount);
-                // hero.modifyParamByPercent(amount, PARAMS.KNOWLEDGE);
-                // hero.modifyParamByPercent(amount, PARAMS.INTELLIGENCE);
+                mod(mastery, amount, //MasteryConsts.WIZARDRY_KN_PERC
+                        1, PARAMS.KNOWLEDGE, MOD.MODIFY_BY_PERCENT);
+                mod(mastery, amount, //MasteryConsts.WIZARDRY_INT_PERC
+                       1 , PARAMS.INTELLIGENCE, MOD.MODIFY_BY_PERCENT);
                 break;
             default:
                 break;
         }
     }
 
-    private void boostParameter(int i, PARAMS p, MOD modval) {
-        Ref ref = new Ref(hero.getGame(), hero.getId());
-        ref.setTarget(hero.getId());
-        ref.setBase(true);
-        ref.setQuiet(true);
-        new ModifyValueEffect(p, modval, i + "").apply(ref);
+    private void mod(PARAMETER mastery, int amount, float modifier, PARAMETER params, MOD modtype) {
+        int result = Math.round(modifier * amount);
+        mod(mastery, result, params, modtype);
     }
 
-    private void boostParameterByPercent(int i, PARAMS p) {
-        boostParameter(i, p, MOD.MODIFY_BY_PERCENT);
+    private void mod(PARAMETER mastery, int amount, PARAMETER param, MOD modtype) {
+        String modifierKey = StringMaster.format(mastery.getName());
+        switch (modtype) {
+            case MODIFY_BY_PERCENT:
+                hero.modifyParamByPercent(param, amount, true, modifierKey);
+                break;
+            case MODIFY_BY_CONST:
+                hero.modifyParameter(param, amount, modifierKey);
+                break;
+        }
     }
 
     public void apply() {

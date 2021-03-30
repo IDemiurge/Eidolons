@@ -55,23 +55,6 @@ public class UnitCalculator extends EntityCalculator<Unit> {
         return memory;
     }
 
-    // @Deprecated
-    public int calculatePower() {
-        if (getChecker().isBfObj()) {
-            return 0; // TODO into new class!
-        }
-
-        int power = DC_MathManager.getUnitPower(getEntity());
-//        if (!getChecker().isHero()) {
-//            if (power != 0) {
-//                return 0;
-//            }
-//        }
-        setParam(PARAMS.POWER, power);
-        // GetParam(PARAMS.UNIT_LEVEL, power);
-        return power;
-    }
-
     public int calculateWeight() {
         int weight = calculateCarryingWeight();
         setParam(PARAMS.C_CARRYING_WEIGHT, weight);

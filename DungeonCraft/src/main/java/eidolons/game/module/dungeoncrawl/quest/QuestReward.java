@@ -1,11 +1,14 @@
 package eidolons.game.module.dungeoncrawl.quest;
 
+import eidolons.content.PARAMS;
+import eidolons.content.consts.VisualEnums;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.ItemFactory;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
+import eidolons.system.libgdx.GdxStatic;
 import main.content.C_OBJ_TYPE;
 import main.content.enums.meta.QuestEnums.QUEST_LEVEL;
 import main.content.enums.meta.QuestEnums.QUEST_REWARD_TYPE;
@@ -24,7 +27,6 @@ import main.system.math.Formula;
 public class QuestReward extends DataUnit<QuestReward.REWARD_VALUE> {
     QUEST_REWARD_TYPE type;
     QUEST_LEVEL level;
-    String xpFormula = "";
     String goldFormula = "";
     String gloryFormula = "";
     String reputationFormula = "";
@@ -99,7 +101,6 @@ public class QuestReward extends DataUnit<QuestReward.REWARD_VALUE> {
         gold = gold - gold % 5;
 
         goldFormula = "" + gold;
-        xpFormula = "" + xp;
         reputationFormula = "" + reputation;
         rewardItems = objType.getProperty(G_PROPS.QUEST_REWARD_ITEMS);
     }
@@ -116,8 +117,6 @@ public class QuestReward extends DataUnit<QuestReward.REWARD_VALUE> {
         }
         if (!goldFormula.isEmpty())
             s += " Gold: " + new Formula(goldFormula).getInt();
-        if (!xpFormula.isEmpty())
-            s += " Experience: " + new Formula(xpFormula).getInt();
         if (!rewardItems.isEmpty())
             s += " Item: " + rewardItems;
         if (!reputationFormula.isEmpty())
@@ -145,12 +144,10 @@ public class QuestReward extends DataUnit<QuestReward.REWARD_VALUE> {
 //                DC_SoundMaster.playStandardSound(STD_SOUNDS.DIS__BOON_LARGE);
 //                break;
 //        }
-        Integer xp = new Formula(xpFormula).getInt(hero.getRef());
         Integer gold = new Formula(goldFormula).getInt(hero.getRef());
         Integer glory = new Formula(gloryFormula).getInt(hero.getRef());
 
             if (negative) {
-                xp = -xp;
                 gold = -gold;
                 glory = -glory;
 //             TODO    glory = -glory;
@@ -158,10 +155,8 @@ public class QuestReward extends DataUnit<QuestReward.REWARD_VALUE> {
 
         hero.getGame().getMissionMaster().getStatManager().addGlory(glory);
 
-        if (!inTown)
-            HeroLevelManager.addXp(hero, xp);
         if (inTown) {
-            HeroLevelManager.addGold(hero, gold);
+             addGold(hero, gold);
             for (String s : ContainerUtils.openContainer(rewardItems)) {
                 if (DataManager.isTypeName(s, C_OBJ_TYPE.ITEMS)) {
                     DC_HeroItemObj item = ItemFactory.createItemObj(DataManager.getType(s,
@@ -173,13 +168,16 @@ public class QuestReward extends DataUnit<QuestReward.REWARD_VALUE> {
         }
     }
 
+    public  void addGold(Unit hero, int gold) {
+        hero.modifyParameter(PARAMS.GOLD, gold);
+        GdxStatic.floatingText( VisualEnums.
+                TEXT_CASES.GOLD, gold + " gold", hero);
+        EUtils.showInfoText("Gold gained: " + gold);
+    }
     public String getTitle() {
         return title;
     }
 
-    public String getXpFormula() {
-        return xpFormula;
-    }
 
     public String getReputationFormula() {
         return reputationFormula;

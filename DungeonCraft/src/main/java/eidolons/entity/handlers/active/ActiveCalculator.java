@@ -3,7 +3,7 @@ package eidolons.entity.handlers.active;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.game.battlecraft.rules.combat.attack.DefenseVsAttackRule;
+import eidolons.game.battlecraft.rules.combat.attack.DefenseAttackCalculator;
 import main.entity.handlers.EntityCalculator;
 import main.entity.handlers.EntityMaster;
 
@@ -23,7 +23,7 @@ public class ActiveCalculator extends EntityCalculator<DC_ActiveObj> {
                 if (getEntity().getChecker().isAttack()) {
 //            Attack attack = DC_AttackMaster.getAttackFromAction(getEntity());
 //             new AttackCalculator(attack, true).getCritOrDodgeChance();
-                    return DefenseVsAttackRule.getCritOrDodgeChance(getEntity(), (BattleFieldObject) target);
+                    return DefenseAttackCalculator.getCritOrDodgeChance(getEntity(), (BattleFieldObject) target);
                 }
         return 100;
     }

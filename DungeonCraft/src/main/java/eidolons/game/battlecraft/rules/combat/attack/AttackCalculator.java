@@ -158,9 +158,9 @@ public class AttackCalculator {
 
     private Integer getAttackDefenseDamageBonus(Attack attack, Integer amount, Unit attacker,
                                                 BattleFieldObject attacked, DC_ActiveObj action, boolean offhand) {
-        int attackValue = DefenseVsAttackRule.getAttackValue(offhand, attacker, attacked, action);
+        int attackValue = DefenseAttackCalculator.getAttackValue(offhand, attacker, attacked, action);
         // TODO
-        int defense = DefenseVsAttackRule.getDefenseValue(attacker, attacked, action);
+        int defense = DefenseAttackCalculator.getDefenseValue(attacker, attacked, action);
         int diff = attackValue - defense;
         boolean negative = false;
         if (diff < 0) {

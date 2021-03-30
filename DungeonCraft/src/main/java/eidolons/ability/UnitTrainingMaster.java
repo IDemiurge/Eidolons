@@ -46,31 +46,8 @@ public class UnitTrainingMaster {
         }
         if (DC_Engine.isTrainingOff())
             return;
-        //        if (!FAST_DC.getLauncher().getFAST_MODE()) {
-        //            if (CoreEngine.isGraphicTestMode()) {
-        //                return;
-        //            }
-        //        }
+        //TODO [30-03-21] progression revamp
 
-        int perc = DEFAULT_XP_MOD;
-
-        if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.HUMANOID)) {
-            perc += HUMANOID_XP_MOD;
-        }
-        unit.modifyParamByPercent(PARAMS.XP, perc);
-
-        Integer spell_xp = unit.getIntParam(PARAMS.SPELL_XP_MOD);
-
-        if (spell_xp == 0 && UnitAnalyzer.checkIsCaster(unit)) {
-            spell_xp = getSpellXpPercentage(unit);
-            spell_xp = MathMaster.applyMod(DEFAULT_CASTER_XP_MOD, spell_xp);
-        }
-
-        // DEFAULT_CASTER_XP_MOD;
-        int spellXp = unit.getIntParam(PARAMS.XP) * (spell_xp) / 100;
-        int skillXp = unit.getIntParam(PARAMS.XP) - spellXp;
-
-        unit.setParam(PARAMS.XP, skillXp);
         if (isSkillsOn()) {
             try {
                 //// TODO: 17.11.2016 improve train func execution speed
@@ -88,7 +65,6 @@ public class UnitTrainingMaster {
             UnitShop.ensureMinimumItems(unit);
         }
 
-        unit.modifyParameter(PARAMS.XP, spellXp);
 
         if (isSpellsOn()) {
             try {

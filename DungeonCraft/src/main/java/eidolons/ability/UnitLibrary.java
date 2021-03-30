@@ -27,7 +27,6 @@ import java.util.Map;
 public class UnitLibrary {
     private static Map<ObjType, Integer> spellPool;
     private static Unit unit;
-    private static Integer xpPercentageToSpend;
     private static HeroManager heroManager;
 
     public static void learnSpellsForUnit(Unit learner) {
@@ -47,19 +46,6 @@ public class UnitLibrary {
             result = learnSpells(LEARN_CASE.NEW) || learnSpells(LEARN_CASE.MEMORIZE)
              || learnSpells(LEARN_CASE.EN_VERBATIM);
         }
-
-        // learnSpells(LEARN_CASE.NEW); // randomized how? same as skills - if
-        // // there are
-        // // multiple options, randomize!
-        // // but the property... could do with weights, really :)
-        // learnSpellUpgradesForUnit(); // Same here!
-        // learnSpells(LEARN_CASE.MEMORIZE); // fill memory first, naturally...
-        // I
-        // could
-        // randomize X times and choose the best
-        // fit!
-        // learnSpells(LEARN_CASE.EN_VERBATIM); // same here with the remaining
-        // xp!
 
     }
 
@@ -99,10 +85,6 @@ public class UnitLibrary {
             // ???
         }
         boolean result = false;
-        xpPercentageToSpend = 100;
-        if (lc == LEARN_CASE.NEW) {
-            xpPercentageToSpend = 50;
-        }
         // balancing between learning new and learning en verbatim...
         initPool(lc);
         Loop.startLoop(75);
@@ -178,13 +160,17 @@ public class UnitLibrary {
                     return true;
                 }
             }
-            if (reason.contains(PARAMS.XP.getName())) {
+            if (reason.contains(PARAMS.SPELL_POINTS.getName())) {
                 // TODO discount
-                return unit.checkParam(PARAMS.XP, type.getIntParam(PARAMS.XP_COST) + "*100/"
-                        + xpPercentageToSpend);
+                return unit.checkParam(PARAMS.SPELL_POINTS_UNSPENT,
+                        getSpellPointCost(type)  );
             }
         }
         return false;
+    }
+
+    private static int getSpellPointCost(ObjType type) {
+        return type.getIntParam(PARAMS.CIRCLE);
     }
 
     private static int getMode(LEARN_CASE lc) {
@@ -200,7 +186,6 @@ public class UnitLibrary {
         // if (empty) autoupgrade = true; => find and add!
 
         // DataManager.getTypesGroup(TYPE, group)
-
     }
 
     private static boolean learnSpell(ObjType spellType, LEARN_CASE lc) {
@@ -215,8 +200,8 @@ public class UnitLibrary {
             return false;
         }
         LogMaster.devLog("SPELL TRAINING: " + unit.getName() + " learns "
-         + spellType.getName() + " (" + lc.toString() + "), remaining xp: "
-         + unit.getIntParam(PARAMS.XP));
+         + spellType.getName() + " (" + lc.toString() + "), remaining sps: "
+         + unit.getIntParam(PARAMS.SPELL_POINTS_UNSPENT));
 
 //        getHeroManager().update(unit);
         return true;

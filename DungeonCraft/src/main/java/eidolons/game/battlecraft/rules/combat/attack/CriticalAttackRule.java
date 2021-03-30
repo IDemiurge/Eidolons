@@ -11,7 +11,7 @@ import main.system.math.MathMaster;
  */
 public class CriticalAttackRule {
     public static int getCriticalChance(int attack, int defense, DC_ActiveObj action) {
-        return DefenseVsAttackRule.getCritChance(attack, defense, action);
+        return DefenseAttackCalculator.getCritChance(attack, defense, action);
     }
 
     public static int getCriticalDamagePercentage(DC_ActiveObj action) {

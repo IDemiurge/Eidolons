@@ -249,7 +249,7 @@ public class FacingMaster {
                 if (FacingMaster.getSingleFacing(facing, c, member.getCoordinates()) != FACING_SINGLE.IN_FRONT) {
                     continue;
                 }
-                double x = ((Unit) member).calculatePower() / PositionMaster
+                double x = ((Unit) member).getPower() / PositionMaster
                  .getExactDistance(member.getCoordinates(), c);
                 Double i = map.get(facing);
                 if (i == null) {

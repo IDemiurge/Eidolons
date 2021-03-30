@@ -127,8 +127,8 @@ public class DynamicBuffRules {
                 return ImageManager.getValueIconPath(PARAMS.RESISTANCE);
             case MOVE:
                 return ImageManager.getValueIconPath(PARAMS.MOBILITY_MASTERY);
-            case NEW_TURN:
-            case END_TURN:
+            case NEW_ROUND:
+            case END_ROUND:
                 return ImageManager.getValueIconPath(PARAMS.INITIATIVE);
         }
         return

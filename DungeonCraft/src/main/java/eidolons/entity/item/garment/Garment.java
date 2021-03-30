@@ -1,6 +1,7 @@
-package eidolons.entity.item;
+package eidolons.entity.item.garment;
 
 import eidolons.content.PARAMS;
+import eidolons.entity.item.DC_HeroSlotItem;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
@@ -12,14 +13,6 @@ import main.system.auxiliary.EnumMaster;
 import static main.content.enums.entity.ItemEnums.GARMENT_TYPE;
 
 public class Garment extends DC_HeroSlotItem {
-    /*
-     * Gloves - unarmed self-damage, increase atk-speed, sneak/crit/attack mods
-     * Boots/Greaves move speed, defense
-     * Cloak/Pauldrons (shoulders)  stealth or armor
-     * ++ helmet???
-     * minor armor bonus
-     * durability - do they break down? if so, how to split between armor and these?
-     */
     private final GARMENT_TYPE garment_type;
 
     // TODO GENERATION: material types? noise level...
@@ -34,13 +27,7 @@ public class Garment extends DC_HeroSlotItem {
     protected void applyPenaltyReductions() {
         int penalty_reduction = -getHero().getIntParam(PARAMS.STRENGTH);
 
-        switch (garment_type) {
-            case BOOTS:
-                modifyParameter(PARAMS.MOVE_ATB_COST_MOD, penalty_reduction, 0,
-                 true);
-                modifyParameter(PARAMS.MOVE_TOU_COST_MOD, penalty_reduction, 0,
-                 true);
-        }
+
 
     }
 

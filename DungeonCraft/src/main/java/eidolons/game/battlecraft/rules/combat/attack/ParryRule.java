@@ -113,10 +113,10 @@ public class ParryRule {
     }
 
     private int getChance(Attack attack) {
-        int attackValue = DefenseVsAttackRule.getAttackValue(attack);
-        int defenseValue = DefenseVsAttackRule.getDefenseValue(attack);
+        int attackValue = DefenseAttackCalculator.getAttackValue(attack);
+        int defenseValue = DefenseAttackCalculator.getDefenseValue(attack);
 
-        float chance = DefenseVsAttackRule.getProportionBasedChance(attackValue, defenseValue, false);
+        float chance = DefenseAttackCalculator.getProportionBasedChance(attackValue, defenseValue, false);
         chance += attack.getAttackedUnit().getIntParam(PARAMS.PARRY_CHANCE);
         chance += -attack.getAttacker().getIntParam(PARAMS.PARRY_PENETRATION);
         return Math.round(chance);

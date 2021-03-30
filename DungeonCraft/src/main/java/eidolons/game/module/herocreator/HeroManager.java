@@ -531,36 +531,6 @@ public class HeroManager {
         return addItem(hero, type, TYPE, PROP, free, !trainer);
     }
 
-    public boolean tryIncrementRank(Unit hero, ObjType type) {
-        boolean skill = type.getOBJ_TYPE_ENUM() == DC_TYPE.SKILLS;
-        DC_FeatObj feat = hero.getFeat(skill, type);
-        if (!checkCanIncrementRank(type, feat, hero)) {
-            return false;
-        }
-        if (!hero.incrementFeatRank(skill, type)) {
-            return false;
-        }
-        saveHero(hero);
-        hero.saveRanks(skill);
-        // DC_SoundMaster.playSkillAddSound(STD_SOUNDS.ButtonUp);
-        int xpCost = feat.getIntParam(PARAMS.XP_COST) * feat.getIntParam(PARAMS.RANK_XP_MOD) / 100;
-        hero.modifyParameter(PARAMS.XP, -xpCost);
-        update(hero);
-        return true;
-    }
-
-    protected boolean checkCanIncrementRank(ObjType type, DC_FeatObj feat, Unit hero) {
-        if (feat == null) {
-            return false;
-        }
-        boolean skill = type.getOBJ_TYPE_ENUM() == DC_TYPE.SKILLS;
-        if (skill) {
-            return feat.getGame().getRequirementsManager().check(hero, feat,
-                    RequirementsManager.RANK_MODE) == null;
-        }
-        List<String> reasons = feat.getGame().getRequirementsManager().checkRankReqs(feat);
-        return reasons.isEmpty();
-    }
 
     public boolean addItem(Unit hero, Entity type, OBJ_TYPE TYPE, PROPERTY PROP,
                            boolean free, boolean update) {

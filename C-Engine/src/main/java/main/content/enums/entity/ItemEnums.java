@@ -29,7 +29,21 @@ public class ItemEnums {
     }
 
     public enum GARMENT_TYPE {
-        BOOTS, GLOVES, CLOAK, HELMET
+        BACK, HEAD, LEGS, ARMS
+    }
+    public enum LEGS_GARMENT_TYPE {
+       BOOTS, GREAVES, DRESS, SKIRT,
+    }
+    public enum ARMS_GARMENT_TYPE {
+        BRACER, PAULDRON,
+    }
+    public enum HEAD_GARMENT_TYPE {
+        HOOD, HELMET, GORGET,
+    }
+        public enum BACK_GARMENT_TYPE {
+          CLOAK, WINGS,
+
+
     }
 
     public enum ITEM_GROUP {
