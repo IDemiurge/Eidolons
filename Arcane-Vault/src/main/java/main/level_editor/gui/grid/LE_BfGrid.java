@@ -119,7 +119,6 @@ public class LE_BfGrid extends GridPanel {
         customOverlayingObjectsUnder = container.customOverlayingObjectsUnder;
         emitterGroups = container.emitterGroups;
         gridObjects = container.gridObjects;
-        manipulators = container.manipulators;
         overlays = container.overlays;
         //for others too?
 

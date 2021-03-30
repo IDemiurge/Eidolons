@@ -4,6 +4,8 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import eidolons.content.consts.VisualEnums;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.game.DC_Game;
+import libgdx.Adapter;
 import libgdx.GDX;
 import libgdx.launch.GenericLauncher;
 import eidolons.system.libgdx.datasource.ScreenData;
@@ -47,6 +49,7 @@ public class EditorApp extends GenericLauncher {
                         screen.setData(newMeta);
 
                         screen.updateInputController();
+                        Adapter.afterGameInit( Eidolons.game);
                         Eidolons.onNonGdxThread(() -> Eidolons.game.getMetaMaster().getDungeonMaster().reinit());
                         //                GuiEventManager.trigger(GuiEventType.LE_TREE_RESET, LevelEditor.getModel());
                         //                switchScreen(LE_Screen.getScreen((Floor) newMeta.getParameter()), newMeta);

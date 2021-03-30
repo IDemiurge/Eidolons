@@ -1,8 +1,8 @@
 package main.launch;
 
 import eidolons.system.utils.content.ContentGenerator;
-import eidolons.system.file.ResourceMaster;
 import eidolons.system.utils.TypeStringProcessor;
+import eidolons.system.utils.file.ResourceMaster;
 import main.content.DC_TYPE;
 import main.data.filesys.PathFinder;
 import main.gui.components.tree.AV_Tree;

@@ -8,7 +8,7 @@ import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.rpg.PrincipleMaster;
 import eidolons.game.module.herocreator.logic.HeroCreator;
-import eidolons.system.DC_Formulas;
+import eidolons.content.DC_Formulas;
 import eidolons.system.math.DC_MathManager;
 import main.AV_DataManager;
 import main.ability.AE_Manager;
@@ -195,19 +195,6 @@ public class AvModelHandler {
                 }
             }
         }
-        if (obj_type == DC_TYPE.SPELLS) {
-            for (ObjType type : DataManager.getTypes(obj_type))
-            // if (type.getIntParam(PARAMS.XP_COST) == 0)
-            {
-                if (!type.getGroup().equals(Strings.STANDARD)) {
-                    type.setParam(PARAMS.XP_COST, type.getIntParam(PARAMS.SPELL_DIFFICULTY)
-                            * DC_Formulas.XP_COST_PER_SPELL_DIFFICULTY);
-                } else {
-                    type.setParam(PARAMS.XP_COST, type.getIntParam(PARAMS.SPELL_DIFFICULTY)
-                            * DC_Formulas.XP_COST_PER_SPELL_DIFFICULTY);
-                }
-            }
-        }
 
         if (obj_type == DC_TYPE.WEAPONS || obj_type == DC_TYPE.ARMOR) {
             for (ObjType type : DataManager.getTypes(obj_type)) {
@@ -232,7 +219,6 @@ public class AvModelHandler {
                         Game.game.initType(type);
                     }
 
-                    type.setParam(PARAMS.POWER, DC_MathManager.getUnitPower(type));
                     if (StringMaster.isEmpty(type.getProperty(PROPS.OFFHAND_NATURAL_WEAPON))) {
                         type.setProperty((PROPS.OFFHAND_NATURAL_WEAPON), PROPS.NATURAL_WEAPON
                                 .getDefaultValue());
@@ -285,8 +271,6 @@ public class AvModelHandler {
 
                     }
                 } else {
-                    type.setParam(PARAMS.TOTAL_XP, DC_MathManager.getUnitXP(type));
-
                     // XML_Transformer.adjustProgressionToWeightForm(type,
                     // true);
                     // XML_Transformer.adjustProgressionToWeightForm(type,
@@ -456,12 +440,6 @@ public class AvModelHandler {
 
     private static void autoAdjustSkill(ObjType type) {
 
-        int sd = type.getIntParam(PARAMS.SKILL_DIFFICULTY);
-        if (sd == 0) {
-            sd = DC_Formulas.getSkillDifficultyForXpCost(type.getIntParam(PARAMS.XP_COST));
-            type.setParam(PARAMS.SKILL_DIFFICULTY, sd);
-        }
-
         String reqs = type.getProperty(PROPS.REQUIREMENTS);
         if (reqs.contains("Principles")) {
             String cleanedReqs = reqs;
@@ -476,93 +454,9 @@ public class AvModelHandler {
             LogMaster.log(1, reqs + "; cleanedReqs =" + cleanedReqs);
         }
 
-        ObjType parent = DataManager.getParent(type);
-        if (parent != null && parent != type) {
-            autoAdjustSkill(parent);
-            Integer parentSd = parent.getIntParam(PARAMS.SKILL_DIFFICULTY);
-            if (type.getIntParam(PARAMS.CIRCLE) - parent.getIntParam(PARAMS.CIRCLE) != 1) {
-                String childSd = "2*x-sqrt(x)-0.01*x^2";
-                childSd = childSd.replace("x", parent.getParam(PARAMS.SKILL_DIFFICULTY));
-                Formula formula = new Formula(childSd);
-                sd = formula.getInt();
-                // + RandomWizard.getRandomIntBetween(-1, 1)
-
-                while (getMinCircle(sd) - getMinCircle(parentSd) < 1) {
-                    sd++;
-                }
-
-                while (getMinCircle(sd) - getMinCircle(parentSd) > 1) {
-                    sd--;
-                }
-                LogMaster.setOff(false);
-                LogMaster.log(1, type.getName() + "'s difficulty auto-set: "
-                        + sd + " from " + parent.getName() + "'s " + parentSd);
-                type.setParam(PARAMS.SKILL_DIFFICULTY, sd);
-
-            }
-        }
-
-        int xpCost = DC_Formulas.calculateFormula(DC_Formulas.XP_COST_PER_SKILL_DIFFICULTY, sd);
-        xpCost = xpCost - xpCost % 5;
-        type.setParam(PARAMS.XP_COST, xpCost);
-
-        int circle = getMinCircle(sd);
-        type.setParam(PARAMS.CIRCLE, circle);
-
-        resetAltBaseTypes(type);
-
-        if (!type.getParamMap().get(PARAMS.RANK_MAX.getName()).isEmpty()) {
-            return;
-        }
-
-        // updated?
-        if (circle == 0) {
-            type.setParam(PARAMS.RANK_MAX, 5);
-        } else if (circle == 1) {
-            type.setParam(PARAMS.RANK_MAX, 3);
-        } else if (circle == 2) {
-            type.setParam(PARAMS.RANK_MAX, 2);
-        }
     }
 
-    private static int getSdForSkillCircle(int circle, boolean min) {
-        if (!min) {
-            circle++;
-        }
-        int sd = 36;
-        while (true) {
-            sd--;
-            if (getMinCircle(sd) == circle) {
-                break;
-            }
-            if (sd <= 0) {
-                return 0;
-            }
-        }
-        if (!min) {
-            sd--;
-        }
 
-        return sd;
-    }
-
-    private static int getMinCircle(int sd) {
-        if (sd > 48) {
-            return 6;
-        }
-        if (sd > 35) {
-            return 5;
-        } else if (sd > 25) {
-            return 4;
-        } else if (sd > 18) {
-            return 3;
-        } else if (sd > 12) {
-            return 2;
-        } else if (sd > 8) {
-            return 1;
-        }
-        return 0;
-    }
 
     private static boolean isSkillSdAutoAdjusting() {
         return autoAdjust;

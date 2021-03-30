@@ -1,6 +1,5 @@
 package main.level_editor.backend.metadata.decor;
 
-import boss.demo.knight.AriusVessel;
 import eidolons.content.consts.DecorData;
 import eidolons.content.consts.DecorData.DECOR_LEVEL;
 import eidolons.content.consts.libgdx.GdxStringUtils;
@@ -283,17 +282,17 @@ public class LE_DecorHandler extends CellDataHandler<DecorData> implements IDeco
 
     @Override
     public void boss() {
-        Eidolons.onGdxThread(() -> {
-            AriusVessel ariusVessel = new AriusVessel(null) {
-                @Override
-                public Coordinates getCoordinates() {
-                    return getSelectionHandler().getSelection().getLastCoordinates();
-                }
-            };
-            GuiEventManager.triggerWithParams(GuiEventType.ADD_BOSS_VIEW, ariusVessel);
-            // AriusBodyActive ariusBodyActive = new AriusBodyActive(null);
-            // GuiEventManager.triggerWithParams(GuiEventType.ADD_BOSS_VIEW, ariusVessel);
-        });
+        // Eidolons.onGdxThread(() -> {
+        //     AriusVessel ariusVessel = new AriusVessel(null) {
+        //         @Override
+        //         public Coordinates getCoordinates() {
+        //             return getSelectionHandler().getSelection().getLastCoordinates();
+        //         }
+        //     };
+        //     GuiEventManager.triggerWithParams(GuiEventType.ADD_BOSS_VIEW, ariusVessel);
+        //     // AriusBodyActive ariusBodyActive = new AriusBodyActive(null);
+        //     // GuiEventManager.triggerWithParams(GuiEventType.ADD_BOSS_VIEW, ariusVessel);
+        // });
     }
 
     @Override

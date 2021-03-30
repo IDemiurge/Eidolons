@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import eidolons.game.core.EUtils;
 import libgdx.GdxMaster;
-import eidolons.system.controls.GlobalController;
+import libgdx.controls.GlobalController;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.level_editor.LevelEditor;

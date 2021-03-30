@@ -1,8 +1,8 @@
 package main.handlers.gen;
 
 import eidolons.content.PARAMS;
-import eidolons.content.ValuePages;
-import eidolons.system.content.BfObjPropGenerator;
+import eidolons.content.values.ValuePages;
+import eidolons.system.utils.content.BfObjPropGenerator;
 import eidolons.system.utils.content.ContentGenerator;
 import main.content.DC_TYPE;
 import main.content.values.parameters.PARAMETER;

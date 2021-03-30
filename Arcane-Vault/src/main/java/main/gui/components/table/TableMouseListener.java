@@ -2,9 +2,9 @@ package main.gui.components.table;
 
 import eidolons.content.DC_CONSTS;
 import eidolons.content.DC_ContentValsManager;
-import eidolons.content.DC_ValueManager.VALUE_GROUP;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.content.values.DC_ValueManager;
 import main.content.*;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.ItemEnums;
@@ -183,7 +183,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
             if (isWeightedType(id)) {
                 enumClass = EnumMaster.getEnumClass(id, DC_CONSTS.class, true);
                 if (id.contains("Mastery Groups")) {
-                    enumClass = VALUE_GROUP.class;
+                    enumClass = DC_ValueManager.VALUE_GROUP.class;
                 }
             } else {
                 if (id.equalsIgnoreCase(PROPS.PARAMETER_BONUSES.getName())) {

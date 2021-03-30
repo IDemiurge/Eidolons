@@ -7,6 +7,8 @@ import eidolons.game.battlecraft.logic.meta.scenario.ScenarioPartyManager;
 import eidolons.game.battlecraft.logic.meta.universal.MetaDataManager;
 import eidolons.game.battlecraft.logic.meta.universal.MetaInitializer;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
+import eidolons.game.core.game.DC_Game;
+import libgdx.Adapter;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.struct.campaign.Campaign;
 
@@ -62,6 +64,7 @@ public class LE_MetaMaster extends ScenarioMetaMaster {
 
         game = createGame();
         game.setMetaMaster(this);
+        Adapter.afterGameInit(DC_Game.game);
         metaGame = initializer.initMetaGame(data);
 
         if (campaign != null)

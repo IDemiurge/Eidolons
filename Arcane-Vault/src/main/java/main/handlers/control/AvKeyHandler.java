@@ -1,6 +1,6 @@
 package main.handlers.control;
 
-import eidolons.content.ValueHelper;
+import eidolons.content.values.ValueHelper;
 import eidolons.game.core.game.DC_Game;
 import main.handlers.AvHandler;
 import main.handlers.AvManager;

@@ -2,7 +2,7 @@ package main;
 
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.content.PROPS;
-import eidolons.content.ValuePageManager;
+import eidolons.content.values.ValuePageManager;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.VALUE;

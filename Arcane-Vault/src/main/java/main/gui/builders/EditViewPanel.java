@@ -1,7 +1,7 @@
 package main.gui.builders;
 
 import eidolons.content.PARAMS;
-import eidolons.system.DC_Formulas;
+import eidolons.content.DC_Formulas;
 import main.ability.AE_Manager;
 import main.ability.gui.AE_MainPanel;
 import main.content.C_OBJ_TYPE;
