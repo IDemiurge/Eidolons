@@ -32,7 +32,8 @@ public class C3TaskManager extends C3Handler {
         this.taskTextMap = taskTextMap;
         this.taskStatusMap = taskStatusMap;
 
-        this.filter = filter;}
+        this.filter = filter;
+    }
 
     public C3_Task createRandomTask() {
         TaskCategory category = categoriesWeightMap.getRandomByWeight();
@@ -46,26 +47,27 @@ public class C3TaskManager extends C3Handler {
                     Arrays.asList(categories));
             return createTask(category);
         }
-        TaskCategory category = new EnumMaster<TaskCategory>().selectEnum(TaskCategory.class );
+        TaskCategory category = new EnumMaster<TaskCategory>().selectEnum(TaskCategory.class);
         return createTask(category);
     }
 
-    private C3_Task createTask(TaskCategory category ) {
+    private C3_Task createTask(TaskCategory category) {
         return createTask(category, false, false);
     }
+
     private C3_Task createTask(TaskCategory category, boolean randomSub, boolean randomTask) {
         Map<String, List<String>> pool = taskTextMap.get(category);
         int random = RandomWizard.getRandomInt(pool.size());
 
-        Object sub =randomSub ?   pool.keySet().toArray()[random] : chooseSub(pool);
+        Object sub = randomSub ? pool.keySet().toArray()[random] : chooseSub(pool);
         random = RandomWizard.getRandomInt(pool.get(sub).size());
 
-        String taskString =randomTask ?  pool.get(sub).get(random) : chooseTask(pool.get(sub));
+        String taskString = randomTask ? pool.get(sub).get(random) : chooseTask(pool.get(sub));
 
         String task = taskString.split("::")[0];
         String comments = "";
-        if (taskString.contains("::") ){
-            comments =  taskString.split("::")[1].replace("::", "");
+        if (taskString.contains("::")) {
+            comments = taskString.split("::")[1].replace("::", "");
         }
         String string = taskStatusMap.get(task);
         CodeTaskStatus status = new EnumMaster<CodeTaskStatus>().retrieveEnumConst(CodeTaskStatus.class, string);

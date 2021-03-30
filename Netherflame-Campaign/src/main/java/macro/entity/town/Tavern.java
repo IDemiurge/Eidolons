@@ -123,7 +123,7 @@ public class Tavern extends TownPlace {
     }
 
     private void initHeroHireParams(Unit hero) {
-        int cost = hero.calculatePower() * 5; // TODO
+        int cost = hero.getPower() * 5; // TODO
         hero.setParam(MACRO_PARAMS.HIRE_COST, cost, true);
         int share = 100;
         hero.setParam(MACRO_PARAMS.GOLD_SHARE, share, true);

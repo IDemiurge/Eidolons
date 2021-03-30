@@ -44,6 +44,7 @@
         <module>Netherflame-Arena</module>
         <module>Netherflame-Campaign</module>
         <module>LibGdx-Core</module>
+        <module>C3</module>
         <!--<module>resources</module>-->
     </modules>
 
