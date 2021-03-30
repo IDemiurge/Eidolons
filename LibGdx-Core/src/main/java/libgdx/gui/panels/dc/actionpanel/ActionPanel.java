@@ -34,17 +34,17 @@ public class ActionPanel extends GroupX {
     public final static int IMAGE_SIZE = 60;
 
     public static final float EMPTY_OFFSET = 110;
-    private static final float SPELL_OFFSET_Y = -6;
+    private static final float ACTIVE_SPACE_OFFSET_Y = -6;
     private static final float OFFSET_X = 100 + EMPTY_OFFSET;
     private static final float QUICK_SLOTS_OFFSET_X = 20;
-    private static final float SPELL_OFFSET_X = 70;
+    private static final float ACTIVE_SPACE_OFFSET_X = 70;
     private static final float PUZZLE_OFFSET_Y =  -88;
     private final Vector2 spellsPos = new Vector2();
 
     private final ImageContainer bottomOverlay;
     protected QuickSlotPanel quickSlotPanel;
     protected ModeActionsPanel modeActionsPanel;
-    protected SpellPanel spellPanel;
+    protected ActiveSpacePanel activeSpacePanel;
     protected FadeImageContainer background;
     QuickWeaponPanel mainHand;
     QuickWeaponPanel offhand;
@@ -72,7 +72,7 @@ public class ActionPanel extends GroupX {
 
         addActor(modeActionsPanel = new ModeActionsPanel(IMAGE_SIZE));
 
-        addActor(spellPanel = new SpellPanel(IMAGE_SIZE));
+        addActor(activeSpacePanel = new ActiveSpacePanel(IMAGE_SIZE));
 
         /////////////ADDITIONAL
 
@@ -109,13 +109,13 @@ public class ActionPanel extends GroupX {
     }
 
     public void resetPositions() {
-        quickSlotPanel.setPosition(-32 + OFFSET_X + QUICK_SLOTS_OFFSET_X, SPELL_OFFSET_Y);
+        quickSlotPanel.setPosition(-32 + OFFSET_X + QUICK_SLOTS_OFFSET_X, ACTIVE_SPACE_OFFSET_Y);
         final float actionOffset =17+ OFFSET_X + (IMAGE_SIZE * 6) + 5;
         modeActionsPanel.setPosition(-28+26+actionOffset, 0);
-        final float spellOffset = SPELL_OFFSET_X-60 + actionOffset + (IMAGE_SIZE * 6)- 35;
-        spellPanel.setPosition(spellOffset, SPELL_OFFSET_Y);
+        final float spellOffset = ACTIVE_SPACE_OFFSET_X -60 + actionOffset + (IMAGE_SIZE * 6)- 35;
+        activeSpacePanel.setPosition(spellOffset, ACTIVE_SPACE_OFFSET_Y);
         spellsPos.x = spellOffset;
-        spellsPos.y = SPELL_OFFSET_Y;
+        spellsPos.y = ACTIVE_SPACE_OFFSET_Y;
         bottomOverlay.setPosition(EMPTY_OFFSET + 100, -12);
 
         float x = quickSlotPanel.getX();
@@ -133,7 +133,7 @@ public class ActionPanel extends GroupX {
                 bodyParamsBar.getY() + 52);
 
 
-        x = spellPanel.getX();
+        x = activeSpacePanel.getX();
         soulParamsBar.setPosition(x +11
                 , bodyParamsBar.getY());
         buffPanelSoul.setPosition(soulParamsBar.getX() + 65, IMAGE_SIZE + 40);
@@ -143,7 +143,7 @@ public class ActionPanel extends GroupX {
         spellbookBtn.setPosition(soulParamsBar.getX() + soulParamsBar.getWidth() / 2 + 89,
                 invBtn.getY());
 
-        atkPts.setPosition(spellPanel.getX()-12, 50);
+        atkPts.setPosition(activeSpacePanel.getX()-12, 50);
         movePts.setPosition(bodyParamsBar.getX() + 337, 54);
     }
 
@@ -267,7 +267,7 @@ public class ActionPanel extends GroupX {
             movePts.setUserObject(source);
             quickSlotPanel.setUserObject(source);
             modeActionsPanel.setUserObject(source);
-            spellPanel.setUserObject(source);
+            activeSpacePanel.setUserObject(source);
             buffPanelBody.setUserObject(source);
             buffPanelSoul.setUserObject(source);
             bodyParamsBar.setUserObject(source);
@@ -301,9 +301,9 @@ public class ActionPanel extends GroupX {
         //     invBtn.setVisible(false);
         // } else
             {
-            spellPanel.setPosition(spellsPos.x, spellsPos.y);
-            if (spellPanel.getColor().a == 0)
-                spellPanel.fadeIn();
+            activeSpacePanel.setPosition(spellsPos.x, spellsPos.y);
+            if (activeSpacePanel.getColor().a == 0)
+                activeSpacePanel.fadeIn();
             if (modeActionsPanel.getColor().a == 0)
                 modeActionsPanel.fadeIn();
             if (quickSlotPanel.getColor().a == 0)
@@ -314,7 +314,7 @@ public class ActionPanel extends GroupX {
 
             //TODO while hovering, don't update!!!
             BaseSlotPanel.hoveredAny = quickSlotPanel.isHovered() ||
-                    spellPanel.isHovered() ||
+                    activeSpacePanel.isHovered() ||
                     modeActionsPanel.isHovered();
         }
 
@@ -334,8 +334,8 @@ public class ActionPanel extends GroupX {
         return modeActionsPanel;
     }
 
-    public SpellPanel getSpellPanel() {
-        return spellPanel;
+    public ActiveSpacePanel getActiveSpacePanel() {
+        return activeSpacePanel;
     }
 
     public BuffPanelSimple getBuffPanelBody() {
@@ -353,7 +353,7 @@ public class ActionPanel extends GroupX {
 
     public void setHidden(boolean hidden) {
         modeActionsPanel.setVisible(!hidden);
-        spellPanel.setVisible(!hidden);
+        activeSpacePanel.setVisible(!hidden);
         modeActionsPanel.setVisible(!hidden);
         log(1,"Action panel hidden: " +hidden);
     }

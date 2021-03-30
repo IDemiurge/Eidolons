@@ -8,6 +8,7 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.netherflame.main.NF_MetaMaster;
+import libgdx.Adapter;
 import libgdx.gui.panels.generic.story.IggBriefScreenOld;
 import libgdx.GdxMaster;
 import libgdx.assets.Assets;
@@ -187,6 +188,8 @@ public class ScreenLoader {
             return; // INIT FAILED or EXITED
         }
         MusicMaster.preload(MusicEnums.MUSIC_SCOPE.ATMO);
+
+        Adapter.afterGameInit( Eidolons.game);
         Eidolons.mainGame.getMetaMaster().getGame().initAndStart();
     }
 

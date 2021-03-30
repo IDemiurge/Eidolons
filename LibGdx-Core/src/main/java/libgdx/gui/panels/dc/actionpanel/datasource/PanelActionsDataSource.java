@@ -2,6 +2,7 @@ package libgdx.gui.panels.dc.actionpanel.datasource;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.spaces.ActiveSpace;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.obj.unit.Unit;
 import libgdx.gui.UiMaster;
@@ -9,18 +10,19 @@ import libgdx.gui.generic.ValueContainer;
 import libgdx.gui.panels.dc.actionpanel.ActionContainer;
 import libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import libgdx.gui.panels.dc.unitinfo.datasource.*;
-import libgdx.gui.panels.dc.unitinfo.datasource.*;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class PanelActionsDataSource implements
-        ActiveQuickSlotsDataSource, UnitActionsDataSource, SpellDataSource,
+        ActiveQuickSlotsDataSource, UnitActionsDataSource, ActiveSpaceDataSource,
         EffectsAndAbilitiesSource, ResourceSource,
         MainWeaponDataSource<ValueContainer>, OffWeaponDataSource {
 
@@ -111,12 +113,28 @@ public class PanelActionsDataSource implements
     }
 
     @Override
-    public List<ValueContainer> getSpells() {
-        return unit.getSpells().stream()
-                .map(getActiveObjValueContainerFunction(UiMaster.getBottomSpellIconSize()))
+    public List<ValueContainer> getActives() {
+        List<DC_ActiveObj> actives=  unit.getActiveSpaces().getCurrent().getDisplayedActives();
+        return actives.stream()
+                .map(getActiveObjValueContainerFunction(UiMaster.getBottomActiveIconSize()))
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public Map<ActiveSpace.ActiveSpaceMeta, List<ValueContainer>> getActiveSpacesExpanded() {
+        List<ActiveSpace> spaces = unit.getActiveSpaces().getVisible();
+        Map<ActiveSpace.ActiveSpaceMeta, List<ValueContainer>> map= new LinkedHashMap<>();
+        for (ActiveSpace space : spaces) {
+            List<DC_ActiveObj> actives = space.getDisplayedActives();
+            List<ValueContainer> containers = actives.stream()
+                    .map(getActiveObjValueContainerFunction(UiMaster.getBottomActiveIconSize()))
+                    .collect(Collectors.toList());
+            ActiveSpace.ActiveSpaceMeta meta = unit.getGame().getActionManager().
+                    getSpaceManager().createMeta(space);
+            map.put(meta, containers);
+        }
+       return map;
+    }
     private Function<DC_ActiveObj, ValueContainer> getActiveObjValueContainerFunction(
             int size) {
         return el -> {

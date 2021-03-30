@@ -6,7 +6,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.game.battlecraft.rules.combat.attack.AttackCalculator.MOD_IDENTIFIER;
 import eidolons.game.battlecraft.rules.combat.attack.CriticalAttackRule;
-import eidolons.game.battlecraft.rules.combat.attack.DefenseVsAttackRule;
+import eidolons.game.battlecraft.rules.combat.attack.DefenseAttackCalculator;
 import eidolons.game.battlecraft.rules.combat.mechanics.ForceRule;
 import eidolons.system.math.ModMaster;
 import main.content.VALUE;
@@ -323,10 +323,10 @@ public class ActionTooltipMaster {
         int attack = action.getOwnerUnit().getIntParam(action.isOffhand() ? PARAMS.OFF_HAND_ATTACK : PARAMS.ATTACK);
         int defense = 0;
         attack = MathMaster.applyMod(attack, action.getIntParam(PARAMS.ATTACK_MOD));
-        int chance = DefenseVsAttackRule.getMissChance(attack, defense, action);
+        int chance = DefenseAttackCalculator.getMissChance(attack, defense, action);
         if (chance <= 0) {
             defense = action.getOwnerUnit().getIntParam(PARAMS.DEFENSE);
-            chance = DefenseVsAttackRule.getMissChance(attack, defense, action);
+            chance = DefenseAttackCalculator.getMissChance(attack, defense, action);
             if (chance <= 0) {
                 return "Accuracy: Miss Impossible";
             }

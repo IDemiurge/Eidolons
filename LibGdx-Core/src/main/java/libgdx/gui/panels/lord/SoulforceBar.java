@@ -2,7 +2,7 @@ package libgdx.gui.panels.lord;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.content.consts.GraphicData;
-import eidolons.game.netherflame.main.lord.EidolonLord;
+import eidolons.game.netherflame.lord.EidolonLord;
 import libgdx.GdxMaster;
 import libgdx.anims.SimpleAnim;
 import libgdx.anims.actions.ActionMaster;

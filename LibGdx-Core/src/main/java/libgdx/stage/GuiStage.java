@@ -16,7 +16,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.netherflame.main.lord.EidolonLord;
+import eidolons.game.netherflame.lord.EidolonLord;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.text.tips.TipMessageSource;
 import libgdx.GdxMaster;

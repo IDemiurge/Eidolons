@@ -166,7 +166,7 @@ public class MainLauncher extends GenericLauncher {
     }
 
     private static EngineLauncher createEngineLauncher() {
-        return new EngineLauncher();
+        return EngineLauncher.getInstance();
     }
 
     private static int getLast() {

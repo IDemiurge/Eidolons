@@ -8,7 +8,7 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.core.Eidolons;
 import eidolons.game.netherflame.main.NF_PartyManager;
 import eidolons.game.netherflame.main.death.HeroChain;
-import eidolons.game.netherflame.main.lord.EidolonLord;
+import eidolons.game.netherflame.lord.EidolonLord;
 import eidolons.game.netherflame.main.soul.eidola.Soul;
 import eidolons.game.netherflame.main.soul.eidola.SoulMaster;
 import libgdx.gui.panels.lord.sub.SoulTabs;

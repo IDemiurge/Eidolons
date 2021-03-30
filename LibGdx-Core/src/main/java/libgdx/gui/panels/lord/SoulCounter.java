@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechExecutor;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
-import eidolons.game.netherflame.main.lord.EidolonLord;
+import eidolons.game.netherflame.lord.EidolonLord;
 import eidolons.game.netherflame.main.soul.SoulforceMaster;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;

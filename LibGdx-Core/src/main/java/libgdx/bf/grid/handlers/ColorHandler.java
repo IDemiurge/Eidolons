@@ -12,14 +12,14 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.launch.Flags;
 
-public class ColorHandler extends GridHandler{
-    private static boolean staticColors= Flags.isLiteLaunch();
+public class ColorHandler extends GridHandler {
+    private static boolean staticColors = Flags.isLiteLaunch();
 
     public ColorHandler(GridPanel grid) {
         super(grid);
         GridManager gridManager = grid.getGridManager();
 
-        GuiEventManager.bind(GuiEventType.BF_OBJ_RESET, p ->
+        GuiEventManager.bind(GuiEventType.COLORMAP_RESET, p ->
                 colorMap = new ColorMap((ColorMapDataSource) p.get()));
     }
 
@@ -42,10 +42,11 @@ public class ColorHandler extends GridHandler{
         }
         return 1 - cell.getColor().a;
     }
+
     ColorMap colorMap;
 
     public void act(float delta) {
-        if ( getColorMap() != null) {
+        if (getColorMap() != null) {
             getColorMap().act(delta);
         }
     }
@@ -64,16 +65,17 @@ public class ColorHandler extends GridHandler{
     public Color getOrigColor(Coordinates c) {
         return GdxColorMaster.get(DC_Game.game.getColorMapDS().getOriginal().get(c));
     }
-//TODO optimization - into array?
+
+    //TODO optimization - into array?
     public Color getColor(Coordinates c) {
-        if (! getColorMap().getOutput().containsKey(c)) {
-            return  getColorMap().getOriginal().get(c);
+        if (!getColorMap().getOutput().containsKey(c)) {
+            return getColorMap().getOriginal().get(c);
             // return GdxColorMaster.get(GdxColorMaster.NULL_COLOR);
         }
         // if (CoreEngine.isLevelEditor()) {
         //     return GdxColorMaster.get(GdxColorMaster.NULL_COLOR);
         // }
-        return GdxColorMaster.get( getColorMap().getOutput().get(c));
+        return GdxColorMaster.get(getColorMap().getOutput().get(c));
         // return cell.getColor();
     }
 }

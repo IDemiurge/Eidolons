@@ -1,7 +1,7 @@
 package libgdx.gui.panels.lord;
 
 import eidolons.content.consts.GraphicData;
-import eidolons.game.netherflame.main.lord.EidolonLord;
+import eidolons.game.netherflame.lord.EidolonLord;
 import eidolons.game.netherflame.main.soul.SoulforceMaster;
 import libgdx.GdxMaster;
 import libgdx.bf.generic.FadeImageContainer;

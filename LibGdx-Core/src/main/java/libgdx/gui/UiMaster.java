@@ -63,7 +63,7 @@ public class UiMaster {
     public static int getBottomQuickItemIconSize() {
         return getIconSize(false);
     }
-    public static int getBottomSpellIconSize() {
+    public static int getBottomActiveIconSize() {
         return getIconSize(false);
     }
 

@@ -15,8 +15,8 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.attach.HeroClass;
 import eidolons.entity.obj.attach.Perk;
-import eidolons.entity.obj.hero.DC_Attributes;
-import eidolons.entity.obj.hero.DC_Masteries;
+import eidolons.entity.hero.DC_Attributes;
+import eidolons.entity.hero.DC_Masteries;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.logic.battlefield.vision.mapper.*;
@@ -2237,8 +2237,8 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public boolean checkAiMod(AI_MODIFIERS trueBrute) {
-        return getHero().checkAiMod(trueBrute);
+    public boolean checkAiMod(AI_MODIFIERS aiMod) {
+        return getHero().checkAiMod(aiMod);
     }
 
     @Override
@@ -2529,8 +2529,8 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public int calculatePower() {
-        return getHero().calculatePower();
+    public int getPower() {
+        return getHero().getPower();
     }
 
     @Override

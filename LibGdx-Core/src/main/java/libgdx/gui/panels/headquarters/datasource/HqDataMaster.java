@@ -6,6 +6,7 @@ import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.Spell;
+import eidolons.entity.hero.NF_ProgressionMaster;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_JewelryObj;
 import eidolons.entity.item.DC_QuickItemObj;
@@ -519,7 +520,7 @@ public class HqDataMaster {
                 if (args.length > 0)
                     i = (int) args[0];
                 for (int j = 0; j < i; j++) {
-                    HeroLevelManager.levelUp(hero);
+                    NF_ProgressionMaster.levelUp(hero);
                 }
                 break;
         }

@@ -60,6 +60,7 @@ public abstract class GenericLauncher extends Game {
     @Override
     public void create() {
         instance = this;
+        ScreenMaster.launcher=this; //TODO gdx Review refactor!!!
         new Adapter().init();
         TextureCache.getInstance();
         GdxMaster.setLoadingCursor();
