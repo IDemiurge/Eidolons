@@ -8,8 +8,10 @@ import eidolons.game.battlecraft.rules.combat.attack.extra_attack.InstantAttackR
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import main.ability.effects.Effect;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.entity.NewRpgEnums;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.system.ExceptionMaster;
 
 import java.util.List;
 
@@ -43,6 +45,7 @@ public class Attack {
     private INSTANT_ATTACK_TYPE instantAttackType;
     private DC_WeaponObj weapon;
     private boolean doubleStrike;
+    private NewRpgEnums.HitType hitType;
 
     public Attack(Ref ref, boolean offhand, boolean counter, boolean canCounter, boolean free,
                   Effect onHit, Effect onKill) {
@@ -60,7 +63,7 @@ public class Attack {
             action = (DC_ActiveObj) ref.getActive();
             // sneak = DC_AttackMaster.checkSneak(ref); elsewhere
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
         }
         if (!offhand) {
             if (action != null) {
@@ -382,4 +385,11 @@ public class Attack {
         this.parried = parried;
     }
 
+    public void setHitType(NewRpgEnums.HitType hitType) {
+        this.hitType = hitType;
+    }
+
+    public NewRpgEnums.HitType getHitType() {
+        return hitType;
+    }
 }

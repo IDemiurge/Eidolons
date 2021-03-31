@@ -52,7 +52,7 @@ public class TrampleRule extends DC_RuleImpl {
          new NumericCondition("{source_total_weight}+{Strength}*2",
           "{event_target_bludgeoning_resistance}/100*{event_target_total_weight}*2+{event_target_Strength}*6")
          // reflex roll?
-         , new RollCondition(GenericEnums.ROLL_TYPES.REFLEX)
+         , new RollCondition(GenericEnums.RollType.REFLEX)
 
          // space
          // force

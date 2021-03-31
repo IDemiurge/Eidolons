@@ -33,7 +33,6 @@ import main.system.launch.Flags;
 import main.system.math.MathMaster;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -477,7 +476,7 @@ public class ItemGenerator implements GenericItemGenerator {
             if (material.getDmg_type() != null) { // MAGICAL MATERIALS
                 int perc = (int) Math.round(material.getEnchantmentCapacity() / SPELL_DAMAGE_FACTOR
                  * Math.sqrt(n));
-                perc = MathMaster.applyMod(perc, quality.getDurabilityMod());
+                perc = MathMaster.applyPercent(perc, quality.getDurabilityMod());
                 String abilName = "DamagePercOnAttackThis";
                 String appendix = " deals an additional " + perc + "% of "
                  + material.getDmg_type().getName() + " damage on each successful hit";

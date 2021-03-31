@@ -35,7 +35,6 @@ public class SpellMaster {
     public static String initSpellbook(Unit hero) {
         List<ObjType> list = new ArrayList<>();
         if (hero.getGame().isSimulation()) {
-            checkNewAutoVerbatim(hero);
             for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
                 if (checkKnown(hero, type)) {
                     // if (!hero.checkProperty(PROPS.LEARNED_SPELLS,
@@ -92,48 +91,10 @@ public class SpellMaster {
         return null;
     }
 
-    public static void checkNewAutoVerbatim(Unit hero) {
-        for (String spell : ContainerUtils.open(hero.getProperty(PROPS.LEARNED_SPELLS))) {
-            boolean result = false;
-            ObjType type = DataManager.getType(spell, DC_TYPE.SPELLS);
-            if (type == null) {
-                main.system.auxiliary.log.LogMaster.log(1, "LibraryManager::checkNewAutoVerbatim - No such spell " + spell);
-                continue;
-            }
-            if (checkStandardSpell(type)) {
-                if (checkDoubleKnowledge(hero, type)) {
-                    result = true;
-                }
-
-                if (checkKnowledge(hero, type)) // optimize-merge!
-                {
-                    if (checkMastery(hero, type)) {
-                        result = true;
-                    }
-                }
-            }
-
-            if (result) {
-                if (hero.checkProperty(PROPS.MEMORIZED_SPELLS, type.getName())) {
-                    hero.removeProperty(PROPS.MEMORIZED_SPELLS, type.getName(), true);
-                }
-                addVerbatimSpell(hero, type);
-            }
-        }
-    }
 
     public static boolean checkKnown(Unit hero, ObjType type) {
         if (isLearned(hero, type)) {
             return true;
-        }
-        if (checkStandardSpell(type)) {
-            if (checkDoubleKnowledge(hero, type)) {
-                return true;
-            }
-            if (checkKnowledge(hero, type)) // Intelligence ?
-            {
-                return checkMastery(hero, type);
-            }
         }
         return false;
     }
@@ -153,15 +114,6 @@ public class SpellMaster {
         return hero.checkParam(PARAMS.KNOWLEDGE, type.getParam(PARAMS.SPELL_DIFFICULTY));
     }
 
-    // 2X KNOWLEDGE FOR ANY SPELL
-    // IF MASTERY IS >1
-    public static boolean checkDoubleKnowledge(Unit hero, ObjType type) {
-        return (hero.checkParam(PARAMS.KNOWLEDGE, ""
-                + Math.round(type.getIntParam(PARAMS.SPELL_DIFFICULTY)
-                * DC_Formulas.KNOWLEDGE_ANY_SPELL_FACTOR)))
-                && hero.checkParam(ContentValsManager
-                .findMastery(type.getProperty(G_PROPS.SPELL_GROUP)));
-    }
 
     public static boolean checkMastery(Unit hero, ObjType type) {
 

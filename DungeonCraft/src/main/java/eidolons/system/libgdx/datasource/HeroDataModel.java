@@ -390,12 +390,12 @@ public class HeroDataModel extends Unit {
     }
 
     @Override
-    public boolean modifyParameter(PARAMETER param, int amount, Integer minMax, boolean quietly, String modifierKey) {
+    public boolean modifyParameter(PARAMETER param, Number amount, Integer minMax, boolean quietly, String modifierKey) {
         return getHero().modifyParameter(param, amount, minMax, quietly, modifierKey);
     }
 
     @Override
-    public boolean modifyParameter(PARAMETER param, int amount, Integer minMax, boolean quietly) {
+    public boolean modifyParameter(PARAMETER param, Number amount, Integer minMax, boolean quietly) {
         return getHero().modifyParameter(param, amount, minMax, quietly);
     }
 
@@ -415,32 +415,32 @@ public class HeroDataModel extends Unit {
     }
 
     @Override
-    public boolean modifyParameter(PARAMETER param, int amount, Integer minMax, String modifierKey) {
+    public boolean modifyParameter(PARAMETER param, Number amount, Integer minMax, String modifierKey) {
         return getHero().modifyParameter(param, amount, minMax, modifierKey);
     }
 
     @Override
-    public boolean modifyParameter(PARAMETER param, int amount, Integer minMax) {
+    public boolean modifyParameter(PARAMETER param, Number amount, Integer minMax) {
         return getHero().modifyParameter(param, amount, minMax);
     }
 
     @Override
-    public void modifyParameter(PARAMETER param, int amount, boolean base) {
+    public void modifyParameter(PARAMETER param, Number amount, boolean base) {
         getHero().modifyParameter(param, amount, base);
     }
 
     @Override
-    public void modifyParameter(PARAMETER param, int amount, boolean base, String modifierKey) {
+    public void modifyParameter(PARAMETER param, Number amount, boolean base, String modifierKey) {
         getHero().modifyParameter(param, amount, base, modifierKey);
     }
 
     @Override
-    public boolean modifyParameter(PARAMETER param, int amount, String modifierKey) {
+    public boolean modifyParameter(PARAMETER param, Number amount, String modifierKey) {
         return getHero().modifyParameter(param, amount, modifierKey);
     }
 
     @Override
-    public boolean modifyParameter(PARAMETER param, int amount) {
+    public boolean modifyParameter(PARAMETER param, Number amount) {
         return getHero().modifyParameter(param, amount);
     }
 

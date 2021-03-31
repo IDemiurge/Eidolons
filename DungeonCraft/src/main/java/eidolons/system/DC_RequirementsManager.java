@@ -54,7 +54,6 @@ public class DC_RequirementsManager implements RequirementsManager {
     private Map<Entity, Requirements> altReqMap;
 
     private Entity hero;
-    private Map<Entity, Requirements> rankReqMap;
 
     private static MASTERY_RANK getRank(Integer score) {
         MASTERY_RANK rank = SkillEnums.MASTERY_RANK.NONE;
@@ -136,7 +135,7 @@ public class DC_RequirementsManager implements RequirementsManager {
                 req.addAll(toRequirements(additionalRequirements));
             } catch (Exception e) {
                 LogMaster.log(1, type + "'s req failed! - "
-                 + additionalRequirements);
+                        + additionalRequirements);
                 // main.system.ExceptionMaster.printStackTrace(e);
             }
         }
@@ -158,7 +157,7 @@ public class DC_RequirementsManager implements RequirementsManager {
             return null;
         }
         Condition condition = ConditionMaster.getPropConditionSourceMatch(prop.toString(),
-         G_PROPS.BASE_TYPE.toString());
+                G_PROPS.BASE_TYPE.toString());
         String altBases = type.getProperty(PROPS.ALT_BASE_TYPES);
         if (!altBases.isEmpty()) {
             OrConditions orCondition = new OrConditions(condition);
@@ -170,7 +169,7 @@ public class DC_RequirementsManager implements RequirementsManager {
         // String typeName = VariableManager.removeVarPart(s);
 
         return new Requirement(condition, InfoMaster.BASE
-         + InfoMaster.getPropReasonString(type.getProperty(G_PROPS.BASE_TYPE), prop));
+                + InfoMaster.getPropReasonString(type.getProperty(G_PROPS.BASE_TYPE), prop));
     }
 
     private Requirements toRequirements(String string) {
@@ -212,7 +211,7 @@ public class DC_RequirementsManager implements RequirementsManager {
                     // TODO
                     valRef = subString.substring(0, subString.lastIndexOf(" "));
                     value = subString.substring(subString.lastIndexOf(" "))
-                     .trim();
+                            .trim();
                 } else {
                     valRef = subString.split(Strings.REQ_VALUE_SEPARATOR)[0];
                     value = subString.split(Strings.REQ_VALUE_SEPARATOR)[1];
@@ -359,7 +358,7 @@ public class DC_RequirementsManager implements RequirementsManager {
 
     private boolean checkSimpleValRef(String valRef) {
         return ContentValsManager.isParameterExtendedSearch(valRef)
-         || ContentValsManager.isProperty(valRef);
+                || ContentValsManager.isProperty(valRef);
     }
 
     // TODO preCheck upgrade
@@ -367,47 +366,47 @@ public class DC_RequirementsManager implements RequirementsManager {
         Requirements req = new Requirements();
 
         String cost = (mode != NORMAL_MODE) ? HeroManager.getCost(type, getHero(), type
-         .getOBJ_TYPE_ENUM(), PROPS.VERBATIM_SPELLS) : HeroManager.getCost(type, getHero());
+                .getOBJ_TYPE_ENUM(), PROPS.VERBATIM_SPELLS) : HeroManager.getCost(type, getHero());
 
-        Condition paramCondition = ConditionMaster.getParamCondition(1, PARAMS.XP, PARAMS.XP_COST);
+        Condition paramCondition = ConditionMaster.getParamCondition(1, PARAMS.SPELL_POINTS_UNSPENT, PARAMS.CIRCLE);
         ((NumericCondition) paramCondition).setComparingValue(new Formula("" + cost));
 
-        Requirement xpReq = new Requirement(paramCondition, InfoMaster.getParamReasonString(type,
-         PARAMS.XP, cost));
+        Requirement ptsReq = new Requirement(paramCondition, InfoMaster.getParamReasonString(type,
+                PARAMS.SPELL_POINTS_UNSPENT, cost));
 
-        req.add(xpReq);
+        req.add(ptsReq);
 
         PARAMETER spellMastery = ContentValsManager.getSpellMasteryForSpell(type);
 
         if (mode != NORMAL_MODE) {
             req.add(new Requirement(ConditionMaster.getParamCondition(spellMastery.getName(), "1",
-             true), InfoMaster.getSpellMasteryReason(spellMastery)));
+                    true), InfoMaster.getSpellMasteryReason(spellMastery)));
             if (mode != VERBATIM_MODE) {
                 req.add(getParamRequirements(PARAMS.MEMORY_REMAINING, PARAMS.SPELL_DIFFICULTY, type));
             }
             if (type.isUpgrade()) {
                 String base = type.getProperty(G_PROPS.BASE_TYPE);
                 req.add(new Requirement(ConditionMaster.getPropCondition(KEYS.SOURCE
-                 .toString(), PROPS.VERBATIM_SPELLS, base), InfoMaster.SPELL_BASE + base));
+                        .toString(), PROPS.VERBATIM_SPELLS, base), InfoMaster.SPELL_BASE + base));
             }
 
             return req;
         }
         if (spellMastery != null) {
             String amount = ""
-             + new Formula("2*"
-             + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.SPELL_DIFFICULTY))
-             .getInt(type.getRef());
+                    + new Formula("2*"
+                    + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.SPELL_DIFFICULTY))
+                    .getInt(type.getRef());
             req.add(new Requirement(getTotalCondition(amount, spellMastery, PARAMS.INTELLIGENCE),
-             // new OrConditions(ConditionMaster
-             // .getParamCondition(PARAMS.INTELLIGENCE,
-             // PARAMS.SPELL_DIFFICULTY),
-             // ConditionMaster
-             // .getParamCondition(spellMastery,
-             // PARAMS.SPELL_DIFFICULTY)),
-             InfoMaster.getTotalReasonString
-              // getOrParamReasonString
-               (amount, PARAMS.INTELLIGENCE, spellMastery))
+                    // new OrConditions(ConditionMaster
+                    // .getParamCondition(PARAMS.INTELLIGENCE,
+                    // PARAMS.SPELL_DIFFICULTY),
+                    // ConditionMaster
+                    // .getParamCondition(spellMastery,
+                    // PARAMS.SPELL_DIFFICULTY)),
+                    InfoMaster.getTotalReasonString
+                            // getOrParamReasonString
+                                    (amount, PARAMS.INTELLIGENCE, spellMastery))
 
             );
         }
@@ -417,8 +416,8 @@ public class DC_RequirementsManager implements RequirementsManager {
         // KEYS.MATCH, PARAMS.SPELL_DIFFICULTY), "0", true)),
         // InfoMaster.UNDER_CONSTRUCTION));
         Requirement unknownReq = new Requirement(new NotCondition(ConditionMaster.getPropCondition(
-         PROPS.KNOWN_SPELLS, G_PROPS.NAME, KEYS.SOURCE.toString(), KEYS.MATCH.toString())),
-         InfoMaster.SPELL_KNOWN);
+                PROPS.KNOWN_SPELLS, G_PROPS.NAME, KEYS.SOURCE.toString(), KEYS.MATCH.toString())),
+                InfoMaster.SPELL_KNOWN);
         req.add(unknownReq);
         return req;
 
@@ -427,13 +426,7 @@ public class DC_RequirementsManager implements RequirementsManager {
     public Requirements generateClassRequirements(Entity type, int mode) {
         // preCheck has class of this Base Type of equal or greater Circle
         // multi :
-
-        if (mode == RANK_MODE) {
-            return generateClassRankRequirements(type);
-        }
         Requirements requirements = new Requirements();
-
-
         for (PARAMS mastery : DC_ContentValsManager.getMasteryParams()) {
             PARAMETER req = ContentValsManager.getReqParam(mastery);
             int param = type.getIntParam(req);
@@ -445,39 +438,33 @@ public class DC_RequirementsManager implements RequirementsManager {
             Requirement r = new Requirement(c, t);
             requirements.add(r);
         }
-        String cost = HeroManager.getCost(type, getHero());
-
-        Requirement xpReq = new Requirement(ConditionMaster.getParamCondition(0, PARAMS.XP,
-         PARAMS.XP_COST), InfoMaster.getParamReasonString(type, PARAMS.XP, cost));
-        ((NumericCondition) xpReq.getCondition()).setComparingValue(new Formula("" + cost));
-
-        requirements.add(xpReq);
+        //TODO check has 1 rank to spend
 
         if (HeroClassMaster.isMulticlass(type)) {
             // TODO changing to simpler form with baseType?
             requirements.add(getBaseTypeRequirement(type, type.getOBJ_TYPE_ENUM()));
             requirements.add(new Requirement(new PropCondition(PROPS.CLASSES, type
-             .getProperty(PROPS.BASE_CLASSES_TWO), false),
-             InfoMaster.MULTICLASS_SECOND_CLASS
-              + StringMaster.cropLast(type.getProperty(PROPS.BASE_CLASSES_TWO), 2,
-              ";").replace(";", " or ")));
+                    .getProperty(PROPS.BASE_CLASSES_TWO), false),
+                    InfoMaster.MULTICLASS_SECOND_CLASS
+                            + StringMaster.cropLast(type.getProperty(PROPS.BASE_CLASSES_TWO), 2,
+                            ";").replace(";", " or ")));
 
             requirements.add(new Requirement(new MultiClassCondition(type.getName()),
-             InfoMaster.MULTICLASS));
+                    InfoMaster.MULTICLASS));
 
         } else {
             requirements.add(new Requirement(new ClassTreeCondition(type.getName()),
-             InfoMaster.CLASS_TREE));
+                    InfoMaster.CLASS_TREE));
 
             Conditions conditions = new OrConditions();
             conditions.add(new EmptyStringCondition(StringMaster.getValueRef(KEYS.SOURCE,
-             PROPS.FIRST_CLASS)));
+                    PROPS.FIRST_CLASS)));
             conditions.add(new EmptyStringCondition(StringMaster.getValueRef(KEYS.SOURCE,
-             PROPS.SECOND_CLASS)));
+                    PROPS.SECOND_CLASS)));
             conditions.add(new StringComparison(type.getProperty(G_PROPS.CLASS_GROUP), StringMaster
-             .getValueRef(KEYS.SOURCE, PROPS.FIRST_CLASS), true));
+                    .getValueRef(KEYS.SOURCE, PROPS.FIRST_CLASS), true));
             conditions.add(new StringComparison(type.getProperty(G_PROPS.CLASS_GROUP), StringMaster
-             .getValueRef(KEYS.SOURCE, PROPS.SECOND_CLASS), true));
+                    .getValueRef(KEYS.SOURCE, PROPS.SECOND_CLASS), true));
 
             requirements.add(new Requirement(conditions, InfoMaster.MAX_CLASSES));
         }
@@ -489,32 +476,17 @@ public class DC_RequirementsManager implements RequirementsManager {
         Requirement paramRequirements = getParamRequirements(PARAMS.GOLD, PARAMS.GOLD_COST, type);
 
         ((NumericCondition) paramRequirements.getCondition()).setComparingValue(new Formula(""
-         + HeroManager.getCost(type, getHero())));
+                + HeroManager.getCost(type, getHero())));
 
         return new Requirements(paramRequirements);
     }
 
-    public Requirements generateClassRankRequirements(Entity type) {
-        Requirements reqs = getRequirements(type, 0);
-        Map<String, Condition> reqMap = new XLinkedMap<>();
-        Requirements rankedReqs = new Requirements(reqMap);
-        for (String string : reqs.getReqMap().keySet()) {
-            Condition req = reqs.getReqMap().get(string);
-            String tip = new MapMaster<String, Condition>().getKeyForValue(reqs.getReqMap(), req);
-            modifyRankReq(type, reqs, tip, reqMap, req, type.getIntParam(PARAMS.RANK));
-        }
-        rankedReqs = new Requirements(reqMap);
-        return rankedReqs;
-
-    }
 
     public Requirements generateSkillRankRequirements(Entity type) {
         Requirements reqs = new Requirements();
-
-        int xpCost = type.getIntParam(PARAMS.XP_COST) * type.getIntParam(PARAMS.RANK_XP_MOD) / 100;
-
-        reqs.add(new Requirement(getCondition(PARAMS.XP + "", xpCost + ""), InfoMaster
-         .getParamReasonString(PARAMS.XP + "", xpCost + "")));
+        String ptsCost=type.getParam(PARAMS.CIRCLE);
+        reqs.add(new Requirement(getCondition(PARAMS.SKILL_POINTS_UNSPENT + "", ptsCost + ""), InfoMaster
+                .getParamReasonString(PARAMS.SKILL_POINTS_UNSPENT + "", ptsCost + "")));
         return reqs;
 
     }
@@ -524,39 +496,33 @@ public class DC_RequirementsManager implements RequirementsManager {
             return generateSkillRankRequirements(type);
         }
         String cost = HeroManager.getCost(type, getHero());
-        Condition xpReq = ConditionMaster.getParamCondition(1, PARAMS.XP, PARAMS.XP_COST);
+        Condition ptsReq = ConditionMaster.getParamCondition(1, PARAMS.SKILL_POINTS_UNSPENT, PARAMS.CIRCLE);
         String mastery = type.getProperty(G_PROPS.MASTERY);
         MASTERY_RANK rank = getRank(type.getIntParam("SKILL_DIFFICULTY"));
 
         Condition rankReq = ConditionMaster.getParamCondition(mastery, rank.getMasteryReq() + "");
-        ((NumericCondition) xpReq).setComparingValue(new Formula("" + cost));
+        ((NumericCondition) ptsReq).setComparingValue(new Formula("" + cost));
         return new Requirements(new Conditions(ConditionMaster
-         .getPropCondition(PROPS.SKILLS, PROPS.SKILL_REQUIREMENTS, KEYS.SOURCE.toString(),
-          KEYS.MATCH.toString()), rankReq, xpReq
-         // TODO OR CONDITION!
-         , ConditionMaster.getPropCondition(PROPS.SKILLS, PROPS.SKILL_OR_REQUIREMENTS,
-         KEYS.SOURCE.toString(), KEYS.MATCH.toString())),
+                .getPropCondition(PROPS.SKILLS, PROPS.SKILL_REQUIREMENTS, KEYS.SOURCE.toString(),
+                        KEYS.MATCH.toString()), rankReq, ptsReq
+                // TODO OR CONDITION!
+                , ConditionMaster.getPropCondition(PROPS.SKILLS, PROPS.SKILL_OR_REQUIREMENTS,
+                KEYS.SOURCE.toString(), KEYS.MATCH.toString())),
 
-         InfoMaster.getPropReasonString(type, PROPS.SKILL_REQUIREMENTS), InfoMaster
-         .getSkillRankReqString(mastery, type, rank), InfoMaster.getParamReasonString(type,
-         PARAMS.XP, cost), InfoMaster.getOrReasonStringFromContainer(
-         PROPS.SKILL_OR_REQUIREMENTS, type.getProperty(PROPS.SKILL_OR_REQUIREMENTS)));
+                InfoMaster.getPropReasonString(type, PROPS.SKILL_REQUIREMENTS), InfoMaster
+                .getSkillRankReqString(mastery, type, rank), InfoMaster.getParamReasonString(type,
+                PARAMS.SKILL_POINTS_UNSPENT, cost), InfoMaster.getOrReasonStringFromContainer(
+                PROPS.SKILL_OR_REQUIREMENTS, type.getProperty(PROPS.SKILL_OR_REQUIREMENTS)));
 
     }
 
     public Requirement getParamRequirements(PARAMETER p, PARAMETER p_cost, Entity type) {
         return new Requirement(ConditionMaster.getParamCondition(0, p, p_cost), InfoMaster
-         .getParamReasonString(type, p, p_cost));
+                .getParamReasonString(type, p, p_cost));
     }
 
     // to condition master
     public Map<Entity, Requirements> getReqMap(int mode) {
-        if (mode == RANK_MODE) {
-            if (rankReqMap == null) {
-                rankReqMap = new HashMap<>();
-            }
-            return rankReqMap;
-        }
         if (mode == ALT_MODE) {
             if (altReqMap == null) {
                 altReqMap = new HashMap<>();
@@ -574,98 +540,6 @@ public class DC_RequirementsManager implements RequirementsManager {
         return null;
     }
 
-    public List<String> checkRankReqs(DC_FeatObj feat) {
-        Requirements reqs = getRequirements(feat, RANK_MODE);
-        Ref ref = new Ref(feat.getOwnerObj());
-        ref.setMatch(feat.getId());
-        reqs.check(ref, true);
-        return reqs.getReasons();
-    }
-
-    private Requirements modifyRankReq(Entity feat, Requirements reqs, String tip,
-                                       Map<String, Condition> reqMap, Condition condition, int rank) {
-        if (condition instanceof Conditions) {
-            Conditions conditions = (Conditions) condition;
-            OrConditions orCondition = null;
-            String[] tipParts = null;
-            if (tip.contains(" or ")) {
-                orCondition = new OrConditions();
-                tipParts = tip.split(" or ");
-            }
-            String reqTip = tip;
-            int i = 0;
-            String prevValue = null;
-            for (Condition c : conditions) {
-                if (orCondition != null) {
-                    if (reqTip.equals(tip)) {
-                        reqTip = "";
-                    }
-                    Requirements modifiedReqs = modifyRankReq(feat, reqs, tipParts[i],
-                     new HashMap<>(), c, rank);
-                    // NumericCondition numericCondition = (NumericCondition) c;
-                    // String value =
-                    // StringMaster.getLastPart(numericCondition.getComparingValue()
-                    // .toString(), " ");
-                    // // TODO OR if param changed!
-                    // if (prevValue != null)
-                    // if (!prevValue.equals(value))
-                    // i++;
-
-                    for (String t : modifiedReqs.getReqMap().keySet()) {
-                        Condition c2 = modifiedReqs.getReqMap().get(t);
-                        orCondition.add(c2);
-                        // if (prevValue != null)
-                        // if (!prevValue.equals(value))
-                        reqTip += t + " or ";
-                    }
-                    i++;
-                    // prevValue = value;
-                } else {
-                    modifyRankReq(feat, reqs, reqTip, reqMap, c, rank);
-                }
-            }
-            if (orCondition != null) {
-                reqMap.put(StringMaster.cropLast(reqTip, 4), orCondition);
-            }
-
-        } else if (condition instanceof NumericCondition) {
-            NumericCondition numericCondition = (NumericCondition) condition;
-            Formula f = new Formula(numericCondition.getComparingValue().toString());
-            String originalValue = "" + f.getInt();
-            Integer mod = (rank + 1) * feat.getIntParam(PARAMS.RANK_SD_MOD);
-            if (tip.contains("Xp")) {
-                f.applyModifier(feat.getIntParam(PARAMS.RANK_XP_MOD));
-            } else {
-                f.applyFactor(mod);
-            }
-            String value = "" + f.getInt();
-
-            // TODO if Conditions, how to getOrCreate the tip?
-
-            // String tip = new MapMaster<String,
-            // Condition>().getKeyForValue(reqs.getReqMap(), req);
-            // try {
-            // tip =
-            // InfoMaster.getModifiedParamReasonString(numericCondition.getComparedValue()
-            // .toString(), value);
-            // } catch (Exception e) {
-            // tip.replace(originalValue, value);
-            // }
-            if (tip.contains("otal "))// total...
-            {
-                tip.replace(originalValue, value);
-            }
-            tip = tip.replace(originalValue, value);
-
-            LogMaster.log(1, tip + " for " + feat + " = " + value);
-
-            numericCondition.setComparingValue(new Formula(value));
-            reqs = new Requirements(new Requirement(numericCondition, tip));
-            reqMap.put(tip, condition);
-
-        }
-        return reqs;
-    }
 
     public Entity getHero() {
         if (hero == null) {

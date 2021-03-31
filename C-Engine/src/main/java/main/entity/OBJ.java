@@ -44,7 +44,7 @@ public interface OBJ extends Referred, Serializable, Runnable {
 
     void setProperty(PROPERTY name, String value);
 
-    boolean modifyParameter(PARAMETER param, int amount);
+    boolean modifyParameter(PARAMETER param, Number amount);
 
     boolean modifyParamByPercent(PARAMETER param, int perc, boolean base);
 
@@ -62,7 +62,7 @@ public interface OBJ extends Referred, Serializable, Runnable {
 
     boolean checkProperty(PROPERTY PROP, String value);
 
-    boolean modifyParameter(PARAMETER param, int amount, Integer minmax);
+    boolean modifyParameter(PARAMETER param, Number amount, Integer minmax);
 
     boolean isFull(PARAMETER p);
 

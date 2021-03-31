@@ -53,7 +53,7 @@ public class ModifyCounterEffect extends MicroEffect implements OneshotEffect, R
 
 //        MODIFY_BY_CONST Counter: {ACTIVE_PARAMS.BLEEDING_MOD}/100*(20-({TARGET_C_TOUGHNESS}*100/{TARGET_TOUGHNESS})*10/100)
         if (getResistanceMod() != null) {
-            amount = MathMaster.applyMod(amount, getResistanceMod());
+            amount = MathMaster.applyPercent(amount, getResistanceMod());
         }
         int mod = 0;
         if (ref.getTargetObj() instanceof DC_HeroItemObj) {

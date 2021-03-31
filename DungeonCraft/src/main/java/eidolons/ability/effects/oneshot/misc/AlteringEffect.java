@@ -30,7 +30,7 @@ public class AlteringEffect extends DC_Effect implements OneshotEffect {
             ref.setAmount(MathMaster.addFactor(ref.getAmount(), new Formula(
              factor).getInt(ref)));
         } else {
-            ref.setAmount(MathMaster.applyMod(ref.getAmount(),
+            ref.setAmount(MathMaster.applyPercent(ref.getAmount(),
              new Formula(mod).getInt(ref)));
         }
         return true;

@@ -134,20 +134,22 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
         }
         Ref ref = new Ref(unit);
         ref.setTarget(unit.getId());
-        if (!RollMaster.roll(GenericEnums.ROLL_TYPES.BODY_STRENGTH, "-",
-         getNumberOfCounters(unit) + "*1.5", ref, " and breaks free!",
-         "Entanglement")) {
-            unit.setCounter(getCounterName(), 0);
-            unit.modifyParameter(PARAMS.C_ATB, -10); //TODO review
-            return false;
-        }
+        //TODO
+        // if (!RollMaster.roll(GenericEnums.ROLL_TYPES.BODY_STRENGTH, "-",
+        //  getNumberOfCounters(unit) + "*1.5", ref, " and breaks free!",
+        //  "Entanglement")) {
+        //     unit.setCounter(getCounterName(), 0);
+        //     unit.modifyParameter(PARAMS.C_ATB, -10); //TODO review
+        //     return false;
+        // }
 
-        if (RollMaster.roll(GenericEnums.ROLL_TYPES.QUICK_WIT, "-",
-         getNumberOfCounters(unit) + "/2.5", ref,
-         "@, unable to figure out how to cut free...", "Entanglement")) {
-            unit.modifyParameter(PARAMS.C_ATB, -10);
-            return false;
-        }
+        //TODO
+        // if (RollMaster.roll(GenericEnums.ROLL_TYPES.QUICK_WIT, "-",
+        //  getNumberOfCounters(unit) + "/2.5", ref,
+        //  "@, unable to figure out how to cut free...", "Entanglement")) {
+        //     unit.modifyParameter(PARAMS.C_ATB, -10);
+        //     return false;
+        // }
 
         if (checkCutAway(false)) {
             return false;
@@ -185,9 +187,9 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
             amount += unit.calculateDamage(offhand);
         }
 
-        amount = MathMaster.applyMod(amount, object
+        amount = MathMaster.applyPercent(amount, object
          .getIntParam(offhand ? PARAMS.OFF_HAND_ATTACK : PARAMS.ATTACK));
-        amount = MathMaster.applyMod(amount, CUT_AWAY_MOD);
+        amount = MathMaster.applyPercent(amount, CUT_AWAY_MOD);
         amount = Math.min(getNumberOfCounters(object), amount);
             unit.modifyCounter(getCounterName(), -amount);
 

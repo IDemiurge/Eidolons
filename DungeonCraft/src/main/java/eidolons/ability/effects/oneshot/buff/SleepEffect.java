@@ -29,8 +29,8 @@ public class SleepEffect extends DC_Effect implements OneshotEffect {
         // statically parsed Spellpower/Mastery?
 
         // add roll on hit - dmg vs max toughness
-        RollEffect rollEffect = new RollEffect(GenericEnums.ROLL_TYPES.MIND_AFFECTING,
-         new RemoveBuffEffect(getBuffName()));
+        RollEffect rollEffect = new RollEffect(GenericEnums.RollType.mind_affecting,
+                new RemoveBuffEffect(getBuffName()));
 
         Conditions conditions = new Conditions(new RefCondition(
          KEYS.EVENT_TARGET, KEYS.TARGET)

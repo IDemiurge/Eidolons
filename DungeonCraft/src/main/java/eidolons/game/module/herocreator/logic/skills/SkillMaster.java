@@ -4,6 +4,7 @@ import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.consts.libgdx.GdxStringUtils;
+import eidolons.entity.hero.NF_ProgressionMaster;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.attach.HeroClass;
 import eidolons.entity.obj.attach.Perk;
@@ -205,18 +206,14 @@ public class SkillMaster {
 
     public static void newFeat(PROPERTY prop, Unit hero, ObjType arg, int tier, int slot) {
         DC_FeatObj featObj = createFeatObj(arg, hero.getRef());
-
-        //max rank req? Well, it is kind of determined by slot number ... but then, how does the rank scale?
-        //        featObj.getRank()
-        //        arg.getVar(PARAMS.CIRCLE);
         PROPERTY tierProp = getTierProp(prop, tier);
 
         hero.addProperty(tierProp, getSlotString(slot, arg.getName()), false);
         hero.addProperty(prop, arg.getName(), false);
 
         hero.getType().addProperty(prop, arg.getName(), false);
-        hero.modifyParameter(PARAMS.XP,
-                -HeroManager.getIntCost(arg, hero));
+        hero.modifyParameter(PARAMS.SKILL_POINTS_UNSPENT,
+                -arg.getIntParam(PARAMS.CIRCLE));
         DequeImpl<? extends DC_FeatObj> container = hero.getSkills();
 
         if (arg.getOBJ_TYPE_ENUM() == DC_TYPE.CLASSES) {

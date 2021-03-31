@@ -31,7 +31,7 @@ public class OrderMaster extends AiHandler {
         chance += source.getIntParam(PARAMS.LEADERSHIP_MASTERY);
         chance += target.getIntParam(PARAMS.ORGANIZATION) - 50;
 //        order.geti
-        chance = MathMaster.applyMod(chance, active.getIntParam(PARAMS.ORDER_CHANCE_MOD,
+        chance = MathMaster.applyPercent(chance, active.getIntParam(PARAMS.ORDER_CHANCE_MOD,
          false));
         if (partyTargeting) {
             chance = chance * 75 / 100;

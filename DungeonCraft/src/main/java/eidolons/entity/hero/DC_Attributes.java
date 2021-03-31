@@ -45,6 +45,7 @@ public class DC_Attributes  {
             case STRENGTH:
                 // + damage modifier
                 mod(amount, AttributeConsts.STR_TOU_BONUS, attr, PARAMS.TOUGHNESS);
+                mod(amount, AttributeConsts.STR_END_BONUS, attr, PARAMS.ENDURANCE);
                 mod(amount, AttributeConsts.STR_FORTITUDE_BONUS, attr, PARAMS.FORTITUDE);
                 mod(before25, AttributeConsts.B25_STR_CARRY_CAPACITY, attr, PARAMS.CARRYING_CAPACITY);
                 mod(amount - 25, AttributeConsts.A25_STR_PENALTY_REDUCTION, attr, PARAMS.WEIGHT_PENALTY_REDUCTION);
@@ -52,6 +53,7 @@ public class DC_Attributes  {
                 break;
             case VITALITY:
                 mod(amount, AttributeConsts.VIT_END_BONUS, attr, PARAMS.TOUGHNESS);
+                mod(amount, AttributeConsts.VIT_TOU_BONUS, attr, PARAMS.ENDURANCE);
                 mod(amount, AttributeConsts.VIT_FORTITUDE_BONUS, attr, PARAMS.FORTITUDE);
                 mod(before25, AttributeConsts.B25_VIT_ELEMENTAL_RESIST, attr, ELEMENTAL_RESISTANCES.getParams());
                 mod(amount - 25, AttributeConsts.A25_VIT_END_REGEN, attr, PARAMS.ENDURANCE_REGEN);

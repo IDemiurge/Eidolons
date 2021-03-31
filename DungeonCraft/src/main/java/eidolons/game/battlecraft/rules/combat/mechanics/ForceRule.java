@@ -386,7 +386,7 @@ public class ForceRule {
 
     public static int getMaxWeightPush(DC_ActiveObj action) {
         int force = getForce(action);
-        force = MathMaster.applyMod(force,
+        force = MathMaster.applyPercent(force,
                 action.getIntParam(PARAMS.FORCE_PUSH_MOD));
         return Math.round(force * PUSH_DISTANCE_COEFFICIENT
                 * 1.5f //round
@@ -395,14 +395,14 @@ public class ForceRule {
 
     public static int getMaxWeightKnock(DC_ActiveObj action) {
         int force = getForce(action);
-        force = MathMaster.applyMod(force,
+        force = MathMaster.applyPercent(force,
                 action.getIntParam(PARAMS.FORCE_KNOCK_MOD));
         return (int) (KNOCK_MAX_WEIGHT_COEFFICIENT * force);
     }
 
     public static int getMinWeightKnock(DC_ActiveObj action) {
         int force = getForce(action);
-        force = MathMaster.applyMod(force,
+        force = MathMaster.applyPercent(force,
                 action.getIntParam(PARAMS.FORCE_KNOCK_MOD));
         return (int) (KNOCK_ALWAYS_WEIGHT_COEFFICIENT * force);
     }

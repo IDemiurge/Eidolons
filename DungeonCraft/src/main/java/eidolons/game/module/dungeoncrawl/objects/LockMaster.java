@@ -54,7 +54,7 @@ public class LockMaster extends DungeonObjMaster<LOCK_ACTIONS> {
         if (formula != null) {
             // TODO
         } else {
-            result = RollMaster.roll(GenericEnums.ROLL_TYPES.UNLOCK, ref);
+            result = RollMaster.roll(GenericEnums.RollType.UNLOCK, ref);
         }
         // roll
         lockedObj.getIntParam(PARAMS.LOCK_LEVEL);

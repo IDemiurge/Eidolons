@@ -5,14 +5,12 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.action.WatchRule;
-import eidolons.game.battlecraft.rules.combat.mechanics.ForceRule;
 import main.content.ContentValsManager;
 import main.content.enums.GenericEnums;
-import main.content.enums.GenericEnums.ROLL_TYPES;
+import main.content.enums.GenericEnums.RollType;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
-import main.data.ability.construct.VariableManager;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
@@ -22,153 +20,50 @@ import main.system.math.Formula;
 import main.system.math.MathMaster;
 
 public class RollMaster {
-    /*
-     * define std rolls, and maybe var refs some rolls may want to define only
-	 * *one* of the refs!
-	 */
-
-    public static final int DEFAULT_MIN_ROLL_PERC = 20;
     public final static String STD_MASS = "{source_C_Carrying_Weight}+{source_Weight};"
-     + "{target_C_Carrying_Weight}+{target_Weight}";
-    public final static String STD_BODY_STRENGTH = "{Strength};{Strength}";
-    public final static String STD_REFLEX = "{Agility};{target_Dexterity}";
-    public final static String STD_ACCURACY = "{target_Dexterity};{Agility}";
-    public static final String STD_QUICK_WIT = "{Intelligence};{target_Intelligence}";
-    public static final String STD_FAITH = "{Charisma}+{Willpower};{spell_spell_difficulty}";
-    public static final String STD_DETECTION = "{target_Detection};{stealth}";
-    public static final String STD_STEALTH = "{Detection};{target_stealth}";
-    public static final String STD_DEFENSE = "{Attack};2*{target_Defense}";
-    public static final String STD_IMMATERIAL = "{Spirit}*5+12;{target_Spellpower}+12";
-    public static final String STD_DISPEL = "{spell_spell_difficulty}+{source_Mastery}+{source_Spellpower};{target_spell_difficulty}+{summoner_Mastery}+{summoner_Spellpower}";
-    public static final String STD_UNLOCK = "{source_pick lock};{target_lock level}";
-    public static final String STD_DISARM_TRAP = "{source_trap_skill};{target_trap level}";
-    //TODO
-    public final static String STD_REACTION =
-     StringMaster.getValueRef(KEYS.SOURCE, PARAMS.INITIATIVE )
-      + ";" +
-      StringMaster.getValueRef(KEYS.TARGET, PARAMS.INITIATIVE );
+            + "{target_C_Carrying_Weight}+{target_Weight}";
 
-    public static final String STD_FORCE =
-     StringMaster.getValueRefs(KEYS.SOURCE, PARAMS.STRENGTH, PARAMS.WEIGHT)
-      + ";" +
-      StringMaster.getValueRefs(KEYS.TARGET, PARAMS.STRENGTH, PARAMS.WEIGHT);
-
-    private static final String STD_SPELL_ROLL = "{Mastery}+{Spellpower}+2*{Spell_SpellDifficulty}";
-    // (fail;success)
-    public final static String STD_MIND_AFFECTING = STD_SPELL_ROLL + ";"
-     + getSTD_SPELL_RESIST_ROLL("{Target_Willpower}+5*{Target_Spirit}");
-    public static final String STD_FORTITUDE = STD_SPELL_ROLL + ";"
-     + getSTD_SPELL_RESIST_ROLL("3*{Target_Vitality}");
     private static String logString;
-
     private static int rolledValue;
-
     private static int rolledValue2;
-
     private static Roll roll;
 
-    private static String getSTD_SPELL_RESIST_ROLL(String string) {
-        return string + "-((" + string + ")*{source_resistance_penetration}/100)";
-    }
-
-    public static String getStdFormula(ROLL_TYPES roll_type, Boolean success) {
+    public static String getStdFormula(RollType roll_type, Boolean success) {
         String formulas = "";
+        //TODO
         switch (roll_type) {
-            case REACTION:
-                formulas = STD_REACTION;
-                break;
-            case FORCE:
-                formulas = STD_FORCE;
-                break;
-            case DISARM_TRAP:
-                formulas = STD_DISARM_TRAP;
-                break;
-            case UNLOCK:
-                formulas = STD_UNLOCK;
-                break;
-            case ACCURACY:
-                formulas = STD_ACCURACY;
-                break;
-            case DISPEL:
-                formulas = STD_DISPEL;
-                break;
-            case IMMATERIAL:
-                formulas = STD_IMMATERIAL;
-                break;
-            case BODY_STRENGTH:
-                formulas = STD_BODY_STRENGTH;
-                break;
-            case DEFENSE:
-                formulas = STD_DEFENSE;
-                break;
-            case STEALTH:
-                formulas = STD_STEALTH;
-                break;
-            case DETECTION:
-                formulas = STD_DETECTION;
-                break;
-            case FAITH:
-                formulas = STD_FAITH;
-                break;
-            case FORTITUDE:
-                formulas = STD_FORTITUDE;
-                break;
-            case MASS:
-                formulas = STD_MASS;
-                break;
-            case MIND_AFFECTING:
-                formulas = STD_MIND_AFFECTING;
-                break;
-            case QUICK_WIT:
-                formulas = STD_QUICK_WIT;
-                break;
-            case REFLEX:
-                formulas = STD_REFLEX;
-                break;
-            default:
-                break;
 
         }
         return ContainerUtils.openContainer(formulas).get(success ? 1 : 0);
     }
 
-    private static String initStdSuccess(ROLL_TYPES roll_type) {
+    private static String initStdSuccess(RollType roll_type) {
         return getStdFormula(roll_type, true);
     }
 
-    private static String initStdFail(ROLL_TYPES roll_type) {
+    private static String initStdFail(RollType roll_type) {
         return getStdFormula(roll_type, false);
     }
 
-    public static boolean roll(ROLL_TYPES roll_type, Ref ref) {
+    public static boolean roll(RollType roll_type, Ref ref) {
         return roll(roll_type, null, null, ref);
     }
 
-    public static boolean roll(ROLL_TYPES roll_type, String success, String fail, Ref ref) {
+    public static boolean roll(RollType roll_type, String success, String fail, Ref ref) {
         return roll(roll_type, success, fail, ref, null);
     }
 
-    public static boolean roll(ROLL_TYPES roll_type, String success, String fail, Ref ref,
+    public static boolean roll(RollType roll_type, String success, String fail, Ref ref,
                                String logString) {
         return rollLogged(roll_type, success, fail, ref, logString, null);
     }
 
-    // if (ImmunityRule.checkImmune(target, roll_type.getName())) // +
-    // " roll"
-    // TODO // -> map to
-    // // different
-    // // names
-    // return false;
-
-    // if (((DC_Game) ref.getGame()).getTestMaster().isActionFree(
-    // ref.getActive().getName()))
-    // return true;
-
+    //TODO
     public static int getRollChance(RollEffect roll) {
-        return getRollChance(roll.getRollType(), roll.getSuccess(), roll.getFail(), roll.getRef());
+        return getRollChance(roll.getRollType(), roll.getSourceValue(), roll.getTargetValue(), roll.getRef());
     }
 
-    public static int getRollChance(ROLL_TYPES roll_type, String success, String fail, Ref ref) {
+    public static int getRollChance(RollType roll_type, String success, String fail, Ref ref) {
         if (StringMaster.isEmpty(fail)) {
             fail = initStdFail(roll_type);
         }
@@ -184,20 +79,19 @@ public class RollMaster {
         successFormula.applyFactor(getSuccessFactor(roll_type));
         int max2 = successFormula.getInt(ref);
 
-        int min1 = MathMaster.applyMod(max1, DEFAULT_MIN_ROLL_PERC);
-        int min2 = MathMaster.applyMod(max2, DEFAULT_MIN_ROLL_PERC);
+        int min1 = MathMaster.applyPercent(max1, DEFAULT_MIN_ROLL_PERC);
+        int min2 = MathMaster.applyPercent(max2, DEFAULT_MIN_ROLL_PERC);
 
         int proportion = Math.round((min1 + max1) / 2 * 100) / ((min2 + max2) / 2);
         return 50 + (100 - proportion) / 2;
     }
 
     /**
-     * @param logString  to be appended to the logged string; for success by default,
-     *                   for failure if contains @
+     * @param logString  to be appended to the logged string; for success by default, for failure if contains @
      * @param rollSource special descriptor for logging, e.g. if rolling vs Ensnare
      * @returns false if target has resisted ('wins roll')
      */
-    public static boolean rollLogged(ROLL_TYPES roll_type, String success, String fail, Ref ref,
+    public static boolean rollLogged(RollType roll_type, String success, String fail, Ref ref,
                                      String logString, String rollSource) {
         boolean result = roll(roll_type, success, fail, ref, logString, rollSource, false);
         if (!checkRollLogged(roll_type, result)) {
@@ -205,16 +99,15 @@ public class RollMaster {
         }
 
         Object[] args = {roll_type.getName(), ref.getSourceObj().getName(),
-         ref.getTargetObj().getName()};
+                ref.getTargetObj().getName()};
 
         if (roll_type.isLogToTop()) {
             args = new Object[]{main.system.text.LogManager.WRITE_TO_TOP, roll_type.getName(),
-             ref.getSourceObj().getName(), ref.getTargetObj().getName()};
+                    ref.getSourceObj().getName(), ref.getTargetObj().getName()};
         }
         ref.getGame().getLogManager().log(RollMaster.logString);
         ref.getGame().getLogManager().doneLogEntryNode();
-        if (Flags.isPhaseAnimsOn())
-        {
+        if (Flags.isPhaseAnimsOn()) {
             //TODO
         }
         if (ref.getGame().isDummyMode()) {
@@ -223,54 +116,50 @@ public class RollMaster {
         return result;
     }
 
-    public static boolean roll(ROLL_TYPES roll_type, String success, String fail, Ref ref,
-                               String logAppendix, String rollSource) {
-        return roll(roll_type, success, fail, ref, logAppendix, rollSource, null);
+    public static boolean roll(RollType roll_type, Ref ref,
+                               GenericEnums.DieType die,
+                               String logAppendix, String rollHint, Boolean logged) {
+        String sourceValue = getStdFormula(roll_type, true);
+        String targetValue = getStdFormula(roll_type, true);
+        //what if we could modify Roll object instead of keeping this infernal chain!!!!
+        return
+    }
+
+    public static boolean roll(RollType roll_type, Ref ref, String sourceValue, String targetValue,
+                               GenericEnums.DieType die,
+                               String logAppendix, String rollHint, Boolean logged) {
+sDice = getStdDiceNumber(ref.getSourceObj());
     }
 
     /**
      * @return true if {failure} formula rolls more, false otherwise
      */
-    public static boolean roll(ROLL_TYPES roll_type, String success, String fail, Ref ref,
-                               String logAppendix, String rollSource, Boolean logged) {
+    public static boolean roll(RollType roll_type, String sourceValue, String targetValue, Ref ref,
+                               GenericEnums.DieType die, String sDice, String tDice,
+                               String logAppendix, String rollHint, Boolean logged) {
         Obj source = ref.getSourceObj();
         Obj target = ref.getTargetObj();
+
         // if (roll == null)
-        roll = new Roll(roll_type, success, fail, 0);
-
-        // ref.getActive()
-
-        if (StringMaster.isEmpty(fail)) {
-            fail = initStdFail(roll_type);
-        }
-        Formula failFormula = new Formula(fail);
-        if (source != null) {
-            failFormula.applyFactor(getFailFactor(roll_type));
-        }
+        //     roll = new Roll(roll_type,die, sourceValue, targetValue,  );
 
         Boolean result;
 
-        int max1 = failFormula.getInt(ref);
-
-        if (StringMaster.isEmpty(success)) {
-            success = initStdSuccess(roll_type);
+        if (StringMaster.isEmpty(targetValue)) targetValue = initStdFail(roll_type);
+        if (StringMaster.isEmpty(sourceValue)) sourceValue = initStdSuccess(roll_type);
+        Formula failFormula = new Formula(targetValue);
+        if (source != null) {
+            failFormula.applyFactor(getFailFactor(roll_type));
         }
-        Formula successFormula = new Formula(success);
+        Formula successFormula = new Formula(sourceValue);
         successFormula.applyFactor(getSuccessFactor(roll_type));
-        int max2 = successFormula.getInt(ref);
+        //TODO make const bonus better - for tabletop
 
-        int min1 = MathMaster.applyMod(max1, DEFAULT_MIN_ROLL_PERC);
-        int min2 = MathMaster.applyMod(max2, DEFAULT_MIN_ROLL_PERC);
+        int tValue = failFormula.getInt(ref);
+        int sValue = successFormula.getInt(ref);
 
-        if (min1 >= max2) {
-            return true;
-        }
-        if (min2 >= max1) {
-            return false;
-        }
-        // per die?
-        rolledValue = RandomWizard.getRandomIntBetween(min1, max1);
-        rolledValue2 = RandomWizard.getRandomIntBetween(min2, max2);
+        rolledValue = sValue + DiceMaster.roll(die, source, new Formula(sDice).getInt(ref), logged);
+        rolledValue2 = tValue + DiceMaster.roll(die, target, new Formula(tDice).getInt(ref), logged);
 
         roll.setRolledValue(rolledValue);
         roll.setRolledValue2(rolledValue2);
@@ -280,21 +169,21 @@ public class RollMaster {
             target = ref.getEvent().getRef().getTargetObj();
         }
         // TODO display roll formulas if FULL_INFO is on!
-        if (rollSource == null) {
-            rollSource = rolledValue + " out of " + max1;
-        } else {
-            rollSource += StringMaster.wrapInParenthesis(rolledValue + " out of " + max1);
-        }
-        String rollTarget = rolledValue2 + " out of " + max2;
-        logString = target.getName() + ((result) ? " fails" : " wins") + " a "
-         + roll_type.getName() + " roll with " + rollTarget + " vs " + source.getName()
-         + "'s " + rollSource;
-
-        if (logAppendix != null) {
-            if (isAppendixAdded(logAppendix, result)) {
-                logString = logString + logAppendix.replace(getSuccessAppendixIdentifier(), "");
-            }
-        }
+        // if (rollSource == null) {
+        //     rollSource = rolledValue + " out of " + max1;
+        // } else {
+        //     rollSource += StringMaster.wrapInParenthesis(rolledValue + " out of " + max1);
+        // }
+        // String rollTarget = rolledValue2 + " out of " + max2;
+        // logString = target.getName() + ((result) ? " fails" : " wins") + " a "
+        //         + roll_type.getName() + " roll with " + rollTarget + " vs " + source.getName()
+        //         + "'s " + rollSource;
+        //
+        // if (logAppendix != null) {
+        //     if (isAppendixAdded(logAppendix, result)) {
+        //         logString = logString + logAppendix.replace(getSuccessAppendixIdentifier(), "");
+        //     }
+        // }
         if (logged == null) {
             logged = checkRollLogged(roll_type, result);
         }
@@ -305,11 +194,11 @@ public class RollMaster {
         ref.getGame().getLogManager();
         ref.getGame().getLogManager();
         if (!ref.isAnimationDisabled()) {
-             //TODO
+            //TODO
         }
         roll.setResult(result);
         roll.setLogAppendix(logAppendix);
-        roll.setRollSource(rollSource);
+        roll.setRollSource(rollHint);
         roll.setRollTarget(rollTarget);
 
         return result;
@@ -318,40 +207,36 @@ public class RollMaster {
 
     public static boolean isAppendixAdded(String logAppendix, Boolean result) {
         return (result && logAppendix.contains(getSuccessAppendixIdentifier()))
-         || (!result && !logAppendix.contains(getSuccessAppendixIdentifier()));
+                || (!result && !logAppendix.contains(getSuccessAppendixIdentifier()));
     }
 
     public static String getSuccessAppendixIdentifier() {
         return "@";
     }
 
-    private static boolean checkRollLogged(ROLL_TYPES roll_type, Boolean result) {
+
+    //TODO
+    public static Boolean rollForceKnockdown(Unit target, DC_ActiveObj attack, int force) {
+        return null;
+    }
+
+    //TODO
+    public static Boolean makeReactionRoll(Unit unit, DC_ActiveObj action, DC_ActiveObj attack) {
+        return null;
+    }
+
+    private static boolean checkRollLogged(RollType roll_type, Boolean result) {
         switch (roll_type) {
-            case DETECTION:
-            case STEALTH:
-            case HEARING:
+            case stealth:
+            case perception:
                 return result;
         }
 
         return true;
     }
 
-    private static String getSuccessFactor(ROLL_TYPES roll_type) {
-        // TODO LUCK RULE!
-        // int mod = ref.getTargetObj().getIntParam(PARAMS.LUCK_MOD);
-        // int bonus = ref.getTargetObj().getIntParam(PARAMS.LUCK_BONUS);
-        // String successFormula = null;
-        // if (!StringMaster.isEmpty(getSuccess()))
-        // successFormula = new Formula(getSuccess())
-        // .getAppended("+(" + bonus + ")")
-        // .getAppendedByFactor(mod).toString();
-        // mod = ref.getSourceObj().getIntParam(PARAMS.LUCK_MOD);
-        // bonus = ref.getSourceObj().getIntParam(PARAMS.LUCK_BONUS);
-        // String failFormula = null;
-        // if (!StringMaster.isEmpty(getFail()))
-        // failFormula = new Formula(getFail())
-        // .getAppended("+(" + bonus + ")")
-        // .getAppendedByFactor(mod).toString();
+    private static String getSuccessFactor(RollType roll_type) {
+        // TODO LUCK RULE? NF CYCLE PENALTY?
 
         PARAMETER param = ContentValsManager.getPARAM(roll_type.name() + "_ROLL_SAVE_BONUS");
         if (param == null) {
@@ -360,20 +245,31 @@ public class RollMaster {
         return StringMaster.getValueRef(KEYS.TARGET, param);
     }
 
-    public static boolean checkRollType(ROLL_TYPES rollType, Ref ref) {
+    private static String getFailFactor(RollType roll_type) {
+        PARAMETER param = ContentValsManager.getPARAM(roll_type.name() + "_ROLL_BEAT_BONUS");
+        if (param == null) {
+            return "0";
+        }
+        return StringMaster.getValueRef(KEYS.SOURCE, param);
+    }
+
+    public static boolean checkRollAutoResolves(RollType rollType, Ref ref) {
         Unit unit = (Unit) ref.getTargetObj();
         if (unit == null) {
             return false;
         }
         boolean result = true;
         switch (rollType) {
-            case MASS:
+            case reflex:
+                //immobilized
+                break;
+            case fortitude:
                 if (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
                     result = false;
                 }
                 break;
-            case FAITH:
-            case MIND_AFFECTING:
+            case grit:
+            case spirit:
                 if (!unit.isLiving()) {
                     result = false;
                 }
@@ -381,7 +277,6 @@ public class RollMaster {
                     result = false;
                 }
                 break;
-
             default:
                 break;
         }
@@ -390,90 +285,11 @@ public class RollMaster {
         }
         if (!result) {
             ref.getGame().getLogManager().logAlert(
-             unit.getName() + " is immune to " + rollType.getName() + " !");
+                    unit.getName() + " is immune to " + rollType.getName() + " !");
         }
         return result;
     }
 
-    private static String getFailFactor(ROLL_TYPES roll_type) {
-        PARAMETER param = ContentValsManager.getPARAM(roll_type.name() + "_ROLL_BEAT_BONUS");
-        if (param == null) {
-            return "0";
-        }
-        return StringMaster.getValueRef(KEYS.SOURCE, param);
-    }
-
-    public static Rolls generateRollsFromString(String rollString) {
-        boolean or = false;
-        if (rollString.contains(Strings.VERTICAL_BAR)) {
-            or = true;
-        }
-        Rolls rolls = new Rolls(or);
-        String separator = Strings.VERTICAL_BAR;
-        if (!or) {
-            separator = Strings.AND;
-        }
-        for (String s : ContainerUtils.open(rollString, separator)) {
-            String varPart = VariableManager.getVarPart(s);
-            if (StringMaster.isEmpty(varPart)) {
-                rolls.add(new Roll(new EnumMaster<ROLL_TYPES>().retrieveEnumConst(ROLL_TYPES.class,
-                 s), null, null));
-                continue;
-            }
-            s = s.replace(varPart, "");
-            varPart = StringMaster.cropParenthesises(varPart);
-            String success = ContainerUtils.openContainer(varPart, Strings.VAR_SEPARATOR).get(0);
-            String fail = ContainerUtils.openContainer(varPart, Strings.VAR_SEPARATOR).get(1);
-            ROLL_TYPES type = new EnumMaster<ROLL_TYPES>().retrieveEnumConst(ROLL_TYPES.class, s);
-            rolls.add(new Roll(type, success, fail));
-        }
-        return rolls;
-    }
-
-    /*
-     * apply *Push* effect always if sufficient force
-     * apply *Knockdown* instead plus damage for force if roll (?) failed
-      TODO reflex? defense vs force? forceResistance - strength, armor,
-         shield,
-         rollLogged(roll_type, success, fail, ref, logString, rollSource)
-         resist if reflex win
-         draw if strength win
-     */
-    public static Boolean rollForceKnockdown(Unit target, DC_ActiveObj attack, int force) {
-        ROLL_TYPES roll_type = GenericEnums.ROLL_TYPES.FORCE;
-
-        String success = "3*" + getStdFormula(GenericEnums.ROLL_TYPES.BODY_STRENGTH, true);
-        String fail = "" + force / ForceRule.ROLL_FACTOR;
-
-        // Ref ref = Ref.getSelfTargetingRefCopy(target);
-        // ref.setSource(attack.getRef().getSource());
-        Boolean result = new Roll(GenericEnums.ROLL_TYPES.FORCE, success, fail, 25)
-         .roll(attack.getRef());
-        if (result == null) {
-
-        }
-        return result;
-    }
-
-    public static Boolean makeReactionRoll(Unit unit, DC_ActiveObj action, DC_ActiveObj attack) {
-        String fail = StringMaster.getValueRef(KEYS.TARGET, PARAMS.INITIATIVE) + "/"
-         + (1 + action.getIntParam(PARAMS.AP_COST)) + "*"
-         + getDexterousModifier(unit, action);
-
-        String success = StringMaster.getValueRef(KEYS.SOURCE, PARAMS.INITIATIVE) + "/"
-         + (1 + attack.getIntParam(PARAMS.ATK_PTS_COST)) + "*"
-         + getVigilanceModifier(unit, action);
-        String successTooltip = "to avoid Attack of Opportunity";
-
-        Roll dex = new Roll(GenericEnums.ROLL_TYPES.REACTION, success, fail, 25);
-        Ref ref = action.getRef().getCopy();
-        ref.setTarget(unit.getId());
-        boolean result = !dex.roll(ref);
-        if (unit.getGame().isDummyMode()) {
-            return true;
-        }
-        return result;
-    }
 
     public static int getDexterousModifier(Unit unit, DC_ActiveObj action) {
         int mod = 25;
@@ -534,10 +350,8 @@ public class RollMaster {
         return roll;
     }
 
-    @Override
-    public String toString() {
-        // TODO Auto-generated method stub
-        return super.toString();
-    }
 
+    public static void setRoll(Roll roll) {
+        RollMaster.roll = roll;
+    }
 }

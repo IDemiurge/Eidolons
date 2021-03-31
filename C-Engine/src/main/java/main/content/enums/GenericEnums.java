@@ -228,41 +228,45 @@ public class GenericEnums {
 
     }
 
+    public enum DieType{
+        d4,
+        d6,
+        d8,
+        d10,
+        d12,
+        d20,
+    }
     /*
      * 24th of April, Hour of Magic
      */
-    public enum ROLL_TYPES implements VarHolder {
-        MIND_AFFECTING("Willpower"),
-        FAITH("Faith"),
-        REFLEX("Reflex"),
-        ACCURACY("Accuracy"),
-        REACTION("Reaction", true),
-        BODY_STRENGTH("Body Strength"),
-        QUICK_WIT("Quick Wit"),
-        FORTITUDE("Fortitude"),
-        DISARM("Disarm"),
-        MASS("Mass"),
-        DETECTION("Detection"),
-        STEALTH("Stealth"),
-        DEFENSE("Defensive"),
-        IMMATERIAL("Immaterial"),
-        DISPEL("Dispel"),
-        UNLOCK("Unlock"),
-        DISARM_TRAP("Disarm Trap"),
-        FORCE("Force"), HEARING("Hearing");
-        boolean logToTop;
-        private final String name;
+    public enum RollType implements VarHolder {
+        fortitude,
+        reflex,
+        grit,
+        wit,
+        spirit,
+        luck,
+        perception,
+        stealth,
 
-        ROLL_TYPES(String s, boolean logToTop) {
-            this(s);
+        mind_affecting(grit,spirit), //both sides same?
+
+        combat(fortitude, reflex),
+        insight(wit, luck),
+        ;
+        boolean logToTop;
+        private   String name;
+
+        RollType(RollType... combo) {
+
+        }
+        RollType(String s, boolean logToTop) {
+            this();
             this.logToTop = logToTop;
         }
 
-        ROLL_TYPES(String s) {
-            if (StringMaster.isEmpty(s)) {
-                s = StringMaster.format(name());
-            }
-            this.name = s;
+        RollType() {
+            this.name =  StringMaster.format( name());
         }
 
         public String getName() {

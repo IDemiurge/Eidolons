@@ -45,7 +45,6 @@ import eidolons.game.battlecraft.rules.combat.attack.extra_attack.AttackOfOpport
 import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
 import eidolons.game.core.master.BuffMaster;
 import eidolons.game.core.master.EffectMaster;
-import eidolons.content.DC_Formulas;
 import eidolons.system.math.DC_CounterMaster;
 import eidolons.system.math.roll.RollMaster;
 import main.ability.effects.Effect;
@@ -214,7 +213,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         Integer mod = as.getPriorityMultiplier();
         mod += (int) (modifier);
         if (mod != null) {
-            priority = MathMaster.applyMod(priority, mod);
+            priority = MathMaster.applyPercent(priority, mod);
         }
         LogMaster.log(1, "AI: " + priority + " priority for " + as);
         return priority;
@@ -641,8 +640,8 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
     @Override
     public void applyRollPriorityMod(RollEffect rollEffect) {
-        int perc = RollMaster.getRollChance(rollEffect.getRollType(), rollEffect.getSuccess(),
-                rollEffect.getFail(), rollEffect.getRef());
+        int perc = RollMaster.getRollChance(rollEffect.getRollType(), rollEffect.getSourceValue(),
+                rollEffect.getTargetValue(), rollEffect.getRef());
         if (perc < 100) {
             applyMultiplier(perc, rollEffect.getRollType() + " Roll");
         }
@@ -650,8 +649,8 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
     @Override
     public int getRollPriorityMod(RollEffect rollEffect) {
-        return RollMaster.getRollChance(rollEffect.getRollType(), rollEffect.getSuccess(),
-                rollEffect.getFail(), rollEffect.getRef());
+        return RollMaster.getRollChance(rollEffect.getRollType(), rollEffect.getSourceValue(),
+                rollEffect.getTargetValue(), rollEffect.getRef());
     }
 
     @Override

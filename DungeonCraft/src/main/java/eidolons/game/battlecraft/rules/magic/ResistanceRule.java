@@ -59,7 +59,7 @@ public class ResistanceRule {
         resistance -= source.getIntParam(PARAMS.RESISTANCE_PENETRATION);
 
         int mod = spell.getIntParam(PARAMS.RESISTANCE_MOD);
-        resistance = MathMaster.applyMod(resistance, mod);
+        resistance = MathMaster.applyPercent(resistance, mod);
         return resistance;
     }
 

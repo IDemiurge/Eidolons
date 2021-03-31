@@ -225,7 +225,7 @@ public class DummyAction implements ActiveObj {
     }
 
     @Override
-    public boolean modifyParameter(PARAMETER param, int amount) {
+    public boolean modifyParameter(PARAMETER param, Number amount) {
         return false;
     }
 
@@ -270,7 +270,7 @@ public class DummyAction implements ActiveObj {
     }
 
     @Override
-    public boolean modifyParameter(PARAMETER param, int amount, Integer minmax) {
+    public boolean modifyParameter(PARAMETER param, Number amount, Integer minmax) {
         return false;
     }
 

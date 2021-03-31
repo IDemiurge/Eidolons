@@ -34,8 +34,6 @@ import java.util.Map;
 // Includes Skills and Classes
     public class DC_FeatObj extends DC_HeroAttachedObj {
 
-    public static PARAMS[] rankParams = {PARAMS.RANK_XP_MOD, PARAMS.RANK_SD_MOD,
-     PARAMS.RANK_FORMULA_MOD};
     private boolean paramStringParsed;
     private Map<PARAMETER, String> modMap;
     private Map<PARAMETER, String> bonusMap;
@@ -52,13 +50,6 @@ import java.util.Map;
 
     @Override
     protected void addDefaultValues() {
-        // no toBase() for feats?
-        for (PARAMS param : rankParams) {
-            Integer value = getIntParam(param);
-            if (value == 0) {
-                setParam(param, param.getDefaultValue());
-            }
-        }
     }
 
     protected void initHero() {
@@ -82,8 +73,6 @@ import java.util.Map;
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
-
-        applyRank();
 
         initHero();
         for (ATTRIBUTE attr : DC_ContentValsManager.getAttributeEnums()) {
@@ -177,7 +166,7 @@ import java.util.Map;
         float quotientSum = 0;
         for (PARAMETER param : getBonusMap().keySet()) {
             Integer amount = NumberUtils.getIntParse(getBonusMap().get(param), getRef());
-            float d = (float) (amount * getRankTotalFormulaMod()) / 100;
+            float d = (float) amount   ;
 
             if (param.isAttribute()) {
                 quotientSum += d - Math.floor(d);
@@ -209,91 +198,9 @@ import java.util.Map;
     private void applyParamMods() {
         for (PARAMETER param : getModMap().keySet()) {
             Integer amount = NumberUtils.getIntParse(modMap.get(param));
-            amount += amount * getRankTotalFormulaMod();
             getHero().modifyParamByPercent(param, amount); // TODO feat name for
             // valModMap!
         }
-    }
-
-    public int getRankXpCost(int rank) {
-        return 0;
-
-    }
-
-    private void applyRank() {
-        Integer rank = getRank();
-        if (rank == 0) {
-            return;
-        }
-        Integer mod = rank * getRankFormulaMod();
-
-        for (AbilityObj p : getPassives()) {
-            // will affect AddParam effects?
-            for (Ability a : p.getAbilities()) {
-                for (Effect ef : a.getEffects()) {
-                    try {
-                        ef.resetOriginalFormula();
-                        ef.appendFormulaByMod(100 + mod);
-                    } catch (Exception e) {
-                        main.system.ExceptionMaster.printStackTrace(e);
-                    }
-                    // some exceptions?
-                    /*
-                     * how widely will this be used?
-					 * mostly on simple low-level skills...
-					 * but also on auras I guess...
-					 * the point is to make things flexible, deeply customizable, and viable for 
-					 * no-magic heroes...
-					 * 
-					 * it's true that with the amount of Masteries/Skills I may not need this on lower
-					 * levels, but at some point I will! 
-					 * 
-					 * how will the rank be saved into hero data? 
-					 * >> (var)
-					 * >> special prop 
-					 * >> prop per rank #
-					 */
-                }
-            }
-        }
-
-        for (PARAMETER attr : ContentValsManager.getAttributes()) {
-            PARAMS param = (PARAMS) attr;
-            Integer value = getIntParam(param, true);
-            if (value <= 0) {
-                continue;
-            }
-            value += Math.round(value * mod / 100);
-            setParam(param, value);
-        }
-        // modifyHeroParameters();
-        for (PARAMETER param : DC_ContentValsManager.getFeatModifyingParams()) {
-            Integer value = getIntParam(param, true);
-            if (value == 0) {
-                continue;
-            }
-            value += Math.round(value * mod / 100);
-            setParam(param, value);
-
-        }
-
-        Integer sdMod = rank * getIntParam(PARAMS.RANK_SD_MOD);
-        setParam(PARAMS.SKILL_DIFFICULTY, getIntParam(PARAMS.SKILL_DIFFICULTY, true));
-        modifyParamByPercent(PARAMS.SKILL_DIFFICULTY, sdMod);
-
-        boolean rankApplied = true;
-    }
-
-    public Integer getRankFormulaMod() {
-        return getIntParam(PARAMS.RANK_FORMULA_MOD);
-    }
-
-    public Integer getRankTotalFormulaMod() {
-        return getRank() * getRankFormulaMod();
-    }
-
-    public Integer getRank() {
-        return getIntParam(PARAMS.RANK);
     }
 
     @Override

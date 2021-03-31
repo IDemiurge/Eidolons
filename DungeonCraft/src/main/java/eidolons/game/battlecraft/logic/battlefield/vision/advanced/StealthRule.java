@@ -268,7 +268,7 @@ public class StealthRule implements ActionRule {
         boolean result = false;
         ref.setAnimationDisabled(true);
         try {
-            result = RollMaster.roll(GenericEnums.ROLL_TYPES.STEALTH, ref);
+            result = RollMaster.roll(GenericEnums.RollType.STEALTH, ref);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         } finally {

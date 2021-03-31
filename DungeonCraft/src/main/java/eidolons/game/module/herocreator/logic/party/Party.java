@@ -14,8 +14,6 @@ import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
-import main.content.values.properties.MACRO_PROPS;
-import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.Ref;
@@ -261,9 +259,9 @@ public class    Party extends Obj {
              // Math.min(
              // DC_Formulas.INTELLIGENCE_ORGANIZATION_CAP_MOD
              // * m.getIntParam(PARAMS.INTELLIGENCE),
-             MathMaster.applyMod(getIntParam(PARAMS.ORGANIZATION), m
+             MathMaster.applyPercent(getIntParam(PARAMS.ORGANIZATION), m
               .getIntParam(PARAMS.INTEGRITY)));
-            m.setParam(PARAMS.BATTLE_SPIRIT, MathMaster.applyMod(getIntParam(PARAMS.BATTLE_SPIRIT),
+            m.setParam(PARAMS.BATTLE_SPIRIT, MathMaster.applyPercent(getIntParam(PARAMS.BATTLE_SPIRIT),
              !m.isHero() ? 100 : m.getIntParam(PARAMS.INTEGRITY)));
             m.resetMorale();
         }

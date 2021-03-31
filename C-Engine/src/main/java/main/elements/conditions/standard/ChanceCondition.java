@@ -1,6 +1,6 @@
 package main.elements.conditions.standard;
 
-import main.content.enums.GenericEnums.ROLL_TYPES;
+import main.content.enums.GenericEnums.RollType;
 import main.elements.conditions.ConditionImpl;
 import main.entity.Ref;
 import main.system.auxiliary.RandomWizard;
@@ -10,9 +10,9 @@ public class ChanceCondition extends ConditionImpl {
     private Formula greater;
     private Formula than;
     private Formula percentage;
-    private ROLL_TYPES roll_type;
+    private RollType roll_type;
 
-    public ChanceCondition(ROLL_TYPES roll_type, Formula greater, Formula than) {
+    public ChanceCondition(RollType roll_type, Formula greater, Formula than) {
         this(greater, than);
         this.roll_type = roll_type;
     }

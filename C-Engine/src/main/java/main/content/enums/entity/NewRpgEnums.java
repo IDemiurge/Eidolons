@@ -68,12 +68,12 @@ public class NewRpgEnums {
     }
 
     public enum HitType {
-        critical_miss,
-        miss,
-        graze,
-        hit,
-        critical_hit,
-        deadeye,
+        critical_miss, //<0
+        miss, //0-20
+        graze, //20-40
+        hit, //40-60
+        critical_hit, //60-80
+        deadeye, //80+
         ;
     }
 }

@@ -3,6 +3,7 @@ package eidolons.game.netherflame.lord;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.game.core.EUtils;
+import eidolons.game.netherflame.lord.progression.LordProgression;
 import eidolons.game.netherflame.main.death.HeroChain;
 import eidolons.game.netherflame.main.soul.eidola.Soul;
 import eidolons.game.netherflame.main.soul.eidola.SoulMaster;
@@ -17,9 +18,16 @@ import java.util.List;
 public class EidolonLord extends LightweightEntity {
 
     public static EidolonLord lord;
-    HeroChain chain;
+    protected HeroChain chain;
+    protected  List<Card> globalDeck;
+    protected LordProgression progression;
+    /*
+    1) consider persistence - unlocks, account, runs that were started
 
-    List<Card> globalDeck;
+    Should we split some of this stuff into Netherflame-Core project?
+
+
+     */
 
     public EidolonLord(ObjType type) {
         super(type);
@@ -27,9 +35,6 @@ public class EidolonLord extends LightweightEntity {
         lord.setParam(PARAMS.C_SOULFORCE,   type.getIntParam(PARAMS.BASE_SOULFORCE));
         lord.setParam(PARAMS.SOULFORCE,   type.getIntParam(PARAMS.SOULFORCE));
         GuiEventManager.trigger(GuiEventType.SOULFORCE_GAINED, this);
-    }
-
-    public void useArts() {
     }
 
     public void soulsLost(Soul... souls) {
@@ -41,7 +46,6 @@ public class EidolonLord extends LightweightEntity {
             getGame().getLogManager().log("A Soul is lost: " + soul.getUnitType().getName());
         }
         SoulMaster.clear();
-
     }
 
     public void soulforceGained(int amount) {

@@ -729,15 +729,15 @@ public abstract class DataModel {
         return modifyParameter(param, amount, minMax, false, modifierKey);
     }
 
-    public boolean modifyParameter(PARAMETER param, int amount, Integer minMax) {
+    public boolean modifyParameter(PARAMETER param, Number amount, Integer minMax) {
         return modifyParameter(param, amount, minMax, false);
     }
 
-    public void modifyParameter(PARAMETER param, int amount, boolean base) {
+    public void modifyParameter(PARAMETER param, Number amount, boolean base) {
         modifyParameter(param, amount, base, null);
     }
 
-    public void modifyParameter(PARAMETER param, int amount, boolean base, String modifierKey) {
+    public void modifyParameter(PARAMETER param, Number amount, boolean base, String modifierKey) {
         modifyParameter(param, amount, modifierKey);
         if (base) {
             type.modifyParameter(param, amount, modifierKey);

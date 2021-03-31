@@ -266,7 +266,7 @@ public class AddBuffEffect extends MultiEffect implements OneshotEffect, Resisti
         // TODO if (checkSpellBuff()) ++
         if (duration != ContentValsManager.INFINITE_VALUE) {
             if (getResistanceMod() != null) {
-                duration = MathMaster.applyMod(duration, getResistanceMod());
+                duration = MathMaster.applyPercent(duration, getResistanceMod());
             }
             duration = MathMaster.addFactor(duration, ref.getSourceObj().getIntParam(
              PARAMS.DURATION_MOD));

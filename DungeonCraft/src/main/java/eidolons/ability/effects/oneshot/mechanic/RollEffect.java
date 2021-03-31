@@ -1,143 +1,94 @@
 package eidolons.ability.effects.oneshot.mechanic;
 
 import eidolons.game.core.master.EffectMaster;
+import eidolons.system.math.roll.Roll;
 import eidolons.system.math.roll.RollMaster;
-import eidolons.system.math.roll.Rolls;
+import main.ability.StringsContainer;
 import main.ability.effects.*;
-import main.content.enums.GenericEnums.ROLL_TYPES;
+import main.content.enums.GenericEnums;
+import main.content.enums.GenericEnums.RollType;
 import main.data.ability.construct.VariableManager;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.Strings;
 
+import static main.content.enums.GenericEnums.DieType.d10;
+
 // auto-wrap in this? 
 /*
- * via special prop ROLL_TYPES 
- * 
- * 
- * 
+ * via special prop ROLL_TYPES
+ *
+ *
+ *
  */
 public class RollEffect extends MicroEffect implements OneshotEffect, ContainerEffect {
     private Effect effect;
-    private String success;
-    private String fail;
     private String abilityName;
-    private ROLL_TYPES rollType;
-    private String rollString;
-    private Rolls rolls;
+    private Effect elseEffect;
     private String elseAbilityName;
-    private Effects elseEffect;
 
-    public RollEffect(ROLL_TYPES rollType, String success, String fail,
-                      String abilityName, String elseAbilityName) {
-        this.success = success;
-        this.fail = fail;
+    private String sValue;
+    private String tValue;
+    private RollType rollType;
+
+    private String sDice;
+    private String tDice;
+    private GenericEnums.DieType dieType;
+    private boolean ignoresChaosRule;
+
+    private String rollString;
+    private Roll roll;
+
+    public RollEffect(RollType type, Effect fx) {
+        this(type, fx, null);
+    }
+
+    public RollEffect(RollType rollType, Effect effect,
+                      StringsContainer container) {
+        this(rollType, d10, effect, null, container);
+    }
+
+    public RollEffect(RollType rollType, GenericEnums.DieType dieType, Effect effect,
+                      StringsContainer container) {
+        this(rollType, dieType, effect, null, container);
+    }
+
+    public RollEffect(RollType rollType, GenericEnums.DieType dieType, Effect effect, Effect elseEffect,
+                      StringsContainer container) {
         this.rollType = rollType;
-        this.abilityName = abilityName;
-        this.elseAbilityName = elseAbilityName;
-    }
-
-    public RollEffect(ROLL_TYPES rollType, String success, String fail,
-                      String abilityName) {
-        this(rollType, success, fail, abilityName, null);
-    }
-
-    public RollEffect(String rollString, String success, String fail,
-                      String abilityName, String elseAbilityName) {
-        this.rollString = rollString;
-        this.success = success;
-        this.fail = fail;
-        this.abilityName = abilityName;
-        this.elseAbilityName = elseAbilityName;
-    }
-
-    public RollEffect(String rollString, String success, String fail,
-                      String abilityName) {
-        this(rollString, success, fail, abilityName, null);
-    }
-
-    public RollEffect(String rollString, String abilityName,
-                      String elseAbilityName) {
-        this(rollString, "", "", abilityName, null);
-    }
-
-    public RollEffect(String rollString, String abilityName) {
-        this(rollString, abilityName, null);
-    }
-
-    public RollEffect(String rollString, Effect e) {
-        this.rollString = rollString;
-        this.effect = e;
-    }
-
-    public RollEffect(ROLL_TYPES rollType, String success, Effect e, String fail) {
-        this.effect = e;
-        this.success = success;
-        this.fail = fail;
-        this.rollType = rollType;
-    }
-
-    public RollEffect(ROLL_TYPES t, Effect effect) {
+        this.dieType = dieType;
         this.effect = effect;
-        this.rollType = t;
+        this.elseEffect = elseEffect;
+        if (container != null) {
+            container.unpack(this, RollEffect.class);
+        }
     }
 
-    private void initRollString() {
-        rolls = RollMaster.generateRollsFromString(rollString);
+
+    public RollEffect(RollType rollType, String sourceValue, String targetValue,
+                      String abilityName, String elseAbilityName) {
+        this.sValue = sourceValue;
+        this.tValue = targetValue;
+        this.rollType = rollType;
+        this.abilityName = abilityName;
+        this.elseAbilityName = elseAbilityName;
     }
 
-    private boolean roll() {
-        if (rolls == null) {
-            return false;
-        }
-        return rolls.roll(ref);
-    }
-
-    @Override
-    public String toString() {
-        String string = "RollEffect:";
-        if (rollString != null) {
-            string = rollString;
-        } else if (rollType != null) {
-            string += rollType.getName();
-        }
-        if (effect != null) {
-            string += StringMaster.wrapInParenthesis(effect.toString());
-        } else if (abilityName != null) {
-            string += StringMaster.wrapInParenthesis(abilityName);
-        }
-        return string;
-    }
 
     public boolean applyThis() {
-        boolean result;
-        if (rollType == null) {
-            if (success == null && fail == null) {
-                initRollString();
-                result = roll();
-            } else {
-                // init roll
-                if (getRollType() == null) {
-                    return true;
-                }
+        boolean result = false;
 
-                return applyThis(); // TODO luck?
-            }
-
+        if (rollType != null) {
+            roll = new Roll(rollType, dieType, sValue, tValue, sDice, tDice);
+            result = roll.roll(getRef());
         } else {
-            if (!RollMaster.checkRollType(rollType, ref)) {
-                return true;
-            }
-
-            // ++ event
-            result =
-             // new ChanceCondition(new Formula(successFormula),
-             // new Formula(failFormula)).preCheck(ref);
-             RollMaster.roll(rollType, getSuccess(), getFail(), ref);
-
-            // roll method instead, with proper logging!
+            // if (!RollMaster.checkRollAutoResolves(rollType, ref)) {
+            //     return true;
+            // }
+            // result = RollMaster.roll(rollType, getSourceValue(), getTargetValue(), ref);
         }
+
         if (game.isDebugMode() || result) {
             return getEffect().apply(ref);
         } else {
@@ -156,10 +107,10 @@ public class RollEffect extends MicroEffect implements OneshotEffect, ContainerE
             elseEffect = new Effects();
         }
         for (String s : ContainerUtils.open(elseAbilityName,
-         Strings.VERTICAL_BAR)) {
+                Strings.VERTICAL_BAR)) {
             ((Effects) effect).addAll(EffectMaster
-             .getEffectsFromAbilityType(VariableManager.getVarType(s,
-              false, ref)));
+                    .getEffectsFromAbilityType(VariableManager.getVarType(s,
+                            false, ref)));
         }
 
         return elseEffect;
@@ -171,51 +122,60 @@ public class RollEffect extends MicroEffect implements OneshotEffect, ContainerE
         if (effect == null) {
             effect = new Effects();
             for (String s : ContainerUtils.open(abilityName,
-             Strings.VERTICAL_BAR)) {
+                    Strings.VERTICAL_BAR)) {
                 ((Effects) effect).addAll(EffectMaster
-                 .getEffectsFromAbilityType(VariableManager.getVarType(
-                  s, false, ref)));
+                        .getEffectsFromAbilityType(VariableManager.getVarType(
+                                s, false, ref)));
             }
         }
         return effect;
     }
 
-    public String getSuccess() {
-        if (StringMaster.isEmpty(success)) {
-            success = RollMaster.getStdFormula(rollType, true);
+    public String getSourceValue() {
+        if (StringMaster.isEmpty(sValue)) {
+            sValue = RollMaster.getStdFormula(rollType, true);
         }
-        return success;
+        return sValue;
     }
 
-    public String getFail() {
+    public String getTargetValue() {
 
-        if (StringMaster.isEmpty(fail)) {
-            fail = RollMaster.getStdFormula(rollType, false);
+        if (StringMaster.isEmpty(tValue)) {
+            tValue = RollMaster.getStdFormula(rollType, false);
         }
-        return fail;
+        return tValue;
+    }
+
+    @Override
+    public String toString() {
+        String string = "RollEffect:";
+        if (rollString != null) {
+            string = rollString;
+        } else if (rollType != null) {
+            string += rollType.getName();
+        }
+        if (effect != null) {
+            string += StringMaster.wrapInParenthesis(effect.toString());
+        } else if (abilityName != null) {
+            string += StringMaster.wrapInParenthesis(abilityName);
+        }
+        return string;
     }
 
     public String getAbilityName() {
         return abilityName;
     }
 
-    public ROLL_TYPES getRollType() {
+    public RollType getRollType() {
         if (rollType == null) {
-            rollType = new EnumMaster<ROLL_TYPES>().retrieveEnumConst(
-             ROLL_TYPES.class, rollString);
+            rollType = new EnumMaster<RollType>().retrieveEnumConst(
+                    RollType.class, rollString);
         }
         return rollType;
     }
 
     public String getRollString() {
         return rollString;
-    }
-
-    public Rolls getRolls() {
-        if (rolls == null) {
-            initRollString();
-        }
-        return rolls;
     }
 
     public String getElseAbilityName() {

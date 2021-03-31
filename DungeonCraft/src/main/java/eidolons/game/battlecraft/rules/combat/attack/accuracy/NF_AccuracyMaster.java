@@ -5,17 +5,24 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.event.ChoiceEventMaster;
-import eidolons.game.battlecraft.rules.DiceMaster;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
+import eidolons.game.battlecraft.rules.combat.attack.AttackCalculator;
 import eidolons.game.battlecraft.rules.combat.attack.DefenseAttackCalculator;
 import eidolons.game.core.game.DC_Game;
+import eidolons.system.math.roll.DiceMaster;
 import main.content.enums.entity.NewRpgEnums;
+import main.content.values.properties.G_PROPS;
+import main.system.auxiliary.EnumMaster;
 
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
+
+import static main.content.enums.entity.NewRpgEnums.HitType.*;
 
 public class NF_AccuracyMaster {
-    public static final NewRpgEnums.HitType[] types = NewRpgEnums.HitType.values();
+    public static final NewRpgEnums.HitType[] types = values();
     private DC_Game game;
 
     public NF_AccuracyMaster(DC_Game game) {
@@ -39,59 +46,93 @@ public class NF_AccuracyMaster {
     }
 
     private int rollAccuracy(int defense, int attackValue, BattleFieldObject attacked, Unit attacker, DC_ActiveObj action) {
+        if (action.isSpell()) {
+            //TODO chaos level applies?
+        }
         int base = DC_Calculator.getAccuracyRating(defense, attackValue);
-        int dice = 1 + game.getState().getChaosLevel();
+        int dice = getDiceNumberForAttack(action, attacker, true);
         int plus = DiceMaster.d20(attacked, dice);
+        dice = getDiceNumberForAttack(action, attacked, false);
         int minus = DiceMaster.d20(attacker, dice);
         return base + plus - minus;
+    }
+
+    private int getDiceNumberForAttack(DC_ActiveObj action, BattleFieldObject unit, boolean attacker) {
+        return 1 + game.getState().getChaosLevel();
     }
 
     public void initHitType(Attack attack) {
         NewRpgEnums.HitType hitType = getHitType(attack);
         logHit(hitType, attack);
-
-
     }
 
     private void logHit(NewRpgEnums.HitType hitType, Attack attack) {
     }
 
+    //spell? should spells also create Attack object?
     public AccuracyBreakdown createBreakdown(Attack attack) {
         Map<NewRpgEnums.HitType, Integer> chances = new LinkedHashMap<>();
-        Map<NewRpgEnums.HitType, Integer> min = new LinkedHashMap<>();
-        Map<NewRpgEnums.HitType, Integer> max = new LinkedHashMap<>();
+        Map<NewRpgEnums.HitType, Integer> minMap = new LinkedHashMap<>();
+        Map<NewRpgEnums.HitType, Integer> maxMap = new LinkedHashMap<>();
+        int accuracyBase, minAccuracy, maxAccuracy;
+
+        int defense = DefenseAttackCalculator.getDefenseValue(attack);
+        int attackValue = DefenseAttackCalculator.getAttackValue(attack);
+        accuracyBase = DC_Calculator.getAccuracyRating(defense, attackValue);
+        int dice = getDiceNumberForAttack(attack.getAction(), attack.getAttacked(), false);
+        int dice2 = getDiceNumberForAttack(attack.getAction(), attack.getAttacker(), true);
+        int max = Math.max(dice, dice2);
+        int min = Math.min(dice, dice2);
+        maxAccuracy = accuracyBase + max * 20 - min;
+        minAccuracy = accuracyBase - max * 20 + min;
+
         for (NewRpgEnums.HitType type : types) {
-            int chance = getChance(attack, type);
+            int chance = getChance(attack, type, minAccuracy, maxAccuracy);
             if (chance > 0) {
                 chances.put(type, chance);
             } else continue;
-            min.put(type, getMinDmg(attack, type));
-            max.put(type, getMaxDmg(attack, type));
+            minMap.put(type, getMinDmg(attack, type));
+            minMap.put(type, getMaxDmg(attack, type));
         }
-        AccuracyBreakdown breakdown = new AccuracyBreakdown(chances, min, max);
+        AccuracyBreakdown breakdown = new AccuracyBreakdown(chances, minMap, maxMap);
         return breakdown;
     }
 
-    public void critMiss(Attack attack) {
-        //change the target of the attack - and then? Graze? Self-damage?
-
+    private Integer getMinDmg(Attack attack, NewRpgEnums.HitType type) {
+        return getDmgRange(attack, type, true);
     }
 
-    public void deadEye(Attack attack) {
-        Deadeye[] options = getDeadEyeOptions(attack);
-        Deadeye deadeye = new ChoiceEventMaster<Deadeye>().promptAndWait(options);
-        apply(deadeye, attack);
+    private Integer getMaxDmg(Attack attack, NewRpgEnums.HitType type) {
+        return getDmgRange(attack, type, false);
     }
 
-    private void apply(Deadeye deadeye, Attack attack) {
-        //abstract? damageModifier, effect, target(s)
+    private Integer getDmgRange(Attack attack, NewRpgEnums.HitType type, boolean minMax) {
+        AttackCalculator calculator = new AttackCalculator(attack, true);
+        calculator.setHitType(type);
+        if (minMax) {
+            calculator.setMin(true);
+        } else {
+            calculator.setMax(true);
+        }
+        return calculator.calculateFinalDamage();
     }
 
-    private Deadeye[] getDeadEyeOptions(Attack attack) {
-
-        return new Deadeye[]{
-
-        };
+    private int getChance(Attack attack, NewRpgEnums.HitType type, int minAccuracy, int maxAccuracy) {
+        if (type == critical_miss || type == deadeye) {
+            if (attack.isExtra()) {
+                return 0;
+            }
+        }
+        int index = EnumMaster.getEnumConstIndex(NewRpgEnums.HitType.class, type);
+        int min = index * 20;
+        int max = min + 20;
+        if (max < minAccuracy)
+            return 0;
+        if (min > maxAccuracy)
+            return 0;
+        int range = maxAccuracy - minAccuracy;
+        int chance = Math.min(maxAccuracy - max, 20) / range * 100;
+        return chance;
     }
 
 

@@ -97,18 +97,18 @@ public class TossItemEffect extends DC_Effect implements OneshotEffect {
         }
         Ref REF = ref.getCopy();
         REF.setTarget(source.getId());
-
-        boolean result = RollMaster.roll(GenericEnums.ROLL_TYPES.ACCURACY, "-", fail, ref, "@, missing the "
-         + item.getName() + " toss", item.getName() + " toss");
-        fail = "5";
-        if (!result) {
-            fail += "*2";
-        }
-        REF.setTarget(unit.getId());
-        result = !RollMaster.roll(GenericEnums.ROLL_TYPES.REFLEX, "-", fail, ref, "@, dropping the tossed "
-         + item.getName(), item.getName() + " toss");
-
-        return result;
+//TODO
+        // boolean result = RollMaster.roll(GenericEnums.ROLL_TYPES.ACCURACY, "-", fail, ref, "@, missing the "
+        //  + item.getName() + " toss", item.getName() + " toss");
+        // fail = "5";
+        // if (!result) {
+        //     fail += "*2";
+        // }
+        // REF.setTarget(unit.getId());
+        // result = !RollMaster.roll(GenericEnums.ROLL_TYPES.REFLEX, "-", fail, ref, "@, dropping the tossed "
+        //  + item.getName(), item.getName() + " toss");
+        // return result;
+        return false;
     }
 
     private void dropped(DC_HeroItemObj item, Unit unit) {

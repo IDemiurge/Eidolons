@@ -16,15 +16,4 @@ public class ActiveCalculator extends EntityCalculator<DC_ActiveObj> {
         super(entity, entityMaster);
     }
 
-
-    public int getCritOrDodgeChance(DC_Obj target) {
-        if (!getEntity().getChecker().isAttackGeneric())
-            if (target instanceof BattleFieldObject)
-                if (getEntity().getChecker().isAttack()) {
-//            Attack attack = DC_AttackMaster.getAttackFromAction(getEntity());
-//             new AttackCalculator(attack, true).getCritOrDodgeChance();
-                    return DefenseAttackCalculator.getCritOrDodgeChance(getEntity(), (BattleFieldObject) target);
-                }
-        return 100;
-    }
 }

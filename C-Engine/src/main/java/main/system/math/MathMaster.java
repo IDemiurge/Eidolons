@@ -94,7 +94,7 @@ public abstract class MathMaster {
     }
 
     // applyFactor
-    public static int applyMod(int amount, Integer mod) {
+    public static int applyPercent(int amount, Integer mod) {
         // amount = amount +
         amount = Math.round(new Float(amount * mod) / 100);
         return amount;
@@ -107,7 +107,7 @@ public abstract class MathMaster {
         if (mod == 0) {
             return amount;
         }
-        return applyMod(amount, mod);
+        return applyPercent(amount, mod);
     }
 
     public static Double applyModDouble(Double amount, Integer mod) {
@@ -265,7 +265,7 @@ public abstract class MathMaster {
 
     public static int applyMods(int amount, Integer... mods) {
         for (int mod : mods) {
-            amount = applyMod(amount, mod);
+            amount = applyPercent(amount, mod);
         }
         return amount;
     }

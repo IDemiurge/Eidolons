@@ -24,4 +24,13 @@ what would be easy to understand?
 If we have outer and inner armor?
 
  */
+
+    @Override
+    public String toString() {
+        return "AccuracyBreakdown {" +
+                "chances=" + chances +
+                ", min=" + min +
+                ", max=" + max +
+                '}';
+    }
 }

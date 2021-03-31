@@ -87,4 +87,7 @@ public class DataUnitFactory<E extends DataUnit> {
         return builder.toString();
     }
 
+    public DataUnit create() {
+        return new DataUnit(constructDataString());
+    }
 }

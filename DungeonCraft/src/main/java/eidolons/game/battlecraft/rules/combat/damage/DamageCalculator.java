@@ -59,7 +59,7 @@ public class DamageCalculator {
 
         int amount = base_damage - blocked;
         int resistance = ResistMaster.getResistanceForDamageType(attacked, attacker, damage_type);
-        amount = amount - MathMaster.applyMod(amount, resistance);
+        amount = amount - MathMaster.applyPercent(amount, resistance);
         int armor = ArmorMaster.getArmorValue(attacked, damage_type);
         //applies natural armor
 //        PhaseAnimation animation = magical ? PhaseAnimator.getActionAnimation(ref, attacker) : PhaseAnimator.getAttackAnimation(ref,

@@ -74,19 +74,6 @@ public class UnitTrainingMaster {
             }
         }
 
-        try {
-            // adjust XP/Gold as per mods and default types...
-            // monsters should probably getOrCreate more...
-            // and then there is the Unit Level...
-
-            new UnitLevelManager().buyPoints(true, unit.getType());
-            new UnitLevelManager().buyPoints(false, unit.getType());
-            new UnitLevelManager().spendPoints(unit.getType(), true);
-            // will xp/gold be "spent"? WriteToType, nota bene...
-            unit.toBase();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
     }
 
     public static Integer getSpellXpPercentage(Unit unit) {

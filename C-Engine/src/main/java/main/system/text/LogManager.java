@@ -3,7 +3,7 @@ package main.system.text;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
-import main.content.enums.GenericEnums.ROLL_TYPES;
+import main.content.enums.GenericEnums.RollType;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.values.parameters.PARAMETER;
 import main.entity.DataModel;
@@ -320,7 +320,7 @@ public abstract class LogManager {
     }
 
     public void logStdRoll(Ref ref, int greater, int randomInt, int than, int randomInt2,
-                           ROLL_TYPES roll_type) {
+                           RollType roll_type) {
         Obj source = ref.getSourceObj();
         Obj target = ref.getEvent().getRef().getTargetObj();
         boolean fail = randomInt2 > randomInt;

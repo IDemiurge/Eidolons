@@ -23,6 +23,7 @@ import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.ActionEnums;
+import main.content.enums.entity.NewRpgEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
@@ -35,6 +36,8 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.launch.Flags;
 import main.system.sound.AudioEnums;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
+
+import static main.content.enums.entity.NewRpgEnums.HitType.*;
 
 public class DC_AttackMaster {
     private final ParryRule parryRule;
@@ -63,8 +66,10 @@ public class DC_AttackMaster {
     }
 
     private static void log(DC_Game game, String message) {
-        // if (!precalc)
-        game.getLogManager().log(message);
+        if (debug)
+            LogMaster.log(LogMaster.ATTACKING_DEBUG, message);
+        else
+            game.getLogManager().log(message);
     }
 
     public static DC_WeaponObj getAttackWeapon(Ref ref, boolean offhand) {
@@ -219,12 +224,14 @@ public class DC_AttackMaster {
                         + " makes a Sneak Attack against " + attacked.getName());
             }
         }
+
+        NewRpgEnums.HitType hitType = accuracyMaster.getHitType(attack);
+        attack.setHitType(hitType);
         if (canCounter) {
             canCounter = attacked.canCounter(action, attack.isSneak());
         }
 
-        LogMaster.log(LogMaster.ATTACKING_DEBUG, attacker.getNameIfKnown() + " attacks "
-                + attacked.getName());
+        log(attacker.getNameIfKnown() + " attacks " + attacked.getName());
         // } ====> Need a common messaging interface for actions/costs
 
         String damage_mods = "";
@@ -283,7 +290,7 @@ public class DC_AttackMaster {
                         //                    }
                         return true;
                     }
-                    dodged = DefenseAttackCalculator.checkDodgedOrCrit(attack);
+                    dodged = hitType == critical_miss || hitType == miss;
                 }
 
         // BEFORE_ATTACK,

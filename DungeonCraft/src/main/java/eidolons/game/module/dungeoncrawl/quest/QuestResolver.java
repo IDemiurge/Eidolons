@@ -107,10 +107,6 @@ public class QuestResolver  extends QuestHandler{
             EUtils.onConfirm("Congratulations! You have completed the quest " +
              quest.getTitle() +
              "! " +
-             "Your exploits have given you " +
-//             "You have gained " +
-             reward.getXpFormula() +
-             " Experience and the " +
              reward.getGoldFormula() +
              " gold pieces promised to you await you in town" +
 //      TODO        quest.getTown().getName() +

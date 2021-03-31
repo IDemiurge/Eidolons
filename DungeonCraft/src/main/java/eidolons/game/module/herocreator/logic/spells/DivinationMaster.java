@@ -62,12 +62,8 @@ public class DivinationMaster {
     public static List<Spell> divine(Unit diviningHero) {
         hero = diviningHero;
         List<Spell> list = new ArrayList<>();
-        pool = DC_MathManager.getDivinationPool(hero);
-        // divination cap limiting?
-
-        sdCondition = new NumericCondition(
-         DC_Formulas.DIVINATION_MAX_SD_FORMULA.toString(),
-         StringMaster.getValueRef(KEYS.MATCH, (PARAMS.SPELL_DIFFICULTY)));
+        pool =0;//  getDivinationPool(hero);
+        sdCondition =null ; //TODO
 
         Spell spell;
         spellGroups = initSpellGroups();
@@ -129,22 +125,7 @@ public class DivinationMaster {
     }
 
     private static void applyKnownSpellDivinationEffect(Spell spell) {
-        if (hero.checkPassive(UnitEnums.STANDARD_PASSIVES.DRUIDIC_VISIONS)) {
-            Ref ref = Ref.getSelfTargetingRefCopy(hero);
-            ref.setID(KEYS.SPELL, spell.getId());
-            new ModifyValueEffect(PARAMS.C_ESSENCE,
-             MOD.MODIFY_BY_CONST,
-             DC_Formulas.DRUIDIC_VISIONS_ESSENCE).apply(ref);
-            return;
-        }
 
-        if (hero.checkPassive(UnitEnums.STANDARD_PASSIVES.HOLY_PRAYER)) {
-            Ref ref = Ref.getSelfTargetingRefCopy(hero);
-            ref.setID(KEYS.SPELL, spell.getId());
-            new ModifyValueEffect(PARAMS.C_ESSENCE, MOD.MODIFY_BY_CONST,
-             DC_Formulas.HOLY_PRAYER_MORALE).apply(ref);
-            // ++ REMOVE COOLDOWN FROM SPELL?
-        }
         Ref ref = Ref.getSelfTargetingRefCopy(spell);
         AddBuffEffect buffEffect = new AddBuffEffect(BUFF_FAVORED, new Effects(
          new ModifyValueEffect(PARAMS.ESS_COST,

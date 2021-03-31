@@ -66,7 +66,7 @@ public class HearingRule implements ActionRule {
 //        String fail = "10+" +  StringMaster.getValueRef(Ref.KEYS.TARGET, PARAMS.NOISE);
         Ref ref = listener.getRef().getCopy();
         ref.setTarget(unit.getId());
-        boolean result = RollMaster.roll(GenericEnums.ROLL_TYPES.HEARING, suc, fail, ref,
+        boolean result = RollMaster.roll(GenericEnums.RollType.HEARING, suc, fail, ref,
                 "", "", false
         );//, "Hear me?", "source?");
 

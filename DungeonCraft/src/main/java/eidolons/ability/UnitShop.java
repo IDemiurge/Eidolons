@@ -73,7 +73,7 @@ public class UnitShop {
             mod += GOLD_COMPENSATION / 2;
         }
 
-        gold = MathMaster.applyMod(gold, mod);
+        gold = MathMaster.applyPercent(gold, mod);
         unit.setParam(PARAMS.GOLD, gold);
         goldOriginalAmount = gold;
     }
@@ -100,7 +100,7 @@ public class UnitShop {
         }
         goldPercentageToSpend = 100 - armorGoldPercentage;
         if (!StringMaster.isEmpty(unit.getProperty(PROPS.OFF_HAND_REPERTOIRE))) {
-            goldPercentageToSpend = MathMaster.applyMod(goldPercentageToSpend, unit
+            goldPercentageToSpend = MathMaster.applyPercent(goldPercentageToSpend, unit
                     .getIntParam(PARAMS.MAIN_HAND_GOLD_PERCENTAGE));
         }
         if (StringMaster.isEmpty(unit.getProperty(PROPS.MAIN_HAND_REPERTOIRE))) {

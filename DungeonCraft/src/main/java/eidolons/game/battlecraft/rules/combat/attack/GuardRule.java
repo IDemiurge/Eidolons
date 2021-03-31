@@ -6,7 +6,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.master.EffectMaster;
 import eidolons.system.math.roll.RollMaster;
-import main.content.enums.GenericEnums.ROLL_TYPES;
+import main.content.enums.GenericEnums.RollType;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.mode.STD_MODES;
 import main.entity.Ref;
@@ -75,7 +75,7 @@ public class GuardRule {
          " against " + attack.getAction().getName();
         //        boolean result = RollMaster.roll(ROLL_TYPES.REACTION, ref);
 
-        return !RollMaster.roll(ROLL_TYPES.REACTION, success, fail, ref, log);
+        return !RollMaster.roll(RollType.REACTION, success, fail, ref, log);
     }
 
     private static boolean checkDefenderTakesMissile(DC_ActiveObj action, Unit unit) {

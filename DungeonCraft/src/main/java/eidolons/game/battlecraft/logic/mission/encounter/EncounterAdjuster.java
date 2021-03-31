@@ -304,7 +304,7 @@ public class EncounterAdjuster extends MissionHandler {
             else
                 mod = 100;
         }
-        power = MathMaster.applyMod(power, mod);
+        power = MathMaster.applyPercent(power, mod);
 
         Floor floor = master.getGame().getDungeonMaster().getDungeon();
         if (floor != null) {
@@ -315,7 +315,7 @@ public class EncounterAdjuster extends MissionHandler {
                 else
                     mod = 100;
             }
-            power = MathMaster.applyMod(power, mod);
+            power = MathMaster.applyPercent(power, mod);
         }
         return power;
 

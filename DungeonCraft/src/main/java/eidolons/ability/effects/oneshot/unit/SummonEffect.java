@@ -9,7 +9,6 @@ import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.rules.magic.SummoningSicknessRule;
 import eidolons.game.battlecraft.rules.round.UpkeepRule;
 import eidolons.game.core.EUtils;
-import eidolons.game.module.herocreator.logic.UnitLevelManager;
 import eidolons.content.DC_Formulas;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.Effect;
@@ -34,7 +33,6 @@ import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 import main.system.sound.AudioEnums;
@@ -111,9 +109,7 @@ public class SummonEffect extends DC_Effect implements OneshotEffect {
             //            String str = new Property(typeName, true).getStr(ref);
             type = DataManager.getType(str);
         }
-        if (type.getOBJ_TYPE_ENUM() != DC_TYPE.CHARS) {
-            type = addXp(type);
-        }
+        //TODO PARAMS.SUMMONED_POWER_MOD)
         if (owner == null) {
             if (ref.getObj(KEYS.THIS) != null) {
                 owner = ref.getObj(KEYS.THIS).getOwner();
@@ -187,45 +183,7 @@ public class SummonEffect extends DC_Effect implements OneshotEffect {
         return STANDARD_EVENT_TYPE.UNIT_SUMMONED;
     }
 
-    protected ObjType addXp(ObjType type) {
 
-        try {
-            Integer xp = getSummonedUnitXp().getInt(ref);
-            try {
-                Integer mod = ref.getObj(KEYS.ACTIVE).getIntParam(PARAMS.SUMMONED_XP_MOD);
-                if (mod != 0) {
-                    xp = MathMaster.applyMod(xp, mod);
-                }
-                if (ref.getObj(KEYS.SOURCE) != null) {
-                    mod = ref.getObj(KEYS.SOURCE).getIntParam(PARAMS.SUMMONED_XP_MOD);
-                    if (mod != 0) {
-                        xp = MathMaster.applyMod(xp, mod);
-                    }
-                }
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-
-            LogMaster.log(1, "Awarding xp to " + type.getName() + ": " + xp);
-            type = new UnitLevelManager().awardXP(type, xp, false);
-            LogMaster.log(1, "Unit level: "
-                    + type.getParam(PARAMS.UNIT_LEVEL));
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-
-        return type;
-    }
-
-    protected Formula getXpFormula(Obj spell) {
-        Formula summonedUnitXp = DC_Formulas.SUMMONED_UNIT_XP;
-        if (!StringMaster.isEmpty(spell.getParam(PARAMS.FORMULA))) {
-            if (spell.getIntParam(PARAMS.FORMULA) != 0) {
-                summonedUnitXp = new Formula(spell.getParam(PARAMS.FORMULA));
-            }
-        }
-        return summonedUnitXp;
-    }
 
     protected STANDARD_EVENT_TYPE getEventType() {
         return STANDARD_EVENT_TYPE.UNIT_BEING_SUMMONED;
@@ -264,14 +222,6 @@ public class SummonEffect extends DC_Effect implements OneshotEffect {
         this.effects = effects;
     }
 
-    public Formula getSummonedUnitXp() {
-        if (summonedUnitXp == null) {
-            if (ref.getObj(KEYS.ACTIVE) != null) {
-                summonedUnitXp = getXpFormula(ref.getObj(KEYS.ACTIVE));
-            }
-        }
-        return summonedUnitXp;
-    }
 
     public void setSummonedUnitXp(Formula summonedUnitXp) {
         this.summonedUnitXp = summonedUnitXp;

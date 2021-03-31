@@ -163,11 +163,6 @@ public abstract class DC_UnitModel extends BattleFieldObject  {
         super.addDynamicValues();
         if (getChecker().isHero()) {
             setParam(PARAMS.IDENTITY_POINTS, getIntParam(PARAMS.STARTING_IDENTITY_POINTS));
-        } else if (!getChecker().isBfObj()) {
-            int xp = MathMaster.getFractionValueCentimal(getIntParam(PARAMS.TOTAL_XP),
-                    getIntParam(PARAMS.XP_LEVEL_MOD));
-            // for training
-            setParam(PARAMS.XP, xp);
         }
     }
 

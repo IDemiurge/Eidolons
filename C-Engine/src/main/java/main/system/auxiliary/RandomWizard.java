@@ -1,7 +1,7 @@
 package main.system.auxiliary;
 
 import main.content.OBJ_TYPE;
-import main.content.enums.GenericEnums.ROLL_TYPES;
+import main.content.enums.GenericEnums.RollType;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.data.xml.XML_Formatter;
@@ -184,7 +184,7 @@ public class RandomWizard<E> {
         return getRandomInt(greater) > getRandomInt(than);
     }
 
-    public static boolean roll(ROLL_TYPES roll_type, int greater, int than, Ref ref) {
+    public static boolean roll(RollType roll_type, int greater, int than, Ref ref) {
 
         int randomInt = getRandomInt(greater);
         int randomInt2 = getRandomInt(than);

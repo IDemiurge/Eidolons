@@ -686,7 +686,7 @@ public enum PARAMS implements PARAMETER {
     MAX_BUFF_STACKS(null, "", false, 0, "buffs"),
     BUFF_STACKS(null, "", true, 0, "buffs"),
     SKILL_DIFFICULTY(null, "", false, 0),
-    SUMMONED_XP_MOD(true, null, "", false, 100, "units", "chars", "perks", "classes"),
+    SUMMONED_POWER_MOD(true, null, "", false, 100, "units", "chars", "perks", "classes"),
     UPKEEP_MOD(true, null, "", false, 100, "units", "chars", "perks", "classes"),
     QUICK_ITEM_GOLD_PERCENTAGE(null, "", false, 0, "units", "chars", "perks"),
     JEWELRY_GOLD_PERCENTAGE(null, "", false, 0, "units", "chars", "perks"),
