@@ -247,6 +247,7 @@ public enum PARAMS implements PARAMETER {
     RESISTANCE_PENETRATION("Res. Pntr", "", false, 0, "actions", "units", "chars", "perks"),
     ARMOR_PENETRATION("Armor Pntr", "", false, 0, "actions", "units", "chars", "perks"),
     ARMOR_MOD(true, "Armor Pntr %", "", false, 100, "actions", "units", "chars", "perks"),
+    ARMOR_BLOCK_BONUS(),
     HEIGHT(null, "", false, 0, "units", "chars", "perks", "bf obj"),
     WEIGHT(null, "", false, 0, "units", "chars", "perks", "bf obj", "items"),
     TOTAL_WEIGHT("Total weight", "", true, 0, "units", "chars", "perks"),
@@ -362,6 +363,8 @@ public enum PARAMS implements PARAMETER {
 
     MARKSMANSHIP_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
     ITEM_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
+    DETECTION_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
+    STEALTH_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
 
     ATHLETICS_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
     MOBILITY_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
@@ -373,7 +376,6 @@ public enum PARAMS implements PARAMETER {
     UNARMED_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
 
     TWO_HANDED_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
-
     DUAL_WIELDING_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
 
     ARMORER_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
@@ -382,49 +384,42 @@ public enum PARAMS implements PARAMETER {
 
     MEDITATION_MASTERY(null, Descriptions.MEDITATION_MASTERY, false, 0, "units", "chars", "perks", "classes"),
     DISCIPLINE_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
-    // MAGICAL_ITEM_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks",
-    // "classes"),
 
     WIZARDRY_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
     SPELLCRAFT_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
     DIVINATION_MASTERY(null, Descriptions.DIVINATION_MASTERY, false, 0, "units", "chars", "perks", "classes"),
     WARCRY_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
-    // spellgroups
-    PSYCHIC_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
-
-    REDEMPTION_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
 
     SORCERY_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
-    // ANTI_MAGIC_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks",
-    // "classes"),
     ENCHANTMENT_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
-    // TRANSMUTATION_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks",
-    // "classes"),
     CONJURATION_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
+
     CELESTIAL_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
     BENEDICTION_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
-    ELEMENTAL_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
+    REDEMPTION_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
+
     FIRE_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
     AIR_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
     WATER_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
     EARTH_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
-    SYLVAN_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
-    DEMONOLOGY_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
 
+    TRANSMUTATION_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
+    SYLVAN_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
+    SAVAGE_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
+
+    DEMONOLOGY_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
     WARP_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
     DESTRUCTION_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
+
     AFFLICTION_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
     BLOOD_MAGIC_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
+    NECROMANCY_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
 
+    PSYCHIC_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
     WITCHERY_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
     SHADOW_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
 
-    NECROMANCY_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
 
-    DETECTION_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
-    STEALTH_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
-
-    SAVAGE_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
 
     ATTR_POINTS("Attribute points", "Attribute points", true, 0, "units", "chars", "perks"),
     ATTR_POINTS_PER_LEVEL("Attribute points", "Attribute points", false, 0, "units", "chars", "perks"),
@@ -432,14 +427,6 @@ public enum PARAMS implements PARAMETER {
     MASTERY_POINTS("MASTERY points", "MASTERY points", true, 0, "units", "chars", "perks"),
     // TRADING?
 
-    RANK("", "", true, 0, "classes"),
-    RANK_MAX("", "", false, 0, "classes"),
-    RANK_REQUIREMENT("", "", false, 0, "classes"),
-    RANK_FORMULA_MOD(true, "", "", false, 25, "classes"),
-    //    TREE_LINK_OFFSET_X("", "", false, 0, "classes"),
-    //    TREE_LINK_OFFSET_Y("", "", false, 0, "classes"),
-    //    TREE_NODE_OFFSET_X("", "", false, 0, "classes"),
-    //    TREE_NODE_OFFSET_Y("", "", false, 0, "classes"),
     // SPELL
     AI_PRIORITY(null, "", false, 0, "actions"),
     CIRCLE("Circle", "", false, 1, "classes"),
@@ -468,11 +455,6 @@ public enum PARAMS implements PARAMETER {
     ATK_PTS_COST("CP Cost", "Cost in Counter Points", false, 0, "actions"),
     MOVE_PTS_COST("CP Cost", "Cost in Counter Points", false, 0, "actions"),
 
-    END_UPKEEP(null, " UPKEEP in Endurance", false, 0, "units", "items"),
-    AP_UPKEEP(null, " UPKEEP in AP", false, 0, "units", "items"),
-    ESS_UPKEEP(null, " UPKEEP in Essence", false, 0, "units", "items"),
-    FOC_UPKEEP(null, " UPKEEP in Focus", false, 0, "units", "items"),
-
     FOC_REQ("Focus Req.", " Focus Requirement", false, 0, "actions", "items"),
     RESISTANCE_MOD(true, null, " RESISTANCE_MOD", false, 100, "actions"),
 
@@ -497,6 +479,7 @@ public enum PARAMS implements PARAMETER {
     SPELLPOWER_MOD(true, null, " SPELLPOWER_MOD", false, 100, "items"),
 
     BLEEDING_MOD(true, null, "", false, 0, "actions", "units", "chars", "perks"),
+
     FORCE(null, "", false, 0, "actions"),
     FORCE_MOD(true, null, "", false, 100, "actions", "units", "chars", "perks"),
     FORCE_KNOCK_MOD(true, null, "", false, 100, "actions", "units", "chars", "perks"),
@@ -509,6 +492,8 @@ public enum PARAMS implements PARAMETER {
     FORCE_MAX_STRENGTH_MOD(true, null, "", false, 4, "actions"),
     // FORCE_CUSTOM_FORMULA(null, "", false, 0, "actions"),
     FORCE_SPELLPOWER_MOD(true, null, "", false, 100, "actions"),
+
+
     SIDE_DAMAGE_MOD(true, null, "", false, 100, "actions", "units", "chars", "perks"),
     DIAGONAL_DAMAGE_MOD(true, null, "", false, 100, "actions", "units", "chars", "perks"),
     SIDE_ATTACK_MOD(true, null, "", false, 100, "actions", "units", "chars", "perks"),
@@ -518,18 +503,6 @@ public enum PARAMS implements PARAMETER {
     CLOSE_QUARTERS_DAMAGE_MOD(true, null, "Close Quarters Damage mod", false, 100, "actions", "units", "chars", "perks"),
     CLOSE_QUARTERS_ATTACK_MOD(true, null, "Close Quarters Attack mod", false, 100, "actions", "units", "chars", "perks"),
 
-
-    PASSAGE_ATTACK_MOD(true, null, null, false, 0, "units", "chars", "perks"),
-    ENGAGEMENT_ATTACK_MOD(true, null, null, false, 0, "units", "chars", "perks"),
-    FLIGHT_ATTACK_MOD(true, null, null, false, 0, "units", "chars", "perks"),
-    STUMBLE_ATTACK_MOD(true, null, null, false, 0, "units", "chars", "perks"),
-    PASSAGE_DEFENSE_MOD(true, null, null, false, 0, "units", "chars", "perks"),
-    ENGAGEMENT_DEFENSE_MOD(true, null, null, false, 0, "units", "chars", "perks"),
-    FLIGHT_DEFENSE_MOD(true, null, null, false, 0, "units", "chars", "perks"),
-    STUMBLE_DEFENSE_MOD(true, null, null, false, 0, "units", "chars", "perks"),
-
-    DISENGAGEMENT_ATTACK_MOD(true, null, null, false, 0, "units", "chars", "perks"),
-    DISENGAGEMENT_DEFENSE_MOD(true, null, null, false, 0, "units", "chars", "perks"),
 
     STOP_DISENGAGEMENT_CHANCE_MOD(true, null, null, false, 0, "units", "chars", "perks"),
     PASS_DISENGAGEMENT_CHANCE_MOD(true, null, null, false, 0, "units", "chars", "perks"),
@@ -562,20 +535,16 @@ public enum PARAMS implements PARAMETER {
     COUNTER_ATTACK_MOD(true, null, null, false, 100, "actions", "units", "chars", "perks"),
     COUNTER_DEFENSE_MOD(true, null, null, false, 100, "actions", "units", "chars", "perks"),
 
-    ENGAGED_AOO_DAMAGE_MOD(true, null, null, false, 100, "actions", "units", "chars", "perks"),
-    ENGAGED_AOO_ATTACK_MOD(true, null, null, false, 100, "actions", "units", "chars", "perks"),
-    ENGAGED_AOO_DEFENSE_MOD(true, null, null, false, 100, "actions", "units", "chars", "perks"),
-
     AUTO_CRIT_CHANCE(null, null, false, 0, "actions", "units", "chars", "perks"),
 
     SNEAK_PROTECTION(null, null, false, 100, "units", "chars", "perks"),
+
     SNEAK_RANGED_MOD(true, null, null, false, 0, "units", "chars", "perks"),
     SNEAK_DAMAGE_MOD(true, null, " DAMAGE_MOD", false, 100, "actions", "units", "chars", "perks"),
     SNEAK_ATTACK_MOD(true, null, " ATTACK_MOD", false, 100, "actions", "units", "chars", "perks"),
-    SNEAK_DEFENSE_MOD(true, null, " DEFENSE_MOD", false, 20, "actions", "units", "chars", "perks"),
-    SNEAK_ARMOR_MOD(true, null, " DEFENSE_MOD", false, 100, "actions", "units", "chars", "perks"),
     SNEAK_DAMAGE_BONUS(null, " BONUS_DAMAGE", false, 0, "actions", "units", "chars", "perks"),
     SNEAK_ATTACK_BONUS(null, " ATTACK_BONUS", false, 0, "actions", "units", "chars", "perks"),
+
     SNEAK_DEFENSE_PENETRATION(null, "SNEAK_DEFENSE_PENETRATION", false, 0, "actions", "units", "chars", "perks"),
     SNEAK_ARMOR_PENETRATION(null, "SNEAK_DEFENSE_PENETRATION", false, 0, "actions", "units", "chars", "perks"),
 
@@ -638,11 +607,12 @@ public enum PARAMS implements PARAMETER {
     ACCURACY(null, "", false, 0, "actions", "units", "chars", "perks"),
 
     VIGILANCE_MOD(true, null, "", false, 0, "units", "chars", "perks"),
-    TOUGHNESS_DEATH_BARRIER_MOD(null, "", false, 100, "bf obj", "units", "chars", "perks"),
-    ARMOR_BLOCK_DEFENSE_MOD(true, null, "", false, 0, "units", "chars", "perks"),
-    SHIELD_BLOCK_DEFENSE_MOD(true, null, "", false, 0, "units", "chars", "perks"),
+
     BLOCK_CHANCE(null, "", false, 0, "units", "chars", "perks"),
-    PARRY_CHANCE(null, "", false, 0, "units", "chars", "perks"),
+    BLOCK_CHANCE_BONUS(null, "", false, 0, "units", "chars"),
+    BLOCK_CHANCE_BONUS_SHIELD(null, "", false, 0, "units", "chars"),
+    BLOCK_CHANCE_BONUS_PARRY(null, "", false, 0, "units", "chars"),
+
     BLOCK_PENETRATION(null, "", false, 0, "units", "chars", "perks"),
     PARRY_PENETRATION(null, "", false, 0, "units", "chars", "perks"),
     CRITICAL_REDUCTION("Crit. reduction", "", false, 0, "units", "chars", "perks", "bf obj"),
@@ -651,26 +621,9 @@ public enum PARAMS implements PARAMETER {
 
     RANGED_PENALTY_MOD(true, "", "", false, 100, "units", "chars", "perks"),
 
-    // RANGED_PENALTY_DMG("close shot dmg.pen", "", false,
-    // DC_Formulas.DEFAULT_RANGED_ADJACENT_DMG_PENALTY),
-    // RANGED_PENALTY_ATK("close shot atk.pen", "", false,
-    // DC_Formulas.DEFAULT_RANGED_ADJACENT_ATK_PENALTY),
-    // MELEE_PENALTY_DMG("melee dmg. pen.", "", false,
-    // DC_Formulas.DEFAULT_RANGED_MELEE_DMG_PENALTY),
-    // MELEE_PENALTY_ATK("melee atk. pen.", "", false,
-    // DC_Formulas.DEFAULT_RANGED_MELEE_DMG_PENALTY),
-    // saving throw types - Will, Chance, Reflex, ...
-
-    ENGAGE_TARGET_ATTACK_MOD(true, null, "", false, 0, "units", "chars", "perks"),
-    ENGAGE_TARGET_DEFENSE_MOD(true, null, "", false, 0, "units", "chars", "perks"),
-    ENGAGEMENT_DEFENSE_REDUCTION_MOD(true, null, "", false, 0, "units", "chars", "perks"),
 
     DURATION_BONUS(null, "", false, 0, "classes", "jewelry", "units", "chars", "perks"),
     DURATION_MOD(true, null, "", false, 0, "classes", "jewelry", "units", "chars", "perks"),
-
-    LUCK_MOD(true, null, "", false, 0, "jewelry", "units", "chars", "perks"),
-    LUCK_BONUS(null, "", false, 0, "jewelry", "units", "chars", "perks"),
-
 
     ADJUST_COEF("encounters"),
     GROUP_NUMBER("encounters"),
@@ -685,14 +638,13 @@ public enum PARAMS implements PARAMETER {
 
     MAX_BUFF_STACKS(null, "", false, 0, "buffs"),
     BUFF_STACKS(null, "", true, 0, "buffs"),
-    SKILL_DIFFICULTY(null, "", false, 0),
     SUMMONED_POWER_MOD(true, null, "", false, 100, "units", "chars", "perks", "classes"),
     UPKEEP_MOD(true, null, "", false, 100, "units", "chars", "perks", "classes"),
     QUICK_ITEM_GOLD_PERCENTAGE(null, "", false, 0, "units", "chars", "perks"),
     JEWELRY_GOLD_PERCENTAGE(null, "", false, 0, "units", "chars", "perks"),
     MAIN_HAND_GOLD_PERCENTAGE(null, "", false, 70, "units", "chars", "perks"),
     ARMOR_GOLD_PERCENTAGE(null, "", false, 40, "units", "chars", "perks"),
-    SPELL_XP_MOD(true, null, "", false, 0, "units", "chars", "perks"),
+
     CLEAVE_MAX_TARGETS(null, "", false, 0, "units", "chars", "perks"),
     CLEAVE_DAMAGE_PERCENTAGE_TRANSFER(null, "", false, 0, "units", "chars", "perks"),
     CLEAVE_DAMAGE_LOSS_PER_JUMP(null, "", false, 0, "units", "chars", "perks"),
@@ -704,33 +656,27 @@ public enum PARAMS implements PARAMETER {
     INJURY_RESISTANCE(null, "", false, 0, "units", "chars", "perks"),
     WOUNDS_RESISTANCE(null, "", false, 0, "units", "chars", "perks"),
 
-    MIND_AFFECTING_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
-    FAITH_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
+    SPIRIT_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
+    GRIT_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
     REFLEX_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
-    BODY_STRENGTH_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
-    QUICK_WIT_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
+    WIT_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
     FORTITUDE_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
-    MASS_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
-    DETECTION_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
-    DEFENSE_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
 
-    REACTION_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
-    REACTION_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
-    DISARM_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
-    DISARM_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
+    SPIRIT_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
+    GRIT_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
+    REFLEX_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
+    WIT_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
+    FORTITUDE_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
 
     FORCE_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
     FORCE_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
-
-    MIND_AFFECTING_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
-    FAITH_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
-    REFLEX_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
-    BODY_STRENGTH_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
-    QUICK_WIT_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
-    FORTITUDE_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
-    MASS_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
+    DETECTION_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
+    PERCEPTION_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
+    PERCEPTION_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
     DETECTION_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
-    DEFENSE_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
+    LUCK_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
+    LUCK_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
+
     SINGLE_HAND_ATTACK_BONUS_MOD(true, null, "", false, 0, "classes", "units", "chars", "perks"),
     SINGLE_HAND_DEFENSE_BONUS_MOD(true, null, "", false, 0, "classes", "units", "chars", "perks"),
     SINGLE_HAND_DAMAGE_BONUS_MOD(true, null, "", false, 0, "classes", "units", "chars", "perks"),
@@ -785,14 +731,14 @@ could have other params - sf discounts,
     MASTERY_RANKS_UNSPENT,
     CLASS_RANKS,
     CLASS_RANKS_UNSPENT,
-    SPELL_POINTS ,
-    SPELL_POINTS_UNSPENT ,
+    SPELL_POINTS,
+    SPELL_POINTS_UNSPENT,
     SKILL_POINTS,
     SKILL_POINTS_UNSPENT,
 
-    WEIGHT_PENALTY_REDUCTION(  ),
+    WEIGHT_PENALTY_REDUCTION(),
     DEITY_EFFECTS_MOD,
-    MASTERY_SCORE_MOD( );
+    MASTERY_SCORE_MOD();
 
     boolean writeToType;
     Color color;

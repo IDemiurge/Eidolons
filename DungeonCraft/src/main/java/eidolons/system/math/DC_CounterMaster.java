@@ -44,7 +44,7 @@ public class DC_CounterMaster {
                         return 0;
                     }
                     break;
-                case Freeze:
+                case Chill:
                     if (!target.getGame().getRules().getFreezeRule()
                      .checkApplies(heroObj)) {
                         return 0;

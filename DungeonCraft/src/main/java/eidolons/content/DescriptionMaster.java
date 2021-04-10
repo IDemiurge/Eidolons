@@ -85,7 +85,6 @@ public class DescriptionMaster {
 
     public static String getMasteryDescription(PARAMS param) {
         switch (param) {
-            case WARCRY_MASTERY:
             case UNARMED_MASTERY:
             case TWO_HANDED_MASTERY:
             case POLEARM_MASTERY:
@@ -103,8 +102,7 @@ public class DescriptionMaster {
 
             case SHIELD_MASTERY:
             case SYLVAN_MASTERY:
-
-            case ELEMENTAL_MASTERY:
+            case TRANSMUTATION_MASTERY:
 
             case AFFLICTION_MASTERY:
             case DESTRUCTION_MASTERY:

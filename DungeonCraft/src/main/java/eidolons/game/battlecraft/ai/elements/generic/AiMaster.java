@@ -4,7 +4,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.advanced.behavior.BehaviorMasterOld;
-import eidolons.game.battlecraft.ai.advanced.companion.MetaGoalMaster;
 import eidolons.game.battlecraft.ai.advanced.machine.AiConst;
 import eidolons.game.battlecraft.ai.advanced.machine.AiPriorityConstantMaster;
 import eidolons.game.battlecraft.ai.elements.actions.ActionManager;
@@ -59,7 +58,6 @@ public abstract class AiMaster {
     protected BehaviorMasterOld behaviorMaster;
     protected AtomicAi atomicAi;
     protected AiScriptExecutor scriptExecutor;
-    protected MetaGoalMaster metaGoalMaster;
     protected AiPriorityConstantMaster priorityConstantMaster;
     protected PriorityModifier priorityModifier;
     protected PathBuilderAtomic pathBuilderAtomic;
@@ -86,7 +84,6 @@ public abstract class AiMaster {
         handlers.add(behaviorMaster = new BehaviorMasterOld(this));
         handlers.add(atomicAi = new AtomicAi(this));
         handlers.add(scriptExecutor = new AiScriptExecutor(this));
-        handlers.add(metaGoalMaster = new MetaGoalMaster(this));
         handlers.add(priorityConstantMaster = new AiPriorityConstantMaster(this));
         handlers.add(priorityModifier = new PriorityModifier(this));
         handlers.add(pathBuilderAtomic = new PathBuilderAtomic(this));
@@ -117,9 +114,6 @@ public abstract class AiMaster {
         return priorityModifier;
     }
 
-    public MetaGoalMaster getMetaGoalMaster() {
-        return metaGoalMaster;
-    }
 
     public BehaviorMasterOld getBehaviorMaster() {
         return behaviorMaster;

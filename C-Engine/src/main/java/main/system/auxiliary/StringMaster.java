@@ -536,6 +536,13 @@ public class StringMaster {
         return new StringBuilder().append(val.getDisplayedName()).append(": ").
                 append(obj.getValue(val).replace(";", ", ")).toString();
     }
+    public static String getValueRefs(KEYS objRef, List<VALUE> valRef) {
+        return getValueRefs(objRef, valRef, "+");
+    }
+    public static String getValueRefs(KEYS objRef, List<VALUE> valRef, String separator) {
+        return ContainerUtils.joinList( valRef.stream().map(val -> getValueRef(objRef, val))
+                .collect(Collectors.toList()) , separator);
+    }
 
     public static String getValueRefs(KEYS objRef, VALUE... valRef) {
         return ContainerUtils.build(Arrays.stream(valRef).map(val -> getValueRef(objRef, val))

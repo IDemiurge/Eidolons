@@ -3,8 +3,10 @@ package eidolons.game.battlecraft.rules.combat.damage;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import main.content.enums.GenericEnums.DAMAGE_MODIFIER;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.entity.NewRpgEnums;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.system.auxiliary.ContainerUtils;
@@ -22,10 +24,14 @@ public class Damage {
     protected DAMAGE_MODIFIER[] modifiers;
     protected DC_ActiveObj action;
     protected Ref ref;
-
+    private Attack attackObject;
+    private NewRpgEnums.HitType hitType;
+    private boolean sneak;
+    private int blocked;
+    StringBuilder logBuilder;
 
     protected Damage() {
-
+        logBuilder = new StringBuilder();
     }
 
 //    public Damage(DAMAGE_TYPE damageType, int amount, Unit attacker, Unit attacked) {
@@ -137,4 +143,31 @@ public class Damage {
     }
 
 
+    public void setHitType(NewRpgEnums.HitType hitType) {
+        this.hitType = hitType;
+    }
+
+    public NewRpgEnums.HitType getHitType() {
+        return hitType;
+    }
+
+    public void setSneak(boolean sneak) {
+        this.sneak = sneak;
+    }
+
+    public boolean isSneak() {
+        return sneak;
+    }
+
+    public void setBlocked(int blocked) {
+        this.blocked = blocked;
+    }
+
+    public int getBlocked() {
+        return blocked;
+    }
+
+    public StringBuilder getLogBuilder() {
+        return logBuilder;
+    }
 }

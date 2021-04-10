@@ -28,9 +28,10 @@ public class AshAnnihilationRule extends DC_RuleImpl {
 
     @Override
     public void initEffects() {
-        effects =
-         new CustomTargetEffect(new TemplateAutoTargeting(AUTO_TARGETING_TEMPLATES.CELL),
-          new ModifyCounterEffect(COUNTER.Ash, MOD.MODIFY_BY_CONST, "{target_weight}/50"));
+        //TODO RPG Review
+        // effects =
+        //  new CustomTargetEffect(new TemplateAutoTargeting(AUTO_TARGETING_TEMPLATES.CELL),
+        //   new ModifyCounterEffect(COUNTER.Ash, MOD.MODIFY_BY_CONST, "{target_weight}/50"));
 
     }
 

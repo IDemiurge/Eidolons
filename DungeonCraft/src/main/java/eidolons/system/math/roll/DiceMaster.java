@@ -1,5 +1,7 @@
 package eidolons.system.math.roll;
 
+import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.unit.Unit;
 import main.content.enums.GenericEnums;
 import main.entity.obj.Obj;
 import main.system.auxiliary.NumberUtils;
@@ -14,6 +16,8 @@ import static main.content.enums.GenericEnums.DieType.*;
 public class DiceMaster {
 
     public static final Map<GenericEnums.DieType, Integer> dieValueMap = new LinkedHashMap<>();
+    public static final Map<Integer, GenericEnums.DieType > dieMap = new LinkedHashMap<>();
+    public static final GenericEnums.DieType DEFAULT_DIE = d10;
 
     static {
         dieValueMap.put(d4, 4);
@@ -22,6 +26,13 @@ public class DiceMaster {
         dieValueMap.put(d10, 10);
         dieValueMap.put(d12, 12);
         dieValueMap.put(d20, 20);
+
+        dieMap.put(4, d4);
+        dieMap.put(6, d6);
+        dieMap.put(8, d8);
+        dieMap.put(10, d10);
+        dieMap.put(12, d12);
+        dieMap.put(20, d20);
     }
 
     public static int roll(GenericEnums.DieType dieType, Obj source, boolean log) {
@@ -63,6 +74,9 @@ public class DiceMaster {
         return tRoll + tValue > sRoll + sValue;
     }
 
+    public static int average(GenericEnums.DieType dieType, int dice) {
+        return (dieValueMap.get(dieType) + 1) * dice / 2;
+    }
 
     //TODO
     private static int checkModifyDice(Obj source, int dice, GenericEnums.DieType dieType) {
@@ -78,6 +92,18 @@ public class DiceMaster {
         //control max/min values?
         return roll(d20, source, dice, true);
 
+    }
+
+    public static int getDefaultDieNumber(BattleFieldObject unit) {
+        return unit.getGame().getState().getChaosLevel() + 1 + getDieNumberBonus(unit);
+    }
+
+    private static int getDieNumberBonus(BattleFieldObject unit) {
+        return 0;
+    }
+
+    public static GenericEnums.DieType getDie(Integer size) {
+        return dieMap.get(size);
     }
 
 }

@@ -27,6 +27,10 @@ public class DataUnit<T extends Enum<T>> implements Serializable {
     public DataUnit() {
 
     }
+    //TODO core Review
+    public boolean isJson(){
+        return false;
+    }
 
     public DataUnit(String text) {
         setData(text);

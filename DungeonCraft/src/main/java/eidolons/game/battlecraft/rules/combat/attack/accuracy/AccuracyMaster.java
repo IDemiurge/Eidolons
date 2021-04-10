@@ -21,15 +21,15 @@ import java.util.Set;
 
 import static main.content.enums.entity.NewRpgEnums.HitType.*;
 
-public class NF_AccuracyMaster {
+public class AccuracyMaster {
     public static final NewRpgEnums.HitType[] types = values();
     private DC_Game game;
 
-    public NF_AccuracyMaster(DC_Game game) {
+    public AccuracyMaster(DC_Game game) {
         this.game = game;
     }
 
-    public NewRpgEnums.HitType getHitType(int accuracy) {
+    public static NewRpgEnums.HitType getHitType(int accuracy) {
         int index = (accuracy - 1) / 20;
         return types[index];
     }
@@ -42,6 +42,7 @@ public class NF_AccuracyMaster {
                 attack.getAttacker(),
                 attack.getAction()
         );
+        attack.setAccuracyRate(accuracy);
         return getHitType(accuracy);
     }
 

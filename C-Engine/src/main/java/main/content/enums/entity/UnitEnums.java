@@ -7,8 +7,7 @@ import main.system.images.ImageManager;
 import java.util.Map;
 
 /**
- * Created by JustMe on 2/14/2017.
- * Contains all enums related to Units
+ * Created by JustMe on 2/14/2017. Contains all enums related to Units
  */
 public final class UnitEnums {
     public enum CLASSIFICATIONS {
@@ -78,65 +77,98 @@ public final class UnitEnums {
     }
 
     public enum COUNTER {
-        Bleeding,
-        Blaze,
-        Poison,
+        Conflagration,
+        Blaze(Conflagration),
         Freeze,
-        Disease,
-        Ensnared,
-        Moist,
-        Charge {
-            public boolean isNegativeAllowed() {
-                return true;
-            }
-        },
-        Lava,
-        Ash,
-        Clay,
-        Encase,
-        Grease,
-        Rage,
-        Madness,
-        Despair,
-        Lust,
-        Hatred,
+        Chill(Freeze),
+        Venom,
+        Poison(Venom),
+        Contamination,
+        Disease(Contamination),
 
-        Virtue,
-        Light,
-        Haze,
-        Zeal,
-        Encryption,
-        Void,
-        Magnetized,
-        Time_Warped {
-            public boolean isNegativeAllowed() {
-                return true;
-            }
-        },
-        Mutagen,
-        Zen,
-        Loyalty,
-        Demon_Debt {
-            public boolean isNegativeAllowed() {
-                return true;
-            }
-        },
-        Demon_Names,
-        Ward,
 
-        Soul,
-        Undying ,
-        Blight,
-        Corrosion, Oblivion,
-        Taint, Aether,
-        Warp, Suffocation;
+        Polarization,
+        Magnetized(Polarization),
+        Potency,
+        Charge(Potency),//TODO  Positive_ ??
+        Magma,
+        Lava(Magma),
+        Encase(),
+        Clay(Encase),
+        Pollution,
+        Grease(Pollution),
+        Soak,
+        Moist(Soak),
+
+
+        Terror,
+        Fear(Terror),
+        Madness(),
+        Haunted(Madness),
+        Despair(),
+        Vertigo(),
+        Lust(Vertigo),
+        Oblivion(),
+        Haze(Oblivion),
+        Fury,
+        Rage(Fury),
+
+        Hemorrhage,
+        Bleeding(Hemorrhage),
+        Stun,
+        Concussion(Stun),
+        Entanglement,
+        Ensnared(Entanglement),
+        Asphyxiation,
+        Suffocation(Asphyxiation),
+
+        Disloyalty,
+        Dismay(Disloyalty ),
+        Agony,
+        Pain(Agony),
+        Injury,
+        Wounds(Injury         ),
+        Exhaustion ,
+        Fatigue(Exhaustion ),
+
+        Flow,
+        Adrenaline(Flow),
+        Inspiration,
+        Morale(Inspiration ),
+        Devotion,
+        Loyalty(Devotion),
+        Ecstasy(),
+        Energy(Ecstasy),
+
+        Holiness,
+        Virtue(Holiness),
+        Immortality,
+        Undying(Immortality),
+        Zen(),
+        Stillness(Zen),
+
+
+        Mutation(),
+        Mutagen(Mutation),
+        Taint(),
+        Blight(Taint),
+        Corrosion(),
+        Acid(Corrosion),
+
+        ;
 
         private Map<COUNTER, COUNTER_INTERACTION> interactionMap;
         private COUNTER down;
         private COUNTER up;
         private final String imagePath;
         private final String name =
-         StringMaster.format(name()) + Strings.COUNTER;
+                StringMaster.format(name()) + Strings.COUNTER;
+        private COUNTER upgraded;
+
+        COUNTER(COUNTER upgraded) {
+            this();
+            this.upgraded = upgraded;
+        }
 
         COUNTER() {
             imagePath = ImageManager.getValueIconsPath() + "counters/" + toString() + ".png";
@@ -150,9 +182,8 @@ public final class UnitEnums {
             return name;
         }
 
-        public void isNegative() {
-            // TODO Auto-generated method stub
-
+        public boolean isUpgraded() {
+            return upgraded == null;
         }
 
         public Map<COUNTER, COUNTER_INTERACTION> getInteractionMap() {
@@ -183,6 +214,9 @@ public final class UnitEnums {
             return imagePath;
         }
 
+        public COUNTER getUpgraded() {
+            return upgraded;
+        }
     }
 
     public enum COUNTER_INTERACTION {
@@ -193,7 +227,8 @@ public final class UnitEnums {
 
     public enum COUNTER_OPERATION {
         TRANSFER_TO,
-        TRANSFER_FROM,;
+        TRANSFER_FROM,
+        ;
 
     }
 
@@ -208,7 +243,8 @@ public final class UnitEnums {
     }
 
     public enum IMMUNITIES {
-        MIND_AFFECTION, POISON, WOUNDS, ENSNARE, MORALE_REDUCTION, MORALE_REDUCTION_KILL,;
+        MIND_AFFECTION, POISON, WOUNDS, ENSNARE, MORALE_REDUCTION, MORALE_REDUCTION_KILL,
+        ;
     }
 
     public enum STANDARD_PASSIVES {
@@ -286,12 +322,12 @@ public final class UnitEnums {
         static {
             DARKVISION.setToolTip("Unit is unaffected by Concealment penalties");
             NON_OBSTRUCTING
-             .setToolTip("Non obstructing units do not block other units' vision or missile targeting");
+                    .setToolTip("Non obstructing units do not block other units' vision or missile targeting");
             NO_RETALIATION.setToolTip("Cannot be counter-attacked by units without Vigilance");
             OPPORTUNIST
-             .setToolTip("Will not trigger Attack of Opportunity when using items or casting spells");
+                    .setToolTip("Will not trigger Attack of Opportunity when using items or casting spells");
             VIGILANCE
-             .setToolTip("Unit is always On Alert and will counter attack units with No Retaliation");
+                    .setToolTip("Unit is always On Alert and will counter attack units with No Retaliation");
         }
 
         boolean var;
@@ -411,7 +447,6 @@ public final class UnitEnums {
         OFF;
 
 
-
         public String toString() {
             return StringMaster.format(name());
         }
@@ -430,7 +465,8 @@ public final class UnitEnums {
         UNDEAD_BEAST,
         SKELETAL_BEAST,
         VAMPIRE_BEAST,
-        WRAITH_MONSTROCITY,;
+        WRAITH_MONSTROCITY,
+        ;
 
         public String toString() {
             return StringMaster.format(name());
@@ -489,14 +525,16 @@ public final class UnitEnums {
 
         FOREST("greenies,creatures"),
         ANIMALS("Animals,Wolves,Wargs,wild,"),
-        REPTILES, BANDIT_SCUM(), SPIDERS,;
+        REPTILES, BANDIT_SCUM(), SPIDERS,
+        ;
 
         private final String subgroups;
 
         UNIT_GROUP(String groups) {
             this.subgroups = groups;
         }
-        UNIT_GROUP( ) {
+
+        UNIT_GROUP() {
             this.subgroups = name();
         }
 
@@ -871,7 +909,8 @@ public final class UnitEnums {
         SILVERLANCE_KNIGHT,
         ;
     }
-    public enum  UNITS_TYPES_FAMILIARS implements OBJ_TYPE_ENUM {
+
+    public enum UNITS_TYPES_FAMILIARS implements OBJ_TYPE_ENUM {
         TRICKSTER_RAVEN,
         ELDRITCH_STRIX,
         DRAKELING,
@@ -880,7 +919,8 @@ public final class UnitEnums {
         RHINO_BEETLE,
         ;
     }
-    public enum  UNITS_TYPES_DEMO implements OBJ_TYPE_ENUM {
+
+    public enum UNITS_TYPES_DEMO implements OBJ_TYPE_ENUM {
         VOID_EIDOLON,
         GARGANTUAN_BEAST,
         GARGOYLE,
@@ -954,7 +994,8 @@ public final class UnitEnums {
         RAVENGUARD_TORTURER,
         ;
     }
-    public enum  UNITS_TYPES_NOCTURNAL implements OBJ_TYPE_ENUM {
+
+    public enum UNITS_TYPES_NOCTURNAL implements OBJ_TYPE_ENUM {
         VOID_SPAWN,
         TWISTED_MUTANT,
         IRON_GOLEM,
@@ -967,7 +1008,8 @@ public final class UnitEnums {
         ASH_EATER,
         ;
     }
-    public enum  UNITS_TYPES_ implements OBJ_TYPE_ENUM {
+
+    public enum UNITS_TYPES_ implements OBJ_TYPE_ENUM {
         GARGOYLE_SENTINEL,
         ELDRITCH_KNIGHT,
         HORSESHOE_CRAB,
@@ -1151,12 +1193,14 @@ public final class UnitEnums {
         ORC_ARCHER,
         ;
     }
-    public enum  UNITS_TYPES_CONSTRUCTS implements OBJ_TYPE_ENUM {
+
+    public enum UNITS_TYPES_CONSTRUCTS implements OBJ_TYPE_ENUM {
         STEEL_GOLEM,
         MECHANICUM_TITAN,
         ;
     }
-    public enum  UNITS_TYPES_TUTORIAL implements OBJ_TYPE_ENUM {
+
+    public enum UNITS_TYPES_TUTORIAL implements OBJ_TYPE_ENUM {
         OLD_RUSTY_GOLEM,
         PUNY_SPIDERLING,
         VENOMOUS_HAIRY_SPIDER,
@@ -1167,7 +1211,8 @@ public final class UnitEnums {
         DESPERATE_ORC_SLAVE,
         ;
     }
-    public enum  UNITS_TYPES_LESSER_DEMON implements OBJ_TYPE_ENUM {
+
+    public enum UNITS_TYPES_LESSER_DEMON implements OBJ_TYPE_ENUM {
         FAMILIAR,
         DEMON_BRUTE,
         HELLGUARD,
@@ -1175,7 +1220,8 @@ public final class UnitEnums {
         CHAOS_LEGIONNAIRE,
         ;
     }
-    public enum  UNITS_TYPES_DEMON implements OBJ_TYPE_ENUM {
+
+    public enum UNITS_TYPES_DEMON implements OBJ_TYPE_ENUM {
         DEMON_CARNIFEX,
         LORD_OF_DESPAIR,
         DEMON_TORMENTOR,
@@ -1185,15 +1231,18 @@ public final class UnitEnums {
         LORD_OF_PAIN,
         ;
     }
-    public enum  UNITS_TYPES_LESSERDEMON implements OBJ_TYPE_ENUM {
+
+    public enum UNITS_TYPES_LESSERDEMON implements OBJ_TYPE_ENUM {
         INFERNAL_GOLEM,
         ;
     }
-    public enum  UNITS_TYPES_GREATER_DEMON implements OBJ_TYPE_ENUM {
+
+    public enum UNITS_TYPES_GREATER_DEMON implements OBJ_TYPE_ENUM {
         SCREAMER,
         ;
     }
-    public enum  UNITS_TYPES_CORRUPTED implements OBJ_TYPE_ENUM {
+
+    public enum UNITS_TYPES_CORRUPTED implements OBJ_TYPE_ENUM {
         EVIL_EYE,
         GUARDIAN_OF_THE_UNDERWORLD,
         MIND_FLAYER,
@@ -1201,7 +1250,8 @@ public final class UnitEnums {
         TROGLODYTE_MUTANT,
         ;
     }
-    public enum  UNITS_TYPES_MONSTER implements OBJ_TYPE_ENUM {
+
+    public enum UNITS_TYPES_MONSTER implements OBJ_TYPE_ENUM {
         MANTICORE,
         HYDRA,
         MINOTAUR,
@@ -1216,7 +1266,8 @@ public final class UnitEnums {
         PLACEHOLDER_UNDEAD_MONSTER,
         ;
     }
-    public enum  UNITS_TYPES_SPIDERS implements OBJ_TYPE_ENUM {
+
+    public enum UNITS_TYPES_SPIDERS implements OBJ_TYPE_ENUM {
         DEADLY_SPIDER,
         PALE_WEAVER,
         MYCOSA,
@@ -1226,12 +1277,14 @@ public final class UnitEnums {
         PLACEHOLDER_CRITTER_SPIDERS,
         ;
     }
-    public enum  UNITS_TYPES_SHADOW implements OBJ_TYPE_ENUM {
+
+    public enum UNITS_TYPES_SHADOW implements OBJ_TYPE_ENUM {
         SHADOW,
         MALEFIC_SHADE,
         ;
     }
-    public enum  UNITS_TYPES_PLAGUE implements OBJ_TYPE_ENUM {
+
+    public enum UNITS_TYPES_PLAGUE implements OBJ_TYPE_ENUM {
         HUSK,
         CORPSEBORN,
         GHOUL,
@@ -1241,7 +1294,8 @@ public final class UnitEnums {
         PLACEHOLDER_UNDEAD_PLAGUE,
         ;
     }
-    public enum  UNITS_TYPES_CRIMSON implements OBJ_TYPE_ENUM {
+
+    public enum UNITS_TYPES_CRIMSON implements OBJ_TYPE_ENUM {
         BLOOD_GHAST,
         BLOOD_REVENANT,
         VAMPIRE,
@@ -1253,7 +1307,8 @@ public final class UnitEnums {
         PLACEHOLDER_UNDEAD_CRIMSON,
         ;
     }
-    public enum  UNITS_TYPES_WRAITH implements OBJ_TYPE_ENUM {
+
+    public enum UNITS_TYPES_WRAITH implements OBJ_TYPE_ENUM {
         GHOST,
         WRAITH_BEAST,
         WRAITH,
@@ -1262,42 +1317,49 @@ public final class UnitEnums {
         PLACEHOLDER_UNDEAD_WRAITH,
         ;
     }
-    public enum  UNITS_TYPES_PALE implements OBJ_TYPE_ENUM {
+
+    public enum UNITS_TYPES_PALE implements OBJ_TYPE_ENUM {
         REVENANT,
         WRAITH_KNIGHT,
         ;
     }
-    public enum  UNITS_TYPES_DEATH implements OBJ_TYPE_ENUM {
+
+    public enum UNITS_TYPES_DEATH implements OBJ_TYPE_ENUM {
         DEATH_LORD,
         HUORN,
         DEATH_KNIGHT,
         CORPSE_SLUG,
         ;
     }
-    public enum  UNITS_TYPES_WILD_ANIMAL implements OBJ_TYPE_ENUM {
+
+    public enum UNITS_TYPES_WILD_ANIMAL implements OBJ_TYPE_ENUM {
         GREY_WOLF,
         WARG,
         DIRE_WARG,
         ;
     }
-    public enum  UNITS_TYPES_DIRE_ANIMAL implements OBJ_TYPE_ENUM {
+
+    public enum UNITS_TYPES_DIRE_ANIMAL implements OBJ_TYPE_ENUM {
         DIRE_GRIZZLY,
         BLACK_PANTHER,
         GRIFF,
         ;
     }
-    public enum  UNITS_TYPES_PET_MONSTER implements OBJ_TYPE_ENUM {
+
+    public enum UNITS_TYPES_PET_MONSTER implements OBJ_TYPE_ENUM {
         DRAKE,
         BASILISK,
         GIANT_DRAGONFLY,
         ;
     }
-    public enum  UNITS_TYPES_SKY implements OBJ_TYPE_ENUM {
+
+    public enum UNITS_TYPES_SKY implements OBJ_TYPE_ENUM {
         CLOUD_TITAN,
         AYRIE,
         ;
     }
-    public enum UNIT_GROUPS  implements OBJ_TYPE_ENUM {
+
+    public enum UNIT_GROUPS implements OBJ_TYPE_ENUM {
         //generate!
         ANIMALS,
         APOSTATES,

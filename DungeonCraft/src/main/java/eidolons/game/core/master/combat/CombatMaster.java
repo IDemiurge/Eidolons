@@ -6,7 +6,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.battlefield.DC_GraveyardManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.rules.combat.attack.DC_AttackMaster;
-import eidolons.game.battlecraft.rules.combat.damage.ArmorMaster;
+import eidolons.game.battlecraft.rules.combat.damage.armor.ArmorMaster;
 import eidolons.game.core.GenericTurnManager;
 import eidolons.game.core.atb.AtbTurnManager;
 import eidolons.game.core.game.DC_Game;

@@ -25,12 +25,29 @@ public class DeadeyeHandler {
         DC_ActiveObj action = attack.getAction();
         Set<Deadeye> set = new LinkedHashSet<>();
         NewRpgEnums.DeadeyeType type = getKillDeadeye(action);
-        set.add(createDeadeye(action, type));
+        set.add(createDeadeye(attack, type));
         type = getStdDeadeye(action);
-        set.add(createDeadeye(action, type));
+        set.add(createDeadeye(attack, type));
         type = getSpecialDeadeye(action);
-        set.add(createDeadeye(action, type));
+        set.add(createDeadeye(attack, type));
 
         return set.toArray(new Deadeye[0]);
+    }
+
+    private Deadeye createDeadeye(Attack attack, NewRpgEnums.DeadeyeType type) {
+        return new Deadeye(attack, type);
+    }
+
+    private NewRpgEnums.DeadeyeType getSpecialDeadeye(DC_ActiveObj action) {
+        return NewRpgEnums.DeadeyeType.maim;
+    }
+
+    private NewRpgEnums.DeadeyeType getKillDeadeye(DC_ActiveObj action) {
+        return NewRpgEnums.DeadeyeType.decapitate;
+    }
+
+    private NewRpgEnums.DeadeyeType getStdDeadeye(DC_ActiveObj action) {
+        return NewRpgEnums.DeadeyeType.heartseeker;
+
     }
 }

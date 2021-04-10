@@ -20,9 +20,20 @@ public class CounterMasterAdvanced {
         }
     }
 
+    //TODO
+    public static void countersAdded(BattleFieldObject unit, COUNTER counter, int newTotal) {
+        COUNTER upgraded = counter.getUpgraded();
+        if (upgraded == null) {
+            return;
+        }
+        int upToAdd = newTotal / 10;
+        // addCounters(unit, upgraded, upToAdd);
+        // removeCounters(unit, counter, upToAdd*10);
+    }
+
     public static void afterRoundEnds(BattleFieldObject unit) {
-//some interactions should happen immediately - e.g. moist vs blaze
-// so we need to Interact, Convert and Transfer... what's the order? probably exactly that!
+        //some interactions should happen immediately - e.g. moist vs blaze
+        // so we need to Interact, Convert and Transfer... what's the order? probably exactly that!
         Map<COUNTER, Integer> map = createCounterMap(unit);
         map.forEach((counter, value) -> map.forEach((counter2, value2) -> {
             if (counter != counter2) {
@@ -117,7 +128,7 @@ public class CounterMasterAdvanced {
                 s.setDown(COUNTER.Corrosion);
                 s.setUp(COUNTER.Charge);
                 break;
-            case Freeze:
+            case Chill:
                 s.setDown(COUNTER.Encase);
                 s.setUp(COUNTER.Moist);
                 initInteraction(s, COUNTER.Blaze, COUNTER_INTERACTION.MUTUAL_DELETION);
@@ -136,7 +147,7 @@ public class CounterMasterAdvanced {
                 s.setUp(COUNTER.Magnetized);
                 break;
             case Moist:
-                s.setDown(COUNTER.Freeze);
+                s.setDown(COUNTER.Chill);
                 s.setUp(COUNTER.Corrosion);
                 break;
             case Grease:
@@ -154,7 +165,6 @@ public class CounterMasterAdvanced {
                 s.setDown(COUNTER.Encase);
                 break;
             case Bleeding:
-            case Time_Warped:
             case Mutagen:
             case Magnetized:
             case Haze:
@@ -162,52 +172,6 @@ public class CounterMasterAdvanced {
             case Disease:
                 break;
 
-            case Rage:
-                s.setDown(COUNTER.Hatred);
-                s.setUp(COUNTER.Oblivion);
-                break;
-            case Oblivion:
-                s.setDown(COUNTER.Taint);
-                s.setUp(COUNTER.Void);
-                break;
-            case Madness:
-            case Lust:
-                s.setDown(COUNTER.Madness);
-                s.setUp(COUNTER.Hatred);
-                break;
-            case Despair:
-                s.setDown(COUNTER.Oblivion);
-                s.setUp(COUNTER.Madness);
-                break;
-            case Hatred:
-                s.setDown(COUNTER.Lust);
-                s.setUp(COUNTER.Rage);
-                break;
-
-            case Virtue:
-                s.setDown(COUNTER.Zeal);
-                s.setUp(COUNTER.Void);
-                break;
-            case Zeal:
-                s.setDown(COUNTER.Rage);
-                s.setUp(COUNTER.Virtue);
-                break;
-            case Void:
-                s.setDown(COUNTER.Time_Warped);
-                s.setUp(COUNTER.Zen);
-                break;
-            case Warp:
-                s.setDown(COUNTER.Lust);
-                s.setUp(COUNTER.Zeal);
-                break;
-            case Aether:
-                s.setDown(COUNTER.Charge);
-                s.setUp(COUNTER.Magnetized);
-                break;
-            case Encryption:
-                s.setDown(COUNTER.Aether);
-                s.setUp(COUNTER.Time_Warped);
-                break;
         }
     }
 

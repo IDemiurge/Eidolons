@@ -10,6 +10,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.battlecraft.rules.combat.attack.AttackCalculator;
 import eidolons.game.battlecraft.rules.combat.attack.SneakRule;
+import eidolons.game.battlecraft.rules.combat.damage.armor.ArmorMaster;
 import eidolons.game.battlecraft.rules.round.UnconsciousRule;
 import eidolons.game.core.master.EffectMaster;
 import main.ability.effects.Effect;
@@ -31,45 +32,44 @@ import java.util.List;
 /**
  * Created by JustMe on 3/14/2017.
  * <portrait>
- * Calculates final Endurance/Toughness losses that BattleFieldObject receives from Damage
- * Also calculates damage for AI FutureBuilder, Unit's displayed value and PhaseAnimations
+ * Calculates final Endurance/Toughness losses that BattleFieldObject receives from Damage Also calculates damage for AI
+ * FutureBuilder, Unit's displayed value and PhaseAnimations
  */
 public class DamageCalculator {
 
     protected static int calculateToughnessDamage(BattleFieldObject attacked, BattleFieldObject attacker,
-                                                  int base_damage, Ref ref, int blocked, DAMAGE_TYPE damage_type) {
+                                                  int base_damage, Ref ref, int blocked, DAMAGE_TYPE damage_type, StringBuilder log) {
         return calculateDamage(false, attacked, attacker, base_damage, ref, blocked,
-         damage_type);
+                damage_type, log);
     }
 
     protected static int calculateEnduranceDamage(BattleFieldObject attacked, BattleFieldObject attacker,
-                                                  int base_damage, Ref ref, int blocked, DAMAGE_TYPE damage_type) {
+                                                  int base_damage, Ref ref, int blocked, DAMAGE_TYPE damage_type, StringBuilder log) {
         return calculateDamage(true, attacked, attacker, base_damage, ref, blocked,
-         damage_type);
+                damage_type, log);
     }
 
     public static int calculateDamage(boolean endurance, BattleFieldObject attacked, BattleFieldObject attacker,
-                                      int base_damage, Ref ref, int blocked, DAMAGE_TYPE damage_type) {
+                                      int base_damage, Ref ref, int blocked, DAMAGE_TYPE damage_type, StringBuilder log) {
 
         if (!endurance) {
             if (isEnduranceOnly(ref)) {
                 return 0;
             }
         }
-
         int amount = base_damage - blocked;
         int resistance = ResistMaster.getResistanceForDamageType(attacked, attacker, damage_type);
         amount = amount - MathMaster.applyPercent(amount, resistance);
         int armor = ArmorMaster.getArmorValue(attacked, damage_type);
-        //applies natural armor
-//        PhaseAnimation animation = magical ? PhaseAnimator.getActionAnimation(ref, attacker) : PhaseAnimator.getAttackAnimation(ref,
-//         attacked);
-//        if (animation != null) {
-//            if (resistance != 0 || armor != 0) {
-//                animation.addPhaseArgs(PHASE_TYPE.REDUCTION_NATURAL, armor, resistance, base_damage
-//                 - blocked);
-//            }
-//        }
+        //TODO LOGGING!
+
+        if (log != null) {
+            log.append("Damage reduced by " +
+                    resistance +
+                    "% (Resistance), plus additional " +
+                    armor + " (Natural Armor)");
+        }
+
         return Math.max(0, amount - armor);
     }
 
@@ -102,21 +102,28 @@ public class DamageCalculator {
         return precalculateDamage(amount, dmg_type, attacked, attacker, attack.getWeapon(), attack.getAction());
     }
 
-    public static int precalculateDamage(int amount, DAMAGE_TYPE dmg_type, BattleFieldObject attacked, BattleFieldObject attacker, DC_WeaponObj weapon, DC_ActiveObj action) {
+    public static int precalculateDamage(int amount, DAMAGE_TYPE dmg_type, BattleFieldObject attacked,
+                                         BattleFieldObject attacker, DC_WeaponObj weapon, DC_ActiveObj action) {
         if (dmg_type == DAMAGE_TYPE.PURE || dmg_type == DAMAGE_TYPE.POISON) {
             return amount;
         }
         if (!(attacked instanceof Unit)) {
             return amount;
         }
-        int blocked = attacked.getGame().getArmorSimulator().getShieldDamageBlocked(amount,
-         attacked, attacker,  action,  weapon, dmg_type);
+        // int blocked = attacked.getGame().getArmorSimulator().getShieldDamageBlocked(amount,
+        //         attacked, attacker, action, weapon, dmg_type);
+        // blocked += attacked.getGame()
+        //         .getArmorSimulator().getArmorBlockDamage(amount, attacked, attacker, action);
 
-        blocked += attacked.getGame()
-         .getArmorSimulator().getArmorBlockDamage(amount, attacked, attacker, action);
+        Ref ref= new Ref(attacker);
+        ref.setTarget(attacked.getId());
+        ref.setAmount(amount);
+        Damage damage = DamageFactory.getDamageForPrecalculate(ref);
 
+        int blocked = attacked.getGame().getArmorSimulator().
+                processDamage(damage).getBlocked();
         amount = calculateDamage(true, attacked, attacker, amount,
-         null, blocked, dmg_type);
+                null, blocked, dmg_type, null );
 
         return amount;
     }
@@ -134,12 +141,12 @@ public class DamageCalculator {
         DAMAGE_TYPE damageType = damage.getDmgType();
         if (damage.getTarget() instanceof Unit) {
             int blocked = sourceObj.getGame().getArmorSimulator().
-             getArmorBlockDamage(damage);
+                    processDamage(damage).getBlocked();
             amount -= blocked;
         }
         amount -= amount * ResistMaster.getResistanceForDamageType(
-         (Unit) ref.getTargetObj(), sourceObj,
-         damageType) / 100;
+                (Unit) ref.getTargetObj(), sourceObj,
+                damageType) / 100;
 
         return amount;// applySpellArmorReduction(amount, (DC_HeroObj)
         // ref.getTargetObj(), ref.getSourceObj());
@@ -148,7 +155,7 @@ public class DamageCalculator {
 
     public static boolean isDead(BattleFieldObject unit) {
         if (unit instanceof Unit) {
-            return UnconsciousRule.checkUnitDies((Unit) unit );
+            return UnconsciousRule.checkUnitDies((Unit) unit);
         }
         if (0 >= unit.getIntParam(PARAMS.C_ENDURANCE)) {
             return true;
@@ -161,26 +168,26 @@ public class DamageCalculator {
             return true;
         }
         return StringMaster.compare(ref.getValue(KEYS.DAMAGE_MODS),
-         DAMAGE_MODIFIER.UNBLOCKABLE
-          .toString());
+                DAMAGE_MODIFIER.UNBLOCKABLE
+                        .toString());
     }
 
     public static boolean isPeriodic(Ref ref) {
         return StringMaster.compare(ref.getValue(KEYS.DAMAGE_MODS),
-         GenericEnums.DAMAGE_MODIFIER.PERIODIC
-          .toString());
+                GenericEnums.DAMAGE_MODIFIER.PERIODIC
+                        .toString());
     }
 
     public static boolean isEnduranceOnly(Ref ref) {
         return StringMaster.compare(ref.getValue(KEYS.DAMAGE_MODS),
-         GenericEnums.DAMAGE_MODIFIER.ENDURANCE_ONLY
-          .toString());
+                GenericEnums.DAMAGE_MODIFIER.ENDURANCE_ONLY
+                        .toString());
     }
 
     public static boolean isArmorAveraged(Ref ref) {
         return StringMaster.compare(ref.getValue(KEYS.DAMAGE_MODS),
-         DAMAGE_MODIFIER.ARMOR_AVERAGED
-          .toString());
+                DAMAGE_MODIFIER.ARMOR_AVERAGED
+                        .toString());
     }
 
     public static boolean isLethal(int damage, Obj targetObj) {
@@ -197,11 +204,11 @@ public class DamageCalculator {
         } //annihilation!
         if (targetObj instanceof Unit) {
             return
-             unconscious ?
-              UnconsciousRule.checkFallsUnconscious((Unit) targetObj,
-               targetObj.getIntParam(PARAMS.C_TOUGHNESS) - damage,  targetObj.getIntParam(PARAMS.C_FOCUS) )
-              : UnconsciousRule.checkUnitAnnihilated(
-              targetObj.getIntParam(PARAMS.C_ENDURANCE) - damage, (Unit) targetObj );
+                    unconscious ?
+                            UnconsciousRule.checkFallsUnconscious((Unit) targetObj,
+                                    targetObj.getIntParam(PARAMS.C_TOUGHNESS) - damage, targetObj.getIntParam(PARAMS.C_FOCUS))
+                            : UnconsciousRule.checkUnitAnnihilated(
+                            targetObj.getIntParam(PARAMS.C_ENDURANCE) - damage, (Unit) targetObj);
         }
         if (damage >= targetObj.getIntParam(PARAMS.C_TOUGHNESS)) {
             return true;
@@ -221,11 +228,11 @@ public class DamageCalculator {
         obj = (DC_Obj) ref.getObj(KEYS.ACTIVE);
 
         if (obj instanceof DC_ActiveObj) {
-        for (DAMAGE_CASE e : obj.getBonusDamage().keySet()) {
-            if (e == CASE) {
-                list.addAll(obj.getBonusDamage().get(e));
+            for (DAMAGE_CASE e : obj.getBonusDamage().keySet()) {
+                if (e == CASE) {
+                    list.addAll(obj.getBonusDamage().get(e));
+                }
             }
-        }
             obj = ((DC_ActiveObj) obj).getActiveWeapon();
             if (obj != null) {
                 for (DAMAGE_CASE e : obj.getBonusDamage().keySet()) {
@@ -254,13 +261,13 @@ public class DamageCalculator {
         if (attack.getWeapon().getSpecialEffects() != null) {
             if (attack.getWeapon().getSpecialEffects().get(SPECIAL_EFFECTS_CASE.ON_ATTACK) != null) {
                 effects.add(attack.getWeapon().getSpecialEffects().get(
-                 SPECIAL_EFFECTS_CASE.ON_ATTACK));
+                        SPECIAL_EFFECTS_CASE.ON_ATTACK));
             }
         }
         if (attack.getAttacker().getSpecialEffects() != null) {
             if (attack.getAttacker().getSpecialEffects().get(SPECIAL_EFFECTS_CASE.ON_ATTACK) != null) {
                 effects.add(attack.getAttacker().getSpecialEffects().get(
-                 SPECIAL_EFFECTS_CASE.ON_ATTACK));
+                        SPECIAL_EFFECTS_CASE.ON_ATTACK));
             }
         }
         for (Effect e : effects) {
@@ -281,7 +288,7 @@ public class DamageCalculator {
         amount += weapon.getDamageModifiers();
         amount += weapon.getIntParam(PARAMS.DAMAGE_BONUS);
         int hero_dmg_mod = unit.getIntParam((offhand) ? PARAMS.OFFHAND_DAMAGE_MOD
-         : PARAMS.DAMAGE_MOD);
+                : PARAMS.DAMAGE_MOD);
         if (hero_dmg_mod == 0) {
             hero_dmg_mod = 100;
         }

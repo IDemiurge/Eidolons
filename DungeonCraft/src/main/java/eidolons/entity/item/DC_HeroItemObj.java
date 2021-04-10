@@ -1,7 +1,6 @@
 package eidolons.entity.item;
 
 import eidolons.content.PARAMS;
-import eidolons.content.consts.VisualEnums;
 import eidolons.entity.ChangeableType;
 import eidolons.entity.obj.attach.DC_HeroAttachedObj;
 import eidolons.entity.obj.unit.Unit;
@@ -116,7 +115,7 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
         if (durability <= 0) {
             broken();
         } else
-            multiplyParamByPercent(getDurabilityParam(), durability, false);
+            multiplyParamByPercent(getDurabilityDependentParam(), durability, false);
     }
 
     @Override
@@ -130,7 +129,7 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
         resetPercentage(PARAMS.DURABILITY);
     }
 
-    protected abstract PARAMETER getDurabilityParam();
+    protected abstract PARAMETER getDurabilityDependentParam();
 
     public int reduceDurability(int amount) {
         return reduceDurability(amount, false);

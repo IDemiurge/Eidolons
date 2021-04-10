@@ -661,10 +661,6 @@ public class ContentGenerator {
         if (t.getName().contains(" Bolt")) {
             t.addProperty(G_PROPS.SPELL_TAGS, "Missile", true);
         }
-
-        if (t.checkProperty(G_PROPS.SPELL_TAGS, "missile")) {
-            t.setParam(PARAMS.IMPACT_AREA, 15);
-        }
         adjustSpellCosts(t);
 
     }
@@ -1017,27 +1013,6 @@ public class ContentGenerator {
             t.setProperty(PROPS.DEFAULT_INSTANT_ATTACK_ACTION, defaultWeaponAction);
             defaultWeaponAction = getDEFAULT_ATTACK_OF_OPPORTUNITY_ACTION(group);
             t.setProperty(PROPS.DEFAULT_ATTACK_OF_OPPORTUNITY_ACTION, defaultWeaponAction);
-        }
-        if (t.getIntParam(PARAMS.IMPACT_AREA) == 0) {
-            if (group == null) {
-                WEAPON_TYPE ty = new EnumMaster<WEAPON_TYPE>().retrieveEnumConst(WEAPON_TYPE.class,
-                        t.getProperty(G_PROPS.WEAPON_TYPE));
-                if (ty == ItemEnums.WEAPON_TYPE.NATURAL) {
-                    Integer area = 20;
-                    t.setParam(PARAMS.IMPACT_AREA, area);
-                } else if (ty == ItemEnums.WEAPON_TYPE.MAGICAL) {
-                    Integer area = 15;
-                    t.setParam(PARAMS.IMPACT_AREA, area);
-                }
-                return;
-            }
-            WEAPON_SIZE size = new EnumMaster<WEAPON_SIZE>().retrieveEnumConst(WEAPON_SIZE.class, t
-                    .getProperty(G_PROPS.WEAPON_SIZE));
-            if (size == null) {
-                return;
-            }
-            Integer area = getDefaultImpactArea(group, size);
-            t.setParam(PARAMS.IMPACT_AREA, area);
         }
     }
 

@@ -56,22 +56,22 @@ public class HearingRule implements ActionRule {
         if (type == null) {
             return;
         }
-//type = "murmur" : "make strange sounds"
+        //type = "murmur" : "make strange sounds"
 
         Unit unit = action.getOwnerUnit();
         double dst = PositionMaster.getExactDistance(unit, listener) + 1;
         String suc = "(30-" + StringMaster.getValueRef(Ref.KEYS.SOURCE, PARAMS.NOISE) + ")" + "/" + dst;
         String fail = "10+" + StringMaster.getValueRef(Ref.KEYS.TARGET, PARAMS.PERCEPTION);
-//        String suc = "("+StringMaster.getValueRef(Ref.KEYS.SOURCE, PARAMS.PERCEPTION) + "+10)"+ "/" +dst ;
-//        String fail = "10+" +  StringMaster.getValueRef(Ref.KEYS.TARGET, PARAMS.NOISE);
+        //        String suc = "("+StringMaster.getValueRef(Ref.KEYS.SOURCE, PARAMS.PERCEPTION) + "+10)"+ "/" +dst ;
+        //        String fail = "10+" +  StringMaster.getValueRef(Ref.KEYS.TARGET, PARAMS.NOISE);
         Ref ref = listener.getRef().getCopy();
         ref.setTarget(unit.getId());
-        boolean result = RollMaster.roll(GenericEnums.RollType.HEARING, suc, fail, ref,
-                "", "", false
-        );//, "Hear me?", "source?");
+        //TODO rpg Review
+        boolean result = false;
+        // RollMaster.roll(GenericEnums.RollType.perception, ref);
 
         if (result) {
-//            GuiEventManager.trigger(GuiEventType.SHOW_SPRITE, Sprites.SOUND, unit.getCoordinates());
+            //            GuiEventManager.trigger(GuiEventType.SHOW_SPRITE, Sprites.SOUND, unit.getCoordinates());
             String descriptor = game.getVisionMaster().getHintMaster().getSoundHints(unit);
             DIRECTION direction = DirectionMaster.getRelativeDirection(listener, unit);
             String dstDescr = dst < 1.5f ? "up close" : dst < 4 ? "close by" : "some distance away";
@@ -98,8 +98,8 @@ public class HearingRule implements ActionRule {
                 repeat = map.get(unit) == direction; //TODO encapsulate all data
                 map.put(unit, direction);
             }
-//                    "Same sound again!"
-//clear on combat end
+            //                    "Same sound again!"
+            //clear on combat end
 
             if (repeat || RandomWizard.chance(110 - listener.getIntParam("perception"))) {
                 level = LogManager.LOGGING_DETAIL_LEVEL.FULL;
@@ -130,7 +130,7 @@ public class HearingRule implements ActionRule {
         for (Unit listener : game.getPlayer(!activeObj.isMine()).collectControlledUnits_()) {
             checkLogged((DC_ActiveObj) activeObj, listener);
         }
-//        Unit listener = Eidolons.getMainHero();
+        //        Unit listener = Eidolons.getMainHero();
     }
 
     private boolean isOn() {
@@ -149,7 +149,7 @@ public class HearingRule implements ActionRule {
 
     private boolean isHearingRequired(Unit listener, DC_ActiveObj action) {
         int maxDistance = listener.isMine() ? 8 : 4;
-//            TODO  db!
+        //            TODO  db!
         if (action.getOwnerUnit().getCoordinates().dst_(listener.getCoordinates()) > maxDistance) {
             return false;
         }

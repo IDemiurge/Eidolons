@@ -78,7 +78,7 @@ public class DC_Attributes  {
                 mod(amount, AttributeConsts.WIL_RES_BONUS, attr, ASTRAL_AND_ELEMENTAL_RESISTANCES.getParams());
                 mod(amount, AttributeConsts.WIL_GRIT_BONUS, attr, PARAMS.GRIT);
                 mod(before25, AttributeConsts.B25_WIL_FOC_BONUS , attr,PARAMS.STARTING_FOCUS);
-                //TODO
+                //TODO spirit?
                 // mod(amount - 25, AttributeConsts.A25_WIL_FOC_BONUS , attr,PARAMS.STARTING_FOCUS);
                 break;
             case SPELLPOWER:
@@ -110,6 +110,7 @@ public class DC_Attributes  {
 
             case CHARISMA:
                 //divination cap
+                // luck?
                 mod(amount, AttributeConsts.CHA_SPIRIT_BONUS, attr, PARAMS.SPIRIT );
                 mod(amount, AttributeConsts.CHA_DEITY_BONUS, attr, PARAMS.DEITY_EFFECTS_MOD);
                 mod(amount - 25, AttributeConsts.B25_CHA_DISCOUNT , attr, PARAMS.GOLD_COST_REDUCTION);

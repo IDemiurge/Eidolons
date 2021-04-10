@@ -74,11 +74,7 @@ public class RaiseEffect extends SummonEffect {
         this.raiseType = type;
     }
 
-    @Override
-    protected Formula getXpFormula(Obj spell) {
-        // TODO perhaps related to the corpse? Limit max xp by corpse's xp, e.g.
-        return super.getXpFormula(spell).getAppendedByFactor(POWER_FACTOR);
-    }
+
 
     public void initCorpse() {
         corpse = (Unit) ref.getGame().getGraveyardManager()

@@ -56,7 +56,7 @@ public class SoulforcePanel extends GroupX {
     }
 
     private void leftButton() {
-        EidolonLord.lord.useArts();
+        // EidolonLord.lord.useArts();
     }
     private void rightButton() {
         GuiEventManager.trigger(GuiEventType.SHOW_HQ_SCREEN);

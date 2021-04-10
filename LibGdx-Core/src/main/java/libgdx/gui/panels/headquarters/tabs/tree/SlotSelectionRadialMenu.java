@@ -21,6 +21,7 @@ import libgdx.gui.tooltips.SmartClickListener;
 import libgdx.shaders.GrayscaleShader;
 import libgdx.texture.TextureCache;
 import eidolons.system.libgdx.datasource.HeroDataModel;
+import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -113,16 +114,16 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
 
     @Override
     protected Vector2 getInitialPosition() {
-//        Vector2 pos = super.getInitialPosition();
-//        pos.lerp(new Vector2(-GdxMaster.getWidth() / 2, -GdxMaster.getHeight() / 2), 0.35f);
-//        setPosition(pos.x, pos.y);
-//        return pos;
-//        return screenToLocalCoordinates(pos);
-//        stageToLocalCoordinates(pos);
-//        Vector2 v = new Vector2(GdxMaster.getWidth() / 2 - getWidth() * 3,
-//                GdxMaster.getHeight() / 2 - getHeight() / 2);
-//        Vector2 mouse = new Vector2(Gdx.input.getX(), Gdx.input.getY());
-//        return v.lerp(mouse, 0.3f);
+        //        Vector2 pos = super.getInitialPosition();
+        //        pos.lerp(new Vector2(-GdxMaster.getWidth() / 2, -GdxMaster.getHeight() / 2), 0.35f);
+        //        setPosition(pos.x, pos.y);
+        //        return pos;
+        //        return screenToLocalCoordinates(pos);
+        //        stageToLocalCoordinates(pos);
+        //        Vector2 v = new Vector2(GdxMaster.getWidth() / 2 - getWidth() * 3,
+        //                GdxMaster.getHeight() / 2 - getHeight() / 2);
+        //        Vector2 mouse = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+        //        return v.lerp(mouse, 0.3f);
 
 
         float w = getWidth();
@@ -221,11 +222,15 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
                         ref.setID(KEYS.INFO, infoFeat.getId());
 
                         String text = type.getProperty(G_PROPS.TOOLTIP);
-                        text += "\n" + TextParser.parse(type.getDescription( ),
-                                ref,  TextParser.VARIABLE_PARSING_CODE, TextParser.TOOLTIP_PARSING_CODE, TextParser.INFO_PARSING_CODE);
+                        text += "\n" + TextParser.parse(type.getDescription(),
+                                ref, TextParser.VARIABLE_PARSING_CODE, TextParser.TOOLTIP_PARSING_CODE, TextParser.INFO_PARSING_CODE);
 
+                        PARAMS costparam =
+                                type.getOBJ_TYPE_ENUM() == DC_TYPE.SPELLS
+                                        ? PARAMS.SPELL_POINTS_UNSPENT
+                                        : PARAMS.SKILL_POINTS_UNSPENT;
                         text += (isFree() ? ""
-                                : (valid ? "\nXp Cost:" + type.getIntParam(PARAMS.XP_COST)
+                                : (valid ? "\nPoint Cost:" + type.getIntParam(costparam)
                                 : ("\n" + reason)));
                         return text;
 

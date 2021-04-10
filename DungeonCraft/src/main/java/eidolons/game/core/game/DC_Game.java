@@ -32,7 +32,7 @@ import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.logic.mission.universal.MissionMaster;
 import eidolons.game.battlecraft.rules.DC_Rules;
 import eidolons.game.battlecraft.rules.combat.attack.DC_AttackMaster;
-import eidolons.game.battlecraft.rules.combat.damage.ArmorMaster;
+import eidolons.game.battlecraft.rules.combat.damage.armor.ArmorMaster;
 import eidolons.game.core.*;
 import eidolons.game.core.atb.AtbController;
 import eidolons.game.core.atb.AtbTurnManager;

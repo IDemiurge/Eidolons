@@ -57,7 +57,20 @@ public class NewRpgEnums {
         add_perks_5,
     }
 
-    public enum DeadeyeType {
+    public enum SpellDeadeyeType {
+        annihilate,
+        heartstopper,
+        hex,
+        level_drain,
+        soul_steal,
+        ricochet,
+        cleave,
+        knockout,
+        double_spell,
+
+        ;
+    }
+        public enum DeadeyeType {
         decapitate,
         knockout,
         overwhelm,
@@ -74,6 +87,16 @@ public class NewRpgEnums {
         hit, //40-60
         critical_hit, //60-80
         deadeye, //80+
+        ;
+    }
+
+    public enum BlockType {
+        deflect, block,
+        ;
+    }
+
+    public enum BlockerType {
+        shield, weapon, magic,
         ;
     }
 }

@@ -90,7 +90,7 @@ public class FreezeRule extends DC_CounterRule {
 
     @Override
     public COUNTER getCounter() {
-        return COUNTER.Freeze;
+        return COUNTER.Chill;
     }
 
     @Override

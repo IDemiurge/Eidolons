@@ -41,7 +41,6 @@ public class DC_Rules implements GameRules {
     private WatchRule watchRule;
     private FocusRule focusRule;
     private EssenceRule essenceRule;
-    private UpkeepRule upkeepRule;
     private EssenceBuffRule essenceBuffRule;
     private ToughnessBuffRule staminaRule;
     private WeightBuffRule weightRule;
@@ -65,7 +64,6 @@ public class DC_Rules implements GameRules {
     private BlightRule blightRule;
     private BlazeRule blazeRule;
     private StackingRule stackingRule;
-    private EngagedRule engagedRule;
     private WaterRule waterRule;
     private UnconsciousRule unconsciousRule;
     private GreaseRule greaseRule;
@@ -95,7 +93,6 @@ public class DC_Rules implements GameRules {
         dynamicBuffRules = new DynamicBuffRules(game);
         unconsciousRule = new UnconsciousRule(game);
         watchRule = new WatchRule();
-        engagedRule = new EngagedRule(getGame());
         stackingRule = new StackingRule(getGame());
         ensnareRule = new EnsnaredRule(getGame());
         stealthRule = new StealthRule(getGame());
@@ -106,7 +103,6 @@ public class DC_Rules implements GameRules {
         actionRules.add(stealthRule);
         actionRules.add(ensnareRule);
         actionRules.add(stackingRule);
-        actionRules.add(engagedRule);
         actionRules.add(hearingRule);
 //        actionRules.add(waterRule= new WaterRule(getGame()));
 
@@ -249,10 +245,6 @@ public class DC_Rules implements GameRules {
         return ashAnnihilationRule;
     }
 
-    public UpkeepRule getUpkeepRule() {
-        return upkeepRule;
-    }
-
     public EssenceBuffRule getEssenceBuffRule() {
         return essenceBuffRule;
     }
@@ -339,10 +331,6 @@ public class DC_Rules implements GameRules {
 
     public StackingRule getStackingRule() {
         return stackingRule;
-    }
-
-    public EngagedRule getEngagedRule() {
-        return engagedRule;
     }
 
     public WaterRule getWaterRule() {

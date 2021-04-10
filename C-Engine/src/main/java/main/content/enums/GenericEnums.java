@@ -240,6 +240,7 @@ public class GenericEnums {
      * 24th of April, Hour of Magic
      */
     public enum RollType implements VarHolder {
+        // mass - todo
         fortitude,
         reflex,
         grit,
@@ -249,16 +250,16 @@ public class GenericEnums {
         perception,
         stealth,
 
-        mind_affecting(grit,spirit), //both sides same?
-
+        mind_affecting(grit,spirit),
         combat(fortitude, reflex),
         insight(wit, luck),
         ;
         boolean logToTop;
         private   String name;
+        private RollType[] multi;
 
         RollType(RollType... combo) {
-
+            multi = combo;
         }
         RollType(String s, boolean logToTop) {
             this();
@@ -294,6 +295,9 @@ public class GenericEnums {
             return logToTop;
         }
 
+        public RollType[] getMulti() {
+            return multi;
+        }
     }
 
     public enum STD_BOOLS {

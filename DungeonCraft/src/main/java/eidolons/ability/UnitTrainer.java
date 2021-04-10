@@ -88,8 +88,9 @@ public class UnitTrainer {
                 if (!WorkspaceMaster.checkTypeIsReadyForUse(t)) {
                     continue;
                 }
-                int weight = Math.max(1, score - t.getIntParam(PARAMS.SKILL_DIFFICULTY));
-                planBuilder.append(t.getName()).append(StringMaster.wrapInParenthesis("" + weight)).append(Strings.CONTAINER_SEPARATOR);
+                //TODO progression Review
+                // int weight = Math.max(1, score - t.getIntParam(PARAMS.SKILL_DIFFICULTY));
+                // planBuilder.append(t.getName()).append(StringMaster.wrapInParenthesis("" + weight)).append(Strings.CONTAINER_SEPARATOR);
             }
         }
         plan = planBuilder.toString();

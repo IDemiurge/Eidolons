@@ -2,19 +2,15 @@ package eidolons.ability.effects.oneshot.unit;
 
 import eidolons.ability.UnitTrainingMaster;
 import eidolons.ability.effects.DC_Effect;
-import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.rules.magic.SummoningSicknessRule;
-import eidolons.game.battlecraft.rules.round.UpkeepRule;
 import eidolons.game.core.EUtils;
-import eidolons.content.DC_Formulas;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.OneshotEffect;
 import main.content.C_OBJ_TYPE;
-import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.enums.entity.SpellEnums;
 import main.content.values.properties.G_PROPS;
@@ -32,9 +28,7 @@ import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
-import main.system.math.MathMaster;
 import main.system.sound.AudioEnums;
 
 public class SummonEffect extends DC_Effect implements OneshotEffect {
@@ -149,7 +143,7 @@ public class SummonEffect extends DC_Effect implements OneshotEffect {
 
         applyLifetimeBuff();
 
-        UpkeepRule.addUpkeep(unit);
+        // UpkeepRule.addUpkeep(unit);
         if (unit instanceof Unit) {
             SummoningSicknessRule.apply((Unit) unit, active);
         }

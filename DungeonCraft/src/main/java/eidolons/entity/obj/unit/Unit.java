@@ -2,6 +2,7 @@ package eidolons.entity.obj.unit;
 
 import eidolons.content.*;
 import eidolons.content.values.ValuePages;
+import eidolons.entity.Deity;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.active.DC_UnitAction;
@@ -138,6 +139,8 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     private boolean movePointsOn = true;
     private boolean extraAtkPointsOn;
     private int freeMovesDone;
+    private List<Deity> nemesis;
+    private List<Deity> patron;
 
     public Unit(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
@@ -379,41 +382,6 @@ public class Unit extends DC_UnitModel implements FacingEntity {
             }
             setProperty(G_PROPS.MAIN_HAND_ITEM, id);
         }
-    }
-
-    public void saveRanks(boolean skills) {
-        saveRanks(skills ? getSkills() : getClasses(), skills ? PROPS.SKILLS : PROPS.CLASSES);
-    }
-
-    public void saveRanks(DequeImpl<? extends DC_FeatObj> container, PROPERTY property) {
-        StringBuilder value = new StringBuilder();
-        for (DC_FeatObj featObj : container) {
-            value.append(featObj.getName());
-            if (featObj.getIntParam(PARAMS.RANK) > 0) {
-                value.append(StringMaster.wrapInParenthesis(featObj.getParam(PARAMS.RANK)));
-            }
-            value.append(";");
-        }
-        setProperty(property, value.toString(), true);
-    }
-
-    public boolean incrementFeatRank(boolean skill, ObjType type) {
-        DC_FeatObj featObj = getFeat(skill, type);
-        return incrementFeatRank(skill, featObj);
-    }
-
-    public boolean incrementFeatRank(boolean skill, DC_FeatObj featObj) {
-        if (featObj.getIntParam(PARAMS.RANK) == featObj.getIntParam(PARAMS.RANK_MAX)) {
-            return false;
-        }
-        featObj.setParam(PARAMS.RANK, featObj.getIntParam(PARAMS.RANK) + 1);
-        return true;
-    }
-
-    public void setFeatRank(boolean skill, int rank, ObjType type) {
-        DC_FeatObj featObj = getFeat(skill, type);
-        featObj.setParam(PARAMS.RANK, rank);
-        // reset
     }
 
     public DC_FeatObj getFeat(ObjType type) {
@@ -1845,4 +1813,19 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         this.freeMovesDone = freeMovesDone;
     }
 
+    public void setNemesis(List<Deity> nemesis) {
+        this.nemesis = nemesis;
+    }
+
+    public List<Deity> getNemesis() {
+        return nemesis;
+    }
+
+    public void setPatron(List<Deity> patron) {
+        this.patron = patron;
+    }
+
+    public List<Deity> getPatron() {
+        return patron;
+    }
 }

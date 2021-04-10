@@ -71,7 +71,7 @@ public class ContentConsts {
     };
     static PARAMETER[] FEAT_MODIFYING_PARAMS = {
             PARAMS.CRITICAL_REDUCTION, PARAMS.CRITICAL_MOD, PARAMS.COUNTER_MOD,
-            PARAMS.BLOCK_CHANCE, PARAMS.PARRY_CHANCE,
+            PARAMS.BLOCK_CHANCE,
     };
     static VALUE[][] excludedValues = {
             {PROPS.DAMAGE_TYPE,},

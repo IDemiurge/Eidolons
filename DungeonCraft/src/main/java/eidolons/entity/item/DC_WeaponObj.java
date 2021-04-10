@@ -197,10 +197,6 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
         }
 
-        if (isShield()) {
-            modifyParameter(PARAMS.BLOCK_CHANCE, getHero().getIntParam(PARAMS.SHIELD_MASTERY));
-            getHero().modifyParameter(PARAMS.BLOCK_CHANCE, getIntParam(PARAMS.BLOCK_CHANCE));
-        }
     }
 
     private boolean isDouble() {
@@ -318,7 +314,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
     }
 
     @Override
-    protected PARAMETER getDurabilityParam() {
+    protected PARAMETER getDurabilityDependentParam() {
         return PARAMS.DAMAGE_BONUS;
     }
 
@@ -437,7 +433,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
             return;
         }
 
-        multiplyParamByPercent(getDurabilityParam(), durability, false);
+        multiplyParamByPercent(getDurabilityDependentParam(), durability, false);
     }
 
     public String getSpriteImagePath() {

@@ -2,6 +2,7 @@ package eidolons.entity.item;
 
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
+import eidolons.game.battlecraft.rules.combat.damage.armor.ArmorMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.enums.entity.ItemEnums.ARMOR_TYPE;
@@ -17,6 +18,7 @@ import main.system.auxiliary.EnumMaster;
 public class DC_ArmorObj extends DC_HeroSlotItem {
 
     private ARMOR_TYPE armorType;
+    private ArmorMaster.ArmorLayer layer;
 
     public DC_ArmorObj(ObjType armor_type, Player originalOwner, GenericGame game, Ref ref) {
         super(armor_type, originalOwner, game, ref, DC_ContentValsManager.getArmorModifyingParams());
@@ -62,7 +64,8 @@ public class DC_ArmorObj extends DC_HeroSlotItem {
 
     @Override
     protected void applyPenaltyReductions() {
-        int penalty_reduction = -getHero().getIntParam(PARAMS.STRENGTH);
+        //TODO not exactly this...
+        int penalty_reduction = -getHero().getIntParam(PARAMS.WEIGHT_PENALTY_REDUCTION);
 
         modifyParameter(PARAMS.DEFENSE_MOD, -penalty_reduction, 100, true);
         modifyParameter(PARAMS.ATTACK_MOD, -penalty_reduction, 100 // getType().getType().getParams();
@@ -71,7 +74,6 @@ public class DC_ArmorObj extends DC_HeroSlotItem {
         modifyParameter(PARAMS.MOVE_ATB_COST_MOD, penalty_reduction, 0, true);
         modifyParameter(PARAMS.MOVE_TOU_COST_MOD, penalty_reduction, 0, true);
 
-        penalty_reduction = -getHero().getIntParam(PARAMS.WILLPOWER);
         modifyParameter(PARAMS.SPELL_TOU_COST_MOD, penalty_reduction, 0, true);
         modifyParameter(PARAMS.SPELL_ESS_COST_MOD, penalty_reduction, 0, true);
 
@@ -86,19 +88,44 @@ public class DC_ArmorObj extends DC_HeroSlotItem {
     }
 
     @Override
-    protected PARAMETER getDurabilityParam() {
+    protected PARAMETER getDurabilityDependentParam() {
         return PARAMS.ARMOR;
     }
 
     @Override
     public void setRef(Ref ref) {
-        ref.setID(KEYS.ARMOR, getId());
+
+        ref.setID(getRefKey(), getId());
         if (!equipped) {
             equipped(ref);
         }
 //          super.setRef(ref);
     }
 
+    private KEYS getRefKey() {
+        switch (layer) {
+            //TODO
+            case Inner:
+                return KEYS.ARMOR;
+            case Outer:
+                return KEYS.ARMOR;
+            case Cloak:
+                return KEYS.ARMOR;
+            case Helmet:
+                return KEYS.ARMOR;
+        }
+        return KEYS.ARMOR;
+    }
+
+    public void setLayer(ArmorMaster.ArmorLayer layer) {
+        this.layer = layer;
+    }
+
+    public void equip(Ref ref, ArmorMaster.ArmorLayer layer) {
+        this.layer = layer;
+        setRef(ref);
+
+    }
     @Override
     public void equipped(Ref ref) {
         super.equipped(ref);

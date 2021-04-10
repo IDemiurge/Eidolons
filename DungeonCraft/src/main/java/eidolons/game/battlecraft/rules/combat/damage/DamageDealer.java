@@ -61,15 +61,12 @@ public class DamageDealer {
             if (!isBonusDamage)
               GdxStatic.floatingText( VisualEnums.TEXT_CASES.REQUIREMENT,
                      "Ineffective!",  damage.getTarget());
-            DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.LAUGH, damage.getTarget());
+            // DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.LAUGH, damage.getTarget());
             return 0;
         }
-        //       damage.getRef().getGame().
-        //        damage.getSource().getGame().getBattleMaster().getOptionManager().applyDifficulty(damage);
-        int result = dealDamageOfType(damage.getDmgType(),
+        int result = dealDamageOfType(damage , damage.getDmgType(),
                 damage.getTarget()
                 , damage.getRef(), damage.getAmount(), isBonusDamage);
-
 
         if (damage instanceof MultiDamage) {
             logOn = false;
@@ -129,11 +126,9 @@ public class DamageDealer {
      * @param amount      total amount of damage to be reduced by Resistance and Armor (unless damage_type==PURE) and dealt as PURE
      * @return actual amount of damage dealt ( max(min(Toughness*(1-DEATH_BARRIER), Toughness dmg),min(Endurance, Endurance dmg))
      */
-    private static int dealDamageOfType(DAMAGE_TYPE damage_type, BattleFieldObject targetObj, Ref ref,
+    private static int dealDamageOfType(Damage damage, DAMAGE_TYPE damage_type, BattleFieldObject targetObj, Ref ref,
                                         int amount, boolean bonus) {
         BattleFieldObject attacker = (BattleFieldObject) ref.getSourceObj();
-        // if (global_damage_mod != 0) IDEA - Difficulty modifier
-        // amount *= OptionsMaster.getGameOptions.getOption(global_damage_mod)/100;
         if (!processDamageEvent(damage_type, ref, amount,
                 STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_DAMAGE)) {
             return -1;
@@ -156,7 +151,7 @@ public class DamageDealer {
                     (DamageCalculator.isEnduranceOnly(ref) ? 0
                             : amount), amount, ref);
         } else {
-            damageDealt = dealDamage(ref, !isAttack(ref), damage_type);
+            damageDealt = dealReducedDamage(damage);
         }
 
         if (!ref.isQuiet()) {
@@ -171,6 +166,7 @@ public class DamageDealer {
 
     }
 
+
     private static boolean isLogged(BattleFieldObject attacker, BattleFieldObject targetObj, ActiveObj active) {
         if (active == null||EffectMaster.getFirstEffectOfClass((DC_ActiveObj) active, SpecialTargetingEffect.class) != null) {
             //don't log every crate being damaged...
@@ -180,7 +176,10 @@ public class DamageDealer {
     }
 
     //proceeds to deal the damage - to toughness and endurance separately and with appropriate events
-    private static int dealDamage(Ref ref, boolean magical, DAMAGE_TYPE dmg_type) {
+    private static int dealReducedDamage(Damage damage) {
+        Ref ref = damage.getRef();
+        DAMAGE_TYPE dmg_type= damage.dmg_type;
+        boolean magical = dmg_type.isMagical();
 
         ref.setValue(KEYS.DAMAGE_TYPE, dmg_type.getName());
         Event event = new Event(
@@ -201,37 +200,23 @@ public class DamageDealer {
             dmg_type = active.getEnergyType();
         }
 
-
         int blocked = 0;
         if (attacked instanceof Unit)
             if (!DamageCalculator.isUnblockable(ref)) {
                 if (ref.getSource() != ref.getTarget()) {
-                    if (isAttack(ref)) {
-                        blocked = attacked.getGame()
-                                .getArmorMaster().getArmorBlockDamage(amount,
-                                        attacked, attacker, active);
-                    } else {
-                        blocked = attacked.getGame()
-                                .getArmorMaster().getArmorBlockForActionDamage(amount, dmg_type,
-                                        attacker, active);
-                    }
-                }
-            }
-        if (attacked instanceof Unit)
-            if (attacker.getRef().getObj(KEYS.WEAPON) instanceof DC_WeaponObj) {
-                int durabilityLost = DurabilityRule.damageDealt(blocked,
-                        (DC_HeroSlotItem) attacked.getRef().getObj(KEYS.ARMOR), dmg_type,
-                        (DC_WeaponObj) attacker.getRef().getObj(KEYS.WEAPON), amount, attacked);
-                if (durabilityLost > 0) {
-                    main.system.auxiliary.log.LogMaster.log(1, "durabilityLost= " + durabilityLost);
+                    damage =  attacked.getGame().getArmorMaster().processDamage(damage,
+                            damage.isSneak(), damage.getHitType(), damage.isAttack());
+                    amount = damage.getAmount();
+                    blocked = damage.getBlocked();
                 }
             }
 
+        StringBuilder log = damage.getLogBuilder();
 
         int t_damage = DamageCalculator.calculateToughnessDamage(attacked, attacker, amount, ref, blocked,
-                dmg_type);
+                dmg_type, log);
         int e_damage = DamageCalculator.calculateEnduranceDamage(attacked, attacker, amount, ref, blocked,
-                dmg_type);
+                dmg_type, log);
         //        PhaseAnimator.handleDamageAnimAndLog(ref, attacked, magical, dmg_type);
 
         ref.setAmount(e_damage);

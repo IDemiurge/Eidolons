@@ -576,12 +576,10 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         try {
             SummonEffect summonEffect = (SummonEffect) EffectMaster.getEffectsOfClass(
                     action.getActive().getAbilities(), SummonEffect.class).get(0);
-            power = summonEffect.getSummonedUnitXp().getInt(action.getRef());
-
+            //TODO AI Review
             if (summonEffect instanceof RaiseEffect) {
                 RaiseEffect raiseEffect = (RaiseEffect) summonEffect;
                 power += raiseEffect.getCorpse().getPower();
-                // TODO for items!
                 Obj weapon = raiseEffect.getCorpse().getRef().getObj(KEYS.WEAPON);
                 if (weapon != null) {
                     power += weapon.getIntParam(PARAMS.GOLD_COST) / 5;
@@ -1598,16 +1596,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 mod = 0;
             }
             mod += getPriorityModifier().getPriorityModifier(as);
-            if (getMetaGoalMaster().isOn())
-                try {
-                    getUnitAi().setMetaGoals(getMetaGoalMaster().initMetaGoalsForUnit(getUnitAi()));
-                    mod += getMetaGoalMaster().getPriorityMultiplier(as);
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
             as.setPriorityMultiplier(mod);
-
-
         }
         for (ActionSequence action : actions) { // into separate method to
             // debug!

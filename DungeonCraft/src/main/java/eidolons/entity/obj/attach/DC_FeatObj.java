@@ -251,21 +251,6 @@ import java.util.Map;
     public void newRound() {
     }
 
-    public BORDER getRankBorder() {
-        Integer rank = getRank();
-        switch (rank) {
-            case 1:
-                return BORDER.RANK_II;
-            case 2:
-                return BORDER.RANK_III;
-            case 3:
-                return BORDER.RANK_IV;
-            case 4:
-                return BORDER.RANK_V;
-        }
-        return null;
-    }
-
     public Map<PARAMETER, String> getModMap() {
         if (modMap == null) {
             modMap = new HashMap<>();

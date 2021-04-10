@@ -8,7 +8,6 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.attach.DC_BuffObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.round.UpkeepRule;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
@@ -228,7 +227,7 @@ public class BuffMaster extends Master {
     public void buffCreated(BuffObj buff, Obj basis) {
         game.getState().addObject(buff);
         addAttachment(buff, basis);
-        UpkeepRule.addUpkeep(buff);
+        // UpkeepRule.addUpkeep(buff);
     }
 
     public BuffObj createCustomBuff(String s, BattleFieldObject unit) {

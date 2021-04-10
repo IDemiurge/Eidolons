@@ -13,6 +13,7 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
+import eidolons.game.battlecraft.rules.combat.attack.accuracy.AccuracyBreakdown;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -594,29 +595,7 @@ public class RadialManager {
         if (!valid) {
             return () -> activeObj.getCosts().getReasonsString();
         }
-        if (!activeObj.isAttackGeneric())
-            if (activeObj.isAttackAny()) {
-                int chance = 0;
-                try {
-                    chance = activeObj.getCalculator().getCritOrDodgeChance(target);
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
-                if (chance == 0)
-                    return null;
-                int finalChance = chance;
-                return () -> {
-                    String string;
-                    if (finalChance > 0) {
-                        string = finalChance + "% to crit";
-                    } else
-                        string = finalChance + "% to miss";
-                    return string;
-                };
-            }
-        if (activeObj.isSpell()) {
-
-        }
+       //TODO  AccuracyBreakdown
         return null;
     }
 

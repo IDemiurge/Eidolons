@@ -3,7 +3,6 @@ package eidolons.game.battlecraft.ai.elements.generic;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.advanced.behavior.BehaviorMasterOld;
-import eidolons.game.battlecraft.ai.advanced.companion.MetaGoalMaster;
 import eidolons.game.battlecraft.ai.advanced.machine.AiConst;
 import eidolons.game.battlecraft.ai.advanced.machine.AiPriorityConstantMaster;
 import eidolons.game.battlecraft.ai.elements.actions.ActionManager;
@@ -101,10 +100,6 @@ public abstract class AiHandler {
 
     public AiGroupHandler getGroupHandler() {
         return master.getGroupHandler();
-    }
-
-    public MetaGoalMaster getMetaGoalMaster() {
-        return master.getMetaGoalMaster();
     }
 
     public AiScriptExecutor getScriptExecutor() {

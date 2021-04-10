@@ -52,9 +52,9 @@ public class LockMaster extends DungeonObjMaster<LOCK_ACTIONS> {
         ref.setTarget(lockedObj.getId());
         // preCheck lockpick
         if (formula != null) {
-            // TODO
         } else {
-            result = RollMaster.roll(GenericEnums.RollType.UNLOCK, ref);
+            // TODO RPG Review
+            // result = RollMaster.roll(GenericEnums.RollType.UNLOCK, ref);
         }
         // roll
         lockedObj.getIntParam(PARAMS.LOCK_LEVEL);

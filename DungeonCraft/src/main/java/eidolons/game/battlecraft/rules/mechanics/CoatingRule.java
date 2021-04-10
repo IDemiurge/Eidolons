@@ -30,7 +30,7 @@ public class CoatingRule {
     public static final COUNTER[] COATING_COUNTERS = {
      COUNTER.Poison, COUNTER.Disease,
      COUNTER.Blight, COUNTER.Corrosion,
-     COUNTER.Blaze, COUNTER.Freeze,
+     COUNTER.Blaze, COUNTER.Chill,
      COUNTER.Moist,};
     public static final Integer RANGED_MOD = 2;
     public static final Integer THROWING_MOD = 5;
@@ -51,7 +51,7 @@ public class CoatingRule {
 
             case Moist:
 
-            case Freeze:
+            case Chill:
 
             case Disease:
             case Corrosion:

@@ -33,7 +33,7 @@ public class DC_JewelryObj extends DC_HeroItemObj {
         return checkProperty(G_PROPS.JEWELRY_TYPE, JEWELRY_TYPE.AMULET.toString());
     }
 
-    protected PARAMETER getDurabilityParam() {
+    protected PARAMETER getDurabilityDependentParam() {
         return null;
     }
 

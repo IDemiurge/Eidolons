@@ -73,7 +73,7 @@ public class CounterMaster {
             case Despair:
                 return 2.45f;
 
-            case Freeze:
+            case Chill:
                 return 4.5f;
             case Poison:
                 return 4.5f;
@@ -82,8 +82,6 @@ public class CounterMaster {
 
             case Ensnared:
                 return 7;
-            case Hatred:
-                return 1;
 
             case Lust:
                 return 2;
@@ -98,7 +96,6 @@ public class CounterMaster {
 
                 return 5;
 
-            case Soul:
             case Undying:
                 return 25;
 
@@ -123,9 +120,7 @@ public class CounterMaster {
 
             case Ensnared:
 
-            case Freeze:
-
-            case Hatred:
+            case Chill:
 
             case Lust:
 
@@ -139,7 +134,6 @@ public class CounterMaster {
 
                 return false;
 
-            case Soul:
             case Undying:
                 return true;
 

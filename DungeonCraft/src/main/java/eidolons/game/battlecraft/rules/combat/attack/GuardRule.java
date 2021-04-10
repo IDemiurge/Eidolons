@@ -75,7 +75,9 @@ public class GuardRule {
          " against " + attack.getAction().getName();
         //        boolean result = RollMaster.roll(ROLL_TYPES.REACTION, ref);
 
-        return !RollMaster.roll(RollType.REACTION, success, fail, ref, log);
+        //TODO RPG Review
+        // return !RollMaster.roll(RollType.REACTION, success, fail, ref, log);
+        return false;
     }
 
     private static boolean checkDefenderTakesMissile(DC_ActiveObj action, Unit unit) {

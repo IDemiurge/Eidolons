@@ -68,6 +68,9 @@ public class ColorHandler extends GridHandler {
 
     //TODO optimization - into array?
     public Color getColor(Coordinates c) {
+        if (getColorMap() == null) {
+            return GdxColorMaster.WHITE;
+        }
         if (!getColorMap().getOutput().containsKey(c)) {
             return getColorMap().getOriginal().get(c);
             // return GdxColorMaster.get(GdxColorMaster.NULL_COLOR);

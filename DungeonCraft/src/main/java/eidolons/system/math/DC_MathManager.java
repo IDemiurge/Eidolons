@@ -105,9 +105,6 @@ public class DC_MathManager extends MathMaster {
         return attacked.getIntParam(DC_ContentValsManager.getDamageTypeResistance(type));
     }
 
-    public static int getFreeMasteryPoints(Unit hero, PARAMETER masteryParam) {
-        return getMasteryPoints(hero, masteryParam) - calculateUsedMasteryPoints(hero, masteryParam);
-    }
 
     public static int getMasteryPoints(Unit hero, PARAMETER masteryParam) {
         int pts = 0;
@@ -115,17 +112,6 @@ public class DC_MathManager extends MathMaster {
             pts += PointMaster.getPointCost(i, hero, masteryParam);
         }
         return pts;
-    }
-
-    public static int calculateUsedMasteryPoints(Unit hero, PARAMETER masteryParam) {
-        int points = 0;
-        for (DC_FeatObj skill : hero.getSkills()) {
-            if (StringMaster.compare(skill.getProperty(G_PROPS.MASTERY), masteryParam.getName(), true)) {
-                points += skill.getIntParam(PARAMS.SKILL_DIFFICULTY);
-            }
-        }
-        return points;
-
     }
 
     public static int getParamPercentage(Unit unit, PARAMETER p) {

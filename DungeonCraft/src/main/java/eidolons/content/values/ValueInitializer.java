@@ -113,7 +113,6 @@ public class ValueInitializer {
         AIR_MASTERY.initMastery();
         EARTH_MASTERY.initMastery();
         FIRE_MASTERY.initMastery();
-        WARCRY_MASTERY.initMastery();
         TACTICS_MASTERY.initMastery();
         LEADERSHIP_MASTERY.initMastery();
         MARKSMANSHIP_MASTERY.initMastery();
@@ -141,8 +140,7 @@ public class ValueInitializer {
 
         AFFLICTION_MASTERY.initMastery();
         BLOOD_MAGIC_MASTERY.initMastery();
-
-        ELEMENTAL_MASTERY.initMastery();
+        TRANSMUTATION_MASTERY.initMastery();
         SYLVAN_MASTERY.initMastery();
         BLADE_MASTERY.initMastery();
         BLUNT_MASTERY.initMastery();

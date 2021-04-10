@@ -2,7 +2,6 @@ package eidolons.game.battlecraft.ai;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.advanced.companion.MetaGoal;
 import eidolons.game.battlecraft.ai.advanced.companion.Order;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
@@ -35,7 +34,6 @@ public class UnitAI {
     private Order currentOrder;
 
     private List<DC_ActiveObj> usedActions;
-    private List<MetaGoal> metaGoals;
     private boolean engagedOverride;
     ENGAGEMENT_LEVEL engagementLevel=ENGAGEMENT_LEVEL.UNSUSPECTING;
 
@@ -227,14 +225,6 @@ public class UnitAI {
         return currentOrder.getPriorityModsMap().get(goalType);
     }
 
-
-    public List<MetaGoal> getMetaGoals() {
-        return metaGoals;
-    }
-
-    public void setMetaGoals(List<MetaGoal> metaGoals) {
-        this.metaGoals = metaGoals;
-    }
 
     public boolean isFree() {
         return combatAI.isFree();

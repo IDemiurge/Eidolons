@@ -40,6 +40,8 @@ public abstract class DC_CounterRule {
     protected Map<BattleFieldObject, Effects> effectsCache = new HashMap<>();
     protected COUNTER counter;
 
+
+
     public DC_CounterRule(DC_Game game) {
         this.game = game;
     }

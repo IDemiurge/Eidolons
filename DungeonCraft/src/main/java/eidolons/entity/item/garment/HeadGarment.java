@@ -7,7 +7,7 @@ import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 
 public class HeadGarment extends Garment {
-    public HeadGarment(ObjType type, Player owner, GenericGame game, Ref ref, PARAMETER[] params) {
-        super(type, owner, game, ref, params);
+    public HeadGarment(ObjType type, Player owner, GenericGame game, Ref ref) {
+        super(type, owner, game, ref);
     }
 }

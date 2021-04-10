@@ -31,6 +31,10 @@ public class DurabilityRule extends DC_RuleImpl {
         setOn(false);
     }
 
+    public static void itemBlocked(Integer dmgBlocked, DC_WeaponObj weapon) {
+        new DurabilityReductionEffect(false, dmgBlocked).apply(Ref.getSelfTargetingRefCopy(weapon));
+    }
+
     private static int physicalDamage(int damage, int blocked, DAMAGE_TYPE damage_type,
                                       DC_HeroSlotItem armor, DC_WeaponObj weapon, BattleFieldObject target) {
         MATERIAL m1;
@@ -92,12 +96,14 @@ public class DurabilityRule extends DC_RuleImpl {
             durabilityReductionEffect.apply(ref);
     }
 
-    private static int spellDamage(int damage, int blocked, DAMAGE_TYPE damage_type,
-                                   DC_HeroSlotItem armor, BattleFieldObject target) {
+    public static int spellDamage(int blocked, DAMAGE_TYPE damage_type,
+                                  DC_HeroSlotItem armor, int modifier) {
         int self_damage_mod = armor.getIntParam(DC_ContentValsManager
                 .getArmorSelfDamageParamForDmgType(damage_type));
         // special cases may apply for Damage
         int amount = blocked * self_damage_mod / 100;
+        amount = amount * modifier / 100;
+
         DurabilityReductionEffect durabilityReductionEffect = new DurabilityReductionEffect(null,
                 amount);
         durabilityReductionEffect.apply(Ref.getSelfTargetingRefCopy(armor));
@@ -136,7 +142,7 @@ public class DurabilityRule extends DC_RuleImpl {
 
 
         if (spell) {
-            return spellDamage(damage, blocked, damage_type, armorObj, target);
+            return spellDamage( blocked, damage_type, armorObj, 100);
         } else {
             return physicalDamage(damage, blocked, damage_type, armorObj, weapon,
                     target);
@@ -155,6 +161,7 @@ public class DurabilityRule extends DC_RuleImpl {
         }
         return true;
     }
+
 
     @Override
     public void apply(Ref ref) {

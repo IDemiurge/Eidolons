@@ -35,8 +35,8 @@ public class DamageFactory {
         }
         Damage damageObject;
         List<Damage> list =
-         DamageCalculator.getBonusDamageList(effect.getRef(), effect.isMagical()
-          ? DAMAGE_CASE.SPELL : DAMAGE_CASE.ACTION);
+                DamageCalculator.getBonusDamageList(effect.getRef(), effect.isMagical()
+                        ? DAMAGE_CASE.SPELL : DAMAGE_CASE.ACTION);
         if (!list.isEmpty()) {
             damageObject = new MultiDamage();
         } else {
@@ -48,30 +48,36 @@ public class DamageFactory {
         damageObject.setRef(effect.getRef());
         return damageObject;
     }
-//    public static MultiDamage getDamageForMultiDamageTest(DAMAGE_TYPE dmg_type,
-//                                                 Ref ref, Integer amount) {
-//    }
+    //    public static MultiDamage getDamageForMultiDamageTest(DAMAGE_TYPE dmg_type,
+    //                                                 Ref ref, Integer amount) {
+    //    }
 
     //TODO what is the amount?! can the same attack have different amounts? dont they come like from the weapon, unit, position..
-    public static MultiDamage getDamageForAttack(DAMAGE_TYPE dmg_type,
-                                                 Ref ref, Integer amount) {
+    public static Damage getDamageForAttack(DAMAGE_TYPE dmg_type,
+                                            Ref ref, Integer amount) {
         List<Damage> list =
-         DamageCalculator.getBonusDamageList(ref, DAMAGE_CASE.ATTACK);
-        MultiDamage damageObject = new MultiDamage();
+                DamageCalculator.getBonusDamageList(ref, DAMAGE_CASE.ATTACK);
+        Damage damageObject;
+        if (list.isEmpty()) {
+            damageObject = new Damage();
+        } else {
+            MultiDamage multiDamage = new MultiDamage();
+            multiDamage.setAdditionalDamage(list);
+            damageObject = multiDamage;
+        }
         damageObject.setAmount(amount);
         damageObject.setDmgType(dmg_type);
         damageObject.setRef(ref);
-        damageObject.setAdditionalDamage(list);
         return damageObject;
     }
 
     public static Damage getDamageFromAttack(Attack attack) {
         return
-         getDamageForAttack(attack.getDamageType(), attack.getRef(), attack.getDamage());
+                getDamageForAttack(attack.getDamageType(), attack.getRef(), attack.getDamage());
     }
 
     public static Damage getDamageForBonusEffect
-     (BonusDamageEffect effect) {
+            (BonusDamageEffect effect) {
         Damage damage;
         if (NumberUtils.isInteger(effect.getFormula().toString())) {
             damage = new Damage();
@@ -85,8 +91,8 @@ public class DamageFactory {
         damage.setDmgType(effect.getType());
         damage.setRef(effect.getRef());
         DAMAGE_MODIFIER[] modifiers = {
-         DAMAGE_MODIFIER.UNBLOCKABLE,
-         DAMAGE_MODIFIER.ARMOR_AVERAGED
+                DAMAGE_MODIFIER.UNBLOCKABLE,
+                DAMAGE_MODIFIER.ARMOR_AVERAGED
         };
         damage.setModifiers(modifiers);
 

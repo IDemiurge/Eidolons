@@ -54,10 +54,6 @@ public class CreateObjectEffect extends SummonEffect {
         // alive?
     }
 
-    @Override
-    protected ObjType addXp(ObjType type) {
-        return (type);
-    }
 
     private String getBuffName() {
         return DEFAULT_BUFF_NAME;

@@ -34,7 +34,7 @@ public class HqSpellMaster {
     public static void learnSpellEnVerbatim(Unit hero, Spell spell) {
         //        LibraryManager.addVerbatimSpell(hero, spell.getType());
         Integer cost = Integer.valueOf(HeroManager.getCost(spell, hero));
-        hero.modifyParameter(PARAMS.XP, -cost);
+        hero.modifyParameter(PARAMS.SPELL_POINTS_UNSPENT, -cost);
         hero.addProperty(true, PROPS.VERBATIM_SPELLS, spell.getName());
         spellsChanged(hero);
 
@@ -42,7 +42,7 @@ public class HqSpellMaster {
 
     public static void learnSpell(Unit hero, Spell spell) {
         Integer cost = Integer.valueOf(HeroManager.getCost(spell, hero));
-        hero.modifyParameter(PARAMS.XP, -cost);
+        hero.modifyParameter(PARAMS.SPELL_POINTS_UNSPENT, -cost);
         hero.addProperty(true, PROPS.LEARNED_SPELLS, spell.getName());
         spellsChanged(hero);
     }

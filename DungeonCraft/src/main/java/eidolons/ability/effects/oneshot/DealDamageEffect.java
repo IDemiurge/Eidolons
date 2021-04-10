@@ -5,7 +5,6 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.game.battlecraft.rules.combat.damage.ArmorMaster;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.DamageDealer;
 import eidolons.game.battlecraft.rules.combat.damage.DamageFactory;
@@ -86,11 +85,15 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
         boolean spell = active instanceof Spell;
 
         initDamageType();
+
+        //TODO rpg Review - need an Attack to use Blockers!
+        // new SpellAttack().var
+
         if (!checkDamageMod(DAMAGE_MODIFIER.UNBLOCKABLE)) {
             if (!new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_HIT, ref).fire()) {
                 return false;
             }
-            amount = ArmorMaster.getShieldReducedAmountForDealDamageEffect(this, targetObj, amount, active);
+            // amount = ShieldMaster.getShieldReducedAmountForDealDamageEffect(this, targetObj, amount, active);
         }
 
         LogMaster.log(LogMaster.COMBAT_DEBUG, "Effect is dealing damage: "

@@ -15,11 +15,13 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.core.game.DC_Game;
+import eidolons.system.math.roll.DiceMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.ability.effects.Effects;
 import main.content.CONTENT_CONSTS;
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
+import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_CASE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
@@ -559,5 +561,9 @@ public abstract class DC_Obj extends MicroObj {
 
     public void setOriginalType(ObjType originalType) {
         this.originalType = originalType;
+    }
+
+    public GenericEnums.DieType getDieType() {
+        return DiceMaster.getDie(getIntParam(PARAMS.DIE_SIZE));
     }
 }

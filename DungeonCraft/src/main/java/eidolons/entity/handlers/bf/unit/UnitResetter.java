@@ -14,7 +14,6 @@ import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.action.EngagedRule;
 import eidolons.game.battlecraft.rules.combat.damage.ResistMaster;
 import eidolons.game.battlecraft.rules.rpg.IntegrityRule;
 import eidolons.game.core.game.DC_Game;
@@ -189,11 +188,6 @@ public class UnitResetter extends EntityResetter<Unit> {
         // if (getOffhandWeapon() != null)
         // getOffhandWeapon().applyMods();
 
-        if (getEntity().getEngagementTarget() != null) {
-            EngagedRule.applyMods(getEntity());
-        } else {
-            getEntity().removeStatus(UnitEnums.STATUS.ENGAGED);
-        }
         int mod = getIntParam(PARAMS.ATTACK_MOD);
         getEntity().multiplyParamByPercent(PARAMS.ATTACK, mod, false);
         mod = getIntParam(PARAMS.OFFHAND_ATTACK_MOD);
@@ -247,14 +241,11 @@ public class UnitResetter extends EntityResetter<Unit> {
             }
         }
         if (getEntity().getSkills() != null) {
-
-            resetRanks(getEntity().getSkills(), PROPS.SKILLS);
             for (DC_FeatObj feat : getEntity().getSkills()) {
                 feat.apply();
             }
         }
         if (getEntity().getClasses() != null) {
-            resetRanks(getEntity().getClasses(), PROPS.CLASSES);
             for (DC_FeatObj feat : getEntity().getClasses()) {
                 feat.apply();
             }
@@ -305,28 +296,6 @@ public class UnitResetter extends EntityResetter<Unit> {
 
     }
 
-    public void resetRanks(DequeImpl<? extends DC_FeatObj> container, PROPERTY property) {
-        List<DC_FeatObj> list = new ArrayList<>(container);
-        for (String feat : ContainerUtils.open(getProperty(property))) {
-            if (!NumberUtils.isInteger(VariableManager.getVarPart(feat)))
-                continue;
-            Integer rank = NumberUtils.getIntParse(VariableManager.getVarPart(feat));
-            if (rank == 0) {
-                continue;
-            }
-            feat = (VariableManager.removeVarPart(feat));
-            for (DC_FeatObj featObj : container) {
-                if (!featObj.getName().equals(feat)) {
-                    continue;
-                }
-                featObj.setParam(PARAMS.RANK, rank);
-                list.remove(featObj);
-            }
-        }
-        for (DC_FeatObj featObj : list) {
-            featObj.setParam(PARAMS.RANK, 0);
-        }
-    }
 
     public void resetActives() {
         for (ActiveObj active : getEntity().getActives()) {

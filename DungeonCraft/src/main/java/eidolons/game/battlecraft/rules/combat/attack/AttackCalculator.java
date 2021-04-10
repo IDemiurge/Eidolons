@@ -10,7 +10,9 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.rules.action.WatchRule;
 import eidolons.game.battlecraft.rules.perk.RangeRule;
+import eidolons.system.math.roll.DiceMaster;
 import main.content.ContentValsManager;
+import main.content.enums.GenericEnums;
 import main.content.enums.entity.NewRpgEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
@@ -144,8 +146,6 @@ public class AttackCalculator {
                 atkMap.put(MOD_IDENTIFIER.THROW, mod - 100);
             }
         }
-
-        action.modifyParameter(PARAMS.IMPACT_AREA, weapon.getIntParam(PARAMS.IMPACT_AREA));
 
         // TODO we don't do this - instead, let's use "calcMap" with PARAMETER,
         // String
@@ -288,24 +288,16 @@ public class AttackCalculator {
             return 0;
         }
         // TODO +action?
-        Integer dieSize = weapon.getIntParam(PARAMS.DIE_SIZE);
-        Integer dieNumber = weapon.getIntParam(PARAMS.DICE);
-        new MapMaster<MOD_IDENTIFIER, Integer>().addToIntegerMap(randomMap,
-                MOD_IDENTIFIER.DIE_SIZE, dieSize);
-        new MapMaster<MOD_IDENTIFIER, Integer>().addToIntegerMap(randomMap,
-                MOD_IDENTIFIER.DIE_NUMBER, dieNumber);
+        GenericEnums.DieType die = weapon.getDieType();
+        Integer dieNumber =
+                DiceMaster.getDefaultDieNumber(attack.getAttacker())+
+                weapon.getIntParam(PARAMS.DICE);
 
-        Integer result = null;
-        if (max) {
-            result = dieSize * dieNumber;
-        } else if (min) {
-            result = dieNumber;
-        }
-        if (result == null) result =
-                RandomWizard.initDice(dieNumber, dieSize, dieList, precalc);
-
-        new MapMaster<MOD_IDENTIFIER, Integer>().addToIntegerMap(randomMap,
-                MOD_IDENTIFIER.DIE_RESULT, result);
+        int sValue = DiceMaster.roll(die, attack.getAttacker(), dieNumber, false);
+        int tValue = DiceMaster.roll(die, attack.getAttacked(),
+                DiceMaster.getDefaultDieNumber(attack.getAttacked()), false);
+        int result = sValue - tValue;
+        // mapDieRoll()
 
         return result;
     }
@@ -320,8 +312,6 @@ public class AttackCalculator {
         int atk_mod = offhand ? attacker.getIntParam(PARAMS.OFFHAND_ATTACK_MOD) - 100
                 + actionAtkMod : actionAtkMod;
         int armor_pen = action.getIntParam(PARAMS.ARMOR_PENETRATION);
-        int armor_mod = action.getIntParam(PARAMS.ARMOR_MOD);
-
 
         if (action.isThrow()) {
             atk_mod = applyVisibilityPenalty(atk_mod);
@@ -333,7 +323,6 @@ public class AttackCalculator {
             }
             DC_Obj ammo = ((DC_WeaponObj) ranged).getAmmo();
             if (ammo != null) {
-                action.modifyParameter(PARAMS.IMPACT_AREA, ammo.getIntParam(PARAMS.IMPACT_AREA));
                 // weapon. //IN DC_WEAPONOBJ
                 // addSpecialEffect(SPECIAL_EFFECTS_CASE.ON_ATTACK,
                 // ammo.getSpecialEffects().getOrCreate(SPECIAL_EFFECTS_CASE.ON_ATTACK));
@@ -342,7 +331,6 @@ public class AttackCalculator {
                 dmg_bonus += bonus;
                 dmg_mod = dmg_mod * ammo.getIntParam(PARAMS.DAMAGE_MOD) / 100;
                 armor_pen += ammo.getIntParam(PARAMS.ARMOR_PENETRATION);
-                armor_mod = armor_mod * ammo.getIntParam(PARAMS.ARMOR_MOD) / 100;
                 ref.setValue(KEYS.DAMAGE_TYPE, ammo.getProperty(PROPS.DAMAGE_TYPE));
             }
         }
@@ -355,7 +343,6 @@ public class AttackCalculator {
         // COUNTED LAST!
         action.modifyParameter(PARAMS.ATTACK, atk_mod);
         action.modifyParameter(PARAMS.ARMOR_PENETRATION, armor_pen);
-        action.modifyParameter(PARAMS.ARMOR_MOD, armor_mod);
 
         modMap.put(MOD_IDENTIFIER.ACTION, dmg_mod);
         bonusMap.put(MOD_IDENTIFIER.ACTION, dmg_bonus);
@@ -602,7 +589,6 @@ public class AttackCalculator {
             return;
         }
         int armor_pen = weapon.getIntParam(PARAMS.ARMOR_PENETRATION);
-        int armor_mod = weapon.getIntParam(PARAMS.ARMOR_MOD);
         int atk_mod = weapon.getIntParam(PARAMS.ATTACK_MOD);
         int dmg_mod = weapon.getIntParam(PARAMS.DAMAGE_MOD);
         addParameter(PARAMS.ARMOR_PENETRATION, armor_pen);
@@ -618,14 +604,13 @@ public class AttackCalculator {
             // modMap
         }
 
-        addModifier(PARAMS.ARMOR_MOD, armor_mod);
         addModifier(PARAMS.ATTACK_MOD, atk_mod);
         addModifier(PARAMS.DAMAGE_MOD, dmg_mod);
 
         modMap.put(MOD_IDENTIFIER.WEAPON, dmg_mod);
         atkMap.put(MOD_IDENTIFIER.WEAPON, atk_mod);
     }
-
+//TODO rpg Review
     private int initSneakMods(Obj obj, int rangedMod) {
         int mod = obj.getIntParam(PARAMS.SNEAK_ATTACK_MOD) * rangedMod / 100;
         MapMaster.addToIntegerMap(atkMap, MOD_IDENTIFIER.SNEAK, mod);
@@ -639,24 +624,10 @@ public class AttackCalculator {
         mod = obj.getIntParam(PARAMS.SNEAK_DAMAGE_BONUS) * rangedMod / 100;
         addParameter(PARAMS.DAMAGE_BONUS, mod);
         // bonusMap.put(key, value);
-        mod = obj.getIntParam(PARAMS.SNEAK_ARMOR_MOD);
-        addModifier(PARAMS.ARMOR_MOD, mod);
-        mod = obj.getIntParam(PARAMS.SNEAK_ARMOR_PENETRATION);
-        addParameter(PARAMS.ARMOR_PENETRATION, mod);
-
-        mod = obj.getIntParam(PARAMS.SNEAK_DEFENSE_MOD);
-        if (mod > 0) {
-            Integer param = attacked.getIntParam(PARAMS.SNEAK_PROTECTION);
-            if (param != 0) {
-                mod = mod * 100 / param;
-            }
-            if (rangedMod != 0) {
-                mod = mod * 100 / rangedMod;
-            }
-            mod = -mod;
-        }
         addModifier(PARAMS.DEFENSE_MOD, mod);
-        mod = obj.getIntParam(PARAMS.SNEAK_DEFENSE_PENETRATION) * rangedMod / 100;
+
+        mod = obj.getIntParam(PARAMS.SNEAK_DEFENSE_PENETRATION)
+                -obj.getIntParam(PARAMS.SNEAK_PROTECTION    ) * rangedMod / 100;
         addParameter(PARAMS.DEFENSE_PENETRATION, mod);
         return dmg_mod;
     }

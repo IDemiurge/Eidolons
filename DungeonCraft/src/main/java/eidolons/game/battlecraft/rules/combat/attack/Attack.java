@@ -46,6 +46,7 @@ public class Attack {
     private DC_WeaponObj weapon;
     private boolean doubleStrike;
     private NewRpgEnums.HitType hitType;
+    private int accuracyRate;
 
     public Attack(Ref ref, boolean offhand, boolean counter, boolean canCounter, boolean free,
                   Effect onHit, Effect onKill) {
@@ -391,5 +392,13 @@ public class Attack {
 
     public NewRpgEnums.HitType getHitType() {
         return hitType;
+    }
+
+    public int getAccuracyRate() {
+        return accuracyRate;
+    }
+
+    public void setAccuracyRate(int accuracyRate) {
+        this.accuracyRate = accuracyRate;
     }
 }

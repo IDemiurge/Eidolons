@@ -357,7 +357,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     }
 
     @Override
-    protected PARAMETER getDurabilityParam() {
+    protected PARAMETER getDurabilityDependentParam() {
         return null; // charges?
     }
 

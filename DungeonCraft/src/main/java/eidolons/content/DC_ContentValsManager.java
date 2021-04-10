@@ -178,13 +178,10 @@ public class DC_ContentValsManager extends ContentValsManager {
         return getDeity(obj.getRef(), property);
     }
 
-    public static Deity getDefaultDeity() {
-        return getDeity(null, ContentConsts.DEFAULT_DEITY);
-    }
 
     public static Deity getDeity(Ref ref, String property) {
         if (StringMaster.isEmpty(property)) {
-            return getDefaultDeity();
+            return null ;
         }
         if (ContentConsts.deities == null) {
             ContentConsts.deities = new HashMap<>();
@@ -194,9 +191,6 @@ public class DC_ContentValsManager extends ContentValsManager {
             return deity;
         }
         ObjType type = DataManager.getType(property, DC_TYPE.DEITIES);
-        if (type == null) {
-            return getDefaultDeity();
-        }
         deity = new Deity(type, ref.getGame(), ref);
         deity.toBase();
         ContentConsts.deities.put(type.getName(), deity);
@@ -774,29 +768,6 @@ public class DC_ContentValsManager extends ContentValsManager {
         return new DC_WeaponObj(DataManager.getType(ContentConsts.DEFAULT_WEAPON, DC_TYPE.WEAPONS), heroObj);
     }
 
-    @Deprecated
-    public static String getFocusMasteries() {
-        if (ContentConsts.focusMasteries != null) {
-            return ContentConsts.focusMasteries;
-        }
-        ContentConsts.focusMasteries = "";
-        //        for (SkillEnums.MASTERY m : SkillTreeView.FOCUS_WORKSPACE) {
-        //            focusMasteries += StringMaster.getWellFormattedString(m.toString()) + ";";
-        //        }
-        return ContentConsts.focusMasteries;
-    }
-
-    @Deprecated
-    public static String getFocusClassGroups() {
-        if (ContentConsts.focusClassGroups != null) {
-            return ContentConsts.focusClassGroups;
-        }
-        ContentConsts.focusClassGroups = "";
-        //        for (CLASS_GROUP m : ClassTreeView.FOCUS_WORKSPACE) {
-        //            focusClassGroups += StringMaster.getWellFormattedString(m.toString()) + ";";
-        //        }
-        return ContentConsts.focusClassGroups;
-    }
 
     public static List<VALUE> getArmorGradeMultiParams() {
         List<VALUE> list = new ArrayList<>();

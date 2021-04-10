@@ -5,8 +5,6 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.game.battlecraft.rules.combat.attack.AttackCalculator.MOD_IDENTIFIER;
-import eidolons.game.battlecraft.rules.combat.attack.CriticalAttackRule;
-import eidolons.game.battlecraft.rules.combat.attack.DefenseAttackCalculator;
 import eidolons.game.battlecraft.rules.combat.mechanics.ForceRule;
 import eidolons.system.math.ModMaster;
 import main.content.VALUE;
@@ -23,11 +21,11 @@ public class ActionTooltipMaster {
     private static String getDiceText(DC_ActiveObj action) {
         DC_WeaponObj weapon = action.getActiveWeapon();
         int dieSize =
-         MathMaster.applyMod(
+         MathMaster.applyPercent(
           weapon.getIntParam(PARAMS.DIE_SIZE),
           action.getFinalModParam(PARAMS.DAMAGE_MOD));
         Integer dice =
-         MathMaster.applyMod(
+         MathMaster.applyPercent(
           weapon.getIntParam(PARAMS.DICE),
           action.getFinalModParam(PARAMS.DAMAGE_MOD));
 
@@ -36,7 +34,7 @@ public class ActionTooltipMaster {
 
     private static String getDamageText(DC_ActiveObj action) {
 //    new AttackCalculator()
-        int damage = MathMaster.applyMod(
+        int damage = MathMaster.applyPercent(
          action.getOwnerUnit().getIntParam(action.isOffhand() ? PARAMS.OFF_HAND_DAMAGE : PARAMS.DAMAGE),
          action.getIntParam(PARAMS.DAMAGE_MOD));
         return damage + " + " + getDiceText(action);
@@ -153,7 +151,7 @@ public class ActionTooltipMaster {
                 case ATTACK:
                     //TODO getAttack
                     return
-                     String.valueOf(MathMaster.applyMod(action.getOwnerUnit().getIntParam(p),
+                     String.valueOf(MathMaster.applyPercent(action.getOwnerUnit().getIntParam(p),
                       action.getIntParam(PARAMS.ATTACK_MOD)));
                 case BASE_DAMAGE:
                     return "Base";
@@ -174,12 +172,6 @@ public class ActionTooltipMaster {
                 case DIAGONAL_DAMAGE_MOD:
                 case DIAGONAL_ATTACK_MOD:
                     return "Diagonal";
-                case ACCURACY:
-                    return getAccuracyDescription(action);
-                case CRITICAL_MOD:
-                    return getCriticalDescription(action);
-                case SNEAK_DEFENSE_MOD:
-                    return getSneakDescription(action);
                 case FORCE_KNOCK_MOD:
                     return getForcePushDescription(action);
                 case FORCE_PUSH_MOD:
@@ -192,10 +184,6 @@ public class ActionTooltipMaster {
                     return getBleedDescription(action);
                 case ARMOR_PENETRATION:
                     return getArmorPenetrationDescription(action);
-                case ARMOR_MOD:
-                    return getArmorModDescription(action);
-                case IMPACT_AREA:
-                    return getAreaOfImpactDescription(action);
             }
             return action.getParam(p);
         }
@@ -221,18 +209,6 @@ public class ActionTooltipMaster {
 
     }
 
-    private static String getArmorModDescription(DC_ActiveObj action) {
-        return "";
-
-    }
-
-    private static String getAreaOfImpactDescription(DC_ActiveObj action) {
-        Integer area = action.getIntParam(PARAMS.IMPACT_AREA);
-        return "Impact Area " +
-         area + ": " +
-         "Can fully ignore Armor with Cover<" +
-         (100 - area) + "%";
-    }
 
     private static String getArmorPenetrationDescription(DC_ActiveObj action) {
         return "";
@@ -254,34 +230,6 @@ public class ActionTooltipMaster {
 
     }
 
-    private static String getSneakDescription(DC_ActiveObj action) {
-
-        String damage = String.valueOf(
-         ModMaster.getFinalModForAction(action, PARAMS.SNEAK_DAMAGE_MOD));
-//    TODO really hide if default?
-//    if (damage.equals(PARAMS.SNEAK_DAMAGE_MOD.getDefaultValue()))
-//        {
-//            damage = "";
-//        }else {
-        damage = damage + "% Damage, ";
-//        }
-
-        String attack = String.valueOf(
-         ModMaster.getFinalModForAction(action, PARAMS.SNEAK_ATTACK_MOD)) +
-         "% Attack, ";
-        String penetration = String.valueOf(
-         100 - ModMaster.getFinalModForAction(action, PARAMS.SNEAK_ARMOR_MOD)) +
-         "% Armor Penetration, ";
-        String defense = String.valueOf(
-         100 - ModMaster.getFinalModForAction(action, PARAMS.SNEAK_DEFENSE_MOD)) +
-         "% Defense Penetration";
-        return "Sneak: " +
-         damage +
-         attack +
-         penetration +
-         defense;
-    }
-
     private static String getForcePushDescription(DC_ActiveObj action) {
         int weight_max = ForceRule.getMaxWeightPush(action);
         String roll_info = "";
@@ -297,45 +245,6 @@ public class ActionTooltipMaster {
          "lb, always win vs < " + weight_min + "lb (or Interrupt)" + roll_info;
     }
 
-    private static String getCriticalDescription(DC_ActiveObj action) {
-        int attack = action.getOwnerUnit().getIntParam(action.isOffhand() ? PARAMS.OFF_HAND_ATTACK : PARAMS.ATTACK);
-        int defense = action.getOwnerUnit().getIntParam(PARAMS.DEFENSE); // last hit unit? 5*level? same as unit's?
-        attack = MathMaster.applyMod(attack, action.getIntParam(PARAMS.ATTACK_MOD));
-        int percentage = CriticalAttackRule.getCriticalDamagePercentage(action);
-        int chance = CriticalAttackRule.getCriticalChance(attack, defense, action);
-        if (chance <= 0) {
-            defense = 0;
-            chance = CriticalAttackRule.getCriticalChance(attack, defense, action);
-            if (chance <= 0) {
-                return "Crit: Impossible";
-            }
-        }
-
-        return "Crit: has " +
-         chance +
-         " chance to deal" +
-         percentage +
-         " to targets with " +
-         defense + " defense";
-    }
-
-    private static String getAccuracyDescription(DC_ActiveObj action) {
-        int attack = action.getOwnerUnit().getIntParam(action.isOffhand() ? PARAMS.OFF_HAND_ATTACK : PARAMS.ATTACK);
-        int defense = 0;
-        attack = MathMaster.applyMod(attack, action.getIntParam(PARAMS.ATTACK_MOD));
-        int chance = DefenseAttackCalculator.getMissChance(attack, defense, action);
-        if (chance <= 0) {
-            defense = action.getOwnerUnit().getIntParam(PARAMS.DEFENSE);
-            chance = DefenseAttackCalculator.getMissChance(attack, defense, action);
-            if (chance <= 0) {
-                return "Accuracy: Miss Impossible";
-            }
-        }
-        return "Accuracy: has " +
-         chance +
-         " chance to miss targets with " +
-         defense + " defense";
-    }
 
     public static String getRange0(DC_ActiveObj action) {
         return "0";

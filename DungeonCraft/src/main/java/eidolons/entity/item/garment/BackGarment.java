@@ -7,7 +7,7 @@ import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 
 public class BackGarment extends Garment {
-    public BackGarment(ObjType type, Player owner, GenericGame game, Ref ref, PARAMETER[] params) {
-        super(type, owner, game, ref, params);
+    public BackGarment(ObjType type, Player owner, GenericGame game, Ref ref) {
+        super(type, owner, game, ref);
     }
 }

@@ -18,7 +18,7 @@ public class Roll {
     private int rolledValue2;
 
     private String logAppendix;
-    private String rollHintSource;
+    private String rollHint;
     private String rollHintTarget;
     private boolean result;
 
@@ -44,15 +44,8 @@ public class Roll {
     }
 
     public Boolean roll(Ref ref) {
-        try {
-            RollMaster.setRoll(this);
-            boolean result = RollMaster.roll(type, sValue, tValue, ref);
-            RollMaster.setRoll(null  );
+            boolean result = RollMaster.roll(this, ref);
             return result;
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-        return null;
     }
 
     public Roll setsValue(String sValue) {
@@ -80,8 +73,8 @@ public class Roll {
         return this;
     }
 
-    public Roll setRollHintSource(String rollHintSource) {
-        this.rollHintSource = rollHintSource;
+    public Roll setRollHint(String rollHintSource) {
+        this.rollHint = rollHintSource;
         return this;
     }
 
@@ -126,8 +119,8 @@ public class Roll {
         return logAppendix;
     }
 
-    public String getRollHintSource() {
-        return rollHintSource;
+    public String getRollHint() {
+        return rollHint;
     }
 
     public String getRollHintTarget() {
