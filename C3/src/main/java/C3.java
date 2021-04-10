@@ -18,17 +18,21 @@ public class C3 implements NativeKeyListener {
 
     private static final int KEY_TASK = NativeKeyEvent.VC_APP_CALCULATOR ;
     private static final int KEY_QUERY = NativeKeyEvent.VC_PAUSE ;
+    // private static final int KEY_SESSION = NativeKeyEvent.VC_PAUSE ;
     // private static final int KEY_QUERY = NativeKeyEvent.VC_META ;
     private final C3Manager manager;
 
+    private boolean sessionMode=true;
+
     public static void main(String[] args) {
         GuiManager.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+        GuiManager.init();
         new C3();
     }
 
 
     public C3() {
-        manager = new C3Manager();
+        manager = new C3Manager(sessionMode);
         try {
             GlobalScreen.registerNativeHook();
         } catch (NativeHookException ex) {
@@ -45,6 +49,9 @@ public class C3 implements NativeKeyListener {
         } catch (AWTException e) {
             e.printStackTrace();
         }
+        if (sessionMode) {
+            manager.getSessionHandler().initSession();
+        }
     }
 
     @Override
@@ -54,6 +61,8 @@ public class C3 implements NativeKeyListener {
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
+        if (manager.getTimerHandler().checkTimers(nativeKeyEvent.getModifiers(), nativeKeyEvent.getKeyCode()))
+            return;
         if ((SHIFT & nativeKeyEvent.getModifiers()) != 0) {
             if (nativeKeyEvent.getKeyCode() == KEY_QUERY) {
                 if (checkPendingQuery())
@@ -63,11 +72,16 @@ public class C3 implements NativeKeyListener {
                     manager.setCurrentQuery(query);
             } else
             if (nativeKeyEvent.getKeyCode() == KEY_TASK) {
-                if (checkPendingTask())
-                    return;
-                C3_Task task= manager.getTaskManager().createRandomTask();
-                if (manager.getTaskResolver().resolveTask(task))
-                    manager.setCurrentTask(task);
+                if (sessionMode){
+                    manager.getSessionHandler().initSession();
+                } else {
+                    if (checkPendingTask())
+                        return;
+                    C3_Task task= manager.getTaskManager().createRandomTask();
+                    if (manager.getTaskResolver().resolveTask(task))
+                        manager.setCurrentTask(task);
+                }
+
             }
         }
         if ((ALT & nativeKeyEvent.getModifiers()) != 0) {

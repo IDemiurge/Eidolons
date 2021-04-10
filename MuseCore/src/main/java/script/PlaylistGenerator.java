@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class PlaylistGenerator {
 
-    private static String genRoot = "C:/music/playlists/gen 2021/";
+    private static String genRoot = "C:/music/playlists/gen 2021 2/";
     public static final boolean merge = true;
     private static String subfolders = "old mix;2;1;[ambi][spec][ost]atmo metal";
     private static int depth = 0;

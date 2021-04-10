@@ -26,7 +26,7 @@ public class C3TrayHandler extends C3Handler implements MouseListener {
         //Alternative (if the icon is on the classpath):
         //Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("icon.png"));
 
-          trayIcon = new TrayIcon(image, "Chaos Control Companion");
+        trayIcon = new TrayIcon(image, "Chaos Control Companion");
         //Let the system resize the image if needed
         // trayIcon.setImageAutoSize(true);
 
@@ -42,6 +42,7 @@ public class C3TrayHandler extends C3Handler implements MouseListener {
 
          */
     }
+
     public void timeElapsed(C3_Task task) {
         trayIcon.displayMessage("Tadan!", "Time elapsed for " + task.getText(), TrayIcon.MessageType.INFO);
 
@@ -50,9 +51,14 @@ public class C3TrayHandler extends C3Handler implements MouseListener {
     public void secondsRemain(int sec) {
         trayIcon.setToolTip("Query: "); //on timer?
     }
+
     public void notify(C3_Query query) {
         trayIcon.displayMessage(" minutes elapsed for " +
                 query.getText(), "Query elapsed", TrayIcon.MessageType.INFO);
+    }
+
+    public void notify(String message, String title) {
+        trayIcon.displayMessage(message,title, TrayIcon.MessageType.INFO);
     }
     private PopupMenu createPopup() {
         PopupMenu menu = new PopupMenu("C3");

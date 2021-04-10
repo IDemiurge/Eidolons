@@ -6,4 +6,8 @@ public class C3Handler {
     public C3Handler(C3Manager manager) {
         this.manager = manager;
     }
+
+    public C3Manager getManager() {
+        return manager;
+    }
 }

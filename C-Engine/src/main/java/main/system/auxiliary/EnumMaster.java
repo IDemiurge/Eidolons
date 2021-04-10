@@ -537,7 +537,7 @@ public class EnumMaster<T> {
         return retrieveEnumConst(class1, ListChooser.chooseEnum(class1));
     }
     public T selectEnum(Class<T> class1) {
-        Object option = DialogMaster.getChosenOption("Select one", getEnumConstants(class1));
+        Object option = DialogMaster.getChosenOption("Select one", getEnumConstants(class1).toArray());
         if (option == null) {
             return null;
         }

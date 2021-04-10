@@ -12,6 +12,23 @@ public class C3Enums {
     public enum C3ItemEvent {
         Started,
     }
+
+    public enum SessionType {
+        Preparation,
+        Perseverance,
+
+        Liberation_Short,
+        Night_Short,
+        Liberation_Long,
+        Night_Long,
+
+        Freedom,
+    }
+
+    public enum Direction {
+        code, des, proj, meta
+    }
+
     public interface Category {
         void setSubcategories(String[] subs);
     }

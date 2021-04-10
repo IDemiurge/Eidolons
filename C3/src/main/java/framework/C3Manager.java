@@ -8,40 +8,51 @@ import log.C3Logger;
 import query.C3QueryManager;
 import query.C3QueryResolver;
 import query.C3_Query;
+import session.C3SessionHandler;
+import session.C3Timer;
+import session.C3TimerHandler;
+import session.SessionLogger;
 import task.C3TaskManager;
 import task.C3TaskResolver;
 import task.C3_Task;
 
 public class C3Manager {
 
-    protected final C3TaskResolver taskResolver;
-    protected final C3TaskManager taskManager;
-    protected final C3QueryResolver queryResolver;
-    protected final C3QueryManager queryManager;
-    protected final C3Logger qlogger;
-    protected final C3Logger tlogger;
+    protected C3TaskResolver taskResolver;
+    protected C3TaskManager taskManager;
+    protected C3QueryResolver queryResolver;
+    protected C3QueryManager queryManager;
+    protected C3Logger qlogger;
+    protected C3Logger tlogger;
 
-    protected final C3Reader reader;
-    protected final C3Writer writer;
-    protected final C3TrayHandler trayHandler;
+    protected C3Reader reader;
+    protected C3Writer writer;
+    protected C3TrayHandler trayHandler;
+    protected C3TimerHandler timerHandler;
+    protected  C3SessionHandler sessionHandler;
     protected C3_Query currentQuery;
     protected C3_Task currentTask;
+    private SessionLogger sessionLogger;
 
-    public C3Manager() {
+    public C3Manager(boolean sessionMode) {
         reader = new C3Reader(this);
         writer = new C3Writer(this);
         qlogger = new C3Logger(this, true);
         tlogger = new C3Logger(this, false);
-        queryResolver = new C3QueryResolver(this);
-        queryManager = new C3QueryManager(this,reader.createQCategoryMap(), reader.readQueryData());
-
-        taskResolver = new C3TaskResolver(this);
-        C3Filter<C3Enums.TaskCategory> filter = generateTaskFilter();
-        taskManager = new C3TaskManager(this,reader.createTCategoryMap(), filter.filter(reader.readTaskData()),
-                reader.readTaskStatusMap(),filter
-              );
+        if (sessionMode) {
+            sessionHandler = new C3SessionHandler(this);
+            sessionLogger = new SessionLogger(this);
+        } else {
+            queryResolver = new C3QueryResolver(this);
+            queryManager = new C3QueryManager(this, reader.createQCategoryMap(), reader.readQueryData());
+            taskResolver = new C3TaskResolver(this);
+            C3Filter<C3Enums.TaskCategory> filter = generateTaskFilter();
+            taskManager = new C3TaskManager(this, reader.createTCategoryMap(), filter.filter(reader.readTaskData()),
+                    reader.readTaskStatusMap(), filter);
+        }
 
         trayHandler = new C3TrayHandler(this);
+        timerHandler = new C3TimerHandler(this);
 
     }
 
@@ -103,5 +114,21 @@ public class C3Manager {
 
     public void notifyTimerElapsed(C3_Query query) {
         getTrayHandler().notify(query);
+    }
+
+    public C3TimerHandler getTimerHandler() {
+        return timerHandler;
+    }
+
+    public C3SessionHandler getSessionHandler() {
+        return sessionHandler;
+    }
+
+    public SessionLogger getSessionLogger() {
+        return sessionLogger;
+    }
+
+    public void setSessionLogger(SessionLogger sessionLogger) {
+        this.sessionLogger = sessionLogger;
     }
 }

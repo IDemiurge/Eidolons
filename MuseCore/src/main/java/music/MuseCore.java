@@ -40,7 +40,9 @@ public class MuseCore implements NativeKeyListener {
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
-        if ((ALT & nativeKeyEvent.getModifiers()) != 0) {
+        boolean alt=false;
+        if ((ALT & nativeKeyEvent.getModifiers()) != 0
+        || (alt = ((SHIFT & nativeKeyEvent.getModifiers()) != 0))) {
             if (nativeKeyEvent.getKeyCode() > 58) {
                 boolean F11_12=(nativeKeyEvent.getKeyCode() == 87 || nativeKeyEvent.getKeyCode() == 88) ;
                 if (
@@ -54,25 +56,25 @@ public class MuseCore implements NativeKeyListener {
                         if (index==3) {
                             return ; //ALT F4!
                         }
-                        PlaylistHandler.playRandom(PlaylistHandler.PLAYLIST_TYPE.values()[index]);
+                        PlaylistHandler.playRandom(alt, PlaylistHandler.PLAYLIST_TYPE.values()[index]);
                     } catch (Exception e) {
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
                 }
             }
 
-            if ((SHIFT & nativeKeyEvent.getModifiers()) != 0) {
-                if (nativeKeyEvent.getKeyCode() > 58) {
-                    if (nativeKeyEvent.getKeyCode() < 70) {
-                        try {
-                            int index = nativeKeyEvent.getKeyCode() - 59;
-                            PlaylistHandler.playRandom(PlaylistHandler.PLAYLIST_TYPE.values()[index]);
-                        } catch (Exception e) {
-                            main.system.ExceptionMaster.printStackTrace(e);
-                        }
-                    }
-                }
-            }
+            // if ((SHIFT & nativeKeyEvent.getModifiers()) != 0) {
+            //     if (nativeKeyEvent.getKeyCode() > 58) {
+            //         if (nativeKeyEvent.getKeyCode() < 70) {
+            //             try {
+            //                 int index = nativeKeyEvent.getKeyCode() - 59;
+            //                 PlaylistHandler.playRandom(PlaylistHandler.PLAYLIST_TYPE.values()[index]);
+            //             } catch (Exception e) {
+            //                 main.system.ExceptionMaster.printStackTrace(e);
+            //             }
+            //         }
+            //     }
+            // }
             //            default:
             //                main.system.auxiliary.log.LogMaster.log(1, " nativeKeyEvent.getModifiers()=" +
             //                        nativeKeyEvent.getModifiers());
