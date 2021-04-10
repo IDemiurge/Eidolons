@@ -5,6 +5,7 @@ import main.data.filesys.PathFinder;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.math.FormulaMaster;
 import main.system.math.Formulas;
 
@@ -13,7 +14,7 @@ public enum STD_MODES implements MODE {
     CONCENTRATION(true, false, true, "C_FOCUS", "max(100, {SOURCE_CONCENTRATION_MOD})/100*("
      + Formulas.CONCENTRATION_BASE + "+{SOURCE_CONCENTRATION_BONUS})"),
 
-    RESTING(false, true, true, "C_STAMINA", "max(100, {SOURCE_RESTING_MOD})/100*("
+    RESTING(false, true, true, "C_TOUGHNESS", "max(100, {SOURCE_RESTING_MOD})/100*("
      + Formulas.REST_CONST + "+{SOURCE_REST_BONUS})"),
     MEDITATION(true, true, true, "C_ESSENCE", "max(100, {SOURCE_MEDITATION_MOD})/100*("
      + Formulas.MEDITATION_BASE + "+{SOURCE_MEDITATION_BONUS})"), // {ACTIVE_something}
@@ -31,6 +32,7 @@ public enum STD_MODES implements MODE {
     PRAYER(true, true, true, "C_MORALE", "(max(100, {SOURCE_PRAYER_MOD})/100*("
      + Formulas.PRAYER_CONST + "+{SOURCE_PRAYER_BONUS})"), // {ACTIVE_something}
     COWER(true, true, true),
+    UNCONSCIOUS(false, true, true),
     PANIC(false, true, false){
         @Override
         public AiEnums.BEHAVIOR_MODE getBehaviorMode() {
@@ -67,7 +69,7 @@ public enum STD_MODES implements MODE {
 
         String paramModString = StringMaster.getParamModString("PARRY_CHANCE",
          Formulas.DEFEND_PARRY_CHANCE_MOD)
-         + StringMaster.SEPARATOR
+         + Strings.SEPARATOR
          + StringMaster.getParamModString("BLOCK_CHANCE", Formulas.DEFEND_BLOCK_CHANCE_MOD);
         DEFENDING.setParameterMods(paramModString);
 
@@ -189,7 +191,7 @@ public enum STD_MODES implements MODE {
         if (buffName != null) {
             return buffName;
         }
-        return StringMaster.getWellFormattedString(name());
+        return StringMaster.format(name());
     }
 
     @Override
@@ -335,7 +337,7 @@ public enum STD_MODES implements MODE {
 
     public String getName() {
 
-        return StringMaster.getWellFormattedString(name());
+        return StringMaster.format(name());
     }
 
     @Override

@@ -1,11 +1,11 @@
 package main.level_editor.gui.panels.palette.tree;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
-import eidolons.game.module.generator.GeneratorEnums;
-import eidolons.game.module.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
-import eidolons.game.module.generator.model.RoomModel;
-import eidolons.game.module.generator.model.RoomTemplateMaster;
-import eidolons.game.module.generator.tilemap.TileMapper;
+import eidolons.dungeons.generator.GeneratorEnums;
+import eidolons.dungeons.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
+import eidolons.dungeons.generator.model.RoomModel;
+import eidolons.dungeons.generator.model.RoomTemplateMaster;
+import eidolons.dungeons.generator.tilemap.TileMapper;
 import main.data.filesys.PathFinder;
 import main.level_editor.LevelEditor;
 import main.system.auxiliary.data.FileManager;
@@ -41,6 +41,7 @@ public class BlockTreeBuilder {
                 Set<RoomModel> models=     new LinkedHashSet<>();
                 for (String room : contents.split(RoomTemplateMaster.MODEL_SPLITTER)) {
                     room = room.trim();
+
                     String[][] cells = TileMapper.toSymbolArray(room);
                     models.add(new RoomModel(cells, type, GeneratorEnums.EXIT_TEMPLATE.CROSSROAD));
 
@@ -58,7 +59,7 @@ public class BlockTreeBuilder {
 
         }
 
-        RoomTemplateMaster manager = LevelEditor.getManager().getStructureManager().
+        RoomTemplateMaster manager = LevelEditor.getManager().getStructureHandler().
                 getRoomTemplateManager();
 
         for (ROOM_TEMPLATE_GROUP group : manager.getModels().keySet()) {

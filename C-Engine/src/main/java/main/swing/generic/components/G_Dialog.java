@@ -2,7 +2,6 @@ package main.swing.generic.components;
 
 import main.game.core.game.Game;
 import main.system.graphics.ColorManager;
-import main.system.graphics.GuiManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -65,9 +64,9 @@ public abstract class G_Dialog {
     public Point getLocation() {
         if (isOnMousePoint()) {
             int x = (int) (MouseInfo.getPointerInfo().getLocation().x - getSize().getWidth() / 2);
-            x = (int) Math.min(GuiManager.getScreenWidthInt() - getSize().getWidth(), x);
+            x = (int) Math.min( getSize().getWidth(), x);
             int y = (int) (MouseInfo.getPointerInfo().getLocation().y - getSize().getHeight() / 2);
-            y = (int) Math.min(GuiManager.getScreenHeight() - getSize().getHeight(), y);
+            y = (int) Math.min(  getSize().getHeight(), y);
             return new Point(x, y);
         }
 
@@ -75,8 +74,8 @@ public abstract class G_Dialog {
             return new Point(0, 0);
         }
 
-        return new Point((int) (GuiManager.getScreenWidth() - getSize().getWidth()) / 2,
-         (int) (GuiManager.getScreenHeight() - getSize().getHeight()) / 2);
+        return new Point((int) (1920 - getSize().getWidth()) / 2,
+         (int) (1050 - getSize().getHeight()) / 2);
     }
 
     protected boolean isOnMousePoint() {

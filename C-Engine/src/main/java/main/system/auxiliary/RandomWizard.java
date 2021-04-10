@@ -1,7 +1,7 @@
 package main.system.auxiliary;
 
 import main.content.OBJ_TYPE;
-import main.content.enums.GenericEnums.ROLL_TYPES;
+import main.content.enums.GenericEnums.RollType;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.data.xml.XML_Formatter;
@@ -11,12 +11,12 @@ import main.system.datatypes.WeightMap;
 import main.system.math.MathMaster;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomWizard<E> {
-    public static final long seed = System.nanoTime();
-    static Random randomGenerator = new Random(seed);
+    static Random randomGenerator =  ThreadLocalRandom.current();
     private static boolean averaged;
-    private static Map<String, WeightMap> weighMapCache = new HashMap<>();
+    private static final Map<String, WeightMap> weighMapCache = new HashMap<>();
     private LinkedHashMap<Integer, E> invertedMap;
 
     public static boolean isWeightMap(String property) {
@@ -184,7 +184,7 @@ public class RandomWizard<E> {
         return getRandomInt(greater) > getRandomInt(than);
     }
 
-    public static boolean roll(ROLL_TYPES roll_type, int greater, int than, Ref ref) {
+    public static boolean roll(RollType roll_type, int greater, int than, Ref ref) {
 
         int randomInt = getRandomInt(greater);
         int randomInt2 = getRandomInt(than);
@@ -194,7 +194,7 @@ public class RandomWizard<E> {
     }
 
     public static String getWeightStringItem(String string, String value) {
-        return string + StringMaster.wrapInParenthesis(value.toString()) + ";";
+        return string + StringMaster.wrapInParenthesis(value) + ";";
     }
 
     public static ObjType getRandomType(OBJ_TYPE TYPE) {
@@ -238,6 +238,10 @@ public class RandomWizard<E> {
         //       brutish...
         // return new Float(getRandomIntBetween((int) (alphaMin * 100),
         //         (int) (alphaMax * 100))) / 100;
+    }
+
+    public static float randomize(float amount, float randomness) {
+        return  amount * (1 - randomness + getRandomFloatBetween(0, randomness*2));
     }
 
     public E getObjectByWeight(String string, Class<? extends E> CLASS) {
@@ -324,7 +328,11 @@ public class RandomWizard<E> {
         if (inverse) {
             invertedMap = new LinkedHashMap<>();
         }
-        for (String string : ContainerUtils.open(property)) {
+        String separator=ContainerUtils.getContainerSeparator();
+        if (!property.contains(separator)) {
+            separator=StringMaster.getAltSeparator();
+        }
+        for (String string : ContainerUtils.open(property, separator)) {
             Integer value = 0;
             try {
                 value = StringMaster.getWeight(string, inverse);

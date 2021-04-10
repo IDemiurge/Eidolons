@@ -16,8 +16,8 @@ public enum FACING_DIRECTION {
     public static final FACING_DIRECTION[] normalFacing = {
      NORTH,     WEST, EAST, SOUTH
     };
-    private DIRECTION direction;
-    private boolean vertical;
+    private final DIRECTION direction;
+    private final boolean vertical;
 
     public boolean isCloserToZero() {
         return closerToZero;
@@ -41,7 +41,7 @@ public enum FACING_DIRECTION {
 
 
     public String getName() {
-        return StringMaster.getWellFormattedString(name());
+        return StringMaster.format(name());
     }
 
     public boolean isVertical() {

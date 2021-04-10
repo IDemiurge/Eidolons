@@ -2,7 +2,7 @@ package main.level_editor.gui.components;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
-import eidolons.libgdx.gui.generic.ValueContainer;
+import libgdx.gui.generic.ValueContainer;
 
 public class EditValueContainer extends ValueContainer {
     private static int max_length=15;

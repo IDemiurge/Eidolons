@@ -4,12 +4,13 @@ import com.google.inject.internal.util.ImmutableList;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
-import eidolons.game.module.generator.GeneratorEnums;
-import eidolons.game.module.generator.model.RoomTemplateMaster;
-import eidolons.game.module.generator.tilemap.TileMapper;
-import eidolons.libgdx.utils.GdxDialogMaster;
-import eidolons.system.content.PlaceholderGenerator;
+import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
+import eidolons.game.core.Eidolons;
+import eidolons.dungeons.generator.GeneratorEnums;
+import eidolons.dungeons.generator.model.RoomTemplateMaster;
+import eidolons.dungeons.generator.tilemap.TileMapper;
+import libgdx.utils.GdxDialogMaster;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -45,8 +46,8 @@ import java.util.stream.Collectors;
 
 public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
 
-    public static final String WALL_PLACEHOLDER = "Wall Placeholder";
-    public static final String ALT_WALL_PLACEHOLDER = "Alt Wall Placeholder";
+    public static final String WALL_PLACEHOLDER = "Wall";
+    public static final String ALT_WALL_PLACEHOLDER = "Alt Wall";
     private Map<String, List<ObjType>> workspaceTypeMap;
 
     public PaletteHandlerImpl(LE_Manager manager) {
@@ -57,14 +58,14 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
     @Override
     public void afterLoaded() {
         List<ObjType> types = DataManager.getTypesSubGroup(DC_TYPE.BF_OBJ, "Placeholder");
-        createPalette   (new LinkedHashSet<>( types), "Placeholders");
+        createPalette(new LinkedHashSet<>(types), "Placeholders");
 
     }
 
     private void initWorkspaceTypeMap() {
         workspaceTypeMap = new LinkedHashMap<>();
         List<File> files = FileManager.getFilesFromDirectory(PathFinder.getEditorWorkspacePath(),
-                false);
+                false, false, false);
         for (File file : files) {
             String data = FileManager.readFile(file);
             List<ObjType> types = new ArrayList<>();
@@ -93,11 +94,10 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
 
     @Override
     public void fromBlock() {
-        if (getModel().getBlock() == null) {
-            return;
-        }
-        LevelBlock block = getModel().getBlock();
-        createPaletteFromObjsOnCoordinates(block.getCoordinatesSet());
+        if (getModel().getLastSelectedStruct() != null) {
+            createPaletteFromObjsOnCoordinates(getModel().getLastSelectedStruct().getCoordinatesSet());
+        } else
+            createPaletteFromObjsOnCoordinates(getSelectionHandler().getSelection().getCoordinates());
     }
 
     @Override
@@ -115,11 +115,14 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
 
     private void createPaletteFromObjsOnCoordinates(Set<Coordinates> coordinatesSet) {
         Set<BattleFieldObject> set = new LinkedHashSet<>();
+        coordinatesSet =
+                coordinatesSet.stream().sorted(SortMaster.getGridCoordSorter()).collect(
+                        Collectors.toCollection(() -> new LinkedHashSet<>()));
         for (Coordinates coordinates : coordinatesSet) {
-            set.addAll(getGame().getObjectsOnCoordinate(coordinates));
+            set.addAll(getGame().getObjectsOnCoordinateAll(coordinates));
         }
 
-        createPaletteFromObjs(set.stream().map(obj -> obj.getType()).collect(Collectors.toSet()));
+        createPaletteFromObjs(set.stream().map(obj -> obj.getType()).collect(Collectors.toCollection(() -> new LinkedHashSet<>())));
     }
 
     private void createPaletteFromObjs(Set<ObjType> set) {
@@ -127,7 +130,7 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
         if (StringMaster.isEmpty(name)) {
             return;
         }
-//        NameMaster.getUniqueVersionedFileName()
+        //        NameMaster.getUniqueVersionedFileName()
         createPalette(set, name);
         reload();
     }
@@ -179,14 +182,14 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
 
     private void reload() {
         initWorkspaceTypeMap();
-        LE_Screen.getInstance().getGuiStage().getPalettePanel().reload();
+        Eidolons.onGdxThread(() -> LE_Screen.getInstance().getGuiStage().getPalettePanel().reload());
         GuiEventManager.trigger(GuiEventType.LE_PALETTE_RESELECT);
     }
 
     private void appendTypes(Set<ObjType> set, DC_TYPE type, XmlStringBuilder xmlStringBuilder) {
         Set<String> objs =
                 set.stream().filter(obj -> obj.getType().getOBJ_TYPE_ENUM() == type)
-                        .sorted(getTypeSorter(type)).map(obj -> obj.getType().getName()).collect(Collectors.toSet());
+                        .sorted(getTypeSorter(type)).map(obj -> obj.getType().getName()).collect(Collectors.toCollection(() -> new LinkedHashSet<>()));
         if (objs.isEmpty()) {
             return;
         }
@@ -217,13 +220,20 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
 
     @Override
     public void areaToBlock() {
-
-        List<String> tiles = getModel().getSelection().getCoordinates().stream()
-                .sorted(getCoordSorter())
+        BlockData data = null;
+        Set<Coordinates> coordinates = getModel().getSelection().getCoordinates();
+        if (coordinates.size() < 9) {
+            if (getModel().getBlock() != null) {
+                data = getModel().getBlock().getData();
+                coordinates = getModel().getBlock().getCoordinatesSet();
+            } else return;
+        }
+        List<String> tiles = coordinates.stream()
+                .sorted(SortMaster.getGridCoordSorter())
                 .map(c -> getTileForCoordinate(c)).collect(Collectors.toList());
 
-        int w = CoordinatesMaster.getWidth(getModel().getSelection().getCoordinates());
-        int h = CoordinatesMaster.getHeight(getModel().getSelection().getCoordinates());
+        int w = CoordinatesMaster.getWidth(coordinates);
+        int h = CoordinatesMaster.getHeight(coordinates);
         String[][] tileMap = new String[w][h];
         int index = 0;
         for (int i = 0; i < w; i++) {
@@ -233,11 +243,27 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
             }
         }
         //ask for types, for read palette selection
-//        LocationBuilder.ROOM_TYPE type=null ;
-//        GeneratorEnums.ROOM_TEMPLATE_GROUP group=null ;
+        //        LocationBuilder.ROOM_TYPE type=null ;
+        //        GeneratorEnums.ROOM_TEMPLATE_GROUP group=null ;
 
         String group = BlockTemplateTree.room_group;
         String type = BlockTemplateTree.room_type;
+        if (group == null) {
+            GeneratorEnums.ROOM_TEMPLATE_GROUP e = getDialogHandler().chooseEnum(GeneratorEnums.ROOM_TEMPLATE_GROUP.class);
+            if (e == null) {
+                group = GeneratorEnums.ROOM_TEMPLATE_GROUP.VOID_MAZE.toString();
+            } else {
+                group = e.toString();
+                BlockTemplateTree.room_group = group;
+            }
+        }
+        if (type == null) {
+            // LocationBuilder.ROOM_TYPE e = getDialogHandler().chooseEnum(LocationBuilder.ROOM_TYPE.class);
+            // if (e == null) {
+            type = LocationBuilder.ROOM_TYPE.THRONE_ROOM.toString();
+            // } else
+            //     type = e.toString();
+        }
         String name = group + "/" + type;
         String filePath = PathFinder.getMapBlockFolderPath() + name + ".txt";
         StringBuilder contents = new StringBuilder();
@@ -247,41 +273,36 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
                 RoomTemplateMaster.MODEL_SPLITTER);
 
         //ask to convert selection into a block!..
-//        LevelBlock block = getStructureManager().selectionToBlock();
-//        block.getData().setValue(LevelStructure.BLOCK_VALUE.room_type, type);
+        //        LevelBlock block = getStructureManager().selectionToBlock();
+        //        block.getData().setValue(LevelStructure.BLOCK_VALUE.room_type, type);
         //tilemap format vs raw -
 
         //reload to palette?
         FileManager.write(contents.toString(), filePath);
+
         selectBlockPalette(ImmutableList.of(group, type));
         reload();
     }
 
-    private Comparator<? super Coordinates> getCoordSorter() {
-        return (Comparator<Coordinates>) (o1, o2) -> {
-            if (-o1.x * 1000 - o1.y < -o2.x* 1000  - o2.y) {
-                return 1;
-            }
-            return -1;
-        };
-    }
-
     private String getTileForCoordinate(Coordinates c) {
-        Set<BattleFieldObject> objects = getGame().getObjectsOnCoordinate(c);
+        Set<BattleFieldObject> objects = getGame().getObjectsOnCoordinateNoOverlaying(c);
         if (objects.isEmpty()) {
+            if (getGame().getCellByCoordinate(c).isVOID()) {
+                return GeneratorEnums.ROOM_CELL.VOID.symbol;
+            }
             return GeneratorEnums.ROOM_CELL.FLOOR.symbol;
         }
         //art, doors, ...
         for (BattleFieldObject object : objects) {
-            if (object.isWall()) {
+            // if (object.isWall()) {
                 return GeneratorEnums.ROOM_CELL.WALL.symbol;
-            }
-        for (GeneratorEnums.ROOM_CELL value : GeneratorEnums.ROOM_CELL.values()) {
-            if (PlaceholderGenerator.getPlaceholderName(value).equalsIgnoreCase(object.getName())) {
-                return value.getSymbol();
-            }
+            // }
+            // for (GeneratorEnums.ROOM_CELL value : GeneratorEnums.ROOM_CELL.values()) {
+            //     if (PlaceholderGenerator.getPlaceholderName(value).equalsIgnoreCase(object.getName())) {
+            //         return value.getSymbol();
+            //     }
+            // }
         }
-    }
         return "?";
     }
 
@@ -292,13 +313,13 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
 
         //path via layered grouping...
 
-//        selectedPalettePath =  getModel().getPaletteSelection();
-//        if ( == null ){
-//            path = getDefaultPath() + name;
-//        }
-//        //paletteCreationDialog
-//
-//        FileManager.write(types, path);
+        //        selectedPalettePath =  getModel().getPaletteSelection();
+        //        if ( == null ){
+        //            path = getDefaultPath() + name;
+        //        }
+        //        //paletteCreationDialog
+        //
+        //        FileManager.write(types, path);
     }
 
     @Override
@@ -332,7 +353,7 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
 
     private void modifyPalette(boolean negative) {
         Set<ObjType> collect = getSelectionHandler().getSelection().getIds().stream().map(id ->
-                getIdManager().getObjectById(id).getType()).collect(Collectors.toSet());
+                getIdManager().getObjectById(id).getType()).collect(Collectors.toCollection(() -> new LinkedHashSet<>()));
         appendToPalette(getPaletteName(), collect, negative);
     }
 
@@ -372,9 +393,9 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
     public ObjType getFiller(LE_BrushType brushType) {
         switch (brushType) {
             case wall:
-                return  DataManager.getType(WALL_PLACEHOLDER);
+                return DataManager.getType(WALL_PLACEHOLDER);
             case alt_wall:
-                return  DataManager.getType(ALT_WALL_PLACEHOLDER);
+                return DataManager.getType(ALT_WALL_PLACEHOLDER);
         }
         return null;
     }

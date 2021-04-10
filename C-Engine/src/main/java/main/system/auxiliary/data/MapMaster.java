@@ -1,10 +1,12 @@
 package main.system.auxiliary.data;
 
+import com.badlogic.gdx.utils.ObjectMap;
 import main.data.XLinkedMap;
 import main.system.SortMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -23,6 +25,16 @@ public class MapMaster<E, T> {
         }
     }
 
+    public static <V, K> Map<V, K> getInvertedMap(Map<K, V> map) {
+
+        Map<V, K> inv = new HashMap<>();
+
+        for (Entry<K, V> entry : map.entrySet()) {
+            inv.put(entry.getValue(), entry.getKey());
+        }
+
+        return inv;
+    }
     public static void addToFloatMap(Map map, Object key, Float n) {
         Float i = (Float) map.get(key);
         if (i == null) {
@@ -68,7 +80,7 @@ public class MapMaster<E, T> {
         StringBuilder s = new StringBuilder();
 
         for (Object e : map.keySet()) {
-            s.append(e.toString()).append(StringMaster.wrapInParenthesis(map.get(e).toString())).append(StringMaster.SEPARATOR);
+            s.append(e.toString()).append(StringMaster.wrapInParenthesis(map.get(e).toString())).append(Strings.SEPARATOR);
         }
         return s.toString();
     }
@@ -143,6 +155,21 @@ public class MapMaster<E, T> {
         }
         return map;
     }
+
+    public static void sort(Map<String, Integer> statMap) {
+        sortByValue(statMap);
+    }
+    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
+        List<Entry<K, V>> list = new ArrayList<>(map.entrySet());
+        list.sort(Entry.comparingByValue());
+
+        Map<K, V> result = new LinkedHashMap<>();
+        for (Entry<K, V> entry : list) {
+            result.put(entry.getKey(), entry.getValue());
+        }
+
+        return result;
+    }
     public HashMap<E, T> cloneHashMap(Map<E, T> map) {
         HashMap<E, T> clone = new HashMap<E, T>();
         clone.putAll(map);
@@ -164,6 +191,14 @@ public class MapMaster<E, T> {
         return null;
     }
 
+    public E getKeyForValue(ObjectMap<E, T> itemMap, T value) {
+        for (ObjectMap.Entry<E, T> e : itemMap.entries()) {
+            if (itemMap.get(e.key).equals(value)) {
+                return e.key;
+            }
+        }
+        return null;
+    }
     public List<T> joinMap(Map<E, List<T>> map) {
         List<T> list = new ArrayList<>();
         for (E e : map.keySet()) {

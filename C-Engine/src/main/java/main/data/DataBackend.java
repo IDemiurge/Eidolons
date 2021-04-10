@@ -40,8 +40,8 @@ public class DataBackend {
     private   List<ObjType> overwrittenTypes;
     private   Map<OBJ_TYPE, Map<String, List<String>>> subGroupsMaps;
     private   Map<C_OBJ_TYPE, List<ObjType>> customObjTypeCache;
-    private   Map<QUALITY_LEVEL, Map<MATERIAL, Map<ObjType, ObjType>>> itemMaps = new ConcurrentMap();
-    private   Map<OBJ_TYPE, Map<String, ObjType>> caches = new HashMap<>();
+    private final Map<QUALITY_LEVEL, Map<MATERIAL, Map<ObjType, ObjType>>> itemMaps = new ConcurrentMap();
+    private final Map<OBJ_TYPE, Map<String, ObjType>> caches = new HashMap<>();
 
     public   void init() {
         subGroupsMaps = new HashMap<>();
@@ -108,7 +108,7 @@ public class DataBackend {
         if (type == null) {
             if (C_OBJ_TYPE.ITEMS.equals(obj_type))
                 try {
-                    return Game.game.getItemGenerator().generateItemType(StringMaster.getWellFormattedString(
+                    return Game.game.getItemGenerator().generateItemType(StringMaster.format(
                             typeName), obj_type);
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
@@ -206,26 +206,17 @@ public class DataBackend {
             return type;
         }
 
-        int log = 0;
         if (!recursion) {
-            LogMaster.log(log, "Type not found: " + TYPE
-                    + ":" + typeName);
             return null;
         }
         if (typeName.endsWith(";")) {
-            LogMaster.log(log, "endsWith(\";\"): " + TYPE
-                    + ":" + typeName);
             typeName = StringMaster.getFormattedTypeName(typeName);
             type = getType(typeName, TYPE, false);
             if (type != null) {
                 return type;
             }
         }
-        //        if (typeName.contains(" ")) {
-        LogMaster.log(log, "Type getWellFormattedString: " + TYPE
-                + ":" + typeName);
-        return getType(StringMaster.getWellFormattedString(typeName), TYPE, false);
-        //        }
+        return getType(StringMaster.format(typeName), TYPE, false);
 
     }
 
@@ -388,7 +379,7 @@ public class DataBackend {
     }
 
     public   void renameType(ObjType type, String newName) {
-        XML_Reader.getTypeMaps().get(type.getProperty(G_PROPS.TYPE)).remove(type.getName());
+        ObjType prev = XML_Reader.getTypeMaps().get(type.getProperty(G_PROPS.TYPE)).remove(type.getName());
         XML_Reader.getTypeMaps().get(type.getProperty(G_PROPS.TYPE)).put(newName, type);
 
     }
@@ -572,7 +563,7 @@ public class DataBackend {
 
         List<ObjType> list = new ArrayList<>();
         boolean or = false;
-        if (filter.contains(StringMaster.OR)) {
+        if (filter.contains(Strings.OR)) {
             or = true;
         }
         for (ObjType objName : map.values()) {
@@ -701,9 +692,9 @@ public class DataBackend {
             ObjType type = getType(string, TYPE);
             if (type == null) {
                 if (NumberUtils.isInteger(string)) {
-                    type = Game.game.getTypeById(NumberUtils.getInteger(string));
+                    type = Game.game.getTypeById(NumberUtils.getIntParse(string));
                     if (type == null) {
-                        Obj obj = Game.game.getObjectById(NumberUtils.getInteger(string));
+                        Obj obj = Game.game.getObjectById(NumberUtils.getIntParse(string));
                         if (obj != null) {
                             type = obj.getType();
                         }
@@ -908,7 +899,7 @@ public class DataBackend {
     }
 
     public   ObjType getItem(QUALITY_LEVEL quality, MATERIAL material, ObjType type) {
-        if (CoreEngine.TEST_LAUNCH) {
+        if (GenericItemGenerator.OFF) {
             return type;
         }
         ObjType itemType = DataManager.getItemMaps().get(quality).get(material).get(type);

@@ -1,8 +1,8 @@
 package main.level_editor.gui.tree;
 
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.gui.NinePatchFactory;
+import libgdx.StyleHolder;
+import libgdx.gui.NinePatchFactory;
 import main.level_editor.gui.panels.ClosablePanel;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -13,12 +13,13 @@ public class LE_TreeHolder extends ClosablePanel {
     LE_TreeView treeView;
 
     public LE_TreeHolder() {
-        setSize(300, 900);
+
+        setSize(300, 940);
         treeView = new LE_TreeView();
         add(scroll = new ScrollPane(treeView, StyleHolder.getScrollStyle())).width(300).height(900)
                 .top().left();
         scroll.setFadeScrollBars(true);
-        setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+        setBackground(NinePatchFactory.getLightPanelFilledDrawable());
 
         GuiEventManager.bind(GuiEventType.LE_TREE_RESET, p -> {
             setUserObject(p.get());
@@ -32,7 +33,6 @@ public class LE_TreeHolder extends ClosablePanel {
             treeView.select(p.get());
         });
     }
-
 
     @Override
     public void setUserObject(Object userObject) {

@@ -20,102 +20,18 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static main.system.auxiliary.Strings.*;
+
 public class StringMaster {
-    public static final String DIAMOND = "♦";
-    public static final String SEPARATOR = ";";
-    public static final String VAR_STRING = "^VAR";
-    public static final String VAR_SEPARATOR = ",";
-    public static final String PAIR_SEPARATOR = ":";
-    public static final String ALT_PAIR_SEPARATOR = "=";
-    public static final String CONTAINER_SEPARATOR = SEPARATOR;
-    public static final String NETCODE_SEPARATOR = "~=~";
-    public static final String FORMULA_REF_OPEN_CHAR = "{";
-    public static final String FORMULA_REF_CLOSE_CHAR = "}";
-    public static final String VARIABLES_OPEN_CHAR = "(";
-    public static final String VARIABLES_CLOSE_CHAR = ")";
-    public static final String FORMULA_FUNC_OPEN_CHAR = "[";
-    public static final String FORMULA_FUNC_CLOSE_CHAR = "]";
-    public static final String VAR_REF_OPEN_CHAR = "[";
-    public static final String VAR_REF_CLOSE_CHAR = "]";
-    public static final String FORMULA_COUNTER_OPEN_CHAR = "'";
-    public static final String FORMULA_COUNTER_CLOSE_CHAR = "'";
-    public static final String FORMULA_BASE_CHAR = "@";
-    public static final String PARSE_REF_CHAR = "&";
-    public static final String FORMULA_REF_SEPARATOR = "_";
-    public static final String CURRENT = "C_";
-    public static final String REGEN = "_REGEN";
-    public static final String PERCENTAGE = "_PERCENTAGE";
-    public static final String GATEWAY = "Gateway";
-    public static final String BASE = "BASE_";
-    public static final String BASE_FORMATTED = "Base ";
-    public static final String PER_LEVEL = "_PER_LEVEL";
-    public static final String COST = "_COST";
-    public static final String FORMAT_CHAR = ".";
-    public static final String REQUIREMENT = "_REQUIREMENT";
-    public static final String OR = " OR ";
-    public static final String REQ_VALUE_SEPARATOR = "=";
-    public static final String COUNTER_CHAR = "$";
-    public final static String BASE_CHAR = "@";
-    public static final String COUNTER = " Counter";
-    public static final String NEW_LINE = System.getProperty("line.separator");
-    public static final String LINE_WRAP = "<%n>";
-    public static final String DEFAULT = "DEFAULT_";
-    public static final String REDUCTION = "_REDUCTION";
-    public static final String PARTY_SUFFIX = "'s Party";
-    public static final String PLAYTEST = "Playtest";
-    public static final String ARCADE = "Arcade";
-    public static final String PRESET = "Preset";
-    public static final String CUSTOM = "Custom";
-    public static final String PLAYABLE = "Playable";
-    public static final String ADVENTURE = "Adventure";
-    public static final String BATTLE_READY = "Battle Ready";
-    public static final String BACKGROUND = "Background";
-    public static final String VALUE_GROUP_CLOSE_CHAR = "]";
-    public static final String VALUE_GROUP_OPEN_CHAR = "[";
-    public static final CharSequence INVISIBLE_BUFF = " invisible";
-    public static final CharSequence INVISIBLE_BUFF_CODE = "-";
-    public static final String FEMALE_PREFIX = "w_";
-    public static final String MASTERY = "Mastery";
-    public static final String WOMAN = "WOMAN";
-    public static final String STANDARD = "Standard";
-    public static final String AND_SEPARATOR = "|";
-    public static final String AND_PROPERTY_SEPARATOR = "]|[";
-    public static final String UPGRADE_SEPARATOR = ">|<";
-    public static final String SCORE = " Score";
-    public static final String AND = " AND ";
-    public static final String CODE_BACK_SLASH = "CODE_BACK_SLASH";
-    public static final String CODE_SLASH = "CODE SLASH";
-    public static final String COMMA_CODE = "COMMA CODE";
-    public static final String VARIABLES_CLOSE_CHAR_CODE = "CLOSE PARENTHESIS";
-    public static final String VARIABLES_OPEN_CHAR_CODE = "OPEN PARENTHESIS";
-    public static final String FORMULA_REF_CLOSE_CHAR_CODE = "CLOSE CURLY BRACES";
-    public static final String FORMULA_REF_OPEN_CHAR_CODE = "OPEN CURLY BRACES";
-    public final static String MESSAGE_PREFIX_SUCCESS = "[+] ";
-    public final static String MESSAGE_PREFIX_FAIL = "[-] ";
-    public final static String MESSAGE_PREFIX_INFO = "[*] ";
-    public final static String MESSAGE_PREFIX_ALERT = "[!] ";
-    public final static String MESSAGE_PREFIX_ALARM = "[!!!] ";
-    public final static String MESSAGE_PREFIX_MISC = "[...] ";
-    public final static String MESSAGE_PREFIX_UNKNOWN = "[?] ";
-    public final static String MESSAGE_PREFIX_PROCEEDING = "[>] ";
-    public static final String MOD = "[mod]";
-    public static final String SET = "[set]";
-    public static final String REMOVE = "[remove]";
-    public static final String VERSION_SEPARATOR = " - ";
-    public static final String XML = ".xml";
-    public static final String DATA_FORMAT = XML;
-    public static final String IDENTITY = " Identity";
-    public static final String ALIGNMENT = " Alignment";
-    public static final String MAP_VALUE_KEY_SEPARATOR = null;
-    public static final String CELL_DATA_SEPARATOR = "::";
-    public static final String COORDINATES_SEPARATOR = "-";
-    public static final String COORDINATES_SEPARATOR_ALT = ":";
-    public static final String ALT_SEPARATOR = ",";
+
     public static final String standard_symbols = "'-(),";
     public static final String PREFIX_SEPARATOR = "::";
+    private static final String WHITESPACE_CODE = "%20";
+    public static final String INDESTRUCTIBLE = " Indestructible";
+    public static final String STRANGE_WALL = " Marked";
     static Pattern pattern_ = Pattern.compile("_");
     static Pattern pattern_space = Pattern.compile(" ");
-    public static final String UPGRADE = getWellFormattedString("UPGRADE");
+    public static final String UPGRADE = format("UPGRADE");
 
     public static boolean compare(String string, String string2) {
         return compare(string, string2, false);
@@ -131,6 +47,12 @@ public class StringMaster {
     }
 
     public static boolean contains(String string, String string2, boolean ignoreCase, boolean strict) {
+        if (string.isEmpty()) {
+            return false;
+        }
+        if (string2.isEmpty()) {
+            return false;
+        }
         if (ignoreCase) {
             string = string.toUpperCase();
             string2 = string2.toUpperCase();
@@ -141,13 +63,13 @@ public class StringMaster {
         if (strict) {
             return false;
         }
-        if (getWellFormattedString(string).contains(string2)) {
+        if (format(string).contains(string2)) {
             return true;
         }
-        if (string.contains(getWellFormattedString(string2))) {
+        if (string.contains(format(string2))) {
             return true;
         }
-        return getWellFormattedString(string).contains(getWellFormattedString(string2));
+        return format(string).contains(format(string2));
 
     }
 
@@ -313,8 +235,8 @@ public class StringMaster {
                     return true;
                 }
             }
-            if (string.contains(AND_SEPARATOR) || string2.contains(AND_SEPARATOR)) {
-                if (compareContainers(string, string2, true, AND_SEPARATOR)) {
+            if (string.contains(VERTICAL_BAR) || string2.contains(VERTICAL_BAR)) {
+                if (compareContainers(string, string2, true, VERTICAL_BAR)) {
                     return true;
                 }
             }
@@ -356,20 +278,20 @@ public class StringMaster {
             return "";
         }
 
-        return getWellFormattedString(o.toString());
+        return format(o.toString());
     }
 
-    public static String getWellFormattedString(String s) {
-        return StringMaster.getWellFormattedString(s, false);
+    public static String format(String s) {
+        return StringMaster.format(s, false);
     }
 
     public static String getCamelCase(String name) {
-        String formatted = StringMaster.getWellFormattedString(name);
+        String formatted = StringMaster.format(name);
         return formatted.substring(0, 1).toLowerCase()
                 + formatted.substring(1).replace(" ", "");
     }
 
-    public static String getWellFormattedString(String s, boolean insertSpaceAfterCapitals) {
+    public static String format(String s, boolean insertSpaceAfterCapitals) {
         if (isEmpty(s)) {
             return "";
         }
@@ -379,7 +301,7 @@ public class StringMaster {
             StringBuilder builder = new StringBuilder(s.length() + 5);
             s = s.trim();
             for (String str : pattern_space.split(s)) {
-                builder.append(getWellFormattedString(str)).append(" ");
+                builder.append(format(str)).append(" ");
             }
             string = builder.toString();
             string = string.substring(0, string.length() - 1);
@@ -388,7 +310,7 @@ public class StringMaster {
         if (s.contains("_")) {
             StringBuilder builder = new StringBuilder(s.length() + 5);
             for (String str : pattern_.split(s)) {
-                builder.append(getWellFormattedString(str)).append(" ");
+                builder.append(format(str)).append(" ");
             }
             string = builder.toString();
             string = string.substring(0, string.length() - 1);
@@ -448,7 +370,7 @@ public class StringMaster {
     }
 
     public static String getFormattedEnumString(String name) {
-        return getWellFormattedString(name);
+        return format(name);
     }
 
     public static String getCoordinatesSeparator() {
@@ -500,7 +422,7 @@ public class StringMaster {
         return "{" + arg + "}";
     }
 
-    public static String wrapInBraces(String arg) {
+    public static String wrapInBrackets(String arg) {
         return "[" + arg + "]";
     }
 
@@ -526,7 +448,7 @@ public class StringMaster {
     }
 
     public static String getObjTypeName(String name) {
-        return getWellFormattedString(name).toLowerCase();
+        return format(name).toLowerCase();
     }
 
     public static String toEnumFormat(String name) {
@@ -613,6 +535,13 @@ public class StringMaster {
     private static String getValueTip(Entity obj, VALUE val) {
         return new StringBuilder().append(val.getDisplayedName()).append(": ").
                 append(obj.getValue(val).replace(";", ", ")).toString();
+    }
+    public static String getValueRefs(KEYS objRef, List<VALUE> valRef) {
+        return getValueRefs(objRef, valRef, "+");
+    }
+    public static String getValueRefs(KEYS objRef, List<VALUE> valRef, String separator) {
+        return ContainerUtils.joinList( valRef.stream().map(val -> getValueRef(objRef, val))
+                .collect(Collectors.toList()) , separator);
     }
 
     public static String getValueRefs(KEYS objRef, VALUE... valRef) {
@@ -755,10 +684,10 @@ public class StringMaster {
     }
 
     public static boolean getBoolean(String value) {
-        value = value.trim();
         if (isEmpty(value)) {
             return false;
         }
+        value = value.trim();
         if (value.equalsIgnoreCase("true")) {
             return true;
         }
@@ -793,6 +722,13 @@ public class StringMaster {
     public static String cropLast(String name, String string) {
         int lastIndexOf = name.lastIndexOf(string);
         if (lastIndexOf > -1) {
+            return replaceLast(name, name.substring(lastIndexOf, lastIndexOf+string.length()), "");
+        }
+        return name;
+    }
+    public static String cropAfter(String name, String string) {
+        int lastIndexOf = name.lastIndexOf(string);
+        if (lastIndexOf > -1) {
             return replaceLast(name, name.substring(lastIndexOf), "");
         }
         return name;
@@ -819,7 +755,7 @@ public class StringMaster {
         }
         if (index == -1) {
             index = (last) ? string.lastIndexOf(regex) : string
-                    .indexOf(getWellFormattedString(regex));
+                    .indexOf(format(regex));
         }
         if (index == -1) {
             return string;
@@ -832,7 +768,7 @@ public class StringMaster {
     public static String replace(boolean all, String string, String regex, String replacement) {
         if (all) {
             try {
-                return string.replace(regex, replacement).replace(getWellFormattedString(regex),
+                return string.replace(regex, replacement).replace(format(regex),
                         replacement).replace(regex.toLowerCase(), replacement).replace(
                         regex.toUpperCase(), replacement);
             } catch (Exception e) {
@@ -943,9 +879,9 @@ public class StringMaster {
 
     public static Integer getWeight(String string, boolean inverse) {
         if (inverse) {
-            return NumberUtils.getInteger(getWeightItem(string, false));
+            return NumberUtils.getIntParse(getWeightItem(string, false));
         }
-        return NumberUtils.getInteger(StringMaster.cropParenthesises(VariableManager.getVarPartLast(string)));
+        return NumberUtils.getIntParse(StringMaster.cropParenthesises(VariableManager.getVarPartLast(string)));
     }
 
     public static String getWeightItem(String string, boolean inverse) {
@@ -1014,7 +950,7 @@ public class StringMaster {
         if (!me) {
             fail = !fail;
         }
-        return fail ? StringMaster.MESSAGE_PREFIX_FAIL : StringMaster.MESSAGE_PREFIX_SUCCESS;
+        return fail ? MESSAGE_PREFIX_FAIL : MESSAGE_PREFIX_SUCCESS;
     }
 
     public static String getStringBeforeNumerals(String name) {
@@ -1145,9 +1081,9 @@ public class StringMaster {
 
     public static String getNameFromId(String property, Game game) {
         if (NumberUtils.isInteger(property)) {
-            Obj obj = game.getObjectById(NumberUtils.getInteger(property));
+            Obj obj = game.getObjectById(NumberUtils.getIntParse(property));
             if (obj == null) {
-                return wrapInBraces("invalid id " + property);
+                return wrapInBrackets("invalid id " + property);
             }
             return obj.getName();
         }
@@ -1207,11 +1143,56 @@ public class StringMaster {
         return typeName.substring(index, index2+1);
     }
 
-
-    public enum STD_DEITY_TYPE_NAMES {
-        Faithless
-
+    public static String getNameFromPath(String path) {
+        return cropFormat(PathUtils.getLastPathSegment(path));
     }
+
+    public static int countChar(String value, String r) {
+        int i=0;
+        for (char c : value.toCharArray()) {
+            if (r.equalsIgnoreCase(""+c))
+                i++;
+        }
+        return i;
+    }
+
+    public static String cropNumericSuffix(String path) {
+        String suffix = NumberUtils.getNumericSuffix(cropFormat(path));
+        return cropLast(path, suffix).trim()+getFormat(path);
+    }
+
+    public static String cropSuffix(String path, String cropSuffix) {
+        return cropLast(path, cropSuffix).trim();
+    }
+
+    public static String fixWhiteSpaces(String s) {
+        return s.replaceAll(WHITESPACE_CODE, " ");
+    }
+
+    public static int firstIndexOfAny(String s, String anyFrom) {
+        for (char c : anyFrom.toCharArray()) {
+            int i = s.indexOf("" + c);
+            if (i>=0) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    //saving space...
+    public static String wall(Boolean indestructible_nullForSecret) {
+        if (indestructible_nullForSecret == null) {
+            return STRANGE_WALL;
+        }
+        return indestructible_nullForSecret ? INDESTRUCTIBLE : "";
+    }
+
+    public static String curOutOfMax(String cur, String max) {
+        return wrapInBrackets(
+                new StringBuilder().append(cur).append("/").
+                        append(max).toString());
+    }
+
 
     public enum STD_TYPE_NAMES {
         Cell

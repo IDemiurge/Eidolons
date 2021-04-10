@@ -3,12 +3,12 @@ package main.system.auxiliary.log;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.threading.TimerTaskMaster;
 
 import java.util.ArrayList;
@@ -132,7 +132,7 @@ public class LogFileMasterOld {
     }
 
     private static void write(List<String> entries, String string) {
-        String fullContent = ContainerUtils.constructStringContainer(entries, StringMaster.NEW_LINE);
+        String fullContent = ContainerUtils.constructStringContainer(entries, Strings.NEW_LINE);
         String folder = getLogFilePath();
         String fileName = string + " log.txt";
         folder += getGameSubfolder();
@@ -144,7 +144,7 @@ public class LogFileMasterOld {
     }
 
     private static boolean isWritingLogFilesOn() {
-        return CoreEngine.isWritingLogFilesOn();
+        return Flags.isWritingLogFilesOn();
     }
 
     public static void checkWriteToFileNewThread(final LOG_CHANNEL channel, final String text) {

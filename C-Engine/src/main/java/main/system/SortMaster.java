@@ -10,6 +10,7 @@ import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
+import main.game.bf.Coordinates;
 import main.swing.listeners.ListChooserSortOptionListener.SORT_TEMPLATE;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
@@ -86,7 +87,7 @@ public class SortMaster<T> {
         return new Comparator<Entity>() {
             protected int checkHeroSubList(Entity o1, Entity o2) {
 
-                String prop = StringMaster.getWellFormattedString(enumClass.getName());
+                String prop = StringMaster.format(enumClass.getName());
                 Object e1 = EnumMaster.getEnumConst(enumClass, o1.getProp(prop));
                 Object e2 = EnumMaster.getEnumConst(enumClass, o2.getProp(prop));
 
@@ -147,6 +148,15 @@ public class SortMaster<T> {
     public static void sortByExpression
      (boolean ascending, List<? extends Object> list, Function<Object, Integer> function) {
         Collections.sort(list, getSorterByExpression(ascending, function));
+    }
+
+    public static  Comparator<? super Coordinates> getGridCoordSorter() {
+        return (Comparator<Coordinates>) (o1, o2) -> {
+            if (-o1.x * 1000 - o1.y < -o2.x * 1000 - o2.y) {
+                return 1;
+            }
+            return -1;
+        };
     }
 
     public   void sortByExpression_
@@ -231,11 +241,11 @@ public class SortMaster<T> {
         String id2 = o2.getValue(p);
 
         if (NumberUtils.isInteger(id1)) {
-            if (NumberUtils.getInteger(id1) > NumberUtils.getInteger(id2)) {
+            if (NumberUtils.getIntParse(id1) > NumberUtils.getIntParse(id2)) {
                 int i = descending ? -1 : 1;
                 return i;
             }
-            if (NumberUtils.getInteger(id1) == NumberUtils.getInteger(id2)) {
+            if (NumberUtils.getIntParse(id1) == NumberUtils.getIntParse(id2)) {
                 return 0;
             }
             return descending ? 1 : -1;

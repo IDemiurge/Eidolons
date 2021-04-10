@@ -23,6 +23,10 @@ public class LightweightEntity extends DataModel {
         setPropMap(type.getPropMap());
         setParamMap(type.getParamMap());
     }
+    @Override
+    protected boolean isFiringValueEvents() {
+        return false;
+    }
 
     @Override
     public String getDoubleParam(PARAMETER param) {

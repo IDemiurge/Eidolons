@@ -1,10 +1,9 @@
 package main.content.values.parameters;
 
 import main.content.ContentValsManager;
-import main.content.OBJ_TYPE;
 
 public class Param implements PARAMETER {
-    private PARAMETER parameter;
+    private final PARAMETER parameter;
     private String name;
 
     public Param(PARAMETER parameter) {
@@ -54,24 +53,6 @@ public class Param implements PARAMETER {
         return parameter.getDefaultValue();
     }
 
-    public boolean isLowPriority() {
-        return parameter.isLowPriority();
-    }
-
-    public void setLowPriority(boolean lowPriority) {
-        parameter.setLowPriority(lowPriority);
-    }
-
-    @Override
-    public boolean isSuperLowPriority() {
-        return parameter.isSuperLowPriority();
-    }
-
-    @Override
-    public void setSuperLowPriority(boolean superLowPriority) {
-        this.parameter.setSuperLowPriority(superLowPriority);
-    }
-
     public boolean isAttribute() {
         return parameter.isAttribute();
     }
@@ -82,14 +63,6 @@ public class Param implements PARAMETER {
 
     public String getShortName() {
         return parameter.getShortName();
-    }
-
-    public boolean isHighPriority() {
-        return parameter.isHighPriority();
-    }
-
-    public void setHighPriority(boolean highPriority) {
-        parameter.setHighPriority(highPriority);
     }
 
     @Override
@@ -117,17 +90,19 @@ public class Param implements PARAMETER {
 
     }
 
-    public void addSpecialDefault(OBJ_TYPE type, Object value) {
-        parameter.addSpecialDefault(type, value);
-    }
-
-    public Object getSpecialDefault(OBJ_TYPE type) {
-        return parameter.getSpecialDefault(type);
-    }
-
     @Override
     public INPUT_REQ getInputReq() {
         return null;
+    }
+
+    @Override
+    public void setDevOnly(boolean devOnly) {
+
+    }
+
+    @Override
+    public boolean isDevOnly() {
+        return false;
     }
 
 }

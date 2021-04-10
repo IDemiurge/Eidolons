@@ -2,7 +2,10 @@ package main.data;
 
 import eidolons.content.PARAMS;
 import main.AV_DataManager;
-import main.content.*;
+import main.content.ContentValsManager;
+import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
+import main.content.VALUE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.parameters.PARAMETER;
@@ -10,8 +13,8 @@ import main.content.values.properties.PROPERTY;
 import main.data.xml.XML_Reader;
 import main.entity.Entity;
 import main.entity.type.ObjType;
+import main.handlers.types.SimulationHandler;
 import main.launch.ArcaneVault;
-import main.simulation.SimulationManager;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -67,10 +70,10 @@ public class TableDataManager {
         int rows = names.size();
 
         Vector<Vector<String>> data = new Vector<>(rows);
-        if (SimulationManager.isUnitType(entity.getOBJ_TYPE())
+        if (SimulationHandler.isUnitType(entity.getOBJ_TYPE())
                 && ArcaneVault.isSimulationOn()) {
             try {
-                fillData(SimulationManager.getUnit((ObjType) entity), names,
+                fillData(SimulationHandler.getUnit((ObjType) entity), names,
                         data);
                 return data;
             } catch (Exception e) {

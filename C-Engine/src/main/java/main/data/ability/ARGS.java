@@ -29,14 +29,16 @@ import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
 import main.elements.targeting.Targeting;
 import main.elements.triggers.Trigger;
 import main.entity.Ref;
-import main.game.bf.directions.DIRECTION;
-import main.game.bf.directions.UNIT_DIRECTION;
 import main.game.bf.MovementManager.MOVE_MODIFIER;
 import main.game.bf.MovementManager.MOVE_TEMPLATES;
+import main.game.bf.directions.DIRECTION;
+import main.game.bf.directions.UNIT_DIRECTION;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.math.Formula;
+import main.system.math.PositionMaster;
 
 import java.util.Arrays;
 
@@ -127,7 +129,7 @@ public enum ARGS implements Argument {
     // AE_ELEMENT_TYPE.ENUM_CHOOSING), TODO freaking depency!
     UPKEEP_FAIL_ACTION(UPKEEP_FAIL_ACTION.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
 
-    ROLL_TYPES(GenericEnums.ROLL_TYPES.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
+    ROLL_TYPES(GenericEnums.RollType.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
     ITEM_SLOT(ItemEnums.ITEM_SLOT.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
     RAISE_MODIFIER(RAISE_MODIFIER.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
     RAISE_TYPE(RAISE_TYPE.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
@@ -143,6 +145,7 @@ public enum ARGS implements Argument {
 
     DATA_TYPE(SPEECH_VALUE.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
     DATA_STRING(DataString.class, AE_ELEMENT_TYPE.ITEM_CHOOSING),
+    SHAPE(PositionMaster.SHAPE.class, AE_ELEMENT_TYPE.ITEM_CHOOSING),
 //    SPEECH(SpeechInterface.class, AE_ELEMENT_TYPE.ITEM_CHOOSING),
 //    SPEECHDATA(SpeechData.class, AE_ELEMENT_TYPE.ITEM_CHOOSING),
 
@@ -165,7 +168,7 @@ public enum ARGS implements Argument {
 
     ARGS(Class<?> c) {
         this.container = Arrays.asList(Mapper.CONTAINER_CLASSES).contains(coreClass);
-        String name = StringMaster.getWellFormattedString(name());
+        String name = StringMaster.format(name());
         this.coreClass = c;
         setPrimitive(false);
         this.ELEMENT_TYPE = AE_ELEMENT_TYPE.ITEM_CHOOSING;
@@ -188,7 +191,7 @@ public enum ARGS implements Argument {
 
     @Override
     public String getEmptyName() {
-        return StringMaster.VAR_STRING;
+        return Strings.VAR_STRING;
 //        return "<<< " + name + " >>>"; // TODO empty node HANDLED!
     }
 

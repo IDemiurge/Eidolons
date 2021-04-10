@@ -4,12 +4,13 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.game.core.game.Game;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 
 public abstract class ConditionImpl implements Condition {
     public static final int MAX_TOOLTIP_LENGTH = 50;
     private static final boolean FORCE_LOG = false;
     protected Game game;
-    private boolean isTrue;
+    private Boolean isTrue;
     private Entity match;
     private String xml;
 
@@ -31,7 +32,7 @@ public abstract class ConditionImpl implements Condition {
 
     @Override
     public String toXml() {
-//        probably same as effects then?
+        //        probably same as effects then?
         return xml;
     }
 
@@ -46,7 +47,7 @@ public abstract class ConditionImpl implements Condition {
     @Override
     public String getTooltip() {
         return StringMaster.cropByLength(MAX_TOOLTIP_LENGTH, StringMaster
-         .getWellFormattedString(toString()));
+                .format(toString()));
     }
 
     public void setGame(Game game) {
@@ -55,42 +56,17 @@ public abstract class ConditionImpl implements Condition {
 
     @Override
     public boolean preCheck(Ref ref) {
-        ref = ref.getCopy();
+        //TODO EA check
+        //        ref = ref.getCopy();
         setGame(ref.getGame());
-        boolean logged = false;
-        if (!isLoggingBlocked()) {
-            if (ref.getGame().getManager().isSelecting()
-             || ref.getGame().getManager().isTriggerBeingChecked()) {
-                logged = true;
-            }
-        }
         try {
             setTrue(check(ref));
-            if (logged) {
-//                LogMaster.log((FORCE_LOG ? 1 : LogMaster.CONDITION_DEBUG),
-//                        toString() + " checks " + isTrue + " on " + ref);
-            }
-
         } catch (Exception e) {
-//            LogMaster.log(1, "*" + toString() + " failed on " + ref);
+            LogMaster.log(1, "*" + toString() + " failed on " + ref);
             main.system.ExceptionMaster.printStackTrace(e);
             return false;
         }
-        if (isTrue) {
-//             LogMaster.log(LogMaster.CONDITION_DEBUG, "" + toString()
-//             + " checks TRUE for " + ref);
-
-            return true;
-        }
-        // LogMaster.log(LogMaster.CONDITION_DEBUG, "" + toString()
-        // + " checks FALSE for " + ref);
-        // TODO init REASON!
-        setTrue(false);
-        return false;
-    }
-
-    public boolean isLoggingBlocked() {
-        return false;
+        return isTrue;
     }
 
     @Override
@@ -113,11 +89,12 @@ public abstract class ConditionImpl implements Condition {
     @Override
     public abstract boolean check(Ref ref);
 
-    public boolean isTrue() {
+    public Boolean isTrue() {
         return isTrue;
     }
 
-    public void setTrue(boolean isTrue) {
+    @Override
+    public void setTrue(Boolean isTrue) {
         this.isTrue = isTrue;
     }
 

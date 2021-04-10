@@ -3,7 +3,7 @@ package com.graphbuilder.math;
 import com.graphbuilder.struc.Stack;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 import main.system.math.MathMaster;
 
 /**
@@ -170,7 +170,7 @@ public class ExpressionTree {
                                 if (c != '+' && c != '-' && (c < '0' || c > '9')) {
                                     throw new ExpressionParseException(
                                      "Expected digit, plus sign or minus sign but found: "
-                                      + String.valueOf(c), j + indexErrorOffset);
+                                      + c, j + indexErrorOffset);
                                 }
 
                                 j++;
@@ -284,7 +284,7 @@ public class ExpressionTree {
                     signed = false;
                 } else {
                     throw new ExpressionParseException(
-                     "Unexpected character: " + String.valueOf(c), i + indexErrorOffset);
+                     "Unexpected character: " + c, i + indexErrorOffset);
                 }
             } else {
                 if (c == ')') {
@@ -328,10 +328,10 @@ public class ExpressionTree {
                     s2.push(String.valueOf(c));
                 } else {
                     LogMaster.log(1, "ExpressionParseException - " + s);
-                    if (!CoreEngine.isMinimizeLogging()) {
+                    if (!Flags.isMinimizeLogging()) {
                         throw new ExpressionParseException(
                          "Expected operator or close bracket but found: "
-                          + String.valueOf(c), i + indexErrorOffset);
+                          + c, i + indexErrorOffset);
                     }
                 }
             }

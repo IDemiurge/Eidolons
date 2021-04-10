@@ -6,6 +6,7 @@ import main.content.text.Descriptions;
 import main.content.values.parameters.PARAMETER;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 
 import static main.content.enums.entity.HeroEnums.PERK_PARAM.*;
 
@@ -84,7 +85,7 @@ public class HeroEnums {
 
         @Override
         public String toString() {
-            return StringMaster.getWellFormattedString(super.toString());
+            return StringMaster.format(super.toString());
         }
 
         public BACKGROUND getFemale() {
@@ -99,7 +100,7 @@ public class HeroEnums {
             if (getRace() != RACE.HUMAN) {
                 return false;
             }
-            return name().substring(0, 5).equalsIgnoreCase(StringMaster.WOMAN);
+            return name().substring(0, 5).equalsIgnoreCase(Strings.WOMAN);
         }
 
         public SOUNDSET[] getSoundsets() {
@@ -135,7 +136,7 @@ public class HeroEnums {
         MULTICLASS,;
 
         public String getName() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
     }
 
@@ -150,15 +151,15 @@ public class HeroEnums {
         SQUIRE_OFFICER(LEADERSHIP_MASTERY, SIGHT_RANGE, RESISTANCE,SPIRIT, FORTITUDE, STAMINA),
 
         ROGUE(STEALTH, ATTACK, TOUGHNESS, N_OF_ACTIONS, STAMINA, SNEAK_ATTACK_MOD),
-        ROGUE_SWASHBUCKLER(DEFENSE, N_OF_COUNTERS, ATTACK, N_OF_ACTIONS, FOCUS_REGEN,STAMINA_REGEN),
+        ROGUE_SWASHBUCKLER(DEFENSE, N_OF_COUNTERS, ATTACK, N_OF_ACTIONS, FOCUS_REGEN, TOUGHNESS_REGEN),
         ROGUE_THUG(STARTING_FOCUS, STEALTH, ATTACK, TOUGHNESS, N_OF_ACTIONS,  SNEAK_ATTACK_MOD),
 
         TRICKSTER(DEFENSE, QUICK_SLOTS, STARTING_FOCUS, N_OF_ACTIONS, STEALTH, ATTACK, SNEAK_ATTACK_MOD),
         TRICKSTER_ACROBAT(DEFENSE, QUICK_SLOTS, STARTING_FOCUS, N_OF_ACTIONS, STEALTH, ATTACK, SNEAK_ATTACK_MOD),
         TRICKSTER_THIEF(DEFENSE, QUICK_SLOTS, STARTING_FOCUS, N_OF_ACTIONS, STEALTH, ATTACK, SNEAK_ATTACK_MOD),
 
-        SCOUT(SIGHT_RANGE, STEALTH, DETECTION, ATTACK,STAMINA_REGEN, N_OF_ACTIONS, STAMINA),
-        SCOUT_RANGER(SIGHT_RANGE, STEALTH, ATTACK, ENDURANCE_REGEN, FOCUS_REGEN, STAMINA_REGEN, DETECTION, N_OF_ACTIONS, STAMINA),
+        SCOUT(SIGHT_RANGE, STEALTH, DETECTION, ATTACK, TOUGHNESS_REGEN, N_OF_ACTIONS, STAMINA),
+        SCOUT_RANGER(SIGHT_RANGE, STEALTH, ATTACK, ENDURANCE_REGEN, FOCUS_REGEN, TOUGHNESS_REGEN, DETECTION, N_OF_ACTIONS, STAMINA),
 
         HERMIT(SPELLPOWER,RESISTANCE, FORTITUDE, SPIRIT, ESSENCE, ESSENCE_REGEN, ENDURANCE_REGEN),
         HERMIT_SHAMAN(SPELLPOWER, RESISTANCE_PENETRATION, FORTITUDE, SPIRIT,  ESSENCE_REGEN, ENDURANCE_REGEN),
@@ -225,8 +226,8 @@ public class HeroEnums {
 
         // ++ quiet =))
         ;
-        private Boolean female;
-        private String path;
+        private final Boolean female;
+        private final String path;
 
         HERO_SOUNDSET(String path, Boolean female) {
             this.path = path;
@@ -238,12 +239,12 @@ public class HeroEnums {
         }
 
         public String getName() {
-            return StringMaster.getWellFormattedString(name().replace("W_", ""));
+            return StringMaster.format(name().replace("W_", ""));
         }
 
         @Override
         public String toString() {
-            return StringMaster.getWellFormattedString(name().replace("W_", "")).toUpperCase();
+            return StringMaster.format(name().replace("W_", "")).toUpperCase();
         }
 
         public boolean isFemale() {
@@ -270,7 +271,7 @@ public class HeroEnums {
         FORTITUDE(5, 9, 15, false, "Hardy"),
 
         ENDURANCE_REGEN(5, 15, 45, false, "Undying"),
-         STAMINA_REGEN(2, 5, 15, false, "Crafty"),
+        TOUGHNESS_REGEN(2, 5, 15, false, "Crafty"),
         ESSENCE_REGEN(11, 25, 60, false, "Meditative"),
         FOCUS_REGEN(4, 10, 25, false, "Recovering"),
 
@@ -388,7 +389,7 @@ public class HeroEnums {
 
         @Override
         public String toString() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
 
         public String getDescription() {

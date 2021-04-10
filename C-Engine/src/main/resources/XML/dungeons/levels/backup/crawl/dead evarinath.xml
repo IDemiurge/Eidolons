@@ -1,0 +1,77 @@
+<Floor><DATA>wall_type=old stone wall;background=img\main\background\old cemetery.png
+;width=92;name=Dead Evarinath;cell_type=natural;height=39;</DATA><MODULES>
+<Old_Cemetery><DATA>border_width=1;origin=0-0;name=Old Cemetery;width=37;cell_type=natural;height=25;border_type=chism;</DATA>
+
+<OVERLAY_DIRECTIONS></OVERLAY_DIRECTIONS>
+<SCRIPT_DATA></SCRIPT_DATA>
+<DECOR></DECOR>
+
+
+<ID_MAP></ID_MAP>
+<OBJ_IDS></OBJ_IDS>
+
+<DATA_MAPS><encounters></encounters><custom_types></custom_types>
+</DATA_MAPS>
+
+
+<CUSTOM_TYPE_DATA></CUSTOM_TYPE_DATA>
+<ENCOUNTER_AI_GROUPS></ENCOUNTER_AI_GROUPS><CUSTOM_AI_GROUPS></CUSTOM_AI_GROUPS>
+<TRANSIT_IDS></TRANSIT_IDS>
+
+
+<Zones><Zone><DATA>name=Commoner Grounds;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Noble Grounds;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Werewolf Cage;</DATA><Blocks></Blocks></Zone></Zones>
+
+<BORDERS></BORDERS><PLATFORM_DATA></PLATFORM_DATA>
+<coordinates_void>39-27;39-26;39-25;39-24;39-23;39-22;39-21;39-20;39-19;39-18;39-17;39-16;39-15;39-14;39-13;39-12;39-11;39-10;39-9;39-8;39-7;39-6;39-5;39-4;39-3;39-2;39-1;38-27;38-1;37-27;37-1;36-27;36-1;35-27;35-1;34-27;34-1;33-27;33-1;32-27;32-1;31-27;31-1;30-27;30-1;29-27;29-1;28-27;28-1;27-27;27-1;26-27;26-1;25-27;25-1;24-27;24-1;23-27;23-1;22-27;22-1;21-27;21-1;20-27;20-1;19-27;19-1;18-27;18-1;17-27;17-1;16-27;16-1;15-27;15-1;14-27;14-1;13-27;13-1;12-27;12-1;11-27;11-1;10-27;10-1;9-27;9-1;8-27;8-1;7-27;7-1;6-27;6-1;5-27;5-1;4-27;4-1;3-27;3-1;2-27;2-1;</coordinates_void>
+</Old_Cemetery>
+
+<Memorial_Gardens><DATA>wall_type=overgrown wall;border_width=1;origin=39-0;name=Memorial Gardens;width=21;cell_type=star;height=35;border_type=wall;</DATA>
+
+<OVERLAY_DIRECTIONS></OVERLAY_DIRECTIONS>
+<SCRIPT_DATA></SCRIPT_DATA>
+<DECOR></DECOR>
+
+
+<ID_MAP></ID_MAP>
+<OBJ_IDS></OBJ_IDS>
+
+<DATA_MAPS><encounters></encounters><custom_types></custom_types>
+</DATA_MAPS>
+
+
+<CUSTOM_TYPE_DATA></CUSTOM_TYPE_DATA>
+<ENCOUNTER_AI_GROUPS></ENCOUNTER_AI_GROUPS><CUSTOM_AI_GROUPS></CUSTOM_AI_GROUPS>
+<TRANSIT_IDS></TRANSIT_IDS>
+
+
+<Zones><Zone><DATA>name=Maze;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Memorial;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Secret Path;</DATA><Blocks></Blocks></Zone></Zones>
+
+<BORDERS>62-5;</BORDERS><PLATFORM_DATA></PLATFORM_DATA>
+<coordinates_void>62-36;62-35;62-34;62-33;62-32;62-31;62-30;62-29;62-28;62-27;62-26;62-25;62-24;62-23;62-22;62-21;62-20;62-19;62-18;62-17;62-16;62-15;62-14;62-13;62-12;62-11;62-10;62-9;62-8;62-7;62-6;62-5;62-4;62-3;62-2;62-1;</coordinates_void>
+</Memorial_Gardens>
+
+<Mausoleum><DATA>wall_type=old stone wall;border_width=1;origin=62-0;name=Mausoleum;width=21;cell_type=octagonal;height=35;border_type=wall;</DATA>
+
+<OVERLAY_DIRECTIONS></OVERLAY_DIRECTIONS>
+<SCRIPT_DATA></SCRIPT_DATA>
+<DECOR></DECOR>
+
+
+<ID_MAP>Bone Shrine=0,;</ID_MAP>
+<OBJ_IDS></OBJ_IDS>
+
+<DATA_MAPS><encounters></encounters><custom_types></custom_types>
+</DATA_MAPS>
+
+
+<CUSTOM_TYPE_DATA></CUSTOM_TYPE_DATA>
+<ENCOUNTER_AI_GROUPS></ENCOUNTER_AI_GROUPS><CUSTOM_AI_GROUPS></CUSTOM_AI_GROUPS>
+<TRANSIT_IDS></TRANSIT_IDS>
+
+
+<Zones><Zone><DATA>name=Outer Grounds;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Inside;</DATA><Blocks></Blocks></Zone></Zones>
+
+<BORDERS></BORDERS><PLATFORM_DATA></PLATFORM_DATA>
+<coordinates_void></coordinates_void>
+</Mausoleum>
+</MODULES></Floor>

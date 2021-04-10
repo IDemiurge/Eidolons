@@ -4,8 +4,8 @@ import main.ability.effects.*;
 import main.content.ContentValsManager;
 import main.entity.Ref;
 import main.entity.obj.Attachment;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
+import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 
 public class ContinuousEffect extends MicroEffect {
@@ -119,7 +119,7 @@ public class ContinuousEffect extends MicroEffect {
         effect.remove();
 //        ref.getGame().getState().removeEffect(this);
         if (getTrigger() != null) {
-            ref.getGame().getState().removeTrigger(getTrigger());
+            ref.getGame().getState().manager.removeTrigger(getTrigger());
         }
 
     }

@@ -48,7 +48,7 @@ public class LayerHandlerImpl extends LE_Handler implements ILayerHandler {
     public void setTrigger() {
         String text = getDialogHandler().textInput("Input trigger script", getSelectedLayer().
                 getTriggerText());
-        Trigger trigger = getGame().getBattleMaster().getScriptManager().parseTrigger(text);
+        Trigger trigger = getGame().getMissionMaster().getScriptManager().parseTrigger(text);
         getSelectedLayer().setTriggerText(text);
         getSelectedLayer().setTrigger(trigger);
     }

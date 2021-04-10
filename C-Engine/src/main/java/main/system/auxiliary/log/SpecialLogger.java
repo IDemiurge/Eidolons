@@ -15,9 +15,15 @@ import java.util.Map;
 
 /**
  * Created by JustMe on 11/19/2017.
+ *
+ * what we need to log?
+ * > puzzle actions - important!
+ * >
+ *
  */
 public class SpecialLogger implements FileLogger {
     private static final int WRITE_ALL_PERIOD = 5000;
+    private static final boolean ON = false;
     private static SpecialLogger instance;
     Map<LOG_CHANNEL, StringBuilder> channelMap = new HashMap<>();
     //    private StringBuilder combatActionLogBuilder = new StringBuilder();
@@ -25,7 +31,7 @@ public class SpecialLogger implements FileLogger {
 //    private StringBuilder visibilityLogBuilder = new StringBuilder();
 //    private StringBuilder inputLogBuilder = new StringBuilder();
     private String timeStamp;
-    private Map<SPECIAL_LOG, StringBuilder> builderMap = new HashMap<>();
+    private final Map<SPECIAL_LOG, StringBuilder> builderMap = new HashMap<>();
 
     private SpecialLogger() {
 
@@ -47,7 +53,7 @@ public class SpecialLogger implements FileLogger {
     }
 
     public void appendExceptionToFileLog(String message) {
-        appendSpecialLog(SPECIAL_LOG.EXCEPTIONS, message);
+        appendAnalyticsLog(SPECIAL_LOG.EXCEPTIONS, message);
     }
 
     public void dialog() {
@@ -94,7 +100,7 @@ public class SpecialLogger implements FileLogger {
     public void checkAppendToSpecialLog(LOG_CHANNEL channel, String text) {
         for (SPECIAL_LOG sub : SPECIAL_LOG.values()) {
             if (sub.getChannels().contains(channel)) {
-                appendSpecialLog(sub, text);
+                appendAnalyticsLog(sub, text);
                 break;
             }
         }
@@ -108,7 +114,10 @@ public class SpecialLogger implements FileLogger {
     }
 
 
-    public void appendSpecialLog(SPECIAL_LOG log, String string) {
+    public void appendAnalyticsLog(SPECIAL_LOG log, String string) {
+        if (!ON){
+            return ;
+        }
         string = TimeMaster.getFormattedTime(true) + ": " + string;
         getBuilder(log).append(string).append("\n");
         main.system.auxiliary.log.LogMaster.log(1,log + ": " + string );

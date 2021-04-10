@@ -18,7 +18,7 @@ public class MicroObj extends Obj {
     protected Coordinates coordinates;
     protected boolean overlaying;
     protected int z;
-    protected Boolean overlayingInitialized; //for performance
+    protected Boolean overlayingInitialized;
     protected Coordinates originalCoordinates;
     private boolean invalidCoordinates;
 
@@ -56,53 +56,71 @@ public class MicroObj extends Obj {
         if (coordinates == null || invalidCoordinates) {
             coordinates = Coordinates.get(getX(), getY());
             invalidCoordinates = false;
-        } else {
-            //            coordinates.setX(getX());
-            //            coordinates.setY(getY());
         }
-        // coordinates.setZ(getZ()); better use separately
         return coordinates;
-    }
-
-    public void setCoordinates(Coordinates coordinates) {
-        if (this.coordinates == null) {
-            if (coordinates.x == 0)
-                if (coordinates.y == 0) {
-                    return;
-                }
-            originalCoordinates = coordinates;
-        }
-        this.coordinates = coordinates;
-        setX(coordinates.getX());
-        setY(coordinates.getY());
     }
 
     public int getY() {
         return y;
     }
 
-    public void setY(int y) {
-        if ( this.y == y){
-            return;
-        }
-        invalidCoordinates= true;
-        this.y = y;
-        setParam(G_PARAMS.POS_Y, y, true);
-        getCoordinates().setY(y);
 
+    public void setCoordinates(Coordinates c) {
+        if (this.coordinates == null) {
+            if (c.x == 0)
+                if (c.y == 0) {
+                    return;
+                }
+            originalCoordinates = c;
+        }
+        this.coordinates = c;
+        this.y = c.y;
+        setParam(G_PARAMS.POS_Y, y, true);
+        this.x = c.x;
+        setParam(G_PARAMS.POS_X, x, true);
     }
 
-    public int getX() {
-        return x;
+    public void setY(int y) {
+        if (this.y == y) {
+            return;
+        }
+        setCoordinates(Coordinates.get(getCoordinates().x, y));
     }
 
     public void setX(int x) {
-        if ( this.x == x){
+        if (this.x == x) {
             return;
         }
-        invalidCoordinates= true;
-        this.x = x;
-        setParam(G_PARAMS.POS_X, x, true);
+        setCoordinates(Coordinates.get(x, getCoordinates().y));
+    }
+    // public void setCoordinates(Coordinates coordinates) {
+    //
+    //     this.coordinates = coordinates;
+    //     setX(coordinates.getX());
+    //     setY(coordinates.getY());
+    // }
+    //
+    //
+    // public void setY(int y) {
+    //     if ( this.y == y){
+    //         return;
+    //     }
+    //     invalidCoordinates= true;
+    //     this.y = y;
+    //     setParam(G_PARAMS.POS_Y, y, true);
+    // }
+    //
+    // public void setX(int x) {
+    //     if ( this.x == x){
+    //         return;
+    //     }
+    //     invalidCoordinates= true;
+    //     this.x = x;
+    //     setParam(G_PARAMS.POS_X, x, true);
+    // }
+
+    public int getX() {
+        return x;
     }
 
     @Override
@@ -120,7 +138,7 @@ public class MicroObj extends Obj {
     public boolean isOverlaying() {
         if (overlayingInitialized == null) {
             overlaying = checkProperty(G_PROPS.BF_OBJECT_TAGS, "" + BfObjEnums.BF_OBJECT_TAGS.OVERLAYING)
-             || checkProperty(G_PROPS.CLASSIFICATIONS, "" + UnitEnums.CLASSIFICATIONS.ATTACHED);
+                    || checkProperty(G_PROPS.CLASSIFICATIONS, "" + UnitEnums.CLASSIFICATIONS.ATTACHED);
             overlayingInitialized = true;
         }
         return overlaying;
@@ -128,14 +146,10 @@ public class MicroObj extends Obj {
 
     @Override
     protected void addDynamicValues() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void afterEffects() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -145,8 +159,6 @@ public class MicroObj extends Obj {
 
     @Override
     public void clicked() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override

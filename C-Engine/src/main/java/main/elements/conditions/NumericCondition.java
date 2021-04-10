@@ -51,22 +51,15 @@ public class NumericCondition extends ConditionImpl {
         if (a == 0 && b == 0) {
             result = false;
         }
-        // LogMaster.log(LogMaster.CONDITION_DEBUG, "Numeric Condition "
-        // + comparedValue + " = " + a
-        // + ((!equal) ? " greater than " : " equal to ") + comparingValue
-        // + " = " + b + " => " + result);
         return result;
     }
 
     @Override
     public String toString() {
-
         return greater.toString()
          + ((!equal) ? (" greater than " + ((!strict) ? "or equal to "
          : ""))
-
          : " equal to ")
-
          + than.toString();
     }
 

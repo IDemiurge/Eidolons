@@ -1,0 +1,18 @@
+
+<Dark_Paths><DATA>width_buffer=1;border_width=2;height_buffer=3;default_wall=Ancient Wall;origin=43-0;name=Dark Paths;width=25;cell_type=natural;alt_default_wall=Cave Wall;height=45;border_type=irregular;</DATA>
+<ID_MAP></ID_MAP>
+<OBJ_IDS></OBJ_IDS>
+
+<DATA_MAPS><encounters>adjust_coef:125;custom:;type:Ravenguard Elite;target_power:;adjust_coef:125;custom:;type:Killer Crew;target_power:;adjust_coef:125;custom:;type:Ravenguard Specialists;target_power:;adjust_coef:150;custom:;type:Ravenguard Enforcers;target_power:;adjust_coef:75;custom:;type:Black Widow;target_power:;adjust_coef:150;custom:;type:Spiderlings;target_power:;</encounters><custom_types></custom_types>
+</DATA_MAPS>
+<CUSTOM_TYPE_DATA></CUSTOM_TYPE_DATA>
+<OVERLAY_DIRECTIONS>195=DOWN;196=DOWN;197=UP;198=UP;</OVERLAY_DIRECTIONS>
+<ENCOUNTER_AI_GROUPS></ENCOUNTER_AI_GROUPS><CUSTOM_AI_GROUPS></CUSTOM_AI_GROUPS>
+<SCRIPT_DATA></SCRIPT_DATA>
+<TRANSIT_IDS></TRANSIT_IDS>
+
+<Zones><Zone><DATA>name=Dark Paths;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Wolf Grove;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Fields of Slaughter;</DATA><Blocks></Blocks></Zone></Zones>
+
+<BORDERS></BORDERS>
+<coordinates_void>44-48;44-47;44-46;44-45;44-44;44-43;44-42;44-41;44-40;44-39;</coordinates_void>
+</Dark_Paths>

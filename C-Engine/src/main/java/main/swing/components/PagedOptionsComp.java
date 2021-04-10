@@ -13,8 +13,8 @@ import java.util.List;
 public class PagedOptionsComp<E> extends G_PagePanel<E> {
 
     List<OptionListener<E>> listeners;
-    private Class<E> clazz;
-    private String tooltip;
+    private final Class<E> clazz;
+    private final String tooltip;
 
     public PagedOptionsComp(String tooltip, Class clazz) {
         super(1, false, 4);
@@ -38,7 +38,7 @@ public class PagedOptionsComp<E> extends G_PagePanel<E> {
         return
 
          new TextComp(VISUALS.OPTION_COMP, getTooltip()
-          + StringMaster.getWellFormattedString(list.get(0).toString()));
+          + StringMaster.format(list.get(0).toString()));
     }
 
     private String getTooltip() {

@@ -2,7 +2,7 @@ package main.system;
 
 import main.system.auxiliary.log.FileLogManager;
 import main.system.auxiliary.log.LogMaster;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,8 +19,9 @@ public class ExceptionMaster {
             // CoreEngine.isLiteLaunch();
             boolean PRINT_ALL = false;
             if (!PRINT_ALL) {
-                if (CoreEngine.isJar() || LogMaster.isOff() || !CoreEngine.isLiteLaunch()) {
-                  if (e.getMessage()!=null )  if (printed.contains(e.getMessage()))
+                if (Flags.isJar() || LogMaster.isOff() || !Flags.isLiteLaunch()) {
+                    //Do not print out the same exception twice
+                    if (e.getMessage() != null) if (printed.contains(e.getMessage()))
                         return;
                     else
                         printed.add(e.getMessage());

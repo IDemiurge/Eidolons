@@ -1,17 +1,14 @@
 package main.content.values.properties;
 
-import main.content.OBJ_TYPE;
 import main.system.auxiliary.StringMaster;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public enum G_PROPS implements PROPERTY {
-    LAST_EDITOR("meta", null),
     VERSION("all", null),
     WORKSPACE_GROUP("all", null),
     DEV_NOTES("all", null),
-    GAME_VERSION("meta", null),
+    TIMESTAMP("all", null),
+
+
     NAME("all", "Name"),
     DISPLAYED_NAME("all", "Name"),
     ID("all", "Id"),
@@ -19,14 +16,22 @@ public enum G_PROPS implements PROPERTY {
     TYPE("all", "Type"),
     PARENT_TYPE("hidden", null),
     CLASSIFICATIONS("", true, "units", "chars", "bf obj", "terrain"),
-    // CLASSIFICATION("all", "Classifications"),
+
+    VARIABLES("all", "Variables"), PASSIVES("all", "Passives"),
+    DESCRIPTION("all", "Description"),
+    LORE("all", "Lore"),
+    STD_BOOLS(null, true, "all"),
+    DYNAMIC_BOOLS(null, true, "all"),
 
     HOTKEY("actions", "Hotkey"),
     GROUP("all", "Group"),
     UNIT_GROUP("UNIT_GROUP", false, "units"),
+
+    BOSS_TYPE("UNIT_GROUP", false, "boss"),
+    BOSS_GROUP("UNIT_GROUP", false, "boss"),
+
     GENDER("Gender", false, "chars"),
     ASPECT("Aspect", false, "chars", "units", "spells", "deities"),
-    VARIABLES("all", "Variables"),
     VARIABLE_TYPES("abils", "Variables"),
     KEYS("keys", false, "skills"), // target
     BUFF_TYPE("buffs", "Buff_type"),
@@ -55,15 +60,15 @@ public enum G_PROPS implements PROPERTY {
     MASTERY("Mastery", "armor", "weapons", "skills"),
     STATUS("Status", true, "units", "chars", "buffs", "spells", "actions", "weapons", "armor", "terrain"),
     MODE("Mode", false, "units", "chars"),
-    ACTIVES("Actives", true, "units", "chars", "items", "actions", "classes", "spells", "weapons", "bf obj", "deities", "skills"),
+    ACTIVES("Actives", true, "units", "chars", "items", "actions",
+            "classes", "spells", "weapons", "bf obj", "deities", "skills"),
     CUSTOM_SOUNDSET("Custom Soundset", false, "units", "chars", "actions", "spells", "bf obj", "items"),
 
-    PASSIVES("all", "Passives"),
+
 
     DEITY("Deity", "units", "chars"),
     FLAVOR("Flavor", false, "scenarios", "weapons", "armor", "items", "jewelry", "classes", "skills", "spells"),
-    DESCRIPTION("all", "Description"),
-    LORE("all", "Lore"),
+
     // "chars"
     RANK("Rank", "chars", "classes"),
     RACE("Race", "chars", "units"),
@@ -100,8 +105,6 @@ public enum G_PROPS implements PROPERTY {
 
     SKILL_GROUP("skills", "Skill Type"),
     EMBLEM("EMBLEM", false, "chars", "deities", "factions"),
-    STD_BOOLS(null, true, "all"),
-    DYNAMIC_BOOLS(null, true, "all"),
 
     STANDARD_PASSIVES("Passives", true,"buffs", "units", "chars", "classes", "bf obj", "skills", "weapons", "armor"),
     IMMUNITIES(null, true, "units", "chars", "classes", "bf obj", "skills", "weapons", "armor"),
@@ -127,56 +130,31 @@ public enum G_PROPS implements PROPERTY {
     FACTION_GROUP("factions"),
     UNIQUE_ID("all"), FULLSIZE_IMAGE("scenarios"),
     PERK_PARAMS("Perk Params", true, "perks"), PERK_GROUP("perks"),
-    PERK_CLASS_REQUIREMENTS("perks");
+    PERK_CLASS_REQUIREMENTS("perks"),
 
-    static {
-        NAME.setInputReq(INPUT_REQ.STRING);
-        // MAIN_HAND_ITEM.setDynamic(true);
-        // OFF_HAND_ITEM.setDynamic(true);
-        // ARMOR_ITEM.setDynamic(true);
-        UNIQUE_ID.setDynamic(true);
-        STATUS.setDynamic(true);
-        // STATUS.setDynamic(true);
-        SPELL_POOL.setDynamic(true);
-        NAME.setHighPriority(true);
-        IMAGE.setHighPriority(true);
-        // ASPECT.setHighPriority(true);
-        // DEITY.setHighPriority(true);
-        MAIN_HAND_ITEM.setLowPriority(true);
-        OFF_HAND_ITEM.setLowPriority(true);
-        ARMOR_ITEM.setLowPriority(true);
+    QUEST_GROUP(null, false, "quest"),
+    QUEST_TYPE(null, false, "quest"),
+    QUEST_TIME_LIMIT(null, false, "quest"),
+    QUEST_LEVEL(null, false, "quest"),
+    QUEST_REWARD_TYPE(null, false, "quest"),
+    QUEST_ARG(null, false, "quest"),
 
-        // CLASSIFICATION.setLowPriority(true);
-        SOUNDSET.setLowPriority(true);
-        CUSTOM_SOUNDSET.setLowPriority(true);
-        LORE.setLowPriority(true);
-        DESCRIPTION.setLowPriority(true);
-        VARIABLES.setLowPriority(true);
-        VARIABLES.setContainer(true);
+    QUEST_REWARD_ITEMS(null, false, "quest"),
+    ;
 
-        KEYS.setLowPriority(true);
-        STD_BOOLS.setLowPriority(true);
-        BASE_TYPE.setLowPriority(true);
-        CUSTOM_PROPS.setLowPriority(true);
-        TARGETING_MODE.setDefaultValue("SINGLE");
-        // ITEMS.setLowPriority(true);
-    }
 
     boolean writeToType;
     INPUT_REQ inputReq;
-    private String name;
+    private final String name;
     private String entityType;
     private String defaultValue;
-    private boolean lowPriority = false;
     private boolean container;
     private String[] entityTypes;
     private boolean dynamic;
-    private boolean superLowPriority;
-    private boolean highPriority;
     private String shortName;
-    private String fullName;
-    private Map<OBJ_TYPE, Object> defaultValuesMap;
+    private final String fullName;
     private String iconPath;
+    private boolean devOnly;
 
     G_PROPS(String shortName, boolean container, String... entityTypes) {
         this(entityTypes[0], shortName);
@@ -218,9 +196,9 @@ public enum G_PROPS implements PROPERTY {
         this.shortName = shortName;
         this.fullName = name();
         if (StringMaster.isEmpty(shortName)) {
-            this.shortName = StringMaster.getWellFormattedString(name());
+            this.shortName = StringMaster.format(name());
         }
-        this.name = StringMaster.getWellFormattedString(name());
+        this.name = StringMaster.format(name());
         this.container = false;
         defaultValue = "";
     }
@@ -232,25 +210,6 @@ public enum G_PROPS implements PROPERTY {
 
     public void setInputReq(INPUT_REQ inputReq) {
         this.inputReq = inputReq;
-    }
-
-    public Map<OBJ_TYPE, Object> getDefaultValuesMap() {
-        if (defaultValuesMap == null) {
-            defaultValuesMap = new HashMap<>();
-        }
-        return defaultValuesMap;
-    }
-
-    @Override
-    public void addSpecialDefault(OBJ_TYPE type, Object value) {
-        getDefaultValuesMap().put(type, value);
-
-    }
-
-    @Override
-    public Object getSpecialDefault(OBJ_TYPE type) {
-        return getDefaultValuesMap().get(type);
-
     }
 
     @Override
@@ -309,14 +268,6 @@ public enum G_PROPS implements PROPERTY {
         this.entityTypes = entityTypes;
     }
 
-    public boolean isLowPriority() {
-        return lowPriority;
-    }
-
-    public void setLowPriority(boolean lowPriority) {
-        this.lowPriority = lowPriority;
-    }
-
     @Override
     public boolean isDynamic() {
         return dynamic;
@@ -324,26 +275,6 @@ public enum G_PROPS implements PROPERTY {
 
     public void setDynamic(boolean dynamic) {
         this.dynamic = dynamic;
-    }
-
-    @Override
-    public boolean isSuperLowPriority() {
-        return superLowPriority;
-    }
-
-    @Override
-    public void setSuperLowPriority(boolean superLowPriority) {
-        this.superLowPriority = superLowPriority;
-    }
-
-    @Override
-    public boolean isHighPriority() {
-        return highPriority;
-    }
-
-    @Override
-    public void setHighPriority(boolean highPriority) {
-        this.highPriority = highPriority;
     }
 
     public String getShortName() {
@@ -370,5 +301,15 @@ public enum G_PROPS implements PROPERTY {
     @Override
     public void setIconPath(String iconPath) {
         this.iconPath = iconPath;
+    }
+
+    @Override
+    public void setDevOnly(boolean devOnly) {
+        this.devOnly = devOnly;
+    }
+
+    @Override
+    public boolean isDevOnly() {
+        return devOnly;
     }
 }

@@ -25,10 +25,7 @@ public class SkillEnums {
         PSYCHIC_MASTERY,
         SHADOW_MASTERY,
         WITCHERY_MASTERY,
-        FIRE_MASTERY,
-        AIR_MASTERY,
-        WATER_MASTERY,
-        EARTH_MASTERY,
+
         REDEMPTION_MASTERY,
         BENEDICTION_MASTERY,
         CELESTIAL_MASTERY,
@@ -45,11 +42,14 @@ public class SkillEnums {
         BLOOD_MAGIC_MASTERY,
         NECROMANCY_MASTERY,
 
-        ELEMENTAL_MASTERY,
+        TRANSMUTATION_MASTERY,
         SAVAGE_MASTERY,
         SYLVAN_MASTERY,
 
-        VOID_MASTERY,
+        FIRE_MASTERY,
+        AIR_MASTERY,
+        WATER_MASTERY,
+        EARTH_MASTERY,
 
         WIZARDRY_MASTERY,
         SPELLCRAFT_MASTERY,
@@ -99,7 +99,7 @@ public class SkillEnums {
         EXPERT(30),
         MASTER(40),
         GRAND_MASTER(50),;
-        private int masteryReq;
+        private final int masteryReq;
 
         MASTERY_RANK(int masteryReq) {
             this.masteryReq = masteryReq;
@@ -110,7 +110,7 @@ public class SkillEnums {
         }
 
         public String getName() {
-            return StringMaster.getWellFormattedString(toString());
+            return StringMaster.format(toString());
         }
     }
 

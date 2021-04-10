@@ -11,12 +11,15 @@ import main.game.bf.directions.UNIT_DIRECTION;
 
 public class CONTENT_CONSTS {
 
+    public enum    MARK {
+        boss, entrance, resp, togglable, undecorated, _void,block
+    }
     public enum COLOR_THEME {
         BLUE, GREEN, RED, DARK, LIGHT, YELLOW, PURPLE {
             public String getSuffix() {
                 return " v";
             }
-        }, ORANGE, PINK, CRIMSON, CYAN,
+        }, ORANGE, PINK, CRIMSON, CYAN, SALAD,
         ;
 
         COLOR_THEME() {
@@ -54,7 +57,7 @@ public class CONTENT_CONSTS {
     }
 
     public enum FLIP {
-        HORIZONTAL, VERTICAL, BOTH, CCW90, CW90, CCW180, CW180
+        HOR, VERT, BOTH, CCW90, CW90, CCW180, CW180
     }
 
     public enum OBJECT_ARMOR_TYPE {
@@ -192,8 +195,8 @@ public class CONTENT_CONSTS {
                 VariableManager.getVarIndex(1) + " is already there!", String.class, KEYS.class),
        ;
 
-        private String text;
-        private Object[] vars;
+        private final String text;
+        private final Object[] vars;
         private String variableNames;
 
         SPECIAL_REQUIREMENTS(String variableNames, String text, Object... vars) {

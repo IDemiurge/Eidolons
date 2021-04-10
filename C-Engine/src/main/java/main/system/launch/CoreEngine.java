@@ -4,14 +4,16 @@ import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.ability.ARGS;
 import main.data.ability.Mapper;
+import main.data.filesys.PathFinder;
 import main.data.xml.XML_Reader;
 import main.system.ExceptionMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.FileLogManager;
-import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.FontMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
@@ -24,134 +26,95 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static main.system.auxiliary.log.LogMaster.important;
+
 public class CoreEngine {
 
+    public final static String[] classFolderPaths = {"main.elements", "main.ability",
+            "eidolons.elements", "eidolons.ability"};
 
-    public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "1.0.0";
     public static final UPLOAD_PACKAGE uploadPackage = UPLOAD_PACKAGE.Backer;
-    public static final String VERSION_NAME = "Backer Demo (Basic Version)"; //StringMaster.getWellFormattedString(uploadPackage.toString());
-    public static final boolean DEV_MODE = true;
-    public static   boolean TEST_LAUNCH ;
-    public static String filesVersion = "v" + VERSION.replace(".", "-");
-    public static boolean swingOn = true;
-    public static boolean animationTestMode;
-    private static CoreEngine engineObject;
-    private static SoundMaster sm;
-    private static boolean arcaneVault;
-    private static boolean concurrentLaunch;
-    private static boolean menuScope = true;
-    private static boolean levelEditor;
+    public static final String VERSION_NAME = "Demo Version"; //StringMaster.getWellFormattedString(uploadPackage.toString());
+    public static final boolean RAM_OPTIMIZATION = true;
+    public static int resBuildId = readBuildId();
+    public static int xmlBuildId = readXmlBuildId();
+    public static String BUILD = NumberUtils.prependZeroes(resBuildId, 2);
+    public static String XML_BUILD = NumberUtils.prependZeroes(xmlBuildId, 2);
+    public static String CORE_VERSION = "0.5";
+    public static String VERSION = CORE_VERSION + "." + BUILD + "."+XML_BUILD;
+    public static String filesVersion = VERSION.replace(".", "-");
+
+    private static void version() {
+        resBuildId = readBuildId();
+        xmlBuildId = readXmlBuildId();
+        BUILD = NumberUtils.prependZeroes(resBuildId, 3);
+        CORE_VERSION = "0.5";
+        VERSION = CORE_VERSION + "." + BUILD;
+        filesVersion = VERSION.replace(".", "-");
+    }
+
+    public static boolean FULL_LAUNCH; ////TODO with audio and all - real xp!
     private static String selectivelyReadTypes;
-    private static String exceptionTypes;
-    private static boolean writingLogFilesOn;
-    private static boolean arcaneTower = false;
-    private static boolean graphicTestMode = false;
+    public static boolean TEST_LAUNCH;
+    public static boolean SELECT_LEVEL = false;
+
+    public static boolean swingOn = true;
+    private static boolean arcaneVault;
+    private static final boolean menuScope = true;
+    private static boolean levelEditor;
     private static boolean graphicsOff;
-    private static boolean guiTestMode;
-    private static boolean vfxOff;
-    private static boolean actionTargetingFiltersOff;
-    private static boolean phaseAnimsOn;
-    private static boolean logicTest;
-    private static boolean itemGenerationOff;
-    private static boolean jar;
-    private static boolean exe;
-    private static boolean mapEditor;
-    private static boolean macro;
-    private static boolean jarlike;
-    private static boolean fastMode;
-    private static boolean jUnit;
-    private static boolean initializing;
-    private static boolean initialized;
-    private static boolean crashSafeMode = true;
-    private static boolean utility;
-    private static float memoryLevel;
-    private static boolean fullFastMode;
-    private static Boolean windows;
-    private static long TOTAL_MEMORY;
-    private static boolean me;
-    private static boolean cinematicMode;
-    private static boolean mapPreview;
-    private static boolean safeMode;
-    private static boolean iggDemo;
-    private static boolean iggDemoRunning;
-    private static boolean toolIsRunning;
-    private static boolean activeTestMode;
-    private static boolean liteLaunch;
-    private static boolean dialogueTest;
-    private static boolean skillTestMode;
-    private static boolean contentTestMode;
-    private static boolean ruleTestMode;
-    private static boolean levelTestMode;
-    private static boolean selectHeroMode;
-    private static boolean debugLaunch;
-    private static boolean devEnabled;
-    private static boolean reverseExit;
-    private static boolean ramEconomy;
-    private static boolean keyCheat;
-    private static boolean mainGame;
-    private static boolean autoFixOn;
-    private static boolean dungeonTool;
-    private static boolean testerVersion;
-    private static boolean superLite;
+    static boolean reflectionMapDisabled;
     private static boolean weakGpu;
-    private static boolean youTube;
-    private static boolean fraps;
-    private static boolean reflectionMapDisabled;
+    private static boolean weakCpu;
 
-    public static void setWeakGpu(boolean weakGpu) {
-        CoreEngine.weakGpu = weakGpu;
-        LogMaster.important("Setting Weak GPU to " + weakGpu);
+    public static boolean isFullLaunch() {
+        return FULL_LAUNCH || Flags.isJar();
     }
 
-    public static boolean getWeakGpu() {
-        return weakGpu;
+    public static void incrementResBuild() {
+        resBuildId++;
+        FileManager.write(resBuildId + "", PathFinder.getBuildsIdPath());
+        version();
+    }
+    public static void incrementXmlBuild() {
+        xmlBuildId++;
+        FileManager.write(xmlBuildId + "", PathFinder.getXmlBuildsIdPath());
+        version();
     }
 
-    public static boolean isYouTube() {
-        return youTube;
-    }
-
-    public static void setYouTube(boolean youTube) {
-        CoreEngine.youTube = youTube;
-    }
-
-    public static boolean isFraps() {
-        return fraps;
-    }
-
-    public static void setFraps(boolean fraps) {
-        CoreEngine.fraps = fraps;
-    }
-
-
+    //core Review - good idea, but how to use it?
     public enum UPLOAD_PACKAGE {
-        Aphotic, igg, Backer,
+        Backer, Tester,
     }
 
+    private static Integer readBuildId() {
+        return NumberUtils.getInt(FileManager.readFile(PathFinder.getBuildsIdPath()));
+    }
+
+    private static Integer readXmlBuildId() {
+        return NumberUtils.getInt(FileManager.readFile(PathFinder.getXmlBuildsIdPath()));
+    }
 
     public static boolean isMyLiteLaunch() {
-        return isIDE() && isLiteLaunch();
+        return Flags.isIDE() && Flags.isLiteLaunch();
     }
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
-        System.out.println("Eidolons " + VERSION);
         System.out.println("Core Engine Init... ");
+        important("---- Eidolons " + VERSION);
 
-
-        long HEAP_SIZE;
-        System.out.println("Heap size:  " +
-                (HEAP_SIZE = Runtime.getRuntime().maxMemory()));
-        int CPU_NUMBER;
-        System.out.println("CPU's available:  " +
-                (CPU_NUMBER = Runtime.getRuntime().availableProcessors()));
-//        System.out.println("Total Memory:  " +
-//         (TOTAL_MEMORY =
-//          Runtime.getRuntime().totalMemory()));
+        if (isDiagOn()) {
+            important("Heap size:  " +
+                    (Runtime.getRuntime().maxMemory()));
+            important("CPU's available:  " +
+                    (Runtime.getRuntime().availableProcessors()));
+            important("Total Memory:  " +
+                    (Runtime.getRuntime().totalMemory()));
+        }
 
         if (System.getProperty("user.home").equalsIgnoreCase("C:\\Users\\Alexa")) {
-            me = true;
+            Flags.me = true;
         }
 
         ImageManager.init();
@@ -159,14 +122,14 @@ public class CoreEngine {
             if (isSwingOn())
                 FontMaster.init();
             GuiManager.init();
-
         }
+
         SoundMaster.initialize();
         DataManager.init();
-        Chronos.logTimeElapsedForMark("SYSTEM INIT");
 
-        System.out.println("...Core Engine Init finished");
-        if (!me) {
+        Chronos.logTimeElapsedForMark("SYSTEM INIT");
+        important("...Core Engine Init finished");
+        if (!Flags.me) {
             System.out.println();
             System.getProperties().list(System.out);
             System.getProperties().list(FileLogManager.getMainPrintStream());
@@ -174,21 +137,14 @@ public class CoreEngine {
         }
     }
 
+
     public static void init(boolean macro) {
 
         systemInit();
         CoreEngine.dataInit(macro);
     }
 
-    public static SoundMaster getSm() {
-        return sm;
-    }
-
-    public static void setSm(SoundMaster sm) {
-        CoreEngine.sm = sm;
-    }
-
-    public static synchronized boolean isArcaneVault() {
+    public static boolean isArcaneVault() {
         return arcaneVault;
     }
 
@@ -204,16 +160,8 @@ public class CoreEngine {
         levelEditor = le;
     }
 
-    public static boolean isConcurrentLaunch() {
-        return concurrentLaunch;
-    }
-
-    public static void setConcurrentLaunch(boolean concurrentLaunch) {
-        CoreEngine.concurrentLaunch = concurrentLaunch;
-    }
-
-    public static void setExceptionTypes(String exceptionTypes) {
-        CoreEngine.exceptionTypes = exceptionTypes;
+    private static boolean isDiagOn() {
+        return false;
     }
 
     public static boolean checkReadNecessary(String name) {
@@ -221,19 +169,19 @@ public class CoreEngine {
         if (selectivelyReadTypes != null) {
             return ContainerUtils.checkContainer(
                     selectivelyReadTypes,
-                    StringMaster.cropFormat(StringMaster.cropLast(name, "-")),
+                    StringMaster.cropFormat(StringMaster.cropAfter(name, "-")),
                     false);
         }
 
-        if (exceptionTypes != null) {
-            if (ContainerUtils.checkContainer(
-                    exceptionTypes,
-                    StringMaster.cropFormat(StringMaster.cropLast(name, "-")),
-                    false
-            )) {
-                return false;
-            }
-        }
+        // if (exceptionTypes != null) {
+        //     if (ContainerUtils.checkContainer(
+        //             exceptionTypes,
+        //             StringMaster.cropFormat(StringMaster.cropLast(name, "-")),
+        //             false
+        //     )) {
+        //         return false;
+        //     }
+        // }
 
         DC_TYPE TYPE = new EnumMaster<DC_TYPE>().retrieveEnumConst(DC_TYPE.class, name);
 
@@ -259,74 +207,17 @@ public class CoreEngine {
         return true;
     }
 
-    public static boolean isLogicTest() {
-        return logicTest;
-    }
-
-    public static void setLogicTest(boolean tEST_MODE) {
-        logicTest = tEST_MODE;
-    }
-
     public static boolean isMenuScope() {
         return menuScope;
-    }
-
-    public static void setMenuScope(boolean menuScope) {
-        CoreEngine.menuScope = menuScope;
     }
 
     public static void setSelectivelyReadTypes(String types) {
         selectivelyReadTypes = types;
     }
 
-    public static void setArcaneVaultMode(boolean b) {
-        // TODO Auto-generated method stub
-
-    }
-
     public static boolean isEnumCachingOn() {
         boolean enumCachingOn = true;
         return enumCachingOn;
-    }
-
-    public static boolean isMinimizeLogging() {
-        return true;
-    }
-
-    public static boolean isWritingLogFilesOn() {
-        return writingLogFilesOn;
-    }
-
-    public static void setWritingLogFilesOn(boolean writingLogFilesOn) {
-        CoreEngine.writingLogFilesOn = writingLogFilesOn;
-    }
-
-    public static boolean isGraphicTestMode() {
-        return graphicTestMode;
-    }
-
-    public static void setGraphicTestMode(boolean graphicTestMode) {
-        CoreEngine.graphicTestMode = graphicTestMode;
-    }
-
-    public static boolean isGuiTestMode() {
-        return guiTestMode;
-    }
-
-    public static void setGuiTestMode(boolean guiTestMode) {
-        CoreEngine.guiTestMode = guiTestMode;
-    }
-
-    public static boolean isAnimationTestMode() {
-        return animationTestMode;
-    }
-
-    public static boolean isArcaneTower() {
-        return arcaneTower;
-    }
-
-    public static void setArcaneTower(boolean arcaneTower) {
-        CoreEngine.arcaneTower = arcaneTower;
     }
 
     public static boolean isSwingOn() {
@@ -344,55 +235,41 @@ public class CoreEngine {
     public static void setGraphicsOff(boolean graphicsOff) {
         CoreEngine.graphicsOff = graphicsOff;
         if (graphicsOff) {
-
             WaitMaster.markAsComplete(WAIT_OPERATIONS.GUI_READY);
         }
     }
 
-    public static boolean isActionTargetingFiltersOff() {
-        return actionTargetingFiltersOff;
-    }
-
-    public static void setActionTargetingFiltersOff(boolean actionTargetingFiltersOff) {
-        CoreEngine.actionTargetingFiltersOff = actionTargetingFiltersOff;
-    }
-
-    public static boolean isExceptionTraceLogged() {
-        return true;
-    }
-
-    public static boolean isPhaseAnimsOn() {
-        return phaseAnimsOn;
-    }
-
-    public static void setPhaseAnimsOn(boolean phaseAnimsOn) {
-        CoreEngine.phaseAnimsOn = phaseAnimsOn;
-    }
-
     public static void dataInit(boolean macro) {
-
         Chronos.mark("TYPES INIT");
 
         XML_Reader.readTypes(macro);
         WaitMaster.receiveInput(WAIT_OPERATIONS.XML_READY, true);
         WaitMaster.markAsComplete(WAIT_OPERATIONS.XML_READY);
-        List<String> classFolders = new ArrayList<>(Arrays.asList(classFolderPaths));
-        //         if (dialogueDataRequired){
-        //             classFolders.add( "main.data.dialogue" );
-        //             classFolders.add(  "main.game.battlecraft.logic.meta.scenario.dialogue.speech" );
-        //         }
 
         Chronos.logTimeElapsedForMark("TYPES INIT");
-        if (isCompileReflectionMap())
-            try {
-                Chronos.mark("MAPPER INIT");
-                Mapper.compileArgMap(Arrays.asList(ARGS.getArgs()),
-                        classFolders);
-                Chronos.logTimeElapsedForMark("MAPPER INIT");
-            } catch (ClassNotFoundException | SecurityException | IOException e) {
-                ExceptionMaster.printStackTrace(e);
-            }
 
+        if (isCompileReflectionMap())
+            compileReflectionMap();
+
+    }
+
+    public static void compileReflectionMap() {
+        if (Mapper.isInitialized()) {
+            return;
+        }
+        List<String> classFolders = new ArrayList<>(Arrays.asList(classFolderPaths));
+        try {
+            Chronos.mark("MAPPER INIT");
+            Mapper.compileArgMap(Arrays.asList(ARGS.getArgs()),
+                    classFolders);
+            Chronos.logTimeElapsedForMark("MAPPER INIT");
+        } catch (ClassNotFoundException | SecurityException | IOException e) {
+            ExceptionMaster.printStackTrace(e);
+        }
+    }
+
+    public static void setReflectionMapDisabled(boolean reflectionMapDisabled) {
+        CoreEngine.reflectionMapDisabled = reflectionMapDisabled;
     }
 
     private static boolean isCompileReflectionMap() {
@@ -401,391 +278,24 @@ public class CoreEngine {
         return !isLevelEditor();
     }
 
-    public static boolean isItemGenerationOff() {
-        return itemGenerationOff;
-    }
-
-    public static void setItemGenerationOff(boolean itemGenerationOff) {
-        CoreEngine.itemGenerationOff = itemGenerationOff;
-    }
-
-    public static boolean isTargetingResultCachingOn() {
-        return !isLogicTest();
-    }
-
-    public static CoreEngine getEngineObject() {
-        return engineObject;
-    }
-
-    public static void setReflectionMapDisabled(boolean reflectionMapDisabled) {
-        CoreEngine.reflectionMapDisabled = reflectionMapDisabled;
-    }
-
     public static void setEngineObject(CoreEngine engineObject) {
-        CoreEngine.engineObject = engineObject;
     }
 
-    public static boolean isJar() {
-        return jar;
+    public static void setWeakCpu(boolean weakCpu) {
+        CoreEngine.weakCpu = weakCpu;
     }
 
-    public static void setJar(boolean jar) {
-        CoreEngine.jar = jar;
+    public static boolean isWeakCpu() {
+        return weakCpu;
     }
 
-    public static boolean isCombatGame() {
-        return isMainGame();
-//        return !toolIsRunning && !isArcaneTower() && !isArcaneVault() && !isLevelEditor() && !isjUnit();
+    public static boolean isWeakGpu() {
+        return weakGpu;
     }
 
-    public static boolean isIDE() {
-        return !exe && !jar;
-    }
-
-    public static boolean isExe() {
-        return exe;
-    }
-
-    public static void setExe(boolean exe) {
-        CoreEngine.exe = exe;
-    }
-
-    public static boolean isDefaultValuesAddedDynamically() {
-        return false;
-    }
-
-    public static boolean isMapEditor() {
-        return mapEditor;
-    }
-
-    public static void setMapEditor(boolean mapEditor) {
-        CoreEngine.mapEditor = mapEditor;
-    }
-
-    public static boolean isMacro() {
-        return macro;
-    }
-
-    public static void setMacro(boolean macro) {
-        CoreEngine.macro = macro;
-    }
-
-    public static boolean isJarlike() {
-        return jarlike;
-    }
-
-    public static void setJarlike(boolean jarlike) {
-        CoreEngine.jarlike = jarlike;
-    }
-
-    public static boolean isFastMode() {
-        return fastMode;
-    }
-
-    public static void setFastMode(boolean fastMode) {
-        CoreEngine.fastMode = fastMode;
-    }
-
-    public static boolean isJUnit() {
-        return jUnit;
-    }
-
-    public static boolean isjUnit() {
-        return jUnit;
-    }
-
-    public static void setjUnit(boolean jUnit) {
-        CoreEngine.jUnit = jUnit;
-    }
-
-    public static boolean isInitializing() {
-        return initializing;
-    }
-
-    public static void setInitializing(boolean initializing) {
-        CoreEngine.initializing = initializing;
-    }
-
-    public static boolean isInitialized() {
-        return initialized;
-    }
-
-    public static void setInitialized(boolean initialized) {
-        CoreEngine.initialized = initialized;
-    }
-
-    public static boolean isTestingMode() {
-        return true;
-    }
-
-    public static boolean isCrashSafeMode() {
-        return crashSafeMode;
-    }
-
-    public static void setCrashSafeMode(boolean crashSafeMode) {
-        CoreEngine.crashSafeMode = crashSafeMode;
-    }
-
-    public static boolean isUtility() {
-        return utility;
-    }
-
-    public static void setUtility(boolean utility) {
-        CoreEngine.utility = utility;
-    }
-
-    public static float getMemoryLevel() {
-        return memoryLevel;
-    }
-
-    public static void setMemoryLevel(float memoryLevel) {
-        CoreEngine.memoryLevel = memoryLevel;
-    }
-
-    public static boolean isFullFastMode() {
-        return fullFastMode;
-    }
-
-    public static void setFullFastMode(boolean fullFastMode) {
-        CoreEngine.fullFastMode = fullFastMode;
-    }
-
-    public static boolean isWindows() {
-        if (windows == null) {
-            windows = System.getProperty("os.name").startsWith("Windows");
-        }
-        return windows;
-    }
-
-    public static void setWindows(boolean windows) {
-        CoreEngine.windows = windows;
-    }
-
-    public static boolean isMe() {
-        return me;
-    }
-
-    public static void setMe(boolean me) {
-        CoreEngine.me = me;
-    }
-
-    public static boolean isFootageMode() {
-        return cinematicMode;
-    }
-
-    public static void setCinematicMode(boolean cinematicMode) {
-        CoreEngine.cinematicMode = cinematicMode;
-    }
-
-    public static void setMapPreview(boolean mapPreview) {
-        CoreEngine.mapPreview = mapPreview;
-    }
-
-    public static boolean isMapPreview() {
-        return mapPreview;
-    }
-
-    public static boolean isSafeMode() {
-        return safeMode;
-    }
-
-    public static void setSafeMode(boolean safeMode) {
-        CoreEngine.safeMode = safeMode;
-    }
-
-    public static boolean isOutlinesFixed() {
-        return true;
-    }
-
-    public static boolean isIggDemo() {
-        return iggDemo;
-    }
-
-    public static void setIggDemo(boolean iggDemo) {
-        CoreEngine.iggDemo = iggDemo;
-    }
-
-    public static void setIggDemoRunning(boolean iggDemoRunning) {
-        CoreEngine.iggDemoRunning = iggDemoRunning;
-    }
-
-    public static boolean isIggDemoRunning() {
-        return iggDemoRunning;
-    }
-
-    public static void setToolIsRunning(boolean toolIsRunning) {
-        CoreEngine.toolIsRunning = toolIsRunning;
-    }
-
-    public static boolean isActiveTestMode() {
-        return activeTestMode;
-    }
-
-    public static void setActiveTestMode(boolean activeTestMode) {
-        CoreEngine.activeTestMode = activeTestMode;
-    }
-
-    public static boolean isLiteLaunch() {
-        if (isSuperLite())
-            return true;
-        return liteLaunch;
-    }
-
-    public static void setLiteLaunch(boolean liteLaunch) {
-        CoreEngine.liteLaunch = liteLaunch;
-    }
-
-    public static boolean isDialogueTest() {
-        return dialogueTest;
-    }
-
-    public static void setDialogueTest(boolean dialogueTest) {
-        CoreEngine.dialogueTest = dialogueTest;
-    }
-
-    public static boolean isSkillTestMode() {
-        return skillTestMode;
-    }
-
-    public static void setSkillTestMode(boolean skillTestMode) {
-        CoreEngine.skillTestMode = skillTestMode;
-    }
-
-    public static boolean isContentTestMode() {
-        return contentTestMode;
-    }
-
-    public static void setContentTestMode(boolean contentTestMode) {
-        CoreEngine.contentTestMode = contentTestMode;
-    }
-
-    public static boolean isRuleTestMode() {
-        return ruleTestMode;
-    }
-
-    public static void setRuleTestMode(boolean ruleTestMode) {
-        CoreEngine.ruleTestMode = ruleTestMode;
-    }
-
-    public static boolean isLevelTestMode() {
-        return levelTestMode;
-    }
-
-    public static void setLevelTestMode(boolean levelTestMode) {
-        CoreEngine.levelTestMode = levelTestMode;
-    }
-
-    public static boolean isSelectHeroMode() {
-        return selectHeroMode;
-    }
-
-    public static void setSelectHeroMode(boolean selectHeroMode) {
-        CoreEngine.selectHeroMode = selectHeroMode;
-    }
-
-    public static boolean isDebugLaunch() {
-        return debugLaunch;
-    }
-
-    public static void setDebugLaunch(boolean debugLaunch) {
-        CoreEngine.debugLaunch = debugLaunch;
-    }
-
-    public static boolean isDevEnabled() {
-        return devEnabled || isIDE();
-    }
-
-    public static void setDevEnabled(boolean devEnabled) {
-        CoreEngine.devEnabled = devEnabled;
-    }
-
-    public static boolean isReverseExit() {
-        return reverseExit;
-    }
-
-    public static void setReverseExit(boolean reverseExit) {
-        CoreEngine.reverseExit = reverseExit;
-    }
-
-    public static boolean isRamEconomy() {
-        return ramEconomy;
-    }
-
-    public static void setRamEconomy(boolean ramEconomy) {
-        CoreEngine.ramEconomy = ramEconomy;
-    }
-
-    public static boolean isKeyCheat() {
-        return keyCheat;
-    }
-
-    public static void setKeyCheat(boolean keyCheat) {
-        CoreEngine.keyCheat = keyCheat;
-    }
-
-    public static void setMainGame(boolean mainGame) {
-        CoreEngine.mainGame = mainGame;
-    }
-
-    public static boolean isMainGame() {
-        return mainGame;
-    }
-
-    public static boolean isAutoFixOn() {
-        return autoFixOn;
-    }
-
-    public static void setAutoFixOn(boolean autoFixOn) {
-        CoreEngine.autoFixOn = autoFixOn;
-    }
-
-    public static boolean isDungeonTool() {
-        return dungeonTool;
-    }
-
-    public static void setDungeonTool(boolean dungeonTool) {
-        CoreEngine.dungeonTool = dungeonTool;
-    }
-
-    public static boolean isTesterVersion() {
-        return testerVersion;
-    }
-
-    public static void setTesterVersion(boolean testerVersion) {
-        CoreEngine.testerVersion = testerVersion;
-    }
-
-    public static boolean isSuperLite() {
-        return superLite;
-    }
-
-    public static void setSuperLite(boolean superLite) {
-        CoreEngine.superLite = superLite;
-    }
-
-    public static boolean isVfxOff() {
-        return vfxOff || isSuperLite();
-    }
-
-    public static void setVfxOff(boolean vfxOff) {
-        CoreEngine.vfxOff = vfxOff;
-    }
-
-
-    public static void setFlag(String field, Boolean val) {
-        try {
-            CoreEngine.class.getField(field).set(null, val);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            try {
-                CoreEngine.class.getField(field.toUpperCase()).set(null, val);
-            } catch (IllegalAccessException e1) {
-                e1.printStackTrace();
-            } catch (NoSuchFieldException e1) {
-                e1.printStackTrace();
-            }
-            e.printStackTrace();
-        }
+    public static void setWeakGpu(boolean weakGpu) {
+        CoreEngine.weakGpu = weakGpu;
+        ////TODO use it in assets?
+        important("Setting Weak GPU to " + weakGpu);
     }
 }

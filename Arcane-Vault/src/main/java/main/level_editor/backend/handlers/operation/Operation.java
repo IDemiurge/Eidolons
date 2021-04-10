@@ -1,5 +1,7 @@
 package main.level_editor.backend.handlers.operation;
 
+import java.util.Arrays;
+
 public class Operation {
 
     protected LE_OPERATION operation;
@@ -38,8 +40,16 @@ public class Operation {
         ADD_BLOCK,
         REMOVE_BLOCK,
         REMOVE_OVERLAY,
-        ADD_OVERLAY, CELL_SCRIPT_CHANGE, MODIFY_STRUCTURE, SAVE_STRUCTURE,
-        MASS_SET_VOID, MASS_RESET_VOID, MODIFY_ENTITY, SAVE_ENTITY_DATA, MODIFY_DATA, SAVE_DATA;
+        ADD_OVERLAY,
+        CELL_SCRIPT_CHANGE, CELL_DECOR_CHANGE,
+
+        MASS_SET_VOID, MASS_RESET_VOID,
+
+        MODIFY_STRUCTURE, SAVE_STRUCTURE,
+        MODIFY_ENTITY, SAVE_ENTITY_DATA,
+        MODIFY_DATA, SAVE_DATA,
+
+        VOID_SET, CELL_DATA_CHANGE;
 
         LE_OPERATION() {
         }
@@ -60,5 +70,12 @@ public class Operation {
 
     public Object[] getArgs() {
         return args;
+    }
+
+    @Override
+    public String toString() {
+        return "Operation " + operation +
+                ", args=" + Arrays.toString(args) +
+                '}';
     }
 }

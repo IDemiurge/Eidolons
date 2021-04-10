@@ -1,7 +1,8 @@
 package main;
 
+import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.content.PROPS;
-import eidolons.content.ValuePageManager;
+import eidolons.content.values.ValuePageManager;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.VALUE;
@@ -32,11 +33,11 @@ public class AV_DataManager {
             {G_PROPS.ASPECT, G_PROPS.DEITY,}, // WEAPONS
             {G_PROPS.ASPECT, G_PROPS.DEITY, G_PROPS.LORE,}, // SKILLS
     };
-    private Map<ObjType, Stack<ObjType>> stackMap = new HashMap<>();
+    private final Map<ObjType, Stack<ObjType>> stackMap = new HashMap<>();
     private static ObjType copiedType;
 
     public static void init() {
-        Map<String, List<VALUE>> IGNORE_MAP = new HashMap<>();
+        ObjectMap<String, List<VALUE>> IGNORE_MAP = new ObjectMap<>();
         for (int code = 0; code < IGNORED_VALUES.length; code++) {
             List<VALUE> list = new ArrayList<>();
             list.addAll(Arrays.asList(IGNORED_FROM_ALL_VALUES));

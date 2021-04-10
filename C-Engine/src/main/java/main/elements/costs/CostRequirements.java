@@ -8,6 +8,7 @@ import main.elements.conditions.Requirements;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.math.Formula;
 
@@ -18,7 +19,7 @@ import java.util.Map;
 public class CostRequirements extends Requirements {
 
     private List<Payment> paymentList = new ArrayList<>();
-    private Map<String, Condition> additionalReqList = new XLinkedMap<>();
+    private final Map<String, Condition> additionalReqList = new XLinkedMap<>();
 
     public CostRequirements(Payment p) {
         paymentList.add(p);
@@ -53,7 +54,7 @@ public class CostRequirements extends Requirements {
             }
             Formula amountFormula = payment.getAmountFormula();
             if (amountFormula.toString().contains(
-             StringMaster.FORMULA_FUNC_OPEN_CHAR)) {
+             Strings.FORMULA_FUNC_OPEN_CHAR)) {
                 continue;
             }
             String value = "" + amountFormula.getInt(ref);

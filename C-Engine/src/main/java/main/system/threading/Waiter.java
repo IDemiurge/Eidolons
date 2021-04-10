@@ -11,6 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Waiter {
     private static final long default_time_limit = 100000; // what if user is
     private static final long PING_PERIOD = 100;
+//    private Date createdAt;
     Lock lock = new ReentrantLock();
     Condition waiting = lock.newCondition();
     Long timeLimit;
@@ -23,6 +24,7 @@ public class Waiter {
 
     public Waiter(WAIT_OPERATIONS operation) {
         this.operation = operation;
+//        createdAt = Calendar.getInstance().getTime();
     }
 
     public Long getDefaultTimeLimitForOperation(WAIT_OPERATIONS operation) {

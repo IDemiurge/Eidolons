@@ -12,6 +12,7 @@ import java.awt.*;
  * Created by JustMe on 2/14/2017.
  */
 public class GenericEnums {
+
     public enum ASPECT {
         NEUTRAL(0, "Cosmic Crystal", "Tombstone", ""),
         ARCANUM(1, "Arcane Crystal", "Arcane Gateway", "Arcane Mastery"),
@@ -24,7 +25,7 @@ public class GenericEnums {
         ;
 
         private int code;
-        private String crystal;
+        private final String crystal;
         private String mastery;
         private String gateway;
 
@@ -141,7 +142,7 @@ public class GenericEnums {
         }
 
         public String getName() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
 
         public String getResistanceName() {
@@ -172,8 +173,8 @@ public class GenericEnums {
 
 //        public int glory_coef;
 
-        private int attributePercentage;
-        private int masteryPercentage;
+        private final int attributePercentage;
+        private final int masteryPercentage;
         private boolean enemySneakAttacksOn;
         private int powerPercentage=100;
 
@@ -215,7 +216,7 @@ public class GenericEnums {
 
     public enum RESIST_GRADE {
         Impregnable(200), Resistant(150), Normal(100), Vulnerable(50), Ineffective(0);
-        private int percent;
+        private final int percent;
 
         RESIST_GRADE(int percent) {
             this.percent = percent;
@@ -227,41 +228,46 @@ public class GenericEnums {
 
     }
 
+    public enum DieType{
+        d4,
+        d6,
+        d8,
+        d10,
+        d12,
+        d20,
+    }
     /*
      * 24th of April, Hour of Magic
      */
-    public enum ROLL_TYPES implements VarHolder {
-        MIND_AFFECTING("Willpower"),
-        FAITH("Faith"),
-        REFLEX("Reflex"),
-        ACCURACY("Accuracy"),
-        REACTION("Reaction", true),
-        BODY_STRENGTH("Body Strength"),
-        QUICK_WIT("Quick Wit"),
-        FORTITUDE("Fortitude"),
-        DISARM("Disarm"),
-        MASS("Mass"),
-        DETECTION("Detection"),
-        STEALTH("Stealth"),
-        DEFENSE("Defensive"),
-        IMMATERIAL("Immaterial"),
-        DISPEL("Dispel"),
-        UNLOCK("Unlock"),
-        DISARM_TRAP("Disarm Trap"),
-        FORCE("Force"), HEARING("Hearing");
-        boolean logToTop;
-        private String name;
+    public enum RollType implements VarHolder {
+        // mass - todo
+        fortitude,
+        reflex,
+        grit,
+        wit,
+        spirit,
+        luck,
+        perception,
+        stealth,
 
-        ROLL_TYPES(String s, boolean logToTop) {
-            this(s);
+        mind_affecting(grit,spirit),
+        combat(fortitude, reflex),
+        insight(wit, luck),
+        ;
+        boolean logToTop;
+        private   String name;
+        private RollType[] multi;
+
+        RollType(RollType... combo) {
+            multi = combo;
+        }
+        RollType(String s, boolean logToTop) {
+            this();
             this.logToTop = logToTop;
         }
 
-        ROLL_TYPES(String s) {
-            if (StringMaster.isEmpty(s)) {
-                s = StringMaster.getWellFormattedString(name());
-            }
-            this.name = s;
+        RollType() {
+            this.name =  StringMaster.format( name());
         }
 
         public String getName() {
@@ -289,6 +295,9 @@ public class GenericEnums {
             return logToTop;
         }
 
+        public RollType[] getMulti() {
+            return multi;
+        }
     }
 
     public enum STD_BOOLS {
@@ -466,7 +475,8 @@ public class GenericEnums {
         darkness("invert/chaotic dark"),
 
         DARK_MIST("mist", "dark mist2"),
-        DARK_MIST_LITE("mist", "dark mist2 light"),
+        DARK_MIST_LITE //("mist", "dark mist2 light"),
+         ("mist", "conceal west wind"),
         SMOKE_TEST("Smoke_Test1.pt"),
         DARK_SOULS("dark souls"),
         DARK_SOULS2("dark souls2"),
@@ -490,10 +500,10 @@ public class GenericEnums {
         LEAVES_LARGE("woods", "leaves large"),
         FALLING_LEAVES_WINDY("woods", "falling leaves windy2"),
 
-        BLACK_MIST_white_mist_wind("black mist", StringMaster.getWellFormattedString("white_mist_wind")),
-        BLACK_MIST_clouds_wind("black mist", StringMaster.getWellFormattedString("clouds_wind")),
-        BLACK_MIST_clouds_gravity("black mist", StringMaster.getWellFormattedString("clouds_gravity")),
-        BLACK_MIST_clouds_antigravity("black mist", StringMaster.getWellFormattedString("clouds_antigravity")),
+        BLACK_MIST_white_mist_wind("black mist", StringMaster.format("white_mist_wind")),
+        BLACK_MIST_clouds_wind("black mist", StringMaster.format("clouds_wind")),
+        BLACK_MIST_clouds_gravity("black mist", StringMaster.format("clouds_gravity")),
+        BLACK_MIST_clouds_antigravity("black mist", StringMaster.format("clouds_antigravity")),
 
         MIST_WHITE("mist", "conceal west wind"),
         MIST_WHITE2("mist", "conceal west wind2"),
@@ -504,8 +514,8 @@ public class GenericEnums {
         MIST_SAND_WIND("mist", "sand wind"),
 
         MIST_BLACK("ambient", "MIST ARCANE"), //"black mist","clouds wind light2"),
-        MIST_TRUE("mist", "MIST TRUE"),
-        MIST_TRUE2("mist", "MIST TRUE2"),
+        MIST_TRUE("mist", "TRUE MIST"),
+        MIST_TRUE2("mist", "TRUE MIST2"),
         MIST_ARCANE("ambient", "MIST ARCANE"),
         MIST_NEW("ambient", "MIST NEW2"),
         THUNDER_CLOUDS("ambient", "THUNDER CLOUDS"),
@@ -604,6 +614,8 @@ public class GenericEnums {
 
     public enum ALPHA_TEMPLATE {
 
+        GRID_LIGHT(0.19f, 1.32f, 1, 0.55f, 0.32f, 0.62f),
+
         HQ_HERO_SPRITE(0.08f, 0.5f, 0.2f, 0.4f, 0.6f, 1f),
         HQ_SPRITE(0.05f, 0.5f, 0.2f, 0, 0.2f, 0.7f),
 
@@ -613,7 +625,9 @@ public class GenericEnums {
         LIGHT(0.28f, 4, 0.8f, 2.6f, 0.1f, 0.4f),
 
         MOONLIGHT(0.4f, 5, 0.5F, 0.6f, 0.1f, 0.9f),
-        CLOUD(0.2f, 0, 2, 0.2f, 0.05f, 1f),
+        CLOUD(0.04f, 5, 3.5f, 0.12f, 0.45f, 1f),
+        CLOUD_HEAVY(0.06f, 5, 3.5f, 0.12f, 0.85f, 1f),
+        THUNDER(0.3f, 10, 0.3f, 0.5f, 0.05f, 1f),
         HIGHLIGHT(0.15f, 0, 1, 0.1f, 0.15f, 1f),
         HIGHLIGHT_MAP(0.1f, 0, 1, 0.4f, 0.75f, 1f),
         HIGHLIGHT_SPEAKER(0.25f, 0, 1, 0.1f, 0.535f, 1f),
@@ -636,7 +650,11 @@ public class GenericEnums {
 
         BLOOM(0.1f, 0F, 0.0F, 0.88f, 0.3f, 1f),
         POST_PROCESS(0.1f, 0F, 0.0F, 0.88f, 0.3f, 1f),
-        SOULFORCE(0.125f, 1.25F, 0.5F, 0.5f, 0.2f, 0.8f);
+        WATER(0.1f, 0.5F, 0.5F, 0.88f, 0.6f, 8f),
+        SOULFORCE(0.125f, 1.25F, 0.5F, 0.5f, 0.2f, 0.8f),
+
+
+        ;
         public float alphaStep;
         public float fluctuatingAlphaPauseDuration;
         public float fluctuatingFullAlphaDuration;
@@ -664,6 +682,7 @@ public class GenericEnums {
     }
 
     public enum BLENDING {
+        NORMAL(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA),
         INVERT_SCREEN(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA),
         PREMULTIPLIED_ALPHA(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA),
         SCREEN(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA),

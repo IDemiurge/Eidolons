@@ -9,6 +9,7 @@ import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
+import main.entity.type.TypeBuilder;
 import main.game.core.game.Game;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.FileManager;
@@ -17,7 +18,6 @@ import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
-import main.system.launch.TypeBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -35,19 +35,19 @@ import static main.system.auxiliary.log.LogMaster.*;
 public class XML_Reader {
     // private static final Logger = Logger.getLogger(XML_Reader.class);
 
-    private static Map<String, Set<String>> tabGroupMap = new HashMap<>();
-    private static Map<String, Set<String>> treeSubGroupMap = new HashMap<>();
+    private static final Map<String, Set<String>> tabGroupMap = new HashMap<>();
+    private static final Map<String, Set<String>> treeSubGroupMap = new HashMap<>();
 
-    private static Map<String, Set<String>> macroTabGroupMap = new HashMap<>();
-    private static Map<String, Set<String>> macroTreeSubGroupMap = new HashMap<>();
+    private static final Map<String, Set<String>> macroTabGroupMap = new HashMap<>();
+    private static final Map<String, Set<String>> macroTreeSubGroupMap = new HashMap<>();
 
-    private static Map<String, Map<String, ObjType>> typeMaps = new HashMap<>();
+    private static final Map<String, Map<String, ObjType>> typeMaps = new HashMap<>();
     private static Map<String, ObjType> bufferCharTypeMap = new HashMap<>(20);
     private static boolean macro;
 
     private static boolean concurrentReadingOn = true;
-    private static Map<String, XML_File> heroFiles = new HashMap<>();
-    private static Map<String, XML_File> partyFiles = new HashMap<>();
+    private static final Map<String, XML_File> heroFiles = new HashMap<>();
+    private static final Map<String, XML_File> partyFiles = new HashMap<>();
     private static DequeImpl<XML_File> files = new DequeImpl<>();
 
     private static Map<String, ObjType> originalCharTypeMap;
@@ -130,8 +130,7 @@ public class XML_Reader {
 
     public static void loadXml(String path) {
         File folder = FileManager.getFile(path);
-        if (CoreEngine.isJar())
-            log(1, "ENGINE INIT >> Loading xml files from: \n " + path);
+        important("Loading xml files from: \n " + path);
         final File[] files = folder.listFiles();
 
         if (files != null) {
@@ -144,26 +143,20 @@ public class XML_Reader {
                 if (checkFile(file)) {
                     try {
                         XML_File xmlFile = readFile(file);
-                        if (CoreEngine.isJar())
-                            log(1, "ENGINE INIT >> " + file + " is read!");
                         if (xmlFile == null)
                             continue;
                         loadFile(xmlFile);
-                        if (CoreEngine.isJar())
-                            log(1, "ENGINE INIT >> " + file + " is loaded!");
                     } catch (Exception e) {
                         brokenXml = true;
-                        if (CoreEngine.isJar())
-                            log(1, "ENGINE INIT >> " + file + " is broken!");
+                            important("ENGINE INIT >> " + file + " is broken!");
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
                 } else {
-                    if (CoreEngine.isJar())
-                        log(1, "ENGINE INIT >> not a valid xml file: \n " + file);
+                    important("ENGINE INIT >> not a valid xml file: \n " + file);
                 }
             }
-            if (CoreEngine.isJar())
-                log(1, "ENGINE INIT >> Done loading xml files from: \n " + path);
+            important( "ENGINE INIT >> Done loading xml files from: \n " + path);
+            important( getFiles().size( ) + "Xml files: \n " + getFiles() );
 /*            Arrays.stream(files)
                     .filter(XML_Reader::checkFile)
                     .forEach(el -> {
@@ -220,6 +213,7 @@ public class XML_Reader {
         }
 
         xmlFile = new XML_File(DC_TYPE.getType(xmlName), xmlName, group, macro, text);
+        xmlFile.setFile(file);
         return xmlFile;
     }
 
@@ -302,11 +296,15 @@ public class XML_Reader {
         return brokenXml;
     }
 
-    public static void readTypeFile(boolean macro, OBJ_TYPE type) {
+    public static void readTypeFile(String path, OBJ_TYPE type) {
+        XML_File xml = readFile(FileManager.getFile(path));
+        xml.setType(type);
+        loadFile(xml);
+    }
+        public static void readTypeFile(boolean macro, OBJ_TYPE type) {
         String path = StrPathBuilder.build((macro ? PathFinder.getMACRO_TYPES_PATH()
                 : PathFinder.getTYPES_PATH()), type.getName() + ".xml");
-        XML_File xml = readFile(FileManager.getFile(path));
-        loadFile(xml);
+            readTypeFile(path, type);
     }
 
     public static void loadXml(boolean macro) {
@@ -520,6 +518,9 @@ public class XML_Reader {
 
     public static XML_File getFile(DC_TYPE TYPE) {
         for (XML_File file : files) {
+            if (file.getType() == null) {
+                continue;
+            }
             if (file.getType().equals(TYPE)) {
                 return file;
             }

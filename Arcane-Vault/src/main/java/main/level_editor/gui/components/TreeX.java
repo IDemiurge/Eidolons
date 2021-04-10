@@ -7,9 +7,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.kotcrab.vis.ui.widget.VisTree;
-import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.gui.NinePatchFactory;
-import eidolons.libgdx.gui.generic.ValueContainer;
+import eidolons.game.core.Eidolons;
+import libgdx.StyleHolder;
+import libgdx.gui.NinePatchFactory;
+import libgdx.gui.generic.ValueContainer;
 import main.data.tree.DataNode;
 import main.system.graphics.FontMaster;
 
@@ -40,7 +41,11 @@ public abstract class TreeX<T extends DataNode> extends VisTree {
         expandAll();
         for (Node node : nodes) {
             if (node.getChildren().size == 0) {
-                node.getParent().collapseAll();
+                try {
+                    node.getParent().collapseAll();
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
             }
 
         }
@@ -100,20 +105,16 @@ public abstract class TreeX<T extends DataNode> extends VisTree {
     }
 
     protected void click(int tapCount, InputEvent event, Node n, T node) {
+        int button = event == null ? 0 : event.getButton();
+        Eidolons.onNonGdxThread(() -> clicked(tapCount, event, n, node, button));
+    }
+
+    protected void clicked(int tapCount, InputEvent event, Node n, T node, int button) {
         if (tapCount > 1) {
-            try {
-                doubleClick(node);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-        } else if (event!=null && event.getButton() == 1) {
-            try {
-                rightClick(node);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-        } else
-        {
+            doubleClick(node);
+        } else if (event != null && button == 1) {
+            rightClick(node);
+        } else {
             selected(node, n);
         }
         for (Node node1 : nodes) {
@@ -122,7 +123,8 @@ public abstract class TreeX<T extends DataNode> extends VisTree {
             }
         }
         if (n.getActor() instanceof Table) {
-            ((Table) n.getActor()).setBackground(NinePatchFactory.getHighlightSmallDrawable());
+            Eidolons.onGdxThread(() ->
+                    ((Table) n.getActor()).setBackground(NinePatchFactory.getHighlightSmallDrawable()));
         }
     }
 
@@ -144,5 +146,8 @@ public abstract class TreeX<T extends DataNode> extends VisTree {
 
     public void select(Object o) {
 
+    }
+
+    public void deselect() {
     }
 }

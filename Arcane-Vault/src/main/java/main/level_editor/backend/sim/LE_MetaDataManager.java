@@ -18,8 +18,8 @@ public class LE_MetaDataManager extends ScenarioMetaDataManager {
     }
 
     @Override
-    public String getMissionPath() {
-        return super.getMissionPath();
+    public String getSoloDungeonPath() {
+        return super.getSoloDungeonPath();
     }
 
     @Override

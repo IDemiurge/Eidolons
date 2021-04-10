@@ -29,7 +29,21 @@ public class ItemEnums {
     }
 
     public enum GARMENT_TYPE {
-        BOOTS, GLOVES, CLOAK, HELMET
+        BACK, HEAD, LEGS, ARMS
+    }
+    public enum LEGS_GARMENT_TYPE {
+       BOOTS, GREAVES, DRESS, SKIRT,
+    }
+    public enum ARMS_GARMENT_TYPE {
+        BRACER, PAULDRON,
+    }
+    public enum HEAD_GARMENT_TYPE {
+        HOOD, HELMET, GORGET,
+    }
+        public enum BACK_GARMENT_TYPE {
+          CLOAK, WINGS,
+
+
     }
 
     public enum ITEM_GROUP {
@@ -84,7 +98,7 @@ public class ItemEnums {
         // RING_2(G_PROPS.OFF_HAND_ITEM)
         ;
 
-        private PROPERTY prop;
+        private final PROPERTY prop;
 
         ITEM_SLOT(PROPERTY prop) {
             this.prop = prop;
@@ -173,7 +187,7 @@ public class ItemEnums {
         PLATINUM(12, 16, 3, 250, 50, ITEM_MATERIAL_GROUP.METAL, 2, null),
         ADAMANTIUM(16, 18, 4, 325, 100, ITEM_MATERIAL_GROUP.METAL, 1, GenericEnums.DAMAGE_TYPE.FIRE),
         METEORITE(14, 12, 1.5, 400, 150, ITEM_MATERIAL_GROUP.METAL, 3, GenericEnums.DAMAGE_TYPE.LIGHTNING),
-        // AURUM
+        // AURUM (SONIC) 'singing steel'
 
         BRIGHT_STEEL(5, 4, 2, 180, 200, ITEM_MATERIAL_GROUP.METAL, 2, GenericEnums.DAMAGE_TYPE.LIGHT),
         DEFILED_STEEL(6, 2, 3.5, 195, 125, ITEM_MATERIAL_GROUP.METAL, -1, GenericEnums.DAMAGE_TYPE.ACID),
@@ -234,12 +248,12 @@ public static final float GLOBAL_DURABILITY_MODIFIER = 1.75f;
         private ITEM_MATERIAL_GROUP group;
         private int code;
         private Color color;
-        private String name;
-        private int modifier;
-        private double weight;
+        private final String name;
+        private final int modifier;
+        private final double weight;
         private int hardness;
-        private int enchantmentCapacity;
-        private int cost;
+        private final int enchantmentCapacity;
+        private final int cost;
         private DAMAGE_TYPE dmg_type;
         private Map<DAMAGE_TYPE, RESIST_GRADE> selfDamageGradeMap;
         private Map<DAMAGE_TYPE, RESIST_GRADE> resistGradeMap;
@@ -266,7 +280,7 @@ public static final float GLOBAL_DURABILITY_MODIFIER = 1.75f;
         }
 
         MATERIAL(int modifier, double weight, int cost, int magic, int code) {
-            this.name = StringMaster.getWellFormattedString(name());
+            this.name = StringMaster.format(name());
             this.modifier = modifier;
             this.weight = weight;
             this.cost = cost;
@@ -384,7 +398,7 @@ public static final float GLOBAL_DURABILITY_MODIFIER = 1.75f;
         }
 
         public String toString() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
 
         public int getDurabilityMod() {
@@ -404,7 +418,7 @@ public static final float GLOBAL_DURABILITY_MODIFIER = 1.75f;
         }
 
         public String getName() {
-            return StringMaster.getWellFormattedString(name());
+            return StringMaster.format(name());
         }
     }
 

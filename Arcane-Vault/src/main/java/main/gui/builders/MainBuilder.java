@@ -2,6 +2,7 @@ package main.gui.builders;
 
 import main.gui.components.controls.AV_ButtonPanel;
 import main.launch.ArcaneVault;
+import main.launch.AvConsts;
 import main.swing.generic.components.Builder;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.G_Panel;
@@ -9,21 +10,52 @@ import main.swing.generic.components.G_Panel;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 //Use G-Engine? Caching 
 public class MainBuilder extends Builder {
 
-    private EditViewPanel tableBuilder = new EditViewPanel();
+    private final EditViewPanel tableBuilder = new EditViewPanel();
     private TabBuilder tabBuilder = new TabBuilder(null);
     // maybe it's time for a massive AV/Builder revamp that will support
     // rebuilding the gui?
-    private AV_ButtonPanel buttonPanel = new AV_ButtonPanel();
+    private final AV_ButtonPanel buttonPanel = new AV_ButtonPanel();
     private boolean nodesDirty;
 
     public MainBuilder() {
-        comp = new G_Panel();
+        if (isSplitPane()){
+            comp = new JSplitPane();
+            comp.setLayout(new GridLayout());
+        } else {
+            comp = new G_Panel();
+        }
+    }
+
+    private boolean isSplitPane() {
+        return false;
+    }
+
+    @Override
+    protected void add(JComponent newComp, String info) {
+        if (comp instanceof JSplitPane) {
+            G_Panel container = new G_Panel();
+            container.add(newComp, info);
+            if (comp.getComponentCount() == 0) {
+                ((JSplitPane) comp).setLeftComponent(container);
+            } else
+                ((JSplitPane) comp).setRightComponent(container);
+            if (getKeyListener() != null) {
+                if (newComp instanceof G_Component) {
+                    ((G_Component) newComp).setKeyManager(getKeyListener());
+                } else {
+                    newComp.addKeyListener(getKeyListener());
+                }
+            }
+            return ;
+        }
+        super.add(newComp, info);
     }
 
     @Override
@@ -37,15 +69,16 @@ public class MainBuilder extends Builder {
 
         infoArray = new String[]{
 
-                "id tree, y 0, x 0, w " + ArcaneVault.TREE_WIDTH + ", h " + ArcaneVault.TREE_HEIGHT,
+                "id tree, y 0, x 0, w " + AvConsts.TREE_WIDTH + ", h " + AvConsts.TREE_HEIGHT,
 
         };
 
-        compArray = new G_Component[]{buttonPanel, tableBuilder.getPanel()};
+        compArray = new JComponent[]{buttonPanel, tableBuilder.getPanel()};
         cInfoArray = new String[]{
                 "id bp, pos "
-                        + (ArcaneVault.selectiveInit ? ArcaneVault.TREE_WIDTH + " "
-                        + ArcaneVault.TREE_HEIGHT : "0 tree.y2") + " table.x2 pref",
+                        + (ArcaneVault.selectiveInit ? AvConsts.TREE_WIDTH + " "
+                        + AvConsts.TREE_HEIGHT : "0 tree.y2") + " table.x2 " +
+                        AvConsts.HEIGHT,
 
                 "id table, pos tree.x2 0 ",
 

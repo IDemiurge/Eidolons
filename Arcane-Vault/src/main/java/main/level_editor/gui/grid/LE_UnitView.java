@@ -2,20 +2,20 @@ package main.level_editor.gui.grid;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.libgdx.GdxColorMaster;
-import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.bf.grid.cell.CellBorderManager;
-import eidolons.libgdx.bf.grid.cell.GridUnitView;
-import eidolons.libgdx.bf.grid.cell.UnitViewOptions;
-import eidolons.libgdx.gui.LabelX;
-import eidolons.libgdx.texture.TextureCache;
+import libgdx.StyleHolder;
+import libgdx.bf.grid.cell.CellBorderManager;
+import libgdx.bf.grid.cell.UnitGridView;
+import libgdx.bf.grid.cell.UnitViewOptions;
+import libgdx.gui.LabelX;
+import libgdx.texture.TextureCache;
 import main.content.DC_TYPE;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.sim.LE_GameSim;
 import main.system.graphics.FontMaster;
 
-public class LE_UnitView extends GridUnitView {
+public class LE_UnitView extends UnitGridView {
 
     LabelX idLabel = new LabelX("", StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 12));
     LabelX aiLabel = new LabelX("", StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 12));
@@ -61,6 +61,10 @@ public class LE_UnitView extends GridUnitView {
         setTeamColor(GdxColorMaster.YELLOW);
     }
 
+    protected boolean isResetOutlineOnHide() {
+        return false;
+    }
+
     @Override
     public void act(float delta) {
         super.act(delta);
@@ -78,6 +82,7 @@ public class LE_UnitView extends GridUnitView {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         setVisible(true);
+        batch.setColor(getColor());
         super.draw(batch, parentAlpha);
     }
 

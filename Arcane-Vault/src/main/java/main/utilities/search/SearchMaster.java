@@ -3,9 +3,9 @@ package main.utilities.search;
 import main.content.DC_TYPE;
 import main.entity.type.ObjType;
 import main.launch.ArcaneVault;
-import eidolons.swing.generic.services.dialog.DialogMaster;
-import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
+import main.system.util.DialogMaster;
 import main.utilities.workspace.Workspace;
 import main.utilities.workspace.WorkspaceManager;
 
@@ -32,26 +32,6 @@ public class SearchMaster {
     }
 
     public static void newSearch() {
-        // getOrCreate TYPES
-        // getOrCreate search text, perhaps with some basic regex syntax like "not",
-        // "or"...
-
-        // List<OBJ_TYPE> types = new ArrayList<>();
-        // int i = DialogMaster.optionChoice(OBJ_TYPES.values(),
-        // "include object type... (at least one)");
-        // // C_TYPES?
-        // if (i == -1)
-        // return;
-        // types.add(OBJ_TYPES.values()[i]);
-        // while (true) {
-        // i = DialogMaster.optionChoice(OBJ_TYPES.values(),
-        // "include another object type...");
-        // if (i == -1)
-        // break;
-        // if (!types.contains(OBJ_TYPES.values()[i]))
-        // types.add(OBJ_TYPES.values()[i]);
-        // }
-        // OBJ_TYPE[] TYPES = new OBJ_TYPE[types.size()];
         List<ObjType> list;
         String typeName = DialogMaster.inputText("Enter type search...",
                 TypeFinder.getLastSearch());

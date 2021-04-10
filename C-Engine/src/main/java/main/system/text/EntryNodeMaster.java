@@ -7,7 +7,6 @@ import main.system.graphics.FontMaster;
 import main.system.graphics.FontMaster.FONT;
 
 import java.awt.*;
-import java.util.List;
 
 public class EntryNodeMaster {
 
@@ -39,20 +38,6 @@ public class EntryNodeMaster {
     public static String getHeader(ENTRY_TYPE type, String... args) {
         return VariableManager.getVarText(type.getHeader(), true, true, args);
         // return TextParser.parse(type.getHeader(), args);
-    }
-
-    public static List<String> getStringsFromSubNode(LogEntryNode node) {
-        // List<String> strings = new ArrayList<>();
-        // return strings;
-        return TextWrapper.wrap(node.getHeader(), getWrapLength(false));
-    }
-
-    public static int getRowHeight(boolean top) {
-        int fontHeight = FontMaster.getFontHeight(top ? getTopFont() : getSubNodeFont());
-        if (top) {
-            fontHeight = fontHeight - 2;
-        }
-        return fontHeight;
     }
 
     public static int getWrapLength(boolean top) {
@@ -122,7 +107,7 @@ public class EntryNodeMaster {
         FOCUS_RULE,
         MORALE_RULE,
         MORALE_KILL_RULE,
-        STAMINA_RULE,
+        TOUGHNESS_RULE,
         WEIGHT_RULE,
         WOUNDS_RULE,
 

@@ -1,15 +1,20 @@
 package main.level_editor.gui.grid;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.bf.grid.cell.GridUnitView;
-import eidolons.libgdx.bf.grid.cell.OverlayView;
-import eidolons.libgdx.bf.grid.cell.UnitViewFactory;
-import eidolons.libgdx.bf.grid.cell.UnitViewOptions;
-import eidolons.libgdx.gui.tooltips.ValueTooltip;
+import libgdx.bf.grid.cell.OverlayView;
+import libgdx.bf.grid.cell.UnitGridView;
+import libgdx.bf.grid.cell.UnitViewFactory;
+import libgdx.bf.grid.cell.UnitViewOptions;
+import libgdx.gui.tooltips.DynamicTooltip;
+import main.entity.obj.Obj;
+import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
+import main.system.auxiliary.StringMaster;
 
 public class LE_UnitViewFactory extends UnitViewFactory {
 
@@ -21,6 +26,7 @@ public class LE_UnitViewFactory extends UnitViewFactory {
         }
         return instance;
     }
+
 
     @Override
     public ClickListener createListener(BattleFieldObject bfObj) {
@@ -48,40 +54,43 @@ public class LE_UnitViewFactory extends UnitViewFactory {
         view.addListener(createListener(bfObj));
     }
 
-    public static GridUnitView doCreate(BattleFieldObject battleFieldObject) {
+    public static UnitGridView doCreate(BattleFieldObject battleFieldObject) {
         return getInstance().create(battleFieldObject);
     }
 
-    public static OverlayView doCreateOverlay(BattleFieldObject bfObj) {
-        return getInstance().createOverlay(bfObj);
-    }
-
     @Override
-    public GridUnitView create(BattleFieldObject battleFieldObject) {
+    public UnitGridView create(BattleFieldObject battleFieldObject) {
         return super.create(battleFieldObject);
     }
 
-    @Override
-    public OverlayView createOverlay(BattleFieldObject battleFieldObject) {
-        return super.createOverlay(battleFieldObject);
-    }
 
-    protected GridUnitView createView(BattleFieldObject bfObj, UnitViewOptions options) {
+    protected UnitGridView createView(BattleFieldObject bfObj, UnitViewOptions options) {
         return
                         new LE_UnitView(bfObj, options);
     }
     @Override
-    protected void addLastSeenView(BattleFieldObject bfObj, GridUnitView view, UnitViewOptions options) {
+    protected void addLastSeenView(BattleFieldObject bfObj, UnitGridView view, UnitViewOptions options) {
 
     }
 
     @Override
-    protected void addOutline(BattleFieldObject bfObj, GridUnitView view, UnitViewOptions options) {
+    protected void addOutline(BattleFieldObject bfObj, UnitGridView view, UnitViewOptions options) {
     }
 
+    public static String getTooltipText(Obj bfObj) {
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+            Coordinates c = LevelEditor.getManager().getSelectionHandler().getBottomLeft();
+            if (c != null) {
+            int x = Math.abs(1 + c.x - bfObj.getX());
+            int y = Math.abs(1 + c.y - bfObj.getY());
+            return StringMaster.wrapInBrackets(x + ":" + y);
+            }
+        }
+        return bfObj. getNameAndCoordinate();
+    }
     @Override
-    protected void addForDC(BattleFieldObject bfObj, GridUnitView view, UnitViewOptions options) {
-        view.setToolTip(new ValueTooltip(bfObj.getName()));
+    protected void addForDC(BattleFieldObject bfObj, UnitGridView view, UnitViewOptions options) {
+        view.setToolTip(new DynamicTooltip(()-> getTooltipText(bfObj)));
     }
 
     @Override

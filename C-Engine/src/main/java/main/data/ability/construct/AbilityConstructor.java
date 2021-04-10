@@ -16,7 +16,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.BfObj;
-import main.entity.type.XmlHoldingType;
+import main.entity.type.impl.XmlHoldingType;
 import main.game.core.game.Game;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
@@ -24,6 +24,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.Err;
 import main.system.auxiliary.log.LogMaster;
+import main.system.launch.Flags;
 import main.system.text.TextParser;
 import org.w3c.dom.Node;
 
@@ -40,7 +41,7 @@ public class AbilityConstructor {
 
     private static final String TARGETING = "Targeting";
     private static final String EFFECTS = "Effect";
-    private static Map<Game, Map<Integer, Map<String, AbilityObj>>> safeCache = new XLinkedMap<>();
+    private static final Map<Game, Map<Integer, Map<String, AbilityObj>>> safeCache = new XLinkedMap<>();
 
     //if Game is reinitialized, static id-caches must be destroyed!
     //TODO get rid of static
@@ -247,6 +248,9 @@ public class AbilityConstructor {
     }
 
     public static void constructPassives(Entity entity) {
+
+        if (Flags.FAST_TEST )
+            return ;
         Chronos.mark("construct passives for " + entity.getName());
         List<AbilityObj> passives = new ArrayList<>();
 

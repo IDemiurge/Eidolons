@@ -1,0 +1,77 @@
+<Floor><DATA>wall_type=volcanic wall;background=img\main\background\valley red.png
+;width=83;name=Nether Realm;cell_type=natural;height=85;</DATA><MODULES>
+<Nether_Plains><DATA>wall_type=Jagged Stone Wall;width_buffer=3;border_width=2;height_buffer=2;origin=0-0;name=Nether Plains;width=33;cell_type=natural;height=33;border_type=irregular;</DATA>
+
+<OVERLAY_DIRECTIONS></OVERLAY_DIRECTIONS>
+<SCRIPT_DATA></SCRIPT_DATA>
+<DECOR></DECOR>
+
+
+<ID_MAP></ID_MAP>
+<OBJ_IDS>38-11=;4-37=;</OBJ_IDS>
+
+<DATA_MAPS><encounters></encounters><custom_types></custom_types>
+</DATA_MAPS>
+
+
+<CUSTOM_TYPE_DATA></CUSTOM_TYPE_DATA>
+<ENCOUNTER_AI_GROUPS></ENCOUNTER_AI_GROUPS><CUSTOM_AI_GROUPS></CUSTOM_AI_GROUPS>
+<TRANSIT_IDS></TRANSIT_IDS>
+
+
+<Zones><Zone><DATA>name=Leaden Lake;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Hollow Ruins;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Black Valley;</DATA><Blocks></Blocks></Zone></Zones>
+
+<BORDERS></BORDERS><PLATFORM_DATA></PLATFORM_DATA>
+<coordinates_void></coordinates_void>
+</Nether_Plains>
+
+<Hellfire_Valley><DATA>width_buffer=3;border_width=2;height_buffer=2;cell_set=brick;origin=43-0;name=Hellfire Valley;width=25;cell_type=octagonal;cell_variant=2;height=59;border_type=chism;</DATA>
+
+<OVERLAY_DIRECTIONS></OVERLAY_DIRECTIONS>
+<SCRIPT_DATA></SCRIPT_DATA>
+<DECOR></DECOR>
+
+
+<ID_MAP></ID_MAP>
+<OBJ_IDS>51-16=;</OBJ_IDS>
+
+<DATA_MAPS><encounters></encounters><custom_types></custom_types>
+</DATA_MAPS>
+
+
+<CUSTOM_TYPE_DATA></CUSTOM_TYPE_DATA>
+<ENCOUNTER_AI_GROUPS></ENCOUNTER_AI_GROUPS><CUSTOM_AI_GROUPS></CUSTOM_AI_GROUPS>
+<TRANSIT_IDS></TRANSIT_IDS>
+
+
+<Zones><Zone><DATA>name=Brimstone Cliffs;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Fields of Gore;</DATA><Blocks></Blocks></Zone></Zones>
+
+<BORDERS></BORDERS><PLATFORM_DATA></PLATFORM_DATA>
+<coordinates_void>52-15;51-18;51-17;51-15;50-17;49-15;49-14;49-13;48-13;48-10;47-10;</coordinates_void>
+</Hellfire_Valley>
+
+<Main><DATA>width_buffer=3;border_width=2;height_buffer=2;origin=0-41;name=Main;width=33;cell_type=star;height=33;border_type=wall;</DATA>
+
+<OVERLAY_DIRECTIONS></OVERLAY_DIRECTIONS>
+<SCRIPT_DATA></SCRIPT_DATA>
+<DECOR></DECOR>
+
+
+<ID_MAP></ID_MAP>
+<OBJ_IDS></OBJ_IDS>
+
+<DATA_MAPS><encounters></encounters><custom_types></custom_types>
+</DATA_MAPS>
+
+
+<CUSTOM_TYPE_DATA></CUSTOM_TYPE_DATA>
+<ENCOUNTER_AI_GROUPS></ENCOUNTER_AI_GROUPS><CUSTOM_AI_GROUPS></CUSTOM_AI_GROUPS>
+<TRANSIT_IDS></TRANSIT_IDS>
+
+
+<Zones><Zone><DATA>name=Stargazer;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Augury;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Secret;</DATA><Blocks></Blocks></Zone></Zones>
+
+<BORDERS></BORDERS><PLATFORM_DATA></PLATFORM_DATA>
+<coordinates_void></coordinates_void>
+</Main>
+</MODULES></Floor>

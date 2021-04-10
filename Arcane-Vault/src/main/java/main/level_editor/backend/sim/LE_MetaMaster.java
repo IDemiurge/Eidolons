@@ -1,11 +1,14 @@
 package main.level_editor.backend.sim;
 
+import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioPartyManager;
 import eidolons.game.battlecraft.logic.meta.universal.MetaDataManager;
 import eidolons.game.battlecraft.logic.meta.universal.MetaInitializer;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
+import eidolons.game.core.game.DC_Game;
+import libgdx.Adapter;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.struct.campaign.Campaign;
 
@@ -16,6 +19,11 @@ public class LE_MetaMaster extends ScenarioMetaMaster {
     public LE_MetaMaster(Campaign campaign) {
         super(campaign.getName());
         this.campaign = campaign;
+    }
+
+    @Override
+    public Floor getFloor() {
+        return LevelEditor.getCurrent();
     }
 
     @Override
@@ -56,6 +64,7 @@ public class LE_MetaMaster extends ScenarioMetaMaster {
 
         game = createGame();
         game.setMetaMaster(this);
+        Adapter.afterGameInit(DC_Game.game);
         metaGame = initializer.initMetaGame(data);
 
         if (campaign != null)
@@ -81,7 +90,7 @@ public class LE_MetaMaster extends ScenarioMetaMaster {
     }
 
     @Override
-    public PartyManager<ScenarioMeta> getPartyManager() {
+    public PartyManager  getPartyManager() {
         return super.getPartyManager();
     }
 

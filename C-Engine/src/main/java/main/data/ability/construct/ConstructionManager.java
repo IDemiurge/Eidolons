@@ -10,6 +10,8 @@ import org.w3c.dom.Node;
 import java.util.ArrayList;
 import java.util.List;
 
+import static main.system.auxiliary.log.LogMaster.important;
+
 public class ConstructionManager {
     public static Object construct(Node node) {
 
@@ -31,25 +33,34 @@ public class ConstructionManager {
 
     private static Construct getConstruct(Node node) {
         AE_Item item = Mapper.getItem(node);
+        if (item == null) {
+            important("No AE item! - " + XML_Converter.getStringFromXML(node));
+            // if (Mapper.isInitialized()) {
+            // important("No AE item! - " + XML_Converter.getStringFromXML(node));
+            // }
+            // CoreEngine.compileReflectionMap();
+            return new Construct("Broken", true);
+        }
         if (item.isPrimitive()) {
             return new Construct(node.getNodeName(), node.getTextContent());
         }
 
         if (item.isENUM()) {
             return new Construct(node.getNodeName(), node.getTextContent(),
-             true);
+                    true);
         }
         String xml = XML_Converter.getStringFromXML(node, false);
         return new Construct(node.getNodeName(), getConstructs(node), xml);
     }
 
-    public static String getXmlFromObject(Object obj) { //for restoring constructor xml
+    //for restoring constructor xml
+    //TODO core Review - why is it needed?
+    public static String getXmlFromObject(Object obj) {
         String xml = "" + obj;
         if (obj.getClass().isEnum()) {
-// StringMaster.getWellFormattedString(string
+            // StringMaster.getWellFormattedString(string
         } else {
             //primitive
-
         }
         // what else? effects, other constructible/convertable...
         return xml;

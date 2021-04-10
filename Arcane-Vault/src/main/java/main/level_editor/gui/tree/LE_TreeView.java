@@ -12,6 +12,7 @@ import com.kotcrab.vis.ui.VisUI;
 import eidolons.game.battlecraft.ai.elements.generic.AiData;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
+import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.layer.Layer;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorData;
@@ -19,22 +20,28 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.ZoneData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper.ObjNode;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
-import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
-import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.gui.generic.ValueContainer;
-import eidolons.libgdx.stage.camera.CameraMan;
-import eidolons.libgdx.texture.Images;
-import eidolons.libgdx.texture.TextureCache;
+import eidolons.game.module.dungeoncrawl.struct.LevelBlock;
+import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
+import eidolons.game.module.dungeoncrawl.struct.LevelZone;
+import libgdx.StyleHolder;
+import libgdx.bf.GridMaster;
+import libgdx.bf.grid.moving.PlatformController;
+import libgdx.bf.grid.moving.PlatformData;
+import libgdx.gui.generic.ValueContainer;
+import libgdx.screens.ScreenMaster;
+import libgdx.stage.camera.MotionData;
+import eidolons.content.consts.Images;
+import libgdx.texture.TextureCache;
 import main.content.DC_TYPE;
 import main.data.tree.LayeredData;
 import main.data.tree.StructNode;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;
+import main.level_editor.backend.handlers.model.EditorModel;
 import main.level_editor.backend.struct.boss.BossDungeon;
 import main.level_editor.backend.struct.campaign.Campaign;
 import main.level_editor.gui.components.TreeX;
+import main.level_editor.gui.dialog.struct.PlatformEditDialog;
 import main.level_editor.gui.stage.LE_GuiStage;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -54,27 +61,39 @@ public class LE_TreeView extends TreeX<StructNode> {
     @Override
     protected void rightClick(StructNode node) {
 
-        if (node.getData() instanceof LevelBlock) {
-            BlockData data = ((LevelBlock) node.getData()) .getData();
-            if (getStage() instanceof LE_GuiStage) {
-                ((LE_GuiStage) getStage()).getBlockEditor().edit(data);
+        LayeredData nodeData = node.getData();
+        if (nodeData instanceof LevelBlock) {
+            if (((LevelBlock) nodeData).getRoomType() == LocationBuilder.ROOM_TYPE.PLATFORM) {
+                PlatformController controller = ScreenMaster.getGrid().getPlatformHandler().findByName(
+                        ((LevelBlock) nodeData).getName());
+                ((LE_GuiStage) getStage()).getPlatformDialog().edit((PlatformData) controller.getData());
+                //confirm
+                WaitMaster.waitForInput(PlatformEditDialog.EDIT_DONE);
+            }
+
+            {
+                BlockData data = ((LevelBlock) nodeData) .getData();
+                if (getStage() instanceof LE_GuiStage) {
+
+                    ((LE_GuiStage) getStage()).getBlockEditor().edit(data);
+                }
             }
         }
-        if (node.getData() instanceof LevelZone) {
-            ZoneData data = ((LevelZone) node.getData() ).getData();
+        if (nodeData instanceof LevelZone) {
+            ZoneData data = ((LevelZone) nodeData).getData();
             if (getStage() instanceof LE_GuiStage) {
                 ((LE_GuiStage) getStage()).getZoneEditor().edit(data);
             }
         }
-        if (node.getData() instanceof  Module) {
-            ModuleData data = ( (Module) node.getData()) .getData();
+        if (nodeData instanceof  Module) {
+            ModuleData data = ( (Module) nodeData) .getData();
             if (getStage() instanceof LE_GuiStage) {
                 ((LE_GuiStage) getStage()).getModuleDialog().edit(data);
             }
         }
 
-        if (node.getData() instanceof Location) {
-            FloorData data = (FloorData) ((Location) node.getData()).getData();
+        if (nodeData instanceof Location) {
+            FloorData data = (FloorData) ((Location) nodeData).getData();
             if (getStage() instanceof LE_GuiStage) {
                 ((LE_GuiStage) getStage()).getFloorDialog().edit(data);
             }
@@ -104,7 +123,7 @@ public class LE_TreeView extends TreeX<StructNode> {
 
         }
         Vector2 v = GridMaster.getCenteredPos(c);
-        CameraMan.MotionData data = new CameraMan.MotionData(v, 0.5f, null);
+        MotionData data = new MotionData(v, 0.5f, null);
         GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_COORDINATE, data);
 //        data =  new CameraMan.MotionData(z, 0.5f, null);
 //        GuiEventManager.trigger(GuiEventType.CAMERA_ZOOM, data);
@@ -163,23 +182,25 @@ public class LE_TreeView extends TreeX<StructNode> {
             } else {
                 LevelEditor.getManager().getSelectionHandler().select(((ObjNode) node.getData()).getObj());
             }
-        } else if (node.getData() instanceof LevelBlock) {
+        } else {
+            EditorModel model = LevelEditor.getModel();
+            if (node.getData() instanceof LevelStruct){
+                model.setLastSelectedStruct(((LevelStruct) node.getData()));
+            }
+        if (node.getData() instanceof LevelBlock) {
+
             LevelBlock block = ((LevelBlock) node.getData());
-            LevelEditor.getModel().setBlock(block);
-            LevelEditor.getModel().setZone(block.getZone());
+            model. setBlock(block);
+            model.setZone(block.getZone());
             WaitMaster.receiveInput(LevelEditor.SELECTION_EVENT, true);
         } else if (node.getData() instanceof LevelZone) {
-            LevelEditor.getModel().setZone(((LevelZone) node.getData()) );
+            model.setZone(((LevelZone) node.getData()));
             //camera!
-        } else if (node.getData() instanceof  Module) {
-            LevelEditor.getModel().setModule((Module) node.getData());
+        } else if (node.getData() instanceof Module) {
+            model.setModule((Module) node.getData());
         } else if (node.getData() instanceof Layer) {
             //select all?
-
-
-            // if on > select
-            // if off > preview
-            //
+        }
         }
     }
 
@@ -213,31 +234,34 @@ public class LE_TreeView extends TreeX<StructNode> {
         if (node.getData() instanceof Location) {
             style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 21);
             Location floor = ((Location) node.getData());
-            texture = TextureCache.getOrCreateR(floor.getDungeon().getImagePath());
+            texture = TextureCache.getSizedRegion(64, floor.getFloor().getImagePath());
+            name = "--- " + floor.getName() +" --- ";
         }
         if (node.getData() instanceof  Module) {
             style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 21);
             Module module = (Module) node.getData();
-            name = "--- " + module.toString();
+            name = "-- " + module.getName()  +" --";
             texture = TextureCache.getOrCreateR(Images.ITEM_BACKGROUND_STONE);
         }
         if (node.getData() instanceof LevelZone) {
             style = StyleHolder.getSizedLabelStyle(FontMaster.FONT.NYALA, 19);
             LevelZone zone = (LevelZone) node.getData();
-            name = "-- " + "Zone " + zone.getName() + ", Data: " + zone.getData();
+            name = "- " + "[Zone] " + zone.getName()  +" -";
 //            val = zone.getSubParts().size();
 //            zone.getTemplateGroup();
 //            zone.getStyle();
         }
         if (node.getData() instanceof LevelBlock) {
             LevelBlock block = (LevelBlock) node.getData();
-            name = "-- " +
+            name = "- " +
+                    (block.getName().isEmpty()? "": block.getName()) +
+                    "" +
                     //(block.isTemplate() ? "Template " : "Custom ") +
                     block.getRoomType() +
                     " at " + block.getOrigin() + " with Cells [" +
                     block.getCoordinatesSet().size() +
-                    "]" + ", Data: " + block.getData();
-            c = LevelEditor.getCurrent().getManager().getStructureManager().getColorForBlock(block);
+                    "]" ;
+            c = LevelEditor.getCurrent().getManager().getStructureHandler().getColorForBlock(block);
 
             //img per room type
 //            texture = TextureCache.getOrCreateR(Images.ITEM_BACKGROUND_STONE);
@@ -260,7 +284,7 @@ public class LE_TreeView extends TreeX<StructNode> {
             actor.getImageContainer().getActor().setColor(c);
         }
 
-        if (actor.getImageContainer().getActor() != null) {
+        if (actor.getImageContainer() != null) {
             actor.getImageContainer().size(w, h);
             actor.getImageContainer().getActor().setSize(w, h);
         }

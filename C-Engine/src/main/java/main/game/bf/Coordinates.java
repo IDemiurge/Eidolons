@@ -4,8 +4,8 @@ import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.ArrayMaster;
-import main.system.graphics.GuiManager;
 import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
 
@@ -15,10 +15,14 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class Coordinates implements Serializable {
+public class Coordinates implements Serializable, Comparable<Coordinates> {
 
 
     public static Coordinates[][] coordinates = new Coordinates[100][100];
+    public static int moduleWidth = 9;
+    public static int moduleHeight = 7;
+    public static int floorWidth;
+    public static int floorHeight;
     public int x;
     public int y;
 
@@ -47,10 +51,10 @@ public class Coordinates implements Serializable {
             checkInvalid();
         }
         if (flipX) {
-            this.x = GuiManager.getCurrentLevelCellsX() - this.x;
+            this.x = getFloorWidth() - this.x;
         }
         if (flipY) {
-            this.y = GuiManager.getCurrentLevelCellsY() - this.y;
+            this.y = getFloorHeight() - this.y;
         }
         if (rotate) {
             int buffer = x;
@@ -68,8 +72,8 @@ public class Coordinates implements Serializable {
     }
 
     public Coordinates(boolean custom, String s) {
-        this(custom, NumberUtils.getInteger(splitCoordinateString(s)[0].trim()), NumberUtils
-                .getInteger(splitCoordinateString(s)[1].trim()));
+        this(custom, NumberUtils.getIntParse(splitCoordinateString(s)[0].trim()), NumberUtils
+                .getIntParse(splitCoordinateString(s)[1].trim()));
     }
 
     public static void resetCaches() {
@@ -83,33 +87,33 @@ public class Coordinates implements Serializable {
 
     }
 
-    public static void clearCaches() {
-        resetCaches();
-
-    }
-
 
     public static boolean withinBounds(int x, int y) {
         if (x < 0) {
             return false;
         }
-        if (x >= GuiManager.getCurrentLevelCellsX()) {
+        if (x >= getFloorWidth()) {
             return false;
         }
         if (y < 0) {
             return false;
         }
-        return y < GuiManager.getCurrentLevelCellsY();
+        return y < getFloorHeight();
 
     }
 
     public static String[] splitCoordinateString(String s) {
-        if (s.contains(StringMaster.COORDINATES_SEPARATOR_ALT)) {
-            return StringMaster.cropParenthesises(s).split(
-                    StringMaster.COORDINATES_SEPARATOR_ALT);
+        String cropped = StringMaster.cropParenthesises(s);
+        if (s.contains(Strings.COORDINATES_SEPARATOR_ALT)) {
+            return cropped.split(
+                    Strings.COORDINATES_SEPARATOR_ALT);
         }
-        return StringMaster.cropParenthesises(s).split(
-                StringMaster.COORDINATES_SEPARATOR);
+        if (cropped.startsWith("-")) {
+            cropped=cropped.substring(1 ).replaceFirst("-", "temp");
+            return ("-"+cropped).split("temp");
+        }
+        return cropped.split(
+                Strings.COORDINATES_SEPARATOR);
     }
 
     public static Coordinates[] getCoordinates(String string) {
@@ -147,16 +151,22 @@ public class Coordinates implements Serializable {
         if (CoreEngine.isLevelEditor()) {
             return false;
         }
-        if (c.x >= GuiManager.getCurrentLevelCellsX()) {
-            c.x = GuiManager.getCurrentLevelCellsX() - 1;
+        if ( getFloorWidth()==0) {
+            return false;
+        }
+        if (getFloorHeight()==0) {
+            return false;
+        }
+        if (c.x >= getFloorWidth()) {
+            c.x = getFloorWidth() - 1;
             c.setInvalid(true);
         }
         if (c.x < 0) {
             c.x = 0;
             c.setInvalid(true);
         }
-        if (c.y >= GuiManager.getCurrentLevelCellsY()) {
-            c.y = GuiManager.getCurrentLevelCellsY() - 1;
+        if (c.y >= getFloorHeight()) {
+            c.y = getFloorHeight() - 1;
             c.setInvalid(true);
         }
         if (c.y < 0) {
@@ -167,13 +177,13 @@ public class Coordinates implements Serializable {
     }
 
     protected static boolean checkInvalid(int x, int y) {
-        if (x >= GuiManager.getCurrentLevelCellsX()) {
+        if (x >= getFloorWidth()) {
             return true;
         }
         if (x < 0) {
             return true;
         }
-        if (y >= GuiManager.getCurrentLevelCellsY()) {
+        if (y >= getFloorHeight()) {
             return true;
         }
         return y < 0;
@@ -188,15 +198,26 @@ public class Coordinates implements Serializable {
     }
 
     public static Coordinates get(boolean custom, String s) {
-        return get(custom, NumberUtils.getInteger(splitCoordinateString(s)[0].trim()), NumberUtils
-                .getInteger(splitCoordinateString(s)[1].trim()));
+        return get(custom, NumberUtils.getIntParse(splitCoordinateString(s)[0].trim()), NumberUtils
+                .getIntParse(splitCoordinateString(s)[1].trim()));
     }
 
     public static Coordinates get(boolean allowInvalid, int x, int y) {
         return new Coordinates(allowInvalid, x, y);
     }
 
-    public static Coordinates get(int x, int y) {
+    public static Coordinates getLimited(int x, int y) {
+        if (x>=coordinates.length)
+            x = coordinates.length-1;
+        if (y>=coordinates[0].length)
+            y = coordinates[0].length-1;
+        if (y< 0)
+            y = 0;
+        if (x< 0)
+            x = 0;
+        return get(x, y);
+    }
+        public static Coordinates get(int x, int y) {
         Coordinates c = coordinates[x][y];
         if (c == null) {
             c = new Coordinates(true, x, y);
@@ -207,6 +228,38 @@ public class Coordinates implements Serializable {
 
     public static void initCache(int w, int h) {
         coordinates = new Coordinates[w][h];
+    }
+
+    public static void setModuleHeight(int moduleHeight) {
+        Coordinates.moduleHeight = moduleHeight;
+    }
+
+    public static void setModuleWidth(int moduleWidth) {
+        Coordinates.moduleWidth = moduleWidth;
+    }
+
+    public static int getFloorWidth() {
+        return floorWidth;
+    }
+
+    public static void setFloorWidth(int floorWidth) {
+        Coordinates.floorWidth = floorWidth;
+    }
+
+    public static int getFloorHeight() {
+        return floorHeight;
+    }
+
+    public static int getModuleWidth() {
+        return moduleWidth;
+    }
+
+    public static int getModuleHeight() {
+        return moduleHeight;
+    }
+
+    public static void setFloorHeight(int floorHeight) {
+        Coordinates.floorHeight = floorHeight;
     }
 
     protected void checkInvalid() {
@@ -238,7 +291,9 @@ public class Coordinates implements Serializable {
 
     @Override
     public String toString() {
-        return x + StringMaster.getCoordinatesSeparator() + y
+        if (x<0 || y<0)
+            return x + Strings.COORDINATES_SEPARATOR_ALT + y;
+        return x + Strings.COORDINATES_SEPARATOR + y
                 // + (z != 0 ? "; sublevel (Z): " + z : "")
                 ;
     }
@@ -259,11 +314,11 @@ public class Coordinates implements Serializable {
     }
 
     public Coordinates invertY() {
-        return get(x, GuiManager.getBF_CompDisplayedCellsY() - 1 - y);
+        return get(x, floorHeight - 1 - y);
     }
 
     public Coordinates invertX() {
-        return get(GuiManager.getBF_CompDisplayedCellsX() - 1 - x, y);
+        return get(floorWidth - 1 - x, y);
     }
 
     public Coordinates invert() {
@@ -339,7 +394,7 @@ public class Coordinates implements Serializable {
             }
         c = create(allowInvalid, x1, y1);
         map.put(direction, c);
-       BattleFieldManager.getInstance().getAdjacenctDirectionMap().put(this, map);
+        BattleFieldManager.getInstance().getAdjacenctDirectionMap().put(this, map);
         return c;
     }
 
@@ -506,16 +561,16 @@ public class Coordinates implements Serializable {
         return x;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
     public int getY() {
         return y;
     }
 
+    public void setX(int x) {
+        throw new UnsupportedOperationException();
+    }
+
     public void setY(int y) {
-        this.y = y;
+        throw new UnsupportedOperationException();
     }
 
     public int getXorY(boolean xOrY) {
@@ -540,7 +595,12 @@ public class Coordinates implements Serializable {
     }
 
     public Coordinates getOffset(int x, int y) {
-        return get(Math.max(0, getX()  + x), Math.max(0, getY() + y));
+        try {
+            return get(Math.max(0, getX() + x), Math.max(0, getY() + y));
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        return get(0,0);
     }
 
     public Coordinates getOffset(Coordinates coordinates) {
@@ -578,10 +638,23 @@ public class Coordinates implements Serializable {
     }
 
     public void flipY(int h) {
-        setY(h-y);
+        setY(h - y);
     }
 
     public void flipX(int w) {
-        setX(w-x);
+        setX(w - x);
+    }
+
+    @Override
+    public int compareTo(Coordinates c) {
+        int val = -getX() * 10 - getY();
+        int val2 = -c.getX() * 10 - c.getY();
+        if (val>val2) {
+            return 1;
+        }
+        if (val<val2) {
+            return -1;
+        }
+        return 0;
     }
 }

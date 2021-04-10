@@ -3,6 +3,7 @@ package main.elements.costs;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
+import main.entity.obj.Obj;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.ContainerUtils;
@@ -17,7 +18,7 @@ import java.util.Map;
 public class Costs extends CostImpl {
 
     private List<Cost> costs;
-    private List<String> reasons = new ArrayList<>();
+    private final List<String> reasons = new ArrayList<>();
 
     public Costs(CostRequirements requirements, Cost... costs) {
         this(requirements, new ArrayList<>(Arrays.asList(costs)));
@@ -181,6 +182,7 @@ public class Costs extends CostImpl {
                 result &= cost.pay(this.ref);
             }
         }
+
         game.fireEvent(new Event(STANDARD_EVENT_TYPE.COSTS_HAVE_BEEN_PAID, ref));
         return result;
     }
@@ -266,4 +268,8 @@ public class Costs extends CostImpl {
 
     }
 
+    public boolean canBePaid(Obj unit) {
+        return        canBePaid(unit.getRef());
+
+    }
 }

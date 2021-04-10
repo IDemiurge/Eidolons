@@ -7,7 +7,6 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.log.LogMaster;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -17,6 +16,7 @@ import java.util.Map;
 //it's actually ENTITY_TYPE
 
 public enum DC_TYPE implements OBJ_TYPE {
+    //don't change the order!
     UNITS("units", G_PROPS.ASPECT, 0, G_PROPS.UNIT_GROUP),
     SPELLS("spells", G_PROPS.ASPECT, 1, G_PROPS.SPELL_GROUP),
     CHARS("chars",
@@ -60,14 +60,12 @@ public enum DC_TYPE implements OBJ_TYPE {
     DEITIES("deities", G_PROPS.GROUP, 14, G_PROPS.ASPECT),
 //    ENCOUNTERS("encounters", G_PROPS.ENCOUNTER_GROUP, 15, G_PROPS.ENCOUNTER_SUBGROUP),
     ENCOUNTERS("encounters", G_PROPS.ENCOUNTER_GROUP, 15, G_PROPS.ENCOUNTER_TYPE),
-    DUNGEONS("dungeons", G_PROPS.GROUP, 16),
+    FLOORS("dungeons", G_PROPS.GROUP, 16),
     PARTY("party", G_PROPS.GROUP, 17),
     TERRAIN("terrain", G_PROPS.GROUP, 18, false),
-    //    FACTIONS("factions", G_PROPS.FACTION_GROUP, 19),
-    ARCADES("arcades", G_PROPS.GROUP, 20),
 
+    BOSS("boss", G_PROPS.BOSS_GROUP,19, G_PROPS.BOSS_TYPE),
     SCENARIOS("scenarios", G_PROPS.GROUP, 21),
-    MISSIONS("missions", G_PROPS.GROUP, 22),
     PLACES("places", G_PROPS.GROUP, 23),
     DIALOGUE("dialogue", G_PROPS.GROUP, 24) {
         public boolean isTreeEditType() {
@@ -75,6 +73,8 @@ public enum DC_TYPE implements OBJ_TYPE {
         }
     },
     ACTORS("actors", G_PROPS.GROUP, 25), LORD("lord", G_PROPS.GROUP, 26 ),
+
+    QUEST("quest", G_PROPS.QUEST_GROUP, 27),
 //    this is macro!!! SHOPS("shops", G_PROPS.GROUP, 26),
 
     //    CHARACTER("character", G_PROPS.GROUP, 32),
@@ -87,13 +87,13 @@ public enum DC_TYPE implements OBJ_TYPE {
     META("meta", G_PROPS.GROUP, -1, true),
     ALL("all");
 
-    private static Map<String, DC_TYPE> searchMap;
+    private static final Map<String, DC_TYPE> searchMap;
 
     static {
 TERRAIN.omitted=true;
 ACTORS.omitted=true;
 JEWELRY.omitted=true;
-DUNGEONS.omitted=true;
+FLOORS.omitted=true;
 DIALOGUE.omitted=true;
 PLACES.omitted=true;
 SCENARIOS.omitted=true;
@@ -102,7 +102,6 @@ SCENARIOS.omitted=true;
         GARMENT.battlecraft = false;
 //        TRAP.battlecraft = false;
         ENCOUNTERS.battlecraft = false;
-        ARCADES.battlecraft = false;
 
         final DC_TYPE[] values = DC_TYPE.values();
         searchMap = new HashMap<>(values.length, 1f);
@@ -181,17 +180,7 @@ SCENARIOS.omitted=true;
         if (s == null) {
             return null;
         }
-        DC_TYPE type = null;
-       /* try {
-            type = valueOf(s.toUpperCase().replace(" ", "_"));
-        } catch (Exception e) {
-        }*/
-        type = getFromName(s);
-        if (type == null) {
-            LogMaster.log(0, "OBJ_TYPE not found: " + s);
-            // throw new RuntimeException();
-        }
-        return type;
+        return  getFromName(s);
     }
 
     public static int getCode(String objType) {

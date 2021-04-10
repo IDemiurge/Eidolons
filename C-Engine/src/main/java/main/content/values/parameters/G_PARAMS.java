@@ -32,15 +32,15 @@ public enum G_PARAMS implements PARAMETER {
     private boolean lowPriority = false;
     private String name;
     private String shortName;
-    private String fullName;
+    private final String fullName;
     private boolean superLowPriority;
     private boolean highPriority;
-    private String description;
+    private final String description;
     private Map<OBJ_TYPE, Object> defaultValuesMap;
     private String iconPath;
 
     G_PARAMS(String description, boolean dynamic, String... s) {
-        this.setName(StringMaster.getWellFormattedString(name()));
+        this.setName(StringMaster.format(name()));
         this.fullName = name();
         this.shortName = name;
         this.description = description;
@@ -61,17 +61,6 @@ public enum G_PARAMS implements PARAMETER {
         return defaultValuesMap;
     }
 
-    @Override
-    public void addSpecialDefault(OBJ_TYPE type, Object value) {
-        getDefaultValuesMap().put(type, value);
-
-    }
-
-    @Override
-    public Object getSpecialDefault(OBJ_TYPE type) {
-        return getDefaultValuesMap().get(type);
-
-    }
 
     @Override
     public String toString() {
@@ -143,29 +132,10 @@ public enum G_PARAMS implements PARAMETER {
         return false;
     }
 
-    @Override
-    public boolean isSuperLowPriority() {
-        return superLowPriority;
-    }
-
-    @Override
-    public void setSuperLowPriority(boolean superLowPriority) {
-        this.superLowPriority = superLowPriority;
-    }
 
     @Override
     public boolean isMastery() {
         return false;
-    }
-
-    @Override
-    public boolean isHighPriority() {
-        return highPriority;
-    }
-
-    @Override
-    public void setHighPriority(boolean highPriority) {
-        this.highPriority = highPriority;
     }
 
     public String getShortName() {
@@ -198,5 +168,15 @@ public enum G_PARAMS implements PARAMETER {
     @Override
     public void setIconPath(String iconPath) {
         this.iconPath = iconPath;
+    }
+
+    @Override
+    public void setDevOnly(boolean devOnly) {
+
+    }
+
+    @Override
+    public boolean isDevOnly() {
+        return false;
     }
 }

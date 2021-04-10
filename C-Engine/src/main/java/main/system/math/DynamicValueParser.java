@@ -3,8 +3,9 @@ package main.system.math;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.system.auxiliary.Loop;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.log.LogMaster;
 import main.system.text.TextParser;
 
@@ -29,8 +30,8 @@ public class DynamicValueParser {
         formula = formula.toUpperCase();
         Loop.startLoop(1000);
         while (!Loop.loopEnded()) {
-            if (!formula.contains(StringMaster.FORMULA_REF_OPEN_CHAR)) {
-                if (!formula.contains(StringMaster.FORMULA_FUNC_OPEN_CHAR)) {
+            if (!formula.contains(Strings.FORMULA_REF_OPEN_CHAR)) {
+                if (!formula.contains(Strings.FORMULA_FUNC_OPEN_CHAR)) {
                     break;
                 }
             }
@@ -38,21 +39,21 @@ public class DynamicValueParser {
 
             for (char ch : charArray) {
 
-                if (ch == StringMaster.FORMULA_FUNC_OPEN_CHAR.charAt(0)) {
+                if (ch == Strings.FORMULA_FUNC_OPEN_CHAR.charAt(0)) {
 
                     String func_substring = StringMaster.getSubString(formula,
-                     StringMaster.FORMULA_FUNC_OPEN_CHAR,
-                     StringMaster.FORMULA_FUNC_CLOSE_CHAR);
+                     Strings.FORMULA_FUNC_OPEN_CHAR,
+                     Strings.FORMULA_FUNC_CLOSE_CHAR);
                     String replacement = FunctionManager.evaluateFunction(ref, func_substring);
                     formula = StringMaster.replaceFirst(formula, func_substring, replacement);
                     break;
 
                 }
 
-                if (ch == StringMaster.FORMULA_REF_OPEN_CHAR.charAt(0)) {
+                if (ch == Strings.FORMULA_REF_OPEN_CHAR.charAt(0)) {
                     String ref_substring = StringMaster.getSubString(formula,
-                     StringMaster.FORMULA_REF_OPEN_CHAR,
-                     StringMaster.FORMULA_REF_CLOSE_CHAR, true);
+                     Strings.FORMULA_REF_OPEN_CHAR,
+                     Strings.FORMULA_REF_CLOSE_CHAR, true);
 
                     int result = 0;
                     try {
@@ -77,8 +78,8 @@ public class DynamicValueParser {
         String obj_ref;
         String param;
         boolean base = false;
-        if (ref_substring.contains(StringMaster.FORMULA_BASE_CHAR)) {
-            ref_substring = ref_substring.replace(StringMaster.FORMULA_BASE_CHAR, "");
+        if (ref_substring.contains(Strings.FORMULA_BASE_CHAR)) {
+            ref_substring = ref_substring.replace(Strings.FORMULA_BASE_CHAR, "");
             base = true;
         }
         if (this.ref != null) {

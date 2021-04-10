@@ -2,13 +2,15 @@ package main.level_editor.backend;
 
 
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
-import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureMaster;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.StructMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.module.dungeoncrawl.dungeon.LevelStruct;
+import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
 import main.game.bf.Coordinates;
+import main.level_editor.backend.display.LE_DisplayHandler;
+import main.level_editor.backend.functions.advanced.IPlatformHandlerImpl;
 import main.level_editor.backend.functions.advanced.LE_AdvFuncs;
 import main.level_editor.backend.functions.io.LE_DataHandler;
-import main.level_editor.backend.functions.io.LE_XmlMaster;
+import main.level_editor.backend.functions.io.LE_XmlHandler;
 import main.level_editor.backend.functions.mapping.LE_TransitHandler;
 import main.level_editor.backend.functions.mouse.LE_MouseHandler;
 import main.level_editor.backend.functions.palette.PaletteHandlerImpl;
@@ -26,18 +28,20 @@ import main.level_editor.backend.handlers.structure.LE_MapHandler;
 import main.level_editor.backend.handlers.structure.LE_ModuleHandler;
 import main.level_editor.backend.handlers.structure.LE_StructureHandler;
 import main.level_editor.backend.handlers.structure.layer.LayerHandlerImpl;
+import main.level_editor.backend.metadata.decor.LE_DecorHandler;
 import main.level_editor.backend.metadata.object.LE_EntityHandler;
 import main.level_editor.backend.metadata.script.LE_ScriptHandler;
 import main.level_editor.backend.sim.LE_GameSim;
 import main.level_editor.backend.sim.LE_IdManager;
-import main.level_editor.backend.struct.level.Floor;
+import main.level_editor.backend.struct.level.LE_Floor;
 import main.level_editor.gui.grid.LE_CameraHandler;
 import main.level_editor.gui.stage.LE_KeyHandler;
 import main.system.data.DataUnit;
 
+import java.util.Set;
 import java.util.function.Function;
 
-public class LE_Handler {
+public abstract class LE_Handler {
 
     protected final LE_Manager manager;
 
@@ -55,38 +59,59 @@ public class LE_Handler {
     public void load() {
     }
 
-    public <T extends Enum<T>> void editData(DataUnit<T> data){
+    protected Set<Coordinates> getCoordinates() {
+        return getSelectionHandler().getSelection().getCoordinates();
+    }
+    protected LE_Manager.LE_LAYER getLayer() {
+        return manager.getLayer();
+    }
+
+
+    public <T extends Enum<T>> void editData(DataUnit<T> data) {
         getEditHandler().editDataUnit(data);
     }
+
     protected boolean isLoaded() {
         return manager.isLoaded();
     }
-    public String getDataMapString(Function<Integer, Boolean> idFilter) {
+
+    public String getDataMapString(Function<Integer, Boolean> idFilter, Function<Coordinates, Boolean> coordinateFilter) {
         return "";
     }
 
-    public String getXml(Function<Integer, Boolean> idFilter) {
+    public String getXml(Function<Integer, Boolean> idFilter, Function<Coordinates, Boolean> coordinateFilter) {
         return "";
     }
 
-    protected StructureMaster getStructureMaster() {
-        return getGame().getMetaMaster().getDungeonMaster().getStructureMaster();
+    protected StructMaster getStructureMaster() {
+        return getGame().getMetaMaster().getDungeonMaster().getStructMaster();
+    }
+
+    public IPlatformHandlerImpl getPlatformHandler() {
+        return manager.getPlatformHandler();
     }
 
     public LE_EntityHandler getEntityHandler() {
         return manager.getEntityHandler();
     }
 
-    public LE_XmlMaster getXmlMaster() {
+    public LE_XmlHandler getXmlMaster() {
         return manager.getXmlMaster();
     }
 
     protected LevelStruct getDungeonLevel() {
-        return getGame().getDungeonMaster().getDungeonWrapper();
+        return getGame().getDungeonMaster().getFloorWrapper();
+    }
+
+    public LE_DecorHandler getDecorHandler() {
+        return manager.getDecorHandler();
     }
 
     public LE_DialogHandler getDialogHandler() {
         return manager.getDialogHandler();
+    }
+    public LE_DisplayHandler getDisplayHandler() {
+        return manager.getDisplayHandler();
     }
 
     public LE_AiHandler getAiHandler() {
@@ -118,7 +143,7 @@ public class LE_Handler {
     }
 
     public LE_StructureHandler getStructureHandler() {
-        return manager.getStructureManager();
+        return manager.getStructureHandler();
     }
 
     public LE_ModuleHandler getModuleHandler() {
@@ -153,9 +178,10 @@ public class LE_Handler {
         return manager.getFloor().getWrapper();
     }
 
-    public Floor getFloor() {
-        return manager.getFloor() ;
+    public LE_Floor getFloor() {
+        return manager.getFloor();
     }
+
     public EditorModel getModel() {
         return getModelManager().getModel();
     }
@@ -188,4 +214,11 @@ public class LE_Handler {
         return manager.getMenuHandler();
     }
 
+    public void saved() {
+
+    }
+
+    public String getPreObjXml(Function<Integer, Boolean> idFilter, Function<Coordinates, Boolean> coordinateFilter) {
+        return "";
+    }
 }

@@ -5,7 +5,7 @@ import main.content.values.parameters.PARAMETER;
 import main.data.ability.construct.VariableManager.AUTOVAR;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 
 public class Parameter extends DynamicValue {
     private PARAMETER param;
@@ -69,7 +69,7 @@ public class Parameter extends DynamicValue {
         if (entity == null) {
             return 0;
         }
-        if (value_string.equalsIgnoreCase(StringMaster.MASTERY)) {
+        if (value_string.equalsIgnoreCase(Strings.MASTERY)) {
             return (int) AUTOVAR.MASTERY.evaluate(entity, null);
             // return FunctionManager.FUNCTIONS.AV.evaluate(ref, value_ref, );
         } else {

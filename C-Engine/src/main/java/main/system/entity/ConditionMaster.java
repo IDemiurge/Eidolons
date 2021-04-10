@@ -7,7 +7,6 @@ import main.content.OBJ_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
-import main.content.values.parameters.G_PARAMS;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -22,10 +21,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.system.auxiliary.ClassMaster;
-import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 import main.system.math.PositionMaster;
@@ -60,7 +56,7 @@ public class ConditionMaster {
 
     public static Condition getNotDeadCondition() {
         return new NotCondition(getStatusMatchCondition(StringMaster
-                .getWellFormattedString(UnitEnums.STATUS.DEAD.name())));
+                .format(UnitEnums.STATUS.DEAD.name())));
     }
 
     public static Condition getAliveAndConsciousFilterCondition() {
@@ -112,7 +108,7 @@ public class ConditionMaster {
 
     public static Condition getPropCondition(String obj_ref, PROPERTY prop, String v, boolean base) {
         if (base) {
-            v = StringMaster.FORMULA_BASE_CHAR + v;
+            v = Strings.FORMULA_BASE_CHAR + v;
         }
         return new StringComparison("{" + obj_ref + "_" + prop.getName() + "}", v, false);
     }
@@ -261,22 +257,6 @@ public class ConditionMaster {
         return getDistanceFilterCondition(SOURCE, 1);
     }
 
-    public static Condition getMoraleAffectedFilterCondition() {
-        return getMoraleAffectedCondition(KEYS.MATCH);
-
-    }
-
-    public static Condition getPassiveRetainCondition() {
-        return new StringComparison("{SOURCE_PASSIVES}", "{ABILITY_NAME}", false);
-    }
-
-    public static Condition getGraveConditions() {
-        Conditions c = new Conditions();
-        c.add(getTYPECondition(DC_TYPE.TERRAIN));
-        c.add(new NumericCondition("{MATCH_" + G_PARAMS.N_OF_CORPSES + "}", "0", false));
-        return c;
-    }
-
     public static Conditions getClaimedBfObjConditions(String BF_OBJECT_TYPE) {
         Conditions conditions = new Conditions();
         conditions.add(ConditionMaster.getPropCondition("MATCH", G_PROPS.BF_OBJECT_TYPE,
@@ -340,7 +320,7 @@ public class ConditionMaster {
     }
 
     public static Condition getParamCondition(String paramName, String amount, boolean base) {
-        return new NumericCondition(false, "{" + ((base) ? StringMaster.BASE_CHAR : "") + SOURCE
+        return new NumericCondition(false, "{" + ((base) ? Strings.BASE_CHAR : "") + SOURCE
                 + "_" + paramName + "}", amount);
     }
 
@@ -379,10 +359,10 @@ public class ConditionMaster {
     public static Conditions toConditions(String string) {
         Conditions conditions = new Conditions();
         for (String conditionString :
-                ContainerUtils.openContainer(string, StringMaster.AND)) {
+                ContainerUtils.openContainer(string, Strings.AND)) {
             Condition c;
-            if (conditionString.contains(StringMaster.OR)) {
-                String[] parts = conditionString.split(StringMaster.OR);
+            if (conditionString.contains(Strings.OR)) {
+                String[] parts = conditionString.split(Strings.OR);
                 c = new OrConditions();
                 for (String part : parts) {
                     Condition condition = parseCondition(part);
@@ -437,8 +417,8 @@ public class ConditionMaster {
 
     private static String parseArg(String arg) {
         if (TextParser.isRef(arg)) { // TODO sometimes it's SOURCE!!!
-            if (!arg.contains(StringMaster.FORMULA_REF_SEPARATOR)) {
-                arg = KEYS.MATCH.toString() + StringMaster.FORMULA_REF_SEPARATOR
+            if (!arg.contains(Strings.FORMULA_REF_SEPARATOR)) {
+                arg = KEYS.MATCH.toString() + Strings.FORMULA_REF_SEPARATOR
                         + StringMaster.cropRef(arg);
                 arg = StringMaster.wrapInCurlyBraces(arg);
             }
@@ -457,7 +437,7 @@ public class ConditionMaster {
             }
         }
         if (result) {
-            prop = KEYS.MATCH.toString() + StringMaster.FORMULA_REF_SEPARATOR + prop;
+            prop = KEYS.MATCH.toString() + Strings.FORMULA_REF_SEPARATOR + prop;
         }
         return prop;
     }
@@ -622,7 +602,7 @@ public class ConditionMaster {
                 break;
             case NAME_TARGET:
                 return new PropCondition(G_PROPS.NAME, KEYS.TARGET, str1, true);
-            case MAINHERO:
+            case MAIN_HERO:
                 break;
             case NAME_SOURCE:
                 return new PropCondition(G_PROPS.NAME, KEYS.SOURCE, str1, true);
@@ -685,7 +665,7 @@ public class ConditionMaster {
         NUMERIC_LESS("numLess", "numeric less", "less"),
         ITEM("item", "slot"),
         INVALID_ABILITIES("item", "slot"),
-        MAINHERO("pc", "mainHero", "MAIN_HERO"),
+        MAIN_HERO("pc", "mainHero", "MAIN_HERO"),
         NAME_SOURCE("name", "source", "sourceName"),
         NAME_TARGET("target"),
         NAME_ACTIVE("active"),
@@ -695,7 +675,7 @@ public class ConditionMaster {
         COORDINATES("coordinates","coord"),
         CAN_ACTIVATE("cost", "can activate", "can pay"), SPOT("spot"), FACING();
 
-        private String[] names;
+        private final String[] names;
 
         CONDITION_TEMPLATES(String... names) {
             this.names = names;

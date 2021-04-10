@@ -3,8 +3,9 @@ package main.swing.components;
 import main.swing.generic.components.misc.GraphicComponent;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.STD_IMAGES;
+import main.system.sound.AudioEnums;
+import main.system.sound.AudioEnums.STD_SOUNDS;
 import main.system.sound.SoundMaster;
-import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import javax.swing.*;
 import java.awt.*;
@@ -65,7 +66,7 @@ public class ImageButton extends GraphicComponent implements MouseListener {
     }
 
     protected STD_SOUNDS getDisabledClickSound() {
-        return (STD_SOUNDS.CLICK_BLOCKED);
+        return (AudioEnums.STD_SOUNDS.CLICK_BLOCKED);
     }
 
     protected void playClickSound() {
@@ -74,7 +75,7 @@ public class ImageButton extends GraphicComponent implements MouseListener {
     }
 
     protected STD_SOUNDS getClickSound() {
-        return (STD_SOUNDS.MOVE);
+        return (AudioEnums.STD_SOUNDS.MOVE);
     }
 
     @Override

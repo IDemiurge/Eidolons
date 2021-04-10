@@ -11,7 +11,7 @@ import main.game.core.game.Game;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.images.ImageManager.BORDER;
-import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class WorkspaceMaster {
     private static boolean implAllowed;
     private static boolean focusAllowed;
     private static boolean fixAllowed;
-    private static List<String> completeSkillSubgroups = new ListMaster<String>()
+    private static final List<String> completeSkillSubgroups = new ListMaster<String>()
      .getList("Axe", "Blade", "Polearm", "Blunt", "Two handed",
       "Dual Wielding", "Armorer", "Defense", "Meditation", "Discipline",
 
@@ -129,8 +129,8 @@ public class WorkspaceMaster {
         if (ws != null) {
             switch (ws) {
                 case IGG_TODO:
-                    if (CoreEngine.isIggDemo()) {
-                     if (CoreEngine.isSkillTestMode())
+                    if (Flags.isIggDemo()) {
+                     if (Flags.isSkillTestMode())
                         return true;
 
                     }

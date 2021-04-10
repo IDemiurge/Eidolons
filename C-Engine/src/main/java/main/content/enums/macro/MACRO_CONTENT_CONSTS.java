@@ -26,9 +26,9 @@ public class MACRO_CONTENT_CONSTS {
         public static DAY_TIME[] values = values();
         //8, 12, 16, 20, 24, 4
         int hour;
-        private boolean undersunVisible;
-        private boolean sunVisible;
-        private String logEntry;
+        private final boolean undersunVisible;
+        private final boolean sunVisible;
+        private final String logEntry;
         private boolean night;
 
         DAY_TIME(boolean night, int hour, boolean undersunVisible, boolean sunVisible, String logEntry) {
@@ -41,7 +41,7 @@ public class MACRO_CONTENT_CONSTS {
 
 
         public String getText() {
-            return StringMaster.getWellFormattedString(toString());
+            return StringMaster.format(toString());
         }
 
         public boolean isUndersunVisible() {

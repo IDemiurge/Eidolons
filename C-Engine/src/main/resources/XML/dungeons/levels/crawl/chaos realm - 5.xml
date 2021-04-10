@@ -1,0 +1,73 @@
+<Floor><DATA>wall_type=volcanic wall;background=img\main\background\eldritch red.png;width=83;name=Chaos Realm;cell_type=natural;height=81;</DATA><MODULES>
+<Black_Lake><DATA>wall_type=jagged stone wall;width_buffer=3;border_width=1;height_buffer=3;origin=0-0;name=Black Lake;width=37;cell_type=natural;height=31;border_type=irregular;</DATA>
+
+<OVERLAY_DIRECTIONS></OVERLAY_DIRECTIONS>
+
+
+<ID_MAP></ID_MAP>
+<OBJ_IDS></OBJ_IDS>
+
+<DATA_MAPS><encounters></encounters><custom_types></custom_types>
+</DATA_MAPS>
+
+
+<CUSTOM_TYPE_DATA></CUSTOM_TYPE_DATA>
+<ENCOUNTER_AI_GROUPS></ENCOUNTER_AI_GROUPS><CUSTOM_AI_GROUPS></CUSTOM_AI_GROUPS>
+<SCRIPT_DATA></SCRIPT_DATA>
+<TRANSIT_IDS></TRANSIT_IDS>
+
+
+<Zones><Zone><DATA>name=The Warrens;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=The Chism;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Gateway Ruins;</DATA><Blocks></Blocks></Zone></Zones>
+
+<BORDERS>42-34;42-33;42-31;42-27;42-26;42-14;42-12;42-11;42-8;42-6;42-5;41-36;39-4;37-4;36-36;36-4;35-4;34-4;33-4;26-36;24-4;22-36;22-4;21-36;21-4;20-4;19-36;19-4;16-4;15-36;14-4;13-36;12-36;11-4;10-36;10-4;8-36;6-36;6-4;5-36;4-35;4-33;4-31;4-29;4-27;4-24;4-23;4-22;4-21;4-20;4-17;4-15;4-12;</BORDERS><PLATFORM_DATA></PLATFORM_DATA>
+<coordinates_void>42-30;42-29;42-28;42-25;42-24;42-22;42-21;42-19;42-18;42-17;42-16;42-13;42-9;42-7;42-4;40-36;40-4;39-36;38-36;37-36;34-36;33-36;32-36;32-4;31-36;31-4;30-36;30-4;29-36;29-4;28-36;28-4;27-36;27-4;26-4;25-36;24-36;23-36;23-4;20-36;18-36;18-4;17-36;17-4;11-36;9-36;9-4;7-36;7-4;4-36;4-30;4-28;4-26;4-25;4-19;4-18;4-16;4-14;4-13;4-11;4-9;4-8;4-7;4-6;4-5;4-4;</coordinates_void>
+</Black_Lake>
+
+<Spiral_Maze><DATA>wall_type=bone wall;width_buffer=3;border_width=1;height_buffer=3;origin=0-39;name=Spiral Maze;width=37;cell_type=octagonal;height=31;border_type=chism;</DATA>
+
+<OVERLAY_DIRECTIONS></OVERLAY_DIRECTIONS>
+
+
+<ID_MAP></ID_MAP>
+<OBJ_IDS></OBJ_IDS>
+
+<DATA_MAPS><encounters></encounters><custom_types></custom_types>
+</DATA_MAPS>
+
+
+<CUSTOM_TYPE_DATA></CUSTOM_TYPE_DATA>
+<ENCOUNTER_AI_GROUPS></ENCOUNTER_AI_GROUPS><CUSTOM_AI_GROUPS></CUSTOM_AI_GROUPS>
+<SCRIPT_DATA></SCRIPT_DATA>
+<TRANSIT_IDS></TRANSIT_IDS>
+
+
+<Zones><Zone><DATA>name=Labyrinth;</DATA><Blocks><Block><DATA>wall_type=jagged stone wall;origin=6-43;width=1;name=Platform N0;cell_type=diamond;height=1;room_type=PLATFORM;</DATA><Missing></Missing></Block></Blocks></Zone><Zone><DATA>name=Soul Altar;</DATA><Blocks></Blocks></Zone></Zones>
+
+<BORDERS>42-75;42-74;42-60;42-46;42-45;42-43;4-73;4-71;4-70;4-66;4-65;4-55;4-50;4-49;4-46;4-45;</BORDERS><PLATFORM_DATA>acceleration:15;cells:6-43;;destination:15-43;name:Platform N0;max_speed:150;min_speed:50;cell_type:diamond;waitPeriod:5;|</PLATFORM_DATA>
+<coordinates_void>41-75;41-43;40-75;40-43;39-75;39-43;38-75;38-43;37-75;37-43;36-75;36-43;35-75;35-43;34-75;34-43;33-75;33-43;32-75;32-43;31-75;31-43;30-75;30-43;29-75;29-43;28-75;28-43;27-75;27-43;26-75;26-43;25-75;25-43;24-75;24-43;23-75;23-43;22-75;22-43;21-75;21-43;20-75;20-43;19-75;19-43;18-75;18-43;17-75;17-43;16-75;16-43;15-75;15-43;14-75;14-43;13-75;13-43;12-75;12-43;11-75;11-43;10-75;10-43;9-75;9-43;8-75;8-43;7-75;7-43;6-75;6-43;5-75;5-43;</coordinates_void>
+</Spiral_Maze>
+
+<Void_Promenade><DATA>wall_type=old stone wall;width_buffer=3;border_width=1;height_buffer=3;origin=45-0;name=Void Promenade;width=25;cell_type=natural;height=49;border_type=chism;</DATA>
+
+<OVERLAY_DIRECTIONS></OVERLAY_DIRECTIONS>
+
+
+<ID_MAP></ID_MAP>
+<OBJ_IDS></OBJ_IDS>
+
+<DATA_MAPS><encounters></encounters><custom_types></custom_types>
+</DATA_MAPS>
+
+
+<CUSTOM_TYPE_DATA></CUSTOM_TYPE_DATA>
+<ENCOUNTER_AI_GROUPS></ENCOUNTER_AI_GROUPS><CUSTOM_AI_GROUPS></CUSTOM_AI_GROUPS>
+<SCRIPT_DATA></SCRIPT_DATA>
+<TRANSIT_IDS></TRANSIT_IDS>
+
+
+<Zones><Zone><DATA>name=Floating Corridors;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Control Center;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Ledge;</DATA><Blocks></Blocks></Zone></Zones>
+
+<BORDERS>75-53;75-28;75-27;75-26;75-25;75-24;75-23;75-18;75-6;75-5;75-4;49-52;49-50;49-47;49-46;49-40;49-39;49-33;49-32;49-29;49-28;49-27;49-24;49-22;49-11;49-10;49-9;49-8;49-6;49-5;</BORDERS><PLATFORM_DATA></PLATFORM_DATA>
+<coordinates_void>74-54;74-4;73-54;73-4;72-54;72-4;71-54;71-4;70-54;70-4;69-54;69-4;68-54;68-4;67-54;67-4;66-54;66-4;65-54;65-4;64-54;64-4;63-54;63-4;62-54;62-4;61-54;61-4;60-54;60-4;59-54;59-4;58-54;58-4;57-54;57-4;56-54;56-4;55-54;55-4;54-54;54-4;53-54;53-4;52-54;52-4;51-54;51-4;50-54;50-4;</coordinates_void>
+</Void_Promenade>
+</MODULES></Floor>

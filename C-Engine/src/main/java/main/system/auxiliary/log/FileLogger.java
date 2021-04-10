@@ -8,7 +8,7 @@ import java.util.List;
  */
 public interface FileLogger {
 
-    void appendSpecialLog(SPECIAL_LOG log, String string);
+    void appendAnalyticsLog(SPECIAL_LOG log, String string);
 
 
     void writeLog(SPECIAL_LOG log);
@@ -19,7 +19,7 @@ public interface FileLogger {
         COMBAT(LOG_CHANNEL.GAME_INFO),
         INPUT, MAIN(), EXCEPTIONS,;
 
-        private List<LOG_CHANNEL> channels;
+        private final List<LOG_CHANNEL> channels;
 
         SPECIAL_LOG(LOG_CHANNEL... channels) {
             this.channels = Arrays.asList(channels);

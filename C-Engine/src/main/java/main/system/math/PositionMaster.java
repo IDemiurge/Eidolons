@@ -1,13 +1,11 @@
 package main.system.math;
 
-import com.badlogic.gdx.math.Vector2;
 import main.entity.obj.Obj;
 import main.game.bf.BattleFieldGrid;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.swing.XLine;
 import main.system.auxiliary.secondary.Bools;
-import main.system.graphics.GuiManager;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +14,7 @@ import java.util.Map;
 public class PositionMaster   {
 
     private static Double[][] distances = new Double[50][50];
-    private static Map<Integer, Double[][]> cache = new HashMap<>();
+    private static final Map<Integer, Double[][]> cache = new HashMap<>();
 
     public static Coordinates getMiddleCoordinate(FACING_DIRECTION side) {
         switch (side) {
@@ -39,11 +37,11 @@ public class PositionMaster   {
     }
 
     public static int getX() {
-        return GuiManager.getCurrentLevelCellsX();
+        return Coordinates.getFloorWidth();
     }
 
     public static int getY() {
-        return GuiManager.getCurrentLevelCellsY();
+        return Coordinates.getFloorHeight();
     }
 
     public static boolean noObstaclesInLine(Coordinates c1, Coordinates c2, BattleFieldGrid grid,
@@ -279,13 +277,20 @@ public class PositionMaster   {
     }
 
     public static float getAngle(Coordinates c, Coordinates c2) {
-        return new Vector2(c.x, c.y).angle(new Vector2(c2.x, c2.y));
-
+        int x_diff = getX_Diff(c, c2);
+        if (x_diff==0) {
+            return 90;
+        }
+        int y_diff = getY_Diff(c, c2);
+        if (y_diff==0) {
+            return  0;
+        }
+        return x_diff / y_diff * 360;
     }
 
-    public static void initDistancesCache() {
-        initDistancesCache(null, GuiManager.getBF_CompDisplayedCellsX(),
-                GuiManager.getBF_CompDisplayedCellsY());
+    public static void initDistancesCache(int w, int h) {
+        initDistancesCache(null, w,
+                h);
     }
 
     public static void initDistancesCache(Integer id, int w, int h) {
@@ -306,7 +311,7 @@ public class PositionMaster   {
         return getY() - y - 1;
     }
 
-    public enum SHAPES {
+    public enum SHAPE {
         CONE, RECTANGLE {
             public boolean isRemoveBase() {
                 return true;

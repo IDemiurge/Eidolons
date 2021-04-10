@@ -21,33 +21,79 @@ public class LE_MenuHandler extends LE_Handler {
                 getDataHandler().openFloor();
                 //how to dispose safely?
                 break;
+            case save_version:
+                getDataHandler().saveVersion();
+                break;
+            case save_as:
+                getDataHandler().saveAs();
+                break;
+            case save_module:
+                getDataHandler().saveModule();
+                break;
+            case save_modules:
+                getDataHandler().saveModulesSeparately();
+                break;
             case save_all:
 //                LevelEditor.getCurrent()
-                getDataHandler().saveFloor();
+                getDataHandler().saveAll();
                 break;
             case clone:
                 //floor
+                FloorManager.cloneFloor();
+                break;
+            case toggle_all:
+                getModel().getDisplayMode().toggleAll();
+                break;
+            case colors:
+                getModel().getDisplayMode().toggleColors();
+            case coordinates:
+                getModel().getDisplayMode().toggleCoordinates();
+                break;
+            case scripts:
+                getModel().getDisplayMode().toggleScripts();
+                break;
+            case lighting:
+                getModel().getDisplayMode().toggleLighting();
+                break;
+            case ai_info:
+                getModel().getDisplayMode().toggleAi();
+                break;
+            case decor_info:
+                getModel().getDisplayMode().toggleDecorText();
+                break;
         }
     }
 
 
-    public enum FUNCTION_BUTTONS{
+    public enum FUNCTION_BUTTONS {
         add_dungeon,
         add_floor,
         add_module,
         edit_module, resize, swap_modules, remove_module,
         edit_floor, remove_floor,
-        open,
-        save_all,
-        clone,
-        toggle_all, all_off, all_on, show_map,
 
-        file(open, clone, save_all),
-        view(toggle_all, all_off, all_on, show_map),
-//        edit(),
+        //////////////
+        open, save_all, clone,
+        save_version, save_as, save_module, save_modules,
+        file(open, clone, save_all, save_version, save_as, save_module, save_modules),
+        //////////////
+        /*
+        showStacks;
+    boolean showMetaAi;
+    boolean showScripts;
+
+    boolean showCoordinates; //TODO use options?
+    boolean showIllumination;
+    boolean showSpace;
+
+    boolean showAllColors
+         */
+        toggle_all, lighting, colors, coordinates, scripts, ai_info, decor_info,
+        view(toggle_all, colors, lighting, coordinates, scripts, ai_info, decor_info  ),
+        //        edit(),
 //        layer(),
-        module(edit_module, resize, swap_modules, remove_module ),
-        floor( add_module, edit_floor, remove_floor),
+        module(edit_module, resize, swap_modules, remove_module),
+        floor(add_module, edit_floor, remove_floor),
 //        dungeon(true, edit_dungeon), TODO use string regex to add floors from folder
 //        campaign(),
 

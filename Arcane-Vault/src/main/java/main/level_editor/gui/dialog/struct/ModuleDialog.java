@@ -2,7 +2,7 @@ package main.level_editor.gui.dialog.struct;
 
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
-import eidolons.system.audio.MusicMaster;
+import eidolons.system.audio.MusicEnums;
 import main.content.enums.GenericEnums;
 
 public class ModuleDialog extends DataEditDialog<LevelStructure.MODULE_VALUE, ModuleData> {
@@ -27,7 +27,7 @@ public class ModuleDialog extends DataEditDialog<LevelStructure.MODULE_VALUE, Mo
             case vfx_template:
                 return GenericEnums.VFX.class;
             case ambience:
-                return MusicMaster.AMBIENCE.class;
+                return MusicEnums.AMBIENCE.class;
 
         }
         return null;

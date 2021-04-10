@@ -4,7 +4,8 @@ import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.ability.construct.AbilityConstructor;
 import main.data.xml.XML_Converter;
-import main.entity.type.XmlHoldingType;
+import main.entity.type.ObjType;
+import main.entity.type.impl.XmlHoldingType;
 
 public class AbilityType extends XmlHoldingType {
 
@@ -13,11 +14,15 @@ public class AbilityType extends XmlHoldingType {
 
     public AbilityType(AbilityType type) {
         super(type);
-
         setDoc(type.getDoc().cloneNode(true));
     }
 
     public AbilityType() {
+    }
+
+    public AbilityType(boolean gen, ObjType objType) {
+        super(gen, objType);
+        cloned();
     }
 
     public void construct() {

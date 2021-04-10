@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneListener;
-import eidolons.libgdx.gui.panels.TablePanelX;
+import libgdx.gui.panels.TablePanelX;
 import main.level_editor.gui.panels.control.impl.*;
 import main.system.auxiliary.StringMaster;
 
@@ -20,14 +20,20 @@ public class TabbedControlPanel extends TabbedPane implements TabbedPaneListener
     CtrlRngPanel rngPanel= new CtrlRngPanel();
     CtrlSelectionPanel selectionPanel= new CtrlSelectionPanel();
     CtrlPalettePanel palettePanel= new CtrlPalettePanel();
+    CtrlCustomPanel customPanel = new CtrlCustomPanel();
+    CtrlScriptPanel scriptPanel = new CtrlScriptPanel();
+    CtrlDecorPanel decorPanel = new CtrlDecorPanel();
+    CtrlDisplayPanel displayPanel = new CtrlDisplayPanel();
 
     LE_ControlPanel[] panels = {
-            modulePanel,
+//            modulePanel,
+            customPanel,
             structurePanel,
             palettePanel,
             funcsPanel,
-            aiPanel,
-            selectionPanel,
+            scriptPanel,
+            // aiPanel,
+            selectionPanel,decorPanel,displayPanel
     };
 
     public TabbedControlPanel(TablePanelX holder) {
@@ -43,7 +49,7 @@ public class TabbedControlPanel extends TabbedPane implements TabbedPaneListener
     }
 
     public static String getTitleFromClass(Class clazz) {
-        String title = StringMaster.getWellFormattedString(clazz.getSimpleName(), true);
+        String title = StringMaster.format(clazz.getSimpleName(), true);
         title = StringMaster.cropFirstSegment(title.trim(), " ");
         title = StringMaster.cropLastSegment(title, " ");
         return title;
@@ -72,8 +78,8 @@ public class TabbedControlPanel extends TabbedPane implements TabbedPaneListener
 
     public class LE_Tab extends Tab {
 
-        private Table table;
-        private String title;
+        private final Table table;
+        private final String title;
 
         public LE_Tab(Table table, String title) {
             super(false, false);

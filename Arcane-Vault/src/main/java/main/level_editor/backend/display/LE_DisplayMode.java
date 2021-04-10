@@ -11,11 +11,23 @@ public class LE_DisplayMode  implements Serializable {
     boolean showMetaAi;
     boolean showScripts;
 
-    boolean showCoordinates = true;
+    boolean showCoordinates; //TODO use options?
     boolean showIllumination;
     boolean showSpace;
 
-    boolean useColors;
+    boolean showAllColors;
+    boolean showDecorText;
+    boolean showVfx;
+    boolean showShadowMap;
+    boolean showShards;
+
+    private boolean gameView;
+    private boolean showGamma;
+    private boolean lightingOn;
+
+    /*
+    can we just have shadowmap/vfx here same way?
+     */
 
     public void toggleAll(){
         showCoordinates = !showCoordinates;
@@ -23,7 +35,8 @@ public class LE_DisplayMode  implements Serializable {
         showMetaAi = !showMetaAi;
         showIllumination = !showIllumination;
         showSpace = !showSpace;
-        useColors = !useColors;
+        showAllColors = !showAllColors;
+        showDecorText = !showDecorText;
         GuiEventManager.trigger(GuiEventType.LE_DISPLAY_MODE_UPDATE );
     }
     public void onAll(){
@@ -32,17 +45,26 @@ public class LE_DisplayMode  implements Serializable {
         showScripts = true ;
         showIllumination = true;
         showSpace = true;
-        useColors = true;
+        showAllColors = true;
+        showDecorText = true;
         GuiEventManager.trigger(GuiEventType.LE_DISPLAY_MODE_UPDATE );
     }
     public void offAll(){
-        useColors = false;
+        showAllColors = false;
         showCoordinates = false;
         showScripts = false;
         showScripts = false;
         showIllumination = false;
         showSpace = false;
+        showDecorText = false;
         GuiEventManager.trigger(GuiEventType.LE_DISPLAY_MODE_UPDATE );
+    }
+
+    public boolean isShowDecorText() {
+        if (isGameView()) {
+            return false;
+        }
+        return showDecorText;
     }
 
     public boolean isShowStacks() {
@@ -93,12 +115,106 @@ public class LE_DisplayMode  implements Serializable {
         this.showSpace = showSpace;
     }
 
-    public boolean isUseColors() {
-        return useColors;
+
+    public boolean isShowAllColors() {
+        return showAllColors;
     }
 
-    public void setUseColors(boolean useColors) {
-        this.useColors = useColors;
+    public void setShowAllColors(boolean showAllColors) {
+        this.showAllColors = showAllColors;
         GuiEventManager.trigger(GuiEventType.LE_DISPLAY_MODE_UPDATE );
+    }
+    public void toggleCoordinates( ) {
+        this.showCoordinates = !showCoordinates;
+    }
+    public void toggleColors( ) {
+        this.showAllColors = !showAllColors;
+    }
+    public void toggleAi( ) {
+        this.showMetaAi = !showMetaAi;
+    }
+    public void toggleDecorText( ) {
+        this.showDecorText = !showDecorText;
+    }
+    public void toggleScripts( ) {
+        this.showScripts = !showScripts;
+    }
+    public void toggleLighting( ) {
+        this.lightingOn = !lightingOn;
+    }
+
+    public void setGameView(boolean gameView) {
+        this.gameView = gameView;
+        lightingOn= gameView;
+    }
+
+    public void setShowDecorText(boolean showDecorText) {
+        this.showDecorText = showDecorText;
+    }
+
+    public boolean isShowVfx() {
+        if (gameView) {
+            return true;
+        }
+        return showVfx;
+    }
+
+    public void setShowVfx(boolean showVfx) {
+        this.showVfx = showVfx;
+    }
+
+    public boolean isShowShadowMap() {
+        if (gameView) {
+            return true;
+        }
+        return showShadowMap;
+    }
+
+    public void setShowShadowMap(boolean showShadowMap) {
+        this.showShadowMap = showShadowMap;
+    }
+
+    public boolean isShowShards() {
+        if (gameView) {
+            return true;
+        }
+        return showShards;
+    }
+
+    public void setShowShards(boolean showShards) {
+        this.showShards = showShards;
+    }
+
+    public void toggleShadows() {
+        setShowShadowMap(!showShadowMap);
+    }
+    public void toggleVfx() {
+        setShowVfx(!showVfx);
+    }
+
+    public boolean isGameView() {
+        return gameView;
+    }
+
+    public void toggleGamma() {
+        setShowGamma(!showGamma);
+    }
+    public boolean isShowGamma() {
+        if (gameView) {
+            return false;
+        }
+        return showGamma;
+    }
+
+    public void setShowGamma(boolean showGamma) {
+        this.showGamma = showGamma;
+    }
+
+    public boolean isLightingOn() {
+        return lightingOn;
+    }
+
+    public void setLightingOn(boolean lightingOn) {
+        this.lightingOn = lightingOn;
     }
 }

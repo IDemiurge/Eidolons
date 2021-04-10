@@ -8,4 +8,7 @@ public class LE_DungeonInitializer extends LocationInitializer {
     }
 
 
+    public String getDungeonPath() {
+        return dungeonPath;
+    }
 }

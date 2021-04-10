@@ -13,15 +13,17 @@ import main.data.DataManager;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.type.BuffType;
 import main.entity.type.ObjType;
+import main.entity.type.impl.BuffType;
 import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.MessageManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.Strings;
 import main.system.auxiliary.log.LOG_CHANNEL;
+import main.system.auxiliary.log.LogMaster;
+import main.system.text.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,11 +46,12 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     private boolean isTransient;
     private Boolean negative;
     private Effect dispelEffects;
-    private double timeInGame = 0;
+    private final double timeInGame = 0;
     private double period;
     private List<PeriodicEffect> timeEffects;
     private boolean immobilizing;
     private boolean dynamic;
+    private Runnable onDispel;
 
     public BuffObj(ObjType type, Player owner, GenericGame game, Ref ref, Effect effect,
                    double duration, Condition retainCondition) {
@@ -77,7 +80,7 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
             }
         } catch (Exception ignored) {
         }
-        if (getName().contains(StringMaster.INVISIBLE_BUFF)) {
+        if (getName().contains(Strings.INVISIBLE_BUFF)) {
             visible = false;
         }
     }
@@ -174,6 +177,9 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
                     // Ref.getSelfTargetingRefCopy(ref.getSourceObj())
             );
         }
+        if (onDispel != null) {
+            onDispel.run();
+        }
         // game.fireEvent(new Event(STANDARD_EVENT_TYPE.BUFF_REMOVED, REF));
         return true;
 
@@ -248,15 +254,13 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     }
 
     public void timeElapsed(double time) {
-
-
         if (permanent) {
             applyTimeEffect(time);
             return;
         }
-        LogMaster.log(1, this + " Buff duration reduced by " + time);
+        if (Log.check(Log.LOG_CASE.buff))
+            LogMaster.log(1, this + " Buff duration reduced by " + time + "\n Duration = " + duration);
         duration -= time;
-        LogMaster.log(1, this + " Buff duration = " + duration);
         if (duration < 0) {
             time += duration;
         }
@@ -445,5 +449,17 @@ return ;
 
     public boolean isDynamic() {
         return dynamic;
+    }
+
+    public boolean isPhysical() {
+        return true;
+    }
+
+    public void setOnDispel(Runnable onDispel) {
+        this.onDispel = onDispel;
+    }
+
+    public Runnable getOnDispel() {
+        return onDispel;
     }
 }

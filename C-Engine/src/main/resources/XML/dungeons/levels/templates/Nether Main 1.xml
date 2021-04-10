@@ -1,0 +1,46 @@
+<Floor>
+<DATA>name=Chaos Realm;cell_type=natural;wall_type=volcanic wall;background=img\main\background\eldritch red.png;
+</DATA>
+<MODULES>
+
+<MODULE>
+<DATA>name=Black Lake;
+	wall_type=jagged stone wall;;cell_type=natural;
+width=37;height=31;border_width=1;width_buffer=3;height_buffer=3;
+border_type=irregular;
+</DATA>
+<zones>
+<zone><DATA>name=The Warrens;</DATA></zone>
+<zone><DATA>name=The Chism;</DATA></zone>
+<zone><DATA>name=Gateway Ruins;</DATA></zone>
+</zones>
+</MODULE>
+
+
+<MODULE>
+<DATA>name=Spiral Maze;
+cell_type=octagonal;wall_type=bone wall;
+width=37;height=31;border_width=1;width_buffer=3;height_buffer=3;
+border_type=chism;
+</DATA>
+<zones>
+<zone><DATA>name=Labyrinth;</DATA></zone>
+<zone><DATA>name=Soul Altar;</DATA></zone>
+</zones>
+</MODULE>
+
+<MODULE>
+<DATA>
+name=Void Promenade;wall_type=old stone wall;
+cell_type=natural;width=25;height=49;border_width=1;width_buffer=3;height_buffer=3;
+border_type=chism;
+</DATA>
+<zones>
+<zone><DATA>name=Floating Corridors;</DATA></zone>
+<zone><DATA>name=Control Center;</DATA></zone>
+<zone><DATA>name=Ledge;</DATA></zone>
+</zones>
+</MODULE>
+
+
+</MODULES></Floor>

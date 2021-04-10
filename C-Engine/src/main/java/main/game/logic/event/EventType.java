@@ -2,6 +2,7 @@ package main.game.logic.event;
 
 import main.game.logic.event.Event.EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 
 public class EventType implements EVENT_TYPE {
     private CONSTRUCTED_EVENT_TYPE typeBasis;
@@ -19,7 +20,7 @@ public class EventType implements EVENT_TYPE {
 
     @Override
     public String name() {
-        return typeBasis.name() + StringMaster.FORMULA_REF_SEPARATOR + arg;
+        return typeBasis.name() + Strings.FORMULA_REF_SEPARATOR + arg;
     }
 
     public boolean equals(EVENT_TYPE type) {

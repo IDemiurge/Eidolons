@@ -2,7 +2,7 @@ package main.level_editor.backend.handlers.dialog;
 
 import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.libgdx.utils.GdxDialogMaster;
+import libgdx.utils.GdxDialogMaster;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.gui.screen.LE_Screen;

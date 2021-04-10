@@ -37,7 +37,7 @@ import java.util.Set;
 
 public abstract class Game implements Serializable {
     public static Game game;
-    protected GameObjMaster master;
+    protected GameObjMaster objMaster;
     protected GameState state;
     protected IdManager idManager;
     protected GameManager manager;
@@ -53,7 +53,6 @@ public abstract class Game implements Serializable {
 
     protected boolean simulation;
     protected boolean debugMode;
-    protected boolean offline = true;
     protected boolean initialized = false;
     protected boolean started = false;
     private boolean running;
@@ -66,15 +65,15 @@ public abstract class Game implements Serializable {
 
 
     public Obj getObjectById(Integer id) {
-        return master.getObjectById(id);
+        return objMaster.getObjectById(id);
     }
 
     public boolean fireEvent(Event event) {
         return manager.handleEvent(event);
     }
 
-    public GameObjMaster getMaster() {
-        return master;
+    public GameObjMaster getObjMaster() {
+        return objMaster;
     }
 
     public Set<Integer> getObjectIds() {
@@ -91,14 +90,6 @@ public abstract class Game implements Serializable {
 
     public void setIdManager(IdManager idManager) {
         this.idManager = idManager;
-    }
-
-    public boolean isOffline() {
-        return offline;
-    }
-
-    public void setOffline(boolean offline) {
-        this.offline = offline;
     }
 
     public abstract void init();
@@ -165,7 +156,7 @@ public abstract class Game implements Serializable {
 
 
     public ObjType getTypeById(Integer id) {
-        return getMaster().getTypeById(id);
+        return getObjMaster().getTypeById(id);
     }
 
     public void initObjTypes() {
@@ -306,10 +297,6 @@ public abstract class Game implements Serializable {
 
 
 
-    public boolean isOnline() {
-        return !isOffline();
-    }
-
     public boolean isCloningMode() {
         return cloningMode;
     }
@@ -320,5 +307,9 @@ public abstract class Game implements Serializable {
 
     public void removed(Obj obj) {
 
+    }
+
+    public boolean checkModule(Obj obj) {
+        return true;
     }
 }

@@ -1,6 +1,7 @@
 package main.level_editor.backend.sim;
 
 import eidolons.entity.obj.BattleFieldObject;
+import main.system.SortMaster;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -15,7 +16,9 @@ public class LE_IdManager {
     }
 
     public void setObjIds(Map<Integer, BattleFieldObject> objIdMap) {
-        ID = objIdMap.size();
+        Integer max = objIdMap.keySet().stream().sorted(SortMaster.getNaturalIntegerComparator(true)).findFirst().orElse(-1 );
+        ID = max;
+        ID++;
         objMap = objIdMap;
     }
 
@@ -31,6 +34,7 @@ public class LE_IdManager {
     }
 
     public Integer objectCreated(BattleFieldObject obj) {
+
         Integer id = ID++;
         objMap.put(id, obj);
         return id;
@@ -52,5 +56,9 @@ public class LE_IdManager {
 
     public Map<Integer, BattleFieldObject> getObjMap() {
         return objMap;
+    }
+
+    public void addMap(Map<Integer, BattleFieldObject> map) {
+        objMap.putAll(map);
     }
 }

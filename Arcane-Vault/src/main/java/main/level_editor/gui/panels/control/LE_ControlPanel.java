@@ -7,10 +7,10 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.libgdx.gui.generic.btn.SmartButton;
-import eidolons.libgdx.gui.panels.TablePanelX;
+import libgdx.StyleHolder;
+import libgdx.gui.generic.btn.ButtonStyled;
+import libgdx.gui.generic.btn.SmartTextButton;
+import libgdx.gui.panels.TablePanelX;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.LE_Manager;
 import main.system.SortMaster;
@@ -27,7 +27,7 @@ public  abstract class LE_ControlPanel<T>  extends TablePanelX {
 
     private boolean initialized;
     private int i;
-    private SmartButton[] buttons;
+    private SmartTextButton[] buttons;
 
     public LE_ControlPanel(){
         super(300, 800);
@@ -37,7 +37,7 @@ public  abstract class LE_ControlPanel<T>  extends TablePanelX {
         int j=0;
         List<Method> sorted = Arrays.asList(clazz.getMethods());
         sorted.sort(getSorter());
-        buttons = new SmartButton[sorted.size()];
+        buttons = new SmartTextButton[sorted.size()];
         for (Method method : sorted) {
             if (method.getAnnotation(getIgnoreAnnotation()) != null) {
                 continue;
@@ -86,7 +86,7 @@ public  abstract class LE_ControlPanel<T>  extends TablePanelX {
 
     protected abstract Class<T> getClazz();
 
-    protected    int getWrap(){return 5;}
+    protected    int getWrap(){return 3;}
 
     protected abstract float getSpace() ;
 
@@ -94,11 +94,11 @@ public  abstract class LE_ControlPanel<T>  extends TablePanelX {
         return IgnoredCtrlMethod.class;
     }
 
-    protected SmartButton createButton(Method method, T handler) {
+    protected SmartTextButton createButton(Method method, T handler) {
         i++;
         String name =// StringMaster.wrapInBraces(i+"")+
-                StringMaster.getWellFormattedString(method.getName(), true);
-        return new SmartButton(name, getButtonTextStyle(), () -> {
+                StringMaster.format(method.getName(), true);
+        return new SmartTextButton(name, getButtonTextStyle(), () -> {
             Eidolons.onNonGdxThread(() -> {
                 try {
                     method.invoke(handler);

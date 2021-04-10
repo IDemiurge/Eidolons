@@ -28,30 +28,27 @@ import main.system.datatypes.DequeImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Represents an Entity on the Battlefield
- * Placed in a map in GameState upon creation
- */
 public class Obj extends Entity {
     protected DequeImpl<BuffObj> buffs;
-    protected List<String> passiveAbils;
+    protected List<String> passiveAbils; //To-Cleanup
     protected Boolean passable;
     protected boolean annihilated;
     protected boolean customType;
 
     public Obj(ObjType type, Player owner, Game game, Ref ref) {
-        super(type
-         // new ObjType(type) TODO how can I ensure that each object's Type can
-         // be modified independently? Perhaps I should clone upon
-         // modification...
-         , owner, game, ref);
-        // init();
+        super(type, owner, game, ref);
     }
+
+    public Obj(ObjType type) {
+        super(type, Player.NEUTRAL, Game.game, new Ref());
+    }
+
     protected void cloneType() {
         type = new ObjType(type);
         game.initType(type);
         customType = true;
     }
+
     @Override
     protected EntityMaster initMaster() {
         return new ObjMaster(this);
@@ -131,6 +128,7 @@ public class Obj extends Entity {
 
         setDirty(true);
     }
+
     public void setDead(boolean dead) {
         this.dead = dead;
         if (dead) {
@@ -151,7 +149,7 @@ public class Obj extends Entity {
     @Override
     public boolean setParam(PARAMETER param, String value, boolean quiety) {
         boolean result = super.setParam(param, value, quiety);
-        if (GuiEventManager.isParamEventAlwaysFired(param.getName())) quiety = false;
+        if (GuiEventManager.isBarParam(param.getName())) quiety = false;
         if (!quiety && game.isStarted()) {
             fireParamEvent(param, value, CONSTRUCTED_EVENT_TYPE.PARAM_MODIFIED);
 
@@ -246,7 +244,7 @@ public class Obj extends Entity {
     public BuffObj getBuff(String buffName, boolean strict) {
         if (buffs == null || buffName == null) {
             LogMaster.log(LogMaster.CORE_DEBUG_1, buffName
-             + " buff was searched");
+                    + " buff was searched");
             return null;
         }
 
@@ -263,7 +261,7 @@ public class Obj extends Entity {
             }
         }
         LogMaster.log(LogMaster.CORE_DEBUG_1, buffName
-         + " buff not found for " + buffs);
+                + " buff not found for " + buffs);
 
         return null;
     }
@@ -336,7 +334,7 @@ public class Obj extends Entity {
     }
 
     public int getZ() {
-        return -100;
+        return -100; //To-Cleanup
     }
 
     public boolean isAnnihilated() {
@@ -345,5 +343,9 @@ public class Obj extends Entity {
 
     public void setAnnihilated(boolean annihilated) {
         this.annihilated = annihilated;
+    }
+
+    public Object getModule() {
+        return null;
     }
 }

@@ -34,17 +34,11 @@ public class Bools {
     }
 
     public static boolean isTrue(Boolean b) {
-        if (b == null) {
-            return false;
-        }
-        return b;
+        return new Boolean(true).equals(b);
     }
 
     public static boolean isFalse(Boolean b) {
-        if (b == null) {
-            return false;
-        }
-        return !b;
+        return new Boolean(false).equals(b);
     }
 
     public static boolean random() {

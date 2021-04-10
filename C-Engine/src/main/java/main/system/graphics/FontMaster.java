@@ -42,13 +42,22 @@ public class FontMaster {
 
     public static Font getFont(FONT f, float size, int style) {
         if (CoreEngine.isGraphicsOff())
-            return null;
+            if (!CoreEngine.isArcaneVault())
+                return null;
 
         if (style == 0) {
             style = Font.PLAIN;
         }
-        // if (f.font==null )
-        // return PrismFontFactory.getSystemFont(null);
+        if (f.font == null) {
+            try {
+                f.font = Font.createFont(Font.TRUETYPE_FONT, FileManager.getFile(
+                        (PathFinder.getFontPath() + f.path)));
+            } catch (FontFormatException e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            } catch (IOException e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        }
         return f.font.deriveFont(style, size);
     }
 
@@ -64,22 +73,6 @@ public class FontMaster {
         if (!CoreEngine.isArcaneVault()) {
             System.setProperty("awt.useSystemAAFontSettings", "on");
             System.setProperty("swing.aatext", "true");
-        }
-        String path = PathFinder.getFontPath();
-
-
-        for (FONT F : FONT.values()) {
-            try {
-                F.font = Font.createFont(Font.TRUETYPE_FONT, FileManager.getFile(
-                (path + F.path)));
-            } catch (FontFormatException e) {
-                // TODO Auto-generated catch block
-                main.system.ExceptionMaster.printStackTrace(e);
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-
         }
 
         initialized = true;
@@ -241,19 +234,20 @@ public class FontMaster {
 
     public enum FONT {
         AVQ("/avqest.ttf"),
-        SC("/starcraft.ttf"),
+//        SC("/starcraft.ttf"),
         DARK("/dark.ttf"),
         NYALA("/nyala.ttf", true),
-        MONO("/SmallTypeWriting.ttf" ),
+//        MONO("/SmallTypeWriting.ttf" ),
         MONO_LARGE("/SmallTypeWritingMedium.ttf" ),
         RU("/philosopher-regular.ttf"),
         MAIN("/main.otf"),
         METAMORPH("/metamorphous-regular.ttf", true),
         MAGIC("/magicmedieval.ttf"),
-        MANORLY_("/manorly_.ttf"),
-        IMMORTAL("/IMMORTAL.ttf"),
-        FERTIGO("/fertigo_pro.otf"),
-        CHANCERY("/BLKCHCRY.ttf"),
+//        MANORLY_("/manorly_.ttf"),
+//        IMMORTAL("/IMMORTAL.ttf"),
+//        FERTIGO("/fertigo_pro.otf"),
+CHANCERY("/BLKCHCRY.ttf"),
+        HUGE("/HUGE.ttf", true),
         SUPER_KNIGHT("/supernatural_knight.ttf");
         public Font font;
         public String path;

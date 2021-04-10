@@ -12,6 +12,7 @@ import main.entity.Entity;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.Strings;
 import main.system.math.Parameter;
 
 public class InfoMaster {
@@ -25,7 +26,6 @@ public class InfoMaster {
     public static final CharSequence ITEM_REASON_BLOCKED = "tadan!";
     public static final String MAX_CLASSES = "Hero already has maximum of two base classes!";
     public static final String UNDER_CONSTRUCTION = "Under construction!";
-    public static final String COOLDOWN_REASON = "Wait for cooldown!";
     public static final String CHOOSE_PARTY = "Select a party";
     public static final String CHOOSE_MEMBER = "Choose a new party member";
     public static final String CHOOSE_DEITY = "Choose a Deity";
@@ -69,7 +69,7 @@ public class InfoMaster {
         return p.getName()
          + PROP_REASON_STRING
          + StringMaster.cropLast(type.getProperty(p).replace(
-         StringMaster.CONTAINER_SEPARATOR, StringMaster.VAR_SEPARATOR + " "), 2);
+         Strings.CONTAINER_SEPARATOR, Strings.VAR_SEPARATOR + " "), 2);
     }
 
     public static String getParamReasonString(Entity type, PARAMETER p, PARAMETER p_cost) {

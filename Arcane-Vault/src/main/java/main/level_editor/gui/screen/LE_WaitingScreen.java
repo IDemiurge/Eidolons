@@ -3,9 +3,9 @@ package main.level_editor.gui.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import eidolons.libgdx.bf.generic.FadeImageContainer;
-import eidolons.libgdx.screens.ScreenData;
-import eidolons.libgdx.screens.ScreenWithLoader;
+import libgdx.bf.generic.FadeImageContainer;
+import eidolons.system.libgdx.datasource.ScreenData;
+import libgdx.screens.ScreenWithLoader;
 import main.system.EventCallbackParam;
 
 public class LE_WaitingScreen extends ScreenWithLoader {
@@ -52,8 +52,7 @@ public class LE_WaitingScreen extends ScreenWithLoader {
         stage.draw();
     }
 
-    @Override
-    protected boolean isWaitForInput() {
+    protected boolean isWaitForInputSupported() {
         return false;
     }
 

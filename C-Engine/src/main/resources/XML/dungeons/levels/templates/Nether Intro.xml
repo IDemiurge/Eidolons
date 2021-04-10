@@ -1,0 +1,68 @@
+<Floor>
+<DATA>name=Nether Circle;background=img\main\background\soul spire2.png;
+module_grid=0-0|1-0|0-1|2-1|2-0;width=154;height=172;
+</DATA>
+<MODULES>
+
+<MODULE>
+<DATA>name=Black Ocean;
+	wall_type=jagged stone wall;;cell_type=cross;
+width=15;height=13;border_width=1;width_buffer=3;height_buffer=3;
+border_type=wall;
+</DATA>
+<zones>
+<zone><DATA>name=The Chamber;</DATA></zone>
+</zones>
+</MODULE>
+
+<MODULE>
+<DATA>name=Soulbreak Chamber;
+	wall_type=jagged stone wall;;cell_type=cross;
+width=21;height=13;border_width=1;width_buffer=3;height_buffer=3;
+border_type=wall;
+</DATA>
+<zones>
+<zone><DATA>name=The Chamber;</DATA></zone>
+</zones>
+</MODULE>
+
+
+
+<MODULE>
+<DATA>name=Fractured Reality;
+cell_type=cross;wall_type=bone wall;
+width=37;height=31;border_width=1;width_buffer=3;height_buffer=3;
+border_type=chism;
+</DATA>
+<zones>
+<zone><DATA>name=Labyrinth;</DATA></zone>
+<zone><DATA>name=Soul Altar;</DATA></zone>
+</zones>
+</MODULE>
+
+<MODULE>
+<DATA>name=Duel Chamber;
+	wall_type=jagged stone wall;;cell_type=rock;
+width=15;height=23;border_width=1;width_buffer=3;height_buffer=3;
+border_type=wall;
+</DATA>
+<zones>
+<zone><DATA>name=The Chamber;</DATA></zone>
+</zones>
+</MODULE>
+
+<MODULE>
+<DATA>name=Nerulac's Realm;
+wall_type=old stone wall;
+cell_type=iron;width=21;height=33;border_width=1;width_buffer=3;height_buffer=3;
+border_type=chism;
+</DATA>
+<zones>
+<zone><DATA>name=Floating Corridors;</DATA></zone>
+<zone><DATA>name=Control Center;</DATA></zone>
+<zone><DATA>name=Ledge;</DATA></zone>
+</zones>
+</MODULE>
+
+
+</MODULES></Floor>

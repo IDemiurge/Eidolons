@@ -1,6 +1,3 @@
-<ActiveAbility><SelectiveTargeting><RefCondition><STRING>SOURCE</STRING>
-<STRING>MATCH</STRING>
-<BOOLEAN>TRUE</BOOLEAN>
-</RefCondition><FORMULA>1</FORMULA>
-</SelectiveTargeting><Effects><DealDamageEffect><FORMULA>25+{SOURCE_SHADOW_MASTERY}*10</FORMULA>
-</DealDamageEffect></Effects></ActiveAbility>
+<ActiveAbility><TemplateAutoTargeting><AUTO_TARGETING_TEMPLATES>SELF</AUTO_TARGETING_TEMPLATES>
+</TemplateAutoTargeting><Effects><ModeEffect><STD_MODES>CONCENTRATION</STD_MODES>
+</ModeEffect></Effects></ActiveAbility>

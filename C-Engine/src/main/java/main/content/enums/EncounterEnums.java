@@ -86,7 +86,7 @@ none, low, normal, high, always
     }
 
     public enum LOOT_TYPE {
-        gold, artifact, treasure, arcane, items, random, junk, none
+     souls, ash,   gold, artifact, treasure, arcane, items, random, junk, none
     }
 
     public enum PRE_BATTLE_EVENT {
@@ -99,6 +99,21 @@ none, low, normal, high, always
         GROUP, LEVEL, FILL, EXTEND
     }
 
+    public enum SPAWN_MODE {
+        once,
+        trigger, // will require some args...
+        on_approach, //block? radius?
+        on_approach_clean_respawn, //repeated if not beaten
+
+    }
+
+    public enum FACING_TEMPLATE {
+        TOWARDS_CENTER,
+        OUTWARD_FROM_ORIGIN,
+        TOWARDS_PLAYER_HERO,
+        OPTIMAL_TOWARDS_ENEMIES,
+        RANDOM,
+    }
     /*
         Guard Ai - stand still, only turn this way or that
         > alerted - goes to investigate

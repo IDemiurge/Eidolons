@@ -1,15 +1,14 @@
 package main.system.math;
 
 import main.content.values.parameters.PARAMETER;
-import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.core.game.Game;
 import main.game.core.game.GenericGame;
 import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.NumberUtils;
 import main.system.datatypes.WeightMap;
 
 import java.awt.event.ActionEvent;
@@ -95,7 +94,7 @@ public abstract class MathMaster {
     }
 
     // applyFactor
-    public static int applyMod(int amount, Integer mod) {
+    public static int applyPercent(int amount, Integer mod) {
         // amount = amount +
         amount = Math.round(new Float(amount * mod) / 100);
         return amount;
@@ -108,7 +107,7 @@ public abstract class MathMaster {
         if (mod == 0) {
             return amount;
         }
-        return applyMod(amount, mod);
+        return applyPercent(amount, mod);
     }
 
     public static Double applyModDouble(Double amount, Integer mod) {
@@ -143,7 +142,7 @@ public abstract class MathMaster {
     public static int getMaxCoordinateFromUnitGroupData(boolean x_y, String data) {
         int max = 0; // x-y=name;
         for (String substring : ContainerUtils.open(data, ",")) {
-            Integer c = NumberUtils.getInteger(substring.split("=")[x_y ? 0 : 1]);
+            Integer c = NumberUtils.getIntParse(substring.split("=")[x_y ? 0 : 1]);
             if (c > max) {
                 max = c;
             }
@@ -160,7 +159,7 @@ public abstract class MathMaster {
         if (param.isMod()) {
             return true;
         }
-        Integer i = NumberUtils.getInteger(param.getDefaultValue());
+        Integer i = NumberUtils.getIntParse(param.getDefaultValue());
         return i == 100;
     }
 
@@ -266,7 +265,7 @@ public abstract class MathMaster {
 
     public static int applyMods(int amount, Integer... mods) {
         for (int mod : mods) {
-            amount = applyMod(amount, mod);
+            amount = applyPercent(amount, mod);
         }
         return amount;
     }
@@ -280,48 +279,17 @@ public abstract class MathMaster {
 
     }
 
-    public Integer evaluateMeditation(Obj obj) {
-
-        return null;
-    }
-
-    public Integer evaluateClaimThreshold(Obj obj, String s) {
-
-        return null;
-    }
-
-    public Integer evaluateClaimOutput(Obj obj, String s) {
-
-        return null;
-    }
-
-    public Integer evaluateRest(Obj obj) {
-
-        return null;
-    }
-
-    public Integer evaluateConcentration(Obj obj) {
-
-        return null;
-    }
-
-    public abstract Integer getStartingEssence(Obj obj);
-
-    public abstract int calculateClaimedObjects(Obj Obj, String BF_OBJECT_TYPE);
-
-    public abstract Integer calculateEssenceRegenBonus(Obj dc_HeroObj);
-
-    public abstract Integer evaluateSummonEnergyCost(Entity obj, String s);
-
     public static float getBalanceCoef(WeightMap map) {
         //average difference, min/max difference TODO
         for (Object o : map.keySet()) {
             Integer val = (Integer) map.get(o);
-
         }
-
         return 0;
     }
+
+    public abstract Integer getStartingEssence(Obj obj);
+
+
 
 
 }

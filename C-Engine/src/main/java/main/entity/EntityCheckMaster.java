@@ -1,5 +1,6 @@
 package main.entity;
 
+import main.content.DC_TYPE;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
@@ -42,7 +43,8 @@ public class EntityCheckMaster {
     }
 
     public static boolean isWall(Entity entity) {
-        return entity.checkProperty(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.WALL.toString());
+        return entity.checkProperty(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.WALL.toString())
+                || entity.checkProperty(G_PROPS.BF_OBJECT_TAGS, BfObjEnums.BF_OBJECT_TAGS.WALL.toString());
     }
 
     public static BACKGROUND getBackground(Entity hero) {
@@ -72,10 +74,7 @@ public class EntityCheckMaster {
     }
 
     public static boolean isBoss(ObjType type) {
-        if (type.getName().equalsIgnoreCase("steel golem")) {
-            return true;
-        }
-        return type.checkProperty(G_PROPS.CLASSIFICATIONS, "Boss");
+        return type.getOBJ_TYPE_ENUM() == DC_TYPE.BOSS;
     }
 
     public static boolean isImmaterial(Entity unit) {

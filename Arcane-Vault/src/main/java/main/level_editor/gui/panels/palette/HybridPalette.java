@@ -4,8 +4,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneListener;
-import eidolons.libgdx.gui.NinePatchFactory;
-import eidolons.libgdx.gui.panels.TablePanelX;
+import libgdx.gui.NinePatchFactory;
+import libgdx.gui.panels.TablePanelX;
 import main.level_editor.gui.panels.ClosablePanel;
 import main.level_editor.gui.panels.palette.tab.TabImpl;
 import main.system.GuiEventManager;
@@ -24,7 +24,7 @@ public class HybridPalette extends ClosablePanel implements TabbedPaneListener {
     private Tab lastSelected;
 
     public enum PALETTE {
-        encounters, obj, unit, custom, blocks,  //groups
+        encounters, obj, unit, decor, custom, blocks,  //groups
     }
 
     private final TablePanelX<Actor> table;
@@ -38,6 +38,9 @@ public class HybridPalette extends ClosablePanel implements TabbedPaneListener {
 
         reload();
 
+        GuiEventManager.bind(GuiEventType.LE_DESELECT, p -> {
+            palette.getTree().deselect();
+        });
         GuiEventManager.bind(GuiEventType.LE_PALETTE_RESELECT, p -> {
             palette.getTree().reselect();
         });

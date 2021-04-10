@@ -1,5 +1,6 @@
 package main.entity.handlers;
 
+import com.badlogic.gdx.utils.ObjectMap;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.parameters.ParamMap;
@@ -12,9 +13,7 @@ import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.system.auxiliary.StringMaster;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by JustMe on 2/15/2017.
@@ -64,20 +63,12 @@ public class EntityHandler<E extends Entity> {
         return getEntity().getProperty(prop);
     }
 
-    public Map<PROPERTY, Map<String, Boolean>> getPropCache(boolean base) {
-        return getEntity().getPropCache(base);
-    }
-
     public String getProperty(PROPERTY prop, boolean base) {
         return getEntity().getProperty(prop, base);
     }
 
-    public HashMap<PROPERTY, Map<String, Boolean>> getPropCache() {
+    public ObjectMap<PROPERTY, ObjectMap<String, Boolean>> getPropCache() {
         return getEntity().getPropCache();
-    }
-
-    public boolean checkParameter(PARAMETER param, int value) {
-        return getEntity().checkParameter(param, value);
     }
 
     public boolean checkProperty(PROPERTY p) {

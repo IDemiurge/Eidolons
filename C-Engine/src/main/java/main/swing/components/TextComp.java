@@ -32,17 +32,6 @@ public class TextComp extends G_Panel {
     }
 
     public TextComp(ComponentVisuals V, String text, int fontSize, FONT type) {
-        // super(V);
-        // this.fontSize = fontSize;
-        // setDefaultFont(getDefaultFont());
-        // if (text != null) {
-        // this.text = text;
-        // this.permanent = true;
-        // }
-        // x = getDefaultX();
-        // y = getDefaultY();
-        // panelSize = getDefaultSize();
-
         super(V);
         this.fontSize = fontSize;
         standardFontType = type;
@@ -53,20 +42,6 @@ public class TextComp extends G_Panel {
         }
         x = getDefaultX();
         y = getDefaultY();
-
-        // if (getVisuals() != null)
-        // if (getVisuals().getImage() != null)
-        // defaultSize = new Dimension(getVisuals().getImage().getWidth(null),
-        // getVisuals()
-        // .getImage().getHeight(null));
-        // if (defaultSize == null) {
-        // if (text != null)
-        // defaultSize = initSizeFromText(text);
-        //
-        // }
-        // if (defaultSize == null)
-        // defaultSize = new Dimension(10, 10);
-
         resetSize(text);
 
         if (standardFontType != null) {
@@ -75,19 +50,9 @@ public class TextComp extends G_Panel {
             setDefaultFont(getDefaultFont());
         }
     }
-
-    public TextComp(Color color) {
-        this(null, "");
-        this.color = color;
-    }
-
     public TextComp() {
         this(null, "");
 
-    }
-
-    public TextComp(ComponentVisuals V) {
-        this(V, null);
     }
 
     public TextComp(String text) {
@@ -289,18 +254,8 @@ public class TextComp extends G_Panel {
         return super.getWidth();
     }
 
-    protected int getCenteredY() {
-        return (getHeight() - FontMaster.getFontHeight(getDefaultFont()))
-         // + FontMaster.getFontHeight(defaultFont)
-         ;
-    }
-
     protected int getCenteredX(String text) {
         return (getWidth() - FontMaster.getStringWidth(getDefaultFont(), text)) / 2;
-    }
-
-    public String getTextDisplayed() {
-        return text;
     }
 
     protected String getText() {
@@ -331,10 +286,6 @@ public class TextComp extends G_Panel {
 
     public int getFontSize() {
         return fontSize;
-    }
-
-    public void setFontSize(int fontSize) {
-        this.fontSize = fontSize;
     }
 
 }
