@@ -1,10 +1,13 @@
 package data;
 
+import main.system.sound.AudioEnums;
+
 public class C3Enums {
 
     public enum QueryMode {
         relax, normal, intense
     }
+
     public enum TaskMode {
         relax, normal, intense
     }
@@ -24,9 +27,73 @@ public class C3Enums {
 
         Freedom,
     }
+static {
+    Direction.Code.setCategories(new TaskCategory[]{
+            TaskCategory.Code_Revamp,
+            TaskCategory.New_Code,
+            TaskCategory.Bug_fixing,
+    });
+    Direction.Design.setCategories(new TaskCategory[]{
+            TaskCategory.Content_Design,
+            TaskCategory.Global_Game_Design,
+            TaskCategory.System_Design,
+            TaskCategory.Lore_Writing,
+    });
+    Direction.Project.setCategories(new TaskCategory[]{
+            TaskCategory.Team_management,
+            TaskCategory.Public_Writing,
+    });
+    Direction.Meta.setCategories(new TaskCategory[]{
+            //TODO
+    });
+}
+    public enum Direction implements Category {
+        Code, Design, Project, Meta;
 
-    public enum Direction {
-        code, des, proj, meta
+        public String[] subs;
+        public TaskCategory[] categories;
+
+        public void setCategories(TaskCategory[] subs) {
+            this.categories = subs;
+        }
+        @Override
+        public void setSubcategories(String[] subs) {
+            this.subs = subs;
+        }
+    }
+
+    public enum C3Sound {
+        ONWARD(AudioEnums.STD_SOUNDS.NEW__ENTER.getPath()),
+        ;
+
+        private String path;
+
+        C3Sound(String path) {
+            this.path = path;
+        }
+
+        public String getPath() {
+            return path;
+        }
+    }
+
+    public enum C3Option {
+
+        EZ_Choice,
+        Music_Reset,
+        Session(Music_Reset, EZ_Choice), Task, Query,
+        ;
+        public C3Option[] children;
+
+        C3Option(C3Option... children) {
+            this.children = children;
+        }
+    }
+
+    public enum EZ_Option {
+        comfy_chair,
+        query,
+        shift_break
     }
 
     public interface Category {
@@ -36,8 +103,9 @@ public class C3Enums {
     public enum CodeTaskStatus {
         Review, Outline, Implement, Test, Refine, Complete
     }
+
     public enum ContentTaskStatus {
-          Outline, Implement, Test, Refine, Complete
+        Outline, Implement, Test, Refine, Complete
     }
 
     public enum TaskCategory implements Category {
@@ -53,8 +121,7 @@ public class C3Enums {
         Game_Content_Writing(7),
         Public_Writing(5),
 
-        Team_management(6)
-        ;
+        Team_management(6);
         public String[] subcategories;
         public int weight;
 

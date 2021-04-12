@@ -21,8 +21,7 @@ public class C3 implements NativeKeyListener {
     // private static final int KEY_SESSION = NativeKeyEvent.VC_PAUSE ;
     // private static final int KEY_QUERY = NativeKeyEvent.VC_META ;
     private final C3Manager manager;
-
-    private boolean sessionMode=true;
+    private final boolean sessionTestMode=true;
 
     public static void main(String[] args) {
         GuiManager.setSize(Toolkit.getDefaultToolkit().getScreenSize());
@@ -32,7 +31,7 @@ public class C3 implements NativeKeyListener {
 
 
     public C3() {
-        manager = new C3Manager(sessionMode);
+        manager = new C3Manager();
         try {
             GlobalScreen.registerNativeHook();
         } catch (NativeHookException ex) {
@@ -49,7 +48,7 @@ public class C3 implements NativeKeyListener {
         } catch (AWTException e) {
             e.printStackTrace();
         }
-        if (sessionMode) {
+        if (sessionTestMode) {
             manager.getSessionHandler().initSession();
         }
     }
@@ -72,16 +71,12 @@ public class C3 implements NativeKeyListener {
                     manager.setCurrentQuery(query);
             } else
             if (nativeKeyEvent.getKeyCode() == KEY_TASK) {
-                if (sessionMode){
                     manager.getSessionHandler().initSession();
-                } else {
-                    if (checkPendingTask())
-                        return;
-                    C3_Task task= manager.getTaskManager().createRandomTask();
-                    if (manager.getTaskResolver().resolveTask(task))
-                        manager.setCurrentTask(task);
-                }
-
+                    // if (checkPendingTask())
+                    //     return;
+                    // C3_Task task= manager.getTaskManager().createRandomTask();
+                    // if (manager.getTaskResolver().resolveTask(task))
+                    //     manager.setCurrentTask(task);
             }
         }
         if ((ALT & nativeKeyEvent.getModifiers()) != 0) {
@@ -95,7 +90,7 @@ public class C3 implements NativeKeyListener {
             if (nativeKeyEvent.getKeyCode() == KEY_TASK) {
                 if (checkPendingTask())
                     return;
-                C3_Task task= manager.getTaskManager().createTask(); //TODO full manual!
+                C3_Task task= manager.getTaskManager().createTask(false); //TODO full manual!
                 if (manager.getTaskResolver().resolveTask(task))
                     manager.setCurrentTask(task);
             }

@@ -10,6 +10,7 @@ import main.system.util.DialogMaster;
 
 import javax.swing.*;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -35,34 +36,67 @@ public class C3TaskManager extends C3Handler {
         this.filter = filter;
     }
 
-    public C3_Task createRandomTask() {
-        TaskCategory category = categoriesWeightMap.getRandomByWeight();
-        return createTask(category);
+    public void tasksPostponed(List<C3_Task> tasks) {
+        //add to backlog...
+        for (C3_Task task : tasks) {
+            //TODO what if we aint got the  cat/sub?
+            taskTextMap.get(task.getCategory()).get(task.getSubCategory()).add(task.getText());
+        }
+        persist();
     }
 
-    public C3_Task createTask() {
+    public void tasksCompleted(List<C3_Task> tasks) {
+        //???
+    }
+
+    public List<String> getTaskNamesFor(TaskCategory... categories) {
+        List<String> list = new LinkedList<>();
+        for (TaskCategory category : categories) {
+            for (String sub : taskTextMap.get(category).keySet()) {
+                list.addAll(taskTextMap.get(category).get(sub));
+            }
+        }
+        return list;
+    }
+
+    public List<C3_Task> getTasksFor(List<String> names, TaskCategory... categories) {
+
+        return null;
+    }
+
+    public C3_Task createRandomTask() {
+        TaskCategory category = categoriesWeightMap.getRandomByWeight();
+        return createTask(false, category);
+    }
+
+    public C3_Task createTask(  boolean custom ) {
+        return createTask(null, custom);
+    }
+    public C3_Task createTask(C3Filter<TaskCategory> filter, boolean custom) {
         if (filter != null) {
             TaskCategory[] categories = filter.getCategory();
             TaskCategory category = new EnumMaster<TaskCategory>().selectEnum(TaskCategory.class,
                     Arrays.asList(categories));
-            return createTask(category);
+            return createTask(custom, category);
         }
         TaskCategory category = new EnumMaster<TaskCategory>().selectEnum(TaskCategory.class);
-        return createTask(category);
+        return createTask( custom, category);
     }
 
-    private C3_Task createTask(TaskCategory category) {
-        return createTask(category, false, false);
+    private C3_Task createTask(boolean custom,TaskCategory category) {
+        return createTask(category, false, false, custom);
     }
 
-    private C3_Task createTask(TaskCategory category, boolean randomSub, boolean randomTask) {
+    private C3_Task createTask(TaskCategory category, boolean randomSub, boolean randomTask, boolean customTask) {
         Map<String, List<String>> pool = taskTextMap.get(category);
         int random = RandomWizard.getRandomInt(pool.size());
 
         Object sub = randomSub ? pool.keySet().toArray()[random] : chooseSub(pool);
         random = RandomWizard.getRandomInt(pool.get(sub).size());
 
-        String taskString = randomTask ? pool.get(sub).get(random) : chooseTask(pool.get(sub));
+        String taskString = randomTask ? pool.get(sub).get(random) :
+                customTask ? DialogMaster.inputText("Input task text" )
+                         :                 chooseTask(pool.get(sub) );
 
         String task = taskString.split("::")[0];
         String comments = "";

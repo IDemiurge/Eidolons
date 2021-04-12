@@ -26,29 +26,50 @@ public class C3TimerHandler extends C3Handler {
 
     public void initTimer(C3Session session) {
         Integer minutesTotal = session.getDuration();
-                keyTimers.add(initKeyTimer(minutesTotal, session));
+        Integer minsBreakInverval = session.getMinsBreakInverval();
+                keyTimers.add(initKeyTimer(minutesTotal,minsBreakInverval, session));
     }
 
     public void timerDone(C3Timer timer) {
         keyTimers.remove(timer);
     }
-    private C3Timer initKeyTimer(int minutesTotal, C3Session session) {
+    private C3Timer initKeyTimer(int minutesTotal, int minsBreakInverval, C3Session session) {
         int key= NativeKeyEvent.VC_PAGE_DOWN;
         int mod= NativeKeyEvent.CTRL_MASK;
-        long delay= 15*60*1000;
+        long delay= minsBreakInverval*60*1000;
         long limit=minutesTotal*60*1000;
         if (testMode)
         {
             delay = 3000;
             limit = 9000;
         }
-        return new C3Timer(this, key, mod, ()-> new TimerTask() {
+        C3Timer timer = new C3Timer(this, key, mod, delay, limit, session);
+        timer.setIntervalTask(() -> new TimerTask() {
             @Override
             public void run() {
-                manager.getTrayHandler().notify("Take a break!", "C3");
-                playSystemSound();
+                timer.paused();
+                intervalElapsed();
+                //TODO wait N seconds returned by elapsed()?
+                timer.resumed();
             }
-        }, delay, limit, session).init();
+        });
+
+        return timer.init();
+    }
+
+    public void shiftBreak() {
+        keyTimers.get(0).paused();
+        keyTimers.get(0).paused();
+    }
+
+    public enum IntervalOption {
+        tray, window, sound,
+}
+    private void intervalElapsed() {
+        // intervalOption.switch
+        manager.getDialogHandler().showBreakMenu();
+        // manager.getTrayHandler().notify("Take a break!", "C3");
+        // playSystemSound();
     }
 
 

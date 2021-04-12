@@ -22,21 +22,22 @@ public class C3Timer {
     boolean paused;
 
     private Timer regularTimer;
-    private Supplier<TimerTask> ringTask;
+    private Supplier<TimerTask> intervalTask;
     private long ringDelay;
     private Timer exitTimer;
 
     private long timeLimit;
     private C3Session session;
+    private boolean finished;
 
-    public C3Timer(C3TimerHandler c3TimerHandler, int keyCode, int mod, Supplier<TimerTask> ringTask, long ringDelay, long timeLimit, C3Session session) {
+    public C3Timer(C3TimerHandler c3TimerHandler, int keyCode, int mod,  long ringDelay, long timeLimit, C3Session session) {
         manager = c3TimerHandler;
         this.keyCode = keyCode;
         this.mod = mod;
-        this.ringTask = ringTask;
         this.ringDelay = ringDelay;
         this.timeLimit = timeLimit;
         this.session = session;
+        session.setTimer(this);
     }
 
     public C3Timer init() {
@@ -50,8 +51,15 @@ public class C3Timer {
                     if (getTimeLeft() <= 0) {
                         finished();
                         exitTimer.cancel();
+                    } else {
+
+                        int minutes = TimeMaster.getMinutes(getTimeLeft());
+                        session.setMinutesLeft(minutes);
+                        minutes = (int) (session.getMinsBreakInverval()- (TimeMaster.getTime() - timeStarted));
+                        manager.getManager().getTrayHandler().setTooltip(
+                                session+", break in: "+
+                                        minutes);
                     }
-                //TODO update tray icon?
             }
         },1000, 1000);
         started();
@@ -63,30 +71,41 @@ public class C3Timer {
     }
 
     private void finished() {
+        finished = true;
+        manager.getManager().getSessionHandler().finished(session);
         manager.getManager().getSessionLogger().finished(session);
         manager.timerDone(this);
     }
 
     private void started() {
         manager.getManager().getSessionLogger().started(session);
-        regularTimer.schedule(ringTask.get(), ringDelay, ringDelay);
+        regularTimer.schedule(intervalTask.get(), ringDelay, ringDelay);
         manager.getManager().getTrayHandler().notify(session + " started!\n >>" +
                 TimeMaster.getMinutes(getTimeLeft()) +
                 " minutes left", "C3 Session");
 
     }
 
-    private void resumed() {
+    public void resumed() {
+        if (finished)
+            return;
+        paused = false;
+        timeStarted = TimeMaster.getTime();
         manager.getManager().getSessionLogger().resumed(session);
         regularTimer = new Timer();
-        regularTimer.schedule(ringTask.get(), ringDelay, ringDelay);
+        regularTimer.schedule(intervalTask.get(), ringDelay, ringDelay);
         manager.getManager().getTrayHandler().notify("Resumed!\n >>" +
                 TimeMaster.getMinutes(getTimeLeft()) +
                 " minutes left", "C3 Session");
 
     }
 
-    private void paused() {
+    public void paused() {
+        if (finished)
+            return;
+        paused = true;
+        timePaused = TimeMaster.getTime();
+        totalTime += timePaused - timeStarted;
         manager.getManager().getSessionLogger().paused(session);
         regularTimer.cancel();
         manager.getManager().getTrayHandler().notify("Paused!", "C3 Session");
@@ -105,14 +124,14 @@ public class C3Timer {
     private void toggle() {
         paused = !paused;
         if (paused) {
-            timePaused = TimeMaster.getTime();
-            totalTime += timePaused - timeStarted;
             paused();
         } else {
-            timeStarted = TimeMaster.getTime();
             resumed();
         }
     }
 
 
+    public void setIntervalTask(Supplier<TimerTask> intervalTask) {
+        this.intervalTask = intervalTask;
+    }
 }

@@ -8,20 +8,22 @@ import main.system.auxiliary.data.FileManager;
 import query.C3_Query;
 
 public class C3Logger extends C3Handler {
-    private final String QLOG_FILE_PATH = "resources/c3_querylog.txt";
-    private final String TLOG_FILE_PATH = "resources/c3_tasklog.txt";
-    private final boolean query;
+    private static final String QLOG_FILE_PATH = "resources/c3_querylog.txt";
+    private static final String TLOG_FILE_PATH = "resources/c3_tasklog.txt";
 
     static StringBuilder logContentsBuilder;
     private final String log_file_path;
 
     public C3Logger(C3Manager manager, boolean query) {
-        super(manager);
-        this.query = query;
-        log_file_path = query ? QLOG_FILE_PATH : TLOG_FILE_PATH;
-        logContentsBuilder = new StringBuilder(FileManager.readFile(log_file_path));
+        this(manager, query ? QLOG_FILE_PATH : TLOG_FILE_PATH);
     }
 
+    public C3Logger(C3Manager manager, String log_file_path ) {
+        super(manager);
+        this.log_file_path = log_file_path;
+        logContentsBuilder = new StringBuilder(FileManager.readFile(log_file_path));
+
+    }
 
     public void started(C3Item item) {
         appendSeparator();

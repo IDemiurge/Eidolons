@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -1187,10 +1188,16 @@ public class StringMaster {
         return indestructible_nullForSecret ? INDESTRUCTIBLE : "";
     }
 
-    public static String curOutOfMax(String cur, String max) {
+    public static String getCurOutOfMax(String cur, String max) {
         return wrapInBrackets(
                 new StringBuilder().append(cur).append("/").
                         append(max).toString());
+    }
+
+    public static String formatList(List list) {
+        AtomicInteger i= new AtomicInteger();
+        list = (List) list.stream().map(o -> i.getAndIncrement() +": " + o.toString()).collect(Collectors.toList());
+       return ContainerUtils.joinList(list, "\n");
     }
 
 
