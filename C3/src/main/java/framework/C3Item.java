@@ -25,4 +25,15 @@ public class C3Item<T extends C3Enums.Category> {
         return text;
     }
 
+    @Override
+    public String toString() {
+        return
+                "[" + category +
+                "]['" + subCategory + '\'' +
+                "]" + text;
+    }
+
+    public String getCompletedText() {
+        return toString();
+    }
 }

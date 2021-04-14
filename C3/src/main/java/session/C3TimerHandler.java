@@ -10,7 +10,6 @@ import java.util.TimerTask;
 
 public class C3TimerHandler extends C3Handler {
     DequeImpl<C3Timer> keyTimers = new DequeImpl();
-    private boolean testMode=false;
 
     public C3TimerHandler(C3Manager manager) {
         super(manager);
@@ -38,17 +37,12 @@ public class C3TimerHandler extends C3Handler {
         int mod= NativeKeyEvent.CTRL_MASK;
         long delay= minsBreakInverval*60*1000;
         long limit=minutesTotal*60*1000;
-        if (testMode)
-        {
-            delay = 3000;
-            limit = 9000;
-        }
         C3Timer timer = new C3Timer(this, key, mod, delay, limit, session);
         timer.setIntervalTask(() -> new TimerTask() {
             @Override
             public void run() {
                 timer.paused();
-                intervalElapsed();
+                intervalElapsed(timer);
                 //TODO wait N seconds returned by elapsed()?
                 timer.resumed();
             }
@@ -59,15 +53,17 @@ public class C3TimerHandler extends C3Handler {
 
     public void shiftBreak() {
         keyTimers.get(0).paused();
-        keyTimers.get(0).paused();
+        manager.getDialogHandler().showBreakMenu( keyTimers.get(0).getInterval());
+        keyTimers.get(0).resumed();
     }
+
 
     public enum IntervalOption {
         tray, window, sound,
 }
-    private void intervalElapsed() {
+    private void intervalElapsed(C3Timer timer) {
         // intervalOption.switch
-        manager.getDialogHandler().showBreakMenu();
+        manager.getDialogHandler().showBreakMenu(timer.getInterval());
         // manager.getTrayHandler().notify("Take a break!", "C3");
         // playSystemSound();
     }

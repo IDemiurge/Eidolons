@@ -45,14 +45,28 @@ public class C3Session extends C3Item<C3Enums.Direction> {
     @Override
     public String toString() {
         return sessionType + " " + direction +
-                "Session\n Time: " +
-                StringMaster.getCurOutOfMax(minutesLeft + "", "" + duration);
+                " Session " ;
     }
 
+    public String getCompletedText() {
+        return toString() +
+                StringMaster.lineSeparator+ getTasksString()+
+                StringMaster.lineSeparator+ getTimeString();
+    }
+    public String getDurationString() {
+        return "Duration: "+ StringMaster.getCurOutOfMax(minutesLeft + "", "" + duration)                ;
+    }
+    public String getTasksString() {
+        return "Tasks Pending: "+ StringMaster.formatList(getTasksPending())
+                + "Tasks Done: "+ StringMaster.formatList(getTasksDone())  ;
+    }
     public String getTimeString() {
-        return "Started at: "+ TimeMaster.getFormattedTime(timer.timeStarted, false, true)
-                +"Started at: "+ TimeMaster.getFormattedTime(timer.timeStarted, false, true)
-                ;
+        if (finished){
+            return "Started at: " + TimeMaster.getFormattedTime(timer.timeStarted, false, true) +
+                    StringMaster.lineSeparator
+            + "Finished at: "+ TimeMaster.getFormattedTime(timer.timeFinished, false, true);
+        }
+        return "Started at: "+ TimeMaster.getFormattedTime(timer.timeStarted, false, true)                ;
     }
     public void setMinutesLeft(int minutesLeft) {
         this.minutesLeft = minutesLeft;

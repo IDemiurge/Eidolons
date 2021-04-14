@@ -43,26 +43,31 @@ public class C3TrayHandler extends C3Handler implements MouseListener, ActionLis
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
             case "Break":
-                manager.getSessionHandler().shiftBreak();
+                manager.getTimerHandler().shiftBreak();
                 break;
             case "New_Query":
-                manager.getQueryManager().createRandomQuery();
+                C3_Query randomQuery = manager.getQueryManager().createRandomQuery();
+                 manager.getQueryResolver().resolve(randomQuery);
+
                 break;
             case "Reset_Music":
-                manager.getSessionHandler().resetMusic( );
+                manager.getSessionHandler().resetMusic();
                 break;
             case "New_Task":
                 manager.getSessionHandler().addTask(DialogMaster.confirm("Custom task?"));
+                break;
+            case "New_Session":
+                manager.getSessionHandler().initSession( );
                 break;
         }
     }
 
     public enum TrayMenuItem {
+        New_Session,
         New_Task,
         New_Query,
         Break,
-        Reset_Music
-        ;
+        Reset_Music;
     }
 
     private PopupMenu createPopup() {
@@ -97,7 +102,9 @@ public class C3TrayHandler extends C3Handler implements MouseListener, ActionLis
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        manager.getDialogHandler().showOptionsMenu();
+        if (e.getButton() == 1) {
+            manager.getDialogHandler().showOptionsMenu();
+        }
 
     }
 

@@ -4,17 +4,16 @@ import data.C3Enums;
 import framework.C3Handler;
 import framework.C3Manager;
 import main.swing.generic.components.editors.lists.ListChooser;
-import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.data.FileManager;
 import main.system.util.DialogMaster;
 import music.PlaylistHandler;
 import task.C3_Task;
 
+import javax.swing.*;
 import java.io.File;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,46 +26,24 @@ public class C3SessionHandler extends C3Handler {
 
     private Integer getInterval(C3Session currentSession) {
         Object chosenOption = DialogMaster.getChosenOption("Break interval?", new Integer[]{
-                10, 15, 20
+                10, 15, 20, 25
         });
         return (Integer) chosenOption;
     }
 
     ;
 
-    public Integer[] getDurationOptions(C3Enums.SessionType sessionType) {
-        switch (sessionType) {
-            case Preparation -> {
-                return new Integer[]{
-                        15, 30, 45
-                };
-            }
-            case Perseverance -> {
-                return new Integer[]{
-                        90, 120, 150
-                };
-            }
-            case Liberation_Short, Night_Short -> {
-                return new Integer[]{
-                        45, 60, 75
-                };
-            }
-            case Liberation_Long, Night_Long -> {
-                return new Integer[]{
-                        75, 90, 120
-                };
-            }
-            case Freedom -> {
-                return new Integer[]{
-                        60, 90, 120, 150
-                };
-            }
+    public Integer[] getDurationOptions(int minBreaks, int max, Integer interval) {
+        List<Integer> list = new LinkedList<>();
+        for (int i = minBreaks; i <= max; i++) {
+            list.add(i);
         }
-        return null;
+        return list.stream().map(i-> i*interval).collect(Collectors.toList()).toArray(new Integer[0]);
     }
 
     public void abortSession(C3Session session) {
         finished(session);
+        manager.getSessionLogger().aborted(session);
     }
 
     // via separate launch?
@@ -80,14 +57,15 @@ public class C3SessionHandler extends C3Handler {
         }
 
         C3Enums.Direction direction = new EnumMaster<C3Enums.Direction>().selectEnum(C3Enums.Direction.class);
-        Integer[] durationOptions = getDurationOptions(sessionType);
-        Integer duration = (Integer) DialogMaster.getChosenOption("What's the timing?", durationOptions);
+        Integer interval = getInterval(currentSession);
+        Integer[] durationOptions = getDurationOptions(sessionType. getMinBreaks( ),sessionType. getMaxBreaks( ), interval);
+
+        Integer duration =(Integer) DialogMaster.getChosenOption("What's the timing?", durationOptions);
 
         if (currentSession != null && !currentSession.isFinished()) {
             abortSession(currentSession);
         }
         currentSession = new C3Session(sessionType, direction, duration, "", "");
-        Integer interval = getInterval(currentSession);
         currentSession.setMinsBreakInverval(interval);
         if (DialogMaster.confirm("Want some mus?"))
             try {
@@ -100,17 +78,43 @@ public class C3SessionHandler extends C3Handler {
     }
 
 
+
     private void initTasks(C3Session currentSession) {
+        while (DialogMaster.confirm("Add custom task?")) {
+            addTask(true);
+        }
+        if (!DialogMaster.confirm("Add prepared tasks?"))
+            return;
         C3Enums.TaskCategory[] categories = getCategories(currentSession.getDirection());
         List<String> names = manager.getTaskManager().getTaskNamesFor(categories);
         String picked = ListChooser.chooseStrings(names);
         List<String> list = ContainerUtils.openContainer(picked);
-        List<C3_Task> tasks = manager.getTaskManager().getTasksFor(list, categories);
+        List<C3_Task> tasks = manager.getTaskManager().getTasksFor(list );
         currentSession.setTasksPending(tasks);
     }
 
     private C3Enums.TaskCategory[] getCategories(C3Enums.Direction direction) {
         return direction.categories;
+    }
+
+    public void taskDone() {
+        List<C3_Task> tasks = currentSession.getTasksPending();
+        String picked = ListChooser.chooseMultiple(tasks);
+        List<Object> collect = ContainerUtils.openContainer(picked).stream().map(
+                string -> SearchMaster.findClosest(string, tasks.toArray())).collect(Collectors.toList());
+        for (Object o : collect) {
+            //TODO input comments!
+            C3_Task task = (C3_Task) o;
+            String input = JOptionPane.showInputDialog("Any comments for [" + task.getText() + "] ?");
+            manager.getTLogger().done(task, input);
+            taskDone(task);
+        }
+    }
+
+    private void taskDone(C3_Task task) {
+        currentSession.getTasksPending().remove(task);
+        currentSession.getTasksDone().add(task);
+        manager.getTaskManager().tasksCompleted(task);
     }
 
     public void addTask(boolean custom) {
@@ -120,7 +124,8 @@ public class C3SessionHandler extends C3Handler {
 
     public void displayActiveTasks() {
         if (!currentSession.getTasksPending().isEmpty()) {
-            DialogMaster.inform(StringMaster.formatList(currentSession.getTasksPending()));
+            DialogMaster.inform(                    "Pending tasks: \n"+
+                    StringMaster.formatList(currentSession.getTasksPending()));
         }
     }
 
@@ -157,11 +162,15 @@ public class C3SessionHandler extends C3Handler {
 
     public String getSessionInfo() {
 
-        return currentSession.toString();
+        return currentSession.toString()+
+                StringMaster.lineSeparator+
+                currentSession.getDurationString()+
+                StringMaster.lineSeparator+
+                currentSession.getTasksString();
     }
 
     public void finished(C3Session session) {
-        manager.getTaskManager().tasksCompleted(session.getTasksDone());
+        taskDone();
         manager.getTaskManager().tasksPostponed(session.getTasksPending());
         session.setFinished(true);
     }
@@ -169,11 +178,6 @@ public class C3SessionHandler extends C3Handler {
     public void resetMusic() {
         initSessionMusic(currentSession.getSessionType(), currentSession.getDirection());
     }
-
-    public void shiftBreak() {
-        manager.getTimerHandler().shiftBreak();
-    }
-
 
     private C3Enums.SessionType getSessionTypeAuto() {
         // int day = Calendar.getInstance().getTime().getDay();

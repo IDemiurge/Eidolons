@@ -13,7 +13,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -85,7 +84,7 @@ public class C3TaskResolver extends C3Handler {
 
     private String getDevlogName(C3_Task task) {
         switch (task.getCategory()) {
-            case New_Code:
+            case Code_New:
             case Code_Revamp:
             case Bug_fixing: {
                 return getCodingDevlog(task.getSubCategory());
@@ -152,7 +151,7 @@ public class C3TaskResolver extends C3Handler {
 
     public void promptTaskInput(C3_Task task) {
         String input = JOptionPane.showInputDialog("Any comments for [" + task.getText() + "] ?");
-        manager.getQLogger().done(task, input);
+        manager.getTLogger().done(task, input);
     }
 
 

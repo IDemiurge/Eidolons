@@ -1,21 +1,17 @@
 package hotkey.dialog;
 
-import data.C3Enums;
 import framework.C3Handler;
 import framework.C3Manager;
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.AudioDevice;
-import javazoom.jl.player.FactoryRegistry;
-import javazoom.jl.player.Player;
 import main.swing.generic.services.DialogMaster;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ArrayMaster;
+import main.system.sound.SoundMaster;
 import session.C3Session;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static data.C3Enums.*;
 import static data.C3Enums.C3Option.*;
@@ -29,71 +25,55 @@ public class C3DialogHandler extends C3Handler {
     public static final C3Option[] topOptions =
             {Session, Task, Query};
 
-    public void showBreakMenu() {
-        String tip=getBreakTip(manager.getSessionHandler().getCurrentSession());
+    public void showBreakMenu(long breakTime) {
+        playSound(C3Sound. PAUSE);
+        String tip = getBreakTip(manager.getSessionHandler().getCurrentSession());
+        Timer breakTimer = new Timer();
+        TimerTask t=new TimerTask() {
+            @Override
+            public void run() {
+                playSound(RandomWizard.random()? C3Sound.BACK_TO_WORK : C3Sound.GET_INTO_IT);
+            }
+        };
+        breakTimer.schedule(t, breakTime);
         boolean result = DialogMaster.confirm(manager.getSessionHandler().getSessionInfo()
-               + "\nPro Tip: " + tip + "!!"
-               + "\n" +
-               "Ready to bounce back?!");
-       if (result ){
-           playSound(C3Sound.ONWARD);
-       } else {
-           showOptionsMenu();
-       }
-
-    }
-
-    public enum BreakTip{
-        Breath,
-        Hydrate,
-        Sit_Up,
-        Commit(Direction.Code),
-        Try_Silence,
-        Stretch,
-        Structure(Direction.Design, Direction.Project),
-        Reality_check(Direction.Design, Direction.Project),
-
-        ; Direction[] directions;
-
-        BreakTip(Direction... directions) {
-            this.directions = directions;
+                + StringMaster.lineSeparator
+                + "Pro Tip >>>>  " + tip + "!!!"
+                + StringMaster.lineSeparator +
+                "Ready to bounce back?!");
+        if (result) {
+            playSound(C3Sound.ONWARD);
+        } else {
+            showOptionsMenu();
         }
+
     }
 
     private String getBreakTip(C3Session currentSession) {
-        BreakTip tip=null ;
-        while (true){
-         tip = new EnumMaster<BreakTip>().getRandomEnumConst(BreakTip.class);
-         if (!ArrayMaster.isNotEmpty(tip.directions) ||
-                 ArrayMaster.contains_(tip.directions, currentSession.getDirection())){
-            break;
-        }
+        BreakTip tip = null;
+        while (true) {
+            //TODO remove given tips
+            tip = new EnumMaster<BreakTip>().getRandomEnumConst(BreakTip.class);
+            if (!ArrayMaster.isNotEmpty(tip.directions) ||
+                    ArrayMaster.contains_(tip.directions, currentSession.getDirection())) {
+                break;
+            }
         }
         return tip.toString();
     }
 
-    private void playSound(C3Sound onward) {
-        try {
-            new Player(getInputStream(onward.getPath()), getAudioDevice()).play();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-    }
-
-    protected AudioDevice getAudioDevice()
-            throws JavaLayerException {
-        return FactoryRegistry.systemRegistry().createAudioDevice();
-    }
-
-    protected InputStream getInputStream(String filename)
-            throws IOException {
-        FileInputStream fin = new FileInputStream(filename);
-        BufferedInputStream bin = new BufferedInputStream(fin);
-        return bin;
+    private void playSound(C3Sound sound) {
+        SoundMaster.play(sound.getPath());
     }
 
     public void showOptionsMenu() {
-        pick(topOptions);
+
+        if (DialogMaster.confirm(manager.getSessionHandler().getSessionInfo()+
+                StringMaster.lineSeparator+
+                "Go to functions menu?")) {
+            pick(topOptions);
+        }
+
     }
 
     public void pick(C3Option[] options) {
@@ -101,7 +81,8 @@ public class C3DialogHandler extends C3Handler {
         if (picked == null) {
             return;
         }
-        if (picked.children == null) {
+        playSound(C3Sound.ONWARD);
+        if (!ArrayMaster.isNotEmpty(picked.children)) {
             handleLeaf(picked);
         } else {
             pick(picked.children);
@@ -111,10 +92,16 @@ public class C3DialogHandler extends C3Handler {
     private void handleLeaf(C3Option picked) {
         switch (picked) {
             case EZ_Choice -> {
-                ezChoiceDraft( manager.getSessionHandler().getCurrentSession());
+                ezChoiceDraft(manager.getSessionHandler().getCurrentSession());
             }
             case Music_Reset -> {
                 manager.getSessionHandler().resetMusic();
+            }
+            case Task_Report -> {
+                manager.getSessionHandler().taskDone();
+            }
+            case New_Task -> {
+                manager.getSessionHandler().addTask(main.system.util.DialogMaster.confirm("Custom task?"));
             }
         }
     }
@@ -135,7 +122,7 @@ public class C3DialogHandler extends C3Handler {
                 manager.getQueryManager().createRandomQuery();
             }
             case shift_break -> {
-                manager.getSessionHandler().shiftBreak();
+                manager.getTimerHandler().shiftBreak();
             }
         }
     }

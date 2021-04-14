@@ -17,24 +17,25 @@ public class C3Timer {
     // Runnable onKey;
 
     long timeStarted;
+    long timeFinished;
     long timePaused;
     private long totalTime;
     boolean paused;
 
     private Timer regularTimer;
     private Supplier<TimerTask> intervalTask;
-    private long ringDelay;
+    private long interval;
     private Timer exitTimer;
 
     private long timeLimit;
     private C3Session session;
     private boolean finished;
 
-    public C3Timer(C3TimerHandler c3TimerHandler, int keyCode, int mod,  long ringDelay, long timeLimit, C3Session session) {
+    public C3Timer(C3TimerHandler c3TimerHandler, int keyCode, int mod, long interval, long timeLimit, C3Session session) {
         manager = c3TimerHandler;
         this.keyCode = keyCode;
         this.mod = mod;
-        this.ringDelay = ringDelay;
+        this.interval = interval;
         this.timeLimit = timeLimit;
         this.session = session;
         session.setTimer(this);
@@ -55,7 +56,7 @@ public class C3Timer {
 
                         int minutes = TimeMaster.getMinutes(getTimeLeft());
                         session.setMinutesLeft(minutes);
-                        minutes = (int) (session.getMinsBreakInverval()- (TimeMaster.getTime() - timeStarted));
+                        minutes =  (session.getMinsBreakInverval() - TimeMaster.getMinutes((TimeMaster.getTime() - timeStarted)));
                         manager.getManager().getTrayHandler().setTooltip(
                                 session+", break in: "+
                                         minutes);
@@ -72,6 +73,7 @@ public class C3Timer {
 
     private void finished() {
         finished = true;
+        timeFinished = TimeMaster.getTime();
         manager.getManager().getSessionHandler().finished(session);
         manager.getManager().getSessionLogger().finished(session);
         manager.timerDone(this);
@@ -79,7 +81,7 @@ public class C3Timer {
 
     private void started() {
         manager.getManager().getSessionLogger().started(session);
-        regularTimer.schedule(intervalTask.get(), ringDelay, ringDelay);
+        regularTimer.schedule(intervalTask.get(), interval, interval);
         manager.getManager().getTrayHandler().notify(session + " started!\n >>" +
                 TimeMaster.getMinutes(getTimeLeft()) +
                 " minutes left", "C3 Session");
@@ -93,7 +95,9 @@ public class C3Timer {
         timeStarted = TimeMaster.getTime();
         manager.getManager().getSessionLogger().resumed(session);
         regularTimer = new Timer();
-        regularTimer.schedule(intervalTask.get(), ringDelay, ringDelay);
+        regularTimer.schedule(intervalTask.get(), interval, interval);
+        manager.getManager().getSessionHandler().displayActiveTasks();
+
         manager.getManager().getTrayHandler().notify("Resumed!\n >>" +
                 TimeMaster.getMinutes(getTimeLeft()) +
                 " minutes left", "C3 Session");
@@ -130,6 +134,9 @@ public class C3Timer {
         }
     }
 
+    public long getInterval() {
+        return interval;
+    }
 
     public void setIntervalTask(Supplier<TimerTask> intervalTask) {
         this.intervalTask = intervalTask;

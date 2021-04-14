@@ -19,7 +19,12 @@ public class SessionLogger extends C3Logger {
         started(session);
     }
 
-    public void finished(C3Session session) {
+    public void aborted(C3Session session) {
+        manager.getTrayHandler().setImage(C3TrayHandler.TrayIconVariant.normal);
+        String input = JOptionPane.showInputDialog(session + " aborted!\n Any comments?");
+        done(session, input);
+    }
+        public void finished(C3Session session) {
         manager.getTrayHandler().setImage(C3TrayHandler.TrayIconVariant.finished);
         String input = JOptionPane.showInputDialog(session + " is done!\n Any comments?");
         done(session, input);

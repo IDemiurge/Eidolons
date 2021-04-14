@@ -1,3 +1,7 @@
+import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.backends.headless.HeadlessApplication;
+import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
+import data.C3Enums;
 import framework.C3Manager;
 import gui.tray.C3TrayHandler;
 import main.system.graphics.GuiManager;
@@ -11,26 +15,31 @@ import task.C3_Task;
 import java.awt.*;
 import java.util.logging.Logger;
 
-public class C3 implements NativeKeyListener {
+public class C3     implements NativeKeyListener {
     private static final int SHIFT = NativeKeyEvent.SHIFT_MASK;
     private static final int ALT = NativeKeyEvent.ALT_MASK;
     private static final int CTRL = NativeKeyEvent.CTRL_MASK;
 
     private static final int KEY_TASK = NativeKeyEvent.VC_APP_CALCULATOR ;
     private static final int KEY_QUERY = NativeKeyEvent.VC_PAUSE ;
-    // private static final int KEY_SESSION = NativeKeyEvent.VC_PAUSE ;
-    // private static final int KEY_QUERY = NativeKeyEvent.VC_META ;
-    private final C3Manager manager;
+
+    private C3Manager manager;
     private final boolean sessionTestMode=true;
+
+
+    // public C3(ApplicationListener listener ) {
+    //     super(listener );
+    // }
 
     public static void main(String[] args) {
         GuiManager.setSize(Toolkit.getDefaultToolkit().getScreenSize());
         GuiManager.init();
-        new C3();
-    }
+        // C3GdxAdapter gdxAdapter = new C3GdxAdapter();
+        // new C3(gdxAdapter );
+        new C3().init();    }
 
 
-    public C3() {
+    public void init() {
         manager = new C3Manager();
         try {
             GlobalScreen.registerNativeHook();
@@ -48,6 +57,7 @@ public class C3 implements NativeKeyListener {
         } catch (AWTException e) {
             e.printStackTrace();
         }
+        manager.getQueryManager().persist();
         if (sessionTestMode) {
             manager.getSessionHandler().initSession();
         }

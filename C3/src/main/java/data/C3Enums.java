@@ -1,5 +1,6 @@
 package data;
 
+import main.system.auxiliary.StringMaster;
 import main.system.sound.AudioEnums;
 
 public class C3Enums {
@@ -17,36 +18,33 @@ public class C3Enums {
     }
 
     public enum SessionType {
-        Preparation,
-        Perseverance,
+        Preparation(1,3),
+        Perseverance(4,8),
 
-        Liberation_Short,
-        Night_Short,
-        Liberation_Long,
-        Night_Long,
+        Liberation_Short(2,4),
+        Night_Short(2,4),
+        Liberation_Long(3,6),
+        Night_Long(3,5),
 
-        Freedom,
+        Freedom(4,8),
+        ;
+
+        private int minBreaks;
+        private int maxBreaks;
+
+        public int getMaxBreaks() {
+            return maxBreaks;
+        }
+
+        SessionType(int minBreaks, int maxBreaks) {
+            this.minBreaks = minBreaks;
+            this.maxBreaks = maxBreaks;
+        }
+
+        public int getMinBreaks() {
+            return minBreaks;
+        }
     }
-static {
-    Direction.Code.setCategories(new TaskCategory[]{
-            TaskCategory.Code_Revamp,
-            TaskCategory.New_Code,
-            TaskCategory.Bug_fixing,
-    });
-    Direction.Design.setCategories(new TaskCategory[]{
-            TaskCategory.Content_Design,
-            TaskCategory.Global_Game_Design,
-            TaskCategory.System_Design,
-            TaskCategory.Lore_Writing,
-    });
-    Direction.Project.setCategories(new TaskCategory[]{
-            TaskCategory.Team_management,
-            TaskCategory.Public_Writing,
-    });
-    Direction.Meta.setCategories(new TaskCategory[]{
-            //TODO
-    });
-}
     public enum Direction implements Category {
         Code, Design, Project, Meta;
 
@@ -64,7 +62,9 @@ static {
 
     public enum C3Sound {
         ONWARD(AudioEnums.STD_SOUNDS.NEW__ENTER.getPath()),
-        ;
+        BACK_TO_WORK(AudioEnums.STD_SOUNDS.NEW__BATTLE_START.getPath()),
+        GET_INTO_IT(AudioEnums.STD_SOUNDS.NEW__BATTLE_START2.getPath()),
+        PAUSE(AudioEnums.STD_SOUNDS.NEW__PAUSE.getPath());
 
         private String path;
 
@@ -78,10 +78,10 @@ static {
     }
 
     public enum C3Option {
-
+        New_Task, Task_Report,
         EZ_Choice,
         Music_Reset,
-        Session(Music_Reset, EZ_Choice), Task, Query,
+        Session(Music_Reset, EZ_Choice), Task(New_Task, Task_Report), Query,
         ;
         public C3Option[] children;
 
@@ -94,6 +94,30 @@ static {
         comfy_chair,
         query,
         shift_break
+    }
+
+    public enum BreakTip{
+        Breath,
+        Hydrate,
+        Sit_Up,
+        Commit(Direction.Code),
+        Try_Silence,
+        Stretch,
+        Dance,
+        Smash_Ya_Eyes,
+        Structure(Direction.Design, Direction.Project),
+        Reality_check(Direction.Design, Direction.Project),
+
+        ;
+        public Direction[] directions;
+        BreakTip(Direction... directions) {
+            this.directions = directions;
+        }
+
+        @Override
+        public String toString() {
+            return StringMaster.format(super.toString());
+        }
     }
 
     public interface Category {
@@ -109,7 +133,7 @@ static {
     }
 
     public enum TaskCategory implements Category {
-        New_Code(8),
+        Code_New(8),
         Code_Revamp(10),
         Bug_fixing(6),
 

@@ -31,7 +31,7 @@ public class C3Writer extends C3Handler {
             for (Object sub : subMap.keySet()) {
                 List list = (List) subMap.get(sub);
                 list = (List) list.stream().map(obj -> new C3Node(obj, null)).collect(Collectors.toList());
-                subs.add(new C3Node(o, list));
+                subs.add(new C3Node(sub, list));
             }
         }
         return root;

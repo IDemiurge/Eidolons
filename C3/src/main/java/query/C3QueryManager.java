@@ -70,7 +70,15 @@ public class C3QueryManager extends C3Handler {
     }
 
     private QueryCategory getCategory(QueryMode mode) {
-        return   categoriesWeightMap.getRandomByWeight();
+        if (queryTextMap.isEmpty()) {
+            return null;
+        }
+        while (true){
+            QueryCategory pick = categoriesWeightMap.getRandomByWeight();
+            if (queryTextMap.keySet().contains(pick)) {
+                return pick;
+            }
+        }
     }
 
     public void addQuery() {

@@ -11,14 +11,14 @@ public class C3Logger extends C3Handler {
     private static final String QLOG_FILE_PATH = "resources/c3_querylog.txt";
     private static final String TLOG_FILE_PATH = "resources/c3_tasklog.txt";
 
-    static StringBuilder logContentsBuilder;
+    private final StringBuilder logContentsBuilder;
     private final String log_file_path;
 
     public C3Logger(C3Manager manager, boolean query) {
         this(manager, query ? QLOG_FILE_PATH : TLOG_FILE_PATH);
     }
 
-    public C3Logger(C3Manager manager, String log_file_path ) {
+    public C3Logger(C3Manager manager, String log_file_path) {
         super(manager);
         this.log_file_path = log_file_path;
         logContentsBuilder = new StringBuilder(FileManager.readFile(log_file_path));
@@ -34,21 +34,23 @@ public class C3Logger extends C3Handler {
 
     public void done(C3Item item, String input) {
         appendDate();
-        appendLine(item + " complete!");
-        appendLine( "Comment: "+ input);
+        appendLine(item.getCompletedText() + " complete!");
+        appendLine("Comment: " + input);
         persist();
     }
+
     public void updated(C3Item item, String arg) { // status?
         appendDate();
         appendLine(item + " changed");
         persist();
     }
 
-    public void logInput(C3Item item,String input) {
+    public void logInput(C3Item item, String input) {
         appendDate();
         appendLine(item + " changed");
         persist();
     }
+
     private void appendSeparator() {
         appendLine("--------------------------------------");
     }
