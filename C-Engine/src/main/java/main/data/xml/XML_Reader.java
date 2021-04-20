@@ -30,7 +30,7 @@ import static main.system.auxiliary.log.LogMaster.*;
 
 /**
  * contains methods for reading Types' xml files, constructing ObjType's and putting them into maps
- * also managed dynamic reload of hero types to avoid data overwriting between HC and AV
+ * also managed dynamic reload of hero types to avoid src.main.data overwriting between HC and AV
  */
 public class XML_Reader {
     // private static final Logger = Logger.getLogger(XML_Reader.class);

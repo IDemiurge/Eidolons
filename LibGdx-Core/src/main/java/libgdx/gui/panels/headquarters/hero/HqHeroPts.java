@@ -70,16 +70,16 @@ public class HqHeroPts extends HqElement {
 
     @Override
     protected void update(float delta) {
-        clazz.setValueText("Class Rank: " + StringMaster.curOutOfMax(
+        clazz.setValueText("Class Rank: " + StringMaster.getCurOutOfMax(
                 dataSource.getParamRounded(PARAMS.CLASS_RANKS_UNSPENT),
                 dataSource.getParamRounded(PARAMS.CLASS_RANKS)));
-        mstr.setValueText("Mastery Rank: " + StringMaster.curOutOfMax(
+        mstr.setValueText("Mastery Rank: " + StringMaster.getCurOutOfMax(
                 dataSource.getParamRounded(PARAMS.MASTERY_RANKS_UNSPENT),
                 dataSource.getParamRounded(PARAMS.MASTERY_RANKS)));
-        skill.setValueText("Skill Points: " + StringMaster.curOutOfMax(
+        skill.setValueText("Skill Points: " + StringMaster.getCurOutOfMax(
                 dataSource.getParamRounded(PARAMS.SKILL_POINTS_UNSPENT),
                 dataSource.getParamRounded(PARAMS.SKILL_POINTS )));
-        spell.setValueText("Spell Points: " + StringMaster.curOutOfMax(
+        spell.setValueText("Spell Points: " + StringMaster.getCurOutOfMax(
                 dataSource.getParamRounded(PARAMS.SPELL_POINTS_UNSPENT),
                 dataSource.getParamRounded(PARAMS.SPELL_POINTS )));
     }

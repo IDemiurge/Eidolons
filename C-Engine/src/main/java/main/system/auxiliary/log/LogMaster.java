@@ -184,7 +184,7 @@ public class LogMaster {
             FileLogManager.stream(FileLogManager.LOG_OUTPUT.FULL, s);
         }
         if (Flags.isIDE()) {
-            //            log.debug(s);
+            //            src.main.log.debug(s);
             System.out.println(s);
         } else {
             if (isConsoleLogging())

@@ -26,7 +26,7 @@ import java.util.*;
 //?
 
 /**
- * loads content into accessible data structures For "enum browsing"
+ * loads content into accessible src.main.data structures For "enum browsing"
  *
  * @author JustMe
  */

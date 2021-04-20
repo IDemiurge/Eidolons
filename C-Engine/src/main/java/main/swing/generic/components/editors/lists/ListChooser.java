@@ -24,10 +24,9 @@ import main.system.graphics.GuiManager;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
+import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ListChooser extends GenericListChooser<String> {
 
@@ -174,6 +173,10 @@ public class ListChooser extends GenericListChooser<String> {
         return name;
     }
 
+    public static String chooseMultiple(List list) {
+        return chooseStrings((List<String>) list.stream().map(o->o.toString()).collect(
+                Collectors.toCollection(()->new LinkedList<String>() )));
+    }
     public static String chooseStrings(List<String> stringList) {
         return chooseStringMode(SELECTION_MODE.MULTIPLE, stringList);
     }

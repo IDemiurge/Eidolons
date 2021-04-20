@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Contains all the data about a Game (like a save) stored in maps
+ * Contains all the src.main.data about a Game (like a save) stored in maps
  * //TODO master-classes should be linked here too, e.g. DungeonMaster,
  * Objects are mapped to ids
  * Provides methods for retrieving it and some for managing it (refactor needed)

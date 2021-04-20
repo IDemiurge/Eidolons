@@ -1,7 +1,7 @@
 package com.graphbuilder.math.func;
 
 /**
- * The log function.
+ * The src.main.log function.
  */
 public class LogFunction implements Function {
 
@@ -9,7 +9,7 @@ public class LogFunction implements Function {
     }
 
     /**
-     * If the number of parameters specified is 1, then the log base 10 is taken of the
+     * If the number of parameters specified is 1, then the src.main.log base 10 is taken of the
      * value at index location 0.  If the number of parameters specified is 2, then the
      * base value is at index location 1.
      */
@@ -28,6 +28,6 @@ public class LogFunction implements Function {
     }
 
     public String toString() {
-        return "log(x):log(x, y)";
+        return "src.main.log(x):src.main.log(x, y)";
     }
 }

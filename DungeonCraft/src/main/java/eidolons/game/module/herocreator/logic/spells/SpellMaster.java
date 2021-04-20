@@ -21,16 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SpellMaster {
-
-    private static final String SD = "{SPELL_SPELL_DIFFICULTY}";
     private static final String STANDARD = "STANDARD";
-
-    public static Condition getSpellRequirements(Spell spell) {
-        // SD: Mastery or Knowledge
-        String spellGroup = spell.getProperty(G_PROPS.SPELL_GROUP);
-        return new NumericCondition("max({SOURCE_KNOWLEDGE}/2-5," + "{SOURCE_" + spellGroup
-                + "MASTERY})", SD);
-    }
 
     public static String initSpellbook(Unit hero) {
         List<ObjType> list = new ArrayList<>();

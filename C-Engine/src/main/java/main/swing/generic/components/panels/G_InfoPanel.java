@@ -46,14 +46,14 @@ public abstract class G_InfoPanel extends G_Panel {
     }
 
     protected Vector<Vector<String>> getEmptyData() {
-        // Vector<Vector<String>> data = new Vector<Vector<String>>();
+        // Vector<Vector<String>> src.main.data = new Vector<Vector<String>>();
         // for (String s : displayedValues) {
         // Vector<String> line = new Vector<String>();
         // line.add(s);
         // line.add("");
-        // data.add(line);
+        // src.main.data.add(line);
         // }
-        // return data;
+        // return src.main.data;
         return null;
     }
 

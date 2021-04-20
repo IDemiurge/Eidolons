@@ -17,7 +17,7 @@ public final class PascalsTriangle {
      * the maximum value a double can represent is larger than long.  Thus, large returned
      * values will only be an approximation of the actual value.  If the result exceeds the
      * capabilities of double precision then the result can be checked using Double.isInfinite(...).
-     * For example: main.system.auxiliary.LogMaster.log(0, PascalsTriangle.nCr(1030, 515)); // outputs: Infinity
+     * For example: main.system.auxiliary.LogMaster.src.main.log(0, PascalsTriangle.nCr(1030, 515)); // outputs: Infinity
      * If the value of n or r is less than 0 or the value of r is greater than n then 0 is
      * returned.
      */

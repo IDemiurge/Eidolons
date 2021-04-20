@@ -1,5 +1,6 @@
 package libgdx.gui.panels.headquarters.weave.model.skills;
 
+import eidolons.content.DC_ContentValsManager;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import libgdx.gui.panels.headquarters.weave.Weave;
 import libgdx.gui.panels.headquarters.weave.WeaveTree;
@@ -27,7 +28,7 @@ public class SkillWeave extends Weave<MASTERY> {
         if (unbound) {
             SKILL_GROUP group = (SKILL_GROUP) getCoreNode().getArg();
             return
-             new ArrayList<>(Arrays.asList(SkillMaster.getMasteriesFromSkillGroup(group)));
+             new ArrayList<>(Arrays.asList(DC_ContentValsManager.getMasteriesFromSkillGroup(group)));
         }
 
 

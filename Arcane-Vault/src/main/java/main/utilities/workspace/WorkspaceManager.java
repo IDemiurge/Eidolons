@@ -196,20 +196,20 @@ public class WorkspaceManager {
                         return true;
                     }
                 }
-            case SKILLS:
-                if (type.getIntParam(PARAMS.CIRCLE) < 2) {
-                    if (StringMaster.contains(DC_ContentValsManager.getFocusMasteries(), type
-                            .getSubGroupingKey())) {
-                        return true;
-                    }
-                }
-            case CLASSES:
-                if (type.getIntParam(PARAMS.CIRCLE) < 2) {
-                    if (StringMaster.contains(DC_ContentValsManager.getFocusClassGroups(), type
-                            .getSubGroupingKey())) {
-                        return true;
-                    }
-                }
+            // case SKILLS:
+            //     if (type.getIntParam(PARAMS.CIRCLE) < 2) {
+            //         if (StringMaster.contains(DC_ContentValsManager.getFocusMasteries(), type
+            //                 .getSubGroupingKey())) {
+            //             return true;
+            //         }
+            //     }
+            // case CLASSES:
+            //     if (type.getIntParam(PARAMS.CIRCLE) < 2) {
+            //         if (StringMaster.contains(DC_ContentValsManager.getFocusClassGroups(), type
+            //                 .getSubGroupingKey())) {
+            //             return true;
+            //         }
+            //     }
         }
         return false;
     }

@@ -275,23 +275,13 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
         List<String> feats = ContainerUtils.openContainer(getProperty(PROP));
         for (String feat : feats) {
             DC_FeatObj featObj = null;
-            int rank = 0;
             // or special separator!
-            if (NumberUtils.isInteger(StringMaster.cropParenthesises(VariableManager
-                    .getVarPart(feat)))) {
-                rank = NumberUtils.getIntParse(StringMaster.cropParenthesises(VariableManager
-                        .getVarPart(feat)));
-                feat = VariableManager.removeVarPart(feat);
-            }
             ObjType featType = DataManager.getType(feat, TYPE);
             if (featType == null) {
                 continue;
             }
             if (featObj == null) {
                 featObj = createFeatObj(featType);
-            }
-            if (rank != 0) {
-                featObj.setParam(PARAMS.RANK, rank);
             }
             list.addCast(featObj);
         }

@@ -18,8 +18,8 @@ public class SoundMaster {
     public static final String ALT = "_ALT";
     public static final String STD_FORMATS = "mp3;flac;ogg;m4a;wav";
     public static final String STD_SOUND_PATH = PathFinder.getSoundPath() + "STD/";
-    public static final String FORMAT = ".mp3";
-    public static final String ALT_FORMAT = ".wav";
+    public static final String ALT_FORMAT = ".mp3";
+    public static final String FORMAT = ".wav";
     public static int masterVolume = 100;
     private static String path;
     private static boolean blockNextSound;

@@ -395,11 +395,6 @@ public class DC_MovementManager implements MovementManager {
         //                    return false;
         //                }
         //        }
-        if (obj instanceof Unit) {
-            if (!game.getRules().getEngagedRule().unitMoved((Unit) obj, c.x, c.y)) {
-                return false;
-            }
-        }
         obj.setCoordinates(c);
 
         return moved(obj, cell, false);

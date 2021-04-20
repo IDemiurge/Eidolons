@@ -19,6 +19,7 @@ import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.HeroEnums.*;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.WEAPON_SIZE;
+import main.content.enums.entity.SkillEnums;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.values.parameters.*;
 import main.content.values.properties.G_PROPS;
@@ -40,6 +41,7 @@ import main.system.auxiliary.log.LogMaster;
 import java.util.*;
 
 import static main.content.enums.entity.HeroEnums.BACKGROUND.*;
+import static main.content.enums.entity.SkillEnums.MASTERY.*;
 
 public class DC_ContentValsManager extends ContentValsManager {
 
@@ -544,20 +546,6 @@ public class DC_ContentValsManager extends ContentValsManager {
         }
     }
 
-    public static PARAMETER getPayParamFromUpkeep(PARAMETER param) {
-        if (param == PARAMS.ESS_UPKEEP) {
-            return PARAMS.C_ESSENCE;
-        }
-        if (param == PARAMS.END_UPKEEP) {
-            return PARAMS.C_ENDURANCE;
-        }
-        if (param == PARAMS.FOC_UPKEEP) {
-            return PARAMS.C_FOCUS;
-        }
-
-        return null;
-    }
-
     public static boolean isParamFloatDisplayed(PARAMETER param) {
         if (param.isAttribute()) {
             return !param.getName().contains("Base");
@@ -987,4 +975,104 @@ public class DC_ContentValsManager extends ContentValsManager {
         }
     }
 
+
+    public static SkillEnums.MASTERY[] getMasteriesFromSkillGroup(SkillEnums.SKILL_GROUP group) {
+        switch (group) {
+            case BODY_MIND:
+                return new SkillEnums.MASTERY[]{
+                        ATHLETICS_MASTERY,
+                        MOBILITY_MASTERY,
+                        MEDITATION_MASTERY,
+                        DISCIPLINE_MASTERY,
+
+                };
+            case SPELLCASTING:
+                return new SkillEnums.MASTERY[]{
+                        SPELLCRAFT_MASTERY,
+                        WIZARDRY_MASTERY,
+                        DIVINATION_MASTERY,
+
+                };
+            case WEAPONS:
+                return new SkillEnums.MASTERY[]{
+                        BLADE_MASTERY,
+                        AXE_MASTERY,
+                        BLUNT_MASTERY,
+                        POLEARM_MASTERY,
+                };
+            case OFFENSE:
+                return new SkillEnums.MASTERY[]{
+                        TWO_HANDED_MASTERY,
+                        DUAL_WIELDING_MASTERY,
+                        MARKSMANSHIP_MASTERY,
+                        UNARMED_MASTERY,
+                };
+            case DEFENSE:
+                return new SkillEnums.MASTERY[]{
+                        DEFENSE_MASTERY,
+                        SHIELD_MASTERY,
+                        STEALTH_MASTERY,
+                        DETECTION_MASTERY,
+
+                };
+            case COMMAND:
+                return new SkillEnums.MASTERY[]{
+                        LEADERSHIP_MASTERY,
+                        TACTICS_MASTERY,
+                        WARCRY_MASTERY
+                };
+            case CRAFT:
+                return new SkillEnums.MASTERY[]{
+                        ARMORER_MASTERY,
+                        ITEM_MASTERY,
+
+                };
+            case PRIME_ARTS:
+                return new SkillEnums.MASTERY[]{
+                        FIRE_MASTERY,
+                        AIR_MASTERY,
+                        WATER_MASTERY,
+                };
+            case ARCANE_ARTS:
+                return new SkillEnums.MASTERY[]{
+                        CONJURATION_MASTERY,
+                        SORCERY_MASTERY,
+                        ENCHANTMENT_MASTERY,
+
+                };
+            case LIFE_ARTS:
+                return new SkillEnums.MASTERY[]{
+                        EARTH_MASTERY,
+                        SAVAGE_MASTERY,
+                        SYLVAN_MASTERY,
+                };
+            case DARK_ARTS:
+                return new SkillEnums.MASTERY[]{
+                        PSYCHIC_MASTERY,
+                        SHADOW_MASTERY,
+                        WITCHERY_MASTERY,
+
+                };
+            case CHAOS_ARTS:
+                return new SkillEnums.MASTERY[]{
+                        WARP_MASTERY,
+                        DESTRUCTION_MASTERY,
+                        DEMONOLOGY_MASTERY,
+
+                };
+            case HOLY_ARTS:
+                return new SkillEnums.MASTERY[]{
+                        REDEMPTION_MASTERY,
+                        BENEDICTION_MASTERY,
+                        CELESTIAL_MASTERY,
+                };
+            case DEATH_ARTS:
+                return new SkillEnums.MASTERY[]{
+                        AFFLICTION_MASTERY,
+                        BLOOD_MAGIC_MASTERY,
+                        NECROMANCY_MASTERY,
+                };
+        }
+        return null;
+    }
 }

@@ -27,8 +27,8 @@ import main.system.auxiliary.log.LogMaster;
 import java.util.Set;
 
 /**
- * With gamestate being mostly a data holder, this class is a method container
- * Selection Top level actions - kill(), ... (no direct data manipulations)
+ * With gamestate being mostly a src.main.data holder, this class is a method container
+ * Selection Top level actions - kill(), ... (no direct src.main.data manipulations)
  *
  * @author JustMe
  */

@@ -27,6 +27,7 @@ public class StringMaster {
 
     public static final String standard_symbols = "'-(),";
     public static final String PREFIX_SEPARATOR = "::";
+    public static final  String lineSeparator = "\n----------------------------\n";
     private static final String WHITESPACE_CODE = "%20";
     public static final String INDESTRUCTIBLE = " Indestructible";
     public static final String STRANGE_WALL = " Marked";
@@ -1105,7 +1106,7 @@ public class StringMaster {
     public static String[] splitLines(String data, boolean allowEmptyLines, String separator) {
         if (allowEmptyLines)
             return data.trim().split(separator);
-        //        data.contains(NEW_LINE)? StringMaster.NEW_LINE
+        //        src.main.data.contains(NEW_LINE)? StringMaster.NEW_LINE
         //       : "\n");
         List<String> list = Arrays.stream(data.trim().split(separator)).
                 filter(line -> !line.isEmpty()).collect(Collectors.toList());
@@ -1196,6 +1197,7 @@ public class StringMaster {
 
     public static String formatList(List list) {
         AtomicInteger i= new AtomicInteger();
+        i.getAndIncrement();
         list = (List) list.stream().map(o -> i.getAndIncrement() +": " + o.toString()).collect(Collectors.toList());
        return ContainerUtils.joinList(list, "\n");
     }

@@ -253,9 +253,9 @@ public abstract class G_ListPanel<E> extends G_Panel {
         }
 
         // if (obj.getOwner().isMe())
-        // data = getData(obj);
+        // src.main.data = getData(obj);
         // else {
-        // data = getEmptyData();
+        // src.main.data = getEmptyData();
         // }
     }
 

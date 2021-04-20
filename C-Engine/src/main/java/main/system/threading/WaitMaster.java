@@ -35,7 +35,7 @@ public class WaitMaster {
          conditions.remove(lock).signal();
         lock.newCondition().signal();
         lock.unlock();
-//        main.system.auxiliary.log.LogMaster.dev("UNLOCKED " + o);
+//        main.system.auxiliary.src.main.log.LogMaster.dev("UNLOCKED " + o);
     }
 
     public static void waitLock(Object o) {
@@ -323,7 +323,7 @@ public class WaitMaster {
 // public static Object waitForInput(WAIT_OPERATIONS operation) {
 // if (getCompleteOperations().contains(operation))
 // return true;
-// main.system.auxiliary.LogMaster.log(LOG_CHANNELS.WAIT_DEBUG, " waiting for "
+// main.system.auxiliary.LogMaster.src.main.log(LOG_CHANNELS.WAIT_DEBUG, " waiting for "
 // + operation.toString());
 // Waiter waiter = waiters.get(operation);
 // boolean remove = true;
@@ -339,12 +339,12 @@ public class WaitMaster {
 // if (result == null)
 // result = waiter.startWaiting();
 //
-// LogMaster.log(LogMaster.WAIT_DEBUG, "INPUT RETURNED: " + result);
+// LogMaster.src.main.log(LogMaster.WAIT_DEBUG, "INPUT RETURNED: " + result);
 //
 // if (remove) {
 // waiters.remove(waiter);
 // } else
-// main.system.auxiliary.LogMaster.log(LogMaster.WAIT_DEBUG, "WAITER RETAINED: "
+// main.system.auxiliary.LogMaster.src.main.log(LogMaster.WAIT_DEBUG, "WAITER RETAINED: "
 // + operation.toString());
 //
 // return result;
@@ -356,7 +356,7 @@ public class WaitMaster {
 //
 // public static boolean receiveInput(WAIT_OPERATIONS operation, Object input,
 // boolean removeWaiter) {
-// main.system.auxiliary.LogMaster.log(LOG_CHANNELS.WAIT_DEBUG,
+// main.system.auxiliary.LogMaster.src.main.log(LOG_CHANNELS.WAIT_DEBUG,
 // " received input for "
 // + operation.toString() + ": " + input);
 // Waiter waiter = waiters.get(operation);

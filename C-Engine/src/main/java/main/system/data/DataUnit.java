@@ -193,7 +193,7 @@ public class DataUnit<T extends Enum<T>> implements Serializable {
             String[] pair = entry.split(getPairSeparator());
             if (pair.length != 2) {
                 //                format=
-                LogMaster.log(0, "malformed data:" + entry);
+                LogMaster.log(0, "malformed src.main.data:" + entry);
                 handleMalformedData(entry);
                 continue;
             }

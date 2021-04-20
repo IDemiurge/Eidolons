@@ -480,7 +480,7 @@ public class PathFinder {
 
     public static String getMetaDataUnitPath() {
         return StrPathBuilder.build(PathFinder.getXML_PATH(),
-                "meta data.txt");
+                "meta src.main.data.txt");
     }
 
     public static String getHitSpritesPath() {

@@ -26,7 +26,7 @@ public class RefMaster {
 //        ref.setAnimationActive(animationActive);
 //        // ref.setAmount(getAmount());
 //        // if (refClones.size() % 100 == 5)
-//        // main.system.auxiliary.LogMaster.log(1, " " + refClones.size());
+//        // main.system.auxiliary.LogMaster.src.main.log(1, " " + refClones.size());
 //        // refClones.add(ref);
 //        return ref;
 //    }
@@ -66,7 +66,7 @@ public class RefMaster {
 //                try {
 //                    return game.getObjectById(Integer.valueOf(getValue(key.name()))).getRef();
 //                } catch (Exception e) {
-//                    LogMaster.log(1, prefix + " + " + getStr());
+//                    LogMaster.src.main.log(1, prefix + " + " + getStr());
 //                    main.system.ExceptionMaster.printStackTrace(e);
 //                }
 //            }

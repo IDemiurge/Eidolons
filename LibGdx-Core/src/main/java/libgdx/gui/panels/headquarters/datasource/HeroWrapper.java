@@ -452,11 +452,6 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public void saveRanks(boolean skills) {
-        getHero().saveRanks(skills);
-    }
-
-    @Override
     public boolean isObstructing(Obj watcher, DC_Obj target) {
         return getHero().isObstructing(watcher, target);
     }
@@ -479,11 +474,6 @@ public class HeroWrapper extends HeroDataModel {
     @Override
     public void setGame(Game game) {
         getHero().setGame(game);
-    }
-
-    @Override
-    public void saveRanks(DequeImpl<? extends DC_FeatObj> container, PROPERTY property) {
-        getHero().saveRanks(container, property);
     }
 
     @Override
@@ -517,11 +507,6 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public boolean incrementFeatRank(boolean skill, ObjType type) {
-        return getHero().incrementFeatRank(skill, type);
-    }
-
-    @Override
     public boolean isAgile() {
         return getHero().isAgile();
     }
@@ -531,10 +516,6 @@ public class HeroWrapper extends HeroDataModel {
         return getHero().isFlying();
     }
 
-    @Override
-    public boolean incrementFeatRank(boolean skill, DC_FeatObj featObj) {
-        return getHero().incrementFeatRank(skill, featObj);
-    }
 
     @Override
     public boolean hasDoubleCounter() {
@@ -549,11 +530,6 @@ public class HeroWrapper extends HeroDataModel {
     @Override
     public boolean hasNoRetaliation() {
         return getHero().hasNoRetaliation();
-    }
-
-    @Override
-    public void setFeatRank(boolean skill, int rank, ObjType type) {
-        getHero().setFeatRank(skill, rank, type);
     }
 
     @Override

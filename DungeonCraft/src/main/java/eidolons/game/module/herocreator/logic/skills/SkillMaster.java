@@ -39,11 +39,6 @@ import static main.content.enums.entity.SkillEnums.MASTERY.*;
 
 /**
  * Created by JustMe on 5/6/2018.
- * <p>
- * :: Mastery ranks
- * :: Slots
- * :: “Geometry”
- * :: RequirementMaster
  */
 public class SkillMaster {
     public static final String MASTERY_RANKS = "MASTERY_RANKS_";
@@ -247,106 +242,6 @@ public class SkillMaster {
 
     public static boolean isMasteryUnlocked(Entity entity, PARAMETER p) {
         return entity.getIntParam(p, true) > 0;
-    }
-
-    public static MASTERY[] getMasteriesFromSkillGroup(SKILL_GROUP group) {
-        switch (group) {
-            case BODY_MIND:
-                return new MASTERY[]{
-                        ATHLETICS_MASTERY,
-                        MOBILITY_MASTERY,
-                        MEDITATION_MASTERY,
-                        DISCIPLINE_MASTERY,
-
-                };
-            case SPELLCASTING:
-                return new MASTERY[]{
-                        SPELLCRAFT_MASTERY,
-                        WIZARDRY_MASTERY,
-                        DIVINATION_MASTERY,
-
-                };
-            case WEAPONS:
-                return new MASTERY[]{
-                        BLADE_MASTERY,
-                        AXE_MASTERY,
-                        BLUNT_MASTERY,
-                        POLEARM_MASTERY,
-                };
-            case OFFENSE:
-                return new MASTERY[]{
-                        TWO_HANDED_MASTERY,
-                        DUAL_WIELDING_MASTERY,
-                        MARKSMANSHIP_MASTERY,
-                        UNARMED_MASTERY,
-                };
-            case DEFENSE:
-                return new MASTERY[]{
-                        DEFENSE_MASTERY,
-                        SHIELD_MASTERY,
-                        STEALTH_MASTERY,
-                        DETECTION_MASTERY,
-
-                };
-            case COMMAND:
-                return new MASTERY[]{
-                        LEADERSHIP_MASTERY,
-                        TACTICS_MASTERY,
-                        WARCRY_MASTERY
-                };
-            case CRAFT:
-                return new MASTERY[]{
-                        ARMORER_MASTERY,
-                        ITEM_MASTERY,
-
-                };
-            case PRIME_ARTS:
-                return new MASTERY[]{
-                        FIRE_MASTERY,
-                        AIR_MASTERY,
-                        WATER_MASTERY,
-                };
-            case ARCANE_ARTS:
-                return new MASTERY[]{
-                        CONJURATION_MASTERY,
-                        SORCERY_MASTERY,
-                        ENCHANTMENT_MASTERY,
-
-                };
-            case LIFE_ARTS:
-                return new MASTERY[]{
-                        EARTH_MASTERY,
-                        SAVAGE_MASTERY,
-                        SYLVAN_MASTERY,
-                };
-            case DARK_ARTS:
-                return new MASTERY[]{
-                        PSYCHIC_MASTERY,
-                        SHADOW_MASTERY,
-                        WITCHERY_MASTERY,
-
-                };
-            case CHAOS_ARTS:
-                return new MASTERY[]{
-                        WARP_MASTERY,
-                        DESTRUCTION_MASTERY,
-                        DEMONOLOGY_MASTERY,
-
-                };
-            case HOLY_ARTS:
-                return new MASTERY[]{
-                        REDEMPTION_MASTERY,
-                        BENEDICTION_MASTERY,
-                        CELESTIAL_MASTERY,
-                };
-            case DEATH_ARTS:
-                return new MASTERY[]{
-                        AFFLICTION_MASTERY,
-                        BLOOD_MAGIC_MASTERY,
-                        NECROMANCY_MASTERY,
-                };
-        }
-        return null;
     }
 
     public static boolean isMasteryAvailable(PARAMETER p, Unit hero) {

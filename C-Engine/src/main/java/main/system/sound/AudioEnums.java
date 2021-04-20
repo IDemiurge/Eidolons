@@ -166,6 +166,7 @@ public class AudioEnums {
         HEY,
         FIGHT,
         FAIL,
+        FALL(true),
         LEVEL_UP,
         CHECK,
         ADD,
