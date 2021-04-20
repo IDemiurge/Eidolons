@@ -18,7 +18,7 @@ import main.system.auxiliary.EnumMaster;
 public class DC_ArmorObj extends DC_HeroSlotItem {
 
     private ARMOR_TYPE armorType;
-    private ArmorMaster.ArmorLayer layer;
+    private ArmorMaster.ArmorLayer layer= ArmorMaster.ArmorLayer.Outer;
 
     public DC_ArmorObj(ObjType armor_type, Player originalOwner, GenericGame game, Ref ref) {
         super(armor_type, originalOwner, game, ref, DC_ContentValsManager.getArmorModifyingParams());
@@ -103,17 +103,17 @@ public class DC_ArmorObj extends DC_HeroSlotItem {
     }
 
     private KEYS getRefKey() {
-        switch (layer) {
-            //TODO
-            case Inner:
-                return KEYS.ARMOR;
-            case Outer:
-                return KEYS.ARMOR;
-            case Cloak:
-                return KEYS.ARMOR;
-            case Helmet:
-                return KEYS.ARMOR;
-        }
+        // switch (layer) {
+        //     //TODO
+        //     case Inner:
+        //         return KEYS.ARMOR;
+        //     case Outer:
+        //         return KEYS.ARMOR;
+        //     case Cloak:
+        //         return KEYS.ARMOR;
+        //     case Helmet:
+        //         return KEYS.ARMOR;
+        // }
         return KEYS.ARMOR;
     }
 

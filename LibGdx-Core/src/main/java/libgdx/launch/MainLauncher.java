@@ -13,6 +13,7 @@ import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
+import main.system.launch.Launch;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.system.util.DialogMaster;
@@ -41,6 +42,7 @@ public class MainLauncher extends GenericLauncher {
         Flags.setMainGame(true);
         Flags.setDialogueTest(true);
 
+        Launch.START(Launch.LaunchPhase._1_dc_setup);
         EngineLauncher engineLauncher = createEngineLauncher();
 
 
@@ -122,8 +124,11 @@ public class MainLauncher extends GenericLauncher {
             }
         }
 
+        Launch.END(Launch.LaunchPhase._1_dc_setup);
+
         new MainLauncher().start();
         WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
+        Launch.END(Launch.LaunchPhase._7_menu_show);
         //        if (CoreEngine.isFastMode()) {
         //            CoreEngine.setJar(true);
         //        }

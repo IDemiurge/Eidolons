@@ -84,7 +84,7 @@ public class NF_MetaMaster extends ScenarioMetaMaster<NF_Meta> {
     }
 
     public boolean isCustomQuestsEnabled() {
-        return true;
+        return false;
     }
 
     @Override

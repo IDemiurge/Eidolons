@@ -11,9 +11,12 @@ import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.content.consts.VisualEnums;
 import eidolons.game.core.Eidolons;
+import eidolons.system.libgdx.GdxAdapter;
+import eidolons.system.libgdx.api.ScreenApi;
 import libgdx.Adapter;
 import libgdx.GdxEvents;
 import libgdx.GdxMaster;
+import libgdx.adapters.ScreenApiImpl;
 import libgdx.assets.Assets;
 import libgdx.screens.GameScreen;
 import libgdx.screens.ScreenMaster;
@@ -38,6 +41,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
+import main.system.launch.Launch;
 
 import java.awt.*;
 
@@ -59,6 +63,8 @@ public abstract class GenericLauncher extends Game {
 
     @Override
     public void create() {
+
+        Launch.START(Launch.LaunchPhase._6_gdx_init);
         instance = this;
         ScreenMaster.launcher=this; //TODO gdx Review refactor!!!
         new Adapter().init();
@@ -70,7 +76,9 @@ public abstract class GenericLauncher extends Game {
         OrthographicCamera camera = new OrthographicCamera();
         viewport = new ScreenViewport(camera);
         ScreenMaster.setMainViewport(viewport);
+        Launch.START(Launch.LaunchPhase._7_menu_show);
         screenLoader.screenInit();
+        Launch.END(Launch.LaunchPhase._7_menu_show);
 
         profiler = new GLProfiler(Gdx.graphics);
         GuiEventManager.bind(GuiEventType.TOGGLE_LOG_GL_PROFILER, p -> {
@@ -84,6 +92,9 @@ public abstract class GenericLauncher extends Game {
             logProfiler();
             TextureCache.getInstance().logDiagnostics();
         });
+
+        Launch.END(Launch.LaunchPhase._6_gdx_init);
+        Launch.END(Launch.LaunchPhase._7_menu_show);
     }
 
     protected ScreenLoader createScreenLoader() {
@@ -281,8 +292,14 @@ public abstract class GenericLauncher extends Game {
     @Override
     public void setScreen(Screen screen) {
         super.setScreen(screen);
-        if (screen instanceof GameScreen)
+        if (screen instanceof GameScreen){
+            ScreenApiImpl api = new ScreenApiImpl(gameScreen);
             this.gameScreen = (GameScreen) screen;
+            GdxAdapter.getInstance().setScreen(api);
+            if (screen instanceof DungeonScreen){
+                GdxAdapter.getInstance().setDungeon(api);
+            }
+        }
     }
 
 }

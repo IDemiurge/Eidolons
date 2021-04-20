@@ -15,10 +15,12 @@ import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.libgdx.GdxAdapter;
+import eidolons.system.libgdx.GdxBeans;
 import eidolons.system.libgdx.GdxStatic;
 import eidolons.system.test.Debugger;
 import main.game.bf.Coordinates;
 import main.game.core.game.Game;
+import main.system.ExceptionMaster;
 import main.system.auxiliary.log.FileLogManager;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
@@ -27,6 +29,7 @@ import main.system.sound.AudioEnums;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.util.function.Supplier;
 
 /**
  * Created by JustMe on 2/15/2017.
@@ -50,6 +53,7 @@ public class Eidolons {
     private static boolean logicThreadBusy;
     private static int customThreadsUsed = 0;
     private static Unit bufferedMainHero;
+    private static Supplier<GdxBeans> gdxBeansProvider;
 
     public static boolean initScenario(MetaGameMaster master) {
         mainGame = new EidolonsGame();
@@ -163,7 +167,7 @@ public class Eidolons {
             showMainMenu();
             MusicMaster.getInstance().scopeChanged(MusicEnums.MUSIC_SCOPE.MENU);
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
             //            DialogMaster.confirm("Game exit failed!");
             //            exitGame();
         }
@@ -221,7 +225,7 @@ public class Eidolons {
                     try {
                         o.run();
                     } catch (Exception e) {
-                        main.system.ExceptionMaster.printStackTrace(e);
+                        ExceptionMaster.printStackTrace(e);
                     } finally {
                         logicThreadBusy = false;
                     }
@@ -250,7 +254,7 @@ public class Eidolons {
         try {
             o.run();
         } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            ExceptionMaster.printStackTrace(e);
         }
     }
 
@@ -264,6 +268,14 @@ public class Eidolons {
         }
         setMainHero(bufferedMainHero);
         bufferedMainHero = null;
+    }
+
+    public static void setGdxBeansProvider(Supplier<GdxBeans> gdxBeansProvider) {
+        Eidolons.gdxBeansProvider = gdxBeansProvider;
+    }
+
+    public static Supplier<GdxBeans> getGdxBeansProvider() {
+        return gdxBeansProvider;
     }
 
 

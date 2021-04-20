@@ -2,6 +2,7 @@ package eidolons.game.battlecraft;
 
 import eidolons.content.DC_ContentValsManager;
 import eidolons.entity.active.DC_ActionManager;
+import main.system.launch.Launch;
 import eidolons.system.DC_ConditionMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.text.DescriptionTooltips;
@@ -42,7 +43,9 @@ public class DC_Engine extends CoreEngine {
     }
 
     public static void systemInit() {
+        Launch.START(Launch.LaunchPhase._2_systemInit);
         systemInit(!CoreEngine.isLevelEditor());
+        Launch.END(Launch.LaunchPhase._2_systemInit);
 
     }
 

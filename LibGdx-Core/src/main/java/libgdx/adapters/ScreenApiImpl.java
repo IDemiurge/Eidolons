@@ -14,6 +14,10 @@ import java.util.Set;
 public class ScreenApiImpl implements ScreenApi {
         GameScreen screen;
 
+    public ScreenApiImpl(GameScreen screen) {
+        this.screen = screen;
+    }
+
     @Override
     public void setRealTimeGameLoop(RealTimeGameLoop exploreGameLoop) {
 

@@ -18,6 +18,7 @@ import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
+import main.system.launch.Launch;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -29,8 +30,8 @@ import java.util.function.Predicate;
 import static main.system.auxiliary.log.LogMaster.*;
 
 /**
- * contains methods for reading Types' xml files, constructing ObjType's and putting them into maps
- * also managed dynamic reload of hero types to avoid src.main.data overwriting between HC and AV
+ * contains methods for reading Types' xml files, constructing ObjType's and putting them into maps also managed dynamic
+ * reload of hero types to avoid src.main.data overwriting between HC and AV
  */
 public class XML_Reader {
     // private static final Logger = Logger.getLogger(XML_Reader.class);
@@ -129,10 +130,11 @@ public class XML_Reader {
     }
 
     public static void loadXml(String path) {
+        Launch.START(Launch.LaunchPhase._4_xml_read);
         File folder = FileManager.getFile(path);
         important("Loading xml files from: \n " + path);
         final File[] files = folder.listFiles();
-
+        List<XML_File> list = new ArrayList<>(files.length);
         if (files != null) {
             //DO NOT FOREACH - its slow on arrays
             for (int i = 0; i < files.length; i++) {
@@ -145,18 +147,30 @@ public class XML_Reader {
                         XML_File xmlFile = readFile(file);
                         if (xmlFile == null)
                             continue;
-                        loadFile(xmlFile);
+                        list.add(xmlFile); //multi-threaded? we could do it via some Worker, but later [20-04-21]
                     } catch (Exception e) {
-                        brokenXml = true;
-                            important("ENGINE INIT >> " + file + " is broken!");
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
                 } else {
-                    important("ENGINE INIT >> not a valid xml file: \n " + file);
+                    Launch.ERROR("ENGINE INIT >> not a valid xml file: \n " + file);
                 }
             }
-            important( "ENGINE INIT >> Done loading xml files from: \n " + path);
-            important( getFiles().size( ) + "Xml files: \n " + getFiles() );
+            Launch.END(Launch.LaunchPhase._4_xml_read);
+
+            Launch.START(Launch.LaunchPhase._5_xml_init);
+            for (XML_File xmlFile : list) {
+                try {
+                    loadFile(xmlFile);
+                } catch (Exception e) {
+                    brokenXml = true;
+                    Launch.ERROR("ENGINE INIT >> " + xmlFile + " is broken!");
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
+            }
+            Launch.END(Launch.LaunchPhase._5_xml_init);
+
+            important("ENGINE INIT >> Done loading xml files from: \n " + path);
+            important(getFiles().size() + "Xml files: \n " + getFiles());
 /*            Arrays.stream(files)
                     .filter(XML_Reader::checkFile)
                     .forEach(el -> {
@@ -301,10 +315,11 @@ public class XML_Reader {
         xml.setType(type);
         loadFile(xml);
     }
-        public static void readTypeFile(boolean macro, OBJ_TYPE type) {
+
+    public static void readTypeFile(boolean macro, OBJ_TYPE type) {
         String path = StrPathBuilder.build((macro ? PathFinder.getMACRO_TYPES_PATH()
                 : PathFinder.getTYPES_PATH()), type.getName() + ".xml");
-            readTypeFile(path, type);
+        readTypeFile(path, type);
     }
 
     public static void loadXml(boolean macro) {
@@ -405,8 +420,7 @@ public class XML_Reader {
     }
 
     /**
-     * //     * @param tabGroupMap
-     * the tabGroupMap to set
+     * //     * @param tabGroupMap the tabGroupMap to set
      */
 
     public static Map<String, Set<String>> getTabGroupMap() {

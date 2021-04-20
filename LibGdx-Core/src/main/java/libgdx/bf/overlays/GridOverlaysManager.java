@@ -606,7 +606,7 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
                         getDroppedItems(coordinates);
                 if (items == null) {
                     Eidolons.game.getDroppedItemManager().reset(coordinates.x, coordinates.y);
-                    main.system.auxiliary.log.LogMaster.log(1, "dropped item forced reset " + coordinates);
+                    main.system.auxiliary.log.LogMaster.verbose( "dropped item forced reset " + coordinates);
                     items = Eidolons.game.getDroppedItemManager().
                             getDroppedItems(coordinates);
                 }

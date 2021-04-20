@@ -7,6 +7,7 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import main.system.launch.Launch;
 import eidolons.game.netherflame.main.NF_MetaMaster;
 import libgdx.Adapter;
 import libgdx.gui.panels.generic.story.IggBriefScreenOld;
@@ -115,7 +116,7 @@ public class ScreenLoader {
                     }
 
                     GuiEventManager.trigger(GuiEventType.UPDATE_LOAD_STATUS, "Loading dungeon...");
-                    initScenario(data, data.getName());
+                    initScenario(data, data.getName() );
                     GuiEventManager.trigger(GuiEventType.UPDATE_LOAD_STATUS, "Dungeon loaded - " + EidolonsGame.lvlPath);
                     firstInitDone = true;
                     setInitRunning(false);
@@ -181,15 +182,20 @@ public class ScreenLoader {
 
     public void initScenario(ScreenData data, String name) {
         LogMaster.log(1, "initScenario for dungeon:" + name);
+        Launch.START(Launch.LaunchPhase._8_dc_init);
+
+        Eidolons.setGdxBeansProvider( ()-> new Adapter().createGdxBeans());
+
         DC_Engine.gameStartInit();
         //how to prevent this from being called twice?
-        if (!Eidolons.initScenario(createMetaForScenario(data))) {
+
+        Launch.START(Launch.LaunchPhase._9_meta_init);
+        if (!Eidolons.initScenario(createMetaForScenario(data)) ) {
+            Launch.END(Launch.LaunchPhase._8_dc_init);
+            Launch.END(Launch.LaunchPhase._9_meta_init);
             setInitRunning(false);
             return; // INIT FAILED or EXITED
         }
-        MusicMaster.preload(MusicEnums.MUSIC_SCOPE.ATMO);
-
-        Adapter.afterGameInit( Eidolons.game);
         Eidolons.mainGame.getMetaMaster().getGame().initAndStart();
     }
 

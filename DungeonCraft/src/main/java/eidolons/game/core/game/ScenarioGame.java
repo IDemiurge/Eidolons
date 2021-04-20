@@ -14,7 +14,7 @@ public class ScenarioGame extends DC_Game {
     public ScenarioGame(ScenarioMetaMaster scenarioMetaMaster) {
         super(false, false);
         metaMaster = scenarioMetaMaster;
-        setGameMode(GAME_MODES.DUNGEON_CRAWL);
+        setGameMode(GAME_MODES.ARENA);
         firstInit();
     }
 

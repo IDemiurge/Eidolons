@@ -113,6 +113,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
             // Simulation.setRealGame(game);
         }
         game.setMetaMaster(this);
+        gdxBeans = Eidolons.getGdxBeansProvider().get();
         metaGame = initializer.initMetaGame(data);
         preStart();
 
@@ -318,6 +319,9 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     }
 
     public GdxBeans getGdxBeans() {
+        if (gdxBeans == null) {
+            gdxBeans = Eidolons.getGdxBeansProvider().get();
+        }
         return gdxBeans;
     }
 

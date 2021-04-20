@@ -80,6 +80,7 @@ import main.system.datatypes.DequeImpl;
 import main.system.entity.IdManager;
 import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
+import main.system.launch.Launch;
 
 import java.util.*;
 
@@ -320,7 +321,7 @@ public class DC_Game extends GenericGame {
 
         keyManager.init();
         getGraveyardManager().init();//TODO in init?
-        missionMaster.startGame();
+        // missionMaster.startGame();
 
         if (getMetaMaster() != null)
             getMetaMaster().gameStarted();
@@ -902,11 +903,17 @@ public class DC_Game extends GenericGame {
     }
 
     public void initAndStart() {
+        Launch.START(Launch.LaunchPhase._10_level_init);
         if (isInitialized())
             reinit();
+        MusicMaster.preload(MusicEnums.MUSIC_SCOPE.ATMO);
         battleInit();
         metaMaster.reinit();
+        Launch.END(Launch.LaunchPhase._10_level_init);
+
+        Launch.START(Launch.LaunchPhase._11_dc_start);
         start(true);
+        Launch.END(Launch.LaunchPhase._11_dc_start);
     }
 
     public void exit(boolean mainMenu) {
