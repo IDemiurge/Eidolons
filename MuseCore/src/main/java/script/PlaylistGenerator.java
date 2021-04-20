@@ -65,7 +65,7 @@ public class PlaylistGenerator {
         List<File> music = all.stream().filter(file -> file.isFile() && isMusic(file)).collect(Collectors.toList());
         StringBuilder contentBuilder = new StringBuilder();
         if (music.size() > 1) {
-            // main.system.auxiliary.log.LogMaster.log(1, "Music folder: " + root);
+            // main.system.auxiliary.src.main.log.LogMaster.src.main.log(1, "Music folder: " + root);
         } else {
             if (music.size() == 2) {
                 //ask?

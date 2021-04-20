@@ -43,6 +43,8 @@ public class MuseCore implements NativeKeyListener {
         boolean alt=false;
         if ((ALT & nativeKeyEvent.getModifiers()) != 0
         || (alt = ((SHIFT & nativeKeyEvent.getModifiers()) != 0))) {
+            //TODO make into tray func
+            //     PlaylistFinder.findAndPlay();
             if (nativeKeyEvent.getKeyCode() > 58) {
                 boolean F11_12=(nativeKeyEvent.getKeyCode() == 87 || nativeKeyEvent.getKeyCode() == 88) ;
                 if (
@@ -76,7 +78,7 @@ public class MuseCore implements NativeKeyListener {
             //     }
             // }
             //            default:
-            //                main.system.auxiliary.log.LogMaster.log(1, " nativeKeyEvent.getModifiers()=" +
+            //                main.system.auxiliary.src.main.log.LogMaster.src.main.log(1, " nativeKeyEvent.getModifiers()=" +
             //                        nativeKeyEvent.getModifiers());
         }
 
