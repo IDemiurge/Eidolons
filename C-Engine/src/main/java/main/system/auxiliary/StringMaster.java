@@ -28,6 +28,7 @@ public class StringMaster {
     public static final String standard_symbols = "'-(),";
     public static final String PREFIX_SEPARATOR = "::";
     public static final  String lineSeparator = "\n----------------------------\n";
+    public static final  String lineSeparator2 = "\n--------------------------------------------------------\n";
     private static final String WHITESPACE_CODE = "%20";
     public static final String INDESTRUCTIBLE = " Indestructible";
     public static final String STRANGE_WALL = " Marked";

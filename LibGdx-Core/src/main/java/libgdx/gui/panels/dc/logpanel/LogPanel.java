@@ -20,13 +20,12 @@ import eidolons.content.consts.Images;
 import libgdx.texture.TextureCache;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
-import eidolons.system.text.DC_LogManager;
+import eidolons.system.text.DC_GameLogManager;
 import main.content.enums.GenericEnums;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.ColorManager;
-import main.system.launch.Flags;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -135,13 +134,13 @@ public class LogPanel extends ScrollTextWrapper {
             String text = p.get().toString();
 
             int align = Align.left;
-            if (text.contains(DC_LogManager.ALIGN_CENTER)) {
-                text = text.replace(DC_LogManager.ALIGN_CENTER, "");
+            if (text.contains(DC_GameLogManager.ALIGN_CENTER)) {
+                text = text.replace(DC_GameLogManager.ALIGN_CENTER, "");
                 align = Align.center;
             }
             String image = null;
-            if (text.contains(DC_LogManager.IMAGE_SEPARATOR)) {
-                String[] parts = text.split(Pattern.quote(DC_LogManager.IMAGE_SEPARATOR));
+            if (text.contains(DC_GameLogManager.IMAGE_SEPARATOR)) {
+                String[] parts = text.split(Pattern.quote(DC_GameLogManager.IMAGE_SEPARATOR));
                 image = parts[0];
                 text = parts[1];
             }

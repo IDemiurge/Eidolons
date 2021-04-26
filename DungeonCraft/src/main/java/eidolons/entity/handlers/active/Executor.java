@@ -20,6 +20,8 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.atb.AtbMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.system.libgdx.GdxAdapter;
+import eidolons.system.libgdx.datasource.AnimContext;
 import main.ability.Ability;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
@@ -160,7 +162,7 @@ public class Executor extends ActiveHandler {
         if (isInterrupted()) {
             return interrupted();
         }
-        Context animContext = new Context(getAction().getOwnerObj(), target);
+        Context animContext = new AnimContext(getAction().getOwnerObj(), target);
         animContext.setAnimationActive(getAction());
         animContext.setObj(KEYS.ACTIVE, getAction());
         ActionInput input = new ActionInput(getAction(), animContext);
@@ -268,8 +270,8 @@ public class Executor extends ActiveHandler {
         GuiEventManager.trigger(GuiEventType.ACTION_BEING_RESOLVED, getAction());
         getAction().initAnimRefs(getRef());
         //TODO gdx sync - did it ever do anything?
-        // if (!input.getAction().isAttackAny())
-        //     ActionAnimMaster.animate(input);
+        if (!input.getAction().isAttackAny())
+            GdxAdapter.getInstance().getAnims().actionResolves(input);
 
         if (getAction().getAbilities() != null) {
             try {

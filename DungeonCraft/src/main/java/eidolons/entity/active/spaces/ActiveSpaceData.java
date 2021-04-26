@@ -17,7 +17,7 @@ public class ActiveSpaceData extends DataUnit<ACTIVE_SPACE_VALUE> {
 
     @Override
     protected String getSeparator() {
-        return ";";
+        return "::";
     }
 
     public static String getInstanceSeparator() {
@@ -33,8 +33,12 @@ public class ActiveSpaceData extends DataUnit<ACTIVE_SPACE_VALUE> {
         return getValue(ACTIVE_SPACE_VALUE.name);
     }
 
+    public void setActive(int index, String name) {
+        setValue("slot_" + (1 + index), name);
+    }
+
     public String getActive(int index) {
-        return getValue("slot_" + index);
+        return getValue("slot_" + (1 + index));
     }
 
     public String getActives() {

@@ -13,6 +13,7 @@ import eidolons.system.math.roll.DiceMaster;
 import main.ability.effects.Effect;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.NewRpgEnums;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -56,13 +57,18 @@ public class BlockMaster {
 
 
     public void dodged(Attack attack) {
+        if (attack.getHitType()== NewRpgEnums.HitType.critical_miss) {
+            StackingRule.actionMissed(attack.getAction());
+            attack.getAction().setFailedLast(true);
+            game.getLogManager().log(LogMaster.LOG.GAME_INFO, attack+ " is a Critical Miss!");
+        } else
+            game.getLogManager().log(LogMaster.LOG.GAME_INFO, attack+ " misses!");
         attack.setDodged(true);
-        // DC_SoundMaster.playMissedSound(attacker, getAttackWeapon(ref, offhand));
+        DC_SoundMaster.playMissedSound(attack.getAttacker(), attack.getWeapon());
         // if (attack.getHitType()== NewRpgEnums.HitType.critical_miss) {
-        // StackingRule.actionMissed(action);
         // }
         // // ++ animation? *MISS* //TODO ++ true strike
-        // action.setFailedLast(true);
+
     }
 
     public List<Blocker> createBlockers(Unit unit, boolean canParry) {

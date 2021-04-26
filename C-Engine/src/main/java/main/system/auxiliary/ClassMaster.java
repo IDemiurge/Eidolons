@@ -22,10 +22,10 @@ public class ClassMaster<T> {
         return false;
     }
 
-    public static  <T> List<T> getInstances(Object object, Class<?> CLASS) {
-        return new ClassMaster<T>().getInstances_(object, CLASS);
+    public static  <T> List<T> getInstancesFromCollection(Object object, Class<?> CLASS) {
+        return new ClassMaster<T>().getInstancesFromCollection_(object, CLASS);
     }
-    public   List<T> getInstances_(Object object, Class<?> CLASS) {
+    public   List<T> getInstancesFromCollection_(Object object, Class<?> CLASS) {
         List<T> list = new ArrayList<>();
 
         if (isInstanceOf(object, CLASS)) {
@@ -36,7 +36,7 @@ public class ClassMaster<T> {
         if (object instanceof Iterable) {
             Iterable collection = (Iterable) object;
             for (Object o : collection) {
-                list.addAll(getInstances_(o, CLASS));
+                list.addAll(getInstancesFromCollection_(o, CLASS));
             }
         }
 

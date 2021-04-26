@@ -6,7 +6,7 @@ import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.master.EffectMaster;
-import libgdx.anims.AnimContext;
+import eidolons.system.libgdx.datasource.AnimContext;
 import libgdx.anims.CompositeAnim;
 import libgdx.anims.construct.AnimConstructor;
 import main.system.auxiliary.TimeMaster;

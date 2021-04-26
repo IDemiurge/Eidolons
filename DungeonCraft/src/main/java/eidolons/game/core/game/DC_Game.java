@@ -51,7 +51,7 @@ import eidolons.system.audio.MusicMaster;
 import eidolons.system.hotkey.DC_KeyManager;
 import eidolons.system.math.DC_MathManager;
 import eidolons.system.test.TestMasterContent;
-import eidolons.system.text.DC_LogManager;
+import eidolons.system.text.DC_GameLogManager;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.OBJ_TYPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
@@ -87,11 +87,9 @@ import java.util.*;
 import static main.system.launch.Flags.isCombatGame;
 
 /**
- * contains references to everything that may be needed in scope of a single game
- * TODO refactor - put data into GameState!
- * init() should be called to create all Masters
- * battleInit() is a reset method
- * start() creates units and starts GameLoop (DC_TurnManager)
+ * contains references to everything that may be needed in scope of a single game TODO refactor - put data into
+ * GameState! init() should be called to create all Masters battleInit() is a reset method start() creates units and
+ * starts GameLoop (DC_TurnManager)
  */
 public class DC_Game extends GenericGame {
     public static DC_Game game;
@@ -194,10 +192,10 @@ public class DC_Game extends GenericGame {
         setTestMaster(new TestMasterContent(this));
         conditionMaster = new DC_ConditionMaster();
         if (!isSimulation()) {
-            logManager = new DC_LogManager(this);
+            logManager = new DC_GameLogManager(this);
         }
         if (!CoreEngine.isArcaneVault())
-             rules = new DC_Rules(this);
+            rules = new DC_Rules(this);
 
         if (!isCombatGame() && !Flags.isDungeonTool() && !CoreEngine.isLevelEditor())
             return;
@@ -331,7 +329,7 @@ public class DC_Game extends GenericGame {
             dungeonMaster.getExplorationMaster().init();
 
         }
-//        visionMaster.refresh();
+        //        visionMaster.refresh();
         getMetaMaster().getDialogueManager().introDialogue();
         DialogueManager.afterDialogue(() -> {
             fireEvent(new Event(Event.STANDARD_EVENT_TYPE.INTRO_FINISHED, new Ref()));
@@ -346,7 +344,7 @@ public class DC_Game extends GenericGame {
 
     public void startGameLoop() {
         startGameLoop(true);
-//        getVisionMaster().refresh();
+        //        getVisionMaster().refresh();
     }
 
 
@@ -394,9 +392,9 @@ public class DC_Game extends GenericGame {
         loop = combatLoop;
         exploreLoop.stop();
         EUtils.showInfoText("The Battle is Joined!");
-
+        getState().setChaosLevel(0);
         if (!combatLoop.isStarted() || !combatLoop.checkThreadIsRunning()
-//                CoreEngine.isIggDemoRunning()
+            //                CoreEngine.isIggDemoRunning()
         )
             loop.startInNewThread();
         else
@@ -469,8 +467,8 @@ public class DC_Game extends GenericGame {
     }
 
 
-    public Obj getObjectByCoordinate(Coordinates c, Boolean overlayingIncluded ) {
-        return getObjMaster().getObjectByCoordinate(c, overlayingIncluded );
+    public Obj getObjectByCoordinate(Coordinates c, Boolean overlayingIncluded) {
+        return getObjMaster().getObjectByCoordinate(c, overlayingIncluded);
     }
 
     public Set<BattleFieldObject> getOverlayingObjects(Coordinates c) {
@@ -478,16 +476,19 @@ public class DC_Game extends GenericGame {
     }
 
     public Set<BattleFieldObject> getObjectsNoOverlaying(Coordinates c) {
-        return getObjMaster().getObjectsOnCoordinate(c, false );
+        return getObjMaster().getObjectsOnCoordinate(c, false);
     }
+
     public Set<BattleFieldObject> getObjectsOnCoordinateNoOverlaying(Coordinates c) {
-        return getObjectsOnCoordinate(c, false );
+        return getObjectsOnCoordinate(c, false);
     }
-    public Set<BattleFieldObject> getObjectsOnCoordinateAll(Coordinates c  ) {
-        return getObjMaster().getObjectsOnCoordinate(c, true  );
+
+    public Set<BattleFieldObject> getObjectsOnCoordinateAll(Coordinates c) {
+        return getObjMaster().getObjectsOnCoordinate(c, true);
     }
-    public Set<BattleFieldObject> getObjectsOnCoordinate(Coordinates c, Boolean overlayingIncluded  ) {
-        return getObjMaster().getObjectsOnCoordinate(c, overlayingIncluded );
+
+    public Set<BattleFieldObject> getObjectsOnCoordinate(Coordinates c, Boolean overlayingIncluded) {
+        return getObjMaster().getObjectsOnCoordinate(c, overlayingIncluded);
     }
 
     public Set<DC_Cell> getCellsForCoordinates(Set<Coordinates> coordinates) {
@@ -710,8 +711,8 @@ public class DC_Game extends GenericGame {
     }
 
     @Override
-    public DC_LogManager getLogManager() {
-        return (DC_LogManager) super.getLogManager();
+    public DC_GameLogManager getLogManager() {
+        return (DC_GameLogManager) super.getLogManager();
     }
 
     public boolean isDummyPlus() {
@@ -959,6 +960,6 @@ public class DC_Game extends GenericGame {
 
     @Override
     public boolean checkModule(Obj obj) {
-        return getMetaMaster().getModuleMaster().isWithinModule(obj );
+        return getMetaMaster().getModuleMaster().isWithinModule(obj);
     }
 }

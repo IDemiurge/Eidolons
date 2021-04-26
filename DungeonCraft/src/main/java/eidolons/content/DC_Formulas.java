@@ -196,7 +196,12 @@ public class DC_Formulas {
     }
 
     public static int calculateAccuracyRating(int defense, int attack) {
-        return (int) ((attack-defense)/Math.sqrt(defense)*2+20);
+        if (defense<0)
+        {
+            attack+=-defense;
+            defense = 1;
+        }
+        return MathMaster.getMinMax((int) ((attack-defense)/Math.sqrt(defense)*2+20), -20,  100);
     }
     public static int calculateAccuracyRatingSpell(int resist, int penetration) {
         return (int) ((penetration-resist)/Math.sqrt(resist)*2+50);

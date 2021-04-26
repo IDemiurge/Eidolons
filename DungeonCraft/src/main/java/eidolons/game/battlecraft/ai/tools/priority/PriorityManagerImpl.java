@@ -1254,7 +1254,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 damage += FutureBuilder.getDamage(action, targetObj, e) * mod / 100;
 
             } catch (Exception e1) {
-                e1.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e1);
             }
         }
         float mod = getConstValue(AiConst.DAMAGE_PRIORITY_MOD);

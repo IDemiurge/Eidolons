@@ -13,12 +13,12 @@ public class AV_ButtonPanel extends G_ButtonPanel {
 
     public AV_ButtonPanel() {
         super(AvButtonHandler.commands);
-        setSize(1400, 82);
+        setSize(1400, 32);
     }
 
     @Override
     public int getWrap() {
-        return 2;
+        return 1;
     }
 
     @Override

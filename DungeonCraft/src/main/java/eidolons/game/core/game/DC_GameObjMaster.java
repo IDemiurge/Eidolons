@@ -106,7 +106,7 @@ public class DC_GameObjMaster extends GameObjMaster {
 
         if (!isCacheForStructures() || set == null) {
             set = new HashSet<>();
-            int size = getGame().getUnits().size();
+            int size = getGame().getStructures().size();
             Iterator<Structure> iterator = getGame().getStructures().iterator();
             for (int i = 0; i < size; i++) {
                 Structure object = iterator.next();

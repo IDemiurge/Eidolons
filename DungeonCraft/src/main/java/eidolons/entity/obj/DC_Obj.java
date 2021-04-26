@@ -74,7 +74,6 @@ public abstract class DC_Obj extends MicroObj {
 
     protected Set<ObjType> appliedTypes = new LinkedHashSet<>();
     protected ObjType originalType;
-
     public DC_Obj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
     }
@@ -563,7 +562,4 @@ public abstract class DC_Obj extends MicroObj {
         this.originalType = originalType;
     }
 
-    public GenericEnums.DieType getDieType() {
-        return DiceMaster.getDie(getIntParam(PARAMS.DIE_SIZE));
-    }
 }

@@ -66,7 +66,7 @@ public class ContentConsts {
     // another page => Modifiers (+sneak)
     private static final PARAMETER[] headerCharParams = null;
     public static PARAMETER[] headerUnitParams = {PARAMS.BASE_DAMAGE, PARAMS.ARMOR,
-            PARAMS.DEFENSE, PARAMS.ATTACK, PARAMS.RESISTANCE, PARAMS.SPELL_ARMOR,
+            PARAMS.DEFENSE, PARAMS.ATTACK, PARAMS.RESISTANCE,
             PARAMS.SIGHT_RANGE,
     };
     static PARAMETER[] FEAT_MODIFYING_PARAMS = {

@@ -306,7 +306,7 @@ public static final String SEPARATOR_NARROW = StrPathBuilder.build(
             try {
                 return field.get(null).toString();
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             return null;
         }).collect(Collectors.toList());

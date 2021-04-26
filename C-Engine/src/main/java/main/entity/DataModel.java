@@ -288,11 +288,14 @@ public abstract class DataModel {
     }
 
     public Integer getIntParam(String param) {
+        return getIntParam(param, false);
+    }
+    public Integer getIntParam(String param, boolean base) {
         PARAMETER p = ContentValsManager.getPARAM(param);
         if (p == null) {
             return 0;
         }
-        return getIntParam(p);
+        return getIntParam(p, base);
     }
 
     public String getStrParam(String param) {

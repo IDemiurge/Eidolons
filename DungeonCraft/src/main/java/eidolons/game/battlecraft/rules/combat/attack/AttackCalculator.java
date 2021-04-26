@@ -162,9 +162,9 @@ public class AttackCalculator {
 
     private Integer getDamageForHitType(Attack attack, Integer amount, Unit attacker,
                                         BattleFieldObject attacked, DC_ActiveObj action, boolean offhand) {
-        int mod =                HitTypeRule.                        getDamagePercentage(action, attacked, hitType);
-        int bonus = MathMaster.applyPercent(amount, mod);
-        return bonus;
+        int mod =                HitTypeRule.                        getDamagePercentage(action, attacked, attack.getHitType());
+        //TODO anything else?
+        return mod;
     }
 
     private int getAttributeDamageBonuses(Obj obj, Unit ownerObj,
@@ -228,6 +228,14 @@ public class AttackCalculator {
         mod = weapon.getIntParam(PARAMS.DAMAGE_MOD) - 100;
         modMap.put(MOD_IDENTIFIER.WEAPON, mod);
         totalMod += mod;
+
+        if (hitType != hit) {
+            bonus = getDamageForHitType(attack, totalBonus, attacker, attacked, action, offhand);
+            bonusMap.put(MOD_IDENTIFIER.HIT_TYPE, bonus);
+            totalMod += mod;
+        }
+
+
         bonus = weapon.getIntParam(PARAMS.DAMAGE_BONUS);
         bonus += getAttributeDamageBonuses(weapon, weapon.getOwnerObj(),
                 weaponMap);
@@ -247,12 +255,7 @@ public class AttackCalculator {
         if (bonus != null)
             totalBonus += bonus;
 
-        if (hitType != hit) {
-            bonus = getDamageForHitType(attack, totalBonus, attacker, attacked, action, offhand);
-            bonusMap.put(MOD_IDENTIFIER.HIT_TYPE, bonus);
-        }
         // bonusMap.put() inside
-        totalBonus += bonus;
         // then add modMap and bonusMap to getOrCreate final bonus! useful to know what
         // part of it was % though
         // TODO MODIFIER NOW DISPLAYED SEPARATED!

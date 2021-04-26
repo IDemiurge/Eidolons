@@ -56,7 +56,7 @@ public class TurnSequenceConstructor extends AiHandler {
                 condition = (FacingCondition) c;
                 break;
             }
-            List<Object> list = ClassMaster.getInstances(c, FacingCondition.class);
+            List<Object> list = ClassMaster.getInstancesFromCollection(c, FacingCondition.class);
             if (!list.isEmpty()) {
                 List<Action> front_sequence = getTurnSequence(FACING_SINGLE.IN_FRONT, source,
                  target.getCoordinates());

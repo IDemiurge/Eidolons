@@ -14,6 +14,7 @@ import java.awt.*;
 public class GenericEnums {
 
     public enum ASPECT {
+        ARENA(-1),
         NEUTRAL(0, "Cosmic Crystal", "Tombstone", ""),
         ARCANUM(1, "Arcane Crystal", "Arcane Gateway", "Arcane Mastery"),
         LIFE(2, "Life Crystal", "Life Gateway", "Life Mastery"),
@@ -25,15 +26,12 @@ public class GenericEnums {
         ;
 
         private int code;
-        private final String crystal;
-        private String mastery;
-        private String gateway;
 
+        ASPECT(int code ) {
+            this.code = code;
+        }
         ASPECT(int code, String crystal, String gateway, String mastery) {
             this.code = code;
-            this.crystal = crystal;
-            this.setGateway(gateway);
-            this.setMastery(mastery);
         }
 
         public static ASPECT getAspectByCode(int code) {
@@ -56,31 +54,8 @@ public class GenericEnums {
         public void setCode(int code) {
             this.code = code;
         }
-
-        // public static ASPECTS getAspectByCode(int code){
-        // return valueOf(name.toUpperCase());
-        // }
-
-        public String getCrystalName() {
-            return crystal;
         }
 
-        public String getMastery() {
-            return mastery;
-        }
-
-        public void setMastery(String mastery) {
-            this.mastery = mastery;
-        }
-
-        public String getGateway() {
-            return gateway;
-        }
-
-        public void setGateway(String gateway) {
-            this.gateway = gateway;
-        }
-    }
 
     public enum BUFF_TYPE {
         RULES, SPELL, PASSIVE, STANDARD, OTHER,

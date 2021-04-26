@@ -1,0 +1,26 @@
+<Floor><DATA>wall_type=volcanic wall;background=img\main\background\Soul Spire2.png;width=32;name=Arena;cell_type=natural;height=23;</DATA><MODULES>
+<The_Pit><DATA>wall_type=volcanic wall;width_buffer=1;border_width=1;height_buffer=1;origin=0-0;name=The Pit;width=25;cell_type=dark_star;height=17;border_type=chism;</DATA>
+
+<OVERLAY_DIRECTIONS></OVERLAY_DIRECTIONS>
+<SCRIPT_DATA></SCRIPT_DATA>
+<DECOR></DECOR>
+
+
+<ID_MAP>Wall=15,9,16,8,17,7,18,6,19,5,29,36,27,40,39,26,34,14,3,28,31,13,2,24,32,23,33,11,1,22,30,10,4,20,38,37,46,;Ash Guard=45,44,;Ash Servant=43,;Soulseeker=41,;Blood Mage=42,;</ID_MAP>
+<OBJ_IDS>24-12=15,;24-10=9,;23-13=16,;23-9=8,;22-14=17,;22-8=7,;21-15=18,;21-7=6,;20-16=19,;20-6=5,;20-3=29,;19-11=36,;18-11=45,;17-10=43,;17-3=27,;16-1=40,;15-15=46,;15-9=41,;14-1=39,;13-10=42,;13-3=26,;12-11=44,;11-11=34,;10-16=14,;10-6=3,;10-3=28,;9-16=31,;9-15=13,;9-7=2,;9-6=24,;8-15=32,;8-7=23,;7-14=33,;7-13=11,;7-9=1,;7-8=22,;6-13=30,;6-12=10,;6-10=4,;6-9=20,;4-4=38,;3-11=37,;</OBJ_IDS>
+
+<DATA_MAPS><encounters></encounters><custom_types></custom_types>
+</DATA_MAPS>
+
+
+<CUSTOM_TYPE_DATA></CUSTOM_TYPE_DATA>
+<ENCOUNTER_AI_GROUPS></ENCOUNTER_AI_GROUPS><CUSTOM_AI_GROUPS></CUSTOM_AI_GROUPS>
+<TRANSIT_IDS></TRANSIT_IDS>
+
+
+<Zones><Zone><DATA>name=Inner;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Outer;</DATA><Blocks></Blocks></Zone></Zones>
+
+<BORDERS></BORDERS><PLATFORM_DATA></PLATFORM_DATA>
+<coordinates_void>28-20;28-19;28-18;28-17;28-16;28-15;28-14;28-13;28-12;28-11;28-10;28-9;28-8;28-7;28-6;28-5;28-4;28-3;28-2;27-20;27-2;26-20;26-2;25-20;25-2;24-20;24-2;23-20;23-2;22-20;22-2;21-20;21-2;20-20;20-2;19-20;19-2;18-20;18-6;18-5;18-2;17-20;17-7;17-6;17-2;16-20;16-11;16-6;16-5;15-20;15-12;15-11;15-10;15-2;14-20;14-11;14-6;14-5;13-20;13-7;13-6;13-2;12-20;12-6;12-5;12-2;11-20;11-2;10-20;10-19;10-18;10-15;10-14;10-8;10-7;10-2;9-20;9-19;9-14;9-13;9-9;9-8;9-4;9-3;9-2;8-20;8-19;8-13;8-12;8-10;8-9;8-3;8-2;7-20;7-19;7-18;7-12;7-10;7-4;7-3;7-2;6-20;6-19;6-18;6-17;6-5;6-4;6-3;6-2;5-20;5-19;5-18;5-17;5-16;5-6;5-5;5-3;5-2;4-20;4-19;4-18;4-17;4-16;4-15;4-12;4-10;4-7;4-6;4-2;3-20;3-19;3-18;3-17;3-16;3-15;3-14;3-13;3-12;3-10;3-9;3-8;3-7;3-6;3-5;3-3;3-2;2-20;2-19;2-18;2-17;2-16;2-15;2-14;2-13;2-12;2-11;2-10;2-9;2-8;2-7;2-6;2-5;2-4;2-3;2-2;</coordinates_void>
+</The_Pit>
+</MODULES></Floor>

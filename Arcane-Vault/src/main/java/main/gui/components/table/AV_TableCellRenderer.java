@@ -38,53 +38,97 @@ public class AV_TableCellRenderer extends DefaultTableCellRenderer {
         // return component;
         // }
 
+        boolean nameOrValue = column == TableDataManager.NAME_COLUMN;
+        String name = (String) table.getValueAt(row, TableDataManager.NAME_COLUMN);
+        if (!nameOrValue) {
+            if (StringMaster.compare(name, G_PROPS.EMPTY_VALUE.toString())) {
+                table.setRowHeight(row, table.getRowHeight() / 2);
+                return renderEmpty(table, "", isSelected, hasFocus, row,
+                        column);
+            }
+            if (StringMaster.compareByChar(name, G_PROPS.IMAGE.toString(), true)) {
+                table.setRowHeight(row, TableDataManager.ROW_HEIGHT * 2);
+                return renderImage(table, value, isSelected, hasFocus, row, column, component);
+            }
+        }
+
         if (value == null) {
             return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
                     column);
         }
-        if (value.toString().equals(G_PROPS.EMPTY_VALUE.toString())) {
-            component = super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row,
-                    column);
-            if (!tablePanel.isColorsInverted()) {
-                component.setBackground(ColorManager.OBSIDIAN);
-            } else {
-                component.setForeground(Color.WHITE);
-            }
-            table.setRowHeight(row, table.getRowHeight() / 2);
-            return component;
-        }
-
         if (ArcaneVault.getSelectedType() == null) {
             return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
                     column);
         }
-
-        String name = (String) table.getValueAt(row, TableDataManager.NAME_COLUMN);
-
-        if (column == TableDataManager.NAME_COLUMN) {
-
-            return renderValueName(table, value, isSelected, hasFocus, row, column, name);
-
-        }
-        if (StringMaster.compare(name, G_PROPS.EMPTY_VALUE.toString())) {
-            component = super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row,
-                    column);
-            if (!tablePanel.isColorsInverted()) {
-                component.setBackground(ColorManager.OBSIDIAN);
-            } else {
-                component.setForeground(Color.WHITE);
-            }
+        if (value.toString().equals(G_PROPS.EMPTY_VALUE.toString())) {
             table.setRowHeight(row, table.getRowHeight() / 2);
+            return renderEmpty(table, "", isSelected, hasFocus, row,
+                    column);
         }
-        if (StringMaster.compareByChar(name, G_PROPS.IMAGE.toString(), true)) {
-            table.setRowHeight(row, TableDataManager.ROW_HEIGHT * 2);
 
-            return renderImage(table, value, isSelected, hasFocus, row, column, component);
-        }
-        return renderValueName(table, value, isSelected, hasFocus, row, column, name);
+
+        value  =   table.getValueAt(row, TableDataManager.VALUE_COLUMN);
+        return renderValueName(table, value, isSelected, hasFocus, row, column, name, nameOrValue);
         // return super.getTableCellRendererComponent(table, value, isSelected,
         // hasFocus, row, column);
     }
+
+    private Component renderEmpty(JTable table, String s, boolean isSelected, boolean hasFocus, int row, int column) {
+        Component component = super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row,
+                column);
+        // component.setBackground(AV_ColorMaster.getDefaultBackgroundColor(tablePanel.isColorsInverted()));
+        component.setBackground(AV_ColorMaster.getDefaultForegroundColor(tablePanel.isColorsInverted()));
+        return component;
+    }
+
+
+    private Component renderValueName(JTable table, Object value, boolean isSelected,
+                                      boolean hasFocus, int row, int column, String name, boolean nameOrValue) {
+        JLabel component = new JLabel(nameOrValue? name :  value.toString());
+        Color borderColor = AV_ColorMaster.getBorderColor(isSelected);
+        if (borderColor!=null ) {
+            component.setBorder(BorderFactory.createLineBorder(
+                    borderColor));
+        }
+
+        // component.setBackground(AV_ColorMaster.getBackgroundColor(tablePanel.isColorsInverted(), ArcaneVault.getSelectedType(),
+        //         value.toString(),name, isSelected));
+        component.setForeground(AV_ColorMaster.getForegroundColor(tablePanel.isColorsInverted(), ArcaneVault.getSelectedType(),
+                value.toString(),name,  isSelected));
+
+        // if (tablePanel.isColorsInverted()) {
+        //     color = ColorManager.getInvertedColor(color);
+        //     color2 = ColorManager.getInvertedColor(color2);
+        //
+        //     color2 = color2.brighter();
+        //     color = color.darker();
+        //     color2 = color2.brighter();
+        //     color = color.darker();
+        // }
+        // else {
+        // color = color.brighter();
+        // color2 = color2.darker();
+        // color = color.brighter();
+        // color2 = color2.darker();
+        // }
+        // component.setBackground(color);
+        // component.setForeground(color2);
+
+        component.setFont(FontMaster.getFont(FONT_TYPE, TableDataManager.FONT_SIZE, Font.ITALIC));
+
+        return component;
+    }
+
+    private Component renderImage(JTable table, Object value, boolean isSelected, boolean hasFocus,
+                                  int row, int column, Component component) {
+
+        JLabel lbl = ImageManager.getLabel(value.toString(), TableDataManager.ROW_HEIGHT * 2,
+                TableDataManager.ROW_HEIGHT * 2);
+        lbl.setBackground(Color.black);
+
+        return lbl;
+    }
+
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
@@ -100,61 +144,5 @@ public class AV_TableCellRenderer extends DefaultTableCellRenderer {
 
     private Map<Object, Component> getCache(boolean isSelected) {
         return isSelected ? cache : cache2;
-    }
-
-    private Component renderValueName(JTable table, Object value, boolean isSelected,
-                                      boolean hasFocus, int row, int column, String name) {
-        JLabel component =
-                // super.getTableCellRendererComponent(table, value, isSelected,
-                // hasFocus, row, column);
-                new JLabel(value + "");
-        if (isSelected) {
-            component.setBorder(BorderFactory.createLineBorder(ColorManager.PURPLE));
-        }
-        // component.setFont(FontMaster.getFont(FONT_TYPE,
-        // TableDataManager.FONT_SIZE, Font.PLAIN));
-
-        Color color;
-        Color color2;
-        color = ColorManager.MILD_WHITE;
-        color2 = ColorManager.DEEP_GRAY;
-
-        if (isSelected) {
-            color = ColorManager.getDarkerColor(color, 33);
-        }
-
-        // if (row % 2 != 0) {
-        if (tablePanel.isColorsInverted()) {
-            color = ColorManager.getInvertedColor(color);
-            color2 = ColorManager.getInvertedColor(color2);
-
-            color2 = color2.brighter();
-            color = color.darker();
-            color2 = color2.brighter();
-            color = color.darker();
-        }
-        // else {
-        // color = color.brighter();
-        // color2 = color2.darker();
-        // color = color.brighter();
-        // color2 = color2.darker();
-        // }
-        component.setBackground(color);
-        component.setForeground(color2);
-
-        component.setFont(FontMaster.getFont(FONT_TYPE, TableDataManager.FONT_SIZE, Font.ITALIC));
-
-        return component;
-    }
-
-    private Component renderImage(JTable table, Object value, boolean isSelected, boolean hasFocus,
-                                  int row, int column, Component component) {
-
-        JLabel lbl = ImageManager.getLabel(value.toString(), TableDataManager.ROW_HEIGHT * 2,
-                TableDataManager.ROW_HEIGHT * 2);
-        table.setBackground(Color.black);
-        lbl.setBackground(Color.black);
-
-        return lbl;
     }
 }

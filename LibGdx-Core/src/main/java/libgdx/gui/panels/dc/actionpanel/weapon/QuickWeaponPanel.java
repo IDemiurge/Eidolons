@@ -257,7 +257,7 @@ public class QuickWeaponPanel extends TablePanelX {
                     return; //TODO igg hack
                 }
                 super.entered();
-                weapon.setZIndex(getChildren().size - 2);
+                weapon.setZIndex(getChildren().size - 1);
                 radial.setZIndex(Integer.MAX_VALUE);
                 weapon.setFadeDuration(0.25f);
                 weapon.setImage(getActiveWeaponDataSource().getLargeImage());

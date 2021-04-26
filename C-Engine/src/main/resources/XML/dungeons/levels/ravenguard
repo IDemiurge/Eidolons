@@ -1,0 +1,26 @@
+<Floor><DATA>wall_type=volcanic wall;filepath=ravenguard;background=img\main\background\Soul Spire2.png;width=32;name=Arena;cell_type=natural;height=23;</DATA><MODULES>
+<The_Pit><DATA>wall_type=volcanic wall;width_buffer=1;border_width=1;height_buffer=1;background=img/main/background/ashen dawn.png;origin=0-0;name=The Pit;width=25;cell_type=dark_star;height=17;border_type=chism;</DATA>
+
+<OVERLAY_DIRECTIONS></OVERLAY_DIRECTIONS>
+<SCRIPT_DATA></SCRIPT_DATA>
+<DECOR></DECOR>
+
+
+<ID_MAP>Wall=76,77,78,73,59,58,57,56,55,54,108,102,107,101,70,106,100,75,69,105,99,74,67,104,98,66,103,97,53,52,51,50,49,48,4,38,36,34,41,40,39,37,42,44,43,;Enchanted Ornate Door=83,96,82,;Holy Flame Brazier=89,91,92,93,46,90,94,;Column=63,62,64,61,;Ravenguard Lieutenant=13,;Ravenguard Crossbowman=11,12,;Halbert Rack=87,86,;Ravenguard Knight=9,;Prestine Stairs=80,;Ravenguard Warden=14,;Greatsword Rack=85,;Iron Knight=84,;Old Chest=81,;</ID_MAP>
+<OBJ_IDS>21-9=76,;21-7=77,;21-6=83,;21-5=78,;21-3=73,;20-9=89,;20-3=91,;19-19=59,;19-18=58,;19-17=57,;19-15=56,;19-14=55,;19-13=54,;18-19=108,;18-13=102,;17-19=107,;17-18=63,;17-14=62,;17-13=101,;17-8=13,;17-4=92,;17-3=70,;16-19=106,;16-13=100,;16-6=11,;16-5=87,;16-4=75,;16-3=69,;15-13=96,;15-7=9,;15-3=80,;14-19=105,;14-13=99,;14-6=12,;14-5=86,;14-4=74,;14-3=67,;13-19=104,;13-18=64,;13-14=61,;13-13=98,;13-8=14,;13-4=93,;13-3=66,;12-19=103,;12-13=97,;11-19=53,;11-18=52,;11-17=51,;11-15=50,;11-14=49,;11-13=48,;10-9=46,;10-5=85,;10-3=90,;9-15=4,;9-13=38,;9-12=94,;9-10=84,;9-9=36,;9-7=34,;9-6=82,;9-5=41,;9-3=40,;8-8=81,;5-13=39,;5-9=37,;5-7=42,;5-5=44,;5-3=43,;</OBJ_IDS>
+
+<DATA_MAPS><encounters></encounters><custom_types></custom_types>
+</DATA_MAPS>
+
+
+<CUSTOM_TYPE_DATA></CUSTOM_TYPE_DATA>
+<ENCOUNTER_AI_GROUPS></ENCOUNTER_AI_GROUPS><CUSTOM_AI_GROUPS></CUSTOM_AI_GROUPS>
+<TRANSIT_IDS></TRANSIT_IDS>
+
+
+<Zones><Zone><DATA>name=Inner;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Outer;</DATA><Blocks></Blocks></Zone></Zones>
+
+<BORDERS></BORDERS><PLATFORM_DATA></PLATFORM_DATA>
+<coordinates_void>28-20;28-19;28-18;28-17;28-16;28-15;28-14;28-13;28-12;28-11;28-10;28-9;28-8;28-7;28-6;28-5;28-4;28-3;28-2;27-20;27-12;27-11;27-10;27-2;26-20;26-12;26-11;26-10;26-2;25-20;25-12;25-11;25-10;25-2;24-20;24-12;24-11;24-10;24-2;23-20;23-12;23-11;23-10;23-2;22-20;22-12;22-11;22-10;22-2;21-20;21-12;21-11;21-10;21-8;21-4;21-2;20-20;20-12;20-11;20-10;20-2;19-20;19-12;19-11;19-10;19-3;19-2;18-20;18-11;18-2;17-20;17-2;16-20;16-2;15-20;15-4;15-2;14-20;14-2;13-20;13-2;12-20;12-11;12-2;11-20;11-12;11-11;11-10;11-3;11-2;10-20;10-12;10-11;10-10;10-2;9-20;9-11;9-8;9-4;9-2;8-20;8-12;8-11;8-10;8-2;7-20;7-12;7-11;7-10;7-2;6-20;6-12;6-11;6-10;6-2;5-20;5-11;5-8;5-4;5-2;4-20;4-12;4-11;4-10;4-2;3-20;3-12;3-11;3-10;3-9;3-3;3-2;2-20;2-19;2-18;2-17;2-16;2-15;2-14;2-13;2-12;2-11;2-10;2-9;2-8;2-7;2-5;2-4;2-3;2-2;</coordinates_void>
+</The_Pit>
+</MODULES></Floor>

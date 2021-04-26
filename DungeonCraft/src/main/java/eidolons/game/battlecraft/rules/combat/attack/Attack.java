@@ -15,6 +15,8 @@ import main.system.ExceptionMaster;
 
 import java.util.List;
 
+import static main.content.enums.entity.NewRpgEnums.HitType.hit;
+
 public class Attack {
     public static final Integer DAMAGE_NOT_SET = -1;
     private boolean sneak;
@@ -391,6 +393,9 @@ public class Attack {
     }
 
     public NewRpgEnums.HitType getHitType() {
+        if (hitType==null ){
+            hitType = hit;
+        }
         return hitType;
     }
 

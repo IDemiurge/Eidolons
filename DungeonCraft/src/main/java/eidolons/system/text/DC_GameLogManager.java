@@ -37,7 +37,7 @@ import java.util.Map;
 
 import static main.content.enums.GenericEnums.DAMAGE_TYPE;
 
-public class DC_LogManager extends LogManager {
+public class DC_GameLogManager extends LogManager {
 
     //EA check - use images in log more
     public static final String ALIGN_CENTER = "<center>";
@@ -45,7 +45,7 @@ public class DC_LogManager extends LogManager {
     public static final String UNIT_TURN_PREFIX = "Active: ";
     private final List<String> fullEntryList = new ArrayList<>();
 
-    public DC_LogManager(Game game) {
+    public DC_GameLogManager(Game game) {
         super(game);
     }
 

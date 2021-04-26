@@ -84,7 +84,7 @@ public class Sprites {
                 spriteMap.put(StringMaster.format(field.getName()).toLowerCase(),
                         field.get(null).toString());
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 

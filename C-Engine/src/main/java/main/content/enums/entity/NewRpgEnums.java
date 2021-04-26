@@ -1,5 +1,7 @@
 package main.content.enums.entity;
 
+import main.system.auxiliary.StringMaster;
+
 public class NewRpgEnums {
     public enum WORLD_VIEW {
         faithless,
@@ -17,6 +19,12 @@ public class NewRpgEnums {
         actives,
         skin,
         index,
+            slot_1,
+            slot_2,
+            slot_3,
+            slot_4,
+            slot_5,
+            slot_6,
         ;
 
     }
@@ -88,6 +96,11 @@ public class NewRpgEnums {
         critical_hit, //60-80
         deadeye, //80+
         ;
+
+        @Override
+        public String toString() {
+            return StringMaster.format(name());
+        }
     }
 
     public enum BlockType {

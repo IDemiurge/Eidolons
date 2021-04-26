@@ -136,13 +136,16 @@ public class DefaultActionHandler {
 
     public static DC_ActiveObj getPreferredAttackAction(boolean offhand, Unit source, BattleFieldObject target) {
         // if (offhand)
-        DC_WeaponObj w = source.getWeapon(offhand);
-        List<DC_UnitAction> atks = source.getGame().getActionManager().getOrCreateWeaponActions(w);
-        w = source.getNaturalWeapon(offhand);
-        atks.addAll(source.getGame().getActionManager().getOrCreateWeaponActions(w));
+        return source.getAttackOfType(ActionEnums.ATTACK_TYPE.STANDARD_ATTACK);
+        //TODO DC revamp
 
-        return pickAutomatically(
-                atks, target);
+        // DC_WeaponObj w = source.getWeapon(offhand);
+        // List<DC_UnitAction> atks = source.getGame().getActionManager().getOrCreateWeaponActions(w);
+        // w = source.getNaturalWeapon(offhand);
+        // atks.addAll(source.getGame().getActionManager().getOrCreateWeaponActions(w));
+        //
+        // return pickAutomatically(
+        //         atks, target);
     }
 
     //

@@ -5,7 +5,7 @@ public class AvFlags {
     static boolean testMode = false;
     static boolean dirty = false;
     static boolean macroMode;
-    static boolean simulationOn = false;
+    static boolean simulationOn = true;
     static boolean colorsInverted = true;
     static boolean altPressed;
     static boolean dialogueMode = true;

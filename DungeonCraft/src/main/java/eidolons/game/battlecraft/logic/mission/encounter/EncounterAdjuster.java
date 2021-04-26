@@ -82,7 +82,7 @@ public class EncounterAdjuster extends MissionHandler {
             try {
                 adjustPower();
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         encounter.setPower(power);
 
@@ -113,7 +113,7 @@ public class EncounterAdjuster extends MissionHandler {
             try {
                 applyGrowth(priority);
             } catch (Exception e) {
-                e.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
         }
 

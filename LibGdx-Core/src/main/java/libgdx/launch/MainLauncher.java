@@ -102,8 +102,8 @@ public class MainLauncher extends GenericLauncher {
                 TestMasterContent.setAddSpells(true);
             if (Flags.isFullFastMode()) {
                 TestMasterContent.setAddAllSpells(true);
-                if (Flags.isMe())
-                    OptionsMaster.setOptionsPath("C:\\Users\\justm\\AppData\\Local\\Eidolons\\fast options.xml");
+                // if (Flags.isMe())
+                //     OptionsMaster.setOptionsPath("C:\\Users\\justm\\AppData\\Local\\Eidolons\\fast options.xml");
             }
         }
 //        if (!CoreEngine.isJar())

@@ -14,6 +14,7 @@ import static eidolons.content.PARAMS.*;
 import static main.content.values.parameters.G_PARAMS.DURATION;
 import static main.content.values.parameters.G_PARAMS.RADIUS;
 import static main.content.values.properties.G_PROPS.ACTIVES;
+import static main.content.values.properties.G_PROPS.VERSION;
 
 public class ValuePages {
     public static final VALUE[] DESCRIPTION = {G_PROPS.DESCRIPTION};
@@ -24,8 +25,16 @@ public class ValuePages {
             G_PROPS.PRINCIPLES, ACTIVES, G_PROPS.PASSIVES, G_PROPS.STANDARD_PASSIVES,
             LEVEL, POWER, FORMULA, G_PROPS.DESCRIPTION, G_PROPS.LORE,
             G_PROPS.FLAVOR,
-
     }; // POWER?
+    public static final VALUE[] ARENA_HEADER = {
+            G_PROPS.UNIQUE_ID,
+            G_PROPS.NAME, VERSION,
+            G_PROPS.IMAGE, G_PROPS.GROUP,
+            G_PROPS.DEV_NOTES, G_PROPS.UNIT_GROUP,
+            ACTIVES, G_PROPS.PASSIVES, G_PROPS.STANDARD_PASSIVES,
+            LEVEL, POWER, FORMULA, G_PROPS.DESCRIPTION, G_PROPS.LORE,
+
+    };
     public static final VALUE[] CHARS_HEADER = {G_PROPS.ASPECT, G_PROPS.DEITY, G_PROPS.BACKGROUND,
             G_PROPS.RACE, G_PROPS.MODE, G_PROPS.STATUS, G_PROPS.STANDARD_PASSIVES,};
     public static final VALUE[] DC_SPELLS_HEADER = {G_PROPS.ASPECT, G_PROPS.SPELL_TYPE,
@@ -93,7 +102,7 @@ public class ValuePages {
 
             ARMOR, ATTACK, DEFENSE, INITIATIVE, EXTRA_ATTACKS,
             EXTRA_MOVES,
-            STARTING_FOCUS, SPIRIT, RESISTANCE, SPELL_ARMOR,
+            STARTING_FOCUS, SPIRIT, RESISTANCE,
             ATB_START_MOD, ATB_START_PRESET,
 
             BASE_DAMAGE,
@@ -784,6 +793,7 @@ public class ValuePages {
     }
 
     public enum PAGE_NAMES {
+        ARENA_HEADER,
         HEADER,
         PARAMETERS,
         PROPERTIES,
@@ -799,6 +809,7 @@ public class ValuePages {
         AV_BOTTOM,
         AV_TRAILING_PAGE,
         DC_TRAILING_PAGE,
+        ;
     }
 
 }

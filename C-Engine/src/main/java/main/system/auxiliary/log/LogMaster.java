@@ -1,11 +1,15 @@
 package main.system.auxiliary.log;
 
+import main.system.auxiliary.ClassFinder;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
 import main.system.launch.Flags;
 import org.apache.log4j.Priority;
 
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 
 public class LogMaster {
@@ -168,8 +172,33 @@ public class LogMaster {
 
     static String shout = "\n******************\n";
 
+    private static List<String> ignoredClasses;
+    private static String[] ignoredPackages = {
+            "eidolons.game.battlecraft.ai",
+    };
+
+    //TODO group exceptions by package!
     static {
+        ignoredClasses = new LinkedList<>();
+        try {
+            for (String aPackage : ignoredPackages) {
+                Class[] classes = ClassFinder.getClasses(aPackage);
+                for (Class aClass : classes) {
+                    ignoredClasses.add(aClass.getName());
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //by package
+
         java.util.logging.Logger.getGlobal().setLevel(Level.ALL);
+    }
+
+    public static List<String> getIgnoredClasses() {
+        return ignoredClasses;
     }
 
     public static void log(String s) {
@@ -197,7 +226,7 @@ public class LogMaster {
     }
 
     private static boolean isConsoleLogging() {
-        return     Flags.isExe() && !Flags.isMe();
+        return Flags.isExe() && !Flags.isMe();
     }
 
     //TODO do these categories!

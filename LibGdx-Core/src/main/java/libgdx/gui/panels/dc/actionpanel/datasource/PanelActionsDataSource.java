@@ -13,11 +13,10 @@ import libgdx.gui.panels.dc.unitinfo.datasource.*;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.launch.CoreEngine;
+import main.system.launch.Flags;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -114,7 +113,9 @@ public class PanelActionsDataSource implements
 
     @Override
     public List<ValueContainer> getActives() {
-        List<DC_ActiveObj> actives=  unit.getActiveSpaces().getCurrent().getDisplayedActives();
+        List<DC_ActiveObj> actives =
+                // Flags.isSafeMode() ? new LinkedList<>(unit.getActionMap().get(ACTION_TYPE.STANDARD)) :
+                        unit.getActiveSpaces().getCurrent().getDisplayedActives();
         return actives.stream()
                 .map(getActiveObjValueContainerFunction(UiMaster.getBottomActiveIconSize()))
                 .collect(Collectors.toList());

@@ -34,7 +34,7 @@ public class DiceMaster {
         dieMap.put(12, d12);
         dieMap.put(20, d20);
     }
-
+//TODO add comment for log
     public static int roll(GenericEnums.DieType dieType, Obj source, boolean log) {
         Integer value = NumberUtils.getInt(dieType.name().substring(1));
         Boolean minMax = checkMinMax(source);
@@ -49,8 +49,8 @@ public class DiceMaster {
 
 
     public static void log(GenericEnums.DieType dieType, Obj source, int i) {
-        String msg = source + " has rolled a " +
-                dieType + " die for [" + i + "]";
+        String msg = source.getNameIfKnown() + " rolls " +
+                dieType + " for [" + i + "]";
         source.getGame().getLogManager().log(LogMaster.LOG.GAME_INFO, msg);
     }
 

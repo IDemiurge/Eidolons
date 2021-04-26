@@ -7,7 +7,9 @@ import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.VALUE;
 import main.content.values.properties.G_PROPS;
+import main.data.arena.A_ValuePageManager;
 import main.entity.type.ObjType;
+import main.gui.builders.EditViewPanel;
 import main.system.auxiliary.ContainerUtils;
 
 import java.util.*;
@@ -47,7 +49,10 @@ public class AV_DataManager {
         ContentValsManager.setAV_IgnoredValues(IGNORE_MAP);
     }
 
-    public static List<String> getValueNames(String key) {
+    public static List<String> getValueNames(EditViewPanel.ValueSet valueSet, String key) {
+        // if (valueSet== EditViewPanel.ValueSet.arena) {
+        //     return A_ValuePageManager.getValuesAV(DC_TYPE.getType(key));
+        // }
         List<VALUE> values;
         try {
             values = ValuePageManager.getValuesForAV(DC_TYPE.getType(key));
@@ -57,9 +62,9 @@ public class AV_DataManager {
             List<String> list = ContainerUtils.convertToStringList(values);
             return list;
         } catch (Exception e) {
-            // main.system.ExceptionMaster.printStackTrace(e);
-            return ContentValsManager.getArcaneVaultValueNames(key);
+            main.system.ExceptionMaster.printStackTrace(e);
         }
+            return ContentValsManager.getArcaneVaultValueNames(key);
 
     }
 

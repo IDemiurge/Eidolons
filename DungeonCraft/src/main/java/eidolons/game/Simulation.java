@@ -22,6 +22,8 @@ public class Simulation {
         game = new SimulationGame();
         game.setMetaMaster(metaMaster);
         game.init();
+            setRealGame(new DC_Game());
+            game.getRealGame().init();
         if (testmode) {
             return;
         }

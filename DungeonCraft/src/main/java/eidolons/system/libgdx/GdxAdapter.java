@@ -26,6 +26,7 @@ public class GdxAdapter {
     GdxOptions options;
 
     private static GdxAdapter instance;
+    private GdxAnims anims;
 
     private GdxAdapter() {
     }
@@ -157,4 +158,11 @@ public class GdxAdapter {
         return dataSourceApi;
     }
 
+    public GdxAnims getAnims() {
+        return anims;
+    }
+
+    public void setAnims(GdxAnims anims) {
+        this.anims = anims;
+    }
 }

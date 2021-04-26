@@ -28,6 +28,7 @@ import main.entity.Ref.KEYS;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.event.EventMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.Strings;
 import main.system.auxiliary.log.LogMaster;
 import main.system.sound.AudioEnums;
@@ -187,7 +188,7 @@ public class DC_AttackMaster {
         attack.setHitType(hitType);
         if (canCounter) canCounter = attacked.canCounter(action, attack.isSneak());
 
-        log(attacker.getNameIfKnown() + " attacks " + attacked.getName());
+        logHitType(attacker.getNameIfKnown() , attacked.getName(), hitType, attack.getAccuracyRate());
         // } ====> Need a common messaging interface for actions/costs
 
         boolean countered = false;
@@ -369,6 +370,12 @@ public class DC_AttackMaster {
 
     }
 
+    private void logHitType(String src, String target, NewRpgEnums.HitType hitType, int accuracyRate) {
+        String msg=src + " makes a " + hitType.toString() + " on " + target
+                + StringMaster.wrapInParenthesis("Accuracy: " + accuracyRate);
+        log(msg);
+    }
+
     public enum ATTACK_EFFECT_GROUP {
         DODGE, SNEAK, SHIELD, PARRY, BLOCK,
         CRIT, DEADEYE, //kill?
@@ -378,7 +385,7 @@ public class DC_AttackMaster {
         BattleFieldObject attacked = attack.getAttacked();
         Unit attacker = attack.getAttacker();
         Unit attackedUnit = null;
-        if (attack.getAttacker() instanceof Unit) {
+        if (attack.getAttacked() instanceof Unit) {
             attackedUnit = (Unit) attack.getAttacked();
         }
         Ref ref = attack.getRef();

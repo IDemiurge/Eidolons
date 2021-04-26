@@ -2,6 +2,7 @@ package eidolons.entity.active;
 
 import eidolons.ability.ActionGenerator;
 import eidolons.content.PROPS;
+import eidolons.entity.active.spaces.UnitActiveSpaces;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.rules.RuleEnums;
@@ -45,11 +46,6 @@ public class ActionInitializer extends DC_ActionManager {
         Unit unit = (Unit) entity;
         DequeImpl<ActiveObj> actives;
         // #1: reset prop with ids if nothing is changed
-        // if (ListMaster.isNotEmpty(actives) && entity.isActivesReady()) {
-        // entity.setProperty(ACTIVES, StringMaster
-        // .constructContainer(StringMaster.convertToIdList(actives)));
-        // return;
-        // }
         actives = new DequeImpl<>();
         // #2: reset the list if prop has been modified (via Add/Remove effects
         // ++ items). They should set ActivesReady to false for that.
@@ -72,11 +68,12 @@ public class ActionInitializer extends DC_ActionManager {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
-        // entity.setProperty(ACTIVES, StringMaster
-        // .constructContainer(StringMaster.convertToIdList(actives)));
         entity.setActivesReady(true);
 
         unit.setActives(new ArrayList<>(actives));
+
+        UnitActiveSpaces spaces = getSpaceManager().createActiveSpaces(unit);
+        unit.setActiveSpaces(spaces);
     }
 
     protected List<DC_ActiveObj> getSpecialModesFromUnit(Unit unit) {

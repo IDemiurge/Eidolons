@@ -13,9 +13,9 @@ import main.system.math.MathMaster;
  */
 public class HitTypeRule {
 
-    private static final int DEFAULT_GRAZE_FACTOR = 50;
-    private static final int DEFAULT_CRITICAL_FACTOR = 200;
-    private static final int DEFAULT_DEADEYE_FACTOR =300 ;
+    private static final int DEFAULT_GRAZE_FACTOR = -50;
+    private static final int DEFAULT_CRITICAL_FACTOR = 50;
+    private static final int DEFAULT_DEADEYE_FACTOR =100 ;
 
     public static int getDamagePercentage(DC_ActiveObj action, BattleFieldObject attacked, NewRpgEnums.HitType hitType) {
         if (attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.CRITICAL_IMMUNE)) {

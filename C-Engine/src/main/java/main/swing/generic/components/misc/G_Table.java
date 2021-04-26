@@ -24,8 +24,8 @@ public class G_Table extends JTable {
     public G_Table(TableModel data, boolean editable) {
         super(data);
         this.editable = editable;
-        setBackground(Color.white);
-        setForeground(Color.black);
+        setBackground(Color.black);
+        setForeground(Color.white);
         // setOpaque(false);
         setFont(FontMaster.getFont(FONT.MAIN, 14, Font.PLAIN));
         setShowGrid(false);

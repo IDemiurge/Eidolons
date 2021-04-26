@@ -22,7 +22,7 @@ public class ValuePageManager {
      ValuePages.PERK_PAGES,
 
     };
-    public static final VALUE[][][] pageArray = {ValuePages.UNIT_PAGES, ValuePages.SPELL_PAGES,
+    public static final VALUE[][][] pageArray = {A_ValuePages.unitVals, ValuePages.SPELL_PAGES,
      ValuePages.CHAR_PAGES, null
 
      , null, null, ValuePages.ACTION_PAGES, ValuePages.ARMOR_PAGES, ValuePages.WEAPON_PAGES,
@@ -35,6 +35,7 @@ public class ValuePageManager {
     // static arrays worked into maps
     // separate props and params???
     private static final String AV_HEADER = PAGE_NAMES.AV_HEADER.name();
+    private static final String ARENA_HEADER = PAGE_NAMES.ARENA_HEADER.name();
     private static final String DC_HEADER = PAGE_NAMES.HEADER.name();
     private static final String AV_TRAILING_PAGE = PAGE_NAMES.AV_TRAILING_PAGE.name();
     private static final String DC_TRAILING_PAGE = PAGE_NAMES.DC_TRAILING_PAGE.name();
@@ -77,6 +78,7 @@ public class ValuePageManager {
             if (!alt) {
                 map.put(DC_HEADER, Arrays.asList(ValuePages.GENERIC_DC_HEADER));
                 map.put(AV_HEADER, Arrays.asList(ValuePages.GENERIC_AV_HEADER));
+                map.put(ARENA_HEADER, Arrays.asList(ValuePages.ARENA_HEADER));
                 map.put(AV_TRAILING_PAGE, Arrays.asList(ValuePages.AV_TRAILING_PAGE));
                 map.put(DC_TRAILING_PAGE, Arrays.asList(ValuePages.DC_TRAILING_PAGE));
 
@@ -198,6 +200,10 @@ public class ValuePageManager {
         }
         for (String name : pageNames) {
             List<VALUE> page = map.get(name);
+            if (page == null) {
+                main.system.auxiliary.log.LogMaster.log(1,"No value page for: " +name);
+                continue;
+            }
             if (filter) {
                 page = getFilteredValueList(page, TYPE, av);
             }
@@ -289,7 +295,7 @@ public class ValuePageManager {
         return getPageNames(TYPE, false, av);
     }
 
-    private static List<String> getPageNames(OBJ_TYPE TYPE, boolean alt, boolean av) {
+    private static List<String> getPageNames(OBJ_TYPE TYPE, boolean alt, boolean arena) {
         String[] pageNames = (alt) ? ValuePages.ALT_PAGE_NAMES : ValuePages.PAGE_NAMES;
         if (TYPE.getCode() >= pageNames.length) {
             return null;
@@ -299,7 +305,7 @@ public class ValuePageManager {
             return null;
         }
         if (!alt) {
-            stringList.add(0, (av) ? AV_HEADER : DC_HEADER);
+            stringList.add(0, (arena) ? ARENA_HEADER : AV_HEADER);
         }
         return stringList;
     }

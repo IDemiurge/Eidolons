@@ -8,6 +8,7 @@ import eidolons.entity.item.DC_ArmorObj;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.game.EidolonsGame;
+import eidolons.system.text.DC_Logger;
 import eidolons.system.utils.content.ContentGenerator;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
@@ -39,47 +40,47 @@ import java.util.Map;
 public class ItemGenerator implements GenericItemGenerator {
 
     public static final MATERIAL[] DEFAULT_MATERIALS_STONE = {ItemEnums.MATERIAL.ONYX, ItemEnums.MATERIAL.OBSIDIAN,
-     ItemEnums.MATERIAL.CRYSTAL, ItemEnums.MATERIAL.SOULSTONE, ItemEnums.MATERIAL.STAR_EMBER};
+            ItemEnums.MATERIAL.CRYSTAL, ItemEnums.MATERIAL.SOULSTONE, ItemEnums.MATERIAL.STAR_EMBER};
     public static final MATERIAL[] BASIC_MATERIALS_STONE = {ItemEnums.MATERIAL.ONYX, ItemEnums.MATERIAL.OBSIDIAN,};
     public static final MATERIAL[] DEFAULT_MATERIALS_WOOD = {ItemEnums.MATERIAL.RED_OAK, ItemEnums.MATERIAL.IRONWOOD,
-     ItemEnums.MATERIAL.BLACKWOOD, ItemEnums.MATERIAL.PALEWOOD, ItemEnums.MATERIAL.WAILWOOD};
+            ItemEnums.MATERIAL.BLACKWOOD, ItemEnums.MATERIAL.PALEWOOD, ItemEnums.MATERIAL.WAILWOOD};
     public static final MATERIAL[] BASIC_MATERIALS_WOOD = {ItemEnums.MATERIAL.RED_OAK, ItemEnums.MATERIAL.IRONWOOD,
-     ItemEnums.MATERIAL.BLACKWOOD, ItemEnums.MATERIAL.PALEWOOD};
+            ItemEnums.MATERIAL.BLACKWOOD, ItemEnums.MATERIAL.PALEWOOD};
     public static final MATERIAL[] BASIC_MATERIALS_METALS = {ItemEnums.MATERIAL.COPPER, ItemEnums.MATERIAL.BRASS,
-     ItemEnums.MATERIAL.BRONZE, ItemEnums.MATERIAL.IRON, ItemEnums.MATERIAL.STEEL, ItemEnums.MATERIAL.MITHRIL};
+            ItemEnums.MATERIAL.BRONZE, ItemEnums.MATERIAL.IRON, ItemEnums.MATERIAL.STEEL, ItemEnums.MATERIAL.MITHRIL};
     public static final MATERIAL[] DEFAULT_MATERIALS_METALS = {ItemEnums.MATERIAL.COPPER, ItemEnums.MATERIAL.BRASS,
-     ItemEnums.MATERIAL.BRONZE, ItemEnums.MATERIAL.IRON, ItemEnums.MATERIAL.STEEL, ItemEnums.MATERIAL.MITHRIL, ItemEnums.MATERIAL.PLATINUM,
-     ItemEnums.MATERIAL.DARK_STEEL, ItemEnums.MATERIAL.WARP_STEEL, ItemEnums.MATERIAL.PALE_STEEL, ItemEnums.MATERIAL.WRAITH_STEEL,
-     ItemEnums.MATERIAL.ADAMANTIUM, ItemEnums.MATERIAL.METEORITE, ItemEnums.MATERIAL.MOON_SILVER, ItemEnums.MATERIAL.ELDRITCH_STEEL,
-     ItemEnums.MATERIAL.BRIGHT_STEEL, ItemEnums.MATERIAL.DEFILED_STEEL
+            ItemEnums.MATERIAL.BRONZE, ItemEnums.MATERIAL.IRON, ItemEnums.MATERIAL.STEEL, ItemEnums.MATERIAL.MITHRIL, ItemEnums.MATERIAL.PLATINUM,
+            ItemEnums.MATERIAL.DARK_STEEL, ItemEnums.MATERIAL.WARP_STEEL, ItemEnums.MATERIAL.PALE_STEEL, ItemEnums.MATERIAL.WRAITH_STEEL,
+            ItemEnums.MATERIAL.ADAMANTIUM, ItemEnums.MATERIAL.METEORITE, ItemEnums.MATERIAL.MOON_SILVER, ItemEnums.MATERIAL.ELDRITCH_STEEL,
+            ItemEnums.MATERIAL.BRIGHT_STEEL, ItemEnums.MATERIAL.DEFILED_STEEL
 
     };
     public static final MATERIAL[] DEFAULT_MATERIALS_CLOTH = {ItemEnums.MATERIAL.COTTON, ItemEnums.MATERIAL.SILK,};
     public static final MATERIAL[] DEFAULT_MATERIALS_BONES = {ItemEnums.MATERIAL.IVORY, ItemEnums.MATERIAL.BLACK_BONE,
-     ItemEnums.MATERIAL.MAN_BONE, ItemEnums.MATERIAL.DRAGON_BONE};
+            ItemEnums.MATERIAL.MAN_BONE, ItemEnums.MATERIAL.DRAGON_BONE};
     public static final MATERIAL[] BASIC_MATERIALS_BONES = {ItemEnums.MATERIAL.IVORY, ItemEnums.MATERIAL.BLACK_BONE,};
 
 
     public static final MATERIAL[] DEFAULT_MATERIALS_NATURAL = {ItemEnums.MATERIAL.PUNY, ItemEnums.MATERIAL.PETTY,
-     ItemEnums.MATERIAL.AVERAGE, ItemEnums.MATERIAL.SIZABLE, ItemEnums.MATERIAL.DIRE, ItemEnums.MATERIAL.FEARSOME,
-     ItemEnums.MATERIAL.MONSTROUS};
+            ItemEnums.MATERIAL.AVERAGE, ItemEnums.MATERIAL.SIZABLE, ItemEnums.MATERIAL.DIRE, ItemEnums.MATERIAL.FEARSOME,
+            ItemEnums.MATERIAL.MONSTROUS};
     public static final MATERIAL[] BASIC_MATERIALS_NATURAL = {ItemEnums.MATERIAL.PUNY, ItemEnums.MATERIAL.PETTY,
-     ItemEnums.MATERIAL.AVERAGE, ItemEnums.MATERIAL.SIZABLE, ItemEnums.MATERIAL.DIRE,};
+            ItemEnums.MATERIAL.AVERAGE, ItemEnums.MATERIAL.SIZABLE, ItemEnums.MATERIAL.DIRE,};
     public static final MATERIAL[] DEFAULT_MATERIALS_SKINS = {ItemEnums.MATERIAL.THIN_LEATHER,
-     ItemEnums.MATERIAL.TOUGH_LEATHER, ItemEnums.MATERIAL.THICK_LEATHER, ItemEnums.MATERIAL.LIZARD_SKIN,
-     ItemEnums.MATERIAL.DRAGONHIDE, ItemEnums.MATERIAL.TROLL_SKIN, ItemEnums.MATERIAL.FUR};
+            ItemEnums.MATERIAL.TOUGH_LEATHER, ItemEnums.MATERIAL.THICK_LEATHER, ItemEnums.MATERIAL.LIZARD_SKIN,
+            ItemEnums.MATERIAL.DRAGONHIDE, ItemEnums.MATERIAL.TROLL_SKIN, ItemEnums.MATERIAL.FUR};
     public static final MATERIAL[] BASIC_MATERIALS_LEATHER = {ItemEnums.MATERIAL.THIN_LEATHER,
-     ItemEnums.MATERIAL.TOUGH_LEATHER, ItemEnums.MATERIAL.THICK_LEATHER,};
+            ItemEnums.MATERIAL.TOUGH_LEATHER, ItemEnums.MATERIAL.THICK_LEATHER,};
     public static final PARAMS[] WEAPON_PARAMS = {PARAMS.DAMAGE_BONUS, PARAMS.DIE_SIZE,
-     PARAMS.DURABILITY};
+            PARAMS.DURABILITY};
     public static final PARAMS[] WEAPON_MOD_PARAMS = {PARAMS.BASE_DAMAGE_MODIFIER, PARAMS.DICE,
-     PARAMS.DURABILITY_MODIFIER};
+            PARAMS.DURABILITY_MODIFIER};
     public static final PARAMS[] ARMOR_PARAMS = {PARAMS.ARMOR, PARAMS.RESISTANCE,
-     PARAMS.DURABILITY};
+            PARAMS.DURABILITY};
     public static final PARAMS[] ARMOR_MOD_PARAMS = {PARAMS.ARMOR_MODIFIER,
-     PARAMS.RESISTANCE_MODIFIER, PARAMS.DURABILITY_MODIFIER};
+            PARAMS.RESISTANCE_MODIFIER, PARAMS.DURABILITY_MODIFIER};
     public static final MATERIAL[] METAL_JEWELRY_MATERIALS = {ItemEnums.MATERIAL.COPPER, ItemEnums.MATERIAL.SILVER,
-     ItemEnums.MATERIAL.GOLD,};
+            ItemEnums.MATERIAL.GOLD,};
     public static final MATERIAL[] STONE_JEWELRY_MATERIALS = DEFAULT_MATERIALS_STONE;
     public static final MATERIAL[] BONE_JEWELRY_MATERIALS = DEFAULT_MATERIALS_BONES;
     // public static final String ATTR_JEWELRY = "Amulet;Ring";
@@ -139,13 +140,13 @@ public class ItemGenerator implements GenericItemGenerator {
 
     public static ObjType generateWeaponItem(QUALITY_LEVEL quality, MATERIAL material, ObjType type) {
         return ItemGenerator
-         .generateItem(quality, material, type, WEAPON_PARAMS, WEAPON_MOD_PARAMS);
+                .generateItem(quality, material, type, WEAPON_PARAMS, WEAPON_MOD_PARAMS);
     }
 
     private static void generatePotions(ObjType type) {
         for (POTION_LEVEL lvl : POTION_LEVEL.values()) {
             ObjType newType = generateUsableItem(type, lvl.getName(), lvl.getImgCode(), lvl
-             .getCost(), lvl.getQuality());
+                    .getCost(), lvl.getQuality());
             newType.setParam(PARAMS.CHARGES, lvl.getCharges());
             // newType.setProp(PARAMS.POTION_LEVEL, lvl.getQuality());
         }
@@ -170,14 +171,14 @@ public class ItemGenerator implements GenericItemGenerator {
     private static void generateConcoctions(ObjType type) {
         for (CONCOCTION_LEVEL lvl : CONCOCTION_LEVEL.values()) {
             ObjType newType = generateUsableItem(type, lvl.getName(), lvl.getImgCode(), lvl
-             .getCost(), lvl.getQuality());
+                    .getCost(), lvl.getQuality());
             newType.setParam(PARAMS.ENERGY, lvl.getMod());
         }
     }
 
     private static MATERIAL[] getJewelryMaterials(String materialGroup) {
         switch (new EnumMaster<ITEM_MATERIAL_GROUP>().retrieveEnumConst(ITEM_MATERIAL_GROUP.class,
-         materialGroup)) {
+                materialGroup)) {
             case BONE:
                 return BONE_JEWELRY_MATERIALS;
             case METAL:
@@ -206,7 +207,7 @@ public class ItemGenerator implements GenericItemGenerator {
             costMod = costMod * level.getCostFactor();
         }
         if (ImageManager.isImage(string + ench.getIconVariantLetter()
-         +ImageManager.PNG)) {
+                + ImageManager.PNG)) {
             string += suffix;
         }
         string += ImageManager.DEFAULT_ENTITY_IMAGE_FORMAT;
@@ -299,7 +300,7 @@ public class ItemGenerator implements GenericItemGenerator {
             amount *= 2;
         }
         name = level.toString() + " " + name + " of " + p.getName()
-         + StringMaster.wrapInParenthesis("+" + amount);
+                + StringMaster.wrapInParenthesis("+" + amount);
         return name;
     }
 
@@ -341,7 +342,7 @@ public class ItemGenerator implements GenericItemGenerator {
 
     private static void initSpecialItem(ObjType type) {
         MATERIAL m = new EnumMaster<MATERIAL>().retrieveEnumConst(MATERIAL.class, type
-         .getProperty(G_PROPS.MATERIAL));
+                .getProperty(G_PROPS.MATERIAL));
 
         // init traits/enchantments?
 
@@ -380,8 +381,11 @@ public class ItemGenerator implements GenericItemGenerator {
         }
 
         applyWeightPenalties(newType);
-
-        itemMaps.get(quality).get(material).put(type, newType);
+        try {
+            itemMaps.get(quality).get(material).put(type, newType);
+        } catch (Exception e) {
+            DC_Logger.logicError("Item Maps error: ", quality, material, itemMaps);
+        }
         DataManager.addType(newType);
         return newType;
     }
@@ -396,7 +400,7 @@ public class ItemGenerator implements GenericItemGenerator {
         int w = type.getIntParam(PARAMS.WEIGHT);
 
         for (PARAMETER p : (type.getOBJ_TYPE_ENUM() == DC_TYPE.WEAPONS ? DC_ContentValsManager
-         .getWeaponWeightPenaltyParams() : DC_ContentValsManager.getArmorWeightPenaltyParams())) {
+                .getWeaponWeightPenaltyParams() : DC_ContentValsManager.getArmorWeightPenaltyParams())) {
             if (type.getGroupingKey().equalsIgnoreCase("" + ItemEnums.WEAPON_TYPE.MAGICAL)) {
                 if (!p.getName().contains("move") && !p.getName().contains("attack")) {
                     continue;
@@ -430,8 +434,8 @@ public class ItemGenerator implements GenericItemGenerator {
             }
             if (p == PARAMS.DICE) {
                 amount =
-                 //                 newType.getIntParam(portrait) *
-                 modifier / 2; // TODO DICE ALREADY USED, DIE_SIZE TO BE SET FOR WEAPONS!
+                        //                 newType.getIntParam(portrait) *
+                        modifier / 2; // TODO DICE ALREADY USED, DIE_SIZE TO BE SET FOR WEAPONS!
             } else if (p == PARAMS.ARMOR_MODIFIER) {
                 // TODO *NEW
                 amount = newType.getIntParam(PARAMS.ARMOR_LAYERS) * modifier * ARMOR_MODIFIER;
@@ -475,28 +479,28 @@ public class ItemGenerator implements GenericItemGenerator {
         } else {
             if (material.getDmg_type() != null) { // MAGICAL MATERIALS
                 int perc = (int) Math.round(material.getEnchantmentCapacity() / SPELL_DAMAGE_FACTOR
-                 * Math.sqrt(n));
+                        * Math.sqrt(n));
                 perc = MathMaster.applyPercent(perc, quality.getDurabilityMod());
                 String abilName = "DamagePercOnAttackThis";
                 String appendix = " deals an additional " + perc + "% of "
-                 + material.getDmg_type().getName() + " damage on each successful hit";
+                        + material.getDmg_type().getName() + " damage on each successful hit";
 
                 if (StringMaster.contains(ItemEnums.WEAPON_GROUP.TOWER_SHIELDS + "|" + ItemEnums.WEAPON_GROUP.BUCKLERS
-                 + "|" + ItemEnums.WEAPON_GROUP.SHIELDS, newType.getProperty(G_PROPS.WEAPON_GROUP))) {
+                        + "|" + ItemEnums.WEAPON_GROUP.SHIELDS, newType.getProperty(G_PROPS.WEAPON_GROUP))) {
                     abilName = "DamagePercOnHitThis"; // TODO APPENDIX
                 } else if (newType.getProperty(G_PROPS.WEAPON_GROUP).equalsIgnoreCase(
-                 "" + ItemEnums.WEAPON_GROUP.WANDS)) {
+                        "" + ItemEnums.WEAPON_GROUP.WANDS)) {
                     abilName = "DamagePercOnSpellImpact";
                 } else if (newType.getProperty(G_PROPS.WEAPON_GROUP).equalsIgnoreCase(
-                 "" + ItemEnums.WEAPON_GROUP.ORBS)) {
+                        "" + ItemEnums.WEAPON_GROUP.ORBS)) {
                     abilName = "DamagePercOnSpellHit";
                 }
                 newType.addProperty(G_PROPS.PASSIVES, abilName
-                 + StringMaster.wrapInParenthesis(perc + ","
-                 + material.getDmg_type().getName()));
+                        + StringMaster.wrapInParenthesis(perc + ","
+                        + material.getDmg_type().getName()));
 
                 newType.appendProperty(G_PROPS.DESCRIPTION, Strings.NEW_LINE
-                 + material.getName() + ": " + appendix);
+                        + material.getName() + ": " + appendix);
 
                 magicApplied = true;
             }
@@ -555,7 +559,7 @@ public class ItemGenerator implements GenericItemGenerator {
 
     public static String generateName(QUALITY_LEVEL quality, MATERIAL material, ObjType type) {
         String qual = (quality != ItemEnums.QUALITY_LEVEL.NORMAL && quality != null) ? quality.toString()
-         + " " : "";
+                + " " : "";
         return qual + material.toString() + " " + type.getName();
     }
 
@@ -584,32 +588,32 @@ public class ItemGenerator implements GenericItemGenerator {
         } else {
             if (type.equals(DC_TYPE.WEAPONS)) {
                 if (baseWeaponTypesForShops == null) {
-                    baseWeaponTypesForShops =     new ArrayList<>(baseWeaponTypes) ;
+                    baseWeaponTypesForShops = new ArrayList<>(baseWeaponTypes);
                     baseWeaponTypesForShops.removeIf(t ->
-                     t.checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.MAGICAL.name()));
+                            t.checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.MAGICAL.name()));
                     baseWeaponTypesForShops.removeIf(t ->
-                     t.checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.NATURAL.name()));
+                            t.checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.NATURAL.name()));
                     baseWeaponTypesForShops.removeIf(t ->
-                     t.checkProperty(G_PROPS.WEAPON_GROUP, WEAPON_GROUP.NATURAL.name()));
+                            t.checkProperty(G_PROPS.WEAPON_GROUP, WEAPON_GROUP.NATURAL.name()));
                     baseWeaponTypesForShops.removeIf(t ->
-                     t.checkProperty(G_PROPS.WEAPON_GROUP, WEAPON_GROUP.FIREARMS.name()));
+                            t.checkProperty(G_PROPS.WEAPON_GROUP, WEAPON_GROUP.FIREARMS.name()));
                     baseWeaponTypesForShops.removeIf(t ->
-                     t.checkProperty(G_PROPS.WEAPON_CLASS, WEAPON_CLASS.DOUBLE.name()));
+                            t.checkProperty(G_PROPS.WEAPON_CLASS, WEAPON_CLASS.DOUBLE.name()));
                 }
                 return (baseWeaponTypesForShops);
             }
-            if (type.equals(DC_TYPE.ITEMS)|| type.equals(DC_TYPE.JEWELRY)) {
-                if (!jewelryGenerated){
+            if (type.equals(DC_TYPE.ITEMS) || type.equals(DC_TYPE.JEWELRY)) {
+                if (!jewelryGenerated) {
                     getDefaultGenerator().generateJewelry();
                 }
-                if (!usablesGenerated){
+                if (!usablesGenerated) {
                     getDefaultGenerator().generateUsableItems();
                 }
                 if (type.equals(DC_TYPE.JEWELRY)) {
                     list.addAll(DataManager.getTypes(type));
                     list.removeIf(type1 -> !type1.isGenerated());
                     list.removeIf(type1 -> type1.checkProperty(
-                     G_PROPS.JEWELRY_GROUP, JEWELRY_GROUP.EMPTY.name()));
+                            G_PROPS.JEWELRY_GROUP, JEWELRY_GROUP.EMPTY.name()));
                 } else {
                     list.addAll(DataManager.getTypesGroup(DC_TYPE.ITEMS, ITEM_GROUP.POTIONS.name()));
                     list.removeIf(type1 -> !type1.isGenerated());
@@ -649,7 +653,7 @@ public class ItemGenerator implements GenericItemGenerator {
     public ObjType getOrCreateJewelry(ObjType baseType, JEWELRY_ITEM_TRAIT trait,
                                       ITEM_LEVEL level) {
         String name = generateName(trait, level, baseType);
-        if (baseType.getOBJ_TYPE_ENUM()!= DC_TYPE.JEWELRY) {
+        if (baseType.getOBJ_TYPE_ENUM() != DC_TYPE.JEWELRY) {
             return null;
         }
         ObjType type = DataManager.getType(name, DC_TYPE.JEWELRY);
@@ -662,8 +666,8 @@ public class ItemGenerator implements GenericItemGenerator {
     public ObjType generateJewelry(String typeName) {
         String string = StringMaster.getFirstItem(typeName, " ");
         ITEM_LEVEL itemLevel =
-         new EnumMaster<ITEM_LEVEL>().
-          retrieveEnumConst(ITEM_LEVEL.class, string);
+                new EnumMaster<ITEM_LEVEL>().
+                        retrieveEnumConst(ITEM_LEVEL.class, string);
 
         typeName = typeName.replaceFirst(string + " ", "");
 
@@ -676,16 +680,16 @@ public class ItemGenerator implements GenericItemGenerator {
             }
         }
         if (objType == null) {
-            return null ;
+            return null;
         }
         JEWELRY_ITEM_TRAIT trait =
-         new EnumMaster<JEWELRY_ITEM_TRAIT>().
-          retrieveEnumConst(JEWELRY_ITEM_TRAIT.class, typeName);
+                new EnumMaster<JEWELRY_ITEM_TRAIT>().
+                        retrieveEnumConst(JEWELRY_ITEM_TRAIT.class, typeName);
         if (trait == null) {
             typeName = VariableManager.removeVarPart(typeName).replaceFirst("of", "").trim();
             trait =
-             new EnumMaster<JEWELRY_ITEM_TRAIT>().
-              retrieveEnumConst(JEWELRY_ITEM_TRAIT.class, typeName);
+                    new EnumMaster<JEWELRY_ITEM_TRAIT>().
+                            retrieveEnumConst(JEWELRY_ITEM_TRAIT.class, typeName);
         }
         return generateJewelryItem(objType, trait, itemLevel);
     }
@@ -695,13 +699,13 @@ public class ItemGenerator implements GenericItemGenerator {
                                 MATERIAL material, ObjType type) {
 
         ObjType newType = generateItem(quality, material, type,
-         (weapon) ? WEAPON_PARAMS : ARMOR_PARAMS, (weapon) ? WEAPON_MOD_PARAMS
-          : ARMOR_MOD_PARAMS);
+                (weapon) ? WEAPON_PARAMS : ARMOR_PARAMS, (weapon) ? WEAPON_MOD_PARAMS
+                        : ARMOR_MOD_PARAMS);
         if (newType == null) {
             return null;
         }
         DataManager.addType(newType.getName(), (weapon) ? DC_TYPE.WEAPONS
-         : DC_TYPE.ARMOR, newType);
+                : DC_TYPE.ARMOR, newType);
         DataManager.getItemMaps().get(quality).get(material).put(type, newType);
         return newType;
     }
@@ -738,11 +742,11 @@ public class ItemGenerator implements GenericItemGenerator {
         DataManager.setBaseItemTypes(baseItemTypes.toArray(new ObjType[0]));
         //Arrays.
         List<ObjType> list = new ArrayList<>(baseWeaponTypes);
-        if (!EidolonsGame.BRIDGE){
+        if (!EidolonsGame.BRIDGE) {
 
-        list.addAll(baseArmorTypes);
-        list.addAll(baseJewelryTypes);
-        list.addAll(baseItemTypes);
+            list.addAll(baseArmorTypes);
+            list.addAll(baseJewelryTypes);
+            list.addAll(baseItemTypes);
         }
         DataManager.setBaseAllItemTypes(list.toArray(new ObjType[0]));
         //        defaultGenerator = new ItemGenerator(false);
@@ -771,20 +775,20 @@ public class ItemGenerator implements GenericItemGenerator {
         //        String baseTypeName = typeName;
         String name = StringMaster.getFirstItem(typeName, " ");
         QUALITY_LEVEL quality =
-         new EnumMaster<QUALITY_LEVEL>().retrieveEnumConst(
-          QUALITY_LEVEL.class, name);
+                new EnumMaster<QUALITY_LEVEL>().retrieveEnumConst(
+                        QUALITY_LEVEL.class, name);
         if (quality != null)
             typeName = typeName.replace(quality.toString(), "").trim();
         else quality = QUALITY_LEVEL.NORMAL;
         name = StringMaster.getFirstItem(typeName, " ");
         MATERIAL material =
-         new EnumMaster<MATERIAL>().retrieveEnumConst(
-          MATERIAL.class, name, true, false);
+                new EnumMaster<MATERIAL>().retrieveEnumConst(
+                        MATERIAL.class, name, true, false);
         if (material == null) {
             name = name + " " + StringMaster.getFirstItem(typeName.replace(name, "").trim(), " ");
             material =
-             new EnumMaster<MATERIAL>().retrieveEnumConst(
-              MATERIAL.class, name);
+                    new EnumMaster<MATERIAL>().retrieveEnumConst(
+                            MATERIAL.class, name);
         }
         if (material == null) {
             return null;
@@ -841,11 +845,11 @@ public class ItemGenerator implements GenericItemGenerator {
     private void generateArmor() {
 
         generateItemTypes(false, defaultQualityLevels, basic ? BASIC_MATERIALS_METALS
-         : DEFAULT_MATERIALS_METALS, ItemEnums.ITEM_MATERIAL_GROUP.METAL);
+                : DEFAULT_MATERIALS_METALS, ItemEnums.ITEM_MATERIAL_GROUP.METAL);
         generateItemTypes(false, defaultQualityLevels, DEFAULT_MATERIALS_CLOTH,
-         ItemEnums.ITEM_MATERIAL_GROUP.CLOTH);
+                ItemEnums.ITEM_MATERIAL_GROUP.CLOTH);
         generateItemTypes(false, defaultQualityLevels, basic ? BASIC_MATERIALS_LEATHER
-         : DEFAULT_MATERIALS_SKINS, ItemEnums.ITEM_MATERIAL_GROUP.LEATHER);
+                : DEFAULT_MATERIALS_SKINS, ItemEnums.ITEM_MATERIAL_GROUP.LEATHER);
 
 
         boolean armorGenerated = true;
@@ -853,20 +857,20 @@ public class ItemGenerator implements GenericItemGenerator {
 
     private void generateWeapons() {
         generateItemTypes(true, defaultQualityLevels, basic ? BASIC_MATERIALS_METALS
-         : DEFAULT_MATERIALS_METALS, ItemEnums.ITEM_MATERIAL_GROUP.METAL);
+                : DEFAULT_MATERIALS_METALS, ItemEnums.ITEM_MATERIAL_GROUP.METAL);
         generateItemTypes(true, defaultQualityLevels, basic ? BASIC_MATERIALS_BONES
-         : DEFAULT_MATERIALS_BONES, ItemEnums.ITEM_MATERIAL_GROUP.BONE);
+                : DEFAULT_MATERIALS_BONES, ItemEnums.ITEM_MATERIAL_GROUP.BONE);
         generateItemTypes(true, defaultQualityLevels, basic ? BASIC_MATERIALS_STONE
-         : DEFAULT_MATERIALS_STONE, ItemEnums.ITEM_MATERIAL_GROUP.STONE);
+                : DEFAULT_MATERIALS_STONE, ItemEnums.ITEM_MATERIAL_GROUP.STONE);
         generateItemTypes(true, defaultQualityLevels, basic ? BASIC_MATERIALS_WOOD
-         : DEFAULT_MATERIALS_WOOD, ItemEnums.ITEM_MATERIAL_GROUP.WOOD);
+                : DEFAULT_MATERIALS_WOOD, ItemEnums.ITEM_MATERIAL_GROUP.WOOD);
         generateItemTypes(true, new QUALITY_LEVEL[]{ItemEnums.QUALITY_LEVEL.NORMAL},
-         basic ? BASIC_MATERIALS_NATURAL : DEFAULT_MATERIALS_NATURAL,
-         ItemEnums.ITEM_MATERIAL_GROUP.NATURAL);
+                basic ? BASIC_MATERIALS_NATURAL : DEFAULT_MATERIALS_NATURAL,
+                ItemEnums.ITEM_MATERIAL_GROUP.NATURAL);
 
         generateItemTypes(true, new QUALITY_LEVEL[]{ItemEnums.QUALITY_LEVEL.NORMAL}, new MATERIAL[]{
-         ItemEnums.MATERIAL.GRANITE, ItemEnums.MATERIAL.CRYSTAL, ItemEnums.MATERIAL.ONYX, ItemEnums.MATERIAL.OBSIDIAN,
-         ItemEnums.MATERIAL.SOULSTONE,}, ItemEnums.ITEM_MATERIAL_GROUP.STONE);
+                ItemEnums.MATERIAL.GRANITE, ItemEnums.MATERIAL.CRYSTAL, ItemEnums.MATERIAL.ONYX, ItemEnums.MATERIAL.OBSIDIAN,
+                ItemEnums.MATERIAL.SOULSTONE,}, ItemEnums.ITEM_MATERIAL_GROUP.STONE);
 
         boolean weaponsGenerated = true;
     }
@@ -877,10 +881,10 @@ public class ItemGenerator implements GenericItemGenerator {
 
             if (type.getProperty(G_PROPS.ITEM_TYPE).equalsIgnoreCase(ItemEnums.ITEM_TYPE.ALCHEMY + "")) {
                 if (type.getProperty(G_PROPS.ITEM_GROUP).equalsIgnoreCase(
-                 ItemEnums.ITEM_GROUP.CONCOCTIONS + "")
-                 || type.getProperty(G_PROPS.ITEM_GROUP).equalsIgnoreCase(
-                 ItemEnums.ITEM_GROUP.COATING + "")
-                 || type.getProperty(G_PROPS.GROUP).equals("Elixirs")) {
+                        ItemEnums.ITEM_GROUP.CONCOCTIONS + "")
+                        || type.getProperty(G_PROPS.ITEM_GROUP).equalsIgnoreCase(
+                        ItemEnums.ITEM_GROUP.COATING + "")
+                        || type.getProperty(G_PROPS.GROUP).equals("Elixirs")) {
                     generateConcoctions(type);
                 } else {
                     generatePotions(type);
@@ -896,7 +900,7 @@ public class ItemGenerator implements GenericItemGenerator {
         for (ObjType type : DataManager.getBaseTypes(DC_TYPE.JEWELRY)) {
             boolean ring = ItemMaster.isRing(type);
             for (MATERIAL material : getJewelryMaterials(type
-             .getProperty(G_PROPS.ITEM_MATERIAL_GROUP))) {
+                    .getProperty(G_PROPS.ITEM_MATERIAL_GROUP))) {
                 ObjType newType = generateEmptyJewelryItem(ring, type, material);
                 newType.setProperty(G_PROPS.JEWELRY_GROUP, JEWELRY_GROUP.EMPTY.name());
                 DataManager.addType(newType.getName(), DC_TYPE.JEWELRY, newType);
@@ -907,8 +911,8 @@ public class ItemGenerator implements GenericItemGenerator {
             boolean leveled = ench.isLeveled();
             List<ObjType> types;
             types = DataManager.toTypeList(
-             // (leveled) ? PAS_LEVEL_JEWELRY:
-             ench.getItemTypes(), DC_TYPE.JEWELRY);
+                    // (leveled) ? PAS_LEVEL_JEWELRY:
+                    ench.getItemTypes(), DC_TYPE.JEWELRY);
             for (ObjType type : types) {
                 //           TODO      ObjType newType = generateJewelryPassiveEnchantment(ench, type, level);
                 if (type.isGenerated()) {
@@ -969,9 +973,9 @@ public class ItemGenerator implements GenericItemGenerator {
 
     public ObjType generateItem(QUALITY_LEVEL quality, MATERIAL material, ObjType type) {
         PARAMS[] params = (type.getOBJ_TYPE_ENUM() == DC_TYPE.WEAPONS) ? WEAPON_PARAMS
-         : ARMOR_PARAMS;
+                : ARMOR_PARAMS;
         PARAMS[] mod_params = (type.getOBJ_TYPE_ENUM() == DC_TYPE.WEAPONS) ? WEAPON_MOD_PARAMS
-         : ARMOR_MOD_PARAMS;
+                : ARMOR_MOD_PARAMS;
 
         return generateItem(quality, material, type, params, mod_params);
 
@@ -983,7 +987,7 @@ public class ItemGenerator implements GenericItemGenerator {
         GenericGame game = (GenericGame) ref.getGame();
 
         return (type.getOBJ_TYPE_ENUM() == DC_TYPE.WEAPONS) ? new DC_WeaponObj(
-         type, ref.getPlayer(), game, ref) : new DC_ArmorObj(type, ref.getPlayer(), game,
-         ref);
+                type, ref.getPlayer(), game, ref) : new DC_ArmorObj(type, ref.getPlayer(), game,
+                ref);
     }
 }

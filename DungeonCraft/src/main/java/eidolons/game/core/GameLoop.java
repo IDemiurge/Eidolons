@@ -17,7 +17,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExploreGameLoop;
 import eidolons.system.audio.DC_SoundMaster;
-import eidolons.system.text.DC_LogManager;
+import eidolons.system.text.DC_GameLogManager;
 import main.game.bf.Coordinates;
 import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
@@ -435,7 +435,7 @@ public abstract class GameLoop {
             return;
         this.activeUnit = activeUnit;
         if (activeUnit != null) {
-            getGame().getLogManager().log(DC_LogManager.UNIT_TURN_PREFIX
+            getGame().getLogManager().log(DC_GameLogManager.UNIT_TURN_PREFIX
                     + activeUnit.getNameIfKnown());
             GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
         }
@@ -537,7 +537,7 @@ public abstract class GameLoop {
         } catch (InterruptedException ie) {
             //ignored
         } catch (Exception e1) {
-            e1.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e1);
         } finally {
             lock.unlock();
         }

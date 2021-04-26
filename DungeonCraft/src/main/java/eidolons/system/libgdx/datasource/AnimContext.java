@@ -1,4 +1,4 @@
-package libgdx.anims;
+package eidolons.system.libgdx.datasource;
 
 import eidolons.entity.active.DC_ActiveObj;
 import main.ability.effects.Effect;

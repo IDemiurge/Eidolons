@@ -47,9 +47,10 @@ public class CoreEngine {
     private static void version() {
         resBuildId = readBuildId();
         xmlBuildId = readXmlBuildId();
+        XML_BUILD = NumberUtils.prependZeroes(xmlBuildId, 4);
         BUILD = NumberUtils.prependZeroes(resBuildId, 3);
         CORE_VERSION = "0.5";
-        VERSION = CORE_VERSION + "." + BUILD;
+        VERSION = CORE_VERSION + "." + BUILD+ "."+ XML_BUILD;
         filesVersion = VERSION.replace(".", "-");
     }
 
@@ -113,9 +114,10 @@ public class CoreEngine {
                     (Runtime.getRuntime().totalMemory()));
         }
 
-        if (System.getProperty("user.home").equalsIgnoreCase("C:\\Users\\Alexa")) {
-            Flags.me = true;
-        }
+        Flags.setMe(PathFinder.getRootPath().contains("C:/code/Eidolons/"));
+        // if (System.getProperty("user.home").equalsIgnoreCase("C:\\Users\\Alexa")) {
+        //     Flags.me = true;
+        // }
 
         ImageManager.init();
         if (!graphicsOff) {

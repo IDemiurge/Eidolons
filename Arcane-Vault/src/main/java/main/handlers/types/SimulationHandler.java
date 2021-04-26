@@ -46,9 +46,10 @@ public class SimulationHandler {
 
     private static void resetUnit(Unit unit) {
         unit.toBase();
+        unit.setDirty(true);
         unit.afterEffects();
         applyEffectForUnit(unit);
-        ArcaneVault.getMainBuilder().getEditViewPanel().resetData(unit.getType());
+        // ArcaneVault.getMainBuilder().getEditViewPanel().resetData(unit.getType());
     }
 
     private static void applyEffectForUnit(Unit unit) {

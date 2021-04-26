@@ -76,9 +76,11 @@ public class Launch {
     }
 
     public void printNewPhase(boolean start, LaunchPhase phase) {
-        log(1, StringMaster.lineSeparator + StringMaster.getStringXTimes(10, ">") + (start ? "START" : "END") +
+        log(1, StringMaster.lineSeparator2 + StringMaster.getStringXTimes(10, ">") +
+                StringMaster.getWhiteSpaces(5)+ (start ? "START" : "END") +
                 " PHASE: " + phase
-                + StringMaster.getStringXTimes(10, "<") + StringMaster.lineSeparator);
+                +                StringMaster.getWhiteSpaces(5)+ StringMaster.getStringXTimes(10, "<")
+                + StringMaster.lineSeparator2);
         //how to sync with gdx?
 
         String update = StringMaster.wrapInBrackets(phase.toString()) + " phase "

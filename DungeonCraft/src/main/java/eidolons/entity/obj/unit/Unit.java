@@ -154,7 +154,6 @@ public class Unit extends DC_UnitModel implements FacingEntity {
             //     }
             // }
             SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.MAIN, message);
-            setName(getName().replace(" IGG", ""));
 
         } else {
             try {
@@ -165,7 +164,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         }
         //TODO make it more apparent why and how this is done
         //cleanRef();
-        ref.removeValue(KEYS.TARGET);
+        ref.removeValue(KEYS.TARGET); //if summoned?
     }
 
     public Unit(Unit hero) {
@@ -460,6 +459,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
 
     @Override
     public void newRound() {
+        activeSpaces.newRound();
         // if (!itemsInitialized)
         // initItems();
         super.newRound();
@@ -516,6 +516,10 @@ public class Unit extends DC_UnitModel implements FacingEntity {
 
     public UnitActiveSpaces getActiveSpaces() {
         return activeSpaces;
+    }
+
+    public void setActiveSpaces(UnitActiveSpaces activeSpaces) {
+        this.activeSpaces = activeSpaces;
     }
 
     public void setSpells(List<Spell> spells) {

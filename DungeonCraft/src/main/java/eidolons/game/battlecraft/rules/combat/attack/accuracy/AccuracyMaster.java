@@ -13,6 +13,7 @@ import eidolons.system.math.roll.DiceMaster;
 import main.content.enums.entity.NewRpgEnums;
 import main.content.values.properties.G_PROPS;
 import main.system.auxiliary.EnumMaster;
+import main.system.math.MathMaster;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -31,6 +32,7 @@ public class AccuracyMaster {
 
     public static NewRpgEnums.HitType getHitType(int accuracy) {
         int index = (accuracy - 1) / 20;
+        index =1+ MathMaster.getMinMax(index, 0, 4);
         return types[index];
     }
 
@@ -55,7 +57,8 @@ public class AccuracyMaster {
         int plus = DiceMaster.d20(attacked, dice);
         dice = getDiceNumberForAttack(action, attacked, false);
         int minus = DiceMaster.d20(attacker, dice);
-        return base + plus - minus;
+        int result=base + plus - minus;
+        return result;
     }
 
     private int getDiceNumberForAttack(DC_ActiveObj action, BattleFieldObject unit, boolean attacker) {

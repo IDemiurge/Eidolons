@@ -539,6 +539,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
 
     private void resetWalls(Set<Coordinates> coordinatesSet) {
         getGame().getBattleFieldManager().resetWalls(coordinatesSet);
+        GridManager.reset();
     }
 
 

@@ -38,9 +38,9 @@ public class Cinematics {
         try {
             Cinematics.class.getField(field.toUpperCase()).set(null, val);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } catch (NoSuchFieldException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
     }

@@ -10,6 +10,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.content.DC_Formulas;
+import eidolons.system.math.roll.DiceMaster;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.ContentValsManager;
 import main.content.enums.GenericEnums;
@@ -38,6 +39,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
     private List<DC_UnitAction> attackActions;
     private DC_QuickItemObj ammo;
     private DC_QuickItemObj lastAmmo;
+    private GenericEnums.DieType die;
 
     public DC_WeaponObj(ObjType type, Player owner, GenericGame game, Ref ref) {
         this(type, owner, game, ref, false);
@@ -467,5 +469,16 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
     public int calculateDiceMax() {
         return getIntParam(PARAMS.DICE) * getIntParam(PARAMS.DIE_SIZE) * getIntParam(PARAMS.DAMAGE_MOD) / 100;
+    }
+
+
+
+    public GenericEnums.DieType getDieType() {
+        if (die == null)
+            die = DiceMaster.getDie(getIntParam(PARAMS.DIE_SIZE));
+        if (die == null)
+            die = GenericEnums.DieType.d4;
+        return die;
+
     }
 }

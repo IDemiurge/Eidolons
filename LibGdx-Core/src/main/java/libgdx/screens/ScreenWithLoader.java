@@ -172,8 +172,9 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
 
     protected void done(EventCallbackParam param) {
         updateInputController();
+        Object o = param.get();
         if (isLoaded()) {
-            main.system.auxiliary.log.LogMaster.devLog(" FIX DOUBLE LOAD!!!! " + toString() + param);
+            main.system.auxiliary.log.LogMaster.devLog(" FIX DOUBLE LOAD!!!! " + toString() + o);
             return;
         }
         data.setParam(param);
@@ -181,7 +182,7 @@ public abstract class ScreenWithLoader extends ScreenWithAssets {
         afterLoad();
         GdxMaster.setDefaultCursor();
         triggerInitialEvents();
-        main.system.auxiliary.log.LogMaster.devLog(toString() + " LOADed with " + param);
+        main.system.auxiliary.log.LogMaster.devLog(toString() + " LOADed with " + o);
     }
 
     protected void triggerInitialEvents() {

@@ -18,7 +18,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.content.consts.Images;
-import eidolons.system.text.DC_LogManager;
+import eidolons.system.text.DC_GameLogManager;
 import main.ability.AbilityObj;
 import main.ability.effects.Effect;
 import main.content.DC_TYPE;
@@ -490,7 +490,7 @@ public class DC_StateManager extends StateManager {
         getGame().getLogManager().addImageToLog(Images.SEPARATOR_NARROW);
 
         game.getLogManager().log(
-                DC_LogManager.ALIGN_CENTER +
+                DC_GameLogManager.ALIGN_CENTER +
                         "                                        [Round #" + (state.getRound() + 1) + "]"
         );
         newTurnTick();

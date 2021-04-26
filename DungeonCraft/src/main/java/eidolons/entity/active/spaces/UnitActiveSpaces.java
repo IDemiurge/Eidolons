@@ -29,6 +29,9 @@ public class UnitActiveSpaces implements Comparator<ActiveSpace> {
 
     public void add(ActiveSpace space) {
         activeSpaces.add(space);
+        if (current == null) {
+            current = space;
+        }
     }
 
     public void remove(ActiveSpace space) {
@@ -95,5 +98,11 @@ public class UnitActiveSpaces implements Comparator<ActiveSpace> {
 
     public int getSwitched() {
         return switched;
+    }
+
+    @Override
+    public String toString() {
+        return   unit +
+                "'s  Active Spaces:" + activeSpaces  ;
     }
 }

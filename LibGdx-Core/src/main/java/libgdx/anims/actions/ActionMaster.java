@@ -345,7 +345,7 @@ public class ActionMaster {
 
     public static List<Action> getActionsOfClass(Actor actor, Class<? extends Action> c) {
         try {
-            return new ClassMaster<Action>().getInstances_(actor.getActions(), c);
+            return new ClassMaster<Action>().getInstancesFromCollection_(actor.getActions(), c);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
@@ -354,18 +354,11 @@ public class ActionMaster {
 
     public static void addScaleActionIfNoActions(Actor actor, float scaleX,
                                                  float scaleY, float v) {
-        if (actor.getActions().size > 0) {
-            try {
-                if (ClassMaster.getInstances(
-                        new ArrayList<>(Arrays.asList(actor.getActions().toArray())),
-                        ScaleToAction.class).size() > 0) {
-                    return;
-                }
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+        for (Action action : actor.getActions()) {
+            if (action instanceof ScaleToAction) {
+                return;
             }
         }
-
         addScaleAction(actor, scaleX, scaleY, v);
     }
 

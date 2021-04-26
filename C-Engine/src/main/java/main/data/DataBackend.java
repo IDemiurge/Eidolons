@@ -43,6 +43,9 @@ public class DataBackend {
     private final Map<QUALITY_LEVEL, Map<MATERIAL, Map<ObjType, ObjType>>> itemMaps = new ConcurrentMap();
     private final Map<OBJ_TYPE, Map<String, ObjType>> caches = new HashMap<>();
 
+    private Map<String, String> uuidToNameMap = new LinkedHashMap<>();
+    private Map<String, String> nameToIdMap = new LinkedHashMap<>();
+
     public   void init() {
         subGroupsMaps = new HashMap<>();
         for (DC_TYPE T : DC_TYPE.values()) {
@@ -87,6 +90,9 @@ public class DataBackend {
     }
 
     public   ObjType getType(String typeName, OBJ_TYPE obj_type) {
+        if (isUseUUID(obj_type)) {
+            typeName = nameToIdMap.get(typeName);
+        }
         Map<String, ObjType> cache = caches.get(obj_type);
         if (cache == null)
             caches.put(obj_type, cache = new HashMap<>());
@@ -370,10 +376,19 @@ public class DataBackend {
     }
 
     public   void addType(String name, String group, ObjType type) {
-        getTypeMap(group).put(name.trim(), type);
+        String key = name.trim();
+        if (isUseUUID(type.getOBJ_TYPE_ENUM())){
+            uuidToNameMap.put(key= type.getUniqueId(), key);
+            //append something if already exists?
+            nameToIdMap.put(name.trim(), key);
+        }
+        getTypeMap(group).put(key, type);
 
     }
 
+    private static boolean isUseUUID(OBJ_TYPE TYPE) {
+        return false;
+    }
     public   void addType(String name, OBJ_TYPE group, ObjType type) {
         addType(name, group.toString(), type);
     }

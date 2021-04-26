@@ -19,9 +19,11 @@ import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_CASE;
 import main.content.enums.GenericEnums.DAMAGE_MODIFIER;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.entity.NewRpgEnums;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 import main.system.auxiliary.StringMaster;
 import main.system.math.MathMaster;
@@ -91,11 +93,17 @@ public class DamageCalculator {
         }
         // TODO ref.setFuture(true) -> average dice, auto-reset action etc
         AttackCalculator calculator = new AttackCalculator(attack, true);
+        attack.setHitType(NewRpgEnums.HitType.hit);
+
         if (min_max_normal != null)
             if (min_max_normal) {
                 calculator.setMin(true);
+                calculator.setHitType(NewRpgEnums.HitType.graze);
+                attack.setHitType(NewRpgEnums.HitType.graze);
             } else {
                 calculator.setMax(true);
+                calculator.setHitType(NewRpgEnums.HitType.critical_hit);
+                attack.setHitType(NewRpgEnums.HitType.critical_hit);
             }
         int amount = calculator.calculateFinalDamage();
         DAMAGE_TYPE dmg_type = attack.getDamageType();
@@ -137,6 +145,7 @@ public class DamageCalculator {
     public static int precalculateDamage(Ref ref) {
         BattleFieldObject sourceObj = (Unit) ref.getSourceObj();
         Damage damage = DamageFactory.getDamageForPrecalculate(ref);
+        damage.setHitType(getAverageHitType(sourceObj, ref.getTargetObj(), ref.getActive()));
         int amount = damage.getAmount();
         DAMAGE_TYPE damageType = damage.getDmgType();
         if (damage.getTarget() instanceof Unit) {
@@ -151,6 +160,12 @@ public class DamageCalculator {
         return amount;// applySpellArmorReduction(amount, (DC_HeroObj)
         // ref.getTargetObj(), ref.getSourceObj());
 
+    }
+
+    private static NewRpgEnums.HitType getAverageHitType(BattleFieldObject sourceObj,
+                                                         Obj targetObj, ActiveObj active) {
+        //TODO AI revamp
+        return NewRpgEnums.HitType.hit;
     }
 
     public static boolean isDead(BattleFieldObject unit) {

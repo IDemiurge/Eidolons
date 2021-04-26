@@ -25,7 +25,7 @@ import static main.content.enums.entity.NewRpgEnums.*;
 
 public class ArmorMaster {
     boolean simulation;
-    StringBuilder toLog;
+    StringBuilder toLog= new StringBuilder();
     DC_Game game;
 
     public enum ArmorLayer {
@@ -82,6 +82,9 @@ diff from attack?
         List<ArmorLayer> armorLayers = getLayersForHitType(hitType, sneak);
         for (ArmorLayer armorLayer : armorLayers) {
             DC_ArmorObj armor = getArmor(armorLayer, (Unit) damage.getTarget());
+            if (armor == null) {
+                continue;
+            }
             int blocked = getBlockedAmount(armorLayer, damage.getAmount(), damage.getDmgType(),
                     weaponAttack,  damage.getModifiers(), damage.getRef());
             String msg = "";
@@ -124,6 +127,9 @@ diff from attack?
         Unit attacker = (Unit) ref.getSourceObj();
         Unit attacked = (Unit) ref.getTargetObj();
         DC_ArmorObj armor = getArmor(armorLayer, attacked);
+        if (armor == null) {
+            return 0;
+        }
         int absorbedPerc = getAbsorbedPerc(armor, dmgType, modifiers, attacker, attacked, simulation);
 
         int armorValue = getArmorValue(armor, dmgType);

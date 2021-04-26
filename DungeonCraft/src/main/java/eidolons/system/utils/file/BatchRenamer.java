@@ -67,7 +67,7 @@ public class BatchRenamer {
                 try {
                     renameAnimsInFolder(folder);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
         }

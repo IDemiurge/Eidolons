@@ -162,7 +162,6 @@ public class DC_ActionManager implements ActionManager {
 
     @Override
     public DC_UnitAction newAction(ObjType type, Ref ref, Player owner, GenericGame game) {
-
         DC_UnitAction action = new DC_UnitAction(type, owner, game, ref);
         game.getState().addObject(action);
         // to graveyard
@@ -174,7 +173,18 @@ public class DC_ActionManager implements ActionManager {
             actionsCache.put(ref.getSourceObj(), map);
         }
         map.put(action.getName(), action);
+        return action;
+    }
 
+    public Spell newSpell(ObjType type, Ref ref, Player owner, GenericGame game) {
+        Spell action = new Spell(type, owner, (DC_Game) game, ref);
+        game.getState().addObject(action);
+        Map<String, ActiveObj> map = actionsCache.get(ref.getSourceObj());
+        if (map == null) {
+            map = new StringMap<>();
+            actionsCache.put(ref.getSourceObj(), map);
+        }
+        map.put(action.getName(), action);
         return action;
     }
 
@@ -188,7 +198,6 @@ public class DC_ActionManager implements ActionManager {
     public boolean activateAttackOfOpportunity(ActiveObj action, Obj countering, boolean free) {
         return true;
     }
-
 
 
     @Override
@@ -211,7 +220,7 @@ public class DC_ActionManager implements ActionManager {
             }
         }
         for (DC_ActiveObj attack : ExtraAttacksRule.getCounterAttacks(active, countering)) {
-//            if (AnimMaster.isTestMode())
+            //            if (AnimMaster.isTestMode())
 
             if (attack.canBeActivatedAsCounter()) {
                 if (attack.canBeTargeted(active.getOwnerUnit().getId())) {
@@ -222,9 +231,16 @@ public class DC_ActionManager implements ActionManager {
         return null;
     }
 
+    private Spell newSpell(String typeName, Entity entity) {
+        return (Spell) newActive(typeName, entity, true);
+    }
 
     @Override
     public DC_UnitAction newAction(String typeName, Entity entity) {
+        return (DC_UnitAction) newActive(typeName, entity, false);
+    }
+
+    public DC_ActiveObj newActive(String typeName, Entity entity, boolean spell) {
         Map<String, ActiveObj> map = actionsCache.get(entity);
         if (map == null) {
             map = new StringMap<>();
@@ -234,7 +250,7 @@ public class DC_ActionManager implements ActionManager {
             return (DC_UnitAction) map.get(typeName);
         }
 
-        ObjType type = DataManager.getType(typeName, DC_TYPE.ACTIONS);
+        ObjType type = DataManager.getType(typeName, spell ? DC_TYPE.SPELLS : DC_TYPE.ACTIONS);
         if (type == null) {
             LogMaster.log(1, "no such active: " + typeName);
             if (DUMMY_ACTION_TYPE == null) {
@@ -243,7 +259,9 @@ public class DC_ActionManager implements ActionManager {
             type = new ObjType(typeName, DUMMY_ACTION_TYPE);
         }
         Ref ref = Ref.getCopy(entity.getRef());
-
+        if (spell) {
+            return newSpell(type, ref, entity.getOwner(), game);
+        }
         return newAction(type, ref, entity.getOwner(), game);
     }
 
@@ -257,8 +275,9 @@ public class DC_ActionManager implements ActionManager {
     }
 
     public DC_ActiveObj getOrCreateActionOrSpell(String typeName, Entity entity) {
-        return  getAction(typeName, entity, false);
+        return getAction(typeName, entity, false);
     }
+
     public DC_ActiveObj getAction(String typeName, Entity entity, boolean onlyIfAlreadyPresent) {
 
         typeName = typeName.trim();
@@ -281,19 +300,21 @@ public class DC_ActionManager implements ActionManager {
                 }
             }
 
-//            action =new SearchMaster<ActiveObj>().find(typeName, entity.getActives());
-//            if (action != null)
-//                return (DC_ActiveObj) action;
+            //            action =new SearchMaster<ActiveObj>().find(typeName, entity.getActives());
+            //            if (action != null)
+            //                return (DC_ActiveObj) action;
 
-            try {
+            if (DataManager.isTypeName(typeName, DC_TYPE.SPELLS)) {
+                // spell = true;
+                action = newSpell(typeName, entity);
+            } else {
                 action = newAction(typeName, entity);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
             }
             actionsCache.get(entity).put(typeName, action);
         }
         return (DC_ActiveObj) action;
     }
+
 
     public List<DC_ActiveObj> generateStandardSubactionsForUnit(Unit unit) {
         List<DC_ActiveObj> actions = new ArrayList<>();
@@ -309,6 +330,7 @@ public class DC_ActionManager implements ActionManager {
     protected Collection<? extends DC_ActiveObj> getSpecialModesFromUnit(Unit unit) {
         return null;
     }
+
     @Override
     public void resetActions(Entity entity) {
 
@@ -508,7 +530,7 @@ public class DC_ActionManager implements ActionManager {
         DC_UnitAction action = new DC_UnitAction(DataManager.getType(DISARM, DC_TYPE.ACTIONS),
                 hero.getOwner(), game, hero.getRef().getCopy()) {
             public boolean resolve() {
-//                animate(); // pass std icon as param?
+                //                animate(); // pass std icon as param?
                 TrapMaster.tryDisarmTrap(trap);
                 // false if dead as result?
                 game.getManager().reset();
@@ -524,8 +546,8 @@ public class DC_ActionManager implements ActionManager {
         DC_UnitAction action = new DC_UnitAction(DataManager.getType(UNLOCK, DC_TYPE.ACTIONS),
                 hero.getOwner(), game, hero.getRef().getCopy()) {
             public boolean resolve() {
-//                animate(); // pass std icon as param?
-//                LockMaster.tryUnlock(e, hero);
+                //                animate(); // pass std icon as param?
+                //                LockMaster.tryUnlock(e, hero);
                 game.getManager().reset();
                 game.getManager().refresh(ownerObj.getOwner().isMe());
                 return true;
@@ -615,11 +637,11 @@ public class DC_ActionManager implements ActionManager {
         }
         List<DC_UnitAction> subActions = getOrCreateWeaponActions(unit.getWeapon(offhand));
         if (isNaturalWeaponIncluded(unit) || subActions.isEmpty())
-         subActions.addAll(getOrCreateWeaponActions(unit.getNaturalWeapon(offhand)));
+            subActions.addAll(getOrCreateWeaponActions(unit.getNaturalWeapon(offhand)));
         action.setSubActions(new ArrayList<>(subActions));
-//      ???  if (action.getSubActions().isEmpty()) {
-//            action.setSubActions(new ArrayList<>(subActions));
-//        }
+        //      ???  if (action.getSubActions().isEmpty()) {
+        //            action.setSubActions(new ArrayList<>(subActions));
+        //        }
         return subActions;
     }
 
@@ -628,7 +650,7 @@ public class DC_ActionManager implements ActionManager {
     }
 
     protected List<DC_UnitAction> getObjTypes(List<? extends ObjType> actionTypes,
-                                            Unit unit) {
+                                              Unit unit) {
         List<DC_UnitAction> list = new ArrayList<>();
         for (ObjType type : actionTypes) {
             if (type == null)

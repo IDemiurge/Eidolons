@@ -1,0 +1,77 @@
+<Floor><DATA>wall_type=old stone wall;background=img\main\background\moon valley(1).jpg
+;width=83;name=Castle Evarinath;cell_type=natural;height=83;</DATA><MODULES>
+<Dark_Paths><DATA>width_buffer=3;border_width=2;height_buffer=3;default_wall=Ancient Wall;origin=43-0;name=Dark Paths;width=25;cell_type=natural;alt_default_wall=Cave Wall;height=45;border_type=irregular;</DATA>
+
+<OVERLAY_DIRECTIONS></OVERLAY_DIRECTIONS>
+<SCRIPT_DATA></SCRIPT_DATA>
+<DECOR></DECOR>
+
+
+<ID_MAP></ID_MAP>
+<OBJ_IDS></OBJ_IDS>
+
+<DATA_MAPS><encounters></encounters><custom_types></custom_types>
+</DATA_MAPS>
+
+
+<CUSTOM_TYPE_DATA></CUSTOM_TYPE_DATA>
+<ENCOUNTER_AI_GROUPS></ENCOUNTER_AI_GROUPS><CUSTOM_AI_GROUPS></CUSTOM_AI_GROUPS>
+<TRANSIT_IDS></TRANSIT_IDS>
+
+
+<Zones><Zone><DATA>name=Dark Paths;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Wolf Grove;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Fields of Slaughter;</DATA><Blocks></Blocks></Zone></Zones>
+
+<BORDERS></BORDERS><PLATFORM_DATA></PLATFORM_DATA>
+<coordinates_void></coordinates_void>
+</Dark_Paths>
+
+<Courtyard><DATA>wall_type=crumbling wall;width_buffer=3;border_width=2;height_buffer=3;origin=0-39;name=Courtyard;width=35;cell_type=cross;height=31;border_type=wall;</DATA>
+
+<OVERLAY_DIRECTIONS></OVERLAY_DIRECTIONS>
+<SCRIPT_DATA></SCRIPT_DATA>
+<DECOR></DECOR>
+
+
+<ID_MAP></ID_MAP>
+<OBJ_IDS>8-75=;</OBJ_IDS>
+
+<DATA_MAPS><encounters></encounters><custom_types></custom_types>
+</DATA_MAPS>
+
+
+<CUSTOM_TYPE_DATA></CUSTOM_TYPE_DATA>
+<ENCOUNTER_AI_GROUPS></ENCOUNTER_AI_GROUPS><CUSTOM_AI_GROUPS></CUSTOM_AI_GROUPS>
+<TRANSIT_IDS></TRANSIT_IDS>
+
+
+<Zones><Zone><DATA>name=The Moat;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Battlements;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Inner Courtyard;</DATA><Blocks></Blocks></Zone></Zones>
+
+<BORDERS></BORDERS><PLATFORM_DATA></PLATFORM_DATA>
+<coordinates_void></coordinates_void>
+</Courtyard>
+
+<Citadel><DATA>wall_type=old stone wall;width_buffer=2;border_width=2;height_buffer=2;origin=0-0;name=Citadel;width=35;cell_type=octagonal;height=31;border_type=wall;</DATA>
+
+<OVERLAY_DIRECTIONS></OVERLAY_DIRECTIONS>
+<SCRIPT_DATA></SCRIPT_DATA>
+<DECOR></DECOR>
+
+
+<ID_MAP></ID_MAP>
+<OBJ_IDS></OBJ_IDS>
+
+<DATA_MAPS><encounters></encounters><custom_types></custom_types>
+</DATA_MAPS>
+
+
+<CUSTOM_TYPE_DATA></CUSTOM_TYPE_DATA>
+<ENCOUNTER_AI_GROUPS></ENCOUNTER_AI_GROUPS><CUSTOM_AI_GROUPS></CUSTOM_AI_GROUPS>
+<TRANSIT_IDS></TRANSIT_IDS>
+
+
+<Zones><Zone><DATA>name=Banner Hall;</DATA><Blocks></Blocks></Zone><Zone><DATA>name=Abandoned Tower;</DATA><Blocks></Blocks></Zone></Zones>
+
+<BORDERS></BORDERS><PLATFORM_DATA></PLATFORM_DATA>
+<coordinates_void></coordinates_void>
+</Citadel>
+</MODULES></Floor>

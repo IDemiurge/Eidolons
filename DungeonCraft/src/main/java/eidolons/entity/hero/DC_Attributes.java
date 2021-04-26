@@ -52,8 +52,8 @@ public class DC_Attributes  {
 
                 break;
             case VITALITY:
-                mod(amount, AttributeConsts.VIT_END_BONUS, attr, PARAMS.TOUGHNESS);
-                mod(amount, AttributeConsts.VIT_TOU_BONUS, attr, PARAMS.ENDURANCE);
+                mod(amount, AttributeConsts.VIT_TOU_BONUS, attr, PARAMS.TOUGHNESS);
+                mod(amount, AttributeConsts.VIT_END_BONUS, attr, PARAMS.ENDURANCE);
                 mod(amount, AttributeConsts.VIT_FORTITUDE_BONUS, attr, PARAMS.FORTITUDE);
                 mod(before25, AttributeConsts.B25_VIT_ELEMENTAL_RESIST, attr, ELEMENTAL_RESISTANCES.getParams());
                 mod(amount - 25, AttributeConsts.A25_VIT_END_REGEN, attr, PARAMS.ENDURANCE_REGEN);

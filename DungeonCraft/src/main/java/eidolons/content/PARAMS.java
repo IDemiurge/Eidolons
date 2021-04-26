@@ -226,19 +226,18 @@ public enum PARAMS implements PARAMETER {
     PSIONIC_DURABILITY_MOD(true, "Cold", "", false, 0),
 
     //TODO saving throws revamp
-    GRIT,
+    GRIT(null, "", false, 3, "units", "chars", "perks"),
     // willpower/spellpower
-    WIT,
+    WIT(null, "", false, 3, "units", "chars", "perks"),
     // intelligence/knowledge
     SPIRIT(null, "", false, 3, "units", "chars", "perks"),
     //charisma/wisdom
     FORTITUDE(null, "", false, 5, "units", "chars", "perks"),
     // vit/str
-    REFLEX(),
+    REFLEX(null, "", false, 3, "units", "chars", "perks"),
     // agi/dex
 
     ENDURANCE_REGEN("End. Regen.", "", false, 0, "units", "chars", "perks", "bf obj"), // Color.GREEN.brighter()),
-    SPELL_ARMOR(null, "", false, 0, "units", "chars", "bf obj"),
     RESISTANCE(null, "", false, 0, "units", "chars", "perks", "bf obj"),
     DEFENSE("Defense", "", false, 0, "units", "chars", "perks", "bf obj"),
     ATTACK("Attack", "", false, 0, "units", "chars", "perks", "bf obj"),

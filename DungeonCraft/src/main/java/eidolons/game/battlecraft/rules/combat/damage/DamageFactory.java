@@ -8,6 +8,7 @@ import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import main.content.enums.GenericEnums.DAMAGE_CASE;
 import main.content.enums.GenericEnums.DAMAGE_MODIFIER;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.entity.NewRpgEnums;
 import main.entity.Ref;
 import main.system.auxiliary.NumberUtils;
 
@@ -46,6 +47,8 @@ public class DamageFactory {
         damageObject.setAmount(amount);
         damageObject.setDmgType(effect.getDamageType());
         damageObject.setRef(effect.getRef());
+        //TODO DC Revamp Finalize
+        damageObject.setHitType(NewRpgEnums.HitType.hit);
         return damageObject;
     }
     //    public static MultiDamage getDamageForMultiDamageTest(DAMAGE_TYPE dmg_type,

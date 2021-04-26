@@ -21,6 +21,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by JustMe on 9/12/2017.
@@ -93,12 +94,18 @@ public class WallMap extends OverlayMap<DIRECTION> {
     protected void bindEvents() {
         super.bindEvents();
         GuiEventManager.bind(GuiEventType.UPDATE_DOOR_MAP, p -> {
-            doorMap = new ObjectMap<>(
-                    (ObjectMap<Coordinates, DOOR_STATE>) p.get());
+            doorMap = new ObjectMap<>( );
+            Map<Coordinates, DOOR_STATE> map = (Map<Coordinates, DOOR_STATE>) p.get();
+            for (Coordinates c : map.keySet()) {
+                doorMap.put(c, map.get(c));
+            }
         });
         GuiEventManager.bind(GuiEventType.UPDATE_DIAGONAL_WALL_MAP, p -> {
-            diagonalJoints = new ObjectMap<>(
-                    (ObjectMap<Coordinates, List<DIRECTION>>) p.get());
+            diagonalJoints = new ObjectMap<>();
+            Map<Coordinates, List<DIRECTION>> map = (Map<Coordinates, List<DIRECTION>>) p.get();
+            for (Coordinates c : map.keySet()) {
+                diagonalJoints.put(c, map.get(c));
+            }
         });
     }
 

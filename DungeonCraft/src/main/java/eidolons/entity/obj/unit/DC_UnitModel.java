@@ -15,6 +15,7 @@ import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.system.text.DC_Logger;
 import eidolons.system.text.ToolTipMaster;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
@@ -52,7 +53,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static main.system.GuiEventType.SHOW_MODE_ICON;
 
-public abstract class DC_UnitModel extends BattleFieldObject  {
+public abstract class DC_UnitModel extends BattleFieldObject {
 
     protected VISION_MODE vision_mode;
 
@@ -72,13 +73,15 @@ public abstract class DC_UnitModel extends BattleFieldObject  {
 
     public DC_UnitModel(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, owner, game, ref);
-        Coordinates c = Coordinates.get(x, y);
-        setCoordinates(c);
-        originalCoordinates = c;
         if (this.game == null) {
             setGame(game);
         }
+        if (!game.isSimulation()) {
+            Coordinates c = Coordinates.get(x, y);
+            setCoordinates(c);
+        originalCoordinates = c;
         addDynamicValues();
+        }
     }
 
     public DC_UnitModel(ObjType type, DC_Game game) {
@@ -217,15 +220,17 @@ public abstract class DC_UnitModel extends BattleFieldObject  {
         return getAttackOfType(ActionEnums.ATTACK_TYPE.QUICK_ATTACK);
     }
 
+    public DC_ActiveObj getStdAttack() {
+        return getAttackOfType(ActionEnums.ATTACK_TYPE.STANDARD_ATTACK);
+    }
     public DC_ActiveObj getAttackOfType(ActionEnums.ATTACK_TYPE type) {
         for (DC_UnitAction subAction : getAttack().getSubActions()) {
             if (subAction.getChecker().checkAttackType(type)) {
                 return subAction;
             }
         }
-        LogMaster.log(1, "No action of type " +
-                type +
-                " found for " + getName());
+        DC_Logger.logicError("No action of type " ,
+                type , " found for " , getName());
         return getAttack().getSubActions().get(0);
     }
 
@@ -599,9 +604,11 @@ public abstract class DC_UnitModel extends BattleFieldObject  {
     public void setTempFacing(FACING_DIRECTION tempFacing) {
         this.tempFacing = tempFacing;
     }
+
     public void initTempFacing() {
         setTempFacing(super.getFacing());
     }
+
     public void removeTempFacing() {
         this.tempFacing = null;
     }
@@ -610,9 +617,11 @@ public abstract class DC_UnitModel extends BattleFieldObject  {
     public void setTempCoordinates(Coordinates tempCoordinates) {
         this.tempCoordinates = tempCoordinates;
     }
+
     public void initTempCoordinates() {
         setTempCoordinates(super.getCoordinates());
     }
+
     public void removeTempCoordinates() {
         this.tempCoordinates = null;
     }
@@ -624,7 +633,7 @@ public abstract class DC_UnitModel extends BattleFieldObject  {
 
     @Override
     public Coordinates getCoordinates() {
-        if (tempCoordinates!=null) {
+        if (tempCoordinates != null) {
             return tempCoordinates;
         }
         return super.getCoordinates();

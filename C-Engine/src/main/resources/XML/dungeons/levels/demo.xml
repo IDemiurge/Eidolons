@@ -1,0 +1,17 @@
+<Floor>
+<DATA>name=Arena;cell_type=natural;wall_type=volcanic wall;background=img\main\background\Soul Spire2.png;
+</DATA>
+<MODULES>
+
+<MODULE>
+<DATA>name=The Pit;
+	wall_type=volcanic wall;;cell_type=dark_star;
+width=25;height=17;border_width=1;width_buffer=1;height_buffer=1;
+border_type=chism;
+</DATA>
+<zones>
+<zone><DATA>name=Inner;</DATA></zone>
+<zone><DATA>name=Outer;</DATA></zone>
+</zones>
+</MODULE>
+</MODULES></Floor>

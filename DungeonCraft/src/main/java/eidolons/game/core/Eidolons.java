@@ -93,7 +93,7 @@ public class Eidolons {
             try {
                 mainHero = game.getMetaMaster().getPartyManager().getParty().getLeader();
             } catch (Exception e) {
-                //                e.printStackTrace();
+                //                main.system.ExceptionMaster.printStackTrace(e);
             }
             if (mainHero == null) {
                 try {
@@ -194,7 +194,7 @@ public class Eidolons {
         try {
             FileLogManager.writeAll();
         } catch (IOException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         Gdx.app.exit();
         // System.exit(0);

@@ -77,8 +77,9 @@ public class MainBuilder extends Builder {
         cInfoArray = new String[]{
                 "id bp, pos "
                         + (ArcaneVault.selectiveInit ? AvConsts.TREE_WIDTH + " "
-                        + AvConsts.TREE_HEIGHT : "0 tree.y2") + " table.x2 " +
-                        AvConsts.HEIGHT,
+                        + AvConsts.TREE_HEIGHT : "0 tree.y2-20") ,
+                // + " table.x2 " +
+                //         AvConsts.HEIGHT,
 
                 "id table, pos tree.x2 0 ",
 
@@ -89,7 +90,6 @@ public class MainBuilder extends Builder {
     }
 
     public EditViewPanel getEditViewPanel() {
-        // TODO Auto-generated method stub
         return tableBuilder;
     }
 

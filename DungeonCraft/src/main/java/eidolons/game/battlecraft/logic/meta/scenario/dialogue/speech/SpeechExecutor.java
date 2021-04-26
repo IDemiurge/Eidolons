@@ -497,7 +497,7 @@ public class SpeechExecutor {
                     } else
                         waiting.await();
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    main.system.ExceptionMaster.printStackTrace(e);
                 }
                 timer.cancel();
                 LogMaster.devLog("Scripts Unlocked!");

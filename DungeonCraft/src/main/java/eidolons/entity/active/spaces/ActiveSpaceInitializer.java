@@ -4,6 +4,9 @@ import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import main.content.enums.entity.NewRpgEnums;
+import main.content.enums.entity.NewRpgEnums.ACTIVE_SPACE_VALUE;
+import main.content.values.properties.G_PROPS;
+import main.entity.Entity;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 
@@ -14,14 +17,16 @@ import java.util.Map;
 
 public class ActiveSpaceInitializer implements IActiveSpaceInitializer {
     public static final PROPS[] activeSpaceProps = {
-            PROPS.MEMORIZED_SPACES,
             PROPS.VERBATIM_SPACES,
+            PROPS.MEMORIZED_SPACES,
             PROPS.ACTIVE_SPACES,
     };
     public static final int MAX_SLOTS = 6;
 
     @Override
     public UnitActiveSpaces createActiveSpaces(Unit unit) {
+        // if ()
+        initDefaultSpaces(unit);
         UnitActiveSpaces spaces = new UnitActiveSpaces(unit);
         int index = 0;
         //TODO what about standard ones - memorized/verbatim?
@@ -34,6 +39,47 @@ public class ActiveSpaceInitializer implements IActiveSpaceInitializer {
             }
 
         return spaces;
+    }
+
+    // name,
+    // type,
+    // mode,
+    // actives,
+    // skin,
+    // index,
+    public void initDefaultSpaces(Entity unit) {
+        ActiveSpaceData data = new ActiveSpaceData("");
+        String s=unit.getProperty(PROPS.MEMORIZED_SPELLS);
+        data.setValue(ACTIVE_SPACE_VALUE.actives, s);
+        List<String> actives = ContainerUtils.openContainer(s);
+        for (int i = 0; i < MAX_SLOTS; i++) {
+            if (actives.size()<=i) break;
+            data.setActive(i, actives.get(i));
+        }
+        data.setValue(ACTIVE_SPACE_VALUE.name, "Memorized");
+        unit.setProperty(PROPS.MEMORIZED_SPACES, data.toString());
+
+        data = new ActiveSpaceData("");
+        s=unit.getProperty(PROPS.VERBATIM_SPELLS);
+        actives = ContainerUtils.openContainer(s);
+        for (int i = 0; i < MAX_SLOTS; i++) {
+            if (actives.size()<=i) break;
+            data.setActive(i, actives.get(i));
+        }
+        data.setValue(ACTIVE_SPACE_VALUE.actives, s);
+        data.setValue(ACTIVE_SPACE_VALUE.name, "Verbatim");
+        unit.setProperty(PROPS.VERBATIM_SPACES, data.toString());
+
+        data = new ActiveSpaceData("");
+        s=unit.getProperty(G_PROPS.ACTIVES);
+        actives = ContainerUtils.openContainer(s);
+        for (int i = 0; i < MAX_SLOTS; i++) {
+            if (actives.size()<=i) break;
+            data.setActive(i, actives.get(i));
+        }
+        data.setValue(ACTIVE_SPACE_VALUE.actives, s);
+        data.setValue(ACTIVE_SPACE_VALUE.name, "Actives");
+        unit.setProperty(PROPS.ACTIVE_SPACES, data.toString());
     }
 
     private ActiveSpace createSpace(int i, Unit unit, UnitActiveSpaces spaces, ActiveSpaceData data) {

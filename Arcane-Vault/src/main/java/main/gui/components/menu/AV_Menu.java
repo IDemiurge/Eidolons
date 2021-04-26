@@ -3,6 +3,7 @@ package main.gui.components.menu;
 import main.system.auxiliary.StringMaster;
 
 import javax.swing.*;
+import java.util.Arrays;
 
 public class AV_Menu {
     AV_MenuHandler handler = new AV_MenuHandler();
@@ -12,15 +13,17 @@ public class AV_Menu {
         // G_Panel with a custom background perhaps, would be nice to have a bit
         // of art in AV
         bar = new JMenuBar();
+        // MENUS.TOP
         for (MENUS m : MENUS.values()) {
             JMenu menu = new JMenu(m.getName());
-            for (MENU_ITEMS i : m.getItems()) {
+            for (AV_MENU_ITEMS i : m.getItems()) {
                 if (i.hasSubMenu()) {
                     JMenu menuItem = getMenu(i);
                     menu.add(menuItem);
 
                 } else {
                     JMenuItem menuItem = new JMenuItem(i.getName());
+                    menuItem.addActionListener(handler);
                     menu.add(menuItem);
                 }
                 // fileMenu.setMnemonic(KeyEvent.VK_F);
@@ -30,27 +33,16 @@ public class AV_Menu {
         // panel.add(bar);
     }
 
-    private JMenu getMenu(MENU_ITEMS i) {
+    private JMenu getMenu(AV_MENU_ITEMS i) {
         JMenu menu = new JMenu(i.getName());
-        // menu.addActionListener(handler);
-        // menu.addMenuListener(new AV_MenuHandler(i.getName(), true));
-        for (MENU_ITEMS sub : i.getItems()) {
+        for (AV_MENU_ITEMS sub : i.getItems()) {
             if (sub.hasSubMenu()) {
-                JMenu menuItem = getMenu(sub);
-                menuItem.addActionListener(handler);
-                menu.addMenuListener(handler);
+                getMenu(sub);
             } else {
-                // JMenuItem menuItem = new JMenuItem(new UIAction(sub.getName()) {
-                //     @Override
-                //     public void actionPerformed(ActionEvent e) {
-                //         handler.actionPerformed(e);
-                //     }
-                // });
-                // menuItem.setActionCommand(i.getName());
-                // menuItem.addActionListener(handler);
-
-                // menu.addMenuListener(new AV_MenuHandler(i.getName(), true));
-                // menu.add(menuItem);
+                JMenuItem menuItem = new JMenuItem(sub.getName());
+                menuItem.setActionCommand(i.getName());
+                menuItem.addActionListener(handler);
+                menu.add(menuItem);
             }
         }
         return menu;
@@ -65,27 +57,27 @@ public class AV_Menu {
     }
 
     public enum MENUS {
-        MENU(MENU_ITEMS.SAVE, MENU_ITEMS.AUTO_SAVE, MENU_ITEMS.BACKUP, MENU_ITEMS.SIMULATION),
+        MENU(AV_MENU_ITEMS.SAVE, AV_MENU_ITEMS.AUTO_SAVE, AV_MENU_ITEMS.BACKUP, AV_MENU_ITEMS.SIMULATION),
 
-        EDIT(MENU_ITEMS.ADD, MENU_ITEMS.UPGRADE, MENU_ITEMS.DELETE,
+        EDIT(AV_MENU_ITEMS.ADD, AV_MENU_ITEMS.UPGRADE, AV_MENU_ITEMS.DELETE,
 
-                MENU_ITEMS.UNDO, MENU_ITEMS.REDO, MENU_ITEMS.BACK, MENU_ITEMS.FORWARD, MENU_ITEMS.NODE_UP, MENU_ITEMS.NODE_DOWN, MENU_ITEMS.FORMULA, MENU_ITEMS.SET_VALUE),
+                AV_MENU_ITEMS.UNDO, AV_MENU_ITEMS.REDO, AV_MENU_ITEMS.BACK, AV_MENU_ITEMS.FORWARD, AV_MENU_ITEMS.NODE_UP, AV_MENU_ITEMS.NODE_DOWN, AV_MENU_ITEMS.FORMULA, AV_MENU_ITEMS.SET_VALUE),
 
-        WORKSPACE(MENU_ITEMS.ADD_TO_WORKSPACE, MENU_ITEMS.ADD_TO_CUSTOM_WORKSPACE, MENU_ITEMS.LOAD_WORKSPACE, MENU_ITEMS.SAVE_WORKSPACE, MENU_ITEMS.SAVE_WORKSPACE_AS, MENU_ITEMS.DELETE_WORKSPACE, MENU_ITEMS.RENAME_WORKSPACE, MENU_ITEMS.GROUPING, MENU_ITEMS.SORT_WORKSPACE),
+        WORKSPACE(AV_MENU_ITEMS.ADD_TO_WORKSPACE, AV_MENU_ITEMS.ADD_TO_CUSTOM_WORKSPACE, AV_MENU_ITEMS.LOAD_WORKSPACE, AV_MENU_ITEMS.SAVE_WORKSPACE, AV_MENU_ITEMS.SAVE_WORKSPACE_AS, AV_MENU_ITEMS.DELETE_WORKSPACE, AV_MENU_ITEMS.RENAME_WORKSPACE, AV_MENU_ITEMS.GROUPING, AV_MENU_ITEMS.SORT_WORKSPACE),
 
         FILTER,
 
-        SEARCH(MENU_ITEMS.FIND_TYPE),
+        SEARCH(AV_MENU_ITEMS.FIND_TYPE),
 
         TRANSFORM,
 
         A_E,
-        TEST(MENU_ITEMS.DC, MENU_ITEMS.HC),
-        TEXT(MENU_ITEMS.GENERATE_MISSING_DESCRIPTIONS);
+        TEST(AV_MENU_ITEMS.DC, AV_MENU_ITEMS.HC),
+        TEXT(AV_MENU_ITEMS.GENERATE_MISSING_DESCRIPTIONS);
         // ++ AE MENU?
-        private final MENU_ITEMS[] items;
+        private final AV_MENU_ITEMS[] items;
 
-        MENUS(MENU_ITEMS... items) {
+        MENUS(AV_MENU_ITEMS... items) {
             this.items = items;
         }
 
@@ -93,12 +85,12 @@ public class AV_Menu {
             return StringMaster.format(name());
         }
 
-        public MENU_ITEMS[] getItems() {
+        public AV_MENU_ITEMS[] getItems() {
             return items;
         }
     }
 
-    public enum MENU_ITEMS {
+    public enum AV_MENU_ITEMS {
         // text
         SKILLS,
         SPELLS,
@@ -121,6 +113,7 @@ public class AV_Menu {
 
         // menu
         SAVE,
+        COMMIT,
         AUTO_SAVE(TOGGLE_AS, PERIOD), // period?
         BACKUP,
         SIMULATION(TOGGLE_SIM),
@@ -163,13 +156,29 @@ public class AV_Menu {
         // transform
         REMOVE_VALUE,
         // AE
-        SAVE_TEMPLATE,;
-        private final MENU_ITEMS[] items;
+        SAVE_TEMPLATE,
+        REMOVE,ADD_TAB,SAVE_ALL,PREVIEW,
+        NEW(), CLONE(), TRANSFORM(), PASTE(), COPY(), TOGGLE(), MAIN(
+                NEW, CLONE,
+                REMOVE, UPGRADE,
+                PREVIEW, UNDO,
+                SAVE_ALL, SAVE,
+                ADD_TAB, TOGGLE,
+                COPY, PASTE,
+                BACKUP, TRANSFORM
+
+        );
+        private final AV_MENU_ITEMS[] items;
 
         // boolean customGeneratedItems
-        MENU_ITEMS(MENU_ITEMS... items) {
+        AV_MENU_ITEMS(AV_MENU_ITEMS... items) {
             this.items = items;
 
+        }
+
+        @Override
+        public String toString() {
+            return getName();
         }
 
         public boolean hasSubMenu() {
@@ -183,7 +192,7 @@ public class AV_Menu {
             return StringMaster.format(name());
         }
 
-        public MENU_ITEMS[] getItems() {
+        public AV_MENU_ITEMS[] getItems() {
             return items;
         }
 

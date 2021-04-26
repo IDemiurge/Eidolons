@@ -2,6 +2,7 @@ package main.handlers.mod;
 
 import main.entity.type.ObjType;
 import main.launch.ArcaneVault;
+import main.swing.generic.services.DialogMaster;
 import main.system.auxiliary.TimeMaster;
 import main.system.launch.CoreEngine;
 
@@ -13,7 +14,19 @@ public class AvVersionHandler {
         return TimeMaster.getTimeStamp();
     }
 
+    // List<AvOperation> operations;
+
     public static void xmlSaved() {
+        //changes appended
+
+    }
+
+    public static void typeModified() {
+        // operations.add(new AvOperation(modified, type, value, prev, newVal));
+    }
+    public static void commitVersion() {
+        DialogMaster.confirm("Commit data for version " + CoreEngine.VERSION + " ?");
+
         CoreEngine.incrementXmlBuild();
         ArcaneVault.resetTitle();
     }

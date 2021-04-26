@@ -238,7 +238,6 @@ public class EditViewPanel implements TableModelListener {
 
         getTable().getColumnModel().getColumn(0).setWidth(200);
         secondTableMode = false;
-
         scrollPane = new JScrollPane(table);
         if (isColorsInverted()) {
             scrollPane.setBackground(ColorManager.BACKGROUND);
@@ -255,9 +254,15 @@ public class EditViewPanel implements TableModelListener {
         resetData(false, type);
     }
 
+    public enum ValueSet{
+        full,
+        arena,
+    }
+
+    ValueSet valueSet = ValueSet.arena;
     public void resetData(boolean quietly, Entity type) {
 
-        Vector<Vector<String>> data = TableDataManager.getTypeData(type);
+        Vector<Vector<String>> data = TableDataManager.getTypeData(type, valueSet);
         Vector<?> oldData = getModel().getDataVector();
         if (!quietly) {
             if (secondModel != null) {
@@ -360,10 +365,10 @@ public class EditViewPanel implements TableModelListener {
                 || SimulationHandler.isUnitType(grpName)) {
 
             //TODO SIMULATION HANDLER
-            type.setParam(PARAMS.LEVEL,
+            // type.setParam(PARAMS.LEVEL,
                     // DC_MathManager.getLevelForPower(type.getIntParam(PARAMS.POWER))
-                    DC_Formulas.getLevelForXp((type.getIntParam(PARAMS.POWER) + 1)
-                            * DC_Formulas.POWER_XP_FACTOR));
+                    // DC_Formulas.getLevelForXp((type.getIntParam(PARAMS.POWER) + 1)
+                    //         * DC_Formulas.POWER_XP_FACTOR));
             if (ArcaneVault.isSimulationOn()) {
                 SimulationHandler.getUnit(type).setValue(valName, newValue);
                 SimulationHandler.refreshType(type);
@@ -428,6 +433,10 @@ public class EditViewPanel implements TableModelListener {
         } else {
             return table;
         }
+    }
+
+    public G_Table getSecondTable() {
+        return secondTable;
     }
 
     public void setTable(G_Table table) {

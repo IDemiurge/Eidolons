@@ -13,6 +13,7 @@ import main.content.values.properties.PROPERTY;
 import main.data.xml.XML_Reader;
 import main.entity.Entity;
 import main.entity.type.ObjType;
+import main.gui.builders.EditViewPanel;
 import main.handlers.types.SimulationHandler;
 import main.launch.ArcaneVault;
 import main.system.auxiliary.StringMaster;
@@ -58,11 +59,11 @@ public class TableDataManager {
         return new ArrayList<>(set);
     }
 
-    public static Vector<Vector<String>> getTypeData(Entity entity) {
+    public static Vector<Vector<String>> getTypeData(Entity entity, EditViewPanel.ValueSet valueSet) {
         if (entity == null) {
             return null;
         }
-        List<String> names = AV_DataManager.getValueNames(entity.getOBJ_TYPE());
+        List<String> names = AV_DataManager.getValueNames(valueSet, entity.getOBJ_TYPE());
         LogMaster.log(
                 0,
                 "VALUE NAMES FOR TYPE " + entity.getOBJ_TYPE() + ": "

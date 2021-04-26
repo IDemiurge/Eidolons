@@ -36,6 +36,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.log.Chronos;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.Flags;
+import main.system.launch.Launch;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.lwjgl.opengl.GL11;
@@ -112,6 +113,7 @@ public class DungeonScreen extends GameScreenWithTown {
 
     @Override
     protected void afterLoad() {
+        Launch.START(Launch.LaunchPhase._12_dc_show);
         Gdx.gl20.glEnable(GL11.GL_POINT_SMOOTH);
         Gdx.gl20.glHint(GL11.GL_POINT_SMOOTH_HINT, GL20.GL_NICEST);
         Gdx.gl20.glEnable(GL11.GL_LINE_SMOOTH);
@@ -138,7 +140,7 @@ public class DungeonScreen extends GameScreenWithTown {
         checkInputController();
         WaitMaster.receiveInput(WAIT_OPERATIONS.DUNGEON_SCREEN_READY, true);
         WaitMaster.markAsComplete(WAIT_OPERATIONS.DUNGEON_SCREEN_READY);
-
+        Launch.END(Launch.LaunchPhase._12_dc_show);
     }
 
     @Override

@@ -153,6 +153,9 @@ public class UnitResetter extends EntityResetter<Unit> {
                     setProperty(PROPS.SPELL_UPGRADES, value, true);
                 }
             }
+        } else {
+            resetAttributes();
+            resetObjects();
         }
 
         if (!getChecker().isBfObj()) {
@@ -223,6 +226,7 @@ public class UnitResetter extends EntityResetter<Unit> {
 
 
     public void resetObjects() {
+        if (!CoreEngine.isArcaneVault())
         if (ExplorationMaster.isExplorationOn()) {
             if (!getEntity().isDirty()) {
                 return;

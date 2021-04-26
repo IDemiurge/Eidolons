@@ -222,7 +222,7 @@ public class TileMapper {
                         try {
                             cells[x][y] = cell;
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            main.system.ExceptionMaster.printStackTrace(e);
                         }
                     y++;
                 }
@@ -350,7 +350,7 @@ public class TileMapper {
         //                    try {
         //                        map.getTiles()[x + offsetX][y + offsetY] = tile;
         //                    } catch (Exception e) {
-        //                        e.printStackTrace();
+        //                        main.system.ExceptionMaster.printStackTrace(e);
         //                    }
         //                }
         //                x++;

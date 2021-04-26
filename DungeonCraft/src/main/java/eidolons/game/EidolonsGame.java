@@ -56,16 +56,16 @@ public class EidolonsGame {
             EidolonsGame.class.getField(field.toUpperCase()).set(null, val);
             main.system.auxiliary.log.LogMaster.important(field + ": global var set to " + val);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         } catch (NoSuchFieldException e) {
             try {
                 EidolonsGame.class.getField(field).set(null, val);
             } catch (IllegalAccessException e1) {
-                e1.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             } catch (NoSuchFieldException e1) {
-                e1.printStackTrace();
+                main.system.ExceptionMaster.printStackTrace(e);
             }
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
 
     }
@@ -74,7 +74,7 @@ public class EidolonsGame {
         try {
             return (boolean) EidolonsGame.class.getField(field.toUpperCase()).get(null);
         } catch (Exception e) {
-            e.printStackTrace();
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return false;
     }

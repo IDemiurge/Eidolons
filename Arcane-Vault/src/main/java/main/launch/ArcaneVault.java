@@ -60,7 +60,10 @@ public class ArcaneVault {
     private static ContentValsManager contentValsManager;
     private static AvManager manager;
 
-    public static void main(String[] args) {
+    public static void launchFromLE() {
+        //TODO
+    }
+        public static void main(String[] args) {
         CoreEngine.setSwingOn(true);
         CoreEngine.setArcaneVault(true);
         CoreEngine.setGraphicsOff(true);
@@ -71,7 +74,7 @@ public class ArcaneVault {
         }
         if (args.length > 0) {
             selectiveLaunch = false;
-            if (args.length > 1) {
+            if (args.length > 0) {
                 setMacroMode(true);
             } else {
                 types = presetTypes;
@@ -85,7 +88,7 @@ public class ArcaneVault {
         } else
             types = "";
 
-        ItemGenerator.setGenerationOn(!ENABLE_ITEM_GENERATION);
+        ItemGenerator.setGenerationOn(ENABLE_ITEM_GENERATION);
         LogMaster.PERFORMANCE_DEBUG_ON = AvFlags.showTime;
 
         //TODO BANNER!
@@ -219,7 +222,7 @@ public class ArcaneVault {
         }
     }
     public static void resetTitle() {
-        getWindow().setTitle(title + " v" + CoreEngine.xmlBuildId);
+        getWindow().setTitle(title + " v" + CoreEngine.VERSION);
     }
 
     public static boolean isMacroMode() {

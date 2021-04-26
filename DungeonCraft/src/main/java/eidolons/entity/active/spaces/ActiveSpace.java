@@ -17,8 +17,8 @@ public class ActiveSpace {
     protected String name;
     protected boolean locked;
     protected boolean hidden;
-    protected  Map<Integer, DC_ActiveObj> activesMap;
-    protected  Unit owner;
+    protected Map<Integer, DC_ActiveObj> activesMap;
+    protected Unit owner;
 
     public ActiveSpace(int index, String name, Unit owner, NewRpgEnums.ACTIVE_SPACE_TYPE type,
                        NewRpgEnums.ACTIVE_SPACE_MODE mode, Map<Integer, DC_ActiveObj> activesMap) {
@@ -88,5 +88,10 @@ public class ActiveSpace {
 
     public Unit getOwner() {
         return owner;
+    }
+
+    @Override
+    public String toString() {
+        return name + ":" + type + "/" + mode + "/" + "\n - " + activesMap;
     }
 }

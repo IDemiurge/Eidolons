@@ -24,6 +24,8 @@ public class Adapter implements ControllerApi {
         gdxAdapter.setController(this);
         gdxAdapter.setOptions(new GdxOptionsImpl());
         gdxAdapter.setGdxApp(new ApiAdapter());
+        gdxAdapter.setGridManager(new GridManagerApiImpl());
+        gdxAdapter.setAnims(new GdxAnimsImpl());
 
         OptionsMaster.applyOptionsGdx();
     }

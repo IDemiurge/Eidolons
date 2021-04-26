@@ -24,6 +24,7 @@ import main.system.GuiEventManager;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
+import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,9 @@ public class Obj extends Entity {
     }
 
     protected void cloneType() {
+        if (CoreEngine.isArcaneVault()){
+            return;
+        }
         type = new ObjType(type);
         game.initType(type);
         customType = true;

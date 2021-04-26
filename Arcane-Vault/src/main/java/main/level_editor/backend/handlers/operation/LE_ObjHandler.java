@@ -13,6 +13,7 @@ import main.content.enums.DungeonEnums;
 import main.data.DataManager;
 import main.data.xml.XML_Converter;
 import main.data.xml.XmlStringBuilder;
+import main.entity.EntityCheckMaster;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -119,7 +120,9 @@ public class LE_ObjHandler extends LE_Handler {
             }
             operation(Operation.LE_OPERATION.ADD_OBJ, objType,
                     c);
-            if (objType.getName().contains("Placeholder")) {
+
+            if (objType.getName().contains("Placeholder")
+            || EntityCheckMaster.isWall(objType)) {
                 getStructureHandler().initWall(c);
             }
         }

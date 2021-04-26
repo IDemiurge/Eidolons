@@ -1,5 +1,6 @@
 package main.system.graphics;
 
+// import com.github.weisj.darklaf.LafManager;
 import main.swing.generic.components.Builder;
 import main.system.launch.CoreEngine;
 
@@ -30,6 +31,10 @@ public class GuiManager {
         if (CoreEngine.isSwingOn()) {
             size = Toolkit.getDefaultToolkit().getScreenSize();
             Builder.setScreenSize(size);
+
+            // LafManager.setTheme(new ());
+            // LafManager.install();
+
             try {
                 UIManager.setLookAndFeel(
                         "javax.swing.plaf.nimbus.NimbusLookAndFeel"

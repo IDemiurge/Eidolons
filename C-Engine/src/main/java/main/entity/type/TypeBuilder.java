@@ -43,7 +43,8 @@ public class TypeBuilder {
             if (isBuildTypeOnInit(TYPE))
                 buildType(node, type);
             else {
-                type.setName(XML_Formatter.restoreXmlNodeName(node.getNodeName()));
+
+                    type.setName(XML_Formatter.restoreXmlNodeName(node.getNodeName()));
                 type.setNode(node); //lazy
             }
         } else {
@@ -56,6 +57,7 @@ public class TypeBuilder {
     private static boolean isUseDefaultType(OBJ_TYPE TYPE) {
         return !TYPE.isTreeEditType();
     }
+
 
     private static boolean isBuildTypeOnInit(OBJ_TYPE objType) {
         if (CoreEngine.isArcaneVault()) {
@@ -90,6 +92,7 @@ public class TypeBuilder {
         }
 
         checkUID(type);
+            //TODO always generate unique one
         type.setInitialized(true);
         type.setBuilt(true);
         return type;
