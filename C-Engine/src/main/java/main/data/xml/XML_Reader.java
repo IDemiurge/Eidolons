@@ -34,31 +34,30 @@ import static main.system.auxiliary.log.LogMaster.*;
  * reload of hero types to avoid src.main.data overwriting between HC and AV
  */
 public class XML_Reader {
-    // private static final Logger = Logger.getLogger(XML_Reader.class);
+    // protected static final Logger = Logger.getLogger(XML_Reader.class);
 
-    private static final Map<String, Set<String>> tabGroupMap = new HashMap<>();
-    private static final Map<String, Set<String>> treeSubGroupMap = new HashMap<>();
+    protected  XmlModel model=new XmlModel(false);
+    protected  XmlModel macroModel =new XmlModel(true);
+  private static final XML_Reader instance= new XML_Reader();
+    
+    protected static final Map<String, Set<String>> macroTabGroupMap = new HashMap<>();
+    protected static final Map<String, Set<String>> macroTreeSubGroupMap = new HashMap<>();
 
-    private static final Map<String, Set<String>> macroTabGroupMap = new HashMap<>();
-    private static final Map<String, Set<String>> macroTreeSubGroupMap = new HashMap<>();
+    protected static Map<String, ObjType> bufferCharTypeMap = new HashMap<>(20);
+    protected static boolean macro;
 
-    private static final Map<String, Map<String, ObjType>> typeMaps = new HashMap<>();
-    private static Map<String, ObjType> bufferCharTypeMap = new HashMap<>(20);
-    private static boolean macro;
+    protected static boolean concurrentReadingOn = true;
+    protected static final Map<String, XML_File> heroFiles = new HashMap<>();
+    protected static final Map<String, XML_File> partyFiles = new HashMap<>();
 
-    private static boolean concurrentReadingOn = true;
-    private static final Map<String, XML_File> heroFiles = new HashMap<>();
-    private static final Map<String, XML_File> partyFiles = new HashMap<>();
-    private static DequeImpl<XML_File> files = new DequeImpl<>();
+    protected static Map<String, ObjType> originalCharTypeMap;
 
-    private static Map<String, ObjType> originalCharTypeMap;
+    protected static String customTypesPath;
 
-    private static String customTypesPath;
-
-    private static boolean brokenXml;
-    private static boolean macroLoaded;
-    private static boolean microLoaded;
-    private static boolean macroAndMicro;
+    protected static boolean brokenXml;
+    protected static boolean macroLoaded;
+    protected static boolean microLoaded;
+    protected static boolean macroAndMicro;
 
     static Predicate<ObjType> typeChecker;
 
@@ -66,15 +65,23 @@ public class XML_Reader {
         XML_Reader.typeChecker = typeChecker;
     }
 
-    private static void constructTypeMap(Document doc, String key,
-                                         Map<String, Set<String>> tabGroupMap,
-                                         Map<String, Set<String>> treeSubGroupMap
+    public static XML_Reader getInstance() {
+        return instance;
+    }
+
+    public XmlModel getModel() {
+        return macro? macroModel : model;
+    }
+
+    protected static void constructTypeMap(Document doc, String key,
+                                           Map<String, Set<String>> tabGroupMap,
+                                           Map<String, Set<String>> treeSubGroupMap
     ) {
         key = key.replace("_", " ").toLowerCase();
         log(DATA_DEBUG, "type map: " + key);
 
         Map<String, ObjType> typeMap =
-                typeMaps.computeIfAbsent(key, k -> new XLinkedMap<>());
+                getInstance().model.typeMaps.computeIfAbsent(key, k -> new XLinkedMap<>());
 
         NodeList nl = doc.getFirstChild().getChildNodes();
         Set<String> groupSet = new LinkedHashSet<>();
@@ -186,14 +193,14 @@ public class XML_Reader {
         }
     }
 
-    private static void loadFile(XML_File xmlFile) {
+    protected static void loadFile(XML_File xmlFile) {
         getFiles().add(xmlFile);
         Document doc = XML_Converter.getDoc(xmlFile.contents);
         loadMap(xmlFile.type == null ? xmlFile.name :
                 xmlFile.type.getName(), doc);
     }
 
-    private static boolean checkFile(File file) {
+    protected static boolean checkFile(File file) {
         if (!file.isFile()) {
             return false;
         }
@@ -211,7 +218,8 @@ public class XML_Reader {
         String fileName = name.substring(0, name.length() - ".xml".length());
 
         if (fileName.contains(DC_TYPE.CHARS.getName())) {
-            XML_File heroFile = new XML_File(DC_TYPE.CHARS, fileName, "", macro, text);
+            String version=readVersion(text);
+            XML_File heroFile = new XML_File(DC_TYPE.CHARS, fileName, "", macro, text, version);
             heroFile.setFile(file);
             heroFiles.put(fileName, heroFile);
         }
@@ -225,10 +233,18 @@ public class XML_Reader {
             xmlName = fileName.substring(0, indexOf).trim();
             group = fileName.substring(indexOf + 1);
         }
-
-        xmlFile = new XML_File(DC_TYPE.getType(xmlName), xmlName, group, macro, text);
+        String version = readVersion(text);
+        xmlFile = new XML_File(DC_TYPE.getType(xmlName), xmlName, group, macro, text, version);
         xmlFile.setFile(file);
         return xmlFile;
+    }
+
+    protected static String readVersion(String text) {
+        String version = CoreEngine.XML_BUILD;
+        if (text.contains(XML_Writer.XML_VERSION_PREFIX)) {
+            version = text.substring(text.lastIndexOf(XML_Writer.XML_VERSION_PREFIX), text.indexOf(XML_Writer.XML_VERSION_SEPARATOR));
+        }
+        return version;
     }
 
 
@@ -237,7 +253,7 @@ public class XML_Reader {
         createCustomTypeList(xml, TYPE, game);
     }
 
-    private static List<ObjType> createCustomTypeList(String xml, OBJ_TYPE TYPE, Game game) {
+    protected static List<ObjType> createCustomTypeList(String xml, OBJ_TYPE TYPE, Game game) {
         return createCustomTypeList(xml, TYPE, game, true, false, false);
     }
 
@@ -367,14 +383,14 @@ public class XML_Reader {
         }
     }
 
-    private static void loadMap(String name, Document doc) {
+    protected static void loadMap(String name, Document doc) {
         Chronos.mark("TYPE MAPPING " + name);
         Map<String, Set<String>> tabGroupMap = XML_Reader.macroTabGroupMap;
         Map<String, Set<String>> treeSubGroupMap = XML_Reader.macroTreeSubGroupMap;
 
         if (DC_TYPE.isOBJ_TYPE(name)) {
-            tabGroupMap = XML_Reader.tabGroupMap;
-            treeSubGroupMap = XML_Reader.treeSubGroupMap;
+            tabGroupMap = getInstance().model.tabGroupMap;
+            treeSubGroupMap = getInstance().model.treeSubGroupMap;
         }
 
         constructTypeMap(doc, name, tabGroupMap, treeSubGroupMap);
@@ -389,7 +405,7 @@ public class XML_Reader {
 
 
     public static Map<String, Map<String, ObjType>> getTypeMaps() {
-        return typeMaps;
+        return getInstance().model.typeMaps;
     }
 
     public static Set<String> getSubGroups(OBJ_TYPE TYPE) {
@@ -431,7 +447,7 @@ public class XML_Reader {
         if (macro) {
             return macroTabGroupMap;
         }
-        return tabGroupMap;
+        return getInstance().model.tabGroupMap;
     }
 
     /**
@@ -441,14 +457,14 @@ public class XML_Reader {
         if (macro) {
             return macroTreeSubGroupMap;
         }
-        return treeSubGroupMap;
+        return getInstance().model.treeSubGroupMap;
     }
 
     public static Map<String, Set<String>> getTreeSubGroupMap() {
         if (macro) {
             return macroTreeSubGroupMap;
         }
-        return treeSubGroupMap;
+        return getInstance().model.treeSubGroupMap;
     }
 
 
@@ -488,7 +504,7 @@ public class XML_Reader {
 
     }
 
-    private static void reloadHeroFiles() {
+    protected static void reloadHeroFiles() {
         for (XML_File heroFile : heroFiles.values()) {
             setOff(true);
             try {
@@ -504,7 +520,7 @@ public class XML_Reader {
         }
     }
 
-    private static void checkNewHeroes() {
+    protected static void checkNewHeroes() {
         Collection<ObjType> types = getTypeMaps().get(DC_TYPE.CHARS.getName()).values();
         for (ObjType type : types) {
             ObjType oldType = originalCharTypeMap.get(type.getName());
@@ -523,15 +539,15 @@ public class XML_Reader {
     }
 
     public static DequeImpl<XML_File> getFiles() {
-        return files;
+        return getInstance().model.files;
     }
 
     public static void setFiles(DequeImpl<XML_File> files) {
-        XML_Reader.files = files;
+        getInstance().model.files = files;
     }
 
     public static XML_File getFile(DC_TYPE TYPE) {
-        for (XML_File file : files) {
+        for (XML_File file : getInstance().model.files) {
             if (file.getType() == null) {
                 continue;
             }

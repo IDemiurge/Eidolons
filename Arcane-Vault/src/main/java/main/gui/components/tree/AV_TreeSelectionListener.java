@@ -94,6 +94,7 @@ public class AV_TreeSelectionListener implements TreeSelectionListener {
                 }
         ArcaneVault.setSelectedTypes(types);
         ArcaneVault.setDirty(dtFlag);
+        ArcaneVault.getMainBuilder().selectionChanged();
 
     }
 

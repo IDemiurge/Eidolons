@@ -6,6 +6,7 @@ import main.content.DC_TYPE;
 import main.entity.type.ObjType;
 import main.handlers.AvHandler;
 import main.handlers.AvManager;
+import main.v2_0.AV2;
 import main.system.auxiliary.ContainerUtils;
 import main.system.data.DataUnit;
 
@@ -51,7 +52,7 @@ public class AvAssembler extends AvHandler implements IAvAssembler {
 
     @Override
     public void preview() {
-        SimulationHandler.refreshType(getSelected());
+        AV2.getSimulationHandler().refreshType(getSelected());
     }
 
     public class TypeAssemblyData extends DataUnit<TEMPLATE_TYPE> {

@@ -109,7 +109,7 @@ public class XML_Transformer {
 
 
     private static void backUp() {
-        AvSaveHandler.fullBackUp(); // new reserve?
+        AvSaveHandler.fullBackUp(null ); // new reserve?
     }
 
     private static void transformStringsToNormal() {

@@ -8,19 +8,25 @@ import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.type.ObjType;
+import main.handlers.AvHandler;
+import main.handlers.AvManager;
 import main.launch.ArcaneVault;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SimulationHandler {
+public class SimulationHandler extends AvHandler {
 
     private static final String[] unitTypes = {DC_TYPE.UNITS.getName(),
             DC_TYPE.BF_OBJ.getName(), DC_TYPE.CHARS.getName(),};
-    private static final Map<ObjType, Unit> unitMap = new HashMap<>();
+    private  final Map<ObjType, Unit> unitMap = new HashMap<>();
 
-    public static void initUnitObj(String name) {
+    public SimulationHandler(AvManager manager) {
+        super(manager);
+    }
+
+    public  void initUnitObj(String name) {
         ObjType type = getUnitType(name);
         if (type == null) {
             return;
@@ -28,7 +34,7 @@ public class SimulationHandler {
         createUnit(type);
     }
 
-    public static Unit createUnit(ObjType type) {
+    public  Unit createUnit(ObjType type) {
         if (unitMap.containsKey(type)) {
             return null;
         }
@@ -44,7 +50,7 @@ public class SimulationHandler {
         return unit;
     }
 
-    private static void resetUnit(Unit unit) {
+    private  void resetUnit(Unit unit) {
         unit.toBase();
         unit.setDirty(true);
         unit.afterEffects();
@@ -52,12 +58,12 @@ public class SimulationHandler {
         // ArcaneVault.getMainBuilder().getEditViewPanel().resetData(unit.getType());
     }
 
-    private static void applyEffectForUnit(Unit unit) {
+    private  void applyEffectForUnit(Unit unit) {
         // getGame().getState().getAttachedEffects()
 
     }
 
-    private static ObjType getUnitType(String name) {
+    private  ObjType getUnitType(String name) {
         ObjType type = DataManager.getType(name, DC_TYPE.UNITS);
         if (type == null) {
             type = DataManager.getType(name, DC_TYPE.CHARS);
@@ -65,18 +71,18 @@ public class SimulationHandler {
         return type;
     }
 
-    public static Unit getUnit(String typeName) {
+    public  Unit getUnit(String typeName) {
         return getUnit(getUnitType(typeName));
     }
 
-    public static Unit getUnit(ObjType type) {
+    public  Unit getUnit(ObjType type) {
         if (!unitMap.containsKey(type)) {
             createUnit(type);
         }
         return unitMap.get(type);
     }
 
-    public static void refreshType(ObjType type) {
+    public  void refreshType(ObjType type) {
         Unit unit = unitMap.get(type);
         if (unit == null) {
             unit= createUnit(type);
@@ -97,11 +103,11 @@ public class SimulationHandler {
         return Arrays.asList(unitTypes).contains(selected);
     }
 
-    private static DC_Game getGame() {
-        return ArcaneVault.getGame();
-    }
+    // private  DC_Game getGame() {
+    //     return ArcaneVault.getGame();
+    // }
 
-    public static void init() {
+    public static void initSim() {
         DC_Engine.gameInit( );
     }
 }

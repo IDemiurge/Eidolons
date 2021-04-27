@@ -5,13 +5,13 @@ import eidolons.content.DC_Formulas;
 import main.ability.AE_Manager;
 import main.ability.gui.AE_MainPanel;
 import main.content.C_OBJ_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.values.properties.G_PROPS;
-import main.data.DataManager;
 import main.data.TableDataManager;
 import main.entity.Entity;
 import main.entity.type.ObjType;
-import main.gui.components.menu.AV_Menu;
 import main.gui.components.table.AV_TableCellRenderer;
+import main.gui.components.table.AvTable;
 import main.gui.components.table.TableMouseListener;
 import main.handlers.control.AvSelectionHandler;
 import main.handlers.mod.AvSaveHandler;
@@ -41,9 +41,9 @@ public class EditViewPanel implements TableModelListener {
     public static final String VALUE = "Value";
     public boolean AE_VIEW_TOGGLE = false;
     public boolean AE_VIEW_TOGGLING = false;
-    protected G_Table table;
+    protected AvTable table;
     protected DefaultTableModel model;
-    protected G_Table secondTable;
+    protected AvTable secondTable;
     protected DefaultTableModel secondModel;
     protected boolean twoTableMode = isTwoTableModeEnabled();
     protected boolean widthSet;
@@ -53,13 +53,13 @@ public class EditViewPanel implements TableModelListener {
     protected G_Panel panel;
     protected boolean heroView = false;
     protected boolean treeView = false;
-    protected boolean menuHidden;
-    protected AV_Menu menu;
-    protected JScrollPane scrollPane;
+    // protected JScrollPane scrollPane;
     Map<String, JTable> tableMap = new HashMap<>();
     Vector<String> names = new Vector<>();
     private boolean dirty = true;
     private boolean reload;
+
+    OBJ_TYPE selectedType;
 
     // protected HeroTabs heroTabs;
 
@@ -123,35 +123,14 @@ public class EditViewPanel implements TableModelListener {
 
     public void refresh() {
         getPanel().requestFocusInWindow();
-        //        if (!isDirty()) {
-        //            getPanel().repaint();
-        //            return;
-        //        }
         getPanel().removeAll();
-        if (!isMenuHidden()) {
-            getPanel().add(menu.getBar(), "id menu, pos 0 0");
-        }
-        if (isHeroView()) {
-            // getPanel().add(heroTabs, "pos 0 0");
-            // setHeroView(false);
-            // getPanel().revalidate();
-            // getPanel().repaint();
-            // getPanel().repaint();
-            // return;
-        }
         int width;
         int height;
         width = getWidth(); // /2
         height = getHeight();
-        // offset instead! visual.x2 visual.xy2
-        // DISPLAY_MODES.MULTI_TABLE
-
-        // scrollPane.removeAll();
-        // scrollPane.add(getTable());
-        // scrollPane.revalidate();
         if (!AE_VIEW) {
             // width *= 2;
-            getPanel().add(scrollPane, "id table, pos 0 menu.y2, w  " + width + ", h " + height);
+            getPanel().add(table, "id table, pos 0 menu.y2, w  " + width + ", h " + height);
         }
         // add(background); setZOrder()
         if (ArcaneVault.getMainBuilder() != null) {
@@ -163,9 +142,9 @@ public class EditViewPanel implements TableModelListener {
             JSplitPane sp;
 
             if (AE_VIEW_TOGGLE) {
-                sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, ae_view, scrollPane);
+                sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, ae_view, table);
             } else {
-                sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPane, ae_view);
+                sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, table, ae_view);
             }
             sp.setDividerLocation(0.5);
             getPanel().add(sp, "pos 0 menu.y2 " + getWidth() * 5 / 3 + " " + AvConsts.AE_HEIGHT);
@@ -174,15 +153,24 @@ public class EditViewPanel implements TableModelListener {
         } else {
             if (secondTable != null) {
                 secondTable.setName(ArcaneVault.getMainBuilder().getPreviousSelectedTabName());
-                getPanel().add(new JScrollPane(secondTable),
+                getPanel().add((secondTable),
                         "id secondTable, pos table.x2 menu.y2, w  " + width + ", h " + height);
             }
         }
+        table.updateButtons(selectedType);
+        if (secondTable != null) {
+            secondTable.updateButtons(selectedType);
+        }
+
         getPanel().revalidate();
         getPanel().repaint();
         if (isTreeView()) {
             setDirty(false);
         }
+    }
+
+    private boolean isButtonsHidden() {
+        return false;
     }
 
     public boolean isDirty() {
@@ -223,13 +211,13 @@ public class EditViewPanel implements TableModelListener {
     protected void initTable(boolean second) {
         secondTableMode = second;
         setModel(new DefaultTableModel(null, names));
-        setTable(new G_Table(getModel(), true));
+        setTable(new AvTable(getModel(), true, second));
         getTable().addMouseListener(new TableMouseListener(getTable(), second));
 
-        getTable().setDefaultRenderer(table.getColumnClass(table.getColumn(NAME).getModelIndex()),
+        getTable().setDefaultRenderer(table.getTable().getColumnClass(table.getTable().getColumn(NAME).getModelIndex()),
                 getTableRenderer());
 
-        getTable().setDefaultRenderer(table.getColumnClass(table.getColumn(VALUE).getModelIndex()),
+        getTable().setDefaultRenderer(table.getTable().getColumnClass(table.getTable().getColumn(VALUE).getModelIndex()),
                 getTableRenderer());
 
         getTable().setRowHeight(TableDataManager.ROW_HEIGHT);
@@ -238,10 +226,10 @@ public class EditViewPanel implements TableModelListener {
 
         getTable().getColumnModel().getColumn(0).setWidth(200);
         secondTableMode = false;
-        scrollPane = new JScrollPane(table);
-        if (isColorsInverted()) {
-            scrollPane.setBackground(ColorManager.BACKGROUND);
-        }
+        // scrollPane = new JScrollPane(table);
+        // if (isColorsInverted()) {
+        //     scrollPane.setBackground(ColorManager.BACKGROUND);
+        // }
     }
 
     protected AV_TableCellRenderer getTableRenderer() {
@@ -254,6 +242,10 @@ public class EditViewPanel implements TableModelListener {
         resetData(false, type);
     }
 
+    public void setReload(boolean reload) {
+        this.reload = reload;
+    }
+
     public enum ValueSet{
         full,
         arena,
@@ -261,6 +253,7 @@ public class EditViewPanel implements TableModelListener {
 
     ValueSet valueSet = ValueSet.arena;
     public void resetData(boolean quietly, Entity type) {
+        selectedType = type.getOBJ_TYPE_ENUM();
 
         Vector<Vector<String>> data = TableDataManager.getTypeData(type, valueSet);
         Vector<?> oldData = getModel().getDataVector();
@@ -276,13 +269,13 @@ public class EditViewPanel implements TableModelListener {
     }
 
     public void copySelectedValues() {
-        G_Table sourceTable = table;
-        G_Table targetTable = secondTable;
-        int[] rows = table.getSelectedRows();
+        G_Table sourceTable = table.getTable();
+        G_Table targetTable = secondTable.getTable();
+        int[] rows = table.getTable().getSelectedRows();
         if (rows.length < 2) {
-            sourceTable = secondTable;
-            targetTable = table;
-            rows = secondTable.getSelectedRows();
+            sourceTable = secondTable.getTable();
+            targetTable = table.getTable();
+            rows = secondTable.getTable().getSelectedRows();
         }
         for (int row : rows) {
             targetTable.setValueAt(sourceTable.getValueAt(row, TableDataManager.VALUE_COLUMN), row,
@@ -309,7 +302,7 @@ public class EditViewPanel implements TableModelListener {
         // ((DefaultMutableTreeNode) path
         // .getLastPathComponent()).toString();
         if (secondTable != null) {
-            if (source == secondTable.getModel()) {
+            if (source == getSecondTable( ).getTable().getModel()) {
                 secondTableMode = true;
                 type = ArcaneVault.getPreviousSelectedType();
             }
@@ -339,7 +332,8 @@ public class EditViewPanel implements TableModelListener {
         String valName = (String) getTable().getValueAt(row, col - 1);
         if (isLevelEditor())
             return;
-        if (!modified(type, valName, newValue)) {
+
+        if (!AV2.getModelHandler().modified(type, valName, newValue)) {
             return;
         }
 
@@ -380,35 +374,6 @@ public class EditViewPanel implements TableModelListener {
         secondTableMode = false;
     }
 
-    protected boolean modified(ObjType type, String valName, String newValue) {
-        if (valName.equalsIgnoreCase(type.getOBJ_TYPE_ENUM().getSubGroupingKey().getName())) {
-            reload = true;
-        } else if (valName.equalsIgnoreCase(type.getOBJ_TYPE_ENUM().getGroupingKey().getName())) {
-            reload = true;
-        } else if (valName.equals(G_PROPS.BASE_TYPE.getName())) {
-            reload = true;
-        } else if (valName.equals(G_PROPS.NAME.getName())) {
-            String oldName = type.getName();
-            DataManager.renameType(type, newValue);
-            if (type.getOBJ_TYPE_ENUM().isTreeEditType()) {
-                AE_Manager.typeRename(newValue, oldName);
-            }
-
-            ArcaneVault.getMainBuilder().getTreeBuilder().update();
-
-        } else if (valName.equalsIgnoreCase(G_PROPS.WORKSPACE_GROUP.getName())) {
-            if (ArcaneVault.getWorkspaceManager().isDefaultTypeWorkspacesOn()) {
-                if (ArcaneVault.getWorkspaceManager().getActiveWorkspace() != null) {
-                    ArcaneVault.getWorkspaceManager().getActiveWorkspace().setDirty(true);
-                }
-            }
-        }
-        if (valName.equals(G_PROPS.IMAGE.getName())) {
-            ArcaneVault.getMainBuilder().getTreeBuilder().update();
-        }
-
-        return true;
-    }
 
     public G_Panel getPanel() {
         return panel;
@@ -428,18 +393,21 @@ public class EditViewPanel implements TableModelListener {
     }
 
     public G_Table getTable() {
+        return getTable(secondTableMode);
+    }
+        public G_Table getTable(boolean secondTableMode) {
         if (secondTableMode) {
-            return secondTable;
+            return secondTable.getTable();
         } else {
-            return table;
+            return table.getTable();
         }
     }
 
-    public G_Table getSecondTable() {
+    public AvTable getSecondTable() {
         return secondTable;
     }
 
-    public void setTable(G_Table table) {
+    public void setTable(AvTable table) {
         if (secondTableMode) {
             this.secondTable = table;
         } else {
@@ -486,7 +454,6 @@ public class EditViewPanel implements TableModelListener {
                 }
             }
         }
-
         ArcaneVault.setSelectedType(type);
         if (fromHT) {
             try {
@@ -512,16 +479,6 @@ public class EditViewPanel implements TableModelListener {
 
     }
 
-    public boolean isMenuHidden() {
-        return menuHidden;
-    }
-
-    public void setMenuHidden(boolean menuHidden) {
-        if (this.menuHidden != menuHidden) {
-            setDirty(true);
-        }
-        this.menuHidden = menuHidden;
-    }
 
     public boolean isLevelEditor() {
         return false;

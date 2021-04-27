@@ -6,7 +6,7 @@ import main.content.OBJ_TYPE;
 import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
 import main.gui.tree.AvTreeNode;
-import main.launch.ArcaneVault;
+import main.v2_0.AV2;
 import main.swing.generic.components.G_Panel;
 import main.system.SortMaster;
 import main.system.auxiliary.EnumMaster;

@@ -6,6 +6,7 @@ import main.launch.AvConsts;
 import main.swing.generic.components.Builder;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.G_Panel;
+import main.system.ExceptionMaster;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -21,7 +22,6 @@ public class MainBuilder extends Builder {
     private TabBuilder tabBuilder = new TabBuilder(null);
     // maybe it's time for a massive AV/Builder revamp that will support
     // rebuilding the gui?
-    private final AV_ButtonPanel buttonPanel = new AV_ButtonPanel();
     private boolean nodesDirty;
 
     public MainBuilder() {
@@ -132,14 +132,13 @@ public class MainBuilder extends Builder {
         return list;
     }
 
-    public DefaultMutableTreeNode getSelectedNode() {
-        try {
-            return (DefaultMutableTreeNode) getTree().getSelectionPath().getLastPathComponent();
-        } catch (Exception e) {
-            // main.system.ExceptionMaster.printStackTrace(e);
-            return null;
-        }
+    public void selectionChanged() {
+        previousSelectedNode = selectedNode;
+        selectedNode = (DefaultMutableTreeNode) getTree().getSelectionPath().getLastPathComponent();
+    }
 
+    public DefaultMutableTreeNode getSelectedNode() {
+            return selectedNode;
     }
 
     public TreeViewBuilder getTreeBuilder() {
@@ -162,7 +161,8 @@ public class MainBuilder extends Builder {
         this.nodesDirty = nodesDirty;
     }
 
-    public AV_ButtonPanel getButtonPanel() {
-        return buttonPanel;
+    public DefaultMutableTreeNode getPreviousSelectedNode() {
+        return previousSelectedNode;
     }
+
 }

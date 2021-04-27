@@ -155,4 +155,9 @@ public class Workspace {
         this.metadata = metadata;
     }
 
+
+    @Override
+    public String toString() {
+        return "WS: "+ name;
+    }
 }

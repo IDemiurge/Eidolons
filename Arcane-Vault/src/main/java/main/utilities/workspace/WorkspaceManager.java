@@ -14,13 +14,17 @@ import main.data.xml.XML_Converter;
 import main.data.xml.XML_Writer;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
+import main.handlers.AvHandler;
+import main.handlers.AvManager;
 import main.launch.ArcaneVault;
 import main.swing.generic.components.G_Panel;
+import main.swing.generic.components.editors.FileChooser;
 import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.util.DialogMaster;
 
 import javax.swing.*;
 import java.io.File;
@@ -37,30 +41,34 @@ import java.util.*;
  *  functions on WS - sort, filter, group by [value] (tabs layer), subgroup by [value] 
  */
 
-public class WorkspaceManager {
-    public static final String SEARCH_PATH = "\\searches\\";
+public class WorkspaceManager extends AvHandler {
     // TODO rather, there must be some data on *which* workspace *is* default!
     private static final String DEFAULT_WORKSPACE_NAME = "default_workspace.xml";
+    public static final String SEARCH_PATH = "\\searches\\";
     private static final boolean LAYER_DOWN = false;
     private static final String METADATA = "METADATA: ";
-    public static boolean ADD_WORKSPACE_TAB_ON_INIT = false;
-    private static final List<Workspace> workspaces = new ArrayList<>();
-    private Workspace activeWorkspace;
+    private static final String PATH = PathFinder.getWorkspacePath();
 
+    public static boolean ADD_WORKSPACE_TAB_ON_INIT = false;
     private boolean defaultTypeWorkspacesOn = true;
     private boolean defaultGroupWorkspacesOn = true;
-    private final boolean autosave = true;
-    private final Boolean macro;
 
-    public WorkspaceManager(Boolean macro, Game game) {
-        this.macro = macro;
-        // TODO
+    private static final List<Workspace> workspaces = new ArrayList<>();
+    private Workspace activeWorkspace;
+    private final FileChooser fileChooser = new FileChooser(PATH);
+
+    private final boolean autosave = true;
+    private String last;
+
+    public WorkspaceManager(AvManager manager) {
+        super(manager);
     }
 
     public static String getFolderPath(boolean search) {
 
         return search ? PathFinder.getXML_PATH() + SEARCH_PATH : (PathFinder.getWorkspacePath());
     }
+
 
     // should support default workspace for simplicity!
     public void newWorkspaceForParty() {
@@ -110,6 +118,11 @@ public class WorkspaceManager {
 
     }
 
+    public void saveAs() {
+        Workspace ws = getActiveWorkspace();
+        String name = DialogMaster.inputText("Enter workspace name for " + ws.getName());
+        saveWorkspace(PATH+ name, ws, null );
+    }
     public void saveWorkspace(String path, Workspace ws, String metadata) {
         if (ws == null) {
             return;
@@ -139,6 +152,11 @@ public class WorkspaceManager {
 
     }
 
+    public Workspace loadWorkspace( ) {
+        String path = fileChooser.launch(PATH, last);
+        last=path;
+        return loadWorkspace(path);
+    }
     public Workspace loadWorkspace(String path) {
         return loadWorkspace(path, false);
     }
@@ -347,17 +365,13 @@ public class WorkspaceManager {
         return defaultTypeWorkspacesOn;
     }
 
-    public void setDefaultTypeWorkspacesOn(boolean defaultTypeWorkspacesOn) {
-        this.defaultTypeWorkspacesOn = defaultTypeWorkspacesOn;
+    public void addToWorkspace(Workspace ws, List<ObjType> selectedTypes) {
+        for (ObjType t : selectedTypes) {
+            ws.addType(t);
+        }
     }
 
-    public boolean isDefaultGroupWorkspacesOn() {
-        return defaultGroupWorkspacesOn;
-    }
 
-    public void setDefaultGroupWorkspacesOn(boolean defaultGroupWorkspacesOn) {
-        this.defaultGroupWorkspacesOn = defaultGroupWorkspacesOn;
-    }
 
     public enum DEFAULT_TYPE_WORKSPACES {
         SPELLS(DC_TYPE.SPELLS), ACTIONS(DC_TYPE.ACTIONS), // type+group

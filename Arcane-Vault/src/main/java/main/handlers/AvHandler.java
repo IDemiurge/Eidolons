@@ -4,6 +4,7 @@ import eidolons.game.core.game.DC_Game;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
+import main.gui.components.table.AvColorHandler;
 import main.handlers.control.AvKeyHandler;
 import main.handlers.control.AvSelectionHandler;
 import main.handlers.control.AvTableHandler;
@@ -115,6 +116,9 @@ public class AvHandler {
         return manager.getVersionHandler();
     }
 
+    public AvColorHandler getColorHandler() {
+        return manager.getColorHandler();
+    }
     public AvInfoHandler getInfoHandler() {
         return manager.getInfoHandler();
     }

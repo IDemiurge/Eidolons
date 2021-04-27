@@ -19,7 +19,6 @@ import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
 import main.gui.builders.MainBuilder;
 import main.gui.builders.TabBuilder;
-import main.handlers.AvManager;
 import main.handlers.types.SimulationHandler;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -27,6 +26,7 @@ import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.utilities.workspace.WorkspaceManager;
+import main.v2_0.AV2;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -56,7 +56,6 @@ public class ArcaneVault {
     private static List<TabBuilder> additionalTrees;
 
     private static DC_Game game;
-    private static WorkspaceManager workspaceManager;
     private static ContentValsManager contentValsManager;
     private static AvManager manager;
 
@@ -250,7 +249,7 @@ public class ArcaneVault {
     }
 
     public static WorkspaceManager getWorkspaceManager() {
-        return workspaceManager;
+        return AV2.getWorkspaceManager();
     }
 
     public static boolean isAltPressed() {

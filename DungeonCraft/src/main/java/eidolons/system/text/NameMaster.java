@@ -462,6 +462,10 @@ public class NameMaster {
          , StringMaster.cropFormat(name))+format;
     }
 
+    public static String version(String version) {
+        return "v" + version;
+    }
+
     public enum HERO_NAME_GROUPS {
         ELVEN, NORSE, DARK, HUMAN
     }

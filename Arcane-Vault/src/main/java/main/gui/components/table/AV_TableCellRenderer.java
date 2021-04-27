@@ -3,6 +3,7 @@ package main.gui.components.table;
 import main.content.values.properties.G_PROPS;
 import main.data.TableDataManager;
 import main.gui.builders.EditViewPanel;
+import main.v2_0.AV2;
 import main.launch.ArcaneVault;
 import main.system.graphics.ColorManager;
 import main.system.graphics.FontMaster;

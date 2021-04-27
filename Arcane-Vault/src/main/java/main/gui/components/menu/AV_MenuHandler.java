@@ -1,23 +1,15 @@
 package main.gui.components.menu;
 
-import eidolons.system.text.TextMaster;
 import main.gui.components.menu.AV_Menu.AV_MENU_ITEMS;
 import main.handlers.AvManager;
+import main.handlers.mod.Av2_Xml;
 import main.handlers.mod.AvModelHandler;
 import main.handlers.mod.AvSaveHandler;
-import main.handlers.mod.AvVersionHandler;
-import main.launch.ArcaneVault;
+import main.v2_0.AV2;
 import main.system.auxiliary.EnumMaster;
 
-import javax.swing.*;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuKeyEvent;
-import javax.swing.event.MenuKeyListener;
-import javax.swing.event.MenuListener;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Locale;
 
 
 public class AV_MenuHandler implements   ActionListener {
@@ -38,39 +30,62 @@ public class AV_MenuHandler implements   ActionListener {
         AV_MENU_ITEMS i = new EnumMaster<AV_MENU_ITEMS>().retrieveEnumConst(AV_MENU_ITEMS.class,actionCommand);
         String[] args = null;
         switch (i) {
-            case GENERATE_MISSING_DESCRIPTIONS:
-                TextMaster.generateMissingDescrTemplate();
-                break;
-            case ADD_TO_WORKSPACE:
-                AvModelHandler.addToWorkspace();
-                break;
-            case FIND_TYPE:
-                AvModelHandler.findType();
-                break;
-            case SET_VALUE:
-                ArcaneVault.getGame().getValueHelper().promptSetValue();
-                break;
-            case SIMULATION:
+            case TOGGLE_SIM -> {
                 AvManager.toggle();
-                break;
-            case SAVE:
+            }
+            case SAVE -> {
+            }
+            case COMMIT -> {
+                AV2.getVersionHandler().commitVersion();
+            }
+            case BACKUP -> {
+                AV2.getSaveHandler().fullBackUp(null );
+            }
+            case RELOAD -> {
+            }
+            case ADD_TAB -> {
+                Av2_Xml.addTab();
+            }
+            case SAVE_ALL -> {
                 AvSaveHandler.saveAll();
-                break;
-            case COMMIT:
-                AvVersionHandler.commitVersion();
-                break;
-            case UNDO:
-                AvModelHandler.undo();
-                break;
-            case BACK:
-                AvModelHandler.undo();
-                break;
-            case BACKUP:
-                AvModelHandler.backUp();
-                break;
-            case DELETE:
-                AvModelHandler.remove();
-                break;
+            }
+            case CUSTOM_FILTER -> {
+            }
+            case NEW_FILTER -> {
+            }
+            case FIND_TYPE -> {
+                AV2.getModelHandler().findType();
+            }
+
+
+            case FILTER_WORKSPACE_VIEW -> {
+            }
+            case ADD_TO_WORKSPACE -> {
+                AvModelHandler.addToWorkspace();
+            }
+            case ADD_TO_CUSTOM_WORKSPACE -> {
+
+                AV2.getWorkspaceHandler().addToCustomWorkspace();
+            }
+            case LOAD_WORKSPACE -> {
+                AV2.getWorkspaceManager().loadWorkspace();
+            }
+            case SAVE_WORKSPACE -> {
+                AV2.getWorkspaceManager().save();
+            }
+            case SAVE_WORKSPACE_AS -> {
+                AV2.getWorkspaceManager().save();
+            }
+            case DELETE_WORKSPACE -> {
+                AV2.getWorkspaceHandler().removeWorkspace();
+            }
+            // case RENAME_WORKSPACE -> {
+            //     AV2.getWorkspaceManager().loadWorkspace();
+            // }
+            case GROUPING -> {
+            }
+            case SORT_WORKSPACE -> {
+            }
         }
 
     }

@@ -1,5 +1,6 @@
 package main.handlers.mod;
 
+import eidolons.system.text.NameMaster;
 import main.ability.AE_Manager;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
@@ -9,6 +10,8 @@ import main.data.filesys.PathFinder;
 import main.data.xml.XML_Reader;
 import main.data.xml.XML_Writer;
 import main.entity.type.ObjType;
+import main.handlers.AvHandler;
+import main.handlers.AvManager;
 import main.launch.ArcaneVault;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -17,21 +20,22 @@ import main.system.sound.SoundMaster;
 import main.system.threading.TimerTaskMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.Weaver;
+import main.v2_0.AV2;
 
 import javax.swing.*;
 
-public class AvSaveHandler {
-    private static final long BACK_UP_PERIOD = 300000;
-    static final long RELOAD_PERIOD = 20000;
+public class AvSaveHandler  extends AvHandler {
     private static final int WAIT_PERIOD = 2000;
+    private static final long AUTO_SAVE_PERIOD = 30000;
     static boolean auto;
     private static boolean saving;
     static boolean autoSaveOff;
     private static boolean backupOnLaunch;
 
-    public AvSaveHandler() {
+    public AvSaveHandler(AvManager manager) {
+        super(manager);
         backupOnLaunch= StringMaster.countChar(ArcaneVault.getTypes(), ";")>3;
-        //TODO this is a hack..
+    //     //TODO this is a hack..
     }
 
     public static void save(ObjType type, String valName) {
@@ -112,7 +116,7 @@ public class AvSaveHandler {
             SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.CHECK);
             ArcaneVault.setDirty(false);
 
-            AvVersionHandler.xmlSaved();
+            AV2.getVersionHandler().xmlSaved();
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         } finally {
@@ -120,36 +124,27 @@ public class AvSaveHandler {
         }
     }
 
-    public static void startSaving() {
+    @Override
+    public void loaded() {
+        startSaving();
+    }
+
+    public void startSaving() {
         if (backupOnLaunch) {
-            Weaver.inNewThread(true, new Runnable() {
-                @Override
-                public void run() {
-                    AvModelHandler.backUp();
-                }
-            });
+            Weaver.inNewThread(true, () -> fullBackUp(null));
         }
-
-        TimerTaskMaster.newTimer(new AvModelHandler(), "saveAllIfDirty", null, null, BACK_UP_PERIOD);
+        TimerTaskMaster.newTimer(this, "saveAllIfDirty", null, null, AUTO_SAVE_PERIOD);
     }
 
-    public static void startBackingUp() {
-        TimerTaskMaster.newTimer(new AvModelHandler(), "backUp", null, null, BACK_UP_PERIOD);
-
+    public void backupNewVersion(String xmlBuild) {
+        fullBackUp(xmlBuild);
+        //write changelog to returned path
     }
-
-    public static boolean isAutoSaveOff() {
-        return autoSaveOff;
-    }
-
-    public static void setAutoSaveOff(boolean autoSaveOff) {
-        AvSaveHandler.autoSaveOff = autoSaveOff;
-    }
-
-    public static void fullBackUp() {
+    public static void fullBackUp(String version) {
         //entire freaking directory? :)
         String dir = PathFinder.getTYPES_PATH();
-        String newPath= PathFinder.getXML_PATH()+"/"+PathFinder.MICRO_MODULE_NAME+"/"+"types backup";
+        String newPath= PathFinder.getXML_PATH()+"/"+PathFinder.MICRO_MODULE_NAME+"/"+(version==null? "types backup" :
+                NameMaster.version(version));
         FileManager.copyDir(dir, newPath);
     }
 
@@ -159,7 +154,7 @@ public class AvSaveHandler {
             AE_Manager.saveTreesIntoXML();
         }
         if (!auto) {
-            AvModelHandler.checkTypeModifications(obj_type);
+            AvAdjuster.checkTypeModifications(obj_type);
         } else {
             if (obj_type == DC_TYPE.CHARS) {
                 XML_Reader.checkHeroesAdded();
@@ -174,4 +169,12 @@ public class AvSaveHandler {
         }
 
     }
+    public static boolean isAutoSaveOff() {
+        return autoSaveOff;
+    }
+
+    public static void setAutoSaveOff(boolean autoSaveOff) {
+        AvSaveHandler.autoSaveOff = autoSaveOff;
+    }
+
 }

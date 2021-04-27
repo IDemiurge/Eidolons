@@ -15,6 +15,7 @@ import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.gui.builders.EditViewPanel;
 import main.handlers.types.SimulationHandler;
+import main.v2_0.AV2;
 import main.launch.ArcaneVault;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;

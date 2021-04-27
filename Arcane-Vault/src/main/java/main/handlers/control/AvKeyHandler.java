@@ -100,7 +100,7 @@ public class AvKeyHandler extends AvHandler implements KeyListener {
     }
 
     private void runTypeFinder() {
-        AvModelHandler.findType();
+        getModelHandler().findType();
     }
 
     private void runValueHelper() {
