@@ -355,6 +355,10 @@ public class DataBackend {
         return map;
     }
 
+    protected XML_Reader getXmlReader() {
+        return XML_Reader.getInstance();
+    }
+
     public   Map<String, ObjType> getTypeMap(OBJ_TYPE type) {
         return getTypeMap(type.toString());
     }

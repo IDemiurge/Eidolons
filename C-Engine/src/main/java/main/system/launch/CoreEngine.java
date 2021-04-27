@@ -38,8 +38,10 @@ public class CoreEngine {
     public static final boolean RAM_OPTIMIZATION = true;
     public static int resBuildId = readBuildId();
     public static int xmlBuildId = readXmlBuildId();
-    public static String BUILD = NumberUtils.prependZeroes(resBuildId, 2);
-    public static String XML_BUILD = NumberUtils.prependZeroes(xmlBuildId, 2);
+    public static int prevXmlBuildId = readXmlBuildId();
+    public static String BUILD = NumberUtils.prependZeroes(resBuildId, 3);
+    public static String XML_BUILD = NumberUtils.prependZeroes(xmlBuildId, 4);
+    public static String PREV_XML_BUILD = NumberUtils.prependZeroes(prevXmlBuildId, 4);
     public static String CORE_VERSION = "0.5";
     public static String VERSION = CORE_VERSION + "." + BUILD + "."+XML_BUILD;
     public static String filesVersion = VERSION.replace(".", "-");
@@ -48,6 +50,9 @@ public class CoreEngine {
         resBuildId = readBuildId();
         xmlBuildId = readXmlBuildId();
         XML_BUILD = NumberUtils.prependZeroes(xmlBuildId, 4);
+        prevXmlBuildId = readXmlBuildId();
+        PREV_XML_BUILD = NumberUtils.prependZeroes(prevXmlBuildId, 4);
+
         BUILD = NumberUtils.prependZeroes(resBuildId, 3);
         CORE_VERSION = "0.5";
         VERSION = CORE_VERSION + "." + BUILD+ "."+ XML_BUILD;
@@ -93,6 +98,9 @@ public class CoreEngine {
     }
 
     private static Integer readXmlBuildId() {
+        return NumberUtils.getInt(FileManager.readFile(PathFinder.getXmlBuildsIdPath()));
+    }
+    private static Integer readPrevXmlBuildId() {
         return NumberUtils.getInt(FileManager.readFile(PathFinder.getXmlBuildsIdPath()));
     }
 
