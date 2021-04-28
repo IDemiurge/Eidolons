@@ -287,6 +287,18 @@ public abstract class MathMaster {
         return 0;
     }
 
+    public static int sum(int value) {
+        int r=0;
+        for (int i = 1; i <= value; i++) {
+            r+=i;
+        }
+        return r;
+    }
+
+    public static int getArithmeticSequenceSum(int start, int end, int level) {
+        return (start+end)/2*level;
+    }
+
     public abstract Integer getStartingEssence(Obj obj);
 
 

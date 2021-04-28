@@ -64,6 +64,8 @@ public class AvHandler {
 
     }
 
+    public void loaded() {
+    }
     public void saved(){
 
     }
@@ -127,6 +129,4 @@ public class AvHandler {
         return manager.getTableHandler();
     }
 
-    public void loaded() {
-    }
 }

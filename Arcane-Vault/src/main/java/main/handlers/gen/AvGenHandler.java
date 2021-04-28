@@ -1,6 +1,7 @@
 package main.handlers.gen;
 
 import eidolons.content.PARAMS;
+import eidolons.content.etalon.EtalonGen;
 import eidolons.content.values.ValuePages;
 import eidolons.system.utils.content.BfObjPropGenerator;
 import eidolons.system.utils.content.ContentGenerator;
@@ -9,8 +10,24 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
+import main.handlers.AvHandler;
+import main.handlers.AvManager;
 
-public class AvGenHandler {
+import java.util.List;
+
+public class AvGenHandler extends AvHandler {
+
+
+    public AvGenHandler(AvManager manager) {
+        super(manager);
+    }
+
+    @Override
+    public void init() {
+        List<ObjType> gen = EtalonGen.generateEtalonTypes();
+        gen.forEach(t -> DataManager.addType(t));
+    }
+
     public static void generateNewArmorParams() {
         for (ObjType type : DataManager.getTypes(DC_TYPE.ARMOR)) {
             ContentGenerator.generateArmorParams(type);

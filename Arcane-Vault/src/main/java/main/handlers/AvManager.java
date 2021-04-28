@@ -58,7 +58,7 @@ public class AvManager {
         handlers.add(typeHandler = new AvTypeHandler(this));
         handlers.add(modelHandler = new AvModelHandler(this));
         // handlers.add(selectionHandler = new AvSelectionHandler(this));
-        // handlers.add(genHandler = new AvGenHandler(this));
+        handlers.add(genHandler = new AvGenHandler(this));
         handlers.add(keyHandler = new AvKeyHandler(this));
         handlers.add(saveHandler = new AvSaveHandler(this));
         handlers.add(versionHandler = new AvVersionHandler(this));

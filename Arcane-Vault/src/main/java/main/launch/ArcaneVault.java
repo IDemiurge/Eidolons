@@ -123,6 +123,8 @@ public class ArcaneVault {
         // if (!testMode)
         Simulation.init(AvFlags.testMode);
         game = Simulation.getGame();
+        AV2.init();
+
         if (!AvFlags.testMode) {
             SimulationHandler.init();
         }

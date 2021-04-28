@@ -16,6 +16,15 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Format == true:
+ * name1:value1;
+ *
+ * Format == false:
+ * name1=value1,
+ *
+ * @param <T>
+ */
 public class DataUnit<T extends Enum<T>> implements Serializable {
     public static final String TRUE = "TRUE";
     protected Class<? extends Enum<T>> enumClass;
@@ -84,6 +93,9 @@ public class DataUnit<T extends Enum<T>> implements Serializable {
     }
 
     public float getFloatValue(T value) {
+        return getFloatValue(value.toString());
+    }
+        public float getFloatValue(String value) {
         float val;
         try {
             val = Float.parseFloat(getValue(value));
@@ -363,6 +375,14 @@ public class DataUnit<T extends Enum<T>> implements Serializable {
 
     public void removeFromValue( T val, String s) {
         setValue(val, getValue(val).replace(s, ""));
+    }
+
+    public float getSum() {
+        float r=0;
+        for (String s : values.keySet()) {
+            r+=getFloatValue(s);
+        }
+        return r;
     }
 
 

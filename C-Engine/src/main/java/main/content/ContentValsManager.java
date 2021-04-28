@@ -39,7 +39,7 @@ public class ContentValsManager {
     public static final String OLD_EMPTY_VALUE = "[...]";
     public static final String RETAINMENT = "_RETAINMENT";
     public static final String RESTORATION = "_RESTORATION";
-    private static final String MASTERY = "_MASTERY";
+    public static final String MASTERY = "_MASTERY";
     private static final boolean LOWER_CASE_CACHED = true;
     private static final ObjectMap<String, List<String>> valueNamesMap = new ObjectMap<>();
 
