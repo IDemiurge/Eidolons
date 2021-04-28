@@ -2,7 +2,6 @@ package eidolons.content.values;
 
 import eidolons.content.PROPS;
 import main.content.VALUE;
-import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 
 import static eidolons.content.PARAMS.*;
@@ -12,15 +11,41 @@ import static main.content.values.properties.G_PROPS.*;
 
 public class A_ValuePages {
 
-    public static final VALUE[] A_UNIT_PROPERTIES = {
+    public static final VALUE[] ITEM_PROPERTIES = {
             G_PROPS.MAIN_HAND_ITEM, G_PROPS.OFF_HAND_ITEM,
             // G_PROPS.RESERVE_MAIN_HAND_ITEM, G_PROPS.RESERVE_OFF_HAND_ITEM,
             // PROPS.INVENTORY,PROPS.JEWELRY,PROPS.FIRST_CLASS, PROPS.SECOND_CLASS,PROPS.KNOWN_SPELLS, PROPS.LEARNED_SPELLS,
             G_PROPS.ARMOR_ITEM, PROPS.QUICK_ITEMS,
-            PROPS.SKILLS, PROPS.CLASSES,
+    };
+    public static final VALUE[] HERO_PROPS = {
+            CLASSES_TIER_1,
+            CLASSES_TIER_2,
+            CLASSES_TIER_3,
 
-            PROPS.MEMORIZED_SPELLS,
-            PROPS.VERBATIM_SPELLS,
+            SKILLS_TIER_1,
+            SKILLS_TIER_2,
+            SKILLS_TIER_3,
+
+            MASTERY_RANKS_1,
+            MASTERY_RANKS_2,
+            MASTERY_RANKS_3,
+            PERKS,
+            ACTIVE_SPACES,
+            VERBATIM_SPACES,
+            MEMORIZED_SPACES,
+    };
+
+    public static final VALUE[] AV_VALUES = {
+            SKILL_POINTS_UNSPENT,
+            SPELL_POINTS_UNSPENT,
+            MASTERY_RANKS_UNSPENT,
+            ATTR_POINTS,
+            CLASS_RANKS_UNSPENT,
+
+            POWER,
+            POWER_TOTAL ,
+            SP_PTS_SPENT ,
+            SK_PTS_SPENT
     };
     public static final VALUE[] ADDITIONAL_UNIT_PROPERTIES = {
             SOUNDSET, AI_TYPE,
@@ -72,7 +97,8 @@ public class A_ValuePages {
     public static final VALUE[][] unitVals = {
             A_BASE_UNIT_PARAMETERS,
             A_DERIVED_UNIT_PARAMETERS, ATTRIBUTES,
-            A_UNIT_PROPERTIES, BASE_ATTRIBUTES, MASTERIES, RESISTANCES,
+            ITEM_PROPERTIES, BASE_ATTRIBUTES, MASTERIES, RESISTANCES,
+            HERO_PROPS, AV_VALUES,
     };
 
 }

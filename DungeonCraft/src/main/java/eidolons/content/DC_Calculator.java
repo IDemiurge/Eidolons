@@ -16,18 +16,6 @@ public class DC_Calculator {
         return base * switched*switched;
     }
 
-    public static int getSpellPoints(Unit unit, int level) {
-        return level;
-    }
-
-    public static int getSkillPoints(Unit unit, int level) {
-        return level;
-    }
-
-    public static int getMasteryRanks(Unit unit, int level) {
-        return level;
-    }
-
     public static int getAccuracyRating(int defense, int attackValue) {
         return DC_Formulas.calculateAccuracyRating(defense, attackValue);
     }

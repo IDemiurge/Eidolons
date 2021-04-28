@@ -25,6 +25,11 @@ public enum PARAMS implements PARAMETER {
     POWER_BASE(null, "", false, 0, "encounters"),
     POWER_MAXIMUM(null, "", false, 0, "encounters"),
 
+    POWER_TOTAL(true, "units", "chars"),
+    SP_PTS_SPENT(true, "units", "chars"),
+    SK_PTS_SPENT(true, "units", "chars"),
+
+
     FREE_MASTERIES(null, "", false, DC_MathManager.DEFAULT_FREE_MASTERY_COUNT, "chars"),
     GLORY("party"),
     MAX_HEROES(null, "", false, 0, "party", "arcades"),
@@ -835,6 +840,11 @@ could have other params - sf discounts,
 
     PARAMS(String str) {
         this(str, null, "", false, 0, Integer.MAX_VALUE);
+    }
+
+    PARAMS(boolean avOnly, String... types) {
+        this(null, "", false, 0, types);
+        this.devOnly = avOnly;
     }
 
     @Override

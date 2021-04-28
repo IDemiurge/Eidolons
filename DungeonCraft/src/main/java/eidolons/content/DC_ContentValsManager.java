@@ -966,8 +966,11 @@ public class DC_ContentValsManager extends ContentValsManager {
             }
             return null;
         }
-            public PARAMS getParameter() {
+        public PARAMS getParameter() {
             return parameter;
+        }
+        public PARAMS getBaseParameter() {
+            return (PARAMS) DC_ContentValsManager.getBaseAttr(this);
         }
 
         public void setParameter(PARAMS parameter) {

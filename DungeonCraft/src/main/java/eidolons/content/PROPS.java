@@ -400,7 +400,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     MEMORIZED_SPACES(null, true, "units", "chars"),
     VERBATIM_SPACES(null, true, "units", "chars"),
     ACTIVE_SPACES(null, true, "units", "chars"),
-    ;
+    BASE_CLASS(null, false, "units", "chars");
 
     boolean writeToType;
     INPUT_REQ inputReq;
