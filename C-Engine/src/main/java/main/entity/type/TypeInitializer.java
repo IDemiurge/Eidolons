@@ -5,7 +5,9 @@ import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
+import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
 import main.data.dialogue.DialogueType;
 import main.entity.type.impl.ActionType;
 import main.entity.type.impl.BuffType;
@@ -84,29 +86,45 @@ public class TypeInitializer {
     }
 
     public ObjType getOrCreateDefault(OBJ_TYPE type) {
-        ObjType objType = defaultTypes.get(type);
-        if (objType != null) {
-            if (type== DC_TYPE.BUFFS) {
+        return getOrCreateDefault(type, true, true);
+    }
+
+    public ObjType getOrCreateDefault(OBJ_TYPE type, boolean setDefaultProps, boolean setDefaultParams) {
+        if (!(  setDefaultParams && setDefaultParams)) {
+            return getNewType(type);
+        }
+            ObjType objType = defaultTypes.get(type);
+        if (objType != null && setDefaultParams && setDefaultParams) { ////TODO just separate caches?
+            if (type == DC_TYPE.BUFFS) {
                 return new BuffType(false, objType);
             }
-            if (type== DC_TYPE.ABILS) {
+            if (type == DC_TYPE.ABILS) {
                 return new AbilityType(false, objType);
             }
             return new ObjType(false, objType);
         }
-        objType=getNewType( type);
+        objType = getNewType(type);
         for (VALUE value : ContentValsManager.getValuesForType(type.getName(), false)) {
+            if (!setDefaultProps) {
+                if (value instanceof PROPERTY)
+                    continue;
+            }
+            if (!setDefaultParams) {
+                if (value instanceof PARAMETER)
+                    continue;
+            }
             if (!StringMaster.isEmpty(value.getDefaultValue())) {
                 objType.setValue(value, value.getDefaultValue());
             }
         }
         defaultTypes.put(type, objType);
-        if (type== DC_TYPE.ABILS) {
+        if (type == DC_TYPE.ABILS) {
             return new AbilityType(false, objType);
         }
-        if (type== DC_TYPE.BUFFS) {
+        if (type == DC_TYPE.BUFFS) {
             return new BuffType(false, objType);
         }
         return new ObjType(false, objType);
     }
+
 }

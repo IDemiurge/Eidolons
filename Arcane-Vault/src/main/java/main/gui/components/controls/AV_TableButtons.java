@@ -54,7 +54,7 @@ public class AV_TableButtons extends G_Panel {
     }
 
     public enum AV_TABLE_BUTTON{
-        NEW, CLONE, UPGRADE, OPEN,
+        NEW, CLONE, UPGRADE, ETALON, OPEN,
         LEVEL_UP(DC_TYPE.CHARS, DC_TYPE.UNITS),
         CLEAR, ROLLBACK, COMPARE,
         REMOVE, RENAME, COPY, PASTE, SET;

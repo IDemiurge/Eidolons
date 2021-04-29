@@ -16,4 +16,12 @@ public class ParamMap extends ValueMap<PARAMETER> {
         PARAMETER p = ContentValsManager.getPARAM(valueName);
         return map.put(p, value);
     }
+
+    @Override
+    protected boolean isEmpty(String value) {
+        if (value==null ||value.isEmpty() || value.equals("0")) {
+            return true;
+        }
+        return false;
+    }
 }

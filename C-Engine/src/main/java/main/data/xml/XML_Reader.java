@@ -288,23 +288,24 @@ public class XML_Reader {
             if (game != null)
                 game.initType(type);
 
-            if (incompleteTypes) {
-                ObjType parent = DataManager.getType(type.getProperty(G_PROPS.PARENT_TYPE), type
-                        .getOBJ_TYPE_ENUM());
-                if (parent != null) {
-                    type.setType(parent);
-                    for (PROPERTY prop : parent.getPropMap().keySet()) {
-                        if (type.getProperty(prop).isEmpty()) {
-                            type.setProperty(prop, parent.getProperty(prop));
-                        }
-                    }
-                    for (PARAMETER param : parent.getParamMap().keySet()) {
-                        if (type.getParam(param).isEmpty()) {
-                            type.setParam(param, parent.getParam(param));
-                        }
-                    }
-                }
-            }
+            //TODO core review - is this still viable? Don't really want to do run-time stuff for Types
+            // if (incompleteTypes) {
+            //     ObjType parent = DataManager.getType(type.getProperty(G_PROPS.PARENT_TYPE), type
+            //             .getOBJ_TYPE_ENUM());
+            //     if (parent != null) {
+            //         type.setType(parent);
+            //         for (PROPERTY prop : parent.getPropMap().keySet()) {
+            //             if (type.getProperty(prop).isEmpty()) {
+            //                 type.setProperty(prop, parent.getProperty(prop));
+            //             }
+            //         }
+            //         for (PARAMETER param : parent.getParamMap().keySet()) {
+            //             if (type.getParam(param).isEmpty()) {
+            //                 type.setParam(param, parent.getParam(param));
+            //             }
+            //         }
+            //     }
+            // }
 
             if (overwrite) {
                 DataManager.overwriteType(type);

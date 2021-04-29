@@ -40,9 +40,16 @@ public abstract class ValueMap<T extends VALUE> implements Serializable {
     }
 
     public String put(T key, String value) {
-        String previous = map.put(key, value);
+        String previous = map.get(key);
+        if (previous==null)
+            if (isEmpty(value))
+                return "";
+        map.put(key, value);
         return previous;
     }
+
+    protected abstract boolean isEmpty(String value);
+
 
     public void putAll(Map<? extends T, ? extends String> m) {
         // map.putAll(m);

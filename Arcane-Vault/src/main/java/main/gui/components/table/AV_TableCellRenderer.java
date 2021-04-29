@@ -134,10 +134,11 @@ public class AV_TableCellRenderer extends DefaultTableCellRenderer {
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
                                                    boolean hasFocus, int row, int column) {
-        Component component = getCache(isSelected).get(value);
-        if (component != null) {
-            return component;
-        }
+        Component
+        //         component =                 getCache(isSelected).get(value);
+        // if (component != null) {
+        //     return component;
+        // }
         component = getTableCellComponent(table, value, isSelected, hasFocus, row, column);
         getCache(isSelected).put(value, component);
         return component;

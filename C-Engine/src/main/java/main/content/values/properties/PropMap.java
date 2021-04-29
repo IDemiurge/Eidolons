@@ -16,4 +16,8 @@ public class PropMap  extends ValueMap<PROPERTY> {
         PROPERTY p = ContentValsManager.getPROP(valueName);
         return map.put(p, value);
     }
+    @Override
+    protected boolean isEmpty(String value) {
+        return value==null || value.isEmpty();
+    }
     }

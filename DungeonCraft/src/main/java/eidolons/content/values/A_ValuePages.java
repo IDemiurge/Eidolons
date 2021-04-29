@@ -95,10 +95,12 @@ public class A_ValuePages {
     };
 
     public static final VALUE[][] unitVals = {
+
             A_BASE_UNIT_PARAMETERS,
             A_DERIVED_UNIT_PARAMETERS, ATTRIBUTES,
-            ITEM_PROPERTIES, BASE_ATTRIBUTES, MASTERIES, RESISTANCES,
-            HERO_PROPS, AV_VALUES,
+            ITEM_PROPERTIES, BASE_ATTRIBUTES,  HERO_PROPS, AV_VALUES,
+            RESISTANCES,
+            MASTERIES,
     };
 
 }

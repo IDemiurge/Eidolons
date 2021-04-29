@@ -9,25 +9,28 @@ import main.system.data.DataUnit;
 public class EtalonConsts {
 
     public enum EtalonType {
-        fighter_defense(6, HeroEnums.CLASS_GROUP.FIGHTER, MASTERY_SET.fighter_defense, ATTRIBUTE_SET.fighter_defense),
-        fighter_offense(6, HeroEnums.CLASS_GROUP.FIGHTER, MASTERY_SET.fighter_offense, ATTRIBUTE_SET.fighter_offense),
-        fighter_offense_alt(6, HeroEnums.CLASS_GROUP.FIGHTER, MASTERY_SET.fighter_offense_alt, ATTRIBUTE_SET.fighter_offense_alt),
-        rogue_offense(6, HeroEnums.CLASS_GROUP.ROGUE, MASTERY_SET.rogue_offense, ATTRIBUTE_SET.rogue_offense),
-        rogue_specialist(6, HeroEnums.CLASS_GROUP.ROGUE, MASTERY_SET.rogue_specialist, ATTRIBUTE_SET.rogue_specialist),
+        //TODO use combinatorics for race!
+        fighter_defense("Human", 6, HeroEnums.CLASS_GROUP.FIGHTER, MASTERY_SET.fighter_defense, ATTRIBUTE_SET.fighter_defense),
+        fighter_offense("Human",6, HeroEnums.CLASS_GROUP.FIGHTER, MASTERY_SET.fighter_offense, ATTRIBUTE_SET.fighter_offense),
+        fighter_offense_alt("Human",6, HeroEnums.CLASS_GROUP.FIGHTER, MASTERY_SET.fighter_offense_alt, ATTRIBUTE_SET.fighter_offense_alt),
+        rogue_offense("Human",6, HeroEnums.CLASS_GROUP.ROGUE, MASTERY_SET.rogue_offense, ATTRIBUTE_SET.rogue_offense),
+        rogue_specialist("Human",6, HeroEnums.CLASS_GROUP.ROGUE, MASTERY_SET.rogue_specialist, ATTRIBUTE_SET.rogue_specialist),
         ;
 
         public int maxLevel;
         public String name;
+        public String baseType;
         HeroEnums.CLASS_GROUP baseClass;
         EtalonConsts.MASTERY_SET masterySet;
         ATTRIBUTE_SET attributeSet;
 
-        EtalonType(int maxLevel, HeroEnums.CLASS_GROUP baseClass, MASTERY_SET masterySet, ATTRIBUTE_SET attributeSet) {
+        EtalonType(String race,int maxLevel, HeroEnums.CLASS_GROUP baseClass, MASTERY_SET masterySet, ATTRIBUTE_SET attributeSet) {
             this.maxLevel = maxLevel;
             this.baseClass = baseClass;
             this.masterySet = masterySet;
             this.attributeSet = attributeSet;
             name = StringMaster.format(name());
+            baseType = "Base Type "+ race;
         }
     }
 
@@ -36,7 +39,7 @@ public class EtalonConsts {
     public enum MASTERY_SET {
         fighter_defense(0.85f, "blade:10;defense:10;shield:8;athletics:7;mobility:5"),
         fighter_offense(0.85f, "axe:10;blunt:10;athletics:8;two_handed:7;mobility:5"),
-        fighter_offense_alt(0.85f, "pole_arm:10;blade:10;athletics:8;two_handed:7;mobility:5"),
+        fighter_offense_alt(0.85f, "polearm:10;blade:10;athletics:8;two_handed:7;mobility:5"),
         rogue_offense(0.7f, "blade:10;mobility:8;dual wielding:6;stealth:5;athletics:4;"),
         rogue_specialist(0.75f, "item:8;blade:6;mobility:8;dual_wielding:5;stealth:8;"),
         ;

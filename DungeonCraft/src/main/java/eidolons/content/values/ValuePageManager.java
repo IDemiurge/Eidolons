@@ -204,9 +204,9 @@ public class ValuePageManager {
                 main.system.auxiliary.log.LogMaster.log(1,"No value page for: " +name);
                 continue;
             }
-            if (filter) {
-                page = getFilteredValueList(page, TYPE, av);
-            }
+            // if (filter) {
+            //     page = getFilteredValueList(page, TYPE, av);
+            // }
             // dynamic/av filters?
             list.add(page);
         }

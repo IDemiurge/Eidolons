@@ -53,7 +53,7 @@ public class AvManager {
 
     public void init() {
         handlers.add(checkHandler = new AvCheckHandler(this));
-        // handlers.add(assembler = new AvAssembler(this));
+        handlers.add(assembler = new AvAssembler(this));
         handlers.add(simulationHandler = new SimulationHandler(this));
         handlers.add(typeHandler = new AvTypeHandler(this));
         handlers.add(modelHandler = new AvModelHandler(this));

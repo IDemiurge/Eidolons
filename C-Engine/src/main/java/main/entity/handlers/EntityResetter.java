@@ -11,7 +11,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.math.Property;
 import main.system.text.TextParser;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by JustMe on 2/15/2017.
@@ -40,8 +40,28 @@ public class EntityResetter<E extends Entity> extends EntityHandler<E> {
         }
 
         getEntity().setOwner(getEntity().getOriginalOwner());
+        //TODO optimize this...
+//         Iterator<PARAMETER> i1 = getEntity().getParamMap().keySet().iterator();
+//         Iterator<PARAMETER> i2 = getEntity().getType(). getParamMap().keySet().iterator();
+//         Iterator<PARAMETER> iterator = new Iterator<PARAMETER>() {
+//     @Override
+//     public boolean hasNext() {
+//         return false;
+//     }
+//     @Override
+//     public PARAMETER next() {
+//         PARAMETER next = i1.next();
+//         checked.add(next);
+//         if (checked.contains())
+//         return null;
+//     }
+// };
+        Set<PARAMETER> set = new LinkedHashSet<>(getEntity().getParamMap().keySet().size() +
+                getEntity().getType().getParamMap().keySet().size());
+        set.addAll(getEntity().getParamMap().keySet());
+        set.addAll(getEntity().getType(). getParamMap().keySet());
 
-        for (PARAMETER p : getEntity().getType(). getParamMap().keySet()) {
+        for (PARAMETER p : set) {
             if (p == null) {
                 continue;
             }
@@ -71,7 +91,12 @@ public class EntityResetter<E extends Entity> extends EntityHandler<E> {
                 }
             }
         }
-        for (PROPERTY p : getEntity().getType().getPropMap().keySet()) {
+        Set<PROPERTY> set2 = new LinkedHashSet<>(getEntity().getPropMap().keySet().size() +
+                getEntity().getType().getPropMap().keySet().size());
+        set2.addAll(getEntity().getPropMap().keySet());
+        set2.addAll(getEntity().getType(). getPropMap().keySet());
+
+        for (PROPERTY p : set2  ) {
 
             if (p.isDynamic()) {
                 if (p.isWriteToType()) {

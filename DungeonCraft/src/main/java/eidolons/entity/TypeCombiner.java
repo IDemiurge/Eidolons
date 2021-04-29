@@ -15,17 +15,19 @@ import java.util.List;
 
 public class TypeCombiner {
     public static final List<VALUE> toModify = new ArrayList<>();
-    public static final  List<VALUE> valuesToSet = new ArrayList<>();
+    public static final List<VALUE> valuesToSet = new ArrayList<>();
 
     public static final VALUE[] VALUES_SET = {
             G_PROPS.IMAGE,
     };
-    static{
+
+    static {
         valuesToSet.addAll(Arrays.asList(VALUES_SET));
         for (VALUE[] unitPage : ValuePages.UNIT_PAGES) {
             toModify.addAll(Arrays.asList(unitPage));
         }
     }
+
     public static void applyType(DC_Obj obj, ObjType applied) {
         if (obj.getAppliedTypes().isEmpty()) {
             obj.setOriginalType(obj.getType());
@@ -34,21 +36,25 @@ public class TypeCombiner {
         obj.getAppliedTypes().add(applied);
         applyType(obj.getType(), applied);
     }
-        public static void applyType(ObjType base, ObjType applied) {
 
+    public static void applyType(ObjType base, ObjType applied) {
+        if (!applied.isGenerated()) {
+            applied = applied.getType();
+        }
+        base.toBase();
         for (VALUE item : toModify) {
             if (!DC_ContentValsManager.isValueForOBJ_TYPE(base.getOBJ_TYPE_ENUM(), item)) {
                 continue;
             }
             if (item instanceof PARAMETER) {
-                Integer n = applied.getIntParam((PARAMETER) item);
+                Double n = applied.getParamDouble((PARAMETER) item);
                 base.modifyParameter((PARAMETER) (item), n, null, true);
             } else {
                 base.addProperty(((PROPERTY) item), applied.getProperty((PROPERTY) item), true);
             }
 
         }
-        for (VALUE item :  VALUES_SET) {
+        for (VALUE item : VALUES_SET) {
             if (!DC_ContentValsManager.isValueForOBJ_TYPE(base.getOBJ_TYPE_ENUM(), item)) {
                 continue;
             }

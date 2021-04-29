@@ -11,6 +11,7 @@ import main.entity.type.ObjType;
 import main.handlers.AvHandler;
 import main.handlers.AvManager;
 import main.launch.ArcaneVault;
+import main.v2_0.AV2;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -20,25 +21,24 @@ public class SimulationHandler extends AvHandler {
 
     private static final String[] unitTypes = {DC_TYPE.UNITS.getName(),
             DC_TYPE.BF_OBJ.getName(), DC_TYPE.CHARS.getName(),};
-    private  final Map<ObjType, Unit> unitMap = new HashMap<>();
+    private final Map<ObjType, Unit> unitMap = new HashMap<>();
 
     public SimulationHandler(AvManager manager) {
         super(manager);
     }
 
-    public  void initUnitObj(String name) {
+    public void initUnitObj(String name) {
         ObjType type = getUnitType(name);
         if (type == null) {
             return;
         }
-        createUnit(type);
+        getAssembler().refreshComboType(type.getType());
+        refreshType(type);
     }
 
-    public  Unit createUnit(ObjType type) {
-        if (unitMap.containsKey(type)) {
-            return null;
-        }
-        Unit unit = new Unit(type, 0, 0, DC_Player.NEUTRAL, getGame(), new Ref(
+    public Unit createUnit(ObjType type) {
+
+        Unit unit = new Unit(type.isGenerated() ? type : type.getType(), 0, 0, DC_Player.NEUTRAL, getGame(), new Ref(
                 getGame()));
         getGame().getState().addObject(unit);
         try {
@@ -50,7 +50,7 @@ public class SimulationHandler extends AvHandler {
         return unit;
     }
 
-    private  void resetUnit(Unit unit) {
+    private void resetUnit(Unit unit) {
         unit.toBase();
         unit.setDirty(true);
         unit.afterEffects();
@@ -58,12 +58,12 @@ public class SimulationHandler extends AvHandler {
         // ArcaneVault.getMainBuilder().getEditViewPanel().resetData(unit.getType());
     }
 
-    private  void applyEffectForUnit(Unit unit) {
+    private void applyEffectForUnit(Unit unit) {
         // getGame().getState().getAttachedEffects()
 
     }
 
-    private  ObjType getUnitType(String name) {
+    private ObjType getUnitType(String name) {
         ObjType type = DataManager.getType(name, DC_TYPE.UNITS);
         if (type == null) {
             type = DataManager.getType(name, DC_TYPE.CHARS);
@@ -71,21 +71,21 @@ public class SimulationHandler extends AvHandler {
         return type;
     }
 
-    public  Unit getUnit(String typeName) {
+    public Unit getUnit(String typeName) {
         return getUnit(getUnitType(typeName));
     }
 
-    public  Unit getUnit(ObjType type) {
+    public Unit getUnit(ObjType type) {
         if (!unitMap.containsKey(type)) {
             createUnit(type);
         }
         return unitMap.get(type);
     }
 
-    public  void refreshType(ObjType type) {
+    public void refreshType(ObjType type) {
         Unit unit = unitMap.get(type);
         if (unit == null) {
-            unit= createUnit(type);
+            unit = createUnit(type);
         }
         try {
             resetUnit(unit);
@@ -108,6 +108,6 @@ public class SimulationHandler extends AvHandler {
     // }
 
     public static void initSim() {
-        DC_Engine.gameInit( );
+        DC_Engine.gameInit();
     }
 }

@@ -9,6 +9,7 @@ import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.SkillEnums;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
+import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
@@ -53,7 +54,8 @@ calculate the new rank set with closest ratio for N pts spent...
 
     private static ObjType generate(EtalonConsts.EtalonType model, int level) {
         //TODO  ObjType base = getBase(DC_TYPE.UNITS); default values should work without this! Or?...
-        ObjType type = new ObjType(model.name, DC_TYPE.UNITS);
+        ObjType baseType = DataManager.getType(model.baseType, DC_TYPE.UNITS);
+        ObjType type = new ObjType(model.name+ ", Level "+level, baseType);
         DC_Game.game.initType(type);
         type.setGenerated(true);
         type.setProperty(G_PROPS.GROUP, "Etalon");
@@ -63,7 +65,9 @@ calculate the new rank set with closest ratio for N pts spent...
 
         EtalonConsts.AttributeData attrs = createAttrData(model.attributeSet.weights, model.attributeSet.spentCoef, level);
         for (DC_ContentValsManager.ATTRIBUTE attribute : DC_ContentValsManager.ATTRIBUTE.values()) {
-            int base = 5; //TODO
+            int base = type.getIntParam(attribute.getBaseParameter()
+
+            ); //TODO
             int pts = attrs.getIntValue(StringMaster.format(attribute.toString()));
             type.setParam(attribute.getBaseParameter(), EtalonCalculator.getAttrValueForPts(base, base, pts)
             );

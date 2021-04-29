@@ -2,8 +2,10 @@ package main.handlers.mod;
 
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PROPS;
+import eidolons.game.Simulation;
 import main.AV_DataManager;
 import main.ability.AE_Manager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ItemEnums.ITEM_RARITY;
 import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
@@ -11,9 +13,11 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
+import main.entity.type.TypeBuilder;
 import main.handlers.AvHandler;
 import main.handlers.AvManager;
 import main.handlers.control.AvSelectionHandler;
+import main.system.auxiliary.CloneMaster;
 import main.v2_0.AV2;
 import main.launch.ArcaneVault;
 import main.system.auxiliary.StringMaster;
@@ -26,6 +30,7 @@ import main.utilities.search.TypeFinder;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 
 public class AvModelHandler extends AvHandler {
 
@@ -52,11 +57,19 @@ public class AvModelHandler extends AvHandler {
     }
 
     public void add(final Boolean upgrade, boolean secondTable) {
-        SwingUtilities.invokeLater(() -> addType(upgrade, secondTable));
+        SwingUtilities.invokeLater(() -> {
+            DefaultMutableTreeNode node = secondTable
+                    ? ArcaneVault.getMainBuilder().getPreviousSelectedNode()
+                    : ArcaneVault.getMainBuilder().getSelectedNode();
+            ObjType type = addType(upgrade, secondTable, true);
+            ArcaneVault.getMainBuilder().getTreeBuilder().newType(type, node );
+        });
     }
 
-    private void addType(Boolean upgrade, boolean secondTable) {
-        DefaultMutableTreeNode node = secondTable ? ArcaneVault.getMainBuilder().getPreviousSelectedNode() : ArcaneVault.getMainBuilder().getSelectedNode();
+    public ObjType addType(Boolean upgrade, boolean secondTable, boolean defaultParams) {
+        DefaultMutableTreeNode node = secondTable
+                ? ArcaneVault.getMainBuilder().getPreviousSelectedNode()
+                : ArcaneVault.getMainBuilder().getSelectedNode();
         String selected = ArcaneVault.getMainBuilder().getSelectedTabName();
 
         if (ArcaneVault.getSelectedType().getOBJ_TYPE_ENUM().isTreeEditType()) {
@@ -65,19 +78,57 @@ public class AvModelHandler extends AvHandler {
         String newName = DialogMaster
                 .inputText("New type's name:", node.getUserObject().toString());
         if (newName == null) {
-            return;
+            return null;
         }
+        DefaultMutableTreeNode parentNode=node==null? null: (DefaultMutableTreeNode) node.getParent();
         if (upgrade == null) {
+            parentNode= (DefaultMutableTreeNode) node.getParent();
             node = null;
             upgrade = false;
         }
-        ArcaneVault.getMainBuilder().getTreeBuilder().newType(newName, node, selected,
-                upgrade);
+        ObjType parentType=node==null? null:(ObjType) node.getUserObject();
+        ObjType type = newType(newName, selected, upgrade, node==null,
+                defaultParams, parentType,  parentNode);
 
         SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.CLOSE);
         ArcaneVault.setDirty(true);
+        return type;
     }
 
+    public ObjType newType(String newName, String TYPE, boolean upgrade, boolean empty,
+                           boolean defaultParams, ObjType objType, DefaultMutableTreeNode parent) {
+        ObjType newType = null;
+        if (empty) {
+            newType = getEmptyType(TYPE, newName, true, defaultParams);
+        } else {
+            newType = CloneMaster.getTypeCopy(objType, newName, ArcaneVault.getGame(), TYPE);
+            newType.setGenerated(false);
+        }
+        newType.setProperty(G_PROPS.NAME, newName);
+        newType.setProperty(G_PROPS.DISPLAYED_NAME, newName);
+        if (empty) {
+            newType.setProperty(DataManager.getSubGroupingKey(TYPE), parent.getUserObject()
+                    .toString());
+            newType.setProperty(DataManager.getGroupingKey(TYPE), ArcaneVault.getMainBuilder()
+                    .getSelectedSubTabName());
+        }
+        if (upgrade) {
+            newType.setProperty(G_PROPS.BASE_TYPE, objType.getName());
+        }
+
+        DataManager.addType(newName, TYPE, newType);
+        Simulation.getGame().initType(newType);
+
+        return newType;
+    }
+
+    private ObjType getEmptyType(String TYPE, String newName, boolean setDefaultProps, boolean setDefaultParams) {
+        ObjType type = TypeBuilder.getTypeInitializer().getOrCreateDefault(
+                ContentValsManager.getOBJ_TYPE(TYPE), setDefaultProps, setDefaultParams);
+        type.setName(newName);
+        Simulation.getGame().initType(type);
+        return type;
+    }
 
     private static void initRarity(ObjType type) {
         if (type.getProperty(PROPS.ITEM_RARITY).isEmpty()) {

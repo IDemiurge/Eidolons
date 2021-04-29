@@ -34,18 +34,20 @@ public class AvButtonHandler extends AvHandler   {
     }
 
         public void handle(boolean secondTable,boolean alt, String command) {
-            AV_TableButtons.AV_TABLE_BUTTON btn = new EnumMaster<AV_TableButtons.AV_TABLE_BUTTON>().retrieveEnumConst(AV_TableButtons.AV_TABLE_BUTTON.class, command);
+            AvSaveHandler.saveAllIfDirty();
+        AV_TableButtons.AV_TABLE_BUTTON btn = new EnumMaster<AV_TableButtons.AV_TABLE_BUTTON>().retrieveEnumConst(AV_TableButtons.AV_TABLE_BUTTON.class, command);
             ObjType type = secondTable ? ArcaneVault.getPreviousSelectedType() : ArcaneVault.getSelectedType();
             //     case "Apply":
             //           getAssembler().applyType();
             switch (btn) {
                 case NEW -> {
                     getModelHandler().add(null, secondTable);
-                    DialogMaster.confirm(type.toString());
                 }
                 case CLONE -> {getModelHandler().add(null, secondTable);
                 }
                 case UPGRADE -> {getModelHandler().upgrade(secondTable);
+                }
+                case ETALON -> {getAssembler().createComboType(secondTable);
                 }
                 case OPEN -> {
                     getModelHandler().findType();

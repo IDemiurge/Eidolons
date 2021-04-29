@@ -14,7 +14,7 @@ public enum G_PROPS implements PROPERTY {
     ID("all", "Id"),
     IMAGE("all", "Image"),
     TYPE("all", "Type"),
-    PARENT_TYPE("hidden", null),
+    PARENT_TYPE("all", "Parent Type"),
     CLASSIFICATIONS("", true, "units", "chars", "bf obj", "terrain"),
 
     VARIABLES("all", "Variables"), PASSIVES("all", "Passives"),

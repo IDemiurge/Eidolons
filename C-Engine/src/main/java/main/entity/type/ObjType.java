@@ -8,8 +8,11 @@ import main.content.values.properties.PropMap;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.handlers.EntityMaster;
+import main.entity.handlers.EntityResetter;
 import main.game.core.game.Game;
+import main.system.ExceptionMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 import org.w3c.dom.Node;
 
@@ -24,6 +27,8 @@ public class ObjType extends Entity {
     private boolean model;
     private Node node;
     private boolean built;
+    private ObjType parentType;
+    private EntityResetter<ObjType> resetter;
 
     public ObjType() {
         this(Game.game);
@@ -131,10 +136,6 @@ public class ObjType extends Entity {
         return getIcon();
     }
 
-    @Override
-    public void toBase() {
-        // does nothing
-    }
 
     public void initType() {
         if (game != null && !isInitialized()) {
@@ -186,7 +187,7 @@ public class ObjType extends Entity {
         if (!built) {
             if (node == null) {
                 built = true;
-                main.system.auxiliary.log.LogMaster.devLog("Dummy unbuildable type " + this);
+                LogMaster.devLog("Dummy unbuildable type " + this);
                 return;
             }
             try {
@@ -194,7 +195,7 @@ public class ObjType extends Entity {
                 built = true;
                 node = null;
             } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+                ExceptionMaster.printStackTrace(e);
             }
         }
     }
@@ -229,5 +230,23 @@ public class ObjType extends Entity {
     public PropMap getPropMap() {
         checkBuild();
         return super.getPropMap();
+    }
+
+    @Override
+    public void toBase() {
+        if (resetter == null)
+            resetter = new EntityResetter<>(this, null);
+        resetter.toBase();
+    }
+
+    public void setParentType(ObjType parentType) {
+        this.type = new ObjType(this);
+        this.type.parentType = parentType;
+        this.type.setProperty(G_PROPS.PARENT_TYPE, parentType.getName());
+        setProperty(G_PROPS.PARENT_TYPE, parentType.getName());
+    }
+
+    public ObjType getParentType() {
+        return  parentType;
     }
 }
