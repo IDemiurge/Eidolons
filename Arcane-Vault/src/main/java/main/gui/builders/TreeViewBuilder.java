@@ -38,6 +38,9 @@ public class TreeViewBuilder extends Builder {
 
     private Workspace workspace;
 
+    JSplitPane splitPane;
+    private AvInfoTree infoTree;
+
     public TreeViewBuilder(List<ObjType> typesDoc, OBJ_TYPE TYPE, String sub) {
         this.TYPE = TYPE;
         this.types = typesDoc;
@@ -51,31 +54,47 @@ public class TreeViewBuilder extends Builder {
 
     @Override
     public void init() {
+        infoTree =  new AvInfoTree();
 
         if (workspace == null) {
-            tree = new AV_Tree(types, TYPE, sub, ArcaneVault.isColorsInverted());
+            tree =createTypeTree();
         } else {
             tree = new AV_Tree(workspace);
         }
         JTree jTree = getTree();
-        jTree.expandRow(0);
+        initTypeTree(jTree);
         // G_Panel container = new G_Panel();
 
         if (comp == null) {
             // Dimension dimension = new Dimension(AvConsts.TREE_WIDTH, AvConsts.TREE_HEIGHT);
             JScrollPane scrollPane = new JScrollPane(jTree);
+            if (isSplitPane()) {
+                splitPane = new JSplitPane();
+                scrollPane = new JScrollPane(splitPane);
+                splitPane.setLeftComponent(jTree);
+                splitPane.setRightComponent(infoTree);
+                splitPane.setDividerLocation(0.7f);
+            }
             comp = scrollPane;
             scrollPane.getVerticalScrollBar().setUnitIncrement(VERTICAL_SCROLL_BAR_UNIT_INCREMENT);
         }
+    }
+
+    public AV_Tree createTypeTree() {
+       return new AV_Tree(types, TYPE, sub, ArcaneVault.isColorsInverted());
+    }
+
+    public void initTypeTree(JTree jTree) {
+        jTree.expandRow(0);
         jTree.addTreeSelectionListener(new AV_TreeSelectionListener(this.tree.getTree()));
         jTree.addMouseListener(new NodeMaster(jTree, false)); // add
-        // workspace
-        // listener?
-
         if (ArcaneVault.isColorsInverted()) {
             jTree.setBackground(ColorManager.BACKGROUND); // getOrCreate ws
         }
-        // background
+    }
+
+    private boolean isSplitPane() {
+        return true;
     }
 
     // TODO
@@ -143,7 +162,7 @@ public class TreeViewBuilder extends Builder {
     }
 
 
-    public ObjType newType(ObjType newType, DefaultMutableTreeNode node ) {
+    public ObjType newType(ObjType newType, DefaultMutableTreeNode node) {
         DefaultMutableTreeNode newNode;
         boolean empty = false;
         if (node == null) {
@@ -160,7 +179,7 @@ public class TreeViewBuilder extends Builder {
 
         DefaultMutableTreeNode parent = ((DefaultMutableTreeNode) getTree().getSelectionPath()
                 .getLastPathComponent());
-        if (empty ) { //|| !upgrade
+        if (empty) { //|| !upgrade
             parent = (DefaultMutableTreeNode) parent.getParent();
         }
         newNode.removeAllChildren();
@@ -193,6 +212,10 @@ public class TreeViewBuilder extends Builder {
 
     public void update() {
         getTree().updateUI();
+    }
+
+    public AvInfoTree getInfoTree() {
+        return infoTree;
     }
 
 }

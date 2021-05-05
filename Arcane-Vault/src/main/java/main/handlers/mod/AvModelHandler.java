@@ -210,7 +210,18 @@ public class AvModelHandler extends AvHandler {
 
     }
 
-    public static void undo() {
+    public   void addDialog() {
+        // int option = DialogMaster.optionChoice("Choose one: ",
+        //         "Etalon", "Empty", "Upgrade " + type, "Clone " + type);
+        // if (option==0){
+        //     String etalon= getDialogHandler().etalonChoice();
+        //     //select ?
+        //     // getAssembler().createComboType();
+        //     // newType(name, TYPE, false , false, false, )
+        // }
+
+    }
+        public static void undo() {
         ObjType selectedType = ArcaneVault.getSelectedType();
         if (selectedType != null) {
             back(selectedType);

@@ -60,6 +60,8 @@ public class TabBuilder extends Builder implements ChangeListener {
     private List<Workspace> activeWorkspaces;
     private boolean levelEditor;
     private G_TabbedPanel autoWorkspaceTab;
+    private int selectedIndex;
+    private int prevIndex;
 
     public TabBuilder(List<String> tabNames, String key) {
         this(key);
@@ -253,6 +255,7 @@ public class TabBuilder extends Builder implements ChangeListener {
         getTabbedPane().insertTab(text, icon, component, tabName, code
 //                Math.min(code, getTabbedPane().getTabCount() - 1)
         );
+        getTabbedPane().addChangeListener(this);
         tabmap.put(tabName, component);
     }
 
@@ -350,6 +353,9 @@ public class TabBuilder extends Builder implements ChangeListener {
                 }
             }
         }
+
+        getTreeBuilder().getInfoTree().refresh();
+
         // getSelectedTabName()
         if (getTabbedPane().getSelectedComponent() instanceof G_TabbedPanel) {
             G_TabbedPanel tab = (G_TabbedPanel) getTabbedPane().getSelectedComponent();
@@ -455,17 +461,25 @@ public class TabBuilder extends Builder implements ChangeListener {
         }
     }
 
-    public TreeViewBuilder getTreeBuilder() {
-
+    public TreeViewBuilder getPrevTreeBuilder() {
+        return getTreeBuilder(true);
+    }
+    public TreeViewBuilder getTreeBuilder( ) {
+        return getTreeBuilder(false);
+    }
+    public TreeViewBuilder getTreeBuilder(boolean prev) {
+        int selectedIndex =prev? prevIndex: getSelectedIndex( );
         if (top) {
-            return ((TabBuilder) getBuilderArray()[getSelectedIndex()]).getTreeBuilder();
+            return ((TabBuilder) getBuilderArray()[selectedIndex]).getTreeBuilder();
         }
-        return (TreeViewBuilder) getBuilderArray()[getSelectedIndex()];
+        return (TreeViewBuilder) getBuilderArray()[selectedIndex];
     }
 
     public int getSelectedIndex() {
-
-        return ((JTabbedPane) comp).getSelectedIndex();
+        //TODO this is shit - overwrites on GETT!!!! listen instead!!
+        prevIndex  = selectedIndex;
+        selectedIndex = ((JTabbedPane) comp).getSelectedIndex();
+        return selectedIndex;
 
     }
 

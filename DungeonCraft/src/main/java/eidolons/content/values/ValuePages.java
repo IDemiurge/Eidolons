@@ -30,6 +30,7 @@ public class ValuePages {
             G_PROPS.UNIQUE_ID,
             G_PROPS.NAME, VERSION,
             G_PROPS.IMAGE,
+            G_PROPS.ASPECT,
             G_PROPS.PARENT_TYPE, G_PROPS.GROUP,
             G_PROPS.DEV_NOTES, G_PROPS.UNIT_GROUP,
             ACTIVES, G_PROPS.PASSIVES, G_PROPS.STANDARD_PASSIVES,

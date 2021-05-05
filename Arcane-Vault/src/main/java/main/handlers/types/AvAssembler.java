@@ -105,8 +105,9 @@ public class AvAssembler extends AvHandler implements IAvAssembler {
 
     @Override
     public void preview() {
-        AV2.getSimulationHandler().refreshType(getSelected());
+        // AV2.getSimulationHandler().refreshType(getSelected());
     }
+
 
     public class TypeAssemblyData extends DataUnit<TEMPLATE_TYPE> {
         public TypeAssemblyData(String text) {

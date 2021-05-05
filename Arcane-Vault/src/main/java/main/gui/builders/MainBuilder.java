@@ -12,6 +12,8 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,16 +27,8 @@ public class MainBuilder extends Builder {
     private boolean nodesDirty;
 
     public MainBuilder() {
-        if (isSplitPane()){
-            comp = new JSplitPane();
-            comp.setLayout(new GridLayout());
-        } else {
-            comp = new G_Panel();
-        }
-    }
+        comp = new G_Panel();
 
-    private boolean isSplitPane() {
-        return false;
     }
 
     @Override
@@ -138,11 +132,14 @@ public class MainBuilder extends Builder {
     }
 
     public DefaultMutableTreeNode getSelectedNode() {
-            return selectedNode;
+        return selectedNode;
     }
 
     public TreeViewBuilder getTreeBuilder() {
         return getTabBuilder().getTreeBuilder();
+    }
+    public TreeViewBuilder getPrevTreeBuilder() {
+        return getTabBuilder().getPrevTreeBuilder();
     }
 
     public TabBuilder getTabBuilder() {

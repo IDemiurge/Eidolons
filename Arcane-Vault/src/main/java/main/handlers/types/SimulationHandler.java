@@ -32,6 +32,11 @@ public class SimulationHandler extends AvHandler {
         if (type == null) {
             return;
         }
+
+     initUnitObj(type);
+    }
+
+        public void initUnitObj(ObjType type) {
         getAssembler().refreshComboType(type.getType());
         refreshType(type);
     }
@@ -82,7 +87,7 @@ public class SimulationHandler extends AvHandler {
         return unitMap.get(type);
     }
 
-    public void refreshType(ObjType type) {
+    private void refreshType(ObjType type) {
         Unit unit = unitMap.get(type);
         if (unit == null) {
             unit = createUnit(type);
