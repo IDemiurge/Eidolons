@@ -1,10 +1,10 @@
-package src.main.session;
+package src.main.framework.session;
 
 import src.main.data.C3Enums;
 import src.main.framework.C3Item;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
-import src.main.task.C3_Task;
+import src.main.framework.task.C3_Task;
 
 import java.util.LinkedList;
 import java.util.List;

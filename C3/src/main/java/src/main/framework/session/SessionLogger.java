@@ -1,9 +1,9 @@
-package src.main.session;
+package src.main.framework.session;
 
 import src.main.framework.C3Item;
 import src.main.framework.C3Manager;
 import src.main.gui.tray.C3TrayHandler;
-import src.main.log.C3Logger;
+import src.main.system.log.C3Logger;
 
 import javax.swing.*;
 

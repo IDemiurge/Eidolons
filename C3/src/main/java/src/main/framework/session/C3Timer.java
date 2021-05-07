@@ -1,4 +1,4 @@
-package src.main.session;
+package src.main.framework.session;
 
 import main.system.auxiliary.TimeMaster;
 
@@ -74,6 +74,8 @@ public class C3Timer {
     private void finished() {
         finished = true;
         timeFinished = TimeMaster.getTime();
+        regularTimer.cancel();
+
         manager.getManager().getSessionHandler().finished(session);
         manager.getManager().getSessionLogger().finished(session);
         manager.timerDone(this);

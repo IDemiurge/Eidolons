@@ -4,17 +4,17 @@ import src.main.data.C3Enums;
 import src.main.data.C3Reader;
 import src.main.data.C3Writer;
 import src.main.gui.tray.C3TrayHandler;
-import src.main.hotkey.dialog.C3DialogHandler;
-import src.main.log.C3Logger;
-import src.main.query.C3QueryManager;
-import src.main.query.C3QueryResolver;
-import src.main.query.C3_Query;
-import src.main.session.C3SessionHandler;
-import src.main.session.C3TimerHandler;
-import src.main.session.SessionLogger;
-import src.main.task.C3TaskManager;
-import src.main.task.C3TaskResolver;
-import src.main.task.C3_Task;
+import src.main.framework.dialog.C3DialogHandler;
+import src.main.system.log.C3Logger;
+import src.main.framework.query.C3QueryManager;
+import src.main.framework.query.C3QueryResolver;
+import src.main.framework.query.C3_Query;
+import src.main.framework.session.C3SessionHandler;
+import src.main.framework.session.C3TimerHandler;
+import src.main.framework.session.SessionLogger;
+import src.main.framework.task.C3TaskManager;
+import src.main.framework.task.C3TaskResolver;
+import src.main.framework.task.C3_Task;
 
 public class C3Manager {
 

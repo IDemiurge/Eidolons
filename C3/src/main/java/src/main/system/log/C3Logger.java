@@ -1,4 +1,4 @@
-package src.main.log;
+package src.main.system.log;
 
 import src.main.framework.C3Handler;
 import src.main.framework.C3Item;

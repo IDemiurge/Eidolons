@@ -41,8 +41,9 @@ public class MuseCore implements NativeKeyListener {
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
         boolean alt=false;
+        alt = ((SHIFT & nativeKeyEvent.getModifiers()) != 0);
         if ((ALT & nativeKeyEvent.getModifiers()) != 0
-        || (alt = ((SHIFT & nativeKeyEvent.getModifiers()) != 0))) {
+        || alt ) {
             //TODO make into tray func
             //     PlaylistFinder.findAndPlay();
             if (nativeKeyEvent.getKeyCode() > 58) {
@@ -78,7 +79,7 @@ public class MuseCore implements NativeKeyListener {
             //     }
             // }
             //            default:
-            //                main.system.auxiliary.src.main.log.LogMaster.src.main.log(1, " nativeKeyEvent.getModifiers()=" +
+            //                main.system.auxiliary.src.main.system.log.LogMaster.src.main.system.log(1, " nativeKeyEvent.getModifiers()=" +
             //                        nativeKeyEvent.getModifiers());
         }
 

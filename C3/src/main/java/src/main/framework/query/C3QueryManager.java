@@ -1,4 +1,4 @@
-package src.main.query;
+package src.main.framework.query;
 
 import src.main.framework.C3Handler;
 import src.main.framework.C3Manager;

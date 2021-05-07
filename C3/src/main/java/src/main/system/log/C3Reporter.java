@@ -1,4 +1,4 @@
-package src.main.log;
+package src.main.system.log;
 
 public class C3Reporter {
     /*

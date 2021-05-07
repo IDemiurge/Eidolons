@@ -1,6 +1,6 @@
 package src.main.data;
 
-import src.main.query.C3_Query;
+import src.main.framework.query.C3_Query;
 
 public class C3DataManager {
 

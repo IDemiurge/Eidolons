@@ -5,8 +5,8 @@ import src.main.framework.C3Handler;
 import src.main.framework.C3Manager;
 import main.data.filesys.PathFinder;
 import main.swing.generic.services.DialogMaster;
-import src.main.query.C3_Query;
-import src.main.task.C3_Task;
+import src.main.framework.query.C3_Query;
+import src.main.framework.task.C3_Task;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -55,7 +55,7 @@ public class C3TrayHandler extends C3Handler implements MouseListener, ActionLis
                 manager.getSessionHandler().resetMusic();
                 break;
             case "New_Task":
-                manager.getSessionHandler().addTask(DialogMaster.confirm("Custom src.main.task?"));
+                manager.getSessionHandler().addTask(DialogMaster.confirm("Custom src.main.framework.task?"));
                 break;
             case "New_Session":
                 manager.getSessionHandler().initSession( );
@@ -135,7 +135,7 @@ public class C3TrayHandler extends C3Handler implements MouseListener, ActionLis
 
     public enum TrayIconVariant {
         normal, active, paused, finished
-        //IDEA - support auto-src.main.session on TIME - just launch / click + confirm and start!
+        //IDEA - support auto-src.main.framework.session on TIME - just launch / click + confirm and start!
     }
 
     private String getImageDefault() {

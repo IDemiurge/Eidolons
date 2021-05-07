@@ -1,5 +1,7 @@
 package music;
 
+import main.content.VALUE;
+import main.content.ValueMap;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
@@ -16,6 +18,7 @@ public class PlaylistHandler {
     public static final String ROOT_PATH_PICK = "C:\\music\\playlists\\auto\\";
     private static final String ROOT_PATH = "C:\\music\\playlists\\";
     private static final Map<PLAYLIST_TYPE, List<File>> cache = new HashMap<>();
+    private static final Map<PLAYLIST_TYPE, List<File>> cacheAlt = new HashMap<>();
 
     public enum PLAYLIST_TYPE {
         deep, //1
@@ -39,19 +42,23 @@ public class PlaylistHandler {
 
     public static void playRandom(boolean alt, PLAYLIST_TYPE type) {
         for (int i = 0; i < 12; i++) {
-            List<File> fileList = cache.get(type);
+            List<File> fileList = getCache(alt).get(type);
             if (!ListMaster.isNotEmpty(fileList)) {
                 String path = ROOT_PATH_PICK + type;
                 if (alt) {
                     path += "/alt";
                 }
                 fileList = FileManager.getFilesFromDirectory(path, false);
-                cache.put(type, new ArrayList<>(fileList));
+                getCache(alt).put(type, new ArrayList<>(fileList));
             }
             if (playRandom(fileList)) {
                 return;
             }
         }
+    }
+
+    public static Map<PLAYLIST_TYPE, List<File>> getCache(boolean a) {
+        return a? cacheAlt : cache;
     }
 
     private static boolean playRandom(List<File> fileList) {

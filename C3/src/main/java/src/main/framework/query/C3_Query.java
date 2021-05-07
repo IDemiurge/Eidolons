@@ -1,4 +1,4 @@
-package src.main.query;
+package src.main.framework.query;
 
 import src.main.data.C3Enums;
 import src.main.framework.C3Item;

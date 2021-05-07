@@ -1,4 +1,4 @@
-package src.main.hotkey;
+package src.main.system.hotkey;
 
 public class AfkScript {
 

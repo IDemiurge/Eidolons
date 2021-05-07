@@ -1,4 +1,4 @@
-package src.main.session;
+package src.main.framework.session;
 
 import src.main.framework.C3Handler;
 import src.main.framework.C3Manager;

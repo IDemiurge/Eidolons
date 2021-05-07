@@ -1,4 +1,4 @@
-package src.main.hotkey.dialog;
+package src.main.framework.dialog;
 
 import src.main.framework.C3Handler;
 import src.main.framework.C3Manager;
@@ -8,7 +8,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ArrayMaster;
 import main.system.sound.SoundMaster;
-import src.main.session.C3Session;
+import src.main.framework.session.C3Session;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -101,7 +101,7 @@ public class C3DialogHandler extends C3Handler {
                 manager.getSessionHandler().taskDone();
             }
             case New_Task -> {
-                manager.getSessionHandler().addTask(main.system.util.DialogMaster.confirm("Custom src.main.task?"));
+                manager.getSessionHandler().addTask(main.system.util.DialogMaster.confirm("Custom src.main.framework.task?"));
             }
         }
     }

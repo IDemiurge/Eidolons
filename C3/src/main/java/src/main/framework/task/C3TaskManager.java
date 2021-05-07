@@ -1,4 +1,4 @@
-package src.main.task;
+package src.main.framework.task;
 
 import src.main.framework.C3Filter;
 import src.main.framework.C3Handler;
@@ -71,7 +71,7 @@ public class C3TaskManager extends C3Handler {
         List<C3_Task> list = new LinkedList<>();
         for (String name : names) {
             // List objs =
-            //         new MapMaster<C3_Task>().searchLayered(taskTextMap, obj -> src.main.task.category == obj);
+            //         new MapMaster<C3_Task>().searchLayered(taskTextMap, obj -> src.main.framework.task.category == obj);
             String[] split = name.split(separator_task);
             TaskCategory cat = new EnumMaster<TaskCategory>().retrieveEnumConst(TaskCategory.class, split[0]);
             list.add(new C3_Task(cat, split[1], split[2], ""));
@@ -110,7 +110,7 @@ public class C3TaskManager extends C3Handler {
         String taskString = null;
         if (customTask) {
             sub = DialogMaster.inputText("Sub-category?");
-            taskString = DialogMaster.inputText("Input src.main.task text");
+            taskString = DialogMaster.inputText("Input src.main.framework.task text");
         } else {
             int random = RandomWizard.getRandomInt(pool.size());
             sub = randomSub ? pool.keySet().toArray()[random] : chooseSub(pool);
@@ -135,7 +135,7 @@ public class C3TaskManager extends C3Handler {
     public void taskSucceeded(C3_Task task) {
 /*
 tasks should be possible to postpone etc!
-upgrade src.main.task status?
+upgrade src.main.framework.task status?
  */
     }
 
@@ -157,7 +157,7 @@ upgrade src.main.task status?
     }
 
     private String chooseTask(List<String> strings) {
-        Object option = DialogMaster.getChosenOption("Select src.main.task", strings.toArray());
+        Object option = DialogMaster.getChosenOption("Select src.main.framework.task", strings.toArray());
         if (option != null) {
             return option.toString();
         }

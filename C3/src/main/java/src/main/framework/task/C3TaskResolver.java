@@ -1,4 +1,4 @@
-package src.main.task;
+package src.main.framework.task;
 
 import src.main.framework.C3Handler;
 import src.main.framework.C3Manager;
@@ -77,7 +77,7 @@ public class C3TaskResolver extends C3Handler {
 
 
     private Integer getDefaultTimeLimit(C3_Task task) {
-        // switch (src.main.task.category) {
+        // switch (src.main.framework.task.category) {
         // }
         return 15;
     }

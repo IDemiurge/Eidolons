@@ -6,8 +6,8 @@ import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
-import src.main.query.C3_Query;
-import src.main.task.C3_Task;
+import src.main.framework.query.C3_Query;
+import src.main.framework.task.C3_Task;
 
 import java.awt.*;
 import java.util.logging.Logger;
@@ -81,9 +81,9 @@ public class C3     implements NativeKeyListener {
                     manager.getSessionHandler().initSession();
                     // if (checkPendingTask())
                     //     return;
-                    // C3_Task src.main.task= manager.getTaskManager().createRandomTask();
-                    // if (manager.getTaskResolver().resolveTask(src.main.task))
-                    //     manager.setCurrentTask(src.main.task);
+                    // C3_Task src.main.framework.task= manager.getTaskManager().createRandomTask();
+                    // if (manager.getTaskResolver().resolveTask(src.main.framework.task))
+                    //     manager.setCurrentTask(src.main.framework.task);
             }
         }
         if ((ALT & nativeKeyEvent.getModifiers()) != 0) {

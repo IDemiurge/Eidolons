@@ -1,4 +1,4 @@
-package src.main.session;
+package src.main.framework.session;
 
 import src.main.data.C3Enums;
 import src.main.framework.C3Handler;
@@ -8,7 +8,7 @@ import main.system.auxiliary.*;
 import main.system.auxiliary.data.FileManager;
 import main.system.util.DialogMaster;
 import music.PlaylistHandler;
-import src.main.task.C3_Task;
+import src.main.framework.task.C3_Task;
 
 import javax.swing.*;
 import java.io.File;
@@ -82,7 +82,7 @@ public class C3SessionHandler extends C3Handler {
 
 
     private void initTasks(C3Session currentSession) {
-        while (DialogMaster.confirm("Add custom src.main.task?")) {
+        while (DialogMaster.confirm("Add custom src.main.framework.task?")) {
             addTask(true);
         }
         if (!DialogMaster.confirm("Add prepared tasks?"))

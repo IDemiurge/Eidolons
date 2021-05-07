@@ -16,6 +16,9 @@ public class PlaylistFinder {
         if (files.isEmpty()) {
             files = FileManager.findFiles(new File(folder), name, true, false);
         }
+        // if (files.isEmpty()) {
+        //     files = FileManager.findFiles(new File(folder), name, true, false);
+        // }
         if (files.isEmpty()) {
             return;
         }
