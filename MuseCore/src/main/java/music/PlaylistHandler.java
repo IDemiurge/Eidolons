@@ -29,13 +29,13 @@ public class PlaylistHandler {
         goodly, //6
         pagan, //7
         dark, //8
-        coding, //9
+        warmup, //9
         rpg, //10
         metal, //11
         finest //12
 
         ,
-        warmup,
+        coding,
         design,
         writing,
     }

@@ -8,7 +8,7 @@ import org.jnativehook.keyboard.NativeKeyListener;
 import java.util.logging.Logger;
 
 public class MuseCore implements NativeKeyListener {
-    private static final int SHIFT = 17;
+    private static final int CTRL_MASK = NativeKeyEvent.CTRL_MASK;
     private static final int ALT = 136;
 
     public static void main(String[] args) {
@@ -41,7 +41,7 @@ public class MuseCore implements NativeKeyListener {
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
         boolean alt=false;
-        alt = ((SHIFT & nativeKeyEvent.getModifiers()) != 0);
+        alt = ((CTRL_MASK & nativeKeyEvent.getModifiers()) != 0);
         if ((ALT & nativeKeyEvent.getModifiers()) != 0
         || alt ) {
             //TODO make into tray func

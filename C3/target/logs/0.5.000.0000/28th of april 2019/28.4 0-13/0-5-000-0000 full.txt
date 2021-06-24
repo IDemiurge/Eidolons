@@ -1,0 +1,21 @@
+java.lang.NullPointerException: Cannot invoke "com.badlogic.gdx.Files.getFileHandle(String, com.badlogic.gdx.Files$FileType)" because "com.badlogic.gdx.Gdx.files" is null
+	at main.system.sound.Player.playNow(Player.java:238)
+	at main.system.sound.Player.lambda$play$0(Player.java:195)
+	at java.base/java.lang.Thread.run(Thread.java:832)
+java.lang.NullPointerException: Cannot invoke "com.badlogic.gdx.audio.Sound.play(float)" because "soundFile" is null
+	at main.system.sound.Player.playNow(Player.java:246)
+	at main.system.sound.Player.lambda$play$0(Player.java:195)
+	at java.base/java.lang.Thread.run(Thread.java:832)
+java.lang.NullPointerException: Cannot invoke "java.util.List.get(int)" because the return value of "main.swing.generic.components.editors.lists.ListChooser.getSecondListData()" is null
+	at main.swing.generic.components.editors.lists.ListChooser.initPanel(ListChooser.java:417)
+	at main.swing.generic.components.editors.lists.GenericListChooser.choose(GenericListChooser.java:111)
+	at main.swing.generic.components.editors.lists.ListChooser.choose(ListChooser.java:313)
+	at main.swing.generic.components.editors.lists.ListChooser.chooseStringMode(ListChooser.java:185)
+	at main.swing.generic.components.editors.lists.ListChooser.chooseStrings(ListChooser.java:181)
+	at main.swing.generic.components.editors.lists.ListChooser.chooseMultiple(ListChooser.java:177)
+	at src.main.framework.session.C3SessionHandler.taskDone(C3SessionHandler.java:104)
+	at src.main.framework.session.C3SessionHandler.finished(C3SessionHandler.java:174)
+	at src.main.framework.session.C3Timer.finished(C3Timer.java:79)
+	at src.main.framework.session.C3Timer$1.run(C3Timer.java:53)
+	at java.base/java.util.TimerThread.mainLoop(Timer.java:556)
+	at java.base/java.util.TimerThread.run(Timer.java:506)
