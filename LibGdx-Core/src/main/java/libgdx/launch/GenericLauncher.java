@@ -141,7 +141,7 @@ public abstract class GenericLauncher extends Game {
     }
 
     protected boolean isStopOnInactive() {
-        return Flags.isMe(); //TODO this messes up loading ?
+        return false;//Flags.isMe(); //TODO this messes up loading ?
     }
 
     protected String getTitle() {
