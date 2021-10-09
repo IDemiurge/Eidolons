@@ -12,11 +12,18 @@ import eidolons.game.battlecraft.rules.combat.mechanics.MoraleKillingRule;
 import eidolons.game.battlecraft.rules.combat.misc.CleaveRule;
 import eidolons.game.battlecraft.rules.combat.misc.KnockdownRule;
 import eidolons.game.battlecraft.rules.combat.misc.TrampleRule;
-import eidolons.game.battlecraft.rules.counter.*;
+import eidolons.game.battlecraft.rules.counter.dmg.BlazeRule;
+import eidolons.game.battlecraft.rules.counter.dmg.BleedingDamageRule;
+import eidolons.game.battlecraft.rules.counter.dmg.PoisonRule;
 import eidolons.game.battlecraft.rules.counter.generic.CounterMasterAdvanced;
 import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;
 import eidolons.game.battlecraft.rules.counter.generic.DamageCounterRule;
-import eidolons.game.battlecraft.rules.counter.timed.TimedRule;
+import eidolons.game.battlecraft.rules.counter.generic.timed.TimedRule;
+import eidolons.game.battlecraft.rules.counter.natural.ClayRule;
+import eidolons.game.battlecraft.rules.counter.natural.GreaseRule;
+import eidolons.game.battlecraft.rules.counter.natural.LavaRule;
+import eidolons.game.battlecraft.rules.counter.negative.*;
+import eidolons.game.battlecraft.rules.counter.psychic.RageRule;
 import eidolons.game.battlecraft.rules.mechanics.AshAnnihilationRule;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
 import eidolons.game.battlecraft.rules.mechanics.WaitRule;
@@ -126,7 +133,6 @@ public class DC_Rules implements GameRules {
         suffocationRule = new SuffocationRule(game);
 
         damageRules.add(bleedingRule);
-        damageRules.add(suffocationRule);
         damageRules.add(poisonRule);
         damageRules.add(diseaseRule);
         damageRules.add(blazeRule);
@@ -184,7 +190,6 @@ public class DC_Rules implements GameRules {
         timedRules.put(diseaseRule,diseaseRule);
         timedRules.put(blazeRule,blazeRule);
         timedRules.put(bleedingRule,bleedingRule);
-        timedRules.put(suffocationRule,suffocationRule);
         timedRules.put(lavaRule,lavaRule);
 
 

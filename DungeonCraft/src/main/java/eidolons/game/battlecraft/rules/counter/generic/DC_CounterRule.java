@@ -31,37 +31,31 @@ import java.util.Map;
 
 public abstract class DC_CounterRule {
 
+    protected COUNTER counter;
     protected Effects effects;
     protected DC_Game game;
-    // protected Map<Entity, BuffObj> buffCache = new HashMap<Entity,
-    // BuffObj>();
-    protected BattleFieldObject object;
+    protected BattleFieldObject object; //current
+
     protected Map<BattleFieldObject, AddBuffEffect> effectCache;
     protected Map<BattleFieldObject, Effects> effectsCache = new HashMap<>();
-    protected COUNTER counter;
-
-
-
+    // protected Map<Entity, BuffObj> buffCache = new HashMap<Entity,
+    // BuffObj>();
     public DC_CounterRule(DC_Game game) {
         this.game = game;
     }
+
+    public abstract COUNTER getCounter();
+    public abstract int getCounterNumberReductionPerTurn(BattleFieldObject unit);
+    public abstract String getBuffName();
+    protected abstract Effect getEffect();
+    public abstract STATUS getStatus();
 
     public String getCounterName() {
         return getCounter().getName();
     }
 
-    public abstract COUNTER getCounter();
-
-    public abstract int getCounterNumberReductionPerTurn(BattleFieldObject unit);
-
     public int getMaxNumberOfCounters(BattleFieldObject unit) {
         return Integer.MAX_VALUE;
-    }
-
-    public abstract String getBuffName();
-
-    public final String getEmitterPath() {
-        return PathFinder.getVfxPath() + "counters/" + getCounterName();
     }
 
     public void initEffects() {
@@ -74,69 +68,27 @@ public abstract class DC_CounterRule {
         if (e != null) {
             effects.add(e);
         }
-
         effects.setForcedLayer(getEffectLayer());
     }
 
     protected Integer getEffectLayer() {
         return Effect.BUFF_RULE;
     }
-
-    protected abstract Effect getEffect();
-
-    protected String getCounterRef() {
-        return "{" + getObjRef() + "_"
-         // + StringMaster.COUNTER_CHAR
-         + getCounterName() + "}";
-    }
-
-    protected String getObjRef() {
-        return "Source";
-    }
-
     protected Effect getSpecialRoundEffects() {
         return null;
-    }
-
-    protected void log(String string) {
-        game.getLogManager().log(LogManager.LOGGING_DETAIL_LEVEL.FULL, string);
-    }
-
-    // only first time
-    protected String getAppliedLogString() {
-        return getName() + " applied on " + object.getName();
-    }
-
-    protected String getLiftedLogString() {
-        return getName() + " lifted from " + object.getName();
-    }
-
-    protected String getName() {
-        return getClass().getSimpleName();
-    }
-
-    protected String getCounterModifiedLogString(int counterMod) {
-        return object.getName() + "'s " + getCounterName()
-         + " number modified by " + counterMod;
-    }
-
-    private void setObject(BattleFieldObject object) {
-        this.object = object;
     }
 
     public void newTurn() {
         for (BattleFieldObject unit : game.getUnits()) {
             processPeriod(unit);
-
         }
     }
 
     public void processPeriod(BattleFieldObject unit) {
         if (unit.isDead()) return;
         if (!ExplorationMaster.isExplorationOn())
-            if (isOutsideCombatIgnored())
-                if (game.getState().getManager().checkUnitIgnoresReset(unit))
-                    return;
+            if (game.getState().getManager().checkUnitIgnoresReset(unit))
+                return;
         if (getNumberOfCounters(unit) <= 0) {
             return;
         }
@@ -144,7 +96,7 @@ public abstract class DC_CounterRule {
         applyCountersInteractions(unit);
         applyCountersConversions(unit);
         applyCountersTranfers(unit);
-        // log TODO spread
+        // TODO periodic instead!
         int counterMod = getCounterNumberReductionPerTurn(unit);
         if (counterMod != 0) {
             log(getCounterModifiedLogString(-counterMod));
@@ -154,10 +106,6 @@ public abstract class DC_CounterRule {
         if (oneshotEffects != null) {
             oneshotEffects.apply(Ref.getSelfTargetingRefCopy(unit));
         }
-    }
-
-    protected boolean isOutsideCombatIgnored() {
-        return true;
     }
 
     public boolean checkApplies(BattleFieldObject unit) {
@@ -170,56 +118,23 @@ public abstract class DC_CounterRule {
         }
         this.object = unit;
         if (getNumberOfCounters(unit) <= 0) {
-            if (!isAppliedAlways()) {
-                // if (checkAlreadyApplied(unit)) TODO that's bullshit!
-                // log(getLiftedLogString());
-//                removeBuff(unit); // may not be needed now
                 removeEffects(unit);
                 return false;
-            }
         }
         if (ImmunityRule.checkImmune(unit, getCounterName())) {
             return false;
         }
 
-        // if (!checkAlreadyApplied(unit))
+        // if (!checkAlreadyApplied(unit))  ???
         // log(getAppliedLogString());
 
-        Ref ref = unit.getRef().getCopy();
-        ref.setTarget(unit.getId());
         initEffects();
-        addBuff(unit);
-
-        if (getSpread() != null) {
-            new CustomTargetEffect(new TemplateAutoTargeting(
-             AUTO_TARGETING_TEMPLATES.ADJACENT),
-             new ModifyCounterEffect(getCounterName(),
-              MOD.MODIFY_BY_CONST,
-
-              getSpread())).apply(Ref
-             .getSelfTargetingRefCopy(unit));
-        }
+        applyEffects(unit);
 
         // TODO ++ APPLY THRU to cells!
 
         // TODO perhaps I should *BUILD THE LOG STRING* up to this point and log
-        // it only once!
         return true;
-        // effects.apply(ref);
-
-    }
-
-    protected boolean checkAlreadyApplied(BattleFieldObject unit) {
-        return unit.getBuff(getBuffName()) != null;
-    }
-
-    protected boolean isAppliedAlways() {
-        // for some weirdo rules unique to a certain battlefield
-        return false;
-    }
-
-    protected String getSpread() {
-        return null;
     }
 
     protected void applyCountersTranfers(BattleFieldObject unit) {
@@ -229,20 +144,12 @@ public abstract class DC_CounterRule {
     }
 
     protected void applyCountersInteractions(BattleFieldObject unit) {
-
-//        if (getClashingCounter() != null) {
-//            int c = unit.getCounter(getClashingCounter());
-//            unit.modifyCounter(getClashingCounter(), -c);
-//            unit.modifyCounter(getCounterName(), -c);
-//        }
-    }
-
-    public abstract STATUS getStatus();
-
-    protected Integer getNumberOfCounters(BattleFieldObject unit) {
-        return Math.min(getMaxNumberOfCounters(unit),
-         unit.getCounter(getCounterName()));
-        // return unit.getCounter(getCounterName());
+        //TODO
+        //        if (getClashingCounter() != null) {
+        //            int c = unit.getCounter(getClashingCounter());
+        //            unit.modifyCounter(getClashingCounter(), -c);
+        //            unit.modifyCounter(getCounterName(), -c);
+        //        }
     }
 
     protected void removeBuff(BattleFieldObject unit) {
@@ -257,6 +164,7 @@ public abstract class DC_CounterRule {
         effects.remove();
     }
 
+
     protected void applyEffects(BattleFieldObject unit) {
         Effect effects = getWrappedEffects(unit);
         effects.apply(Ref.getSelfTargetingRefCopy(unit));
@@ -264,10 +172,7 @@ public abstract class DC_CounterRule {
             ((AddBuffEffect) effects).getBuff().setCounterRef(getCounterName());
         }
         //TODO animation?
-//        startContinuousAnimation();
-//        playAddAnimation();
-//        playIntensifyAnimation();
-//        playTickAnimation();
+        //        startContinuousAnimation();
     }
 
     private Effect getWrappedEffects(BattleFieldObject unit) {
@@ -295,40 +200,28 @@ public abstract class DC_CounterRule {
         return effect;
     }
 
-    protected void addBuff(BattleFieldObject unit) {
-        applyEffects(unit);
-//        if (unit.hasBuff(getBuffName())) {
-//            unit.removeBuff(getBuffName());
-//        }
-//        AddBuffEffect effect = null;
-//        if (isUseBuffCache()) {
-//            effect = getEffectCache().getVar(unit); // buff effect cache!
-//        }
-//        if (effect == null) {
-//            // Ref REF = new Ref(unit.getGame(), unit.getId());
-//            // REF.setTarget(unit.getId());
-//            // REF.setBasis(unit.getId());
-//            // buff = new DC_BuffObj(DataManager.getType(getBuffName(),
-//            // OBJ_TYPES.BUFFS), Player.NEUTRAL, game, REF, effects,
-//            // ContentManager.INFINITE_VALUE, null);
-//            // buff.setCounterRef(getCounterName());
-//            effect = new AddBuffEffect(getBuffName(), effects);
-//            if (isUseBuffCache()) {
-//                getEffectCache().put(unit, effect);
-//            }
-//            // else getUnitList().add(unit); // for logging!
-//
-//            // disappear
-//            // tooltip should update number of counters
-//            // could status also have the number?
-//        }
-//
-//        effect.apply(Ref.getSelfTargetingRefCopy(unit)); // retain/duration? has
-//        // to
-//        effect.getBuff().setCounterRef(getCounterName());
-
+    protected String getCounterRef() {
+        return "{Source_" + getCounterName() + "}";
+    }
+    protected String getName() {
+        return getClass().getSimpleName();
+    }
+    private void setObject(BattleFieldObject object) {
+        this.object = object;
     }
 
+    protected void log(String string) {
+        game.getLogManager().log(LogManager.LOGGING_DETAIL_LEVEL.FULL, string);
+    }
+
+    protected String getCounterModifiedLogString(int counterMod) {
+        return object.getName() + "'s " + getCounterName()
+                + " counters modified by " + counterMod;
+    }
+    protected Integer getNumberOfCounters(BattleFieldObject unit) {
+        return Math.min(getMaxNumberOfCounters(unit),
+                unit.getCounter(getCounterName()));
+    }
     protected boolean isUseBuffCache() {
         return true;
     }
