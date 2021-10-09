@@ -15,7 +15,6 @@ import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.combat.damage.ResistMaster;
-import eidolons.game.battlecraft.rules.rpg.IntegrityRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.content.ContentValsManager;
@@ -23,25 +22,17 @@ import main.content.enums.entity.UnitEnums;
 import main.content.mode.STD_MODES;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
-import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
-import main.data.ability.construct.VariableManager;
 import main.entity.Ref.KEYS;
 import main.entity.handlers.EntityMaster;
 import main.entity.handlers.EntityResetter;
 import main.entity.obj.ActiveObj;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
-import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
-import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static main.system.GuiEventType.SHOW_MODE_ICON;
 
@@ -308,16 +299,6 @@ public class UnitResetter extends EntityResetter<Unit> {
         }
     }
 
-    public void resetIntegrity() {
-        IntegrityRule.resetIntegrity(getEntity());
-
-    }
-
-    public void applyIntegrity() {
-        IntegrityRule.applyIntegrity(getEntity());
-
-    }
-
     public void applyBackground() {
         if (getEntity().getBackgroundType() == null) {
             getEntity().setBackgroundType(DataManager.getType(getProperty(G_PROPS.BACKGROUND_TYPE),
@@ -375,10 +356,6 @@ public class UnitResetter extends EntityResetter<Unit> {
     }
 
     public void resetHeroValues() {
-        if (getEntity().isHero()) {
-            resetIntegrity();
-            applyIntegrity();
-        }
         getEntity().getMasteries().apply();
         getEntity().getAttrs().apply();
     }
@@ -496,7 +473,6 @@ public class UnitResetter extends EntityResetter<Unit> {
 
     private void finalizeReset() {
         getGame().getRules().getDynamicBuffRules().checkBuffs(getEntity());
-        getGame().getRules().getStackingRule().checkStackingPenalty(getEntity());
 
     }
 

@@ -85,7 +85,7 @@ public class DC_SoundMaster extends SoundMaster {
             return;
         setPositionFor(unit.getCoordinates());
 //        unit.getGame().getDungeon().isSurface()
-        if (unit.isPale() || unit.isImmaterial()) {
+        if ( unit.isImmaterial()) {
             if (!unit.isMine()) {
                 getPlayer().playEffectSound(AudioEnums.SOUNDS.ALERT, unit);
             } else

@@ -138,7 +138,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
             return false;
         if (!canFallUnconscious(unit))
             return false;
-        return toughness <= 0 || focus <= 0 ;
+        return toughness <= 0 && focus <= 0 ;
     }
 
     private static boolean canBeAnnihilated(Unit unit) {
@@ -151,35 +151,25 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
                 // unit.isLiving();
     }
 
-
-    //returns true if unit Recovers
-    public boolean checkStatusUpdate(Unit unit) {
-        return checkStatusUpdate(unit, null);
-    }
-
-    public boolean checkStatusUpdate(Unit unit, DC_ActiveObj activeObj) {
+    public void checkStatusUpdate(Unit unit) {
         if (unit.isDead()) {
             if (unit.isAnnihilated())
                 if (checkUnitAnnihilated(unit)) {
                     unit.getGame().getManager().getDeathMaster().unitAnnihilated(unit, unit);
-                    return false;
                 }
-            return false;
         } else if (checkUnitDies(unit)) {
-            //            unit.getGame().getManager().unitDies(activeObj, unit, activeObj.getOwnerUnit(), true, false);
             unit.getGame().getManager().unitDies(unit, unit, true, false);
-            return false;
         }
-
-        return false;
     }
+    public boolean checkUnitAnnihilated(Unit attacked) {
+        return checkUnitAnnihilated(attacked.getIntParam(PARAMS.C_ENDURANCE), attacked);
+    }
+
 
     @Override
     public void actionComplete(ActiveObj activeObj) {
         for (Unit unit : game.getUnits()) {
-            if (checkStatusUpdate(unit)) {
-                unitRecovers(unit);
-            }
+            checkStatusUpdate(unit);
         }
     }
 
@@ -188,17 +178,12 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         return true;
     }
 
+
     @Override
     public boolean check(Unit unit) {
-        return checkStatusUpdate(unit);
+        return false;
     }
-
     @Override
     public void apply(Unit unit, float delta) {
-        unitRecovers(unit);
-    }
-
-    public boolean checkUnitAnnihilated(Unit attacked) {
-        return checkUnitAnnihilated(attacked.getIntParam(PARAMS.C_ENDURANCE), attacked);
     }
 }

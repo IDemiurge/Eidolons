@@ -147,10 +147,6 @@ public class VisionRule {
     }
 
     private boolean isObjResetRequired(Unit observer, DC_Obj sub) {
-        if (observer == ShadowMaster.getShadowUnit()) {
-            return true;
-        }
-
         //        if (sub instanceof Unit) TODO I really think enemies don't need to know anything else....
         if (!observer.isPlayerCharacter())
             return observer.isHostileTo(sub.getOwner());
@@ -213,10 +209,6 @@ public class VisionRule {
         //            landmark = ((BattleFieldObject) object).isWall() || ((BattleFieldObject) object).isLandscape();
         //        }
 
-        if (source == ShadowMaster.getShadowUnit()) {
-            return ShadowVisionMaster.getVisibility(sight, object);
-
-        }
         if (master.getGame().getRules().getStealthRule().
                 checkInvisible(source.getOwner(), object))
             return VISIBILITY_LEVEL.UNSEEN;

@@ -35,12 +35,9 @@ import main.system.sound.AudioEnums;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 /**
- * Created by JustMe on 3/14/2017.
- * Handles the process of damage dealing for AttackEffect and DealDamageEffect
+ * Created by JustMe on 3/14/2017. Handles the process of damage dealing for AttackEffect and DealDamageEffect
  */
 public class DamageDealer {
-
-
     private static boolean logOn;
 
     /**
@@ -56,15 +53,14 @@ public class DamageDealer {
 
     private static int dealDamage(Damage damage, boolean isBonusDamage) {
         logOn = true;
-        if (checkDamageImmune(damage))
-        {
+        if (checkDamageImmune(damage)) {
             if (!isBonusDamage)
-              GdxStatic.floatingText( VisualEnums.TEXT_CASES.REQUIREMENT,
-                     "Ineffective!",  damage.getTarget());
+                GdxStatic.floatingText(VisualEnums.TEXT_CASES.REQUIREMENT,
+                        "Ineffective!", damage.getTarget());
             // DC_SoundMaster.playEffectSound(AudioEnums.SOUNDS.LAUGH, damage.getTarget());
             return 0;
         }
-        int result = dealDamageOfType(damage , damage.getDmgType(),
+        int result = dealDamageOfType(damage, damage.getDmgType(),
                 damage.getTarget()
                 , damage.getRef(), damage.getAmount(), isBonusDamage);
 
@@ -118,13 +114,16 @@ public class DamageDealer {
     }
 
     /**
-     * This method accepts amount of damage already reduced by everything <b>except Resistance and Armor</b>  (defense, shield...)
+     * This method accepts amount of damage already reduced by everything <b>except Resistance and Armor</b>  (defense,
+     * shield...)
      *
      * @param damage_type enum const, null will be set to active.getEnergyType()
      * @param targetObj   BattleFieldObject to deal dmg to
      * @param ref         contains all the other info we may need
-     * @param amount      total amount of damage to be reduced by Resistance and Armor (unless damage_type==PURE) and dealt as PURE
-     * @return actual amount of damage dealt ( max(min(Toughness*(1-DEATH_BARRIER), Toughness dmg),min(Endurance, Endurance dmg))
+     * @param amount      total amount of damage to be reduced by Resistance and Armor (unless damage_type==PURE) and
+     *                    dealt as PURE
+     * @return actual amount of damage dealt ( max(min(Toughness*(1-DEATH_BARRIER), Toughness dmg),min(Endurance,
+     * Endurance dmg))
      */
     private static int dealDamageOfType(Damage damage, DAMAGE_TYPE damage_type, BattleFieldObject targetObj, Ref ref,
                                         int amount, boolean bonus) {
@@ -156,7 +155,7 @@ public class DamageDealer {
 
         if (!ref.isQuiet()) {
             try {
-                active.getRef().addValue(KEYS.DAMAGE_DEALT, damageDealt  );
+                active.getRef().addValue(KEYS.DAMAGE_DEALT, damageDealt);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -168,17 +167,17 @@ public class DamageDealer {
 
 
     private static boolean isLogged(BattleFieldObject attacker, BattleFieldObject targetObj, ActiveObj active) {
-        if (active == null||EffectMaster.getFirstEffectOfClass((DC_ActiveObj) active, SpecialTargetingEffect.class) != null) {
+        if (active == null || EffectMaster.getFirstEffectOfClass((DC_ActiveObj) active, SpecialTargetingEffect.class) != null) {
             //don't log every crate being damaged...
             return !(targetObj instanceof Structure);
         }
         return true;
     }
 
-    //proceeds to deal the damage - to toughness and endurance separately and with appropriate events
+    //proceeds to deal the damage - to toughness and endurance sequentially and with appropriate events
     private static int dealReducedDamage(Damage damage) {
         Ref ref = damage.getRef();
-        DAMAGE_TYPE dmg_type= damage.dmg_type;
+        DAMAGE_TYPE dmg_type = damage.dmg_type;
         boolean magical = dmg_type.isMagical();
 
         ref.setValue(KEYS.DAMAGE_TYPE, dmg_type.getName());
@@ -204,20 +203,22 @@ public class DamageDealer {
         if (attacked instanceof Unit)
             if (!DamageCalculator.isUnblockable(ref)) {
                 if (ref.getSource() != ref.getTarget()) {
-                    damage =  attacked.getGame().getArmorMaster().processDamage(damage,
+                    damage = attacked.getGame().getArmorMaster().processDamage(damage,
                             damage.isSneak(), damage.getHitType(), damage.isAttack());
-                    amount = damage.getAmount();
                     blocked = damage.getBlocked();
+                    amount = damage.getAmount() - blocked;
                 }
             }
 
         StringBuilder log = damage.getLogBuilder();
 
-        int t_damage = DamageCalculator.calculateToughnessDamage(attacked, attacker, amount, ref, blocked,
+        int t_damage = DamageCalculator.calculateToughnessDamage(attacked, attacker, amount, ref,
                 dmg_type, log);
-        int e_damage = DamageCalculator.calculateEnduranceDamage(attacked, attacker, amount, ref, blocked,
+        int e_damage = DamageCalculator.calculateEnduranceDamage(attacked, attacker,
+                //NF Rules
+                amount- t_damage
+                , ref,
                 dmg_type, log);
-        //        PhaseAnimator.handleDamageAnimAndLog(ref, attacked, magical, dmg_type);
 
         ref.setAmount(e_damage);
         // TODO separate event types?
@@ -398,17 +399,13 @@ public class DamageDealer {
                 return damageDealt;
             }
         }
-        boolean dead = DamageCalculator.isDead(attacked);
+        boolean dead = attacked.checkBool(STD_BOOLS.FAUX)
+                || DamageCalculator.isDead(attacked);
 
-        boolean annihilated = attacked instanceof Unit && attacked.getGame().getRules().getUnconsciousRule().
-                checkUnitAnnihilated((Unit) attacked);
+        boolean annihilated =dead && (attacked instanceof Unit && attacked.getGame().getRules().getUnconsciousRule().
+                checkUnitAnnihilated((Unit) attacked));
         boolean unconscious = false;
 
-        if (!dead) {
-            if (attacked.checkBool(STD_BOOLS.FAUX)) {
-                dead = true;
-            }
-        }
         if (dead) {
             // will start new entry... a good preCheck
             try {
@@ -427,15 +424,14 @@ public class DamageDealer {
             // if (DC_GameManager.checkInterrupted(ref))
             // return 0; ???
         }
-        // unconscious = attacked instanceof Unit && attacked.getIntParam(PARAMS.C_TOUGHNESS) <= 0;
-//                    attacked.getGame().getRules().getUnconsciousRule().checkStatusUpdate((Unit) attacked, (DC_ActiveObj) ref.getActive());
-        //TODO check this
-        // if (unconscious) {
-        //     attacked.getGame().getRules().getUnconsciousRule().
-        //             fallUnconscious((Unit) attacked);
-        // }
+        //NF Rules
+        unconscious = attacked.getGame().getRules().getUnconsciousRule().checkFallsUnconscious((Unit) attacked);
+        if (unconscious) {
+            attacked.getGame().getRules().getUnconsciousRule().
+                    fallUnconscious((Unit) attacked);
+        }
         if (toughness_dmg < 0 || endurance_dmg < 0) {
-            LogMaster.log(1, toughness_dmg + "rogue damage " + endurance_dmg);
+            LogMaster.log(1, toughness_dmg + "NEGATIVE DAMAGE " + endurance_dmg);
         } else
             LogMaster.log(1, toughness_dmg + " / " + endurance_dmg + " damage has been dealt to "
                     + attacked.toString());
@@ -445,8 +441,7 @@ public class DamageDealer {
                     damageDealt);
         }
 
-        if (!CoreEngine.isGraphicsOff())
-                GdxStatic.                        checkHpBarReset(attacked);
+            GdxStatic.checkHpBarReset(attacked);
 
         return damageDealt;
     }

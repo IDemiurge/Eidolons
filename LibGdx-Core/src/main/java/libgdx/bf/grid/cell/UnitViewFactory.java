@@ -125,9 +125,6 @@ public class UnitViewFactory {
             if (bfObj.isBoss()) {
                 return null;
             }
-            if (bfObj == ShadowMaster.getShadowUnit()) {
-                return null;
-            }
             if (bfObj.isDetectedByPlayer()) {
                 return null;
             }

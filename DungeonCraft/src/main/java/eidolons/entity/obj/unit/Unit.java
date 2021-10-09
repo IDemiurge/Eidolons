@@ -241,7 +241,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
                     }
                 }
                 if (param.isDynamic()) {
-                    if (Debugger.isImmortalityOn() || this == ShadowMaster.getShadowUnit())
+                    if (Debugger.isImmortalityOn() )
                         if (param == PARAMS.C_ENDURANCE || param == PARAMS.C_TOUGHNESS)
                             if (integer <= 0) {
                                 return;

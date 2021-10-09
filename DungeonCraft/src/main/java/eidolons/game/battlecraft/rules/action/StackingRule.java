@@ -55,11 +55,6 @@ public class StackingRule implements ActionRule {
 
     public static boolean checkCanPlace(Coordinates c, Entity unit,
                                         List<? extends Entity> otherUnits) {
-        return checkCanPlace(100, c, unit, otherUnits);
-    }
-
-    public static boolean checkCanPlace(Integer maxSpaceTakenPercentage, Coordinates c, Entity unit,
-                                        List<? extends Entity> otherUnits) {
         if (EntityCheckMaster.isOverlaying(unit)) {
             boolean result = DC_Game.game.getOverlayingObjects(c).size() < MAX_OVERLAYING_ON_CELL;
             if (!result) {
@@ -71,28 +66,9 @@ public class StackingRule implements ActionRule {
         if (unit instanceof Entrance)
             return true;
 
-        return instance.canBeMovedOnto(maxSpaceTakenPercentage, unit, c, otherUnits, true, true);
+        return instance.canBeMovedOnto(unit, c, otherUnits, true);
     }
 
-    //apply on each reset?
-    public void checkStackingPenalty(Unit unit) {
-        int stackFactor = getStackFactor(unit.getCoordinates(), unit, false);
-        //depends on girth?
-        int amount = stackFactor * 25;
-        unit.modifyParameter(PARAMS.ATB_COST_MOD, amount, null, true);
-        String descr = "Packed too close to other objects, this unit spends " +
-                amount + "% more ATB on non-move actions.";
-        game.getRules().getDynamicBuffRules().addDynamicBuff("Packed", unit, "" + stackFactor, descr);
-        // Effects effects = new Effects();
-        // effects.apply
-
-        stackFactor = getStackFactor(unit.getCoordinates(), unit, true);
-        amount = stackFactor * 50;
-        unit.modifyParameter(PARAMS.MOVE_ATB_COST_MOD, amount, null, true);
-        descr = "Engaged in close quarters, this unit spends " +
-                amount + "% more ATB on move actions.";
-        game.getRules().getDynamicBuffRules().addDynamicBuff("Close Quarters", unit, "" + stackFactor, descr);
-    }
 
     public static void actionMissed(DC_ActiveObj action) {
         if (RuleKeeper.isRuleOn(RuleEnums.RULE.MISSED_ATTACK_REDIRECTION))
@@ -110,7 +86,8 @@ public class StackingRule implements ActionRule {
         }
         Map<BattleFieldObject, Integer> map = new HashMap<>();
         for (BattleFieldObject unit : units) {
-            map.put(unit, unit.getIntParam(PARAMS.GIRTH));
+            //TODO NF Rules Review - Girth?
+            map.put(unit, 1);
         }
         BattleFieldObject randomTarget = new RandomWizard<BattleFieldObject>().getObjectByWeight(map);
         ref.setTarget(randomTarget.getId());
@@ -129,25 +106,23 @@ public class StackingRule implements ActionRule {
         return ExplorationMaster.isExplorationOn();
     }
 
+
     public boolean canBeMovedOnto(Entity unit, Coordinates c) {
-        return canBeMovedOnto(100, unit, c, null, false, false);
+        return canBeMovedOnto(unit, c, true);
     }
-    public boolean canBeMovedOnto(Entity unit, Coordinates c, boolean cache) {
-        return canBeMovedOnto(100, unit, c, null, false, cache);
-    }
-    public boolean canBeMovedOnto(Entity unit, Coordinates c, boolean prohibitStacking,boolean cache) {
-        return canBeMovedOnto(100, unit, c, null, prohibitStacking, cache);
+        public boolean canBeMovedOnto(Entity unit, Coordinates c, boolean cache) {
+        return canBeMovedOnto(unit, c, null, cache);
     }
 
-    private boolean canBeMovedOnto(Integer maxSpaceTakenPercentage, Entity unit, Coordinates c,
-                                   List<? extends Entity> otherUnits, boolean prohibitStacking, boolean useCache) {
+    private boolean canBeMovedOnto(Entity unit, Coordinates c,
+                                      List<? extends Entity> otherUnits, boolean useCache) {
         Boolean result = checkPlatform(unit, c);
         if (result != null) {
             return result;
         }
         result = false;
         HashMap<Coordinates, Boolean> bools = cache.get(unit);
-        if (useCache && maxSpaceTakenPercentage == 100) {
+        if (useCache ) {
             if (bools != null) {
                 if (bools.containsKey(c)) {
                     return bools.get(c);
@@ -161,133 +136,42 @@ public class StackingRule implements ActionRule {
         DequeImpl<? extends Entity> units = new DequeImpl<>(otherUnits); //already placed ones?
         for (BattleFieldObject u : game.getObjMaster().getObjects(c.x, c.y, false)) {
             if (!units.contains(u)) {
-                if (u==unit) {
+                if (u == unit || u.isDead())
                     continue;
-                }
-                if (u.isDead())
-                    continue;
-                if (!isStackingSupported() || prohibitStacking) {
-                    if (isStackUnit(u)) {
+                if (!isStackingSupported()) {
+                    if (!isStackUnit(u)) {
                         return false;
                     }
                 }
-                if (u.isWall())
-                    return false;
-                if (u.isImpassable())
-                    return false;
                 if (u.isWater())
                     return WaterRule.checkPassable(u, unit);
-                if (!u.isNeutral() && !u.isMine())
-                    if (game.getVisionMaster().checkInvisible(u)) {
-                        continue;
-                    }
-                if (!u.isAnnihilated())
-                    //                    continue; TODO why was Type necessary?
+                // if (!u.isNeutral() && !u.isMine())
+                //     if (game.getVisionMaster().checkInvisible(u)) {
+                //         continue;
+                //     }
+                if (u instanceof Unit)
+                    if (!u.isAnnihilated())
                     units.addCast(u);
-                //                    units.addCast(!u.isDead() ? u.getType() : u);
             }
         }
-        if (unit == null) {
-            // unit = DataManager.getType(HeroCreator.BASE_HERO, DC_TYPE.CHARS);
-            // instead, just empty type with 0 girth!
-            unit = new ObjType();
-        } else if (unit.getIntParam(PARAMS.GIRTH) == 0) {
-            return true;
-        }
-        //check if '1 unit per cell' is on
-        if (maxSpaceTakenPercentage <= 0) {
-            if (!units.isEmpty()) {
-                return false;
-            }
-        }
-
-
-        DC_Cell cell;
-        if (!game.isSimulation()) {
-            cell = game.getCellByCoordinate(c);
-        } else {
-            cell = new DC_Cell(c, game); //TODO this is a hack...
-        }
-        if (cell == null) {
-            //TODO cell is utter void!
-            return false;
-        }
-        if (cell.isVOID()) {
-            if (unit != Eidolons.getMainHero() || !Flags.isIDE() || game.getDungeonMaster().getPuzzleMaster().getCurrent() instanceof VoidMaze)// || !VoidHandler.TEST_MODE)
-                if (!unit.checkProperty(G_PROPS.STANDARD_PASSIVES, UnitEnums.STANDARD_PASSIVES.VOIDWALKER.getName())) {
-                    return false;
+        if (unit != null) {
+                DC_Cell cell;
+                if (!game.isSimulation()) {
+                    cell = game.getCellByCoordinate(c);
+                } else {
+                    cell = new DC_Cell(c, game); //TODO this is a hack...
+                }
+                if (cell.isVOID()) {
+                    if (unit != Eidolons.getMainHero() || !Flags.isIDE() || game.getDungeonMaster().getPuzzleMaster().getCurrent() instanceof VoidMaze)// || !VoidHandler.TEST_MODE)
+                        if (!unit.checkProperty(G_PROPS.STANDARD_PASSIVES, UnitEnums.STANDARD_PASSIVES.VOIDWALKER.getName())) {
+                            return false;
+                        }
                 }
         }
-
-        //TODO ???
-        if (game.isSimulation()) {
-            if (units.size() > 1) {
-                return false;
-            }
-        }
-        // no passable/overlaying!
-        int space = NumberUtils.getIntParse(PARAMS.SPACE.getDefaultValue());
-        if (c != null) {
-            if (!game.isSimulation()) {
-                space = cell.getIntParam(PARAMS.SPACE);
-            }
-        }
-
-        int girth = 0;
-        for (Entity u : units) {
-            if (u == unit) {
-                continue;
-            }
-            if (EntityCheckMaster.isWall(u)) {
-                return false;
-            }
-            if (EntityCheckMaster.isEntrance(u)) {
-                continue;
-            }
-            if (u instanceof Door) {
-                if (((Door) u).getState() == DoorMaster.DOOR_STATE.OPEN) {
-                    girth += u.getIntParam(PARAMS.GIRTH) / 2;
-                    continue;
-                } else return false;
-            }
-            if (u.isDead()) {
-                if (u instanceof Structure)
-                    continue;
-
-                girth += u.getIntParam(PARAMS.GIRTH) / CORPSE_GIRTH_FACTOR;
-            } else
-                girth += u.getIntParam(PARAMS.GIRTH);
-            //           TODO  if (DoorMaster.isDoor((BattleFieldObject) u)) {
-        }
-        // [QUICK FIX]
-        if (unit.getIntParam(PARAMS.GIRTH) == 0) {
-            girth += NumberUtils.getIntParse(PARAMS.GIRTH.getDefaultValue());
-        } else {
-            girth += unit.getIntParam(PARAMS.GIRTH);
-        }
-        space = space * maxSpaceTakenPercentage / 100;
-        cell.setParam(PARAMS.GIRTH, girth);
-        if (space >= girth) {
+        if (units.isEmpty()) {
             result = true;
-        } else {
-            if (unit.getIntParam(PARAMS.GIRTH) > space) {
-                if (units.isEmpty()) {
-                    result = true;
-                }
-            }
         }
-        if (!result) {
-            units.removeIf(Entity::isDead);
-            if (units.size() == 1) {
-                if (units.get(0) instanceof Door) {
-                    return true;
-                }
-            }
-        }
-        if (useCache&&maxSpaceTakenPercentage == 100) //only cache for default cases!
-        {
-            bools.put(c, result);
-        }
+        bools.put(c, result);
         return result;
     }
 
@@ -324,19 +208,4 @@ public class StackingRule implements ActionRule {
         return true;
     }
 
-    public int getStackFactor(Coordinates coordinates, Unit unit, boolean engagement) {
-        int stackFactor = 1;
-        if (unit == null) {
-            return stackFactor;
-        }
-        for (BattleFieldObject object : game.getObjectsOnCoordinateNoOverlaying(coordinates)) {
-            if (object == unit) {
-                continue;
-            }
-            if (object.getOwner().isHostileTo(unit.getOwner()) == engagement) {
-                stackFactor += object.getIntParam(PARAMS.GIRTH) / 400 + 1;
-            }
-        }
-        return stackFactor;
-    }
 }

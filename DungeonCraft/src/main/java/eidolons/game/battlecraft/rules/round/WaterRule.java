@@ -37,7 +37,6 @@ public class WaterRule extends RoundRule implements ActionRule {
 
     public static boolean isBridged(BattleFieldObject waterObj) {
         boolean bridged = false;
-        Integer girth = 0;
         for (BattleFieldObject object : waterObj.getGame().getObjectsOnCoordinateNoOverlaying(waterObj.getCoordinates())) {
             if (object == waterObj) {
                 continue;
@@ -45,10 +44,10 @@ public class WaterRule extends RoundRule implements ActionRule {
             if (object.isDead()) {
                 continue;
             }
-            girth += object.getIntParam(PARAMS.GIRTH);
-            if (waterObj.getIntParam(PARAMS.SPACE) <= girth) {
-                bridged = true;
-            }
+            //TODO NF Rules Review
+            // if (waterObj.getIntParam(PARAMS.SPACE) <= girth) {
+            //     bridged = true;
+            // }
         }
         return bridged;
     }

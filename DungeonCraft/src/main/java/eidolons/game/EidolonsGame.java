@@ -117,10 +117,6 @@ public class EidolonsGame {
         return true;
     }
 
-    public static boolean isAltControlPanel() {
-        return ShadowMaster.isShadowAlive();
-    }
-
     public static FACING_DIRECTION getPresetFacing(Unit unit) {
         return null;
     }

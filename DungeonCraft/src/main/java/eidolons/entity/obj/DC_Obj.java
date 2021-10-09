@@ -70,8 +70,6 @@ public abstract class DC_Obj extends MicroObj {
     private boolean resetIgnored;
     private boolean visibilityFrozen;
 
-    protected boolean pale;
-
     protected Set<ObjType> appliedTypes = new LinkedHashSet<>();
     protected ObjType originalType;
     public DC_Obj(ObjType type, Player owner, Game game, Ref ref) {
@@ -520,14 +518,6 @@ public abstract class DC_Obj extends MicroObj {
 
     public void setResetIgnored(boolean resetIgnored) {
         this.resetIgnored = resetIgnored;
-    }
-
-    public void setPale(boolean pale) {
-        this.pale = pale;
-    }
-
-    public boolean isPale() {
-        return pale;
     }
 
     public void log(String s) {

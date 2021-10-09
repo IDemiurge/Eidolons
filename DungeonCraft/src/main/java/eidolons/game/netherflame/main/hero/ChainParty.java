@@ -41,8 +41,6 @@ public class ChainParty extends Party {
         for (Unit member : members) {
             if ( member.getName().equalsIgnoreCase(leaderName)){
                 setLeader(member);
-            }else {
-                member.setPale(true);
             }
 
         }

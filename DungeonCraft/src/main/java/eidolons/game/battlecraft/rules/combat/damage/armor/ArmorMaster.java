@@ -90,7 +90,7 @@ diff from attack?
             String msg = "";
             if (damage.getAmount() - blocked > 0) {
                 msg = getLoggedMsg(armor, blocked, damage);
-                damage.setAmount(damage.getAmount() - blocked);
+                // damage.setAmount(damage.getAmount() - blocked); don't block twice please...
             } else {
                 msg = getLoggedMsgNegated(armor, damage);
                 damage.setAmount(0);

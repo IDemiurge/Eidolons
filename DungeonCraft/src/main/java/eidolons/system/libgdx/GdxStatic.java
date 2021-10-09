@@ -11,6 +11,7 @@ import main.game.bf.Coordinates;
 import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.launch.CoreEngine;
 
 import java.util.Set;
 
@@ -56,7 +57,8 @@ public class GdxStatic {
         GdxAdapter.getInstance().getGdxApp().setTargetingCursor();
     }
     public static void checkHpBarReset(Obj sourceObj) {
-GdxAdapter.getInstance().getManager().checkHpBarReset(sourceObj);
+        if (!CoreEngine.isGraphicsOff())
+            GdxAdapter.getInstance().getManager().checkHpBarReset(sourceObj);
     }
 
     public static boolean isEventDisplayable(Event event) {

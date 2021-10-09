@@ -28,6 +28,8 @@ public class SoulforceMaster extends MetaGameHandler {
     private static Coordinates lastRespPoint;
     private static SoulforceMaster instance;
 
+    private boolean trueForm;
+
     public SoulforceMaster(MetaGameMaster master) {
         super(master);
     }
@@ -63,7 +65,7 @@ public class SoulforceMaster extends MetaGameHandler {
     }
 
     public boolean isTrueForm() {
-        return ShadowMaster.isShadowAlive();
+        return trueForm;
     }
 
     private int getResurrectCost(boolean inPlace, Unit hero) {

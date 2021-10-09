@@ -22,13 +22,9 @@ public class AutoAttackEffect extends DC_Effect implements OneshotEffect {
     public boolean applyThis() {
         DC_ActiveObj attack = pickAttack();
         if (attack == null) {
-            if (getSourceUnitOrNull() == ShadowMaster.getShadowUnit()) {
-                attack = getActiveObj().getSubActions().get(0);
-            } else {
                 ref.getActive().setCancelled(true);
                 EUtils.showInfoText("Could not find an attack!");
                 return false;
-            }
         }
 
         boolean result = attack.activatedOn(ref);

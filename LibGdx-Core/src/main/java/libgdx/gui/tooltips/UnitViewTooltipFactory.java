@@ -124,7 +124,6 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
 
             if (!object.isMine())
                 if (!object.getGame().isDebugMode())
-                    if (!ShadowMaster.isShadowAlive())
                         if (object.getVisibilityLevelForPlayer() !=
                                 VISIBILITY_LEVEL.CLEAR_SIGHT) {
                             //ENEMY OUTLINE

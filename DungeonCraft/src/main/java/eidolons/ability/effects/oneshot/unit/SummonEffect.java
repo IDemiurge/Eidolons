@@ -143,9 +143,6 @@ public class SummonEffect extends DC_Effect implements OneshotEffect {
         applyLifetimeBuff();
 
         // UpkeepRule.addUpkeep(unit);
-        if (unit instanceof Unit) {
-            SummoningSicknessRule.apply((Unit) unit, active);
-        }
         if (unit.getRef().getObj(KEYS.SUMMONER) instanceof Unit) {
             Unit summoner = (Unit) unit.getRef().getObj(KEYS.SUMMONER);
             FACING_DIRECTION f = summoner.getFacing();

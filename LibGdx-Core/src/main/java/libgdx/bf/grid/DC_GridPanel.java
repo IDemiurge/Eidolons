@@ -111,9 +111,6 @@ public class DC_GridPanel extends GridPanel {
         if (Eidolons.game != null)
             if (Eidolons.game.getLoop() != null)
                 paused = Eidolons.game.getLoop().isPaused();
-        if (ShadowMaster.isShadowAlive() && Eidolons.game.getLoop().getActiveUnit() != ShadowMaster.getShadowUnit()) {
-            paused = false;
-        }
         if (parentAlpha == ShaderDrawer.SUPER_DRAW) {
             for (GroupX groupX : getCommentSprites()) {
                 groupX.setVisible(false);

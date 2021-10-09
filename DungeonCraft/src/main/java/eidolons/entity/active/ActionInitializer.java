@@ -356,10 +356,6 @@ public class ActionInitializer extends DC_ActionManager {
                 actives.addAllCast(generatedSubactions);
                 break;
             case MODE:
-                if (unit == ShadowMaster.getShadowUnit()) {
-                    actions.add(unit.getAction("Shadow Step"));
-                    break;
-                }
                 actions.addAll(getObjTypes(modeObjTypes, unit));
                 break;
             case STANDARD:

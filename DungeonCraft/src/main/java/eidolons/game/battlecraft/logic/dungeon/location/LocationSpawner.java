@@ -41,7 +41,6 @@ public class LocationSpawner extends Spawner {
             }
             List<String> list = ListMaster.toNameList(
                     party.getMembers());
-            getPositioner().setMaxSpacePercentageTaken(50);
             List<Coordinates> coords = getPositioner().getPlayerPartyCoordinates(list);
             Iterator<Coordinates> iterator = coords.iterator();
 //            coords.removeIf(c -> c == null); TODO concurrent mod ...
