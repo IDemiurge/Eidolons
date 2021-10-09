@@ -225,6 +225,10 @@ public class CoreEngine {
         selectivelyReadTypes = types;
     }
 
+    public static String getSelectivelyReadTypes() {
+        return selectivelyReadTypes;
+    }
+
     public static boolean isEnumCachingOn() {
         boolean enumCachingOn = true;
         return enumCachingOn;

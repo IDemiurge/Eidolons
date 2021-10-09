@@ -64,6 +64,7 @@ public class Ref implements Cloneable, Serializable {
     private boolean clone;
     private boolean original;
     private Set<Coordinates> area;
+    private Object arg;
 
     public Ref() {
         this.game = Game.game;
@@ -400,11 +401,12 @@ public class Ref implements Cloneable, Serializable {
 
     }
 
-    public void setTarget(Integer this_target) {
+    public Ref setTarget(Integer this_target) {
         setID(KEYS.TARGET, this_target);
         if (original && !isClone() && getSource() != null) {
             LogMaster.log(1, ">>>> target set for original ref? => \n " + this);
         }
+        return this;
     }
 
     public Ref getCopy() {
@@ -650,6 +652,18 @@ public class Ref implements Cloneable, Serializable {
         setValue(keys, (NumberUtils.getInt(getValue(keys.name()))+s)+"");
     }
 
+    public Object getArg() {
+        if (arg == null) {
+            return getValue(KEYS.ARG);
+        }
+        return arg;
+    }
+
+    public void setArg(Object arg) {
+        this.arg = arg;
+        setValue(KEYS.ARG, arg.toString());
+    }
+
     public enum KEYS {
         THIS,
 
@@ -696,7 +710,7 @@ public class Ref implements Cloneable, Serializable {
         DAMAGE_TOTAL,
         DAMAGE_AMOUNT,
         DAMAGE_DEALT,
-
+        ARG,
         IMAGE,
         OBJECTIVE, BLOCK,
         //macro
