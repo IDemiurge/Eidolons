@@ -1,4 +1,4 @@
-package eidolons.game.module.dungeoncrawl.objects.vendor;
+package eidolons.game.module.dungeoncrawl.explore.vendor;
 
 public class VendorHandler {
     /*

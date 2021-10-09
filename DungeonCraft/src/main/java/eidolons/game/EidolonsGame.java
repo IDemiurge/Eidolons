@@ -5,7 +5,6 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.netherflame.main.death.ShadowMaster;
 import main.content.values.parameters.PARAMETER;
 import main.data.StringMap;
 import main.game.bf.directions.FACING_DIRECTION;

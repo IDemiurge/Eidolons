@@ -7,7 +7,6 @@ import eidolons.game.netherflame.lord.progression.LordProgression;
 import eidolons.game.netherflame.main.death.HeroChain;
 import eidolons.game.netherflame.main.soul.eidola.Soul;
 import eidolons.game.netherflame.main.soul.eidola.SoulMaster;
-import eidolons.game.netherflame.soulflux.Card;
 import main.entity.LightweightEntity;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
@@ -19,7 +18,6 @@ public class EidolonLord extends LightweightEntity {
 
     public static EidolonLord lord;
     protected HeroChain chain;
-    protected  List<Card> globalDeck;
     protected LordProgression progression;
     /*
     1) consider persistence - unlocks, account, runs that were started

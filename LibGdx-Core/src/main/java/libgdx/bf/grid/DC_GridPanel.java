@@ -19,7 +19,6 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.InteractiveObj;
-import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.puzzle.voidy.DefVoidHandler;
 import eidolons.puzzle.voidy.VoidHandler;
 import eidolons.system.text.HelpMaster;

@@ -11,7 +11,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.action.ActionRule;
 import eidolons.game.core.atb.AtbController;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.netherflame.main.death.ShadowMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effect.MOD_PROP_TYPE;
@@ -80,11 +79,6 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         if (unit.isDead()) {
             return;
         }
-        if (unit.isPlayerCharacter()) {
-            if (ShadowMaster.isShadowAlive()) {
-                return;
-            }
-        }
         if (unit.getGame().getMetaMaster().getPartyManager().heroUnconscious(unit)){
             return;
         }
@@ -104,8 +98,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
 
 
     public static boolean checkUnitDies(Unit unit) {
-        return checkUnitDies(unit.getIntParam(PARAMS.C_FOCUS),unit.getIntParam(PARAMS.C_TOUGHNESS),
-                unit.getIntParam(PARAMS.C_ENDURANCE),
+        return checkUnitDies(unit.getIntParam(PARAMS.C_ENDURANCE),
                 unit
         );
     }
@@ -120,17 +113,12 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         return endurance <= -unit.getIntParam(PARAMS.ENDURANCE) / 2;
     }
 
-    public static boolean checkUnitDies(Integer focus,Integer toughness, Integer endurance, Unit unit
+    public static boolean checkUnitDies(Integer endurance, Unit unit
     ) {
         if (endurance <= 0) {
             return true;
         }
-        if (focus > 0 && toughness > 0) {
-            return false;
-        }
-        if (!canFallUnconscious(unit)) {
-            return toughness <= 0;
-        }
+        if (canFallUnconscious(unit))
         if (checkFallsUnconscious(unit)) {
             if (!new Event(STANDARD_EVENT_TYPE.UNIT_IS_FALLING_UNCONSCIOUS, unit.getRef()).fire()) {
                 return true;
@@ -159,8 +147,8 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
     }
 
     private static boolean canFallUnconscious(Unit unit) {
-        return unit.isLiving();
-        // special? vampires and such...
+        return false;
+                // unit.isLiving();
     }
 
 

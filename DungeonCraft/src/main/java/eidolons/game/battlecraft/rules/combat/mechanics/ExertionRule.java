@@ -1,4 +1,4 @@
-package eidolons.game.battlecraft.rules.anew;
+package eidolons.game.battlecraft.rules.combat.mechanics;
 
 public class ExertionRule {
 

@@ -7,7 +7,7 @@ import eidolons.entity.item.DC_InventoryManager.OPERATIONS;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
-import eidolons.game.module.dungeoncrawl.objects.vendor.GoldMaster;
+import eidolons.game.module.dungeoncrawl.explore.vendor.GoldMaster;
 import libgdx.anims.text.FloatingTextMaster;
 import libgdx.gui.panels.dc.inventory.InventoryClickHandlerImpl;
 import libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;

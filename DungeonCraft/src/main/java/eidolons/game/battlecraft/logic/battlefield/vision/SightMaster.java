@@ -8,7 +8,6 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.ClearshotMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.netherflame.main.death.ShadowMaster;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.enums.rules.VisionEnums.VISION_MODE;

@@ -9,7 +9,6 @@ import eidolons.game.core.game.ScenarioGame;
 import eidolons.game.eidolon.event.GameEventHandler;
 import eidolons.game.netherflame.NF_Game;
 import eidolons.game.netherflame.main.death.NF_DefeatHandler;
-import eidolons.game.eidolon.event.NF_EventHandler;
 import eidolons.game.netherflame.main.misc.SoloPartyManager;
 import eidolons.game.netherflame.main.soul.SoulforceMaster;
 
@@ -36,11 +35,11 @@ public class NF_MetaMaster extends ScenarioMetaMaster<NF_Meta> {
     public NF_MetaMaster(String data) {
         super(data);
         soulforceMaster = new SoulforceMaster(this);
-        eventHandler = new NF_EventHandler(this);
+        eventHandler = createEventHandler();
 
     }
     protected GameEventHandler createEventHandler() {
-        return new NF_EventHandler(this);
+        return new GameEventHandler(this);
     }
 
     public SoulforceMaster getSoulforceMaster() {
@@ -74,9 +73,6 @@ public class NF_MetaMaster extends ScenarioMetaMaster<NF_Meta> {
             return new SoloPartyManager(this);
         return new NF_PartyManager(this);
     }
-
-
-
 
     @Override
     protected boolean isTownEnabled() {

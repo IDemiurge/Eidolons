@@ -13,7 +13,6 @@ import eidolons.game.battlecraft.logic.mission.universal.MissionMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
-import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.game.eidolon.event.GameEventHandler;
 import eidolons.system.libgdx.GdxBeans;
 import main.content.DC_TYPE;
@@ -47,13 +46,9 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     protected GameEventHandler eventHandler;
 
-    ShadowMaster shadowMaster = new ShadowMaster(this);
     private GdxBeans gdxBeans;
     private QuestMaster questMaster;
 
-    public ShadowMaster getShadowMaster() {
-        return shadowMaster;
-    }
 
     public MetaGameMaster(String data) {
         this.data = data;
@@ -234,13 +229,12 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     public void gameExited() {
         PartyManager.setSelectedHero(null);
-        ShadowMaster.reset();
         try {
             GuiEventManager.cleanUp();
         } catch (Exception e) {
             ExceptionMaster.printStackTrace(e);
         }
-        if (game.isStarted())
+        // if (game.isStarted())
             //TODO gdx sync
             // try {
             //     AnimMaster.getInstance().getDrawer().cleanUp();

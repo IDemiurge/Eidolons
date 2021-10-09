@@ -5,7 +5,6 @@ import eidolons.ability.effects.DC_Effect;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.rules.magic.SummoningSicknessRule;
 import eidolons.game.core.EUtils;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.Effect;

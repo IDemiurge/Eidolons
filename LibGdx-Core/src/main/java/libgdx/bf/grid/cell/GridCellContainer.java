@@ -15,7 +15,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.colormap.LightConsts;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.struct.Entrance;
-import eidolons.game.netherflame.main.death.ShadowMaster;
 import libgdx.GDX;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;

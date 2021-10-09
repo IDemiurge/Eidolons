@@ -4,7 +4,6 @@ import eidolons.system.libgdx.wrapper.VectorGdx;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner.SPAWN_MODE;
@@ -25,7 +24,6 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
-import eidolons.game.netherflame.main.misc.PaleAspect;
 import eidolons.system.libgdx.GdxAdapter;
 import eidolons.system.text.Texts;
 import eidolons.system.text.tips.TipMessageMaster;
@@ -341,14 +339,6 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
         //        GuiEventManager.trigger(GuiEventType.SHADOW_MAP_FADE_IN, 100);
         //        String group = args[i];
         //        i++;
-        if (PaleAspect.ON) {
-            PaleAspect.shadowLeapToLocation(Coordinates.get(args[0]));
-            return true;
-        }
-        if (EidolonsGame.isAltControlPanel()) { //TODO true form...
-            PaleAspect.shadowLeapToLocation(Eidolons.getMainHero(), false, Coordinates.get(args[0]));
-            return true;
-        }
         List<Unit> members = getMaster().getMetaMaster().getPartyManager().getParty().
                 getMembers();
         List<Coordinates> coordinates =

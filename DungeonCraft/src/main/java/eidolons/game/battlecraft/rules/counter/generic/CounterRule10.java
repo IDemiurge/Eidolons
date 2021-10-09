@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.rules.counter.generic;
 
 import eidolons.ability.EventAndCondition;
-import eidolons.game.battlecraft.logic.battlefield.saves.SavesMaster;
+import eidolons.game.battlecraft.rules.saves.SavesMaster;
 import eidolons.game.core.game.DC_Game;
 
 /*

@@ -9,8 +9,6 @@ import eidolons.game.battlecraft.rules.mechanics.ConcealmentRule;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.module.dungeoncrawl.struct.Entrance;
-import eidolons.game.netherflame.main.death.ShadowMaster;
-import eidolons.game.netherflame.main.death.ShadowVisionMaster;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.entity.UnitEnums;

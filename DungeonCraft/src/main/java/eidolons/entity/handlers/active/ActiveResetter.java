@@ -5,7 +5,6 @@ import eidolons.content.values.DC_ValueManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.mechanics.TerrainRule;
 import eidolons.game.battlecraft.rules.perk.FlyingRule;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.content.enums.entity.ActionEnums;

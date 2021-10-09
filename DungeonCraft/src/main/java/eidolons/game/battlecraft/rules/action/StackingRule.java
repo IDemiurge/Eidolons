@@ -17,7 +17,6 @@ import eidolons.game.module.dungeoncrawl.struct.Entrance;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster;
-import eidolons.game.netherflame.main.misc.PaleAspect;
 import eidolons.system.libgdx.GdxAdapter;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
@@ -193,9 +192,6 @@ public class StackingRule implements ActionRule {
             // instead, just empty type with 0 girth!
             unit = new ObjType();
         } else if (unit.getIntParam(PARAMS.GIRTH) == 0) {
-            return true;
-        }
-        if (PaleAspect.ON) {
             return true;
         }
         //check if '1 unit per cell' is on

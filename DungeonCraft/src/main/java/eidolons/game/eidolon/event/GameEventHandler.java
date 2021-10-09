@@ -17,7 +17,6 @@ public class GameEventHandler extends MetaGameHandler {
         super(master);
     }
 
-
     public boolean handle(Event event) {
         SoundEvents.checkEventSound(event);
         getMaster().getDungeonMaster().getPuzzleMaster().processEvent(event);
@@ -51,16 +50,4 @@ public class GameEventHandler extends MetaGameHandler {
         return true;
     }
 
-    protected void waitForAnims() {
-        GdxStatic.waitForAnimations(null);
-    }
-
-    protected void handleUnconscious(Event event) {
-        if (event.getRef().getSourceObj() instanceof Unit) {
-            if (((Unit) event.getRef().getSourceObj()).isPlayerCharacter()) {
-                getMaster().getDefeatHandler().fallsUnconscious(event);
-
-            }
-        }
-    }
 }

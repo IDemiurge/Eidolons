@@ -18,7 +18,6 @@ import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.objects.ContainerObj;
-import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.StyleHolder;
 import libgdx.bf.generic.ImageContainer;

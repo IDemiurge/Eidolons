@@ -75,20 +75,5 @@ public class SoulMaster {
 
     }
 
-    private static boolean isSoulTrapOn(BattleFieldObject killed) {
-        return !(killed instanceof Structure);
-    }
-    public static void gainSoul(BattleFieldObject killed) {
-        Soul soul = getOrCreate(killed.getType());
-        EidolonLord.lord.soulsGained(soul);
-    }
-    public static void slain(BattleFieldObject killed) {
-        if(isSoulTrapOn(killed)){
-            gainSoul(killed);
-
-        }
-
-
-    }
 
 }

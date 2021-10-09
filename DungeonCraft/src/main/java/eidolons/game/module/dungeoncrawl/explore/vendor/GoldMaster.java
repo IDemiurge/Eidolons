@@ -1,4 +1,4 @@
-package eidolons.game.module.dungeoncrawl.objects.vendor;
+package eidolons.game.module.dungeoncrawl.explore.vendor;
 
 import eidolons.content.PARAMS;
 import eidolons.content.consts.Images;
