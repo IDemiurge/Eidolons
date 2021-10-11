@@ -16,7 +16,6 @@ import eidolons.game.core.master.*;
 import eidolons.game.core.state.DC_GameState;
 import eidolons.game.core.state.DC_StateManager;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.system.libgdx.GdxAdapter;
 import eidolons.system.libgdx.GdxStatic;
 import eidolons.system.audio.DC_SoundMaster;
@@ -140,10 +139,6 @@ public class DC_GameManager extends GameManager {
             return false;
         }
         if (unit.isUnconscious()) {
-            if (unit.isMainHero()) {
-                //some trick here?
-                getGame().getMetaMaster().getShadowMaster().heroRecovers();
-            } else
                 getGame().getRules().getUnconsciousRule().unitRecovers(unit);
         }
         // DC_SoundMaster.playEffectSound(SOUNDS.WHAT, obj);
@@ -213,16 +208,6 @@ public class DC_GameManager extends GameManager {
         //set dirty flag?
         GuiEventManager.trigger(UPDATE_GUI, null);
         //        GuiEventManager.trigger(GuiEventType.UPDATE_AMBIENCE, null);
-
-        if (getMainHero().isUnconscious()) {
-            Unit unit = ShadowMaster.getShadowUnit();
-            if (unit != null) {
-                if (!unit.isDead()) {
-                    GuiEventManager.trigger(UPDATE_MAIN_HERO, unit);
-                }
-            }
-            return;
-        }
 
         if (getActiveObj().isMine()) {
             GuiEventManager.trigger(UPDATE_MAIN_HERO, getActiveObj());

@@ -30,10 +30,7 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import eidolons.game.module.herocreator.logic.party.Party;
-import eidolons.game.netherflame.main.death.ShadowMaster;
-import eidolons.game.netherflame.main.hero.ChainParty;
 import eidolons.game.netherflame.lord.EidolonLord;
 import eidolons.content.DC_Formulas;
 import eidolons.system.utils.content.ContentGenerator;
@@ -63,7 +60,6 @@ import main.content.enums.system.MetaEnums;
 import main.content.mode.STD_MODES;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
-import main.content.values.properties.PROPERTY;
 import main.data.ability.construct.AbilityConstructor;
 import main.entity.Entity;
 import main.entity.Ref;
@@ -245,7 +241,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
                     }
                 }
                 if (param.isDynamic()) {
-                    if (Debugger.isImmortalityOn() || this == ShadowMaster.getShadowUnit())
+                    if (Debugger.isImmortalityOn() )
                         if (param == PARAMS.C_ENDURANCE || param == PARAMS.C_TOUGHNESS)
                             if (integer <= 0) {
                                 return;

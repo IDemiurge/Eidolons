@@ -11,7 +11,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.action.ActionRule;
 import eidolons.game.core.atb.AtbController;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.netherflame.main.death.ShadowMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effect.MOD_PROP_TYPE;
@@ -80,11 +79,6 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         if (unit.isDead()) {
             return;
         }
-        if (unit.isPlayerCharacter()) {
-            if (ShadowMaster.isShadowAlive()) {
-                return;
-            }
-        }
         if (unit.getGame().getMetaMaster().getPartyManager().heroUnconscious(unit)){
             return;
         }
@@ -104,8 +98,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
 
 
     public static boolean checkUnitDies(Unit unit) {
-        return checkUnitDies(unit.getIntParam(PARAMS.C_FOCUS),unit.getIntParam(PARAMS.C_TOUGHNESS),
-                unit.getIntParam(PARAMS.C_ENDURANCE),
+        return checkUnitDies(unit.getIntParam(PARAMS.C_ENDURANCE),
                 unit
         );
     }
@@ -120,17 +113,12 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         return endurance <= -unit.getIntParam(PARAMS.ENDURANCE) / 2;
     }
 
-    public static boolean checkUnitDies(Integer focus,Integer toughness, Integer endurance, Unit unit
+    public static boolean checkUnitDies(Integer endurance, Unit unit
     ) {
         if (endurance <= 0) {
             return true;
         }
-        if (focus > 0 && toughness > 0) {
-            return false;
-        }
-        if (!canFallUnconscious(unit)) {
-            return toughness <= 0;
-        }
+        if (canFallUnconscious(unit))
         if (checkFallsUnconscious(unit)) {
             if (!new Event(STANDARD_EVENT_TYPE.UNIT_IS_FALLING_UNCONSCIOUS, unit.getRef()).fire()) {
                 return true;
@@ -150,7 +138,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
             return false;
         if (!canFallUnconscious(unit))
             return false;
-        return toughness <= 0 || focus <= 0 ;
+        return toughness <= 0 && focus <= 0 ;
     }
 
     private static boolean canBeAnnihilated(Unit unit) {
@@ -159,39 +147,29 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
     }
 
     private static boolean canFallUnconscious(Unit unit) {
-        return unit.isLiving();
-        // special? vampires and such...
+        return false;
+                // unit.isLiving();
     }
 
-
-    //returns true if unit Recovers
-    public boolean checkStatusUpdate(Unit unit) {
-        return checkStatusUpdate(unit, null);
-    }
-
-    public boolean checkStatusUpdate(Unit unit, DC_ActiveObj activeObj) {
+    public void checkStatusUpdate(Unit unit) {
         if (unit.isDead()) {
             if (unit.isAnnihilated())
                 if (checkUnitAnnihilated(unit)) {
                     unit.getGame().getManager().getDeathMaster().unitAnnihilated(unit, unit);
-                    return false;
                 }
-            return false;
         } else if (checkUnitDies(unit)) {
-            //            unit.getGame().getManager().unitDies(activeObj, unit, activeObj.getOwnerUnit(), true, false);
             unit.getGame().getManager().unitDies(unit, unit, true, false);
-            return false;
         }
-
-        return false;
     }
+    public boolean checkUnitAnnihilated(Unit attacked) {
+        return checkUnitAnnihilated(attacked.getIntParam(PARAMS.C_ENDURANCE), attacked);
+    }
+
 
     @Override
     public void actionComplete(ActiveObj activeObj) {
         for (Unit unit : game.getUnits()) {
-            if (checkStatusUpdate(unit)) {
-                unitRecovers(unit);
-            }
+            checkStatusUpdate(unit);
         }
     }
 
@@ -200,17 +178,12 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         return true;
     }
 
+
     @Override
     public boolean check(Unit unit) {
-        return checkStatusUpdate(unit);
+        return false;
     }
-
     @Override
     public void apply(Unit unit, float delta) {
-        unitRecovers(unit);
-    }
-
-    public boolean checkUnitAnnihilated(Unit attacked) {
-        return checkUnitAnnihilated(attacked.getIntParam(PARAMS.C_ENDURANCE), attacked);
     }
 }

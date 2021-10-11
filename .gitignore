@@ -9,6 +9,9 @@ Dueling-Club/target/*
 resources/target/*
 Arcane-Tower/target/*
 Arcane-Vault/target/*
+MuseCore/target/*
+C3/target/*
+LibGdx-Core/target/*
 *.class
 *.log
 *.log.*

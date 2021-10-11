@@ -137,7 +137,6 @@ public class NF_PartyManager extends ScenarioPartyManager {
         GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, hero);
         party.setLeader(hero);
         hero.setMainHero(true);
-        hero.setPale(false);
         party.setProperty(PROPS.PARTY_MAIN_HERO, hero.getName());
         Eidolons.setMainHero(hero);
         getGame().getObjMaster().objAdded(hero);

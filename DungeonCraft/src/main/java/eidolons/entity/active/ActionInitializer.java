@@ -12,7 +12,6 @@ import eidolons.game.battlecraft.rules.combat.attack.dual.DualAttackMaster;
 import eidolons.game.battlecraft.rules.mechanics.FleeRule;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.netherflame.main.death.ShadowMaster;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;
@@ -357,10 +356,6 @@ public class ActionInitializer extends DC_ActionManager {
                 actives.addAllCast(generatedSubactions);
                 break;
             case MODE:
-                if (unit == ShadowMaster.getShadowUnit()) {
-                    actions.add(unit.getAction("Shadow Step"));
-                    break;
-                }
                 actions.addAll(getObjTypes(modeObjTypes, unit));
                 break;
             case STANDARD:

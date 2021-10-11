@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.sub;
 
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
-import eidolons.game.netherflame.main.misc.PaleAspect;
 import main.elements.conditions.Condition;
 import main.elements.triggers.Trigger;
 import main.game.logic.event.Event;
@@ -42,13 +41,6 @@ public class PuzzleTrigger extends Trigger {
             }
         }
 
-        if (puzzle.isPale()) {
-            if (PaleAspect.ON) {
-                if (type == PUZZLE_TRIGGER.ENTER) {
-                    return false;
-                }
-            }
-        }
         if (event.getType() == eventType) {
             return super.check(event);
         }

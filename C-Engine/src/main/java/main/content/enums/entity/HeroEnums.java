@@ -15,7 +15,7 @@ import static main.content.enums.entity.HeroEnums.PERK_PARAM.*;
  */
 public class HeroEnums {
     public enum BACKGROUND {
-        MAN_OF_KINGS_REALM(RACE.HUMAN, SOUNDSET.ANGEL){
+        MAN_OF_KINGS_REALM(RACE.HUMAN, SOUNDSET.ANGEL) {
             @Override
             public String getTypeName() {
                 return "Man of King's Realm";
@@ -63,7 +63,8 @@ public class HeroEnums {
         RED_ORC(RACE.GOBLINOID),
         BLACK_ORC(RACE.GOBLINOID),
         PALE_ORC(RACE.GOBLINOID),
-        GREEN_ORC(RACE.GOBLINOID),;
+        GREEN_ORC(RACE.GOBLINOID),
+        ;
         private RACE race;
         private SOUNDSET[] soundsets;
 
@@ -75,7 +76,7 @@ public class HeroEnums {
         public BACKGROUND getMale() {
             if (getRace() == RACE.HUMAN) {
                 BACKGROUND male = new EnumMaster<BACKGROUND>().retrieveEnumConst(BACKGROUND.class,
-                 name().replace("WO", ""));
+                        name().replace("WO", ""));
                 if (male != null) {
                     return male;
                 }
@@ -133,7 +134,8 @@ public class HeroEnums {
         HERMIT,
         ACOLYTE,
         RANGER,
-        MULTICLASS,;
+        MULTICLASS,
+        ;
 
         public String getName() {
             return StringMaster.format(name());
@@ -142,47 +144,50 @@ public class HeroEnums {
 
     public enum CLASS_PERK_GROUP {
 
-        FIGHTER(TOUGHNESS, ATTACK, ARMOR, FORTITUDE, ENDURANCE,  CARRYING_CAPACITY,STAMINA),
-        FIGHTER_SOLDIER(TOUGHNESS, ATTACK, ARMOR, FORTITUDE, ENDURANCE,  CARRYING_CAPACITY,STAMINA),
-        FIGHTER_WARRIOR(TOUGHNESS, ATTACK, ARMOR, FORTITUDE, ENDURANCE,  CARRYING_CAPACITY,STAMINA),
+        FIGHTER(TOUGHNESS, ATTACK, ARMOR, FORTITUDE, ENDURANCE, CARRYING_CAPACITY),
+        FIGHTER_SOLDIER(TOUGHNESS, ATTACK, ARMOR, FORTITUDE, ENDURANCE, CARRYING_CAPACITY),
+        FIGHTER_WARRIOR(TOUGHNESS, ATTACK, ARMOR, FORTITUDE, ENDURANCE, CARRYING_CAPACITY),
 
-        SQUIRE(LEADERSHIP_MASTERY, RESISTANCE,SPIRIT, N_OF_COUNTERS, CARRYING_CAPACITY, FORTITUDE, STAMINA),
-        SQUIRE_KNIGHT(TOUGHNESS, ATTACK, RESISTANCE, SPIRIT, N_OF_COUNTERS, FORTITUDE, STAMINA),
-        SQUIRE_OFFICER(LEADERSHIP_MASTERY, SIGHT_RANGE, RESISTANCE,SPIRIT, FORTITUDE, STAMINA),
+        SQUIRE(LEADERSHIP_MASTERY, RESISTANCE, SPIRIT, CARRYING_CAPACITY, FORTITUDE),
+        SQUIRE_KNIGHT(TOUGHNESS, ATTACK, RESISTANCE, SPIRIT, FORTITUDE),
+        SQUIRE_OFFICER(LEADERSHIP_MASTERY, SIGHT_RANGE, RESISTANCE, SPIRIT, FORTITUDE),
 
-        ROGUE(STEALTH, ATTACK, TOUGHNESS, N_OF_ACTIONS, STAMINA, SNEAK_ATTACK_MOD),
-        ROGUE_SWASHBUCKLER(DEFENSE, N_OF_COUNTERS, ATTACK, N_OF_ACTIONS, FOCUS_REGEN, TOUGHNESS_REGEN),
-        ROGUE_THUG(STARTING_FOCUS, STEALTH, ATTACK, TOUGHNESS, N_OF_ACTIONS,  SNEAK_ATTACK_MOD),
+        ROGUE(STEALTH, ATTACK, TOUGHNESS, INITIATIVE, SNEAK_ATTACK_MOD),
+        ROGUE_SWASHBUCKLER(DEFENSE, ATTACK, INITIATIVE, FOCUS_SPEED),
+        ROGUE_THUG(STARTING_FOCUS, STEALTH, ATTACK, TOUGHNESS, INITIATIVE, SNEAK_ATTACK_MOD),
 
-        TRICKSTER(DEFENSE, QUICK_SLOTS, STARTING_FOCUS, N_OF_ACTIONS, STEALTH, ATTACK, SNEAK_ATTACK_MOD),
-        TRICKSTER_ACROBAT(DEFENSE, QUICK_SLOTS, STARTING_FOCUS, N_OF_ACTIONS, STEALTH, ATTACK, SNEAK_ATTACK_MOD),
-        TRICKSTER_THIEF(DEFENSE, QUICK_SLOTS, STARTING_FOCUS, N_OF_ACTIONS, STEALTH, ATTACK, SNEAK_ATTACK_MOD),
+        TRICKSTER(DEFENSE, QUICK_SLOTS, STARTING_FOCUS, INITIATIVE, STEALTH, ATTACK, SNEAK_ATTACK_MOD),
+        TRICKSTER_ACROBAT(DEFENSE, QUICK_SLOTS, STARTING_FOCUS, INITIATIVE, STEALTH, ATTACK, SNEAK_ATTACK_MOD),
+        TRICKSTER_THIEF(DEFENSE, QUICK_SLOTS, STARTING_FOCUS, INITIATIVE, STEALTH, ATTACK, SNEAK_ATTACK_MOD),
 
-        SCOUT(SIGHT_RANGE, STEALTH, DETECTION, ATTACK, TOUGHNESS_REGEN, N_OF_ACTIONS, STAMINA),
-        SCOUT_RANGER(SIGHT_RANGE, STEALTH, ATTACK, ENDURANCE_REGEN, FOCUS_REGEN, TOUGHNESS_REGEN, DETECTION, N_OF_ACTIONS, STAMINA),
+        SCOUT(SIGHT_RANGE, STEALTH, DETECTION, ATTACK, INITIATIVE),
+        SCOUT_RANGER(SIGHT_RANGE, STEALTH, ATTACK, FOCUS_SPEED, DETECTION, INITIATIVE),
 
-        HERMIT(SPELLPOWER,RESISTANCE, FORTITUDE, SPIRIT, ESSENCE, ESSENCE_REGEN, ENDURANCE_REGEN),
-        HERMIT_SHAMAN(SPELLPOWER, RESISTANCE_PENETRATION, FORTITUDE, SPIRIT,  ESSENCE_REGEN, ENDURANCE_REGEN),
-        HERMIT_DRUID(KNOWLEDGE, SPELLPOWER,RESISTANCE, FOCUS_REGEN,  SPIRIT, ESSENCE, ESSENCE_REGEN),
+        HERMIT(SPELLPOWER, RESISTANCE, FORTITUDE, SPIRIT, ESSENCE, ESSENCE_ABSORPTION),
+        HERMIT_SHAMAN(SPELLPOWER, RESISTANCE_PENETRATION, FORTITUDE, SPIRIT, ESSENCE_ABSORPTION),
+        HERMIT_DRUID(KNOWLEDGE_CAP, SPELLPOWER, RESISTANCE, FOCUS_SPEED, SPIRIT, ESSENCE, ESSENCE_ABSORPTION),
 
-        ACOLYTE(DIVINATION_CAP, SPIRIT, ESSENCE, ESSENCE_REGEN, STAMINA, FOCUS_REGEN, RESISTANCE),
-        ACOLYTE_CLERIC(DIVINATION_CAP, KNOWLEDGE, ESSENCE, ESSENCE_REGEN, FOCUS_REGEN, RESISTANCE),
-        ACOLYTE_PRIEST(DIVINATION_CAP, SPELLPOWER, ESSENCE, ESSENCE_REGEN, FOCUS_REGEN, RESISTANCE),
-        ACOLYTE_MONK(SPIRIT, FOCUS_REGEN, RESISTANCE, DEFENSE, N_OF_ACTIONS, N_OF_COUNTERS),
+        ACOLYTE(DIVINATION_CAP, SPIRIT, ESSENCE, ESSENCE_ABSORPTION, FOCUS_SPEED, RESISTANCE),
+        ACOLYTE_CLERIC(DIVINATION_CAP, KNOWLEDGE_CAP, ESSENCE, ESSENCE_ABSORPTION, FOCUS_SPEED, RESISTANCE),
+        ACOLYTE_PRIEST(DIVINATION_CAP, SPELLPOWER, ESSENCE, ESSENCE_ABSORPTION, FOCUS_SPEED, RESISTANCE),
+        ACOLYTE_MONK(SPIRIT, FOCUS_SPEED, RESISTANCE, DEFENSE, INITIATIVE),
 
-        APOSTATE(RESISTANCE_PENETRATION, SPELLPOWER, ESSENCE_REGEN,STARTING_FOCUS,MEMORIZATION_CAP ),
-        APOSTATE_DARK(RESISTANCE_PENETRATION, SPELLPOWER, STARTING_FOCUS,MEMORIZATION_CAP ),
-        APOSTATE_ARCANE(ESSENCE, SPELLPOWER, ESSENCE_REGEN,STARTING_FOCUS,MEMORIZATION_CAP ),
+        APOSTATE(RESISTANCE_PENETRATION, SPELLPOWER, ESSENCE_ABSORPTION, STARTING_FOCUS, MEMORIZATION_CAP),
+        APOSTATE_DARK(RESISTANCE_PENETRATION, SPELLPOWER, STARTING_FOCUS, MEMORIZATION_CAP),
+        APOSTATE_ARCANE(ESSENCE, SPELLPOWER, ESSENCE_ABSORPTION, STARTING_FOCUS, MEMORIZATION_CAP),
 
-        WIZARD_APPRENTICE(KNOWLEDGE,  ESSENCE, FOCUS_REGEN, CARRYING_CAPACITY, MEMORIZATION_CAP ),
-        WIZARD(KNOWLEDGE,  ESSENCE, ESSENCE_REGEN, FOCUS_REGEN, STARTING_FOCUS, MEMORIZATION_CAP ),
-        MAGE(SPELLPOWER, ESSENCE, ESSENCE_REGEN, FOCUS_REGEN, STARTING_FOCUS, MEMORIZATION_CAP ),
+        WIZARD_APPRENTICE(KNOWLEDGE_CAP, ESSENCE, FOCUS_SPEED, CARRYING_CAPACITY, MEMORIZATION_CAP),
+        WIZARD(KNOWLEDGE_CAP, ESSENCE, ESSENCE_ABSORPTION, FOCUS_SPEED, STARTING_FOCUS, MEMORIZATION_CAP),
+        MAGE(SPELLPOWER, ESSENCE, ESSENCE_ABSORPTION, FOCUS_SPEED, STARTING_FOCUS, MEMORIZATION_CAP),
 
-        MULTICLASS,;
+        MULTICLASS,
+        ;
         PERK_PARAM[] paramPerks;
+
         CLASS_PERK_GROUP(PERK_PARAM... paramPerks) {
             this.paramPerks = paramPerks;
         }
+
         public PERK_PARAM[] getParamPerks() {
             return paramPerks;
         }
@@ -248,53 +253,125 @@ public class HeroEnums {
         }
 
         public boolean isFemale() {
-
             return female;
         }
 
     }
 
+    public enum PERK_UNIQUE {
+        APOSTATE_,
+
+    }
+
+    public enum PERK_PASSIVE {
+        VIGILANT,
+        OPPORTUNISTIC,
+        VENGEFUL,
+        DISPASSIONATE,
+        BLOODTHIRSTY,
+        DARKVISION,
+        DEXTEROUS,
+        AGILE,
+        FIRST_STRIKE,
+        NO_RETALIATION,
+        BERSERKER,
+        // RELENTLESS("This unit is unaffected by Stamina effects"),
+        // ZOMBIFIED("This unit is unaffected by Focus effects"),
+        // SOULLESS("Will not provide Soul counters"), //
+        // FLESHLESS("Poison, disease and bleeding have no effect on this unit"),
+        // BLIND_FIGHTER("Concealed and Invisible units do not receive bonuses when fighting this unit"),
+        // CHARGE("Charge"),
+        // TRUE_STRIKE("True Strike"),
+        // BROAD_REACH("Can attack melee targets to the sides"),
+        // HIND_REACH("Can attack melee targets behind"),
+        // CRITICAL_IMMUNE("Immune to Critical Hits"),
+        // SNEAK_IMMUNE("Immune to Sneak Attacks"),
+        // MIND_AFFECTING_IMMUNE("Immune to Mind-Affecting"),
+        // FAVORED("This unit receives full bonus of its deity"),
+        // SHORT("Non-Short units do not get their vision or missile attacks obstructed by this unit"),
+        // TALL("Does not get its vision or missile attacks obstructed by non-Tall units"),
+        // HUGE("")
+    }
+
     public enum PERK_PARAM {
         SPIRIT(3, 7, 15, false, "Indomitable"),
-        RESISTANCE(10, 20, 32, false, "Resilient"),
-        RESISTANCE_PENETRATION(21, 42, 70, false, "Penetrating"),
-        SPELLPOWER(3, 7, 16, false, "Overpowering"),
-        KNOWLEDGE(3, 8, 18, false, "Erudite"),
-        MEMORIZATION_CAP(14, 35, 80, false, "Prodigious"),
-        DIVINATION_CAP(14, 35, 80, false, "Favored"),
+        GRIT(3, 7, 15, false, "Relentless"),
+        FORTITUDE(3, 7, 15, false, "Hardy"),
+        REFLEX(3, 7, 15, false, "Adroit"),
+        WIT(3, 7, 15, false, "Witty"),
+        LUCK(3, 7, 15, false, "Lucky"),
 
-        N_OF_COUNTERS(3, 6, 10, false, "Drilled"),
-        N_OF_ACTIONS(1, 2, 3, false, "Swift"),
+        Q_SPIRIT(3, 7, 15, false, "Sycophantic"),
+        Q_GRIT(3, 7, 15, false, "Daisy"),
+        Q_FORTITUDE(3, 7, 15, false, "Wispy"),
+        Q_REFLEX(3, 7, 15, false, "Stiff"),
+        Q_WIT(3, 7, 15, false, "Dull"),
+        Q_LUCK(3, 7, 15, false, "Unlucky"),
+
+        RESISTANCE(10, 20, 32, false, "Resilient"),
+        SPELLPOWER(3, 7, 16, false, "Overpowering"),
+
+        Q_RESISTANCE(10, 20, 32, false, "Vulnerable"),
+        Q_SPELLPOWER(3, 7, 16, false, "Feeble"),
+
+        EXTRA_ATTACKS(3, 6, 10, false, "Bold"),
+        FREE_MOVES(3, 6, 10, false, "Springy"),
+
+        Q_EXTRA_ATTACKS(3, 6, 10, false, "Reserved"),
+        Q_FREE_MOVES(3, 6, 10, false, "Heavy-Footed"),
+
+        INITIATIVE(1, 2, 3, false, "Swift"),
         ATTACK(14, 40, 110, false, "Accurate"),
         DEFENSE(12, 35, 100, false, "Nimble"),
         ARMOR(6, 24, 80, false, "Hard Skinned"),
-        FORTITUDE(5, 9, 15, false, "Hardy"),
 
-        ENDURANCE_REGEN(5, 15, 45, false, "Undying"),
-        TOUGHNESS_REGEN(2, 5, 15, false, "Crafty"),
-        ESSENCE_REGEN(11, 25, 60, false, "Meditative"),
-        FOCUS_REGEN(4, 10, 25, false, "Recovering"),
+        Q_INITIATIVE(1, 2, 3, false, "Slow"),
+        Q_ATTACK(14, 40, 110, false, "Cannon-shot"),
+        Q_DEFENSE(12, 35, 100, false, "Clumsy"),
+        Q_ARMOR(6, 24, 80, false, "Thin Skinned"),
+
 
         TOUGHNESS(30, 100, 250, false, "Tough"),
         ENDURANCE(75, 250, 650, false, "Steadfast"),
-        STAMINA(5, 17, 50, false, "Relentless"),
-        ESSENCE(45, 110, 320 , false, "Aligned"),
-        STARTING_FOCUS(7, 15, 30, false, "Sharp"),
+        ESSENCE(45, 110, 320, false, "Aligned"),
+        STARTING_FOCUS(7, 15, 30, false, "Focused"),
+        FOCUS_SPEED(1, 2, 3, false, "Adaptive"),
+
+        Q_TOUGHNESS(30, 100, 250, false, "Fragile"),
+        Q_ENDURANCE(75, 250, 650, false, "Faint"),
+        Q_ESSENCE(45, 110, 320, false, "Unquiet"),
+        Q_STARTING_FOCUS(7, 15, 30, false, "Distracted"),
+        Q_CARRYING_CAPACITY(115, 300, 700, false, "Weak"),
+        Q_DETECTION(25, 65, 125, false, "Inattentive"),
+        Q_STEALTH(8, 22, 50, false, "Thunderous"),
+        Q_FOCUS_SPEED(1, 2, 3, false, "Rigid"),
 
         CARRYING_CAPACITY(115, 300, 700, false, "Mighty"),
-        QUICK_SLOTS(2, 5, 10, false, "Resourceful"),
-        SNEAK_ATTACK_MOD(25, 40, 75, false, "Cunning"),
         DETECTION(25, 65, 125, false, "Observant"),
         STEALTH(8, 22, 50, false, "Surreptitious"),
-        SIGHT_RANGE(1, 2, 3, false, "Sharp Eyed"),
+
+        //UNIQUE PERKS
+        RESISTANCE_PENETRATION(21, 42, 70, false, "Theurge"),
+        BLOCK_CHANCE(6, 24, 80, false, "Crafty"),
         LEADERSHIP_MASTERY(10, 22, 40, false, "Confident"),
+
+        KNOWLEDGE_CAP(3, 8, 18, false, "Erudite"),
+        MEMORIZATION_CAP(14, 35, 80, false, "Prodigious"),
+        DIVINATION_CAP(14, 35, 80, false, "Favored"),
+        ESSENCE_ABSORPTION(11, 25, 60, false, "Meditative"),
+
+        ARMOR_PENETRATION(6, 24, 80, false, "Deadly"),
+        QUICK_SLOTS(2, 5, 10, false, "Resourceful"),
+        SNEAK_ATTACK_MOD(25, 40, 75, false, "Cunning"),
+        SIGHT_RANGE(1, 2, 3, false, "Sharp Eyed"),
+
 
         //sagacious
         ;
 
         //rolls?
 
-        public   PARAMETER param  ;
+        public PARAMETER param;
         public float[] values;
         public boolean percentage;
         public String name;
@@ -333,7 +410,8 @@ public class HeroEnums {
         GREEDY(PRINCIPLES.AMBITION, PRINCIPLES.TREACHERY),
 
         SADISTIC(PRINCIPLES.WAR, PRINCIPLES.LAW),
-        SPITEFUL(PRINCIPLES.WAR, PRINCIPLES.FREEDOM),;
+        SPITEFUL(PRINCIPLES.WAR, PRINCIPLES.FREEDOM),
+        ;
 
         PERSONALITY(PRINCIPLES... p) {
 
@@ -342,7 +420,8 @@ public class HeroEnums {
 
     public enum PRINCIPLES {
 
-        WAR, PEACE, HONOR, TREACHERY, LAW, FREEDOM, CHARITY, AMBITION, TRADITION, PROGRESS,;
+        WAR, PEACE, HONOR, TREACHERY, LAW, FREEDOM, CHARITY, AMBITION, TRADITION, PROGRESS,
+        ;
 
         static {
             HONOR.setOpposite(TREACHERY);
@@ -410,7 +489,8 @@ public class HeroEnums {
         // stoneshield, ironhelm, frostbeard, runesmith, moonsilver, redblaze
         GOBLINOID,
         DEMON,
-        VAMPIRE,;
+        VAMPIRE,
+        ;
 
         RACE() {
 

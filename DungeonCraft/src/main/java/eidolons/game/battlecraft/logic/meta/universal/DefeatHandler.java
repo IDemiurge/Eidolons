@@ -8,10 +8,7 @@ public class DefeatHandler<E extends MetaGame> extends MetaGameHandler<E>{
     }
 
     public boolean isEnded(boolean surrender, boolean end) {
-
         return true;
     }
 
-    public void fallsUnconscious(Event event) {
-    }
 }

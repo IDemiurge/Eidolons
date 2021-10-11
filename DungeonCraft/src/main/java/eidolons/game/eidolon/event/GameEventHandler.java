@@ -3,7 +3,7 @@ package eidolons.game.eidolon.event;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
-import eidolons.game.battlecraft.rules.counter.UndyingCounterRule;
+import eidolons.game.battlecraft.rules.counter.positive.UndyingCounterRule;
 import eidolons.game.core.Eidolons;
 import eidolons.system.libgdx.GdxStatic;
 import eidolons.system.text.tips.TipMessageMaster;
@@ -16,7 +16,6 @@ public class GameEventHandler extends MetaGameHandler {
     public GameEventHandler(MetaGameMaster master) {
         super(master);
     }
-
 
     public boolean handle(Event event) {
         SoundEvents.checkEventSound(event);
@@ -51,16 +50,4 @@ public class GameEventHandler extends MetaGameHandler {
         return true;
     }
 
-    protected void waitForAnims() {
-        GdxStatic.waitForAnimations(null);
-    }
-
-    protected void handleUnconscious(Event event) {
-        if (event.getRef().getSourceObj() instanceof Unit) {
-            if (((Unit) event.getRef().getSourceObj()).isPlayerCharacter()) {
-                getMaster().getDefeatHandler().fallsUnconscious(event);
-
-            }
-        }
-    }
 }

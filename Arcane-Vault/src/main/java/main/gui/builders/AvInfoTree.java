@@ -20,6 +20,9 @@ mode should be static!
 
     @Override
     public void refresh() {
+        if (AV2.getMainBuilder() == null) {
+            return;
+        }
         this.treeViewBuilder = AV2.getMainBuilder().getPrevTreeBuilder();
 
         if (mode != null) {

@@ -8,7 +8,6 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.ClearshotMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.netherflame.main.death.ShadowMaster;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.enums.rules.VisionEnums.VISION_MODE;
@@ -323,27 +322,12 @@ public class SightMaster {
             unit.removeStatus(UnitEnums.STATUS.REVEALED.toString());
             return UNIT_VISION.IN_PLAIN_SIGHT;
         }
-
         if (unit.isMine())
             if (activeUnit.isMine())
                 return UNIT_VISION.IN_PLAIN_SIGHT;
-        if (unit instanceof Unit) {
-            if (!((Unit) unit).getAI().isOutsideCombat()) {
-                if (activeUnit instanceof Unit) {
-                    if (((Unit) activeUnit).isShadow()) {
-                        return UNIT_VISION.IN_PLAIN_SIGHT;
-                    }
-                }
-            }
-        }
 
         Boolean result = checkInSightSector(activeUnit, unit);
         if (result == null) {
-            if (ShadowMaster.getShadowUnit() == activeUnit) {
-                if (activeUnit.getCoordinates().dst_(unit.getCoordinates()) <= 5) {
-                    return UNIT_VISION.IN_SIGHT;
-                }
-            }
             if (activeUnit.getVisionMode() != VISION_MODE.X_RAY_VISION)
                 if (isBlocked(unit, activeUnit, false)) {
                     return UNIT_VISION.BLOCKED;

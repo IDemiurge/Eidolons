@@ -576,8 +576,6 @@ public enum PARAMS implements PARAMETER {
     TOUGHNESS_PERCENTAGE("Percentage", "", true, MathMaster.PERCENTAGE, "units", "chars", "perks"),
     ESSENCE_PERCENTAGE("Percentage", "", true, MathMaster.PERCENTAGE, "units", "chars", "perks"),
     FOCUS_PERCENTAGE("Percentage", "", true, MathMaster.PERCENTAGE, "units", "chars", "perks"),
-    N_OF_ACTIONS_PERCENTAGE("Percentage", "", true, MathMaster.PERCENTAGE, "units", "chars", "perks"),
-    N_OF_COUNTERS_PERCENTAGE("Percentage", "", true, MathMaster.PERCENTAGE, "units", "chars", "perks"),
 
     TOUGHNESS_COST_MOD(null, "", false, 0, "units", "chars", "perks"),
     ESSENCE_COST_MOD(null, "", false, 0, "units", "chars", "perks"),
@@ -686,8 +684,6 @@ public enum PARAMS implements PARAMETER {
     SINGLE_HAND_DAMAGE_BONUS_MOD(true, null, "", false, 0, "classes", "units", "chars", "perks"),
     THROW_SIZE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
 
-    SPACE(null, "", false, StackingRule.DEFAULT_SPACE_PER_CELL, "terrain", "bf obj"), // for passable objects!
-    GIRTH(null, "", false, 300, "units", "chars", "perks", "bf obj"),
     COATING_COUNTERS_APPLIED_PER_HIT_MOD(true, null, "", false, 0, "units", "chars", "perks"),
     COATING_COUNTERS_APPLIED_TO_ITEM_MOD(true, null, "", false, 0, "units", "chars", "perks"),
     COATING_COUNTERS_SPENT_MOD(true, null, "", false, 0, "units", "chars", "perks"),

@@ -13,7 +13,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster.CONTAINER_ACTION;
-import eidolons.game.module.dungeoncrawl.objects.vendor.GoldMaster;
+import eidolons.game.module.dungeoncrawl.explore.vendor.GoldMaster;
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
@@ -39,8 +39,6 @@ import main.data.ability.construct.VariableManager;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.SortMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.Loop;
@@ -52,8 +50,6 @@ import main.system.math.MathMaster;
 import main.system.sound.AudioEnums;
 import main.system.sound.AudioEnums.STD_SOUNDS;
 import main.system.threading.WaitMaster;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 

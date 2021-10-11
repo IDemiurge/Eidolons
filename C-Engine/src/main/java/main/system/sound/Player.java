@@ -249,6 +249,7 @@ public class Player {
                 v = v / 100;
             }
             soundFile.setVolume(id, v);
+            // soundFile.setPan(id, v);
             log(" Playing sound" + sound.getSound() +
                     "; id: " + id + " volume: "
                     + v);

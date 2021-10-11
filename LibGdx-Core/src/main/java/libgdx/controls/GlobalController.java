@@ -13,7 +13,6 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.cinematic.CinematicLib;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.game.netherflame.lord.EidolonLord;
 import libgdx.GdxMaster;
 import libgdx.anims.actions.ActionMaster;
@@ -121,23 +120,12 @@ public class GlobalController implements Controller {
                 EUtils.showInfoText("... Tutorial " + (bool ? "on" : "off"));
                 break;
             case Keys.F2:
-                if (Flags.isIDE()) {
-                    EidolonLord.lord.soulforceLost(50);
-                    return false;
-                }
-                if (Flags.isIDE())
-                    LordPanel.getInstance().init();
-                GuiEventManager.trigger(GuiEventType.TOGGLE_LORD_PANEL);
                 return true;
             case Keys.F1:
                 if (!Flags.isIDE())
                     if (!EidolonsGame.isHqEnabled()) {
                         return false;
                     }
-                if (ShadowMaster.isShadowAlive()) {
-                    EUtils.showInfoText("Cannot do this now");
-                    return false;
-                }
                 if (Eidolons.getGame().isBossFight()) {
                     EUtils.showInfoText("There is no time...");
                     return false;

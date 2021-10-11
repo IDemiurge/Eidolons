@@ -229,11 +229,10 @@ public class PerkGenerator {
             String prefix = "attribute";
             switch (sub) {
                 case STARTING_FOCUS:
-                case FOCUS_REGEN:
+                case FOCUS_SPEED:
 
-                case ESSENCE_REGEN:
+                case ESSENCE_ABSORPTION:
                 case CARRYING_CAPACITY:
-                case TOUGHNESS_REGEN:
                 case DEFENSE:
                 case SIGHT_RANGE:
                 case QUICK_SLOTS:

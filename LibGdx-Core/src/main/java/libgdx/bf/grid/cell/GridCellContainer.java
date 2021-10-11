@@ -15,7 +15,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.colormap.LightConsts;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.struct.Entrance;
-import eidolons.game.netherflame.main.death.ShadowMaster;
 import libgdx.GDX;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
@@ -403,7 +402,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
                         i * 2 - getUnitViewsVisible().size()
                 )); //over cell at least
                 //                 i / 2 +1
-            } else if (actor.isHovered() || actor.getUserObject() == ShadowMaster.getShadowUnit())
+            } else if (actor.isHovered() )
                 hovered = actor;
             else if (actor.isActive()) {
                 if (hovered == null) hovered = actor;
@@ -670,11 +669,6 @@ public class GridCellContainer extends GridCell implements Hoverable {
         this.stackView = stackView;
         info.setVisible(stackView);
         info.setNameText("[" + getUnitViews(true).size() + " in stack, ESC to hide]");
-        info.setValueText("[" +
-                getUserObject().getParam(PARAMS.GIRTH) +
-                " girth on " + 1000 +
-                //         getUserObject().getIntParam() +
-                "space]");
         info.pack();
         getUnitViews(false).forEach(view -> view.setStackView(stackView));
     }

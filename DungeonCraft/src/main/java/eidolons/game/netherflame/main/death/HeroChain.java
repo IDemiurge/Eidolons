@@ -25,12 +25,6 @@ public class HeroChain {
 //        heroes = party.getMemberTypes().stream().map(member -> new ChainHero(lives, member)).collect(Collectors.toList());
     }
 
-    public void spawned(Unit hero) {
-        if (Flags.isActiveTestMode()) {
-
-        }
-    }
-
     public Party getParty() {
         return party;
     }
@@ -46,11 +40,6 @@ public class HeroChain {
     public List<ChainHero> getHeroes() {
         return heroes;
     }
-
-    public int getLivesPerMission() {
-        return 1;
-    }
-
 
     public boolean isFinished() {
 

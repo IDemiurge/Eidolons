@@ -23,42 +23,22 @@ public class NF_DefeatHandler extends DefeatHandler {
 
     @Override
     public boolean isEnded(boolean surrender, boolean end) {
-        //destroyed as a Shadow
+        //killed in True Form
         // if (getMaster().getSoulforceMaster().isTrueForm()) {
+        //TODO SOULBURN
         //     return !SoulforceMaster.getInstance().died();
         // }
         if (getMaster().getPartyManager().deathEndsGame()) {
             return true;
         }
-        //TODO deal with the corpse loot!!!
         getGame().getLoop().setPaused(true);
 
-        //TODO gdx Review 2021
-        // if (VisualChoiceHandler.isOn()) {
-        //     GuiEventManager.triggerWithParams(GuiEventType.VISUAL_CHOICE,
-        //             new VC_DataSource(VC_TYPE.death));
-        // VC_OPTION o = (VC_OPTION) WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.VISUAL_CHOICE);
-        // switch (o) {
-        //     case ashen_rebirth:
-        //     case fiery_rebirth:
-        //         return false;
-        //     case dissolution:
-        //         return true;
-        // }
-        // }
-        //Boolean result
         if (getGame().getLoop() instanceof CombatLoop) {
             ((CombatLoop) getGame().getLoop()).endCombat();
         }
 
         GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK, 2f);
         WaitMaster.WAIT(1000); //need more time or different sequence
-        if (!ShadowMaster.isShadowAlive()) {
-            TipMessageMaster.death();
-        } else {
-            getMaster().getShadowMaster();
-        }
-        //play sound
         GuiEventManager.trigger(GuiEventType.BLACKOUT_AND_BACK, 1.5f);
         WaitMaster.WAIT(1100);
         //use the normal selection events?
@@ -72,24 +52,9 @@ public class NF_DefeatHandler extends DefeatHandler {
         GdxStatic.setDefaultCursor();
         GuiEventManager.trigger(GuiEventType.UPDATE_GUI);
 
-
         WaitMaster.WAIT(600);
         getGame().getLoop().setPaused(false);
         return false;
-    }
-    @Override
-    public void fallsUnconscious(Event event) {
-        if (!isOn())
-            return;
-        getMaster().getShadowMaster().heroFell(event);
-    }
-
-    @Deprecated
-    public boolean isNoLivesLeft() {
-        if (EidolonsGame.TUTORIAL_PATH) {
-            return false;
-        }
-        return getMaster().getPartyManager().getHeroChain().isFinished();
     }
 
     public static boolean isOn() {
@@ -104,7 +69,6 @@ public class NF_DefeatHandler extends DefeatHandler {
     public NF_PartyManager getPartyManager() {
         return (NF_PartyManager) super.getPartyManager();
     }
-
 
     @Override
     public NF_MetaMaster getMaster() {

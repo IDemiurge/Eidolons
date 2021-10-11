@@ -40,26 +40,38 @@ import java.util.List;
 public class DamageCalculator {
 
     protected static int calculateToughnessDamage(BattleFieldObject attacked, BattleFieldObject attacker,
-                                                  int base_damage, Ref ref, int blocked, DAMAGE_TYPE damage_type, StringBuilder log) {
-        return calculateDamage(false, attacked, attacker, base_damage, ref, blocked,
+                                                  int base_damage, Ref ref, DAMAGE_TYPE damage_type, StringBuilder log) {
+       /*
+       NF Rules
+       Now Toughness acts as a buffer of HP you can lose each round without consequence.
+       > Cannot take Endurance damage while has Toughness (unless damage is VORPAL)
+        */
+       if (checkDamagePenetratesToughness(ref, damage_type))
+           return 0;
+        return calculateDamage(false, attacked, attacker, base_damage, ref,
                 damage_type, log);
     }
+
 
     protected static int calculateEnduranceDamage(BattleFieldObject attacked, BattleFieldObject attacker,
-                                                  int base_damage, Ref ref, int blocked, DAMAGE_TYPE damage_type, StringBuilder log) {
-        return calculateDamage(true, attacked, attacker, base_damage, ref, blocked,
+                                                  int base_damage, Ref ref,  DAMAGE_TYPE damage_type, StringBuilder log) {
+        return calculateDamage(true, attacked, attacker, base_damage, ref,
                 damage_type, log);
     }
 
+    private static boolean checkDamagePenetratesToughness(Ref ref, DAMAGE_TYPE damage_type) {
+        //TODO NF Rules review
+        return damage_type== DAMAGE_TYPE.POISON || damage_type== DAMAGE_TYPE.PURE;
+    }
     public static int calculateDamage(boolean endurance, BattleFieldObject attacked, BattleFieldObject attacker,
-                                      int base_damage, Ref ref, int blocked, DAMAGE_TYPE damage_type, StringBuilder log) {
+                                      int base_damage, Ref ref,DAMAGE_TYPE damage_type, StringBuilder log) {
 
         if (!endurance) {
             if (isEnduranceOnly(ref)) {
                 return 0;
             }
         }
-        int amount = base_damage - blocked;
+        int amount = base_damage ;
         int resistance = ResistMaster.getResistanceForDamageType(attacked, attacker, damage_type);
         amount = amount - MathMaster.applyPercent(amount, resistance);
         int armor = ArmorMaster.getArmorValue(attacked, damage_type);
@@ -71,8 +83,9 @@ public class DamageCalculator {
                     "% (Resistance), plus additional " +
                     armor + " (Natural Armor)");
         }
-
-        return Math.max(0, amount - armor);
+        Integer toughness = attacked.getIntParam(PARAMS.C_TOUGHNESS);
+        amount = Math.max(0, amount - armor);
+        return Math.min(amount, toughness);
     }
 
     public static int precalculateDamage(Attack attack) {
@@ -130,8 +143,9 @@ public class DamageCalculator {
 
         int blocked = attacked.getGame().getArmorSimulator().
                 processDamage(damage).getBlocked();
+        amount -= blocked;
         amount = calculateDamage(true, attacked, attacker, amount,
-                null, blocked, dmg_type, null );
+                null, dmg_type, null );
 
         return amount;
     }

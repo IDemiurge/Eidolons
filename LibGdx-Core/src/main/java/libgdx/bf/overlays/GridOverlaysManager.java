@@ -301,7 +301,7 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
                     getCellByCoordinate(c);
             if (debug || (sightInfoDisplayed&&Flags.isIDE())) {
                 drawOverlay(container, INFO_TEXT, batch, cell, x, y);
-                return;
+                // return;
             } else if (path) {
                 if (c.equals(DC_MovementManager.playerDestination)) {
                     drawOverlay(container, DESTINATION, batch, cell, x, y);

@@ -43,7 +43,6 @@ import eidolons.game.core.state.DC_StateManager;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExploreGameLoop;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
-import eidolons.game.netherflame.main.misc.PaleAspect;
 import eidolons.system.DC_ConditionMaster;
 import eidolons.system.DC_RequirementsManager;
 import eidolons.system.audio.MusicEnums;
@@ -132,8 +131,6 @@ public class DC_Game extends GenericGame {
     protected MusicMaster musicMaster;
     protected DC_BattleFieldGrid grid;
 
-    protected DC_GameObjMaster paleMaster;
-
     public DC_Game() {
         this(false);
     }
@@ -177,7 +174,6 @@ public class DC_Game extends GenericGame {
 
         setIdManager(new DC_IdManager(this));
         objMaster = new DC_GameObjMaster(this);
-        paleMaster = new DC_GameObjMaster(this, true);
         manager = createGameManager();
         manager.init();
 
@@ -457,15 +453,8 @@ public class DC_Game extends GenericGame {
     }
 
     public DC_GameObjMaster getObjMaster() {
-        if (PaleAspect.ON)
-            return getPaleMaster();
         return (DC_GameObjMaster) objMaster;
     }
-
-    public DC_GameObjMaster getPaleMaster() {
-        return paleMaster;
-    }
-
 
     public Obj getObjectByCoordinate(Coordinates c, Boolean overlayingIncluded) {
         return getObjMaster().getObjectByCoordinate(c, overlayingIncluded);
@@ -853,7 +842,6 @@ public class DC_Game extends GenericGame {
 
     public void reinit(boolean restart) {
         objMaster = new DC_GameObjMaster(this);
-        paleMaster = new DC_GameObjMaster(this, true);
         List<Obj> cachedObjects = new ArrayList<>();
         if (!restart)
             for (Obj sub : getState().getObjects().values()) {

@@ -12,6 +12,8 @@ import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.handlers.AvHandler;
 import main.handlers.AvManager;
+import main.launch.AV_Utils;
+import main.v2_0.AV2;
 
 import java.util.List;
 
@@ -24,8 +26,10 @@ public class AvGenHandler extends AvHandler {
 
     @Override
     public void init() {
+        if (AV_Utils.isTypeRead(DC_TYPE.UNITS)){
         List<ObjType> gen = EtalonGen.generateEtalonTypes();
         gen.forEach(t -> DataManager.addType(t));
+        }
     }
 
     public static void generateNewArmorParams() {

@@ -547,14 +547,7 @@ public class DC_StateManager extends StateManager {
             return;
         }
         super.addObject(obj);
-        if (obj instanceof DC_Obj) {
-            if (((DC_Obj) obj).isPale()) {
-                getGame().getPaleMaster().objAdded(obj);
-                return;
-            }
-        }
         getGame().getObjMaster().objAdded(obj);
-
     }
 
     public void removeObject(Integer id) {

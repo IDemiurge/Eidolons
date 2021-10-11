@@ -13,10 +13,7 @@ import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
 import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj;
 import eidolons.dungeons.generator.model.AbstractCoordinates;
-import eidolons.game.netherflame.main.misc.PaleAspect;
-import eidolons.content.consts.Sprites;
 import eidolons.system.audio.DC_SoundMaster;
-import eidolons.system.libgdx.GdxAdapter;
 import eidolons.system.text.tips.TipMessageMaster;
 import main.content.enums.EncounterEnums;
 import main.entity.Ref;
@@ -69,9 +66,6 @@ public class PuzzleActions extends PuzzleElement {
         }
         // if (!isPaleReturn(puzzle,punishment))
         puzzle.failed();
-        if (puzzle.isPale()) {
-            PaleAspect.exitPale();
-        }
     }
 
     private static void applyPunishment(Puzzle puzzle, PuzzleEnums.PUZZLE_PUNISHMENT punishment, String data) {
@@ -106,9 +100,6 @@ public class PuzzleActions extends PuzzleElement {
     }
 
     public static void resolution(PuzzleEnums.PUZZLE_RESOLUTION resolution, Puzzle puzzle, String s) {
-        if (puzzle.isPale()) {
-            PaleAspect.exitPale();
-        }
         //TODO tips and so on
         switch (resolution) {
             case remove_wall:

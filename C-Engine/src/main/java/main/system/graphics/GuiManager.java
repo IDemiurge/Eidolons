@@ -1,6 +1,7 @@
 package main.system.graphics;
 
 // import com.github.weisj.darklaf.LafManager;
+
 import main.swing.generic.components.Builder;
 import main.system.launch.CoreEngine;
 
@@ -49,7 +50,11 @@ public class GuiManager {
                 }
                 main.system.ExceptionMaster.printStackTrace(e);
             }
-            FontMaster.setUIFont();
+            try {
+                FontMaster.setUIFont();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         }
     }
 

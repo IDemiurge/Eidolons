@@ -839,6 +839,7 @@ it sort of broke at some point - need to investigate!
         ((CustomSpriteBatch) batch).resetBlending();
         decorMap.get(DecorData.DECOR_LEVEL.LOWEST).draw(batch, 1);
         pillars.draw(batch, 1f);
+        pillars.drawScreen(batch);
         for (PlatformDecor platform : platformDecor) {
             platform.draw(batch, 1);
         }

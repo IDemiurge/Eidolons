@@ -19,7 +19,6 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.InteractiveObj;
-import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.puzzle.voidy.DefVoidHandler;
 import eidolons.puzzle.voidy.VoidHandler;
 import eidolons.system.text.HelpMaster;
@@ -112,9 +111,6 @@ public class DC_GridPanel extends GridPanel {
         if (Eidolons.game != null)
             if (Eidolons.game.getLoop() != null)
                 paused = Eidolons.game.getLoop().isPaused();
-        if (ShadowMaster.isShadowAlive() && Eidolons.game.getLoop().getActiveUnit() != ShadowMaster.getShadowUnit()) {
-            paused = false;
-        }
         if (parentAlpha == ShaderDrawer.SUPER_DRAW) {
             for (GroupX groupX : getCommentSprites()) {
                 groupX.setVisible(false);

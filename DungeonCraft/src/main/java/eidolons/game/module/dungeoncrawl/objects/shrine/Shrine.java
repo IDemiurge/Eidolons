@@ -5,7 +5,7 @@ import eidolons.game.module.dungeoncrawl.objects.DungeonObj;
 import main.entity.type.ObjType;
 
 import static eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE.SHRINE;
-
+@Deprecated
 public class Shrine extends DungeonObj  {
 
     public Shrine(ObjType type, int x, int y) {

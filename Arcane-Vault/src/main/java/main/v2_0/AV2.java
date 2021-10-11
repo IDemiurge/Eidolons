@@ -1,5 +1,6 @@
 package main.v2_0;
 
+import main.content.DC_TYPE;
 import main.gui.builders.MainBuilder;
 import main.gui.components.table.AvColorHandler;
 import main.gui.tree.AvTreeBuilder;
@@ -111,4 +112,5 @@ public class AV2 {
     public static WsHandler getWorkspaceHandler() {
         return getManager().getWorkspaceHandler();
     }
+
 }

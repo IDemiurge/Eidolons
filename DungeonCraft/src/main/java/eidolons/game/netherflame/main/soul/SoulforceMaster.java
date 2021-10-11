@@ -9,7 +9,6 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.netherflame.main.NF_PartyManager;
 import eidolons.game.netherflame.main.death.ChainHero;
-import eidolons.game.netherflame.main.death.ShadowMaster;
 import eidolons.game.netherflame.lord.EidolonLord;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
@@ -28,6 +27,8 @@ public class SoulforceMaster extends MetaGameHandler {
 
     private static Coordinates lastRespPoint;
     private static SoulforceMaster instance;
+
+    private boolean trueForm;
 
     public SoulforceMaster(MetaGameMaster master) {
         super(master);
@@ -64,7 +65,7 @@ public class SoulforceMaster extends MetaGameHandler {
     }
 
     public boolean isTrueForm() {
-        return ShadowMaster.isShadowAlive();
+        return trueForm;
     }
 
     private int getResurrectCost(boolean inPlace, Unit hero) {

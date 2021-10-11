@@ -688,7 +688,6 @@ public class ValuePages {
     public static final PARAMETER[] BACKGROUND_PARAMS_ADDITIONAL = {
             GOLD, ATTR_POINTS, MASTERY_POINTS,
             FREE_MASTERIES, MASTERY_RANKS_PER_LEVEL, ATTR_POINTS_PER_LEVEL,
-            GIRTH,
             // MEMORIZATION_CAP,
             // XP_GAIN_MOD,
             // XP_LEVEL_MOD,

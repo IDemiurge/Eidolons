@@ -102,7 +102,7 @@ public class OrbsPanel extends TablePanel {
             }
             orb.act(delta);
             i++;
-            boolean disabled = EidolonsGame.isAltControlPanel() &&
+            boolean disabled =
                     !EidolonsGame.getVar(ContentValsManager.getBaseParameterFromCurrent(param).getName());
 
             if (disabled) {

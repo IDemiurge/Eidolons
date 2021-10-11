@@ -7,7 +7,6 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleElement;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleQuest;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleStats;
 import eidolons.game.core.EUtils;
-import eidolons.game.netherflame.main.misc.PaleAspect;
 import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.text.tips.TextEvent;
@@ -228,9 +227,6 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
     }
 
     protected void entered() {
-        if (puzzle.isPale()) {
-            PaleAspect.enterPale();
-        }
         // Eidolons.onNonGdxThread(() -> {
         cinematicStart();
         //just zoom out? need to center cam on exits..

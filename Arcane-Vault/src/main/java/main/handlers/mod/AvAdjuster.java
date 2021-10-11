@@ -5,25 +5,18 @@ import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.consts.libgdx.GdxStringUtils;
-import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.rpg.PrincipleMaster;
-import eidolons.game.module.herocreator.logic.HeroCreator;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.enums.entity.ActionEnums;
-import main.content.enums.entity.HeroEnums;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.handlers.gen.AvGenHandler;
-import main.v2_0.AV2;
-import main.launch.ArcaneVault;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 
@@ -71,14 +64,6 @@ public class AvAdjuster {
             }
 
 
-            if (obj_type == DC_TYPE.CHARS) {
-                for (ObjType type : DataManager.getTypes(obj_type)) {
-                    // ContentGenerator.generateArmorPerDamageType(type, null);
-                    if (type.getGroup().equals("Background")) {
-                        PrincipleMaster.initPrincipleIdentification(type);
-                    }
-                }
-            }
         }
         checkPrincipleProcessing(obj_type);
         checkAdjustIcon(obj_type);
@@ -93,13 +78,8 @@ public class AvAdjuster {
             AvGenHandler.generateNewArmorParams();
         } else if (obj_type == DC_TYPE.WEAPONS) {
             AvGenHandler.generateNewWeaponParams();
-        } else if (obj_type == DC_TYPE.DEITIES) {
-            for (ObjType type : DataManager.getTypes(obj_type))
-            // if (type.getGroup().equals("Background"))
-            {
-                PrincipleMaster.initPrincipleIdentification(type);
-            }
-        } else if (obj_type == DC_TYPE.ENCOUNTERS) {
+        }
+        else if (obj_type == DC_TYPE.ENCOUNTERS) {
             adjustEncounters();
         } else if (obj_type == DC_TYPE.ACTIONS) {
             for (ObjType type : DataManager.getTypes(obj_type)) {
@@ -151,53 +131,7 @@ public class AvAdjuster {
                         type.setProperty((PROPS.OFFHAND_NATURAL_WEAPON), PROPS.NATURAL_WEAPON
                                 .getDefaultValue());
                     }
-                    if (ArcaneVault.isSimulationOn()) {
-                        int girth = 0;
-                        Unit unit = AV2.getSimulationHandler().getUnit(type);
-                        HeroEnums.RACE race = unit.getRace();
-                        if (race != null) {
-                            switch (race) {
-                                case DEMON:
-                                    girth = 200;
-                                    if (unit.getBackground() == HeroEnums.BACKGROUND.INFERI_WARPBORN) {
-                                        girth = 80;
-                                    }
-                                    break;
-                                case ELF:
-                                    girth = 50;
-                                    break;
-                                case GOBLINOID:
-                                    girth = 135;
-                                    break;
-                                case VAMPIRE:
-                                case HUMAN:
-                                    girth = 100;
-                                    break;
-                                case DWARF:
-                                    girth = 175;
-                                    break;
-                            }
-                        }
-                        if (type.getGroup().equals(Strings.BACKGROUND)) {
-                            LogMaster.setOff(true);
-                            try {
 
-                                unit.resetDefaultAttrs();
-                            } catch (Exception e) {
-
-                            } finally {
-                                LogMaster.setOff(false);
-                            }
-
-                        } else {
-                            girth += DataManager.getType(HeroCreator.BASE_HERO, DC_TYPE.CHARS)
-                                    .getIntParam(PARAMS.GIRTH);
-                        }
-                        if (!type.getName().equals(HeroCreator.BASE_HERO)) {
-                            type.setParam(PARAMS.GIRTH, girth);
-                        }
-
-                    }
                 } else {
                     // XML_Transformer.adjustProgressionToWeightForm(type,
                     // true);

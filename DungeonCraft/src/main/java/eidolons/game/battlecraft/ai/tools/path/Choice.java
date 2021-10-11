@@ -21,7 +21,6 @@ public class Choice {
     private Coordinates prevCoordinates;
     private final List<Action> actions;
     private Boolean[] turns;
-    int maxUnitsInStack;
 
     public Choice(Coordinates targetCoordinate, Action... actions) {
         this(targetCoordinate, null, actions);
@@ -32,9 +31,6 @@ public class Choice {
         this.prevCoordinates = prevCoordinates;
         this.actions = new ArrayList<>(Arrays.asList(actions));
 
-        maxUnitsInStack=
-        Eidolons.getGame().getRules().getStackingRule().getStackFactor(coordinates,
-                actions[0].getSource(), false);
 
     }
 

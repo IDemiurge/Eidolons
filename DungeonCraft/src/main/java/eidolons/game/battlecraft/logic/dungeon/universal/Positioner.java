@@ -34,7 +34,6 @@ import java.util.stream.Collectors;
 public class Positioner  extends DungeonHandler  {
     protected Map<Coordinates, List<ObjType>> unitCache;
     List<Coordinates> coordinatesUsed = new ArrayList<>();
-    private Integer maxSpacePercentageTaken = 100;
 
     public Positioner(DungeonMaster  master) {
         super(master);
@@ -96,7 +95,7 @@ public class Positioner  extends DungeonHandler  {
     }
 
     private static boolean canBeMovedOnto(Entity entity, Coordinates coordinate) {
-      return DC_Game.game.getRules().getStackingRule().canBeMovedOnto(entity, coordinate, true, false);
+      return DC_Game.game.getRules().getStackingRule().canBeMovedOnto(entity, coordinate, false);
     }
 
     public boolean isAutoOptimalFacing() {
@@ -283,19 +282,12 @@ public class Positioner  extends DungeonHandler  {
         }
 
         try {
-            return StackingRule.checkCanPlace(maxSpacePercentageTaken, c, entityToPosition, otherUnits);
+            return StackingRule.checkCanPlace( c, entityToPosition, otherUnits);
         } catch (Exception e) {
             return true;
         }
     }
 
-    public Integer getMaxSpacePercentageTaken() {
-        return maxSpacePercentageTaken;
-    }
-
-    public void setMaxSpacePercentageTaken(Integer maxSpacePercentageTaken) {
-        this.maxSpacePercentageTaken = maxSpacePercentageTaken;
-    }
 
     public static DIRECTION getRandomSpawnAdjustDirection() {
         DIRECTION direction = FacingMaster.getRandomFacing().getDirection();

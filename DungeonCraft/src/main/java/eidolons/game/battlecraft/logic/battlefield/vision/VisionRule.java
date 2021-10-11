@@ -9,8 +9,6 @@ import eidolons.game.battlecraft.rules.mechanics.ConcealmentRule;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.module.dungeoncrawl.struct.Entrance;
-import eidolons.game.netherflame.main.death.ShadowMaster;
-import eidolons.game.netherflame.main.death.ShadowVisionMaster;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.entity.UnitEnums;
@@ -149,10 +147,6 @@ public class VisionRule {
     }
 
     private boolean isObjResetRequired(Unit observer, DC_Obj sub) {
-        if (observer == ShadowMaster.getShadowUnit()) {
-            return true;
-        }
-
         //        if (sub instanceof Unit) TODO I really think enemies don't need to know anything else....
         if (!observer.isPlayerCharacter())
             return observer.isHostileTo(sub.getOwner());
@@ -215,10 +209,6 @@ public class VisionRule {
         //            landmark = ((BattleFieldObject) object).isWall() || ((BattleFieldObject) object).isLandscape();
         //        }
 
-        if (source == ShadowMaster.getShadowUnit()) {
-            return ShadowVisionMaster.getVisibility(sight, object);
-
-        }
         if (master.getGame().getRules().getStealthRule().
                 checkInvisible(source.getOwner(), object))
             return VISIBILITY_LEVEL.UNSEEN;
