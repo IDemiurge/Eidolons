@@ -576,8 +576,6 @@ public enum PARAMS implements PARAMETER {
     TOUGHNESS_PERCENTAGE("Percentage", "", true, MathMaster.PERCENTAGE, "units", "chars", "perks"),
     ESSENCE_PERCENTAGE("Percentage", "", true, MathMaster.PERCENTAGE, "units", "chars", "perks"),
     FOCUS_PERCENTAGE("Percentage", "", true, MathMaster.PERCENTAGE, "units", "chars", "perks"),
-    N_OF_ACTIONS_PERCENTAGE("Percentage", "", true, MathMaster.PERCENTAGE, "units", "chars", "perks"),
-    N_OF_COUNTERS_PERCENTAGE("Percentage", "", true, MathMaster.PERCENTAGE, "units", "chars", "perks"),
 
     TOUGHNESS_COST_MOD(null, "", false, 0, "units", "chars", "perks"),
     ESSENCE_COST_MOD(null, "", false, 0, "units", "chars", "perks"),

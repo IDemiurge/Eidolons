@@ -3,7 +3,7 @@ package eidolons.game.eidolon.event;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
-import eidolons.game.battlecraft.rules.counter.UndyingCounterRule;
+import eidolons.game.battlecraft.rules.counter.positive.UndyingCounterRule;
 import eidolons.game.core.Eidolons;
 import eidolons.system.libgdx.GdxStatic;
 import eidolons.system.text.tips.TipMessageMaster;

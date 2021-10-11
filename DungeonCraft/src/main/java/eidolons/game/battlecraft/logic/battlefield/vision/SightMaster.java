@@ -322,27 +322,12 @@ public class SightMaster {
             unit.removeStatus(UnitEnums.STATUS.REVEALED.toString());
             return UNIT_VISION.IN_PLAIN_SIGHT;
         }
-
         if (unit.isMine())
             if (activeUnit.isMine())
                 return UNIT_VISION.IN_PLAIN_SIGHT;
-        if (unit instanceof Unit) {
-            if (!((Unit) unit).getAI().isOutsideCombat()) {
-                if (activeUnit instanceof Unit) {
-                    if (((Unit) activeUnit).isShadow()) {
-                        return UNIT_VISION.IN_PLAIN_SIGHT;
-                    }
-                }
-            }
-        }
 
         Boolean result = checkInSightSector(activeUnit, unit);
         if (result == null) {
-            if (ShadowMaster.getShadowUnit() == activeUnit) {
-                if (activeUnit.getCoordinates().dst_(unit.getCoordinates()) <= 5) {
-                    return UNIT_VISION.IN_SIGHT;
-                }
-            }
             if (activeUnit.getVisionMode() != VISION_MODE.X_RAY_VISION)
                 if (isBlocked(unit, activeUnit, false)) {
                     return UNIT_VISION.BLOCKED;
