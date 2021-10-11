@@ -349,7 +349,6 @@ public class HeroManager {
 
         Entity type = stack.pop();
         applyChangedType(true, hero, type);
-        CharacterCreator.setSelectedHeroType(hero.getType());
     }
 
     public void update(Unit hero) {

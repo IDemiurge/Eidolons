@@ -83,8 +83,9 @@ public class DamageCalculator {
                     "% (Resistance), plus additional " +
                     armor + " (Natural Armor)");
         }
-
-        return Math.max(0, amount - armor);
+        Integer toughness = attacked.getIntParam(PARAMS.C_TOUGHNESS);
+        amount = Math.max(0, amount - armor);
+        return Math.min(amount, toughness);
     }
 
     public static int precalculateDamage(Attack attack) {

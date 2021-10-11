@@ -35,13 +35,10 @@ import java.awt.*;
 
 public class CharacterCreator {
 
-    private static final String TITLE = "Hero Creator";
-    public static int STD_COLUMN_NUMBER = 6;
     private static DC_Game game;
     private static HeroManager heroManager;
     private static HeroCreator heroCreator;
     private static Dimension heroPanelSize;
-    private static ObjType selectedHeroType;
     private static boolean initialized;
 
     private static boolean partyMode;
@@ -54,20 +51,6 @@ public class CharacterCreator {
     public static void init() {
         setHeroCreator(HeroCreator.getInstance() );
         setHeroManager(new HeroManager(getGame()));
-    }
-
-    // heroes;
-
-    public static void setSelectedHeroType(ObjType selectedHeroType) {
-        CharacterCreator.selectedHeroType = selectedHeroType;
-    }
-
-    public static void open(boolean unit) {
-
-    }
-
-    public static void open(ObjType type) {
-        // no additional levels; support renaming; save
     }
 
     public static void saveAs(ObjType type) {
@@ -191,9 +174,7 @@ public class CharacterCreator {
     }
 
     public static void addHero(final Unit hero, boolean initial) {
-
         getHeroManager().addHero(hero);
-        setSelectedHeroType(hero.getType());
         setInitialized(true);
         saveLastPartyData();
     }

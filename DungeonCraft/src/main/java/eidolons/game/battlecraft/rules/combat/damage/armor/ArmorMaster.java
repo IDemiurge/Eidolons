@@ -62,19 +62,16 @@ public class ArmorMaster {
         this.game = game;
     }
 
-    public void damageEffect(Damage damage, boolean sneak, HitType hitType) {
-/*
-diff from attack?
- */
-        if (!simulation)
-            log();
-    }
-
     private void log() {
+        if (simulation)
+            return;
         game.getLogManager().log(LogMaster.LOG.GAME_INFO, toLog.toString());
         toLog = new StringBuilder();
     }
 
+    private void append(String msg) {
+        toLog.append(msg);
+    }
     public Damage processDamage(Damage damage) {
         return processDamage(damage, damage.isSneak(), damage.getHitType(), damage.isAttack());
     }
@@ -96,15 +93,14 @@ diff from attack?
                 damage.setAmount(0);
             }
             damage.setBlocked(blocked);
-            if (!simulation)
-                toLog.append(msg);
+
+                append(msg);
         }
-        // already handled by DamageDealer
-        // if (damage instanceof MultiDamage) {
-        //     processMultiDamage((MultiDamage) damage, sneak, hitType, weaponAttack);
-        // }
+            log();
+
         return damage;
     }
+
 
     private String getLoggedMsgNegated(DC_ArmorObj armorObj, Damage damage) {
         return armorObj.getName() + " negates " + damage;
@@ -112,14 +108,6 @@ diff from attack?
 
     private String getLoggedMsg(DC_ArmorObj armorObj, int blocked, Damage damage) {
         return armorObj.getName() + " absorbs " + blocked + " from " + damage;
-    }
-
-    private MultiDamage processMultiDamage(MultiDamage damage, boolean sneak, HitType hitType, boolean weaponAttack) {
-        List<Damage> list = damage.getAdditionalDamage();
-        for (Damage dmg : list) {
-            processDamage(dmg, sneak, hitType, weaponAttack);
-        }
-        return damage;
     }
 
     private int getBlockedAmount(ArmorLayer armorLayer, Integer amount, DAMAGE_TYPE dmgType, boolean weaponAttack,
