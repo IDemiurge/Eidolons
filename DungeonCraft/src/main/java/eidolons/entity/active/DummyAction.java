@@ -145,6 +145,11 @@ public class DummyAction implements ActiveObj {
     }
 
     @Override
+    public void setOnComplete(Runnable b) {
+
+    }
+
+    @Override
     public String getOBJ_TYPE() {
         return null;
     }

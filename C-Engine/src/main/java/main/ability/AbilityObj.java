@@ -138,6 +138,11 @@ public class AbilityObj extends Obj implements Ability, ActiveObj, Interruptable
         return targetGroup;
     }
 
+    @Override
+    public void setOnComplete(Runnable b) {
+
+    }
+
     public void setTargetGroup(GroupImpl targetGroup) {
         this.targetGroup = targetGroup;
     }

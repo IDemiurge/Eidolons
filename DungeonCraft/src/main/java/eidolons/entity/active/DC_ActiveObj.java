@@ -234,6 +234,31 @@ public abstract class DC_ActiveObj extends DC_Obj implements Feat, ActiveObj, In
     }
 
     @Override
+    public Integer getCharges() {
+        return null;
+    }
+
+    @Override
+    public Integer getCooldown() {
+        return null;
+    }
+
+    @Override
+    public void cooldownActivated() {
+
+    }
+
+    @Override
+    public void chargeUsed() {
+
+    }
+
+    @Override
+    public void timePassed(int seconds) {
+
+    }
+
+    @Override
     public boolean canBeActivated(Ref ref) {
         return canBeActivated(ref, false);
     }
@@ -271,6 +296,11 @@ public abstract class DC_ActiveObj extends DC_Obj implements Feat, ActiveObj, In
 
     }
 
+
+    @Override
+    public boolean isActive() {
+        return false;
+    }
 
     public void invokeClicked() {
         if (!getActivator().canBeManuallyActivated()) {
@@ -967,6 +997,11 @@ public abstract class DC_ActiveObj extends DC_Obj implements Feat, ActiveObj, In
     @Override
     public void setOnComplete(Runnable onComplete) {
         this.onComplete = onComplete;
+    }
+
+    @Override
+    public DC_ActiveObj getActive() {
+        return this;
     }
 }
 

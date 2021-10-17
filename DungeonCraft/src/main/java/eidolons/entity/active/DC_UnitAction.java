@@ -42,6 +42,7 @@ public class DC_UnitAction extends DC_ActiveObj {
         super(type, unit.getOwner(), unit.getGame(), unit.getRef().getCopy());
     }
 
+
     @Override
     public boolean canBeActivated() {
         if (dummy) {
