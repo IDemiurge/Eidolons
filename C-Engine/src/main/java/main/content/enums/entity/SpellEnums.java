@@ -397,4 +397,12 @@ public class SpellEnums {
         }
 
     }
+
+    public enum SPELL_CATEGORY{
+        SINGLE,
+        SUMMON,
+        CONJURE,
+        ZONE,
+        GLOBAL
+    }
 }

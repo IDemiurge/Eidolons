@@ -93,12 +93,15 @@ public enum PARAMS implements PARAMETER {
 
     DURABILITY_MODIFIER("Durability mod", "", false, 100),
     COST_MODIFIER(null, "", false, 100),
+    QUICK_SLOT_BONUS(null, "", false, 0, "units", "chars", "perks"),
     QUICK_SLOTS(null, "", false, 0, "units", "chars", "perks"),
     C_QUICK_SLOTS(null, "", true, 2, "units", "chars", "perks"),
     ITEM_COST_MOD(null, "", false, 0, "units", "chars", "perks"),
 
-    CHARGES(null, "", false, 1, "items"),
-    C_CHARGES(null, "", true, 1, "items"),
+    CHARGES(null, "", false, 1, "items", "feats"),
+    C_CHARGES(null, "", true, 1, "items", "feats"),
+    COOLDOWN(null, "", false, 1, "items", "feats"),
+    C_COOLDOWN(null, "", true, 1, "items", "feats"),
     // UNIT/CHAR
 
 
@@ -124,6 +127,10 @@ public enum PARAMS implements PARAMETER {
     FOCUS_RETAINMENT(null, "", false, 0, "units", "chars", "perks"),
     ESSENCE_RESTORATION(null, "", false, 0, "units", "chars", "perks"),
     ESSENCE_RETAINMENT(null, "", false, 0, "units", "chars", "perks"),
+
+    ESSENCE_ABSORB_BONUS(null, "", false, 0, "units", "chars", "perks"),
+    ESSENCE_ABSORB_MOD(null, "", false, 0, "units", "chars", "perks"),
+    ESSENCE_LEAK(null, "", false, 0, "units", "chars", "perks"),
 
     INITIATIVE("Initiative", "", false, 4, "units", "chars", "perks", "bf obj"),
     ATB_START_MOD("ATB_START_PRESET", "", false, 0, "units", "chars", "perks", "bf obj"),

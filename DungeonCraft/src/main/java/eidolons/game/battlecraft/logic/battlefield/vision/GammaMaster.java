@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.battlefield.vision;
 
-import eidolons.content.consts.VisualEnums;
 import eidolons.content.consts.VisualEnums.SHADE_CELL;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
@@ -67,7 +66,7 @@ public class GammaMaster {
 
         Coordinates c = Eidolons.getPlayerCoordinates();
         float alpha = 0;
-        DC_Cell cell = Eidolons.game.getCellByCoordinate(
+        DC_Cell cell = Eidolons.game.getCell(
                 master.getGame().getGrid().getModuleCoordinates(x, y));
         float gamma = getGammaForCell(cell);
 
@@ -128,7 +127,7 @@ public class GammaMaster {
 
 
     private float getVoidAlpha(int x, int y) {
-        if (master.getGame().getCellByCoordinate(Coordinates.get(x, y)).hasMark(CONTENT_CONSTS.MARK.undecorated)) {
+        if (master.getGame().getCell(Coordinates.get(x, y)).hasMark(CONTENT_CONSTS.MARK.undecorated)) {
             return 0;
         }
         //TODO Light revamp - those cobwebs need a new idea
@@ -177,7 +176,7 @@ public class GammaMaster {
 
 
     public float getGammaForCell(int x, int y) {
-        return getGammaForCell(Eidolons.game.getCellByCoordinate(Coordinates.get(x, y)));
+        return getGammaForCell(Eidolons.game.getCell(Coordinates.get(x, y)));
     }
 
     public float getGammaForCell(DC_Cell cell) {

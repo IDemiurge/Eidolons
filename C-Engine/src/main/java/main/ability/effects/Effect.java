@@ -101,6 +101,10 @@ public interface Effect extends Interruptable, Referred, XmlConvertable,
 
     }
 
+    default boolean isEmpty() {
+        return false;
+    }
+
 
     enum ABILITY_MANIPULATION {
         ADD, REMOVE, REMOVE_ALL, MODIFY_FORMULA, STEAL
@@ -197,7 +201,7 @@ public interface Effect extends Interruptable, Referred, XmlConvertable,
         ON_TURN,
         NEW_ROUND,
         END_ROUND,
-        ON_COMBAT_END, ON_COMBAT_START;
+        ON_COMBAT_END, ON_COMBAT_START, CUSTOM;
 
         private String name;
 

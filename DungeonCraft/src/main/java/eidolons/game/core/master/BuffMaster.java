@@ -206,7 +206,7 @@ public class BuffMaster extends Master {
             buff.setAppliedThrough(true);
             if (basis instanceof Unit) {
                 Ref REF = ref.getCopy();
-                Obj cell = game.getCellByCoordinate(basis.getCoordinates());
+                Obj cell = game.getCell(basis.getCoordinates());
                 if (!cell.hasBuff(buff.getName())) {
                     REF.setBasis(cell.getId());
                     REF.setTarget(cell.getId());

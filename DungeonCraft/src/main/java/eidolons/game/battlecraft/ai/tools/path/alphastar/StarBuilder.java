@@ -38,7 +38,7 @@ public class StarBuilder extends AiHandler implements IPathHandler {
                 prev = c;
                 c = path.nodes.get(i).getCoordinates();
                 choices.add(createChoice(unit, prev, c));
-                game.getCellByCoordinate(c).setObjectsModified(true); //TODO core Review
+                game.getCell(c).setObjectsModified(true); //TODO core Review
             }
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);

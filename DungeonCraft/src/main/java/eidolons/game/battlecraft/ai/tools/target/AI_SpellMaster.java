@@ -26,6 +26,7 @@ import main.content.C_OBJ_TYPE;
 import main.content.enums.entity.AbilityEnums;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.content.enums.entity.ItemEnums;
+import main.content.enums.entity.SpellEnums;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.AI_LOGIC;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
@@ -33,6 +34,7 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
+import main.entity.obj.ActiveObj;
 import main.entity.type.ObjType;
 import main.system.auxiliary.log.LogMaster;
 import main.system.entity.CounterMaster;
@@ -427,4 +429,7 @@ public class AI_SpellMaster {
         return null;
     }
 
+    public static SpellEnums.SPELL_CATEGORY getSpellCategory(ActiveObj spell) {
+        return null;
+    }
 }

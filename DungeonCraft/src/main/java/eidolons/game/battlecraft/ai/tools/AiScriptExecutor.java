@@ -184,7 +184,7 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                     return ((DC_Obj) arg).getId();
                 }
                 if (arg instanceof Coordinates) {
-                    return getGame().getCellByCoordinate((Coordinates) arg).getId();
+                    return getGame().getCell((Coordinates) arg).getId();
                 }
 
             }

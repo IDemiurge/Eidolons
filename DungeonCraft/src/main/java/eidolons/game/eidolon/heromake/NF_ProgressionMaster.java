@@ -1,4 +1,4 @@
-package eidolons.entity.hero;
+package eidolons.game.eidolon.heromake;
 
 import eidolons.content.DC_Calculator;
 import eidolons.content.PARAMS;

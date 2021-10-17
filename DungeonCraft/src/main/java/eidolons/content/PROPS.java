@@ -397,9 +397,13 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     PLACEHOLDER_DATA(null, false, "units", "bf obj"),
     PLACEHOLDER_SYMBOL(null, false, "units", "bf obj"),
     LINKED_UNIT(null, false, "units", "bf obj"),
+    GRIMOIRE_SPACES(null, true, "units", "chars"),
     MEMORIZED_SPACES(null, true, "units", "chars"),
     VERBATIM_SPACES(null, true, "units", "chars"),
-    ACTIVE_SPACES(null, true, "units", "chars"),
+    CUSTOM_SPACES(null, true, "units", "chars"),
+    DIVINED_SPACES(null, true, "units", "chars"),
+    COMBAT_SPACES(null, true, "units", "chars"),
+    QUICK_ITEMS_SPACES(null, true, "units", "chars"),
     BASE_CLASS(null, false, "units", "chars");
 
     boolean writeToType;

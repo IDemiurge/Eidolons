@@ -1,6 +1,5 @@
 package eidolons.entity.active.spaces;
 
-import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import main.content.enums.entity.NewRpgEnums;
 
@@ -8,37 +7,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ActiveSpace {
+public class FeatSpace {
 
     protected int index;
-    protected NewRpgEnums.ACTIVE_SPACE_TYPE type;
-    protected NewRpgEnums.ACTIVE_SPACE_MODE mode;
+    protected NewRpgEnums.FEAT_SPACE_TYPE type;
+    protected NewRpgEnums.FEAT_SPACE_MODE mode;
     //protected  List<ActiveSpaceModifier> modifiers;
     protected String name;
     protected boolean locked;
     protected boolean hidden;
-    protected Map<Integer, DC_ActiveObj> activesMap;
+    protected Map<Integer, Feat> featMap;
     protected Unit owner;
 
-    public ActiveSpace(int index, String name, Unit owner, NewRpgEnums.ACTIVE_SPACE_TYPE type,
-                       NewRpgEnums.ACTIVE_SPACE_MODE mode, Map<Integer, DC_ActiveObj> activesMap) {
+    public FeatSpace(int index, String name, Unit owner, NewRpgEnums.FEAT_SPACE_TYPE type,
+                     NewRpgEnums.FEAT_SPACE_MODE mode, Map<Integer, Feat> featMap) {
         this.name = name;
         this.owner = owner;
         this.type = type;
         this.index = index;
         this.mode = mode;
-        this.activesMap = activesMap;
+        this.featMap = featMap;
     }
 
 
     public static class ActiveSpaceMeta {
         //for visuals?
         String description;
-        NewRpgEnums.ACTIVE_SPACE_SKIN skin;
+        NewRpgEnums.FEAT_SPACE_SKIN skin;
         boolean darkened;
         boolean grayOut;
 
-        public ActiveSpaceMeta(String description, NewRpgEnums.ACTIVE_SPACE_SKIN skin, boolean darkened, boolean grayOut) {
+        public ActiveSpaceMeta(String description, NewRpgEnums.FEAT_SPACE_SKIN skin, boolean darkened, boolean grayOut) {
             this.description = description;
             this.skin = skin;
             this.darkened = darkened;
@@ -46,24 +45,24 @@ public class ActiveSpace {
         }
     }
 
-    public DC_ActiveObj get(int slot) {
-        return activesMap.get(slot);
+    public Feat get(int slot) {
+        return featMap.get(slot);
     }
 
-    public NewRpgEnums.ACTIVE_SPACE_TYPE getType() {
+    public NewRpgEnums.FEAT_SPACE_TYPE getType() {
         return type;
     }
 
-    public NewRpgEnums.ACTIVE_SPACE_MODE getMode() {
+    public NewRpgEnums.FEAT_SPACE_MODE getMode() {
         return mode;
     }
 
-    public List<DC_ActiveObj> getDisplayedActives() {
-        return new ArrayList<>(activesMap.values());
+    public List<Feat> getFeats() {
+        return new ArrayList<>(featMap.values());
     }
 
-    public Map<Integer, DC_ActiveObj> getActivesMap() {
-        return activesMap;
+    public Map<Integer, Feat> getFeatMap() {
+        return featMap;
     }
 
     public boolean isLocked() {
@@ -82,8 +81,8 @@ public class ActiveSpace {
         return name;
     }
 
-    public void setActivesMap(Map<Integer, DC_ActiveObj> activesMap) {
-        this.activesMap = activesMap;
+    public void setFeatMap(Map<Integer, Feat> featMap) {
+        this.featMap = featMap;
     }
 
     public Unit getOwner() {
@@ -92,6 +91,6 @@ public class ActiveSpace {
 
     @Override
     public String toString() {
-        return name + ":" + type + "/" + mode + "/" + "\n - " + activesMap;
+        return name + ":" + type + "/" + mode + "/" + "\n - " + featMap;
     }
 }

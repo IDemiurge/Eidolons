@@ -10,6 +10,7 @@ import main.content.enums.entity.NewRpgEnums;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.StringMaster;
 
 import java.util.Arrays;
 
@@ -29,6 +30,7 @@ public class Damage {
     private boolean sneak;
     private int blocked;
     StringBuilder logBuilder;
+    private boolean negated;
 
     protected Damage() {
         logBuilder = new StringBuilder();
@@ -169,5 +171,21 @@ public class Damage {
 
     public StringBuilder getLogBuilder() {
         return logBuilder;
+    }
+
+    public void setNegated(boolean negated) {
+        this.negated = negated;
+    }
+
+    public boolean isNegated() {
+        return negated;
+    }
+
+    @Override
+    public String toString() {
+        return
+                StringMaster.wrapInBrackets(
+                amount + " "+ dmg_type.getName() +
+                " Damage" );
     }
 }

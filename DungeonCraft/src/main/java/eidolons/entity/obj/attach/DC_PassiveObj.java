@@ -5,9 +5,6 @@ import eidolons.content.DC_ContentValsManager.ATTRIBUTE;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
-import main.ability.Ability;
-import main.ability.AbilityObj;
-import main.ability.effects.Effect;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.values.parameters.PARAMETER;
@@ -24,7 +21,6 @@ import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.Strings;
 import main.system.entity.ConditionMaster;
-import main.system.images.ImageManager.BORDER;
 import main.system.math.Formula;
 import main.system.text.TextParser;
 
@@ -32,19 +28,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 // Includes Skills and Classes
-    public class DC_FeatObj extends DC_HeroAttachedObj {
+    public class DC_PassiveObj extends DC_HeroAttachedObj {
 
     private boolean paramStringParsed;
     private Map<PARAMETER, String> modMap;
     private Map<PARAMETER, String> bonusMap;
     private final int tier;
 
-        public DC_FeatObj(ObjType featType, Player originalOwner, GenericGame game, Ref ref) {
+        public DC_PassiveObj(ObjType featType, Player originalOwner, GenericGame game, Ref ref) {
         super(featType, originalOwner, game, ref);
         tier = getIntParam(PARAMS.CIRCLE);
     }
 
-    public DC_FeatObj(ObjType type, Ref ref) {
+    public DC_PassiveObj(ObjType type, Ref ref) {
         this(type, ref.getSourceObj().getOwner(), (GenericGame) ref.getGame(), ref);
     }
 

@@ -42,7 +42,7 @@ public class DC_GraveyardManager implements GraveyardManager {
         // this does not tell us which corpse has been removed???
 
         graveMap.get( (unit.getCoordinates())).remove(unit); // ???
-        game.getCellByCoordinate( (unit.getCoordinates())).setParam(G_PARAMS.N_OF_CORPSES,
+        game.getCell( (unit.getCoordinates())).setParam(G_PARAMS.N_OF_CORPSES,
          graveMap.get( (unit.getCoordinates())).size());
 
         if (game.getObjectByCoordinate( (unit.getCoordinates())) != null) {
@@ -72,7 +72,7 @@ public class DC_GraveyardManager implements GraveyardManager {
     @Override
     public void addCorpse(Obj unit) {
         graveMap.get( (unit.getCoordinates())).push(unit);
-        Obj cell = game.getCellByCoordinate( (unit.getCoordinates()));
+        Obj cell = game.getCell( (unit.getCoordinates()));
         cell.setParam(G_PARAMS.N_OF_CORPSES, graveMap.get( (unit.getCoordinates()))
          .size());
         if (game.getObjectByCoordinate( (unit.getCoordinates())) != null) {

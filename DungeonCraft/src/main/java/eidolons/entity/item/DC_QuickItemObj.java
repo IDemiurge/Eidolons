@@ -4,6 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.values.ValuePages;
 import eidolons.entity.active.DC_QuickItemAction;
+import eidolons.entity.active.spaces.Feat;
 import eidolons.game.module.dungeoncrawl.objects.Trap;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.DC_TYPE;
@@ -30,7 +31,7 @@ import main.system.text.TextParser;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
-public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
+public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem, Feat {
     private static final VALUE[] TRANSLATED_VALUES = {G_PROPS.STD_BOOLS,
             PARAMS.FORMULA, G_PROPS.DESCRIPTION,};
     // or aggregation?
@@ -273,6 +274,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
         return false;
     }
 
+
     private void removeCharge() {
         main.system.auxiliary.log.LogMaster.log(1, this + " - removeCharge ");
         modifyParameter(PARAMS.C_CHARGES, -1);
@@ -393,6 +395,11 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
      * Will these items also provide passive bonuses? What about rings and
      * talismans?
      */
+
+    @Override
+    public boolean isActive() {
+        return true;
+    }
 
     public DC_QuickItemAction getActive() {
         if (active == null)

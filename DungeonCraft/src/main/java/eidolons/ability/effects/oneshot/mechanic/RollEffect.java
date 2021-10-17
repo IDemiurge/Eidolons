@@ -38,6 +38,7 @@ public class RollEffect extends MicroEffect implements OneshotEffect, ContainerE
     private boolean ignoresChaosRule;
 
     private String rollString;
+    private String constValue;
     private Roll roll;
 
     public RollEffect(RollType type, Effect fx) {

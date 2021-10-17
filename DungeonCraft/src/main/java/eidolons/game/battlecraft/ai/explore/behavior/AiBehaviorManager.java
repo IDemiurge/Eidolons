@@ -174,7 +174,7 @@ public class AiBehaviorManager extends AiHandler {
             case BOSS:
                 if (ai.getGroupAI().getArg() == null) {
                     try {
-                        ai.getGroupAI().setArg(game.getCellByCoordinate(
+                        ai.getGroupAI().setArg(game.getCell(
                                 ai.getGroupAI().getLeader().getCoordinates().getAdjacentCoordinate(
                                         ai.getGroup().getLeader().getFacing().getDirection())));
                     } catch (Exception e) {

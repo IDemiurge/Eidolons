@@ -3,11 +3,11 @@ package eidolons.entity.active;
 import eidolons.ability.ActionGenerator;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.spaces.ActiveSpaceInitializer;
-import eidolons.entity.active.spaces.IActiveSpaceInitializer;
+import eidolons.entity.active.spaces.FeatSpaceInitializer;
+import eidolons.entity.active.spaces.IFeatSpaceInitializer;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
-import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.entity.obj.attach.DC_PassiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
@@ -55,11 +55,11 @@ public class DC_ActionManager implements ActionManager {
     protected static ArrayList<ObjType> orderObjTypes;
     protected GenericGame game;
     protected HashMap<Entity, Map<String, ActiveObj>> actionsCache = new HashMap<>();
-    private IActiveSpaceInitializer spaceManager;
+    private IFeatSpaceInitializer spaceManager;
 
     public DC_ActionManager(GenericGame game) {
         this.game = game;
-        spaceManager = new ActiveSpaceInitializer();
+        spaceManager = new FeatSpaceInitializer();
     }
 
     public static void init() {
@@ -149,9 +149,9 @@ public class DC_ActionManager implements ActionManager {
     }
 
     protected void checkSetFeatRef(DC_UnitAction action) {
-        DequeImpl<DC_FeatObj> skills = new DequeImpl<>(action.getOwnerUnit().getSkills());
+        DequeImpl<DC_PassiveObj> skills = new DequeImpl<>(action.getOwnerUnit().getSkills());
         skills.addAll(action.getOwnerUnit().getClasses());
-        for (DC_FeatObj s : skills) {
+        for (DC_PassiveObj s : skills) {
             if (StringMaster.contains(s.getProperty(G_PROPS.ACTIVES), action.getName())) {
                 action.getRef().setID(KEYS.SKILL, s.getId());
                 return;
@@ -695,7 +695,7 @@ public class DC_ActionManager implements ActionManager {
     }
 
 
-    public IActiveSpaceInitializer getSpaceManager() {
+    public IFeatSpaceInitializer getSpaceManager() {
         return spaceManager;
     }
 }

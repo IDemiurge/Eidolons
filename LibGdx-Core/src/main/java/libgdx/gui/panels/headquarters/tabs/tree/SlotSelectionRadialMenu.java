@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.entity.obj.attach.DC_PassiveObj;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -216,7 +216,7 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
             ref.setID(KEYS.INFO, type.getId());
             ref.setID(KEYS.SOURCE, Eidolons.getMainHero().getId());
 
-            DC_FeatObj infoFeat = new DC_FeatObj(type, ref);
+            DC_PassiveObj infoFeat = new DC_PassiveObj(type, ref);
             node.addListener(new DynamicTooltip(() -> {
                         ref.setID(KEYS.SKILL, infoFeat.getId());
                         ref.setID(KEYS.INFO, infoFeat.getId());

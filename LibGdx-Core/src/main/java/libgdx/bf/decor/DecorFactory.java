@@ -80,9 +80,9 @@ public class DecorFactory {
         if (!value.isEmpty()) {
             //what about CustomObject and such?
             return new CellDecor(new EmitterActor(value),
-                    actor, DEFAULT_SIGHT_RANGE, DC_Game.game.getCellByCoordinate(c), sprite);
+                    actor, DEFAULT_SIGHT_RANGE, DC_Game.game.getCell(c), sprite);
         }
-        CellDecor decor = new CellDecor(actor, DEFAULT_SIGHT_RANGE, DC_Game.game.getCellByCoordinate(c), sprite);
+        CellDecor decor = new CellDecor(actor, DEFAULT_SIGHT_RANGE, DC_Game.game.getCell(c), sprite);
         decor.setBaseColor(data.getColor());
         return decor;
     }

@@ -47,6 +47,9 @@ public class DiceMaster {
         return minMax ? 1 : value;
     }
 
+    public static int roll(Dice dice, Unit unit, boolean log) {
+        return roll(dice.type, unit, dice.dice, log);
+    }
 
     public static void log(GenericEnums.DieType dieType, Obj source, int i) {
         String msg = source.getNameIfKnown() + " rolls " +

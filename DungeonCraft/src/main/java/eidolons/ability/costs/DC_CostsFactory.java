@@ -1,4 +1,4 @@
-package eidolons.ability;
+package eidolons.ability.costs;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
@@ -7,7 +7,6 @@ import main.elements.conditions.Requirement;
 import main.elements.costs.*;
 import main.entity.Entity;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
 
@@ -46,7 +45,7 @@ public class DC_CostsFactory {
         if (cost != null) {
             costs.add(cost);
         }
-        cost = getCost(spell, PARAMS.ESS_COST, PARAMS.C_ESSENCE);
+        cost = getEssenceCost(spell);
         if (cost != null) {
             costs.add(cost);
         }
@@ -78,6 +77,10 @@ public class DC_CostsFactory {
 
         return (isSpell) ? new DC_SpellCosts(requirements, costs)
                 : new DC_ActionCosts(requirements, costs);
+    }
+
+    private static Cost getEssenceCost(DC_ActiveObj spell) {
+        return new EssenceCost(spell.getIntParam(PARAMS.ESS_COST));
     }
 
     private static void addSpecialRequirements(CostRequirements requirements,

@@ -392,7 +392,7 @@ public abstract class AiBehavior {
     }
 
     protected DC_Cell getCell(Coordinates coordinates) {
-        return ai.getUnit().getGame().getCellByCoordinate(coordinates);
+        return ai.getUnit().getGame().getCell(coordinates);
     }
 
     protected ActionSequence getMethodOrders() {

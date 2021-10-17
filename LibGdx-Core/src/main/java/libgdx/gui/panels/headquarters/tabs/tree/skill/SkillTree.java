@@ -1,7 +1,7 @@
 package libgdx.gui.panels.headquarters.tabs.tree.skill;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.entity.obj.attach.DC_PassiveObj;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import libgdx.gui.panels.headquarters.datasource.tree.HeroTreeDataSource;
@@ -93,7 +93,7 @@ public class SkillTree extends HeroTree<MasteryRankSlot, SkillSlot> {
     @Override
     protected boolean isDataAnOpenSlot(Object lastData) {
         return SkillMaster.isDataAnOpenSlot(
-                (Triple<DC_FeatObj, SkillEnums.MASTERY, SkillEnums.MASTERY>) lastData);
+                (Triple<DC_PassiveObj, SkillEnums.MASTERY, SkillEnums.MASTERY>) lastData);
     }
 
     @Override

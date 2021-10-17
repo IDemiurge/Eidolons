@@ -2,7 +2,7 @@ package eidolons.entity.active;
 
 import eidolons.ability.ActionGenerator;
 import eidolons.content.PROPS;
-import eidolons.entity.active.spaces.UnitActiveSpaces;
+import eidolons.entity.active.spaces.FeatSpaces;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.rules.RuleEnums;
@@ -71,8 +71,10 @@ public class ActionInitializer extends DC_ActionManager {
 
         unit.setActives(new ArrayList<>(actives));
 
-        UnitActiveSpaces spaces = getSpaceManager().createActiveSpaces(unit);
-        unit.setActiveSpaces(spaces);
+        FeatSpaces spaces = getSpaceManager().createFeatSpaces(unit, true);
+        unit.setSpellSpaces(spaces);
+        spaces = getSpaceManager().createFeatSpaces(unit, false);
+        unit.setCombatSpaces(spaces);
     }
 
     protected List<DC_ActiveObj> getSpecialModesFromUnit(Unit unit) {

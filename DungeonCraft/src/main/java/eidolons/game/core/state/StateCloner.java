@@ -10,7 +10,7 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.attach.DC_BuffObj;
-import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.entity.obj.attach.DC_PassiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -240,7 +240,7 @@ public class StateCloner {
                 case DC_SpellObj:
                     return new Spell(e.getType(), e.getOwner(), game, e.getRef().getCopy());
                 case DC_FeatObj:
-                    return new DC_FeatObj(e.getType(), e.getOwner(), game, e.getRef().getCopy());
+                    return new DC_PassiveObj(e.getType(), e.getOwner(), game, e.getRef().getCopy());
                 case DC_BuffObj:
                     return new DC_BuffObj(
                      (DC_BuffObj) e);

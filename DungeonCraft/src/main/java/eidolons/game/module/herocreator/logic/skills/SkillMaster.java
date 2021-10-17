@@ -4,17 +4,14 @@ import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.consts.libgdx.GdxStringUtils;
-import eidolons.entity.hero.NF_ProgressionMaster;
-import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.entity.obj.attach.DC_PassiveObj;
 import eidolons.entity.obj.attach.HeroClass;
 import eidolons.entity.obj.attach.Perk;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.herocreator.HeroManager;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.SkillEnums.MASTERY;
-import main.content.enums.entity.SkillEnums.SKILL_GROUP;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
@@ -35,19 +32,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static main.content.enums.entity.SkillEnums.MASTERY.*;
-
 /**
  * Created by JustMe on 5/6/2018.
  */
 public class SkillMaster {
     public static final String MASTERY_RANKS = "MASTERY_RANKS_";
     public static final String DUMMY_SKILL = "Skill Slot";
-    private static DC_FeatObj dummy;
+    private static DC_PassiveObj dummy;
 
-    public static DC_FeatObj getEmptySkill() {
+    public static DC_PassiveObj getEmptySkill() {
         if (dummy == null) {
-            dummy = new DC_FeatObj(new ObjType(SkillMaster.DUMMY_SKILL), new Ref(Eidolons.getMainHero()));
+            dummy = new DC_PassiveObj(new ObjType(SkillMaster.DUMMY_SKILL), new Ref(Eidolons.getMainHero()));
         }
         return dummy;
     }
@@ -95,8 +90,8 @@ public class SkillMaster {
     }
 
 
-    public static List<DC_FeatObj> getSkillsOfTier(Unit hero, int tier) {
-        List<DC_FeatObj> list = new ArrayList<>();
+    public static List<DC_PassiveObj> getSkillsOfTier(Unit hero, int tier) {
+        List<DC_PassiveObj> list = new ArrayList<>();
         String prop = hero.getProperty(getTierProp(PROPS.SKILLS, tier));
 //        if (isSkillSlotsMixed()){
         prop = hero.getProperty(PROPS.SKILLS);
@@ -106,7 +101,7 @@ public class SkillMaster {
         for (String substring : ContainerUtils.openContainer(prop)) {
             String[] parts = substring.split("=");
             String name = parts.length > 1 ? parts[1] : substring;
-            DC_FeatObj skill = hero.getFeat(DataManager.getType(name, DC_TYPE.SKILLS));
+            DC_PassiveObj skill = hero.getFeat(DataManager.getType(name, DC_TYPE.SKILLS));
             if (skill == null)
                 continue;
             if (skill.getIntParam("circle") != tier)
@@ -147,7 +142,7 @@ public class SkillMaster {
     }
 
     private static boolean isSkillProhibited(ObjType type, Unit hero) {
-        for (DC_FeatObj skill : hero.getSkills()) {
+        for (DC_PassiveObj skill : hero.getSkills()) {
             if (skill.getType().equals(type)) {
                 return true;
             }
@@ -177,14 +172,14 @@ public class SkillMaster {
         return ContentValsManager.getPROP(prop.name() + "_TIER_" + tier);
     }
 
-    public static DC_FeatObj createFeatObj(ObjType featType, Ref ref) {
+    public static DC_PassiveObj createFeatObj(ObjType featType, Ref ref) {
         switch ((DC_TYPE) featType.getOBJ_TYPE_ENUM()) {
             case PERKS:
                 return new Perk(featType, (Unit) ref.getSourceObj());
             case CLASSES:
                 return new HeroClass(featType, (Unit) ref.getSourceObj());
         }
-        return new DC_FeatObj(featType, ref);
+        return new DC_PassiveObj(featType, ref);
     }
 
     public static void newSkill(Unit hero, ObjType arg, int tier, int slot) {
@@ -200,7 +195,7 @@ public class SkillMaster {
     }
 
     public static void newFeat(PROPERTY prop, Unit hero, ObjType arg, int tier, int slot) {
-        DC_FeatObj featObj = createFeatObj(arg, hero.getRef());
+        DC_PassiveObj featObj = createFeatObj(arg, hero.getRef());
         PROPERTY tierProp = getTierProp(prop, tier);
 
         hero.addProperty(tierProp, getSlotString(slot, arg.getName()), false);
@@ -209,7 +204,7 @@ public class SkillMaster {
         hero.getType().addProperty(prop, arg.getName(), false);
         hero.modifyParameter(PARAMS.SKILL_POINTS_UNSPENT,
                 -arg.getIntParam(PARAMS.CIRCLE));
-        DequeImpl<? extends DC_FeatObj> container = hero.getSkills();
+        DequeImpl<? extends DC_PassiveObj> container = hero.getSkills();
 
         if (arg.getOBJ_TYPE_ENUM() == DC_TYPE.CLASSES) {
             container = hero.getClasses();
@@ -260,7 +255,7 @@ public class SkillMaster {
         return GdxStringUtils.getSizedImagePath(left.getImagePath(), 64);
     }
 
-    public static boolean isDataAnOpenSlot(Triple<DC_FeatObj, MASTERY, MASTERY> data) {
+    public static boolean isDataAnOpenSlot(Triple<DC_PassiveObj, MASTERY, MASTERY> data) {
         if (data == null) {
             return false;
         }

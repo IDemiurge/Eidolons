@@ -47,7 +47,7 @@ public class ConcealmentRule {
     public static int getMissChance(DC_ActiveObj action) {
         DC_Obj source = action.getOwnerUnit();
         Obj target = action.getRef().getTargetObj();
-        Obj cell = source.getGame().getCellByCoordinate(source.getCoordinates());
+        Obj cell = source.getGame().getCell(source.getCoordinates());
         // if (source.checkPassive(STANDARD_PASSIVES.DARKVISION))
         // return false;
         // if (source.checkPassive(STANDARD_PASSIVES.LIGHTVISION))

@@ -2,6 +2,7 @@ package libgdx.gui.panels.dc.actionpanel;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -27,6 +28,8 @@ import main.system.GuiEventType;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.List;
+
 import static main.system.GuiEventType.ACTION_PANEL_UPDATE;
 import static main.system.auxiliary.log.LogMaster.log;
 
@@ -42,9 +45,10 @@ public class ActionPanel extends GroupX {
     private final Vector2 spellsPos = new Vector2();
 
     private final ImageContainer bottomOverlay;
-    protected QuickSlotPanel quickSlotPanel;
+    // protected QuickSlotPanel quickSlotPanel;
     protected ModeActionsPanel modeActionsPanel;
-    protected ActiveSpacePanel activeSpacePanel;
+    protected FeatSpacePanel spellSpacePanel;
+    protected FeatSpacePanel combatSpacePanel;
     protected FadeImageContainer background;
     QuickWeaponPanel mainHand;
     QuickWeaponPanel offhand;
@@ -64,15 +68,23 @@ public class ActionPanel extends GroupX {
     ExtraPtsComp movePts = new ExtraPtsComp(false);
     ExtraPtsComp atkPts = new ExtraPtsComp(true);
 
+    List<Actor> elements;
+
+    @Override
+    public void addActor(Actor actor) {
+        super.addActor(actor);
+        elements.add(actor);
+    }
+
     public ActionPanel() {
         addActor(background = new FadeImageContainer((Textures.BOTTOM_PANEL_BG)));
         //        background.pack();
         setSize(background.getWidth(), background.getHeight());
-        addActor(quickSlotPanel = new QuickSlotPanel(IMAGE_SIZE));
+        addActor(combatSpacePanel = new FeatSpacePanel(IMAGE_SIZE));
 
         addActor(modeActionsPanel = new ModeActionsPanel(IMAGE_SIZE));
 
-        addActor(activeSpacePanel = new ActiveSpacePanel(IMAGE_SIZE));
+        addActor(spellSpacePanel = new FeatSpacePanel(IMAGE_SIZE));
 
         /////////////ADDITIONAL
 
@@ -109,16 +121,16 @@ public class ActionPanel extends GroupX {
     }
 
     public void resetPositions() {
-        quickSlotPanel.setPosition(-32 + OFFSET_X + QUICK_SLOTS_OFFSET_X, ACTIVE_SPACE_OFFSET_Y);
+        combatSpacePanel.setPosition(-32 + OFFSET_X + QUICK_SLOTS_OFFSET_X, ACTIVE_SPACE_OFFSET_Y);
         final float actionOffset =17+ OFFSET_X + (IMAGE_SIZE * 6) + 5;
         modeActionsPanel.setPosition(-28+26+actionOffset, 0);
         final float spellOffset = ACTIVE_SPACE_OFFSET_X -60 + actionOffset + (IMAGE_SIZE * 6)- 35;
-        activeSpacePanel.setPosition(spellOffset, ACTIVE_SPACE_OFFSET_Y);
+        spellSpacePanel.setPosition(spellOffset, ACTIVE_SPACE_OFFSET_Y);
         spellsPos.x = spellOffset;
         spellsPos.y = ACTIVE_SPACE_OFFSET_Y;
         bottomOverlay.setPosition(EMPTY_OFFSET + 100, -12);
 
-        float x = quickSlotPanel.getX();
+        float x = combatSpacePanel.getX();
 
         bodyParamsBar.setPosition(x - 37, 47);
         buffPanelBody.setPosition(bodyParamsBar.getX() + 20, IMAGE_SIZE + 40);
@@ -133,7 +145,7 @@ public class ActionPanel extends GroupX {
                 bodyParamsBar.getY() + 52);
 
 
-        x = activeSpacePanel.getX();
+        x = spellSpacePanel.getX();
         soulParamsBar.setPosition(x +11
                 , bodyParamsBar.getY());
         buffPanelSoul.setPosition(soulParamsBar.getX() + 65, IMAGE_SIZE + 40);
@@ -143,7 +155,7 @@ public class ActionPanel extends GroupX {
         spellbookBtn.setPosition(soulParamsBar.getX() + soulParamsBar.getWidth() / 2 + 89,
                 invBtn.getY());
 
-        atkPts.setPosition(activeSpacePanel.getX()-12, 50);
+        atkPts.setPosition(spellSpacePanel.getX()-12, 50);
         movePts.setPosition(bodyParamsBar.getX() + 337, 54);
     }
 
@@ -263,11 +275,13 @@ public class ActionPanel extends GroupX {
             }
 
             //Gdx revamp - action containers re-creation!
+            elements.forEach( el->
+                    el.setUserObject(source));
             atkPts.setUserObject(source);
             movePts.setUserObject(source);
-            quickSlotPanel.setUserObject(source);
             modeActionsPanel.setUserObject(source);
-            activeSpacePanel.setUserObject(source);
+            combatSpacePanel.setUserObject(source);
+            spellSpacePanel.setUserObject(source);
             buffPanelBody.setUserObject(source);
             buffPanelSoul.setUserObject(source);
             bodyParamsBar.setUserObject(source);
@@ -292,6 +306,7 @@ public class ActionPanel extends GroupX {
         super.act(delta);
         resetPositions();
 
+        //TODO EXPLORE MODE - hide it entirely?
         // altBg = EidolonsGame.isAltControlPanel();
         // background.setImage(altBg ? UiImages.BOTTOM_PANEL_BG_ALT : UiImages.BOTTOM_PANEL_BG);
         // if (altBg) {
@@ -300,23 +315,23 @@ public class ActionPanel extends GroupX {
         //     spellbookBtn.setVisible(false);
         //     invBtn.setVisible(false);
         // } else
-            {
-            activeSpacePanel.setPosition(spellsPos.x, spellsPos.y);
-            if (activeSpacePanel.getColor().a == 0)
-                activeSpacePanel.fadeIn();
-            if (modeActionsPanel.getColor().a == 0)
-                modeActionsPanel.fadeIn();
-            if (quickSlotPanel.getColor().a == 0)
-                quickSlotPanel.fadeIn();
-
-            spellbookBtn.setVisible(true);
-            invBtn.setVisible(true);
-
-            //TODO while hovering, don't update!!!
-            BaseSlotPanel.hoveredAny = quickSlotPanel.isHovered() ||
-                    activeSpacePanel.isHovered() ||
-                    modeActionsPanel.isHovered();
-        }
+        //     {
+        //     spellSpacePanel.setPosition(spellsPos.x, spellsPos.y);
+        //     if (spellSpacePanel.getColor().a == 0)
+        //         spellSpacePanel.fadeIn();
+        //     if (modeActionsPanel.getColor().a == 0)
+        //         modeActionsPanel.fadeIn();
+        //     if (quickSlotPanel.getColor().a == 0)
+        //         quickSlotPanel.fadeIn();
+        //
+        //     spellbookBtn.setVisible(true);
+        //     invBtn.setVisible(true);
+        //
+        //     //TODO while hovering, don't update!!!
+        //     BaseSlotPanel.hoveredAny = quickSlotPanel.isHovered() ||
+        //             spellSpacePanel.isHovered() ||
+        //             modeActionsPanel.isHovered();
+        // }
 
 
     }
@@ -326,16 +341,12 @@ public class ActionPanel extends GroupX {
         super.draw(batch, parentAlpha);
     }
 
-    public QuickSlotPanel getQuickSlotPanel() {
-        return quickSlotPanel;
-    }
-
     public ModeActionsPanel getModeActionsPanel() {
         return modeActionsPanel;
     }
 
-    public ActiveSpacePanel getActiveSpacePanel() {
-        return activeSpacePanel;
+    public FeatSpacePanel getSpellSpacePanel() {
+        return spellSpacePanel;
     }
 
     public BuffPanelSimple getBuffPanelBody() {
@@ -353,7 +364,7 @@ public class ActionPanel extends GroupX {
 
     public void setHidden(boolean hidden) {
         modeActionsPanel.setVisible(!hidden);
-        activeSpacePanel.setVisible(!hidden);
+        spellSpacePanel.setVisible(!hidden);
         modeActionsPanel.setVisible(!hidden);
         log(1,"Action panel hidden: " +hidden);
     }

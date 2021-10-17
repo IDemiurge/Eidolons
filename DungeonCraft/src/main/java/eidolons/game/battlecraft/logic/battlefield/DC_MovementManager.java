@@ -24,7 +24,6 @@ import eidolons.game.core.game.DC_BattleFieldGrid;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.master.EffectMaster;
 import eidolons.game.core.state.DC_GameState;
-import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
 import eidolons.game.module.dungeoncrawl.explore.ExploreGameLoop;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
@@ -44,8 +43,6 @@ import main.game.bf.directions.UNIT_DIRECTION;
 import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -97,7 +94,7 @@ public class DC_MovementManager implements MovementManager {
         if (from.x != c.x && from.y != c.y) {
             Action leap = AiActionFactory.newAction("Clumsy Leap", unit.getAI());
             leap.setRef(Ref.getCopy(leap.getRef()));
-            leap.getRef().setTarget(unit.getGame().getCellByCoordinate(c).getId());
+            leap.getRef().setTarget(unit.getGame().getCell(c).getId());
             return leap;
         }
         // }
@@ -273,7 +270,7 @@ public class DC_MovementManager implements MovementManager {
                     for (Action action : choice.getActions()) {
                         log(action.getActive().getName() + " added to queue " + playerDestination);
                         Context context = new Context(unit,
-                                game.getCellByCoordinate(choice.getCoordinates()));
+                                game.getCell(choice.getCoordinates()));
                         ActionInput actionInput = new ActionInput(action.getActive(), context);
                         actionInput.setAuto(true);
                         ((ExploreGameLoop) unit.getGame().getGameLoop()).tryAddPlayerActions(actionInput);
@@ -407,7 +404,7 @@ public class DC_MovementManager implements MovementManager {
     }
 
     public void moved(Unit unit, boolean quiet) {
-        moved(unit, game.getCellByCoordinate(unit.getCoordinates()), quiet);
+        moved(unit, game.getCell(unit.getCoordinates()), quiet);
     }
 
     public boolean moved(BattleFieldObject obj, DC_Cell cell, Ref REF) {

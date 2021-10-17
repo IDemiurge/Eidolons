@@ -6,8 +6,8 @@ import eidolons.content.consts.Images;
 
 import java.util.List;
 
-public class ActiveSpacePanel extends BaseSlotPanel {
-    public ActiveSpacePanel() {
+public class FeatSpacePanel extends BaseSlotPanel {
+    public FeatSpacePanel() {
         super(0);
     }
 
@@ -15,7 +15,7 @@ public class ActiveSpacePanel extends BaseSlotPanel {
         return 6;
     }
 
-    public ActiveSpacePanel(int imageSize) {
+    public FeatSpacePanel(int imageSize) {
         super(imageSize);
     }
 

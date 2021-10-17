@@ -6,7 +6,7 @@ import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PROPS;
 import eidolons.entity.SimCache;
 import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.entity.obj.attach.DC_PassiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.Simulation;
 import eidolons.game.core.game.DC_Game;
@@ -662,8 +662,8 @@ public class HeroDataModel extends Unit {
         //full reset?
     }
 
-    public DC_FeatObj getFeat(boolean skill, ObjType type) {
-        return (DC_FeatObj) getGame().getSimulationObj(this, type,
+    public DC_PassiveObj getFeat(boolean skill, ObjType type) {
+        return (DC_PassiveObj) getGame().getSimulationObj(this, type,
          skill ? PROPS.SKILLS : PROPS.CLASSES);
     }
 

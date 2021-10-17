@@ -61,30 +61,29 @@ public class DamageCalculator {
 
     private static boolean checkDamagePenetratesToughness(Ref ref, DAMAGE_TYPE damage_type) {
         //TODO NF Rules review
+        if (isEnduranceOnly(ref))
+            return true;
         return damage_type== DAMAGE_TYPE.POISON || damage_type== DAMAGE_TYPE.PURE;
     }
     public static int calculateDamage(boolean endurance, BattleFieldObject attacked, BattleFieldObject attacker,
                                       int base_damage, Ref ref,DAMAGE_TYPE damage_type, StringBuilder log) {
 
-        if (!endurance) {
-            if (isEnduranceOnly(ref)) {
-                return 0;
-            }
-        }
         int amount = base_damage ;
-        int resistance = ResistMaster.getResistanceForDamageType(attacked, attacker, damage_type);
-        amount = amount - MathMaster.applyPercent(amount, resistance);
-        int armor = ArmorMaster.getArmorValue(attacked, damage_type);
-        //TODO LOGGING!
-
-        if (log != null) {
-            log.append("Damage reduced by " +
-                    resistance +
-                    "% (Resistance), plus additional " +
-                    armor + " (Natural Armor)");
+        // int resistance = ResistMaster.getResistanceForDamageType(attacked, attacker, damage_type);
+        // amount = amount - MathMaster.applyPercent(amount, resistance);
+        // int armor = ArmorMaster.getArmorValue(attacked, damage_type);
+        //TODO Review - now before T/E dmg calc in DamageDealer!
+        // if (log != null) {
+        //     log.append("Damage reduced by " +
+        //             resistance +
+        //             "% (Resistance), plus additional " +
+        //             armor + " (Natural Armor)");
+        // }
+        if (endurance) {
+            return amount;
+            // return Math.min(amount, attacked.getIntParam(PARAMS.C_ENDURANCE)); allow negative Endurance
         }
         Integer toughness = attacked.getIntParam(PARAMS.C_TOUGHNESS);
-        amount = Math.max(0, amount - armor);
         return Math.min(amount, toughness);
     }
 

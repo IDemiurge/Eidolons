@@ -1,7 +1,7 @@
 package eidolons.ability.conditions.req;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.entity.obj.attach.DC_PassiveObj;
 import eidolons.entity.obj.unit.Unit;
 import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;
@@ -25,7 +25,7 @@ public class ClassTreeCondition extends MicroCondition {
             return true;
         }
         Unit hero = (Unit) ref.getSourceObj();
-        for (DC_FeatObj c : hero.getClasses()) {
+        for (DC_PassiveObj c : hero.getClasses()) {
             if (c.getType().equals(type)) {
                 return true;
             }

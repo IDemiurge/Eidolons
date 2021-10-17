@@ -7,7 +7,7 @@ import eidolons.content.values.ValuePages;
 import eidolons.content.values.ValueTypePairs;
 import eidolons.entity.Deity;
 import eidolons.entity.item.DC_WeaponObj;
-import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.entity.obj.attach.DC_PassiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.mechanics.CoatingRule;
 import eidolons.game.core.game.DC_Game;
@@ -717,7 +717,7 @@ public class DC_ContentValsManager extends ContentValsManager {
         return ContainerUtils.constructStringContainer(getStandardDeities(), separator);
     }
 
-    public static String getMainAttributeForClass(DC_FeatObj classObj) {
+    public static String getMainAttributeForClass(DC_PassiveObj classObj) {
 
         CLASS_GROUP group = new EnumMaster<CLASS_GROUP>().retrieveEnumConst(CLASS_GROUP.class,
          classObj.getProperty(G_PROPS.CLASS_GROUP));

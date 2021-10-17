@@ -1,7 +1,7 @@
 package eidolons.game.module.herocreator.logic;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.hero.NF_ProgressionMaster;
+import eidolons.game.eidolon.heromake.NF_ProgressionMaster;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.content.DC_Formulas;

@@ -159,7 +159,7 @@ public class DC_PositionMaster {
 
     public static Coordinates getRandomValidAdjacent(Coordinates originalCoordinates, Unit unit) {
         for (Coordinates coordinates : originalCoordinates.getAdjacentCoordinates()) {
-            DC_Cell cell = unit.getGame().getCellByCoordinate(coordinates);
+            DC_Cell cell = unit.getGame().getCell(coordinates);
             if (cell==null )
                 continue;
             if (unit.getGame().getRules().getStackingRule().canBeMovedOnto(unit, coordinates))

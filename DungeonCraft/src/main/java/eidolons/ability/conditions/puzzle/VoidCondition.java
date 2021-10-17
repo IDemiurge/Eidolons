@@ -19,7 +19,7 @@ public class VoidCondition extends DC_Condition {
             return ((DC_Cell) matchObj).isVOID();
         }
 
-        DC_Cell cell = getGame().getCellByCoordinate(matchObj.getCoordinates());
+        DC_Cell cell = getGame().getCell(matchObj.getCoordinates());
         if (CoreEngine.TEST_LAUNCH && getGame().isDebugMode()) {
             if (!cell.getMarks().contains(CONTENT_CONSTS.MARK.togglable)) {
                 return false;

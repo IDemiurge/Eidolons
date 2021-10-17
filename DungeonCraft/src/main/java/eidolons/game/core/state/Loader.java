@@ -10,7 +10,7 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.attach.DC_BuffObj;
-import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.entity.obj.attach.DC_PassiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
@@ -215,7 +215,7 @@ public class Loader {
                 return new Spell(type, owner, game, ref);
             case SKILLS:
             case CLASSES:
-                return new DC_FeatObj(type, owner, game, ref);
+                return new DC_PassiveObj(type, owner, game, ref);
             case WEAPONS:
                 return new DC_WeaponObj(type, owner, game, ref);
             case ARMOR:

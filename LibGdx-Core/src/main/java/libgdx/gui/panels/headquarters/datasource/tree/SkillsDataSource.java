@@ -1,6 +1,6 @@
 package libgdx.gui.panels.headquarters.datasource.tree;
 
-import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.entity.obj.attach.DC_PassiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import main.content.enums.entity.SkillEnums.MASTERY;
@@ -45,12 +45,12 @@ public class SkillsDataSource extends HeroTreeDataSource {
         return list;
     }
 
-    public List<Triple<DC_FeatObj, MASTERY, MASTERY>> getSkillSlots(int tier) {
-        List<Triple<DC_FeatObj, MASTERY, MASTERY>> list = new ArrayList<>();
+    public List<Triple<DC_PassiveObj, MASTERY, MASTERY>> getSkillSlots(int tier) {
+        List<Triple<DC_PassiveObj, MASTERY, MASTERY>> list = new ArrayList<>();
 
         List<MASTERY> ranks = getMasteryRanks(tier);
 
-        List<DC_FeatObj> skills = SkillMaster.getSkillsOfTier(hero, tier);
+        List<DC_PassiveObj> skills = SkillMaster.getSkillsOfTier(hero, tier);
 
 //        for (int j = 0; j < skills.size(); j++) {
 //            if (skills.getVar(j) == null)
@@ -62,7 +62,7 @@ public class SkillsDataSource extends HeroTreeDataSource {
         while (true) {
             if (ranks.size() <= i+1) break;
 
-            DC_FeatObj skill =  SkillMaster.getEmptySkill();
+            DC_PassiveObj skill =  SkillMaster.getEmptySkill();
 
             if (skills.get(i) !=null )
                 skill = skills.get(i);

@@ -255,7 +255,7 @@ public abstract class Game implements Serializable {
         this.requirementsManager = requirementsManager;
     }
 
-    public abstract Obj getCellByCoordinate(Coordinates coordinates);
+    public abstract Obj getCell(Coordinates coordinates);
 
     public Collection<Obj> getObjects(OBJ_TYPE TYPE) {
         if (TYPE instanceof DC_TYPE) {

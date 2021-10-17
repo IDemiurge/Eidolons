@@ -23,7 +23,7 @@ public class VoidMazeSetup extends MazeSetup<VoidMaze> {
 
     public void cleanUp() {
         for (Coordinates markedCell : puzzle.getMarkedCells()) {
-            DC_Game.game.getCellByCoordinate(puzzle.getAbsoluteCoordinate(markedCell)).
+            DC_Game.game.getCell(puzzle.getAbsoluteCoordinate(markedCell)).
                     getMarks().remove(CONTENT_CONSTS.MARK.togglable);
         }
     }
@@ -55,12 +55,12 @@ public class VoidMazeSetup extends MazeSetup<VoidMaze> {
             }
         }
         for (Coordinates markedCell : puzzle. getHandler().markedCells) {
-            Eidolons.getGame().getCellByCoordinate(getAbsoluteCoordinate(markedCell)).
+            Eidolons.getGame().getCell(getAbsoluteCoordinate(markedCell)).
                     getMarks().add(CONTENT_CONSTS.MARK.togglable);
         }
         if (puzzle.isMarkAroundEntrance()){
             for (Coordinates c : getEntranceCoordinates().getAdjacent()) {
-                Eidolons.getGame().getCellByCoordinate(c).
+                Eidolons.getGame().getCell(c).
                         getMarks().add(CONTENT_CONSTS.MARK.togglable);
             }
         }

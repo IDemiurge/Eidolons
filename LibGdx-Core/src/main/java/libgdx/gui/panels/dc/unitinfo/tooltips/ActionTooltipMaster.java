@@ -4,11 +4,10 @@ import eidolons.content.values.DC_ValueManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_WeaponObj;
-import eidolons.game.battlecraft.rules.combat.attack.AttackCalculator.MOD_IDENTIFIER;
 import eidolons.game.battlecraft.rules.combat.mechanics.ForceRule;
-import eidolons.system.math.ModMaster;
 import main.content.VALUE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.entity.ActionEnums;
 import main.content.values.properties.G_PROPS;
 import main.system.images.ImageManager;
 import main.system.math.MathMaster;
@@ -47,25 +46,25 @@ public class ActionTooltipMaster {
 
             switch (p) {
                 case COUNTER_MOD:
-                    return MOD_IDENTIFIER.COUNTER_ATTACK.getImagePath();
+                    return ActionEnums.MOD_IDENTIFIER.COUNTER_ATTACK.getImagePath();
                 case AOO_ATTACK_MOD:
                 case AOO_DAMAGE_MOD:
-                    return MOD_IDENTIFIER.AOO.getImagePath();
+                    return ActionEnums.MOD_IDENTIFIER.AOO.getImagePath();
                 case INSTANT_ATTACK_MOD:
                 case INSTANT_DAMAGE_MOD:
-                    return MOD_IDENTIFIER.INSTANT_ATTACK.getImagePath();
+                    return ActionEnums.MOD_IDENTIFIER.INSTANT_ATTACK.getImagePath();
                 case SIDE_ATTACK_MOD:
                 case SIDE_DAMAGE_MOD:
-                    return MOD_IDENTIFIER.SIDE_ATTACK.getImagePath();
+                    return ActionEnums.MOD_IDENTIFIER.SIDE_ATTACK.getImagePath();
                 case DIAGONAL_ATTACK_MOD:
                 case DIAGONAL_DAMAGE_MOD:
-                    return MOD_IDENTIFIER.DIAGONAL_ATTACK.getImagePath();
+                    return ActionEnums.MOD_IDENTIFIER.DIAGONAL_ATTACK.getImagePath();
                 case CLOSE_QUARTERS_ATTACK_MOD:
                 case CLOSE_QUARTERS_DAMAGE_MOD:
-                    return MOD_IDENTIFIER.CLOSE_QUARTERS.getImagePath();
+                    return ActionEnums.MOD_IDENTIFIER.CLOSE_QUARTERS.getImagePath();
                 case LONG_REACH_ATTACK_MOD:
                 case LONG_REACH_DAMAGE_MOD:
-                    return MOD_IDENTIFIER.LONG_REACH.getImagePath();
+                    return ActionEnums.MOD_IDENTIFIER.LONG_REACH.getImagePath();
             }
         }
         return ImageManager.getValueIconPath(value);

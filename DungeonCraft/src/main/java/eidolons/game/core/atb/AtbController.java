@@ -135,8 +135,13 @@ public class AtbController implements Comparator<Unit> {
 
     protected void processTimeElapsed(Float time) {
         addTime(time);
+        for (AtbUnit unit : this.unitsInAtb) {
+            unit.setAtbReadiness(unit.getAtbReadiness() + getAtbGainForUnit(time, unit));
+        }
 
-        if (!isPrecalc()) {
+        if (isPrecalc()) {
+            return ;
+        }
             int toLog = Math.round(time * TIME_LOGIC_MODIFIER + unloggedTimePassed);
             if (toLog > 0) {
                 unloggedTimePassed -= toLog;
@@ -155,19 +160,11 @@ public class AtbController implements Comparator<Unit> {
                     }
             );
             GuiEventManager.trigger(GuiEventType.TIME_PASSED, time);
-        }
-        if (!isPrecalc()) {
             if (Log.check(Log.LOG_CASE.atb))
                 if (time > 0)
                     manager.getGame().getLogManager().log(LogManager.LOGGING_DETAIL_LEVEL.FULL, getTimeString(time) + " passed, " +
                             getTimeString(SECONDS_IN_ROUND - this.time) +
                             " until end of round");
-        }
-
-        for (AtbUnit unit : this.unitsInAtb) {
-            unit.setAtbReadiness(unit.getAtbReadiness() + getAtbGainForUnit(time, unit));
-        }
-        if (!isPrecalc())
             manager.getGame().getManager().atbTimeElapsed(time);
     }
 

@@ -7,7 +7,6 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
-import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.struct.Entrance;
 import eidolons.content.consts.CellData;
 import eidolons.content.consts.DecorData;
@@ -363,7 +362,7 @@ public class FloorLoader extends DungeonHandler {
     private void initCells(Map<Coordinates, CellData> cellDataMap) {
         for (Coordinates coordinates : cellDataMap.keySet()) {
             CellData data = cellDataMap.get(coordinates);
-            DC_Cell cell = getGame().getCellByCoordinate(coordinates);
+            DC_Cell cell = getGame().getCell(coordinates);
             data.apply(cell);
         }
     }
@@ -373,7 +372,7 @@ public class FloorLoader extends DungeonHandler {
             String string = textDataMap.get(coordinates).getValue(CellScriptData.CELL_SCRIPT_VALUE.marks);
             for (String substring : ContainerUtils.openContainer(string)) {
                 MARK mark = new EnumMaster<MARK>().retrieveEnumConst(MARK.class, substring);
-                DC_Cell cell = getGame().getCellByCoordinate(coordinates);
+                DC_Cell cell = getGame().getCell(coordinates);
                 cell.getMarks().add(mark);
                 if (mark == MARK._void) {
                     cell.setVOID(true);

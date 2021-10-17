@@ -91,7 +91,7 @@ public class PathChoiceMaster {
                             Coordinates coordinates = ((SelfMoveEffect) e).getCoordinates();
                             if (coordinates != null) {
                                 objects = new ArrayList<>(Collections.singletonList(unit
-                                        .getGame().getCellByCoordinate(coordinates)));
+                                        .getGame().getCell(coordinates)));
                             }
                         } catch (Exception ex) {
                             main.system.ExceptionMaster.printStackTrace(ex);

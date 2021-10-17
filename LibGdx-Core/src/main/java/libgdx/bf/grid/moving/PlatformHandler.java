@@ -116,7 +116,7 @@ in the most crazy variant, we could have a pendulum/circular rotation
             PlatformCell cell = create(c, data);
 
             cells.add(cell);
-            cell.setUserObject(DC_Game.game.getCellByCoordinate(c));
+            cell.setUserObject(DC_Game.game.getCell(c));
         }
 
         PlatformDecor visuals = createCellVisuals(cells, data);

@@ -3,7 +3,7 @@ package eidolons.game.module.herocreator.logic;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.consts.libgdx.GdxStringUtils;
-import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.entity.obj.attach.DC_PassiveObj;
 import eidolons.entity.obj.attach.HeroClass;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
@@ -49,8 +49,8 @@ public class HeroClassMaster {
 
     }
 
-    public static List<DC_FeatObj> getClasses(Unit hero, int tier) {
-        ArrayList<DC_FeatObj> list = new ArrayList<>(hero.getClasses());
+    public static List<DC_PassiveObj> getClasses(Unit hero, int tier) {
+        ArrayList<DC_PassiveObj> list = new ArrayList<>(hero.getClasses());
         list.removeIf(c -> c.getTier() != tier);
         if (list.size()< getMaxClassSlots(tier)){
             list.add(getOpenSlot());
@@ -120,8 +120,8 @@ public class HeroClassMaster {
     public static List<CLASS_GROUP> getClassGroups(HeroDataModel entity) {
         List<CLASS_GROUP> list = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            List<DC_FeatObj> classes = getClasses(entity, i);
-            for (DC_FeatObj sub : classes) {
+            List<DC_PassiveObj> classes = getClasses(entity, i);
+            for (DC_PassiveObj sub : classes) {
                 CLASS_GROUP group = new EnumMaster<CLASS_GROUP>().retrieveEnumConst(CLASS_GROUP.class, sub.getProperty(G_PROPS.CLASS_GROUP));
                 if (!list.contains(group))
                     list.add(group);

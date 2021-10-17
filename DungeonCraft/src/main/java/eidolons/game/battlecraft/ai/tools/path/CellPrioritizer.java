@@ -157,7 +157,7 @@ public class CellPrioritizer extends AiHandler {
             for (Coordinates c : enemy.getCoordinates()
              .getAdjacentCoordinates()) {
                 if (!cells.contains(c)) {
-                    DC_Cell cell = enemy.getGame().getCellByCoordinate(c);
+                    DC_Cell cell = enemy.getGame().getCell(c);
                     int priority = getMeleePriorityForCell(ai.getUnit(), cell);
                     if (priority > max_priority) // threshold maybe
                     {

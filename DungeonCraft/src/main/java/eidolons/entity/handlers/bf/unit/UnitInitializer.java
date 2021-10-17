@@ -8,7 +8,7 @@ import eidolons.entity.SimCache;
 import eidolons.entity.active.Spell;
 import eidolons.entity.handlers.bf.BfObjInitializer;
 import eidolons.entity.item.*;
-import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.entity.obj.attach.DC_PassiveObj;
 import eidolons.entity.hero.DC_Attributes;
 import eidolons.entity.hero.DC_Masteries;
 import eidolons.entity.obj.unit.Unit;
@@ -31,7 +31,6 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
-import main.data.ability.construct.VariableManager;
 import main.entity.handlers.EntityMaster;
 import main.entity.type.ObjType;
 import main.system.auxiliary.*;
@@ -270,11 +269,11 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
 
     // TODO reqs: save() ; modify() ; resetSkillRanks() for (s s : skills)
     public void initFeatContainer(PROPERTY PROP, DC_TYPE TYPE,
-                                  DequeImpl<? extends DC_FeatObj> list) {
+                                  DequeImpl<? extends DC_PassiveObj> list) {
         // TODO make it dynamic and clean!
         List<String> feats = ContainerUtils.openContainer(getProperty(PROP));
         for (String feat : feats) {
-            DC_FeatObj featObj = null;
+            DC_PassiveObj featObj = null;
             // or special separator!
             ObjType featType = DataManager.getType(feat, TYPE);
             if (featType == null) {
@@ -287,7 +286,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
         }
     }
 
-    private DC_FeatObj createFeatObj(ObjType featType) {
+    private DC_PassiveObj createFeatObj(ObjType featType) {
         return SkillMaster.createFeatObj(featType, getRef());
     }
 

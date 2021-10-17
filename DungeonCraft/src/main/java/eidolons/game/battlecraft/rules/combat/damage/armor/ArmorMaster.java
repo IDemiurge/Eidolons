@@ -25,7 +25,7 @@ import static main.content.enums.entity.NewRpgEnums.*;
 
 public class ArmorMaster {
     boolean simulation;
-    StringBuilder toLog= new StringBuilder();
+    StringBuilder toLog = new StringBuilder();
     DC_Game game;
 
     public enum ArmorLayer {
@@ -72,38 +72,44 @@ public class ArmorMaster {
     private void append(String msg) {
         toLog.append(msg);
     }
+
     public Damage processDamage(Damage damage) {
         return processDamage(damage, damage.isSneak(), damage.getHitType(), damage.isAttack());
     }
+
     public Damage processDamage(Damage damage, boolean sneak, HitType hitType, boolean weaponAttack) {
         List<ArmorLayer> armorLayers = getLayersForHitType(hitType, sneak);
+        int blocked = 0;
         for (ArmorLayer armorLayer : armorLayers) {
             DC_ArmorObj armor = getArmor(armorLayer, (Unit) damage.getTarget());
             if (armor == null) {
                 continue;
             }
-            int blocked = getBlockedAmount(armorLayer, damage.getAmount(), damage.getDmgType(),
-                    weaponAttack,  damage.getModifiers(), damage.getRef());
-            String msg = "";
-            if (damage.getAmount() - blocked > 0) {
-                msg = getLoggedMsg(armor, blocked, damage);
-                // damage.setAmount(damage.getAmount() - blocked); don't block twice please...
-            } else {
-                msg = getLoggedMsgNegated(armor, damage);
-                damage.setAmount(0);
-            }
-            damage.setBlocked(blocked);
-
-                append(msg);
+            blocked += getBlockedAmount(armorLayer, damage.getAmount(), damage.getDmgType(),
+                    weaponAttack, damage.getModifiers(), damage.getRef());
+            String msg =  getLoggedMsg(armor, blocked, damage);
+                // msg = getLoggedMsgNegated(armor, damage);
+            append(msg);
         }
-            log();
+        if (blocked>=damage.getAmount()){
+            damage.setNegated(true);
+            append(getLoggedMsgNegated(damage));
+        } else {
+
+        }
+        damage.setBlocked(blocked);
+        append(getTotalBlockMsg(blocked, damage));
+        log();
 
         return damage;
     }
 
+    private String getTotalBlockMsg(int blocked, Damage damage) {
+        return blocked + " total absorbed by armor from " + damage;
+    }
 
-    private String getLoggedMsgNegated(DC_ArmorObj armorObj, Damage damage) {
-        return armorObj.getName() + " negates " + damage;
+    private String getLoggedMsgNegated( Damage damage) {
+        return  "Armor negates " + damage;
     }
 
     private String getLoggedMsg(DC_ArmorObj armorObj, int blocked, Damage damage) {
@@ -163,7 +169,7 @@ public class ArmorMaster {
     }
 
     private void absorbed(Integer base, DC_ArmorObj armor, DAMAGE_TYPE dmgType, int modifier) {
-        DurabilityRule.spellDamage(base,   dmgType, armor, modifier);
+        DurabilityRule.spellDamage(base, dmgType, armor, modifier);
     }
 
 

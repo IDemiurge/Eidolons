@@ -12,6 +12,8 @@ import eidolons.game.core.game.DC_Game;
 public class DC_RuleMaster {
     private final DC_Rules rules;
     private final DC_Game game;
+    private float lastTime = 0;
+    private float currentTime = 0;
 
     public DC_RuleMaster(DC_Game game, DC_Rules rules) {
         this.game = game;
@@ -122,11 +124,25 @@ public class DC_RuleMaster {
         return null;
     }
 
+    public void newRound() {
+        lastTime = 0;
+        currentTime = 0;
+    }
+
     public void timePassed(Float time) {
+        int secondsSinceLast = (int) (currentTime - lastTime);
+        lastTime = currentTime;
+        currentTime += time;
+
         for (BattleFieldObject object : game.getBfObjects()) {
 
             if (object.isResetIgnored()) {
                 continue;
+            }
+            if (object instanceof Unit) {
+                for (DC_SecondsRule rule : rules.getSecondsRules()) {
+                    rule.secondsPassed((Unit) object, secondsSinceLast);
+                }
             }
             for (DamageCounterRule rule : rules.getTimedRules().keySet()) {
                 if (rule.checkApplies(object)) {

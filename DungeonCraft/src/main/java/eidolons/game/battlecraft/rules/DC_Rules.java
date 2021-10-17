@@ -25,8 +25,11 @@ import eidolons.game.battlecraft.rules.counter.natural.LavaRule;
 import eidolons.game.battlecraft.rules.counter.negative.*;
 import eidolons.game.battlecraft.rules.counter.psychic.RageRule;
 import eidolons.game.battlecraft.rules.mechanics.AshAnnihilationRule;
+import eidolons.game.battlecraft.rules.mechanics.CooldownRule;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
 import eidolons.game.battlecraft.rules.mechanics.WaitRule;
+import eidolons.game.battlecraft.rules.parameters.EssenceRule;
+import eidolons.game.battlecraft.rules.parameters.FocusGrowthRule;
 import eidolons.game.battlecraft.rules.round.*;
 import eidolons.game.core.game.DC_Game;
 import main.game.core.game.GameRules;
@@ -44,6 +47,7 @@ public class DC_Rules implements GameRules {
     private final DequeImpl<RoundRule> roundRules = new DequeImpl<>();
     private final DequeImpl<ActionRule> actionRules = new DequeImpl<>();
     private final DequeImpl<DC_RuleImpl> triggerRules = new DequeImpl<>();
+    private final DequeImpl<DC_SecondsRule> secondsRules = new DequeImpl<>();
 
     private WatchRule watchRule;
     private FocusRule focusRule;
@@ -82,6 +86,8 @@ public class DC_Rules implements GameRules {
     private final DC_RuleMaster master;
     private Map<DamageCounterRule, TimedRule> timedRules;
     private DynamicBuffRules dynamicBuffRules;
+    private FocusGrowthRule focusGrowthRule;
+    private CooldownRule cdRule;
 
 
     public DC_Rules(DC_Game game) {
@@ -116,9 +122,7 @@ public class DC_Rules implements GameRules {
         cleaveRule = new CleaveRule(getGame());
 
         focusRule = new FocusRule(getGame());
-        essenceRule = new EssenceRule(getGame());
         roundRules.add(focusRule);
-        roundRules.add(essenceRule);
 //        roundRules.add( upkeepRule = new UpkeepRule(getGame()) );
 //        roundRules.add( scoutingRule = new ScoutingRule(getGame()));
         roundRules.add(unconsciousRule);
@@ -192,6 +196,10 @@ public class DC_Rules implements GameRules {
         timedRules.put(bleedingRule,bleedingRule);
         timedRules.put(lavaRule,lavaRule);
 
+        secondsRules.add(focusGrowthRule = new FocusGrowthRule());
+        secondsRules.add(cdRule = new CooldownRule());
+        secondsRules.add(essenceRule = new EssenceRule());
+
 
         // this.rules.add(rule);
         // rule = new TreasonRule(getGame());
@@ -236,10 +244,6 @@ public class DC_Rules implements GameRules {
 
     public FocusRule getFocusRule() {
         return focusRule;
-    }
-
-    public EssenceRule getEssenceRule() {
-        return essenceRule;
     }
 
     public SuffocationRule getSuffocationRule() {
@@ -392,4 +396,7 @@ public class DC_Rules implements GameRules {
         return dynamicBuffRules;
     }
 
+    public DequeImpl<DC_SecondsRule> getSecondsRules() {
+        return secondsRules;
+    }
 }

@@ -196,7 +196,7 @@ public class PlatformController extends MoveController {
     protected void coordinatesChanged() {
         log(LOG_CHANNEL.PLATFORM,getName() + " is at " + coordinates);
         for (PlatformCell cell : cells) {
-            DC_Cell dc_cell = DC_Game.game.getCellByCoordinate(coordinates.getOffset(
+            DC_Cell dc_cell = DC_Game.game.getCell(coordinates.getOffset(
                     cell.getOriginalX() - tip.getOriginalX(),
                     cell.getOriginalY() - tip.getOriginalY()));
             cell.setUserObject(dc_cell);

@@ -51,7 +51,7 @@ public class DC_HeroManager extends HeroManager {
 
     @Override
     public boolean addItem(Unit hero, Entity type, OBJ_TYPE TYPE, PROPERTY PROP) {
-        Obj cell = game.getCellByCoordinate(hero.getCoordinates());
+        Obj cell = game.getCell(hero.getCoordinates());
         DC_HeroItemObj item = (DC_HeroItemObj) ObjUtilities.findObjByType(type, hero.getGame()
          .getDroppedItemManager().getDroppedItems(cell));
         boolean result = hero.getGame().getDroppedItemManager().pickUp(cell, item);

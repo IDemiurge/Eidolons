@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules.magic;
 
-import eidolons.ability.DC_CostsFactory;
+import eidolons.ability.costs.DC_CostsFactory;
 import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
@@ -8,7 +8,6 @@ import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.ActionInput;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.mode.STD_MODES;
 import main.data.filesys.PathFinder;

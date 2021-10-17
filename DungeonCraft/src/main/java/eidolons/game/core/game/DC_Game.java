@@ -599,7 +599,7 @@ public class DC_Game extends GenericGame {
     }
 
     @Override
-    public DC_Cell getCellByCoordinate(Coordinates coordinates) {
+    public DC_Cell getCell(Coordinates coordinates) {
         return getObjMaster().getCellByCoordinate(coordinates);
     }
 

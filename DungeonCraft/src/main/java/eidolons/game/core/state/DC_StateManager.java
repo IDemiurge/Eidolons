@@ -438,14 +438,14 @@ public class DC_StateManager extends StateManager {
             if (unit.isDead()) {
                 continue;
             }
-            Obj cell = game.getCellByCoordinate(unit.getCoordinates());
+            Obj cell = game.getCell(unit.getCoordinates());
             if (cell == null) {
                 continue;
             }
             if (cell.getBuffs() == null) {
                 continue;
             }
-            for (BuffObj buff : game.getCellByCoordinate(unit.getCoordinates()).getBuffs()) {
+            for (BuffObj buff : game.getCell(unit.getCoordinates()).getBuffs()) {
                 if (unit.hasBuff(buff.getName())) {
                     continue;
                 }

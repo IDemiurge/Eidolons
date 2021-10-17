@@ -13,7 +13,6 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
-import eidolons.game.battlecraft.rules.combat.attack.accuracy.AccuracyBreakdown;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -110,7 +109,7 @@ public class RadialManager {
                     return false;
 //
                 if (target instanceof BattleFieldObject) {
-                    target = target.getGame().getCellByCoordinate(target.getCoordinates());
+                    target = target.getGame().getCell(target.getCoordinates());
                 }
             }
         } else {
@@ -310,7 +309,7 @@ public class RadialManager {
     protected static RadialContainer configureShortcutActionNode(DC_Obj target, DC_ActiveObj activeObj) {
         if (activeObj.isMove()) {
             if (target instanceof BattleFieldObject) {
-                target = target.getGame().getCellByCoordinate(target.getCoordinates());
+                target = target.getGame().getCell(target.getCoordinates());
             }
         } else if (activeObj.isTurn()) {
             target = activeObj.getOwnerUnit();
@@ -568,7 +567,7 @@ public class RadialManager {
             if (activeObj.getTargeting() instanceof SelectiveTargeting) {
                 return () -> {
                     if (activeObj.isMove()) {
-                        DC_Cell cell = target.getGame().getCellByCoordinate(target.getCoordinates());
+                        DC_Cell cell = target.getGame().getCell(target.getCoordinates());
                         if (!activeObj.getTargeter().canBeTargeted(cell.getId()))
                             return;
                     }

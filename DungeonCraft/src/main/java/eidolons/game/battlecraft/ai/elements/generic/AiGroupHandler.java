@@ -8,7 +8,7 @@ import eidolons.game.module.dungeoncrawl.struct.LevelBlock;
 import main.content.enums.EncounterEnums;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.Strings;
-import main.system.auxiliary.data.MapBuilder;
+import main.system.auxiliary.data.MapConverter;
 import main.system.datatypes.DequeImpl;
 
 import java.util.ArrayList;
@@ -74,7 +74,7 @@ public class AiGroupHandler extends AiHandler {
             //TODO it's reverse - it's dataUnit=[ids]!
         }
         encounterAiMap =
-                new MapBuilder<>("=", Strings.VERTICAL_BAR,
+                new MapConverter<>("=", Strings.VERTICAL_BAR,
                         NumberUtils::getIntParse,
                         AiData::new
                 )

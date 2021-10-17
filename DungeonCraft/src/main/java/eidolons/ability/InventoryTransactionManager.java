@@ -62,7 +62,7 @@ public class InventoryTransactionManager {
 
     public static void equipOriginalItems(Unit to, Obj from) {
         for (Obj i : to.getGame().getDroppedItemManager().getDroppedItems(
-         to.getGame().getCellByCoordinate(to.getCoordinates()))) {
+         to.getGame().getCell(to.getCoordinates()))) {
             if (i.getRef().getSourceObj() == from) {
                 ITEM_SLOT slot = null;
 

@@ -30,7 +30,7 @@ public class A_ValuePages {
             MASTERY_RANKS_2,
             MASTERY_RANKS_3,
             PERKS,
-            ACTIVE_SPACES,
+            COMBAT_SPACES,
             VERBATIM_SPACES,
             MEMORIZED_SPACES,
     };

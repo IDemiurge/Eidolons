@@ -1,12 +1,12 @@
 package eidolons.game.battlecraft.rules.combat.attack.block;
 
-import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
-import eidolons.game.battlecraft.rules.combat.attack.accuracy.AccuracyMaster;
-import main.ability.effects.Effect;
+import eidolons.system.math.roll.Roll;
+import eidolons.system.math.roll.RollMaster;
 import main.content.enums.entity.NewRpgEnums;
-import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.log.LogMaster;
+import main.entity.Ref;
+
+import static main.content.enums.GenericEnums.*;
 
 /*
 IDEA: don't rely on concrete item, create an abstraction - so we can use spells that will 'fake' such blocking fx!
@@ -15,15 +15,6 @@ public abstract class BlockRule {
     protected BlockResult result;
     protected Attack attack;
     private boolean simulation;
-
-    public static class BlockResult {
-        NewRpgEnums.BlockType blockType;
-        int accuracyReduction;
-        int durabilityDamage;
-        int durabilitySelfDamage;
-        Effect onBlockEffects;
-        StringBuilder logMsg=new StringBuilder();
-    }
 
     //could override!
     public NewRpgEnums.BlockType getBlockType(NewRpgEnums.HitType hitType) {
@@ -46,36 +37,12 @@ public abstract class BlockRule {
         //             + StringMaster.wrapInParenthesis(chance + "%"));
 
             }
-    public void applyBlock(Attack attack, BlockResult result, Blocker blocker) {
-        if (result.accuracyReduction>0) {
-            int accuracy = attack.getAccuracyRate();
-            NewRpgEnums.HitType hitType = AccuracyMaster.getHitType(accuracy - result.accuracyReduction);
-            attack.setHitType(hitType);
-        }
 
-        attack.setDodged(true);
-        // result.onBlockEffects
-        BattleFieldObject attacked = attack.getAttacked();
-        BattleFieldObject attacker = attack.getAttacker();
-
-       result.logMsg.append(attacked.getName()).
-               append(" uses ").
-               append(blocker.getName()).
-               append(" to block").
-               append(attack.getRawDamage()).toString();
-
+    //at the end only!
+    public void blockTriggered(Attack attack, BlockResult result, Blocker blocker) {
         playBlockSound(blocker, result.blockType);
         floatingText(blocker, result );
-
-        attacked.getGame().getLogManager().log(LogMaster.LOG.GAME_INFO,
-                result.logMsg.toString());
-
-        // return hitType;
     }
-
-    protected abstract void floatingText(Blocker blocker, BlockResult result);
-
-    protected abstract void playBlockSound(Blocker blocker, NewRpgEnums.BlockType blockType);
 
     public BlockResult processAttack(Attack attack, Blocker blocker) {
         this.attack = attack;
@@ -99,7 +66,17 @@ public abstract class BlockRule {
     }
 
     private boolean checkBlock(Blocker blocker) {
-
-        return false;
+        //TODO NF Rules armor rev
+        int reduction=0;
+        int bonus = blocker.getBlockChance(reduction);
+        Roll roll = new Roll(RollType.reflex, DieType.d20, String.valueOf(bonus), "0");
+        Ref ref= new Ref();
+        boolean result = RollMaster.roll(roll, ref);
+        return result;
     }
+
+
+    protected abstract void floatingText(Blocker blocker, BlockResult result);
+
+    protected abstract void playBlockSound(Blocker blocker, NewRpgEnums.BlockType blockType);
 }

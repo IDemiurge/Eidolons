@@ -59,11 +59,11 @@ public class ClearShotCondition extends MicroCondition {
     }
 
     public boolean check(Coordinates c, Coordinates c2) {
-        Obj ce = game.getCellByCoordinate(c);
+        Obj ce = game.getCell(c);
         if (ce == null) {
             return false;
         }
-        Obj ce2 = game.getCellByCoordinate(c2);
+        Obj ce2 = game.getCell(c2);
         if (ce2 == null) {
             return false;
         }
@@ -152,7 +152,7 @@ public class ClearShotCondition extends MicroCondition {
         if (wallObstruction)
             source.getGame().getVisionMaster().getVisionController().
                     getWallObstructionMapper().set(source.getCoordinates(),
-                    source.getGame().getCellByCoordinate(target.getCoordinates()), !result);
+                    source.getGame().getCell(target.getCoordinates()), !result);
         return result;
     }
 

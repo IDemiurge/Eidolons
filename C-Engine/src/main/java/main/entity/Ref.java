@@ -29,8 +29,8 @@ import java.util.regex.Pattern;
 /**
  * Stores all the relevant ID's. Used to find proper Entities with getObj(KEYS key).
  * <portrait>
- * Ref object is passed on activate(Ref ref) from the source entity to Active entity.
- * To activate on a given object, set ref’s {target} key, otherwise Active's Targeting will select()
+ * Ref object is passed on activate(Ref ref) from the source entity to Active entity. To activate on a given object, set
+ * ref’s {target} key, otherwise Active's Targeting will select()
  */
 public class Ref implements Cloneable, Serializable {
     public final static KEYS[] REPLACING_KEYS = {
@@ -111,8 +111,8 @@ public class Ref implements Cloneable, Serializable {
                 return true;
             }
         }
-//     way too heavy
-//     return (new SearchMaster<KEYS>().find(key, Arrays.asList(KEYS.values()), true) != null);
+        //     way too heavy
+        //     return (new SearchMaster<KEYS>().find(key, Arrays.asList(KEYS.values()), true) != null);
         return false;
     }
 
@@ -174,12 +174,12 @@ public class Ref implements Cloneable, Serializable {
             objCache.put(string.toLowerCase(), obj);
             return obj;
         }
-//        try {
+        //        try {
         return game.getObjectById(getId(string));
-//        } catch (Exception e) {
-//            main.system.ExceptionMaster.printStackTrace(e);
-//            return null;
-//        }
+        //        } catch (Exception e) {
+        //            main.system.ExceptionMaster.printStackTrace(e);
+        //            return null;
+        //        }
     }
 
     public Integer getId(String key) {
@@ -211,8 +211,8 @@ public class Ref implements Cloneable, Serializable {
         } catch (Exception e) {
 
         }
-//   COULD FIND WRONG STUFF!
-//     return new EnumMaster<KEYS>().retrieveEnumConst(KEYS.class, name);
+        //   COULD FIND WRONG STUFF!
+        //     return new EnumMaster<KEYS>().retrieveEnumConst(KEYS.class, name);
         return null;
     }
 
@@ -316,7 +316,7 @@ public class Ref implements Cloneable, Serializable {
         // }
 
         for (KEYS key : REPLACING_KEYS) {
-//            String prefix = key.name() + StringMaster.FORMULA_REF_SEPARATOR;
+            //            String prefix = key.name() + StringMaster.FORMULA_REF_SEPARATOR;
             if (prefix_.equals(key.name())) {
                 setStr(getStr().replace(key.name() + Strings.FORMULA_REF_SEPARATOR, ""));
                 return game.getObjectById(Integer.valueOf(getValue(key.name()))).getRef();
@@ -522,8 +522,9 @@ public class Ref implements Cloneable, Serializable {
         return effect;
     }
 
-    public void setEffect(Effect effect) {
+    public Ref setEffect(Effect effect) {
         this.effect = effect;
+        return this;
     }
 
     public Integer getId(KEYS key) {
@@ -649,7 +650,7 @@ public class Ref implements Cloneable, Serializable {
     }
 
     public void addValue(KEYS keys, int s) {
-        setValue(keys, (NumberUtils.getInt(getValue(keys.name()))+s)+"");
+        setValue(keys, (NumberUtils.getInt(getValue(keys.name())) + s) + "");
     }
 
     public Object getArg() {

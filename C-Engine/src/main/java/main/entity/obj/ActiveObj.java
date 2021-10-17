@@ -55,4 +55,5 @@ public interface ActiveObj extends Cancellable, Active, OBJ {
     boolean isConstructed();
 
     void setConstructed(boolean b);
+    void setOnComplete(Runnable b);
 }

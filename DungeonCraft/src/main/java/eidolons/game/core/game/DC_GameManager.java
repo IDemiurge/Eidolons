@@ -253,7 +253,7 @@ public class DC_GameManager extends GameManager {
 
         if (!selectionObj) {
             if (C_OBJ_TYPE.BF_OBJ.equals(obj.getOBJ_TYPE_ENUM())) {
-                selectionObj = selectingSet.contains(getGame().getCellByCoordinate(
+                selectionObj = selectingSet.contains(getGame().getCell(
                         obj.getCoordinates()));
             }
         }

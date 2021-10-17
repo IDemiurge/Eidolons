@@ -13,6 +13,7 @@ import eidolons.game.battlecraft.rules.perk.RangeRule;
 import eidolons.system.math.roll.DiceMaster;
 import main.content.ContentValsManager;
 import main.content.enums.GenericEnums;
+import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.NewRpgEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
@@ -23,64 +24,50 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.BfObj;
 import main.entity.obj.Obj;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.images.ImageManager;
-import main.system.images.ImageManager.STD_IMAGES;
 import main.system.launch.Flags;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import static main.content.enums.entity.NewRpgEnums.HitType.hit;
 
+/**
+ * make it into a generic basis? Use methods selectively?
+ * <p>
+ * the idea was also to have some data model to DISPLAY the ATK properly
+ */
 public class AttackCalculator {
-    Attack attack;
-    Map<MOD_IDENTIFIER, Integer> bonusMap = new XLinkedMap<>();
-    Map<MOD_IDENTIFIER, Integer> modMap = new XLinkedMap<>();
+    Map<ActionEnums.MOD_IDENTIFIER, Integer> bonusMap = new XLinkedMap<>();
+    Map<ActionEnums.MOD_IDENTIFIER, Integer> modMap = new XLinkedMap<>();
 
-    Map<MOD_IDENTIFIER, Integer> posMap = new XLinkedMap<>();
-    Map<MOD_IDENTIFIER, Integer> atkMap = new XLinkedMap<>();
-    Map<MOD_IDENTIFIER, Integer> extraMap = new XLinkedMap<>();
-    Map<MOD_IDENTIFIER, Integer> randomMap = new XLinkedMap<>();
+    Map<ActionEnums.MOD_IDENTIFIER, Integer> posMap = new XLinkedMap<>();
+    Map<ActionEnums.MOD_IDENTIFIER, Integer> atkMap = new XLinkedMap<>();
+    Map<ActionEnums.MOD_IDENTIFIER, Integer> extraMap = new XLinkedMap<>();
     Map<PARAMETER, Integer> weaponMap = new XLinkedMap<>();
     Map<PARAMETER, Integer> actionMap = new XLinkedMap<>();
 
-    Map<MOD_IDENTIFIER, Integer> weaponModMap = new XLinkedMap<>();
-    Map<MOD_IDENTIFIER, Integer> actionModMap = new XLinkedMap<>();
-    Map<MOD_IDENTIFIER, Integer> posModMap = new XLinkedMap<>();
-    Map<MOD_IDENTIFIER, Integer> atkModMap = new XLinkedMap<>();
-    Map<MOD_IDENTIFIER, Integer> defModMap = new XLinkedMap<>();
-    Map<MOD_IDENTIFIER, Integer> extraModMap = new XLinkedMap<>();
+    Map<ActionEnums.MOD_IDENTIFIER, Integer> atkModMap = new XLinkedMap<>();
+    Map<ActionEnums.MOD_IDENTIFIER, Integer> defModMap = new XLinkedMap<>();
 
     Map<PARAMETER, Integer> subMap = new XLinkedMap<>();
-    List<Integer> dieList = new ArrayList<>();
-
-    // Map<PARAMETER, String> calcMap;
     boolean precalc;
-    DC_AttackMaster master;
-    private final DC_ActiveObj action;
-    private final Unit attacker;
-    private BattleFieldObject attacked;
-    private final DC_WeaponObj weapon;
-    private final boolean counter;
-    private final boolean offhand;
-    private final boolean critical;
-    private final boolean sneak;
-    private final Ref ref;
-    private Integer amount;
-    private final boolean AoO;
-    private final boolean instant;
-    private final boolean disengage;
-    private boolean min;
-    private boolean max;
-    private NewRpgEnums.HitType hitType;
+
+    protected final Attack attack;
+    protected final DC_ActiveObj action;
+    protected final Unit attacker;
+    protected BattleFieldObject attacked;
+    protected final DC_WeaponObj weapon;
+    protected final Ref ref;
+    protected final boolean counter, offhand, critical, sneak, AoO, instant, disengage;
+
+    protected Integer amount;
+    protected boolean min, max;
+    protected NewRpgEnums.HitType hitType;
 
     public AttackCalculator(Attack attack, boolean precalc) {
         this.attack = attack;
@@ -114,16 +101,12 @@ public class AttackCalculator {
         initAllModifiers();
         amount = applyDamageBonuses();
 
-        if (Flags.isPhaseAnimsOn())
-            if (!precalc) {
-                //TODO
-            }
         attack.setDamage(amount);
         return amount;
     }
 
 
-    private void initAllModifiers() {
+    protected void initAllModifiers() {
         initializeWeaponModifiers();
         initializeActionModifiers();
         initializePositionModifiers();
@@ -138,12 +121,12 @@ public class AttackCalculator {
             Integer mod = attacker.getIntParam(PARAMS.THROW_DAMAGE_MOD);
             if (mod != 0) {
                 dmg_mod += mod - 100;
-                modMap.put(MOD_IDENTIFIER.THROW, mod - 100);
+                modMap.put(ActionEnums.MOD_IDENTIFIER.THROW, mod - 100);
             }
             mod = attacker.getIntParam(PARAMS.THROW_ATTACK_MOD);
             if (mod != 0) {
                 atk_mod += mod - 100;
-                atkMap.put(MOD_IDENTIFIER.THROW, mod - 100);
+                atkMap.put(ActionEnums.MOD_IDENTIFIER.THROW, mod - 100);
             }
         }
 
@@ -160,14 +143,14 @@ public class AttackCalculator {
     }
 
 
-    private Integer getDamageForHitType(Attack attack, Integer amount, Unit attacker,
+    protected Integer getDamageForHitType(Attack attack, Integer amount, Unit attacker,
                                         BattleFieldObject attacked, DC_ActiveObj action, boolean offhand) {
-        int mod =                HitTypeRule.                        getDamagePercentage(action, attacked, attack.getHitType());
+        int mod = HitTypeRule.getDamagePercentage(action, attacked, attack.getHitType());
         //TODO anything else?
         return mod;
     }
 
-    private int getAttributeDamageBonuses(Obj obj, Unit ownerObj,
+    protected int getAttributeDamageBonuses(Obj obj, Unit ownerObj,
                                           Map<PARAMETER, Integer> map) {
         int result = 0;
         subMap = map;
@@ -179,7 +162,7 @@ public class AttackCalculator {
         return result;
     }
 
-    private int getDamageModifier(PARAMS dmgModifier, PARAMS value, Unit ownerObj, Obj obj) {
+    protected int getDamageModifier(PARAMS dmgModifier, PARAMS value, Unit ownerObj, Obj obj) {
         int amount = obj.getIntParam(dmgModifier) * ownerObj.getIntParam(value) / 100;
         // map = animation.getPhase(type).getArgs()[0];
         if (amount != 0) {
@@ -192,14 +175,14 @@ public class AttackCalculator {
     // amount = (base_damage + totalBonus)*mod
     // totalBonus = rollDice + force + attributeDamageBonuses
     // totalMod = action/weapon/unit dmg_mod
-    private Integer applyDamageBonuses() {
+    protected Integer applyDamageBonuses() {
         amount = attacker.getIntParam(PARAMS.BASE_DAMAGE);
-        bonusMap.put(MOD_IDENTIFIER.UNIT, amount);
+        bonusMap.put(ActionEnums.MOD_IDENTIFIER.UNIT, amount);
         int totalBonus = 0;
         int totalMod = 0;
         // DICE
         Integer bonus = rollDice();
-        bonusMap.put(MOD_IDENTIFIER.RANDOM, bonus);
+        bonusMap.put(ActionEnums.MOD_IDENTIFIER.RANDOM, bonus);
         totalBonus += bonus;
         // FORCE
         //        bonus = ForceRule.getDamage(action, attacker, attacked);
@@ -209,7 +192,7 @@ public class AttackCalculator {
         bonus = action.getIntParam(PARAMS.DAMAGE_BONUS);
         bonus += getAttributeDamageBonuses(action, attacker,
                 actionMap);
-        bonusMap.put(MOD_IDENTIFIER.ACTION, bonus);
+        bonusMap.put(ActionEnums.MOD_IDENTIFIER.ACTION, bonus);
         totalBonus += bonus;
 
         // ACTION
@@ -220,18 +203,18 @@ public class AttackCalculator {
             }
 
         } // TODO [QUICK FIX] - why 50 becomes 150?!
-        modMap.put(MOD_IDENTIFIER.ACTION, mod);
+        modMap.put(ActionEnums.MOD_IDENTIFIER.ACTION, mod);
         totalMod += mod;
 
 
         // WEAPON
         mod = weapon.getIntParam(PARAMS.DAMAGE_MOD) - 100;
-        modMap.put(MOD_IDENTIFIER.WEAPON, mod);
+        modMap.put(ActionEnums.MOD_IDENTIFIER.WEAPON, mod);
         totalMod += mod;
 
         if (hitType != hit) {
             bonus = getDamageForHitType(attack, totalBonus, attacker, attacked, action, offhand);
-            bonusMap.put(MOD_IDENTIFIER.HIT_TYPE, bonus);
+            bonusMap.put(ActionEnums.MOD_IDENTIFIER.HIT_TYPE, bonus);
             totalMod += mod;
         }
 
@@ -241,17 +224,17 @@ public class AttackCalculator {
                 weaponMap);
         weaponMap.put(PARAMS.DAMAGE_BONUS, weapon.getIntParam(PARAMS.DAMAGE_BONUS));
 
-        bonusMap.put(MOD_IDENTIFIER.WEAPON, bonus);
+        bonusMap.put(ActionEnums.MOD_IDENTIFIER.WEAPON, bonus);
         totalBonus += bonus;
         // POSITION
-        if (modMap.get(MOD_IDENTIFIER.POS) != null) {
-            totalMod += modMap.get(MOD_IDENTIFIER.POS);
+        if (modMap.get(ActionEnums.MOD_IDENTIFIER.POS) != null) {
+            totalMod += modMap.get(ActionEnums.MOD_IDENTIFIER.POS);
         }
         // EXTRA - already initialized!
-        if (modMap.get(MOD_IDENTIFIER.EXTRA_ATTACK) != null) {
-            totalMod += modMap.get(MOD_IDENTIFIER.EXTRA_ATTACK);
+        if (modMap.get(ActionEnums.MOD_IDENTIFIER.EXTRA_ATTACK) != null) {
+            totalMod += modMap.get(ActionEnums.MOD_IDENTIFIER.EXTRA_ATTACK);
         }
-        bonus = bonusMap.get(MOD_IDENTIFIER.AMMO);
+        bonus = bonusMap.get(ActionEnums.MOD_IDENTIFIER.AMMO);
         if (bonus != null)
             totalBonus += bonus;
 
@@ -293,8 +276,8 @@ public class AttackCalculator {
         // TODO +action?
         GenericEnums.DieType die = weapon.getDieType();
         Integer dieNumber =
-                DiceMaster.getDefaultDieNumber(attack.getAttacker())+
-                weapon.getIntParam(PARAMS.DICE);
+                DiceMaster.getDefaultDieNumber(attack.getAttacker()) +
+                        weapon.getIntParam(PARAMS.DICE);
 
         int sValue = DiceMaster.roll(die, attack.getAttacker(), dieNumber, false);
         int tValue = DiceMaster.roll(die, attack.getAttacked(),
@@ -305,7 +288,11 @@ public class AttackCalculator {
         return result;
     }
 
-    private void initializeActionModifiers() {
+    @Deprecated
+    /*
+    ATK TYPES and SPELL TYPES
+     */
+    protected void initializeActionModifiers() {
         int dmg_bonus = getAttributeDamageBonuses(action, attacker,
                 new XLinkedMap<>());
         Integer actionDmgMod = action.getIntParam(PARAMS.DAMAGE_MOD);
@@ -330,7 +317,7 @@ public class AttackCalculator {
                 // addSpecialEffect(SPECIAL_EFFECTS_CASE.ON_ATTACK,
                 // ammo.getSpecialEffects().getOrCreate(SPECIAL_EFFECTS_CASE.ON_ATTACK));
                 int bonus = ammo.getIntParam(PARAMS.DAMAGE_BONUS) + rollDice(ammo);
-                bonusMap.put(MOD_IDENTIFIER.AMMO, bonus);
+                bonusMap.put(ActionEnums.MOD_IDENTIFIER.AMMO, bonus);
                 dmg_bonus += bonus;
                 dmg_mod = dmg_mod * ammo.getIntParam(PARAMS.DAMAGE_MOD) / 100;
                 armor_pen += ammo.getIntParam(PARAMS.ARMOR_PENETRATION);
@@ -347,12 +334,12 @@ public class AttackCalculator {
         action.modifyParameter(PARAMS.ATTACK, atk_mod);
         action.modifyParameter(PARAMS.ARMOR_PENETRATION, armor_pen);
 
-        modMap.put(MOD_IDENTIFIER.ACTION, dmg_mod);
-        bonusMap.put(MOD_IDENTIFIER.ACTION, dmg_bonus);
+        modMap.put(ActionEnums.MOD_IDENTIFIER.ACTION, dmg_mod);
+        bonusMap.put(ActionEnums.MOD_IDENTIFIER.ACTION, dmg_bonus);
 
     }
 
-    private int applyVisibilityPenalty(int atk_mod) {
+    protected int applyVisibilityPenalty(int atk_mod) {
         int penalty = 0;
         if (attacked.getUnitVisionStatus() == UNIT_VISION.IN_SIGHT) {
             // as opposed to IN_PLAIN_SIGHT
@@ -364,25 +351,25 @@ public class AttackCalculator {
         }
 
         atk_mod = MathMaster.applyModIfNotZero(atk_mod, penalty);
-        atkModMap.put(MOD_IDENTIFIER.SIGHT_RANGE, penalty);
+        atkModMap.put(ActionEnums.MOD_IDENTIFIER.SIGHT_RANGE, penalty);
         return atk_mod;
     }
 
-    private int applyParamMod(int amount, PARAMS param) {
+    protected int applyParamMod(int amount, PARAMS param) {
         amount = MathMaster.applyModOrFactor(amount, attacker, (param));
         amount = MathMaster.applyModIfNotZero(amount, action.getIntParam(param));
         amount = MathMaster.applyModIfNotZero(amount, weapon.getIntParam(param));
         return amount;
     }
 
-    private void initializePositionModifiers() {
+    protected void initializePositionModifiers() {
         int dmg_mod = 0;
         int atk_mod = 0;
         Boolean close_long = RangeRule.isCloseQuartersOrLongReach(attacker, attacked, weapon,
                 action);
         if (close_long != null) {
-            MOD_IDENTIFIER identifier = close_long ? MOD_IDENTIFIER.CLOSE_QUARTERS
-                    : MOD_IDENTIFIER.LONG_REACH;
+            ActionEnums.MOD_IDENTIFIER identifier = close_long ? ActionEnums.MOD_IDENTIFIER.CLOSE_QUARTERS
+                    : ActionEnums.MOD_IDENTIFIER.LONG_REACH;
             int damageMod = RangeRule.getMod(true, close_long, attacker, attacked, weapon, action);
             posMap.put(identifier, damageMod);
             dmg_mod += damageMod;
@@ -404,13 +391,13 @@ public class AttackCalculator {
             if (diagonalMod != 0 && diagonalMod != -100) {
                 // action.getModsMap().put("Diagonal Attack", diagonalMod);
                 atk_mod += diagonalMod;
-                posMap.put(MOD_IDENTIFIER.DIAGONAL_ATTACK, diagonalMod);
+                posMap.put(ActionEnums.MOD_IDENTIFIER.DIAGONAL_ATTACK, diagonalMod);
             }
             diagonalMod = action.getIntParam(PARAMS.DIAGONAL_DAMAGE_MOD) - 100;
             if (diagonalMod != 0 && diagonalMod != -100) {
                 // action.getModsMap().put("Diagonal Attack", diagonalMod);
                 dmg_mod += diagonalMod;
-                posMap.put(MOD_IDENTIFIER.DIAGONAL_ATTACK, diagonalMod);
+                posMap.put(ActionEnums.MOD_IDENTIFIER.DIAGONAL_ATTACK, diagonalMod);
             }
             // TODO DO FOR WEAPONS AND MAKE A SUB MAP!
         } else if (FacingMaster.getSingleFacing(action.getOwnerUnit(), (BfObj) ref
@@ -418,15 +405,15 @@ public class AttackCalculator {
             Integer sideMod = action.getIntParam(PARAMS.SIDE_ATTACK_MOD) - 100;
             if (sideMod != 0 && sideMod != -100) {
                 atk_mod += sideMod;
-                modMap.put(MOD_IDENTIFIER.POS, sideMod); // TODO
-                posMap.put(MOD_IDENTIFIER.SIDE_ATTACK, sideMod);
+                modMap.put(ActionEnums.MOD_IDENTIFIER.POS, sideMod); // TODO
+                posMap.put(ActionEnums.MOD_IDENTIFIER.SIDE_ATTACK, sideMod);
             }
             sideMod = action.getIntParam(PARAMS.SIDE_DAMAGE_MOD) - 100;
             if (sideMod != 0 && sideMod != 100) {
                 // generic?
-                modMap.put(MOD_IDENTIFIER.POS, sideMod);
+                modMap.put(ActionEnums.MOD_IDENTIFIER.POS, sideMod);
                 dmg_mod += sideMod;
-                posMap.put(MOD_IDENTIFIER.SIDE_ATTACK, sideMod);
+                posMap.put(ActionEnums.MOD_IDENTIFIER.SIDE_ATTACK, sideMod);
             }
         }
         if (sneak) {
@@ -441,19 +428,18 @@ public class AttackCalculator {
                     dmg_mod += initSneakMods(weapon, rangedMod);
                 }
             }
-
         }
         // addToCalcMap(PARAMS. ATTACK_MOD, atkMod);
         // addToCalcMap(PARAMS. DAMAGE_MOD, dmg_mod);
         if (dmg_mod != 0) {
-            modMap.put(MOD_IDENTIFIER.POS, dmg_mod);
+            modMap.put(ActionEnums.MOD_IDENTIFIER.POS, dmg_mod);
         }
 
         action.modifyParameter(PARAMS.ATTACK_MOD, atk_mod, false);
         // action.modifyParameter(PARAMS.DAMAGE_MOD, dmg_mod, false);
     }
 
-    private void addToMap(Map<PARAMETER, Integer> calcMap, PARAMETER param, int mod) {
+    protected void addToMap(Map<PARAMETER, Integer> calcMap, PARAMETER param, int mod) {
         Integer value = calcMap.get(param);
         if (value != null) {
             value += mod;
@@ -464,17 +450,29 @@ public class AttackCalculator {
         LogMaster.log(1, " ");
     }
 
-    private void addModifier(PARAMS param, int mod) {
+    protected void addModifier(PARAMS param, int mod) {
         action.modifyParameter(param, mod - 100, false);
     }
 
-    private void addParameter(PARAMS param, int mod) {
+    protected void addParameter(PARAMS param, int mod) {
         action.modifyParameter(param, mod, false);
     }
 
-    private void initializeAttackModifiers() {
+    protected void addModifier(Map<ActionEnums.MOD_IDENTIFIER, Integer> map, ActionEnums.MOD_IDENTIFIER id, PARAMS param,
+                             Integer integer) {
+        addModifier(action, map, id, param, integer);
+    }
+
+    protected void addModifier(Entity e, Map<ActionEnums.MOD_IDENTIFIER, Integer> map, ActionEnums.MOD_IDENTIFIER id,
+                             PARAMS param, Integer integer) {
+        map.put(id, integer);
+        e.modifyParamByPercent(param, integer);
+    }
+
+
+    protected void initializeAttackModifiers() {
         Integer integer = weapon.getIntParam(PARAMS.ATTACK_MOD);
-        addModifier(atkModMap, MOD_IDENTIFIER.WEAPON, PARAMS.ATTACK, integer);
+        addModifier(atkModMap, ActionEnums.MOD_IDENTIFIER.WEAPON, PARAMS.ATTACK, integer);
 
         //      TODO   if (attacked.isEngagedWith(attacker)) {
         //            integer = weapon.getIntParam(PARAMS.ATTACK_MOD);
@@ -482,13 +480,13 @@ public class AttackCalculator {
         //        }
         if (AoO) {
             integer = attacker.getIntParam(PARAMS.AOO_ATTACK_MOD);
-            addModifier(atkModMap, MOD_IDENTIFIER.AOO, PARAMS.ATTACK, integer);
+            addModifier(atkModMap, ActionEnums.MOD_IDENTIFIER.AOO, PARAMS.ATTACK, integer);
         }
         if (instant) {
             integer = attacker.getIntParam(PARAMS.INSTANT_ATTACK_MOD);
-            addModifier(atkModMap, MOD_IDENTIFIER.INSTANT_ATTACK, PARAMS.ATTACK, integer);
+            addModifier(atkModMap, ActionEnums.MOD_IDENTIFIER.INSTANT_ATTACK, PARAMS.ATTACK, integer);
             if (WatchRule.checkWatched(attacker, attacked)) {
-                addModifier(atkModMap, MOD_IDENTIFIER.WATCHED, PARAMS.ATTACK, MathMaster
+                addModifier(atkModMap, ActionEnums.MOD_IDENTIFIER.WATCHED, PARAMS.ATTACK, MathMaster
                         .applyModIfNotZero(MathMaster.applyModIfNotZero(
                                 WatchRule.INSTANT_ATTACK_MOD, attacker
                                         .getIntParam(PARAMS.WATCH_ATTACK_MOD)), attacked
@@ -501,36 +499,36 @@ public class AttackCalculator {
         }
         if (counter) {
             integer = attacker.getIntParam(PARAMS.COUNTER_ATTACK_MOD);
-            addModifier(atkModMap, MOD_IDENTIFIER.COUNTER_ATTACK, PARAMS.ATTACK, integer);
+            addModifier(atkModMap, ActionEnums.MOD_IDENTIFIER.COUNTER_ATTACK, PARAMS.ATTACK, integer);
         }
         if (attack.getInstantAttackType() != null) {
             PARAMETER param = ContentValsManager.getPARAM(attack.getInstantAttackType().toString()
                     + "_ATTACK_MOD");
             integer = attacked.getIntParam(param);
-            addModifier(atkModMap, MOD_IDENTIFIER.INSTANT_ATTACK, PARAMS.ATTACK, integer);
+            addModifier(atkModMap, ActionEnums.MOD_IDENTIFIER.INSTANT_ATTACK, PARAMS.ATTACK, integer);
         }
     }
 
-    private void initializeDefenseModifiers() {
+    protected void initializeDefenseModifiers() {
         Integer integer;
         if (AoO) {
             integer = attacked.getIntParam(PARAMS.AOO_DEFENSE_MOD);
-            addModifier(attacked, defModMap, MOD_IDENTIFIER.AOO, PARAMS.DEFENSE, integer);
+            addModifier(attacked, defModMap, ActionEnums.MOD_IDENTIFIER.AOO, PARAMS.DEFENSE, integer);
         }
         if (instant) {
             integer = attacked.getIntParam(PARAMS.INSTANT_DEFENSE_MOD);
-            addModifier(attacked, defModMap, MOD_IDENTIFIER.INSTANT_ATTACK, PARAMS.DEFENSE, integer);
+            addModifier(attacked, defModMap, ActionEnums.MOD_IDENTIFIER.INSTANT_ATTACK, PARAMS.DEFENSE, integer);
         }
         if (counter) {
             integer = attacked.getIntParam(PARAMS.COUNTER_DEFENSE_MOD);
-            addModifier(attacked, defModMap, MOD_IDENTIFIER.COUNTER_ATTACK, PARAMS.DEFENSE, integer);
+            addModifier(attacked, defModMap, ActionEnums.MOD_IDENTIFIER.COUNTER_ATTACK, PARAMS.DEFENSE, integer);
         }
 
         if (disengage) {
             PARAMETER param = ContentValsManager.getPARAM(attack.getInstantAttackType().toString()
                     + "_DEFENSE_MOD");
             integer = attacked.getIntParam(param);
-            addModifier(attacked, defModMap, MOD_IDENTIFIER.INSTANT_ATTACK, PARAMS.DEFENSE, integer);
+            addModifier(attacked, defModMap, ActionEnums.MOD_IDENTIFIER.INSTANT_ATTACK, PARAMS.DEFENSE, integer);
         }
         // if ( engaged){
         // integer = attacked.getIntParam(PARAMS.ENGAGED_ATTACK_MOD);
@@ -540,18 +538,8 @@ public class AttackCalculator {
 
     }
 
-    private void addModifier(Map<MOD_IDENTIFIER, Integer> map, MOD_IDENTIFIER id, PARAMS param,
-                             Integer integer) {
-        addModifier(action, map, id, param, integer);
-    }
 
-    private void addModifier(Entity e, Map<MOD_IDENTIFIER, Integer> map, MOD_IDENTIFIER id,
-                             PARAMS param, Integer integer) {
-        map.put(id, integer);
-        e.modifyParamByPercent(param, integer);
-    }
-
-    private void initializeExtraModifiers() {
+    protected void initializeExtraModifiers() {
         Integer mod = 100;
         PARAMS param = null;
 
@@ -570,24 +558,24 @@ public class AttackCalculator {
         }
         if (weapon != null) {
             mod = MathMaster.applyPercent(mod, weapon.getIntParam(param));
-            extraMap.put(MOD_IDENTIFIER.WEAPON, weapon.getIntParam(param));
+            extraMap.put(ActionEnums.MOD_IDENTIFIER.WEAPON, weapon.getIntParam(param));
         }
         mod = MathMaster.applyModIfNotZero(mod, action.getIntParam(param));
         mod = MathMaster.applyModIfNotZero(mod, attacker.getIntParam(param));
         // mod += weapon.getIntParam(param) - 100;
         // mod += action.getIntParam(param) - 100;
-        extraMap.put(MOD_IDENTIFIER.ACTION, action.getIntParam(param));
+        extraMap.put(ActionEnums.MOD_IDENTIFIER.ACTION, action.getIntParam(param));
         // mod += attacker.getIntParam(param) - 100;
-        extraMap.put(MOD_IDENTIFIER.UNIT, attacker.getIntParam(param));
+        extraMap.put(ActionEnums.MOD_IDENTIFIER.UNIT, attacker.getIntParam(param));
         mod -= 100;
-        modMap.put(MOD_IDENTIFIER.EXTRA_ATTACK, mod);
+        modMap.put(ActionEnums.MOD_IDENTIFIER.EXTRA_ATTACK, mod);
     }
 
-    private void initializeRandomModifiers() {
+    protected void initializeRandomModifiers() {
         // ??
     }
 
-    private void initializeWeaponModifiers() {
+    protected void initializeWeaponModifiers() {
         if (weapon == null) {
             return;
         }
@@ -610,16 +598,17 @@ public class AttackCalculator {
         addModifier(PARAMS.ATTACK_MOD, atk_mod);
         addModifier(PARAMS.DAMAGE_MOD, dmg_mod);
 
-        modMap.put(MOD_IDENTIFIER.WEAPON, dmg_mod);
-        atkMap.put(MOD_IDENTIFIER.WEAPON, atk_mod);
+        modMap.put(ActionEnums.MOD_IDENTIFIER.WEAPON, dmg_mod);
+        atkMap.put(ActionEnums.MOD_IDENTIFIER.WEAPON, atk_mod);
     }
-//TODO rpg Review
-    private int initSneakMods(Obj obj, int rangedMod) {
+
+    //TODO rpg Review
+    protected int initSneakMods(Obj obj, int rangedMod) {
         int mod = obj.getIntParam(PARAMS.SNEAK_ATTACK_MOD) * rangedMod / 100;
-        MapMaster.addToIntegerMap(atkMap, MOD_IDENTIFIER.SNEAK, mod);
+        MapMaster.addToIntegerMap(atkMap, ActionEnums.MOD_IDENTIFIER.SNEAK, mod);
         addModifier(PARAMS.ATTACK_MOD, mod);
         int dmg_mod = obj.getIntParam(PARAMS.SNEAK_DAMAGE_MOD) * rangedMod / 100;
-        MapMaster.addToIntegerMap(posMap, MOD_IDENTIFIER.SNEAK, dmg_mod);
+        MapMaster.addToIntegerMap(posMap, ActionEnums.MOD_IDENTIFIER.SNEAK, dmg_mod);
         addModifier(PARAMS.DAMAGE_MOD, dmg_mod);
         // TODO add up Mod and Bonus for AtkMap!
         mod = obj.getIntParam(PARAMS.SNEAK_ATTACK_BONUS) * rangedMod / 100;
@@ -630,7 +619,7 @@ public class AttackCalculator {
         addModifier(PARAMS.DEFENSE_MOD, mod);
 
         mod = obj.getIntParam(PARAMS.SNEAK_DEFENSE_PENETRATION)
-                -obj.getIntParam(PARAMS.SNEAK_PROTECTION    ) * rangedMod / 100;
+                - obj.getIntParam(PARAMS.SNEAK_PROTECTION) * rangedMod / 100;
         addParameter(PARAMS.DEFENSE_PENETRATION, mod);
         return dmg_mod;
     }
@@ -641,69 +630,6 @@ public class AttackCalculator {
 
     public void setMax(boolean max) {
         this.max = max;
-    }
-
-    public enum MOD_IDENTIFIER {
-        ATK_DEF,
-        HIT_TYPE("ui/value icons/identifiers/CRIT.jpg"),
-        ACTION,
-        WEAPON,
-        UNIT,
-        EXTRA_ATTACK,
-        RANDOM,
-        AMMO,
-        FORCE,
-
-        POS("ui/value icons/identifiers/POS.png"),
-        SNEAK("ui/value icons/identifiers/SNEAK.jpg"),
-        CLOSE_QUARTERS("ui/value icons/identifiers/CLOSE_QUARTERS.jpg"),
-        LONG_REACH("ui/value icons/identifiers/LONG_REACH.jpg"),
-        DIAGONAL_ATTACK("ui/value icons/identifiers/DIAGONAL_ATTACK.png"),
-        SIDE_ATTACK("ui/value icons/identifiers/SIDE_ATTACK.png"),
-
-        ARMOR("ui/value icons/identifiers/ARMOR.jpg"),
-        RESISTANCE("ui/value icons/identifiers/RESISTANCE.jpg"),
-        DIE_SIZE("ui/value icons/identifiers/DIE_SIZE.png"),
-        DIE_NUMBER("ui/value icons/identifiers/DIE_NUMBER.png"),
-        DIE_RESULT,
-        THROW(STD_IMAGES.THROW.getPath()),
-        INSTANT_ATTACK(STD_IMAGES.INSTANT_ATTACK.getPath()),
-        AOO(STD_IMAGES.ATTACK_OF_OPPORTUNITY.getPath()),
-        COUNTER_ATTACK(STD_IMAGES.COUNTER_ATTACK.getPath()),
-        DISENGAGEMENT,
-        WATCHED(STD_IMAGES.EYE.getPath()),
-        SIGHT_RANGE(STD_IMAGES.EYE.getPath());
-        private String imagePath;
-
-        MOD_IDENTIFIER() {
-
-        }
-
-        MOD_IDENTIFIER(String path) {
-            this.imagePath = path;
-        }
-
-        public String getImagePath() {
-            return imagePath;
-        }
-
-        public Image getImage(Object... values) {
-            if (imagePath == null) {
-                try {
-                    //???
-                    // return DC_ImageMaster.getImageDynamic(this, values);
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                    return ImageManager.getImage(ImageManager.getEmptyListIconSmall());
-                }
-            }
-            return ImageManager.getImage(imagePath);
-        }
-
-        public String getName() {
-            return StringMaster.format(name());
-        }
-
     }
 
     public void setHitType(NewRpgEnums.HitType hitType) {

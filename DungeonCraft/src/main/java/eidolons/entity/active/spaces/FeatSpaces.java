@@ -1,6 +1,6 @@
 package eidolons.entity.active.spaces;
 
-import eidolons.ability.DC_CostsFactory;
+import eidolons.ability.costs.DC_CostsFactory;
 import eidolons.content.DC_Calculator;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
@@ -9,33 +9,35 @@ import main.elements.costs.Costs;
 
 import java.util.*;
 
-public class UnitActiveSpaces implements Comparator<ActiveSpace> {
+public class FeatSpaces implements Comparator<FeatSpace> {
     private Unit unit;
-    private List<ActiveSpace> activeSpaces;
-    private ActiveSpace current;
-    private ActiveSpace prev;
+    private List<FeatSpace> featSpaces;
+    private FeatSpace current;
+    private FeatSpace prev;
     private int switched;
+    boolean spellSpaces;
 
-    public UnitActiveSpaces(Unit unit) {
+    public FeatSpaces(Unit unit, boolean spellSpaces) {
         this.unit = unit;
-        activeSpaces = new LinkedList<>();
+        this.spellSpaces = spellSpaces;
+        featSpaces = new LinkedList<>();
     }
 
-    public List<ActiveSpace> getVisible() {
-        ArrayList<ActiveSpace> list = new ArrayList<>(this.activeSpaces);
+    public List<FeatSpace> getVisible() {
+        ArrayList<FeatSpace> list = new ArrayList<>(this.featSpaces);
         Collections.sort(list, this);
         return list;
     }
 
-    public void add(ActiveSpace space) {
-        activeSpaces.add(space);
+    public void add(FeatSpace space) {
+        featSpaces.add(space);
         if (current == null) {
             current = space;
         }
     }
 
-    public void remove(ActiveSpace space) {
-        activeSpaces.remove(space);
+    public void remove(FeatSpace space) {
+        featSpaces.remove(space);
     }
 
     public void newRound() {
@@ -45,11 +47,11 @@ public class UnitActiveSpaces implements Comparator<ActiveSpace> {
         }
     }
 
-    public boolean canSwitchTo(ActiveSpace space) {
+    public boolean canSwitchTo(FeatSpace space) {
         return getSwitchCosts(unit).canBePaid(unit);
     }
 
-    public void switchTo(ActiveSpace space) {
+    public void switchTo(FeatSpace space) {
         paySwitchCost(unit);
         switched++;
         prev = current;
@@ -62,7 +64,7 @@ public class UnitActiveSpaces implements Comparator<ActiveSpace> {
     }
 
     @Override
-    public int compare(ActiveSpace o1, ActiveSpace o2) {
+    public int compare(FeatSpace o1, FeatSpace o2) {
         if (o1.type.sortIndex == o2.type.sortIndex) {
             if (o1.index == o2.index)
                 return 0;
@@ -84,15 +86,15 @@ public class UnitActiveSpaces implements Comparator<ActiveSpace> {
 
     }
 
-    public List<ActiveSpace> getActiveSpaces() {
-        return activeSpaces;
+    public List<FeatSpace> getSpaces() {
+        return featSpaces;
     }
 
-    public ActiveSpace getCurrent() {
+    public FeatSpace getCurrent() {
         return current;
     }
 
-    public ActiveSpace getPrev() {
+    public FeatSpace getPrev() {
         return prev;
     }
 
@@ -103,6 +105,6 @@ public class UnitActiveSpaces implements Comparator<ActiveSpace> {
     @Override
     public String toString() {
         return   unit +
-                "'s  Active Spaces:" + activeSpaces  ;
+                "'s  Active Spaces:" + featSpaces;
     }
 }

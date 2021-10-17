@@ -10,8 +10,8 @@ import static main.content.enums.entity.NewRpgEnums.*;
     <ActiveSpacesProp>
     name=X; | name=X2; ...
      */
-public class ActiveSpaceData extends DataUnit<ACTIVE_SPACE_VALUE> {
-    public ActiveSpaceData(String string) {
+public class FeatSpaceData extends DataUnit<FEAT_SPACE_VALUE> {
+    public FeatSpaceData(String string) {
         super(string);
     }
 
@@ -30,7 +30,7 @@ public class ActiveSpaceData extends DataUnit<ACTIVE_SPACE_VALUE> {
     }
 
     public String getName() {
-        return getValue(ACTIVE_SPACE_VALUE.name);
+        return getValue(FEAT_SPACE_VALUE.name);
     }
 
     public void setActive(int index, String name) {
@@ -42,23 +42,23 @@ public class ActiveSpaceData extends DataUnit<ACTIVE_SPACE_VALUE> {
     }
 
     public String getActives() {
-        return getValue(ACTIVE_SPACE_VALUE.actives);
+        return getValue(FEAT_SPACE_VALUE.feats);
     }
 
     public void set(int index, String active) {
         setValue("slot_" + index, active);
     }
 
-    public ACTIVE_SPACE_TYPE getType() {
-        return new EnumMaster<ACTIVE_SPACE_TYPE>().retrieveEnumConst(ACTIVE_SPACE_TYPE.class, getValue(ACTIVE_SPACE_VALUE.type));
+    public FEAT_SPACE_TYPE getType() {
+        return new EnumMaster<FEAT_SPACE_TYPE>().retrieveEnumConst(FEAT_SPACE_TYPE.class, getValue(FEAT_SPACE_VALUE.type));
     }
 
-    public ACTIVE_SPACE_MODE getMode() {
-        return ACTIVE_SPACE_MODE.normal;
+    public FEAT_SPACE_MODE getMode() {
+        return FEAT_SPACE_MODE.normal;
     }
 
     public int indexOf(String name) {
-        for (int i = 0; i < ActiveSpaceInitializer.MAX_SLOTS; i++) {
+        for (int i = 0; i < FeatSpaceInitializer.MAX_SLOTS; i++) {
             if (getActive(i).equalsIgnoreCase(name)) {
                 return i;
             }

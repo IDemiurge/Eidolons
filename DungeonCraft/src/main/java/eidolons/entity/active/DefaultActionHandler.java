@@ -1,6 +1,5 @@
 package eidolons.entity.active;
 
-import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
@@ -235,7 +234,7 @@ public class DefaultActionHandler {
             return false;
         }
         Obj target = action.getTargeting() instanceof SelectiveTargeting ?
-                Eidolons.getGame().getCellByCoordinate(c) : null;
+                Eidolons.getGame().getCell(c) : null;
         Context context = new Context(source, target);
         return activate(context, action);
 
@@ -340,10 +339,10 @@ public class DefaultActionHandler {
 
     private static boolean doDebugStuffCell(Unit source, Coordinates c) {
         Ref ref = new Ref(source);
-        ref.setMatch(source.getGame().getCellByCoordinate(c).getId());
+        ref.setMatch(source.getGame().getCell(c).getId());
         ClearshotMaster.clearCache();
         source.getGame().getVisionMaster().getSightMaster().getClearShotCondition().preCheck(ref);
-        DC_Obj target = source.getGame().getCellByCoordinate(c);
+        DC_Obj target = source.getGame().getCell(c);
         int g = target.getGame().getVisionMaster().getGammaMaster().getGamma(source, target);
         return false;
     }
@@ -365,7 +364,7 @@ public class DefaultActionHandler {
         source.getGame().getMovementManager().cancelAutomove(source);
         new Thread(() -> {
             source.getGame().getMovementManager().moveTo(
-                    source.getGame().getCellByCoordinate(coordinates));
+                    source.getGame().getCell(coordinates));
         }, "moveTo thread").start();
         return true;
     }

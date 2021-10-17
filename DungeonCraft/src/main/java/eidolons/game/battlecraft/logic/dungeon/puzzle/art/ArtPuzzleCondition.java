@@ -20,7 +20,7 @@ public class ArtPuzzleCondition extends DC_Condition {
 
         for (int i = 0; i < puzzle.getWidth(); i++) {
             for (int j = 0; j < puzzle.getHeight(); j++) {
-                DC_Cell cell = getGame().getCellByCoordinate(puzzle.getAbsoluteCoordinate(i, j));
+                DC_Cell cell = getGame().getCell(puzzle.getAbsoluteCoordinate(i, j));
                 if (cell.getOverlayRotation()%360 != 0) {
                     return false;
                 }

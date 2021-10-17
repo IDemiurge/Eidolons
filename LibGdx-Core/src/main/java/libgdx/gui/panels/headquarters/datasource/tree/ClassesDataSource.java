@@ -1,6 +1,6 @@
 package libgdx.gui.panels.headquarters.datasource.tree;
 
-import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.entity.obj.attach.DC_PassiveObj;
 import eidolons.entity.obj.attach.Perk;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.herocreator.logic.HeroClassMaster;
@@ -26,11 +26,11 @@ public class ClassesDataSource extends HeroTreeDataSource {
 
     public List getPerkSlots(int tier) {
         List linkData = new ArrayList<>();
-        List<DC_FeatObj> classes = HeroClassMaster.getClasses(hero, tier);
+        List<DC_PassiveObj> classes = HeroClassMaster.getClasses(hero, tier);
         List<Perk> perks = PerkMaster.getPerks(hero, tier);
 
-        for (DC_FeatObj class1 : classes) {
-            DC_FeatObj class2 = null;
+        for (DC_PassiveObj class1 : classes) {
+            DC_PassiveObj class2 = null;
             int i = classes.indexOf(class1);
             if (classes.size() >i + 1)
                 class2 = classes.get(i + 1);

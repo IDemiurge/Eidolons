@@ -1,11 +1,9 @@
 
 package eidolons.game.battlecraft.rules.action;
 
-import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
-import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.VoidMaze;
 import eidolons.game.battlecraft.rules.RuleEnums;
@@ -15,8 +13,6 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.struct.Entrance;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.module.dungeoncrawl.objects.Door;
-import eidolons.game.module.dungeoncrawl.objects.DoorMaster;
 import eidolons.system.libgdx.GdxAdapter;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
@@ -25,9 +21,7 @@ import main.entity.EntityCheckMaster;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
-import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
@@ -157,7 +151,7 @@ public class StackingRule implements ActionRule {
         if (unit != null) {
                 DC_Cell cell;
                 if (!game.isSimulation()) {
-                    cell = game.getCellByCoordinate(c);
+                    cell = game.getCell(c);
                 } else {
                     cell = new DC_Cell(c, game); //TODO this is a hack...
                 }

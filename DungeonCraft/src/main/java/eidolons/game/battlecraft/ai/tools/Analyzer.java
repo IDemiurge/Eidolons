@@ -51,7 +51,7 @@ public class Analyzer extends AiHandler {
     public static List<DC_Cell> getProtectCells(UnitAI ai) {
         List<Unit> list = getAllies(ai);
         //TODO filter
-        return list.stream().map(unit -> unit.getGame().getCellByCoordinate(unit.getCoordinates())).collect(Collectors.toList());
+        return list.stream().map(unit -> unit.getGame().getCell(unit.getCoordinates())).collect(Collectors.toList());
     }
 
     public static List<Unit> getAllies(UnitAI ai) {
@@ -212,7 +212,7 @@ public class Analyzer extends AiHandler {
             if (isEnemy(obj, ai.getUnit())) {
                 Coordinates coordinates = ai.getUnit().getOwner()
                         .getLastSeenCache().get(obj);
-                list.add(obj.getGame().getCellByCoordinate(
+                list.add(obj.getGame().getCell(
                         coordinates));
             }
         }
@@ -471,7 +471,7 @@ public class Analyzer extends AiHandler {
         return new ListMaster<DC_Cell>().getList(ai
                 .getUnit()
                 .getGame()
-                .getCellByCoordinate(
+                .getCell(
                         new RandomWizard<Coordinates>().getRandomSetItem(ai
                                 .getUnit().getCoordinates()
                                 .getAdjacentCoordinates())));

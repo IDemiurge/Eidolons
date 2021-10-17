@@ -2,7 +2,10 @@ package libgdx.gui.panels.dc.actionpanel.datasource;
 
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.spaces.Feat;
+import libgdx.gui.generic.ValueContainer;
 import libgdx.gui.panels.dc.actionpanel.ActionContainer;
+import libgdx.gui.panels.dc.actionpanel.FeatContainer;
 import libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -10,46 +13,49 @@ import main.system.GuiEventType;
 public class ActionContainerFactory {
 
     public static final ActionContainerFactory instance = new ActionContainerFactory();
-    private static final ObjectMap<DC_ActiveObj, ActionContainer> cache = new ObjectMap<>();
+    private static final ObjectMap<Feat, ActionContainer> cache = new ObjectMap<>();
 
     private ActionContainerFactory() {
-        GuiEventManager.bind(GuiEventType. HIGHLIGHT_ACTION, p-> {
-            getValueContainer((DC_ActiveObj) p.get(), 64) .setHighlight(true);
+        GuiEventManager.bind(GuiEventType.HIGHLIGHT_ACTION, p -> {
+            getValueContainer((DC_ActiveObj) p.get(), 64).setHighlight(true);
         });
-        GuiEventManager.bind(GuiEventType. HIGHLIGHT_ACTION_OFF, p-> {
-            getValueContainer((DC_ActiveObj) p.get(), 64) .setHighlight(false);
+        GuiEventManager.bind(GuiEventType.HIGHLIGHT_ACTION_OFF, p -> {
+            getValueContainer((DC_ActiveObj) p.get(), 64).setHighlight(false);
         });
     }
 
-    public static ActionContainer getValueContainer(DC_ActiveObj el, int size) {
+    public static FeatContainer getValueContainer(Feat el, int size) {
         ActionContainer container = cache.get(el);
         boolean valid = el.canBeActivated();
-        boolean b=false;
+        boolean highlighted = false;
         if (container != null) {
-//            container.reset(getImage(el));
-//            container.setValid(valid);
-            b = container.isHighlighted();
-//            if (b)
-//                return container;
+            //            container.reset(getImage(el));
+            //            container.setValid(valid);
+            highlighted = container.isHighlighted();
+            //            if (b)
+            //                return container;
         }
-            container = new ActionContainer(
+        if (el.isActive()) {
+            container = new ActionContainer(()-> el.getCharges(),
                     size, valid, getImage(el)
                     , el::invokeClicked);
+            ActionCostTooltip tooltip = new ActionCostTooltip(el.getActive());
+            tooltip.addTo(container);
+        } else {
 
-        if (b) {
-            container.setHighlight(b);
+            //TODO NF Rules - Passives
         }
-            cache.put(el, container);
+        if (highlighted) {
+            container.setHighlight(true);
+        }
+        cache.put(el, container);
 
         container.setUserObject(el);
 
-        ActionCostTooltip tooltip = new ActionCostTooltip(el);
-
-        tooltip.addTo(container);
         return container;
     }
 
-    private static String getImage(DC_ActiveObj el) {
+    private static String getImage(Feat el) {
         //        if (el.can)
         return el.getImagePath();
     }

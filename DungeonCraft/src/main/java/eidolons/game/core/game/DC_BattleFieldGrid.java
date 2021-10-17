@@ -162,7 +162,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
             Coordinates c = Coordinates.get(X, Y);
             BattleFieldObject[] objects = getObjects(X, Y, false);
             for (BattleFieldObject obj : objects) {
-                if (obj.isObstructing(source, game.getCellByCoordinate(c))) {
+                if (obj.isObstructing(source, game.getCell(c))) {
                     return false;
                 }
             }
@@ -192,7 +192,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
             Coordinates c = (x_y) ? Coordinates.get(xy, i) : Coordinates.get(i, xy);
             Set<BattleFieldObject> objects = game.getObjMaster().getObjectsOnCoordinate(c, false);
             for (BattleFieldObject obj : objects) {
-                if (obj.isObstructing(source, game.getCellByCoordinate(c))) {
+                if (obj.isObstructing(source, game.getCell(c))) {
                     return false;
                 }
             }

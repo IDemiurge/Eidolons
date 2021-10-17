@@ -12,7 +12,7 @@ import eidolons.entity.handlers.bf.unit.*;
 import eidolons.entity.item.*;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.entity.obj.attach.DC_PassiveObj;
 import eidolons.entity.obj.attach.HeroClass;
 import eidolons.entity.obj.attach.Perk;
 import eidolons.entity.hero.DC_Attributes;
@@ -538,7 +538,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public DC_FeatObj getFeat(ObjType type) {
+    public DC_PassiveObj getFeat(ObjType type) {
         return getHero().getFeat(type);
     }
 
@@ -552,7 +552,7 @@ public class HeroWrapper extends HeroDataModel {
         return getHero().hasBuff(buffName);
     }
 
-    public DC_FeatObj getFeat(boolean skill, ObjType type) {
+    public DC_PassiveObj getFeat(boolean skill, ObjType type) {
         return getHero().getFeat(skill, type);
     }
 
@@ -1555,7 +1555,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public void addFeat(DC_FeatObj e) {
+    public void addFeat(DC_PassiveObj e) {
         getHero().addFeat(e);
     }
 
@@ -1590,12 +1590,12 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public DequeImpl<DC_FeatObj> getSkills() {
+    public DequeImpl<DC_PassiveObj> getSkills() {
         return getHero().getSkills();
     }
 
     @Override
-    public void setSkills(DequeImpl<DC_FeatObj> skills) {
+    public void setSkills(DequeImpl<DC_PassiveObj> skills) {
         getHero().setSkills(skills);
     }
 

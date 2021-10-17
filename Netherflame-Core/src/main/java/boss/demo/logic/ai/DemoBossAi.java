@@ -9,8 +9,6 @@ import boss.ai.BossAi;
 import boss.demo.logic.DemoBossActionManager;
 import main.entity.Ref;
 
-import static eidolons.game.core.Eidolons.getMainHero;
-
 public class  DemoBossAi extends BossAi {
 
     public DemoBossAi(BossManager manager) {
@@ -30,7 +28,7 @@ public class  DemoBossAi extends BossAi {
     }
 
     private DC_Cell getTargetCell(DC_ActiveObj active) {
-       return getGame().getCellByCoordinate(Eidolons.getMainHero().getCoordinates());
+       return getGame().getCell(Eidolons.getMainHero().getCoordinates());
     }
 
     private BOSS_ACTION chooseSpellKey() {

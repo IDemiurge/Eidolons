@@ -243,7 +243,7 @@ it sort of broke at some point - need to investigate!
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                DC_Cell cell = DC_Game.game.getCellByCoordinate(Coordinates.get(x,
+                DC_Cell cell = DC_Game.game.getCell(Coordinates.get(x,
                         y));
                 if (y < y2 && y >= y1
                         && x < x2 && x >= x1) {

@@ -1,20 +1,18 @@
 package libgdx.gui.panels.dc.actionpanel.datasource;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.spaces.ActiveSpace;
+import eidolons.entity.active.spaces.FeatSpace;
+import eidolons.entity.active.spaces.Feat;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.obj.unit.Unit;
 import libgdx.gui.UiMaster;
 import libgdx.gui.generic.ValueContainer;
 import libgdx.gui.panels.dc.actionpanel.ActionContainer;
+import libgdx.gui.panels.dc.actionpanel.FeatContainer;
 import libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import libgdx.gui.panels.dc.unitinfo.datasource.*;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
-import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
-import main.system.launch.CoreEngine;
-import main.system.launch.Flags;
 
 import java.util.*;
 import java.util.function.Function;
@@ -55,15 +53,18 @@ public class PanelActionsDataSource implements
 
 
     @Override
-    public List<ValueContainer> getQuickSlotActions() {
+    public List<FeatContainer> getQuickSlotActions() {
         final DequeImpl<DC_QuickItemObj> items = unit.getQuickItems();
-        if (items == null)
-            return (List<ValueContainer>)
-                    ListMaster.fillWithNullElements(new ArrayList<ValueContainer>(), unit.getRemainingQuickSlots());
-        List<ValueContainer> list = items.stream()
+        //TODO real split!
+        // unit.getCombatSpaces().getSpaces().stream().filter(space -> space.getType()== q).forEach(space ->
+        //         space.getFeats());
+        // for (FeatSpace featSpace : unit.getCombatSpaces().getSpaces()) {
+        //
+        // }
+        List<FeatContainer> list = items.stream()
                 .map((DC_QuickItemObj key) -> {
                     boolean valid = key.getActive().canBeManuallyActivated();
-                    final ValueContainer valueContainer = new ActionContainer(
+                    final ActionContainer valueContainer = new ActionContainer(()-> key.getCharges(),
                             UiMaster.getBottomQuickItemIconSize(),
                             valid,
                             (key.getImagePath()),
@@ -113,30 +114,30 @@ public class PanelActionsDataSource implements
 
     @Override
     public List<ValueContainer> getActives() {
-        List<DC_ActiveObj> actives =
+        List<Feat> actives =
                 // Flags.isSafeMode() ? new LinkedList<>(unit.getActionMap().get(ACTION_TYPE.STANDARD)) :
-                        unit.getActiveSpaces().getCurrent().getDisplayedActives();
+                        unit.getSpellSpaces().getCurrent().getFeats();
         return actives.stream()
                 .map(getActiveObjValueContainerFunction(UiMaster.getBottomActiveIconSize()))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Map<ActiveSpace.ActiveSpaceMeta, List<ValueContainer>> getActiveSpacesExpanded() {
-        List<ActiveSpace> spaces = unit.getActiveSpaces().getVisible();
-        Map<ActiveSpace.ActiveSpaceMeta, List<ValueContainer>> map= new LinkedHashMap<>();
-        for (ActiveSpace space : spaces) {
-            List<DC_ActiveObj> actives = space.getDisplayedActives();
+    public Map<FeatSpace.ActiveSpaceMeta, List<ValueContainer>> getActiveSpacesExpanded() {
+        List<FeatSpace> spaces = unit.getSpellSpaces().getVisible();
+        Map<FeatSpace.ActiveSpaceMeta, List<ValueContainer>> map= new LinkedHashMap<>();
+        for (FeatSpace space : spaces) {
+            List<Feat> actives = space.getFeats();
             List<ValueContainer> containers = actives.stream()
                     .map(getActiveObjValueContainerFunction(UiMaster.getBottomActiveIconSize()))
                     .collect(Collectors.toList());
-            ActiveSpace.ActiveSpaceMeta meta = unit.getGame().getActionManager().
+            FeatSpace.ActiveSpaceMeta meta = unit.getGame().getActionManager().
                     getSpaceManager().createMeta(space);
             map.put(meta, containers);
         }
        return map;
     }
-    private Function<DC_ActiveObj, ValueContainer> getActiveObjValueContainerFunction(
+    private Function<Feat, ValueContainer> getActiveObjValueContainerFunction(
             int size) {
         return el -> {
             return ActionContainerFactory.getValueContainer(el, size);

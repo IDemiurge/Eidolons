@@ -56,7 +56,7 @@ public abstract class BossManager<T extends BossModel> {
 
     public void init() {
         for (Coordinates c : game.getModule().getCoordinatesSet()) {
-            if (game.getCellByCoordinate(c).getMarks().contains(CONTENT_CONSTS.MARK.boss)) {
+            if (game.getCell(c).getMarks().contains(CONTENT_CONSTS.MARK.boss)) {
                 origin = c;
                 break;
             }

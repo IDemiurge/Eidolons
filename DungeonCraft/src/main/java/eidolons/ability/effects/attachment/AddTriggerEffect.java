@@ -21,7 +21,7 @@ import main.system.launch.Flags;
 import org.w3c.dom.Node;
 
 public class AddTriggerEffect extends MultiEffect implements
- AttachmentEffect, ContainerEffect {
+        AttachmentEffect, ContainerEffect {
     // ONLY FOR PARAMS LIKE MANA, HP, STA, IN ... (CURRENT VALUES)
     protected EVENT_TYPE event_type;
     protected Ability ability;
@@ -47,33 +47,37 @@ public class AddTriggerEffect extends MultiEffect implements
 
     public AddTriggerEffect(String event_type, Condition conditions, String target, Effect effect) {
         this(Event.getEventType(event_type), conditions, new EnumMaster<KEYS>().retrieveEnumConst(
-         KEYS.class, target), effect);
+                KEYS.class, target), effect);
     }
 
-    // continuous
     @Override
     public boolean applyThis() {
         if (!Flags.isCombatGame()) {
             return true;
         }
         if (trigger == null) {
-            trigger = new Trigger(event_type, conditions, ability);
+            trigger = createTriggerObject();
 
             if (!Flags.DEV_MODE)
-                    if (conditions != null)
-                        if (conditions.toXml() == null)
-                            if (!StringMaster.isEmpty(toXml()))
-                                try {
-                                    Node xml = XmlNodeMaster.findNode(toXml(), "Conditions");
-                                    if (xml != null)
-                                        conditions.setXml(XML_Converter.getStringFromXML(xml));
-                                } catch (Exception e) {
-//                main.system.ExceptionMaster.printStackTrace(e);
-                                }
+                if (conditions != null)
+                    if (conditions.toXml() == null)
+                        if (!StringMaster.isEmpty(toXml()))
+                            try {
+                                Node xml = XmlNodeMaster.findNode(toXml(), "Conditions");
+                                if (xml != null)
+                                    conditions.setXml(XML_Converter.getStringFromXML(xml));
+                            } catch (Exception e) {
+                                //                main.system.ExceptionMaster.printStackTrace(e);
+                            }
         }
         trigger.setRetainCondition(retainCondition);
+        //continuous - since triggers are also cleaned!
         ref.getGame().getManager().addTrigger(trigger);
         return true;
+    }
+
+    protected Trigger createTriggerObject() {
+        return new Trigger(event_type, conditions, ability);
     }
 
     public void remove() {

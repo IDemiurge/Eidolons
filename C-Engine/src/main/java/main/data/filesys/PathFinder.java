@@ -39,6 +39,7 @@ public class PathFinder {
     private static volatile boolean isInitialized = false;
     private static String jarName;
     private static String spritesPath;
+    public static final String absoluteResPath = "C:/code/eidolons/resources/res/";
 
     private static void _init() {
         ClassLoader classLoader = PathFinder.class.getClassLoader();

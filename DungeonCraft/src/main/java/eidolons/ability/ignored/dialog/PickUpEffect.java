@@ -19,7 +19,7 @@ public class PickUpEffect extends InventoryDialogEffect {
     @Override
     public boolean applyThis() {
         Unit unit = (Unit) ref.getSourceObj();
-        DC_Cell cell = getGame().getCellByCoordinate(unit.getCoordinates());
+        DC_Cell cell = getGame().getCell(unit.getCoordinates());
         return ContainerMaster.loot(unit, cell);
     }
 }

@@ -7,7 +7,8 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.active.Spell;
-import eidolons.entity.active.spaces.UnitActiveSpaces;
+import eidolons.entity.active.spaces.Feat;
+import eidolons.entity.active.spaces.FeatSpaces;
 import eidolons.entity.handlers.bf.unit.*;
 import eidolons.entity.item.*;
 import eidolons.entity.item.garment.Garment;
@@ -15,7 +16,7 @@ import eidolons.entity.item.garment.HeadGarment;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.KeyResolver;
-import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.entity.obj.attach.DC_PassiveObj;
 import eidolons.entity.obj.attach.HeroClass;
 import eidolons.entity.obj.attach.Perk;
 import eidolons.entity.hero.DC_Attributes;
@@ -104,7 +105,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     protected HeadGarment headGarment;
     protected Garment garment;
 
-    protected DequeImpl<DC_FeatObj> skills;
+    protected DequeImpl<DC_PassiveObj> skills;
     protected DequeImpl<HeroClass> classes;
     protected DequeImpl<Perk> perks;
     protected DequeImpl<DC_QuickItemObj> quickItems;
@@ -115,7 +116,8 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     protected DC_Attributes attrs;
 
     protected List<Spell> spells;
-    protected UnitActiveSpaces activeSpaces;
+    protected FeatSpaces spellSpaces;
+    protected FeatSpaces combatSpaces;
     protected boolean initialized;
     protected List<Spell> spellbook;
     protected boolean itemsInitialized;
@@ -379,12 +381,12 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         }
     }
 
-    public DC_FeatObj getFeat(ObjType type) {
+    public DC_PassiveObj getFeat(ObjType type) {
         return getFeat(type.getOBJ_TYPE_ENUM() == DC_TYPE.SKILLS, type);
     }
 
-    public DC_FeatObj getFeat(boolean skill, ObjType type) {
-        for (DC_FeatObj feat : getSkills()) {
+    public DC_PassiveObj getFeat(boolean skill, ObjType type) {
+        for (DC_PassiveObj feat : getSkills()) {
             if (feat.getName().equalsIgnoreCase(type.getName())) {
                 return feat;
             }
@@ -455,7 +457,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
 
     @Override
     public void newRound() {
-        activeSpaces.newRound();
+        spellSpaces.newRound();
         // if (!itemsInitialized)
         // initItems();
         super.newRound();
@@ -510,12 +512,20 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         return spells;
     }
 
-    public UnitActiveSpaces getActiveSpaces() {
-        return activeSpaces;
+    public FeatSpaces getSpellSpaces() {
+        return spellSpaces;
     }
 
-    public void setActiveSpaces(UnitActiveSpaces activeSpaces) {
-        this.activeSpaces = activeSpaces;
+    public void setSpellSpaces(FeatSpaces spellSpaces) {
+        this.spellSpaces = spellSpaces;
+    }
+
+    public FeatSpaces getCombatSpaces() {
+        return combatSpaces;
+    }
+
+    public void setCombatSpaces(FeatSpaces combatSpaces) {
+        this.combatSpaces = combatSpaces;
     }
 
     public void setSpells(List<Spell> spells) {
@@ -552,7 +562,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         this.spellbook = spellbook;
     }
 
-    public void addFeat(DC_FeatObj e) {
+    public void addFeat(DC_PassiveObj e) {
         if (e.getOBJ_TYPE_ENUM() == DC_TYPE.SKILLS) {
             getSkills().add(e);
         } else {
@@ -560,11 +570,11 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         }
     }
 
-    public DequeImpl<DC_FeatObj> getSkills() {
+    public DequeImpl<DC_PassiveObj> getSkills() {
         return skills;
     }
 
-    public void setSkills(DequeImpl<DC_FeatObj> skills) {
+    public void setSkills(DequeImpl<DC_PassiveObj> skills) {
         this.skills = skills;
     }
 
@@ -1779,6 +1789,12 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         for (BuffObj buff : new LinkedList<>(getBuffs())) {
             buff.remove();
         }
+    }
+    public List<Feat> getActiveFeats() {
+        List<Feat> feats=    new ArrayList<>() ;
+        feats.addAll(spellSpaces.getCurrent().getFeats());
+        feats.addAll(combatSpaces.getCurrent().getFeats());
+        return feats;
     }
 
     public boolean canInstantAttack() {

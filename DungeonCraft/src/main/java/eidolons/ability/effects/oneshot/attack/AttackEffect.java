@@ -1,6 +1,7 @@
 package eidolons.ability.effects.oneshot.attack;
 
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.spaces.Feat;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
@@ -29,6 +30,25 @@ public class AttackEffect extends MicroEffect implements OneshotEffect {
     protected boolean offhand;
     protected DC_WeaponObj weapon;
     protected Attack attack;
+
+    /*
+     * Any feat can be basis for an attack - spell, passive, QI, combat skill etc
+     * Spells: custom damage calculation - just branch it at a certain point
+     * > but how to PREVIEW this damage then?
+     * Perhaps we could have something similar to 4 atk types with spells, instead of specifying damage all the time?!
+     *  Would weapon matter for this Spell Damage case? I recall some games used that trick
+     *
+     * Usage - subclass into SpellAttackEffect , use it in AV
+     * custom parameters
+     *
+     * Std atk types - via entities? Or will they be really STANDARD? Maybe only Special atk will be different. For the rest, just
+     * use std numbers and provided dmg type!
+     * Aha - so in that calculator instead of petty dmg bonus param use ATK TYPE !
+     *
+     *
+     */
+    Feat feat;
+
 
     // on deal > than x%?
 

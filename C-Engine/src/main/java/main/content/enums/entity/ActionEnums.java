@@ -2,6 +2,9 @@ package main.content.enums.entity;
 
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
+import main.system.images.ImageManager;
+
+import java.awt.*;
 
 /**
  * Created by JustMe on 2/14/2017.
@@ -231,6 +234,69 @@ public class ActionEnums {
     public enum MISC_ACTIONS {
         Cower,
         stumble
+
+    }
+
+    public enum MOD_IDENTIFIER {
+        ATK_DEF,
+        HIT_TYPE("ui/value icons/identifiers/CRIT.jpg"),
+        ACTION,
+        WEAPON,
+        UNIT,
+        EXTRA_ATTACK,
+        RANDOM,
+        AMMO,
+        FORCE,
+
+        POS("ui/value icons/identifiers/POS.png"),
+        SNEAK("ui/value icons/identifiers/SNEAK.jpg"),
+        CLOSE_QUARTERS("ui/value icons/identifiers/CLOSE_QUARTERS.jpg"),
+        LONG_REACH("ui/value icons/identifiers/LONG_REACH.jpg"),
+        DIAGONAL_ATTACK("ui/value icons/identifiers/DIAGONAL_ATTACK.png"),
+        SIDE_ATTACK("ui/value icons/identifiers/SIDE_ATTACK.png"),
+
+        ARMOR("ui/value icons/identifiers/ARMOR.jpg"),
+        RESISTANCE("ui/value icons/identifiers/RESISTANCE.jpg"),
+        DIE_SIZE("ui/value icons/identifiers/DIE_SIZE.png"),
+        DIE_NUMBER("ui/value icons/identifiers/DIE_NUMBER.png"),
+        DIE_RESULT,
+        THROW(ImageManager.STD_IMAGES.THROW.getPath()),
+        INSTANT_ATTACK(ImageManager.STD_IMAGES.INSTANT_ATTACK.getPath()),
+        AOO(ImageManager.STD_IMAGES.ATTACK_OF_OPPORTUNITY.getPath()),
+        COUNTER_ATTACK(ImageManager.STD_IMAGES.COUNTER_ATTACK.getPath()),
+        DISENGAGEMENT,
+        WATCHED(ImageManager.STD_IMAGES.EYE.getPath()),
+        SIGHT_RANGE(ImageManager.STD_IMAGES.EYE.getPath());
+        private String imagePath;
+
+        MOD_IDENTIFIER() {
+
+        }
+
+        MOD_IDENTIFIER(String path) {
+            this.imagePath = path;
+        }
+
+        public String getImagePath() {
+            return imagePath;
+        }
+
+        public Image getImage(Object... values) {
+            if (imagePath == null) {
+                try {
+                    //???
+                    // return DC_ImageMaster.getImageDynamic(this, values);
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                    return ImageManager.getImage(ImageManager.getEmptyListIconSmall());
+                }
+            }
+            return ImageManager.getImage(imagePath);
+        }
+
+        public String getName() {
+            return StringMaster.format(name());
+        }
 
     }
 }

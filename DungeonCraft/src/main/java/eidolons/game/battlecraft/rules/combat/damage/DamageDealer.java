@@ -9,6 +9,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
+import eidolons.game.battlecraft.rules.combat.damage.armor.ArmorMaster;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.core.master.EffectMaster;
@@ -31,6 +32,7 @@ import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
+import main.system.math.MathMaster;
 import main.system.sound.AudioEnums;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
@@ -212,8 +214,28 @@ public class DamageDealer {
 
         StringBuilder log = damage.getLogBuilder();
 
+        int resistance = ResistMaster.getResistanceForDamageType(attacked, attacker, dmg_type);
+        amount = amount - MathMaster.applyPercent(amount, resistance);
+        int armor = ArmorMaster.getArmorValue(attacked, dmg_type);
+        if (log != null) {
+            log.append("Damage reduced by " +
+                    resistance +
+                    "% (Resistance), plus additional " +
+                    armor + " (Natural Armor)");
+        }
+        amount -=armor;
+
+        if (amount<=0){
+            //TODO !!!
+        }
+
         int t_damage = DamageCalculator.calculateToughnessDamage(attacked, attacker, amount, ref,
                 dmg_type, log);
+        ref.setAmount(t_damage);
+        if (!new Event(magical ? STANDARD_EVENT_TYPE.UNIT_IS_DEALT_MAGICAL_TOUGHNESS_DAMAGE
+                : STANDARD_EVENT_TYPE.UNIT_IS_DEALT_PHYSICAL_TOUGHNESS_DAMAGE, ref).fire()) {
+            return 0;
+        }
         int e_damage = DamageCalculator.calculateEnduranceDamage(attacked, attacker,
                 //NF Rules
                 amount- t_damage
@@ -224,11 +246,6 @@ public class DamageDealer {
         // TODO separate event types?
         if (!new Event(magical ? STANDARD_EVENT_TYPE.UNIT_IS_DEALT_MAGICAL_ENDURANCE_DAMAGE
                 : STANDARD_EVENT_TYPE.UNIT_IS_DEALT_PHYSICAL_ENDURANCE_DAMAGE, ref).fire()) {
-            return 0;
-        }
-        ref.setAmount(t_damage);
-        if (!new Event(magical ? STANDARD_EVENT_TYPE.UNIT_IS_DEALT_MAGICAL_TOUGHNESS_DAMAGE
-                : STANDARD_EVENT_TYPE.UNIT_IS_DEALT_PHYSICAL_TOUGHNESS_DAMAGE, ref).fire()) {
             return 0;
         }
         ref.setValue(KEYS.DAMAGE_TYPE, dmg_type.getName());

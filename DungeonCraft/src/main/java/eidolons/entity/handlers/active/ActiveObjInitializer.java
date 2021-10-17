@@ -1,6 +1,6 @@
 package eidolons.entity.handlers.active;
 
-import eidolons.ability.DC_CostsFactory;
+import eidolons.ability.costs.DC_CostsFactory;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;

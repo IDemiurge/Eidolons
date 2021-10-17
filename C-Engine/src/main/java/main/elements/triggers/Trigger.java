@@ -10,6 +10,8 @@ import main.game.logic.event.Event.EVENT_TYPE;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
 
+import java.util.function.Supplier;
+
 public class Trigger {
     protected Condition conditions;
     protected Integer basis;
@@ -24,6 +26,11 @@ public class Trigger {
     protected Condition retainCondition;
     protected Game game;
     protected Event event;
+
+    protected Supplier<Boolean> cooldownCheck;
+    protected Supplier<Integer> charges;
+    protected Runnable afterTriggeredCallback;
+
 
     public Trigger(EVENT_TYPE eventType, Condition conditions, Ability abilities) {
         this(eventType, conditions, abilities, abilities.getRef().getGame(),
@@ -70,12 +77,13 @@ public class Trigger {
         REF.setEvent(event);
         boolean result = abilities.activatedOn(REF);
         if (result && game.isStarted()) {
-            // if (
             game.getManager().checkForChanges(true);
-            // game.getManager().refreshAll();
         }
         if (isRemoveAfterTriggers(result)) {
             remove();
+        }
+        if (afterTriggeredCallback!=null){
+            afterTriggeredCallback.run();
         }
         return result;
 
@@ -97,20 +105,31 @@ public class Trigger {
         LogMaster.log(LogMaster.CORE_DEBUG, "checking trigger for event: "
                 + event.getType().name());
         // return true;
+        boolean result=false;
         if (event.getType().equals(eventType)) {
             ref.setEvent(event);
             if (conditions == null) {
                 this.event = event;
                 return trigger();
             }
+            if (cooldownCheck!=null){
+                if (!cooldownCheck.get()) {
+                    return false;
+                }
+            }
+            if (charges!=null){
+                if (charges.get()<=0) {
+                    return false;
+                }
+            }
+
+            //TODO release cleanup
             ref.getGame().getManager().setTriggerBeingChecked(true);
             try {
                 if (conditions.preCheck(ref)) {
                     this.event = event;
                     ref.getGame().getManager().setTriggerBeingActivated(true);
-                    return trigger();
-                } else {
-                    return false;
+                    result = trigger();
                 }
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
@@ -120,9 +139,9 @@ public class Trigger {
                 ref.getGame().getManager().setTriggerBeingActivated(false);
             }
 
-        } else {
-            return false;
         }
+
+        return result;
     }
 
     protected Ref getRef(Event event) {
@@ -215,6 +234,17 @@ public class Trigger {
 
     public void setCallback(Runnable callback) {
         this.callback = callback;
+    }
+    public void setAfterTriggeredCallback(Runnable afterTriggeredCallback) {
+        this.afterTriggeredCallback = afterTriggeredCallback;
+    }
+
+    public void setCharges(Supplier<Integer> charges) {
+        this.charges = charges;
+    }
+
+    public void setCooldownCheck(Supplier<Boolean> cooldownCheck) {
+        this.cooldownCheck = cooldownCheck;
     }
 
     public String toXml() {

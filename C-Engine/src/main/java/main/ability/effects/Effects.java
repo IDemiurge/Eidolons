@@ -75,6 +75,15 @@ public class Effects extends EffectImpl implements Iterable<Effect> {
     }
 
     @Override
+    public boolean isEmpty() {
+        for (Effect effect : effects) {
+            if (!effect.isEmpty())
+                return false;
+        }
+        return true;
+    }
+
+    @Override
     public void remove() {
         getEffects().forEach(e -> e.remove());
     }

@@ -73,7 +73,7 @@ public class AiAutoGroupHandler extends AiHandler {
                 )).collect(Collectors.toList());
 
                 for (Coordinates coordinates : sorted) {
-                    DC_Cell cell = game.getCellByCoordinate(coordinates);
+                    DC_Cell cell = game.getCell(coordinates);
                     switch (block.getTileMap().getMap().get(coordinates)) {
                         case DOOR:
                         case CONTAINER:
@@ -81,13 +81,13 @@ public class AiAutoGroupHandler extends AiHandler {
                     }
                 }
                 DIRECTION d = leader.getFacing().getDirection();
-                DC_Cell cell = game.getCellByCoordinate(leader.getCoordinates().getAdjacentCoordinate(
+                DC_Cell cell = game.getCell(leader.getCoordinates().getAdjacentCoordinate(
                         d).getAdjacentCoordinate(
                         d));
                 if (cell != null) {
                     return cell;
                 }
-                cell = game.getCellByCoordinate(leader.getCoordinates().getAdjacentCoordinate(d));
+                cell = game.getCell(leader.getCoordinates().getAdjacentCoordinate(d));
                 if (cell != null) {
                     return cell;
                 }

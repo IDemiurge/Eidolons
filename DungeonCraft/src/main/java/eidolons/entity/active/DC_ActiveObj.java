@@ -5,6 +5,7 @@ import eidolons.ability.effects.oneshot.DealDamageEffect;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.entity.active.spaces.Feat;
 import eidolons.entity.handlers.active.*;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
@@ -58,8 +59,8 @@ import main.system.text.TextParser;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interruptable,
- AttachedObj {
+public abstract class DC_ActiveObj extends DC_Obj implements Feat, ActiveObj, Interruptable,
+        AttachedObj {
 
     protected BattleFieldObject ownerObj;
     protected Targeting targeting;
@@ -85,6 +86,8 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     private boolean targetingCachingOff;
     private boolean disabled;
     private boolean pointCostActivation;
+    private Runnable onComplete;
+
 
     public DC_ActiveObj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -144,7 +147,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
                     return DAMAGE_TYPE.MAGICAL;
                 return null;
             } else
-            return  getActiveWeapon().getDamageType();
+                return getActiveWeapon().getDamageType();
         }
         return super.getDamageType();
     }
@@ -152,7 +155,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public DAMAGE_TYPE getEnergyType() {
         if (energyType == null) {
             energyType = (new EnumMaster<DAMAGE_TYPE>().retrieveEnumConst(DAMAGE_TYPE.class,
-             getProperty(PROPS.DAMAGE_TYPE)));
+                    getProperty(PROPS.DAMAGE_TYPE)));
         }
         if (energyType == null) {
             energyType = DC_ContentValsManager.getDamageForAspect(getAspect());
@@ -165,13 +168,13 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     public boolean isDamageSpell() {
         return EffectMaster.getFirstEffectOfClass(this,
-         DealDamageEffect.class) != null;
+                DealDamageEffect.class) != null;
     }
 
     public RESISTANCE_TYPE getResistanceType() {
         if (resistType == null) {
             resistType = (new EnumMaster<RESISTANCE_TYPE>().retrieveEnumConst(
-             RESISTANCE_TYPE.class, getProperty(PROPS.RESISTANCE_TYPE)));
+                    RESISTANCE_TYPE.class, getProperty(PROPS.RESISTANCE_TYPE)));
         }
 
         if (resistType == null) {
@@ -189,7 +192,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     public boolean isDebuffSpell() {
         return EffectMaster.getFirstEffectOfClass(this,
-         AddBuffEffect.class) != null;
+                AddBuffEffect.class) != null;
     }
 
     @Override
@@ -216,6 +219,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public boolean isConstructed() {
         return super.isConstructed();
     }
+
     protected boolean isConstructOnToBase() {
         return !ExplorationMaster.isExplorationOn();
     }
@@ -258,7 +262,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     public String getDescription(Ref ref) {
         return TextParser.parse(getProperty(G_PROPS.DESCRIPTION), ref,
-         TextParser.ACTIVE_PARSING_CODE);
+                TextParser.ACTIVE_PARSING_CODE);
     }
 
     @Override
@@ -312,7 +316,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             return getName();
         }
         if (Flags.isIDE()) {
-        return StringMaster.getPossessive(getOwnerUnit().getName()) + " " + getName();
+            return StringMaster.getPossessive(getOwnerUnit().getName()) + " " + getName();
         }
         return StringMaster.getPossessive(getOwnerUnit().getNameIfKnown()) + " " + getName();
     }
@@ -482,7 +486,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public AI_LOGIC getAiLogic() {
         if (aiLogic == null) {
             aiLogic = new EnumMaster<AI_LOGIC>().retrieveEnumConst(AI_LOGIC.class,
-             getProperty(PROPS.AI_LOGIC));
+                    getProperty(PROPS.AI_LOGIC));
         }
         return aiLogic;
     }
@@ -490,8 +494,8 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public ACTION_TYPE getActionType() {
         if (actionType == null)
             actionType =
-             new EnumMaster<ACTION_TYPE>().retrieveEnumConst(ACTION_TYPE.class,
-              getProperty(G_PROPS.ACTION_TYPE));
+                    new EnumMaster<ACTION_TYPE>().retrieveEnumConst(ACTION_TYPE.class,
+                            getProperty(G_PROPS.ACTION_TYPE));
         return actionType;
     }
 
@@ -508,12 +512,12 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     public Integer getFinalModParam(PARAMETER mod) {
         return
-         ModMaster.getFinalModForAction(this, mod);
+                ModMaster.getFinalModForAction(this, mod);
     }
 
     public int getFinalBonusParam(PARAMS bonus) {
         return
-         ModMaster.getFinalBonusForAction(this, bonus);
+                ModMaster.getFinalBonusForAction(this, bonus);
     }
 
     public boolean isAttackOrStandardAttack() {
@@ -627,14 +631,14 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public boolean isMode() {
         return getChecker().isMode();
     }
+
     @Override
     public boolean isMelee() {
         return getChecker().isMelee();
     }
 
     public boolean isStandardAttack() {
-        if (getName().equalsIgnoreCase("Shield Bash"))
-        {
+        if (getName().equalsIgnoreCase("Shield Bash")) {
             return true;
         }
         return getChecker().isStandardAttack();
@@ -680,6 +684,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     public void actionComplete() {
         getHandler().actionComplete();
+        if (onComplete != null) {
+            onComplete.run();
+        }
     }
 
     public boolean isInstantAction() {
@@ -953,5 +960,13 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         this.pointCostActivation = pointCostActivation;
     }
 
+    public Runnable getOnComplete() {
+        return onComplete;
+    }
+
+    @Override
+    public void setOnComplete(Runnable onComplete) {
+        this.onComplete = onComplete;
+    }
 }
 

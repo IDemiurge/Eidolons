@@ -26,9 +26,11 @@ import libgdx.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import main.system.images.ImageManager.BORDER;
 
+import java.util.function.Supplier;
+
 import static libgdx.gui.UiMaster.UI_ACTIONS.SCALE_ACTION_ICON;
 
-public class ActionContainer extends ValueContainer {
+public class ActionContainer extends FeatContainer {
 //Gdx Review - are they all they could be? Used quite widely..
 
     protected static TextureRegion lightUnderlay = TextureCache.getOrCreateR(
@@ -43,40 +45,41 @@ public class ActionContainer extends ValueContainer {
     private RadialMenu customRadialMenu;
     protected Runnable clickAction;
     private boolean valid = true;
-    protected boolean hover;
     protected float underlayOffsetX;
     protected float underlayOffsetY;
     protected float size = UiMaster.getIconSize();
     protected TextureRegion underlay;
-    FadeImageContainer highlight;
-    private boolean highlighted;
 
     //overlay!
-    public ActionContainer(boolean valid, TextureRegion texture, Runnable action) {
-        this(texture, action);
+    // public ActionContainer(boolean valid, TextureRegion texture, Runnable action) {
+    //     this(texture, action);
+    //     this.setValid(valid);
+    // }
+
+    // public ActionContainer(TextureRegion texture, Runnable action) {
+    //     this(texture, null, action);
+    // }
+
+    // public ActionContainer(Supplier<Integer> charges,TextureRegion texture, String value, Runnable action) {
+    //     super(charges, texture, value);
+    //     bindAction(action);
+    // }
+
+    public ActionContainer(Supplier<Integer> charges, int size, boolean valid, String image, Runnable action) {
+        super(charges, TextureCache.getSizedRegion(size, image), "name!");
         this.setValid(valid);
-    }
-
-    public ActionContainer(TextureRegion texture, Runnable action) {
-
-        this(texture, null, action);
-    }
-
-    public ActionContainer(TextureRegion texture, String value, Runnable action) {
-        super(texture, value);
-        bindAction(action);
-
-    }
-
-    public ActionContainer(int size, boolean valid, String image, Runnable invokeClicked) {
-        this(size, valid, TextureCache.getSizedRegion(size, image), invokeClicked);
-    }
-
-    public ActionContainer(int size, boolean valid, TextureRegion region,
-                           Runnable runnable) {
-        this(valid, region, runnable);
         this.size = size;
+        bindAction(action);
     }
+    // public ActionContainer(int size, boolean valid, String image, Runnable invokeClicked) {
+    //     this(size, valid, TextureCache.getSizedRegion(size, image), invokeClicked);
+    // }
+
+    // public ActionContainer(int size, boolean valid, TextureRegion region,
+    //                        Runnable runnable) {
+    //     this(valid, region, runnable);
+    //     this.size = size;
+    // }
 
 
     public static boolean isDarkened() {
@@ -253,47 +256,6 @@ public class ActionContainer extends ValueContainer {
 //        }
     }
 
-    public boolean isHighlighted() {
-        return highlighted;
-    }
-
-    public void setHighlight(boolean b) {
-        highlighted = b;
-        if (highlight == null) {
-            if (getUserObject() instanceof Spell) {
-                addActor(highlight = new FadeImageContainer(Images.TARGET_BORDER)); //circle
-            } else {
-                addActor(highlight = new FadeImageContainer(Images.TARGET_BORDER));
-            }
-            highlight.setScale(0.4f);
-            highlight.setPosition(-4, -4);
-            highlight.setColor(0.15f, 0.75f, 0.35f, 1);
-            highlight.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.HIGHLIGHT_SPEAKER);
-        }
-        //back and forth floating? or scale?
-        if (b) {
-            highlight.fadeIn();
-        } else {
-            highlight.fadeOut();
-        }
-    }
-
-
-    @Override
-    public void act(float delta) {
-        if (highlight != null) {
-            if (highlight.getColor().a > 0 && highlight.getActions().size == 0) {
-                highlight.fluctuate(delta);
-                setScale(highlight.getColor().a);
-                setY(highlight.getContent().getColor().a * -32 + 32);
-            } else {
-                setScale(1);
-                setY(0);
-            }
-        }
-        super.act(delta);
-    }
-
     public boolean isValid() {
         if (isBlocked())
             return false;
@@ -388,26 +350,6 @@ public class ActionContainer extends ValueContainer {
 
     public void setSize(float size) {
         this.size = size;
-    }
-
-    public boolean isHover() {
-        return hover;
-    }
-
-    public void setHover(boolean hover) {
-        if (hover)
-        {
-            if (highlight != null) {
-                highlighted=false;
-                highlight.fadeOut();
-            }
-        }
-        this.hover = hover;
-
-        BaseSlotPanel panel = (BaseSlotPanel) GdxMaster.getFirstParentOfClass(this, BaseSlotPanel.class);
-        if (panel != null) {
-            panel.setHovered(hover);
-        }
     }
 
     public void setValid(boolean valid) {

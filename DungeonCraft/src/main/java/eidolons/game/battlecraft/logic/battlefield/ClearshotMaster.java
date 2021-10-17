@@ -130,7 +130,7 @@ diagonal adjacent walls will remove whole directions..
     public static boolean checkWallObstruction(Coordinates source, Coordinates target, Coordinates coordinates) {
         Boolean result = DC_Game.game.getVisionMaster().getVisionController().
                 getWallObstructionMapper().get(source,
-                DC_Game.game.getCellByCoordinate(target));
+                DC_Game.game.getCell(target));
         if (result != null) {
             return result;
         }

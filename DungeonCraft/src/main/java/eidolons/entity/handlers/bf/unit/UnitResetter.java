@@ -7,7 +7,7 @@ import eidolons.content.PROPS;
 import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_QuickItemObj;
-import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.entity.obj.attach.DC_PassiveObj;
 import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
@@ -231,17 +231,17 @@ public class UnitResetter extends EntityResetter<Unit> {
         resetAttributes();
         resetMasteryScores();
         if (getEntity().getPerks() != null) {
-            for (DC_FeatObj feat : getEntity().getPerks()) {
+            for (DC_PassiveObj feat : getEntity().getPerks()) {
                 feat.apply();
             }
         }
         if (getEntity().getSkills() != null) {
-            for (DC_FeatObj feat : getEntity().getSkills()) {
+            for (DC_PassiveObj feat : getEntity().getSkills()) {
                 feat.apply();
             }
         }
         if (getEntity().getClasses() != null) {
-            for (DC_FeatObj feat : getEntity().getClasses()) {
+            for (DC_PassiveObj feat : getEntity().getClasses()) {
                 feat.apply();
             }
 

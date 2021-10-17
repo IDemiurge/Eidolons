@@ -75,7 +75,7 @@ public class ObjCreator extends Master {
         if (game.isStarted()) {
             Coordinates coordinates = Coordinates.get(x, y);
             game.getObjMaster().clearCache(coordinates);
-            game.getCellByCoordinate(coordinates).resetObjectArrays();
+            game.getCell(coordinates).resetObjectArrays();
             getGame().getVisionMaster().getIllumination().setResetRequired(true);
             DC_GameState.gridChanged = true;
         }

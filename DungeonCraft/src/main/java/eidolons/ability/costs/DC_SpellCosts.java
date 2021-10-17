@@ -1,4 +1,4 @@
-package eidolons.ability;
+package eidolons.ability.costs;
 
 import main.elements.costs.Cost;
 import main.elements.costs.CostRequirements;

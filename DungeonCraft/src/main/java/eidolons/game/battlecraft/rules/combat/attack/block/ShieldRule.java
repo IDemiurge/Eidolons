@@ -4,6 +4,9 @@ import eidolons.content.consts.VisualEnums;
 import eidolons.system.libgdx.GdxStatic;
 import main.content.enums.entity.NewRpgEnums;
 
+/**
+ *
+ */
 public class ShieldRule extends BlockRule{
     @Override
     protected void floatingText(Blocker blocker, BlockResult result) {

@@ -1,6 +1,6 @@
 package libgdx.gui.panels.headquarters.tabs.tree.skill;
 
-import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.entity.obj.attach.DC_PassiveObj;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import libgdx.GdxImageMaster;
 import libgdx.gui.panels.headquarters.tabs.tree.HtNode;
@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class SkillSlot extends HtNode {
 
-    private Triple<DC_FeatObj, MASTERY, MASTERY> data;
+    private Triple<DC_PassiveObj, MASTERY, MASTERY> data;
 
     public SkillSlot(int tier,int slot) {
         super(tier, Images.TIER, Images.CIRCLE_OVERLAY, Images.EMPTY_CLASS_SLOT,slot );
@@ -71,7 +71,7 @@ public class SkillSlot extends HtNode {
     @Override
     public void setUserObject(Object userObject) {
         super.setUserObject(userObject);
-        data = (Triple<DC_FeatObj, MASTERY, MASTERY>) userObject;
+        data = (Triple<DC_PassiveObj, MASTERY, MASTERY>) userObject;
 //        tooltip = new SkillTooltip(data);
     }
 

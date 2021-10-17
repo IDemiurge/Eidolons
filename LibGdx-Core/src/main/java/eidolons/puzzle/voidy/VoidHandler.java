@@ -4,7 +4,6 @@ import com.google.inject.internal.util.ImmutableList;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleHandler;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.IVoidGdxHandler;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.VoidMaze;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.VoidMazeHandler;
@@ -26,7 +25,6 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.MapMaster;
-import org.apache.poi.hpsf.wellknown.PropertyIDMap;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -193,7 +191,7 @@ public   class VoidHandler extends PuzzleElement<VoidMaze> implements IVoidGdxHa
         if (coordinate == null) {
             return false;
         }
-        DC_Cell cell = object.getGame().getCellByCoordinate(coordinate);
+        DC_Cell cell = object.getGame().getCell(coordinate);
         if (checkMarked(cell))
             if (cell.isVOID()) {
                 list.add(coordinate);

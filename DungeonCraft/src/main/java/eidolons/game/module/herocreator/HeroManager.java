@@ -6,7 +6,6 @@ import eidolons.content.PROPS;
 import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.item.DC_JewelryObj;
 import eidolons.entity.item.DC_QuickItemObj;
-import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
 import eidolons.game.core.EUtils;

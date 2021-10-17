@@ -18,7 +18,7 @@ import main.system.launch.Flags;
 public class OutlineMaster {
 
 
-    private static final boolean outlinesOn = false;
+    private static final boolean outlinesOn = true;
     protected VisionMaster master;
 
     public OutlineMaster(VisionMaster visionMaster) {

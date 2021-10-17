@@ -22,6 +22,16 @@ public class Roll {
     private String rollHintTarget;
     private boolean result;
 
+    private boolean constValue;
+    private String value;
+
+    public Roll(RollType type, GenericEnums.DieType die, String constValue) {
+        this.type = type;
+        this.die = die;
+        this.value = constValue;
+        this.constValue = true;
+    }
+
     public Roll(RollType type, GenericEnums.DieType die) {
         this.type = type;
         this.die = die;
@@ -141,5 +151,13 @@ public class Roll {
 
     public void setResult(boolean result) {
         this.result = result;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public boolean isConstValue() {
+        return constValue;
     }
 }

@@ -2,13 +2,10 @@ package eidolons.system.math;
 
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
-import eidolons.content.PROPS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.herocreator.logic.PointMaster;
-import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.content.DC_Formulas;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
@@ -17,13 +14,9 @@ import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
-import main.content.values.properties.G_PROPS;
-import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.core.game.GenericGame;
-import main.system.auxiliary.StringMaster;
-import main.system.math.Formula;
 import main.system.math.MathMaster;
 
 public class DC_MathManager extends MathMaster {

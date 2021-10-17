@@ -12,11 +12,11 @@ public class NewRpgEnums {
 
     }
 
-        public enum ACTIVE_SPACE_VALUE {
+        public enum FEAT_SPACE_VALUE {
         name,
         type,
         mode,
-        actives,
+            feats,
         skin,
         index,
             slot_1,
@@ -28,19 +28,19 @@ public class NewRpgEnums {
         ;
 
     }
-    public enum ACTIVE_SPACE_SKIN{
+    public enum FEAT_SPACE_SKIN {
         lite, //all kinds for grimoires!
     }
 
-    public enum ACTIVE_SPACE_MODE{
+    public enum FEAT_SPACE_MODE {
         normal, auto, triggered,
     }
 
-    public enum ACTIVE_SPACE_TYPE{
+    public enum FEAT_SPACE_TYPE {
         memorized(2), verbatim(1), divined(5),
         grimoire(3), sphere(4), song(6), custom(10);
 
-            ACTIVE_SPACE_TYPE(int sortIndex) {
+            FEAT_SPACE_TYPE(int sortIndex) {
                 this.sortIndex = sortIndex;
             }
 

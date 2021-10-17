@@ -7,7 +7,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.attack.accuracy.AccuracyMaster;
 import eidolons.game.battlecraft.rules.combat.attack.block.BlockMaster;
-import eidolons.game.battlecraft.rules.combat.attack.block.BlockRule;
+import eidolons.game.battlecraft.rules.combat.attack.block.BlockResult;
 import eidolons.game.battlecraft.rules.combat.attack.extra_attack.CounterAttackRule;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.DamageDealer;
@@ -188,7 +188,7 @@ public class DC_AttackMaster {
         attack.setHitType(hitType);
         if (canCounter) canCounter = attacked.canCounter(action, attack.isSneak());
 
-        logHitType(attacker.getNameIfKnown() , attacked.getName(), hitType, attack.getAccuracyRate());
+        logHitType(attacker.getNameIfKnown(), attacked.getName(), hitType, attack.getAccuracyRate());
         // } ====> Need a common messaging interface for actions/costs
 
         boolean countered = false;
@@ -237,16 +237,21 @@ public class DC_AttackMaster {
             return true;
         }
         ref.setAmount(final_amount);
-
+        BlockResult blockResult = null;
         if (!attacked.isDead())
             if (!dodged) {
                 dodged = hitType == critical_miss || hitType == miss;
                 if (!dodged && attacked instanceof Unit) {
-                    BlockRule.BlockResult blockResult = blockMaster.attacked(attack);
-                    hitType = attack.getHitType();
-                    dodged = hitType == critical_miss || hitType == miss;
+                    blockResult = blockMaster.attacked(attack);
+                    dodged = blockMaster.applyBlock(attack, blockResult);
                 }
             }
+        //TODO
+        if (!blockResult.onBlockEffects.isEmpty()) {
+            if (applyEffectGroup(ATTACK_EFFECT_GROUP.BLOCK, attack, ref.getCopy().setEffect(blockResult.onBlockEffects))) {
+                return true;
+            }
+        }
         // BEFORE_ATTACK,
         // BEFORE_HIT
         if (!attacked.isDead())
@@ -371,7 +376,7 @@ public class DC_AttackMaster {
     }
 
     private void logHitType(String src, String target, NewRpgEnums.HitType hitType, int accuracyRate) {
-        String msg=src + " makes a " + hitType.toString() + " on " + target
+        String msg = src + " makes a " + hitType.toString() + " on " + target
                 + StringMaster.wrapInParenthesis("Accuracy: " + accuracyRate);
         log(msg);
     }
@@ -382,15 +387,25 @@ public class DC_AttackMaster {
     }
 
     private boolean applyEffectGroup(ATTACK_EFFECT_GROUP group, Attack attack) {
+        return applyEffectGroup(group, attack, null);
+    }
+
+    private boolean applyEffectGroup(ATTACK_EFFECT_GROUP group, Attack attack, Ref ref) {
         BattleFieldObject attacked = attack.getAttacked();
         Unit attacker = attack.getAttacker();
         Unit attackedUnit = null;
         if (attack.getAttacked() instanceof Unit) {
             attackedUnit = (Unit) attack.getAttacked();
         }
-        Ref ref = attack.getRef();
+        if (ref == null)
+            ref = attack.getRef();
         boolean offhand = attack.isOffhand();
         switch (group) {
+            case BLOCK:
+                if (checkEffectsInterrupt(attacker, attackedUnit, SPECIAL_EFFECTS_CASE.CUSTOM, ref, offhand)) {
+                    return true;
+                }
+                break;
             case DODGE:
                 if (checkEffectsInterrupt(attacker, attackedUnit, SPECIAL_EFFECTS_CASE.ON_DODGE, ref,
                         offhand)) {
@@ -407,12 +422,6 @@ public class DC_AttackMaster {
 
                 attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_SNEAK_ATTACK, attacked, ref);
                 attacker.applySpecialEffects(SPECIAL_EFFECTS_CASE.ON_SNEAK_ATTACK_SELF, attacker, ref);
-                break;
-            case SHIELD:
-                break;
-            case PARRY:
-                break;
-            case BLOCK:
                 break;
             case CRIT:
                 checkEffectsInterrupt(attacker, attacker, SPECIAL_EFFECTS_CASE.ON_CRIT_SELF, ref,

@@ -89,7 +89,7 @@ public class ArtSetup extends PuzzleSetup<ArtPuzzle, Object> {
             for (int j = 0; j < puzzle.getHeight(); j++) {
                 //            for (int j = puzzle.getHeight()-1; j >= 0; j--) {
                 Coordinates root = c.getOffsetByY(j).getOffsetByX(i);
-                DC_Cell cell = Eidolons.getGame().getCellByCoordinate(
+                DC_Cell cell = Eidolons.getGame().getCell(
                         root);
                 mosaic.add(cell);
             }

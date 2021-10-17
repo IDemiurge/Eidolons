@@ -7,10 +7,10 @@ import main.content.values.parameters.PARAMETER;
 
 import static eidolons.content.PARAMS.C_ESSENCE;
 import static eidolons.content.PARAMS.ESSENCE;
+@Deprecated
+public class EssenceRuleOld extends RetainRestoreRule {
 
-public class EssenceRule extends RetainRestoreRule {
-
-    public EssenceRule(DC_Game game) {
+    public EssenceRuleOld(DC_Game game) {
         super(game);
     }
 

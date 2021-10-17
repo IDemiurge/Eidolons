@@ -40,7 +40,7 @@ public class PatrolAi extends CyclicGroupBehavior {
 
     protected DC_Obj createCycledArg(int i, DC_Obj[] cycledArgs) {
         if (presetPoints.length > i) {
-            return master.getGame().getCellByCoordinate(presetPoints[i]);
+            return master.getGame().getCell(presetPoints[i]);
         }
         if (i == getCycledStepsNumber() - 1) {
             //return back

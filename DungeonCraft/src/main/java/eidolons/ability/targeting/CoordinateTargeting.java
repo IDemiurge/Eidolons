@@ -97,7 +97,7 @@ public class CoordinateTargeting extends TargetingImpl {
                     Obj object = obj.getGame().getObjectByCoordinate(coordinate,
                             false);
                     if (object == null) {
-                        object = obj.getGame().getCellByCoordinate(coordinate);
+                        object = obj.getGame().getCell(coordinate);
                     }
                     ref.setTarget(object.getId());
                     return true;
@@ -114,7 +114,7 @@ public class CoordinateTargeting extends TargetingImpl {
                     getObjectsOnCoordinate(coordinate, true); //TODO EA hack - overlaying!
         }
         if (objects.size() == 0 || cellTargeting) {
-            DC_Cell cell = obj.getGame().getCellByCoordinate(coordinate);
+            DC_Cell cell = obj.getGame().getCell(coordinate);
             if (cell == null) {
                 return false;
             }
