@@ -13,9 +13,8 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.cinematic.CinematicLib;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.netherflame.lord.EidolonLord;
 import libgdx.GdxMaster;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.grid.cell.GenericGridView;
 import libgdx.bf.grid.cell.GridCellContainer;
 import libgdx.bf.grid.cell.UnitGridView;
@@ -26,7 +25,6 @@ import libgdx.gui.overlay.choice.VC_DataSource;
 import libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import libgdx.gui.panels.headquarters.HqMaster;
 import libgdx.gui.panels.headquarters.town.TownPanel;
-import libgdx.gui.panels.lord.LordPanel;
 import libgdx.screens.AtlasGenSpriteBatch;
 import libgdx.screens.ScreenMaster;
 import libgdx.screens.dungeon.DungeonScreen;
@@ -264,7 +262,7 @@ public class GlobalController implements Controller {
     private boolean space() {
         if (activeButton != null) {
             if (!activeButton.isChecked())
-                ActionMaster.click(activeButton.getActor());
+                ActionMasterGdx.click(activeButton.getActor());
             activeButton = null;
             return true;
         }
@@ -296,7 +294,7 @@ public class GlobalController implements Controller {
     private boolean enter() {
         if (activeButton != null) {
             if (!activeButton.isChecked())
-                ActionMaster.click(activeButton.getActor());
+                ActionMasterGdx.click(activeButton.getActor());
             activeButton = null;
             return true;
         }
@@ -382,7 +380,7 @@ public class GlobalController implements Controller {
 
         if (activeButton != null) {
             if (!activeButton.isChecked())
-                ActionMaster.click(activeButton.getActor());
+                ActionMasterGdx.click(activeButton.getActor());
             activeButton = null;
             return true;
         }

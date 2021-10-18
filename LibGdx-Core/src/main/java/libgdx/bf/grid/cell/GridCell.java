@@ -20,7 +20,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.main.AnimMaster;
 import libgdx.bf.Borderable;
 import libgdx.bf.GridMaster;
@@ -79,9 +79,9 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
     public void setVoid(boolean VOID, boolean animated) {
         if (animated) {
             if (VOID) {
-                ActionMaster.addFadeOutAction(cellImgContainer, 0.5f, false);
+                ActionMasterGdx.addFadeOutAction(cellImgContainer, 0.5f, false);
             } else {
-                ActionMaster.addFadeInAction(cellImgContainer, 0.5f);
+                ActionMasterGdx.addFadeInAction(cellImgContainer, 0.5f);
             }
         } else {
             cellImgContainer.setVisible(!VOID);
@@ -312,15 +312,15 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
             return;
         this.overlayRotation = overlayRotation;
         overlay.setOrigin(64, 64);
-        ActionMaster.addRotateByAction(overlay, overlay.getRotation(), overlayRotation);
+        ActionMasterGdx.addRotateByAction(overlay, overlay.getRotation(), overlayRotation);
     }
 
     public void setOverlayTexture(TextureRegion region) {
         if (region == null) {
-            ActionMaster.addFadeOutAction(getOverlay(), 2);
+            ActionMasterGdx.addFadeOutAction(getOverlay(), 2);
             return;
         }
-        ActionMaster.addFadeInAction(getOverlay(), 2);
+        ActionMasterGdx.addFadeInAction(getOverlay(), 2);
         this.overlay.setImage(region);
         GdxMaster.center(this.overlay);
     }
@@ -376,8 +376,8 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
 
     public void removePillar() {
         if (pillar != null)
-            ActionMaster.addAfter(pillar, new SequenceAction(
-                    ActionMaster.getFadeOut(pillar, 1f),
+            ActionMasterGdx.addAfter(pillar, new SequenceAction(
+                    ActionMasterGdx.getFadeOut(pillar, 1f),
                     new RemoveActorAction()));
     }
 

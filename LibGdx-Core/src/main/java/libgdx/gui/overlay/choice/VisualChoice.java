@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import eidolons.game.core.EUtils;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.sprite.SpriteX;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.gui.LabelX;
@@ -106,7 +106,7 @@ public class VisualChoice extends TablePanelX implements OverlayPanel {
 
     private void moveSelectionTo(int i) {
         float x=getPosX(i);
-        ActionMaster.addMoveToAction(moving, x, moving.getY(), 2f);
+        ActionMasterGdx.addMoveToAction(moving, x, moving.getY(), 2f);
     }
 
 
@@ -165,7 +165,7 @@ public class VisualChoice extends TablePanelX implements OverlayPanel {
             }
             item.setPosition(x, y);
             if (item.chosen) {
-                MoveToAction moveToAction = ActionMaster.addMoveToAction(item, x1, y, v);
+                MoveToAction moveToAction = ActionMasterGdx.addMoveToAction(item, x1, y, v);
                 moveToAction.setInterpolation(Interpolation.sine);
             }
 
@@ -198,7 +198,7 @@ public class VisualChoice extends TablePanelX implements OverlayPanel {
 
     public void showDescription(String tooltip) {
         descrContainer.fadeOut();
-        ActionMaster.addAfter(descrContainer, new Action() {
+        ActionMasterGdx.addAfter(descrContainer, new Action() {
             @Override
             public boolean act(float delta) {
                 descr.setText(tooltip);

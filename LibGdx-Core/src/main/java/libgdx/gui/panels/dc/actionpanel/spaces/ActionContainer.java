@@ -1,4 +1,4 @@
-package libgdx.gui.panels.dc.actionpanel;
+package libgdx.gui.panels.dc.actionpanel.spaces;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -8,22 +8,17 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.Spell;
 import eidolons.entity.handlers.active.Activator;
 import eidolons.game.EidolonsGame;
-import libgdx.GdxMaster;
-import libgdx.anims.actions.ActionMaster;
-import libgdx.bf.generic.FadeImageContainer;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.mouse.BattleClickListener;
 import libgdx.gui.UiMaster;
 import libgdx.gui.controls.radial.RadialMenu;
-import libgdx.gui.generic.ValueContainer;
+import libgdx.gui.panels.dc.actionpanel.ActionPanel;
 import libgdx.screens.dungeon.DungeonScreen;
 import libgdx.shaders.DarkShader;
 import libgdx.shaders.GrayscaleShader;
-import eidolons.content.consts.Images;
 import libgdx.texture.TextureCache;
-import main.content.enums.GenericEnums;
 import main.system.images.ImageManager.BORDER;
 
 import java.util.function.Supplier;
@@ -114,7 +109,7 @@ public class ActionContainer extends FeatContainer {
                 if (!isValid())
                     return true;
                 if (isScaledOnHover())
-                    ActionMaster.addScaleAction(imageContainer.getActor(), getImageScaleX() - scaleByOnHover, getImageScaleY() - scaleByOnHover,
+                    ActionMasterGdx.addScaleAction(imageContainer.getActor(), getImageScaleX() - scaleByOnHover, getImageScaleY() - scaleByOnHover,
                             UiMaster.getDuration(SCALE_ACTION_ICON));
                 setLastPressed(ActionContainer.this);
                 return super.touchDown(event, x, y, pointer, button);
@@ -125,7 +120,7 @@ public class ActionContainer extends FeatContainer {
                 if (!isValid())
                     return;
                 if (isScaledOnHover())
-                    ActionMaster.addScaleAction(imageContainer.getActor(), getImageScaleX(), getImageScaleY(),
+                    ActionMasterGdx.addScaleAction(imageContainer.getActor(), getImageScaleX(), getImageScaleY(),
                             UiMaster.getDuration(SCALE_ACTION_ICON));
                 super.touchUp(event, x, y, pointer, button);
             }
@@ -200,21 +195,21 @@ public class ActionContainer extends FeatContainer {
 
     public void scaleUp() {
         imageContainer.getActor().clearActions();
-        ActionMaster.addScaleAction(imageContainer.getActor(), getImageScaleX() + scaleByOnHover, getImageScaleY() + scaleByOnHover,
+        ActionMasterGdx.addScaleAction(imageContainer.getActor(), getImageScaleX() + scaleByOnHover, getImageScaleY() + scaleByOnHover,
                 UiMaster.getDuration(SCALE_ACTION_ICON));
 
-        ActionMaster.addMoveToAction(imageContainer.getActor(),
+        ActionMasterGdx.addMoveToAction(imageContainer.getActor(),
                 imageContainer.getActor().getX(),
                 6, 0.25f);
     }
 
     public void scaleDown() {
         imageContainer.getActor().clearActions();
-        ActionMaster.addScaleAction(imageContainer.getActor(), getImageScaleX(),
+        ActionMasterGdx.addScaleAction(imageContainer.getActor(), getImageScaleX(),
                 getImageScaleY(),
                 UiMaster.getDuration(SCALE_ACTION_ICON));
 
-        ActionMaster.addMoveToAction(imageContainer.getActor(),
+        ActionMasterGdx.addMoveToAction(imageContainer.getActor(),
                 imageContainer.getActor().getX(),
                 0, 0.25f);
     }

@@ -7,7 +7,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import libgdx.GdxMaster;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.gui.generic.GearCluster;
 import libgdx.gui.generic.NoHitGroup;
@@ -82,7 +82,7 @@ public class CursorDecorator extends NoHitGroup {
         if (gears != null) {
             if (gears.getColor().a > 0) {
                 gears.fadeOut();
-                ActionMaster.addRemoveAfter(gears);
+                ActionMasterGdx.addRemoveAfter(gears);
             } else gears.remove();
         }
     }

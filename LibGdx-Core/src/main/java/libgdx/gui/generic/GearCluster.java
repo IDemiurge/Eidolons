@@ -2,7 +2,7 @@ package libgdx.gui.generic;
 
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.actions.AutoFloatAction;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.RandomWizard;
@@ -137,13 +137,13 @@ public class GearCluster extends GroupX {
     public void applySpeedChange(float dur, float forTime, float to) {
         clearActions();
         Float cached = speed;
-        speedAction = ActionMaster.addFloatAction(this, speed, speed, to, dur);
+        speedAction = ActionMasterGdx.addFloatAction(this, speed, speed, to, dur);
         speedAction.setInterpolation(Interpolation.bounce);
         if (forTime > 0) {
-            ActionMaster.addDelayedAction(this, forTime + dur, new Action() {
+            ActionMasterGdx.addDelayedAction(this, forTime + dur, new Action() {
                 @Override
                 public boolean act(float delta) {
-                    ActionMaster.addFloatAction(GearCluster.this, speed, speed, cached, dur);
+                    ActionMasterGdx.addFloatAction(GearCluster.this, speed, speed, cached, dur);
                     return true;
                 }
             });

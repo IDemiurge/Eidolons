@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import eidolons.content.PARAMS;
 import eidolons.content.consts.libgdx.WallMaster;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
@@ -18,7 +17,7 @@ import eidolons.game.module.dungeoncrawl.struct.Entrance;
 import libgdx.GDX;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.actions.FadeOutAction;
 import libgdx.bf.Hoverable;
 import libgdx.bf.datasource.GridCellDataSource;
@@ -282,7 +281,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
             actor.setPosition(x, y);
             //Gdx hack
             if (Math.abs(1 - actor.getScaleX()) < 0.5f && isAnimated()) {
-                ActionMaster.addScaleAction(actor,
+                ActionMasterGdx.addScaleAction(actor,
                         scaleX, scaleY, 0.25f);
             } else {
                 actor.setScale(scaleX, scaleY);
@@ -474,7 +473,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
             GenericGridView view = (GenericGridView) actor;
             if (!getUserObject().isVOID()) {
                 if (isAnimated()) {
-                    ActionMaster.addFadeInAction(actor, getFadeDuration());
+                    ActionMasterGdx.addFadeInAction(actor, getFadeDuration());
                 }
             }
 
@@ -579,7 +578,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
         if (result && actor instanceof GenericGridView) {
             setDirty(true);
             if (isAnimated())
-                ActionMaster.addFadeOutAction(actor, getFadeDuration());
+                ActionMasterGdx.addFadeOutAction(actor, getFadeDuration());
             //            recalcUnitViewBounds();
             ((GenericGridView) actor).sizeChanged();
         }
@@ -715,7 +714,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
         }
         overlay.getColor().a = 0;
         overlay.fadeIn();
-        ActionMaster.addAfter(overlay, new FadeOutAction());
+        ActionMasterGdx.addAfter(overlay, new FadeOutAction());
         // log(1, "fadeIn overlay" + this);
     }
 
@@ -728,7 +727,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
             return;
         }
         overlay.fadeOut();
-        ActionMaster.addRemoveAfter(overlay);
+        ActionMasterGdx.addRemoveAfter(overlay);
     }
 
 

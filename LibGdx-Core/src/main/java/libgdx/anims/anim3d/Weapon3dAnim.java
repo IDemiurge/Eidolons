@@ -12,7 +12,7 @@ import eidolons.content.consts.VisualEnums;
 import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.entity.active.DC_ActiveObj;
 import libgdx.anims.AnimData;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.sprite.SpriteAnimation;
 import libgdx.anims.sprite.SpriteAnimationFactory;
 import libgdx.anims.std.ActionAnim;
@@ -51,7 +51,7 @@ public class Weapon3dAnim extends ActionAnim {
     @Override
     protected Action getAction() {
         setColor(new Color(1, 1, 1, 1));
-        AlphaAction alphaAction = (AlphaAction) ActionMaster.getAction(AlphaAction.class);
+        AlphaAction alphaAction = (AlphaAction) ActionMasterGdx.getAction(AlphaAction.class);
         alphaAction.setDuration(getDuration() / 2);
         alphaAction.setAlpha(0);
         DelayAction delayed = new DelayAction(getDuration() / 2);

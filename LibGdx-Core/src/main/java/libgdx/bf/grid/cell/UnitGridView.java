@@ -12,7 +12,7 @@ import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;
 import eidolons.game.core.game.DC_Game;
 import libgdx.GDX;
 import libgdx.StyleHolder;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.sprite.SpriteX;
 import libgdx.bf.decor.CellDecor;
 import libgdx.bf.grid.moving.PlatformController;
@@ -130,7 +130,7 @@ public class UnitGridView extends GenericGridView {
         scaleResetTimer -= delta;
         if (scaleResetTimer <= 0) {
             if (getScaleX() > 1)
-                ActionMaster.addScaleAction(this, 1, 3);
+                ActionMasterGdx.addScaleAction(this, 1, 3);
             scaleResetTimer = scaleResetPeriod;
         }
         if (DC_Game.game.isDebugMode()) {

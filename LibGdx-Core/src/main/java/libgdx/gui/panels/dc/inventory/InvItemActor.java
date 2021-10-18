@@ -22,7 +22,7 @@ import eidolons.game.module.dungeoncrawl.explore.vendor.GoldMaster;
 import eidolons.game.netherflame.main.soul.eidola.EidolonImbuer;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.gui.LabelX;
 import libgdx.gui.UiMaster;
@@ -303,9 +303,9 @@ public class InvItemActor extends ItemActor {
                     //                        if (defaultScale != 1)
                     {
                         if (image.getActions().size == 0)
-                            ActionMaster.addScaleAction(image, hoverScale, 0.5f);
+                            ActionMasterGdx.addScaleAction(image, hoverScale, 0.5f);
                         else
-                            ActionMaster.addAfter(image, ActionMaster.getScaleAction(hoverScale, 0.5f));
+                            ActionMasterGdx.addAfter(image, ActionMasterGdx.getScaleAction(hoverScale, 0.5f));
                     }
                 super.entered();
             }
@@ -318,9 +318,9 @@ public class InvItemActor extends ItemActor {
                 if (image.getActions().size < 3)
                     if (image.getScaleX() != defaultScale) {
                         if (image.getActions().size == 0)
-                            ActionMaster.addScaleAction(image, defaultScale, 0.5f);
+                            ActionMasterGdx.addScaleAction(image, defaultScale, 0.5f);
                         else
-                            ActionMaster.addAfter(image, ActionMaster.getScaleAction(defaultScale, 0.5f));
+                            ActionMasterGdx.addAfter(image, ActionMasterGdx.getScaleAction(defaultScale, 0.5f));
                     }
                 super.exited();
             }

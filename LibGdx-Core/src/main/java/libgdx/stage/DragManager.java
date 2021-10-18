@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import libgdx.GdxMaster;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.gui.UiMaster;
 import libgdx.shaders.ShaderDrawer;
@@ -91,13 +91,13 @@ public class DragManager extends FadeImageContainer {
     @Override
     public void fadeOut() {
         super.fadeOut();
-        ActionMaster.addScaleAction(this, 0, getFadeDuration());
+        ActionMasterGdx.addScaleAction(this, 0, getFadeDuration());
     }
 
     @Override
     public void fadeIn() {
         super.fadeIn();
-        ActionMaster.addScaleAction(this, 1, getFadeDuration());
+        ActionMasterGdx.addScaleAction(this, 1, getFadeDuration());
     }
 
     public void setDraggedEntity(Entity draggedEntity) {

@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import libgdx.GdxMaster;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.sprite.Blended;
 import libgdx.shaders.ShaderDrawer;
 import main.system.auxiliary.ClassMaster;
@@ -221,9 +221,9 @@ public class GroupX extends Group {
             removeAction(sub);
         }
         setVisible(true);
-        ActionMaster.addFadeOutAction(this, getFadeOutDuration());
+        ActionMasterGdx.addFadeOutAction(this, getFadeOutDuration());
         if (isHideWhenFade())
-            ActionMaster.addHideAfter(this);
+            ActionMasterGdx.addHideAfter(this);
     }
 
     protected boolean isHideWhenFade() {
@@ -247,7 +247,7 @@ public class GroupX extends Group {
         for (Action sub : getActionsOfClass(AfterAction.class)) {
             removeAction(sub);
         }
-        ActionMaster.addFadeInAction(this, getFadeInDuration());
+        ActionMasterGdx.addFadeInAction(this, getFadeInDuration());
     }
 
     public void offset(float dX, float dY) {
@@ -300,6 +300,6 @@ public class GroupX extends Group {
     }
 
     public void fadeTo(float alpha, float dur) {
-        ActionMaster.addAlphaAction(this, dur, alpha);
+        ActionMasterGdx.addAlphaAction(this, dur, alpha);
     }
 }

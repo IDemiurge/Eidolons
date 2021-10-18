@@ -17,7 +17,7 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
 import eidolons.content.consts.libgdx.GdxColorMaster;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.GridMaster;
 import libgdx.bf.grid.GridPanel;
 import libgdx.bf.grid.sub.GridElement;
@@ -279,7 +279,7 @@ public class ShadowMap extends GroupX implements GridElement {
             int x = (c1.x - c.x) * 128;
             int y = (c1.y - c.y) * 128;
 
-            ActionMaster.addMoveByAction(emitter, x, y, 0.5f);
+            ActionMasterGdx.addMoveByAction(emitter, x, y, 0.5f);
 
             main.system.auxiliary.log.LogMaster.log(1, "RESET_LIGHT_EMITTER " + p);
 

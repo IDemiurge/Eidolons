@@ -3,7 +3,7 @@ package libgdx.gui.controls;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector2;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.grid.cell.BaseView;
 import libgdx.bf.grid.cell.GenericGridView;
 import libgdx.bf.grid.cell.GridCellContainer;
@@ -83,7 +83,7 @@ public class StackViewMaster {
         int y = !horizontal ? -size * views.size() / 2 + size / 2 : 0;
         for (GenericGridView view : views) {
             //sorted?
-            ActionMaster.addMoveByAction(view, x, y, 0.9f);
+            ActionMasterGdx.addMoveByAction(view, x, y, 0.9f);
             posMap.put(view, new Vector2(-x, -y));
             if (horizontal) {
                 x += 140;
@@ -93,7 +93,7 @@ public class StackViewMaster {
             view.setStackView(true);
             view.setHovered(true);
 
-            ActionMaster.addScaleAction(view, 1, 1.2f);
+            ActionMasterGdx.addScaleAction(view, 1, 1.2f);
             //                ScreenMaster.getDungeonGrid().getCells()[c.x][c.y];
             //stackView(true);
             scaleMap.put(view, view.getScaleX());
@@ -119,10 +119,10 @@ public class StackViewMaster {
             Vector2 v = posMap.get(view);
             view.setHovered(false);
             view.setStackView(false);
-            ActionMaster.addMoveByAction(view, v.x, v.y, 1.2f);
+            ActionMasterGdx.addMoveByAction(view, v.x, v.y, 1.2f);
         }
         for (GenericGridView view : scaleMap.keySet()) {
-            ActionMaster.addScaleAction(view, scaleMap.get(view), 1.4f);
+            ActionMasterGdx.addScaleAction(view, scaleMap.get(view), 1.4f);
         }
         posMap.clear();
         scaleMap.clear();

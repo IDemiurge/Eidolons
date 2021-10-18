@@ -16,7 +16,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import libgdx.GdxImageMaster;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.GridMaster;
 import libgdx.bf.generic.ImageContainer;
 import libgdx.bf.overlays.bar.HpBar;
@@ -164,9 +164,9 @@ public class QueueView extends UnitView {
             y = VIEW_Y_INACTIVE;
             y1 = LINE_Y_INACTIVE;
             if (on) {
-                ActionMaster.addFadeInAction(verticalLine, 1f * AtbPanel.getSpeedFactor());
+                ActionMasterGdx.addFadeInAction(verticalLine, 1f * AtbPanel.getSpeedFactor());
             } else {
-                ActionMaster.addFadeOutAction(verticalLine, 1f * AtbPanel.getSpeedFactor());
+                ActionMasterGdx.addFadeOutAction(verticalLine, 1f * AtbPanel.getSpeedFactor());
             }
         }
         if (on) {
@@ -176,10 +176,10 @@ public class QueueView extends UnitView {
             y += 20;
             y1 += 30;
         }
-        MoveToAction move = ActionMaster.getMoveToAction(0, y, 1f * AtbPanel.getSpeedFactor());
-        ActionMaster.addAction(this, move);
-        move = ActionMaster.getMoveToAction(verticalLine.getX(), y1, 1f * AtbPanel.getSpeedFactor());
-        ActionMaster.addAction(verticalLine, move);
+        MoveToAction move = ActionMasterGdx.getMoveToAction(0, y, 1f * AtbPanel.getSpeedFactor());
+        ActionMasterGdx.addAction(this, move);
+        move = ActionMasterGdx.getMoveToAction(verticalLine.getX(), y1, 1f * AtbPanel.getSpeedFactor());
+        ActionMasterGdx.addAction(verticalLine, move);
     }
 
     public void setActive(boolean active) {
@@ -194,16 +194,16 @@ public class QueueView extends UnitView {
         this.active = active;
         //we would need a delay here? elsewise...
         if (active) {
-            ActionMaster.addFadeInAction(verticalLine, 1f * AtbPanel.getSpeedFactor());
-            ActionMaster.addFadeInAction(activeMarker, 1f * AtbPanel.getSpeedFactor());
-            ActionMaster.addMoveToAction(this, portrait.getX(), PORTRAIT_Y_ACTIVE, 1f * AtbPanel.getSpeedFactor());
-            ActionMaster.addMoveToAction(verticalLine, verticalLine.getX(), LINE_Y_ACTIVE, 1f * AtbPanel.getSpeedFactor());
+            ActionMasterGdx.addFadeInAction(verticalLine, 1f * AtbPanel.getSpeedFactor());
+            ActionMasterGdx.addFadeInAction(activeMarker, 1f * AtbPanel.getSpeedFactor());
+            ActionMasterGdx.addMoveToAction(this, portrait.getX(), PORTRAIT_Y_ACTIVE, 1f * AtbPanel.getSpeedFactor());
+            ActionMasterGdx.addMoveToAction(verticalLine, verticalLine.getX(), LINE_Y_ACTIVE, 1f * AtbPanel.getSpeedFactor());
             verticalLine.setVisible(true);
         } else {
-            ActionMaster.addFadeOutAction(verticalLine, 1f * AtbPanel.getSpeedFactor());
-            ActionMaster.addFadeOutAction(activeMarker, 1f * AtbPanel.getSpeedFactor());
-            ActionMaster.addMoveToAction(portrait, portrait.getX(), PORTRAIT_Y_INACTIVE, 1f * AtbPanel.getSpeedFactor());
-            ActionMaster.addMoveToAction(verticalLine, verticalLine.getX(), LINE_Y_INACTIVE, 1f * AtbPanel.getSpeedFactor());
+            ActionMasterGdx.addFadeOutAction(verticalLine, 1f * AtbPanel.getSpeedFactor());
+            ActionMasterGdx.addFadeOutAction(activeMarker, 1f * AtbPanel.getSpeedFactor());
+            ActionMasterGdx.addMoveToAction(portrait, portrait.getX(), PORTRAIT_Y_INACTIVE, 1f * AtbPanel.getSpeedFactor());
+            ActionMasterGdx.addMoveToAction(verticalLine, verticalLine.getX(), LINE_Y_INACTIVE, 1f * AtbPanel.getSpeedFactor());
         }
     }
 

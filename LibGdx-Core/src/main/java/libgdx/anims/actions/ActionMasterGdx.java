@@ -21,13 +21,12 @@ import main.system.auxiliary.secondary.ReflectionMaster;
 import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by JustMe on 1/26/2017.
  */
-public class ActionMaster {
+public class ActionMasterGdx {
     public static final ObjectMap<Class, ActionPool> poolMap = new ObjectMap<>();
     private static final float DEFAULT_FADE_OUT_DURATION = 2;
     private static final float DEFAULT_FADE_IN_DURATION = 0.5f;
@@ -418,10 +417,10 @@ public class ActionMaster {
     }
 
     public static SequenceAction getDisplaceSequence(float x, float y, int dx, int dy, float dur, boolean overlaying) {
-        MoveByAction move = (MoveByAction) ActionMaster.getAction(MoveByAction.class);
+        MoveByAction move = (MoveByAction) ActionMasterGdx.getAction(MoveByAction.class);
         move.setAmount(dx, dy);
         move.setDuration(dur);
-        MoveToAction moveBack = (MoveToAction) ActionMaster.getAction(MoveToAction.class);
+        MoveToAction moveBack = (MoveToAction) ActionMasterGdx.getAction(MoveToAction.class);
         moveBack.setPosition(x, y);
         moveBack.setDuration(dur);
         if (overlaying) {

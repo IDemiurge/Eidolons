@@ -1,6 +1,6 @@
 package libgdx.gui.panels.headquarters.weave.actor;
 
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.gui.panels.headquarters.weave.WeaveHighlightable;
 import eidolons.content.consts.Images;
@@ -27,14 +27,14 @@ public class WeaveLinkActor extends FadeImageContainer implements WeaveHighlight
     public void highlight() {
         if (fromNode!=null )
             fromNode.highlight();
-        ActionMaster.addAlphaAction(this, 0.5f, 1f);
+        ActionMasterGdx.addAlphaAction(this, 0.5f, 1f);
     }
 
     @Override
     public void highlightOff() {
         if (fromNode!=null )
             fromNode.highlightOff();
-        ActionMaster.addAlphaAction(this, 0.5f, getDefaultAlpha());
+        ActionMasterGdx.addAlphaAction(this, 0.5f, getDefaultAlpha());
 
     }
 }

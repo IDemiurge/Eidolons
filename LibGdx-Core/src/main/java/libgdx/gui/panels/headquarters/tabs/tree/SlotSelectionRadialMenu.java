@@ -10,7 +10,7 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import libgdx.GdxMaster;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.gui.controls.radial.RadialContainer;
 import libgdx.gui.controls.radial.RadialMenu;
 import libgdx.gui.panels.headquarters.HqPanel;
@@ -278,7 +278,7 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
         v = //stageToLocalCoordinates
                 (new Vector2(x - 200, y));
 
-        ActionMaster.addMoveToAction(this, v.x, v.y, 1.5f);
+        ActionMasterGdx.addMoveToAction(this, v.x, v.y, 1.5f);
 
     }
 

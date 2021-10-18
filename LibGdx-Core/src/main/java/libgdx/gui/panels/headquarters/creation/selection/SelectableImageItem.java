@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.bf.generic.ImageContainer;
 import libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
@@ -67,7 +67,7 @@ public class SelectableImageItem extends FadeImageContainer {
         else {
             if (highlight.getColor().a > 0) {
                 if (highlight.getActions().size == 0)
-                    ActionMaster.addFadeOutAction(highlight, 1, false);
+                    ActionMasterGdx.addFadeOutAction(highlight, 1, false);
             }
         }
     }
@@ -87,10 +87,10 @@ public class SelectableImageItem extends FadeImageContainer {
         }
         this.selected = selected;
         if (!selected) {
-            ActionMaster.addScaleAction(getContent(), highlight.getScaleX(), 0.3f);
+            ActionMasterGdx.addScaleAction(getContent(), highlight.getScaleX(), 0.3f);
             setZIndex(0);
         } else {
-            ActionMaster.addScaleAction(getContent(), highlight.getScaleX() * 1.3f, 0.3f);
+            ActionMasterGdx.addScaleAction(getContent(), highlight.getScaleX() * 1.3f, 0.3f);
             setZIndex(999);
         }
     }

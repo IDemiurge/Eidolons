@@ -11,7 +11,7 @@ import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.actions.FloatActionLimited;
 import libgdx.bf.generic.SuperContainer;
 import libgdx.bf.grid.cell.BaseView;
@@ -40,7 +40,7 @@ public class ShadeLightCell extends SuperContainer {
     private static final boolean alphaFluctuation = true;
     private final float width;
     private final float height;
-    FloatActionLimited alphaAction = (FloatActionLimited) ActionMaster.getAction(FloatActionLimited.class);
+    FloatActionLimited alphaAction = (FloatActionLimited) ActionMasterGdx.getAction(FloatActionLimited.class);
     private final VisualEnums.SHADE_CELL type;
     private Float originalX;
     private Float originalY;

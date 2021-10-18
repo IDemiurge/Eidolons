@@ -3,17 +3,14 @@ package eidolons.puzzle.voidy;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import eidolons.puzzle.gridobj.CinematicGridObject;
 import eidolons.puzzle.gridobj.GridObject;
-import eidolons.puzzle.voidy.VoidHandler;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.main.AnimMaster;
 import libgdx.anims.sprite.SpriteAnimation;
 import libgdx.anims.sprite.SpriteAnimationFactory;
 import libgdx.anims.std.HitAnim;
 import libgdx.anims.std.sprite.CustomSpriteAnim;
-import libgdx.bf.GridMaster;
 import libgdx.bf.grid.cell.GridCell;
 import eidolons.system.audio.DC_SoundMaster;
-import libgdx.bf.grid.handlers.GridManager;
 import libgdx.screens.ScreenMaster;
 import main.content.enums.entity.BfObjEnums;
 import main.game.bf.Coordinates;
@@ -121,24 +118,24 @@ public class VoidAnimator {
         }
         //TODO wait mechanism for cellImage!
         if (waitPeriod > 0)
-            ActionMaster.addWaitAction(cell, waitPeriod);
-        ActionMaster.addCustomAction(cell, () -> playAnimSound(raiseOrCollapse));
+            ActionMasterGdx.addWaitAction(cell, waitPeriod);
+        ActionMasterGdx.addCustomAction(cell, () -> playAnimSound(raiseOrCollapse));
         cell.getCellImgContainer().setVisible(true);
-        ActionMaster.addAlphaAction(cell.getCellImgContainer(), dur, !raiseOrCollapse);
+        ActionMasterGdx.addAlphaAction(cell.getCellImgContainer(), dur, !raiseOrCollapse);
 
         if (isScaleOn()) {
             scale = raiseOrCollapse ? 1f : 0.01f;
             scaleX = isVertScale() ? 100 * scale : scale;
             scaleY = scale;
-            ActionMaster.addScaleActionCentered(cell.getCellImage(), scaleX, scaleY, dur + waitPeriod);
+            ActionMasterGdx.addScaleActionCentered(cell.getCellImage(), scaleX, scaleY, dur + waitPeriod);
         }
         if (raiseOrCollapse) {
-            ActionMaster.addMoveToAction(cell, x, y, dur);
+            ActionMasterGdx.addMoveToAction(cell, x, y, dur);
         } else
-            ActionMaster.addMoveToAction(cell, x + offsetX, y + offsetY, dur);
+            ActionMasterGdx.addMoveToAction(cell, x + offsetX, y + offsetY, dur);
 
         float delay = raiseOrCollapse ? dur / 5 : 0.01f;
-        ActionMaster.addDelayedAction(cell, delay, new Action() {
+        ActionMasterGdx.addDelayedAction(cell, delay, new Action() {
             @Override
             public boolean act(float delta) {
                 cell.getUserObject().setVOID(!raiseOrCollapse);
@@ -152,7 +149,7 @@ public class VoidAnimator {
 
         DIRECTION direction = from;
 
-        ActionMaster.addAfter(cell, () -> {
+        ActionMasterGdx.addAfter(cell, () -> {
 
             if (raiseOrCollapse) {
                 handler.getRaised().put(cell, direction);

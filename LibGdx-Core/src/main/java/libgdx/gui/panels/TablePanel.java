@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import libgdx.GdxMaster;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.gui.NinePatchFactory;
 import libgdx.gui.generic.btn.FlipDrawable;
 import libgdx.TiledNinePatchGenerator;
@@ -247,14 +247,14 @@ public class TablePanel<T extends Actor> extends Table {
 
     public void fadeOut() {
         clearActions();
-        ActionMaster.addFadeOutAction(this, 0.25f);
-        ActionMaster.addHideAfter(this);
+        ActionMasterGdx.addFadeOutAction(this, 0.25f);
+        ActionMasterGdx.addHideAfter(this);
     }
 
     public void fadeIn() {
         clearActions();
         setVisible(true);
-        ActionMaster.addFadeInAction(this, 0.25f);
+        ActionMasterGdx.addFadeInAction(this, 0.25f);
     }
 
     public boolean isFixedSize() {

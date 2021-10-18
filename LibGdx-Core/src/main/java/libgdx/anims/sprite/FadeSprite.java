@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.screens.CustomSpriteBatch;
 import main.content.enums.GenericEnums;
@@ -36,7 +36,7 @@ public class FadeSprite extends FadeImageContainer {
             return;
 
         if (previousImage != null) {
-            ActionMaster.addFadeOutAction(previousImage, getFadeDuration() * 2, true);
+            ActionMasterGdx.addFadeOutAction(previousImage, getFadeDuration() * 2, true);
         }
         previousImage = getContent();
 

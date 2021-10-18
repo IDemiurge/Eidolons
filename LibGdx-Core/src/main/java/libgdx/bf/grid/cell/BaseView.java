@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.sprite.SpriteMaster;
 import libgdx.anims.sprite.SpriteX;
 import libgdx.bf.Borderable;
@@ -271,7 +271,7 @@ public class BaseView extends SuperActor implements Hoverable, Borderable {
     public void setBorder(TextureRegion texture) {
 
         if (texture == null) {
-            ActionMaster.addFadeOutAction(border, 0.65f, true);
+            ActionMasterGdx.addFadeOutAction(border, 0.65f, true);
             borderTexture = null;
             setTeamColorBorder(false);
         } else {
@@ -283,7 +283,7 @@ public class BaseView extends SuperActor implements Hoverable, Borderable {
             }
             addActor(border = new Image(texture));
             border.getColor().a = 0;
-            ActionMaster.addFadeInAction(border, 0.65f);
+            ActionMasterGdx.addFadeInAction(border, 0.65f);
 
             borderTexture = texture;
             updateBorderSize();

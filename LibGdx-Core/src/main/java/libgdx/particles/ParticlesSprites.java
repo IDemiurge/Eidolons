@@ -1,6 +1,6 @@
 package libgdx.particles;
 
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.gui.generic.GroupX;
 import eidolons.content.consts.VisualEnums.PARTICLES_SPRITE;
 import main.data.XLinkedMap;
@@ -24,7 +24,7 @@ public class ParticlesSprites extends GroupX {
                 addActor(sprite);
                 sprite.getColor().a=0;
             }
-            ActionMaster.addAlphaAction(sprite, 3, alpha);
+            ActionMasterGdx.addAlphaAction(sprite, 3, alpha);
         });
     }
 

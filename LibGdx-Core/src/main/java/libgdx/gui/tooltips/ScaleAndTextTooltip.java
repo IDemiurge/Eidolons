@@ -1,7 +1,7 @@
 package libgdx.gui.tooltips;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 
 import java.util.function.Supplier;
 
@@ -21,7 +21,7 @@ public class ScaleAndTextTooltip extends DynamicTooltip {
     @Override
     protected void exited() {
         super.exited();
-        ActionMaster.addScaleAction(actor,
+        ActionMasterGdx.addScaleAction(actor,
          1,
          1,
          getDuration(), isCentered());
@@ -30,7 +30,7 @@ public class ScaleAndTextTooltip extends DynamicTooltip {
     @Override
     protected void entered() {
         super.entered();
-        ActionMaster.addScaleAction(actor,
+        ActionMasterGdx.addScaleAction(actor,
          getScale(),
          getScale(),
          getDuration(), isCentered());

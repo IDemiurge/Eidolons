@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import eidolons.content.PROPS;
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
@@ -20,14 +19,13 @@ import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.DamageFactory;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.anims.AnimData;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.fullscreen.ScreenshakeMaster;
 import libgdx.anims.sprite.SpriteAnimation;
 import libgdx.anims.sprite.SpriteAnimationFactory;
 import libgdx.anims.text.FloatingText;
 import libgdx.anims.text.FloatingTextMaster;
 import libgdx.screens.ScreenMaster;
-import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.CONTENT_CONSTS.OBJECT_ARMOR_TYPE;
@@ -245,7 +243,7 @@ public class HitAnim extends ActionAnim {
         }
 
         SequenceAction sequence =
-                ActionMaster.getDisplaceSequence(x, y, dx, dy, getDuration() / 2, overlaying);
+                ActionMasterGdx.getDisplaceSequence(x, y, dx, dy, getDuration() / 2, overlaying);
 
         if (isDelayed()) {
             DelayAction delayed = new DelayAction(getDuration() / 3);

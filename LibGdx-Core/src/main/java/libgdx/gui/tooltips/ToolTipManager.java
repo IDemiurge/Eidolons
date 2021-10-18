@@ -16,7 +16,7 @@ import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import libgdx.GDX;
 import libgdx.GdxMaster;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.assets.AnimMaster3d;
 import libgdx.bf.Hoverable;
 import libgdx.bf.grid.cell.BaseView;
@@ -141,7 +141,7 @@ public class ToolTipManager extends TablePanel {
                             return;
                         }
                 }
-            ActionMaster.addFadeOutAction(tooltip, 0.35f);
+            ActionMasterGdx.addFadeOutAction(tooltip, 0.35f);
         }
         if (object == null) {
             actorCell.setActor(tooltip = null);
@@ -233,7 +233,7 @@ public class ToolTipManager extends TablePanel {
 
         tooltip.getColor().a = 0;
         tooltip.clearActions();
-        ActionMaster.addFadeInAction(tooltip, 0.5f);
+        ActionMasterGdx.addFadeInAction(tooltip, 0.5f);
         if (tooltip.getEntity() != null)
             entityHover(tooltip.getEntity());
     }
@@ -557,7 +557,7 @@ public class ToolTipManager extends TablePanel {
         //        if (object.getScaleY() == getDefaultScale(object))
         //            scaleY = getZoomScale(object);
 
-        ActionMaster.
+        ActionMasterGdx.
                 addScaleActionIfNoActions(object, scale, scale, 0.35f);
 
     }
@@ -573,14 +573,14 @@ public class ToolTipManager extends TablePanel {
             }
         }
         scaleDown(object);
-        ActionMaster.screenOff(object);
+        ActionMasterGdx.screenOff(object);
         float scaleX;
         float scaleY;
         object.setHovered(false);
         if (object instanceof UnitGridView) {
             scaleX = object.getScaledWidth();
             scaleY = object.getScaledHeight();
-            ActionMaster.
+            ActionMasterGdx.
                     addScaleAction(object, scaleX, scaleY, 0.35f);
             ((UnitGridView) object).getInitiativeQueueUnitView().hoverOff();
         } else if (object instanceof QueueView) {

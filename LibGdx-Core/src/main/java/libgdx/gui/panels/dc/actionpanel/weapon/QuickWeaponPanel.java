@@ -9,7 +9,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.EidolonsGame;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.EUtils;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.text.FloatingTextMaster;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.bf.generic.ImageContainer;
@@ -262,7 +262,7 @@ public class QuickWeaponPanel extends TablePanelX {
                 weapon.setFadeDuration(0.25f);
                 weapon.setImage(getActiveWeaponDataSource().getLargeImage());
                 int i = !offhand ? -1 : 1;
-                ActionMaster.addMoveToAction(weapon, WEAPON_POS_X + 20 * i, 20, 0.75f);
+                ActionMasterGdx.addMoveToAction(weapon, WEAPON_POS_X + 20 * i, 20, 0.75f);
             }
 
             @Override
@@ -275,7 +275,7 @@ public class QuickWeaponPanel extends TablePanelX {
                 radial.setZIndex(Integer.MAX_VALUE);
                 weapon.setFadeDuration(0.5f);
                 weapon.setImage(getActiveWeaponDataSource().getNormalImage());
-                ActionMaster.addMoveToAction(weapon, WEAPON_POS_X, 0, 0.75f);
+                ActionMasterGdx.addMoveToAction(weapon, WEAPON_POS_X, 0, 0.75f);
             }
         };
     }

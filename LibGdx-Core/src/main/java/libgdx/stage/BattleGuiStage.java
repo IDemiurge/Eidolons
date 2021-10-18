@@ -17,7 +17,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import libgdx.gui.panels.lord.SoulforcePanel;
 import libgdx.GDX;
 import libgdx.GdxMaster;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.fullscreen.FullscreenAnims;
 import libgdx.gui.HideButton;
 import libgdx.gui.overlay.choice.VisualChoice;
@@ -245,7 +245,7 @@ public class BattleGuiStage extends GuiStage {
                     (GdxMaster.getHeight() - outcomePanel.getHeight() / 2);
             float x = (GdxMaster.getWidth() - outcomePanel.getWidth()) / 2;
             outcomePanel.setPosition(x, y + outcomePanel.getHeight());
-            ActionMaster.addMoveToAction(outcomePanel, x, y, 2.5f);
+            ActionMasterGdx.addMoveToAction(outcomePanel, x, y, 2.5f);
         });
 
     }

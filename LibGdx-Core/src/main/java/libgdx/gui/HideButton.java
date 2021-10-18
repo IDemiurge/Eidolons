@@ -1,7 +1,7 @@
 package libgdx.gui;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.gui.generic.GroupX;
 import libgdx.gui.generic.btn.SymbolButton;
 import libgdx.gui.generic.btn.ButtonStyled;
@@ -24,15 +24,15 @@ public class HideButton extends SymbolButton {
             if (actor instanceof GroupX) {
                 ((GroupX) actor).fadeOut();
             } else {
-                ActionMaster.addFadeInAction(actor);
+                ActionMasterGdx.addFadeInAction(actor);
             }
-            ActionMaster.addHideAfter(actor);
+            ActionMasterGdx.addHideAfter(actor);
         } else {
             actor.setVisible(true);
             if (actor instanceof GroupX) {
                 ((GroupX) actor).fadeIn();
             } else {
-                ActionMaster.addFadeInAction(actor);
+                ActionMasterGdx.addFadeInAction(actor);
             }
         }
     }

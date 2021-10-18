@@ -13,7 +13,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import libgdx.GDX;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.Fluctuating;
 import libgdx.bf.generic.SuperContainer;
 import libgdx.gui.LabelX;
@@ -223,9 +223,9 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
         tooltip.getColor().a = 0;
         tooltip.clearActions();
         if (dur != 0) {
-            ActionMaster.addFadeInAndOutAction(tooltip, dur, true);
+            ActionMasterGdx.addFadeInAndOutAction(tooltip, dur, true);
         } else {
-            ActionMaster.addFadeInAction(tooltip, 0.85f);
+            ActionMasterGdx.addFadeInAction(tooltip, 0.85f);
         }
         tooltip.layout();
         tooltip.pack();
@@ -242,7 +242,7 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
 
     protected void hideTooltip(LabelX tooltip, float dur) {
         SuperContainer container = (SuperContainer) tooltip.getParent();
-        ActionMaster.addFadeOutAction(tooltip, dur, true);
+        ActionMasterGdx.addFadeOutAction(tooltip, dur, true);
         if (container == null)
             return;
         //        tooltip.clearActions();

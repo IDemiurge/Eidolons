@@ -1,17 +1,17 @@
-package libgdx.gui.panels.dc.actionpanel;
+package libgdx.gui.panels.dc.actionpanel.spaces;
 
 import libgdx.gui.generic.ValueContainer;
 import libgdx.gui.panels.dc.actionpanel.datasource.UnitActionsDataSource;
 
 import java.util.List;
 
-public class ModeActionsPanel extends BaseSlotPanel {
+public class DefaultActionsPanel extends FeatSpacePanel {
 
-    public ModeActionsPanel() {
+    public DefaultActionsPanel() {
         super(0);
     }
 
-    public ModeActionsPanel(int imageSize) {
+    public DefaultActionsPanel(int imageSize) {
         super(imageSize);
     }
 

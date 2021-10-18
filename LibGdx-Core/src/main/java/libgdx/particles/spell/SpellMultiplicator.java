@@ -9,7 +9,7 @@ import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import libgdx.anims.Anim;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.construct.AnimConstructor;
 import libgdx.anims.std.SpellAnim;
 import libgdx.anims.std.SpellAnim.SPELL_ANIMS;
@@ -261,7 +261,7 @@ public class SpellMultiplicator implements Runnable {
             createAndAddEmitterActions(actor, c);
         }
 
-        ActionMaster.addRemoveAfter(actor);
+        ActionMasterGdx.addRemoveAfter(actor);
         return actor;
     }
 
@@ -306,7 +306,7 @@ public class SpellMultiplicator implements Runnable {
             );
             speed = template.speed;
         }
-        MoveByAction action = ActionMaster.getMoveByAction(getOrigin(), v, actor, (int) speed);
+        MoveByAction action = ActionMasterGdx.getMoveByAction(getOrigin(), v, actor, (int) speed);
 
         if (anim.getPart() == VisualEnums.ANIM_PART.IMPACT) {
             duration = 1f / 100;

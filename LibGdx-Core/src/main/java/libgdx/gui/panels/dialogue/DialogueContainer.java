@@ -8,7 +8,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.Scene;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.DialogueContainerAdapter;
 import libgdx.anims.fullscreen.BriefBackground;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.gui.panels.TablePanelX;
 import libgdx.shaders.ShaderDrawer;
 import libgdx.stage.GuiStage;
@@ -234,11 +234,11 @@ public class DialogueContainer extends TablePanelX implements DialogueContainerA
 
     @Override
     public void fadeBg(Float dur, Float alpha) {
-        ActionMaster.addAlphaAction(this, dur, alpha);
+        ActionMasterGdx.addAlphaAction(this, dur, alpha);
     }
 
     @Override
     public void fade(Float dur, Float alpha, boolean ui_bg_both) {
-        ActionMaster.addAlphaAction((Actor)(ui_bg_both ? getCurrent() : getBgSprite()), dur, alpha);
+        ActionMasterGdx.addAlphaAction((Actor)(ui_bg_both ? getCurrent() : getBgSprite()), dur, alpha);
     }
 }

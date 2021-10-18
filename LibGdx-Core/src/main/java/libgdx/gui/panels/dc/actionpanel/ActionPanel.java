@@ -7,7 +7,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import libgdx.GdxMaster;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.bf.generic.ImageContainer;
 import libgdx.gui.generic.GroupX;
@@ -17,6 +17,9 @@ import libgdx.gui.panels.dc.actionpanel.bar.SoulParamsBar;
 import libgdx.gui.panels.dc.actionpanel.datasource.ActiveQuickSlotsDataSource;
 import libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import libgdx.gui.panels.dc.actionpanel.facing.FacingPanel;
+import libgdx.gui.panels.dc.actionpanel.spaces.ActionContainer;
+import libgdx.gui.panels.dc.actionpanel.spaces.DefaultActionsPanel;
+import libgdx.gui.panels.dc.actionpanel.spaces.FeatSpacePanel;
 import libgdx.gui.panels.dc.actionpanel.weapon.QuickWeaponPanel;
 import libgdx.gui.panels.dc.actionpanel.weapon.WeaponDataSource;
 import libgdx.gui.panels.headquarters.HqMaster;
@@ -46,7 +49,7 @@ public class ActionPanel extends GroupX {
 
     private final ImageContainer bottomOverlay;
     // protected QuickSlotPanel quickSlotPanel;
-    protected ModeActionsPanel modeActionsPanel;
+    protected DefaultActionsPanel defaultActionsPanel;
     protected FeatSpacePanel spellSpacePanel;
     protected FeatSpacePanel combatSpacePanel;
     protected FadeImageContainer background;
@@ -80,11 +83,11 @@ public class ActionPanel extends GroupX {
         addActor(background = new FadeImageContainer((Textures.BOTTOM_PANEL_BG)));
         //        background.pack();
         setSize(background.getWidth(), background.getHeight());
-        addActor(combatSpacePanel = new FeatSpacePanel(IMAGE_SIZE));
+        addActor(combatSpacePanel = new FeatSpacePanel(IMAGE_SIZE, false));
 
-        addActor(modeActionsPanel = new ModeActionsPanel(IMAGE_SIZE));
+        addActor(defaultActionsPanel = new DefaultActionsPanel(IMAGE_SIZE));
 
-        addActor(spellSpacePanel = new FeatSpacePanel(IMAGE_SIZE));
+        addActor(spellSpacePanel = new FeatSpacePanel(IMAGE_SIZE, true));
 
         /////////////ADDITIONAL
 
@@ -123,7 +126,7 @@ public class ActionPanel extends GroupX {
     public void resetPositions() {
         combatSpacePanel.setPosition(-32 + OFFSET_X + QUICK_SLOTS_OFFSET_X, ACTIVE_SPACE_OFFSET_Y);
         final float actionOffset =17+ OFFSET_X + (IMAGE_SIZE * 6) + 5;
-        modeActionsPanel.setPosition(-28+26+actionOffset, 0);
+        defaultActionsPanel.setPosition(-28+26+actionOffset, 0);
         final float spellOffset = ACTIVE_SPACE_OFFSET_X -60 + actionOffset + (IMAGE_SIZE * 6)- 35;
         spellSpacePanel.setPosition(spellOffset, ACTIVE_SPACE_OFFSET_Y);
         spellsPos.x = spellOffset;
@@ -135,7 +138,7 @@ public class ActionPanel extends GroupX {
         bodyParamsBar.setPosition(x - 37, 47);
         buffPanelBody.setPosition(bodyParamsBar.getX() + 20, IMAGE_SIZE + 40);
 
-        x = modeActionsPanel.getX()-34;
+        x = defaultActionsPanel.getX()-34;
         mainHand.setPosition(x - 14,
                 bodyParamsBar.getY() + 22);
         offhand.setPosition(mainHand.getX() + 235 + 146- 112,
@@ -211,30 +214,30 @@ public class ActionPanel extends GroupX {
 
     private void bindEvents() {
         GuiEventManager.bind(GuiEventType.LOG_ROLLED_IN, p -> {
-            ActionMaster.addMoveToAction(this, GdxMaster.centerWidth(this), getY(), 1.4f);
+            ActionMasterGdx.addMoveToAction(this, GdxMaster.centerWidth(this), getY(), 1.4f);
         });
         GuiEventManager.bind(GuiEventType.LOG_ROLLED_OUT, p -> {
-            ActionMaster.addMoveToAction(this, defaultX, getY(), 1.4f);
+            ActionMasterGdx.addMoveToAction(this, defaultX, getY(), 1.4f);
         });
 
         GuiEventManager.bind(GuiEventType.MINIMIZE_UI_ON, p -> {
-            ActionMaster.addMoveToAction(this, getX(), PUZZLE_OFFSET_Y, 1.4f);
-            ActionMaster.addAfter(this, ()-> setHidden(true));
+            ActionMasterGdx.addMoveToAction(this, getX(), PUZZLE_OFFSET_Y, 1.4f);
+            ActionMasterGdx.addAfter(this, ()-> setHidden(true));
             soulParamsBar.fadeOut();
             bodyParamsBar.fadeOut();
         });
         GuiEventManager.bind(GuiEventType.MINIMIZE_UI_OFF, p -> {
-            ActionMaster.addMoveToAction(this, getX(), 0, 1.4f);
-            ActionMaster.addAfter(this, ()-> setHidden(false));
+            ActionMasterGdx.addMoveToAction(this, getX(), 0, 1.4f);
+            ActionMasterGdx.addAfter(this, ()-> setHidden(false));
             soulParamsBar.fadeIn();
             bodyParamsBar.fadeIn();
         });
 
         GuiEventManager.bind(GuiEventType.ACTION_HOVERED_OFF, p -> {
-            ActionMaster.addMoveToAction(bottomOverlay, bottomOverlay.getX(), -9, 0.4f);
+            ActionMasterGdx.addMoveToAction(bottomOverlay, bottomOverlay.getX(), -9, 0.4f);
         });
         GuiEventManager.bind(GuiEventType.ACTION_HOVERED, p -> {
-            ActionMaster.addMoveToAction(bottomOverlay, bottomOverlay.getX(), -15, 0.4f);
+            ActionMasterGdx.addMoveToAction(bottomOverlay, bottomOverlay.getX(), -15, 0.4f);
         });
         GuiEventManager.bind(GuiEventType.UPDATE_MAIN_HERO, p -> {
             Unit hero = (Unit) p.get();
@@ -269,7 +272,7 @@ public class ActionPanel extends GroupX {
             ActionContainer.setDarkened(false);
             if (getY() < 0) {
                 if (isMovedDownOnEnemyTurn())
-                    ActionMaster.addMoveToAction(this, getX(), 0, 1);
+                    ActionMasterGdx.addMoveToAction(this, getX(), 0, 1);
                 //  ActorMaster.addFadeInOrOut(bodyParamsBar, 1);
                 //    ActorMaster.addFadeInOrOut(soulParamsBar, 1);
             }
@@ -279,7 +282,7 @@ public class ActionPanel extends GroupX {
                     el.setUserObject(source));
             atkPts.setUserObject(source);
             movePts.setUserObject(source);
-            modeActionsPanel.setUserObject(source);
+            defaultActionsPanel.setUserObject(source);
             combatSpacePanel.setUserObject(source);
             spellSpacePanel.setUserObject(source);
             buffPanelBody.setUserObject(source);
@@ -289,7 +292,7 @@ public class ActionPanel extends GroupX {
         } else {
             //                setY(-IMAGE_SIZE);
             if (isMovedDownOnEnemyTurn())
-                ActionMaster.addMoveToAction(this, getX(), -IMAGE_SIZE, 1);
+                ActionMasterGdx.addMoveToAction(this, getX(), -IMAGE_SIZE, 1);
 
             ActionContainer.setDarkened(true);
             // ActorMaster.addFadeInOrOut(bodyParamsBar, 1);
@@ -341,8 +344,8 @@ public class ActionPanel extends GroupX {
         super.draw(batch, parentAlpha);
     }
 
-    public ModeActionsPanel getModeActionsPanel() {
-        return modeActionsPanel;
+    public DefaultActionsPanel getModeActionsPanel() {
+        return defaultActionsPanel;
     }
 
     public FeatSpacePanel getSpellSpacePanel() {
@@ -363,9 +366,9 @@ public class ActionPanel extends GroupX {
     }
 
     public void setHidden(boolean hidden) {
-        modeActionsPanel.setVisible(!hidden);
+        defaultActionsPanel.setVisible(!hidden);
         spellSpacePanel.setVisible(!hidden);
-        modeActionsPanel.setVisible(!hidden);
+        defaultActionsPanel.setVisible(!hidden);
         log(1,"Action panel hidden: " +hidden);
     }
 

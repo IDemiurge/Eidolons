@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.gui.generic.GroupX;
 import libgdx.gui.generic.btn.ButtonStyled;
 import libgdx.gui.generic.btn.SymbolButton;
@@ -209,10 +209,10 @@ public class RollDecorator {
                         break;
                 }
 
-            ActionMaster.addMoveToAction(
+            ActionMasterGdx.addMoveToAction(
                     this, toX, toY, getDuration());
 
-            ActionMaster.addRotateByAction(
+            ActionMasterGdx.addRotateByAction(
                     arrow, 180);
 
             if (onEither != null) {

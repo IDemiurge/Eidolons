@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.gui.LabelX;
 import libgdx.gui.panels.TablePanelX;
 import main.system.GuiEventManager;
@@ -37,7 +37,7 @@ public class QuestProgressPanel extends TablePanelX {
                         for (Actor actor : getChildren()) {
                             if (actor instanceof QuestElement) {
                                 if (((QuestElement) actor).quest==p.get()) {
-                                    ActionMaster.addFadeOutAction(actor, 1, true);
+                                    ActionMasterGdx.addFadeOutAction(actor, 1, true);
                                 }
                             }
                         }

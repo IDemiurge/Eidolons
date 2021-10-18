@@ -2,7 +2,7 @@ package libgdx.gui.overlay;
 
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.generic.ImageContainer;
 import libgdx.gui.LabelX;
 import libgdx.gui.generic.NoHitGroup;
@@ -37,7 +37,7 @@ public class LargeText extends NoHitGroup {
         setVisible(true);
         float delay;
         //fade in/out one by one!
-        ActionMaster.addFadeInAndOutAction(this, dur, false);
+        ActionMasterGdx.addFadeInAndOutAction(this, dur, false);
         mainText.setText(main);
         subText.setText(sub);
         mainText.pack();

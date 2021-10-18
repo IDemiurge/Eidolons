@@ -1,6 +1,6 @@
 package libgdx.gui.panels.dc.topleft.atb;
 
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.generic.ImageContainer;
 import libgdx.bf.grid.cell.QueueView;
 import main.content.enums.GenericEnums;
@@ -125,7 +125,7 @@ public class AtbViewManager {
         atbPanel.previewActor.clearActions();
         atbPanel.previewActor.setY(-30);
         atbPanel.previewActor.setX(atbPanel.container.getX() + (i + 1) * (AtbPanel.imageSize + atbPanel.DST_BETWEEN_VIEWS) - atbPanel.DST_BETWEEN_VIEWS / 2);
-        ActionMaster.addScaleActionCentered(atbPanel.previewActor, 0, 1, 8);
+        ActionMasterGdx.addScaleActionCentered(atbPanel.previewActor, 0, 1, 8);
 //        ActorMaster.addMoveToAction(previewActor, previewActor.getX()+previewActor.getWidth()/2,
 //         previewActor.getY(), 5);
     }

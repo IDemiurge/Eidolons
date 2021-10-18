@@ -20,7 +20,7 @@ import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneAdapter;
 import libgdx.GDX;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.gui.NinePatchFactory;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.Options;
@@ -117,8 +117,8 @@ public class OptionsWindow extends VisWindow {
     protected void close() {
 //        super.close();
         active = false;
-        ActionMaster.addFadeOutAction(this, 1, false);
-        ActionMaster.addHideAfter(this );
+        ActionMasterGdx.addFadeOutAction(this, 1, false);
+        ActionMasterGdx.addHideAfter(this );
         GuiEventManager.trigger(GuiEventType.GAME_RESUMED);
     }
 

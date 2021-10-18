@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.gui.LabelX;
 import libgdx.gui.NinePatchFactory;
 import libgdx.gui.generic.btn.ButtonStyled;
@@ -75,13 +75,13 @@ public class BriefText extends TablePanelX {
         }
 
         if (mainText.getText().equals(getUserObject().toString())) {
-            ActionMaster.addFadeOutAction(this, getFadeOutDur());
+            ActionMasterGdx.addFadeOutAction(this, getFadeOutDur());
         } else {
             if (mainText.getColor().a == 0) {
                 mainText.setText(getUserObject().toString());
             }
             mainText.setText(getUserObject().toString());
-            ActionMaster.addFadeInAction(this, getFadeInDur());
+            ActionMasterGdx.addFadeInAction(this, getFadeInDur());
         }
         mainText.setSize(800, 250);
         continueBtn.makeActive();

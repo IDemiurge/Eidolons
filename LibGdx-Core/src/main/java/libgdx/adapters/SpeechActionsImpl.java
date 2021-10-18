@@ -16,7 +16,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
 import libgdx.anims.SimpleAnim;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.fullscreen.Screenshake;
 import libgdx.anims.main.AnimMaster;
 import libgdx.bf.GridMaster;
@@ -120,7 +120,7 @@ public class SpeechActionsImpl implements GdxSpeechActions {
             }
             Interpolation interpolation = null;
             if (vars.size() > 1) {
-                interpolation = ActionMaster.getInterpolation(vars.get(1));
+                interpolation = ActionMasterGdx.getInterpolation(vars.get(1));
             }
             if (zoom) {
                 //        new CameraMan.MotionData(Float.valueOf(value) / 100, Float.valueOf(vars.getVar(0)) / 1000, Interpolation.swing);

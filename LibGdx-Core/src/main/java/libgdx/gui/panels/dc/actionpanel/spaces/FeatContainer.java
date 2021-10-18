@@ -1,4 +1,4 @@
-package libgdx.gui.panels.dc.actionpanel;
+package libgdx.gui.panels.dc.actionpanel.spaces;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.content.consts.Images;
@@ -83,7 +83,7 @@ public class FeatContainer extends ValueContainer {
         }
         this.hover = hover;
 
-        BaseSlotPanel panel = (BaseSlotPanel) GdxMaster.getFirstParentOfClass(this, BaseSlotPanel.class);
+        FeatSpacePanel panel = (FeatSpacePanel) GdxMaster.getFirstParentOfClass(this, FeatSpacePanel.class);
         if (panel != null) {
             panel.setHovered(hover);
         }

@@ -10,7 +10,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import libgdx.anims.AnimData;
 import libgdx.anims.AnimData.ANIM_VALUES;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.main.AnimMaster;
 import libgdx.anims.sprite.SpriteAnimation;
 import libgdx.bf.grid.cell.BaseView;
@@ -109,14 +109,14 @@ public class DeathAnim extends ActionAnim {
         }
 //        AnimMaster.getInstance().addActor(getActor());
 //        getActor().setPosition(getOrigin().x, getOrigin().y);
-        AlphaAction action = ActionMaster.addFadeOutAction(getActor());
+        AlphaAction action = ActionMasterGdx.addFadeOutAction(getActor());
         if (action == null) {
             main.system.auxiliary.log.LogMaster.log(1,"Death Anim fade failed for \n" +getRef());
             getActor().setVisible(false);
             return;
         }
         action.setDuration(duration);
-        ActionMaster.addRemoveAfter(getActor());
+        ActionMasterGdx.addRemoveAfter(getActor());
     }
 
     @Override

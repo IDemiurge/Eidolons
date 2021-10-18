@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import eidolons.content.consts.VisualEnums;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.GdxMaster;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.sprite.SpriteX;
 import libgdx.bf.SuperActor;
 import libgdx.bf.SuperGroup;
@@ -130,7 +130,7 @@ public class FlyingObjs extends GroupX {
         // MoveToBezier
         Vector2 dest = getDestination(obj, cinematic);
         float dur = getDuration(obj, cinematic);
-        MoveToAction action = ActionMaster.addMoveToAction(obj, dest.x, dest.y, dur);
+        MoveToAction action = ActionMasterGdx.addMoveToAction(obj, dest.x, dest.y, dur);
         // action.setInterpolation(Interpolation.fade);
         // action = ActionMaster.addMoveByActionReal(obj, 0, dest.y - obj.getY(), dur);
         // action.setInterpolation(Interpolation.circleOut);
@@ -145,7 +145,7 @@ public class FlyingObjs extends GroupX {
             //TODO cannot predict if player will follow, but we can increase speed and reduce alpha after it leaves
             //camera, and REMOVE it soon
         }
-        ActionMaster.addAfter(obj, () -> {
+        ActionMasterGdx.addAfter(obj, () -> {
             if (obj.actor instanceof EmitterActor) {
                 ((EmitterActor) obj.actor).allowFinish();
             } else {

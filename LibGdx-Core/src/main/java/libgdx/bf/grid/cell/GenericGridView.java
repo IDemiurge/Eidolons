@@ -10,7 +10,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.module.cinematic.Cinematics;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.GridMaster;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.bf.overlays.bar.HpBar;
@@ -166,17 +166,17 @@ public class GenericGridView extends UnitView {
         if (arrow != null) {
             val = val % 360;
             if (animated)
-                ActionMaster.addRotateByAction(arrow, arrowRotation + ARROW_ROTATION_OFFSET,
+                ActionMasterGdx.addRotateByAction(arrow, arrowRotation + ARROW_ROTATION_OFFSET,
                         val + ARROW_ROTATION_OFFSET);
             else
                 arrow.setRotation(val + ARROW_ROTATION_OFFSET);
         }
         if (spritesContainersUnder != null) {
-            ActionMaster.addRotateByAction(spritesContainersUnder, arrowRotation + ARROW_ROTATION_OFFSET,
+            ActionMasterGdx.addRotateByAction(spritesContainersUnder, arrowRotation + ARROW_ROTATION_OFFSET,
                     val + ARROW_ROTATION_OFFSET);
         }
         if (spritesContainers != null) {
-            ActionMaster.addRotateByAction(spritesContainers, arrowRotation + ARROW_ROTATION_OFFSET,
+            ActionMasterGdx.addRotateByAction(spritesContainers, arrowRotation + ARROW_ROTATION_OFFSET,
                     val + ARROW_ROTATION_OFFSET);
         }
         arrowRotation = val;

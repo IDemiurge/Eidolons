@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.SuperActor;
 import eidolons.content.consts.GraphicData;
 import libgdx.bf.generic.FadeImageContainer;
@@ -66,7 +66,7 @@ public class VC_Item extends SuperActor {
                 if (option.checkDisabled()) {
                     return;
                 }
-                ActionMaster.addFadeInAction(title, 1.5f);
+                ActionMasterGdx.addFadeInAction(title, 1.5f);
                 blackout.fadeTo(0.1f, 1.1f);
                 GuiEventManager.triggerWithParams
                         (GuiEventType.GRID_SCREEN, image, new GraphicData("dur:1.5f;alpha:0.5f;"));

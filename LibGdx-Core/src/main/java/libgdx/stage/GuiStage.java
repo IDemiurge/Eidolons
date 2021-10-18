@@ -20,7 +20,7 @@ import eidolons.game.netherflame.lord.EidolonLord;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.text.tips.TipMessageSource;
 import libgdx.GdxMaster;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.Fluctuating;
 import libgdx.bf.generic.SuperContainer;
 import libgdx.bf.menu.GameMenu;
@@ -459,7 +459,7 @@ public abstract class GuiStage extends GenericGuiStage implements StageWithClosa
         });
         GuiEventManager.bind(GuiEventType.HIDE_CUSTOM_PANEL, p -> {
             customPanel.fadeOut();
-            ActionMaster.addRemoveAfter(customPanel);
+            ActionMasterGdx.addRemoveAfter(customPanel);
             customPanel = null;
         });
         GuiEventManager.bind(GuiEventType.TOGGLE_LORD_PANEL, p -> {

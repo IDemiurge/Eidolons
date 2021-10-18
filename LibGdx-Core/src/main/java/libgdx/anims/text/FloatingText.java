@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import eidolons.content.consts.VisualEnums;
 import libgdx.StyleHolder;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.actions.WaitAction;
 import libgdx.bf.GridMaster;
 import libgdx.gui.LabelX;
@@ -313,7 +313,7 @@ public class FloatingText extends GroupX {
 
     public void added() {
         if (fadeInDuration != 0) {
-            ActionMaster.addFadeInAction(this, fadeInDuration);
+            ActionMasterGdx.addFadeInAction(this, fadeInDuration);
         }
     }
 

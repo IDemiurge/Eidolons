@@ -27,7 +27,7 @@ import eidolons.puzzle.gridobj.GridObject;
 import eidolons.puzzle.gridobj.LinkedGridObject;
 import libgdx.bf.grid.moving.flight.FlightHandler;
 import eidolons.game.module.dungeoncrawl.struct.Entrance;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.actions.FadeOutAction;
 import libgdx.bf.GridMaster;
 import libgdx.bf.decor.CellDecor;
@@ -271,7 +271,7 @@ it sort of broke at some point - need to investigate!
                     //compare pos of modules, choose axis and direction, increase delay
                     //add fade in waves
                     if (cells[x][y] != null)
-                        ActionMaster.addFadeOutAction(cells[x][y], 1.5f, true);
+                        ActionMasterGdx.addFadeOutAction(cells[x][y], 1.5f, true);
                 }
             }
         }
@@ -279,7 +279,7 @@ it sort of broke at some point - need to investigate!
     }
 
     protected void resetCellForModule(GridCellContainer container) {
-        ActionMaster.addFadeInAction(container, 1.5f);
+        ActionMasterGdx.addFadeInAction(container, 1.5f);
         addActor(container);
     }
 
@@ -566,15 +566,15 @@ it sort of broke at some point - need to investigate!
             if (visible) {
                 view.getColor().a = 0;
                 view.setVisible(true);
-                ActionMaster.addFadeInAction(view, getFadeDuration(view));
+                ActionMasterGdx.addFadeInAction(view, getFadeDuration(view));
             } else {
                 //                ActionMaster.checkHasAction(view, AlphaAction.class).if
                 if (view.getActionsOfClass(FadeOutAction.class).size > 0) {
                     return;
                 }
                 view.clearActions();
-                ActionMaster.addFadeOutAction(view, getFadeDuration(view));
-                ActionMaster.addSetVisibleAfter(view, false);
+                ActionMasterGdx.addFadeOutAction(view, getFadeDuration(view));
+                ActionMasterGdx.addSetVisibleAfter(view, false);
 
                 if (overlayManager != null)
                     overlayManager.clearTooltip(view.getUserObject());
@@ -1140,7 +1140,7 @@ it sort of broke at some point - need to investigate!
 
                     overlay.setDirection(overlay.getUserObject().getDirection());
 
-                    MoveToAction a = ActionMaster.addMoveByAction(overlay, v.x, v.y, 0.5f);
+                    MoveToAction a = ActionMasterGdx.addMoveByAction(overlay, v.x, v.y, 0.5f);
                     a.setInterpolation(Interpolation.circleOut);
                 }
             }

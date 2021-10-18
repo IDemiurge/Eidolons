@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.generic.ImageContainer;
 import libgdx.bf.grid.cell.QueueView;
 import libgdx.bf.grid.cell.UnitGridView;
@@ -219,7 +219,7 @@ public class AtbPanel extends GroupX {
             moveApplied = true;
             sub.getActions().clear();
             AfterAction a = new AfterAction();
-            a.setAction(ActionMaster.getMoveToAction(x, sub.getY(), getViewMoveDuration()));
+            a.setAction(ActionMasterGdx.getMoveToAction(x, sub.getY(), getViewMoveDuration()));
             sub.addAction(a);
             a.setTarget(sub);
             //            sub.setX(relToPixPos(n));
@@ -320,9 +320,9 @@ public class AtbPanel extends GroupX {
 
         float x = !visible ? getInactiveX() : getActiveX();
         float y = background.getY();
-        ActionMaster.addMoveToAction(background, x, y, 2f);
+        ActionMasterGdx.addMoveToAction(background, x, y, 2f);
         container.setVisible(true);
-        ActionMaster.addAlphaAction(container, 2f, !visible);
+        ActionMasterGdx.addAlphaAction(container, 2f, !visible);
 
         checkPositionsRequired = true;
         getGears().activeWork(0.5f, 1);
@@ -342,12 +342,12 @@ public class AtbPanel extends GroupX {
     protected void rollComponent(Actor container, boolean visible) {
         float x = container.getX();
         float y = !visible ? container.getHeight() - combatQueueOffsetY : queueOffsetY;
-        ActionMaster.addMoveToAction(container, x, y, 1);
+        ActionMasterGdx.addMoveToAction(container, x, y, 1);
         getGears().activeWork(0.5f, 1);
         if (visible)
             container.setVisible(true);
         else
-            ActionMaster.addHideAfter(container);
+            ActionMasterGdx.addHideAfter(container);
     }
 
 

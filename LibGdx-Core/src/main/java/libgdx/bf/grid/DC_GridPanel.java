@@ -23,7 +23,7 @@ import eidolons.puzzle.voidy.DefVoidHandler;
 import eidolons.puzzle.voidy.VoidHandler;
 import eidolons.system.text.HelpMaster;
 import libgdx.GdxMaster;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.main.AnimMaster;
 import libgdx.anims.text.FloatingTextMaster;
 import libgdx.bf.Borderable;
@@ -452,7 +452,7 @@ public class DC_GridPanel extends GridPanel {
         float y = uv.getY() + gridCellContainer.getY();
         gridCellContainer.removeActor(uv);
         uv.clearActions();
-        ActionMaster.addFadeOutAction(uv, 0.5f, false);
+        ActionMasterGdx.addFadeOutAction(uv, 0.5f, false);
         addActor(uv);
         uv.setPosition(x, y);
         if (heroObj.isPlayerCharacter())

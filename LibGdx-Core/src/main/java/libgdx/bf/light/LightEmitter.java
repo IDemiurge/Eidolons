@@ -10,7 +10,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.cinematic.Cinematics;
 import libgdx.GdxMaster;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.actions.FloatActionLimited;
 import libgdx.anims.sprite.FadeSprite;
 import libgdx.bf.SuperActor;
@@ -56,7 +56,7 @@ public class LightEmitter extends SuperActor {
     private DIRECTION direction;
     private final FadeImageContainer center;
     private int freeRays = 2;
-    private final FloatActionLimited alphaAction = (FloatActionLimited) ActionMaster.getAction(FloatActionLimited.class);
+    private final FloatActionLimited alphaAction = (FloatActionLimited) ActionMasterGdx.getAction(FloatActionLimited.class);
     private FadeImageContainer overlay;
     private final LIGHT_RAY type;
     private float baseAlpha;
@@ -214,7 +214,7 @@ public class LightEmitter extends SuperActor {
     private void removeRay(FadeImageContainer ray, DIRECTION d) {
         freeRays++;
         ray.fadeOut();
-        ActionMaster.addRemoveAfter(ray);
+        ActionMasterGdx.addRemoveAfter(ray);
         rays.remove(d);
     }
 

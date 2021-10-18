@@ -21,7 +21,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
 import libgdx.TiledNinePatchGenerator;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.gui.panels.TabbedPanel;
 import libgdx.gui.panels.TablePanel;
 import libgdx.gui.panels.TablePanelX;
@@ -166,7 +166,7 @@ public class OutcomePanel extends TablePanelX implements EventListener {
         float y = GdxMaster.getHeight() -
          (GdxMaster.getHeight() - getHeight() / 2);
         float x = (GdxMaster.getWidth() - getWidth()) / 2;
-        ActionMaster.addMoveToAction(this, x, y, 2.5f);
+        ActionMasterGdx.addMoveToAction(this, x, y, 2.5f);
         //        addElement(buttonTable).pad(0, 20, 20, 20);
     }
 
@@ -245,9 +245,9 @@ public class OutcomePanel extends TablePanelX implements EventListener {
     }
 
     private void rollBack() {
-        ActionMaster.addMoveToAction(this, getX(),
+        ActionMasterGdx.addMoveToAction(this, getX(),
          GdxMaster.getHeight() - exitButton.getActorHeight(), 1.5f);
-        ActionMaster.addHideAfter(this);
+        ActionMasterGdx.addHideAfter(this);
     }
 
     private String getGameStats(OutcomeDatasource datasource) {

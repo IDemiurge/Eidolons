@@ -12,7 +12,7 @@ import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.system.libgdx.datasource.FullscreenAnimDataSource;
 import libgdx.GdxMaster;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.sprite.SpriteAnimation;
 import libgdx.anims.sprite.SpriteAnimationFactory;
 import libgdx.assets.Assets;
@@ -268,9 +268,9 @@ public class FullscreenAnims extends GroupX {
         Actor group = groupCache.get(data.getType()).get(data.getFrom());
         group.setVisible(true);
         group.getColor().a = 0;
-        ActionMaster.addAlphaAction(group, getFadeInDuration(), data.getIntensity());
-        ActionMaster.addAfter(group, ActionMaster.getAlphaAction(group, getFadeOutDuration(), 0, false));
-        ActionMaster.addRemoveAfter(group);
+        ActionMasterGdx.addAlphaAction(group, getFadeInDuration(), data.getIntensity());
+        ActionMasterGdx.addAfter(group, ActionMasterGdx.getAlphaAction(group, getFadeOutDuration(), 0, false));
+        ActionMasterGdx.addRemoveAfter(group);
         addActor(group);
     }
 

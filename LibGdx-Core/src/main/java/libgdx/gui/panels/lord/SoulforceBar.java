@@ -5,7 +5,7 @@ import eidolons.content.consts.GraphicData;
 import eidolons.game.netherflame.lord.EidolonLord;
 import libgdx.GdxMaster;
 import libgdx.anims.SimpleAnim;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.actions.FloatActionLimited;
 import libgdx.anims.sprite.SpriteX;
 import libgdx.bf.Fluctuating;
@@ -22,7 +22,7 @@ import main.system.math.MathMaster;
 
 public class SoulforceBar extends SuperActor {
 
-    FloatActionLimited floatAction = (FloatActionLimited) ActionMaster.getAction(FloatActionLimited.class);
+    FloatActionLimited floatAction = (FloatActionLimited) ActionMasterGdx.getAction(FloatActionLimited.class);
     boolean labelDisplayed = true;
     float displayedPerc = 1f;
     private Float perc = 1f;

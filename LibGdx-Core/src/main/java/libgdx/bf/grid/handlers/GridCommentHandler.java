@@ -16,7 +16,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.module.cinematic.Cinematics;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.actions.WaitAction;
 import libgdx.anims.sprite.SpriteX;
 import libgdx.anims.text.FloatingText;
@@ -354,9 +354,9 @@ public class GridCommentHandler extends GridHandler{
         floatingText.setFadeInDuration(textTop ? 5 : 4);
 
         floatingText.fadeIn();
-        ActionMaster.addFadeInAction(commentBgSprite, 2);
-        ActionMaster.addFadeInAction(commentTextBgSprite, 2);
-        ActionMaster.addFadeInAction(portrait, 3);
+        ActionMasterGdx.addFadeInAction(commentBgSprite, 2);
+        ActionMasterGdx.addFadeInAction(commentTextBgSprite, 2);
+        ActionMasterGdx.addFadeInAction(portrait, 3);
 //            commentSprite.setScale(0.5f);
         //flip?
         Vector2 v = GridMaster.getCenteredPos(c);
@@ -428,14 +428,14 @@ public class GridCommentHandler extends GridHandler{
             grid.getActiveCommentSprites().remove(commentGroup);
 //       this will be a mess!     GdxMaster.inputPass();
 
-            ActionMaster.addAction(finalCommentBgSprite, new WaitAction(delta -> Eidolons.getGame().isPaused()));
-            ActionMaster.addAction(portrait, new WaitAction(delta -> Eidolons.getGame().isPaused()));
-            ActionMaster.addAction(finalCommentTextBgSprite, new WaitAction(delta -> Eidolons.getGame().isPaused()));
+            ActionMasterGdx.addAction(finalCommentBgSprite, new WaitAction(delta -> Eidolons.getGame().isPaused()));
+            ActionMasterGdx.addAction(portrait, new WaitAction(delta -> Eidolons.getGame().isPaused()));
+            ActionMasterGdx.addAction(finalCommentTextBgSprite, new WaitAction(delta -> Eidolons.getGame().isPaused()));
 
-            ActionMaster.addFadeOutAction(finalCommentBgSprite, seq ? 6 : 4);
-            ActionMaster.addRemoveAfter(finalCommentBgSprite);
-            ActionMaster.addFadeOutAction(portrait, seq ? 4 : 3);
-            ActionMaster.addFadeOutAction(finalCommentTextBgSprite, seq ? 5 : 4);
+            ActionMasterGdx.addFadeOutAction(finalCommentBgSprite, seq ? 6 : 4);
+            ActionMasterGdx.addRemoveAfter(finalCommentBgSprite);
+            ActionMasterGdx.addFadeOutAction(portrait, seq ? 4 : 3);
+            ActionMasterGdx.addFadeOutAction(finalCommentTextBgSprite, seq ? 5 : 4);
 
             WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.COMMENT_DONE, true);
         };

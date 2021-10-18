@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldListener;
 import com.kotcrab.vis.ui.VisUI;
 import libgdx.GdxMaster;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.gui.LabelX;
 import libgdx.gui.NinePatchFactory;
 import libgdx.gui.generic.btn.ButtonStyled;
@@ -70,8 +70,8 @@ public class TextInputPanel extends TablePanelX implements Blocking, TextFieldLi
     @Override
     public void fadeOut() {
         clearActions();
-        ActionMaster.addFadeOutAction(this, 0.25f);
-        ActionMaster.addRemoveAfter(this);
+        ActionMasterGdx.addFadeOutAction(this, 0.25f);
+        ActionMasterGdx.addRemoveAfter(this);
     }
 
     public void keyTyped(char c) {

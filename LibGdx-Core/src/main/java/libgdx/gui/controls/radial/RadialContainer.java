@@ -12,7 +12,7 @@ import eidolons.entity.obj.DC_Obj;
 import libgdx.StyleHolder;
 import libgdx.bf.mouse.BattleClickListener;
 import libgdx.gui.UiMaster;
-import libgdx.gui.panels.dc.actionpanel.ActionContainer;
+import libgdx.gui.panels.dc.actionpanel.spaces.ActionContainer;
 import libgdx.gui.tooltips.Tooltip;
 import libgdx.shaders.ShaderDrawer;
 import libgdx.texture.TextureCache;

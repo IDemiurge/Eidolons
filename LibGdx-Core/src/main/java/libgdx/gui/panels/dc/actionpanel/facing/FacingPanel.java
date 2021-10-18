@@ -8,7 +8,7 @@ import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import libgdx.GdxMaster;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.gui.datasource.FullUnitDataSource;
 import libgdx.gui.generic.GearCluster;
@@ -136,7 +136,7 @@ public class FacingPanel extends TablePanel {
             animated = false;
         }
         if (animated) {
-            ActionMaster.addRotateByAction(background,
+            ActionMasterGdx.addRotateByAction(background,
                     facing.getDirection().getDegrees(),
                     dataSource.getFacing().getDirection().getDegrees());
         } else {

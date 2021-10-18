@@ -10,7 +10,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.cinematic.Cinematics;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.main.AnimMaster;
 import libgdx.bf.GridMaster;
 import libgdx.bf.mouse.InputController;
@@ -159,7 +159,7 @@ public class CameraMan {
 
         GuiEventManager.bind(CAMERA_ZOOM, param -> {
             MotionData data = (MotionData) param.get();
-            zoomAction = (FloatAction) ActionMaster.getAction(FloatAction.class);
+            zoomAction = (FloatAction) ActionMasterGdx.getAction(FloatAction.class);
             zoomAction.setStart(getCam().zoom);
             zoomAction.setEnd(data.zoom);
             if (data.duration <= 0) {

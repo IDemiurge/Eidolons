@@ -9,7 +9,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.puzzle.gridobj.GridObject;
 import eidolons.content.consts.libgdx.GdxColorMaster;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.actions.RotateByActionLimited;
 import libgdx.anims.sprite.SpriteX;
 import libgdx.bf.SuperActor;
@@ -201,17 +201,17 @@ public class GridAnimHandler extends GridHandler {
         if (data.getIntValue(GraphicData.GRAPHIC_VALUE.x) != 0) {
             float x = data.getIntValue(GraphicData.GRAPHIC_VALUE.x) * 128;
             float y = grid.getGdxY_ForModule(data.getIntValue(GraphicData.GRAPHIC_VALUE.y)) * 128;
-            MoveToAction move = ActionMaster.addMoveToAction(view, x, y, dur);
+            MoveToAction move = ActionMasterGdx.addMoveToAction(view, x, y, dur);
             move.setInterpolation(Interpolation.pow2In);
             //destination?
             grid.detachUnitView(view.getUserObject());
         }
 
-        ActionMaster.addScaleAction(portrait, 0, dur * 1.25f);
+        ActionMasterGdx.addScaleAction(portrait, 0, dur * 1.25f);
         // ActionMaster.addFadeOutAction(portrait, dur);
-        RotateByActionLimited rotate = ActionMaster.addRotateByAction(portrait, 60, dur);
+        RotateByActionLimited rotate = ActionMasterGdx.addRotateByAction(portrait, 60, dur);
         rotate.setInterpolation(Interpolation.swing);
-        ActionMaster.addAfter(portrait, () -> {
+        ActionMasterGdx.addAfter(portrait, () -> {
             portrait.setScale(1f);
             portrait.setRotation(0);
             view.setPortraitMode(false);
@@ -232,7 +232,7 @@ public class GridAnimHandler extends GridHandler {
         float a = data.getFloatValue(GraphicData.GRAPHIC_VALUE.alpha);
         action.setAlpha(a);
         initTemporal(data, action);
-        SequenceAction sequence = ActionMaster.getBackSequence(action);
+        SequenceAction sequence = ActionMasterGdx.getBackSequence(action);
         addAction(animated, sequence, data);
         return false;
     }
@@ -243,7 +243,7 @@ public class GridAnimHandler extends GridHandler {
         action.setEndColor(color);
         action.setColor(animated.getColor());
         initTemporal(data, action);
-        SequenceAction sequence = ActionMaster.getBackSequence(action);
+        SequenceAction sequence = ActionMasterGdx.getBackSequence(action);
         addAction(animated, sequence, data);
         return false;
     }
@@ -312,14 +312,14 @@ public class GridAnimHandler extends GridHandler {
         if (data.getFloatValue(GraphicData.GRAPHIC_VALUE.dur) > 0) {
             dur = data.getFloatValue(GraphicData.GRAPHIC_VALUE.dur);
         }
-        SequenceAction sequence = ActionMaster.getDisplaceSequence(animated.getX(), animated.getY(), dx, dy, dur, false);
+        SequenceAction sequence = ActionMasterGdx.getDisplaceSequence(animated.getX(), animated.getY(), dx, dy, dur, false);
         addAction(animated, sequence, data);
 
         return true;
     }
 
     protected void addAction(GroupX animated, Action action, GraphicData data) {
-        ActionMaster.addAction(animated, action);
+        ActionMasterGdx.addAction(animated, action);
         if (action instanceof SequenceAction) {
             for (Action a : ((SequenceAction) action).getActions()) {
                 if (a instanceof TemporalAction)
@@ -335,7 +335,7 @@ public class GridAnimHandler extends GridHandler {
         if (StringMaster.isEmpty(data.getValue(GraphicData.GRAPHIC_VALUE.interpolation))) {
             return;
         }
-        Interpolation interpolation = ActionMaster.getInterpolation(data.getValue(GraphicData.GRAPHIC_VALUE.interpolation));
+        Interpolation interpolation = ActionMasterGdx.getInterpolation(data.getValue(GraphicData.GRAPHIC_VALUE.interpolation));
         action.setInterpolation(interpolation);
     }
 

@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.*;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.DC_Obj;
 import libgdx.GdxMaster;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.sprite.SpriteAnimation;
 import libgdx.anims.sprite.SpriteAnimationFactory;
 import libgdx.gui.generic.ValueContainer;
@@ -133,10 +133,10 @@ public class RadialMenu extends Group implements Closable {
             return;
         if (isAnimated()) {
             currentNode.getChildNodes().forEach(child -> {
-                ActionMaster.addMoveToAction(child, currentNode.getX(), currentNode.getY(), getAnimationDuration());
+                ActionMasterGdx.addMoveToAction(child, currentNode.getX(), currentNode.getY(), getAnimationDuration());
             });
-            ActionMaster.addFadeOutAction(this, getAnimationDuration());
-            ActionMaster.addHideAfter(this);
+            ActionMasterGdx.addFadeOutAction(this, getAnimationDuration());
+            ActionMasterGdx.addHideAfter(this);
         } else
             setVisible(false);
         SoundController.playCustomEventSound(SOUND_EVENT.RADIAL_CLOSED);
@@ -236,15 +236,15 @@ public class RadialMenu extends Group implements Closable {
         adjustPosition();
         //  TODO fade out the old nodes       ActorMaster.addChained
         //         (this, ActorMaster.addFadeOutAction(this, getAnimationDuration()/2),
-        ActionMaster.addFadeInAction(this, getAnimationDuration());
-        ActionMaster.addAfter(this, new Action() {
+        ActionMasterGdx.addFadeInAction(this, getAnimationDuration());
+        ActionMasterGdx.addAfter(this, new Action() {
             @Override
             public boolean act(float delta) {
                 ready = true;
                 return true;
             }
         });
-        ActionMaster.addRotateByAction(closeButton, -90);
+        ActionMasterGdx.addRotateByAction(closeButton, -90);
 
         updateBackground(0);
     }
@@ -257,7 +257,7 @@ public class RadialMenu extends Group implements Closable {
                 w / 2, GdxMaster.getWidth() - w);
         float y = MathMaster.minMax(getY(),
                 h / 2, GdxMaster.getHeight() - h);
-        ActionMaster.addMoveToAction(this, x, y, 1);
+        ActionMasterGdx.addMoveToAction(this, x, y, 1);
 
     }
 
@@ -333,7 +333,7 @@ public class RadialMenu extends Group implements Closable {
 
             if (isAnimated()) {
                 valueContainer.setPosition(currentNode.getX(), currentNode.getY());
-                ActionMaster.addMoveToAction(valueContainer, v.x, v.y, 0.5f);
+                ActionMasterGdx.addMoveToAction(valueContainer, v.x, v.y, 0.5f);
             } else
                 valueContainer.setPosition(v.x, v.y);
         }
