@@ -1,15 +1,19 @@
 package music;
 
 import main.system.graphics.GuiManager;
+import music.funcs.MC_Funcs;
+import music.tray.MC_Tray;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 
+import java.awt.*;
 import java.util.logging.Logger;
 
 public class MuseCore implements NativeKeyListener {
     private static final int CTRL_MASK = NativeKeyEvent.CTRL_MASK;
+    private static final int SHIFT_MASK = NativeKeyEvent.SHIFT_MASK;
     private static final int ALT = 136;
     private int draftStd = 8;
 
@@ -18,7 +22,7 @@ public class MuseCore implements NativeKeyListener {
     }
 
     public void init() {
-            GuiManager.init();
+        GuiManager.init();
         try {
             GlobalScreen.registerNativeHook();
         } catch (NativeHookException ex) {
@@ -35,6 +39,12 @@ public class MuseCore implements NativeKeyListener {
 
         // Don't forget to disable the parent handlers.
         logger.setUseParentHandlers(false);
+
+        try {
+            new MC_Tray().displayTray();
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -43,31 +53,37 @@ public class MuseCore implements NativeKeyListener {
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
-        boolean alt=false;
-        alt = ((CTRL_MASK & nativeKeyEvent.getModifiers()) != 0);
-        if (alt) {
+        boolean alt = ((SHIFT_MASK & nativeKeyEvent.getModifiers()) != 0);
+        boolean ctrl = ((CTRL_MASK & nativeKeyEvent.getModifiers()) != 0);
+        boolean caps = ((NativeKeyEvent.CAPS_LOCK_MASK & nativeKeyEvent.getModifiers()) != 0);
+        if (ctrl) {
             PlaylistHandler.draft = draftStd;
         } else {
             PlaylistHandler.draft = 0;
         }
         if ((ALT & nativeKeyEvent.getModifiers()) != 0
-        || alt ) {
+                || alt) {
             //TODO make into tray func
             //     PlaylistFinder.findAndPlay();
             if (nativeKeyEvent.getKeyCode() > 58) {
-                boolean F11_12=(nativeKeyEvent.getKeyCode() == 87 || nativeKeyEvent.getKeyCode() == 88) ;
+                boolean F11_12 = (nativeKeyEvent.getKeyCode() == 87 || nativeKeyEvent.getKeyCode() == 88);
                 if (
-                        F11_12|| //F11 F12
-                        nativeKeyEvent.getKeyCode() <= 58 + PlaylistHandler.PLAYLIST_TYPE.values().length) {
+                        F11_12 || //F11 F12
+                                nativeKeyEvent.getKeyCode() <= 58 + PlaylistHandler.PLAYLIST_TYPE.values().length) {
                     try {
                         int index = nativeKeyEvent.getKeyCode() - 59;
                         if (F11_12) {
-                            index = nativeKeyEvent.getKeyCode()-77;
+                            index = nativeKeyEvent.getKeyCode() - 77;
                         }
-                        if (index==3) {
-                            return ; //ALT F4!
+                        if (index == 3) {
+                            return; //ALT F4!
                         }
-                        PlaylistHandler.playRandom(alt, PlaylistHandler.PLAYLIST_TYPE.values()[index]);
+                        PlaylistHandler.PLAYLIST_TYPE type = PlaylistHandler.PLAYLIST_TYPE.values()[index];
+
+                        if (caps) {
+                            PlaylistHandler.play("", MC_Funcs.showAll(alt, false, type));
+                        } else
+                            PlaylistHandler.playRandom(alt, type);
                     } catch (Exception e) {
                         main.system.ExceptionMaster.printStackTrace(e);
                     }

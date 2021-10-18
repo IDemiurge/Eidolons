@@ -21,11 +21,12 @@ public class PlaylistHandler {
     private static final Map<PLAYLIST_TYPE, List<File>> cacheAlt = new HashMap<>();
     public static int draft=0;
 
+
     public enum PLAYLIST_TYPE {
         deep, //1
         ost, //2
         gym, //3
-        auto, //4
+        finest, //4
         fury, //5
         goodly, //6
         pagan, //7
@@ -33,19 +34,25 @@ public class PlaylistHandler {
         warmup, //9
         rpg, //10
         metal, //11
-        finest //12
+        future //12
 
         ,
+        auto,
         coding,
         design,
         writing,
     }
 
     public static int draft(List<File> fileList, int n) {
-        Collections.shuffle(fileList);
         if (n>fileList.size())
             n = fileList.size();
-        List<String> collect = fileList.stream().limit(n).
+
+        int from=0;
+        int to=n;
+        //TODO
+        List<File> list = fileList.subList(from, to);
+
+        List<String> collect = list.stream().
                 map(file->  StringMaster.format( StringMaster.cropFormat(file.getName()))).
                 collect(Collectors.toList());
         Object[] options = collect.toArray();
@@ -56,15 +63,7 @@ public class PlaylistHandler {
 
     public static void playRandom(boolean alt, PLAYLIST_TYPE type) {
         for (int i = 0; i < 12; i++) {
-            List<File> fileList = getCache(alt).get(type);
-            if (!ListMaster.isNotEmpty(fileList)) {
-                String path = ROOT_PATH_PICK + type;
-                if (alt) {
-                    path += "/alt";
-                }
-                fileList = FileManager.getFilesFromDirectory(path, false);
-                getCache(alt).put(type, new ArrayList<>(fileList));
-            }
+            List<File> fileList = getPlaylistFiles(alt, type);
             if (playRandom(fileList)) {
                 return;
             }
@@ -75,6 +74,21 @@ public class PlaylistHandler {
         return a ? cacheAlt : cache;
     }
 
+    public static List<File> getPlaylistFiles(boolean alt, PLAYLIST_TYPE type) {
+        return getPlaylistFiles(true, alt, type);
+    }
+    public static List<File> getPlaylistFiles(boolean useCache, boolean alt, PLAYLIST_TYPE type) {
+        List<File> fileList = getCache(alt).get(type);
+        if (!useCache || !ListMaster.isNotEmpty(fileList)) {
+            String path = ROOT_PATH_PICK + type;
+            if (alt) {
+                path += "/alt";
+            }
+            fileList = FileManager.getFilesFromDirectory(path, false);
+            getCache(alt).put(type, new ArrayList<>(fileList));
+        }
+        return fileList;
+    }
     private static boolean playRandom(List<File> fileList) {
         int randomIndex = getRandomIndex(fileList);
 
