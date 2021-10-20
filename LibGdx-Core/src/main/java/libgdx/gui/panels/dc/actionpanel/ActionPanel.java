@@ -52,9 +52,6 @@ public class ActionPanel extends GroupX {
     QuickWeaponPanel offhand;
     FacingPanel facingPanel;
 
-    SymbolButton spellbookBtn = new SymbolButton(ButtonStyled.STD_BUTTON.SPELLBOOK, this::showSpellbook);
-    SymbolButton invBtn = new SymbolButton(ButtonStyled.STD_BUTTON.INV, this::showInventory);
-
     protected BuffPanelSimple buffPanelBody;
     protected BuffPanelSimple buffPanelSoul;
 
@@ -107,9 +104,6 @@ public class ActionPanel extends GroupX {
         addActor(buffPanelBody);
         addActor(buffPanelSoul);
 
-        addActor(spellbookBtn);
-        addActor(invBtn);
-
         setY(-IMAGE_SIZE);
         bindEvents();
         initListeners();
@@ -148,11 +142,6 @@ public class ActionPanel extends GroupX {
                 , bodyParamsBar.getY());
         buffPanelSoul.setPosition(soulParamsBar.getX() + 65, IMAGE_SIZE + 40);
 
-        invBtn.setPosition(bodyParamsBar.getX() + bodyParamsBar.getWidth() / 2 + 79,
-                getHeight() - 90);
-        spellbookBtn.setPosition(soulParamsBar.getX() + soulParamsBar.getWidth() / 2 + 89,
-                invBtn.getY());
-
         atkPts.setPosition(spellSpacePanel.getX()-12, 50);
         movePts.setPosition(bodyParamsBar.getX() + 337, 54);
     }
@@ -182,21 +171,6 @@ public class ActionPanel extends GroupX {
     @Override
     public void setBounds(float x, float y, float width, float height) {
         super.setBounds(x, y, width, height);
-    }
-
-    private void showSpellbook() {
-        if (DC_Game.game != null)
-            if (DC_Game.game.isStarted()) {
-                HqMaster.openHqPanel();
-                HqMaster.tab("Spells");
-            }
-    }
-
-    private void showInventory() {
-
-        if (DC_Game.game != null)
-            if (DC_Game.game.isStarted())
-                Eidolons.activateMainHeroAction(ActionEnums.USE_INVENTORY);
     }
 
     @Override

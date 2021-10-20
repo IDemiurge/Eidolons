@@ -2,12 +2,17 @@ package eidolons.game.battlecraft.rules.counter.active;
 
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
+import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
 
 public class WrathRule extends ActiveCRule{
+    public WrathRule(DC_Game game) {
+        super(game);
+    }
+
     @Override
     protected PARAMETER getRetainmentParam() {
         return null;
@@ -34,6 +39,11 @@ public class WrathRule extends ActiveCRule{
 
     @Override
     public UnitEnums.STATUS getStatus() {
+        return null;
+    }
+
+    @Override
+    protected String getSaveAmount() {
         return null;
     }
 }

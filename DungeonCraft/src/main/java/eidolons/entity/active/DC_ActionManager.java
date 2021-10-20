@@ -60,33 +60,6 @@ public class DC_ActionManager implements ActionManager {
     }
 
     public static void init() {
-        stdObjTypes = new ArrayList<>();
-        for (STD_ACTIONS name : STD_ACTIONS.values()) {
-            if (!(DataManager.getType(StringMaster
-                    .format(name.name()), DC_TYPE.ACTIONS) instanceof ObjType)) {
-                continue;
-            }
-            ObjType type = DataManager.getType(StringMaster
-                    .format(name.name()), DC_TYPE.ACTIONS);
-
-            stdObjTypes.add(type);
-        }
-
-        modeObjTypes = new ArrayList<>();
-        for (STD_MODE_ACTIONS name : STD_MODE_ACTIONS.values()) {
-            ObjType type = DataManager.getType(StringMaster
-                    .format(name.name()), DC_TYPE.ACTIONS);
-
-            modeObjTypes.add(type);
-        }
-
-        orderObjTypes = new ArrayList<>();
-        for (STD_ORDER_ACTIONS type : STD_ORDER_ACTIONS.values()) {
-            ObjType actionType = DataManager.getType(StringMaster
-                    .format(type.toString()), DC_TYPE.ACTIONS);
-            orderObjTypes.add(actionType);
-        }
-
         hiddenActions = new ArrayList<>();
         for (HIDDEN_ACTIONS name : HIDDEN_ACTIONS.values()) {
             ObjType type = DataManager.getType(StringMaster
@@ -250,10 +223,7 @@ public class DC_ActionManager implements ActionManager {
         ObjType type = DataManager.getType(typeName, spell ? DC_TYPE.SPELLS : DC_TYPE.ACTIONS);
         if (type == null) {
             LogMaster.log(1, "no such active: " + typeName);
-            if (DUMMY_ACTION_TYPE == null) {
-                DUMMY_ACTION_TYPE = DataManager.getType(DUMMY_ACTION, DC_TYPE.ACTIONS);
-            }
-            type = new ObjType(typeName, DUMMY_ACTION_TYPE);
+            throw new RuntimeException("no such active: " + typeName);
         }
         Ref ref = Ref.getCopy(entity.getRef());
         if (spell) {
@@ -276,7 +246,6 @@ public class DC_ActionManager implements ActionManager {
     }
 
     public DC_ActiveObj getAction(String typeName, Entity entity, boolean onlyIfAlreadyPresent) {
-
         typeName = typeName.trim();
         if (actionsCache.get(entity) == null) {
             actionsCache.put(entity, new StringMap<>());
@@ -345,10 +314,11 @@ public class DC_ActionManager implements ActionManager {
             list.add(action);
         }
         if (checkAddThrowAction(weapon.getOwnerObj(), weapon)) {
-            DC_UnitAction throwAction = getOrCreateAction(weapon.isMainHand() ? THROW_MAIN : THROW_OFFHAND,
-                    obj);
-            throwAction.setName(getThrowName(weapon.getName()));
-            list.add(throwAction);
+            //TODO
+            // DC_UnitAction throwAction = getOrCreateAction(weapon.isMainHand() ? THROW_MAIN : THROW_OFFHAND,
+            //         obj);
+            // throwAction.setName(getThrowName(weapon.getName()));
+            // list.add(throwAction);
         }
         weapon.setAttackActions(new ArrayList<>(list));
         return list;
@@ -356,38 +326,6 @@ public class DC_ActionManager implements ActionManager {
 
     public static String getThrowName(String itemName) {
         return "Throw " + itemName;
-    }
-
-
-    protected ActiveObj getDisarmAction(final Unit hero, final Trap trap) {
-        DC_UnitAction action = new DC_UnitAction(DataManager.getType(DISARM, DC_TYPE.ACTIONS),
-                hero.getOwner(), game, hero.getRef().getCopy()) {
-            public boolean resolve() {
-                //                animate(); // pass std icon as param?
-                TrapMaster.tryDisarmTrap(trap);
-                // false if dead as result?
-                game.getManager().reset();
-                game.getManager().refresh(ownerObj.getOwner().isMe());
-                return true;
-            }
-        };
-        actionsCache.get(hero).put(DISARM, action);
-        return action;
-    }
-
-    protected ActiveObj getUnlockAction(final Unit hero, final Entity e) {
-        DC_UnitAction action = new DC_UnitAction(DataManager.getType(UNLOCK, DC_TYPE.ACTIONS),
-                hero.getOwner(), game, hero.getRef().getCopy()) {
-            public boolean resolve() {
-                //                animate(); // pass std icon as param?
-                //                LockMaster.tryUnlock(e, hero);
-                game.getManager().reset();
-                game.getManager().refresh(ownerObj.getOwner().isMe());
-                return true;
-            }
-        };
-        actionsCache.get(hero).put(UNLOCK, action);
-        return action;
     }
 
     protected boolean checkAddThrowAction(Unit unit, DC_WeaponObj weapon) {

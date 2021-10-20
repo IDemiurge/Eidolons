@@ -42,6 +42,8 @@ import main.system.math.PositionMaster;
 import java.util.Collection;
 import java.util.List;
 
+import static main.content.enums.entity.ActionEnums.DEFAULT_ACTION.*;
+
 public class AtomicAi extends AiHandler {
 
     private static final double MAX_DST_TURN = 1;
@@ -147,11 +149,11 @@ public class AtomicAi extends AiHandler {
         //     return null;
         // }
         if (ParamAnalyzer.isFatigued(getUnit())) {
-            return AiActionFactory.newAction(ActionEnums.STD_MODE_ACTIONS.Rest.name(),
+            return AiActionFactory.newAction(Rest.name(),
                     getUnit().getAI());
         }
         if (ParamAnalyzer.isHazed(getUnit())) {
-            return AiActionFactory.newAction(ActionEnums.STD_MODE_ACTIONS.Concentrate.name(),
+            return AiActionFactory.newAction(Concentrate.name(),
                     getUnit().getAI());
         }
 
@@ -167,16 +169,16 @@ public class AtomicAi extends AiHandler {
 
         return AiActionFactory.newAction(
                 RandomWizard.random() ? RandomWizard.random() ?
-                        ActionEnums.STD_SPEC_ACTIONS.Wait.toString() : RandomWizard.random() ?
-                        ActionEnums.STD_SPEC_ACTIONS.Wait.toString() :
-                        ActionEnums.STD_MODE_ACTIONS.Defend.toString() : RandomWizard.random() ?
-                        ActionEnums.STD_SPEC_ACTIONS.Wait.toString() :
-                        ActionEnums.STD_MODE_ACTIONS.On_Alert.toString(), ai);
+                        Wait.toString() : RandomWizard.random() ?
+                        Wait.toString() :
+                        Defend.toString() : RandomWizard.random() ?
+                        Wait.toString() :
+                        On_Alert.toString(), ai);
     }
 
     public Action getAtomicWait(Unit unit) {
         return AiActionFactory.newAction(unit.getAction(
-                ActionEnums.STD_SPEC_ACTIONS.Wait.toString()), Ref.getSelfTargetingRefCopy(unit));
+                Wait.toString()), Ref.getSelfTargetingRefCopy(unit));
     }
 
     private Action getReloadAction(UnitAI ai) {

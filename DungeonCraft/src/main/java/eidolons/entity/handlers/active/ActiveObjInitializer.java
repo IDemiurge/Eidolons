@@ -53,11 +53,6 @@ public class ActiveObjInitializer extends EntityInitializer<DC_ActiveObj> {
             return;
         }
         if (EffectMaster.getEffectsFromAbilities(getEntity().getAbilities()).size() == 0) {
-            if (getEntity() instanceof DC_UnitAction) {
-                if (((DC_UnitAction) getEntity()).isDummy()) {
-                    return;
-                }
-            }
             if (getEntity().isAttackAny()) {
                 main.system.auxiliary.log.LogMaster.important(">>> ATTACK CONSTRUCT FAILeD: " + getEntity());
             } else if (!getEntity().getName().equalsIgnoreCase("wait"))

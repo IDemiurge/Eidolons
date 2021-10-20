@@ -27,15 +27,11 @@ import java.util.List;
 
 public class DC_UnitAction extends DC_ActiveObj {
 
-    private boolean dummy;
     private ACTION_TYPE actionType;
     private ModeEffect modeEffect;
 
     public DC_UnitAction(ObjType type, Player owner, GenericGame game, Ref ref) {
         super(type, owner, game, ref);
-        if (type.getType() == ActionEnums.DUMMY_ACTION_TYPE) {
-            dummy = true;
-        }
     }
 
     public DC_UnitAction(ObjType type, Unit unit) {
@@ -45,15 +41,7 @@ public class DC_UnitAction extends DC_ActiveObj {
 
     @Override
     public boolean canBeActivated() {
-        if (dummy) {
-            main.system.auxiliary.log.LogMaster.log(1, "cannot activate, it's a dummy!!! - " + this);
-            return false;
-        }
         return true;
-    }
-
-    public boolean isDummy() {
-        return dummy;
     }
 
     @Override

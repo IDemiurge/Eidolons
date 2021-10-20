@@ -16,14 +16,11 @@ import main.entity.Entity;
 import main.entity.obj.ActiveObj;
 import main.game.core.game.GenericGame;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+
+import static main.content.enums.entity.ActionEnums.ADDITIONAL_MOVE_ACTIONS.*;
 
 public class ActionInitializer extends DC_ActionManager {
     public ActionInitializer(GenericGame game) {
@@ -38,7 +35,6 @@ public class ActionInitializer extends DC_ActionManager {
         Unit unit = (Unit) entity;
         DequeImpl<ActiveObj> actives;
         // #1: reset prop with ids if nothing is changed
-        actives = new DequeImpl<>();
         // #2: reset the list if prop has been modified (via Add/Remove effects
         // ++ items). They should set ActivesReady to false for that.
         // or upon init
@@ -76,19 +72,16 @@ public class ActionInitializer extends DC_ActionManager {
 
         actives.add(getOrCreateAction(ActionEnums.DUMMY_ACTION, unit));
         if (unit.isBfObj()) {
-            return;
+            return actives;
         }
 
-        actives.add(getOrCreateAction(ActionEnums.MOVE_LEFT, unit));
-        actives.add(getOrCreateAction(ActionEnums.MOVE_RIGHT, unit));
-        actives.add(getOrCreateAction(ActionEnums.MOVE_BACK, unit));
-
+        actives.add(getOrCreateAction(MOVE_LEFT.toString(), unit));
+        actives.add(getOrCreateAction(MOVE_RIGHT.toString(), unit));
+        actives.add(getOrCreateAction(MOVE_BACK.toString(), unit));
         if (!unit.isHuge() && !unit.checkPassive(UnitEnums.STANDARD_PASSIVES.CLUMSY)) {
             actives.add(getOrCreateAction(ActionEnums.CLUMSY_LEAP, unit));
 
         }
-        actives.add(getOrCreateAction(ActionEnums.STD_SPEC_ACTIONS.Wait.name(), unit));
-
 
         //        if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.PUSH))
         actives.add(getOrCreateAction(ActionEnums.STD_SPEC_ACTIONS.Push.name(), unit));
@@ -172,86 +165,10 @@ public class ActionInitializer extends DC_ActionManager {
         // }
     }
 
-    private void addOffhandActions(DequeImpl<DC_UnitAction> actives, Unit unit) {
-        if (actives != null) {
-            ArrayList<ActiveObj> list = new ArrayList<>(actives);
-            for (ActiveObj attack : list) {
-
-                ObjType offhand = ActionGenerator.generateOffhandAction(attack.getType());
-
-                if (offhand == null) {
-                    continue;
-                }
-                actives.add(getOrCreateAction(offhand.getName(), unit));
-            }
-        }
-
-    }
-
     private void addHiddenActions(Unit unit, Collection<ActiveObj> actives) {
-        actives.addAll(getStandardActionsForGroup(ActionEnums.ACTION_TYPE.HIDDEN, unit));
+        // actions.addAll(getObjTypes(hiddenActions, unit));
+        List<DC_ActiveObj> generatedSubactions = generateStandardSubactionsForUnit(unit);
+        actives.addAll(generatedSubactions);
     }
 
-    private Collection<ActiveObj> getStandardActions(Unit unit) {
-        Collection<ActiveObj> actives = new ArrayList<>();
-        // TODO also add to Actives container!
-
-        if (unit.isBoss()) {
-            //            actives.addAll(BossMaster.getActionMaster(unit).getStandardActions(unit));
-        } else
-            for (ActionEnums.ACTION_TYPE type : ActionEnums.ACTION_TYPE.values()) {
-                // I could actually centralize all action-adding to HERE! Dual, INV
-                // and all the future ones
-                if (type != ActionEnums.ACTION_TYPE.HIDDEN) {
-                    if (type != ActionEnums.ACTION_TYPE.STANDARD_ATTACK) {
-                        actives.addAll(getStandardActionsForGroup(type, unit));
-                    }
-                }
-            }
-
-        if (RuleKeeper.checkFeature(RuleEnums.FEATURE.ORDERS))
-            actives.addAll(getOrderActions(unit));
-        // checkDual(unit);
-        // checkInv(unit);
-
-        return actives;
-    }
-
-    private Collection<? extends ActiveObj> getOrderActions(Unit unit) {
-        return getObjTypes(orderObjTypes, unit);
-    }
-
-    private DequeImpl<DC_UnitAction> getStandardActionsForGroup(ActionEnums.ACTION_TYPE type,
-
-                                                                Unit unit) {
-        if (stdObjTypes == null) {
-            init();
-        }
-        DequeImpl<DC_UnitAction> actions = new DequeImpl<>();
-        DequeImpl<DC_UnitAction> actives = new DequeImpl<>();
-
-        switch (type) {
-            case STANDARD_ATTACK:
-                // TODO
-                actions.addAll(getAndInitAttacks(false, unit));
-                actions.addAll(getAndInitAttacks(true, unit));
-                break;
-            case HIDDEN:
-                // TODO extract into separate?
-                actions.addAll(getObjTypes(hiddenActions, unit));
-                List<DC_ActiveObj> generatedSubactions = generateStandardSubactionsForUnit(unit);
-                actives.addAllCast(generatedSubactions);
-                break;
-            case MODE:
-                actions.addAll(getObjTypes(modeObjTypes, unit));
-                break;
-            case STANDARD:
-                actions.addAll(getObjTypes(stdObjTypes, unit));
-                break;
-        }
-        unit.getActionMap().put(type, actions);
-        actives.addAll(actions);
-        return (actives);
-
-    }
 }
