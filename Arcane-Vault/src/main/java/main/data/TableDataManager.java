@@ -75,7 +75,7 @@ public class TableDataManager {
         if (SimulationHandler.isUnitType(entity.getOBJ_TYPE())
                 && ArcaneVault.isSimulationOn()) {
             try {
-                fillData(SimulationHandler.getUnit((ObjType) entity), names,
+                fillData(AV2.getSimulationHandler().getUnit((ObjType) entity), names,
                         data);
                 return data;
             } catch (Exception e) {

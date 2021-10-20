@@ -5,20 +5,22 @@ import main.content.OBJ_TYPE;
 import java.io.File;
 
 public class XML_File {
-    OBJ_TYPE type;
-    String name;
-    String group;
-    boolean macro;
-    String contents;
-    private File file;
+    protected   OBJ_TYPE type;
+    protected  String name;
+    protected  String group;
+    protected  String version;
+    protected  boolean macro;
+    protected  String contents;
+    protected File file;
 
     public XML_File(OBJ_TYPE type, String name, String group, boolean macro,
-                    String contents) {
+                    String contents, String version) {
         this.type = type;
         this.contents = contents;
         this.name = name;
         this.group = group;
         this.macro = macro;
+        this.version = version;
     }
 
     @Override

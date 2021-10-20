@@ -57,7 +57,6 @@ public class ArcaneVault {
 
     private static DC_Game game;
     private static ContentValsManager contentValsManager;
-    private static AvManager manager;
 
     public static void launchFromLE() {
         //TODO
@@ -94,10 +93,9 @@ public class ArcaneVault {
         log(3, "Welcome to Arcane Vault! \nBrace yourself to face the darkest mysteries of Edalar...");
 
         initialize();
-        AV_Utils.launched();
-
+        AV_Utils.backendLoaded();
         mainBuilder = new MainBuilder();
-        mainBuilder.setKeyListener(manager.getKeyHandler());
+        mainBuilder.setKeyListener(AV2.getManager().getKeyHandler());
         createWindow();
 
     }
@@ -114,9 +112,6 @@ public class ArcaneVault {
         CoreEngine.systemInit();
         CoreEngine.dataInit(AvFlags.macroMode);
 
-        manager = new AvManager();
-        workspaceManager = new WorkspaceManager(AvFlags.macroMode, getGame());
-
         if (XML_Reader.getTypeMaps().keySet().size() + 3 < DC_TYPE.values().length) {
             AvFlags.testMode = true;
         }
@@ -126,7 +121,7 @@ public class ArcaneVault {
         AV2.init();
 
         if (!AvFlags.testMode) {
-            SimulationHandler.init();
+            SimulationHandler.initSim();
         }
 
         if (DataManager.isTypesRead(DC_TYPE.BF_OBJ)) {
@@ -159,8 +154,8 @@ public class ArcaneVault {
         window.addWindowListener(new AV_WindowListener(window));
         setArcaneVaultIcon();
 
-        manager.setMainBuilder(mainBuilder);
-        manager.loaded();
+        AV2.getManager().setMainBuilder(mainBuilder);
+        AV2.getManager().loaded();
     }
 
     public static MainBuilder getMainBuilder() {
@@ -341,7 +336,4 @@ public class ArcaneVault {
 
     }
 
-    public static AvManager getManager() {
-        return manager;
-    }
 }

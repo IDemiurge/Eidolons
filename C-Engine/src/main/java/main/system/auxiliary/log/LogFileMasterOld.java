@@ -66,7 +66,7 @@ public class LogFileMasterOld {
         String fullContent = null;
         String folder = getLogFilePath();
         folder += FileManager.getUniqueFileVersion(getGameLogFileNameBase(), folder);
-        XML_Writer.write(fullContent, folder, "full src.main.log.txt");
+        XML_Writer.write(fullContent, folder, "full src.main.system.log.txt");
     }
 
     public static void startWritingThread() {
@@ -134,7 +134,7 @@ public class LogFileMasterOld {
     private static void write(List<String> entries, String string) {
         String fullContent = ContainerUtils.constructStringContainer(entries, Strings.NEW_LINE);
         String folder = getLogFilePath();
-        String fileName = string + " src.main.log.txt";
+        String fileName = string + " src.main.system.log.txt";
         folder += getGameSubfolder();
         XML_Writer.write(fullContent, folder, fileName);
     }

@@ -15,7 +15,7 @@ public class PassiveAbility extends AbilityImpl {
 
     // @Override
     // public boolean resolve() {
-    // main.system.auxiliary.LogMaster.src.main.log(0, "ABILITY_BEING_RESOLVED "
+    // main.system.auxiliary.LogMaster.src.main.system.log(0, "ABILITY_BEING_RESOLVED "
     // + getClass().getSimpleName());
     // Event event = new Event("ABILITY_BEING_RESOLVED", ref);
     // if (game.fireEvent(event)) {

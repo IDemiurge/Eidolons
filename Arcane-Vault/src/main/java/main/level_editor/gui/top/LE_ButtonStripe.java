@@ -18,6 +18,7 @@ public class LE_ButtonStripe extends HorizontalFlowGroup {
     SymbolButton viewModes;
     SymbolButton save;
     SymbolButton saveV;
+    SymbolButton AV;
 
     SymbolButton undo;
 
@@ -25,6 +26,7 @@ public class LE_ButtonStripe extends HorizontalFlowGroup {
         super(10);
         setHeight(80);
         setWidth(900);
+        // addActor(AV = new SymbolButton(ButtonStyled.STD_BUTTON.LE_AV, ()-> LE_AvIntegration.openAvWindow()));
         addActor(undo = new SymbolButton(ButtonStyled.STD_BUTTON.LE_UNDO, () ->
                 Core.onGdxThread(() -> {
                     try {

@@ -149,7 +149,7 @@ public abstract class Entity extends DataModel implements OBJ {
         //         getIntegerMap(false).clear(); // TODO [OPTIMIZED] no need to clear
         //         // type's map?
         //         if (modifierMaps != null) {
-        //             modifierMaps.clear(); // remember? For interesting spells or src.main.log
+        //             modifierMaps.clear(); // remember? For interesting spells or src.main.system.log
         //         }
         //         // info...
         //         if (!type.checkProperty(G_PROPS.DISPLAYED_NAME)) {
@@ -157,7 +157,7 @@ public abstract class Entity extends DataModel implements OBJ {
         //         }
         //
         //         if (this.owner != getOriginalOwner()) {
-        //             LogMaster.src.main.log(LogMaster.CORE_DEBUG, getName()
+        //             LogMaster.src.main.system.log(LogMaster.CORE_DEBUG, getName()
         //              + ": original owner restored!");
         //             this.owner = getOriginalOwner();
         //         }

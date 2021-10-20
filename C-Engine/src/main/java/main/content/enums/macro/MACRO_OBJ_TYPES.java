@@ -144,7 +144,7 @@ MACRO_OBJ_TYPES implements OBJ_TYPE {
         // MACRO_OBJ_TYPES.class, s, true);
         // }
         // if (type == null) {
-        // main.system.auxiliary.LogMaster.src.main.log(1, s
+        // main.system.auxiliary.LogMaster.src.main.system.log(1, s
         // + " is not a MACRO_OBJ_TYPE!");
         // }
         return type;

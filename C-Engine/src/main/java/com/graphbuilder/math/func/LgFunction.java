@@ -1,7 +1,7 @@
 package com.graphbuilder.math.func;
 
 /**
- * The src.main.log base 2 function.
+ * The src.main.system.log base 2 function.
  */
 public class LgFunction implements Function {
 
@@ -9,7 +9,7 @@ public class LgFunction implements Function {
     }
 
     /**
-     * Returns the src.main.log base 2 of the value at index location 0.
+     * Returns the src.main.system.log base 2 of the value at index location 0.
      */
     public double of(double[] d, int numParam) {
         return java.lang.Math.log(d[0]) / java.lang.Math.log(2);

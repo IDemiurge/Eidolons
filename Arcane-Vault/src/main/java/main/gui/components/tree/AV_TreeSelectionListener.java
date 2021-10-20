@@ -5,6 +5,7 @@ import main.content.DC_TYPE;
 import main.entity.type.ObjType;
 import main.gui.builders.EditViewPanel;
 import main.handlers.types.SimulationHandler;
+import main.v2_0.AV2;
 import main.launch.ArcaneVault;
 import main.swing.SwingMaster;
 import main.swing.generic.components.G_Panel;
@@ -75,7 +76,7 @@ public class AV_TreeSelectionListener implements TreeSelectionListener {
         //AV revamp - default preview?
         if (SimulationHandler.isUnitType(tab) && ArcaneVault.isSimulationOn()) {
             try {
-                SimulationHandler.initUnitObj(name);
+                AV2.getSimulationHandler().initUnitObj(name);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }

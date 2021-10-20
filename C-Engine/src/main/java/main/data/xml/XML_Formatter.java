@@ -195,7 +195,7 @@ public class XML_Formatter {
         cache.put(s, name);
         return name;
         // if (s.contains("'"))
-        // main.system.auxiliary.LogMaster.src.main.log(1, s);
+        // main.system.auxiliary.LogMaster.src.main.system.log(1, s);
         // return s.replace(",", COMMA_CODE).replace("'", "_").replace(":",
         // COLON_CODE).replace(";",
         // SEMICOLON_CODE).replace("#", "_").replace("!", "_").replace("(",

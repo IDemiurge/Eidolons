@@ -56,7 +56,7 @@ public class DataBackend {
     public   List<List<String>> getTabTreeData(PROPERTY filterValue, String type) {
         List<List<String>> lists = new ArrayList<>();
 
-        for (String criterion : XML_Reader.getSubGroups(type)) {
+        for (String criterion : getXmlReader().getSubGroups(type)) {
             if (criterion == null) {
                 continue;
             }
@@ -72,7 +72,7 @@ public class DataBackend {
     }
 
     public   ObjType getType(String typeName, boolean recursion) {
-        for (String group : XML_Reader.getTypeMaps().keySet()) {
+        for (String group : getXmlReader().getTypeMaps().keySet()) {
             ObjType type;
             OBJ_TYPE TYPE = ContentValsManager.getOBJ_TYPE(group);
             try {
@@ -197,7 +197,7 @@ public class DataBackend {
 
         Map<String, ObjType> map = getTypeMap(TYPE);
         if (map == null) {
-            //main.system.auxiliary.src.main.log.LogMaster.src.main.log(src.main.log,"NO TYPE MAP: "+obj_type );
+            //main.system.auxiliary.src.main.system.log.LogMaster.src.main.system.log(src.main.system.log,"NO TYPE MAP: "+obj_type );
             return null;
         }
         ObjType type = map.get(typeName);
@@ -260,7 +260,7 @@ public class DataBackend {
         }
 
         if (obj_type.equals(DC_TYPE.JEWELRY)) {
-            //main.system.auxiliary.src.main.log.LogMaster.src.main.log(src.main.log,"NO JEWELRY!  "  );
+            //main.system.auxiliary.src.main.system.log.LogMaster.src.main.system.log(src.main.system.log,"NO JEWELRY!  "  );
             return null;
         }
         int i = 0;
@@ -333,11 +333,11 @@ public class DataBackend {
     }
 
     public   Map<String, ObjType> getTypeMap(String type) {
-        Map<String, ObjType> map = XML_Reader.getTypeMaps().get(type);
+        Map<String, ObjType> map = getXmlReader().getTypeMaps().get(type);
         if (map == null) {
-            for (String sub : XML_Reader.getTypeMaps().keySet()) {
+            for (String sub : getXmlReader().getTypeMaps().keySet()) {
                 if (StringMaster.compare(sub, type)) {
-                    map = XML_Reader.getTypeMaps().get(sub);
+                    map = getXmlReader(). getTypeMaps().get(sub);
                     break;
                 }
             }
@@ -350,7 +350,7 @@ public class DataBackend {
                 return null;
             }
             map = new HashMap<>();
-            XML_Reader.getTypeMaps().put(type, map);
+            getXmlReader().getTypeMaps().put(type, map);
         }
         return map;
     }
@@ -364,9 +364,9 @@ public class DataBackend {
     }
 
     public   void displayData() {
-        for (Map<String, ObjType> m : XML_Reader.getTypeMaps().values()) {
+        for (Map<String, ObjType> m : getXmlReader().getTypeMaps().values()) {
             for (Entry<String, ObjType> t : m.entrySet()) {
-                //LogMaster.src.main.log(src.main.log, t.getKey() + " " + t.getValue().toString());
+                //LogMaster.src.main.system.log(src.main.system.log, t.getKey() + " " + t.getValue().toString());
             }
         }
     }
@@ -398,8 +398,8 @@ public class DataBackend {
     }
 
     public   void renameType(ObjType type, String newName) {
-        ObjType prev = XML_Reader.getTypeMaps().get(type.getProperty(G_PROPS.TYPE)).remove(type.getName());
-        XML_Reader.getTypeMaps().get(type.getProperty(G_PROPS.TYPE)).put(newName, type);
+        ObjType prev = getXmlReader().getTypeMaps().get(type.getProperty(G_PROPS.TYPE)).remove(type.getName());
+        getXmlReader().getTypeMaps().get(type.getProperty(G_PROPS.TYPE)).put(newName, type);
 
     }
 
@@ -542,7 +542,7 @@ public class DataBackend {
 
         List<String> list = new ArrayList<>();
 
-        Map<String, Map<String, ObjType>> map = XML_Reader.getTypeMaps();
+        Map<String, Map<String, ObjType>> map = getXmlReader().getTypeMaps();
         Collection<ObjType> set = map.get(TYPE.toString()).values();
         for (ObjType type : set) {
             if (StringMaster.compare(type.getProperty(TYPE.getSubGroupingKey()), subgroup, true)) {
@@ -562,11 +562,11 @@ public class DataBackend {
     // TODO SORT
     public   List<String> getFilteredTypeNameList(String filter, OBJ_TYPE OBJ_TYPE,
                                                        VALUE filterValue) {
-        Map<String, ObjType> map = XML_Reader.getTypeMaps().get(OBJ_TYPE.toString());
+        Map<String, ObjType> map = getXmlReader().getTypeMaps().get(OBJ_TYPE.toString());
         if (map == null) {
             char[] chars = OBJ_TYPE.toString().toCharArray();
             chars[0] = Character.toUpperCase(chars[0]);
-            map = XML_Reader.getTypeMaps().get(new String(chars));
+            map = getXmlReader().getTypeMaps().get(new String(chars));
         }
         List<String> list = new ArrayList<>();
         for (String objName : map.keySet()) {
@@ -578,7 +578,7 @@ public class DataBackend {
     }
 
     public   List<ObjType> getFilteredTypes(OBJ_TYPE OBJ_TYPE, String filter, VALUE filterValue) {
-        Map<String, ObjType> map = XML_Reader.getTypeMaps().get(OBJ_TYPE.toString());
+        Map<String, ObjType> map = getXmlReader().getTypeMaps().get(OBJ_TYPE.toString());
 
         List<ObjType> list = new ArrayList<>();
         boolean or = false;
@@ -619,7 +619,7 @@ public class DataBackend {
                 list.addAll(getTypesGroup(T, group));
             return list;
         }
-        Map<String, Map<String, ObjType>> map = XML_Reader.getTypeMaps();
+        Map<String, Map<String, ObjType>> map = getXmlReader().getTypeMaps();
         Collection<ObjType> set = map.get(TYPE.toString()).values();
         for (ObjType type : set) {
             if (StringMaster.compareByChar(type.getProperty(TYPE.getGroupingKey()), group, true)) {
@@ -644,7 +644,7 @@ public class DataBackend {
             return getTypeNames(TYPE);
         }
         List<String> list = new ArrayList<>();
-        Map<String, Map<String, ObjType>> map = XML_Reader.getTypeMaps();
+        Map<String, Map<String, ObjType>> map = getXmlReader().getTypeMaps();
         Collection<ObjType> set = new HashSet<>();
         if (TYPE instanceof C_OBJ_TYPE) {
             for (DC_TYPE T : ((C_OBJ_TYPE) TYPE).getTypes()) {
@@ -761,7 +761,7 @@ public class DataBackend {
     private   Map<OBJ_TYPE, Map<String, List<String>>> getTypesSubGroups() {
         if (typesSubGroups == null) {
             typesSubGroups = new HashMap<>();
-            for (String sub : XML_Reader.getTypeMaps().keySet()) {
+            for (String sub : getXmlReader().getTypeMaps().keySet()) {
                 typesSubGroups.put(ContentValsManager.getOBJ_TYPE(sub),
                         new HashMap<>());
             }
@@ -780,14 +780,14 @@ public class DataBackend {
         if (TYPE instanceof C_OBJ_TYPE) {
             List<String> group = new ArrayList<>();
             for (DC_TYPE type : ((C_OBJ_TYPE) TYPE).getTypes()) {
-                group.addAll(XML_Reader.getTabGroupMap().get(type.getName()));
+                group.addAll(getXmlReader().getTabGroupMap().get(type.getName()));
             }
             return group;
         }
-        if (!ListMaster.isNotEmpty(XML_Reader.getTabGroupMap().get(TYPE.getName()))) {
+        if (!ListMaster.isNotEmpty(getXmlReader().getTabGroupMap().get(TYPE.getName()))) {
             return new ArrayList<>();
         }
-        return new ArrayList<>(XML_Reader.getTabGroupMap().get(TYPE.getName()));
+        return new ArrayList<>(getXmlReader().getTabGroupMap().get(TYPE.getName()));
     }
 
     public   void addType(ObjType type) {
@@ -852,8 +852,8 @@ public class DataBackend {
         // if (subGroupsMaps.get(TYPE).get(group) != null)
         // return (subGroupsMaps.get(TYPE).get(group));
 
-        Set<String> fullList = (XML_Reader.getTreeSubGroupMap().get(group));
-        Set<String> allGroupsForType = XML_Reader.getTreeSubGroupMap().get(group); // TODO
+        Set<String> fullList = (getXmlReader().getTreeSubGroupMap().get(group));
+        Set<String> allGroupsForType = getXmlReader().getTreeSubGroupMap().get(group); // TODO
 
         List<String> filteredSubGroups = new ArrayList<>();
 
@@ -981,7 +981,7 @@ public class DataBackend {
 
     public   boolean isTypesRead(DC_TYPE type) {
 //        return  !getTypes(type).isEmpty();
-        return XML_Reader.getTypeMaps().get(type.getName()) != null;
+        return getXmlReader().getTypeMaps().get(type.getName()) != null;
     }
 
     public   String getObjImage(String name) {

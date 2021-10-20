@@ -1,5 +1,6 @@
 package main.system.auxiliary;
 
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.data.DataManager;
@@ -1202,6 +1203,42 @@ public class StringMaster {
         list = (List) list.stream().map(o -> i.getAndIncrement() +": " + o.toString()).collect(Collectors.toList());
        return ContainerUtils.joinList(list, "\n");
     }
+
+    public static String getTextureDown(String path) {
+        return getAppendedImageFile(path, " down");
+    }
+    public static String getTextureOver(String path) {
+        return getAppendedImageFile(path, " over");
+    }
+    public static String getTexture_disabled(String path) {
+        return getAppendedImageFile(path, " disabled");
+    }
+    public static String getTexture_checked(String path) {
+        return getAppendedImageFile(path, " checked");
+    }
+    public static String getTexture_checked_over(String path) {
+        return getAppendedImageFile(path, " checked over");
+    }
+
+
+    // public Drawable getTextureOver() {
+    //     return TextureCache.getOrCreateTextureRegionDrawable(StringMaster.getAppendedImageFile(path, " over"));
+    // }
+    //
+    // public Drawable getTextureDisabled() {
+    //     return TextureCache.getOrCreateTextureRegionDrawable(StringMaster.getAppendedImageFile(path,
+    //             " disabled"));
+    //
+    // }
+    //
+    // public Drawable getTextureChecked() {
+    //     return TextureCache.getOrCreateTextureRegionDrawable(StringMaster.getAppendedImageFile(path,
+    //             " checked", true));
+    // }
+    // public Drawable getTextureCheckedOver() {
+    //     return TextureCache.getOrCreateTextureRegionDrawable(StringMaster.getAppendedImageFile(path,
+    //             " checked over", true));
+    // }
 
 
     public enum STD_TYPE_NAMES {

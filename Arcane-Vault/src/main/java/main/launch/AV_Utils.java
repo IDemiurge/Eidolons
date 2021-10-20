@@ -22,10 +22,15 @@ import java.util.List;
 public class AV_Utils {
     private static final boolean artGen = false;
     private static final boolean imgPathUpdate = false;
+    private static final String[] LAUNCH_OPTIONS = {"Last", "Selective", "Selective Custom",
+            "Full", "Battlecraft", "Arcane Tower",};
+    private static final boolean workspaceLaunch = false;
 
-    public static void launched() {
-        AvSaveHandler.startSaving();
-
+    public static boolean isTypeRead(DC_TYPE units) {
+        return CoreEngine.getSelectivelyReadTypes().contains(units.getName());
+    }
+    public static void backendLoaded() {
+        //TODO generify
         if (ArcaneVault.getTypes().contains("encounters")) {
             //            String input = DialogMaster.inputText("Input 'json' (baseType = name:val;... || baseType2 = ...)");
             String base = DialogMaster.inputText("base Type name");
@@ -50,14 +55,7 @@ public class AV_Utils {
             ResourceMaster.updateImagePaths();
         }
         ContentGenerator.updateImagePathsForJpg_Png();
-
-
     }
-
-    private static final String[] LAUNCH_OPTIONS = {"Last", "Selective", "Selective Custom",
-            "Full", "Battlecraft", "Arcane Tower",};
-
-    private static final boolean workspaceLaunch = false;
 
     public static String selectiveLaunch() {
         int init = DialogMaster.optionChoice("Launch Options", LAUNCH_OPTIONS);

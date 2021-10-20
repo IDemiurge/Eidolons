@@ -1,6 +1,8 @@
 package main.gui.builders;
 
-import main.gui.components.controls.AV_ButtonPanel;
+import main.gui.components.controls.AV_IconStrip;
+import main.gui.components.menu.AV_Menu;
+import main.gui.components.table.AvColorHandler;
 import main.launch.ArcaneVault;
 import main.launch.AvConsts;
 import main.swing.generic.components.Builder;
@@ -22,9 +24,33 @@ public class MainBuilder extends Builder {
 
     private final EditViewPanel tableBuilder = new EditViewPanel();
     private TabBuilder tabBuilder = new TabBuilder(null);
+    private TabBuilder tabBuilderOrig = tabBuilder;
     // maybe it's time for a massive AV/Builder revamp that will support
     // rebuilding the gui?
     private boolean nodesDirty;
+    private AV_Menu menu;
+    private AV_Menu menu2;
+    private AV_IconStrip icons;
+    private DefaultMutableTreeNode selectedNode;
+    private DefaultMutableTreeNode previousSelectedNode;
+
+    JComboBox<VIEW_MODE> viewModes;
+    JComboBox<TREE_MODE> treeModes;
+//     JComboBox<TREE_MODE> treeModes;
+// AvColorHandler.HIGHLIGHT_SCHEME
+    public enum TREE_MODE {
+        hierarchy,
+        related,
+        second,
+
+    }
+
+    public enum VIEW_MODE { //sync with color scheme?
+        // two_types,
+        compare,
+        raw_type,
+        parent_type,
+    }
 
     public MainBuilder() {
         comp = new G_Panel();
@@ -47,39 +73,54 @@ public class MainBuilder extends Builder {
                     newComp.addKeyListener(getKeyListener());
                 }
             }
-            return ;
+            return;
         }
         super.add(newComp, info);
     }
 
     @Override
     public void init() {
+        ActionListener viewModeListener = null;
+        ActionListener treeModeListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Object source = e.getSource();
 
+                getTreeBuilder().getInfoTree().setMode((TREE_MODE) ((JComboBox<TREE_MODE>) source).getSelectedItem());
+            }
+        };
         builderArray = new Builder[]{
-
                 getTabBuilder(),
-
         };
 
         infoArray = new String[]{
-
                 "id tree, y 0, x 0, w " + AvConsts.TREE_WIDTH + ", h " + AvConsts.TREE_HEIGHT,
-
         };
-
-        compArray = new JComponent[]{buttonPanel, tableBuilder.getPanel()};
+        menu = new AV_Menu(false);
+        menu2 = new AV_Menu(true);
+        viewModes = new JComboBox<>(VIEW_MODE.values());
+        viewModes.addActionListener(viewModeListener);
+        treeModes = new JComboBox<>(TREE_MODE.values());
+        treeModes.addActionListener(treeModeListener);
+        compArray = new JComponent[]{
+                // viewModes,
+                treeModes,
+                menu.getBar(),
+                icons = new AV_IconStrip(),
+                menu2.getBar(), tableBuilder.getPanel(),
+        };
         cInfoArray = new String[]{
-                "id bp, pos "
-                        + (ArcaneVault.selectiveInit ? AvConsts.TREE_WIDTH + " "
-                        + AvConsts.TREE_HEIGHT : "0 tree.y2-20") ,
-                // + " table.x2 " +
-                //         AvConsts.HEIGHT,
+                // "id bp, pos " + (ArcaneVault.selectiveInit ? AvConsts.TREE_WIDTH + " " + AvConsts.TREE_HEIGHT : "0 tree.y2-20"),
 
-                "id table, pos tree.x2 0 ",
+                // "id views, pos tree.x2 menu.y2+5 ",
+                "id treeModes, pos tree.x2 0 ",
+                "id menu, pos treeModes.x2 0, pad 3",
+                "id icons, pos menu.x2 0, pad 3",
+                "id menu2, pos icons.x2 0, pad 3",
+                "id table, pos tree.x2 menu.y2+5 ",
 
         };
 
-        // compHolderArray = new {sp};
         initMap();
     }
 
@@ -92,8 +133,9 @@ public class MainBuilder extends Builder {
             return ((TabBuilder) getTabBuilder().getBuilderArray()[getTabBuilder()
                     .getSelectedIndex()]).getSelectedTabName();
         } catch (Exception e) {
-            return "";
+            ExceptionMaster.printStackTrace(e);
         }
+        return "";
     }
 
     public String getSelectedTabName() {
@@ -104,11 +146,6 @@ public class MainBuilder extends Builder {
         return ArcaneVault.getPreviousSelectedType().getName();
     }
 
-    @Override
-    public void refresh() {
-        // TODO Auto-generated method stub
-
-    }
 
     public JTree getTree() {
         return getTabBuilder().getTree();

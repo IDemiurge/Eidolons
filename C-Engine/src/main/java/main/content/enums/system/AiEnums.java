@@ -103,7 +103,7 @@ public class AiEnums {
 
 
     // AI_TYPE can influence preferred goals
-    // getting src.main.task arguments based on GOAL TYPE???
+    // getting src.main.framework.task arguments based on GOAL TYPE???
     public enum GOAL_TYPE {
         ATTACK, // ALL HOSTILE GOALS
         APPROACH,
