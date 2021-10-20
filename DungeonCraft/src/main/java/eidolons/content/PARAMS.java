@@ -243,11 +243,13 @@ public enum PARAMS implements PARAMETER {
     WIT(null, "", false, 3, "units", "chars", "perks"),
     // intelligence/knowledge
     SPIRIT(null, "", false, 3, "units", "chars", "perks"),
-    //charisma/wisdom
-    FORTITUDE(null, "", false, 5, "units", "chars", "perks"),
+    //charisma/willpower
+    MIGHT(null, "", false, 3, "units", "chars", "perks"),
     // vit/str
     REFLEX(null, "", false, 3, "units", "chars", "perks"),
     // agi/dex
+    LUCK(null, "", false, 3, "units", "chars", "perks"),
+    // charisma/wisdom
 
     ENDURANCE_REGEN("End. Regen.", "", false, 0, "units", "chars", "perks", "bf obj"), // Color.GREEN.brighter()),
     RESISTANCE(null, "", false, 0, "units", "chars", "perks", "bf obj"),

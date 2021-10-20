@@ -5,7 +5,7 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.mechanics.ConcealmentRule;
+import eidolons.game.battlecraft.rules.counter.natural.ConcealmentRule;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.module.dungeoncrawl.struct.Entrance;

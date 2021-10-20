@@ -86,7 +86,7 @@ public class DiseaseRule extends DamageCounterRule  implements TimedRule {
     // }
     @Override
     public int getCounterNumberReductionPerTurn(BattleFieldObject unit) {
-        int n = 1 + unit.getIntParam(PARAMS.FORTITUDE) * unit.getIntParam(PARAMS.POISON_RESISTANCE)
+        int n = 1 + unit.getIntParam(PARAMS.MIGHT) * unit.getIntParam(PARAMS.POISON_RESISTANCE)
          / 100;
         if (checkVirulent(unit)) {
             n -= 10;

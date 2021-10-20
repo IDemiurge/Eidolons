@@ -73,11 +73,13 @@ public class A_ValuePages {
             ARMOR_PENETRATION,
 
             EMPTY_VALUE,
+
             REFLEX,
             SPIRIT,
             GRIT,
-            FORTITUDE,
+            MIGHT,
             WIT,
+            LUCK,
 
             EMPTY_VALUE,
             WEIGHT, CARRYING_CAPACITY,

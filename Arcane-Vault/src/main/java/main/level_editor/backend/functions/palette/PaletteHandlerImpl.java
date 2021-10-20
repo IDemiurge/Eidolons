@@ -287,7 +287,7 @@ public class PaletteHandlerImpl extends LE_Handler implements IPaletteHandler {
     private String getTileForCoordinate(Coordinates c) {
         Set<BattleFieldObject> objects = getGame().getObjectsOnCoordinateNoOverlaying(c);
         if (objects.isEmpty()) {
-            if (getGame().getCellByCoordinate(c).isVOID()) {
+            if (getGame().getCell(c).isVOID()) {
                 return GeneratorEnums.ROOM_CELL.VOID.symbol;
             }
             return GeneratorEnums.ROOM_CELL.FLOOR.symbol;

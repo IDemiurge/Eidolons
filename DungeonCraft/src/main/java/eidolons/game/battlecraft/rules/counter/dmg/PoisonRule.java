@@ -102,7 +102,7 @@ public class PoisonRule extends DamageCounterRule implements TimedRule{
 
     @Override
     public int getCounterNumberReductionPerTurn(BattleFieldObject unit) {
-        return 1 + unit.getIntParam(PARAMS.FORTITUDE) * unit.getIntParam(PARAMS.POISON_RESISTANCE)
+        return 1 + unit.getIntParam(PARAMS.MIGHT) * unit.getIntParam(PARAMS.POISON_RESISTANCE)
          / 100;
     }
  

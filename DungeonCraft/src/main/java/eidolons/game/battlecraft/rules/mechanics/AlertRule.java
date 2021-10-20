@@ -12,7 +12,7 @@ import java.util.Map;
  * remove from PQ, but then also reduce initiative? Or keep it high? if target
  * unit died/disappears/gets immobilized, wake the unit up
  */
-public class WaitRule {
+public class AlertRule {
     public static final String WAIT_BUFF = "Waiting";
 
     static Map<Unit, Unit> waitMap;

@@ -1,4 +1,4 @@
-package eidolons.game.battlecraft.rules.mechanics;
+package eidolons.game.battlecraft.rules.counter.natural;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;

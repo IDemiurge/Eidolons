@@ -171,7 +171,7 @@ public class LE_ObjHandler extends LE_Handler {
 
     private void checkToggleVoid(BattleFieldObject bfObj) {
         if (bfObj instanceof Structure) {
-            if (getGame().getCellByCoordinate(bfObj.getCoordinates()).isVOID()) {
+            if (getGame().getCell(bfObj.getCoordinates()).isVOID()) {
                 operation(Operation.LE_OPERATION.VOID_TOGGLE, bfObj.getCoordinates());
             }
         }

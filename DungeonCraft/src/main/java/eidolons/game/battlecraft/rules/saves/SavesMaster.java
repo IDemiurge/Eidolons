@@ -1,12 +1,24 @@
 package eidolons.game.battlecraft.rules.saves;
 
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 
 public class SavesMaster {
 
+    /**
+     * specifically for saving rolls vs CONST VALUE
+     * @param saveType
+     * @param target
+     * @param value
+     * @return
+     */
+    public static boolean savingThrow(SaveType saveType, BattleFieldObject target, Integer value) {
+
+    }
+
     public enum SaveType {
-        Fortitude, Reflex, Grit, Wit, Spirit, Luck
+        Might, Reflex, Grit, Wit, Spirit, Luck
     }
 
     // public void processActionSaves(DC_ActiveObj action, Unit target) {

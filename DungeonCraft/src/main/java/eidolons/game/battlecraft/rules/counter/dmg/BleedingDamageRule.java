@@ -62,7 +62,7 @@ public class BleedingDamageRule extends DamageCounterRule  implements TimedRule 
 
     @Override
     public int getCounterNumberReductionPerTurn(BattleFieldObject unit) {
-        return unit.getIntParam(PARAMS.FORTITUDE);
+        return unit.getIntParam(PARAMS.MIGHT);
     }
 
     @Override

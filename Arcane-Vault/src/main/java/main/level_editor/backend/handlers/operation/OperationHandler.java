@@ -55,7 +55,7 @@ public class OperationHandler extends LE_Handler {
                 } else {
                     getFloorWrapper().getCellMap().put(c, cdata);
                 }
-                DC_Cell cell = getGame().getCellByCoordinate(c);
+                DC_Cell cell = getGame().getCell(c);
                 cdata.apply(cell);
                 GuiEventManager.trigger(event, cell);
                 break;
@@ -102,7 +102,7 @@ public class OperationHandler extends LE_Handler {
                 set = true;
             case VOID_TOGGLE:
                 c = (Coordinates) args[0];
-                cell = manager.getGame().getCellByCoordinate(c);
+                cell = manager.getGame().getCell(c);
                 boolean isVoid = cell.isVOID();
                 if (!isVoid)
                     for (BattleFieldObject bfObj : manager.getGame().getObjectsOnCoordinateAll(c)) {
@@ -120,7 +120,7 @@ public class OperationHandler extends LE_Handler {
             case MASS_SET_VOID:
                 Collection<Coordinates> collection = (Collection<Coordinates>) args[0];
                 for (Coordinates coordinates : collection) {
-                    cell = manager.getGame().getCellByCoordinate(coordinates);
+                    cell = manager.getGame().getCell(coordinates);
                     isVoid = !cell.isVOID();
                     if (isVoid)
                         for (BattleFieldObject bfObj : manager.getGame().getObjectsNoOverlaying(coordinates)) {

@@ -110,7 +110,7 @@ public class LE_ModuleHandler extends LE_Handler implements IModuleHandler {
         for (Module module : getModules()) {
         List<Coordinates> buffer = getBufferCoordinates(module);
         for (Coordinates coordinates : buffer) {
-            getGame().getCellByCoordinate(coordinates).setOverlayData(Images.OVERLAY_DARK);
+            getGame().getCell(coordinates).setOverlayData(Images.OVERLAY_DARK);
         }
         GuiEventManager.trigger(GuiEventType.INIT_CELL_OVERLAY, buffer);
         }

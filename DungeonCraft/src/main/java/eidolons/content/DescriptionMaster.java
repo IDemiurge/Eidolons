@@ -176,7 +176,7 @@ public class DescriptionMaster {
         public static String getNonMasteryDescription(PARAMS param) {
 
         switch (param) {
-            case FORTITUDE:
+            case MIGHT:
                 return "";
             // Used in rolls against effect such as Poison, Disease, Instant
             // Death and

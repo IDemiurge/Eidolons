@@ -13,7 +13,7 @@ import eidolons.game.battlecraft.rules.action.StackingRule;
 import eidolons.game.battlecraft.rules.combat.attack.extra_attack.AttackOfOpportunityRule;
 import eidolons.game.battlecraft.rules.combat.attack.extra_attack.ExtraAttacksRule;
 import eidolons.game.battlecraft.rules.combat.mechanics.ForceRule;
-import eidolons.game.battlecraft.rules.mechanics.ConcealmentRule;
+import eidolons.game.battlecraft.rules.counter.natural.ConcealmentRule;
 import eidolons.game.battlecraft.rules.perk.EvasionRule;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.EUtils;

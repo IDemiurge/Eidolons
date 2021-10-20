@@ -12,7 +12,6 @@ import libgdx.gui.UiMaster;
 import libgdx.gui.generic.ValueContainer;
 import libgdx.gui.generic.VerticalValueContainer;
 import libgdx.gui.panels.dc.unitinfo.tooltips.*;
-import libgdx.gui.panels.dc.unitinfo.tooltips.*;
 import libgdx.gui.tooltips.Tooltip;
 import libgdx.gui.tooltips.ValueTooltip;
 import libgdx.texture.TextureCache;
@@ -278,7 +277,7 @@ public class UnitDataSource implements
 
     @Override
     public VerticalValueContainer getFortitude() {
-        return getParamContainer(PARAMS.FORTITUDE);
+        return getParamContainer(PARAMS.MIGHT);
     }
 
     @Override

@@ -65,7 +65,7 @@ public class LE_AdvFuncs extends LE_Handler implements IAdvFuncs {
         operation(CLEAR_START);
         Set<Coordinates> coordinates = getSelectionHandler().getSelection().getCoordinates();
         if (coordinates. size()>10) {
-            if (getGame().getCellByCoordinate(coordinates.iterator().next()).isVOID()) {
+            if (getGame().getCell(coordinates.iterator().next()).isVOID()) {
                 operation(MASS_RESET_VOID, coordinates);
             }else
                 operation(MASS_SET_VOID, coordinates);
@@ -109,7 +109,7 @@ public class LE_AdvFuncs extends LE_Handler implements IAdvFuncs {
         {
             for (Coordinates c : coordinates) {
                 Coordinates c1 = c.getOffset(getMirroredCoordinate(c.getOffset(-origin.x, -origin.y), d, w, h));
-                boolean VOID = getGame().getCellByCoordinate(c).isVOID();
+                boolean VOID = getGame().getCell(c).isVOID();
                 if (VOID) {
                     toVoid.add(c1);
                     continue;

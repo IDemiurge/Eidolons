@@ -27,7 +27,7 @@ import eidolons.game.battlecraft.rules.counter.psychic.RageRule;
 import eidolons.game.battlecraft.rules.mechanics.AshAnnihilationRule;
 import eidolons.game.battlecraft.rules.mechanics.CooldownRule;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
-import eidolons.game.battlecraft.rules.mechanics.WaitRule;
+import eidolons.game.battlecraft.rules.mechanics.AlertRule;
 import eidolons.game.battlecraft.rules.parameters.EssenceRule;
 import eidolons.game.battlecraft.rules.parameters.FocusGrowthRule;
 import eidolons.game.battlecraft.rules.round.*;
@@ -102,7 +102,7 @@ public class DC_Rules implements GameRules {
 
     private void init() {
         RuleKeeper.init();
-        WaitRule.reset();
+        AlertRule.reset();
         dynamicBuffRules = new DynamicBuffRules(game);
         unconsciousRule = new UnconsciousRule(game);
         watchRule = new WatchRule();

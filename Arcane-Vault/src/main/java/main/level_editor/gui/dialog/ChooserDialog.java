@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import libgdx.anims.actions.ActionMaster;
+import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.generic.ImageContainer;
 import libgdx.gui.NinePatchFactory;
 import libgdx.gui.generic.btn.ButtonStyled;
@@ -114,7 +114,7 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
                 super.clicked(event, x, y);
                 selected = item;
                 if (isInstaOk()) {
-                    ActionMaster.addScaleAction(actor, 0, 1f);
+                    ActionMasterGdx.addScaleAction(actor, 0, 1f);
                     ok();
                 }
             }

@@ -14,8 +14,7 @@ public class FeatSpace {
     protected NewRpgEnums.FEAT_SPACE_MODE mode;
     //protected  List<ActiveSpaceModifier> modifiers;
     protected String name;
-    protected boolean locked;
-    protected boolean hidden;
+    protected boolean locked, hidden, active;
     protected Map<Integer, Feat> featMap;
     protected Unit owner;
 
@@ -27,6 +26,14 @@ public class FeatSpace {
         this.index = index;
         this.mode = mode;
         this.featMap = featMap;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
 

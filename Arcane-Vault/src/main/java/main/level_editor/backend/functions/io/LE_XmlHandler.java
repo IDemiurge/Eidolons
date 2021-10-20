@@ -249,7 +249,7 @@ public class LE_XmlHandler extends LE_Handler {
 
         xmlBuilder.append("\n").open(FloorLoader.COORDINATES_VOID);
         for (Coordinates coordinates : module.initCoordinateSet(false)) {
-            DC_Cell cell = DC_Game.game.getCellByCoordinate(coordinates);
+            DC_Cell cell = DC_Game.game.getCell(coordinates);
             if (cell != null) //TODO buffer!
                 if (cell.isVOID()) {
                     xmlBuilder.append(cell.getCoordinates().toString()).append(";");

@@ -27,6 +27,7 @@ public class AttackTypes {
         int atbMod;
         int atkMod; //usually a thing, eh?
         int toughnessCost; // in absolute value? Or % max?
+        int strDmgMod, agiDmgMod; //TODO not just from Weapon, for sure!
 
         AttackType(int dmgMod, int atbMod, int toughnessCost) {
             this.dmgMod = dmgMod;

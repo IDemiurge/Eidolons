@@ -6,7 +6,7 @@ import eidolons.ability.effects.attachment.AddTriggerEffect;
 import eidolons.ability.effects.continuous.SetCustomModeEffect;
 import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.mechanics.WaitRule;
+import eidolons.game.battlecraft.rules.mechanics.AlertRule;
 import main.ability.Ability;
 import main.ability.ActiveAbility;
 import main.ability.effects.Effect;
@@ -42,7 +42,7 @@ public class WaitEffect extends MicroEffect implements OneshotEffect {
         }
 
         try {
-            WaitRule.addWaitingUnit((Unit) ref.getSourceObj(), (Unit) ref
+            AlertRule.addWaitingUnit((Unit) ref.getSourceObj(), (Unit) ref
              .getTargetObj());
         } catch (Exception e) {
             return false;
@@ -52,7 +52,7 @@ public class WaitEffect extends MicroEffect implements OneshotEffect {
     }
 
     protected String getBuffName() {
-        return WaitRule.WAIT_BUFF;
+        return AlertRule.WAIT_BUFF;
     }
 
     protected Effect getEffects(Ref ref) {

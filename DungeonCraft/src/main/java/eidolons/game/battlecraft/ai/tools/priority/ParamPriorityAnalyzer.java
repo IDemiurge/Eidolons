@@ -27,7 +27,7 @@ public class ParamPriorityAnalyzer extends AiHandler {
 
     public static float getParamNumericPriority(PARAMS param) {
         switch (param) {
-            case FORTITUDE:
+            case MIGHT:
             case SPIRIT:
                 return 100;
             case C_EXTRA_MOVES:

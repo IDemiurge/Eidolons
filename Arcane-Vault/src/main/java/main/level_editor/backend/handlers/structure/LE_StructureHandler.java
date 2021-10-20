@@ -40,7 +40,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.FileManager;
-import main.system.auxiliary.data.MapBuilder;
+import main.system.auxiliary.data.MapConverter;
 import main.system.threading.WaitMaster;
 
 import java.util.*;
@@ -81,12 +81,12 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
     public void afterLoaded() {
         String content = FileManager.readFile(getTemplatesPath() + "blocks.xml");
         blockTemplates =
-                new MapBuilder<>(":", Strings.VERTICAL_BAR, s -> s, s -> new BlockData(s)).build(content);
+                new MapConverter<>(":", Strings.VERTICAL_BAR, s -> s, s -> new BlockData(s)).build(content);
 
         content = FileManager.readFile(getTemplatesPath() + "zones.xml");
 
         zoneTemplates =
-                new MapBuilder<>(":", Strings.VERTICAL_BAR, s -> s, s -> new ZoneData(s)).build(content);
+                new MapConverter<>(":", Strings.VERTICAL_BAR, s -> s, s -> new ZoneData(s)).build(content);
     }
 
     @Override
@@ -552,7 +552,7 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
         if (type != null) {
             Set<DC_Cell> set = new LinkedHashSet<>();
             for (Coordinates coordinates : layer.getCoordinatesSet()) {
-                DC_Cell cell = getGame().getCellByCoordinate(coordinates);
+                DC_Cell cell = getGame().getCell(coordinates);
                 if (cell != null) //TODO without buffer!
                 // if (cell.getCellType() != type || layer.getCellVersion()!= cell.getCellVariant())
                 {

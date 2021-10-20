@@ -13,7 +13,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.Strings;
-import main.system.auxiliary.data.MapBuilder;
+import main.system.auxiliary.data.MapConverter;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -210,7 +210,7 @@ public class LE_AiHandler extends LE_Handler implements IAiHandler {
 
     public void initEncounterGroups(String textContent) {
         encounterAiMap =
-                new MapBuilder<>(":", Strings.VERTICAL_BAR,
+                new MapConverter<>(":", Strings.VERTICAL_BAR,
                         s -> NumberUtils.getIntParse(s),
                         s -> new AiData(s))
                         .build(textContent);

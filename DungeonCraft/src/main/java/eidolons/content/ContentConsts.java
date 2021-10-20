@@ -2,7 +2,6 @@ package eidolons.content;
 
 import eidolons.entity.Deity;
 import main.content.DC_TYPE;
-import main.content.OBJ_TYPE;
 import main.content.VALUE;
 import main.content.enums.entity.HeroEnums;
 import main.content.values.parameters.G_PARAMS;
@@ -24,11 +23,11 @@ public class ContentConsts {
             PARAMS.C_FOCUS,
     };
     public static final PARAMETER[] MAIN_PARAMETERS = {
-            PARAMS.ATTACK, PARAMS.DEFENSE, PARAMS.INITIATIVE, PARAMS.ARMOR, PARAMS.FORTITUDE, PARAMS.RESISTANCE, PARAMS.SPIRIT,
+            PARAMS.ATTACK, PARAMS.DEFENSE, PARAMS.INITIATIVE, PARAMS.ARMOR, PARAMS.MIGHT, PARAMS.RESISTANCE, PARAMS.SPIRIT,
             PARAMS.EXTRA_ATTACKS,
     };
     public static final PARAMETER[] ROLL_PARAMETERS = {
-            PARAMS.FORTITUDE, PARAMS.REFLEX, PARAMS.GRIT, PARAMS.WIT, PARAMS.SPIRIT,
+            PARAMS.MIGHT, PARAMS.REFLEX, PARAMS.GRIT, PARAMS.WIT, PARAMS.SPIRIT,
     };
     public static final PARAMS[] ATTRIBUTES_WRAPPED = {
             PARAMS.STRENGTH, PARAMS.INTELLIGENCE, PARAMS.VITALITY,

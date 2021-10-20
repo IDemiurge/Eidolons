@@ -33,7 +33,7 @@ public class LE_ScriptHandler extends CellDataHandler<CellScriptData> implements
         }
         operation(Operation.LE_OPERATION.FILL_START);
         for (Coordinates coordinate : getSelectionHandler().getSelection().getCoordinates()) {
-            if (getGame().getCellByCoordinate(coordinate).isVOID()) {
+            if (getGame().getCell(coordinate).isVOID()) {
                 if (mark == MARK._void) {
                     continue;
                 }

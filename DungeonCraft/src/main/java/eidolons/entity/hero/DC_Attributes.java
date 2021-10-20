@@ -46,7 +46,7 @@ public class DC_Attributes  {
                 // + damage modifier
                 mod(amount, AttributeConsts.STR_TOU_BONUS, attr, PARAMS.TOUGHNESS);
                 mod(amount, AttributeConsts.STR_END_BONUS, attr, PARAMS.ENDURANCE);
-                mod(amount, AttributeConsts.STR_FORTITUDE_BONUS, attr, PARAMS.FORTITUDE);
+                mod(amount, AttributeConsts.STR_MIGHT_BONUS, attr, PARAMS.MIGHT);
                 mod(before25, AttributeConsts.B25_STR_CARRY_CAPACITY, attr, PARAMS.CARRYING_CAPACITY);
                 mod(amount - 25, AttributeConsts.A25_STR_PENALTY_REDUCTION, attr, PARAMS.WEIGHT_PENALTY_REDUCTION);
 
@@ -54,7 +54,7 @@ public class DC_Attributes  {
             case VITALITY:
                 mod(amount, AttributeConsts.VIT_TOU_BONUS, attr, PARAMS.TOUGHNESS);
                 mod(amount, AttributeConsts.VIT_END_BONUS, attr, PARAMS.ENDURANCE);
-                mod(amount, AttributeConsts.VIT_FORTITUDE_BONUS, attr, PARAMS.FORTITUDE);
+                mod(amount, AttributeConsts.VIT_MIGHT_BONUS, attr, PARAMS.MIGHT);
                 mod(before25, AttributeConsts.B25_VIT_ELEMENTAL_RESIST, attr, ELEMENTAL_RESISTANCES.getParams());
                 mod(amount - 25, AttributeConsts.A25_VIT_END_REGEN, attr, PARAMS.ENDURANCE_REGEN);
 
@@ -77,6 +77,7 @@ public class DC_Attributes  {
             case WILLPOWER:
                 mod(amount, AttributeConsts.WIL_RES_BONUS, attr, ASTRAL_AND_ELEMENTAL_RESISTANCES.getParams());
                 mod(amount, AttributeConsts.WIL_GRIT_BONUS, attr, PARAMS.GRIT);
+                mod(amount, AttributeConsts.WIL_SPIRIT_BONUS, attr, PARAMS.SPIRIT);
                 mod(before25, AttributeConsts.B25_WIL_FOC_BONUS , attr,PARAMS.STARTING_FOCUS);
                 //TODO spirit?
                 // mod(amount - 25, AttributeConsts.A25_WIL_FOC_BONUS , attr,PARAMS.STARTING_FOCUS);
@@ -105,6 +106,7 @@ public class DC_Attributes  {
                 mod(amount, AttributeConsts.WIS_ESSENCE_BONUS, attr, PARAMS.ESSENCE);
                 mod(amount, AttributeConsts.WIS_PERCEPTION_BONUS, attr, PARAMS.PERCEPTION);
                 mod(amount, AttributeConsts.WIS_SPIRIT_BONUS, attr, PARAMS.SPIRIT );
+                mod(amount, AttributeConsts.WIS_LUCK_BONUS, attr, PARAMS.LUCK );
                 mod(amount - 25, AttributeConsts.B25_WIS_ELEMENTAL_RES , attr, ELEMENTAL_RESISTANCES.getParams());
                 mod(before25, AttributeConsts.A25_WIS_DETECTION, attr, PARAMS.DETECTION);
 
@@ -112,6 +114,7 @@ public class DC_Attributes  {
                 //divination cap
                 // luck?
                 mod(amount, AttributeConsts.CHA_SPIRIT_BONUS, attr, PARAMS.SPIRIT );
+                mod(amount, AttributeConsts.CHA_LUCK_BONUS, attr, PARAMS.LUCK );
                 mod(amount, AttributeConsts.CHA_DEITY_BONUS, attr, PARAMS.DEITY_EFFECTS_MOD);
                 mod(amount - 25, AttributeConsts.B25_CHA_DISCOUNT , attr, PARAMS.GOLD_COST_REDUCTION);
                 mod(before25, AttributeConsts.A25_CHA_ASTRAL_RES , attr, ASTRAL_RESISTANCES.getParams());
