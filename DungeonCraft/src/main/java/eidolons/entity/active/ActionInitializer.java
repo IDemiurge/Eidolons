@@ -40,24 +40,11 @@ public class ActionInitializer extends DC_ActionManager {
         // or upon init
 
         unit.setActionMap(new HashMap<>());
+        actives = createStandardActions(unit);
 
-        // if (!unit.isStandardActionsAdded())
-        if (!unit.isBfObj()) {
-            actives.addAll(getStandardActions(unit));
-        }
-        if (unit.isBoss()) {
-
-        } else {
-            addSpecialActions(unit, actives);
-            addCustomActions(unit, actives);
-            try {
-                constructActionMaps(unit);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-        }
+        // addCustomActions(unit, actives); deprecated!
+        constructActionMaps(unit);
         entity.setActivesReady(true);
-
         unit.setActives(new ArrayList<>(actives));
 
         FeatSpaces spaces = getSpaceManager().createFeatSpaces(unit, true);
@@ -69,100 +56,46 @@ public class ActionInitializer extends DC_ActionManager {
     private DequeImpl<ActiveObj> createStandardActions(Unit unit) {
         DequeImpl<ActiveObj> actives = new DequeImpl<>();
         // should be another passive to deny unit even those commodities...
-
         actives.add(getOrCreateAction(ActionEnums.DUMMY_ACTION, unit));
         if (unit.isBfObj()) {
             return actives;
+        }
+        Arrays.stream(ActionEnums.DEFAULT_ACTION.values()).forEach(
+                action -> actives.add(getOrCreateAction(action.name(), unit))
+        );
+
+        //TODO ATKS
+        // actives.addAll(getAndInitAttacks(false, unit));
+        if (UnitAnalyzer.checkOffhand(unit)) {
+            // actives.addAll(getAndInitAttacks(true, unit));
+
+            actives.add(getOrCreateAction(ActionEnums.STD_ACTIONS.Offhand_Attack.toString(), unit));
+            // addOffhandActions(unit.getActionMap().get(ActionEnums.ACTION_TYPE.STANDARD_ATTACK), unit);
+            // addOffhandActions(unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK), unit);
         }
 
         actives.add(getOrCreateAction(MOVE_LEFT.toString(), unit));
         actives.add(getOrCreateAction(MOVE_RIGHT.toString(), unit));
         actives.add(getOrCreateAction(MOVE_BACK.toString(), unit));
         if (!unit.isHuge() && !unit.checkPassive(UnitEnums.STANDARD_PASSIVES.CLUMSY)) {
-            actives.add(getOrCreateAction(ActionEnums.CLUMSY_LEAP, unit));
-
-        }
-
-        //        if (RuleKeeper.checkFeature(RuleKeeper.FEATURE.PUSH))
-        actives.add(getOrCreateAction(ActionEnums.STD_SPEC_ACTIONS.Push.name(), unit));
-        actives.add(getOrCreateAction(ActionEnums.STD_SPEC_ACTIONS.Pull.name(), unit));
-
-        actives.addAll(getStandardActionsForGroup(ActionEnums.ACTION_TYPE.STANDARD_ATTACK, unit));
-
-        if (UnitAnalyzer.checkOffhand(unit)) {
-            actives.add(getOrCreateAction(ActionEnums.OFFHAND_ATTACK, unit));
-            addOffhandActions(unit.getActionMap().get(ActionEnums.ACTION_TYPE.STANDARD_ATTACK), unit);
-            addOffhandActions(unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK), unit);
+            actives.add(getOrCreateAction(CLUMSY_LEAP.toString(), unit));
         }
 
         if (RuleKeeper.checkFeature(RuleEnums.FEATURE.DUAL_ATTACKS))
             if (UnitAnalyzer.checkDualWielding(unit)) {
-                try {
-                    actives.addAll(DualAttackMaster.getDualAttacks(unit));
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }   // good idea! :) dual thrust, dual
-                // stunning blow, many possibilities! :) but it will be tricky...
-                // TODO should add all dual actions
+                actives.addAll(DualAttackMaster.getDualAttacks(unit));
             }
 
-        if (RuleKeeper.checkFeature(RuleEnums.FEATURE.USE_INVENTORY)) {
-            if (unit.canUseItems()) {
-                actives.add(getOrCreateAction(ActionEnums.USE_INVENTORY, unit));
-            }
-        }
-
-        if (RuleKeeper.checkFeature(RuleEnums.FEATURE.TOGGLE_WEAPON_SET)) {
-            if (unit.getReserveOffhandWeapon() != null ||
-                    unit.getReserveMainWeapon() != null) {
-                actives.add(getOrCreateAction(ActionEnums.TOGGLE_WEAPON_SET, unit));
-            }
-        }
-        if (RuleKeeper.checkFeature(RuleEnums.FEATURE.WATCH)) {
-            actives.add(getOrCreateAction(ActionEnums.STD_SPEC_ACTIONS.Watch.name(), unit));
-        }
-
-
-        if (RuleKeeper.checkFeature(RuleEnums.FEATURE.FLEE)) {
-            if (FleeRule.isFleeAllowed()) {
-                actives.add(getOrCreateAction(ActionEnums.FLEE, unit));
-            }
-        }
-        if (RuleKeeper.checkFeature(RuleEnums.FEATURE.PICK_UP)) {
-            try {
-                if (unit.getGame().getDroppedItemManager().checkHasItemsBeneath(unit)) {
-                    actives.add(getOrCreateAction(ActionEnums.PICK_UP, unit));
-                }
-            } catch (Exception e) {
-                // main.system.ExceptionMaster.printStackTrace(e);
-            }
-        }
-        if (RuleKeeper.checkFeature(RuleEnums.FEATURE.DIVINATION)) {
-            if (unit.canDivine()) {
-                actives.add(getOrCreateAction(ActionEnums.DIVINATION, unit));
-            }
-        }
-        if (RuleKeeper.checkFeature(RuleEnums.FEATURE.TOSS_ITEM)) {
-            if (ListMaster.isNotEmpty(unit.getQuickItems())) {
-                actives.add(getOrCreateAction(ActionEnums.TOSS_ITEM, unit));
-            }
-        }
-
-
-        //        actives.add(getOrCreateAction(SEARCH_MODE, unit));
-
-        //  TODO condition?      if (unit.isHero())
-
-        if (RuleKeeper.checkFeature(RuleEnums.FEATURE.GUARD_MODE))
-            actives.add(getOrCreateAction(StringMaster.format(
-                    ActionEnums.STD_SPEC_ACTIONS.Guard_Mode.name()), unit));
-
-        // for (Entity e : LockMaster.getObjectsToUnlock(unit)) {
-        // actives.add(getUnlockAction(unit, e));
+        // if (unit.getReserveOffhandWeapon() != null) {
+        //     actives.add(getOrCreateAction(ActionEnums.TOGGLE_WEAPON_SET, unit));
         // }
-        // for (Trap trap : TrapMaster.getTrapsToDisarm(unit)) {
-        // actives.add(getDisarmAction(unit, trap));
+        // if (unit.getReserveMainWeapon() != null) {
+        //     actives.add(getOrCreateAction(ActionEnums.TOGGLE_WEAPON_SET, unit));
         // }
+
+        addHiddenActions(unit, actives);
+
+        return actives;
     }
 
     private void addHiddenActions(Unit unit, Collection<ActiveObj> actives) {
