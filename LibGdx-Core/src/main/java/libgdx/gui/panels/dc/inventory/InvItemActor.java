@@ -131,9 +131,6 @@ public class InvItemActor extends ItemActor {
 
     private String getUnderlayPathForItem(DC_HeroItemObj model) {
         if (model instanceof DC_HeroSlotItem) {
-            if (EidolonImbuer.isImbued(model)) {
-                return Images.ITEM_BACKGROUND_OVERLAY_MAGIC;
-            }
         ItemEnums.QUALITY_LEVEL qualityLevel =  ((DC_HeroSlotItem) model).getQuality();
             switch (qualityLevel) {
 

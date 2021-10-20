@@ -26,6 +26,7 @@ import main.system.GuiEventType;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static main.system.GuiEventType.ACTION_PANEL_UPDATE;
@@ -39,7 +40,7 @@ public class ActionPanel extends GroupX {
     private static final float OFFSET_X = 100 + EMPTY_OFFSET;
     private static final float QUICK_SLOTS_OFFSET_X = 20;
     private static final float ACTIVE_SPACE_OFFSET_X = 70;
-    private static final float PUZZLE_OFFSET_Y =  -88;
+    private static final float PUZZLE_OFFSET_Y = -88;
     private final Vector2 spellsPos = new Vector2();
 
     private final ImageContainer bottomOverlay;
@@ -60,7 +61,7 @@ public class ActionPanel extends GroupX {
 
     private Float defaultX;
 
-    List<Actor> elements;
+    List<Actor> elements = new ArrayList<>();
 
     @Override
     public void addActor(Actor actor) {
@@ -74,7 +75,7 @@ public class ActionPanel extends GroupX {
         setSize(background.getWidth(), background.getHeight());
         addActor(combatSpacePanel = new FeatSpacePanel(IMAGE_SIZE, false));
 
-        addActor(defaultActionsPanel = new DefaultActionsPanel(IMAGE_SIZE));
+        addActor(defaultActionsPanel = new DefaultActionsPanel("Default Actions"));
 
         addActor(spellSpacePanel = new FeatSpacePanel(IMAGE_SIZE, true));
 
@@ -108,9 +109,9 @@ public class ActionPanel extends GroupX {
 
     public void resetPositions() {
         combatSpacePanel.setPosition(-32 + OFFSET_X + QUICK_SLOTS_OFFSET_X, ACTIVE_SPACE_OFFSET_Y);
-        final float actionOffset =17+ OFFSET_X + (IMAGE_SIZE * 6) + 5;
-        defaultActionsPanel.setPosition(-28+26+actionOffset, 0);
-        final float spellOffset = ACTIVE_SPACE_OFFSET_X -60 + actionOffset + (IMAGE_SIZE * 6)- 35;
+        final float actionOffset = 17 + OFFSET_X + (IMAGE_SIZE * 6) + 5;
+        defaultActionsPanel.setPosition(-28 + 26 + actionOffset, 0);
+        final float spellOffset = ACTIVE_SPACE_OFFSET_X - 60 + actionOffset + (IMAGE_SIZE * 6) - 35;
         spellSpacePanel.setPosition(spellOffset, ACTIVE_SPACE_OFFSET_Y);
         spellsPos.x = spellOffset;
         spellsPos.y = ACTIVE_SPACE_OFFSET_Y;
@@ -121,18 +122,18 @@ public class ActionPanel extends GroupX {
         bodyParamsBar.setPosition(x - 37, 47);
         buffPanelBody.setPosition(bodyParamsBar.getX() + 20, IMAGE_SIZE + 40);
 
-        x = defaultActionsPanel.getX()-34;
+        x = defaultActionsPanel.getX() - 34;
         mainHand.setPosition(x - 14,
                 bodyParamsBar.getY() + 22);
-        offhand.setPosition(mainHand.getX() + 235 + 146- 112,
-                mainHand.getY()  );
+        offhand.setPosition(mainHand.getX() + 235 + 146 - 112,
+                mainHand.getY());
 
-        facingPanel.setPosition((mainHand.getX() + offhand.getX()) / 2  ,
+        facingPanel.setPosition((mainHand.getX() + offhand.getX()) / 2,
                 bodyParamsBar.getY() + 52);
 
 
         x = spellSpacePanel.getX();
-        soulParamsBar.setPosition(x +11
+        soulParamsBar.setPosition(x + 11
                 , bodyParamsBar.getY());
         buffPanelSoul.setPosition(soulParamsBar.getX() + 65, IMAGE_SIZE + 40);
 
@@ -183,13 +184,13 @@ public class ActionPanel extends GroupX {
 
         GuiEventManager.bind(GuiEventType.MINIMIZE_UI_ON, p -> {
             ActionMasterGdx.addMoveToAction(this, getX(), PUZZLE_OFFSET_Y, 1.4f);
-            ActionMasterGdx.addAfter(this, ()-> setHidden(true));
+            ActionMasterGdx.addAfter(this, () -> setHidden(true));
             soulParamsBar.fadeOut();
             bodyParamsBar.fadeOut();
         });
         GuiEventManager.bind(GuiEventType.MINIMIZE_UI_OFF, p -> {
             ActionMasterGdx.addMoveToAction(this, getX(), 0, 1.4f);
-            ActionMasterGdx.addAfter(this, ()-> setHidden(false));
+            ActionMasterGdx.addAfter(this, () -> setHidden(false));
             soulParamsBar.fadeIn();
             bodyParamsBar.fadeIn();
         });
@@ -239,7 +240,7 @@ public class ActionPanel extends GroupX {
             }
 
             //Gdx revamp - action containers re-creation!
-            elements.forEach( el->
+            elements.forEach(el ->
                     el.setUserObject(source));
             defaultActionsPanel.setUserObject(source);
             combatSpacePanel.setUserObject(source);
@@ -328,7 +329,7 @@ public class ActionPanel extends GroupX {
         defaultActionsPanel.setVisible(!hidden);
         spellSpacePanel.setVisible(!hidden);
         defaultActionsPanel.setVisible(!hidden);
-        log(1,"Action panel hidden: " +hidden);
+        log(1, "Action panel hidden: " + hidden);
     }
 
 

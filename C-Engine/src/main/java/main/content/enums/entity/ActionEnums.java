@@ -257,4 +257,13 @@ public class ActionEnums {
         }
 
     }
+
+    public enum ATTACK_CASE{
+        SNEAK,
+
+        SIDEWAYS,
+        DIAGONAL,
+
+
+    }
 }

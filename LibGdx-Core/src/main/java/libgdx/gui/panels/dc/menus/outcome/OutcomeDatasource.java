@@ -71,9 +71,9 @@ public class OutcomeDatasource {
     }
 
     public Boolean getOutcome() {
-
         //null for surrender?
-        return game.getMissionMaster().getOutcomeManager().getOutcome();
+        // return game.getMissionMaster().getOutcomeManager().getOutcome();
+        return null;
     }
 
 

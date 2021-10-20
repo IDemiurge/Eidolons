@@ -12,19 +12,14 @@ import main.system.GuiEventType;
 public class HqControlPanel extends HqElement {
 
     public HqControlPanel() {
-        //        setFixedSize(true);
-
-        if (!HqDataMaster.isSimulationOff())
-            add(new SymbolButton(ButtonStyled.STD_BUTTON.UNDO, HqDataMaster::undo));
+        add(new SymbolButton(ButtonStyled.STD_BUTTON.UNDO, HqDataMaster::undo));
         add(new SymbolButton(ButtonStyled.STD_BUTTON.OK, () -> {
-            if (!HqDataMaster.isSimulationOff())
-                save();
-            else
-                close();
+            // if (!HqDataMaster.isSimulationOff())
+            //     save();
+            // else
+            close();
         }));
-
-        if (!HqDataMaster.isSimulationOff())
-            add(new SymbolButton(ButtonStyled.STD_BUTTON.CANCEL, this::close));
+        add(new SymbolButton(ButtonStyled.STD_BUTTON.CANCEL, this::close));
     }
 
     private void save() {

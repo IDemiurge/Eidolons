@@ -49,9 +49,6 @@ public class GameMenuHandler {
                 Core.exitToMenu();
 //                GuiEventManager.trigger(GuiEventType.DISPOSE_TEXTURES);
                 return false;
-            case RESTART:
-                Core.restart();
-                break;
 //            case QUESTS:
 //                Eidolons.onThisOrNonGdxThread(() -> {
 //                    if (QuestMaster.TEST_MODE) {

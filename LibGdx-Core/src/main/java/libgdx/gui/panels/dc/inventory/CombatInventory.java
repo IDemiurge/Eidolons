@@ -142,11 +142,8 @@ public class CombatInventory extends TablePanel implements Blocking {
     private void initButtonListeners() {
         final InventoryDataSource source = getUserObject();
         doneButton.setRunnable(source.getDoneHandler());
-
-        if (!HqDataMaster.isSimulationOff()) {
             cancelButton.setRunnable(source.getCancelHandler());
             undoButton.setRunnable(source.getUndoHandler());
-        }
     }
 
     @Override

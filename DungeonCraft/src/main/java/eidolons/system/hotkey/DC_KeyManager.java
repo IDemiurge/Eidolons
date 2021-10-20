@@ -36,6 +36,7 @@ public class DC_KeyManager implements KeyListener {
         this.mngr = mngr;
         stdActionKeyMap = new ConcurrentHashMap<>();
         addMoveActionKeyMap = new ConcurrentHashMap<>();
+        customActionKeyMap = new ConcurrentHashMap<>();
     }
 
     public void init() {

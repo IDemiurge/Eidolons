@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
+import eidolons.system.options.OptionsMaster;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
 import libgdx.gui.menu.selection.SelectionPanel;
@@ -13,18 +15,13 @@ import libgdx.gui.menu.selection.difficulty.DifficultySelectionPanel;
 import libgdx.gui.menu.selection.hero.HeroSelectionPanel;
 import libgdx.gui.menu.selection.manual.ManualPanel;
 import libgdx.gui.menu.selection.town.quest.QuestSelectionPanel;
-import libgdx.gui.panels.headquarters.creation.HeroCreationMaster;
-import libgdx.gui.panels.headquarters.creation.HeroCreationPanel;
 import libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import libgdx.stage.LoadingStage;
 import libgdx.video.VideoMaster;
-import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
-import eidolons.system.options.OptionsMaster;
 import main.entity.Entity;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.launch.Flags;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -38,7 +35,6 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
     private static Boolean videoEnabled;
     protected VideoMaster loadVideo;
     protected Label underText;
-    protected HeroCreationPanel hcPanel;
 
     public ScreenWithVideoLoader() {
         //TODO loader here, but need data!
@@ -70,8 +66,6 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
 
     @Override
     protected boolean isTooltipsOn() {
-        if (HeroCreationMaster.isHeroCreationInProgress())
-            return false;
         if (selectionPanel != null)
             if (selectionPanel.isVisible())
                 return false;
@@ -134,18 +128,11 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoaderAndUI {
 
     private void showHeroCreationPanel(EventCallbackParam p) {
         if (p.get() == null) {
-            hcPanel.fadeOut();
             overlayStage.setActive(false);
             updateInputController();
         } else {
-            HeroCreationMaster.setHeroCreationInProgress(true);
             Unit unit = (Unit) p.get();
             HqDataMaster.getInstance(unit); //init model
-            if (hcPanel == null) {
-                overlayStage.addActor(hcPanel = HeroCreationPanel.getInstance());
-            } else {
-                hcPanel.setVisible(true);
-            }
             //update
             overlayStage.setActive(true);
             updateInputController();

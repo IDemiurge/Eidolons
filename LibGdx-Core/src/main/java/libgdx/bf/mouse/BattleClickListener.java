@@ -61,8 +61,6 @@ public class BattleClickListener extends ClickListener {
             return true;
         if (HqPanel.getActiveInstance()!=null )
             return true;
-        if (LordPanel.getActiveInstance()!=null )
-            return true;
         return super.handle(e);
     }
 

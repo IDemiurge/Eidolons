@@ -88,12 +88,12 @@ public class HqMaster {
 
 
     public static boolean isDirty() {
-        if (HqDataMaster.isSimulationOff())
-            return false;
-        for (HqHeroDataSource sub : HqPanel.getActiveInstance().getHeroes()) {
-            if (!sub.getEntity().getModificationList().isEmpty())
-                return true;
-        }
+        // if (HqDataMaster.isSimulationOff())
+        //     return false;
+        // for (HqHeroDataSource sub : HqPanel.getActiveInstance().getHeroes()) {
+        //     if (!sub.getEntity().getModificationList().isEmpty())
+        //         return true;
+        // }
         return false;
     }
 

@@ -212,8 +212,8 @@ public class OutcomePanel extends TablePanelX implements EventListener {
                     if (!ExplorationMaster.isExplorationOn())
                         Core.getGame().getObjMaster().nextLevel();
 
-                    if (!Bools.isTrue(outcome))
-                        Core.restart();
+                    // if (!Bools.isTrue(outcome))
+                    //     Core.restart();
 
 
                 } else if (exit_continue_next) {

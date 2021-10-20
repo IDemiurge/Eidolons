@@ -63,7 +63,8 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         return new SpawnManager(this) {
             @Override
             protected Unit findMainHero() {
-                return EidolonLord.lord.trueForm;
+              return Core.getMainHero();
+                // return EidolonLord.lord.trueForm;
             }
         };
     }

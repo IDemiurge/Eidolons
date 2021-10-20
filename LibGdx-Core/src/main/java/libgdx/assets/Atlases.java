@@ -11,6 +11,7 @@ import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.item.DC_WeaponObj;
+import eidolons.game.battlecraft.rules.combat.attack.AttackTypes;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import libgdx.GdxImageMaster;
 import libgdx.GdxMaster;
@@ -346,8 +347,9 @@ public class Atlases {
                     filter(type -> type.getProperty(G_PROPS.WEAPON_GROUP).equals(
                             activeObj.getActiveWeapon().getProperty(G_PROPS.WEAPON_GROUP))).collect(Collectors.toList());
         } else {
-            types = new ArrayList<>(
-                    activeObj.getParentAction().getSubActions());
+            // types = new ArrayList<>(
+            //         activeObj.getParentAction().getSubActions());
+            types= AttackTypes.getAttackTypes(activeObj);
         }
         Array<TextureAtlas.AtlasRegion> regions = null;
         for (Entity sub : types) {

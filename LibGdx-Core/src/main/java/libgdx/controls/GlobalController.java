@@ -213,10 +213,6 @@ public class GlobalController implements Controller {
                     CinematicLib.doTest(3);
                     return true;
                 }
-                new Thread(() -> {
-                    DC_Game.game.getMetaMaster().getDefeatHandler().isEnded(true, true);
-                }, " thread").start();
-
                 return true;
             case Keys.F4:
                 if (CinematicLib.TEST_ON) {

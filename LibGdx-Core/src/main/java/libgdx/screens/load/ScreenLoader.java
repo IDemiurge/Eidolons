@@ -4,6 +4,9 @@ import com.badlogic.gdx.Screen;
 import eidolons.content.consts.VisualEnums;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
+import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
+import eidolons.game.battlecraft.logic.meta.testenv.TestMeta;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
@@ -197,10 +200,7 @@ public class ScreenLoader {
     }
 
     public MetaGameMaster createMetaForScenario(ScreenData data) {
-        // if (!CoreEngine.TEST_LAUNCH) {
-        //     return new ScenarioMetaMaster(data.getName());
-        // }
-        return new NF_MetaMaster(data.getName());
+          return new ScenarioMetaMaster(data.getName());
     }
 
     public static void setFirstInitDone(boolean firstInitDone) {

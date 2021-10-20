@@ -6,7 +6,6 @@ import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Core;
 import eidolons.game.module.herocreator.HeroManager;
-import eidolons.game.module.herocreator.logic.spells.SpellMaster;
 import libgdx.gui.panels.headquarters.tabs.spell.SpellActor.SPELL_OVERLAY;
 import main.content.enums.entity.SpellEnums.SPELL_POOL;
 import main.elements.conditions.RequirementsManager;
@@ -67,11 +66,6 @@ public class HqSpellMaster {
             return false;
         if (spell.getOwnerUnit().calculateRemainingMemory() < spell.getIntParam(PARAMS.SPELL_DIFFICULTY))
             return false;
-        if (spell.isUpgrade()) {
-            if (SpellMaster.hasSpellVersion(spell.getOwnerUnit(), spell, PROPS.MEMORIZED_SPELLS)) {
-                return false;
-            }
-        }
         return spell.getGame().getRequirementsManager().check(spell.getOwnerUnit(), spell
                 , RequirementsManager.ALT_MODE) == null;
     }

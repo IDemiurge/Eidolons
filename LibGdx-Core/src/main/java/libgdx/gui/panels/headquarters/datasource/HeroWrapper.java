@@ -44,7 +44,6 @@ import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.enums.entity.HeroEnums.GENDER;
 import main.content.enums.entity.HeroEnums.RACE;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
-import main.content.enums.entity.SpellEnums.SPELL_UPGRADE;
 import main.content.enums.entity.UnitEnums.*;
 import main.content.enums.rules.VisionEnums.*;
 import main.content.enums.system.AiEnums.AI_TYPE;
@@ -576,16 +575,6 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public DC_ActiveObj getPreferredInstantAttack() {
-        return getHero().getPreferredInstantAttack();
-    }
-
-    @Override
-    public void setPreferredInstantAttack(DC_ActiveObj preferredInstantAttack) {
-        getHero().setPreferredInstantAttack(preferredInstantAttack);
-    }
-
-    @Override
     public boolean isSmall() {
         return getHero().isSmall();
     }
@@ -618,16 +607,6 @@ public class HeroWrapper extends HeroDataModel {
     @Override
     public boolean isShort() {
         return getHero().isShort();
-    }
-
-    @Override
-    public DC_ActiveObj getPreferredCounterAttack() {
-        return getHero().getPreferredCounterAttack();
-    }
-
-    @Override
-    public void setPreferredCounterAttack(DC_ActiveObj preferredCounterAttack) {
-        getHero().setPreferredCounterAttack(preferredCounterAttack);
     }
 
     @Override
@@ -696,16 +675,6 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public DC_ActiveObj getPreferredAttackOfOpportunity() {
-        return getHero().getPreferredAttackOfOpportunity();
-    }
-
-    @Override
-    public void setPreferredAttackOfOpportunity(DC_ActiveObj preferredAttackOfOpportunity) {
-        getHero().setPreferredAttackOfOpportunity(preferredAttackOfOpportunity);
-    }
-
-    @Override
     public String getCachedValue(VALUE value) {
         return getHero().getCachedValue(value);
     }
@@ -733,16 +702,6 @@ public class HeroWrapper extends HeroDataModel {
     @Override
     public void constructConcurrently() {
         getHero().constructConcurrently();
-    }
-
-    @Override
-    public DC_ActiveObj getPreferredAttackAction() {
-        return getHero().getPreferredAttackAction();
-    }
-
-    @Override
-    public void setPreferredAttackAction(DC_ActiveObj preferredAttackAction) {
-        getHero().setPreferredAttackAction(preferredAttackAction);
     }
 
     @Override
@@ -2325,11 +2284,6 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public void spellUpgradeToggled(Entity spell, SPELL_UPGRADE ug) {
-        getHero().spellUpgradeToggled(spell, ug);
-    }
-
-    @Override
     public DC_HeroItemObj findItem(String typeName, Boolean quick_inv_slot) {
         return getHero().findItem(typeName, quick_inv_slot);
     }
@@ -2534,11 +2488,6 @@ public class HeroWrapper extends HeroDataModel {
     @Override
     public void initNaturalWeapon(boolean offhand) {
         getHero().initNaturalWeapon(offhand);
-    }
-
-    @Override
-    public void initIntegrityAlignments() {
-        getHero().initIntegrityAlignments();
     }
 
     @Override

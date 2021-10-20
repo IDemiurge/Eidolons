@@ -23,6 +23,7 @@ import libgdx.gui.tooltips.ValueTooltip;
 import libgdx.texture.TextureCache;
 import main.content.VALUE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
@@ -64,7 +65,7 @@ public class AttackTooltipFactory {
         Attack attack = DC_AttackMaster.getAttackFromAction(source.getAttackAction(false));
         Ref ref = source.getRef().getCopy();
         ref.setTarget(target.getId());
-        for (AttackDataSource.ATTACK_CASE value : AttackDataSource.ATTACK_CASE.values()) {
+        for (ActionEnums.ATTACK_CASE value : ActionEnums.ATTACK_CASE.values()) {
             if (checkCase(value, ref)){
                 ValueContainer container = createContainer(value);
                 table.add(container).row();
@@ -75,14 +76,10 @@ public class AttackTooltipFactory {
         return table;
     }
 
-    private static boolean checkCase(AttackDataSource.ATTACK_CASE value, Ref ref) {
+    private static boolean checkCase(ActionEnums.ATTACK_CASE value, Ref ref) {
         switch (value) {
             case SNEAK:
                return SneakRule.checkSneak(ref);
-            case CLOSE_QUARTERS:
-                return RangeRule.isCloseQuartersOrLongReach(ref);
-            case LONG_REACH:
-                return !RangeRule.isCloseQuartersOrLongReach(ref);
             case SIDEWAYS:
                 return FacingMaster.getSingleFacing_(ref.getSourceObj(), ref.getTargetObj())== UnitEnums.FACING_SINGLE.TO_THE_SIDE;
             case DIAGONAL:
@@ -91,7 +88,7 @@ public class AttackTooltipFactory {
         return false;
     }
 
-    private static ValueContainer createContainer(AttackDataSource.ATTACK_CASE value) {
+    private static ValueContainer createContainer(ActionEnums.ATTACK_CASE value) {
         String pic="";
         String text = StringMaster.format(value.toString())+ " Attack";
         String tooltip=text + " modificators will apply";
@@ -100,12 +97,6 @@ public class AttackTooltipFactory {
             case SNEAK:
                 tooltip="Target may have reduced defense";
                 color = GdxColorMaster.LILAC;
-                break;
-            case CLOSE_QUARTERS:
-                color = GdxColorMaster.RED;
-                break;
-            case LONG_REACH:
-                color = GdxColorMaster.BLUE;
                 break;
             case SIDEWAYS:
                 color = GdxColorMaster.YELLOW;

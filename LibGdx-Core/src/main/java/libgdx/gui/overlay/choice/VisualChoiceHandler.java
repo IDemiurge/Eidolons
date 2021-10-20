@@ -24,26 +24,7 @@ public class VisualChoiceHandler extends MetaGameHandler {
     }
 
     public   boolean isDisabled(VC_DataSource.VC_OPTION option) {
-
-            Set<ChainHero> heroes;
-            switch (option) {
-            case ashen_rebirth:
-                heroes= getMaster().getSoulforceMaster().
-                        getHeroesCanRespawn(false, getMaster().getPartyManager().
-                                getHeroChain().getHeroes());
-                return heroes.isEmpty();
-            case fiery_rebirth:
-                heroes= getMaster().getSoulforceMaster().
-                        getHeroesCanRespawn(true, getMaster().getPartyManager().
-                                getHeroChain().getHeroes());
-                return heroes.isEmpty();
-        }
-
         return false;
     }
 
-    @Override
-    public NF_MetaMaster getMaster() {
-        return (NF_MetaMaster) super.getMaster();
-    }
 }
