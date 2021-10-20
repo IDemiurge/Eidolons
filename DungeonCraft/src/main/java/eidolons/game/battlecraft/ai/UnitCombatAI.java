@@ -5,6 +5,7 @@ import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
 import eidolons.game.battlecraft.ai.advanced.companion.CompanionMaster;
+import eidolons.game.battlecraft.ai.anew.AiImpulse;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.tools.AiExecutor;
@@ -43,6 +44,7 @@ public class UnitCombatAI {
     private boolean free;
     private INTENT_ICON intentIcon;
     private ActionSequence lastSequence;
+    private AiImpulse impulse;
 
     public UnitCombatAI(Unit unit) {
         this.unit = unit;
@@ -219,5 +221,13 @@ public class UnitCombatAI {
 
     public ActionSequence getLastSequence() {
         return lastSequence;
+    }
+
+    public AiImpulse getImpulse() {
+        return impulse;
+    }
+
+    public void setImpulse(AiImpulse impulse) {
+        this.impulse = impulse;
     }
 }

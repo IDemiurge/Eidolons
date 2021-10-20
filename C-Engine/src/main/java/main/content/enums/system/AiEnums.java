@@ -191,8 +191,15 @@ public class AiEnums {
     }
 
     public enum IMPULSE_TYPE {
-        HATRED, VENGEANCE,  FEAR, PROTECTIVENESS, FINISH,
-
+        HATRED, //unlimited aggro, plus secondary berserk mode (attacks other things if PC is being respawned or hidden)
+        VENGEANCE, // aggro until kills/hits hard
+        FINISH, // aggro until kills
+        PROTECTION, // won't leave an ally's side
+        BULLY_CHASE, // aggro until gets seriously hit or sees an ally fall
+        ROOTED , // won’t move
+        HESITANCE , // won’t move until an ally lands a hit
+        PANIC , // will try to put space between itself and you
+        MADNESS
     }
 
     public enum ai_parameter {

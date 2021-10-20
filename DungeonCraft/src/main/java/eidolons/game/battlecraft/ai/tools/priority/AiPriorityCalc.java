@@ -12,7 +12,7 @@ public class AiPriorityCalc {
     AiCalcData data;
 
     Map<String, Float> multipliers = new LinkedHashMap<>();
-    Map<String, Float> terms= new LinkedHashMap<>();
+    Map<String, Float> bonuses = new LinkedHashMap<>();
 
     public AiPriorityCalc(ActionSequence sequence, UnitAI ai, AiCalcData data) {
         this.sequence = sequence;
@@ -24,12 +24,12 @@ public class AiPriorityCalc {
         return multipliers;
     }
 
-    public Map<String, Float> getTerms() {
-        return terms;
+    public Map<String, Float> getBonuses() {
+        return bonuses;
     }
 
-    public AiPriorityCalc     addTerm(String id, Float f){
-        terms.put(id, f);
+    public AiPriorityCalc     addBonus(String id, Float f){
+        bonuses.put(id, f);
         return this;
     }
     public AiPriorityCalc     addMultiplier(String id, Float f){

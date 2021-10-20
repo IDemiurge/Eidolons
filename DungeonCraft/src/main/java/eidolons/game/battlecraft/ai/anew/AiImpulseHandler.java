@@ -1,24 +1,57 @@
 package eidolons.game.battlecraft.ai.anew;
 
-import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import main.content.enums.system.AiEnums;
 import main.elements.conditions.Condition;
 import main.elements.conditions.DistanceCondition;
-import main.entity.Entity;
 import main.entity.Ref;
+import main.entity.obj.Obj;
 import main.game.logic.event.Event;
 import main.system.auxiliary.data.ArrayMaster;
 
 public class AiImpulseHandler extends AiUnitHandler {
     AiEnums.IMPULSE_TYPE[] types = AiEnums.IMPULSE_TYPE.values();
 
+    /*
+    Impulse enforces a goal-type and adds
+    restrictions (protection) - we can't just filter, we need to create tasks that align;
+    maybe we can do some abstract filtering- we know some tasks will always break the rule etc
+
+    or
+    opposite (e.g. berserk)
+    it goes away if its condition is met OR some mind-affecting is done
+
+    while under Impulse, intention is overridden,
+     */
     public AiImpulse createImpulse() {
         AiImpulse impulse= null ;
         ActionSequence impulseSequence = createSequence(impulse);
         // impulseSequence.setExertion(true);
 
         return impulse;
+    }
+
+    public boolean checkClearImpulse(){
+       AiImpulse impulse= ai.getCombatAI().getImpulse();
+        if (getCondition(impulse).check(new Ref(ai.getUnit()).setMatch(ai.getUnit().getId()))) {
+            return true;
+        }
+        return false;
+    }
+
+    private Condition getCondition(AiImpulse impulse) {
+        switch (impulse.type) {
+            case HATRED:
+                break;
+            case VENGEANCE:
+            case FINISH:
+               // return new PlayerRespawningCondition();
+            case PROTECTION:
+                // return new IsDeadCondition((Obj) impulse.arg);
+            case BULLY_CHASE:
+                break;
+        }
+        return null;
     }
 
     private ActionSequence createSequence(AiImpulse impulse) {
@@ -62,14 +95,6 @@ public class AiImpulseHandler extends AiUnitHandler {
         switch (impulseType) {
             case HATRED:
                 return new DistanceCondition("3");
-            case VENGEANCE:
-                break;
-            case FEAR:
-                break;
-            case PROTECTIVENESS:
-                break;
-            case FINISH:
-                break;
         }
         return null;
     }
@@ -88,14 +113,6 @@ public class AiImpulseHandler extends AiUnitHandler {
             case VENGEANCE:
                 return new Event.STANDARD_EVENT_TYPE[]{
                         Event.STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED,
-                };
-            case FEAR:
-                return new Event.STANDARD_EVENT_TYPE[]{
-                        Event.STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE,
-                };
-            case PROTECTIVENESS:
-                return new Event.STANDARD_EVENT_TYPE[]{
-                        Event.STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE,
                 };
         }
         return new Event.STANDARD_EVENT_TYPE[0];

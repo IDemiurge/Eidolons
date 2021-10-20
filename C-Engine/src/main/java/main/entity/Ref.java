@@ -442,8 +442,9 @@ public class Ref implements Cloneable, Serializable {
         return getId(KEYS.MATCH);
     }
 
-    public void setMatch(Integer match) {
+    public Ref setMatch(Integer match) {
         setValue(KEYS.MATCH, match + "");
+        return this;
     }
 
     public GroupImpl getGroup() {

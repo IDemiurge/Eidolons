@@ -13,6 +13,7 @@ public class AiStateMachine {
     solid basics - positioning, waiting, modes,
      */
 
+    //after an action is completed OR round ends
     public void checkStateChange(Event event){
         /*
 when does it change?
