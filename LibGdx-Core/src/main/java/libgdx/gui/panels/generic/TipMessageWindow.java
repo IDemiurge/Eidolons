@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.kotcrab.vis.ui.widget.VisCheckBox;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.system.text.tips.TipMessageSource;
 import libgdx.GDX;
 import libgdx.GdxMaster;
@@ -64,7 +64,7 @@ public class TipMessageWindow extends TablePanelX implements OverlayingUI {
         if (message == null) {
             message = "";
         } else
-            message = TextParser.parse(message, Eidolons.getMainHero().getRef());
+            message = TextParser.parse(message, Core.getMainHero().getRef());
         if (large) {
             label = new LabelX(message, StyleHolder.getSizedLabelStyle(FontMaster.FONT.AVQ, 21));
         } else {
@@ -103,7 +103,7 @@ public class TipMessageWindow extends TablePanelX implements OverlayingUI {
                             runnable.run();
                             WaitMaster.receiveInput(source.msgChannel, button);
                         } else
-                            Eidolons.onThisOrNonGdxThread(() -> {
+                            Core.onThisOrNonGdxThread(() -> {
                                 runnable.run();
                                 WaitMaster.receiveInput(source.msgChannel, button);
                             });

@@ -1,6 +1,6 @@
 package eidolons.system.text;
 
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.FileManager;
@@ -47,7 +47,7 @@ public class HelpMaster {
     }
 
     public static String getWelcomeText() {
-        String name = Eidolons.getMainHero().getName().split(" ")[0];
+        String name = Core.getMainHero().getName().split(" ")[0];
         return getHeroInfoText(name, null);
     }
 

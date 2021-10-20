@@ -226,14 +226,15 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
             //TODO some actions will ALWAYS cost MP
             return true;
         }
-        if (getEntity().getOwnerUnit().isMovePointsOn()) {
-            if (isTurn() || isMove()) {
-                return getEntity().getOwnerObj().checkCanDoFreeMove(getEntity());
-            }
-
-        } else {
-            return false;
-        }
+        //TODO NF Rules - active counter exertion
+        // if (getEntity().getOwnerUnit().isMovePointsOn()) {
+        //     if (isTurn() || isMove()) {
+        //         return getEntity().getOwnerObj().checkCanDoFreeMove(getEntity());
+        //     }
+        //
+        // } else {
+        //     return false;
+        // }
         return false;
     }
 }

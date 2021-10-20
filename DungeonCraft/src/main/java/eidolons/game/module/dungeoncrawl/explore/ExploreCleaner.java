@@ -4,7 +4,7 @@ import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.advanced.StealthRule;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.master.EffectMaster;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.entity.SpellEnums;
@@ -37,12 +37,8 @@ public class ExploreCleaner extends ExplorationHandler {
     }
 
     public void cleanUpAfterBattle() {
-        for (Unit unit : new ArrayList<>(Eidolons.getGame().getUnits())) {
+        for (Unit unit : new ArrayList<>(Core.getGame().getUnits())) {
             {
-                if (unit.isShadow()) {
-                    unit.kill(); //TODO lazy..
-                    return;
-                }
                 if (unit.isSummoned()){
                     if (unit.getRef().getObj(Ref.KEYS.SPELL).checkProperty(G_PROPS.SPELL_TAGS,
                             SpellEnums.SPELL_TAGS.COMBAT_ONLY.toString())) {

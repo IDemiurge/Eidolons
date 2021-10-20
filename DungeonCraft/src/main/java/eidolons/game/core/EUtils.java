@@ -84,7 +84,7 @@ public class EUtils {
 
     public static void onConfirm(String text, boolean cancel, Runnable o, boolean onAnotherThread) {
         if (onAnotherThread)
-            onConfirm(text, cancel, () -> Eidolons.onNonGdxThread(o));
+            onConfirm(text, cancel, () -> Core.onNonGdxThread(o));
         else onConfirm(text, cancel, o);
     }
 
@@ -125,7 +125,7 @@ public class EUtils {
 
     public static void waitAndRun(int i, Runnable o) {
         WaitMaster.WAIT(i);
-        Eidolons.onNonGdxThread(o::run);
+        Core.onNonGdxThread(o::run);
     }
 
     public static void showInfoTextStyled(VisualEnums.LABEL_STYLE style, String s) {

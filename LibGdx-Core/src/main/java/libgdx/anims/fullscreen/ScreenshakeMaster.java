@@ -3,7 +3,7 @@ package libgdx.anims.fullscreen;
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import main.entity.Ref;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -12,8 +12,8 @@ public class ScreenshakeMaster {
 
     public static void shakeCamera(Ref ref, Damage damage) {
         boolean lethal = ref.getTargetObj().isDead();
-        boolean meTarget = ref.getTargetObj() == Eidolons.getMainHero();
-        boolean me = ref.getSourceObj() == Eidolons.getMainHero();
+        boolean meTarget = ref.getTargetObj() == Core.getMainHero();
+        boolean me = ref.getSourceObj() == Core.getMainHero();
 
         Boolean vertical = null;
         if (me)

@@ -8,7 +8,7 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.IVoidGdxHandler
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.VoidMaze;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.VoidMazeHandler;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleElement;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.puzzle.gridobj.GridObject;
 import eidolons.puzzle.gridobj.Veil;
 import libgdx.GdxMaster;
@@ -93,7 +93,7 @@ public   class VoidHandler extends PuzzleElement<VoidMaze> implements IVoidGdxHa
     }
 
     public void toggleAuto() {
-        toggleAuto(Eidolons.getMainHero());
+        toggleAuto(Core.getMainHero());
     }
 
     public void toggleAutoOff(Unit obj) {
@@ -114,7 +114,7 @@ public   class VoidHandler extends PuzzleElement<VoidMaze> implements IVoidGdxHa
 
         ScreenMaster.getDungeonGrid().setCustomVoidHandler(null);
 
-        toggleAutoOff(Eidolons.getMainHero());
+        toggleAutoOff(Core.getMainHero());
     }
 
     public void toggleAuto(Unit obj) {
@@ -135,7 +135,7 @@ public   class VoidHandler extends PuzzleElement<VoidMaze> implements IVoidGdxHa
                     GridCell gridCell = raised.keySet().iterator().next();
                     raised.keySet().remove(gridCell);
                     DC_Cell cell = gridCell.getUserObject();
-                    if (canDropHero || !Eidolons.getPlayerCoordinates().equals(cell.getCoordinates())) {
+                    if (canDropHero || !Core.getPlayerCoordinates().equals(cell.getCoordinates())) {
 
                         Coordinates c = cell.getCoordinates();
                         toggle(false, c, ImmutableList.of(c), 1f, raised.get(cell));
@@ -147,7 +147,7 @@ public   class VoidHandler extends PuzzleElement<VoidMaze> implements IVoidGdxHa
             }
         }
         if (isMainHeroMode()) {
-            autoRaiseFor(Eidolons.getMainHero());
+            autoRaiseFor(Core.getMainHero());
         } else
             for (BattleFieldObject object : autoRaise) {
                 autoRaiseFor(object);
@@ -243,10 +243,10 @@ public   class VoidHandler extends PuzzleElement<VoidMaze> implements IVoidGdxHa
             // WaitMaster.WAIT(period);
             if (GdxMaster.isLwjglThread()) {
                 animator.animate(period, raiseOrCollapse, cell, speed, from);
-                Eidolons.onNonGdxThread(() -> onAnimate(cell));
+                Core.onNonGdxThread(() -> onAnimate(cell));
             } else {
                 int finalPeriod = period;
-                Eidolons.onGdxThread(() ->  animator.animate(finalPeriod, raiseOrCollapse, cell, speed, from));
+                Core.onGdxThread(() ->  animator.animate(finalPeriod, raiseOrCollapse, cell, speed, from));
                 onAnimate(cell);
             }
         }
@@ -316,7 +316,7 @@ public   class VoidHandler extends PuzzleElement<VoidMaze> implements IVoidGdxHa
 
                 @Override
                 public boolean checkVisible() {
-                    visible = (Eidolons.getGame().
+                    visible = (Core.getGame().
                             getManager().getMainHeroCoordinates().dst_(c) <= getDefaultVisionRange());
                     //blackness revealed only when close by
                     if (visible) {

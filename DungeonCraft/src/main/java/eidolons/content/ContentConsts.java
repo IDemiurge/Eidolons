@@ -1,6 +1,5 @@
 package eidolons.content;
 
-import eidolons.entity.Deity;
 import main.content.DC_TYPE;
 import main.content.VALUE;
 import main.content.enums.entity.HeroEnums;
@@ -24,7 +23,6 @@ public class ContentConsts {
     };
     public static final PARAMETER[] MAIN_PARAMETERS = {
             PARAMS.ATTACK, PARAMS.DEFENSE, PARAMS.INITIATIVE, PARAMS.ARMOR, PARAMS.MIGHT, PARAMS.RESISTANCE, PARAMS.SPIRIT,
-            PARAMS.EXTRA_ATTACKS,
     };
     public static final PARAMETER[] ROLL_PARAMETERS = {
             PARAMS.MIGHT, PARAMS.REFLEX, PARAMS.GRIT, PARAMS.WIT, PARAMS.SPIRIT,
@@ -82,7 +80,6 @@ public class ContentConsts {
             PARAMS.C_ATB.name(),
     };
     static List<VALUE> NO_SHOW_NAME_VALUES = new ArrayList<>();
-    static Map<String, Deity> deities;
     static List<PARAMS> masteries;
     static List<PARAMETER> ARMOR_MODIFYING_PARAMS_FULL;
     static Map<String, EDITOR> editorMap;

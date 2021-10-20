@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules;
 
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
@@ -153,7 +153,7 @@ public class RuleKeeper  {
     }
 
     public static boolean isRuleTestOn(RuleEnums.RULE rule) {
-        if (Eidolons.getGame().isDebugMode())
+        if (Core.getGame().isDebugMode())
             return false;
         return Bools.isTrue(mapTest.get(rule));
     }

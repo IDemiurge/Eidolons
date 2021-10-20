@@ -2,7 +2,7 @@ package eidolons.game.module.dungeoncrawl.explore;
 
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.ActionInput;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.system.math.PositionMaster;
 
@@ -46,7 +46,7 @@ public class ExplorationResetHandler extends ExplorationHandler {
     }
 
     public boolean isAggroCheckNeeded(ActionInput input) {
-        Unit unit = Eidolons.getMainHero();
+        Unit unit = Core.getMainHero();
         //input.getAction().getGame().getAiManager().getAnalyzer().
         //         getClosestEnemy(unit)
         Unit enemy =  input.getAction().getOwnerUnit();

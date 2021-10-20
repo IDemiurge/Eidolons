@@ -1,22 +1,14 @@
 package eidolons.game.netherflame.main.soul;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
-import eidolons.game.netherflame.main.NF_PartyManager;
-import eidolons.game.netherflame.main.death.ChainHero;
+import eidolons.game.core.Core;
 import eidolons.game.netherflame.lord.EidolonLord;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Shadow action costs?
@@ -27,20 +19,10 @@ public class SoulforceMaster extends MetaGameHandler {
 
     private static Coordinates lastRespPoint;
     private static SoulforceMaster instance;
-
     private boolean trueForm;
 
     public SoulforceMaster(MetaGameMaster master) {
         super(master);
-    }
-
-    public static Coordinates getLastRespPoint() {
-        return lastRespPoint;
-    }
-
-    //TODO get CLOSEST
-    public static void setLastRespPoint(Coordinates lastRespPoint) {
-        SoulforceMaster.lastRespPoint = lastRespPoint;
     }
 
     public static void slain(Unit killed) {
@@ -53,23 +35,15 @@ public class SoulforceMaster extends MetaGameHandler {
                 EidolonLord.lord.getSoulforceMax();
     }
 
-    public void shrineActivated(Structure shrine) {
-        // activeShrines.add(shrine);
-    }
-
     public static SoulforceMaster getInstance() {
         if (instance == null) {
-            instance = new SoulforceMaster(Eidolons.getGame().getMetaMaster());
+            instance = new SoulforceMaster(Core.getGame().getMetaMaster());
         }
         return instance;
     }
 
     public boolean isTrueForm() {
         return trueForm;
-    }
-
-    private int getResurrectCost(boolean inPlace, Unit hero) {
-        return 10 + hero.getIntParam(PARAMS.LEVEL) * 5;
     }
 
     private static int getSoulforce() {
@@ -84,11 +58,8 @@ public class SoulforceMaster extends MetaGameHandler {
         return type.getIntParam(PARAMS.POWER) / 50;
     }
 
-    public Set<ChainHero> getHeroesCanRespawn(boolean inPlace, List<ChainHero> heroes) {
-        return heroes.stream().filter(hero -> getSoulforce() >= getResurrectCost(inPlace,hero.getUnit())).collect(Collectors.toSet());
-    }
-
-    public boolean slipPenalty() {
+    //TODO
+    public boolean soulburn() {
         int slipPenalty = getSlipPenalty();
         if (getSoulforce() <= slipPenalty) {
             return false;
@@ -99,13 +70,17 @@ public class SoulforceMaster extends MetaGameHandler {
     }
 
     private int getSlipPenalty() {
-        return 20 + Eidolons.getMainHero().getLevel() * 2;
+        return 20 + Core.getMainHero().getLevel() * 2;
     }
 
-    public Set<ChainHero> getHeroesCanRespawn() {//VC_DataSource.VC_OPTION chosen) {
-        if (getGame().getMetaMaster().getPartyManager() instanceof NF_PartyManager) {
-            return ((NF_PartyManager) getGame().getMetaMaster().getPartyManager()).getParty().getHeroes();
-        }
-        return new HashSet<>();
+
+    public static Coordinates getLastRespPoint() {
+        return lastRespPoint;
     }
+
+    //TODO get CLOSEST
+    public static void setLastRespPoint(Coordinates lastRespPoint) {
+        SoulforceMaster.lastRespPoint = lastRespPoint;
+    }
+
 }

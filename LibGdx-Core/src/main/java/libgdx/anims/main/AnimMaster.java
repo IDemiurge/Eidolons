@@ -11,7 +11,7 @@ import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechExecutor;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.libgdx.datasource.AnimContext;
@@ -141,7 +141,7 @@ public class AnimMaster extends Group {
 
     public static void waitForAnimations(ActionInput action) {
         if (action == null) {
-            action = Eidolons.getGame().getLoop().getLastActionInput();
+            action = Core.getGame().getLoop().getLastActionInput();
         }
         if (action == null) {
             return;
@@ -318,7 +318,7 @@ public class AnimMaster extends Group {
         GuiEventManager.bind(GuiEventType.SHOW_SPRITE_SUPPLIER, p -> {
 //            AnimConstructor.createSpriteAnim(path);
             Supplier<SpriteAnimation> sup = (Supplier<SpriteAnimation>) p.get();
-            new CustomSpriteAnim(Eidolons.getMainHero().getLastAction(), sup.get()).startAsSingleAnim();
+            new CustomSpriteAnim(Core.getMainHero().getLastAction(), sup.get()).startAsSingleAnim();
         });
 
         GuiEventManager.bind(GuiEventType.ACTION_INTERRUPTED, p -> {
@@ -501,7 +501,7 @@ public class AnimMaster extends Group {
         CustomSpriteAnim anim = new CustomSpriteAnim(null, path);
         anim.setOrigin(coordinates);
         anim.onDone(callback, param);
-        Eidolons.onThisOrGdxThread(()->
+        Core.onThisOrGdxThread(()->
             customAnimation(anim));
         return anim;
     }

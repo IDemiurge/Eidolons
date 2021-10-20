@@ -52,26 +52,8 @@ public class AutoAttackEffect extends DC_Effect implements OneshotEffect {
         if (Flags.isSafeMode())
             return getSourceUnitOrNull().getStdAttack();
         List<DC_ActiveObj> subActions = getActiveObj().getValidSubactions(ref, target);
-        if (subActions.isEmpty()) {
-            DC_Logger.logicError("Failing on our autoattack ... subActions.isEmpty()");
 
-            for (DC_ActiveObj subAction : getActiveObj().getSubActions()) {
-                if (subAction.isThrow()) {
-                    continue;
-                }
-                if (!subAction.canBeTargeted(target)) {
-                    Ref REF = ref.getCopy();
-                    REF.setMatch(target);
-                    for (Condition condition : subAction.getTargeting().getFilter().getConditions()) {
-                        if (!condition.check(REF)) {
-                            log(1, "Breaking our autoattack: " + condition);
-                        }
-                    }
-                } else {
-                    // log(1, "It worked?: " + subAction);
-                }
-            }
-        }
+        //TODO NF Rules revamp
         if (subActions.size() == 1) {
             return subActions.get(0);
         }

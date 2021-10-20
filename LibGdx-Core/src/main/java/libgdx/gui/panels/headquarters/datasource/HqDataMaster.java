@@ -14,10 +14,10 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.DroppedItemManager;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.explore.vendor.GoldMaster;
 import eidolons.game.module.herocreator.logic.PointMaster;
-import eidolons.game.module.herocreator.logic.skills.SkillMaster;
+import eidolons.game.module.herocreator.logic.passives.SkillMaster;
 import eidolons.system.libgdx.datasource.HeroDataModel;
 import libgdx.gui.panels.headquarters.HqMaster;
 import libgdx.gui.panels.headquarters.HqPanel;
@@ -152,7 +152,7 @@ public class HqDataMaster {
                                  HeroDataModel.HERO_OPERATION operation,
                                  Object... args) {
         //        new Thread(() -> {
-        Eidolons.onThisOrNonGdxThread(() -> {
+        Core.onThisOrNonGdxThread(() -> {
             HqDataMaster master = getInstance(model.getHero());
             master.applyOperation(model,
                     operation, args);
@@ -221,7 +221,7 @@ public class HqDataMaster {
     }
 
     public static HqDataMaster getInstance() {
-        return getInstance(Eidolons.getMainHero());
+        return getInstance(Core.getMainHero());
     }
 
     public static HqDataMaster getInstance(Unit unit) {

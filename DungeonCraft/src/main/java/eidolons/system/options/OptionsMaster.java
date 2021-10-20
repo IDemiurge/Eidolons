@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionRule;
 import eidolons.game.battlecraft.rules.RuleEnums.RULE_SCOPE;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationTimeMaster;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.data.MetaDataUnit;
@@ -31,8 +31,6 @@ import main.system.auxiliary.Strings;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
-import main.system.graphics.FontMaster;
-import main.system.graphics.GuiManager;
 import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
 import main.system.sound.SoundMaster;
@@ -40,8 +38,6 @@ import main.system.util.DialogMaster;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import javax.swing.*;
-import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -132,9 +128,9 @@ public class OptionsMaster {
                                     ));
                     break;
                 case GAME_DIFFICULTY:
-                    if (Eidolons.game != null)
-                        if (Eidolons.game.getMissionMaster() != null)
-                            Eidolons.game.getMissionMaster().getOptionManager().difficultySet(value);
+                    if (Core.game != null)
+                        if (Core.game.getMissionMaster() != null)
+                            Core.game.getMissionMaster().getOptionManager().difficultySet(value);
                     break;
             }
         }

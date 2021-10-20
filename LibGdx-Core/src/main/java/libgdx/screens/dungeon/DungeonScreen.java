@@ -6,11 +6,10 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import eidolons.content.consts.GridCreateData;
-import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import libgdx.GdxMaster;
@@ -221,7 +220,7 @@ public class DungeonScreen extends GameScreenWithTown {
         } else {
             if (DC_Game.game != null)
                 if (!isBlocked())////TODO some dialogue windows will pause RT -thread and more?
-                    Eidolons.game.getLoop().setVisualLock(false);
+                    Core.game.getLoop().setVisualLock(false);
             if (postProcessing != null)
                 postProcessing.begin();
             drawBg(delta);

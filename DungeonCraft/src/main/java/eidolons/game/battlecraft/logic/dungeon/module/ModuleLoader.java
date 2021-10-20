@@ -6,7 +6,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.system.libgdx.GdxAdapter;
 
 import main.game.bf.BattleFieldManager;
@@ -83,11 +83,11 @@ public class ModuleLoader extends DungeonHandler {
         module.setFirstInit(false);
 
         GuiEventManager.trigger(GuiEventType.GRID_RESET );
-        GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, Eidolons.getMainHero());
+        GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, Core.getMainHero());
     }
 
     private void adjustTransitHero(Module module) {
-        Eidolons.getMainHero().setModule(module);
+        Core.getMainHero().setModule(module);
     }
 
     public void loadInitial() {

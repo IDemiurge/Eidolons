@@ -1,5 +1,14 @@
 package eidolons.entity.hero;
 
+import com.badlogic.gdx.utils.ObjectMap;
+import eidolons.content.DC_ContentValsManager;
+import eidolons.content.PARAMS;
+import eidolons.entity.obj.unit.Unit;
+import main.system.auxiliary.StringMaster;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class AttributeConsts {
 
     public static final float SAVE_BONUS = 0.1f;
@@ -56,4 +65,27 @@ public class AttributeConsts {
     public static final float CHA_DEITY_BONUS = 1;
     public static final float B25_CHA_DISCOUNT = 1;
     public static final float A25_CHA_ASTRAL_RES = 1;
+
+    public static List<String> getAttributeBonusInfoStrings(DC_ContentValsManager.ATTRIBUTE attr, Unit hero) {
+        List<String> list = new ArrayList<>();
+        Object key  = StringMaster.format(attr.name());
+        for (PARAMS p : attr.getParams()) {
+            ObjectMap<String, Double> map = hero.getModifierMaps().get(p);
+            if (map == null) {
+                continue;
+            }
+            Double amount = map.get((String) key);
+            if (amount == null) {
+                continue;
+            }
+            String string = "+";
+            if (amount < 0) {
+                string = "-";
+            }
+            string += StringMaster.wrapInBrackets("" + amount) + " " + p.getName();
+
+            list.add(string);
+        }
+        return list;
+    }
 }

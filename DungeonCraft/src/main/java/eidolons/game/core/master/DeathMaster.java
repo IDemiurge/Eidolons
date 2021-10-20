@@ -5,19 +5,13 @@ import eidolons.entity.handlers.bf.unit.UnitChecker;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
-import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.state.DC_GameState;
-import eidolons.game.module.dungeoncrawl.explore.DungeonCrawler;
-import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import eidolons.game.netherflame.main.soul.SoulforceMaster;
 import main.ability.AbilityObj;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
-import main.content.enums.GenericEnums.STD_BOOLS;
-import main.entity.EntityCheckMaster;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Attachment;
@@ -201,14 +195,6 @@ public class DeathMaster extends Master {
             list.addAll(getGame().getStructures());
         }
         for (BattleFieldObject unit : list) {
-
-            if (retainPlayerParty) {
-                if (PartyHelper.getParty() != null) {
-                    if (PartyHelper.getParty().getMembers().contains(unit)) {
-                        continue;
-                    }
-                }
-            }
             unit.kill(unit, false, quiet);
             toRemove.add(unit);
 

@@ -12,6 +12,7 @@ import main.entity.type.ObjType;
 import java.util.HashMap;
 import java.util.Map;
 
+//TODO NF RPG REVAMP
 public class HeroLevelManager {
     private static final Map<VALUE, String> buffer = new HashMap<>();
 

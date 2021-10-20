@@ -22,7 +22,7 @@ import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionRule;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.VoidMazeHandler;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import libgdx.GdxMaster;
@@ -202,7 +202,7 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
             }
             if (!(observer instanceof Unit)) {
                 if (gridPanel instanceof DC_GridPanel) {
-                    observer = Eidolons.getMainHero();
+                    observer = Core.getMainHero();
                 }
             } else {
                 if (!VisionRule.isSightInfoAvailable(observer))
@@ -297,7 +297,7 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
             path = true;
         }
         if (debug || sightInfoDisplayed || path) {
-            DC_Cell cell = Eidolons.getGame().getObjMaster().
+            DC_Cell cell = Core.getGame().getObjMaster().
                     getCellByCoordinate(c);
             if (debug || (sightInfoDisplayed&&Flags.isIDE())) {
                 drawOverlay(container, INFO_TEXT, batch, cell, x, y);
@@ -401,7 +401,7 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
         Rectangle rect;
         if (isTooltipRequired(overlay)) {
             if (obj == null) {
-                obj = Eidolons.getGame().getObjMaster().getCellByCoordinate(Coordinates.get(x, y));
+                obj = Core.getGame().getObjMaster().getCellByCoordinate(Coordinates.get(x, y));
             }
             ObjectMap<Rectangle, Tooltip> map = tooltipMap.get(obj);
             if (map == null) {
@@ -424,7 +424,7 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
 
         if (isClickListenerRequired(overlay)) {
             if (obj == null) {
-                obj = Eidolons.getGame().getObjMaster().getCellByCoordinate(Coordinates.get(x, y));
+                obj = Core.getGame().getObjMaster().getCellByCoordinate(Coordinates.get(x, y));
             }
             ObjectMap<OVERLAY, Rectangle> map2 = getOverlayMap(obj);
             rect = map2.get(overlay);
@@ -602,12 +602,12 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
         switch (overlay) {
             case BAG:
                 //TODO kill this shit
-                List<DC_HeroItemObj> items = Eidolons.game.getDroppedItemManager().
+                List<DC_HeroItemObj> items = Core.game.getDroppedItemManager().
                         getDroppedItems(coordinates);
                 if (items == null) {
-                    Eidolons.game.getDroppedItemManager().reset(coordinates.x, coordinates.y);
+                    Core.game.getDroppedItemManager().reset(coordinates.x, coordinates.y);
                     main.system.auxiliary.log.LogMaster.verbose( "dropped item forced reset " + coordinates);
-                    items = Eidolons.game.getDroppedItemManager().
+                    items = Core.game.getDroppedItemManager().
                             getDroppedItems(coordinates);
                 }
                 if (!items.isEmpty())

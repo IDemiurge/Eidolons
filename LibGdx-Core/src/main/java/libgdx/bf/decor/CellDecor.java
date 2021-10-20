@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.entity.obj.DC_Cell;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import libgdx.bf.mouse.InputController;
 import libgdx.gui.generic.ContainerGroup;
 import libgdx.particles.EmitterActor;
@@ -96,7 +96,7 @@ public class CellDecor extends ContainerGroup {
     private boolean checkVisible() {
         if (CoreEngine.isLevelEditor())
             return true;
-        return !(Eidolons.getGame().getManager().
+        return !(Core.getGame().getManager().
                 getMainHeroCoordinates().dst_(cell.getCoordinates()) > sightRange);
     }
 

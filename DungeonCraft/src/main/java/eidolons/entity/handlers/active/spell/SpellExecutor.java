@@ -7,11 +7,10 @@ import eidolons.entity.handlers.active.ActiveMaster;
 import eidolons.entity.handlers.active.Executor;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.DC_UnitModel;
+import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
 import eidolons.game.core.ActionInput;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.module.herocreator.logic.HeroAnalyzer;
-import eidolons.game.module.herocreator.logic.spells.DivinationMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.enums.GenericEnums;
@@ -51,19 +50,7 @@ public class SpellExecutor extends Executor {
 
     @Override
     public void actionComplete() {
-
         super.actionComplete();
-
-        if (getSpell().getSpellPool() == SpellEnums.SPELL_POOL.DIVINED) {
-//            if (DivinationMaster.rollRemove(getSpell())) {
-                if (getSpell().getBuff(DivinationMaster.BUFF_FAVORED) != null) {
-                    getSpell().removeBuff(DivinationMaster.BUFF_FAVORED);
-                } else {
-                    getSpell().remove();
-                }
-//            }
-        }
-
     }
 
     @Override
@@ -85,7 +72,7 @@ public class SpellExecutor extends Executor {
         if (result) {
             this.channeling = true;
             getAction().setChannelingNow(channeling);
-            ChannelingRule.playChannelingSound(getSpell(), HeroAnalyzer.isFemale(getAction().getOwnerObj()));
+            ChannelingRule.playChannelingSound(getSpell(), UnitAnalyzer.isFemale(getAction().getOwnerObj()));
             result = ChannelingRule.activateChanneing(getSpell());
 
         }

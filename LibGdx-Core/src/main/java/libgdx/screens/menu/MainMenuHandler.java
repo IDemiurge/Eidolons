@@ -1,6 +1,6 @@
 package libgdx.screens.menu;
 
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import libgdx.launch.MainLauncher;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -147,7 +147,7 @@ public class MainMenuHandler {
             case ABOUT:
                 break;
             case EXIT:
-                Eidolons.exitGame();
+                Core.exitGame();
                 break;
         }
 

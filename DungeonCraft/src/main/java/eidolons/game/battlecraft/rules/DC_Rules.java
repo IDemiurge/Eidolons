@@ -49,7 +49,6 @@ public class DC_Rules implements GameRules {
     private final DequeImpl<DC_RuleImpl> triggerRules = new DequeImpl<>();
     private final DequeImpl<DC_SecondsRule> secondsRules = new DequeImpl<>();
 
-    private WatchRule watchRule;
     private FocusRule focusRule;
     private EssenceRule essenceRule;
     private EssenceBuffRule essenceBuffRule;
@@ -105,14 +104,12 @@ public class DC_Rules implements GameRules {
         AlertRule.reset();
         dynamicBuffRules = new DynamicBuffRules(game);
         unconsciousRule = new UnconsciousRule(game);
-        watchRule = new WatchRule();
         stackingRule = new StackingRule(getGame());
         ensnareRule = new EnsnaredRule(getGame());
         stealthRule = new StealthRule(getGame());
         stackingRule = new StackingRule(getGame());
         HearingRule hearingRule = new HearingRule(getGame());
         actionRules.add(unconsciousRule);
-        actionRules.add(watchRule);
         actionRules.add(stealthRule);
         actionRules.add(ensnareRule);
         actionRules.add(stackingRule);
@@ -236,10 +233,6 @@ public class DC_Rules implements GameRules {
 
     public DequeImpl<ActionRule> getActionRules() {
         return actionRules;
-    }
-
-    public WatchRule getWatchRule() {
-        return watchRule;
     }
 
     public FocusRule getFocusRule() {

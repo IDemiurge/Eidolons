@@ -1,11 +1,9 @@
 package eidolons.game.eidolon.event;
 
-import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.rules.counter.positive.UndyingCounterRule;
-import eidolons.game.core.Eidolons;
-import eidolons.system.libgdx.GdxStatic;
+import eidolons.game.core.Core;
 import eidolons.system.text.tips.TipMessageMaster;
 import main.game.logic.event.Event;
 import main.system.GuiEventManager;
@@ -36,7 +34,7 @@ public class GameEventHandler extends MetaGameHandler {
                     }
                     break;
                 case UNIT_ACTION_COMPLETE:
-                    if (event.getRef().getSourceObj()== Eidolons.getMainHero()) {
+                    if (event.getRef().getSourceObj()== Core.getMainHero()) {
                         GuiEventManager.trigger(GuiEventType.CLEAR_COMMENTS);
                     }
 

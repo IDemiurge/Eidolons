@@ -1,19 +1,15 @@
 package eidolons.game.module.dungeoncrawl.objects;
 
-import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.module.dungeoncrawl.objects.LockMaster.LOCK_ACTIONS;
-import eidolons.system.math.roll.RollMaster;
-import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.system.math.Formula;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,33 +29,9 @@ public class LockMaster extends DungeonObjMaster<LOCK_ACTIONS> {
         return null;
     }
 
-    public boolean tryUnlock(Entity lockedObj, Unit lockPicker) {
-        return tryUnlock(lockedObj, lockPicker, null);
-
-    }
-
     @Override
     public DC_ActiveObj getDefaultAction(Unit source, DungeonObj target) {
         return null;
-    }
-
-    public boolean tryUnlock(Entity lockedObj, Unit lockPicker, Formula formula) {
-        boolean result = TrapMaster.checkTrapOnLock(lockedObj);
-        if (!result) {
-            return false;
-        }
-        Ref ref = new Ref(lockPicker);
-        ref.setTarget(lockedObj.getId());
-        // preCheck lockpick
-        if (formula != null) {
-        } else {
-            // TODO RPG Review
-            // result = RollMaster.roll(GenericEnums.RollType.UNLOCK, ref);
-        }
-        // roll
-        lockedObj.getIntParam(PARAMS.LOCK_LEVEL);
-        // DC_SoundMaster.playStandardSound(STD_SOUNDS.UNLOCK_SUCCESS);
-        return result;
     }
 
     public List<Obj> getObjectsToUnlock(Unit unit) {

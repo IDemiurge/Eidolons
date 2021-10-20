@@ -96,10 +96,6 @@ public class RadialContainer extends ActionContainer {
     }
 
 
-    public RadialContainer(TextureRegion texture, String value, Runnable action) {
-        super(texture, value, action);
-    }
-
     public RadialContainer(TextureRegion textureRegion, Runnable runnable, boolean valid, DC_ActiveObj activeObj, DC_Obj target) {
         this(textureRegion, runnable);
         this.setValid(valid);

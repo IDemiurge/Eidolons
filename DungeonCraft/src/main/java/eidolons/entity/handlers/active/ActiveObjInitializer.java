@@ -84,33 +84,8 @@ public class ActiveObjInitializer extends EntityInitializer<DC_ActiveObj> {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
 
-            Formula ap_cost = new Formula(getParam(PARAMS.AP_COST));
-
-            if (!ExplorationMaster.isExplorationOn()
-                   // && !getEntity().getOwnerObj().isAiControlled()
-                    &&                    (getEntity().isInstantAction() || getHandler().isExtraAttackMode())) {
-                PARAMS parameter = getEntity().isAttackAny()
-                        ? PARAMS.C_EXTRA_ATTACKS
-                        : PARAMS.C_EXTRA_MOVES;
-                Cost cost = costs.getCost(parameter);
-                if (cost == null) {
-                    PARAMS costParam = getEntity().isAttackAny()
-                            ? PARAMS.ATK_PTS_COST
-                            : PARAMS.MOVE_PTS_COST;
-                    CostImpl ptsCost = new CostImpl(new Payment(parameter, ap_cost),
-                            costParam);
-                    if (!getEntity().isAttackAny()) {
-                        if (ptsCost.canBePaid(getRef())) {
-                            costs.addCost(ptsCost);
-                            getEntity().setPointCostActivation(true);
-                        }
-                    } else
-                        costs.addCost(ptsCost);
-                }
-            } else {
-                costs.addCost(new CostImpl(new Payment(null, (int) AtbMaster.getReadinessCost(getEntity()))
-                        , PARAMS.ATB));
-            }
+            costs.addCost(new CostImpl(new Payment(null, (int) AtbMaster.getReadinessCost(getEntity()))
+                    , PARAMS.ATB));
         }
 
         costs.setActive(getEntity());

@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import eidolons.game.battlecraft.logic.mission.quest.QuestMissionStatManager;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
@@ -210,10 +210,10 @@ public class OutcomePanel extends TablePanelX implements EventListener {
                 final Boolean exit_continue_next = getEventType(actor);
                 if (exit_continue_next == null) {
                     if (!ExplorationMaster.isExplorationOn())
-                        Eidolons.getGame().getObjMaster().nextLevel();
+                        Core.getGame().getObjMaster().nextLevel();
 
                     if (!Bools.isTrue(outcome))
-                        Eidolons.restart();
+                        Core.restart();
 
 
                 } else if (exit_continue_next) {
@@ -221,7 +221,7 @@ public class OutcomePanel extends TablePanelX implements EventListener {
                     if (Flags.isMacro()) {
                         GuiEventManager.trigger(GuiEventType.BATTLE_FINISHED);
                     } else {
-                        Eidolons.exitFromGame();
+                        Core.exitFromGame();
                     }
 
 
@@ -229,7 +229,7 @@ public class OutcomePanel extends TablePanelX implements EventListener {
                     //TODO display stats!
                     String stats = QuestMissionStatManager.getGameStatsText();
                     EUtils.onConfirm(stats +
-                     "\n Exit to menu?", true, Eidolons::exitFromGame);
+                     "\n Exit to menu?", true, Core::exitFromGame);
                     WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED,
                      false);
 

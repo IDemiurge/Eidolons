@@ -2,7 +2,6 @@ package libgdx.gui.overlay.choice;
 
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
-import eidolons.game.netherflame.main.NF_MetaMaster;
 import eidolons.game.netherflame.main.death.ChainHero;
 
 import java.util.Set;

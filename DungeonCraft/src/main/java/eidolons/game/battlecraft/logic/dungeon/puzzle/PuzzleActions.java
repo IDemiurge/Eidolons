@@ -6,7 +6,7 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Awakener;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleElement;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
 import eidolons.game.battlecraft.logic.mission.quest.CombatScriptExecutor;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.struct.LevelBlock;
 import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
@@ -41,7 +41,7 @@ public class PuzzleActions extends PuzzleElement {
                 case ROTATE_MOSAIC_CELL_ANTICLOCKWISE:
                     arg = 1;
                 case ROTATE_MOSAIC_CELL_CLOCKWISE:
-                    DC_Cell cell = DC_Game.game.getCell(Eidolons.getPlayerCoordinates());
+                    DC_Cell cell = DC_Game.game.getCell(Core.getPlayerCoordinates());
                     cell.setOverlayRotation(cell.getOverlayRotation() + 90 * (int) (arg));
 
                     if (cell.getOverlayRotation() % 360 == 0) {
@@ -89,7 +89,7 @@ public class PuzzleActions extends PuzzleElement {
     private static Set<BattleFieldObject> getObjects(Puzzle puzzle) {
         Set<BattleFieldObject> set = new LinkedHashSet<>();
         for (Coordinates c : puzzle.getBlock().getCoordinatesSet()) {
-            set.addAll(Eidolons.getGame().getObjectsOnCoordinateNoOverlaying(c));
+            set.addAll(Core.getGame().getObjectsOnCoordinateNoOverlaying(c));
         }
         return set;
         //                .stream().map(c-> Eidolons.getGame().getObjectsOnCoordinate(c)).reduce()
@@ -107,7 +107,7 @@ public class PuzzleActions extends PuzzleElement {
             case unseal_door:
                 LevelBlock block = puzzle.getBlock();
                 for (Coordinates c : block.getCoordinatesSet()) {
-                    for (BattleFieldObject object : Eidolons.getGame().getObjectsOnCoordinateNoOverlaying(c)) {
+                    for (BattleFieldObject object : Core.getGame().getObjectsOnCoordinateNoOverlaying(c)) {
                         if (object instanceof Door) {
                             //                            ((Door) object).setState(DoorMaster.DOOR_STATE.OPEN);
                             ((Door) object).getDM().open((DungeonObj) object, new Ref());
@@ -155,9 +155,9 @@ public class PuzzleActions extends PuzzleElement {
         //         Eidolons.getMainHero().getCoordinates(), p ->
         //                 AnimMaster.getInstance().spriteAnim(Sprites.PORTAL_OPEN,
         //                         c), null);
-        Eidolons.getGame().getMissionMaster().getScriptManager().execute(
+        Core.getGame().getMissionMaster().getScriptManager().execute(
                 CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION.REPOSITION,
-                Ref.getSelfTargetingRefCopy(Eidolons.getMainHero()), c.toString());
+                Ref.getSelfTargetingRefCopy(Core.getMainHero()), c.toString());
 
 
     }

@@ -5,7 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import libgdx.bf.grid.cell.OverlayView;
 import libgdx.bf.grid.cell.UnitGridView;
 import libgdx.bf.grid.cell.UnitViewFactory;
@@ -36,7 +36,7 @@ public class LE_UnitViewFactory extends UnitViewFactory {
             public void clicked(InputEvent event, float x, float y) {
                 InputEvent e = new InputEvent();
                 e.setButton(event.getButton());
-                Eidolons.onNonGdxThread(() -> LevelEditor.getCurrent().
+                Core.onNonGdxThread(() -> LevelEditor.getCurrent().
                         getManager().getMouseHandler().handleObjectClick(e, getTapCount(), bfObj));
             }
 

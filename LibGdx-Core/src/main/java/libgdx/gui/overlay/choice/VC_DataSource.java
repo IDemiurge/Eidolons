@@ -27,11 +27,11 @@ public class VC_DataSource {
         List<VC_Option> options = new LinkedList<>();
         switch (type) {
             case hero_choice:
-                VC_OPTION chosen = (VC_OPTION) arg;
-                Set<ChainHero> heroes = SoulforceMaster.getInstance().getHeroesCanRespawn( );
-                for (ChainHero hero : heroes) {
-                    options.add(createHeroOption(hero));
-                }
+                // VC_OPTION chosen = (VC_OPTION) arg;
+                // Set<ChainHero> heroes = SoulforceMaster.getInstance().getHeroesCanRespawn( );
+                // for (ChainHero hero : heroes) {
+                //     options.add(createHeroOption(hero));
+                // }
                 // sortHeroOptions(options);
         }
         return options;

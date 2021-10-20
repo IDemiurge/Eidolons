@@ -5,7 +5,7 @@ import eidolons.content.consts.VisualEnums;
 import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import libgdx.GdxMaster;
 import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.generic.FadeImageContainer;
@@ -92,7 +92,7 @@ public class CursorDecorator extends NoHitGroup {
             return;
         }
         //check special - interactive, ...
-        Unit hero = Eidolons.getMainHero();
+        Unit hero = Core.getMainHero();
         VisualEnums.CURSOR type = VisualEnums.CURSOR.ATTACK;
         boolean hostile = object.getOwner().isHostileTo(hero.getOwner());
         if (hostile) {

@@ -1,7 +1,7 @@
 package eidolons.game.module.dungeoncrawl.quest;
 
 import eidolons.content.PARAMS;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
 import main.content.enums.meta.QuestEnums;
@@ -52,7 +52,7 @@ public class QuestPreparer {
     }
 
     public void initArg() {
-        int powerLevel= Eidolons.getMainHero().getIntParam(PARAMS.POWER) ;
+        int powerLevel= Core.getMainHero().getIntParam(PARAMS.POWER) ;
         DungeonEnums.DUNGEON_STYLE style = DungeonEnums.DUNGEON_STYLE.Somber; //quest.getMaster().getStyle();
 //        Eidolons.getGame().getDungeonMaster().getDungeonLevel().getMainStyle()
 // TODO is it useful?

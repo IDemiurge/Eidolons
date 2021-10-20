@@ -10,14 +10,12 @@ import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.action.StackingRule;
-import eidolons.game.battlecraft.rules.combat.attack.extra_attack.AttackOfOpportunityRule;
 import eidolons.game.battlecraft.rules.combat.attack.extra_attack.ExtraAttacksRule;
-import eidolons.game.battlecraft.rules.combat.mechanics.ForceRule;
 import eidolons.game.battlecraft.rules.counter.natural.ConcealmentRule;
 import eidolons.game.battlecraft.rules.perk.EvasionRule;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.atb.AtbMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.libgdx.GdxAdapter;
@@ -99,7 +97,7 @@ public class Executor extends ActiveHandler {
 
     public void activateOnGameLoopThread(Ref ref) {
         targeter.setForcePresetTarget(true);
-        Eidolons.getGame().getGameLoop().actionInputManual(
+        Core.getGame().getGameLoop().actionInputManual(
                 new ActionInput(getAction(), new Context(ref)));
     }
 
@@ -110,12 +108,12 @@ public class Executor extends ActiveHandler {
             activate();
             return;
         }
-        Eidolons.getGame().getGameLoop().actionInputManual(
+        Core.getGame().getGameLoop().actionInputManual(
                 new ActionInput(getAction(), t));
     }
 
     public void activateOnGameLoopThread() {
-        Eidolons.getGame().getGameLoop().actionInputManual(
+        Core.getGame().getGameLoop().actionInputManual(
                 new ActionInput(getAction(), new Context(getAction().getOwnerObj().getRef())));
     }
 
@@ -348,15 +346,6 @@ public class Executor extends ActiveHandler {
             getAction().getCosts().pay(getRef());
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
-        } finally {
-            if (getAction().isPointCostActivation()) {
-                getAction().setPointCostActivation(false);
-                if (!getAction().isAttackAny())
-                    getOwnerObj().freeMoveDone();
-                else {
-                    return;
-                }
-            }
         }
     }
 

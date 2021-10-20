@@ -4,7 +4,6 @@ import eidolons.content.values.DC_ValueManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_WeaponObj;
-import eidolons.game.battlecraft.rules.combat.mechanics.ForceRule;
 import main.content.VALUE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.ActionEnums;

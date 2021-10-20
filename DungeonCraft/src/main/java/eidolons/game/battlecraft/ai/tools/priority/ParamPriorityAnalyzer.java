@@ -30,11 +30,7 @@ public class ParamPriorityAnalyzer extends AiHandler {
             case MIGHT:
             case SPIRIT:
                 return 100;
-            case C_EXTRA_MOVES:
-            case C_EXTRA_ATTACKS:
-                return 120;
             case INITIATIVE:
-            case EXTRA_ATTACKS:
                 return 150;
 
             case DETECTION:

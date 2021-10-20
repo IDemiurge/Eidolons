@@ -43,8 +43,6 @@ public interface PriorityManager {
 
     int getSpellPriority(GOAL_TYPE type, Action action);
 
-    int getSpellPriority(Spell spell, Context context);
-
     int getSelfSpellPriority(Action action);
 
     void addEffectPriority(Action action, Effect e);
@@ -71,8 +69,6 @@ public interface PriorityManager {
     float getCowardiceFactor(Unit coward);
 
     int getCowerPriority(Unit unit);
-
-    int getStealthPriority(Action action);
 
     int getZoneSpellPriority(Action action, boolean damage);
 
@@ -139,15 +135,4 @@ public interface PriorityManager {
     int getCostFactor(Costs cost, Unit unit);
 
 
-    enum AI_EFFECT_PRIORITIZING {
-        ATTACK, DAMAGE, BUFF, PARAM_MOD, COUNTER_MOD, SUMMON, MODE, BEHAVIOR_MODE,
-    }
-
-    enum PRIORITY_FUNCS {
-        NO_ALLIES,
-        NEVER,
-        ALWAYS,
-
-        DURATION, DANGER, CAPACITY, DANGER_TO_ALLY,
-    }
 }

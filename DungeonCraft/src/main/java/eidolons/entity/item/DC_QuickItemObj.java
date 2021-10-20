@@ -5,7 +5,6 @@ import eidolons.content.PROPS;
 import eidolons.content.values.ValuePages;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.active.spaces.Feat;
-import eidolons.game.module.dungeoncrawl.objects.Trap;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.DC_TYPE;
 import main.content.VALUE;
@@ -39,9 +38,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem, Feat {
     private boolean wrapped;
 
     private DC_WeaponObj wrappedWeapon;
-    private Trap wrappedTrap;
     private boolean ammo;
-    private boolean trap;
 
     public DC_QuickItemObj(ObjType type, Player owner, GenericGame game, Ref ref) {
         super(type, owner, game, ref, null);

@@ -2,7 +2,7 @@ package eidolons.system.audio;
 
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.audio.MusicEnums.AMBIENCE;
@@ -54,7 +54,7 @@ public class AmbientMaster {
             }
             return EVIL;
         }
-        Unit hero = Eidolons.getMainHero();
+        Unit hero = Core.getMainHero();
         if (hero == null)
             return DEFAULT_AMBIENCE;
 

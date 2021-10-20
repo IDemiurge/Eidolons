@@ -9,7 +9,7 @@ import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.explore.ExploreAiManager;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior;
 import eidolons.game.core.ActionInput;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.logic.action.context.Context;
 import main.system.datatypes.DequeImpl;
@@ -68,7 +68,7 @@ public class ExplorationAiMaster extends ExplorationHandler {
             if (ai.getExplorationTimePassed() <= ExplorationTimeMaster.secondsPerAP)
                 continue;
             double distance = PositionMaster.getExactDistance(ai.getUnit().getCoordinates(),
-             Eidolons.getPlayerCoordinates());
+             Core.getPlayerCoordinates());
             if (distance > getMaxDistance(ai))
                 continue;
             try {

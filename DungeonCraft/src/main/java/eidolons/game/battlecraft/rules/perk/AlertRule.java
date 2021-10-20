@@ -5,7 +5,6 @@ import eidolons.ability.effects.containers.LoggedEffect;
 import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
 import eidolons.ability.effects.oneshot.mechanic.DelayedEffect;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.action.WatchRule;
 import main.ability.effects.Effect;
 import main.content.mode.STD_MODES;
 import main.elements.conditions.*;

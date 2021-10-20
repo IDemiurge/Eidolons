@@ -1,7 +1,6 @@
 package eidolons.ability.conditions;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.action.WatchRule;
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref;
 

@@ -170,9 +170,6 @@ public class DC_ConditionMaster extends ConditionMaster {
                 condition = new NotCondition(getItemCondition(variables[0].toString(), variables[1]
                         .toString(), variables[2].toString(), KEYS.SOURCE.toString()));
                 break;
-            case REST:
-                condition = new RestCondition();
-                break;
             case REF_NOT_EMPTY: {
                 condition = new RefNotEmptyCondition(variables[0].toString(), variables[1]
                         .toString());

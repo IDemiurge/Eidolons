@@ -1,10 +1,9 @@
 package main.level_editor.backend.display;
 
-import eidolons.content.consts.VisualEnums;
 import eidolons.content.consts.VisualEnums.FULLSCREEN_ANIM;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import libgdx.screens.ScreenMaster;
 import libgdx.screens.dungeon.GenericDungeonScreen;
 import eidolons.system.options.GraphicsOptions;
@@ -94,7 +93,7 @@ public class LE_DisplayHandler extends LE_Handler implements IDisplayHandler {
                 cell.setGamma(getGame().getManager().getActiveObj(),
                         gamma);
             }
-            Eidolons.onGdxThread(() ->
+            Core.onGdxThread(() ->
             {
                 try {
                     ScreenMaster.getGrid().resetZIndices();

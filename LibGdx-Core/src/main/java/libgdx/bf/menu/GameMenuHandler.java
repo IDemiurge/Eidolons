@@ -1,7 +1,7 @@
 package libgdx.bf.menu;
 
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import libgdx.bf.menu.GameMenu.GAME_MENU_ITEM;
 import eidolons.system.text.HelpMaster;
@@ -41,16 +41,16 @@ public class GameMenuHandler {
                 break;
             case OUTER_WORLD:
                 //TODO save and send log!
-                Eidolons.exitGame();
+                Core.exitGame();
             case EXIT:
             case MAIN_MENU:
                 //                DC_Game.game.getBattleMaster().getOutcomeManager().next();
                 //                DC_Game.game.exit(true);
-                Eidolons.exitToMenu();
+                Core.exitToMenu();
 //                GuiEventManager.trigger(GuiEventType.DISPOSE_TEXTURES);
                 return false;
             case RESTART:
-                Eidolons.restart();
+                Core.restart();
                 break;
 //            case QUESTS:
 //                Eidolons.onThisOrNonGdxThread(() -> {
@@ -65,7 +65,7 @@ public class GameMenuHandler {
 //                });
 //                return null;
             case PASS_TIME:
-                Eidolons.getGame().getDungeonMaster().getExplorationMaster()
+                Core.getGame().getDungeonMaster().getExplorationMaster()
                  .getTimeMaster().playerWaits();
                 break;
 

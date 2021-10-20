@@ -230,8 +230,6 @@ public class Spell extends DC_ActiveObj {
 
     private PROPERTY getSpellProp() {
         switch (getSpellPool()) {
-            case DIVINED:
-                return PROPS.DIVINED_SPELLS;
             case MEMORIZED:
                 return PROPS.MEMORIZED_SPELLS;
             case VERBATIM:

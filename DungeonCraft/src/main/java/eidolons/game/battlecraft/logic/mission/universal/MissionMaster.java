@@ -19,7 +19,6 @@ public abstract class MissionMaster<E extends DungeonSequence> {
     protected MissionOptionManager optionManager;
     protected MissionStatManager statManager;
     protected MissionConstructor constructor;
-    protected MissionOutcomeManager outcomeManager;
     protected PlayerManager playerManager;
     protected ScriptManager scriptManager;
     protected EncounterSpawner encounterSpawner;
@@ -32,7 +31,6 @@ public abstract class MissionMaster<E extends DungeonSequence> {
         this.statManager = createStatManager();
         game.getManager().setStatMaster(statManager);
         this.constructor = createConstructor();
-        this.outcomeManager = createOutcomeManager();
         this.playerManager = createPlayerManager();
         scriptManager= createScriptManager();
 
@@ -62,8 +60,6 @@ public abstract class MissionMaster<E extends DungeonSequence> {
         return new PlayerManager<>(this);
     }
 
-    protected abstract MissionOutcomeManager<E> createOutcomeManager();
-
     protected abstract MissionConstructor<E> createConstructor();
 
     protected abstract MissionStatManager<E> createStatManager();
@@ -82,9 +78,6 @@ public abstract class MissionMaster<E extends DungeonSequence> {
         return constructor;
     }
 
-    public MissionOutcomeManager getOutcomeManager() {
-        return outcomeManager;
-    }
 
     public PlayerManager getPlayerManager() {
         return playerManager;

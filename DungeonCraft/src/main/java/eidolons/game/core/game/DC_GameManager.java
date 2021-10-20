@@ -11,7 +11,7 @@ import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.rules.action.ActionRule;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.master.*;
 import eidolons.game.core.state.DC_GameState;
 import eidolons.game.core.state.DC_StateManager;
@@ -77,10 +77,10 @@ public class DC_GameManager extends GameManager {
 
         stateManager = new DC_StateManager(state);
         gameObjMaster = game.getObjMaster();// new DC_GameMaster(game);
-        Eidolons.stateManager = getStateManager();
-        Eidolons.gameMaster = getGameObjMaster();
-        Eidolons.game = game;
-        Eidolons.gameManager = this;
+        Core.stateManager = getStateManager();
+        Core.gameMaster = getGameObjMaster();
+        Core.game = game;
+        Core.gameManager = this;
         state.setManager(getStateManager());
 
     }
@@ -122,9 +122,6 @@ public class DC_GameManager extends GameManager {
 
     public boolean activeSelect(final Obj obj, boolean sameUnit) {
         Unit unit = (Unit) obj;
-        if (!sameUnit) {
-            unit.setFreeMovesDone(0);
-        }
 
         boolean result = true;
         for (ActionRule ar : getGame().getRules().getActionRules()) {
@@ -464,10 +461,6 @@ public class DC_GameManager extends GameManager {
 
         getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.ROUND_ENDS, state.getRound());
         state.setRound(state.getRound() + 1); // TODO why not on start?
-        if (getGame().getMissionMaster().getOutcomeManager().checkTimedOutcome() != null) {
-            getGame().getLogManager().doneLogEntryNode();
-            return false;
-        }
         getStateManager().endTurn();
         getGame().getLogManager().doneLogEntryNode();
         return true;
@@ -490,7 +483,7 @@ public class DC_GameManager extends GameManager {
         }
         if (ExplorationMaster.isExplorationOn())
             if (active == null || active.isAiControlled()) {
-                return Eidolons.getMainHero();
+                return Core.getMainHero();
             }
         return active;
     }
@@ -629,7 +622,7 @@ public class DC_GameManager extends GameManager {
     }
 
     public Unit getMainHero() {
-        return Eidolons.getMainHero();
+        return Core.getMainHero();
     }
 
     public void atbTimeElapsed(Float time) {

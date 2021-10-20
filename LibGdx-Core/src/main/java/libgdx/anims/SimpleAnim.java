@@ -3,7 +3,7 @@ package libgdx.anims;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.content.consts.VisualEnums;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import libgdx.anims.sprite.SpriteX;
 import libgdx.bf.GridMaster;
 import eidolons.content.consts.GraphicData;
@@ -58,7 +58,7 @@ public class SimpleAnim implements Animation {
     }
     public SimpleAnim(String vfx, String spritePaths, Runnable onDone) {
         this(vfx, spritePaths, onDone, GridMaster.getCenteredPos(
-                Eidolons.getPlayerCoordinates()), null, null);
+                Core.getPlayerCoordinates()), null, null);
         this.spritePaths = spritePaths;
         this.onDone = onDone;
     }
@@ -197,7 +197,7 @@ public class SimpleAnim implements Animation {
 
     @Override
     public Ref getRef() {
-        return Eidolons.getMainHero().getRef();
+        return Core.getMainHero().getRef();
     }
 
     @Override

@@ -14,7 +14,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.core.ActionInput;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj;
 import libgdx.anims.text.FloatingTextMaster;
@@ -490,7 +490,7 @@ public class RadialManager {
                     if (!target.equals(active.getOwnerUnit())) {
                         context.setTarget(target.getId());
                     }
-                Eidolons.getGame().getLoop().actionInputManual(
+                Core.getGame().getLoop().actionInputManual(
                         new ActionInput(active, context));
             } else {
                 FloatingTextMaster.getInstance().createFloatingText(VisualEnums.TEXT_CASES.CANNOT_ACTIVATE, "", active);

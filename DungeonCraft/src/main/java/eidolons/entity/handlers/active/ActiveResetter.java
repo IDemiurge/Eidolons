@@ -134,22 +134,6 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
         Integer ap = ownerObj.getIntParam(PARAMS.ATB_COST_MOD);
         Integer ess = ownerObj.getIntParam(PARAMS.ESSENCE_COST_MOD);
         Integer foc = ownerObj.getIntParam(PARAMS.FOCUS_COST_MOD);
-        Integer cp = ownerObj.getIntParam(PARAMS.ATK_PTS_COST_MOD);
-        if (getHandler().isCounterMode()) {
-            ap = MathMaster.applyModIfNotZero(ap, ownerObj.getIntParam(PARAMS.COUNTER_PTS_COST_MOD));
-            sta = MathMaster.applyModIfNotZero(sta, ownerObj
-             .getIntParam(PARAMS.COUNTER_TOUGHNESS_COST_MOD));
-        }
-        if (getHandler().isInstantMode()) {
-            ap = MathMaster.applyModIfNotZero(ap, ownerObj.getIntParam(PARAMS.INSTANT_PTS_COST_MOD));
-            sta = MathMaster.applyModIfNotZero(sta, ownerObj
-             .getIntParam(PARAMS.INSTANT_TOUGHNESS_COST_MOD));
-        }
-        if (getHandler().isAttackOfOpportunityMode()) {
-            ap = MathMaster.applyModIfNotZero(ap, ownerObj.getIntParam(PARAMS.AOO_PTS_COST_MOD));
-            sta = MathMaster.applyModIfNotZero(sta, ownerObj
-             .getIntParam(PARAMS.AOO_TOUGHNESS_COST_MOD));
-        }
         switch (getEntity().getActionGroup()) {
             case ATTACK:
                 // boolean offhand = checkSingleProp(G_PROPS.ACTION_TAGS,
@@ -189,7 +173,6 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
                 break;
 
         }
-        getEntity().modifyParamByPercent(PARAMS.ATK_PTS_COST, cp, true);
         // getEntity().modifyParamByPercent(PARAMS.MP_COST, cp, true);
         getEntity().modifyParamByPercent(PARAMS.TOU_COST, sta, true);
         getEntity().modifyParamByPercent(PARAMS.AP_COST, ap, true);

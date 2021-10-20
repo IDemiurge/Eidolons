@@ -97,10 +97,6 @@ public class DC_PriorityManager {
         return aiMaster.getSituationAnalyzer().getMeleeDangerFactor(unit);
     }
 
-    public static int getMeleeThreat(Unit enemy) {
-        return aiMaster.getThreatAnalyzer().getMeleeThreat(enemy);
-    }
-
     public static ActionSequence chooseByPriority(List<ActionSequence> actions) {
         return impl.chooseByPriority(actions);
     }

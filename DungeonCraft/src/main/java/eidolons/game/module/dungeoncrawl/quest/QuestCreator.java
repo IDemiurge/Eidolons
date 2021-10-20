@@ -1,7 +1,7 @@
 package eidolons.game.module.dungeoncrawl.quest;
 
 import eidolons.content.PARAMS;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
 import eidolons.dungeons.generator.init.RngUnitProvider;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
@@ -79,7 +79,7 @@ public class QuestCreator extends QuestHandler {
                                            float powerRange, DungeonQuest quest,
                                            DUNGEON_STYLE style) {
         List<ObjType> pool = null;
-        boolean surface = Eidolons.getGame().getDungeonMaster().getFloorWrapper().isSurface();
+        boolean surface = Core.getGame().getDungeonMaster().getFloorWrapper().isSurface();
         Loop loop = new Loop(30);
         while (loop.continues()) {
             try {

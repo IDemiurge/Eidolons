@@ -2,7 +2,7 @@ package libgdx.gui.panels.headquarters.creation;
 
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.herocreator.logic.HeroCreator;
 import libgdx.gui.panels.headquarters.creation.HeroCreationSequence.HERO_CREATION_ITEM;
 import libgdx.gui.panels.headquarters.datasource.HqDataMaster;
@@ -118,7 +118,7 @@ public class HeroCreationMaster {
         backScreens = new Stack<>();
         //        ObjType baseType = DataManager.getType("base hero type", DC_TYPE.CHARS);
         Unit hero = HeroCreator.getInstance().newHero();
-        Eidolons.setMainHero(hero);
+        Core.setMainHero(hero);
         EUtils.event(GuiEventType.HC_SHOW, hero);
         hero = (Unit) waitForInput(WAIT_OPERATIONS.HC_DONE);
         return hero;

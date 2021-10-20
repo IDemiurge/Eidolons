@@ -1,9 +1,7 @@
 package eidolons.entity.obj.unit;
 
-import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.Deity;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.handlers.bf.unit.UnitCalculator;
@@ -15,9 +13,7 @@ import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.system.text.DC_Logger;
 import eidolons.system.text.ToolTipMaster;
-import main.content.DC_TYPE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
@@ -29,7 +25,6 @@ import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
 import main.content.mode.MODE;
 import main.content.mode.STD_MODES;
 import main.content.values.properties.G_PROPS;
-import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.entity.type.ObjType;
@@ -42,10 +37,8 @@ import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.images.ImageManager;
-import main.system.math.MathMaster;
 
 import javax.swing.*;
 import java.util.Map;
@@ -56,17 +49,11 @@ import static main.system.GuiEventType.SHOW_MODE_ICON;
 public abstract class DC_UnitModel extends BattleFieldObject {
 
     protected VISION_MODE vision_mode;
-
     protected MODE mode;
     protected Map<ACTION_TYPE, DequeImpl<DC_UnitAction>> actionMap;
 
-    protected Deity deity;
     protected UnitAI unitAI;
     protected ImageIcon emblem;
-    protected DC_ActiveObj preferredInstantAttack;
-    protected DC_ActiveObj preferredCounterAttack;
-    protected DC_ActiveObj preferredAttackOfOpportunity;
-    protected DC_ActiveObj preferredAttackAction;
     protected Boolean unconscious;
     private FACING_DIRECTION tempFacing;
     private Coordinates tempCoordinates;
@@ -182,14 +169,9 @@ public abstract class DC_UnitModel extends BattleFieldObject {
 
     @Override
     public void newRound() {
-
         if (!new Event(STANDARD_EVENT_TYPE.UNIT_NEW_ROUND_BEING_STARTED, ref).fire()) {
             return;
         }
-        // if (game.getState().getRound() > -1) // ???
-        //     getResetter().regenerateToughness();
-        resetDynamicParam(PARAMS.C_EXTRA_MOVES);
-        resetDynamicParam(PARAMS.C_EXTRA_ATTACKS);
         resetDynamicParam(PARAMS.C_TOUGHNESS);
         regen();
 
@@ -197,69 +179,20 @@ public abstract class DC_UnitModel extends BattleFieldObject {
     }
 
 
-    public DC_ActiveObj getPreferredInstantAttack() {
-        String action = getProperty(PROPS.DEFAULT_INSTANT_ATTACK_ACTION);
-        if (!action.isEmpty()) {
-            preferredInstantAttack = getAction(action);
-            return preferredInstantAttack;
-        }
-        return getAttackOfType(ActionEnums.ATTACK_TYPE.QUICK_ATTACK);
-    }
-
-    public void setPreferredInstantAttack(DC_ActiveObj preferredInstantAttack) {
-        this.preferredInstantAttack = preferredInstantAttack;
-        setProperty(PROPS.DEFAULT_INSTANT_ATTACK_ACTION, preferredInstantAttack.getName());
-    }
-
-    public DC_ActiveObj getPreferredCounterAttack() {
-        String action = getProperty(PROPS.DEFAULT_COUNTER_ATTACK_ACTION);
-        if (!action.isEmpty()) {
-            preferredCounterAttack = getAction(action);
-            return preferredCounterAttack;
-        }
-        return getAttackOfType(ActionEnums.ATTACK_TYPE.QUICK_ATTACK);
-    }
-
     public DC_ActiveObj getStdAttack() {
         return getAttackOfType(ActionEnums.ATTACK_TYPE.STANDARD_ATTACK);
     }
     public DC_ActiveObj getAttackOfType(ActionEnums.ATTACK_TYPE type) {
-        for (DC_UnitAction subAction : getAttack().getSubActions()) {
-            if (subAction.getChecker().checkAttackType(type)) {
-                return subAction;
-            }
-        }
-        DC_Logger.logicError("No action of type " ,
-                type , " found for " , getName());
-        return getAttack().getSubActions().get(0);
-    }
-
-    public void setPreferredCounterAttack(DC_ActiveObj preferredCounterAttack) {
-        this.preferredCounterAttack = preferredCounterAttack;
-        setProperty(PROPS.DEFAULT_COUNTER_ATTACK_ACTION, preferredCounterAttack.getName());
-    }
-
-    public DC_ActiveObj getPreferredAttackOfOpportunity() {
-        String action = getProperty(PROPS.DEFAULT_ATTACK_OF_OPPORTUNITY_ACTION);
-        if (!action.isEmpty()) {
-            preferredAttackOfOpportunity = getAction(action);
-            return preferredAttackOfOpportunity;
-        }
-        return getAttackOfType(ActionEnums.ATTACK_TYPE.QUICK_ATTACK);
-    }
-
-    public void setPreferredAttackOfOpportunity(DC_ActiveObj preferredAttackOfOpportunity) {
-        this.preferredAttackOfOpportunity = preferredAttackOfOpportunity;
-        setProperty(PROPS.DEFAULT_ATTACK_OF_OPPORTUNITY_ACTION, preferredAttackOfOpportunity
-                .getName());
-    }
-
-    public DC_ActiveObj getPreferredAttackAction() {
-        return preferredAttackAction;
-    }
-
-    public void setPreferredAttackAction(DC_ActiveObj preferredAttackAction) {
-        this.preferredAttackAction = preferredAttackAction;
+        return getAttack();
+        //TODO NF Rules revamp
+        // for (DC_UnitAction subAction : getAttack().getSubActions()) {
+        //     if (subAction.getChecker().checkAttackType(type)) {
+        //         return subAction;
+        //     }
+        // }
+        // DC_Logger.logicError("No action of type " ,
+        //         type , " found for " , getName());
+        // return getAttack().getSubActions().get(0);
     }
 
     public boolean turnStarted() {
@@ -332,46 +265,17 @@ public abstract class DC_UnitModel extends BattleFieldObject {
         return facing;
     }
 
-    public void initDeity() {
-        if (DataManager.isTypeName(getProperty(G_PROPS.DEITY), DC_TYPE.DEITIES)) {
-            this.setDeity(DC_ContentValsManager.getDeity(this));
-            setProperty(G_PROPS.DEITY, deity.getName(), true);
-        } else
-            setDeity(null);
-
-    }
-
     protected void initEmblem() {
         this.setEmblem((ImageManager.getIcon(getProperty(G_PROPS.EMBLEM, true))));
-
     }
 
     public ImageIcon getEmblem() {
-        if (emblem != null) {
-            return emblem;
-        }
-
-        if (getDeity() == null) {
-            return null;
-        }
-        return getDeity().getEmblem();
+        return emblem;
     }
 
     public void setEmblem(ImageIcon emblem) {
         this.emblem = emblem;
     }
-
-    public Deity getDeity() {
-        if (deity == null || isSimulation()) {
-            initDeity();
-        }
-        return deity;
-    }
-
-    public void setDeity(Deity deity) {
-        this.deity = deity;
-    }
-
 
     @Override
     public void setDirty(boolean dirty) {
@@ -647,7 +551,4 @@ public abstract class DC_UnitModel extends BattleFieldObject {
         return super.getFacing();
     }
 
-    public boolean checkCanDoFreeMove(DC_ActiveObj activeObj) {
-        return getChecker().checkCanDoFreeMove(activeObj);
-    }
 }

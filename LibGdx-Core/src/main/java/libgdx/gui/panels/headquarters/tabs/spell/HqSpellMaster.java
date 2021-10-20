@@ -4,7 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.herocreator.HeroManager;
 import eidolons.game.module.herocreator.logic.spells.SpellMaster;
 import libgdx.gui.panels.headquarters.tabs.spell.SpellActor.SPELL_OVERLAY;
@@ -77,7 +77,7 @@ public class HqSpellMaster {
     }
 
     public static boolean canLearn(Spell spell) {
-        return spell.getGame().getRequirementsManager().check(Eidolons.getMainHero(), spell) == null;
+        return spell.getGame().getRequirementsManager().check(Core.getMainHero(), spell) == null;
     }
 
     public static boolean canLearnEnVerbatim(Spell spell) {

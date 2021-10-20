@@ -128,7 +128,8 @@ public class Weapon3dAnim extends ActionAnim {
     private SpriteAnimation getRandomizedSprite(SpriteAnimation sprite) {
         Array<AtlasRegion> regions = sprite.getRegions();
         //backward?
-        List<DC_ActiveObj> subactions = new ArrayList<>(getActive().getParentAction().getSubActions());
+        //TODO NF Rules revamp
+        List<DC_ActiveObj> subactions = new ArrayList<>();
         subactions.remove(getActive());
         subactions.removeIf(a ->
                 a.isThrow() ||

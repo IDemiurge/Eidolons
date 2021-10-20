@@ -5,10 +5,9 @@ import eidolons.content.consts.VisualEnums;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import main.system.launch.Launch;
-import eidolons.game.netherflame.main.NF_MetaMaster;
 import libgdx.Adapter;
 import libgdx.gui.panels.generic.story.IggBriefScreenOld;
 import libgdx.GdxMaster;
@@ -20,8 +19,6 @@ import libgdx.screens.ScreenMaster;
 import libgdx.screens.ScreenWithLoader;
 import libgdx.screens.dungeon.DungeonScreen;
 import libgdx.screens.menu.AnimatedMenuScreen;
-import eidolons.system.audio.MusicEnums;
-import eidolons.system.audio.MusicMaster;
 import eidolons.system.options.OptionsMaster;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
@@ -109,8 +106,8 @@ public class ScreenLoader {
                     return;
                 }
                 setInitRunning(true);
-                Eidolons.onThisOrNonGdxThread(() -> {
-                    if (Eidolons.getMainHero() != null) {
+                Core.onThisOrNonGdxThread(() -> {
+                    if (Core.getMainHero() != null) {
                         LogMaster.log(1, "*************** Second init attempted!");
                         return;
                     }
@@ -146,7 +143,7 @@ public class ScreenLoader {
                     //TODO PITCH FIX - GET INSTANCE!
                     GuiEventManager.trigger(GuiEventType.UPDATE_LOAD_STATUS, "Loading game screen...");
                     switchScreen(DungeonScreen::new, newMeta);
-                    Eidolons.setScope(Eidolons.SCOPE.BATTLE);
+                    Core.setScope(Core.SCOPE.BATTLE);
                     break;
                 case BRIEFING:
                 case CINEMATIC:
@@ -162,7 +159,7 @@ public class ScreenLoader {
                 case PRE_BATTLE:
                     break;
                 case MAIN_MENU:
-                    Eidolons.setScope(Eidolons.SCOPE.MENU);
+                    Core.setScope(Core.SCOPE.MENU);
                     switchScreen(AnimatedMenuScreen::new, newMeta);
                     WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.GDX_READY, true);
                     WaitMaster.markAsComplete(WaitMaster.WAIT_OPERATIONS.GDX_READY);
@@ -184,19 +181,19 @@ public class ScreenLoader {
         LogMaster.log(1, "initScenario for dungeon:" + name);
         Launch.START(Launch.LaunchPhase._8_dc_init);
 
-        Eidolons.setGdxBeansProvider( ()-> new Adapter().createGdxBeans());
+        Core.setGdxBeansProvider( ()-> new Adapter().createGdxBeans());
 
         DC_Engine.gameStartInit();
         //how to prevent this from being called twice?
 
         Launch.START(Launch.LaunchPhase._9_meta_init);
-        if (!Eidolons.initScenario(createMetaForScenario(data)) ) {
+        if (!Core.initScenario(createMetaForScenario(data)) ) {
             Launch.END(Launch.LaunchPhase._8_dc_init);
             Launch.END(Launch.LaunchPhase._9_meta_init);
             setInitRunning(false);
             return; // INIT FAILED or EXITED
         }
-        Eidolons.mainGame.getMetaMaster().getGame().initAndStart();
+        Core.mainGame.getMetaMaster().getGame().initAndStart();
     }
 
     public MetaGameMaster createMetaForScenario(ScreenData data) {

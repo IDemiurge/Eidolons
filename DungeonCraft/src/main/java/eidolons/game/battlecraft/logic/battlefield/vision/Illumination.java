@@ -8,7 +8,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMapDataSource;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.state.DC_GameState;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -69,8 +69,8 @@ public class Illumination {
         } else {
             lerp = heroLight.lerp;
         }
-        DIRECTION direction = Eidolons.getMainHero().getFacing().getDirection();
-        Coordinates coordinates = Eidolons.getPlayerCoordinates();
+        DIRECTION direction = Core.getMainHero().getFacing().getDirection();
+        Coordinates coordinates = Core.getPlayerCoordinates();
         for (DIRECTION d : DIRECTION.clockwise) {
             Coordinates c = coordinates.getAdjacentCoordinate(d);
             if (c == null) {
@@ -106,7 +106,7 @@ public class Illumination {
         }
         Coordinates c = obj.getCoordinates();
         //TODO DC Review
-        return c.dst(Eidolons.getPlayerCoordinates()) > 10;
+        return c.dst(Core.getPlayerCoordinates()) > 10;
     }
 
     public void resetIllumination(boolean full) {
@@ -155,7 +155,7 @@ public class Illumination {
     }
 
     private boolean isSpectrumResetRequired(Obj obj) {
-        return obj.getCoordinates().dst_(Eidolons.getPlayerCoordinates()) < 6 && DC_GameState.gridChanged;
+        return obj.getCoordinates().dst_(Core.getPlayerCoordinates()) < 6 && DC_GameState.gridChanged;
     }
 
     public Map<Obj, LightEmittingEffect> getEffectCache() {

@@ -1,6 +1,5 @@
 package eidolons.game.module.dungeoncrawl.explore;
 
-import eidolons.ability.conditions.special.RestCondition;
 import eidolons.content.ContentConsts;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
@@ -10,7 +9,7 @@ import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;
 import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;
 import eidolons.game.battlecraft.rules.round.RoundRule;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.atb.AtbController;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.libgdx.GdxAdapter;
@@ -19,7 +18,6 @@ import eidolons.system.options.OptionsMaster;
 import main.content.ContentValsManager;
 import main.content.mode.MODE;
 import main.content.values.parameters.PARAMETER;
-import main.entity.Ref;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.NumberUtils;
@@ -136,10 +134,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     private boolean wait(float timeInSeconds, boolean rest) {
         if (!ExplorationMaster.isExplorationOn())
             return false;
-        if (!new RestCondition().preCheck(new Ref())) {
-            return false;
-        }
-        Eidolons.onThisOrNonGdxThread(() -> {
+        Core.onThisOrNonGdxThread(() -> {
             float wakeUpTime = time + timeInSeconds;
             float speedFactor = rest ? 25 : 10;
             int period = 100;
@@ -254,7 +249,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
             }
         else
             //TODO img demo hack performance
-            Eidolons.getMainHero().applyBuffRules();
+            Core.getMainHero().applyBuffRules();
     }
 
     private void processAiChecks() {

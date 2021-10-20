@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.bf.generic.ImageContainer;
 import libgdx.gui.panels.ScrollPanel;
@@ -224,10 +224,10 @@ public class LogPanel extends ScrollTextWrapper {
         word = word.replace(".", "");
         if (previous == null) {
         }
-        if (Eidolons.MAIN_HERO != null)
-            if (StringMaster.containsWord(Eidolons.MAIN_HERO.getName(), word)
+        if (Core.MAIN_HERO != null)
+            if (StringMaster.containsWord(Core.MAIN_HERO.getName(), word)
             ) {
-                return GdxColorMaster.lighter(GdxColorMaster.getColor(Eidolons.getMainHero().getOwner().getFlagColor().getColor()));
+                return GdxColorMaster.lighter(GdxColorMaster.getColor(Core.getMainHero().getOwner().getFlagColor().getColor()));
             }
         for (Unit unit : AggroMaster.getLastAggroGroup()) {
             if (StringMaster.containsWord(unit.getName(), (word))) {

@@ -19,15 +19,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     // AGE(null, "chars"),
     DIALOGUE_DATA(null, false, "dialogue"),
 
-    PARTY_MISSIONS_NEXT(null, false, "party"),
-    PARTY_MISSION(null, false, "party"),
-    PARTY_MAIN_HERO(null, false, "party"),
-    MEMBERS(null, true, "party"),
-    LEADER(null, false, "party"),
-    STATS_SLAIN_ENEMIES(null, true, "party"),
-    STATS_FALLEN_HEROES(null, true, "party"),
-
-
     SCENARIO_TYPE(null, false, "scenarios"),
     SCENARIO_MISSIONS(null, true, "scenarios"),
     SCENARIO_PARTY(null, false, "scenarios"),
@@ -55,10 +46,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     ATTRIBUTE_PROGRESSION(null, true, "units", "chars"),
     MASTERY_PROGRESSION(null, true, "units", "chars"),
 
-    SPELL_PLAN(null, true, "units", "chars"),
-    SPELL_UPGRADES(null, true, "spells", "chars"),
-    SPELL_UPGRADE_GROUPS(null, true, "spells", "skills", "classes", "units", "chars"),
-
     ACTION_PRIORITY_MODS(null, true, "units", "chars"),
     ACTION_PRIORITY_BONUSES(null, true, "units", "chars"),
 
@@ -76,11 +63,8 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     ALLOWED_MATERIAL(null, true, "units", "chars"),
 
     // quick items/jewelry?
-    XP_PLAN(null, true, "units"),
+    LVL_PLAN(null, true, "units"),
     GOLD_PLAN(null, true, "units"),
-
-    HOTKEY(null, false, "actions", "spells"),
-    ALT_HOTKEY(null, false, "actions", "spells"),
 
     AI_LOGIC(null, false, "actions", "spells"),
     AI_TYPE(null, false, "units", "chars"),
@@ -90,18 +74,11 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     STANDARD_ACTION_PASSIVES("STD_ACTION_PASSIVES", true, "actions"),
     STANDARD_SPELL_PASSIVES("STD_SPELL_PASSIVES", true, "spells"),
 
-    UPKEEP_FAIL_ACTION(null, false, "spells"),
-
-    // REQUIRED_SKILLS("REQUIRED_SKILLS", true, "actions", "spells", "skills"),
-    // REQUIRED_SPELLS("REQUIRED_SPELLS", true, "actions", "spells", "skills"),
-    // ++ ATTRS
-    // ++ MASTERIES
     LAST_SEEN(null, true, "units", "chars", "bf obj"),
     HINTS(null, true, "units", "chars", "bf obj"),
-    PERCEPTION_STATUS_PLAYER(null, false, "units", "chars", "bf obj"),
-    PERCEPTION_STATUS(null, false, "units", "chars", "bf obj"),
     FACING_DIRECTION(null, false, "units", "chars", "bf obj"),
     DIRECTION(null, false, "units", "chars", "bf obj"),
+
     VISIBILITY_STATUS(null, false, "units", "chars", "bf obj", "terrain"),
     DETECTION_STATUS(null, false, "units", "chars", "bf obj", "terrain"),
     DAMAGE_TYPE(null, false, "units", "chars", "weapons", "actions", "items", "spells"),
@@ -155,44 +132,11 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
 
     ITEM_SPELL(null, false, "items"),
     // all spells except verbatim/memorized
-    SPELLBOOK(null, true, "units", "chars", "actions", "spells", "skills"),
     VERBATIM_SPELLS(null, true, "units", "chars", "actions", "spells", "skills"),
     // all spells
     KNOWN_SPELLS(null, true, "units", "chars"),
     LEARNED_SPELLS(null, true, "units", "chars"),
     MEMORIZED_SPELLS(null, true, "units", "chars"),
-    DIVINED_SPELLS(null, true, "units", "chars"),
-    UPGRADED_SPELLS(null, true, "units", "chars"),
-    PREPARED_SPELLS(null, true, "units", "chars"),
-    INJURIES(null, true, "units", "chars") {
-        @Override
-        public boolean isWriteToType() {
-            return true;
-        }
-    },
-
-    SPECIAL_ACTION_MODES(null, true, "units", "chars", "skills", "classes"),
-    ACTION_MODES(null, true, "actions"),
-    FACTION("chars", null),
-
-    DEFAULT_ATTACK_ACTION(null, false, "weapons"),
-    DEFAULT_COUNTER_ATTACK_ACTION(null, false, "weapons"),
-    DEFAULT_ATTACK_OF_OPPORTUNITY_ACTION(null, false, "weapons"),
-    DEFAULT_INSTANT_ATTACK_ACTION(null, false, "weapons"),
-
-    TRUE_NAME("deities", null),
-    DIVINATION_PARAMETER("chars", null),
-    DIVINATION_FORCED_SPELL_GROUPS("chars", null),
-    FAVORED_SPELL_GROUPS("deities", null),
-    BONUS_HERO_TRAITS("deities", null),
-    FOLLOWER_UNITS("deities", null),
-    ALLIED_DEITIES("deities", null),
-    FRIEND_DEITIES("deities", null),
-    ENEMY_DEITIES("deities", null),
-    SPECIAL_FAVORED_SPELLS("deities", null),
-    FAVORED_ASPECT("deities", "Favored Aspect"),
-    SECOND_FAVORED_ASPECT("deities", "Second Favored Aspect"),
-    THIRD_FAVORED_ASPECT("deities", "Third Favored Aspect"),
 
     BUFF_NAME(null, true, "spells", "actions", "items"),
     RESISTANCE_TYPE("spells", "Resistance type"),
@@ -252,42 +196,8 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
 
     TERRAIN_TYPE(null, false, "terrain"),
 
-    DURABILITY_GRADE_PIERCING(StringMaster.format(StringMaster.getLastPart(
-            "DURABILITY_GRADE_PIERCING", "_")), false, "weapons", "armor"),
-    DURABILITY_GRADE_BLUDGEONING(StringMaster.format(StringMaster.getLastPart(
-            "DURABILITY_GRADE_BLUDGEONING", "_")), false, "weapons", "armor"),
-    DURABILITY_GRADE_SLASHING(StringMaster.format(StringMaster.getLastPart(
-            "DURABILITY_GRADE_SLASHING", "_")), false, "weapons", "armor"),
-    DURABILITY_GRADE_POISON(StringMaster.format(StringMaster.getLastPart(
-            "DURABILITY_GRADE_POISON", "_")), false, "weapons", "armor"),
-    DURABILITY_GRADE_FIRE(StringMaster.format(StringMaster.getLastPart(
-            "DURABILITY_GRADE_FIRE", "_")), false, "weapons", "armor"),
-    DURABILITY_GRADE_COLD(StringMaster.format(StringMaster.getLastPart(
-            "DURABILITY_GRADE_COLD", "_")), false, "weapons", "armor"),
-    DURABILITY_GRADE_LIGHTNING(StringMaster.format(StringMaster.getLastPart(
-            "DURABILITY_GRADE_LIGHTNING", "_")), false, "weapons", "armor"),
-    DURABILITY_GRADE_ACID(StringMaster.format(StringMaster.getLastPart(
-            "DURABILITY_GRADE_ACID", "_")), false, "weapons", "armor"),
 
-    DURABILITY_GRADE_SONIC(StringMaster.format(StringMaster.getLastPart(
-            "DURABILITY_GRADE_SONIC", "_")), false, "weapons", "armor"),
-    DURABILITY_GRADE_LIGHT(StringMaster.format(StringMaster.getLastPart(
-            "DURABILITY_GRADE_LIGHT", "_")), false, "weapons", "armor"),
 
-    DURABILITY_GRADE_ARCANE(StringMaster.format(StringMaster.getLastPart(
-            "DURABILITY_GRADE_ARCANE", "_")), false, "weapons", "armor"),
-    DURABILITY_GRADE_CHAOS(StringMaster.format(StringMaster.getLastPart(
-            "DURABILITY_GRADE_CHAOS", "_")), false, "weapons", "armor"),
-
-    DURABILITY_GRADE_SHADOW(StringMaster.format(StringMaster.getLastPart(
-            "DURABILITY_GRADE_SHADOW", "_")), false, "weapons", "armor"),
-    DURABILITY_GRADE_HOLY(StringMaster.format(StringMaster.getLastPart(
-            "DURABILITY_GRADE_HOLY", "_")), false, "weapons", "armor"),
-    DURABILITY_GRADE_DEATH(StringMaster.format(StringMaster.getLastPart(
-            "DURABILITY_GRADE_DEATH", "_")), false, "weapons", "armor"),
-    DURABILITY_GRADE_PSIONIC(StringMaster.format(StringMaster.getLastPart(
-            "DURABILITY_GRADE_PSIONIC", "_")), false, "weapons", "armor"),
-    //
     RESIST_GRADE_PIERCING(StringMaster.format(StringMaster.getLastPart(
             "RESIST_GRADE_PIERCING", "_")), false, "units", "chars", "weapons", "armor"),
     RESIST_GRADE_BLUDGEONING(StringMaster.format(StringMaster.getLastPart(
@@ -381,22 +291,24 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     ACTOR_TYPE(null, false, "actors"),
     ACTOR_UNIT_NAMES(null, true, "actors"),
 
-
     COATING_MOD(null, false, "chars", "units", "skills"),
     KEY_DOOR_PAIRS(null, false, "dungeons"),
-    LORD_SOULS(null, true, "lord"),
 
-    EIDOLON_ASPECTS(null, true, "chars", "units"),
     ITEM_TRAITS(null, true, "weapons", "armor", "jewelry"),
+
     OVERLAY_SPRITES(null, false, "units", "chars", "bf obj"),
     UNDERLAY_SPRITES(null, false, "units", "chars", "bf obj"),
     TEXTURES_OVERLAY(null, false, "units", "chars", "bf obj"),
     TEXTURES_UNDERLAY(null, false, "units", "chars", "bf obj"),
     VFX(null, false, "units", "chars", "bf obj"),
     CUSTOM_OBJECT(null, false, "units", "chars", "bf obj"),
+
     PLACEHOLDER_DATA(null, false, "units", "bf obj"),
     PLACEHOLDER_SYMBOL(null, false, "units", "bf obj"),
     LINKED_UNIT(null, false, "units", "bf obj"),
+
+    //NF Rules
+
     GRIMOIRE_SPACES(null, true, "units", "chars"),
     MEMORIZED_SPACES(null, true, "units", "chars"),
     VERBATIM_SPACES(null, true, "units", "chars"),
@@ -404,7 +316,10 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     DIVINED_SPACES(null, true, "units", "chars"),
     COMBAT_SPACES(null, true, "units", "chars"),
     QUICK_ITEMS_SPACES(null, true, "units", "chars"),
-    BASE_CLASS(null, false, "units", "chars");
+
+    BASE_CLASS(null, false, "units", "chars")
+
+    ;
 
     boolean writeToType;
     INPUT_REQ inputReq;

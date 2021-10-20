@@ -3,7 +3,7 @@ package libgdx.gui.panels.headquarters.weave;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import libgdx.GdxMaster;
 import libgdx.gui.generic.GroupX;
 import libgdx.gui.panels.headquarters.weave.model.WeaveModelBuilder;
@@ -74,7 +74,7 @@ public class WeaveSpace extends StageX {
     }
 
     private Unit getHero() {
-        return Eidolons.getMainHero();
+        return Core.getMainHero();
     }
 
     public void setViewMode(WEAVE_VIEW_MODE viewMode) {

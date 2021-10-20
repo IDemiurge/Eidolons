@@ -2,7 +2,7 @@ package eidolons.ability.conditions.puzzle;
 
 import eidolons.ability.conditions.DC_Condition;
 import eidolons.entity.obj.DC_Cell;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import main.content.CONTENT_CONSTS;
 import main.entity.Ref;
 import main.entity.obj.Obj;
@@ -13,7 +13,7 @@ public class VoidCondition extends DC_Condition {
     public boolean check(Ref ref) {
         Obj matchObj = ref.getMatchObj();
         if (matchObj == null) {
-            matchObj= Eidolons.getMainHero();
+            matchObj= Core.getMainHero();
         }
         if (matchObj instanceof DC_Cell) {
             return ((DC_Cell) matchObj).isVOID();

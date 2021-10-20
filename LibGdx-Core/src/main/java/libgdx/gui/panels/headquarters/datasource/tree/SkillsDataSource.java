@@ -2,7 +2,7 @@ package libgdx.gui.panels.headquarters.datasource.tree;
 
 import eidolons.entity.obj.attach.DC_PassiveObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.module.herocreator.logic.skills.SkillMaster;
+import eidolons.game.module.herocreator.logic.passives.SkillMaster;
 import main.content.enums.entity.SkillEnums.MASTERY;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;

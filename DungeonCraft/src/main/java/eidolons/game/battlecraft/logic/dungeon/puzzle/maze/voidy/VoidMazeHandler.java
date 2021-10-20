@@ -6,7 +6,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazeHandler;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.cinematic.CinematicLib;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.system.libgdx.GdxAdapter;
@@ -74,7 +74,7 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
             // Object c1 = RandomWizard.getRandomListObject(puzzle.falseExits);
             // List<Coordinates> c = CoordinatesMaster.getCoordinatesBetween(getAbsoluteCoordinate((Coordinates) c1),
             //         getExitCoordinates());
-            Coordinates c = Eidolons.getPlayerCoordinates().getOffset(0, -9);
+            Coordinates c = Core.getPlayerCoordinates().getOffset(0, -9);
             GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_COORDINATE, c);
         }
         Cinematics.doZoom(2, 2.25f, Interpolation.fade);
@@ -117,7 +117,7 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
         actions = 0;
         super.started();
         initVisuals();
-        getVoidHandler().toggleAutoOn(Eidolons.getMainHero());
+        getVoidHandler().toggleAutoOn(Core.getMainHero());
     }
 
     private void initVisuals() {

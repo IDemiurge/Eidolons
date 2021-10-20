@@ -13,10 +13,9 @@ import eidolons.entity.active.DefaultActionHandler;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
-import eidolons.game.battlecraft.ai.tools.priority.ThreatAnalyzer;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.objects.ContainerObj;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.StyleHolder;
@@ -80,7 +79,7 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
     @Override
     protected Supplier<List<Actor>> supplier(BattleFieldObject object, BaseView view) {
         return () -> {
-            if (Eidolons.getGame().getStateManager().isResetting()) {
+            if (Core.getGame().getStateManager().isResetting()) {
                 return null;
             }
             maxWidth = getMaxWidth();
@@ -162,10 +161,11 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
             //TODO emblem?
             if (object instanceof Unit) {
                 if (object.getOwner().isEnemy()) {
-                    VisualEnums.THREAT_LEVEL threat = ThreatAnalyzer.getThreatLevel(object);
-                    Color color = threat.color;
-                    Label.LabelStyle style = StyleHolder.getSizedColoredLabelStyle(FontMaster.FONT.AVQ, 24, color);
-                    super.addStyledContainer(style, "             ", StringMaster.format(threat.toString()));
+                    //TODO NF Restore
+                    // VisualEnums.THREAT_LEVEL threat = ThreatAnalyzer.getThreatLevel(object);
+                    // Color color = threat.color;
+                    // Label.LabelStyle style = StyleHolder.getSizedColoredLabelStyle(FontMaster.FONT.AVQ, 24, color);
+                    // super.addStyledContainer(style, "             ", StringMaster.format(threat.toString()));
                 } else {
                     Label.LabelStyle style = StyleHolder.getSizedColoredLabelStyle(FontMaster.FONT.AVQ, 24,
                             object.getOwner().isNeutral() ? GdxColorMaster.BRONZE : GdxColorMaster.CYAN);
@@ -232,12 +232,6 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
                             container.row();
                             endContainer();
                             startContainer();
-                            if (object.getIntParam(PARAMS.EXTRA_ATTACKS) > 0) {
-                                add(getValueContainer(object, PARAMS.C_EXTRA_ATTACKS, PARAMS.EXTRA_ATTACKS));
-                            }
-                            if (object.getIntParam(PARAMS.EXTRA_MOVES) > 0) {
-                                add(getValueContainer(object, PARAMS.C_EXTRA_MOVES, PARAMS.EXTRA_MOVES));
-                            }
                             endContainer();
                     }
             if (!object.isIndestructible())
@@ -289,7 +283,7 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
             }
 
             //            if (VisionManager.isVisibilityOn()){
-            if (RuleKeeper.isRuleOn(RuleEnums.RULE.VISIBILITY) || Eidolons.game.isDebugMode()) {
+            if (RuleKeeper.isRuleOn(RuleEnums.RULE.VISIBILITY) || Core.game.isDebugMode()) {
                 addParamStringToValues(object, PARAMS.LIGHT_EMISSION);
                 addParamStringToValues(object, PARAMS.ILLUMINATION);
                 addParamStringToValues(object, PARAMS.CONCEALMENT);
@@ -339,9 +333,9 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
     private ValueContainer getContainerTip(BattleFieldObject unit) {
         //check clearshot!
         //Left-Click to interact
-        boolean out = PositionMaster.getExactDistance(Eidolons.getGame().getManager().getActiveObj(), unit) > 1.5f;
+        boolean out = PositionMaster.getExactDistance(Core.getGame().getManager().getActiveObj(), unit) > 1.5f;
         if (!out)
-            out = !new ClearShotCondition().check(Eidolons.getGame().getManager().getActiveObj(), unit);
+            out = !new ClearShotCondition().check(Core.getGame().getManager().getActiveObj(), unit);
         String text = "Left-Click to interact";
         if (out) {
             text = "(out of reach) " + text;
@@ -352,9 +346,9 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
 
     private ValueContainer getOverlayingTip(BattleFieldObject unit) {
         String text = "Alt-Click or Radial to open contents";
-        boolean out = PositionMaster.getExactDistance(Eidolons.getGame().getManager().getActiveObj(), unit) > 1.5f;
+        boolean out = PositionMaster.getExactDistance(Core.getGame().getManager().getActiveObj(), unit) > 1.5f;
         if (!out)
-            out = !new ClearShotCondition().check(Eidolons.getGame().getManager().getActiveObj(), unit);
+            out = !new ClearShotCondition().check(Core.getGame().getManager().getActiveObj(), unit);
         if (out) {
             text = "(out of reach) " + text;
         }
@@ -363,14 +357,14 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
     }
 
     private ValueContainer getAttackTip(BattleFieldObject unit) {
-        DC_ActiveObj attackAction = DefaultActionHandler.getPreferredAttackAction(Eidolons.getMainHero(), unit);
+        DC_ActiveObj attackAction = DefaultActionHandler.getPreferredAttackAction(Core.getMainHero(), unit);
         if (attackAction != null) {
             String control =
                     "Click to attack with ";
             if (OptionsMaster.getControlOptions().getBooleanValue(CONTROL_OPTION.ALT_MODE_ON)) {
                 control = "Alt-" + control;
             }
-            Ref ref = Eidolons.getMainHero().getRef().getCopy();
+            Ref ref = Core.getMainHero().getRef().getCopy();
             ref.setID(KEYS.ACTIVE, attackAction.getId());
             ref.setTarget(unit.getId());
             //                    Attack attack = DC_AttackMaster.getAttackFromAction(attackAction);

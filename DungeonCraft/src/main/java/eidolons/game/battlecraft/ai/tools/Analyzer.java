@@ -14,10 +14,9 @@ import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.rules.action.StackingRule;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.master.EffectMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.content.DC_TYPE;
@@ -56,7 +55,7 @@ public class Analyzer extends AiHandler {
 
     public static List<Unit> getAllies(UnitAI ai) {
         List<Unit> list = new XList<>();
-        for (Unit unit : Eidolons.game.getUnits()) {
+        for (Unit unit : Core.game.getUnits()) {
             if (unit.getOwner() != ai.getUnit().getOwner()) {
                 continue;
             }
@@ -75,7 +74,7 @@ public class Analyzer extends AiHandler {
 
     public static List<Unit> getWaitUnits(UnitAI ai) {
         List<Unit> list = new XList<>();
-        for (Unit unit : Eidolons.game.getUnits()) {
+        for (Unit unit : Core.game.getUnits()) {
             if (unit.equals(ai.getUnit())) {
                 continue;
             }
@@ -106,7 +105,7 @@ public class Analyzer extends AiHandler {
         if (enemies.isEmpty())
             if (ai.getUnit().isMine()) {
                 if (!ai.getUnit().isPlayerCharacter()) { //TODO IGG HACK
-                    enemies = getVisibleEnemies(Eidolons.getMainHero().getAI());
+                    enemies = getVisibleEnemies(Core.getMainHero().getAI());
                 }
             }
 
@@ -294,7 +293,7 @@ public class Analyzer extends AiHandler {
                                       Boolean neutral, Boolean unconscious) {
         //getCache()
         List<Unit> list = new XList<>();
-        for (Unit unit : Eidolons.game.getUnits()) {
+        for (Unit unit : Core.game.getUnits()) {
             if (unit.getZ() != ai.getUnit().getZ())// TODO
             {
                 continue;
@@ -314,12 +313,6 @@ public class Analyzer extends AiHandler {
                     continue;
                 }
             }
-            if (!unit.isShadow())
-                if (vision_no_vision) {
-                    if (!VisionHelper.checkVisible(unit, true)) {
-                        continue;
-                    }
-                }
             if (!dead) {
                 if (unit.isDead()) {
                     continue;

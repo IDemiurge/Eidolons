@@ -4,14 +4,12 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.Eidolons;
-import eidolons.game.core.game.DC_Game;
+import eidolons.game.core.Core;
 import libgdx.GdxMaster;
 import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.bf.generic.ImageContainer;
 import libgdx.gui.generic.GroupX;
-import libgdx.gui.generic.btn.SymbolButton;
 import libgdx.gui.panels.dc.actionpanel.bar.BodyParamsBar;
 import libgdx.gui.panels.dc.actionpanel.bar.SoulParamsBar;
 import libgdx.gui.panels.dc.actionpanel.datasource.ActiveQuickSlotsDataSource;
@@ -22,10 +20,7 @@ import libgdx.gui.panels.dc.actionpanel.spaces.DefaultActionsPanel;
 import libgdx.gui.panels.dc.actionpanel.spaces.FeatSpacePanel;
 import libgdx.gui.panels.dc.actionpanel.weapon.QuickWeaponPanel;
 import libgdx.gui.panels.dc.actionpanel.weapon.WeaponDataSource;
-import libgdx.gui.panels.headquarters.HqMaster;
 import libgdx.texture.Textures;
-import libgdx.gui.generic.btn.ButtonStyled;
-import main.content.enums.entity.ActionEnums;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -91,8 +86,8 @@ public class ActionPanel extends GroupX {
 
         /////////////ADDITIONAL
 
-        soulParamsBar = new SoulParamsBar(Eidolons::getMainHero);
-        bodyParamsBar = new BodyParamsBar(Eidolons::getMainHero);
+        soulParamsBar = new SoulParamsBar(Core::getMainHero);
+        bodyParamsBar = new BodyParamsBar(Core::getMainHero);
 
         addActor(bodyParamsBar);
         addActor(soulParamsBar);
@@ -243,7 +238,7 @@ public class ActionPanel extends GroupX {
             Unit hero = (Unit) p.get();
             // dirty flag?
             if (hero == null) {
-                hero = Eidolons.getMainHero();
+                hero = Core.getMainHero();
             }
             if (hero.isDead()) {
                 return;
@@ -267,7 +262,7 @@ public class ActionPanel extends GroupX {
     }
 
     public void updatePanel() {
-        final ActiveQuickSlotsDataSource source = new PanelActionsDataSource(Eidolons.getMainHero());
+        final ActiveQuickSlotsDataSource source = new PanelActionsDataSource(Core.getMainHero());
         if (source != null) {
             ActionContainer.setDarkened(false);
             if (getY() < 0) {

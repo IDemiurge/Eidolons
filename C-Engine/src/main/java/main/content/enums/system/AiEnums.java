@@ -247,4 +247,22 @@ public class AiEnums {
         Flight,
         Panic
     }
+
+    public enum TOTAL_PRIORITY {
+        no_allies,
+        never,
+        always,
+    }
+
+    public     enum AI_EFFECT_PRIORITIZING {
+        ATTACK, DAMAGE, BUFF, PARAM_MOD, COUNTER_MOD, SUMMON, MODE, BEHAVIOR_MODE,
+    }
+
+    public     enum PRIORITY_FUNCS {
+        NO_ALLIES,
+        NEVER,
+        ALWAYS,
+
+        DURATION, DANGER, CAPACITY, DANGER_TO_ALLY,
+    }
 }

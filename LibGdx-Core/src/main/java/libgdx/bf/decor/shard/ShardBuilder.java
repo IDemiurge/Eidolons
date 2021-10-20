@@ -1,7 +1,7 @@
 package libgdx.bf.decor.shard;
 
 import eidolons.content.consts.VisualEnums;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
 import eidolons.dungeons.generator.model.AbstractCoordinates;
@@ -65,7 +65,7 @@ public class ShardBuilder {
         if (checkNormal(x, y, (DIRECTION) direction)) {
             return VisualEnums.SHARD_SIZE.NORMAL;
         }
-        if (Eidolons.getGame().isBossFight()) {
+        if (Core.getGame().isBossFight()) {
             return null;
         }
         return VisualEnums.SHARD_SIZE.SMALL;

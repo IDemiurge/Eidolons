@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import libgdx.GDX;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
@@ -125,9 +125,9 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
     @Override
     public void setItem(SelectableItemData sub) {
         Shop shop = (Shop) sub.getEntity();
-        Unit unit = Eidolons.getMainHero();
+        Unit unit = Core.getMainHero();
         update(shop);
-        Eidolons.onThisOrNonGdxThread(() ->
+        Core.onThisOrNonGdxThread(() ->
          shop.enter(unit));
     }
 
@@ -135,7 +135,7 @@ public class ShopPanel extends ContainerPanel implements SelectableItemDisplayer
         if (shop == null) {
             shop = getUserObject().getShop();
         }
-        Unit unit = Eidolons.getMainHero();
+        Unit unit = Core.getMainHero();
         setUserObject(
          new ShopDataSource(shop, unit));
     }

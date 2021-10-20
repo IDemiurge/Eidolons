@@ -4,7 +4,6 @@ import eidolons.ability.effects.oneshot.mechanic.ChangeFacingEffect;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.AiUnitActionMaster;
-import eidolons.game.core.Eidolons;
 import main.ability.effects.Effect;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.ContainerUtils;

@@ -1,6 +1,5 @@
 package eidolons.content.consts;
 
-import eidolons.entity.Deity;
 import eidolons.game.netherflame.main.NF_Images;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.data.filesys.PathFinder;
@@ -278,10 +277,6 @@ public static final String SEPARATOR_NARROW = StrPathBuilder.build(
 
                  
         }
-        return null;
-    }
-
-    public static String getSketch(Deity deity) {
         return null;
     }
 

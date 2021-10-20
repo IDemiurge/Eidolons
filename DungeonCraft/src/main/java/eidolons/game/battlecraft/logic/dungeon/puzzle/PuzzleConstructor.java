@@ -7,11 +7,10 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums.PUZZLE_PUN
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums.PUZZLE_RESOLUTION;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTrigger;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.struct.LevelBlock;
 import eidolons.system.ConditionsUtils;
 import eidolons.system.libgdx.GdxAdapter;
-import eidolons.system.libgdx.GdxEvents;
 import main.content.enums.GenericEnums;
 import main.data.ability.construct.VariableManager;
 import main.elements.conditions.Condition;
@@ -125,7 +124,7 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
             for (String substring : ContainerUtils.openContainer(text, ",")) {
                 data.setValue(values[i++], substring);
             }
-            int coef = getDifficultyCoef(Eidolons.getGame().getMissionMaster().getOptionManager().getDifficulty());
+            int coef = getDifficultyCoef(Core.getGame().getMissionMaster().getOptionManager().getDifficulty());
             data.setValue(PuzzleData.PUZZLE_VALUE.DIFFICULTY_COEF, coef);
             int reward = puzzle.getSoulforceBase() * coef / 100;
             data.setValue(PuzzleData.PUZZLE_VALUE.SOULFORCE_REWARD, reward);
@@ -171,7 +170,7 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
 
 
     protected void initExitTrigger() {
-        Eidolons.getGame().getManager().addTrigger(createTrigger(PuzzleTrigger.PUZZLE_TRIGGER.EXIT,
+        Core.getGame().getManager().addTrigger(createTrigger(PuzzleTrigger.PUZZLE_TRIGGER.EXIT,
                 ConditionsUtils.join(new LambdaCondition(ref -> puzzle.active),
                         ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAIN_HERO),
                         getPuzzleExitConditions()),
@@ -186,14 +185,14 @@ public abstract class PuzzleConstructor<T extends Puzzle> {
     private void exited() {
         //TODO isApplyPunishment()
         if (isPointExit())
-            if (Eidolons.getPlayerCoordinates().equals(puzzle.getExitCoordinates())) {
+            if (Core.getPlayerCoordinates().equals(puzzle.getExitCoordinates())) {
                 return;
             }
         puzzle.failed();
     }
 
     protected void initEnterTrigger() {
-        Eidolons.getGame().getManager().addTrigger(createTrigger(PuzzleTrigger.PUZZLE_TRIGGER.ENTER,
+        Core.getGame().getManager().addTrigger(createTrigger(PuzzleTrigger.PUZZLE_TRIGGER.ENTER,
                 ConditionsUtils.join(new LambdaCondition(ref -> !puzzle.active && (!puzzle.solved || isReplayable())),
                         ConditionsUtils.fromTemplate(ConditionMaster.CONDITION_TEMPLATES.MAIN_HERO),
                         getPuzzleEnterConditions()),

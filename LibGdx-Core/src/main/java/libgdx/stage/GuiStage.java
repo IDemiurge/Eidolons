@@ -12,7 +12,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -41,7 +41,6 @@ import libgdx.gui.panels.generic.TipMessageWindow;
 import libgdx.gui.panels.headquarters.HqMaster;
 import libgdx.gui.panels.headquarters.HqPanel;
 import libgdx.gui.panels.headquarters.datasource.HqDataMaster;
-import libgdx.gui.panels.lord.LordPanel;
 import libgdx.gui.panels.quest.QuestJournal;
 import libgdx.gui.panels.quest.QuestProgressPanel;
 import libgdx.screens.Blackout;
@@ -634,7 +633,7 @@ public abstract class GuiStage extends GenericGuiStage implements StageWithClosa
         timeLastTyped = TimeMaster.getTime();
         lastTyped = character;
 
-        Eidolons.onNonGdxThread(() ->  handleKeyTyped(character));
+        Core.onNonGdxThread(() ->  handleKeyTyped(character));
         return super.keyTyped(character);
     }
 
@@ -825,7 +824,7 @@ public abstract class GuiStage extends GenericGuiStage implements StageWithClosa
     }
 
     public void dialogueDone() {
-        Eidolons.getGame().getManager().setHighlightedObj(null);
+        Core.getGame().getManager().setHighlightedObj(null);
         dialogueContainer.fadeOut();
         dialogueToggle(false);
         dialogueContainer.hide();

@@ -13,15 +13,13 @@ import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.combat.attack.extra_attack.ExtraAttacksRule;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.objects.Trap;
-import eidolons.game.module.dungeoncrawl.objects.TrapMaster;
-import main.content.CONTENT_CONSTS2.STD_ACTION_MODES;
-import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
-import main.content.enums.entity.ActionEnums.*;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
+import main.content.enums.entity.ActionEnums.HIDDEN_ACTIONS;
+import main.content.enums.entity.ActionEnums.STD_ACTIONS;
 import main.content.enums.entity.ItemEnums;
-import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.StringMap;
@@ -36,16 +34,15 @@ import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.game.logic.generic.ActionManager;
 import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.threading.Weaver;
 
-import java.util.*;
-
-import static main.content.enums.entity.ActionEnums.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DC_ActionManager implements ActionManager {
 
@@ -316,174 +313,10 @@ public class DC_ActionManager implements ActionManager {
     }
 
 
-    public List<DC_ActiveObj> generateStandardSubactionsForUnit(Unit unit) {
-        List<DC_ActiveObj> actions = new ArrayList<>();
-        // actions.addAll(generateModesForUnit(unit,
-        // ACTION_TYPE_GROUPS.ATTACK));
-        actions.addAll(generateModesForUnit(unit, ACTION_TYPE_GROUPS.MOVE));
-        actions.addAll(generateModesForUnit(unit, ACTION_TYPE_GROUPS.TURN));
-        // actions.addAll(generateModesForUnit(unit, ACTION_TYPE_GROUPS.MODE));
-        actions.addAll(getSpecialModesFromUnit(unit));
-        return actions;
-    }
-
-    protected Collection<? extends DC_ActiveObj> getSpecialModesFromUnit(Unit unit) {
-        return null;
-    }
-
     @Override
     public void resetActions(Entity entity) {
 
     }
-
-    // public boolean activateAttack(Obj _attacked, Obj _attacker) {
-    // // for Communicator
-    // // ObjType type =  DataManager.getType(ATTACK,
-    // // OBJ_TYPES.ACTIONS);
-    // //
-    // // Ref ref = new Ref(game, _attacker.getId());
-    // // ref.setTarget(_attacked.getId());
-    // // type.setOwnerObj(_attacker);
-    // // if (!type.canBeActivated(ref)) {
-    // // return false;
-    // // }
-    // // return type.activate(ref);
-    //
-    // }
-
-    protected DC_UnitAction generateModeAction(String mode, DC_UnitAction baseAction) {
-        return generateModeAction(new EnumMaster<STD_ACTION_MODES>().retrieveEnumConst(
-                STD_ACTION_MODES.class, mode), baseAction);
-    }
-
-    public List<DC_ActiveObj> generateModesForUnit(Unit unit, ACTION_TYPE_GROUPS group) {
-        List<DC_ActiveObj> actions = new ArrayList<>();
-        for (ActiveObj active : unit.getActives()) {
-            DC_ActiveObj action = (DC_ActiveObj) active;
-            if (action.getActionGroup() != group) {
-                continue;
-            }
-            if (!StringMaster.isEmpty(action.getActionMode())) {
-                continue;
-            }
-            if (action.isAttackGeneric()) {
-                continue;
-            }
-            List<DC_UnitAction> subActions = new ArrayList<>();
-
-            for (STD_ACTION_MODES mode : STD_ACTION_MODES.values()) {
-                if (checkModeForAction(action, unit, mode)) {
-                    DC_UnitAction subAction = getModeAction(action, unit, mode);
-                    subActions.add(subAction);
-                }
-            }
-            action.setSubActions(subActions);
-            actions.addAll(subActions);
-        }
-
-        return actions;
-    }
-
-    protected boolean checkModeForAction(DC_ActiveObj action, Unit unit, STD_ACTION_MODES mode) {
-        if (hiddenActions.contains(action.getType())) {
-            return false;
-        }
-        if (mode.getDefaultActionGroups().contains(action.getActionGroup())) {
-            if (checkStdAction(action)) {
-                return true;
-            }
-        }
-        return action.getProperty(PROPS.ACTION_MODES).contains(
-                StringMaster.format(mode.toString()));
-
-    }
-
-    protected boolean checkStdAction(DC_ActiveObj action) {
-        for (STD_ACTIONS s : STD_ACTIONS.values()) {
-            if (StringMaster.compare(s.toString(), action.getName())) {
-                return true;
-            }
-        }
-        for (STD_SPEC_ACTIONS s : STD_SPEC_ACTIONS.values()) {
-            if (StringMaster.compare(s.toString(), action.getName())) {
-                return true;
-            }
-        }
-        for (ADDITIONAL_MOVE_ACTIONS s : ADDITIONAL_MOVE_ACTIONS.values()) {
-            if (StringMaster.compare(s.toString(), action.getName())) {
-                return true;
-            }
-        }
-        for (STD_MODE_ACTIONS s : STD_MODE_ACTIONS.values()) {
-            if (StringMaster.compare(s.toString(), action.getName())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    protected DC_UnitAction getModeAction(DC_ActiveObj action, Unit unit, STD_ACTION_MODES mode) {
-        DC_UnitAction subAction = (DC_UnitAction) getAction(mode.getPrefix() + action.getName(),
-                unit);
-        if (subAction == null) {
-            subAction = (generateModeAction(mode, action));
-        }
-        return subAction;
-    }
-
-    protected DC_UnitAction generateModeAction(STD_ACTION_MODES mode, DC_ActiveObj baseAction) {
-        ObjType type = new ObjType(baseAction.getType());
-        if (mode.getAddPropMap() != null) {
-            for (String s : mode.getAddPropMap().keySet()) {
-                type.addProperty(s, mode.getAddPropMap().get(s));
-            }
-        }
-        if (mode.getSetPropMap() != null) {
-            for (String s : mode.getSetPropMap().keySet()) {
-                type.setProperty(s, mode.getSetPropMap().get(s));
-            }
-        }
-        if (mode.getParamBonusMap() != null) {
-            for (String s : mode.getParamBonusMap().keySet()) {
-                // type.setModifierKey(mode.getName());
-                type.modifyParameter(s, mode.getParamBonusMap().get(s));
-            }
-        }
-        if (mode.getParamModMap() != null) {
-            for (String s : mode.getParamModMap().keySet()) {
-                PARAMETER param = ContentValsManager.getPARAM(s);
-                if (type.getIntParam(param) == 0) {
-                    type.setParam(param, param.getDefaultValue());
-                }
-                type.modifyParamByPercent(param, NumberUtils.getIntParse(mode.getParamModMap().get(
-                        s)), false);
-            }
-        }
-        if (mode != STD_ACTION_MODES.STANDARD) {
-            type.setName(mode.getPrefix() + baseAction.getName());
-        }
-        DC_UnitAction subAction = newAction(type, new Ref(baseAction.getOwnerUnit()), baseAction
-                .getOwner(), game);
-        // TODO not all!..
-        subAction.setActionType(ACTION_TYPE.HIDDEN);
-        subAction.setActionTypeGroup(ACTION_TYPE_GROUPS.HIDDEN);
-        return subAction;
-    }
-
-    public void resetActionsForGameMode(Unit unit, boolean exploreMode) {
-        List<ActiveObj> actions = unit.getActives();
-        /*
-        in explore:
-        + Camp
-
-        - Defend
-
-         substitude wait?
-
-         */
-
-    }
-
 
     public List<DC_UnitAction> getOrCreateWeaponActions(DC_WeaponObj weapon) {
         if (weapon == null) {
@@ -628,25 +461,6 @@ public class DC_ActionManager implements ActionManager {
             }
 
         }
-    }
-
-    public List<DC_UnitAction> getAndInitAttacks(boolean offhand, Unit unit) {
-        DC_ActiveObj action = unit.getAttackAction(offhand);
-        if (action == null) {
-            return null;
-        }
-        List<DC_UnitAction> subActions = getOrCreateWeaponActions(unit.getWeapon(offhand));
-        if (isNaturalWeaponIncluded(unit) || subActions.isEmpty())
-            subActions.addAll(getOrCreateWeaponActions(unit.getNaturalWeapon(offhand)));
-        action.setSubActions(new ArrayList<>(subActions));
-        //      ???  if (action.getSubActions().isEmpty()) {
-        //            action.setSubActions(new ArrayList<>(subActions));
-        //        }
-        return subActions;
-    }
-
-    private boolean isNaturalWeaponIncluded(Unit unit) {
-        return false;
     }
 
     protected List<DC_UnitAction> getObjTypes(List<? extends ObjType> actionTypes,

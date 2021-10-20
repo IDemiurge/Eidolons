@@ -11,7 +11,7 @@ import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.core.ActionInput;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import main.content.enums.EncounterEnums;
 import main.content.enums.EncounterEnums.UNIT_GROUP_TYPE;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
@@ -77,7 +77,7 @@ public class AiBehaviorManager extends AiHandler {
         }
         if (testMode) {
             groups.sort(new SortMaster<GroupAI>().getSorterByExpression_(groupAI -> -groupAI.getLeader().getCoordinates().
-                    dst(Eidolons.getPlayerCoordinates())));
+                    dst(Core.getPlayerCoordinates())));
         }
         Integer n = 0;
         for (GroupAI group : new ArrayList<>(groups)) {

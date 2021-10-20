@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.logic.mission.quest;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.mission.universal.stats.BattleStats;
 import eidolons.game.battlecraft.logic.mission.universal.stats.MissionStatManager;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
@@ -19,7 +19,7 @@ public class QuestMissionStatManager extends MissionStatManager<QuestMission> {
     }
 
     public static String getGameStatsText() {
-        BattleStats stats = Eidolons.getGame().getMissionMaster().getStatManager().getStats();
+        BattleStats stats = Core.getGame().getMissionMaster().getStatManager().getStats();
         String text = "";
         text += "\n Glory rating:" + stats.getGlory() + StringMaster.wrapInParenthesis(
          getCodename(stats.getGlory())

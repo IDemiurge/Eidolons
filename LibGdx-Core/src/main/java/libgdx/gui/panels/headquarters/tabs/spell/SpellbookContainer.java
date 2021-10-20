@@ -2,7 +2,7 @@ package libgdx.gui.panels.headquarters.tabs.spell;
 
 import eidolons.entity.active.Spell;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.master.SpellMaster;
 import eidolons.game.module.herocreator.HeroManager;
 import libgdx.gui.panels.headquarters.datasource.HqDataMaster;
@@ -65,16 +65,16 @@ public class SpellbookContainer extends HqSpellContainer {
 //        }
         if (spell.getSpellPool() == null) {
             if (HqSpellMaster.canLearn(spell)) {
-                EUtils.onConfirm("Learn " + spell + " for " + HeroManager.getCost(spell, Eidolons.getMainHero()) + " Experience Points?", true, () ->
+                EUtils.onConfirm("Learn " + spell + " for " + HeroManager.getCost(spell, Core.getMainHero()) + " Experience Points?", true, () ->
                         HqDataMaster.operation(getUserObject(), HeroDataModel.HERO_OPERATION.SPELL_LEARNED, spell));
             } else {
                 EUtils.showInfoTextStyled(LABEL_STYLE.AVQ_SMALL, "Cannot learn " + spell.getName() + ":\n " +
-                        spell.getGame().getRequirementsManager().check(Eidolons.getMainHero(), spell));
+                        spell.getGame().getRequirementsManager().check(Core.getMainHero(), spell));
             }
         } else {
 //        if (HqSpellMaster.canLearnEnVerbatim(spell))
             if (HqSpellMaster.canLearnEnVerbatim(spell)) {
-                EUtils.onConfirm("Learn " + spell + " En Verbatim for " + HeroManager.getCost(spell, Eidolons.getMainHero())
+                EUtils.onConfirm("Learn " + spell + " En Verbatim for " + HeroManager.getCost(spell, Core.getMainHero())
                         + " Experience Points?", true, () ->
                         HqDataMaster.operation(getUserObject(), HeroDataModel.HERO_OPERATION.SPELL_EN_VERBATIM, spell));
             } else

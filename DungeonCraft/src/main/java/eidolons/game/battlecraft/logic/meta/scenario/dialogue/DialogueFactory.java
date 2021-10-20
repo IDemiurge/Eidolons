@@ -4,7 +4,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.line.DialogueLineF
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechBuilder;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.system.text.TextMaster;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.*;
@@ -96,7 +96,7 @@ public class DialogueFactory {
     @Refactor
     public GameDialogue getDialogue(String name) {
         if (map.isEmpty() || Flags.isDialogueTest())
-            init(Eidolons.game.getMetaMaster());
+            init(Core.game.getMetaMaster());
         return map.get(StringMaster.formatMapKey(name));
     }
 

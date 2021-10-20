@@ -5,7 +5,6 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.combat.mechanics.ForceRule;
 import main.ability.effects.OneshotEffect;
 import main.data.ability.AE_ConstrArgs;
 import main.system.math.Formula;

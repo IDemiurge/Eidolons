@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import libgdx.GdxMaster;
@@ -61,11 +61,11 @@ public class ClockPanel extends GroupX {
         String time;
         if (ExplorationMaster.isExplorationOn()) {
             roundLabel.setText("Exploration");
-            time = Eidolons.game.getDungeonMaster().getExplorationMaster().getTimeMaster().getDisplayedTime();
+            time = Core.game.getDungeonMaster().getExplorationMaster().getTimeMaster().getDisplayedTime();
         } else {
-            roundLabel.setText("Round "+Eidolons.game.getState().getRoundDisplayedNumber());
+            roundLabel.setText("Round "+ Core.game.getState().getRoundDisplayedNumber());
             time =
-                            Eidolons.game.getTurnManager().getTimeString();
+                            Core.game.getTurnManager().getTimeString();
         }
         timeLabel.setText(time);
         timeLabel.pack();

@@ -136,7 +136,7 @@ public class ActionExecutor extends Executor {
                 if (getAction().isAttackGeneric()) {
                     Conditions conditions = new OrConditions();
                     int maxRange = 0;
-                    for (DC_ActiveObj attack : getAction().getSubActions()) {
+                    for (DC_ActiveObj attack : getAction().getAttackTypes()) {
                         if (attack.isThrow()) {
                             continue;
                         }

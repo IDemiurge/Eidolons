@@ -4,7 +4,6 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.action.WatchRule;
 import eidolons.game.battlecraft.rules.perk.FlyingRule;
 import main.system.math.MathMaster;
 
@@ -27,14 +26,6 @@ public class DefenseAttackCalculator {
                 - attacker.getIntParam(PARAMS.DEFENSE_PENETRATION);
         defense = defense * (action.getIntParam(PARAMS.DEFENSE_MOD)) / 100;
         defense += action.getIntParam(PARAMS.DEFENSE_BONUS);
-        if (attacked instanceof Unit)
-            if (WatchRule.checkWatched((Unit) attacked, attacker)) {
-                //increase defense if attacked watches attacker
-                //TODO add reverse mods - 'defense when watched on attack' for trickster
-                int bonus = MathMaster.applyPercent(WatchRule.DEFENSE_MOD, attacked
-                        .getIntParam(PARAMS.WATCH_DEFENSE_MOD));
-                defense += bonus;
-            }
         return defense;
     }
 
@@ -62,13 +53,6 @@ public class DefenseAttackCalculator {
             int bonus = FlyingRule.getAttackBonus(attack, flying_mod);
             attack += bonus;
         }
-        if (attacker instanceof Unit)
-            if (WatchRule.checkWatched((Unit) attacker, attacked)) {
-                //increase attack if attacker watches attacked
-                int bonus = MathMaster.applyPercent(WatchRule.ATTACK_MOD, attacker
-                        .getIntParam(PARAMS.WATCH_ATTACK_MOD));
-                attack += bonus;
-            }
 
         return attack;
     }

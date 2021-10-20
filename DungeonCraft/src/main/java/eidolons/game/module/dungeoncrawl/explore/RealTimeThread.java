@@ -1,6 +1,6 @@
 package eidolons.game.module.dungeoncrawl.explore;
 
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import main.system.auxiliary.log.FileLogManager;
 import main.system.threading.WaitMaster;
@@ -35,8 +35,8 @@ public class RealTimeThread extends Thread {
 
     protected void realTimeLogic() {
         try {
-            Eidolons.getGame().getDungeonMaster().getExplorationMaster().getPartyMaster().reset();
-            Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().reset();
+            Core.getGame().getDungeonMaster().getExplorationMaster().getPartyMaster().reset();
+            Core.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().reset();
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
@@ -51,13 +51,13 @@ public class RealTimeThread extends Thread {
                 FileLogManager.act(period);
             }
 
-            if (Eidolons.getGame() == null)
+            if (Core.getGame() == null)
                 return;
             if (loop.isExited())
                 return;
             if (loop.isStopped())
                 return;
-            if (Eidolons.getGame() != game)
+            if (Core.getGame() != game)
                 return;
             if (loop.isVisualLock())
                 continue;
@@ -65,7 +65,7 @@ public class RealTimeThread extends Thread {
             // if (!ScreenMaster.getScreen().isLoaded()) {
             //     continue;
             // }
-            if (Eidolons.getGame().isPaused()) continue;
+            if (Core.getGame().isPaused()) continue;
             if (!ExplorationMaster.isExplorationOn()) continue;
             if (ExplorationMaster.isRealTimePaused()) continue;
             loop.setVisualLock(true);
@@ -81,7 +81,7 @@ public class RealTimeThread extends Thread {
             }
             timer += period;
             try {
-                Eidolons.getGame().getDungeonMaster().getExplorationMaster().
+                Core.getGame().getDungeonMaster().getExplorationMaster().
                         getTimeMaster().checkTimedEvents();
 
                 //           do we really want time to pass while we're down in a dungeon?

@@ -11,7 +11,7 @@ import eidolons.game.battlecraft.logic.battlefield.ClearshotMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExploreGameLoop;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj;
@@ -35,10 +35,10 @@ import java.util.List;
 public class DefaultActionHandler {
 
     public static boolean leftClickInteractiveObj(DC_Obj userObject) {
-        if (!Eidolons.getGame().getManager().isSelecting())
+        if (!Core.getGame().getManager().isSelecting())
             if (userObject instanceof InteractiveObj) {
-                activate(new Context(Eidolons.getMainHero(), userObject), ((InteractiveObj) userObject).getDM().getDefaultAction(
-                        Eidolons.getMainHero(), (DungeonObj) userObject));
+                activate(new Context(Core.getMainHero(), userObject), ((InteractiveObj) userObject).getDM().getDefaultAction(
+                        Core.getMainHero(), (DungeonObj) userObject));
                 return true;
             }
 
@@ -73,7 +73,7 @@ public class DefaultActionHandler {
         // if (!OptionsMaster.getGameplayOptions().getBooleanValue
         //         (GAMEPLAY_OPTION.DEFAULT_ACTIONS))
         //     return false;
-        Unit source = Eidolons.getGame().getManager().getActiveObj();
+        Unit source = Core.getGame().getManager().getActiveObj();
 
         if (source.getGame().isDebugMode()) {
             return doDebugStuff(source, target);
@@ -196,7 +196,7 @@ public class DefaultActionHandler {
 
         Unit source = null;
         try {
-            source = Eidolons.getGame().getManager().getActiveObj();
+            source = Core.getGame().getManager().getActiveObj();
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
@@ -234,7 +234,7 @@ public class DefaultActionHandler {
             return false;
         }
         Obj target = action.getTargeting() instanceof SelectiveTargeting ?
-                Eidolons.getGame().getCell(c) : null;
+                Core.getGame().getCell(c) : null;
         Context context = new Context(source, target);
         return activate(context, action);
 
@@ -277,7 +277,7 @@ public class DefaultActionHandler {
             if (action.getName().equalsIgnoreCase("use")) {
                 if (((InteractiveObj) context.getTargetObj()).getTYPE() == InteractiveObjMaster.INTERACTIVE_OBJ_TYPE.INSCRIPTION
                         || action.getOwnerUnit().getCoordinates().dst(context.getTargetObj().getCoordinates()) <= 1) {
-                    Eidolons.onNonGdxThread(() -> Eidolons.getGame().getGameLoop().activateAction(
+                    Core.onNonGdxThread(() -> Core.getGame().getGameLoop().activateAction(
                             new ActionInput(action, context)));
                     return true;
                 }
@@ -286,7 +286,7 @@ public class DefaultActionHandler {
         if (context.getTargetObj() != null)
             if (!action.canBeTargeted(context.getTarget(), false))
                 return false;
-        Eidolons.getGame().getGameLoop().actionInputManual(
+        Core.getGame().getGameLoop().actionInputManual(
                 new ActionInput(action, context));
         return true;
     }
@@ -358,7 +358,7 @@ public class DefaultActionHandler {
     }
 
     public static boolean moveToMotion(Coordinates coordinates) {
-        Unit source=Eidolons.getMainHero();
+        Unit source= Core.getMainHero();
         if (!isMoveToOn())
             return false;
         source.getGame().getMovementManager().cancelAutomove(source);

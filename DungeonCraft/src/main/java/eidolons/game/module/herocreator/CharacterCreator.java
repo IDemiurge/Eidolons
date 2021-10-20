@@ -3,9 +3,7 @@ package eidolons.game.module.herocreator;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.Simulation;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.core.game.DC_Game.GAME_TYPE;
 import eidolons.game.module.herocreator.logic.HeroCreator;
-import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.system.text.NameMaster;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
@@ -27,23 +25,17 @@ import main.system.auxiliary.secondary.InfoMaster;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-import main.system.threading.Weaver;
 import main.system.util.DialogMaster;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class CharacterCreator {
 
     private static DC_Game game;
     private static HeroManager heroManager;
     private static HeroCreator heroCreator;
-    private static Dimension heroPanelSize;
     private static boolean initialized;
 
-    private static boolean partyMode;
-    private static Party party;
-    private static boolean arcadeMode;
     private static boolean AV;
     private static HeroManager dc_HeroManager;
     private static Unit hero;
@@ -94,9 +86,6 @@ public class CharacterCreator {
         newType.setProperty(G_PROPS.NAME, name);
         Simulation.getGame().initType(newType);
 
-        if (!partyMode) {
-            addHero(newType);
-        }
         if (preset && !newVersion) {
             newType.setGroup(Strings.PRESET, false);
             String value = ListChooser.chooseEnum(CUSTOM_HERO_GROUP.class);
@@ -160,37 +149,7 @@ public class CharacterCreator {
 
     }
 
-    private static void addHero(ObjType newType) {
-        addHero(HeroCreator.createHeroObj(newType));
 
-    }
-@Deprecated
-    public static void refreshGUI() {
-
-    }
-
-    public static void addHero(final Unit hero) {
-        addHero(hero, false);
-    }
-
-    public static void addHero(final Unit hero, boolean initial) {
-        getHeroManager().addHero(hero);
-        setInitialized(true);
-        saveLastPartyData();
-    }
-
-    public static Unit getNewHero() {
-        return getHeroCreator().newHero();
-    }
-
-    public static void addNewHero() {
-        Unit hero = getHeroCreator().newHero();
-
-        if (hero != null) {
-            addHero(hero);
-
-        }
-    }
 
     public static DC_Game getGame() {
         if (game == null) {
@@ -237,22 +196,6 @@ public class CharacterCreator {
         CharacterCreator.heroCreator = heroCreator;
     }
 
-    public static boolean isPartyMode() {
-        return partyMode;
-    }
-
-    public static void setPartyMode(boolean partyMode) {
-        CharacterCreator.partyMode = partyMode;
-    }
-
-    public static Dimension getHeroPanelSize() {
-        return heroPanelSize;
-    }
-
-    public static void setHeroPanelSize(Dimension heroPanelSize) {
-        CharacterCreator.heroPanelSize = heroPanelSize;
-    }
-
     public static boolean isAV() {
         return AV;
     }
@@ -261,34 +204,6 @@ public class CharacterCreator {
         AV = aV;
     }
 
-    public static Party getParty() {
-        return party;
-    }
-
-    public static void setParty(Party party) {
-        CharacterCreator.party = party;
-    }
-
-    public static boolean isArcadeMode() {
-        return arcadeMode;
-    }
-
-    public static void setArcadeMode(boolean arcadeMode) {
-        CharacterCreator.arcadeMode = arcadeMode;
-    }
-
-    public static void partyMemberAdded(Unit hero) {
-        addHero(hero);
-        saveLastPartyData();
-    }
-
-    public static void saveLastPartyData() {
-//        FileManager.write(PartyHelper.getParty().getMemberString(), Launcher.getLastPresetPath());
-    }
-
-    public static void partyMemberRemoved(Unit hero) {
-        saveLastPartyData();
-    }
 
     public static boolean isInitialized() {
         return initialized;
@@ -298,31 +213,12 @@ public class CharacterCreator {
         CharacterCreator.initialized = initialized;
     }
 
-    public static void savePreset(ObjType heroType) {
-//        saveAs(heroType, CoreEngine.DEV_MODE);
-
-    }
 
     public static void setDC_HeroManager(HeroManager heroManager) {
         dc_HeroManager = heroManager;
 
     }
 
-    public static void initNewHero(final Unit hero) {
-        initNewHero(hero, true);
-    }
-
-    public static void initNewHero(final Unit hero, boolean newThread) {
-        if (newThread) {
-            Weaver.inNewThread(new Runnable() {
-                public void run() {
-                    WaitMaster.receiveInput(WAIT_OPERATIONS.SELECTION, initHero(hero));
-                }
-            });
-        } else {
-            WaitMaster.receiveInput(WAIT_OPERATIONS.SELECTION, initHero(hero));
-        }
-    }
 
     public static String getHeroName(Entity hero) {
         String name;
@@ -398,44 +294,5 @@ public class CharacterCreator {
         return name;
     }
 
-    public static boolean initHero(Unit hero) {
-        String name = getHeroName(hero);
-        if (name == null) {
-            return false;
-        }
-
-        hero.setName(name);
-        // if (CharacterCreator.isArcadeMode()) {
-        hero.setGroup(Strings.CUSTOM, true);
-
-        hero.getDeity().applyHeroBonuses(hero);
-
-//        BattleCraft.chooseMasteryGroups(hero);TODO
-
-        DataManager.addType(hero.getType());
-        // if (
-        // CharacterCreator.save(hero.getType());
-
-        return true;
-    }
-
-    public static boolean isLevelUpEnabled(Unit hero) {
-        if (hero.getGame().getGameType() == GAME_TYPE.SKIRMISH
-         || hero.getGame().getGameType() == GAME_TYPE.SCENARIO) {
-//            if (hero.getLevel() >= ScenarioPrecombatMaster.getScenario().getMaxHeroLevel()) {
-//                return false;
-//            }
-        }
-        return true;
-    }
-
-    public static ObjType selectHero() {
-        return getHeroCreator().chooseBaseType();
-    }
-
-
-    public enum HC_MODE {
-
-    }
 
 }

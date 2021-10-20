@@ -2,7 +2,7 @@ package main.level_editor.gui.top;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.kotcrab.vis.ui.layout.HorizontalFlowGroup;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import libgdx.gui.NinePatchFactory;
 import libgdx.gui.generic.btn.ButtonStyled;
 import libgdx.gui.generic.btn.SymbolButton;
@@ -26,7 +26,7 @@ public class LE_ButtonStripe extends HorizontalFlowGroup {
         setHeight(80);
         setWidth(900);
         addActor(undo = new SymbolButton(ButtonStyled.STD_BUTTON.LE_UNDO, () ->
-                Eidolons.onGdxThread(() -> {
+                Core.onGdxThread(() -> {
                     try {
                         LevelEditor.getCurrent().getManager().getOperationHandler().undo();
                     } catch (Exception e) {
@@ -45,10 +45,10 @@ public class LE_ButtonStripe extends HorizontalFlowGroup {
         addActor(container);
         container.add(
                 save = new SymbolButton(ButtonStyled.STD_BUTTON.REPAIR, () ->
-                        Eidolons.onNonGdxThread(() -> LevelEditor.getCurrent().getManager().getDataHandler().saveFloor()))).top();
+                        Core.onNonGdxThread(() -> LevelEditor.getCurrent().getManager().getDataHandler().saveFloor()))).top();
         container.add(
                 saveV = new SymbolButton(ButtonStyled.STD_BUTTON.CHEST, () ->
-                        Eidolons.onGdxThread(() -> LevelEditor.getCurrent().getManager().
+                        Core.onGdxThread(() -> LevelEditor.getCurrent().getManager().
                                 getDataHandler().saveVersion()))).top();
         //        addActor(new TablePanelX<>(40, getHeight()));
         addActor(controlPanel = new SymbolButton(ButtonStyled.STD_BUTTON.LE_CTRL, null));

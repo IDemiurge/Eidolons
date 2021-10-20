@@ -18,11 +18,9 @@ import eidolons.game.core.game.SimulationGame;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
-import eidolons.game.module.herocreator.logic.skills.SkillMaster;
-import eidolons.game.module.herocreator.logic.spells.SpellMaster;
+import eidolons.game.module.herocreator.logic.passives.SkillMaster;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
-import main.content.enums.entity.UnitEnums;
 import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
 import main.content.mode.MODE;
 import main.content.mode.ModeImpl;
@@ -97,10 +95,6 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     }
 
     public void initHeroObjects() {
-        if ((getChecker().isHero() || getChecker().checkPassive(UnitEnums.STANDARD_PASSIVES.FAVORED)) && getEntity().getDeity() != null) {
-            addProperty(G_PROPS.PASSIVES, getEntity().getDeity().getProperty(G_PROPS.PASSIVES));
-        }
-
         initItems(); // replace type names with ids for weapon/armor
 
         if (!initialized) {
@@ -125,16 +119,6 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     public void initSpells(boolean reset) {
         getEntity().setSpells(
                 getGame().getManager().getSpellMaster().getSpells(getEntity(), reset));
-    }
-
-    public void initSpellbook() {
-        SpellMaster.initSpellbook(getEntity());
-        List<Spell> spellbook =
-                new ArrayList<>(getEntity().getSpells());
-        spellbook.addAll(getGame().getManager().getSpellMaster().
-                initSpellpool(getEntity(), PROPS.SPELLBOOK));
-        getEntity().setSpellbook(spellbook);
-        // init objects for all the known spells as well!
     }
 
     public void initPerks() {

@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.battlefield.vision;
 
 import eidolons.entity.obj.DC_Obj;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 
 public class VisionHelper {
@@ -34,7 +34,7 @@ public class VisionHelper {
 
 
     public static VisionMaster getMaster() {
-        return Eidolons.game.getVisionMaster();
+        return Core.game.getVisionMaster();
     }
 
     public static boolean checkDetected(DC_Obj dc_obj) {

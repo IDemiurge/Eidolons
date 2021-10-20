@@ -1,25 +1,19 @@
 package eidolons.entity.active;
 
-import eidolons.ability.ActionGenerator;
 import eidolons.content.PROPS;
 import eidolons.entity.active.spaces.FeatSpaces;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.game.battlecraft.rules.combat.attack.dual.DualAttackMaster;
-import eidolons.game.core.Eidolons;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;
-import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.Entity;
 import main.entity.obj.ActiveObj;
-import main.entity.type.ObjType;
 import main.game.core.game.GenericGame;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
@@ -76,116 +70,8 @@ public class ActionInitializer extends DC_ActionManager {
         unit.setCombatSpaces(spaces);
     }
 
-    protected List<DC_ActiveObj> getSpecialModesFromUnit(Unit unit) {
-        List<DC_ActiveObj> subActions = new ArrayList<>();
-        for (String mode : ContainerUtils.open(unit.getProperty(PROPS.SPECIAL_ACTION_MODES))) {
-            DC_UnitAction baseAction = unit.getAction(VariableManager.getVar(mode));
-            DC_UnitAction subAction;
-            if (DataManager.getType(VariableManager.removeVarPart(mode), DC_TYPE.ACTIONS) != null) {
-                subAction = generateModeAction(VariableManager.removeVarPart(mode), baseAction);
-            }
-            subAction = getOrCreateAction(VariableManager.removeVarPart(mode), unit);
-            baseAction.getSubActions().add(subAction);
-            // DataManager.getType(VariableManager.getVar(mode),
-            // OBJ_TYPES.ACTIONS);
-        }
-
-        return subActions;
-    }
-
-    public static boolean isActionNotBlocked(DC_ActiveObj activeObj, boolean exploreMode) {
-        if (activeObj.getOwnerUnit() == Eidolons.getMainHero())
-            if (EidolonsGame.TUTORIAL) {
-                if (EidolonsGame.TURNS_DISABLED)
-                    if (activeObj.isTurn())
-                        return false;
-                if (activeObj.isMove())
-                    if (EidolonsGame.MOVES_DISABLED) {
-                        return false;
-                    }
-                if (activeObj.isAttackAny())
-                    return !EidolonsGame.ATTACKS_DISABLED;
-
-                if (activeObj.isMode()) {
-                    return EidolonsGame.getActionSwitch(activeObj.getName());
-                }
-                if (!activeObj.isSpell()) {
-                    return EidolonsGame.getActionSwitch(activeObj.getName());
-                }
-                //                switch (activeObj.getName()) {
-                //                    case "Wait":
-                //                        return EidolonsGame.getActionSwitch(activeObj.getName());
-                //                }
-
-            }
-        return true;
-    }
-
-    public boolean isActionAvailable(DC_ActiveObj activeObj, boolean exploreMode) {
-
-        switch (activeObj.getName()) {
-            case "Defend":
-                return !exploreMode;
-            case "Camp":
-            case "Dissolve":
-                return exploreMode;
-
-        }
-        return true;
-    }
-
-    private void addCustomActions(Unit unit, DequeImpl<ActiveObj> actives) {
-
-        String activesProp = unit.getProperty(G_PROPS.ACTIVES);
-        for (String typeName : ContainerUtils.open(activesProp)) {
-            ObjType type = DataManager.getType(typeName, DC_TYPE.ACTIONS);
-            DC_UnitAction action;
-            if (type == null) {
-                try {
-                    action = (DC_UnitAction) game.getObjectById(Integer.valueOf(typeName));
-                } catch (Exception e) {
-                    continue;
-                }
-            } else {
-                action = getOrCreateAction(typeName, unit);
-            }
-            // idList.add(action.getId() + "");
-            actives.add(action);
-        }
-        // list = new DequeImpl<>(items);
-
-        if (ExplorationMaster.isExplorationOn())
-            try {
-                actives.removeIf(activeObj -> unit.getGame().getDungeonMaster().
-                        getExplorationMaster().getActionHandler().
-                        isActivationDisabledByExploration((DC_ActiveObj) activeObj));
-
-                List<DC_ActiveObj> actions = unit.getGame().getDungeonMaster().
-                        getExplorationMaster().getActionHandler().
-                        getExplorationActions(unit);
-                actives.addAll(actions);
-
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-
-        if (!unit.isBfObj()) {
-            addHiddenActions(unit, actives);
-        }
-
-        actives.removeIf(activeObj -> !isActionAvailable((DC_ActiveObj) activeObj, ExplorationMaster.isExplorationOn()));
-
-        StringBuilder activesPropBuilder = new StringBuilder(activesProp);
-        for (ActiveObj a : actives) {
-            if (activesPropBuilder.toString().contains(a.getName())) {
-                activesPropBuilder.append(a.getName()).append(";");
-            }
-        }
-        activesProp = activesPropBuilder.toString();
-        unit.setProperty(G_PROPS.ACTIVES, activesProp);
-    }
-
-    private void addSpecialActions(Unit unit, DequeImpl<ActiveObj> actives) {
+    private DequeImpl<ActiveObj> createStandardActions(Unit unit) {
+        DequeImpl<ActiveObj> actives = new DequeImpl<>();
         // should be another passive to deny unit even those commodities...
 
         actives.add(getOrCreateAction(ActionEnums.DUMMY_ACTION, unit));

@@ -5,7 +5,6 @@ import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.action.WatchRule;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.content.mode.STD_MODES;

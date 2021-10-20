@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.entity.active.DefaultActionHandler;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
@@ -167,13 +167,13 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
                 if (button == Input.Buttons.RIGHT && !event.isHandled()) {
                     if (Flags.isMe()) {
                         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-                            cell.getGame().getMovementManager().move(Eidolons.getMainHero(), cell.getCoordinates());
-                            GuiEventManager.trigger(UNIT_MOVED, Eidolons.getMainHero());
+                            cell.getGame().getMovementManager().move(Core.getMainHero(), cell.getCoordinates());
+                            GuiEventManager.trigger(UNIT_MOVED, Core.getMainHero());
                             return;
                         }
                     }
                     event.handle();
-                    if (cell.getCoordinates().dst(Eidolons.getPlayerCoordinates()) > 1) {
+                    if (cell.getCoordinates().dst(Core.getPlayerCoordinates()) > 1) {
                         DefaultActionHandler.moveToMotion(cell.getCoordinates());
                     } else
                         GuiEventManager.trigger(CREATE_RADIAL_MENU, cell);

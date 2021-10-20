@@ -10,7 +10,7 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer.BUFF_RULE;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer.BUFF_RULE_STATUS;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.PostProcessingOptions.POST_PROCESSING_OPTIONS;
 import main.system.GuiEventManager;
@@ -84,7 +84,7 @@ public class PostFxUpdater {
     }
 
     public void update() {
-        Unit hero = Eidolons.MAIN_HERO;
+        Unit hero = Core.MAIN_HERO;
         if (hero == null) {
             return;
         }

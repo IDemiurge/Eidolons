@@ -3,9 +3,9 @@ package eidolons.system.text;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.DescriptionMaster;
 import eidolons.content.PARAMS;
+import eidolons.entity.hero.AttributeConsts;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.module.herocreator.logic.AttributeMaster;
 import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
@@ -208,7 +208,7 @@ public class DescriptionTooltips {
 
     private static String getSpecialForHero(PARAMETER value, Unit hero) {
         if (value.isAttribute()) {
-            List<String> s = AttributeMaster.getAttributeBonusInfoStrings(
+            List<String> s = AttributeConsts.getAttributeBonusInfoStrings(
                     DC_ContentValsManager.ATTRIBUTE.getForParameter(value), hero);
             if (s.isEmpty()) {
                 return Strings.NEW_LINE + "[cannot display values provided!]";

@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.attach.DC_PassiveObj;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import libgdx.GdxMaster;
 import libgdx.anims.actions.ActionMasterGdx;
@@ -214,7 +214,7 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
                 node.setShader(GrayscaleShader.getGrayscaleShader());
             Ref ref = dataSource.getEntity().getRef().getCopy();
             ref.setID(KEYS.INFO, type.getId());
-            ref.setID(KEYS.SOURCE, Eidolons.getMainHero().getId());
+            ref.setID(KEYS.SOURCE, Core.getMainHero().getId());
 
             DC_PassiveObj infoFeat = new DC_PassiveObj(type, ref);
             node.addListener(new DynamicTooltip(() -> {

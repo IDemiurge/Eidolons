@@ -10,7 +10,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.Scene;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.SpeechDataSource;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.cinematic.Cinematics;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
@@ -77,7 +77,7 @@ public class DialogueView extends TablePanelX implements Scene {
     }
 
     public void update(SpeechDataSource data) {
-        Eidolons.onGdxThread(() -> update(data, false));
+        Core.onGdxThread(() -> update(data, false));
     }
     public void update(SpeechDataSource data, boolean appendedMessage) {
         //        prev = portrait.getPrevious();
@@ -167,13 +167,13 @@ public class DialogueView extends TablePanelX implements Scene {
 
 
     protected boolean tryNext(boolean allowFinish) {
-        Eidolons.onThisOrNonGdxThread(() ->
+        Core.onThisOrNonGdxThread(() ->
                 respond(SpeechDataSource.DEFAULT_RESPONSE, 0, allowFinish));
         return true;
     }
 
     private boolean respond(String option, int index) {
-        Eidolons.onThisOrNonGdxThread(() -> {
+        Core.onThisOrNonGdxThread(() -> {
             respond(option, index, true);
         });
         return true;
@@ -215,10 +215,10 @@ public class DialogueView extends TablePanelX implements Scene {
 
             if (next != null) {
                 if (!appendedMessage)
-                    Eidolons.onGdxThread(()-> scroll.append("", "", Images.SEPARATOR_NARROW, false).center().setX(getWidth() / 2));
+                    Core.onGdxThread(()-> scroll.append("", "", Images.SEPARATOR_NARROW, false).center().setX(getWidth() / 2));
 
                 boolean finalAppendedMessage = appendedMessage;
-                Eidolons.onGdxThread(()-> update(next, finalAppendedMessage));
+                Core.onGdxThread(()-> update(next, finalAppendedMessage));
 
                 if (!appendedMessage)
                     try { //TODO refactor!

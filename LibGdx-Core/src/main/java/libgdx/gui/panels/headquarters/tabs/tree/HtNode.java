@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.utils.Align;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
-import eidolons.game.module.herocreator.logic.HeroClassMaster;
+import eidolons.game.module.herocreator.logic.passives.HeroClassMaster;
 import libgdx.StyleHolder;
 import libgdx.bf.DynamicLayeredActor;
 import libgdx.gui.generic.ValueContainer;

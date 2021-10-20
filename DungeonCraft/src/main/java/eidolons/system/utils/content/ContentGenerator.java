@@ -165,22 +165,6 @@ public class ContentGenerator {
 
     }
 
-    public static void markPartyUsedContent() {
-        String partyName = "Dark Heroes";
-        for (String substring : ContainerUtils.openContainer(DataManager.getType(partyName, DC_TYPE.PARTY).getProperty(PROPS.MEMBERS))) {
-            ObjType hero = DataManager.getType(substring, DC_TYPE.CHARS);
-            for (PROPERTY prop : heroProps) {
-                for (String s : ContainerUtils.openContainer(hero.getProperty(prop))) {
-                    ObjType t = DataManager.getType(s);
-                    if (t == null) {
-                        continue;
-                    }
-                    t.setProperty(G_PROPS.DEV_NOTES, "Used");
-                }
-            }
-        }
-    }
-
     public static void generateUnitGroupsEnumsTxt() {
         String contents = "";
         loop:
@@ -550,35 +534,6 @@ public class ContentGenerator {
         return sub.name();
     }
 
-    public static void adjustParties() {
-
-        for (ObjType type : DataManager.getTypes(DC_TYPE.PARTY)) {
-            ObjType leader = DataManager.getType(type.getProperty(PROPS.LEADER), DC_TYPE.CHARS);
-            if (leader == null) {
-                List<String> members = ContainerUtils.openContainer(type.getProperty(PROPS.MEMBERS));
-                if (members.isEmpty()) {
-                    continue;
-                }
-                leader = DataManager.getType(members.get(0), DC_TYPE.CHARS);
-                if (leader == null) {
-                    continue;
-                }
-                type.setProperty(PROPS.LEADER, leader.getName());
-            }
-
-            type.setImage(leader.getImagePath());
-        }
-
-    }
-
-    public static void generateWaveUnitTypes(ObjType t) {
-        List<String> list = new ArrayList<>();
-        for (String u : ContainerUtils.open(t.getProperty(PROPS.SHRUNK_PRESET_GROUP))) {
-            if (!list.contains(u)) {
-                list.add(u);
-            }
-        }
-    }
 
     public static void setAbilBaseTypes() {
         List<List<ObjType>> groups = new ArrayList<>();
@@ -1005,14 +960,6 @@ public class ContentGenerator {
                     t.setProperty(PROPS.WEAPON_ATTACKS, weaponActions);
                 }
             }
-            String defaultWeaponAction = getDEFAULT_ATTACK_ACTION(group);
-            t.setProperty(PROPS.DEFAULT_ATTACK_ACTION, defaultWeaponAction);
-            defaultWeaponAction = getDEFAULT_COUNTER_ATTACK_ACTION(group);
-            t.setProperty(PROPS.DEFAULT_COUNTER_ATTACK_ACTION, defaultWeaponAction);
-            defaultWeaponAction = getDEFAULT_INSTANT_ATTACK_ACTION(group);
-            t.setProperty(PROPS.DEFAULT_INSTANT_ATTACK_ACTION, defaultWeaponAction);
-            defaultWeaponAction = getDEFAULT_ATTACK_OF_OPPORTUNITY_ACTION(group);
-            t.setProperty(PROPS.DEFAULT_ATTACK_OF_OPPORTUNITY_ACTION, defaultWeaponAction);
         }
     }
 

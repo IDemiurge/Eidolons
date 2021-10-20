@@ -1,6 +1,6 @@
 package libgdx.utils;
 
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import main.data.filesys.PathFinder;
 import main.system.PathUtils;
 import main.system.SortMaster;
@@ -79,7 +79,7 @@ public class Packer {
 
     public static void main(String[] args) {
         new Packer(
-                ContainerUtils.join("-", Eidolons.NAME, Eidolons.EXTENSION, Eidolons.SUFFIX,
+                ContainerUtils.join("-", Core.NAME, Core.EXTENSION, Core.SUFFIX,
                         CoreEngine.filesVersion) + "/", true).pack();
     }
 

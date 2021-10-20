@@ -18,7 +18,6 @@ import eidolons.game.battlecraft.ai.tools.path.PathBuilder;
 import eidolons.game.battlecraft.ai.tools.path.alphastar.StarBuilder;
 import eidolons.game.battlecraft.ai.tools.priority.PriorityManager;
 import eidolons.game.battlecraft.ai.tools.priority.PriorityModifier;
-import eidolons.game.battlecraft.ai.tools.priority.ThreatAnalyzer;
 import eidolons.game.battlecraft.ai.tools.prune.PruneMaster;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
 import eidolons.game.core.game.DC_Game;
@@ -76,10 +75,6 @@ public abstract class AiHandler {
     }
     public StarBuilder getStarBuilder() {
         return master.getStarBuilder();
-    }
-
-    public ThreatAnalyzer getThreatAnalyzer() {
-        return master.getThreatAnalyzer();
     }
 
     public GoalManager getGoalManager() {

@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static eidolons.game.core.Eidolons.getGame;
+import static eidolons.game.core.Core.getGame;
 
 public class PuzzleSpawner {
 

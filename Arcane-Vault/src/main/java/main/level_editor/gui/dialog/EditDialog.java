@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import libgdx.gui.NinePatchFactory;
 import main.level_editor.gui.components.EditValueContainer;
 
@@ -37,7 +37,7 @@ public abstract class EditDialog<T> extends ChooserDialog<T, EditValueContainer>
                 selected = item;
                 resetBackgrounds();
                 actor.setBackground(NinePatchFactory.getHighlightSmallDrawable());
-                Eidolons.onNonGdxThread(() -> editItem(actor, item));
+                Core.onNonGdxThread(() -> editItem(actor, item));
             }
         };
     }

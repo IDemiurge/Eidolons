@@ -7,7 +7,6 @@ import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.item.DC_InventoryManager.OPERATIONS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
 import libgdx.gui.panels.dc.inventory.container.ContainerClickHandler;
 import libgdx.gui.panels.headquarters.datasource.HqDataMasterDirect;
 import eidolons.game.battlecraft.logic.meta.universal.shop.Shop;

@@ -3,8 +3,8 @@ package libgdx.gui.panels.headquarters.datasource.tree;
 import eidolons.entity.obj.attach.DC_PassiveObj;
 import eidolons.entity.obj.attach.Perk;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.module.herocreator.logic.HeroClassMaster;
-import eidolons.game.module.herocreator.logic.PerkMaster;
+import eidolons.game.module.herocreator.logic.passives.HeroClassMaster;
+import eidolons.game.module.herocreator.logic.passives.PerkMaster;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 
 import java.util.ArrayList;

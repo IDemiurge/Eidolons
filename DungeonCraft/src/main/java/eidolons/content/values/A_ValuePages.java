@@ -60,8 +60,7 @@ public class A_ValuePages {
 
             DAMAGE, OFF_HAND_DAMAGE,
 
-            ATTACK, DEFENSE, EXTRA_ATTACKS,
-            EXTRA_MOVES,
+            ATTACK, DEFENSE,
 
             EMPTY_VALUE,
             STARTING_FOCUS, RESISTANCE, RESISTANCE_PENETRATION,

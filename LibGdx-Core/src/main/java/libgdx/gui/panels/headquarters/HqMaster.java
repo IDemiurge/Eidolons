@@ -2,8 +2,8 @@ package libgdx.gui.panels.headquarters;
 
 import eidolons.entity.SimCache;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.Eidolons;
-import eidolons.game.core.game.DC_Game;
+import eidolons.game.core.Core;
+import eidolons.game.netherflame.lord.EidolonLord;
 import libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import main.content.enums.system.MetaEnums;
@@ -44,7 +44,7 @@ public class HqMaster {
 
     public static void openHqPanel() {
 
-        List<Unit> members = new ArrayList<>(DC_Game.game.getMetaMaster().getPartyManager().getParty().getMembers());
+        List<Unit> members = new ArrayList<>(EidolonLord.lord.getChain().getHeroes());
 //        members.add(DC_Game.game.getManager().getMainHero());
         List<HqHeroDataSource> list = new ArrayList<>();
 
@@ -57,7 +57,7 @@ public class HqMaster {
         if (list.isEmpty()) {
             list.add(new HqHeroDataSource(
                     HqDataMaster.getOrCreateInstance(
-                            Eidolons.getMainHero()).getHeroModel()));
+                            Core.getMainHero()).getHeroModel()));
         }
         GuiEventManager.trigger(GuiEventType.SHOW_HQ_SCREEN, list);
         GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, null);

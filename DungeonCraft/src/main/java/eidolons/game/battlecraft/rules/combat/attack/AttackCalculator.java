@@ -8,7 +8,6 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.rules.action.WatchRule;
 import eidolons.game.battlecraft.rules.perk.RangeRule;
 import eidolons.system.math.roll.DiceMaster;
 import main.content.ContentValsManager;
@@ -26,12 +25,9 @@ import main.entity.obj.BfObj;
 import main.entity.obj.Obj;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.launch.Flags;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import static main.content.enums.entity.NewRpgEnums.HitType.hit;

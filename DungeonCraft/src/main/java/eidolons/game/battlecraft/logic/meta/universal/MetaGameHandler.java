@@ -18,7 +18,7 @@ public class MetaGameHandler<E extends MetaGame> {
         return master;
     }
 
-    public PartyManager getPartyManager() {
+    public SpawnManager getPartyManager() {
         return master.getPartyManager();
     }
 

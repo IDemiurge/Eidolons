@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import libgdx.StyleHolder;
 import libgdx.gui.generic.btn.ButtonStyled;
 import libgdx.gui.generic.btn.SmartTextButton;
@@ -99,7 +99,7 @@ public  abstract class LE_ControlPanel<T>  extends TablePanelX {
         String name =// StringMaster.wrapInBraces(i+"")+
                 StringMaster.format(method.getName(), true);
         return new SmartTextButton(name, getButtonTextStyle(), () -> {
-            Eidolons.onNonGdxThread(() -> {
+            Core.onNonGdxThread(() -> {
                 try {
                     method.invoke(handler);
                 } catch (IllegalAccessException e) {

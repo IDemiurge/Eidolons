@@ -8,7 +8,7 @@ import eidolons.game.battlecraft.ai.advanced.engagement.EngagementHandler;
 import eidolons.game.battlecraft.logic.battlefield.vision.advanced.HintMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
@@ -276,13 +276,13 @@ public class VisionMaster implements GenericVisionManager {
     }
 
     public Unit getSeeingUnit() {
-        Unit unit = Eidolons.getMainHero();
+        Unit unit = Core.getMainHero();
         if (unit == null) {
-            unit = Eidolons.game.getManager().getActiveObj();
+            unit = Core.game.getManager().getActiveObj();
         }
         if (unit == null) {
-            if (!Eidolons.game.getPlayer(true).collectControlledUnits().isEmpty())
-                unit = (Unit) Eidolons.game.getPlayer(true).collectControlledUnits().iterator().next();
+            if (!Core.game.getPlayer(true).collectControlledUnits().isEmpty())
+                unit = (Unit) Core.game.getPlayer(true).collectControlledUnits().iterator().next();
         }
         return unit;
     }

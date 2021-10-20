@@ -15,9 +15,6 @@ public class AtbMaster {
     }
 
     public static float getReadinessCost(DC_ActiveObj action) {
-        if (action.isPointCostActivation()) {
-            return 0;
-        }
         return (float) (
                 action.getParamDouble(PARAMS.AP_COST)
                         * AtbController.ATB_READINESS_PER_AP);

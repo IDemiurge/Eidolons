@@ -4,7 +4,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.logic.mission.universal.stats.BattleStats.BATTLE_STATS;
 import eidolons.game.battlecraft.logic.mission.universal.stats.MissionStatManager.PLAYER_STATS;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import main.data.XLinkedMap;
 import main.system.data.DataUnit;
@@ -45,7 +45,7 @@ public class BattleStats extends DataUnit<BATTLE_STATS> {
     @Override
     public String toString() {
         String stats = "";
-        Map<String, Integer> map = getUnitStats(Eidolons.getMainHero()).getGeneralStats();
+        Map<String, Integer> map = getUnitStats(Core.getMainHero()).getGeneralStats();
         for (String s : map.keySet()) {
             stats+="\n" + s + ": " + map.get(s);
         }
@@ -127,7 +127,7 @@ public class BattleStats extends DataUnit<BATTLE_STATS> {
 
     public UnitStats getHeroStats() {
         return game.getMissionMaster().getStatManager().
-         getStats().getUnitStats(Eidolons.getMainHero());
+         getStats().getUnitStats(Core.getMainHero());
     }
     private PlayerStats getPlayerStats() {
         return game.getMissionMaster().getStatManager().

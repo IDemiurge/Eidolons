@@ -20,10 +20,9 @@ import eidolons.game.battlecraft.ai.tools.path.PathBuilderAtomic;
 import eidolons.game.battlecraft.ai.tools.path.alphastar.StarBuilder;
 import eidolons.game.battlecraft.ai.tools.priority.PriorityManager;
 import eidolons.game.battlecraft.ai.tools.priority.PriorityModifier;
-import eidolons.game.battlecraft.ai.tools.priority.ThreatAnalyzer;
 import eidolons.game.battlecraft.ai.tools.prune.PruneMaster;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import main.content.values.parameters.PARAMETER;
 
@@ -54,7 +53,6 @@ public abstract class AiMaster {
     protected PathSequenceConstructor pathSequenceConstructor;
     protected TurnSequenceConstructor turnSequenceConstructor;
     protected SituationAnalyzer situationAnalyzer;
-    protected ThreatAnalyzer threatAnalyzer;
     protected BehaviorMasterOld behaviorMaster;
     protected AtomicAi atomicAi;
     protected AiScriptExecutor scriptExecutor;
@@ -77,7 +75,6 @@ public abstract class AiMaster {
         handlers.add(analyzer = new Analyzer(this));
         handlers.add(paramAnalyzer = new ParamAnalyzer(this));
         handlers.add(situationAnalyzer = new SituationAnalyzer(this));
-        handlers.add(threatAnalyzer = new ThreatAnalyzer(this));
         handlers.add(cellPrioritizer = new CellPrioritizer(this));
         handlers.add(pathSequenceConstructor = new PathSequenceConstructor(this));
         handlers.add(turnSequenceConstructor = new TurnSequenceConstructor(this));
@@ -185,10 +182,6 @@ public abstract class AiMaster {
         return turnSequenceConstructor;
     }
 
-    public ThreatAnalyzer getThreatAnalyzer() {
-        return threatAnalyzer;
-    }
-
     public SituationAnalyzer getSituationAnalyzer() {
         return situationAnalyzer;
     }
@@ -219,7 +212,7 @@ public abstract class AiMaster {
 
     public Unit getUnit() {
         if (unit == null) {
-            return Eidolons.getMainHero(); //TODO dangerous
+            return Core.getMainHero(); //TODO dangerous
         }
         return unit;
     }

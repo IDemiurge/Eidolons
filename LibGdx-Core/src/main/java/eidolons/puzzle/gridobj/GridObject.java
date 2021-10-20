@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.dungeons.generator.model.AbstractCoordinates;
 import libgdx.anims.sprite.SpriteX;
 import libgdx.bf.GridMaster;
@@ -72,7 +72,7 @@ public abstract class GridObject extends GroupWithEmitters<EmitterActor> {
         //        }
         if (CoreEngine.isLevelEditor())
             return true;
-        return !(Eidolons.getGame().getManager().getMainHeroCoordinates().dst_(c) > getVisionRange());
+        return !(Core.getGame().getManager().getMainHeroCoordinates().dst_(c) > getVisionRange());
     }
 
     public void setKey(String key) {

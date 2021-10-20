@@ -9,7 +9,7 @@ import eidolons.content.PARAMS;
 import eidolons.content.consts.VisualEnums;
 import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.system.libgdx.datasource.FullscreenAnimDataSource;
 import libgdx.GdxMaster;
 import libgdx.anims.actions.ActionMasterGdx;
@@ -66,7 +66,7 @@ public class FullscreenAnims extends GroupX {
 //                obj = e.getRef().getSourceObj();
 //            }
             {
-                if (obj == Eidolons.getMainHero()) {
+                if (obj == Core.getMainHero()) {
                     GenericEnums.BLENDING blending = getBlending(type);
 
                     if (SPRITE_MODE) {

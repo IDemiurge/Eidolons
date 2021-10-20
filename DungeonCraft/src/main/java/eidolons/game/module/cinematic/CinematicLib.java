@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Interpolation;
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.ScriptLib;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
 import main.system.GuiEventManager;
@@ -20,7 +20,7 @@ public class CinematicLib {
 
     public static void doTest(int i) {
         StdCinematic func = getTestFunc(i);
-        Eidolons.onNonGdxThread(() -> run(func));
+        Core.onNonGdxThread(() -> run(func));
     }
 
     private static StdCinematic getTestFunc(int i) {
@@ -87,7 +87,7 @@ COMBAT_ENDS,
                 break;
             case VOID_MAZE_AFTER:
 
-                GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, Eidolons.getMainHero());
+                GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, Core.getMainHero());
                 WaitMaster.WAIT(1500);
                 doZoom(1.25f, 3.5f, Interpolation.fade);
                 WaitMaster.WAIT(2500);

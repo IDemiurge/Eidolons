@@ -6,8 +6,7 @@ import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.ItemFactory;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
-import eidolons.game.module.herocreator.logic.HeroLevelManager;
+import eidolons.game.core.Core;
 import eidolons.system.libgdx.GdxStatic;
 import main.content.C_OBJ_TYPE;
 import main.content.enums.meta.QuestEnums.QUEST_LEVEL;
@@ -56,8 +55,8 @@ public class QuestReward extends DataUnit<QuestReward.REWARD_VALUE> {
                 objType.getProperty(G_PROPS.QUEST_LEVEL));
 
 
-        int gold = 20 * Eidolons.getMainHero().getLevel();
-        int xp = 20 * Eidolons.getMainHero().getLevel();
+        int gold = 20 * Core.getMainHero().getLevel();
+        int xp = 20 * Core.getMainHero().getLevel();
         int reputation = 10;
 
         if (type == null) {

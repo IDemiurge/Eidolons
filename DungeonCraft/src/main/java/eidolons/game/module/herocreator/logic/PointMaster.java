@@ -3,7 +3,7 @@ package eidolons.game.module.herocreator.logic;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.module.herocreator.logic.skills.SkillMaster;
+import eidolons.game.module.herocreator.logic.passives.SkillMaster;
 import main.content.ContentValsManager;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;

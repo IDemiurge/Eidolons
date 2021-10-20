@@ -5,7 +5,7 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleActions;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTrigger.PUZZLE_TRIGGER;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.system.ConditionsUtils;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
@@ -89,7 +89,7 @@ public class ArtSetup extends PuzzleSetup<ArtPuzzle, Object> {
             for (int j = 0; j < puzzle.getHeight(); j++) {
                 //            for (int j = puzzle.getHeight()-1; j >= 0; j--) {
                 Coordinates root = c.getOffsetByY(j).getOffsetByX(i);
-                DC_Cell cell = Eidolons.getGame().getCell(
+                DC_Cell cell = Core.getGame().getCell(
                         root);
                 mosaic.add(cell);
             }

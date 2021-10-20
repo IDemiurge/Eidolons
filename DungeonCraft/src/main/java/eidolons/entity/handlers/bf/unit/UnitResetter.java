@@ -161,8 +161,6 @@ public class UnitResetter extends EntityResetter<Unit> {
                 }
                 if (game.isDummyMode()) {
                     if (getGame().isDummyPlus()) {
-                        getEntity().resetDynamicParam(PARAMS.C_EXTRA_ATTACKS);
-                        getEntity().resetDynamicParam(PARAMS.C_EXTRA_MOVES);
                         resetParam(PARAMS.C_FOCUS);
                         resetParam(PARAMS.C_ESSENCE);
                         resetParam(PARAMS.C_FOCUS);
@@ -360,27 +358,6 @@ public class UnitResetter extends EntityResetter<Unit> {
         getEntity().getAttrs().apply();
     }
 
-    public void resetMorale() {
-        if (ParamAnalyzer.isMoraleIgnore(getEntity())) {
-            return;
-        }
-        Integer intParam = getIntParam(PARAMS.BATTLE_SPIRIT);
-        if (intParam == 0) {
-            if (getRef().getObj(KEYS.PARTY) == null) {
-                getEntity().setParam(PARAMS.BATTLE_SPIRIT, 100);
-            }
-            return;
-        }
-        if (intParam == 100) {
-            return;
-        }
-        getEntity().setParam(PARAMS.ESSENCE, getIntParam(PARAMS.ESSENCE)
-                * intParam / 100);
-        // the C_ value cannot be changed, but the PERCENTAGE
-        // getEntity().setParam(PARAMS.C_MORALE, getIntParam(PARAMS.C_MORALE), true);
-        getEntity().resetPercentage(PARAMS.ESSENCE);
-    }
-
     public void regenerateToughness(float delta) {
         if (getEntity().isFull(PARAMS.TOUGHNESS))
             return;
@@ -396,11 +373,7 @@ public class UnitResetter extends EntityResetter<Unit> {
     public void afterEffectsApplied() {
         getEntity().setBeingReset(true);
         resetHeroValues();
-//        if (game.isSimulation()) { TODO EA check
-            getInitializer().initSpellbook();
-//        }
 
-        resetMorale();
         if (!getInitializer().dynamicValuesReady && !game.isSimulation()) {
             getInitializer().addDynamicValues();
             getInitializer().dynamicValuesReady = true;

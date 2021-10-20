@@ -1,6 +1,6 @@
 package libgdx.gui.menu.selection.hero;
 
-import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
+import eidolons.game.battlecraft.logic.meta.universal.SpawnManager;
 import libgdx.gui.menu.selection.ItemListPanel;
 import libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import libgdx.gui.menu.selection.SelectableItemDisplayer;
@@ -42,7 +42,7 @@ public class HeroSelectionPanel extends SelectionPanel {
 
     @Override
     public WAIT_OPERATIONS getWaitOperation() {
-        return PartyManager.WAIT_OPERATION;
+        return SpawnManager.WAIT_OPERATION;
     }
     @Override
     public void closed(Object selection) {

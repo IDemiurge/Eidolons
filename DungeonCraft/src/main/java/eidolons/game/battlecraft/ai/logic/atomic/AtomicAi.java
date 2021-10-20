@@ -18,12 +18,11 @@ import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import eidolons.game.battlecraft.rules.action.StackingRule;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_ACTION;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_STATE;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
-import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.rules.VisionEnums;
 import main.content.enums.system.AiEnums;
@@ -468,15 +467,15 @@ public class AtomicAi extends AiHandler {
 
         if (!Analyzer.getAdjacentEnemies(getUnit(), false).isEmpty())
             return null;
-        VisionEnums.UNIT_VISION v = ai.getUnit().getUnitVisionStatus(Eidolons.getMainHero());
+        VisionEnums.UNIT_VISION v = ai.getUnit().getUnitVisionStatus(Core.getMainHero());
         float dst = v == VisionEnums.UNIT_VISION.BLOCKED ? 3.5f : 6 +
-                ai.getUnit().getSightRangeTowards(Eidolons.getMainHero());
+                ai.getUnit().getSightRangeTowards(Core.getMainHero());
         if (ai.getType().isCaster())
             dst *= 1.5f;
         if (ai.getType().isRanged())
             dst *= 1.25f;
         if (v != VisionEnums.UNIT_VISION.IN_PLAIN_SIGHT) if (v != VisionEnums.UNIT_VISION.IN_SIGHT) {
-            if (PositionMaster.getExactDistance(ai.getUnit(), Eidolons.getMainHero()) > dst)
+            if (PositionMaster.getExactDistance(ai.getUnit(), Core.getMainHero()) > dst)
                 return AiEnums.AI_LOGIC_CASE.FAR_UNSEEN;
         }
 

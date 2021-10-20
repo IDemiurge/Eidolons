@@ -1,6 +1,6 @@
 package libgdx.gui.menu.selection.rng;
 
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import libgdx.gui.menu.selection.ItemListPanel;
 import libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import libgdx.gui.menu.selection.SelectableItemDisplayer;
@@ -29,7 +29,7 @@ public class RngSelectionPanel extends ScenarioSelectionPanel {
     }
     @Override
     protected void scenarioChosen(final ObjType scenario) {
-        Eidolons.onThisOrNonGdxThread(() -> {
+        Core.onThisOrNonGdxThread(() -> {
             //TODO macro Review
             // ObjType type = ScenarioGenerator.generateRandomLevelScenario(
             //   500, scenario.getName(),

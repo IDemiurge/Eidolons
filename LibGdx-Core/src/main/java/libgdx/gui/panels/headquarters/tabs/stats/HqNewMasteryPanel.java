@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.game.core.EUtils;
-import eidolons.game.module.herocreator.logic.skills.SkillMaster;
+import eidolons.game.module.herocreator.logic.passives.SkillMaster;
 import libgdx.GdxMaster;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.gui.generic.GroupX;
@@ -23,7 +23,6 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.Strings;
 import main.system.images.ImageManager;
-import main.system.launch.Flags;
 
 import java.util.ArrayList;
 import java.util.List;

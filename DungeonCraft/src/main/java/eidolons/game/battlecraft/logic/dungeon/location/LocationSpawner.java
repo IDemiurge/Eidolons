@@ -8,10 +8,9 @@ import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.module.dungeoncrawl.struct.LevelBlock;
-import eidolons.game.module.herocreator.logic.party.Party;
+import eidolons.game.netherflame.lord.EidolonLord;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.system.auxiliary.data.ListMaster;
 
 import java.util.*;
 
@@ -32,19 +31,16 @@ public class LocationSpawner extends Spawner {
     }
 
     @Override
+    @Deprecated
     public List<Unit> spawn(UnitsData data, DC_Player player, SPAWN_MODE mode) {
         if (player.isMe() &&   getGame().getMetaMaster() != null) {
-            Party party = getGame().getMetaMaster().getPartyManager()
-                    .getParty();
-            if (party == null) {
-                return new LinkedList<>();
-            }
-            List<String> list = ListMaster.toNameList(
-                    party.getMembers());
+
+
+            List<String> list = new ArrayList<>(EidolonLord.lord.getChain().getHeroNames());
             List<Coordinates> coords = getPositioner().getPlayerPartyCoordinates(list);
             Iterator<Coordinates> iterator = coords.iterator();
 //            coords.removeIf(c -> c == null); TODO concurrent mod ...
-            for (Unit member : party.getMembers()) {
+            for (Unit member : EidolonLord.lord.getChain().getHeroes()) {
                 if (!iterator.hasNext()) {
                     main.system.auxiliary.log.LogMaster.log(1, "Spawn failed: Coordinates: " + coords +
                             "; Units" + list);

@@ -55,7 +55,6 @@ public abstract class DungeonMaster {
     private LockMaster lockMaster;
     private ContainerMaster containerMaster;
     private InteractiveObjMaster interactiveMaster;
-    private final TrapMaster trapMaster;
     private PuzzleMaster puzzleMaster;
     private IPortalMaster portalMaster;
     private final LayerManager layerManager;
@@ -74,7 +73,6 @@ public abstract class DungeonMaster {
 
     public DungeonMaster(DC_Game game) {
         this.game = game;
-        trapMaster = new TrapMaster(this);
         initializer = createInitializer();
         spawner = createSpawner();
         layerManager = createLayerManager();
@@ -269,10 +267,6 @@ public abstract class DungeonMaster {
         return getMissionMaster().getConstructor();
     }
 
-    public MissionOutcomeManager getOutcomeManager() {
-        return getMissionMaster().getOutcomeManager();
-    }
-
     public DungeonSequence getMission() {
         return getMissionMaster().getMission();
     }
@@ -302,10 +296,6 @@ public abstract class DungeonMaster {
 
     public void next() {
         floorWrapper = null;
-    }
-
-    public TrapMaster getTrapMaster() {
-        return trapMaster;
     }
 
     public IPortalMaster getPortalMaster() {
