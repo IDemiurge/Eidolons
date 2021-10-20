@@ -132,17 +132,6 @@ public class UnitResetter extends EntityResetter<Unit> {
             if (game.isSimulation()) {
                 resetObjects();
                 resetQuickSlotsNumber();
-                StringBuilder valueBuilder = new StringBuilder();
-                for (Spell s : getEntity().getSpells()) {
-                    if (!s.getProperty(PROPS.SPELL_UPGRADES).isEmpty()) {
-                        valueBuilder.append(s.getName()).append(StringMaster.wrapInParenthesis(s
-                                .getProperty(PROPS.SPELL_UPGRADES).replace(";", ","))).append(";");
-                    }
-                }
-                String value = valueBuilder.toString();
-                if (!value.isEmpty()) {
-                    setProperty(PROPS.SPELL_UPGRADES, value, true);
-                }
             }
         } else {
             resetAttributes();
@@ -418,8 +407,6 @@ public class UnitResetter extends EntityResetter<Unit> {
         if (!getGame().getRules().getWeightRule().apply(getEntity())) {
             getEntity().setInfiniteValue(PARAMS.CARRYING_CAPACITY, 2);
         }
-        if (RuleKeeper.isRuleOn(RuleEnums.RULE.WATCH))
-            getGame().getRules().getWatchRule().updateWatchStatus(getEntity());
         getGame().getRules().getWoundsRule().apply(getEntity());
     }
 

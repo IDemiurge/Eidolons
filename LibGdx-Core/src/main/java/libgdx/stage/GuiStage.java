@@ -95,7 +95,6 @@ public abstract class GuiStage extends GenericGuiStage implements StageWithClosa
     protected ArrayList<Actor> dialogueActors;
     protected DialogueContainer dialogueContainer;
     protected Map<GameDialogue, DialogueContainer> dialogueCache = new HashMap<>();
-    protected LordPanel lordPanel;
     protected HideButton hideQuests;
     protected ExtendableLogPanel logPanel;
     private GroupX customPanel;
@@ -210,12 +209,6 @@ public abstract class GuiStage extends GenericGuiStage implements StageWithClosa
             hqPanel.setPosition(GdxMaster.centerWidth(hqPanel),
                     GdxMaster.centerHeight(hqPanel));
             hqPanel.setVisible(false);
-            if (LordPanel.ON) {
-                addActor(lordPanel = LordPanel.getInstance());
-                lordPanel.setPosition(GdxMaster.centerWidth(lordPanel),
-                        GdxMaster.centerHeight(lordPanel));
-                lordPanel.setVisible(false);
-            }
             addActor(journal = new QuestJournal());
             journal.setPosition(GdxMaster.centerWidth(journal),
                     GdxMaster.centerHeight(journal));
@@ -393,7 +386,6 @@ public abstract class GuiStage extends GenericGuiStage implements StageWithClosa
                 if (tipMessageWindow.getColor().a != 0) //TODO why are there such cases?!
                     return true;
         return
-                LordPanel.visibleNotNull() ||
                         confirmationPanel.isVisible() || GdxMaster.isVisibleEffectively(textPanel) ||
                         HqPanel.getActiveInstance() != null || OptionsWindow.isActive()
                         || GameMenu.menuOpen;
@@ -417,7 +409,6 @@ public abstract class GuiStage extends GenericGuiStage implements StageWithClosa
                 if (actor instanceof Group)
                     ancestors.add((Group) actor);
                 if (checkContainsNoOverlaying(ancestors)) {
-                    if (!ancestors.contains(LordPanel.getInstance()))
                         if (!ancestors.contains(OptionsWindow.getInstance())) {
                             if (GdxMaster.getFirstParentOfClass(
                                     actor, RadialContainer.class) == null) {
@@ -460,13 +451,6 @@ public abstract class GuiStage extends GenericGuiStage implements StageWithClosa
             customPanel.fadeOut();
             ActionMasterGdx.addRemoveAfter(customPanel);
             customPanel = null;
-        });
-        GuiEventManager.bind(GuiEventType.TOGGLE_LORD_PANEL, p -> {
-            if (lordPanel.isVisible()) {
-                GuiEventManager.trigger(GuiEventType.SHOW_LORD_PANEL, null);
-            } else {
-                GuiEventManager.trigger(GuiEventType.SHOW_LORD_PANEL, EidolonLord.lord);
-            }
         });
 
         GuiEventManager.bind(GuiEventType.OPEN_OPTIONS, p -> {
@@ -707,8 +691,6 @@ public abstract class GuiStage extends GenericGuiStage implements StageWithClosa
 
         if (hqPanel != null)
             hqPanel.setZIndex(Integer.MAX_VALUE);
-        if (lordPanel != null)
-            lordPanel.setZIndex(Integer.MAX_VALUE);
         if (confirmationPanel != null)
             confirmationPanel.setZIndex(Integer.MAX_VALUE);
         if (infoTooltipContainer != null)

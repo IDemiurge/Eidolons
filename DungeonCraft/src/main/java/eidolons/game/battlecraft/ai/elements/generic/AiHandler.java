@@ -13,7 +13,6 @@ import eidolons.game.battlecraft.ai.elements.goal.GoalManager;
 import eidolons.game.battlecraft.ai.elements.task.TaskManager;
 import eidolons.game.battlecraft.ai.logic.atomic.AtomicAi;
 import eidolons.game.battlecraft.ai.tools.*;
-import eidolons.game.battlecraft.ai.tools.path.CellPrioritizer;
 import eidolons.game.battlecraft.ai.tools.path.PathBuilder;
 import eidolons.game.battlecraft.ai.tools.path.alphastar.StarBuilder;
 import eidolons.game.battlecraft.ai.tools.priority.PriorityManager;
@@ -131,10 +130,6 @@ public abstract class AiHandler {
 
     public AiExecutor getExecutor() {
         return master.getExecutor();
-    }
-
-    public CellPrioritizer getCellPrioritizer() {
-        return master.getCellPrioritizer();
     }
 
     public PathSequenceConstructor getPathSequenceConstructor() {

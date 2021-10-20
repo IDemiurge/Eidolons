@@ -137,7 +137,8 @@ public class TaskManager extends AiHandler {
                 // ai.getGroup().getKnownEnemies
                 break;
             case APPROACH:
-                targets = new ArrayList<>(getCellPrioritizer().getApproachCells(ai));
+                //TODO NF AI Revamp
+                // targets = new ArrayList<>(getCellPrioritizer().getApproachCells(ai));
                 break;
 
             case SEARCH:
@@ -210,9 +211,6 @@ public class TaskManager extends AiHandler {
                     targets = Analyzer.getWaitUnits(ai);
                 break;
             case PROTECT:
-                if (RuleKeeper.isRuleOn(RuleEnums.RULE.GUARD))
-                    if (GuardRule.on)
-                        targets = Analyzer.getProtectCells(ai);
                 break;
 
             case COATING:

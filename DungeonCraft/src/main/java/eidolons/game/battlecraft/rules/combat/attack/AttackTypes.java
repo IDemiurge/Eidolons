@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.rules.combat.attack;
 
+import eidolons.entity.active.DC_ActiveObj;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.system.auxiliary.ContainerUtils;
@@ -15,6 +16,11 @@ import java.util.Set;
 import static main.content.enums.GenericEnums.DAMAGE_TYPE.*;
 
 public class AttackTypes {
+
+    //TODO NF Rules
+    public static boolean canActivateAny(DC_ActiveObj active) {
+        return true;
+    }
 
     public enum AttackType {
         standard(100, 35, 10),

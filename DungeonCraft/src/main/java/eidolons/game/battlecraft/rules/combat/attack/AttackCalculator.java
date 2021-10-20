@@ -8,7 +8,6 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.rules.perk.RangeRule;
 import eidolons.system.math.roll.DiceMaster;
 import main.content.ContentValsManager;
 import main.content.enums.GenericEnums;
@@ -59,7 +58,7 @@ public class AttackCalculator {
     protected BattleFieldObject attacked;
     protected final DC_WeaponObj weapon;
     protected final Ref ref;
-    protected final boolean counter, offhand, critical, sneak, AoO, instant, disengage;
+    protected final boolean counter, offhand, critical, sneak, AoO, instant ;
 
     protected Integer amount;
     protected boolean min, max;
@@ -71,7 +70,6 @@ public class AttackCalculator {
         this.attacker = attack.getAttacker();
         this.attacked = attack.getAttacked();
         this.weapon = attack.getWeapon();
-        this.disengage = attack.isDisengagement();
         this.counter = attack.isCounter();
         this.instant = attack.isInstant();
         this.AoO = attack.isAttackOfOpportunity();
@@ -361,19 +359,6 @@ public class AttackCalculator {
     protected void initializePositionModifiers() {
         int dmg_mod = 0;
         int atk_mod = 0;
-        Boolean close_long = RangeRule.isCloseQuartersOrLongReach(attacker, attacked, weapon,
-                action);
-        if (close_long != null) {
-            ActionEnums.MOD_IDENTIFIER identifier = close_long ? ActionEnums.MOD_IDENTIFIER.CLOSE_QUARTERS
-                    : ActionEnums.MOD_IDENTIFIER.LONG_REACH;
-            int damageMod = RangeRule.getMod(true, close_long, attacker, attacked, weapon, action);
-            posMap.put(identifier, damageMod);
-            dmg_mod += damageMod;
-
-            int atkMod = RangeRule.getMod(false, close_long, attacker, attacked, weapon, action);
-            atkMap.put(identifier, atkMod);
-            atk_mod += atkMod;
-        }
         if (ref.getTargetObj() == null) {
             if (attack.getAttacked() != null) {
                 ref.setTarget(attack.getAttacked().getId());
@@ -481,27 +466,10 @@ public class AttackCalculator {
         if (instant) {
             integer = attacker.getIntParam(PARAMS.INSTANT_ATTACK_MOD);
             addModifier(atkModMap, ActionEnums.MOD_IDENTIFIER.INSTANT_ATTACK, PARAMS.ATTACK, integer);
-            if (WatchRule.checkWatched(attacker, attacked)) {
-                addModifier(atkModMap, ActionEnums.MOD_IDENTIFIER.WATCHED, PARAMS.ATTACK, MathMaster
-                        .applyModIfNotZero(MathMaster.applyModIfNotZero(
-                                WatchRule.INSTANT_ATTACK_MOD, attacker
-                                        .getIntParam(PARAMS.WATCH_ATTACK_MOD)), attacked
-                                .getIntParam(PARAMS.WATCHED_ATTACK_MOD))
-
-                );
-
-                // addModifier(attacked, map, id, param, integer);
-            }
         }
         if (counter) {
             integer = attacker.getIntParam(PARAMS.COUNTER_ATTACK_MOD);
             addModifier(atkModMap, ActionEnums.MOD_IDENTIFIER.COUNTER_ATTACK, PARAMS.ATTACK, integer);
-        }
-        if (attack.getInstantAttackType() != null) {
-            PARAMETER param = ContentValsManager.getPARAM(attack.getInstantAttackType().toString()
-                    + "_ATTACK_MOD");
-            integer = attacked.getIntParam(param);
-            addModifier(atkModMap, ActionEnums.MOD_IDENTIFIER.INSTANT_ATTACK, PARAMS.ATTACK, integer);
         }
     }
 
@@ -520,17 +488,6 @@ public class AttackCalculator {
             addModifier(attacked, defModMap, ActionEnums.MOD_IDENTIFIER.COUNTER_ATTACK, PARAMS.DEFENSE, integer);
         }
 
-        if (disengage) {
-            PARAMETER param = ContentValsManager.getPARAM(attack.getInstantAttackType().toString()
-                    + "_DEFENSE_MOD");
-            integer = attacked.getIntParam(param);
-            addModifier(attacked, defModMap, ActionEnums.MOD_IDENTIFIER.INSTANT_ATTACK, PARAMS.DEFENSE, integer);
-        }
-        // if ( engaged){
-        // integer = attacked.getIntParam(PARAMS.ENGAGED_ATTACK_MOD);
-        // addModifier(defModMap, MOD_IDENTIFIER.ENGAGED, PARAMS.DEFENSE,
-        // integer);
-        // }
 
     }
 

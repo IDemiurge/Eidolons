@@ -93,15 +93,7 @@ public class ActionInitializer extends DC_ActionManager {
         //     actives.add(getOrCreateAction(ActionEnums.TOGGLE_WEAPON_SET, unit));
         // }
 
-        addHiddenActions(unit, actives);
-
         return actives;
-    }
-
-    private void addHiddenActions(Unit unit, Collection<ActiveObj> actives) {
-        // actions.addAll(getObjTypes(hiddenActions, unit));
-        List<DC_ActiveObj> generatedSubactions = generateStandardSubactionsForUnit(unit);
-        actives.addAll(generatedSubactions);
     }
 
 }

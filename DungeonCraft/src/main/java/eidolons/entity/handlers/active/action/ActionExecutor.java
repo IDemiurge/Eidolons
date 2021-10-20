@@ -8,6 +8,7 @@ import eidolons.entity.handlers.active.ActiveMaster;
 import eidolons.entity.handlers.active.Executor;
 import eidolons.entity.handlers.active.Targeter;
 import eidolons.game.battlecraft.ai.AI_Manager;
+import eidolons.game.battlecraft.rules.combat.attack.AttackTypes;
 import eidolons.game.battlecraft.rules.combat.attack.dual.DualWieldingRule;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.mode.STD_MODES;
@@ -173,11 +174,7 @@ public class ActionExecutor extends Executor {
             @Override
             public boolean canBeActivated(Ref ref, boolean first) {
                 if (getAction().isAttackGeneric()) {
-                    for (DC_ActiveObj attack : getAction().getSubActions()) {
-                        if (attack.canBeActivated(ref, true)) {
-                            return true;
-                        }
-                    }
+                    return AttackTypes.canActivateAny(active);
                 }
                 if (getAction().isContinuousMode()) {
                     if (checkActionDeactivatesContinuousMode()) {

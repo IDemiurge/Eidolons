@@ -180,7 +180,6 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     public void init() {
         super.init();
         initEmblem();
-        initIntegrityAlignments();
         getInitializer().init();
 
     }
@@ -1374,12 +1373,6 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     public void initNaturalWeapon(boolean offhand) {
         getInitializer().initNaturalWeapon(offhand);
     }
-
-
-    public void initIntegrityAlignments() {
-        getInitializer().initIntegrityAlignments();
-    }
-
 
     public boolean canUseItems() {
         return getChecker().canUseItems();

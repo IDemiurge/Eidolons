@@ -229,7 +229,7 @@ public class AtomicAi extends AiHandler {
         FACING_DIRECTION facing = FacingMaster.
                 getOptimalFacingTowardsUnits(getUnit().getCoordinates(),
                         units
-                        , t -> getThreatAnalyzer().getThreat(ai, (Unit) t)
+                        , t -> getThreat(ai, (Unit) t)
                 );
         if (facing == null)
             return null;
@@ -248,6 +248,11 @@ public class AtomicAi extends AiHandler {
         }
         return Positioner.adjustCoordinate(ai.getUnit(), c, ai.getUnit().getFacing());
 
+    }
+
+    //TODO NF AI Revamp
+    private Integer getThreat(UnitAI ai, Unit t) {
+        return t.getLevel() * 5;
     }
 
     public Action getAtomicActionMove(UnitAI ai, Boolean approach_retreat_search) {
@@ -418,8 +423,8 @@ public class AtomicAi extends AiHandler {
                     return null;
                 if (enemy.getCoordinates().dst_(ai.getUnit().getCoordinates()) >=
                         (relative == FACING_SINGLE.BEHIND
-                        ? MAX_DST_TURN_BEHIND
-                        : MAX_DST_TURN)) {
+                                ? MAX_DST_TURN_BEHIND
+                                : MAX_DST_TURN)) {
                     return null;
                 }
                 return AiEnums.AI_LOGIC_CASE.TURN_AROUND;

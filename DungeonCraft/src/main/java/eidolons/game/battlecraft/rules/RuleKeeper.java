@@ -112,14 +112,10 @@ public class RuleKeeper  {
             return r.scope;
         }
         switch (r) {
-            case INJURY:
-                return RuleEnums.RULE_SCOPE.TEST;
             case ATTACK_OF_OPPORTUNITY:
             case INSTANT_ATTACK:
             case FORCE:
                 return RuleEnums.RULE_SCOPE.FULL;
-            case TRAMPLE:
-                return RuleEnums.RULE_SCOPE.ADVANCED;
 
         }
         return RuleEnums.RULE_SCOPE.BASIC;

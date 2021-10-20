@@ -8,7 +8,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.VoidMaze;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.round.WaterRule;
 import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.struct.Entrance;
@@ -137,12 +136,6 @@ public class StackingRule implements ActionRule {
                         return false;
                     }
                 }
-                if (u.isWater())
-                    return WaterRule.checkPassable(u, unit);
-                // if (!u.isNeutral() && !u.isMine())
-                //     if (game.getVisionMaster().checkInvisible(u)) {
-                //         continue;
-                //     }
                 if (u instanceof Unit)
                     if (!u.isAnnihilated())
                     units.addCast(u);

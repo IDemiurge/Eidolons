@@ -93,13 +93,6 @@ public interface PriorityManager {
 
     int getAttackPriority(DC_ActiveObj active, BattleFieldObject targetObj);
 
-    int getSpecialEffectsPriority(SPECIAL_EFFECTS_CASE CASE, Unit source,
-                                  Unit target);
-
-    int getSpecialEffectPriority(Effect e);
-
-    int getAttackOfOpportunityPenalty(DC_ActiveObj action, Unit targetObj);
-
     int getCounterPenalty(DC_ActiveObj active, Unit targetObj);
 
     int getDamagePriority(DC_ActiveObj action, Obj targetObj);
@@ -131,8 +124,5 @@ public interface PriorityManager {
     int getModePriority(Unit unit, STD_MODES mode);
 
     AiMaster getMaster();
-
-    int getCostFactor(Costs cost, Unit unit);
-
 
 }

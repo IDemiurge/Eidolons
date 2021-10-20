@@ -33,7 +33,6 @@ public class SpellMaster extends Master {
 
     private static final PROPERTY VERBATIM = PROPS.VERBATIM_SPELLS;
     private static final PROPERTY MEMORIZED = PROPS.MEMORIZED_SPELLS;
-    private static final PROPERTY DIVINED = PROPS.DIVINED_SPELLS;
     Map<MicroObj, Map<ObjType, Spell>> spellCache = new HashMap<>();
     static Map<ObjType, Spell> globalSpellCache = new HashMap<>();
 

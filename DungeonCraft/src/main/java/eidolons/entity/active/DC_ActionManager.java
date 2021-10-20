@@ -181,14 +181,6 @@ public class DC_ActionManager implements ActionManager {
 
     public Active getCounterAttackAction(Unit countered, Unit countering,
                                          DC_ActiveObj active) {
-        DC_ActiveObj counterAttack = countering.getPreferredCounterAttack();
-        if (counterAttack != null) {
-            if (counterAttack.canBeActivatedAsCounter()) {
-                if (counterAttack.canBeTargeted(active.getOwnerUnit().getId())) {
-                    return counterAttack;
-                }
-            }
-        }
         for (DC_ActiveObj attack : ExtraAttacksRule.getCounterAttacks(active, countering)) {
             //            if (AnimMaster.isTestMode())
 

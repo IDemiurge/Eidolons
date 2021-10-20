@@ -120,11 +120,6 @@ public class ActionManager extends AiHandler {
         getPathSequenceConstructor().clearCache(); // TODO try not to? :)
         Unit unit = getUnit();
 
-        if (unit != ai.getUnit()) {
-            getCellPrioritizer().reset();
-        }
-
-
         checkDeactivate();
 
         if (ListMaster.isNotEmpty(ai.getForcedActions())) {

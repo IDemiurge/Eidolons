@@ -86,42 +86,7 @@ public class ActiveObjInitializer extends EntityInitializer<DC_ActiveObj> {
         costs.setActive(getEntity());
         costs.setActiveId(getId());
 
-        //TODO Review
-        if (getEntity().isAttackAny())
-            if (getEntity().isExtraAttackMode())
-                applyDynamicCostMods(costs);
-
-
         getEntity().setCosts(costs);
-    }
-
-
-    public void applyDynamicCostMods(Costs costs) {
-        Unit ownerObj = getEntity().getOwnerUnit();
-        Integer sta = 0;
-        Integer ap = 0;
-        if (getHandler().isCounterMode()) {
-            ap = ownerObj.getIntParam(PARAMS.COUNTER_PTS_COST_MOD);
-            sta = ownerObj
-                    .getIntParam(PARAMS.COUNTER_TOUGHNESS_COST_MOD);
-        }
-        if (getHandler().isInstantMode()) {
-            ap = ownerObj.getIntParam(PARAMS.INSTANT_PTS_COST_MOD);
-            sta = ownerObj
-                    .getIntParam(PARAMS.INSTANT_TOUGHNESS_COST_MOD);
-        }
-        if (getHandler().isAttackOfOpportunityMode()) {
-            ap = ownerObj.getIntParam(PARAMS.AOO_PTS_COST_MOD);
-            sta = ownerObj
-                    .getIntParam(PARAMS.AOO_TOUGHNESS_COST_MOD);
-        }
-        if (ap != 0)
-            if (costs.getCost(PARAMS.AP_COST) != null)
-                costs.getCost(PARAMS.AP_COST).getPayment().getAmountFormula().applyModifier(ap);
-        if (sta != 0)
-            if (costs.getCost(PARAMS.TOU_COST) != null) {
-                costs.getCost(PARAMS.TOU_COST).getPayment().getAmountFormula().applyModifier(sta);
-            }
     }
 
 

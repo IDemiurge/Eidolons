@@ -60,9 +60,6 @@ public class ActionPanel extends GroupX {
 
     private Float defaultX;
 
-    ExtraPtsComp movePts = new ExtraPtsComp(false);
-    ExtraPtsComp atkPts = new ExtraPtsComp(true);
-
     List<Actor> elements;
 
     @Override
@@ -89,9 +86,6 @@ public class ActionPanel extends GroupX {
         addActor(bodyParamsBar);
         addActor(soulParamsBar);
         addActor(facingPanel = new FacingPanel());
-
-        addActor(movePts);
-        addActor(atkPts);
 
         addActor(mainHand = new QuickWeaponPanel(false));
         addActor(offhand = new QuickWeaponPanel(true));
@@ -142,8 +136,6 @@ public class ActionPanel extends GroupX {
                 , bodyParamsBar.getY());
         buffPanelSoul.setPosition(soulParamsBar.getX() + 65, IMAGE_SIZE + 40);
 
-        atkPts.setPosition(spellSpacePanel.getX()-12, 50);
-        movePts.setPosition(bodyParamsBar.getX() + 337, 54);
     }
 
     public ActionPanel(int x, int y) {
@@ -249,8 +241,6 @@ public class ActionPanel extends GroupX {
             //Gdx revamp - action containers re-creation!
             elements.forEach( el->
                     el.setUserObject(source));
-            atkPts.setUserObject(source);
-            movePts.setUserObject(source);
             defaultActionsPanel.setUserObject(source);
             combatSpacePanel.setUserObject(source);
             spellSpacePanel.setUserObject(source);

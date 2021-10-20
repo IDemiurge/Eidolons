@@ -270,13 +270,6 @@ public class ContentGenerator {
             generateFalseWalls();
         if (DataManager.isTypesRead(DC_TYPE.SCENARIOS))
             generateRngScenarios();
-        if (DataManager.isTypesRead(DC_TYPE.PARTY))
-            try {
-                markPartyUsedContent();
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-
 //        updateImagePaths(DC_TYPE.SKILLS);
 //        writeImages(DC_TYPE.SKILLS);
 //            writeDataToText();

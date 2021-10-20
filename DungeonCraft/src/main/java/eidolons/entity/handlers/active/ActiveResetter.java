@@ -5,7 +5,6 @@ import eidolons.content.values.DC_ValueManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.perk.FlyingRule;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TAGS;
@@ -21,7 +20,6 @@ import main.entity.handlers.EntityResetter;
 import main.entity.obj.Obj;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.math.MathMaster;
 
 import static main.content.enums.system.MetaEnums.CUSTOM_VALUE_TEMPLATE.COST_MOD_ACTIVE_NAME;
 import static main.content.enums.system.MetaEnums.CUSTOM_VALUE_TEMPLATE.COST_REDUCTION_ACTIVE_NAME;
@@ -153,7 +151,6 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
                 }
                 break;
             case MOVE:
-                FlyingRule.checkAddMoveCostReductions(ownerObj);
                 sta += ownerObj.getIntParam(PARAMS.MOVE_TOU_COST_MOD, false);
                 ap += ownerObj.getIntParam(PARAMS.MOVE_ATB_COST_MOD, false);
                 break;

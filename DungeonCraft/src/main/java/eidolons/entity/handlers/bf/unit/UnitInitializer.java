@@ -397,25 +397,4 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
 
     }
 
-
-    public void initIntegrityAlignments() {
-        if (!RuleKeeper.isRuleOn(RuleEnums.RULE.INTEGRITY)) {
-            return ;
-        }
-        Map<PRINCIPLES, Integer> map = new RandomWizard<PRINCIPLES>().constructWeightMap(
-                getProperty(G_PROPS.PRINCIPLES), PRINCIPLES.class);
-        for (PRINCIPLES principle : map.keySet()) {
-            Integer amount = map.get(principle);
-            if (amount == 0) {
-                continue;
-            }
-            PARAMETER alignmentParam = DC_ContentValsManager.getAlignmentForPrinciple(principle);
-            getEntity().modifyParameter(alignmentParam, amount);
-
-        }
-    }
-
-    //    public boolean isItemsInitialized() {
-    //        return getEntity().isItemsInitialized();
-    //    }
 }

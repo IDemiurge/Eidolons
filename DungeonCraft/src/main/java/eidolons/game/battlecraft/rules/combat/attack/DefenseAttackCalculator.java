@@ -3,8 +3,6 @@ package eidolons.game.battlecraft.rules.combat.attack;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.perk.FlyingRule;
 import main.system.math.MathMaster;
 
 /**
@@ -32,27 +30,9 @@ public class DefenseAttackCalculator {
     public static int getAttackValue(boolean offhand, BattleFieldObject attacker, BattleFieldObject attacked,
                                      DC_ActiveObj action) {
         int attack = attacker.getIntParam((offhand) ? PARAMS.OFF_HAND_ATTACK : PARAMS.ATTACK);
-        Boolean flying_mod = null;
-        if (!action.isRanged()) {
-            if (attacker.isFlying()) {
-                if (!attacked.isFlying()) {
-                    flying_mod = true;
-                }
-            }
-            if (!attacker.isFlying()) {
-                if (attacked.isFlying()) {
-                    flying_mod = false;
-                }
-            }
-        }
         attack = MathMaster.applyPercent(attack,
                 action.getIntParam(PARAMS.ATTACK_MOD));
         attack += action.getIntParam(PARAMS.ATTACK_BONUS);
-
-        if (flying_mod != null) {
-            int bonus = FlyingRule.getAttackBonus(attack, flying_mod);
-            attack += bonus;
-        }
 
         return attack;
     }

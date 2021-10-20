@@ -280,11 +280,7 @@ divination?
 
     private void addDispelOnHitTrigger() {
         Effects effects = new Effects(new RemoveBuffEffect(addBuffEffect.getBuffTypeName()));
-        if (!mode.equals(STD_MODES.ALERT)) {
-            effects.add(InterruptRule.getEffect());
-        } else {
-            effects.add(AlertRule.getInterruptEffect());
-        }
+        effects.add(InterruptRule.getEffect());
         if (mode.equals(STD_MODES.CHANNELING)) {
             effects.add(new EffectImpl() {
                 @Override

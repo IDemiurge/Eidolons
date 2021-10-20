@@ -11,23 +11,24 @@ import main.system.auxiliary.data.ArrayMaster;
 import main.system.auxiliary.data.MapMaster;
 
 import java.util.*;
+
 public class ValuePageManager {
     public static final VALUE[][][] altPageArray = {ValuePages.ALT_UNIT_PAGES,
-     ValuePages.ALT_SPELL_PAGES, ValuePages.ALT_CHAR_PAGES, null
+            ValuePages.ALT_SPELL_PAGES, ValuePages.ALT_CHAR_PAGES, null
 
-     , ValuePages.ALT_BF_OBJ_PAGES, null, ValuePages.ACTION_PAGES_DC,
-     HC_ValuePages.ARMOR_PAGES, HC_ValuePages.WEAPONS_PAGES, ValuePages.SKILL_PAGES,
-     ValuePages.ALT_QUICK_ITEM_PAGES, ValuePages.JEWELRY_PAGES, new VALUE[0][0],
-     ValuePages.CLASS_PAGES,
-     ValuePages.PERK_PAGES,
+            , ValuePages.ALT_BF_OBJ_PAGES, null, ValuePages.ACTION_PAGES_DC,
+            HC_ValuePages.ARMOR_PAGES, HC_ValuePages.WEAPONS_PAGES, ValuePages.SKILL_PAGES,
+            ValuePages.ALT_QUICK_ITEM_PAGES, ValuePages.JEWELRY_PAGES, new VALUE[0][0],
+            ValuePages.CLASS_PAGES,
+            ValuePages.PERK_PAGES,
 
     };
     public static final VALUE[][][] pageArray = {A_ValuePages.unitVals, ValuePages.SPELL_PAGES,
-     ValuePages.CHAR_PAGES, null
+            ValuePages.CHAR_PAGES, null
 
-     , null, null, ValuePages.ACTION_PAGES, ValuePages.ARMOR_PAGES, ValuePages.WEAPON_PAGES,
-     ValuePages.SKILL_PAGES, ValuePages.QUICK_ITEM_PAGES, ValuePages.JEWELRY_PAGES,
-     new VALUE[0][0], ValuePages.CLASS_PAGES,
+            , null, null, ValuePages.ACTION_PAGES, ValuePages.ARMOR_PAGES, ValuePages.WEAPON_PAGES,
+            ValuePages.SKILL_PAGES, ValuePages.QUICK_ITEM_PAGES, ValuePages.JEWELRY_PAGES,
+            new VALUE[0][0], ValuePages.CLASS_PAGES,
             ValuePages.PERK_PAGES,
 
     };
@@ -74,7 +75,7 @@ public class ValuePageManager {
 
             List<List<VALUE>> pageList = new ArrayMaster<VALUE>().get2dList(pages);
             Map<String, List<VALUE>> map = new MapMaster<String, List<VALUE>>().constructMap(
-             pageNames, pageList);
+                    pageNames, pageList);
             if (!alt) {
                 map.put(DC_HEADER, Arrays.asList(ValuePages.GENERIC_DC_HEADER));
                 map.put(AV_HEADER, Arrays.asList(ValuePages.GENERIC_AV_HEADER));
@@ -100,11 +101,11 @@ public class ValuePageManager {
     public static List<List<VALUE>> getValuesForHCInfoPages(OBJ_TYPE TYPE) {
         VALUE[][] pages = null;
         if (TYPE == DC_TYPE.DEITIES) {
-            pages = HC_ValuePages.DEITY_PAGES;
+            //TODO
         }
         if (TYPE == DC_TYPE.CHARS) {
-//                pages = HC_ValuePages.BACKGROUND_CHAR_PAGES;
-                pages = HC_ValuePages.CHAR_PAGES;
+            //                pages = HC_ValuePages.BACKGROUND_CHAR_PAGES;
+            pages = HC_ValuePages.CHAR_PAGES;
         }
         if (TYPE == DC_TYPE.ACTIONS) {
             pages = HC_ValuePages.ACTION_PAGES;
@@ -117,9 +118,6 @@ public class ValuePageManager {
         }
         if (TYPE == DC_TYPE.ARMOR) {
             pages = HC_ValuePages.ARMOR_PAGES;
-        }
-        if (TYPE == DC_TYPE.PARTY) {
-            pages = HC_ValuePages.PARTY_PAGES;
         }
         if (TYPE == DC_TYPE.SKILLS) {
             pages = HC_ValuePages.SKILL_PAGES;
@@ -201,7 +199,7 @@ public class ValuePageManager {
         for (String name : pageNames) {
             List<VALUE> page = map.get(name);
             if (page == null) {
-                main.system.auxiliary.log.LogMaster.log(1,"No value page for: " +name);
+                main.system.auxiliary.log.LogMaster.log(1, "No value page for: " + name);
                 continue;
             }
             // if (filter) {
@@ -220,7 +218,7 @@ public class ValuePageManager {
         if (page == null) {
             page = new ArrayList<>();
             for (VALUE p : (!prop) ? ContentValsManager.getParamsForType(TYPE.getName(), !av)
-             : ContentValsManager.getPropsForType(TYPE.getName(), !av)) {
+                    : ContentValsManager.getPropsForType(TYPE.getName(), !av)) {
                 if (!ContentValsManager.isValueForOBJ_TYPE(TYPE, p)) {
                     continue;
                 }
@@ -316,7 +314,7 @@ public class ValuePageManager {
 
     public static List<VALUE> getValuePage(int index, OBJ_TYPE TYPE) {
         return new ArrayList<>(Arrays
-         .asList((VALUE[]) pageMaps.get(TYPE).keySet().toArray()[index]));
+                .asList((VALUE[]) pageMaps.get(TYPE).keySet().toArray()[index]));
     }
 
     private static String getAvPageName(OBJ_TYPE TYPE) {

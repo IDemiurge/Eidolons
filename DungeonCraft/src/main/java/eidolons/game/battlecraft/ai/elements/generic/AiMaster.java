@@ -14,7 +14,6 @@ import eidolons.game.battlecraft.ai.elements.goal.GoalManager;
 import eidolons.game.battlecraft.ai.elements.task.TaskManager;
 import eidolons.game.battlecraft.ai.logic.atomic.AtomicAi;
 import eidolons.game.battlecraft.ai.tools.*;
-import eidolons.game.battlecraft.ai.tools.path.CellPrioritizer;
 import eidolons.game.battlecraft.ai.tools.path.PathBuilder;
 import eidolons.game.battlecraft.ai.tools.path.PathBuilderAtomic;
 import eidolons.game.battlecraft.ai.tools.path.alphastar.StarBuilder;
@@ -49,7 +48,6 @@ public abstract class AiMaster {
     protected ParamAnalyzer paramAnalyzer;
     protected ActionSequenceConstructor actionSequenceConstructor;
     protected AiExecutor executor;
-    protected CellPrioritizer cellPrioritizer;
     protected PathSequenceConstructor pathSequenceConstructor;
     protected TurnSequenceConstructor turnSequenceConstructor;
     protected SituationAnalyzer situationAnalyzer;
@@ -75,7 +73,6 @@ public abstract class AiMaster {
         handlers.add(analyzer = new Analyzer(this));
         handlers.add(paramAnalyzer = new ParamAnalyzer(this));
         handlers.add(situationAnalyzer = new SituationAnalyzer(this));
-        handlers.add(cellPrioritizer = new CellPrioritizer(this));
         handlers.add(pathSequenceConstructor = new PathSequenceConstructor(this));
         handlers.add(turnSequenceConstructor = new TurnSequenceConstructor(this));
         handlers.add(behaviorMaster = new BehaviorMasterOld(this));
@@ -168,10 +165,6 @@ public abstract class AiMaster {
 
     public AiExecutor getExecutor() {
         return executor;
-    }
-
-    public CellPrioritizer getCellPrioritizer() {
-        return cellPrioritizer;
     }
 
     public PathSequenceConstructor getPathSequenceConstructor() {
