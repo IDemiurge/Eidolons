@@ -259,7 +259,7 @@ public class ListChooser extends GenericListChooser<String> {
 
     public static String chooseTypes(OBJ_TYPE TYPE, String property, String group) {
         List<String> listData = new ArrayList<>();
-        if (group != "no pool") {
+        if (!group.equals("no pool")) {
             listData = DataManager.toStringList(DataManager.getTypesGroup(TYPE, group));
         }
         List<String> secondListData = DataManager.toStringList(DataManager.toTypeList(property,

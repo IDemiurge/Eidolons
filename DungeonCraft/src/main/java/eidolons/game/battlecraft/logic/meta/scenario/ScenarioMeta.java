@@ -32,7 +32,6 @@ public class ScenarioMeta extends MetaGame {
         return scenario;
     }
 
-
     public QuestMission getMission() {
         return (QuestMission) getMaster().getMissionMaster().getMission();
     }
@@ -50,7 +49,6 @@ public class ScenarioMeta extends MetaGame {
     }
 
     public boolean isPartyRespawn() {
-//        if (getMissionIndex().checkProperty(PROPS.MISSION_BRIEFING_DATA))
         if (Flags.isMacro()) {
             return false;
         }
