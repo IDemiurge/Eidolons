@@ -7,7 +7,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.content.consts.VisualEnums;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import libgdx.GDX;
 import libgdx.GdxMaster;
 import libgdx.bf.grid.DC_GridPanel;
@@ -157,8 +157,8 @@ public class ScreenMaster {
         GdxMaster.CUSTOM_RESOLUTION = resolution != VisualEnums.RESOLUTION._1920x1080;
         if (resolution != null) {
             if (resolution != getResolution()) {
-                if (Eidolons.getScope() != null)
-                    if (Eidolons.getScope() != Eidolons.SCOPE.MENU) {
+                if (Core.getScope() != null)
+                    if (Core.getScope() != Core.SCOPE.MENU) {
                         EUtils.onConfirm(
                                 "New resolution will be applied on restart... Ok?", true, OptionsMaster::saveOptions);
                         return;

@@ -3,7 +3,6 @@ package eidolons.entity.obj.attach;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.netherflame.main.NF_MetaMaster;
 import main.ability.AbilityObj;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
@@ -34,14 +33,6 @@ public class DynamicBuffRules {
                 buff.remove();
             }
         }
-        if (unit.isShadow()) {
-            if (game.getMetaMaster() instanceof NF_MetaMaster) {
-                //TODO localize
-                addDynamicBuff("Eidolon Shadow", unit, "", "This is what I am now without the Arts");
-            }
-        }
-
-
         if (unit.checkDualWielding()) {
 //            new AddBuffEffect(type, fx, true);
             addDynamicBuff("Dual Wielding", unit, "(" +
@@ -108,9 +99,9 @@ public class DynamicBuffRules {
             case ON_SHIELD_BLOCK_SELF:
             case ON_SHIELD_BLOCK:
                 return ImageManager.getMasteryGroupPath(SkillEnums.SKILL_GROUP.DEFENSE.toString());
-            case ON_PARRY:
-            case ON_PARRY_SELF:
-                return ImageManager.getValueIconPath(PARAMS.EXTRA_ATTACKS);
+            // case ON_PARRY:
+            // case ON_PARRY_SELF:
+            //     return ImageManager.getValueIconPath(PARAMS.EXTRA_ATTACKS);
             case ON_SNEAK_ATTACK:
             case ON_SNEAK_ATTACK_SELF:
             case ON_SNEAK_HIT_SELF:

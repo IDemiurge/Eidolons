@@ -13,7 +13,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.ZoneData;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.battlecraft.logic.mission.encounter.EncounterData;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import libgdx.GdxMaster;
 import eidolons.content.consts.DecorData;
 import libgdx.bf.grid.moving.PlatformData;
@@ -99,7 +99,7 @@ public class LE_GuiStage extends GenericGuiStage {
         initButtons();
         initTable();
 
-        open = new SymbolButton(ButtonStyled.STD_BUTTON.UP, () -> Eidolons.onNonGdxThread(() -> FloorManager.addFloor()));
+        open = new SymbolButton(ButtonStyled.STD_BUTTON.UP, () -> Core.onNonGdxThread(() -> FloorManager.addFloor()));
 
         floorsTable = new TablePanelX<>(300, 40);
         //        floorsTable.add(open);
@@ -280,7 +280,7 @@ public class LE_GuiStage extends GenericGuiStage {
     @Override
     public boolean keyDown(int keyCode) {
         boolean r = super.keyDown(keyCode);
-        Eidolons.onNonGdxThread(() -> {
+        Core.onNonGdxThread(() -> {
             LevelEditor.getManager().getKeyHandler().keyDown(keyCode);
         });
         return r;
@@ -289,7 +289,7 @@ public class LE_GuiStage extends GenericGuiStage {
     @Override
     public boolean keyUp(int keyCode) {
         boolean r = super.keyUp(keyCode);
-        Eidolons.onNonGdxThread(() -> {
+        Core.onNonGdxThread(() -> {
             LevelEditor.getManager().getKeyHandler().keyUp(keyCode);
         });
         return r;
@@ -298,7 +298,7 @@ public class LE_GuiStage extends GenericGuiStage {
     @Override
     public boolean keyTyped(char character) {
         boolean r = super.keyTyped(character);
-        Eidolons.onNonGdxThread(() -> {
+        Core.onNonGdxThread(() -> {
             LevelEditor.getManager().getKeyHandler().keyTyped(character);
         });
         return r;

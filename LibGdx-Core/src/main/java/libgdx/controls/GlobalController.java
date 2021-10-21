@@ -7,8 +7,8 @@ import eidolons.content.consts.VisualEnums;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
-import eidolons.game.core.Eidolons.SCOPE;
+import eidolons.game.core.Core;
+import eidolons.game.core.Core.SCOPE;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.cinematic.CinematicLib;
 import eidolons.game.module.cinematic.Cinematics;
@@ -70,7 +70,7 @@ public class GlobalController implements Controller {
     public static void cellClicked(InputEvent event, float x, float y) {
         if (controlPause) {
             //            if (Gdx.input.isCatchMenuKey()) TODO how to disable on drag?
-            Eidolons.getGame().getLoop().setPaused(false);
+            Core.getGame().getLoop().setPaused(false);
             setControlPause(false);
         }
     }
@@ -83,7 +83,7 @@ public class GlobalController implements Controller {
     public boolean keyDown(int keyCode) {
 
         if (controlPause) {
-            Eidolons.getGame().getLoop().setPaused(false);
+            Core.getGame().getLoop().setPaused(false);
             setControlPause(false);
             return true;
         }
@@ -124,7 +124,7 @@ public class GlobalController implements Controller {
                     if (!EidolonsGame.isHqEnabled()) {
                         return false;
                     }
-                if (Eidolons.getGame().isBossFight()) {
+                if (Core.getGame().isBossFight()) {
                     EUtils.showInfoText("There is no time...");
                     return false;
                 }
@@ -132,8 +132,8 @@ public class GlobalController implements Controller {
                 return true;
             case Keys.F4:
                 if (Flags.isIDE())
-                    if (Eidolons.getScope() != SCOPE.MENU) {
-                        Eidolons.exitToMenu();
+                    if (Core.getScope() != SCOPE.MENU) {
+                        Core.exitToMenu();
                         return true;
                     }
                 return false;
@@ -172,7 +172,7 @@ public class GlobalController implements Controller {
                 break;
             case Keys.HOME:
                 if (GdxMaster.getMainBatch() instanceof AtlasGenSpriteBatch) {
-                    Eidolons.onGdxThread(() -> {
+                    Core.onGdxThread(() -> {
                         try {
                             ((AtlasGenSpriteBatch) GdxMaster.getMainBatch()).writeAtlases();
                         } catch (Exception e) {
@@ -185,7 +185,7 @@ public class GlobalController implements Controller {
                 GuiEventManager.trigger(GuiEventType.DISPOSE_SCOPE, "DIALOGUE");
                 break;
             case Keys.F9:
-                Eidolons.onNonGdxThread(() -> {
+                Core.onNonGdxThread(() -> {
                     String text = GdxDialogMaster.inputText("Your script...", lastScript);
                     if (!text.contains("=")) {
                         text = "script=" + text;
@@ -213,27 +213,23 @@ public class GlobalController implements Controller {
                     CinematicLib.doTest(3);
                     return true;
                 }
-                new Thread(() -> {
-                    DC_Game.game.getMetaMaster().getDefeatHandler().isEnded(true, true);
-                }, " thread").start();
-
                 return true;
             case Keys.F4:
                 if (CinematicLib.TEST_ON) {
                     CinematicLib.doTest(4);
                     return true;
                 }
-                Eidolons.getMainHero().kill(Eidolons.getMainHero(), true, true);
+                Core.getMainHero().kill(Core.getMainHero(), true, true);
                 //                WeaveMaster.openWeave();
                 return true;
             case Keys.F5:
-                Eidolons.getMainHero().setParam(PARAMS.C_TOUGHNESS, 1, true);
+                Core.getMainHero().setParam(PARAMS.C_TOUGHNESS, 1, true);
                 return true;
             case Keys.F6:
                 // new Thread(() -> IntroLauncher.introBriefing(), " thread").start();
                 GuiEventManager.trigger(GuiEventType.VISUAL_CHOICE,
                         new VC_DataSource(VC_DataSource.VC_TYPE.death));
-                Eidolons.onNonGdxThread(() -> {
+                Core.onNonGdxThread(() -> {
                     Object o = WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.VISUAL_CHOICE);
                     GuiEventManager.trigger(GuiEventType.VISUAL_CHOICE,
                             new VC_DataSource(VC_DataSource.VC_TYPE.hero_choice, o));
@@ -253,7 +249,7 @@ public class GlobalController implements Controller {
 
     private void doScript(String text) {
         try {
-            Eidolons.getGame().getMetaMaster().getDialogueManager().getSpeechExecutor().execute(text);
+            Core.getGame().getMetaMaster().getDialogueManager().getSpeechExecutor().execute(text);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
@@ -287,7 +283,7 @@ public class GlobalController implements Controller {
         if (ScreenMaster.getScreen().getGuiStage().getDisplayedClosable()
                 instanceof Blocking)
             return false;
-        Eidolons.game.getLoop().togglePaused();
+        Core.game.getLoop().togglePaused();
         return true;
     }
 
@@ -306,7 +302,7 @@ public class GlobalController implements Controller {
         if (TownPanel.getActiveInstance() != null) {
             TownPanel.getActiveInstance().done();
         }
-        if (Eidolons.getScope() == SCOPE.MENU) {
+        if (Core.getScope() == SCOPE.MENU) {
             MainMenu.getInstance().getHandler().handle(MAIN_MENU_ITEM.PLAY);
             return true;
         }
@@ -335,7 +331,7 @@ public class GlobalController implements Controller {
         }
         if (list.size() <= 1) {
             if (!CoreEngine.isLevelEditor())
-                GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, Eidolons.getMainHero());
+                GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_UNIT, Core.getMainHero());
             if (ScreenMaster.getScreen().getController().inputPass()) {
 
             }
@@ -348,7 +344,7 @@ public class GlobalController implements Controller {
             index = 0;
         int finalIndex = index;
         GridCellContainer finalCell = cell;
-        Eidolons.onNonGdxThread(() -> {
+        Core.onNonGdxThread(() -> {
             GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_OFF, hovered);
             GenericGridView newFocus = list.get(finalIndex);
             WaitMaster.WAIT(100);
@@ -444,7 +440,7 @@ public class GlobalController implements Controller {
             //            case 'D':
             //                return true;
             case 'W': //TODO custom hotkeys
-                Eidolons.game.getDungeonMaster().getExplorationMaster().getTimeMaster()
+                Core.game.getDungeonMaster().getExplorationMaster().getTimeMaster()
                         .playerWaits();
                 return true;
             case 'O': {

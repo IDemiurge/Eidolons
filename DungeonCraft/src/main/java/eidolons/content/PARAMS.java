@@ -493,47 +493,10 @@ public enum PARAMS implements PARAMETER {
 
     BLEEDING_MOD(true, null, "", false, 0, "actions", "units", "chars", "perks"),
 
-    FORCE(null, "", false, 0, "actions"),
-    FORCE_MOD(true, null, "", false, 100, "actions", "units", "chars", "perks"),
-    FORCE_KNOCK_MOD(true, null, "", false, 100, "actions", "units", "chars", "perks"),
-    FORCE_PUSH_MOD(true, null, "", false, 100, "actions", "units", "chars", "perks"),
-    FORCE_PROTECTION(null, "", false, 0, "units", "chars", "perks"),
-    FORCE_DAMAGE_MOD(true, null, "", false, 100, "actions", "units", "chars", "perks"),
-    FORCE_SPELL_DAMAGE_MOD(true, null, "", false, 100, "units", "chars", "perks"),
-    FORCE_MOD_SOURCE_WEIGHT(null, "", false, 100, "actions", "units", "chars", "perks"),
-    FORCE_MOD_WEAPON_WEIGHT(null, "", false, 100, "actions"),
-    FORCE_MAX_STRENGTH_MOD(true, null, "", false, 4, "actions"),
-    // FORCE_CUSTOM_FORMULA(null, "", false, 0, "actions"),
-    FORCE_SPELLPOWER_MOD(true, null, "", false, 100, "actions"),
-
-
     SIDE_DAMAGE_MOD(true, null, "", false, 100, "actions", "units", "chars", "perks"),
     DIAGONAL_DAMAGE_MOD(true, null, "", false, 100, "actions", "units", "chars", "perks"),
     SIDE_ATTACK_MOD(true, null, "", false, 100, "actions", "units", "chars", "perks"),
     DIAGONAL_ATTACK_MOD(true, null, "", false, 100, "actions", "units", "chars", "perks"),
-    LONG_REACH_ATTACK_MOD(true, null, "", false, 100, "actions", "units", "chars", "perks"),
-    LONG_REACH_DAMAGE_MOD(true, null, "", false, 100, "actions", "units", "chars", "perks"),
-    CLOSE_QUARTERS_DAMAGE_MOD(true, null, "Close Quarters Damage mod", false, 100, "actions", "units", "chars", "perks"),
-    CLOSE_QUARTERS_ATTACK_MOD(true, null, "Close Quarters Attack mod", false, 100, "actions", "units", "chars", "perks"),
-
-
-    STOP_DISENGAGEMENT_CHANCE_MOD(true, null, null, false, 0, "units", "chars", "perks"),
-    PASS_DISENGAGEMENT_CHANCE_MOD(true, null, null, false, 0, "units", "chars", "perks"),
-    STOP_ENGAGEMENT_CHANCE_MOD(true, null, null, false, 0, "units", "chars", "perks"),
-    PASS_ENGAGEMENT_CHANCE_MOD(true, null, null, false, 0, "units", "chars", "perks"),
-    STOP_FLIGHT_CHANCE_MOD(true, null, null, false, 0, "units", "chars", "perks"),
-    PASS_FLIGHT_CHANCE_MOD(true, null, null, false, 0, "units", "chars", "perks"),
-    STOP_PASSAGE_CHANCE_MOD(true, null, null, false, 0, "units", "chars", "perks"),
-    PASS_PASSAGE_CHANCE_MOD(true, null, null, false, 0, "units", "chars", "perks"),
-
-    WATCH_DEFENSE_MOD(true, null, null, false, 100, "units", "chars", "perks"),
-    WATCH_AP_PENALTY_MOD(true, null, null, false, 100, "units", "chars", "perks"),
-    WATCH_ATTACK_MOD(true, null, null, false, 100, "units", "chars", "perks"),
-    WATCH_ATTACK_OTHERS_MOD(true, null, null, false, 100, "units", "chars", "perks"),
-    WATCH_DEFENSE_OTHERS_MOD(true, null, null, false, 100, "units", "chars", "perks"),
-
-    WATCHED_ATTACK_MOD(true, null, null, false, 100, "units", "chars", "perks"),
-    WATCH_DETECTION_MOD(true, null, null, false, 0, "units", "chars", "perks"),
 
     INSTANT_DAMAGE_MOD(true, null, null, false, 100, "actions", "units", "chars", "perks"),
     INSTANT_ATTACK_MOD(true, null, null, false, 100, "actions", "units", "chars", "perks"),
@@ -547,8 +510,6 @@ public enum PARAMS implements PARAMETER {
     COUNTER_MOD(true, null, "", false, 100, "actions", "units", "chars", "perks"),
     COUNTER_ATTACK_MOD(true, null, null, false, 100, "actions", "units", "chars", "perks"),
     COUNTER_DEFENSE_MOD(true, null, null, false, 100, "actions", "units", "chars", "perks"),
-
-    AUTO_CRIT_CHANCE(null, null, false, 0, "actions", "units", "chars", "perks"),
 
     SNEAK_PROTECTION(null, null, false, 100, "units", "chars", "perks"),
 
@@ -590,15 +551,6 @@ public enum PARAMS implements PARAMETER {
     ESSENCE_COST_MOD(null, "", false, 0, "units", "chars", "perks"),
     FOCUS_COST_MOD(null, "", false, 0, "units", "chars", "perks"),
     ATB_COST_MOD(null, "", false, 0, "units", "chars", "perks"),
-    ATK_PTS_COST_MOD(null, "", false, 0, "units", "chars", "perks"),
-
-    EXTRA_ATTACKS_POINT_COST_MOD(true, "Extra Attacks Cost Mod", "", false, 50, "units", "chars", "perks"),
-    INSTANT_TOUGHNESS_COST_MOD(null, "", false, -50, "units", "chars", "perks"),
-    INSTANT_PTS_COST_MOD(null, "", false, 0, "units", "chars", "perks"),
-    AOO_TOUGHNESS_COST_MOD(null, "", false, -50, "units", "chars", "perks"),
-    AOO_PTS_COST_MOD(null, "", false, 0, "units", "chars", "perks"),
-    COUNTER_TOUGHNESS_COST_MOD(null, "", false, -50, "units", "chars", "perks"),
-    COUNTER_PTS_COST_MOD(null, "", false, 0, "units", "chars", "perks"),
 
     SPELL_TOU_COST_MOD("Spell STA pen.", "", false, 0, "units", "chars", "perks"),
     SPELL_ESS_COST_MOD("Spell ESS pen.", "", false, 0, "units", "chars", "perks"),
@@ -660,30 +612,22 @@ public enum PARAMS implements PARAMETER {
     CLEAVE_DAMAGE_PERCENTAGE_TRANSFER(null, "", false, 0, "units", "chars", "perks"),
     CLEAVE_DAMAGE_LOSS_PER_JUMP(null, "", false, 0, "units", "chars", "perks"),
 
-    FEAR_RESISTANCE(null, "", false, 0, "units", "chars", "perks"),
-    BLEEDING_RESISTANCE(null, "", false, 0, "units", "chars", "perks"),
-    INTERRUPT_RESISTANCE(null, "", false, 0, "units", "chars", "perks"),
     BASH_RESISTANCE(null, "", false, 0, "units", "chars", "perks"),
-    INJURY_RESISTANCE(null, "", false, 0, "units", "chars", "perks"),
     WOUNDS_RESISTANCE(null, "", false, 0, "units", "chars", "perks"),
 
     SPIRIT_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
     GRIT_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
     REFLEX_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
     WIT_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
-    FORTITUDE_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
+    MIGHT_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
 
     SPIRIT_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
     GRIT_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
     REFLEX_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
     WIT_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
-    FORTITUDE_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
+    MIGHT_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
 
-    FORCE_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
-    FORCE_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
     DETECTION_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
-    PERCEPTION_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
-    PERCEPTION_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
     DETECTION_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
     LUCK_ROLL_SAVE_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
     LUCK_ROLL_BEAT_BONUS(null, "", false, 0, "classes", "units", "chars", "perks"),
@@ -697,23 +641,10 @@ public enum PARAMS implements PARAMETER {
     COATING_COUNTERS_APPLIED_TO_ITEM_MOD(true, null, "", false, 0, "units", "chars", "perks"),
     COATING_COUNTERS_SPENT_MOD(true, null, "", false, 0, "units", "chars", "perks"),
 
-    ARCADE_LEVEL(null, "", false, 0, "party"),
     LEVEL("LEVEL", "", false, 1, "units", "chars", "perks", "party", "arcades"),
-    MIN_LEVEL(null, "", false, 0, "mission"),
-    MAX_LEVEL(null, "", false, 0, "mission"),
-    DIFFICULTY_MOD(true, null, "", false, 100, "mission"),
     UNIT_LEVEL("LEVEL", "", false, 0, "units"),
     HERO_LEVEL("HERO_LEVEL", "", false, 0, "chars"),
 
-    MAX_SPELL_UPGRADES(null, "", false, 4),
-    LOCK_LEVEL(null, "", false, 0, "bf obj"),
-    PICK_LOCK(null, "", false, 0, "classes", "units", "chars", "perks"),
-    TRAP_LEVEL(null, "", false, 0, "bf obj", "trap"),
-    DISARM_TRAP(null, "", false, 0, "classes", "units", "chars", "perks"),
-
-    AUTO_TEST_ID("", "", false, 0, "actions", "classes"),
-    //    HT_CUSTOM_POS_X("", "", false, 0, "classes"),
-    //    HT_CUSTOM_POS_Y("", "", false, 0, "classes"),
     ANIM_FRAME_DURATION("", "", false, 0, "actions"),
     ANIM_SPEED("", "", false, 0, "actions"),
 

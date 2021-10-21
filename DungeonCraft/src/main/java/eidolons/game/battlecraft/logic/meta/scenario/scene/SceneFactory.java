@@ -1,19 +1,10 @@
 package eidolons.game.battlecraft.logic.meta.scenario.scene;
 
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActor;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.ActorDataSource;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.Scene;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.SpeechDataSource;
-import eidolons.game.core.Eidolons;
-import eidolons.game.netherflame.main.story.brief.BriefScene;
-import eidolons.game.netherflame.main.story.brief.BriefingData;
-import main.data.dialogue.DataString.SPEECH_VALUE;
-import main.data.dialogue.SpeechData;
+import eidolons.game.core.Core;
 import main.system.auxiliary.Refactor;
-import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,8 +69,8 @@ public class SceneFactory implements Supplier<List<Scene>> {
     @Override
     public List<Scene> get() {
         if (dialogue)
-            return getScenesLinear(Eidolons.game.getMetaMaster().getDialogueFactory().getDialogue(data));
-        return getScenesLinear(Eidolons.game.getMetaMaster().getIntroFactory().getDialogue(data));
+            return getScenesLinear(Core.game.getMetaMaster().getDialogueFactory().getDialogue(data));
+        return getScenesLinear(Core.game.getMetaMaster().getIntroFactory().getDialogue(data));
     }
 
 }

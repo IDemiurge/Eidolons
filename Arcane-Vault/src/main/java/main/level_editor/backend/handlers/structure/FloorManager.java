@@ -5,7 +5,7 @@ import com.badlogic.gdx.Input;
 import eidolons.content.consts.VisualEnums;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import libgdx.gui.utils.FileChooserX;
 import eidolons.system.libgdx.datasource.ScreenData;
@@ -110,7 +110,7 @@ public class FloorManager {
 
     public static void floorSelected(LE_Floor floor) {
         current = floor;
-        Eidolons.game = floor.getGame();
+        Core.game = floor.getGame();
         DC_Game.game = floor.getGame();
         EidolonsGame.lvlPath = FileManager.formatPath(
                 DC_Game. game.getMetaMaster().getMetaDataManager().getSoloDungeonPath(),true,true).

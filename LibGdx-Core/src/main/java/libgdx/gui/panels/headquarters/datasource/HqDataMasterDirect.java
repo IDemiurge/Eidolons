@@ -1,7 +1,7 @@
 package libgdx.gui.panels.headquarters.datasource;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.system.libgdx.datasource.HeroDataModel;
 import libgdx.gui.panels.headquarters.HqPanel;
 import libgdx.gui.panels.headquarters.town.TownPanel;
@@ -36,7 +36,7 @@ public class HqDataMasterDirect extends HqDataMaster {
     }
 
     public static HqDataMasterDirect getInstance() {
-        return getInstance(Eidolons.getMainHero());
+        return getInstance(Core.getMainHero());
     }
 
     public static HqDataMasterDirect getInstance(Unit unit) {

@@ -2,7 +2,7 @@ package libgdx.gui.panels.dc.topleft;
 
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.ScenarioGame;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
@@ -38,7 +38,7 @@ public class LevelInfoPanel extends TablePanelX {
         GuiEventManager.bind(GuiEventType.GAME_STARTED, p -> {
             CharSequence text;
             CharSequence v;
-            if (Eidolons.getGame() instanceof ScenarioGame) {
+            if (Core.getGame() instanceof ScenarioGame) {
                 if (EidolonsGame.FOOTAGE) {
                     text = "Castle Evarinath";
                     v =

@@ -32,19 +32,6 @@ public class DC_CostsFactory {
         // if (cost != null)
         // costs.add(cost);
 
-        cost = getCost(spell, PARAMS.ATK_PTS_COST, PARAMS.C_EXTRA_ATTACKS);
-        if (cost != null) {
-            costs.add(cost);
-        }
-        cost = getCost(spell, PARAMS.MOVE_PTS_COST, PARAMS.C_EXTRA_MOVES);
-        if (cost != null) {
-            costs.add(cost);
-        }
-
-        cost = getCost(spell, PARAMS.SF_COST, PARAMS.C_SOULFORCE);
-        if (cost != null) {
-            costs.add(cost);
-        }
         cost = getEssenceCost(spell);
         if (cost != null) {
             costs.add(cost);

@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.GdxMaster;
@@ -153,7 +153,7 @@ public class LE_GridCell extends GridCellContainer {
                 LogMaster.log(1, x + " " + y);
                 InputEvent e = new InputEvent();
                 e.setButton(event.getButton());
-                Eidolons.onNonGdxThread(() ->
+                Core.onNonGdxThread(() ->
                         LevelEditor.getCurrent().getManager().getMouseHandler().
                                 handleCellClick(e, getTapCount(), getGridX(), getGridY()));
             }
@@ -171,7 +171,7 @@ public class LE_GridCell extends GridCellContainer {
     protected boolean checkIgnored() {
         if (!isVisible())
             return true;
-        if (Eidolons.game == null)
+        if (Core.game == null)
             return true;
 
         return !isWithinCamera();

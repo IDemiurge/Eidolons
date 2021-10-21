@@ -4,14 +4,12 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.Eidolons;
-import eidolons.game.core.game.DC_Game;
+import eidolons.game.core.Core;
 import libgdx.GdxMaster;
 import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.bf.generic.ImageContainer;
 import libgdx.gui.generic.GroupX;
-import libgdx.gui.generic.btn.SymbolButton;
 import libgdx.gui.panels.dc.actionpanel.bar.BodyParamsBar;
 import libgdx.gui.panels.dc.actionpanel.bar.SoulParamsBar;
 import libgdx.gui.panels.dc.actionpanel.datasource.ActiveQuickSlotsDataSource;
@@ -22,15 +20,13 @@ import libgdx.gui.panels.dc.actionpanel.spaces.DefaultActionsPanel;
 import libgdx.gui.panels.dc.actionpanel.spaces.FeatSpacePanel;
 import libgdx.gui.panels.dc.actionpanel.weapon.QuickWeaponPanel;
 import libgdx.gui.panels.dc.actionpanel.weapon.WeaponDataSource;
-import libgdx.gui.panels.headquarters.HqMaster;
 import libgdx.texture.Textures;
-import libgdx.gui.generic.btn.ButtonStyled;
-import main.content.enums.entity.ActionEnums;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static main.system.GuiEventType.ACTION_PANEL_UPDATE;
@@ -44,7 +40,7 @@ public class ActionPanel extends GroupX {
     private static final float OFFSET_X = 100 + EMPTY_OFFSET;
     private static final float QUICK_SLOTS_OFFSET_X = 20;
     private static final float ACTIVE_SPACE_OFFSET_X = 70;
-    private static final float PUZZLE_OFFSET_Y =  -88;
+    private static final float PUZZLE_OFFSET_Y = -88;
     private final Vector2 spellsPos = new Vector2();
 
     private final ImageContainer bottomOverlay;
@@ -57,9 +53,6 @@ public class ActionPanel extends GroupX {
     QuickWeaponPanel offhand;
     FacingPanel facingPanel;
 
-    SymbolButton spellbookBtn = new SymbolButton(ButtonStyled.STD_BUTTON.SPELLBOOK, this::showSpellbook);
-    SymbolButton invBtn = new SymbolButton(ButtonStyled.STD_BUTTON.INV, this::showInventory);
-
     protected BuffPanelSimple buffPanelBody;
     protected BuffPanelSimple buffPanelSoul;
 
@@ -68,10 +61,7 @@ public class ActionPanel extends GroupX {
 
     private Float defaultX;
 
-    ExtraPtsComp movePts = new ExtraPtsComp(false);
-    ExtraPtsComp atkPts = new ExtraPtsComp(true);
-
-    List<Actor> elements;
+    List<Actor> elements = new ArrayList<>();
 
     @Override
     public void addActor(Actor actor) {
@@ -85,21 +75,18 @@ public class ActionPanel extends GroupX {
         setSize(background.getWidth(), background.getHeight());
         addActor(combatSpacePanel = new FeatSpacePanel(IMAGE_SIZE, false));
 
-        addActor(defaultActionsPanel = new DefaultActionsPanel(IMAGE_SIZE));
+        addActor(defaultActionsPanel = new DefaultActionsPanel("Default Actions"));
 
         addActor(spellSpacePanel = new FeatSpacePanel(IMAGE_SIZE, true));
 
         /////////////ADDITIONAL
 
-        soulParamsBar = new SoulParamsBar(Eidolons::getMainHero);
-        bodyParamsBar = new BodyParamsBar(Eidolons::getMainHero);
+        soulParamsBar = new SoulParamsBar(Core::getMainHero);
+        bodyParamsBar = new BodyParamsBar(Core::getMainHero);
 
         addActor(bodyParamsBar);
         addActor(soulParamsBar);
         addActor(facingPanel = new FacingPanel());
-
-        addActor(movePts);
-        addActor(atkPts);
 
         addActor(mainHand = new QuickWeaponPanel(false));
         addActor(offhand = new QuickWeaponPanel(true));
@@ -112,9 +99,6 @@ public class ActionPanel extends GroupX {
         addActor(buffPanelBody);
         addActor(buffPanelSoul);
 
-        addActor(spellbookBtn);
-        addActor(invBtn);
-
         setY(-IMAGE_SIZE);
         bindEvents();
         initListeners();
@@ -125,9 +109,9 @@ public class ActionPanel extends GroupX {
 
     public void resetPositions() {
         combatSpacePanel.setPosition(-32 + OFFSET_X + QUICK_SLOTS_OFFSET_X, ACTIVE_SPACE_OFFSET_Y);
-        final float actionOffset =17+ OFFSET_X + (IMAGE_SIZE * 6) + 5;
-        defaultActionsPanel.setPosition(-28+26+actionOffset, 0);
-        final float spellOffset = ACTIVE_SPACE_OFFSET_X -60 + actionOffset + (IMAGE_SIZE * 6)- 35;
+        final float actionOffset = 17 + OFFSET_X + (IMAGE_SIZE * 6) + 5;
+        defaultActionsPanel.setPosition(-28 + 26 + actionOffset, 0);
+        final float spellOffset = ACTIVE_SPACE_OFFSET_X - 60 + actionOffset + (IMAGE_SIZE * 6) - 35;
         spellSpacePanel.setPosition(spellOffset, ACTIVE_SPACE_OFFSET_Y);
         spellsPos.x = spellOffset;
         spellsPos.y = ACTIVE_SPACE_OFFSET_Y;
@@ -138,28 +122,21 @@ public class ActionPanel extends GroupX {
         bodyParamsBar.setPosition(x - 37, 47);
         buffPanelBody.setPosition(bodyParamsBar.getX() + 20, IMAGE_SIZE + 40);
 
-        x = defaultActionsPanel.getX()-34;
+        x = defaultActionsPanel.getX() - 34;
         mainHand.setPosition(x - 14,
                 bodyParamsBar.getY() + 22);
-        offhand.setPosition(mainHand.getX() + 235 + 146- 112,
-                mainHand.getY()  );
+        offhand.setPosition(mainHand.getX() + 235 + 146 - 112,
+                mainHand.getY());
 
-        facingPanel.setPosition((mainHand.getX() + offhand.getX()) / 2  ,
+        facingPanel.setPosition((mainHand.getX() + offhand.getX()) / 2,
                 bodyParamsBar.getY() + 52);
 
 
         x = spellSpacePanel.getX();
-        soulParamsBar.setPosition(x +11
+        soulParamsBar.setPosition(x + 11
                 , bodyParamsBar.getY());
         buffPanelSoul.setPosition(soulParamsBar.getX() + 65, IMAGE_SIZE + 40);
 
-        invBtn.setPosition(bodyParamsBar.getX() + bodyParamsBar.getWidth() / 2 + 79,
-                getHeight() - 90);
-        spellbookBtn.setPosition(soulParamsBar.getX() + soulParamsBar.getWidth() / 2 + 89,
-                invBtn.getY());
-
-        atkPts.setPosition(spellSpacePanel.getX()-12, 50);
-        movePts.setPosition(bodyParamsBar.getX() + 337, 54);
     }
 
     public ActionPanel(int x, int y) {
@@ -189,21 +166,6 @@ public class ActionPanel extends GroupX {
         super.setBounds(x, y, width, height);
     }
 
-    private void showSpellbook() {
-        if (DC_Game.game != null)
-            if (DC_Game.game.isStarted()) {
-                HqMaster.openHqPanel();
-                HqMaster.tab("Spells");
-            }
-    }
-
-    private void showInventory() {
-
-        if (DC_Game.game != null)
-            if (DC_Game.game.isStarted())
-                Eidolons.activateMainHeroAction(ActionEnums.USE_INVENTORY);
-    }
-
     @Override
     public void setX(float x) {
         if (defaultX == null) {
@@ -222,13 +184,13 @@ public class ActionPanel extends GroupX {
 
         GuiEventManager.bind(GuiEventType.MINIMIZE_UI_ON, p -> {
             ActionMasterGdx.addMoveToAction(this, getX(), PUZZLE_OFFSET_Y, 1.4f);
-            ActionMasterGdx.addAfter(this, ()-> setHidden(true));
+            ActionMasterGdx.addAfter(this, () -> setHidden(true));
             soulParamsBar.fadeOut();
             bodyParamsBar.fadeOut();
         });
         GuiEventManager.bind(GuiEventType.MINIMIZE_UI_OFF, p -> {
             ActionMasterGdx.addMoveToAction(this, getX(), 0, 1.4f);
-            ActionMasterGdx.addAfter(this, ()-> setHidden(false));
+            ActionMasterGdx.addAfter(this, () -> setHidden(false));
             soulParamsBar.fadeIn();
             bodyParamsBar.fadeIn();
         });
@@ -243,7 +205,7 @@ public class ActionPanel extends GroupX {
             Unit hero = (Unit) p.get();
             // dirty flag?
             if (hero == null) {
-                hero = Eidolons.getMainHero();
+                hero = Core.getMainHero();
             }
             if (hero.isDead()) {
                 return;
@@ -267,7 +229,7 @@ public class ActionPanel extends GroupX {
     }
 
     public void updatePanel() {
-        final ActiveQuickSlotsDataSource source = new PanelActionsDataSource(Eidolons.getMainHero());
+        final ActiveQuickSlotsDataSource source = new PanelActionsDataSource(Core.getMainHero());
         if (source != null) {
             ActionContainer.setDarkened(false);
             if (getY() < 0) {
@@ -278,10 +240,8 @@ public class ActionPanel extends GroupX {
             }
 
             //Gdx revamp - action containers re-creation!
-            elements.forEach( el->
+            elements.forEach(el ->
                     el.setUserObject(source));
-            atkPts.setUserObject(source);
-            movePts.setUserObject(source);
             defaultActionsPanel.setUserObject(source);
             combatSpacePanel.setUserObject(source);
             spellSpacePanel.setUserObject(source);
@@ -369,7 +329,7 @@ public class ActionPanel extends GroupX {
         defaultActionsPanel.setVisible(!hidden);
         spellSpacePanel.setVisible(!hidden);
         defaultActionsPanel.setVisible(!hidden);
-        log(1,"Action panel hidden: " +hidden);
+        log(1, "Action panel hidden: " + hidden);
     }
 
 

@@ -405,9 +405,6 @@ public class UnitChecker extends EntityChecker<Unit> {
         return checkProperty(G_PROPS.IMMUNITIES, type.toString());
     }
 
-    public boolean checkCanDoFreeMove(DC_ActiveObj activeObj) {
-        return (getEntity().getFreeMovesDone())<1+getEntity().getIntParam(PARAMS.FREE_MOVE_BONUS);
-    }
 
     /**
      * mastery group (spell/skill),

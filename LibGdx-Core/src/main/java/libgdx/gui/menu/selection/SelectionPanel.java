@@ -5,8 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.game.EidolonsGame;
-import eidolons.game.core.Eidolons;
-import eidolons.game.core.Eidolons.SCOPE;
+import eidolons.game.core.Core;
+import eidolons.game.core.Core.SCOPE;
 import libgdx.GDX;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
@@ -194,7 +194,7 @@ public abstract class SelectionPanel extends TablePanelX {
         } else if (isAutoDoneEnabled() && (Flags.isMacro()
                 || ListMaster.isNotEmpty(MainLauncher.presetNumbers))) {
             listPanel.updateAct(0);
-            Eidolons.onNonGdxThread(this::tryDone);
+            Core.onNonGdxThread(this::tryDone);
         }
     }
 
@@ -254,8 +254,8 @@ public abstract class SelectionPanel extends TablePanelX {
     }
 
     private void back() {
-        if (Eidolons.getScope() == SCOPE.MENU)
-            Eidolons.showMainMenu();
+        if (Core.getScope() == SCOPE.MENU)
+            Core.showMainMenu();
     }
 
     public void tryDone() {

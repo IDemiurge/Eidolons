@@ -103,7 +103,7 @@ public class AiEnums {
 
 
     // AI_TYPE can influence preferred goals
-    // getting src.main.task arguments based on GOAL TYPE???
+    // getting src.main.framework.task arguments based on GOAL TYPE???
     public enum GOAL_TYPE {
         ATTACK, // ALL HOSTILE GOALS
         APPROACH,
@@ -246,5 +246,23 @@ public class AiEnums {
         Retreat,
         Flight,
         Panic
+    }
+
+    public enum TOTAL_PRIORITY {
+        no_allies,
+        never,
+        always,
+    }
+
+    public     enum AI_EFFECT_PRIORITIZING {
+        ATTACK, DAMAGE, BUFF, PARAM_MOD, COUNTER_MOD, SUMMON, MODE, BEHAVIOR_MODE,
+    }
+
+    public     enum PRIORITY_FUNCS {
+        NO_ALLIES,
+        NEVER,
+        ALWAYS,
+
+        DURATION, DANGER, CAPACITY, DANGER_TO_ALLY,
     }
 }

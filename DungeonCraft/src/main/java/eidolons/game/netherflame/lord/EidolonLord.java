@@ -1,30 +1,23 @@
 package eidolons.game.netherflame.lord;
 
 import eidolons.content.PARAMS;
-import eidolons.content.PROPS;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
-import eidolons.game.netherflame.lord.progression.LordProgression;
-import eidolons.game.netherflame.main.death.HeroChain;
-import eidolons.game.netherflame.main.soul.eidola.Soul;
-import eidolons.game.netherflame.main.soul.eidola.SoulMaster;
+import eidolons.game.eidolon.chain.EidolonChain;
 import main.entity.LightweightEntity;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
-import java.util.List;
-
 public class EidolonLord extends LightweightEntity {
 
     public static EidolonLord lord;
-    protected HeroChain chain;
-    protected LordProgression progression;
+    public Unit trueForm;
+    protected EidolonChain chain;
+    // protected LordProgression progression;
     /*
     1) consider persistence - unlocks, account, runs that were started
-
     Should we split some of this stuff into Netherflame-Core project?
-
-
      */
 
     public EidolonLord(ObjType type) {
@@ -35,16 +28,6 @@ public class EidolonLord extends LightweightEntity {
         GuiEventManager.trigger(GuiEventType.SOULFORCE_GAINED, this);
     }
 
-    public void soulsLost(Soul... souls) {
-        for (Soul soul : souls) {
-            if (soul == null) {
-                continue;
-            }
-            removeProperty(PROPS.LORD_SOULS, soul.getUnitType().getName());
-            getGame().getLogManager().log("A Soul is lost: " + soul.getUnitType().getName());
-        }
-        SoulMaster.clear();
-    }
 
     public void soulforceGained(int amount) {
         lord.addParam(PARAMS.C_SOULFORCE, amount);
@@ -67,31 +50,7 @@ public class EidolonLord extends LightweightEntity {
         return super.getIntParam(PARAMS.SOULFORCE);
     }
 
-    public void soulsGained(Soul soul) {
-        addProperty(PROPS.LORD_SOULS, soul.getUnitType().getName());
-        getGame().getLogManager().log("A Soul is trapped: " + soul.getUnitType().getName());
-
-//        SpeechExecutor.run("sprite=soul grip(me)");
-//        WaitMaster.waitForCondition();
-
-        GuiEventManager.trigger(GuiEventType.SOULS_CLAIMED, soul);
-    }
-
-    public HeroChain getChain() {
+    public EidolonChain getChain() {
         return chain;
     }
-
-    public void setChain(HeroChain chain) {
-        this.chain = chain;
-    }
-
-
-    /**
-     * from save
-     * > soul list
-     * > memories
-     * and more...
-     */
-
-
 }

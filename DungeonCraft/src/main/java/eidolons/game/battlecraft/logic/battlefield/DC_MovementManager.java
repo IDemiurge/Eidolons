@@ -412,7 +412,6 @@ public class DC_MovementManager implements MovementManager {
         DC_GameState.gridChanged=true;
         if (!REF.isQuiet())
             if (obj instanceof Unit) {
-                game.getDungeonMaster().getTrapMaster().unitMoved((Unit) obj);
                 game.getDungeonMaster().getPortalMaster().unitMoved((Unit) obj);
             }
         cell.setObjectsModified(true);

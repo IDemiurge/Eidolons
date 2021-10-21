@@ -73,8 +73,8 @@ public class AiUnitActionMaster {
                 break;
 
             case DEFEND:
-                actions.add(AiActionFactory.getUnitAction(unit, ActionEnums.STD_MODE_ACTIONS.Defend.name()));
-                actions.add(AiActionFactory.getUnitAction(unit, ActionEnums.STD_MODE_ACTIONS.On_Alert.name()));
+                actions.add(AiActionFactory.getUnitAction(unit, ActionEnums.DEFAULT_ACTION.Defend.name()));
+                actions.add(AiActionFactory.getUnitAction(unit, ActionEnums.DEFAULT_ACTION.On_Alert.name()));
                 break;
 
             case COWER:
@@ -82,7 +82,7 @@ public class AiUnitActionMaster {
                 break;
             case AMBUSH:
                 if (!checkAddStealth(true, unit, actions)) {
-                    actions.add(AiActionFactory.getUnitAction(unit, ActionEnums.STD_MODE_ACTIONS.On_Alert.name()));
+                    actions.add(AiActionFactory.getUnitAction(unit, ActionEnums.DEFAULT_ACTION.On_Alert.name()));
                 }
                 break;
             case STALK:
@@ -108,11 +108,11 @@ public class AiUnitActionMaster {
             case PREPARE:
                 actions.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.MODE));
                 if (!unit.isLiving()) {
-                    actions.remove(AiActionFactory.getUnitAction(unit, ActionEnums.STD_MODE_ACTIONS.Defend.name()));
+                    actions.remove(AiActionFactory.getUnitAction(unit, ActionEnums.DEFAULT_ACTION.Defend.name()));
 
                 }
-                actions.remove(AiActionFactory.getUnitAction(unit, ActionEnums.STD_MODE_ACTIONS.Defend.name()));
-                actions.remove(AiActionFactory.getUnitAction(unit, ActionEnums.STD_MODE_ACTIONS.On_Alert.name()));
+                actions.remove(AiActionFactory.getUnitAction(unit, ActionEnums.DEFAULT_ACTION.Defend.name()));
+                actions.remove(AiActionFactory.getUnitAction(unit, ActionEnums.DEFAULT_ACTION.On_Alert.name()));
                 break;
         }
         actions.addAll(ActionFilter.filterActives(type, (unit.getSpells())));

@@ -1,7 +1,7 @@
 package eidolons.system.test;
 
 import eidolons.content.PROPS;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import main.content.DC_TYPE;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
@@ -36,9 +36,9 @@ public class TestDialogMaster {
 
         //TODO via event HqMaster.filterTestContent(full);
         String val= DialogMaster.inputText("; Separated string...", ContainerUtils.constructEntityNameContainer(full));
-        Eidolons.getMainHero().addProperty(true, prop(T), val);
-        Eidolons.getMainHero().setInitialized(false);
-        Eidolons.getMainHero().reset();
+        Core.getMainHero().addProperty(true, prop(T), val);
+        Core.getMainHero().setInitialized(false);
+        Core.getMainHero().reset();
             return true;
         }
 

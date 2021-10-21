@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static eidolons.game.core.Eidolons.getGame;
+import static eidolons.game.core.Core.getGame;
 
 /**
  * not thread safe!

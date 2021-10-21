@@ -2,7 +2,7 @@ package libgdx.stage;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.content.consts.VisualEnums;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
 import eidolons.system.libgdx.datasource.AmbienceDataSource;
@@ -54,7 +54,7 @@ public class GuiVisualEffects extends GroupX {
             if (!isCustomEmitters())
                 return;
             LevelStruct struct = DC_Game.game.getDungeonMaster().getStructMaster().getLowestStruct(
-             Eidolons.getPlayerCoordinates());
+             Core.getPlayerCoordinates());
             initEmitters(AmbienceDataSource.getTemplate(struct.getStyle()), (DAY_TIME) p.get());
 
         });

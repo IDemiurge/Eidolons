@@ -66,6 +66,11 @@ public class ActionContainer extends FeatContainer {
         this.size = size;
         bindAction(action);
     }
+
+    public ActionContainer(TextureRegion texture, Runnable action) {
+        super(()-> -1 , texture, "");
+        bindAction(action);
+    }
     // public ActionContainer(int size, boolean valid, String image, Runnable invokeClicked) {
     //     this(size, valid, TextureCache.getSizedRegion(size, image), invokeClicked);
     // }

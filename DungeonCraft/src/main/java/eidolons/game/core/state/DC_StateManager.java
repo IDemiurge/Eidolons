@@ -9,12 +9,11 @@ import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
-import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
 import eidolons.game.battlecraft.rules.DC_RuleImpl;
 import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;
 import eidolons.game.battlecraft.rules.counter.generic.DamageCounterRule;
 import eidolons.game.battlecraft.rules.round.RoundRule;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.content.consts.Images;
@@ -55,7 +54,6 @@ import static main.system.auxiliary.log.LogMaster.log;
  */
 public class DC_StateManager extends StateManager {
 
-    private final StatesKeeper keeper;
     private final OBJ_TYPE[] toBaseIgnoredTypes = {DC_TYPE.SPELLS, DC_TYPE.ACTIONS};
     private boolean savingOn;
 
@@ -70,15 +68,6 @@ public class DC_StateManager extends StateManager {
 
     public DC_StateManager(DC_GameState state, boolean clone) {
         super(state);
-        if (clone) {
-            keeper = state.getGame().getState().getManager().getKeeper();
-        } else {
-            keeper = new StatesKeeper(getGame());
-        }
-    }
-
-    public StatesKeeper getKeeper() {
-        return keeper;
     }
 
     public boolean isResetting() {
@@ -93,7 +82,7 @@ public class DC_StateManager extends StateManager {
     public void resetAllSynchronized_(boolean recursion) {
         if (!recursion)
             if (Flags.isIDE()) {
-                Eidolons.tryIt(() -> resetAllSynchronized_(false));
+                Core.tryIt(() -> resetAllSynchronized_(false));
                 return;
             }
         if (!resetting) {
@@ -109,7 +98,7 @@ public class DC_StateManager extends StateManager {
 
                         if ((ExplorationMaster.isExplorationOn() && obj.isOutsideCombat()) ||
                                 getGame().getVisionMaster().getVisionRule().
-                                        isResetRequiredSafe(Eidolons.getMainHero(), obj)
+                                        isResetRequiredSafe(Core.getMainHero(), obj)
                                 || isAlwaysReset(obj)
 
                         ) {
@@ -203,9 +192,6 @@ public class DC_StateManager extends StateManager {
         if (!CoreEngine.isGraphicsOff())
             triggerOnResetGuiEvents();
 
-        if (savingOn) {
-            keeper.save();
-        }
         if (active != null) {
             if (active instanceof Spell) {
                 Spell s = (Spell) active;
@@ -348,12 +334,6 @@ public class DC_StateManager extends StateManager {
                 obj.afterEffects();
 
             }
-        }
-        if (PartyHelper.getParty() != null) {
-            PartyHelper.getParty().afterEffects();
-        }
-        for (Obj obj : PartyHelper.getParties()) {
-            obj.afterEffects();
         }
     }
 

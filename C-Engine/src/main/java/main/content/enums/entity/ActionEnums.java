@@ -10,30 +10,14 @@ import java.awt.*;
  * Created by JustMe on 2/14/2017.
  */
 public class ActionEnums {
-    public static final String OFFHAND_ATTACK = StringMaster
-            .format(STD_SPEC_ACTIONS.OFFHAND_ATTACK.name());
-    public static final String ATTACK = (STD_ACTIONS.Attack.name());
+    public static final String ATTACK = (STD_ACTIONS.Attack.toString());
+    public static final String OFFHAND_ATTACK = (STD_ACTIONS.Offhand_Attack.toString());
     public static final String OFFHAND = "Off Hand ";
     public static final String RELOAD = "Reload";
-    public static final String THROW = "Throw";
-    public static final String CLUMSY_LEAP = "Clumsy Leap";
-    public static final String MOVE_RIGHT = "Move Right";
-    public static final String MOVE_LEFT = "Move Left";
     public static final String MOVE_BACK = "Move Back";
-    public static final String FLEE = "Flee";
-    public static final String TOGGLE_WEAPON_SET = "Toggle Weapon Set";
-    public static final String THROW_MAIN = "Throw Main Hand Weapon";
-    public static final String THROW_OFFHAND = "Throw Off Hand Weapon";
-    public static final String TOSS_ITEM = "Toss Item";
     public static final String ENTER = "Enter";
-    public static final String DISARM = "Disarm";
-    public static final String UNLOCK = "Unlock";
     public static final String DUMMY_ACTION = "Dummy Action";
-    public static final String USE_INVENTORY = StringMaster
-            .format(STD_SPEC_ACTIONS.Use_Inventory.toString());
-    public static final String DIVINATION = "Divination";
-    public static final String PICK_UP = "Pick Up Items";
-    public static ObjType DUMMY_ACTION_TYPE;
+    public static final String THROW = "Throw";
 
     public enum ACTION_TAGS {
         STANDARD_ATTACK,
@@ -122,8 +106,11 @@ public class ActionEnums {
         }
     }
 
-    public enum STD_ACTIONS {
-        Attack, Turn_Anticlockwise, Turn_Clockwise, Move;
+    public enum DEFAULT_ACTION {
+        Wait, On_Alert, Concentrate, Examine, Rest, Defend,
+    }
+        public enum STD_ACTIONS {
+        Attack, Offhand_Attack, Turn_Anticlockwise, Turn_Clockwise, Move;
 
         public String toString() {
             return StringMaster.format(name());
@@ -138,34 +125,10 @@ public class ActionEnums {
         }
     }
 
-    public enum STD_ORDER_ACTIONS {
-        Press_the_Attack,
-        Hold_Fast,
-        Protect_me,
-        Heal_me,
-        Kill_Him,
-        Retreat,
-        Cancel_Order {
-            @Override
-            public String toString() {
-                return StringMaster.format(name());
-            }
-        },
-        ;
-
-        public String toString() {
-            return "Order: " + StringMaster.format(name() +
-                    "!");
-        }
-
-    }
-
     public enum STD_SPEC_ACTIONS {
-        On_Alert, Use_Inventory, OFFHAND_ATTACK, DUAL_ATTACK, Search_Mode, Guard_Mode, Watch, Wait, Toggle_Weapon_Set, Push, Pull,
-        //        @Override
-        //        public String toString() {
-        //            return StringMaster.getWellFormattedString(name());
-        //        }
+        Search_Mode,
+        Toggle_Weapon,
+        Toggle_Offhand_Weapon,
     }
 
     public enum WEAPON_ATTACKS {
@@ -231,11 +194,6 @@ public class ActionEnums {
 
     }
 
-    public enum MISC_ACTIONS {
-        Cower,
-        stumble
-
-    }
 
     public enum MOD_IDENTIFIER {
         ATK_DEF,
@@ -297,6 +255,15 @@ public class ActionEnums {
         public String getName() {
             return StringMaster.format(name());
         }
+
+    }
+
+    public enum ATTACK_CASE{
+        SNEAK,
+
+        SIDEWAYS,
+        DIAGONAL,
+
 
     }
 }

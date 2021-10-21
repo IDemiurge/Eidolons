@@ -2,7 +2,7 @@ package eidolons.game.module.dungeoncrawl.objects;
 
 import eidolons.entity.obj.Structure;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import main.entity.Ref;
 import main.entity.type.ObjType;
@@ -18,7 +18,7 @@ public abstract class DungeonObj extends Structure {
     }
 
     public DungeonObj(ObjType type, int x, int y) {
-        super(type, x, y, DC_Player.NEUTRAL, Eidolons.game, new Ref());
+        super(type, x, y, DC_Player.NEUTRAL, Core.game, new Ref());
     }
 
     public boolean isLocked() {

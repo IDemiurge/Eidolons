@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.netherflame.main.NF_Images;
 import libgdx.GdxMaster;
 import libgdx.anims.sprite.SpriteAnimation;
@@ -97,7 +97,7 @@ public class HqPanel extends TablePanel implements Blocking {
     public void init() {
 
         if (!Flags.isActiveTestMode())
-            if (initialized || Eidolons.getGame().isBossFight()) {
+            if (initialized || Core.getGame().isBossFight()) {
                 return; //really?
             }
         if (!Flags.isLiteLaunch()) {
@@ -165,7 +165,7 @@ public class HqPanel extends TablePanel implements Blocking {
             fluctuating.fluctuate(delta);
             bgSprite.setAlpha(fluctuating.getColor().a);
         }
-        if (Eidolons.getGame().isBossFight()) {
+        if (Core.getGame().isBossFight()) {
             return;
         }
         addActor(header);
@@ -302,7 +302,7 @@ public class HqPanel extends TablePanel implements Blocking {
         if (userObject instanceof List) {
             ((List) userObject).removeIf((h) -> {
                 if (h instanceof HqHeroDataSource) {
-                    return !((HqHeroDataSource) h).getName().equalsIgnoreCase(Eidolons.getMainHero().getName());
+                    return !((HqHeroDataSource) h).getName().equalsIgnoreCase(Core.getMainHero().getName());
                 }
                 return false;
             });

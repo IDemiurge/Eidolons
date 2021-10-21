@@ -1,6 +1,6 @@
 package eidolons.puzzle.voidy;
 
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import libgdx.bf.grid.DC_GridPanel;
 import libgdx.bf.grid.cell.GridCell;
 import main.entity.Ref;
@@ -16,7 +16,7 @@ public class PuzzleVoidHandler extends VoidHandler {
     @Override
     protected void onAnimate(GridCell cell) {
         // WaitMaster.WAIT(200);
-        Ref ref = Ref.getSelfTargetingRefCopy(Eidolons.getMainHero());
+        Ref ref = Ref.getSelfTargetingRefCopy(Core.getMainHero());
         cell.getUserObject().getGame().getDungeonMaster().getPuzzleMaster().processEvent(
                 //this is kind of a hack
                 new Event(Event.STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE,

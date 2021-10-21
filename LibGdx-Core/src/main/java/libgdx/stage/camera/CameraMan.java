@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.cinematic.Cinematics;
 import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.main.AnimMaster;
@@ -91,7 +91,7 @@ public class CameraMan {
 
 
     public void centerCam() {
-        Unit mainHero = Eidolons.getMainHero();
+        Unit mainHero = Core.getMainHero();
         if (mainHero != null) {
             centerCameraOnMainHero();
         } else
@@ -105,13 +105,13 @@ public class CameraMan {
         CameraOptions.update(OptionsMaster.getControlOptions());
         cameraTimer = new ActTimer(CameraOptions.options.CENTER_CAMERA_AFTER_TIME, () -> {
             if (!firstCenteringDone) {
-                centerCameraOn(Eidolons.getMainHero());
+                centerCameraOn(Core.getMainHero());
                 firstCenteringDone = true;
             }
             if (!CameraOptions.options.AUTO_CAMERA_OFF)
-                if (Eidolons.getGame().getManager().checkAutoCameraCenter()) {
-                    if (!Eidolons.getMainHero().isDead()) //for Shade
-                        centerCameraOn(Eidolons.getMainHero());
+                if (Core.getGame().getManager().checkAutoCameraCenter()) {
+                    if (!Core.getMainHero().isDead()) //for Shade
+                        centerCameraOn(Core.getMainHero());
                 }
         });
 
@@ -119,7 +119,7 @@ public class CameraMan {
             camController.follow(null);
         });
         GuiEventManager.bind(GuiEventType.CAMERA_FOLLOW_MAIN, p -> {
-            camController.follow(Eidolons.getMainHero());
+            camController.follow(Core.getMainHero());
         });
 
         GuiEventManager.bind(GuiEventType.CAMERA_OFFSET, p -> {
@@ -180,8 +180,8 @@ public class CameraMan {
         // cameraTimer.setPeriod(options.CENTER_CAMERA_AFTER_TIME);
         // cameraTimer.act(delta);
         // gdx review - is this a useful feature?
-        if (!Eidolons.getGame().isPaused())
-            if (!Eidolons.getGame().isDebugMode())
+        if (!Core.getGame().isPaused())
+            if (!Core.getGame().isDebugMode())
                 if (motions.isEmpty()) {
                     if (camController.checkFollow(delta))
                         return;
@@ -275,10 +275,10 @@ public class CameraMan {
     }
 
     public void centerCameraOnMainHero() {
-        Vector2 v = GridMaster.getCenteredPos(Eidolons.getPlayerCoordinates());
+        Vector2 v = GridMaster.getCenteredPos(Core.getPlayerCoordinates());
         cam.position.x=v.x;
         cam.position.y=v.y;
-        centerCameraOn(Eidolons.getMainHero(), true);
+        centerCameraOn(Core.getMainHero(), true);
     }
 
     public static void setCameraPanMod(float mod) {

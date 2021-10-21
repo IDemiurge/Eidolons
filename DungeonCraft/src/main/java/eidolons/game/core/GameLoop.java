@@ -187,10 +187,6 @@ public abstract class GameLoop {
             Chronos.mark(activeUnit + "'s action");
             result = makeAction();
             Chronos.logTimeElapsedForMark(activeUnit + "'s action");
-            if (!aftermath)
-                if (game.getMissionMaster().getOutcomeManager().checkOutcomeClear()) {
-                    return false;
-                }
             if (result == null) {
                 continue;
             }
@@ -426,7 +422,7 @@ public abstract class GameLoop {
 
     public Unit getActiveUnit() {
         if (activeUnit == null)
-            return Eidolons.getMainHero();
+            return Core.getMainHero();
         return activeUnit;
     }
 
@@ -464,7 +460,7 @@ public abstract class GameLoop {
             }
         if (Flags.isIDE())
             if (!Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT))
-                if (game.isDebugMode() || (Flags.isLevelTestMode() && !Eidolons.getMainHero().getLastCoordinates().equals(c)))
+                if (game.isDebugMode() || (Flags.isLevelTestMode() && !Core.getMainHero().getLastCoordinates().equals(c)))
                     if (location.getMainEntrance() != null)
                         return location.getMainEntrance().getCoordinates().equals(c);
         return false;
@@ -570,7 +566,7 @@ public abstract class GameLoop {
     }
 
     public void activateMainHeroAction(String name) {
-        activateAction(new ActionInput(Eidolons.getMainHero().getActionOrSpell(name), new Context(Eidolons.getMainHero().getRef())));
+        activateAction(new ActionInput(Core.getMainHero().getActionOrSpell(name), new Context(Core.getMainHero().getRef())));
     }
 
     public DC_ActiveObj getLastAction() {

@@ -1,7 +1,7 @@
 package libgdx.screens.dungeon;
 
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import libgdx.GdxMaster;
 import libgdx.anims.fullscreen.Screenshake;
@@ -51,7 +51,7 @@ public abstract class GameScreenWithTown extends GenericDungeonScreen {
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
                 showTownPanel(null);
-                Eidolons.exitToMenu();
+                Core.exitToMenu();
             }
         });
     }

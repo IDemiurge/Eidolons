@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import libgdx.bf.Borderable;
 import eidolons.content.consts.Images;
 import libgdx.texture.TextureCache;
@@ -93,8 +93,8 @@ public class CellBorderManager extends Group {
                     //TODO replace this quick-fix:
                     // click on non-blue-border cell must still do cell.invokeClicked() (run()) somehow
 
-                    if (Eidolons.game.getManager().isSelecting()) {
-                        Eidolons.game.getManager().selectingStopped(true);
+                    if (Core.game.getManager().isSelecting()) {
+                        Core.game.getManager().selectingStopped(true);
                         EUtils.playSound(AudioEnums.STD_SOUNDS.NEW__CLICK_DISABLED);
                     }
                 }
@@ -102,7 +102,7 @@ public class CellBorderManager extends Group {
 
             } else {
                 EUtils.playSound(AudioEnums.STD_SOUNDS.NEW__CLICK_UP2);
-                Eidolons.game.getManager().selectingStopped(true);
+                Core.game.getManager().selectingStopped(true);
             }
             clearTeamColorBorder(true);
 

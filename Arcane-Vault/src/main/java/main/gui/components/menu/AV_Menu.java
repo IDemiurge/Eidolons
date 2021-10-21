@@ -3,24 +3,27 @@ package main.gui.components.menu;
 import main.system.auxiliary.StringMaster;
 
 import javax.swing.*;
-import java.util.Arrays;
+
+import static main.gui.components.menu.AV_Menu.MENUS.*;
 
 public class AV_Menu {
     AV_MenuHandler handler = new AV_MenuHandler();
     private JMenuBar bar;
-
-    public AV_Menu() {
-        // G_Panel with a custom background perhaps, would be nice to have a bit
-        // of art in AV
+    public static final MENUS[] MENUS= { MENU, EDIT,
+            // FILTER,
+            // SEARCH
+    };
+    public static final MENUS[] ALT_MENUS= { WORKSPACE, TRANSFORM, EDIT,
+            AE };
+    public AV_Menu(boolean alt) {
         bar = new JMenuBar();
-        // MENUS.TOP
-        for (MENUS m : MENUS.values()) {
+
+        for (MENUS m : alt? ALT_MENUS : MENUS) {
             JMenu menu = new JMenu(m.getName());
             for (AV_MENU_ITEMS i : m.getItems()) {
                 if (i.hasSubMenu()) {
                     JMenu menuItem = getMenu(i);
                     menu.add(menuItem);
-
                 } else {
                     JMenuItem menuItem = new JMenuItem(i.getName());
                     menuItem.addActionListener(handler);
@@ -138,17 +141,22 @@ public class AV_Menu {
         TRANSFORM(),REMOVE_VALUE,
         // AE
         SAVE_TEMPLATE,
-        REMOVE,ADD_TAB,SAVE_ALL,PREVIEW,
-        NEW(), CLONE(), TRANSFORM(), PASTE(), COPY(), TOGGLE(), MAIN(
-                NEW, CLONE,
-                REMOVE, UPGRADE,
-                PREVIEW, UNDO,
-                SAVE_ALL, SAVE,
-                ADD_TAB, TOGGLE,
-                COPY, PASTE,
-                BACKUP, TRANSFORM
 
-        );
+        TOP_LEFT(),
+
+        TOP_RIGHT(),
+
+        ADD_TO_WORKSPACE,
+        ADD_TO_CUSTOM_WORKSPACE,
+        LOAD_WORKSPACE,
+        SAVE_WORKSPACE,
+        SAVE_WORKSPACE_AS,
+        DELETE_WORKSPACE,
+        RENAME_WORKSPACE,
+        GROUPING,
+        SORT_WORKSPACE,
+
+        ;
         private final AV_MENU_ITEMS[] items;
 
         // boolean customGeneratedItems

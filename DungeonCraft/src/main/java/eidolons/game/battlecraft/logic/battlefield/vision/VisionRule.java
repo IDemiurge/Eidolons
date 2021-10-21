@@ -6,7 +6,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.counter.natural.ConcealmentRule;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.module.dungeoncrawl.struct.Entrance;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
@@ -137,7 +137,7 @@ public class VisionRule {
         else if (getPlayerUnseenMode()) {
             return false;
         }
-        double dst = PositionMaster.getExactDistance(observer, Eidolons.getMainHero());
+        double dst = PositionMaster.getExactDistance(observer, Core.getMainHero());
         //         dst >          Eidolons.getMainHero().getMaxVisionDistance()&&
         return !(dst > observer.getMaxVisionDistance());
     }
@@ -422,7 +422,7 @@ public class VisionRule {
 
     public void resetIgnore() {
         float dstCoef = 1.5f;
-        Unit observer = Eidolons.getMainHero();
+        Unit observer = Core.getMainHero();
         for (Obj c : master.getGame().getCells()) {
             DC_Obj cell = (DC_Obj) c;
             cell.setResetIgnored(true);

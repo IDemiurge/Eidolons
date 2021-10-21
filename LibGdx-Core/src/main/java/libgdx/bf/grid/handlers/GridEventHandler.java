@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import libgdx.anims.construct.AnimConstructor;
 import libgdx.anims.main.AnimMaster;
@@ -194,7 +194,7 @@ public class GridEventHandler extends GridHandler {
             if (view.getActor().isVisible())
                 if (view.getHpBar() != null)
                     if (
-                            obj== Eidolons.getMainHero() ||
+                            obj== Core.getMainHero() ||
                             !ExplorationMaster.isExplorationOn()
                                     || HpBarManager.canHpBarBeVisible((BattleFieldObject) view.getActor().getUserObject()))
                         view.resetHpBar();

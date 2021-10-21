@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.ActionInput;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import libgdx.GdxMaster;
 import libgdx.anims.actions.ActionMasterGdx;
@@ -53,7 +53,7 @@ public class FacingPanel extends TablePanel {
         GuiEventManager.bind(GuiEventType.UPDATE_MAIN_HERO,
                 p -> {
                     if (p.get() == null)
-                        setUserObject(new FullUnitDataSource(Eidolons.getMainHero()));
+                        setUserObject(new FullUnitDataSource(Core.getMainHero()));
                     else
                         setUserObject(new FullUnitDataSource((Unit) p.get()));
                 });
@@ -81,7 +81,7 @@ public class FacingPanel extends TablePanel {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 //                DungeonScreen.getInstance().getCameraMan().centerCameraOn(DC_Game.game.getManager().getMainHero());
 
-                GuiEventManager.triggerWithParams(GuiEventType.CAMERA_PAN_TO_UNIT, Eidolons.getMainHero(), 2f);
+                GuiEventManager.triggerWithParams(GuiEventType.CAMERA_PAN_TO_UNIT, Core.getMainHero(), 2f);
                 DungeonScreen.getInstance().getController().inputPass();
                 return super.touchDown(event, x, y, pointer, button);
             }

@@ -113,7 +113,7 @@ public class AV_Tree extends G_Panel {
                     groupSorter = new EnumMaster<>().getEnumSorter(ENUM);
                 }
 
-            return  ArcaneVault.getManager().getTreeBuilder().build(types, TYPE, group,
+            return  AV2.getManager().getTreeBuilder().build(types, TYPE, group,
                     (Comparator<ObjType>) getComparator(), groupSorter);
 
         } else if (workspace != null) {

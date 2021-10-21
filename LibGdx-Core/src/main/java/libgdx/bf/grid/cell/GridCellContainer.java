@@ -12,7 +12,7 @@ import eidolons.content.consts.libgdx.WallMaster;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.colormap.LightConsts;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.struct.Entrance;
 import libgdx.GDX;
 import libgdx.GdxMaster;
@@ -234,7 +234,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
             }
             if (actor instanceof GenericGridView) {
                 list.add((GenericGridView) actor);
-                if (actor.getUserObject() == Eidolons.MAIN_HERO) {
+                if (actor.getUserObject() == Core.MAIN_HERO) {
                     mainHero = true;
                 }
             }
@@ -345,9 +345,9 @@ public class GridCellContainer extends GridCell implements Hoverable {
     protected boolean checkIgnored() {
         if (!isVisible())
             return true;
-        if (Eidolons.game == null)
+        if (Core.game == null)
             return true;
-        if (!Eidolons.game.isStarted())
+        if (!Core.game.isStarted())
             return true;
 
         return !isWithinCamera();
@@ -484,7 +484,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
             }
 
             BattleFieldObject userObject = (BattleFieldObject) actor.getUserObject();
-            if (userObject == Eidolons.MAIN_HERO
+            if (userObject == Core.MAIN_HERO
                     || userObject instanceof Entrance)
                 mainHero = true;
             if (userObject.isWall()) {
@@ -558,7 +558,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
     }
 
     private void removed(Actor actor) {
-        if (actor.getUserObject() == Eidolons.MAIN_HERO)
+        if (actor.getUserObject() == Core.MAIN_HERO)
             mainHero = false;
         lightEmitter = false;
         if (wall) {

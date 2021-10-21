@@ -6,16 +6,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import libgdx.GdxImageMaster;
-import libgdx.gui.NinePatchFactory;
+import libgdx.TiledNinePatchGenerator;
+import libgdx.gui.generic.btn.ButtonStyled;
 import libgdx.gui.generic.btn.SmartTextButton;
 import libgdx.gui.panels.TablePanelX;
 import libgdx.gui.panels.headquarters.HqElement;
-import libgdx.gui.panels.headquarters.creation.HeroCreationWorkspace;
 import libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import libgdx.gui.panels.headquarters.datasource.tree.HeroTreeDataSource;
 import libgdx.gui.panels.headquarters.weave.WeaveMaster;
-import libgdx.TiledNinePatchGenerator;
-import libgdx.gui.generic.btn.ButtonStyled;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 
 /**
@@ -32,10 +30,10 @@ public abstract class HeroTree<N extends HtNode, N2 extends HtNode>
     }
 
     public HeroTree(boolean altBackground) {
-        if (altBackground) {
-            setSize(HeroCreationWorkspace.PREVIEW_WIDTH, HeroCreationWorkspace.SELECTION_HEIGHT);
-            setBackground(NinePatchFactory.getLightPanelDrawable());
-        } else
+        // if (altBackground) {
+        //     setSize(HeroCreationWorkspace.PREVIEW_WIDTH, HeroCreationWorkspace.SELECTION_HEIGHT);
+        //     setBackground(NinePatchFactory.getLightPanelDrawable());
+        // } else
             setBackgroundAndSize(GdxImageMaster.
                     getPanelBackground(TiledNinePatchGenerator.NINE_PATCH.SAURON, TiledNinePatchGenerator.BACKGROUND_NINE_PATCH.PATTERN,
                             530, 725));

@@ -1,7 +1,7 @@
 package libgdx.anims;
 
 import eidolons.content.consts.VisualEnums;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import libgdx.anims.text.FloatingText;
 import libgdx.gui.generic.GroupX;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
@@ -52,7 +52,7 @@ public class FloatingTextLayer extends GroupX {
 
     @Override
     public void act(float delta) {
-        if (Eidolons.getGame().isPaused())
+        if (Core.getGame().isPaused())
             return;
         super.act(delta);
         for (FloatingText sub : new ArrayList<>(queued)) {

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
 import eidolons.content.consts.libgdx.GdxColorMaster;
@@ -40,7 +40,7 @@ public class GlobalVfxMap extends GroupX {
         initModuleVfx(module);
         GuiEventManager.bind(GuiEventType.UNIT_VIEW_MOVED, p -> {
             UnitGridView view = (UnitGridView) p.get();
-            if (view.getUserObject() == Eidolons.getMainHero()) {
+            if (view.getUserObject() == Core.getMainHero()) {
                 Unit hero = (Unit) view.getUserObject();
                 for (EmitterMap map : maps) {
                     map.update(hero.getCoordinates());

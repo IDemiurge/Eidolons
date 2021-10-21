@@ -18,12 +18,11 @@ import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import eidolons.game.battlecraft.rules.action.StackingRule;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_ACTION;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_STATE;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
-import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.rules.VisionEnums;
 import main.content.enums.system.AiEnums;
@@ -42,6 +41,8 @@ import main.system.math.PositionMaster;
 
 import java.util.Collection;
 import java.util.List;
+
+import static main.content.enums.entity.ActionEnums.DEFAULT_ACTION.*;
 
 public class AtomicAi extends AiHandler {
 
@@ -148,11 +149,11 @@ public class AtomicAi extends AiHandler {
         //     return null;
         // }
         if (ParamAnalyzer.isFatigued(getUnit())) {
-            return AiActionFactory.newAction(ActionEnums.STD_MODE_ACTIONS.Rest.name(),
+            return AiActionFactory.newAction(Rest.name(),
                     getUnit().getAI());
         }
         if (ParamAnalyzer.isHazed(getUnit())) {
-            return AiActionFactory.newAction(ActionEnums.STD_MODE_ACTIONS.Concentrate.name(),
+            return AiActionFactory.newAction(Concentrate.name(),
                     getUnit().getAI());
         }
 
@@ -168,16 +169,16 @@ public class AtomicAi extends AiHandler {
 
         return AiActionFactory.newAction(
                 RandomWizard.random() ? RandomWizard.random() ?
-                        ActionEnums.STD_SPEC_ACTIONS.Wait.toString() : RandomWizard.random() ?
-                        ActionEnums.STD_SPEC_ACTIONS.Wait.toString() :
-                        ActionEnums.STD_MODE_ACTIONS.Defend.toString() : RandomWizard.random() ?
-                        ActionEnums.STD_SPEC_ACTIONS.Wait.toString() :
-                        ActionEnums.STD_MODE_ACTIONS.On_Alert.toString(), ai);
+                        Wait.toString() : RandomWizard.random() ?
+                        Wait.toString() :
+                        Defend.toString() : RandomWizard.random() ?
+                        Wait.toString() :
+                        On_Alert.toString(), ai);
     }
 
     public Action getAtomicWait(Unit unit) {
         return AiActionFactory.newAction(unit.getAction(
-                ActionEnums.STD_SPEC_ACTIONS.Wait.toString()), Ref.getSelfTargetingRefCopy(unit));
+                Wait.toString()), Ref.getSelfTargetingRefCopy(unit));
     }
 
     private Action getReloadAction(UnitAI ai) {
@@ -228,7 +229,7 @@ public class AtomicAi extends AiHandler {
         FACING_DIRECTION facing = FacingMaster.
                 getOptimalFacingTowardsUnits(getUnit().getCoordinates(),
                         units
-                        , t -> getThreatAnalyzer().getThreat(ai, (Unit) t)
+                        , t -> getThreat(ai, (Unit) t)
                 );
         if (facing == null)
             return null;
@@ -247,6 +248,11 @@ public class AtomicAi extends AiHandler {
         }
         return Positioner.adjustCoordinate(ai.getUnit(), c, ai.getUnit().getFacing());
 
+    }
+
+    //TODO NF AI Revamp
+    private Integer getThreat(UnitAI ai, Unit t) {
+        return t.getLevel() * 5;
     }
 
     public Action getAtomicActionMove(UnitAI ai, Boolean approach_retreat_search) {
@@ -417,8 +423,8 @@ public class AtomicAi extends AiHandler {
                     return null;
                 if (enemy.getCoordinates().dst_(ai.getUnit().getCoordinates()) >=
                         (relative == FACING_SINGLE.BEHIND
-                        ? MAX_DST_TURN_BEHIND
-                        : MAX_DST_TURN)) {
+                                ? MAX_DST_TURN_BEHIND
+                                : MAX_DST_TURN)) {
                     return null;
                 }
                 return AiEnums.AI_LOGIC_CASE.TURN_AROUND;
@@ -468,15 +474,15 @@ public class AtomicAi extends AiHandler {
 
         if (!Analyzer.getAdjacentEnemies(getUnit(), false).isEmpty())
             return null;
-        VisionEnums.UNIT_VISION v = ai.getUnit().getUnitVisionStatus(Eidolons.getMainHero());
+        VisionEnums.UNIT_VISION v = ai.getUnit().getUnitVisionStatus(Core.getMainHero());
         float dst = v == VisionEnums.UNIT_VISION.BLOCKED ? 3.5f : 6 +
-                ai.getUnit().getSightRangeTowards(Eidolons.getMainHero());
+                ai.getUnit().getSightRangeTowards(Core.getMainHero());
         if (ai.getType().isCaster())
             dst *= 1.5f;
         if (ai.getType().isRanged())
             dst *= 1.25f;
         if (v != VisionEnums.UNIT_VISION.IN_PLAIN_SIGHT) if (v != VisionEnums.UNIT_VISION.IN_SIGHT) {
-            if (PositionMaster.getExactDistance(ai.getUnit(), Eidolons.getMainHero()) > dst)
+            if (PositionMaster.getExactDistance(ai.getUnit(), Core.getMainHero()) > dst)
                 return AiEnums.AI_LOGIC_CASE.FAR_UNSEEN;
         }
 

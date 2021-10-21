@@ -5,9 +5,8 @@ import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.ModuleMaster;
 import eidolons.game.battlecraft.logic.meta.universal.*;
 import eidolons.game.battlecraft.logic.mission.quest.QuestMissionMaster;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.ScenarioGame;
-import eidolons.game.netherflame.main.death.NF_DefeatHandler;
 import eidolons.system.libgdx.datasource.ScreenData;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -51,7 +50,7 @@ public class ScenarioMetaMaster<T extends ScenarioMeta> extends MetaGameMaster<T
         if (outcome != null)
             if (outcome) {
                 if (getMetaGame().isFinalLevel()) {
-                    getMissionMaster().getOutcomeManager().victory();
+                    // victory();
                     return;
                 }
 
@@ -65,26 +64,23 @@ public class ScenarioMetaMaster<T extends ScenarioMeta> extends MetaGameMaster<T
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
 
         if (restart) {
-            Eidolons.mainGame.getMetaMaster().getMetaGame().setRestarted(true);
-            Eidolons.setParty(null);
-        } else {
-            Eidolons.setParty(getPartyManager().getParty());
+            Core.mainGame.getMetaMaster().getMetaGame().setRestarted(true);
         }
-        if (!Eidolons.initScenario(
+        if (!Core.initScenario(
          new ScenarioMetaMaster(getData()))) {
             return;
         }
 
         //TODO should not be necessary!
-        Eidolons.mainGame.getMetaMaster().getMetaGame().setRestarted(restart);
+        Core.mainGame.getMetaMaster().getMetaGame().setRestarted(restart);
 //        ?  Eidolons.mainGame.getMetaMaster(). init();
-        Eidolons.mainGame.getMetaMaster().getGame().getDungeonMaster().next();
-        Eidolons.mainGame.getMetaMaster().getGame().battleInit();
-        Eidolons.mainGame.getMetaMaster().getGame().start(restart);
+        Core.mainGame.getMetaMaster().getGame().getDungeonMaster().next();
+        Core.mainGame.getMetaMaster().getGame().battleInit();
+        Core.mainGame.getMetaMaster().getGame().start(restart);
 
 
         GuiEventManager.trigger(GuiEventType.UPDATE_MAIN_HERO);
-        GuiEventManager.trigger(GuiEventType.ACTIVE_UNIT_SELECTED, Eidolons.getMainHero());
+        GuiEventManager.trigger(GuiEventType.ACTIVE_UNIT_SELECTED, Core.getMainHero());
         GuiEventManager.trigger(GuiEventType.UPDATE_GUI);
 
 //        GuiEventManager.trigger(GuiEventType.SCREEN_LOADED);
@@ -92,18 +88,8 @@ public class ScenarioMetaMaster<T extends ScenarioMeta> extends MetaGameMaster<T
     }
 
     @Override
-    protected DefeatHandler createDefeatHandler() {
-        return new NF_DefeatHandler(this);
-    }
-
-    @Override
     protected ScenarioGame createGame() {
         return new ScenarioGame(this);
-    }
-
-    @Override
-    protected PartyManager createPartyManager() {
-        return new ScenarioPartyManager(this);
     }
 
     @Override
@@ -132,9 +118,7 @@ public class ScenarioMetaMaster<T extends ScenarioMeta> extends MetaGameMaster<T
     }
 
     public String getMissionName() {
-        if (getMetaDataManager().getMissionName() != null)
-            return getMetaDataManager().getMissionName();
-        return getPartyManager().getParty().getMission();
+       return getMetaDataManager().getMissionName();
     }
 
     protected String getScenarioInfo() {

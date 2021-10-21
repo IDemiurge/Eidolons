@@ -8,8 +8,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.VoidMaze;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
-import eidolons.game.battlecraft.rules.round.WaterRule;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.struct.Entrance;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -137,12 +136,6 @@ public class StackingRule implements ActionRule {
                         return false;
                     }
                 }
-                if (u.isWater())
-                    return WaterRule.checkPassable(u, unit);
-                // if (!u.isNeutral() && !u.isMine())
-                //     if (game.getVisionMaster().checkInvisible(u)) {
-                //         continue;
-                //     }
                 if (u instanceof Unit)
                     if (!u.isAnnihilated())
                     units.addCast(u);
@@ -156,7 +149,7 @@ public class StackingRule implements ActionRule {
                     cell = new DC_Cell(c, game); //TODO this is a hack...
                 }
                 if (cell.isVOID()) {
-                    if (unit != Eidolons.getMainHero() || !Flags.isIDE() || game.getDungeonMaster().getPuzzleMaster().getCurrent() instanceof VoidMaze)// || !VoidHandler.TEST_MODE)
+                    if (unit != Core.getMainHero() || !Flags.isIDE() || game.getDungeonMaster().getPuzzleMaster().getCurrent() instanceof VoidMaze)// || !VoidHandler.TEST_MODE)
                         if (!unit.checkProperty(G_PROPS.STANDARD_PASSIVES, UnitEnums.STANDARD_PASSIVES.VOIDWALKER.getName())) {
                             return false;
                         }

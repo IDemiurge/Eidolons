@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules;
 
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
@@ -112,14 +112,10 @@ public class RuleKeeper  {
             return r.scope;
         }
         switch (r) {
-            case INJURY:
-                return RuleEnums.RULE_SCOPE.TEST;
             case ATTACK_OF_OPPORTUNITY:
             case INSTANT_ATTACK:
             case FORCE:
                 return RuleEnums.RULE_SCOPE.FULL;
-            case TRAMPLE:
-                return RuleEnums.RULE_SCOPE.ADVANCED;
 
         }
         return RuleEnums.RULE_SCOPE.BASIC;
@@ -153,7 +149,7 @@ public class RuleKeeper  {
     }
 
     public static boolean isRuleTestOn(RuleEnums.RULE rule) {
-        if (Eidolons.getGame().isDebugMode())
+        if (Core.getGame().isDebugMode())
             return false;
         return Bools.isTrue(mapTest.get(rule));
     }

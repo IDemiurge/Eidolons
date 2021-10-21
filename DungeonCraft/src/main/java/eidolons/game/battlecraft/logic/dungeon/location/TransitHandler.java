@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.logic.dungeon.location;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.struct.Entrance;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
@@ -55,10 +55,10 @@ public class TransitHandler extends DungeonHandler {
     }
 
     private void transit(Entrance transit) {
-        Eidolons.getMainHero().setCoordinates(transit.getTargetCoordinates());
+        Core.getMainHero().setCoordinates(transit.getTargetCoordinates());
         getModuleLoader().loadModuleFull(transit.getTargetModule());
         WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.GUI_READY);
-        GuiEventManager.trigger(GuiEventType.UNIT_MOVED, Eidolons.getMainHero());
-        GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_COORDINATE, Eidolons.getPlayerCoordinates());
+        GuiEventManager.trigger(GuiEventType.UNIT_MOVED, Core.getMainHero());
+        GuiEventManager.trigger(GuiEventType.CAMERA_PAN_TO_COORDINATE, Core.getPlayerCoordinates());
     }
 }

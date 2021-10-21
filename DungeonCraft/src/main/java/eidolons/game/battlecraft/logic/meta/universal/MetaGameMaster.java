@@ -1,19 +1,20 @@
 package eidolons.game.battlecraft.logic.meta.universal;
 
 import eidolons.content.PROPS;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.module.ModuleMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.intro.IntroFactory;
 import eidolons.game.battlecraft.logic.mission.universal.MissionMaster;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
 import eidolons.game.eidolon.event.GameEventHandler;
+import eidolons.game.netherflame.lord.EidolonLord;
 import eidolons.system.libgdx.GdxBeans;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -34,20 +35,20 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     private static final String SOLO_LEVEL = "crawl/a flight[new].xml"; //review this
     protected String data;
-    protected PartyManager partyManager;
+    protected E metaGame;
+
+    protected SpawnManager spawnManager;
     protected MetaInitializer<E> initializer;
     protected MetaDataManager<E> metaDataManager;
 
-    protected E metaGame;
     protected DC_Game game;
     protected DialogueManager dialogueManager;
-    protected DefeatHandler defeatHandler;
-    protected LootMaster<E> lootMaster;
+
+    private QuestMaster questMaster;
 
     protected GameEventHandler eventHandler;
 
     private GdxBeans gdxBeans;
-    private QuestMaster questMaster;
 
 
     public MetaGameMaster(String data) {
@@ -58,27 +59,29 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     protected abstract DC_Game createGame();
 
-    protected abstract PartyManager createPartyManager();
+    protected  SpawnManager createSpawnManager() {
+        return new SpawnManager(this) {
+            @Override
+            protected Unit findMainHero() {
+              return Core.getMainHero();
+                // return EidolonLord.lord.trueForm;
+            }
+        };
+    }
 
     protected abstract MetaDataManager createMetaDataManager();
-
-    public DialogueActorMaster getDialogueActorMaster() {
-        return dialogueManager.getDialogueActorMaster();
-    }
 
     protected abstract MetaInitializer createMetaInitializer();
 
     public void initHandlers() {
-        partyManager = createPartyManager();
+        spawnManager = createSpawnManager();
         initializer = createMetaInitializer();
         metaDataManager = createMetaDataManager();
         // VisualChoiceHandler choiceHandler = new VisualChoiceHandler(this);
 
         if (Flags.isCombatGame()) {
-            lootMaster = createLootMaster();
             questMaster = createQuestMaster();
             eventHandler = createEventHandler( );
-            defeatHandler = createDefeatHandler();
             dialogueManager = new DialogueManager(this);
             if (dialogueManager.isPreloadDialogues()) {
                 getDialogueFactory().init(this);
@@ -92,46 +95,44 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         return null;
     }
 
-    protected LootMaster<E> createLootMaster() {
-        return new LootMaster<>(this);
-    }
-
-    protected DefeatHandler createDefeatHandler() {
-        return new DefeatHandler(this);
-    }
-
     public DC_Game init() {
-        game = Eidolons.game;
+        game = Core.game;
         if (game == null) {
             // Simulation.init(false, this);
             game = createGame();
             // Simulation.setRealGame(game);
         }
         game.setMetaMaster(this);
-        gdxBeans = Eidolons.getGdxBeansProvider().get();
+        gdxBeans = Core.getGdxBeansProvider().get();
         metaGame = initializer.initMetaGame(data);
         preStart();
-
-        if (partyManager.initPlayerParty() != null) {
-            if (isTownEnabled()) {
-                getMetaDataManager().initData();
-                getMissionMaster().getConstructor().init();
-            } else if (isRngQuestsEnabled() || isCustomQuestsEnabled())
-                if (!getQuestMaster().initQuests()) {
-                    Eidolons.getMainGame().setAborted(true);
-                    return game;
-                }
-            if (!getMissionMaster().getOptionManager().chooseDifficulty(
-                    getMetaGame().isDifficultyReset()))
-                Eidolons.getMainGame().setAborted(true);
-        }
+        // if (spawnManager.initPlayerParty() != null) {
+        //     if (isTownEnabled()) {
+        //         getMetaDataManager().initData();
+        //         getMissionMaster().getConstructor().init();
+        //     } else if (isRngQuestsEnabled() || isCustomQuestsEnabled())
+        //         if (!getQuestMaster().initQuests()) {
+        //             Eidolons.getMainGame().setAborted(true);
+        //             return game;
+        //         }
+        //     if (!getMissionMaster().getOptionManager().chooseDifficulty(
+        //             getMetaGame().isDifficultyReset()))
+        //         Eidolons.getMainGame().setAborted(true);
+        // }
         return game;
     }
 
+    public void preStart() {
+        spawnManager.preStart();
+        //        getBattleMaster().getOptionManager().selectDifficulty();
+        //        getGame().getDataKeeper().setDungeonData(new DungeonData(getMetaGame()));
+
+    }
     public boolean isCustomQuestsEnabled() {
         return false;
     }
 
+    //isTownNode
     protected boolean isTownEnabled() {
         if (EidolonsGame.TOWN)
             return true;
@@ -155,22 +156,12 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         return !Flags.isMacro();
     }
 
-    public void preStart() {
-        partyManager.preStart();
-        //        getBattleMaster().getOptionManager().selectDifficulty();
-        //        getGame().getDataKeeper().setDungeonData(new DungeonData(getMetaGame()));
-
-    }
 
     public void gameStarted() {
-        partyManager.gameStarted();
+        spawnManager.gameStarted();
         //   TODO remove lazy init hack?
         //        getDialogueFactory().init(this);
         //        getIntroFactory().init(this);
-    }
-
-    public LootMaster getLootMaster() {
-        return lootMaster;
     }
 
     public DungeonMaster getDungeonMaster() {
@@ -205,8 +196,8 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         return game;
     }
 
-    public PartyManager getPartyManager() {
-        return partyManager;
+    public SpawnManager getPartyManager() {
+        return spawnManager;
     }
 
     public MetaInitializer getInitializer() {
@@ -228,7 +219,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     }
 
     public void gameExited() {
-        PartyManager.setSelectedHero(null);
+        SpawnManager.setSelectedHero(null);
         try {
             GuiEventManager.cleanUp();
         } catch (Exception e) {
@@ -275,10 +266,6 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         return getScenarioInfo();
     }
 
-    public DefeatHandler getDefeatHandler() {
-        return defeatHandler;
-    }
-
     protected String getScenarioInfo() {
         return "No info!";
     }
@@ -314,7 +301,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     public GdxBeans getGdxBeans() {
         if (gdxBeans == null) {
-            gdxBeans = Eidolons.getGdxBeansProvider().get();
+            gdxBeans = Core.getGdxBeansProvider().get();
         }
         return gdxBeans;
     }

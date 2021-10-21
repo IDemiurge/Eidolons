@@ -14,16 +14,13 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.DroppedItemManager;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.explore.vendor.GoldMaster;
 import eidolons.game.module.herocreator.logic.PointMaster;
-import eidolons.game.module.herocreator.logic.skills.SkillMaster;
+import eidolons.game.module.herocreator.logic.passives.SkillMaster;
 import eidolons.system.libgdx.datasource.HeroDataModel;
 import libgdx.gui.panels.headquarters.HqMaster;
 import libgdx.gui.panels.headquarters.HqPanel;
-import libgdx.gui.panels.headquarters.creation.HcHeroModel;
-import libgdx.gui.panels.headquarters.creation.HeroCreationMaster;
-import libgdx.gui.panels.headquarters.creation.HeroCreationPanel;
 import libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import libgdx.gui.panels.headquarters.tabs.spell.HqSpellMaster;
 import libgdx.gui.panels.headquarters.town.TownPanel;
@@ -152,7 +149,7 @@ public class HqDataMaster {
                                  HeroDataModel.HERO_OPERATION operation,
                                  Object... args) {
         //        new Thread(() -> {
-        Eidolons.onThisOrNonGdxThread(() -> {
+        Core.onThisOrNonGdxThread(() -> {
             HqDataMaster master = getInstance(model.getHero());
             master.applyOperation(model,
                     operation, args);
@@ -211,7 +208,7 @@ public class HqDataMaster {
     }
 
     public static boolean isSimulationOff() {
-        return !HeroCreationMaster.isHeroCreationInProgress();
+        return true;
     }
 
     public static HqDataMaster createAndSaveInstance(Unit unit) {
@@ -221,7 +218,7 @@ public class HqDataMaster {
     }
 
     public static HqDataMaster getInstance() {
-        return getInstance(Eidolons.getMainHero());
+        return getInstance(Core.getMainHero());
     }
 
     public static HqDataMaster getInstance(Unit unit) {
@@ -309,9 +306,6 @@ public class HqDataMaster {
         heroModel.reset();
         if (HqPanel.getActiveInstance() != null) {
             HqPanel.getActiveInstance().setUserObject(new HqHeroDataSource(heroModel));
-        } else {
-            if (HeroCreationMaster.isHeroCreationInProgress())
-                HeroCreationPanel.getInstance().setUserObject(new HqHeroDataSource(heroModel));
         }
     }
 
@@ -321,9 +315,6 @@ public class HqDataMaster {
     }
 
     protected HeroDataModel createHeroDataModel(Unit hero) {
-        if (HeroCreationMaster.isHeroCreationInProgress()) {
-            return new HcHeroModel(hero);
-        }
         return new HeroDataModel(hero);
     }
 
@@ -551,10 +542,6 @@ public class HqDataMaster {
         heroModel.reset();
         if (HqPanel.getActiveInstance() != null) {
             HqPanel.getActiveInstance().modelChanged();
-        } else {
-            if (HeroCreationMaster.isHeroCreationInProgress()) {
-                HeroCreationPanel.getInstance().modelChanged();
-            }
         }
     }
 

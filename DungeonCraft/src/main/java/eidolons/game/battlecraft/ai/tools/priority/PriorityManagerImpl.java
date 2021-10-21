@@ -15,7 +15,6 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
-import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
@@ -41,7 +40,6 @@ import eidolons.game.battlecraft.ai.tools.target.SpellAnalyzer;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
-import eidolons.game.battlecraft.rules.combat.attack.extra_attack.AttackOfOpportunityRule;
 import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
 import eidolons.game.core.master.BuffMaster;
 import eidolons.game.core.master.EffectMaster;
@@ -62,7 +60,6 @@ import main.content.enums.entity.ActionEnums.STD_MODE_ACTIONS;
 import main.content.enums.entity.SpellEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.system.AiEnums;
-import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.content.mode.STD_MODES;
@@ -146,9 +143,6 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             }
         } else {
             switch (goal) {
-                case PROTECT:
-                    setBasePriority(getGuardPriority(action));
-                    break;
                 case ATTACK:
                     setBasePriority(getAttackPriority(as));
                     break;
@@ -161,9 +155,6 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                     break;
                 case SUMMONING:
                     setBasePriority(getSummonPriority(action));
-                    break;
-                case STEALTH:
-                    setBasePriority(getStealthPriority(action));
                     break;
                 case SEARCH:
                     // TODO sight range/detection factors,
@@ -220,86 +211,13 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
     }
 
-    private int getGuardPriority(Action action) {
-        if (getUnitAi().getType() == AI_TYPE.ARCHER
-                || getUnitAi().getType() == AI_TYPE.CASTER
-                || getUnitAi().getType() == AI_TYPE.SNEAK
-                || getUnitAi().getType() == AI_TYPE.CASTER_SUMMONER
-                || getUnitAi().getType() == AI_TYPE.CASTER_OFFENSE)
-            return 0;
-        Coordinates c = action.getTarget().getCoordinates(); //TODO targets should be cells, then be allies there...
-        // it's harder for when allies move, eh?
-        // >> Add "remove guard" priority penalty
-        Collection<Unit> list = game.getUnitsForCoordinates(c);
-        float factor = ParamPriorityAnalyzer.getUnitLifeFactor(getUnit()) - 100;
-        //        getCounterPenalty()
-        //        getParamAnalyzer().getParamPriority()
-        for (Unit unit : list) {
-            if (unit.isAlliedTo(getUnit().getOwner())) {
-                float danger = getSituationAnalyzer().getDangerFactor(unit);
-                if (unit.isUnconscious())
-                    danger *= 1.25f;
-                factor += danger;
-            }
-        }
-        float mod = unit.getIntParam(PARAMS.EXTRA_ATTACKS) * 5;
-        mod += unit.getIntParam(PARAMS.C_EXTRA_ATTACKS) * 2;
-        mod += unit.getIntParam(PARAMS.COUNTER_MOD) / 3 +
-                unit.getIntParam(PARAMS.COUNTER_ATTACK_MOD) / 3;
-
-        if (getUnitAi().getType() == AI_TYPE.TANK)
-            mod *= 1.5f;
-        if (getUnitAi().getType() == AI_TYPE.GUARD)
-            mod *= 2f;
-
-        factor = factor * mod;
-
-        return Math.round(factor * getConstValue(AiConst.GOAL_PROTECT));
-    }
-
-    private void applyCustomPriorityMethod(PRIORITY_FUNCS func, Object... args) {
-        switch (func) {
-            case DANGER_TO_ALLY:
-                Unit enemy = (Unit) game.getObjectById((Integer) args[1]);
-                Unit ally = (Unit) args[0];
-                int threat = getThreatAnalyzer().getThreat(ally.getAI(), enemy);
-                applyMultiplier(threat, "protect danger");
-        }
-    }
 
     @Override
     public int getCowerPriority(Unit unit) {
         return Math.round(300 * getCowardiceFactor(unit));
     }
 
-    @Override
-    public int getStealthPriority(Action action) {
-        if (action.getActive() instanceof DC_UnitAction) {
-            DC_UnitAction unitAction = (DC_UnitAction) action.getActive();
-            if (unitAction.getModeEffect() != null) {
-                if (unitAction.getModeEffect().getMode().equals(STD_MODES.STEALTH)) {
-                    /*
-                     * preCheck detection inevitable?
-                     */
-                    return 300;
-                    // should add to the max target priority...
-                }
-
-                if (unitAction.getModeEffect().getMode().equals(STD_MODES.HIDE)) {
-                    return 200; // ++ wounds
-                }
-            }
-        }
-        return 0;
-    }
-
-    public enum TOTAL_PRIORITY {
-        no_allies,
-        never,
-        always,
-    }
-
-    boolean checkTotalPriority(TOTAL_PRIORITY total_priority) {
+    boolean checkTotalPriority(AiEnums.TOTAL_PRIORITY total_priority) {
         switch (total_priority) {
             case no_allies:
                 return getAnalyzer().getAllies(getUnitAi()).size() <= 1;
@@ -314,8 +232,8 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     @Override
     public int evaluatePriorityFormula(Action action, String property) {
         Boolean less_or_more_for_health = null;
-        if (EnumMaster.get(TOTAL_PRIORITY.class, property) != null) {
-            TOTAL_PRIORITY total = (TOTAL_PRIORITY) EnumMaster.get(TOTAL_PRIORITY.class, property);
+        if (EnumMaster.get(AiEnums.TOTAL_PRIORITY.class, property) != null) {
+            AiEnums.TOTAL_PRIORITY total = (AiEnums.TOTAL_PRIORITY) EnumMaster.get(AiEnums.TOTAL_PRIORITY.class, property);
             if (total != null) {
                 if (checkTotalPriority(total)) {
                     return Integer.MAX_VALUE;
@@ -324,7 +242,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             }
         }
 
-        for (PRIORITY_FUNCS p : PRIORITY_FUNCS.values()) {
+        for (AiEnums.PRIORITY_FUNCS p : AiEnums.PRIORITY_FUNCS.values()) {
             String text = StringMaster.wrapInBrackets(p.name().toLowerCase());
             if (!property.contains(text)) {
                 continue;
@@ -338,7 +256,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                     i = calculateCapacity(action.getSource());
                     break;
                 case DANGER:
-                    i = getSituationAnalyzer().getMeleeDangerFactor(getUnit(), false, true) / 100;
+                    // i = getSituationAnalyzer().getMeleeDangerFactor(getUnit(), false, true) / 100;
                     break;
             }
 
@@ -651,6 +569,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 rollEffect.getTargetValue(), rollEffect.getRef());
     }
 
+    //TODO
     @Override
     public int getRetreatPriority(ActionSequence as) {
         float cowardice_factor = getCowardiceFactor(as.getAi().getUnit());
@@ -662,32 +581,6 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             cowardice_factor *= 2;
         }
 
-        int currentMeleeDangerFactor = 0;
-        try {
-            currentMeleeDangerFactor = getSituationAnalyzer().getMeleeDangerFactor(getUnit(), false, false);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-        if (currentMeleeDangerFactor == 0 && getUnitAi().getBehaviorMode() != AiEnums.BEHAVIOR_MODE.PANIC) {
-            priority = 0;
-            return priority;
-        }
-        Coordinates c = getUnit().getCoordinates();
-        getUnit().setTempCoordinates(as.getLastAction().getTarget().getCoordinates());
-        int meleeDangerFactor = 0;
-        try {
-            meleeDangerFactor = getSituationAnalyzer().getMeleeDangerFactor(getUnit(), false, false);
-            // meleeDangerFactor =getDangerFactorByMemory(unit); TODO for panic!
-
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        } finally {
-            getUnit().setTempCoordinates(c);
-        }
-        priority = currentMeleeDangerFactor - meleeDangerFactor;
-        if (priority <= 0) {
-            return 0;
-        }
         if (getUnitAi().getBehaviorMode() == AiEnums.BEHAVIOR_MODE.PANIC) {
             addConstant(250, "Panic");
         }
@@ -1184,43 +1077,6 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     }
 
     @Override
-    public int getSpecialEffectsPriority(SPECIAL_EFFECTS_CASE CASE, Unit source,
-                                         Unit target) {
-        int p = 0;
-        if (source.getSpecialEffects() != null) {
-            if (source.getSpecialEffects().get(CASE) != null) {
-                Effect e = source.getSpecialEffects().get(CASE);
-                if (e instanceof Effects) {
-                    Effects effects = (Effects) e;
-                    for (Effect ef : effects) {
-                        p += getSpecialEffectPriority(e);
-                    }
-                }
-            }
-        }
-        return p;
-    }
-
-    @Override
-    public int getSpecialEffectPriority(Effect e) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public int getAttackOfOpportunityPenalty(DC_ActiveObj action, Unit targetObj) {
-        int penalty = 0;
-        List<DC_ActiveObj> list = AttackOfOpportunityRule.getAttacks(action);
-
-        for (DC_ActiveObj a : list) {
-            penalty -= getDamagePriority(a, getUnit()) / 2;
-        }
-
-        return penalty;
-    }
-
-
-    @Override
     public int getCounterPenalty(DC_ActiveObj active, Unit targetObj) {
         // TODO cache!
         Active action = game.getActionManager().getCounterAttackAction(targetObj, getUnit(), active);
@@ -1421,9 +1277,6 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 return 0;
             }
         } else {
-            if (getSituationAnalyzer().getMeleeDangerFactor(getUnit()) != 0) {
-                return 0;
-            }
             if (Analyzer.checkRangedThreat(target)) {
                 return 0;
             } //TODO check if engaged alone!
@@ -1443,9 +1296,6 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
         if (!ally) {
             addMultiplier(100 - ParamPriorityAnalyzer.getUnitLifeFactor(getUnit()), "Unit life factor");
-
-            addMultiplier(getThreatAnalyzer().getMeleeThreat(target), "Enemy melee threat");
-
         } else {
             addMultiplier(100 - ParamPriorityAnalyzer.getUnitLifeFactor(target), "ally life factor");
         }
@@ -1459,9 +1309,8 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     @Override
     public int getDefendPriority(UnitAI unit_ai) {
         // subtract current ap
-
         int base_priority = unit_ai.getType() == AiEnums.AI_TYPE.TANK ? 75 : 25;
-        return 5 + base_priority * getSituationAnalyzer().getMeleeDangerFactor(getUnit()) / 100;
+        return  base_priority ;
     }
 
     @Override
@@ -1484,10 +1333,10 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 base = getSituationAnalyzer().getCastingPriority(unit);
             case CONCENTRATION:
             case RESTING:
-                dangerModifier = getSituationAnalyzer().getMeleeDangerFactor(unit, false, true);
-                dangerModifier -= getSituationAnalyzer().getRangedDangerFactor(unit);
-                addMultiplier(base, "param percentage missing");
-                base = base * getRestorationPriorityMod(unit) / 100;
+                // dangerModifier = getSituationAnalyzer().getMeleeDangerFactor(unit, false, true);
+                // dangerModifier -= getSituationAnalyzer().getRangedDangerFactor(unit);
+                // addMultiplier(base, "param percentage missing");
+                // base = base * getRestorationPriorityMod(unit) / 100;
                 break;
             default:
                 return 0;
@@ -1499,20 +1348,9 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 - getUnit().getParamPercentage(PARAMS.INITIATIVE);
         addMultiplier(timeModifier, "time");
         applyMultiplier(paramModifier, "param Modifier");
-        applyMultiplier(dangerModifier, "danger factor");
+        // applyMultiplier(dangerModifier, "danger factor");
         return base;
         // modifier * (DEFAULT_PRIORITY - percentage) / factor;
-    }
-
-    @Override
-    public int getCostFactor(Costs cost, Unit unit) {
-        return getParamAnalyzer().getCostPriorityFactor(cost, unit);
-    }
-
-    private int getRestorationPriorityMod(Unit unit) {
-        int mod = getConstInt(AiConst.DEFAULT_RESTORATION_PRIORITY_MOD);
-        mod = (int) (mod * getConstValue(AiConst.SELF_VALUE));
-        return mod;
     }
 
     public void applyMultiplier(int factor, String string) {
@@ -1685,7 +1523,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     }
 
 
-    public int getPriorityForEffect(AI_EFFECT_PRIORITIZING aep, Effect e, Action a) {
+    public int getPriorityForEffect(AiEnums.AI_EFFECT_PRIORITIZING aep, Effect e, Action a) {
         DC_Obj target = a.getTarget();
         switch (aep) {
             case COUNTER_MOD:

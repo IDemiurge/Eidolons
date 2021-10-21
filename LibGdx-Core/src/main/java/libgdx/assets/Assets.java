@@ -8,7 +8,7 @@ import eidolons.content.consts.VisualEnums.VFX_ATLAS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import libgdx.anims.construct.AnimConstructor;
 import libgdx.anims.sprite.SpriteAnimationFactory;
 import libgdx.audio.SoundPlayer;
@@ -173,7 +173,7 @@ public class Assets {
 
 
     public static void preloadHeroes() {
-        loadSprite(Sprites.getHeroSpritePath(Eidolons.getMainHero().getName()));
+        loadSprite(Sprites.getHeroSpritePath(Core.getMainHero().getName()));
     }
 
     public static void preloadSounds() {

@@ -2,7 +2,7 @@ package eidolons.game.core.atb;
 
 import com.badlogic.gdx.utils.Array;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.entity.Ref;
@@ -50,9 +50,9 @@ public class AtbController implements Comparator<Unit> {
 
     protected static int compareForSort(AtbUnit first, AtbUnit second) {
         if (first.getTimeTillTurn() == second.getTimeTillTurn())
-            return first.getUnit() == Eidolons.getMainHero()
+            return first.getUnit() == Core.getMainHero()
                     ? -1 :
-                    second.getUnit() == Eidolons.getMainHero() ? 1 : 0; //EA check
+                    second.getUnit() == Core.getMainHero() ? 1 : 0; //EA check
         if (first.getTimeTillTurn() < second.getTimeTillTurn())
             return -1;
         else
@@ -152,7 +152,7 @@ public class AtbController implements Comparator<Unit> {
             }
             clockTicks++;
             float finalTime = this.time;
-            Eidolons.onNewThread(() ->
+            Core.onNewThread(() ->
                     {
                         int delay=  clockTicks*200;
                         WaitMaster.WAIT(delay);

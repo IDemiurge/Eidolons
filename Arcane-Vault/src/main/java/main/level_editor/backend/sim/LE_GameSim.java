@@ -7,7 +7,7 @@ import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_BattleFieldGrid;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.core.game.ScenarioGame;
@@ -158,7 +158,7 @@ public class LE_GameSim extends ScenarioGame {
 
         ObjType type=DataManager.getType(DUMMY, DC_TYPE.UNITS);
         dummyPC = (Unit) createObject(type, 0, 0, getPlayer(true), new Ref(getGame()));
-        Eidolons.setMainHero(dummyPC);
+        Core.setMainHero(dummyPC);
 
         getDungeonMaster().getFloorLoader().loadingDone();
 //        try {

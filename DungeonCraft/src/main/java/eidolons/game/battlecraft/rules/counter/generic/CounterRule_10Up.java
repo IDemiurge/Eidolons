@@ -5,6 +5,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.rules.saves.SavesMaster;
 import eidolons.game.core.game.DC_Game;
 import main.content.enums.entity.UnitEnums;
+import main.entity.Ref;
 import main.system.math.Formula;
 
 /*
@@ -26,6 +27,7 @@ public abstract class CounterRule_10Up extends DC_CounterRule {
             modify = val - cur;
             target.modifyCounter(getUpgraded(), upgraded);
             if (getSaveType() != null) {
+                Ref ref= Ref.getSelfTargetingRefCopy(target);
                 Integer value = new Formula(getSaveAmount()).getInt(ref);
                 boolean result = SavesMaster.savingThrow(getSaveType(), target, value);
                 if (isLoseAllOnSave()){
@@ -39,6 +41,7 @@ public abstract class CounterRule_10Up extends DC_CounterRule {
 
     }
 
+    protected abstract String getSaveAmount();
 
     protected EventAndCondition getCustomDynamics() {
         return null;

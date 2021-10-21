@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.logic.meta.scenario.dialogue;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import main.entity.LightweightEntity;
 import main.entity.type.ObjType;
@@ -28,7 +28,7 @@ public class DialogueActor extends LightweightEntity {
 
     @Override
     public Game getGame() {
-        return Eidolons.getGame();
+        return Core.getGame();
     }
 
     public Unit getLinkedUnit() {
@@ -37,10 +37,10 @@ public class DialogueActor extends LightweightEntity {
 
     public void setupLinkedUnit() {
         if (getName().equalsIgnoreCase("you")) {
-            setLinkedUnit(Eidolons.getMainHero());
+            setLinkedUnit(Core.getMainHero());
             return;
         }
-        Coordinates c = Eidolons.getPlayerCoordinates();
+        Coordinates c = Core.getPlayerCoordinates();
         List<Coordinates> area = CoordinatesMaster.getCoordinatesWithin(
                 Math.max(0, c.getX() - 10),
                 Math.min(((DC_Game) getGame()).getDungeon().getCellsX(), c.getX() + 10),

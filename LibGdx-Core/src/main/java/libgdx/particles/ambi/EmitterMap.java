@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.SnapshotArray;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.bf.GridMaster;
@@ -52,8 +52,8 @@ public class EmitterMap extends GroupX {
         this.showChance = showChance;
         if (colorHue != null)
             color = colorHue;
-        else if (Eidolons.game instanceof DC_Game) {
-            CONTENT_CONSTS.COLOR_THEME colorTheme = Eidolons.game.getDungeon().getColorTheme();
+        else if (Core.game instanceof DC_Game) {
+            CONTENT_CONSTS.COLOR_THEME colorTheme = Core.game.getDungeon().getColorTheme();
             if (colorTheme != null)
                 color = GdxColorMaster.getColorForTheme(colorTheme);
         }

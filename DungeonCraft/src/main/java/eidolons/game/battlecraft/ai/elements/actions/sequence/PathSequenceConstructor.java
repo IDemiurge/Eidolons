@@ -140,10 +140,6 @@ public class PathSequenceConstructor extends AiHandler {
         if (targetAction.isDummy()) {
             return new ListMaster<Coordinates>().getList(targetAction.getTarget().getCoordinates());
         }
-        if (targetAction.getActive().getName().equalsIgnoreCase(
-                StringMaster.format(ActionEnums.STD_SPEC_ACTIONS.Guard_Mode.toString()))) {
-            return new ListMaster<Coordinates>().toList_(targetAction.getTask().getObjArg().getCoordinates());
-        }
         Boolean fastPickClosestToTargetOrSelf = null;
         if (allowFastPick) {
             if (targetAction.getActive().isRanged()) {

@@ -1,7 +1,5 @@
 package main.gui.builders;
 
-import eidolons.content.PARAMS;
-import eidolons.content.DC_Formulas;
 import main.ability.AE_Manager;
 import main.ability.gui.AE_MainPanel;
 import main.content.C_OBJ_TYPE;
@@ -17,6 +15,7 @@ import main.handlers.control.AvSelectionHandler;
 import main.handlers.mod.AvSaveHandler;
 import main.handlers.mod.AvVersionHandler;
 import main.handlers.types.SimulationHandler;
+import main.v2_0.AV2;
 import main.launch.ArcaneVault;
 import main.launch.AvConsts;
 import main.swing.generic.components.G_Panel;
@@ -78,7 +77,6 @@ public class EditViewPanel implements TableModelListener {
             getPanel().setBackground(ColorManager.BACKGROUND);
         }
 
-        menu = new AV_Menu();
     }
 
     public boolean isColorsInverted() {
@@ -364,8 +362,8 @@ public class EditViewPanel implements TableModelListener {
                     // DC_Formulas.getLevelForXp((type.getIntParam(PARAMS.POWER) + 1)
                     //         * DC_Formulas.POWER_XP_FACTOR));
             if (ArcaneVault.isSimulationOn()) {
-                SimulationHandler.getUnit(type).setValue(valName, newValue);
-                SimulationHandler.refreshType(type);
+                // AV2.getSimulationHandler().getUnit(type).setValue(valName, newValue);
+                AV2.getSimulationHandler().initUnitObj(type);
                 resetData(true, type);
             }
 

@@ -15,23 +15,12 @@ public class HC_ValuePages {
     // description mode? on all hc panels?
 
     // WILL THERE BE THE ADDITIONAL PAGE WITH ALL MISSING VALUES?
-    public static final VALUE[] DEITY_HEADER = {G_PROPS.ASPECT, G_PROPS.PRINCIPLES,
-     PROPS.FAVORED_SPELL_GROUPS,
-     // PROPS.ENEMY_DEITIES,
-     // PROPS.PRIME_MISSION,
-     // PROPS.TRUE_NAME,
-     PROPS.PERKS};
-
-    public static final VALUE[][] DEITY_PAGES = {DEITY_HEADER,
-     // ValuePages.DESCRIPTION,
-     ValuePages.LORE, ValuePages.PRINCIPLE_ALIGNMENTS, ValuePages.PRINCIPLE_IDENTITIES};
-
     public static final VALUE[] CHAR_HEADER = {G_PROPS.RACE, G_PROPS.ASPECT, G_PROPS.DEITY,
      G_PROPS.PRINCIPLES, G_PROPS.STANDARD_PASSIVES,};
 
     public static final VALUE[] CHAR_PARAMS_1 = {PARAMS.TOUGHNESS, PARAMS.ENDURANCE,
       PARAMS.ESSENCE, PARAMS.FOCUS,   PARAMS.INITIATIVE,
-     PARAMS.EXTRA_ATTACKS,  PARAMS.STARTING_FOCUS,
+       PARAMS.STARTING_FOCUS,
      PARAMS.ARMOR_PENETRATION, PARAMS.RESISTANCE_PENETRATION,
 
     };
@@ -127,11 +116,6 @@ public class HC_ValuePages {
 
     };
 
-    public static final VALUE[] PARTY_PROPERTIES = {PROPS.MEMBERS,
-
-    };
-    public static final VALUE[][] PARTY_PAGES = {PARTY_PROPERTIES, PARTY_PARAMETERS,};
-
     public static final VALUE[][] ARMOR_PAGES = {ARMOR_PARAMETERS, ValuePages.DESCRIPTION,
      ARMOR_PROPERTIES, ValuePages.PENALTIES, ValuePages.NATURAL_RESISTANCES,
      ValuePages.ASTRAL_RESISTANCES
@@ -146,18 +130,5 @@ public class HC_ValuePages {
     public static final VALUE[][] ACTION_PAGES = {ValuePages.ACTION_PARAMS_DC,
      ValuePages.ACTION_PARAMS_DC2, ValuePages.DESCRIPTION, ValuePages.COSTS,
      ValuePages.ACTION_PROPS_DC,};
-
-    public static List<List<VALUE>> getPageLists(DC_TYPE TYPE) {
-        VALUE[][] pages = null;
-        switch (TYPE) {
-            case CHARS:
-                pages = CHAR_PAGES;
-                break;
-            case PARTY:
-                pages = PARTY_PAGES;
-                break;
-        }
-        return ValuePageManager.getValueLists(pages);
-    }
 
 }

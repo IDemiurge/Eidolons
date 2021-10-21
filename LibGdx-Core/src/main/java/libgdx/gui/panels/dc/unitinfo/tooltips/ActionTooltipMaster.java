@@ -4,7 +4,6 @@ import eidolons.content.values.DC_ValueManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_WeaponObj;
-import eidolons.game.battlecraft.rules.combat.mechanics.ForceRule;
 import main.content.VALUE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.ActionEnums;
@@ -59,12 +58,6 @@ public class ActionTooltipMaster {
                 case DIAGONAL_ATTACK_MOD:
                 case DIAGONAL_DAMAGE_MOD:
                     return ActionEnums.MOD_IDENTIFIER.DIAGONAL_ATTACK.getImagePath();
-                case CLOSE_QUARTERS_ATTACK_MOD:
-                case CLOSE_QUARTERS_DAMAGE_MOD:
-                    return ActionEnums.MOD_IDENTIFIER.CLOSE_QUARTERS.getImagePath();
-                case LONG_REACH_ATTACK_MOD:
-                case LONG_REACH_DAMAGE_MOD:
-                    return ActionEnums.MOD_IDENTIFIER.LONG_REACH.getImagePath();
             }
         }
         return ImageManager.getValueIconPath(value);
@@ -138,12 +131,6 @@ public class ActionTooltipMaster {
             PARAMS p = (PARAMS) value;
 
             switch (p) {
-                case CLOSE_QUARTERS_DAMAGE_MOD:
-                    return (getRange0(action));
-                case DAMAGE_MOD:
-                    return (getRange1(action));
-                case LONG_REACH_DAMAGE_MOD:
-                    return (getRange2(action));
 
                 case DAMAGE_BONUS: //TODO ????
                     return ImageManager.getValueIconPath(p);
@@ -171,14 +158,6 @@ public class ActionTooltipMaster {
                 case DIAGONAL_DAMAGE_MOD:
                 case DIAGONAL_ATTACK_MOD:
                     return "Diagonal";
-                case FORCE_KNOCK_MOD:
-                    return getForcePushDescription(action);
-                case FORCE_PUSH_MOD:
-                    return getForceKnockDescription(action);
-                case FORCE_DAMAGE_MOD:
-                    return getForceDamageDescription(action);
-                case FORCE_MAX_STRENGTH_MOD:
-                    return getForceMaxStrengthDescription(action);
                 case BLEEDING_MOD:
                     return getBleedDescription(action);
                 case ARMOR_PENETRATION:
@@ -187,24 +166,6 @@ public class ActionTooltipMaster {
             return action.getParam(p);
         }
         return null;
-
-    }
-
-    private static boolean isIgnoreIfZero(PARAMS p) {
-        return p != PARAMS.FORCE && p != PARAMS.BASE_DAMAGE;
-    }
-
-    private static String getForceMaxStrengthDescription(DC_ActiveObj action) {
-        return "Strength limit for Force: " +
-         action.getIntParam(PARAMS.FORCE_MAX_STRENGTH_MOD);
-    } //TODO rework
-
-    private static String getForceDamageDescription(DC_ActiveObj action) {
-        DAMAGE_TYPE type = DAMAGE_TYPE.BLUDGEONING;
-        return "+ Inflicts " +
-         action.getIntParam(PARAMS.FORCE_DAMAGE_MOD) + "% of Force as " +
-         type.getName() +
-         " damage";
 
     }
 
@@ -224,26 +185,9 @@ public class ActionTooltipMaster {
     }
 
     private static String getBleedDescription(DC_ActiveObj action) {
-
         return "Bleeding: Inflicts " + action.getIntParam(PARAMS.BLEEDING_MOD) + "% Bleed Counters";
 
     }
-
-    private static String getForcePushDescription(DC_ActiveObj action) {
-        int weight_max = ForceRule.getMaxWeightPush(action);
-        String roll_info = "";
-        return "Push: targets with less than " + weight_max +
-         "lb weight" + roll_info;
-    }
-
-    private static String getForceKnockDescription(DC_ActiveObj action) {
-        int weight_max = ForceRule.getMaxWeightKnock(action);
-        int weight_min = ForceRule.getMinWeightKnock(action);
-        String roll_info = "";
-        return "Knockdown: never rolled vs > " + weight_max +
-         "lb, always win vs < " + weight_min + "lb (or Interrupt)" + roll_info;
-    }
-
 
     public static String getRange0(DC_ActiveObj action) {
         return "0";

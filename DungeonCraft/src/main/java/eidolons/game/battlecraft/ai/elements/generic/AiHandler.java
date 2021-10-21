@@ -13,12 +13,10 @@ import eidolons.game.battlecraft.ai.elements.goal.GoalManager;
 import eidolons.game.battlecraft.ai.elements.task.TaskManager;
 import eidolons.game.battlecraft.ai.logic.atomic.AtomicAi;
 import eidolons.game.battlecraft.ai.tools.*;
-import eidolons.game.battlecraft.ai.tools.path.CellPrioritizer;
 import eidolons.game.battlecraft.ai.tools.path.PathBuilder;
 import eidolons.game.battlecraft.ai.tools.path.alphastar.StarBuilder;
 import eidolons.game.battlecraft.ai.tools.priority.PriorityManager;
 import eidolons.game.battlecraft.ai.tools.priority.PriorityModifier;
-import eidolons.game.battlecraft.ai.tools.priority.ThreatAnalyzer;
 import eidolons.game.battlecraft.ai.tools.prune.PruneMaster;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
 import eidolons.game.core.game.DC_Game;
@@ -78,10 +76,6 @@ public abstract class AiHandler {
         return master.getStarBuilder();
     }
 
-    public ThreatAnalyzer getThreatAnalyzer() {
-        return master.getThreatAnalyzer();
-    }
-
     public GoalManager getGoalManager() {
         return master.getGoalManager();
     }
@@ -136,10 +130,6 @@ public abstract class AiHandler {
 
     public AiExecutor getExecutor() {
         return master.getExecutor();
-    }
-
-    public CellPrioritizer getCellPrioritizer() {
-        return master.getCellPrioritizer();
     }
 
     public PathSequenceConstructor getPathSequenceConstructor() {

@@ -7,7 +7,7 @@ import com.badlogic.gdx.files.FileHandle;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SoundOptions.SOUND_OPTION;
@@ -608,7 +608,7 @@ public class MusicMaster {
         if (MASTER_MODE) {
             if (scope == MusicEnums.MUSIC_SCOPE.MAP)
                 return MASTER_PATH + "map";
-            if (Eidolons.game != null && Eidolons.game.isStarted())
+            if (Core.game != null && Core.game.isStarted())
                 if (scope == MusicEnums.MUSIC_SCOPE.BATTLE)
                     return MASTER_PATH + "battle";
             if (scope == MusicEnums.MUSIC_SCOPE.MENU) {

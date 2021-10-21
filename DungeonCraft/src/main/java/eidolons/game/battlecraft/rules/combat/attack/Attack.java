@@ -4,7 +4,6 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.combat.attack.extra_attack.InstantAttackRule.INSTANT_ATTACK_TYPE;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import main.ability.effects.Effect;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
@@ -44,7 +43,6 @@ public class Attack {
     private boolean triggered;
     private List<Damage> rawDamage;
     private int damageDealt;
-    private INSTANT_ATTACK_TYPE instantAttackType;
     private DC_WeaponObj weapon;
     private boolean doubleStrike;
     private NewRpgEnums.HitType hitType;
@@ -158,17 +156,6 @@ public class Attack {
         this.free = free;
     }
 
-    public boolean isDisengagement() {
-        return getInstantAttackType() == INSTANT_ATTACK_TYPE.DISENGAGEMENT;
-    }
-
-    public INSTANT_ATTACK_TYPE getInstantAttackType() {
-        return instantAttackType;
-    }
-
-    public void setInstantAttackType(INSTANT_ATTACK_TYPE type) {
-        instantAttackType = type;
-    }
 
     public boolean isCounter() {
         return (counter);

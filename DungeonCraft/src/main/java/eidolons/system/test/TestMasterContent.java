@@ -4,7 +4,6 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentValsManager;
@@ -369,23 +368,6 @@ public class TestMasterContent {
             addAllSpells(type);
             return;
         }
-        if (isAddPartySpells())
-            if (Eidolons.getGame().getMetaMaster().getPartyManager().getParty() != null) {
-                for (String substring : ContainerUtils.openContainer(Eidolons.getGame().getMetaMaster().
-                        getPartyManager().getParty().getType().getProperty(PROPS.MEMBERS))) {
-                    ObjType t = DataManager.getType(substring, DC_TYPE.CHARS);
-                    if (t.equals(type)) {
-                        continue;
-                    }
-                    String spells = t.getProperty(PROPS.VERBATIM_SPELLS) + ";";
-                    spells += t.getProperty(PROPS.MEMORIZED_SPELLS);
-
-                    for (String s : ContainerUtils.openContainer(spells)) {
-                        type.addProperty(PROPS.VERBATIM_SPELLS, s, true);
-                    }
-                }
-                return;
-            }
 
         for (String s : ContainerUtils.open(getFOCUS_LIST())) {
             if (checkHeroForTestSpell(type, s, last)) {

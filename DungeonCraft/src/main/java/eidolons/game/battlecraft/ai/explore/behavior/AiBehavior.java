@@ -14,7 +14,7 @@ import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.tools.path.ActionPath;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.bf.Coordinates;
@@ -482,8 +482,8 @@ public abstract class AiBehavior {
     }
 
     protected boolean checkCanTeleport() {
-        double dst = PositionMaster.getExactDistance(ai.getUnit(), Eidolons.getMainHero());
-        return !(dst < Eidolons.getMainHero().
+        double dst = PositionMaster.getExactDistance(ai.getUnit(), Core.getMainHero());
+        return !(dst < Core.getMainHero().
                 getMaxVisionDistanceTowards(ai.getUnit().getCoordinates()));
     }
 

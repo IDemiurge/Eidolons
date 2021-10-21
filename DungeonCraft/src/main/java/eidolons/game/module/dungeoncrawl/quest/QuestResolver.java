@@ -2,7 +2,7 @@ package eidolons.game.module.dungeoncrawl.quest;
 
 import eidolons.ability.conditions.DynamicCondition;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import main.elements.conditions.Condition;
 import main.elements.conditions.ObjComparison;
 import main.elements.triggers.Trigger;
@@ -39,7 +39,7 @@ public class QuestResolver  extends QuestHandler{
 
         Trigger updateTrigger= new QuestTrigger(event, condition,
          completionConditions, completionRunnable, quest);
-        Eidolons.getGame().getState().addTrigger(updateTrigger);
+        Core.getGame().getState().addTrigger(updateTrigger);
 
     }
 
@@ -114,7 +114,7 @@ public class QuestResolver  extends QuestHandler{
                 GuiEventManager.trigger(GuiEventType.QUEST_ENDED, quest);
                 GuiEventManager.trigger(GuiEventType.QUEST_UPDATE, quest);
                 GuiEventManager.trigger(GuiEventType.QUESTS_UPDATE_REQUIRED);
-                reward.award(Eidolons.getMainHero(), false);
+                reward.award(Core.getMainHero(), false);
                 quest.setComplete(true);
             } );
         };

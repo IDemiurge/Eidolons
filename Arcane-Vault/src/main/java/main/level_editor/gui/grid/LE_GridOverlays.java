@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.struct.LevelBlock;
 import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
 import libgdx.GdxMaster;
@@ -124,7 +124,7 @@ public class LE_GridOverlays extends GridOverlaysManager {
         StringBuilder builder = new StringBuilder();
         // builder.append(ListMaster.toStringList(((DC_Cell) obj).getMarks())).append("\n");
         builder.append("Gamma: ").append(obj.getGame().getVisionMaster()
-                .getGammaMaster().getGamma(Eidolons.getMainHero(), obj)).append("\n");
+                .getGammaMaster().getGamma(Core.getMainHero(), obj)).append("\n");
         return builder.toString();
     }
 

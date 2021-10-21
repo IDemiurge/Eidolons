@@ -16,6 +16,7 @@ import java.util.List;
 
 public class ExtraAttacksRule {
 
+    //TODO NF rev
     public static boolean checkInterrupted(DC_ActiveObj action, ENTRY_TYPE enclosingEntryType) {
         boolean result = false;
         String message = StringMaster
@@ -23,13 +24,13 @@ public class ExtraAttacksRule {
          + StringMaster.getPossessive(action.getOwnerObj().getNameIfKnown())
          + " "
          + action.getDisplayedName() + " has been interrupted";
-        if (InstantAttackRule.checkInstantAttacksInterrupt(action)) {
-            result = true;
-            message += " by an Instant Attack";
-        } else if (AttackOfOpportunityRule.checkAttacksOfOpportunityInterrupt(action)) {
-            result = true;
-            message += " by an Attack of Opportunity";
-        }
+        // if (InstantAttackRule.checkInstantAttacksInterrupt(action)) {
+        //     result = true;
+        //     message += " by an Instant Attack";
+        // } else if (AttackOfOpportunityRule.checkAttacksOfOpportunityInterrupt(action)) {
+        //     result = true;
+        //     message += " by an Attack of Opportunity";
+        // }
         // action.getGame().getLogManager().newLogEntryNode(type, args)
         if (!result) {
             result = (checkSourceInterrupted(action));

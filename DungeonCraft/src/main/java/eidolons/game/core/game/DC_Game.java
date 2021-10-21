@@ -27,7 +27,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGame;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
-import eidolons.game.battlecraft.logic.mission.test.TestMissionMaster;
+import eidolons.game.battlecraft.logic.mission.quest.QuestMissionMaster;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.logic.mission.universal.MissionMaster;
 import eidolons.game.battlecraft.rules.DC_Rules;
@@ -241,7 +241,7 @@ public class DC_Game extends GenericGame {
     }
 
     protected MissionMaster createBattleMaster() {
-        return new TestMissionMaster(this);
+        return new QuestMissionMaster(this);
     }
 
     protected boolean isLocation() {
@@ -864,7 +864,7 @@ public class DC_Game extends GenericGame {
         for (Obj sub : cachedObjects) {
             getState().addObject(sub);
         }
-        getState().addObject(Eidolons.getMainHero());
+        getState().addObject(Core.getMainHero());
         if (dungeonMaster.getExplorationMaster() != null) {
             dungeonMaster.getExplorationMaster().
                     getResetter().setResetNotRequired(false);

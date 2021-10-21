@@ -8,9 +8,9 @@ import eidolons.content.values.DC_ValueManager;
 import eidolons.content.values.DC_ValueManager.VALUE_GROUP;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.herocreator.HeroManager;
-import eidolons.game.module.herocreator.logic.HeroClassMaster;
+import eidolons.game.module.herocreator.logic.passives.HeroClassMaster;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
@@ -538,7 +538,7 @@ public class DC_RequirementsManager implements RequirementsManager {
 
     public Entity getHero() {
         if (hero == null) {
-            return Eidolons.getMainHero();
+            return Core.getMainHero();
         }
         return hero;
     }

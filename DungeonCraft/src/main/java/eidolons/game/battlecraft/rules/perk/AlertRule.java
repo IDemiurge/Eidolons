@@ -1,11 +1,8 @@
 package eidolons.game.battlecraft.rules.perk;
 
-import eidolons.ability.effects.DC_Effect;
 import eidolons.ability.effects.containers.LoggedEffect;
 import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
 import eidolons.ability.effects.oneshot.mechanic.DelayedEffect;
-import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.action.WatchRule;
 import main.ability.effects.Effect;
 import main.content.mode.STD_MODES;
 import main.elements.conditions.*;
@@ -18,20 +15,6 @@ import main.system.entity.ConditionMaster;
 
 public class AlertRule {
 
-    public static void wakeUp(Unit unit) {
-        unit.removeBuff(STD_MODES.ALERT.getBuffName());
-        WatchRule.getWatchersMap().remove(unit);
-    }
-
-    public static Effect getInterruptEffect() {
-        return new DC_Effect() {
-            @Override
-            public boolean applyThis() {
-                WatchRule.getWatchersMap().remove(getTarget());
-                return true;
-            }
-        };
-    }
 
     public static Condition getWakeUpConditions() {
         // TODO will be checked with a ref from UNIT_ACTION_COMPLETE event!

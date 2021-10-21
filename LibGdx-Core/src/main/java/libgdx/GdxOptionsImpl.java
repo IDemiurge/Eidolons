@@ -1,6 +1,6 @@
 package libgdx;
 
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.system.libgdx.GdxAdapter;
 import eidolons.system.libgdx.GdxOptions;
 import eidolons.system.options.AnimationOptions;
@@ -130,7 +130,7 @@ public class GdxOptionsImpl implements GdxOptions {
                 break;
 
             case FULLSCREEN:
-                if (Eidolons.getScope() == Eidolons.SCOPE.MENU)
+                if (Core.getScope() == Core.SCOPE.MENU)
                     ScreenMaster.setFullscreen(bool);
                 break;
 

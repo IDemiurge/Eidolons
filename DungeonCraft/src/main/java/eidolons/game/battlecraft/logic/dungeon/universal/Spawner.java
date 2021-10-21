@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
-import eidolons.ability.UnitTrainingMaster;
+import eidolons.entity.obj.unit.trainers.UnitTrainingMaster;
 import eidolons.content.consts.GridCreateData;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
@@ -125,11 +125,7 @@ public class Spawner extends DungeonHandler {
 
     public int getMinLevel(String type) {
         int level = 0;
-        try {
-            level = getGame().getMetaMaster().getPartyManager().getPartyLevel();
-        } catch (Exception e) {
-        }
-
+            // level = getGame().getMetaMaster().getPartyManager().getPartyLevel();
         return level;
     }
 

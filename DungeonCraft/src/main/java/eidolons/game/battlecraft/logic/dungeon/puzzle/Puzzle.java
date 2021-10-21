@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle;
 
 import eidolons.content.data.FlightData;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.*;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.struct.LevelBlock;
 import eidolons.dungeons.generator.model.AbstractCoordinates;
@@ -57,7 +57,7 @@ public abstract class Puzzle {
     }
 
     public PuzzleMaster getMaster() {
-        return Eidolons.getGame().getDungeonMaster().getPuzzleMaster();
+        return Core.getGame().getDungeonMaster().getPuzzleMaster();
     }
 
     public void setRules(PuzzleRules... rules) {

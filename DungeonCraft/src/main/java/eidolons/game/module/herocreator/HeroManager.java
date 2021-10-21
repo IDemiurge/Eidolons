@@ -1,19 +1,16 @@
 package eidolons.game.module.herocreator;
 
 import eidolons.content.DC_ContentValsManager;
-import eidolons.content.PARAMS;
+import eidolons.content.DC_Formulas;
 import eidolons.content.PROPS;
 import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.item.DC_JewelryObj;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
+import eidolons.game.core.Core;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.master.EffectMaster;
-import eidolons.game.module.herocreator.logic.spells.SpellMaster;
-import eidolons.content.DC_Formulas;
 import main.ability.effects.Effect;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentValsManager;
@@ -288,7 +285,7 @@ public class HeroManager {
     public static WEAPON_CLASS getWeaponClass(String type) {
         ObjType objType = DataManager.getType(type, DC_TYPE.WEAPONS);
         if (objType == null) {
-            objType = Eidolons.game.getObjectById(NumberUtils.getIntParse(type)).getType();
+            objType = Core.game.getObjectById(NumberUtils.getIntParse(type)).getType();
         }
         return getWeaponClass(objType);
     }
@@ -302,19 +299,6 @@ public class HeroManager {
         typeStacks.remove(hero);
     }
 
-    public void afterDefeatRewind() {
-        game.setSimulation(true);
-        for (Unit hero : PartyHelper.getParty().getMembers()) {
-            stepBack(hero);
-        }
-    }
-
-    public void prebattleCleanSave() {
-        clearStacks();
-        for (Unit hero : PartyHelper.getParty().getMembers()) {
-            saveHero(hero);
-        }
-    }
 
     public void clearStacks() {
         typeStacks.clear();
@@ -558,21 +542,11 @@ public class HeroManager {
         if (type.getOBJ_TYPE_ENUM() == DC_TYPE.CLASSES) {
             classAdded(hero, type);
         }
-        int cost;
-        if (!free) {
-            cost = subtractCost(hero, type, TYPE, PROP);
-            checkShop(type, TYPE, PROP, cost, true);
-        } else {
-            if (update) {
-                update(hero);
-            }
-
+        if (update) {
+            update(hero);
         }
 
         return true;
-    }
-
-    private void checkShop(Entity type, OBJ_TYPE TYPE, PROPERTY PROP, int cost, boolean sold) {
     }
 
     private int getMode(OBJ_TYPE T, PROPERTY p) {
@@ -585,20 +559,6 @@ public class HeroManager {
     }
 
     private void classAdded(Unit hero, Entity class_type) {
-//      TODO   if (ClassView.isMulticlass(class_type)) {
-//            if (!class_type.checkProperty(G_PROPS.BASE_TYPE)) { // prime
-//                // multiclass
-//                hero.setProperty(PROPS.MULTICLASSES, hero.getType().getProperty(PROPS.CLASSES),
-//                 true);
-//                hero.setProperty(PROPS.FIRST_CLASS, ClassView.MULTICLASS + " "
-//                 + StringMaster.wrapInParenthesis(class_type.getName()), true);
-//                hero.setProperty(PROPS.SECOND_CLASS, "", true);
-//            } else {
-//                hero.getType().addProperty(PROPS.MULTICLASSES, class_type.getName());
-//            }
-//
-//            return;
-//        }
         PROPS property = PROPS.FIRST_CLASS;
         String value = hero.getProperty(property);
         String group = class_type.getProperty(G_PROPS.CLASS_GROUP);
@@ -615,15 +575,6 @@ public class HeroManager {
         if (StringMaster.isEmpty(value)) {
             hero.getType().setProperty(property, group);
         }
-
-    }
-
-    public boolean addSpellUpgrade(Unit hero, Entity type, PROPERTY prop) {
-        saveHero(hero);
-        subtractCost(hero, type, DC_TYPE.SPELLS, prop);
-        boolean result = SpellMaster.replaceSpellVersion(hero, type, PROPS.VERBATIM_SPELLS);
-        update(hero);
-        return result;
 
     }
 
@@ -824,32 +775,11 @@ public class HeroManager {
             return;
         }
 
-        int cost;
-        if (!free) {
-            cost = modifyCostParam(hero, type, TYPE, true, prop);
-            checkShop(type, TYPE, prop, cost, false);
-        }
         if (update) {
             update(hero);
         }
-
     }
 
-    public boolean addMemorizedSpell(Unit hero, Entity type) {
-
-        if (hero.calculateRemainingMemory() >= type.getIntParam(PARAMS.SPELL_DIFFICULTY)) {
-            if (type.isUpgrade()) {
-                if (SpellMaster.hasSpellVersion(hero, type, PROPS.MEMORIZED_SPELLS)) {
-                    return false;
-                }
-            }
-            return addItem(hero, type, DC_TYPE.SPELLS, PROPS.MEMORIZED_SPELLS, !trainer
-            );
-        } else {
-            // TODO alarm
-            return false;
-        }
-    }
 
     public boolean isTrainer() {
         return trainer;

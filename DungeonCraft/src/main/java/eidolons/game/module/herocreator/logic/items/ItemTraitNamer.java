@@ -4,8 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import eidolons.content.DC_CONSTS.ITEM_LEVEL;
 import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.netherflame.main.soul.eidola.EidolonImbuer;
-import eidolons.game.netherflame.main.soul.eidola.Soul;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;
@@ -30,8 +28,10 @@ public class ItemTraitNamer {
         String names = "";
         for (int i = 0; i < 5; i++) {
             ObjType type = DataManager.getRandomType(TYPE);
-            Set<ItemTrait> traits = new EidolonImbuer().getTraits(
-                    type, new Soul(DataManager.getRandomType(DC_TYPE.UNITS)));
+            Set<ItemTrait> traits =null ;
+            //TODO
+            // new EidolonImbuer().getTraits(
+            //         type, new Soul(DataManager.getRandomType(DC_TYPE.UNITS)));
             names += "\n" +
                     getName(type, new ArrayList<>(traits));
         }

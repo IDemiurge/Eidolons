@@ -2,10 +2,8 @@ package eidolons.entity.handlers.active;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
-import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.rules.action.WatchRule;
 import eidolons.system.libgdx.GdxAdapter;
 import main.content.enums.entity.UnitEnums;
 import main.content.mode.STD_MODES;
@@ -75,27 +73,12 @@ public class Activator extends ActiveHandler {
     }
 
 
-    private Boolean checkSubActionModeActivation() {
-        // TODO triggered activation?
-        DC_UnitAction action = getModeAction();
-        if (action == null) {
-            return null;
-        }
-        return action.canBeActivated(getRef());
-
-    }
-
     public boolean canBeManuallyActivated() {
         if (getChecker().isBlocked()) {
             return false;
         }
         if (game.isDebugMode())
             return true;
-        Boolean checkSubActionMode =
-                checkSubActionModeActivation();
-        if (checkSubActionMode != null) {
-            return checkSubActionMode;
-        }
         if (getAction() instanceof DC_QuickItemAction) {
             return canBeActivated(getAction().getOwnerUnit().getRef(), true);
         }
@@ -110,18 +93,6 @@ public class Activator extends ActiveHandler {
         GdxAdapter.getInstance().getEventsAdapter().cannotActivate(e, reason);
 
     }
-
-    public DC_UnitAction getModeAction() {
-        String mode = getAction().getOwnerUnit().getActionMode(getEntity());
-        if (mode == null) {
-            return null;
-        }
-        if (getChecker().isAttackGeneric()) {
-            return (DC_UnitAction) game.getActionManager().getAction(mode, getAction().getOwnerUnit());
-        }
-        return (DC_UnitAction) game.getActionManager().getAction(mode + " " + getName(), getAction().getOwnerUnit());
-    }
-
 
     public boolean canBeActivatedAsExtraAttack(Boolean instant_counter_opportunity) {
         getHandler().setExtraAttackMode(instant_counter_opportunity, true);
@@ -145,21 +116,9 @@ public class Activator extends ActiveHandler {
     }
 
     public boolean canBeActivatedAsAttackOfOpportunity(boolean pending, Unit target) {
-        boolean watch = getOwnerObj().getMode().equals(STD_MODES.ALERT)
-                || WatchRule.checkWatched(getOwnerObj(), target);
-
-        if (!watch) {
             if (pending) {
                 return false;
             }
-            return canBeActivatedAsInstant();
-        }
-        if (!pending) {
-            if (canBeActivatedAsInstant()) {
-                return true;
-            }
-        }
-
         return canBeActivatedAsExtraAttack(null);
 
     }

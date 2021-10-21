@@ -1,10 +1,10 @@
 package eidolons.game;
 
-import eidolons.entity.active.ActionInitializer;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.system.hotkey.Accessibility;
 import main.content.values.parameters.PARAMETER;
 import main.data.StringMap;
 import main.game.bf.directions.FACING_DIRECTION;
@@ -175,7 +175,7 @@ public class EidolonsGame {
         if (!EidolonsGame.TUTORIAL) {
             return false;
         }
-        if (!ActionInitializer.isActionNotBlocked(activeObj, ExplorationMaster.isExplorationOn())) {
+        if (!Accessibility.isActionNotBlocked(activeObj, ExplorationMaster.isExplorationOn())) {
             return true;
         }
         if (activeObj.isSpell()) {

@@ -243,8 +243,5 @@ public class CONTENT_CONSTS {
 
     // use cases: 1) reduce cost 2) increase Spellpower/mastery: apply when?
 
-    public enum TARGET_KEYWORD {
-        SOURCE, TARGET, SUMMONER, BASIS, WEAPON, ARMOR, SPELL, ACTIVE
-    }
 
 }

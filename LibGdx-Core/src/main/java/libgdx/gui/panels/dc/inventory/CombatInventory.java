@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.ability.InventoryTransactionManager;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import libgdx.StyleHolder;
 import libgdx.TiledNinePatchGenerator;
@@ -142,11 +142,8 @@ public class CombatInventory extends TablePanel implements Blocking {
     private void initButtonListeners() {
         final InventoryDataSource source = getUserObject();
         doneButton.setRunnable(source.getDoneHandler());
-
-        if (!HqDataMaster.isSimulationOff()) {
             cancelButton.setRunnable(source.getCancelHandler());
             undoButton.setRunnable(source.getUndoHandler());
-        }
     }
 
     @Override
@@ -223,7 +220,7 @@ public class CombatInventory extends TablePanel implements Blocking {
         else {
             int x = getUserObject().getUnit().getX();
             int y = getUserObject().getUnit().getY();
-            Eidolons.getGame().getDroppedItemManager().reset(x, y);
+            Core.getGame().getDroppedItemManager().reset(x, y);
         }
 
         WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, result);

@@ -1,31 +1,17 @@
 package main.handlers.control;
 
 import eidolons.content.PARAMS;
-import eidolons.game.core.Eidolons;
 import main.AV_DataManager;
-import main.content.DC_TYPE;
 import main.content.VALUE;
-import main.content.values.properties.G_PROPS;
 import main.entity.type.ObjType;
-import main.gui.builders.EditViewPanel;
 import main.gui.components.controls.AV_TableButtons;
-import main.gui.components.menu.AV_Menu;
 import main.gui.components.table.AvColorHandler;
-import main.gui.components.table.TableMouseListener;
 import main.handlers.AvHandler;
 import main.handlers.AvManager;
-import main.handlers.mod.AvModelHandler;
 import main.handlers.mod.AvSaveHandler;
 import main.launch.ArcaneVault;
-import main.swing.generic.components.editors.lists.ListChooser;
-import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.util.DialogMaster;
-import main.utilities.xml.XML_Transformer;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class AvButtonHandler extends AvHandler   {
 

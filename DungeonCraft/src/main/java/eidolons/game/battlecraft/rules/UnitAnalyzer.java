@@ -4,6 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.values.ValuePages;
 import eidolons.entity.obj.unit.Unit;
+import main.content.enums.entity.HeroEnums;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.values.parameters.PARAMETER;
@@ -82,4 +83,7 @@ public class UnitAnalyzer {
         return ai_type != AI_TYPE.TANK;
     }
 
+    public static boolean isFemale(Entity hero) {
+        return hero.checkProperty(G_PROPS.GENDER, HeroEnums.GENDER.FEMALE + "");
+    }
 }

@@ -223,7 +223,7 @@ public class Mapper {
                 }
                 if (!constructAE_Item(CLASS)) {
                     //Core Review
-                    // LogMaster.src.main.log(1, CLASS + " in " + "" + packageName
+                    // LogMaster.src.main.system.log(1, CLASS + " in " + "" + packageName
                     //         + " failed to construct!");
                 }
             }
@@ -243,9 +243,9 @@ public class Mapper {
 
     private static void sortLists() {
         for (List<AE_Item> list : map.values()) {
-//            LogMaster.src.main.log(0, list + "");
+//            LogMaster.src.main.system.log(0, list + "");
             Collections.sort(list);
-//            LogMaster.src.main.log(0, list + "");
+//            LogMaster.src.main.system.log(0, list + "");
         }
     }
 

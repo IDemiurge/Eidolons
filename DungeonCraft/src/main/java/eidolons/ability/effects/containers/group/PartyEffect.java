@@ -1,11 +1,10 @@
 package eidolons.ability.effects.containers.group;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.module.herocreator.logic.party.Party;
+import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import main.data.ability.AE_ConstrArgs;
 import main.elements.conditions.Condition;
 import main.elements.conditions.standard.EmptyCondition;
-import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.system.entity.FilterMaster;
 
@@ -35,12 +34,9 @@ public class PartyEffect extends GroupObjModifyEffect {
 
     @Override
     protected List<Obj> getObjectsToModify() {
-        Party party = (Party) ref.getSourceObj().getRef()
-         .getObj(KEYS.PARTY);
-        if (party == null) {
-            return new ArrayList<>();
-        }
-        List<Unit> list = party.getMembers();
+
+        DC_Player player = (DC_Player) ref.getSourceObj().getOwner();
+        List<Unit> list = new ArrayList<>(player.collectControlledUnits_());
 
         initFilterConditions();
         FilterMaster.filter(list, conditions);

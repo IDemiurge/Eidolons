@@ -8,11 +8,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class G_ButtonPanel extends JPanel implements ActionListener {
-    public G_ButtonPanel(String[] commands) {
+    public G_ButtonPanel(Object[] commands) {
         this(new ArrayList<>(Arrays.asList(commands)));
     }
 
-    public G_ButtonPanel(List<String> commands) {
+    public G_ButtonPanel(List  commands) {
         int rows;
         int cols;
         if (isHorizontal()) {
@@ -25,10 +25,10 @@ public abstract class G_ButtonPanel extends JPanel implements ActionListener {
         int spaceH=0;
         int spaceV=0;
         setLayout(new GridLayout(rows, cols, spaceH, spaceV));
-        for (String command : commands) {
+        for (Object command : commands) {
             JButton button;
-            add (button = new JButton(command));
-            button.setActionCommand(command);
+            add (button = new JButton(command.toString()));
+            button.setActionCommand(command.toString());
             button.addActionListener(this);
         }
 

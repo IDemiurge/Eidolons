@@ -2,7 +2,7 @@ package eidolons.game.module.dungeoncrawl.quest;
 
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import eidolons.system.audio.DC_SoundMaster;
@@ -253,7 +253,7 @@ public class QuestMaster extends MetaGameHandler {
         GuiEventManager.trigger(GuiEventType.QUESTS_UPDATE_REQUIRED);
         questsPool.remove(quest); //can't retake it
         updateQuests();
-        quest.getReward().award(Eidolons.getMainHero(), true);
+        quest.getReward().award(Core.getMainHero(), true);
         quest.setRewardTaken(true);
         DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__QUEST_COMPLETED);
     }

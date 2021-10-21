@@ -4,7 +4,6 @@ import eidolons.ability.effects.oneshot.mechanic.RollEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.action.WatchRule;
 import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.content.enums.GenericEnums;
@@ -17,7 +16,6 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.system.auxiliary.*;
 import main.system.math.Formula;
-import main.system.math.MathMaster;
 
 import java.util.Arrays;
 import java.util.List;
@@ -231,9 +229,6 @@ public class RollMaster {
         if (action.getOwnerUnit().checkPassive(UnitEnums.STANDARD_PASSIVES.DEXTEROUS)) {
             mod += 25;
         }
-        if (WatchRule.checkWatched(action.getOwnerUnit(), unit)) {
-            mod += 25;
-        }
         if (action.getOwnerUnit().checkParam(PARAMS.VIGILANCE_MOD)) {
             mod += action.getOwnerUnit().getIntParam(PARAMS.VIGILANCE_MOD);
         }
@@ -246,9 +241,6 @@ public class RollMaster {
         int mod = 10;
         if (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.VIGILANCE)) {
             mod += 40;
-        }
-        if (WatchRule.checkWatched(unit, action.getOwnerUnit())) {
-            mod += 50;
         }
         if (unit.checkParam(PARAMS.VIGILANCE_MOD)) {
             mod += unit.getIntParam(PARAMS.VIGILANCE_MOD);

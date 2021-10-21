@@ -19,10 +19,9 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.mission.quest.CombatScriptExecutor;
 import eidolons.game.battlecraft.logic.mission.quest.CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.dungeons.generator.model.AbstractCoordinates;
-import eidolons.game.module.herocreator.logic.spells.SpellMaster;
 import eidolons.system.libgdx.GdxAdapter;
 import eidolons.content.consts.GraphicData;
 import eidolons.content.consts.SpriteData;
@@ -102,7 +101,7 @@ public class SpeechExecutor {
 
     public static void run(String s) {
         try {
-            Eidolons.getGame().getMetaMaster().getDialogueManager().getSpeechExecutor().execute(s);
+            Core.getGame().getMetaMaster().getDialogueManager().getSpeechExecutor().execute(s);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
@@ -141,7 +140,7 @@ public class SpeechExecutor {
         int max = 0;
         Coordinates c1 = null;
         String string = null;
-        BattleFieldObject unit = Eidolons.getMainHero();
+        BattleFieldObject unit = Core.getMainHero();
         List<Coordinates> coordinatesList = null;
 
         if (wait && !skipRun) {
@@ -172,7 +171,7 @@ public class SpeechExecutor {
                 finalScript = true;
                 break;
             case HIGHLIGHT_ACTION:
-                DC_ActiveObj a = Eidolons.getMainHero().getActionOrSpell(value);
+                DC_ActiveObj a = Core.getMainHero().getActionOrSpell(value);
                 if (vars.size() > 0) {
                     GuiEventManager.trigger(GuiEventType.HIGHLIGHT_ACTION_OFF, a);
                 } else
@@ -215,21 +214,6 @@ public class SpeechExecutor {
                     active.setDisabled(true);
                 }
                 break;
-            case ADD_SPELL:
-            case REMOVE_SPELL:
-                unit = getUnit(value);
-                ObjType t = DataManager.getType(vars.get(0), DC_TYPE.SPELLS);
-                if (t == null) {
-                    SpellMaster.removeSpells((Unit) unit);
-                } else if (speechAction == ADD_SPELL) {
-                    SpellMaster.addVerbatimSpell((Unit) unit, t);
-                } else {
-                    SpellMaster.removeSpell((Unit) unit, t);
-
-                }
-
-                break;
-
 
             case REVEAL:
             case SWITCH:
@@ -282,7 +266,7 @@ public class SpeechExecutor {
                     unit = getUnit(vars.get(0));
                 }
                 if (unit == null) {
-                    unit = Eidolons.getMainHero();
+                    unit = Core.getMainHero();
                 }
 
                 Object arg = null;
@@ -572,7 +556,7 @@ public class SpeechExecutor {
                     String finalScript = script;
                     onDone = () -> {
                         if (finalScript != null) {
-                            Eidolons.onThisOrNonGdxThread(() ->
+                            Core.onThisOrNonGdxThread(() ->
                                     execute(SCRIPT, finalScript));
                         }
                     };
@@ -640,7 +624,7 @@ public class SpeechExecutor {
                 if (d != null) {
                     important("Nested script: " + d);
                     if (!vars.isEmpty() || bool) {
-                        Eidolons.onNonGdxThread(() ->
+                        Core.onNonGdxThread(() ->
                                 new SpeechScript(d, master).execute());
                     } else {
                         SpeechScript subscript = new SpeechScript(d, master);
@@ -657,7 +641,7 @@ public class SpeechExecutor {
                 if (func == null) {
                     LogMaster.devLog("NO SUCH SCRIPT or function: " + value);
                 }
-                master.getMissionMaster().getScriptManager().execute(func, Eidolons.getMainHero().getRef(),
+                master.getMissionMaster().getScriptManager().execute(func, Core.getMainHero().getRef(),
                         vars.toArray(new String[0]));
                 break;
 
@@ -821,7 +805,7 @@ public class SpeechExecutor {
                     if (bool) {
                         c = GdxStatic.getCameraCenter();
                     } else
-                        c = Eidolons.getPlayerCoordinates().getOffset(c1);
+                        c = Core.getPlayerCoordinates().getOffset(c1);
                     if (c1 != null) {
                         c = c.getOffset(c1);
                     }
@@ -933,14 +917,14 @@ public class SpeechExecutor {
                 c = getCoordinate(vars.get(0), true);
                 c1 = getCoordinate(vars.get(1), true);
                 for (Coordinates coordinates : CoordinatesMaster.getCoordinatesBetweenInclusive(c, c1)) {
-                    for (BattleFieldObject object : Eidolons.getGame().getObjectsOnCoordinateNoOverlaying(coordinates)) {
+                    for (BattleFieldObject object : Core.getGame().getObjectsOnCoordinateNoOverlaying(coordinates)) {
                         doUnit(object, value, vars);
                     }
                 }
                 break;
             case COORDINATE:
                 c = getCoordinate(vars.get(0));
-                for (BattleFieldObject object : Eidolons.getGame().getObjectsOnCoordinateNoOverlaying(c)) {
+                for (BattleFieldObject object : Core.getGame().getObjectsOnCoordinateNoOverlaying(c)) {
                     doUnit(object, value, vars);
                 }
                 break;
@@ -1015,7 +999,7 @@ public class SpeechExecutor {
             case VIDEO:
                 Runnable r = null;
                 if (vars.size() > 0) {
-                    r = () -> Eidolons.onNonGdxThread(() -> execute(SCRIPT, vars.get(0)));
+                    r = () -> Core.onNonGdxThread(() -> execute(SCRIPT, vars.get(0)));
                 }
                 GuiEventManager.triggerWithParams(GuiEventType.PLAY_VIDEO, value, r);
                 break;
@@ -1123,7 +1107,7 @@ public class SpeechExecutor {
     }
 
     protected void doUnit(String value, List<String> vars) {
-        BattleFieldObject unit = vars.size() == 0 ? Eidolons.getMainHero() : getUnit(vars.get(0));
+        BattleFieldObject unit = vars.size() == 0 ? Core.getMainHero() : getUnit(vars.get(0));
         doUnit(unit, value, vars);
     }
 
@@ -1163,7 +1147,7 @@ public class SpeechExecutor {
                         }
                     break;
                 case "kill":
-                    unit.kill(Eidolons.getMainHero(), true, false);
+                    unit.kill(Core.getMainHero(), true, false);
 
                     break;
                 case "die":
@@ -1184,10 +1168,10 @@ public class SpeechExecutor {
             case "me":
             case "self":
             case "source":
-                return Eidolons.getMainHero();
+                return Core.getMainHero();
         }
         BattleFieldObject unit = master.getGame().getAiManager().getScriptExecutor().findUnit(
-                Eidolons.getMainHero().getRef(), value);
+                Core.getMainHero().getRef(), value);
         if (unit == null) {
             DialogueActor actor = DialogueActorMaster.getActor(value);
             if (actor != null) {

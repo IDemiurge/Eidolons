@@ -4,7 +4,7 @@ import boss.BossHandler;
 import boss.anims.generic.BossVisual;
 import boss.logic.BossCycle;
 import boss.logic.entity.BossUnit;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.netherflame.boss.BossHandler;
 import eidolons.game.netherflame.boss.BossManager;
 import eidolons.game.netherflame.boss.BossModel;
@@ -29,7 +29,7 @@ public abstract class BossViewFactory<T extends BossModel> extends BossHandler<T
 
     public void afterInit() {
 
-        Eidolons.onGdxThread(() -> {
+        Core.onGdxThread(() -> {
             for (BossCycle.BOSS_TYPE boss_type : getModel().getCycle()) {
                 try {
                     BossVisual view = create(boss_type, getEntity(boss_type));

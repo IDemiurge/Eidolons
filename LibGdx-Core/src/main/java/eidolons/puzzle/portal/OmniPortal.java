@@ -1,7 +1,7 @@
 package eidolons.puzzle.portal;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import libgdx.gui.generic.btn.ButtonStyled;
 import libgdx.gui.generic.btn.SmartTextButton;
 import libgdx.gui.panels.TablePanelX;
@@ -50,7 +50,7 @@ public class OmniPortal extends Portal{
 
     private void goTo(Coordinates coordinates) {
         pair = getOrCreatePortal(coordinates);
-        entered(Eidolons.getMainHero());
+        entered(Core.getMainHero());
         GuiEventManager.trigger(GuiEventType.HIDE_CUSTOM_PANEL, destinationsMenu);
     }
 

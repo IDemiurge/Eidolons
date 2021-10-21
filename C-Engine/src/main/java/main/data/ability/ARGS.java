@@ -4,7 +4,6 @@ import main.ability.Ability;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.*;
 import main.content.CONTENT_CONSTS.SPECIAL_REQUIREMENTS;
-import main.content.CONTENT_CONSTS2.INJURY;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_CASE;
@@ -137,7 +136,6 @@ public enum ARGS implements Argument {
 
     ORDER_TYPE(main.content.CONTENT_CONSTS2.ORDER_TYPE.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
 
-    INJURY(INJURY.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
     DAMAGE_CASE(DAMAGE_CASE.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
     COUNTER_INTERACTION_TYPE(COUNTER_INTERACTION.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
     COUNTER_OPERATION(COUNTER_OPERATION.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),

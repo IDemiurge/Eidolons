@@ -5,7 +5,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.advanced.engagement.EngageEvent;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationHandler;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -45,7 +45,7 @@ public class AggroMaster extends ExplorationHandler {
                 if (leader == null) {
                     leader = getAggroGroup().get(0);
                 }
-                master.event(new EngageEvent(leader, Eidolons.getMainHero(), EngageEvent.ENGAGE_EVENT.combat_start,
+                master.event(new EngageEvent(leader, Core.getMainHero(), EngageEvent.ENGAGE_EVENT.combat_start,
                         getAggroGroup().size()));
             }
         } else {

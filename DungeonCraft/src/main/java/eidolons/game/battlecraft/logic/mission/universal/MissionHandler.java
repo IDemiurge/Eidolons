@@ -62,7 +62,4 @@ public class MissionHandler<E extends DungeonSequence> {
         return master.getConstructor();
     }
 
-    public MissionOutcomeManager getOutcomeManager() {
-        return master.getOutcomeManager();
-    }
 }

@@ -4,7 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
@@ -66,7 +66,7 @@ public class IlluminationMaster {
 
         if (illumination <= 0)
         {
-            if (target == Eidolons.getMainHero()) {
+            if (target == Core.getMainHero()) {
                 return 50;
             }
             return illumination;
@@ -88,7 +88,7 @@ public class IlluminationMaster {
 
         // TODO DISTANCE FACTOR?
         illumination = (int) Math.round(illumination * ilMod  );
-        if (target == Eidolons.getMainHero()) {
+        if (target == Core.getMainHero()) {
             illumination*=2;
         }
         if (source == master.getSeeingUnit())

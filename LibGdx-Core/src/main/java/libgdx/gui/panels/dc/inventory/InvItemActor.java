@@ -17,9 +17,8 @@ import eidolons.content.consts.VisualEnums.CELL_TYPE;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_HeroSlotItem;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.explore.vendor.GoldMaster;
-import eidolons.game.netherflame.main.soul.eidola.EidolonImbuer;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
 import libgdx.anims.actions.ActionMasterGdx;
@@ -132,9 +131,6 @@ public class InvItemActor extends ItemActor {
 
     private String getUnderlayPathForItem(DC_HeroItemObj model) {
         if (model instanceof DC_HeroSlotItem) {
-            if (EidolonImbuer.isImbued(model)) {
-                return Images.ITEM_BACKGROUND_OVERLAY_MAGIC;
-            }
         ItemEnums.QUALITY_LEVEL qualityLevel =  ((DC_HeroSlotItem) model).getQuality();
             switch (qualityLevel) {
 
@@ -391,7 +387,7 @@ public class InvItemActor extends ItemActor {
                 final boolean isCtrlPressed = Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) ||
                  Gdx.input.isKeyPressed(Keys.CONTROL_RIGHT);
 
-                Eidolons.onNonGdxThread(() ->
+                Core.onNonGdxThread(() ->
                  handler.cellClicked(cellType, tapCount, isRightClicked,
                   isAltPressed, model, isCtrlPressed));
 

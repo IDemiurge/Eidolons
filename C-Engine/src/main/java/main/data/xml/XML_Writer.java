@@ -18,12 +18,15 @@ import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.Bools;
+import main.system.launch.CoreEngine;
 
 import java.io.File;
 import java.util.*;
 
 public class XML_Writer {
 
+    public static final String XML_VERSION_PREFIX = "version=";
+    public static final String XML_VERSION_SEPARATOR = "%%";
     public static final int STR_CAPACITY = 15000;
     public static final String separator = PathUtils.getPathSeparator();
     private static final String XML = "XML";
@@ -33,7 +36,7 @@ public class XML_Writer {
     static Map<String, ObjType> map;
     static String subgroup = "";
     static Map<String, StringBuilder> subStrings;
-    static private String stringPool;
+    static private StringBuilder stringPool;
     static private String path;
     private static OBJ_TYPE currentObjTypeGroup;
     private static String filePath;
@@ -89,15 +92,6 @@ public class XML_Writer {
     }
 
     public static boolean writeXML_ForTypeGroup(OBJ_TYPE TYPE, String group) {
-        if (XML_Reader.isBrokenXml()) {
-            if (writingBlocked == null) {
-                // writingBlocked = DialogMaster
-                // .confirm("Xml wasn't read properly, block writing Types' xml?");
-            }
-        }
-        if (Bools.isTrue(writingBlocked)) {
-            return false;
-        }
         if (group == null) {
             if (DC_TYPE.getXmlGroups(TYPE) != null) {
                 for (Object obj : DC_TYPE.getXmlGroups(TYPE)) {
@@ -114,8 +108,14 @@ public class XML_Writer {
 
         setPathForOBJ_TYPE(TYPE, group);
         LogMaster.log(0, path + " - WRITING XML FOR GROUP " + TYPE);
-        stringPool = "<XML>";
-
+        stringPool = new StringBuilder( "<XML ");
+stringPool
+        .append(XML_VERSION_PREFIX)
+        .append("'")
+        .append(CoreEngine.XML_BUILD)
+        .append(XML_VERSION_SEPARATOR)
+        .append("'")
+        .append(">");
         if (group == null) {
             map = DataManager.getTypeMap(TYPE);
             if (map == null) {
@@ -126,7 +126,7 @@ public class XML_Writer {
 
         putSubGroups();
 
-        stringPool += closeXML(XML);
+        stringPool.append(closeXML(XML));
 
         return write();
 
@@ -191,7 +191,7 @@ public class XML_Writer {
 
             String typeSubString = xml.substring(beginIndex, endIndex) + closeXML(type.getName());
 
-            stringPool = xml.replace(typeSubString, newTypeString);
+            stringPool = new StringBuilder(xml.replace(typeSubString, newTypeString));
 
         } else
 
@@ -199,10 +199,11 @@ public class XML_Writer {
             String groupNode = openXML(type.getProperty(TYPE.getGroupingKey()));
 
             if (xml.contains(groupNode)) {
-                stringPool = xml.replace(groupNode, groupNode + newTypeString);
+                stringPool = new StringBuilder(xml.replace(groupNode, groupNode + newTypeString));
             } else {
-                stringPool = xml.replace(closeXML(XML), groupNode + newTypeString
-                 + closeXML(type.getProperty(TYPE.getGroupingKey())) + closeXML(XML));
+                stringPool = new StringBuilder(xml.replace(closeXML(XML), new StringBuilder().append(groupNode).
+                        append(newTypeString).append(closeXML(type.getProperty(TYPE.getGroupingKey())))
+                        .append(closeXML(XML)).toString()));
             }
         }
         return write();
@@ -257,9 +258,9 @@ public class XML_Writer {
             if (strname.isEmpty()) {
                 strname = "Empty";
             }
-            stringPool += openXML(strname);
-            stringPool += subGroup.toString();
-            stringPool += closeXML(strname);
+            stringPool.append(openXML(strname));
+            stringPool.append(subGroup.toString());
+            stringPool.append(closeXML(strname));
         }
 
     }
@@ -413,12 +414,12 @@ public class XML_Writer {
     }
 
     private static boolean write() {
-        return write(stringPool, path, fileName);
+        return write(stringPool.toString(), path, fileName);
     }
 
     public static void write(XML_File file) {
         setPathForOBJ_TYPE(file.getType(), file.getGroup());
-        stringPool = file.getContents();
+        stringPool = new StringBuilder(file.getContents());
         write();
     }
 

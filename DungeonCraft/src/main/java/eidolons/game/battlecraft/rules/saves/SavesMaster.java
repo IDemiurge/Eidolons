@@ -15,6 +15,7 @@ public class SavesMaster {
      */
     public static boolean savingThrow(SaveType saveType, BattleFieldObject target, Integer value) {
 
+        return false;
     }
 
     public enum SaveType {

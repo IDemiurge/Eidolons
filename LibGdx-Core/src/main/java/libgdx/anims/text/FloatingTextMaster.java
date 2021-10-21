@@ -12,7 +12,7 @@ import eidolons.entity.obj.unit.FacingEntity;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.MultiDamage;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.GdxMaster;
@@ -289,7 +289,7 @@ public class FloatingTextMaster {
         floatingText.setStayFullDuration(getStayFull(CASE, arg));
         floatingText.setFadeInDuration(getFadeIn(CASE, arg));
 
-        Eidolons.onThisOrGdxThread(() -> floatingText.setFontStyle(getFontStyle(CASE, arg)));
+        Core.onThisOrGdxThread(() -> floatingText.setFontStyle(getFontStyle(CASE, arg)));
 
         floatingText.setDisplacementX(getDisplacementX(CASE));
         floatingText.setDisplacementY(getDisplacementY(CASE));

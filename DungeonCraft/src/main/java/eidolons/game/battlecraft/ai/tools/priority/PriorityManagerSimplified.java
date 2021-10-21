@@ -15,11 +15,6 @@ public class PriorityManagerSimplified extends PriorityManagerImpl {
     }
 
     @Override
-    public int getStealthPriority(Action action) {
-        return super.getStealthPriority(action);
-    }
-
-    @Override
     public int getRetreatPriority(ActionSequence as) {
         return super.getRetreatPriority(as);
     }
@@ -43,11 +38,6 @@ public class PriorityManagerSimplified extends PriorityManagerImpl {
     @Override
     public int getItemPriority(DC_Obj targetObj) {
         return super.getItemPriority(targetObj);
-    }
-
-    @Override
-    public int getAttackOfOpportunityPenalty(DC_ActiveObj action, Unit targetObj) {
-        return super.getAttackOfOpportunityPenalty(action, targetObj);
     }
 
     @Override

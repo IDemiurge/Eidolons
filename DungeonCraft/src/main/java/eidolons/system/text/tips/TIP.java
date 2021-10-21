@@ -2,9 +2,8 @@ package eidolons.system.text.tips;
 
 import eidolons.content.consts.Images;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.meta.tutorial.TutorialManager;
 import eidolons.game.battlecraft.logic.mission.quest.CombatScriptExecutor;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.netherflame.main.NF_Images;
 import main.data.DataManager;
 import main.system.threading.WaitMaster;
@@ -29,7 +28,7 @@ public enum TIP implements TextEvent {
     first_battle(false, NF_Images.BRIEF_ART.SENTRIES.getPath(), "") {
         @Override
         public void run() {
-            Eidolons.getGame().getMissionMaster()
+            Core.getGame().getMissionMaster()
                     .getScriptManager().execute(CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION.AGGRO, null);
             EidolonsGame.FIRST_BATTLE_STARTED = true;
         }
@@ -40,7 +39,7 @@ public enum TIP implements TextEvent {
     sentries(false, NF_Images.BRIEF_ART.SENTRIES.getPath(), "") {
         @Override
         public void run() {
-            Eidolons.getGame().getMissionMaster()
+            Core.getGame().getMissionMaster()
                     .getScriptManager().execute(CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION.AGGRO, null);
             EidolonsGame.FIRST_BATTLE_STARTED = true;
         }

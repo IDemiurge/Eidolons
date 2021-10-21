@@ -60,14 +60,6 @@ public class GoalManager extends AiHandler {
         }
         list.addAll(getDefaultGoals());
 
-        if (unit.getAiType() == AiEnums.AI_TYPE.CASTER || unit.getAiType() == AiEnums.AI_TYPE.ARCHER) {
-            if (!unit.checkPassive(UnitEnums.STANDARD_PASSIVES.FEARLESS)) {
-                if (DC_PriorityManager.getMeleeDangerFactor(unit) > 0) {
-                    list.add(AiEnums.GOAL_TYPE.RETREAT);
-                }
-            }
-        }
-
         if (Analyzer.hasAnySpecialActions(unit)) {
             addNonEnemyGoals(list);
 

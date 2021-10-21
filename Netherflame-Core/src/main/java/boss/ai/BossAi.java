@@ -5,7 +5,7 @@ import boss.logic.BossCycle;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import boss.BossManager;
 
 public abstract class BossAi extends BossHandler {
@@ -27,7 +27,7 @@ public abstract class BossAi extends BossHandler {
     protected Action getAttack() {
         DC_ActiveObj active = unit.getAction(getActionMaster().getMainAttack());
         //zone ? it's also delayed!
-        return new Action(active, Eidolons.getMainHero());
+        return new Action(active, Core.getMainHero());
     }
 
 

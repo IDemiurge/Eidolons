@@ -5,7 +5,6 @@ import main.data.TableDataManager;
 import main.gui.builders.EditViewPanel;
 import main.v2_0.AV2;
 import main.launch.ArcaneVault;
-import main.system.graphics.ColorManager;
 import main.system.graphics.FontMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.auxiliary.StringMaster;
@@ -78,7 +77,7 @@ public class AV_TableCellRenderer extends DefaultTableCellRenderer {
         Component component = super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row,
                 column);
         // component.setBackground(AV_ColorMaster.getDefaultBackgroundColor(tablePanel.isColorsInverted()));
-        component.setBackground(AV_ColorMaster.getDefaultForegroundColor(tablePanel.isColorsInverted()));
+        component.setBackground(AV2.getColorHandler().getDefaultForegroundColor(tablePanel.isColorsInverted()));
         return component;
     }
 
@@ -86,7 +85,7 @@ public class AV_TableCellRenderer extends DefaultTableCellRenderer {
     private Component renderValueName(JTable table, Object value, boolean isSelected,
                                       boolean hasFocus, int row, int column, String name, boolean nameOrValue) {
         JLabel component = new JLabel(nameOrValue? name :  value.toString());
-        Color borderColor = AV_ColorMaster.getBorderColor(isSelected);
+        Color borderColor = AV2.getColorHandler().getBorderColor(isSelected);
         if (borderColor!=null ) {
             component.setBorder(BorderFactory.createLineBorder(
                     borderColor));
@@ -94,7 +93,7 @@ public class AV_TableCellRenderer extends DefaultTableCellRenderer {
 
         // component.setBackground(AV_ColorMaster.getBackgroundColor(tablePanel.isColorsInverted(), ArcaneVault.getSelectedType(),
         //         value.toString(),name, isSelected));
-        component.setForeground(AV_ColorMaster.getForegroundColor(tablePanel.isColorsInverted(), ArcaneVault.getSelectedType(),
+        component.setForeground(AV2.getColorHandler().getForegroundColor(tablePanel.isColorsInverted(), ArcaneVault.getSelectedType(),
                 value.toString(),name,  isSelected));
 
         // if (tablePanel.isColorsInverted()) {

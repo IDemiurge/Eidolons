@@ -5,7 +5,6 @@ import eidolons.content.values.DC_ValueManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.perk.FlyingRule;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TAGS;
@@ -21,7 +20,6 @@ import main.entity.handlers.EntityResetter;
 import main.entity.obj.Obj;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.math.MathMaster;
 
 import static main.content.enums.system.MetaEnums.CUSTOM_VALUE_TEMPLATE.COST_MOD_ACTIVE_NAME;
 import static main.content.enums.system.MetaEnums.CUSTOM_VALUE_TEMPLATE.COST_REDUCTION_ACTIVE_NAME;
@@ -134,22 +132,6 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
         Integer ap = ownerObj.getIntParam(PARAMS.ATB_COST_MOD);
         Integer ess = ownerObj.getIntParam(PARAMS.ESSENCE_COST_MOD);
         Integer foc = ownerObj.getIntParam(PARAMS.FOCUS_COST_MOD);
-        Integer cp = ownerObj.getIntParam(PARAMS.ATK_PTS_COST_MOD);
-        if (getHandler().isCounterMode()) {
-            ap = MathMaster.applyModIfNotZero(ap, ownerObj.getIntParam(PARAMS.COUNTER_PTS_COST_MOD));
-            sta = MathMaster.applyModIfNotZero(sta, ownerObj
-             .getIntParam(PARAMS.COUNTER_TOUGHNESS_COST_MOD));
-        }
-        if (getHandler().isInstantMode()) {
-            ap = MathMaster.applyModIfNotZero(ap, ownerObj.getIntParam(PARAMS.INSTANT_PTS_COST_MOD));
-            sta = MathMaster.applyModIfNotZero(sta, ownerObj
-             .getIntParam(PARAMS.INSTANT_TOUGHNESS_COST_MOD));
-        }
-        if (getHandler().isAttackOfOpportunityMode()) {
-            ap = MathMaster.applyModIfNotZero(ap, ownerObj.getIntParam(PARAMS.AOO_PTS_COST_MOD));
-            sta = MathMaster.applyModIfNotZero(sta, ownerObj
-             .getIntParam(PARAMS.AOO_TOUGHNESS_COST_MOD));
-        }
         switch (getEntity().getActionGroup()) {
             case ATTACK:
                 // boolean offhand = checkSingleProp(G_PROPS.ACTION_TAGS,
@@ -169,7 +151,6 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
                 }
                 break;
             case MOVE:
-                FlyingRule.checkAddMoveCostReductions(ownerObj);
                 sta += ownerObj.getIntParam(PARAMS.MOVE_TOU_COST_MOD, false);
                 ap += ownerObj.getIntParam(PARAMS.MOVE_ATB_COST_MOD, false);
                 break;
@@ -189,7 +170,6 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
                 break;
 
         }
-        getEntity().modifyParamByPercent(PARAMS.ATK_PTS_COST, cp, true);
         // getEntity().modifyParamByPercent(PARAMS.MP_COST, cp, true);
         getEntity().modifyParamByPercent(PARAMS.TOU_COST, sta, true);
         getEntity().modifyParamByPercent(PARAMS.AP_COST, ap, true);

@@ -81,7 +81,8 @@ public class ActionSequenceConstructor extends AiHandler {
     public List<ActionSequence> createActionSequencesForGoal(Goal goal, UnitAI ai) {
         List<ActionSequence> actionSequences = new ArrayList<>();
         List<DC_ActiveObj> actions = AiUnitActionMaster.getFullActionList(goal.getTYPE(), ai.getUnit());
-        actions.addAll(addSubactions(actions));
+        //TODO NF Rules revamp
+        // actions.addAll(addSubactions(actions));
         for (DC_ActiveObj action : actions) {
             if (!TimeLimitMaster.checkTimeLimitForAi(getUnitAi()))
                 break;
@@ -162,14 +163,6 @@ public class ActionSequenceConstructor extends AiHandler {
         return sequences;
     }
 
-
-    private List<DC_ActiveObj> addSubactions(List<DC_ActiveObj> actions) {
-        List<DC_ActiveObj> subactions = new ArrayList<>();
-        for (DC_ActiveObj a : actions) {
-            subactions.addAll(a.getSubActions());
-        }
-        return subactions;
-    }
 
 
     private List<ActionSequence> getSequencesWithPathsForAction(Action action, Object arg, Task task) {

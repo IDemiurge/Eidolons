@@ -11,10 +11,10 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.mission.quest.QuestMissionStatManager;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import libgdx.gui.panels.lord.SoulforcePanel;
+import libgdx.gui.panels.sf_old.SoulforcePanel;
 import libgdx.GDX;
 import libgdx.GdxMaster;
 import libgdx.anims.actions.ActionMasterGdx;
@@ -231,7 +231,7 @@ public class BattleGuiStage extends GuiStage {
             if (UnitInfoPanelNew.isNewUnitInfoPanelWIP()) {
                 addActor(infoPanel = UnitInfoPanelNew.getInstance());
             }
-            Eidolons.getGame().getLoop().setPaused(true, false);
+            Core.getGame().getLoop().setPaused(true, false);
             infoPanel.setUserObject(HqDataMaster.getHeroDataSource(unit));
         });
 

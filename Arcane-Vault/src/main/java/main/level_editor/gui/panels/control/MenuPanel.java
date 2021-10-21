@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.kotcrab.vis.ui.widget.Menu;
 import com.kotcrab.vis.ui.widget.MenuBar;
 import com.kotcrab.vis.ui.widget.MenuItem;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import libgdx.StyleHolder;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.brush.BrushShape;
@@ -141,7 +141,7 @@ public class MenuPanel extends MenuBar {
     }
 
     private void clicked(LE_MenuHandler.FUNCTION_BUTTONS subFunc) {
-        Eidolons.onNonGdxThread(() -> LevelEditor.getCurrent().getManager().getMenuHandler().clicked(subFunc));
+        Core.onNonGdxThread(() -> LevelEditor.getCurrent().getManager().getMenuHandler().clicked(subFunc));
     }
 
     private MenuItem createMenuItem(LE_MenuHandler.FUNCTION_BUTTONS subFunc) {

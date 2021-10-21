@@ -10,14 +10,11 @@ import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.action.StackingRule;
-import eidolons.game.battlecraft.rules.combat.attack.extra_attack.AttackOfOpportunityRule;
 import eidolons.game.battlecraft.rules.combat.attack.extra_attack.ExtraAttacksRule;
-import eidolons.game.battlecraft.rules.combat.mechanics.ForceRule;
 import eidolons.game.battlecraft.rules.counter.natural.ConcealmentRule;
-import eidolons.game.battlecraft.rules.perk.EvasionRule;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.atb.AtbMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.libgdx.GdxAdapter;
@@ -99,7 +96,7 @@ public class Executor extends ActiveHandler {
 
     public void activateOnGameLoopThread(Ref ref) {
         targeter.setForcePresetTarget(true);
-        Eidolons.getGame().getGameLoop().actionInputManual(
+        Core.getGame().getGameLoop().actionInputManual(
                 new ActionInput(getAction(), new Context(ref)));
     }
 
@@ -110,12 +107,12 @@ public class Executor extends ActiveHandler {
             activate();
             return;
         }
-        Eidolons.getGame().getGameLoop().actionInputManual(
+        Core.getGame().getGameLoop().actionInputManual(
                 new ActionInput(getAction(), t));
     }
 
     public void activateOnGameLoopThread() {
-        Eidolons.getGame().getGameLoop().actionInputManual(
+        Core.getGame().getGameLoop().actionInputManual(
                 new ActionInput(getAction(), new Context(getAction().getOwnerObj().getRef())));
     }
 
@@ -231,24 +228,6 @@ public class Executor extends ActiveHandler {
                 setResult(false);
                 setInterrupted(true);
             }
-
-        if (getChecker().isRangedTouch()) {
-            boolean missed = ConcealmentRule.checkMissed(getAction());
-            if (!missed) {
-                missed = EvasionRule.checkMissed(getAction());
-                if (missed) {
-                    EvasionRule.logDodged(game.getLogManager(), getAction());
-                }
-            } else {
-                ConcealmentRule.logMissed(game.getLogManager(), getAction());
-            }
-            if (missed) {
-                payCosts();
-                setResult(false);
-                setInterrupted(true);
-                StackingRule.actionMissed(getAction());
-            }
-        }
     }
 
     private void initActivation() {
@@ -264,7 +243,6 @@ public class Executor extends ActiveHandler {
     protected void resolve(ActionInput input) {
         log(getAction() + " resolves", false);
         addStdPassives();
-        ForceRule.addForceEffects(getAction());
         getAction().activatePassives();
 
         GuiEventManager.trigger(GuiEventType.ACTION_BEING_RESOLVED, getAction());
@@ -348,15 +326,6 @@ public class Executor extends ActiveHandler {
             getAction().getCosts().pay(getRef());
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
-        } finally {
-            if (getAction().isPointCostActivation()) {
-                getAction().setPointCostActivation(false);
-                if (!getAction().isAttackAny())
-                    getOwnerObj().freeMoveDone();
-                else {
-                    return;
-                }
-            }
         }
     }
 
@@ -437,14 +406,15 @@ public class Executor extends ActiveHandler {
         return pendingAttacksOpportunity;
     }
 
+    //TODO NF Rules revamp
     private void checkPendingAttacksOfOpportunity() {
         if (getAction().getOwnerUnit() == null) {
             return; //objects...
         }
         for (DC_ActiveObj attack : new ArrayList<>(getPendingAttacksOpportunity())) {
-            if (!AttackOfOpportunityRule.checkPendingAttackProceeds(getAction().getOwnerUnit(), attack)) {
-                continue;
-            }
+            // if (!AttackOfOpportunityRule.checkPendingAttackProceeds(getAction().getOwnerUnit(), attack)) {
+            //     continue;
+            // }
             getPendingAttacksOpportunity().remove(attack);
             Ref REF = Ref.getCopy(attack.getRef());
             REF.setTarget(getAction().getOwnerObj().getId());

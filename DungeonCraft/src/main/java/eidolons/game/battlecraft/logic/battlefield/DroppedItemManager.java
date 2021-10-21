@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Deprecated
 public class DroppedItemManager {
 
     private static final List<DC_HeroItemObj> VOID = new ArrayList<>();
@@ -93,8 +94,9 @@ public class DroppedItemManager {
             return true;
         }
         return
-                RandomWizard.chance(unit.getGame().getMetaMaster().getLootMaster().
-                        getChanceForOwnedItemToDrop(unit, item));
+                RandomWizard.chance(66);
+                        // unit.getGame().getMetaMaster().getLootMaster().
+                        // getChanceForOwnedItemToDrop(unit, item));
     }
 
     private void destroyItem(DC_HeroItemObj item) {

@@ -14,30 +14,13 @@ public class ValueInitializer {
     }
     public static void initProps(){
 
-        FAVORED_SPELL_GROUPS.setContainer(true);
         NATURAL_WEAPON.setDefaultValue("Average Fist");
-        // OFFHAND_NATURAL_WEAPON.setDefaultValue("Average Fist");
-        SPELL_UPGRADES.setDynamic(true);
-
         HINTS.setDynamic(true);
         LAST_SEEN.setDynamic(true);
-        UPKEEP_FAIL_ACTION.setDynamic(true);
         DROPPED_ITEMS.setDynamic(true);
-        // QUICK_ITEMS.setDynamic(true);
-        // INVENTORY.setDynamic(true);
-        // JEWELRY.setDynamic(true);
-        // VERBATIM_SPELLS.setDynamic(true);
-        // MEMORIZED_SPELLS.setDynamic(true);
-        DIVINED_SPELLS.setDynamic(true);
-        // KNOWN_SPELLS.setDynamic(true);
-        // LEARNED_SPELLS.setDynamic(true);
-
         FACING_DIRECTION.setDynamic(true);
         VISIBILITY_STATUS.setDynamic(true);
         DETECTION_STATUS.setDynamic(true);
-        PERCEPTION_STATUS_PLAYER.setDynamic(true);
-        PERCEPTION_STATUS.setDynamic(true);
-
         DC_TYPE.SPELLS.setUpgradeRequirementProp(KNOWN_SPELLS);
         DC_TYPE.CLASSES.setUpgradeRequirementProp(CLASSES);
         DC_TYPE.SKILLS.setUpgradeRequirementProp(SKILLS);

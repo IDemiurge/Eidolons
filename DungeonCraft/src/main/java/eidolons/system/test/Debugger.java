@@ -1,6 +1,6 @@
 package eidolons.system.test;
 
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
@@ -42,11 +42,11 @@ public class Debugger {
 
     private static String getMainHeroStatus() {
         try {
-            if (Eidolons.getMainHero() == null)
+            if (Core.getMainHero() == null)
                 return NO_HERO;
-            if (Eidolons.getMainHero() != DC_Game.game.getGameLoop().getActiveUnit())
+            if (Core.getMainHero() != DC_Game.game.getGameLoop().getActiveUnit())
                 return NOT_ACTIVE;
-            if (Eidolons.getMainHero() != DC_Game.game.getPlayer(true).getHeroObj())
+            if (Core.getMainHero() != DC_Game.game.getPlayer(true).getHeroObj())
                 return NOT_PLAYERS_HERO;
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);

@@ -1,17 +1,12 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle;
 
-import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleElement;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTrigger;
-import eidolons.game.core.Eidolons;
-import eidolons.game.core.game.DC_Game;
 import eidolons.system.ConditionsUtils;
 import main.elements.conditions.Condition;
 import main.elements.conditions.standard.EmptyCondition;
 import main.game.logic.event.Event;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.entity.ConditionMaster;
 
 public class PuzzleRules extends PuzzleElement {

@@ -4,7 +4,7 @@ import eidolons.content.PROPS;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.herocreator.logic.skills.SkillMaster;
+import eidolons.game.module.herocreator.logic.passives.SkillMaster;
 import eidolons.system.test.TestMasterContent;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
@@ -33,7 +33,6 @@ public class SpellMaster extends Master {
 
     private static final PROPERTY VERBATIM = PROPS.VERBATIM_SPELLS;
     private static final PROPERTY MEMORIZED = PROPS.MEMORIZED_SPELLS;
-    private static final PROPERTY DIVINED = PROPS.DIVINED_SPELLS;
     Map<MicroObj, Map<ObjType, Spell>> spellCache = new HashMap<>();
     static Map<ObjType, Spell> globalSpellCache = new HashMap<>();
 

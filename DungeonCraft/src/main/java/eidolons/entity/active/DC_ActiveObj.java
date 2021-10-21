@@ -64,28 +64,31 @@ public abstract class DC_ActiveObj extends DC_Obj implements Feat, ActiveObj, In
 
     protected BattleFieldObject ownerObj;
     protected Targeting targeting;
+    private Obj targetObj;
+    private GroupImpl targetGroup;
+
     protected Abilities abilities;
+
     protected Costs costs = new Costs(new ArrayList<>());
     protected boolean interrupted;
     protected boolean free = false;
     protected boolean quietMode = false;
-    protected List<DC_UnitAction> subActions;
+
     private RESISTANCE_TYPE resistType;
     private DAMAGE_TYPE energyType;
     private ACTION_TYPE_GROUPS actionTypeGroup;
     private ACTION_TYPE actionType;
     private AI_LOGIC aiLogic;
+
     private String customTooltip;
     private DC_ActiveObj parentAction;
     private boolean autoSelectionOn = false;
     private boolean continuous;
     private boolean resistanceChecked;
-    private Damage damageDealt;
-    private Obj targetObj;
-    private GroupImpl targetGroup;
     private boolean targetingCachingOff;
     private boolean disabled;
-    private boolean pointCostActivation;
+
+    private Damage damageDealt;
     private Runnable onComplete;
 
 
@@ -363,11 +366,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements Feat, ActiveObj, In
     @Override
     public void clicked() {
         try {
-            DC_UnitAction modeAction = getModeAction();
-            if (modeAction != null) {
-                modeAction.activate();
-                return;
-            }
             Ref REF = ownerObj.getRef().getCopy();
             REF.setTriggered(false);
             setRef(REF);
@@ -482,22 +480,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements Feat, ActiveObj, In
     }
 
 
-    public List<DC_UnitAction> getSubActions() {
-        if (subActions == null) {
-            subActions = new ArrayList<>();
-        }
-        return subActions;
-    }
-
-    public void setSubActions(List<DC_UnitAction> subActions) {
-        this.subActions = subActions;
-        if (subActions != null) {
-            for (DC_ActiveObj a : subActions) {
-                a.setParentAction(this);
-            }
-        }
-    }
-
     public DC_ActiveObj getParentAction() {
         return parentAction;
     }
@@ -528,17 +510,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements Feat, ActiveObj, In
                             getProperty(G_PROPS.ACTION_TYPE));
         return actionType;
     }
-
-    public String getActionMode() {
-        if (getOwnerUnit() == null) {
-            return null;
-        }
-        if (getOwnerUnit() instanceof Unit) {
-            return getOwnerUnit().getActionMode(this);
-        }
-        return null;
-    }
-
 
     public Integer getFinalModParam(PARAMETER mod) {
         return
@@ -782,20 +753,8 @@ public abstract class DC_ActiveObj extends DC_Obj implements Feat, ActiveObj, In
         return getActivator().canBeActivated(ref, first);
     }
 
-    public DC_UnitAction getModeAction() {
-        return getActivator().getModeAction();
-    }
-
-    public boolean canBeActivatedAsExtraAttack(Boolean instant_counter_opportunity) {
-        return getActivator().canBeActivatedAsExtraAttack(instant_counter_opportunity);
-    }
-
     public boolean canBeActivatedAsCounter() {
         return getActivator().canBeActivatedAsCounter();
-    }
-
-    public boolean canBeActivatedAsInstant() {
-        return getActivator().canBeActivatedAsInstant();
     }
 
     public boolean canBeActivatedAsAttackOfOpportunity(boolean pending, Unit target) {
@@ -951,15 +910,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements Feat, ActiveObj, In
         return getValidSubactions(getRef(), null);
     }
 
+    //TODO NF Rules revamp
     public List<DC_ActiveObj> getValidSubactions(Ref ref, Integer target) {
         List<DC_ActiveObj> subActions = new ArrayList<>();
-        for (DC_ActiveObj attack : getSubActions()) {
-            if (attack.canBeActivated(ref, true)) {
-                if (target == null || attack.canBeTargeted(target)) {
-                    subActions.add(attack);
-                }
-            }
-        }
         return subActions;
     }
 
@@ -982,14 +935,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements Feat, ActiveObj, In
         }
     }
 
-    public boolean isPointCostActivation() {
-        return pointCostActivation;
-    }
-
-    public void setPointCostActivation(boolean pointCostActivation) {
-        this.pointCostActivation = pointCostActivation;
-    }
-
     public Runnable getOnComplete() {
         return onComplete;
     }
@@ -1002,6 +947,11 @@ public abstract class DC_ActiveObj extends DC_Obj implements Feat, ActiveObj, In
     @Override
     public DC_ActiveObj getActive() {
         return this;
+    }
+
+    //TODO NF Rules revamp
+    public List<DC_ActiveObj> getAttackTypes() {
+        return new ArrayList<>();
     }
 }
 

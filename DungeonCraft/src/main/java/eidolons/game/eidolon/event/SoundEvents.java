@@ -1,6 +1,6 @@
 package eidolons.game.eidolon.event;
 
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicEnums;
 import main.data.filesys.PathFinder;
@@ -52,7 +52,7 @@ public class SoundEvents {
                 case UNIT_HAS_BEEN_KILLED:
                     if (EntityCheckMaster.isOverlaying(event.getRef().getTargetObj()))
                         break;
-                    if (event.getRef().getTargetObj() != Eidolons.MAIN_HERO) {
+                    if (event.getRef().getTargetObj() != Core.MAIN_HERO) {
 //                        DC_SoundMaster.playRandomSoundVariant(PathFinder.getSoundsetsPath()
 //                                + "combat/fall/", true);
                         break;
@@ -62,7 +62,7 @@ public class SoundEvents {
                     return MusicEnums.MUSIC_MOMENT.DEATH.getCorePath();
 
                 case UNIT_HAS_RECOVERED_FROM_UNCONSCIOUSNESS:
-                    if (event.getRef().getSourceObj() != Eidolons.MAIN_HERO) {
+                    if (event.getRef().getSourceObj() != Core.MAIN_HERO) {
                         break;
                     }
                     return MusicEnums.MUSIC_MOMENT.RISE.getCorePath();
@@ -71,7 +71,7 @@ public class SoundEvents {
                     if (event.getRef().getSourceObj().isDead()) {
                         return null;
                     }
-                    if (event.getRef().getSourceObj() != Eidolons.MAIN_HERO) {
+                    if (event.getRef().getSourceObj() != Core.MAIN_HERO) {
                         DC_SoundMaster.playRandomSoundVariant(PathFinder.getSoundsetsPath()
                                 + "combat/fall/", true);
                         break;

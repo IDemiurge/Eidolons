@@ -2,7 +2,7 @@ package libgdx.gui.panels.headquarters.tabs.tree.classes;
 
 import eidolons.content.PROPS;
 import eidolons.entity.obj.attach.HeroClass;
-import eidolons.game.module.herocreator.logic.HeroClassMaster;
+import eidolons.game.module.herocreator.logic.passives.HeroClassMaster;
 import libgdx.gui.panels.headquarters.tabs.tree.HtNode;
 import eidolons.content.consts.Images;
 import main.entity.Entity;

@@ -14,7 +14,7 @@ import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzle;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -108,9 +108,9 @@ public class DC_GridPanel extends GridPanel {
             if (HqPanel.getActiveInstance().getColor().a == 1)
                 return;
         }
-        if (Eidolons.game != null)
-            if (Eidolons.game.getLoop() != null)
-                paused = Eidolons.game.getLoop().isPaused();
+        if (Core.game != null)
+            if (Core.game.getLoop() != null)
+                paused = Core.game.getLoop().isPaused();
         if (parentAlpha == ShaderDrawer.SUPER_DRAW) {
             for (GroupX groupX : getCommentSprites()) {
                 groupX.setVisible(false);
@@ -213,7 +213,7 @@ public class DC_GridPanel extends GridPanel {
 
                         TextureRegion texture;
                         if (outline != null) {
-                            String path = Eidolons.game.getVisionMaster().getVisibilityMaster().getImagePath(outline, obj);
+                            String path = Core.game.getVisionMaster().getVisibilityMaster().getImagePath(outline, obj);
                             if (obj instanceof Unit) {
                                 LogMaster.log(1, obj + " has OUTLINE: " + path);
                             }
@@ -342,7 +342,7 @@ public class DC_GridPanel extends GridPanel {
             if (p.getLeft().isEmpty()) {
                 FloatingTextMaster.getInstance().createFloatingText(VisualEnums.TEXT_CASES.REQUIREMENT,
                         "No targets available!",
-                        Eidolons.getGame().getManager().getControlledObj());
+                        Core.getGame().getManager().getControlledObj());
                 GdxMaster.setDefaultCursor();
                 EUtils.playSound(AudioEnums.STD_SOUNDS.NEW__CLICK_DISABLED);
                 return;

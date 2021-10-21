@@ -44,8 +44,8 @@ import main.system.math.Formula;
 import java.util.ArrayList;
 import java.util.List;
 
-import static main.content.enums.entity.ActionEnums.MISC_ACTIONS;
-import static main.content.enums.entity.ActionEnums.STD_SPEC_ACTIONS;
+import static main.content.enums.entity.ActionEnums.HIDDEN_ACTIONS.*;
+import static main.content.enums.entity.ActionEnums.DEFAULT_ACTION;
 
 public class ActionManager extends AiHandler {
 
@@ -119,11 +119,6 @@ public class ActionManager extends AiHandler {
         }
         getPathSequenceConstructor().clearCache(); // TODO try not to? :)
         Unit unit = getUnit();
-
-        if (unit != ai.getUnit()) {
-            getCellPrioritizer().reset();
-        }
-
 
         checkDeactivate();
 
@@ -209,10 +204,10 @@ public class ActionManager extends AiHandler {
         Action action = null;
         if (behaviorMode != null) {
             if (behaviorMode == AiEnums.BEHAVIOR_MODE.PANIC) {
-                action = new Action(ai.getUnit().getAction(MISC_ACTIONS.Cower.toString()));
+                action = new Action(ai.getUnit().getAction(Cower_In_Terror.toString()));
             }
             if (behaviorMode == AiEnums.BEHAVIOR_MODE.CONFUSED) {
-                action = new Action(ai.getUnit().getAction(MISC_ACTIONS.stumble.toString()));
+                action = new Action(ai.getUnit().getAction(Stumble_About.toString()));
             }
             if (behaviorMode == AiEnums.BEHAVIOR_MODE.BERSERK) {
                 // TODO make real
@@ -252,11 +247,11 @@ public class ActionManager extends AiHandler {
         if (behaviorMode == null) {
             if (ParamAnalyzer.isFatigued(getUnit())) {
                 actions.add(new ActionSequence(AiEnums.GOAL_TYPE.PREPARE, getAction(getUnit(),
-                        ActionEnums.STD_MODE_ACTIONS.Rest.name())));
+                        ActionEnums.DEFAULT_ACTION.Rest.name())));
             }
             if (ParamAnalyzer.isHazed(getUnit())) { // when is that used?
                 actions.add(new ActionSequence(AiEnums.GOAL_TYPE.PREPARE, getAction(getUnit(),
-                        ActionEnums.STD_MODE_ACTIONS.Concentrate.name())));
+                        ActionEnums.DEFAULT_ACTION.Concentrate.name())));
             }
         }
         if (actions.isEmpty()) {
@@ -264,7 +259,7 @@ public class ActionManager extends AiHandler {
                 return getForcedForBehavior(getUnit(), getUnit().getBehaviorMode());
             }
             LogMaster.log(1, getUnit() + " has been Forced to wait!");
-            return getAction(getUnit(), STD_SPEC_ACTIONS.Wait.name(), null);
+            return getAction(getUnit(), DEFAULT_ACTION.Wait.name(), null);
         }
         ActionSequence sequence = getPriorityManager().chooseByPriority(actions);
 
@@ -276,7 +271,7 @@ public class ActionManager extends AiHandler {
         action = sequence.popNextAction();
         if (action == null) {
             LogMaster.log(1, getUnit() + " has been Forced to Defend!");
-            return getAction(getUnit(), ActionEnums.STD_MODE_ACTIONS.Defend.name(), null);
+            return getAction(getUnit(), ActionEnums.DEFAULT_ACTION.Defend.name(), null);
         }
         return action;
     }
@@ -290,7 +285,7 @@ public class ActionManager extends AiHandler {
             case CONFUSED:
                 return new Action(unit.getAction("Stumble About"));
         }
-        return getAction(getUnit(), STD_SPEC_ACTIONS.Wait.name(), null);
+        return getAction(getUnit(), DEFAULT_ACTION.Wait.name(), null);
     }
 
     private Integer checkWaitForBlockingAlly() {

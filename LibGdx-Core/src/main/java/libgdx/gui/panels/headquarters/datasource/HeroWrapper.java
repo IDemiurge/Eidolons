@@ -3,7 +3,6 @@ package libgdx.gui.panels.headquarters.datasource;
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.Deity;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.active.DC_UnitAction;
@@ -22,7 +21,7 @@ import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.logic.battlefield.vision.mapper.*;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.libgdx.datasource.HeroDataModel;
 import main.ability.AbilityObj;
@@ -45,7 +44,6 @@ import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.enums.entity.HeroEnums.GENDER;
 import main.content.enums.entity.HeroEnums.RACE;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
-import main.content.enums.entity.SpellEnums.SPELL_UPGRADE;
 import main.content.enums.entity.UnitEnums.*;
 import main.content.enums.rules.VisionEnums.*;
 import main.content.enums.system.AiEnums.AI_TYPE;
@@ -97,7 +95,7 @@ public class HeroWrapper extends HeroDataModel {
     }
     @Override
     public DC_Game getGame() {
-        return Eidolons.getGame();
+        return Core.getGame();
     }
 
     @Override
@@ -577,16 +575,6 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public DC_ActiveObj getPreferredInstantAttack() {
-        return getHero().getPreferredInstantAttack();
-    }
-
-    @Override
-    public void setPreferredInstantAttack(DC_ActiveObj preferredInstantAttack) {
-        getHero().setPreferredInstantAttack(preferredInstantAttack);
-    }
-
-    @Override
     public boolean isSmall() {
         return getHero().isSmall();
     }
@@ -619,16 +607,6 @@ public class HeroWrapper extends HeroDataModel {
     @Override
     public boolean isShort() {
         return getHero().isShort();
-    }
-
-    @Override
-    public DC_ActiveObj getPreferredCounterAttack() {
-        return getHero().getPreferredCounterAttack();
-    }
-
-    @Override
-    public void setPreferredCounterAttack(DC_ActiveObj preferredCounterAttack) {
-        getHero().setPreferredCounterAttack(preferredCounterAttack);
     }
 
     @Override
@@ -697,16 +675,6 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public DC_ActiveObj getPreferredAttackOfOpportunity() {
-        return getHero().getPreferredAttackOfOpportunity();
-    }
-
-    @Override
-    public void setPreferredAttackOfOpportunity(DC_ActiveObj preferredAttackOfOpportunity) {
-        getHero().setPreferredAttackOfOpportunity(preferredAttackOfOpportunity);
-    }
-
-    @Override
     public String getCachedValue(VALUE value) {
         return getHero().getCachedValue(value);
     }
@@ -734,16 +702,6 @@ public class HeroWrapper extends HeroDataModel {
     @Override
     public void constructConcurrently() {
         getHero().constructConcurrently();
-    }
-
-    @Override
-    public DC_ActiveObj getPreferredAttackAction() {
-        return getHero().getPreferredAttackAction();
-    }
-
-    @Override
-    public void setPreferredAttackAction(DC_ActiveObj preferredAttackAction) {
-        getHero().setPreferredAttackAction(preferredAttackAction);
     }
 
     @Override
@@ -961,11 +919,6 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public void initDeity() {
-        getHero().initDeity();
-    }
-
-    @Override
     public void addPassive(String abilName) {
         getHero().addPassive(abilName);
     }
@@ -1081,15 +1034,6 @@ public class HeroWrapper extends HeroDataModel {
         return getHero().getProp(prop);
     }
 
-    @Override
-    public Deity getDeity() {
-        return getHero().getDeity();
-    }
-
-    @Override
-    public void setDeity(Deity deity) {
-        getHero().setDeity(deity);
-    }
 
     @Override
     public String getGroup() {
@@ -2065,10 +2009,6 @@ public class HeroWrapper extends HeroDataModel {
         return getHero().modifyParamByPercent(param, perc);
     }
 
-    @Override
-    public boolean canDivine() {
-        return getHero().canDivine();
-    }
 
     @Override
     public boolean modifyParamByPercent(PARAMETER param, int perc, boolean base) {
@@ -2339,39 +2279,8 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public boolean toggleActionMode(DC_ActiveObj action, String mode) {
-        return getHero().toggleActionMode(action, mode);
-    }
-
-    @Override
-    public String getActionMode(DC_ActiveObj activeObj) {
-        return getHero().getActionMode(activeObj);
-    }
-
-    @Override
-    @Deprecated
-    public void initToolTip() {
-        getHero().initToolTip();
-    }
-
-    @Override
-    public boolean isLeader() {
-        return getHero().isLeader();
-    }
-
-    @Override
-    public void setLeader(boolean leader) {
-        getHero().setLeader(leader);
-    }
-
-    @Override
     public boolean isHostileTo(DC_Player player) {
         return getHero().isHostileTo(player);
-    }
-
-    @Override
-    public void spellUpgradeToggled(Entity spell, SPELL_UPGRADE ug) {
-        getHero().spellUpgradeToggled(spell, ug);
     }
 
     @Override
@@ -2434,10 +2343,6 @@ public class HeroWrapper extends HeroDataModel {
         getHero().setBackgroundType(backgroundType);
     }
 
-    @Override
-    public  Map<DC_ActiveObj, String> getActionModeMap() {
-        return getHero().getActionModeMap();
-    }
 
     @Override
     public boolean removeProperty(PROPERTY prop, String value) {
@@ -2460,11 +2365,6 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public List<DC_UnitAction> getAttacks(boolean offhand) {
-        return getHero().getAttacks(offhand);
-    }
-
-    @Override
     public void resetQuickSlotsNumber() {
         getHero().resetQuickSlotsNumber();
     }
@@ -2479,10 +2379,6 @@ public class HeroWrapper extends HeroDataModel {
         getHero().resetDefaultAttrs();
     }
 
-    @Override
-    public void resetMorale() {
-        getHero().resetMorale();
-    }
 
     @Override
     public UnitLogger getLogger() {
@@ -2565,11 +2461,6 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public void initSpellbook() {
-        getHero().initSpellbook();
-    }
-
-    @Override
     public void initSkills() {
         getHero().initSkills();
     }
@@ -2597,11 +2488,6 @@ public class HeroWrapper extends HeroDataModel {
     @Override
     public void initNaturalWeapon(boolean offhand) {
         getHero().initNaturalWeapon(offhand);
-    }
-
-    @Override
-    public void initIntegrityAlignments() {
-        getHero().initIntegrityAlignments();
     }
 
     @Override

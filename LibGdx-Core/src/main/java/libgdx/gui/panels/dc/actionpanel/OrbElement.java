@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import eidolons.content.PARAMS;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import libgdx.StyleHolder;
 import libgdx.bf.SuperActor;
 import libgdx.bf.generic.ImageContainer;
@@ -199,7 +199,7 @@ public class OrbElement extends SuperActor {
             //            }
 
         }
-        if (Eidolons.game.isDebugMode() || Gdx.input.isKeyPressed(Keys.ALT_LEFT))
+        if (Core.game.isDebugMode() || Gdx.input.isKeyPressed(Keys.ALT_LEFT))
             label.draw(batch, parentAlpha);
 
         //TODO if hover

@@ -2,7 +2,7 @@ package boss.logic.rules;
 
 import boss.BossHandler;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import boss.BossManager;
 import boss.BossModel;
 
@@ -16,7 +16,7 @@ public class BossVision <T extends BossModel> extends BossHandler<T> {
      */
 
     public boolean isMainHeroVisible(){
-        return isVisible(Eidolons.getMainHero());
+        return isVisible(Core.getMainHero());
     }
 
     public boolean isVisible(Unit hero) {

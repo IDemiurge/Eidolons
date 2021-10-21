@@ -5,13 +5,12 @@ import eidolons.content.values.ValueInitializer;
 import eidolons.content.values.ValuePageManager;
 import eidolons.content.values.ValuePages;
 import eidolons.content.values.ValueTypePairs;
-import eidolons.entity.Deity;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.attach.DC_PassiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.mechanics.CoatingRule;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.herocreator.logic.skills.SkillMaster;
+import eidolons.game.module.herocreator.logic.passives.SkillMaster;
 import main.content.*;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.ASPECT;
@@ -175,37 +174,10 @@ public class DC_ContentValsManager extends ContentValsManager {
 
     }
 
-    public static Deity getDeity(Obj obj) {
-        String property = obj.getProperty(G_PROPS.DEITY);
-        return getDeity(obj.getRef(), property);
-    }
-
-
-    public static Deity getDeity(Ref ref, String property) {
-        if (StringMaster.isEmpty(property)) {
-            return null ;
-        }
-        if (ContentConsts.deities == null) {
-            ContentConsts.deities = new HashMap<>();
-        }
-        Deity deity = ContentConsts.deities.get(property);
-        if (deity != null) {
-            return deity;
-        }
-        ObjType type = DataManager.getType(property, DC_TYPE.DEITIES);
-        deity = new Deity(type, ref.getGame(), ref);
-        deity.toBase();
-        ContentConsts.deities.put(type.getName(), deity);
-        return deity;
-    }
-
     public static List<ATTRIBUTE> getAttributeEnums() {
         return Arrays.asList(ATTRIBUTE.values());
     }
 
-    // public static boolean isResetExcludedParam(PARAMETER portrait) {
-    // return Arrays.asList(resetExcludedParam).contains(portrait);
-    // }
 
     public static PARAMETER getAlignmentForPrinciple(PRINCIPLES principle) {
         PARAMETER param = ContentConsts.alignmentMap.get(principle);
@@ -409,8 +381,7 @@ public class DC_ContentValsManager extends ContentValsManager {
             }
             boolean unit = C_OBJ_TYPE.UNITS_CHARS.equals(entity.getOBJ_TYPE_ENUM());
 
-            if (getDefaultValuesToReset().contains(VAL)
-             || (!unit && StringMaster.isEmpty(entity.getValue(VAL)) && !StringMaster
+            if ((!unit && StringMaster.isEmpty(entity.getValue(VAL)) && !StringMaster
              .isEmpty(value))) {
                 if (entity instanceof Obj) {
                     entity.getType().setValue(VAL, value);
@@ -426,21 +397,12 @@ public class DC_ContentValsManager extends ContentValsManager {
         entity.setDefaultValuesInitialized(true);
     }
 
-    private static List<VALUE> getDefaultValuesToReset() {
-        return new ArrayList<>(Arrays
-         .asList(
-          PARAMS.COUNTER_TOUGHNESS_COST_MOD,
-          PARAMS.AOO_TOUGHNESS_COST_MOD,
-          PARAMS.INSTANT_TOUGHNESS_COST_MOD,
-          PARAMS.COUNTER_MOD));
-    }
 
     private static String getDefaultValueSpecial(Entity entity, VALUE v) {
         // if (v.getSpecialDefault(entity.getOBJ_TYPE_ENUM()) != null) {
         //     return v.getSpecialDefault(entity.getOBJ_TYPE_ENUM()).toString();
         // }
         // Core Review - this is too heavy and brutish, do we even need it really?
-
         return null;
     }
 
@@ -807,10 +769,6 @@ public class DC_ContentValsManager extends ContentValsManager {
                 return PARAMS.C_FOCUS;
             case ENDURANCE_COST:
                 return PARAMS.C_ENDURANCE;
-            case ATK_PTS_COST:
-                return PARAMS.C_EXTRA_ATTACKS;
-            case MOVE_PTS_COST:
-                return PARAMS.C_EXTRA_MOVES;
         }
         return costParam;
     }

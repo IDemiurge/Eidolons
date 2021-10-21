@@ -5,7 +5,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.advanced.companion.Order;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.content.consts.Images;
@@ -103,15 +103,15 @@ public class DC_GameLogManager extends LogManager {
             if (obj.getActivePlayerVisionStatus() == PLAYER_VISION.INVISIBLE) {
                 return;
             }
-        if (obj == Eidolons.getMainHero()) {
-            DIRECTION relative = DirectionMaster.getRelativeDirection( Eidolons.getMainHero().getLastCoordinates()
-                    ,Eidolons.getPlayerCoordinates()                   );
-            int dst = Eidolons.getPlayerCoordinates().dst(Eidolons.getMainHero().getLastCoordinates());
+        if (obj == Core.getMainHero()) {
+            DIRECTION relative = DirectionMaster.getRelativeDirection( Core.getMainHero().getLastCoordinates()
+                    , Core.getPlayerCoordinates()                   );
+            int dst = Core.getPlayerCoordinates().dst(Core.getMainHero().getLastCoordinates());
             String gamelog = name + " has moved [" + relative.toString().toLowerCase() + "] "
                     +StringMaster.wrapInParenthesis(""+dst);
             log(gamelog);
         } else {
-            int dst = Eidolons.getPlayerCoordinates().dst(obj.getCoordinates());
+            int dst = Core.getPlayerCoordinates().dst(obj.getCoordinates());
             String gamelog = name + " has moved to a new position at [" + dst + "] distance";
             log(gamelog);
         }

@@ -7,7 +7,7 @@ import eidolons.entity.item.DC_InventoryManager.OPERATIONS;
 import eidolons.entity.item.DC_JewelryObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.HeroManager;
 import libgdx.anims.text.FloatingTextMaster;
@@ -36,7 +36,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
     public InventoryClickHandlerImpl(HqDataMaster dataMaster, HeroDataModel hero) {
         this.dataMaster = dataMaster;
         this.hero = hero;
-        manager = Eidolons.game.getInventoryManager();
+        manager = Core.game.getInventoryManager();
     }
 
     @Override

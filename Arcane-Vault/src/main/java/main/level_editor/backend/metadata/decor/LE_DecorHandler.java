@@ -4,7 +4,6 @@ import eidolons.content.consts.DecorData;
 import eidolons.content.consts.DecorData.DECOR_LEVEL;
 import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
-import eidolons.game.core.Eidolons;
 import eidolons.content.consts.GraphicData;
 import eidolons.content.consts.GraphicData.GRAPHIC_VALUE;
 import libgdx.screens.ScreenMaster;

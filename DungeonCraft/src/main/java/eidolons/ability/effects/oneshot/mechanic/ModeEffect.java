@@ -5,7 +5,6 @@ import eidolons.ability.effects.common.ModifyPropertyEffect;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.continuous.SetCustomModeEffect;
 import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
-import eidolons.ability.effects.oneshot.spell.DivinationEffect;
 import eidolons.ability.effects.oneshot.status.ImmobilizeEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
@@ -159,19 +158,8 @@ divination?
         return addBuffEffect.apply(ref);
     }
 
+    //TODO NF Rules revamp - add counters?
     private Effect createOneShotEffect(MODE mode, Obj obj) {
-        if (mode instanceof STD_MODES) {
-            switch (((STD_MODES) mode)) {
-                case CONCENTRATION:
-                    //TODO DC Review - might wanna introduce some variable here
-                    int n= obj.getIntParam(PARAMS.EXTRA_ATTACKS)/3;
-                    return new ModifyValueEffect(PARAMS.C_EXTRA_MOVES, MOD.MODIFY_BY_CONST, n+"");
-                case ALERT:
-                case DEFENDING:
-                    n= obj.getIntParam(PARAMS.EXTRA_ATTACKS)/2;
-                    return new ModifyValueEffect(PARAMS.C_EXTRA_ATTACKS, MOD.MODIFY_BY_CONST, n+"");
-            }
-        }
         return null;
     }
 
@@ -187,19 +175,15 @@ divination?
                 return;
         Effects effects = new Effects();
         String period = mode.getPeriod();
-        if (mode != STD_MODES.DIVINATION) {
-            for (String substring : ContainerUtils.openContainer(periodicValues)) {
-                String amount = VariableManager.getVar(substring, 0);
-                String maxAmount = VariableManager.getVar(substring, 1);
-                String periodicValue = VariableManager.removeVarPart(substring);
+        for (String substring : ContainerUtils.openContainer(periodicValues)) {
+            String amount = VariableManager.getVar(substring, 0);
+            String maxAmount = VariableManager.getVar(substring, 1);
+            String periodicValue = VariableManager.removeVarPart(substring);
 
-                Formula max = new Formula(maxAmount);
-                Formula formula = new Formula(amount);
-                effects.add(new ModifyValueEffect(periodicValue, MOD.MODIFY_BY_CONST,
-                        formula, max));
-            }
-        } else {
-            effects.add(new DivinationEffect());
+            Formula max = new Formula(maxAmount);
+            Formula formula = new Formula(amount);
+            effects.add(new ModifyValueEffect(periodicValue, MOD.MODIFY_BY_CONST,
+                    formula, max));
         }
         Effect fx = new PeriodicEffect(period, effects);
         fx.setRef(Ref.getSelfTargetingRefCopy(ref.getSourceObj()));
@@ -283,8 +267,8 @@ divination?
             // ++ remove disable actions?!
         }
         if (mode.isRemoveEndRound())
-        addBuffEffect.addEffect(new DelayedEffect(REMOVE_EVENT, new RemoveBuffEffect(addBuffEffect
-                .getBuffTypeName()), c));
+            addBuffEffect.addEffect(new DelayedEffect(REMOVE_EVENT, new RemoveBuffEffect(addBuffEffect
+                    .getBuffTypeName()), c));
         // .apply(ref);
     }
 
@@ -296,11 +280,7 @@ divination?
 
     private void addDispelOnHitTrigger() {
         Effects effects = new Effects(new RemoveBuffEffect(addBuffEffect.getBuffTypeName()));
-        if (!mode.equals(STD_MODES.ALERT)) {
-            effects.add(InterruptRule.getEffect());
-        } else {
-            effects.add(AlertRule.getInterruptEffect());
-        }
+        effects.add(InterruptRule.getEffect());
         if (mode.equals(STD_MODES.CHANNELING)) {
             effects.add(new EffectImpl() {
                 @Override
@@ -320,11 +300,6 @@ divination?
 
     private void addEndTurnEffect() {
         Condition condition = new StringComparison(prop, mode.toString(), true);
-        if (mode == STD_MODES.DIVINATION) {
-            Effect effect = new DivinationEffect();
-            addBuffEffect.addEffect(new DelayedEffect(effect, condition));
-            return;
-        }
         String formula = mode.getFormula();
         if (ref.getActive() instanceof DC_ActiveObj) {
             DC_ActiveObj activeObj = (DC_ActiveObj) ref.getActive();

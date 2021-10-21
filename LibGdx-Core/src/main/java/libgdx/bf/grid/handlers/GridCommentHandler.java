@@ -12,7 +12,7 @@ import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.entity.obj.unit.DummyUnit;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.cinematic.Cinematics;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
@@ -197,7 +197,7 @@ public class GridCommentHandler extends GridHandler{
 
         comment(portrait, unit.getFacing(), unit.getCoordinates(), textTop, text, at);
         LogMaster.devLog(text + "\n - Comment by " + unit.getNameAndCoordinate());
-        Eidolons.getGame().getLogManager().log(unit.getName() + ": \n" +
+        Core.getGame().getLogManager().log(unit.getName() + ": \n" +
                 StringMaster.removeNewLines(text).trim());
     }
 
@@ -256,9 +256,9 @@ public class GridCommentHandler extends GridHandler{
         SpriteX finalCommentBgSprite = commentBgSprite;
         SpriteX finalCommentTextBgSprite = commentTextBgSprite;
         DIRECTION textPlacement = textTop ? DIRECTION.DOWN
-                : (c.dst(Eidolons.getPlayerCoordinates()) > 4) ? DIRECTION.LEFT : DIRECTION.RIGHT;
+                : (c.dst(Core.getPlayerCoordinates()) > 4) ? DIRECTION.LEFT : DIRECTION.RIGHT;
         if (finalAt != null) {
-            Vector2 v = GridMaster.getCenteredPos(Eidolons.getPlayerCoordinates());
+            Vector2 v = GridMaster.getCenteredPos(Core.getPlayerCoordinates());
             if (v.x < finalAt.x) {
                 textPlacement = DIRECTION.LEFT;
             } else {
@@ -428,9 +428,9 @@ public class GridCommentHandler extends GridHandler{
             grid.getActiveCommentSprites().remove(commentGroup);
 //       this will be a mess!     GdxMaster.inputPass();
 
-            ActionMasterGdx.addAction(finalCommentBgSprite, new WaitAction(delta -> Eidolons.getGame().isPaused()));
-            ActionMasterGdx.addAction(portrait, new WaitAction(delta -> Eidolons.getGame().isPaused()));
-            ActionMasterGdx.addAction(finalCommentTextBgSprite, new WaitAction(delta -> Eidolons.getGame().isPaused()));
+            ActionMasterGdx.addAction(finalCommentBgSprite, new WaitAction(delta -> Core.getGame().isPaused()));
+            ActionMasterGdx.addAction(portrait, new WaitAction(delta -> Core.getGame().isPaused()));
+            ActionMasterGdx.addAction(finalCommentTextBgSprite, new WaitAction(delta -> Core.getGame().isPaused()));
 
             ActionMasterGdx.addFadeOutAction(finalCommentBgSprite, seq ? 6 : 4);
             ActionMasterGdx.addRemoveAfter(finalCommentBgSprite);

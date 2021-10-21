@@ -93,14 +93,6 @@ public class DC_PriorityManager {
         return impl.getHealthFactor(targetObj, less_or_more_for_health);
     }
 
-    public static int getMeleeDangerFactor(Unit unit) {
-        return aiMaster.getSituationAnalyzer().getMeleeDangerFactor(unit);
-    }
-
-    public static int getMeleeThreat(Unit enemy) {
-        return aiMaster.getThreatAnalyzer().getMeleeThreat(enemy);
-    }
-
     public static ActionSequence chooseByPriority(List<ActionSequence> actions) {
         return impl.chooseByPriority(actions);
     }

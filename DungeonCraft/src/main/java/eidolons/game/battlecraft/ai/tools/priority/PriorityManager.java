@@ -43,8 +43,6 @@ public interface PriorityManager {
 
     int getSpellPriority(GOAL_TYPE type, Action action);
 
-    int getSpellPriority(Spell spell, Context context);
-
     int getSelfSpellPriority(Action action);
 
     void addEffectPriority(Action action, Effect e);
@@ -72,8 +70,6 @@ public interface PriorityManager {
 
     int getCowerPriority(Unit unit);
 
-    int getStealthPriority(Action action);
-
     int getZoneSpellPriority(Action action, boolean damage);
 
     int getSearchPriority(ActionSequence as);
@@ -96,13 +92,6 @@ public interface PriorityManager {
     int getItemPriority(DC_Obj targetObj);
 
     int getAttackPriority(DC_ActiveObj active, BattleFieldObject targetObj);
-
-    int getSpecialEffectsPriority(SPECIAL_EFFECTS_CASE CASE, Unit source,
-                                  Unit target);
-
-    int getSpecialEffectPriority(Effect e);
-
-    int getAttackOfOpportunityPenalty(DC_ActiveObj action, Unit targetObj);
 
     int getCounterPenalty(DC_ActiveObj active, Unit targetObj);
 
@@ -136,18 +125,4 @@ public interface PriorityManager {
 
     AiMaster getMaster();
 
-    int getCostFactor(Costs cost, Unit unit);
-
-
-    enum AI_EFFECT_PRIORITIZING {
-        ATTACK, DAMAGE, BUFF, PARAM_MOD, COUNTER_MOD, SUMMON, MODE, BEHAVIOR_MODE,
-    }
-
-    enum PRIORITY_FUNCS {
-        NO_ALLIES,
-        NEVER,
-        ALWAYS,
-
-        DURATION, DANGER, CAPACITY, DANGER_TO_ALLY,
-    }
 }

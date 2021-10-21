@@ -61,14 +61,16 @@ public class DC_Attributes  {
             case AGILITY:
                 // + damage modifier
                 mod(amount, AttributeConsts.AGI_ATK_BONUS, attr, PARAMS.ATTACK);
-                mod(DC_Formulas.getCountersFromAgi(amount), attr, PARAMS.EXTRA_ATTACKS);
+                //TODO NF Rules revamp
+                // mod(DC_Formulas.getCountersFromAgi(amount), attr, PARAMS.EXTRA_ATTACKS); adrenaline gain?
                 mod(amount, AttributeConsts.AGI_REFLEX_BONUS, attr, PARAMS.REFLEX);
                 mod(before25, AttributeConsts.B25_AGI_ARMOR_PENETRATION, attr, PARAMS.ARMOR_PENETRATION);
                 mod(amount - 25, AttributeConsts.A25_AGI_INITIATIVE , attr, PARAMS.INITIATIVE);
                 break;
 
             case DEXTERITY:
-                mod(DC_Formulas.getExtraMovesFromDex(amount), attr, PARAMS.EXTRA_MOVES);
+                //TODO NF Rules revamp
+                // mod(DC_Formulas.getExtraMovesFromDex(amount), attr, PARAMS.EXTRA_MOVES); energy?
                 mod(amount, AttributeConsts.DEX_DEF_BONUS, attr, PARAMS.DEFENSE);
                 mod(amount, AttributeConsts.DEX_REFLEX_BONUS, attr, PARAMS.REFLEX);
                 mod(before25, AttributeConsts.B25_DEX_INITIATIVE , attr, PARAMS.INITIATIVE);

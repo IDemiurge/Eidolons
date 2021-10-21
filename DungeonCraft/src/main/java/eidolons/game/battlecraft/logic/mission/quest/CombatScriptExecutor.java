@@ -20,7 +20,7 @@ import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.logic.mission.universal.MissionMaster;
 import eidolons.game.battlecraft.logic.mission.universal.ScriptManager;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
@@ -52,6 +52,7 @@ import main.system.threading.WaitMaster;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static main.system.threading.WaitMaster.WAIT_OPERATIONS.MESSAGE_RESPONSE;
@@ -244,7 +245,7 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
         int req = Integer.parseInt(args[1]);
         if (req > n) {
             String text = getEsotericaKey(req);
-            doComment(Eidolons.getMainHero(), text);
+            doComment(Core.getMainHero(), text);
             return false;
         }
         String key = args[0];
@@ -264,19 +265,19 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
             }
             BattleFieldObject a = getGame().getObjMaster().getByName(arg, ref);
             if (a != null) {
-                AggroMaster.aggro((Unit) a, Eidolons.getMainHero());
+                AggroMaster.aggro((Unit) a, Core.getMainHero());
                 hasAggro = true;
             }
         }
         if (!hasAggro)
-            for (Unit unit : Eidolons.getGame().getUnits()) {
-                if (Eidolons.getPlayerCoordinates().dst(unit.getCoordinates()) < dst) {
-                    AggroMaster.aggro(unit, Eidolons.getMainHero());
+            for (Unit unit : Core.getGame().getUnits()) {
+                if (Core.getPlayerCoordinates().dst(unit.getCoordinates()) < dst) {
+                    AggroMaster.aggro(unit, Core.getMainHero());
                     hasAggro = true;
                 }
             }
         if (hasAggro) {
-            Eidolons.getGame().getDungeonMaster().getExplorationMaster().switchExplorationMode(false);
+            Core.getGame().getDungeonMaster().getExplorationMaster().switchExplorationMode(false);
         } else {
 
         }
@@ -339,8 +340,7 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
         //        GuiEventManager.trigger(GuiEventType.SHADOW_MAP_FADE_IN, 100);
         //        String group = args[i];
         //        i++;
-        List<Unit> members = getMaster().getMetaMaster().getPartyManager().getParty().
-                getMembers();
+        Set<Unit> members = game.getPlayer(true).collectControlledUnits_();
         List<Coordinates> coordinates =
                 getCoordinatesListForUnits(args[0], getPlayerManager().getPlayer(true),
                         members.stream().map(DataModel::getName).collect(Collectors.toList()), ref);
@@ -372,7 +372,7 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
         //        GuiEventManager.trigger(GuiEventType.SHOW_COMMENT_PORTRAIT, img, text, c);
 
         text = GdxAdapter.getInstance().getEventsAdapter().comment(img, text, c);
-        Eidolons.getGame().getLogManager().log(name + " :" +  (text));
+        Core.getGame().getLogManager().log(name + " :" +  (text));
         return true;
     }
 
@@ -441,7 +441,7 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
             }
         }
         if (unit == null) {
-            unit = Eidolons.getMainHero();
+            unit = Core.getMainHero();
         }
 
 

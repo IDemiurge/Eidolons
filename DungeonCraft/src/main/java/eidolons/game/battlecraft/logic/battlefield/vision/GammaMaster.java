@@ -6,7 +6,7 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.struct.Entrance;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
 import main.content.CONTENT_CONSTS;
@@ -64,9 +64,9 @@ public class GammaMaster {
         if (type == SHADE_CELL.BLACKOUT) return getBlackoutAlpha(x, y);
         if (type == SHADE_CELL.HIGHLIGHT) return getHiglightAlpha(x, y);
 
-        Coordinates c = Eidolons.getPlayerCoordinates();
+        Coordinates c = Core.getPlayerCoordinates();
         float alpha = 0;
-        DC_Cell cell = Eidolons.game.getCell(
+        DC_Cell cell = Core.game.getCell(
                 master.getGame().getGrid().getModuleCoordinates(x, y));
         float gamma = getGammaForCell(cell);
 
@@ -101,7 +101,7 @@ public class GammaMaster {
                 break;
             case CONCEALMENT:
                 alpha =
-                        master.getIlluminationMaster().getConcealment(Eidolons.getMainHero(), cell) * CONCEALMENT_ALPHA_FACTOR;
+                        master.getIlluminationMaster().getConcealment(Core.getMainHero(), cell) * CONCEALMENT_ALPHA_FACTOR;
                 if (alpha > 0)
                     alpha += getAlphaForShadowMapCell(x, (y), SHADE_CELL.LIGHT_EMITTER) / 3;
                 break;
@@ -176,7 +176,7 @@ public class GammaMaster {
 
 
     public float getGammaForCell(int x, int y) {
-        return getGammaForCell(Eidolons.game.getCell(Coordinates.get(x, y)));
+        return getGammaForCell(Core.game.getCell(Coordinates.get(x, y)));
     }
 
     public float getGammaForCell(DC_Cell cell) {

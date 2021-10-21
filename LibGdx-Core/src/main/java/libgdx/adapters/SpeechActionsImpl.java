@@ -12,7 +12,7 @@ import eidolons.puzzle.gridobj.LinkedGridObject;
 import eidolons.puzzle.voidy.VoidHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.GdxSpeechActions;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
 import libgdx.anims.SimpleAnim;
@@ -98,7 +98,7 @@ public class SpeechActionsImpl implements GdxSpeechActions {
             if (!zoom) {
                 switch (value) {
                     case "me":
-                        v =GridMaster.getCenteredPos(Eidolons.getPlayerCoordinates());
+                        v =GridMaster.getCenteredPos(Core.getPlayerCoordinates());
                         break;
                     case "orig":
                         v = new Vector2(0, 0);

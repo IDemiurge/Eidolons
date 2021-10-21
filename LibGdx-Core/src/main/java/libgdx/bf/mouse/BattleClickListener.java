@@ -5,9 +5,8 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import libgdx.gui.panels.headquarters.HqPanel;
-import libgdx.gui.panels.lord.LordPanel;
 import libgdx.screens.ScreenMaster;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -56,13 +55,11 @@ public class BattleClickListener extends ClickListener {
 
     @Override
     public boolean handle(Event e) {
-        if (Eidolons.game == null)
+        if (Core.game == null)
             return true;
-        if (!Eidolons.game.isBattleInit())
+        if (!Core.game.isBattleInit())
             return true;
         if (HqPanel.getActiveInstance()!=null )
-            return true;
-        if (LordPanel.getActiveInstance()!=null )
             return true;
         return super.handle(e);
     }

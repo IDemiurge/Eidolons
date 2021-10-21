@@ -2,7 +2,7 @@ package libgdx.gui.panels.headquarters.tabs.tree.classes;
 
 import eidolons.entity.obj.attach.HeroClass;
 import eidolons.entity.obj.attach.Perk;
-import eidolons.game.module.herocreator.logic.PerkMaster;
+import eidolons.game.module.herocreator.logic.passives.PerkMaster;
 import libgdx.GdxImageMaster;
 import libgdx.gui.panels.headquarters.tabs.tree.HtNode;
 import libgdx.gui.panels.headquarters.tabs.tree.SlotSelectionRadialMenu;

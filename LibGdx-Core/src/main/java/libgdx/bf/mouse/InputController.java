@@ -6,7 +6,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -16,8 +16,6 @@ import libgdx.bf.menu.GameMenu;
 import libgdx.screens.GameScreen;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.OptionsMaster;
-import libgdx.GdxMaster;
-import libgdx.screens.GameScreen;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.system.datatypes.DequeImpl;
@@ -28,10 +26,6 @@ import main.system.sound.SoundMaster;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.badlogic.gdx.Input.Buttons.LEFT;
-import static com.badlogic.gdx.Input.Keys.ALT_LEFT;
-import static com.badlogic.gdx.Input.Keys.CONTROL_LEFT;
 
 /**
  * Created by PC on 25.10.2016.
@@ -230,7 +224,7 @@ public abstract class InputController implements InputProcessor {
         }
         if (onInput != null) {
             main.system.auxiliary.log.LogMaster.devLog("onInput.run() ");
-            Eidolons.onNonGdxThread(onInput);
+            Core.onNonGdxThread(onInput);
             onInput = null;
         }
     }

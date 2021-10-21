@@ -11,7 +11,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster.CONTAINER_ACTION;
 import eidolons.game.module.dungeoncrawl.explore.vendor.GoldMaster;
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
@@ -650,7 +650,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         int gold = getAmountOfGold(obj, totalCost);
         if (gold > 0) {
             int foodChance = Math.min(25, gold * 3);
-            MathMaster.addFactor(foodChance, Eidolons.getMainHero().getIntParam(PARAMS.FORAGING));
+            MathMaster.addFactor(foodChance, Core.getMainHero().getIntParam(PARAMS.FORAGING));
 
             if (RandomWizard.chance(foodChance)) {
                 contents += "Food";
@@ -700,7 +700,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
 
     private boolean checkCanPlaceQuestItem(DungeonQuest quest, String contents, BattleFieldObject obj) {
         if (obj instanceof ContainerObj) {
-            if (obj.getCoordinates().dst(Eidolons.getPlayerCoordinates()) > 20) {
+            if (obj.getCoordinates().dst(Core.getPlayerCoordinates()) > 20) {
                 return false;
             }
             return obj.getProperty(G_PROPS.BF_OBJECT_GROUP).equalsIgnoreCase(BF_OBJECT_GROUP.TREASURE.toString());

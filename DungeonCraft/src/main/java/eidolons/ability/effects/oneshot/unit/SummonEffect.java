@@ -1,6 +1,6 @@
 package eidolons.ability.effects.oneshot.unit;
 
-import eidolons.ability.UnitTrainingMaster;
+import eidolons.entity.obj.unit.trainers.UnitTrainingMaster;
 import eidolons.ability.effects.DC_Effect;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;

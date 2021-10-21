@@ -5,7 +5,7 @@ import eidolons.dungeons.generator.GeneratorEnums;
 import eidolons.dungeons.generator.LevelData;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.struct.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.struct.LevelBlock;
 import eidolons.game.module.dungeoncrawl.struct.LevelZone;
@@ -124,7 +124,7 @@ public class RngMainSpawner {
         log(1, "Spawning for quests ");
         if (!Flags.isFullFastMode())
             if (Flags.isCombatGame())
-                if (Eidolons.getGame().getMetaMaster().isRngQuestsEnabled())
+                if (Core.getGame().getMetaMaster().isRngQuestsEnabled())
                     try {
                         spawnForQuests();
                     } catch (Exception e) {
@@ -148,7 +148,7 @@ public class RngMainSpawner {
     private void spawnForQuests() {
         Collection<Quest> quests;
         try {
-            quests = Eidolons.getGame().getMetaMaster().getQuestMaster().getQuestsPool();
+            quests = Core.getGame().getMetaMaster().getQuestMaster().getQuestsPool();
         } catch (Exception e) {
             return;
         }

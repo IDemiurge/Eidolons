@@ -53,11 +53,6 @@ public class ActiveObjInitializer extends EntityInitializer<DC_ActiveObj> {
             return;
         }
         if (EffectMaster.getEffectsFromAbilities(getEntity().getAbilities()).size() == 0) {
-            if (getEntity() instanceof DC_UnitAction) {
-                if (((DC_UnitAction) getEntity()).isDummy()) {
-                    return;
-                }
-            }
             if (getEntity().isAttackAny()) {
                 main.system.auxiliary.log.LogMaster.important(">>> ATTACK CONSTRUCT FAILeD: " + getEntity());
             } else if (!getEntity().getName().equalsIgnoreCase("wait"))
@@ -84,74 +79,14 @@ public class ActiveObjInitializer extends EntityInitializer<DC_ActiveObj> {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
 
-            Formula ap_cost = new Formula(getParam(PARAMS.AP_COST));
-
-            if (!ExplorationMaster.isExplorationOn()
-                   // && !getEntity().getOwnerObj().isAiControlled()
-                    &&                    (getEntity().isInstantAction() || getHandler().isExtraAttackMode())) {
-                PARAMS parameter = getEntity().isAttackAny()
-                        ? PARAMS.C_EXTRA_ATTACKS
-                        : PARAMS.C_EXTRA_MOVES;
-                Cost cost = costs.getCost(parameter);
-                if (cost == null) {
-                    PARAMS costParam = getEntity().isAttackAny()
-                            ? PARAMS.ATK_PTS_COST
-                            : PARAMS.MOVE_PTS_COST;
-                    CostImpl ptsCost = new CostImpl(new Payment(parameter, ap_cost),
-                            costParam);
-                    if (!getEntity().isAttackAny()) {
-                        if (ptsCost.canBePaid(getRef())) {
-                            costs.addCost(ptsCost);
-                            getEntity().setPointCostActivation(true);
-                        }
-                    } else
-                        costs.addCost(ptsCost);
-                }
-            } else {
-                costs.addCost(new CostImpl(new Payment(null, (int) AtbMaster.getReadinessCost(getEntity()))
-                        , PARAMS.ATB));
-            }
+            costs.addCost(new CostImpl(new Payment(null, (int) AtbMaster.getReadinessCost(getEntity()))
+                    , PARAMS.ATB));
         }
 
         costs.setActive(getEntity());
         costs.setActiveId(getId());
 
-        //TODO Review
-        if (getEntity().isAttackAny())
-            if (getEntity().isExtraAttackMode())
-                applyDynamicCostMods(costs);
-
-
         getEntity().setCosts(costs);
-    }
-
-
-    public void applyDynamicCostMods(Costs costs) {
-        Unit ownerObj = getEntity().getOwnerUnit();
-        Integer sta = 0;
-        Integer ap = 0;
-        if (getHandler().isCounterMode()) {
-            ap = ownerObj.getIntParam(PARAMS.COUNTER_PTS_COST_MOD);
-            sta = ownerObj
-                    .getIntParam(PARAMS.COUNTER_TOUGHNESS_COST_MOD);
-        }
-        if (getHandler().isInstantMode()) {
-            ap = ownerObj.getIntParam(PARAMS.INSTANT_PTS_COST_MOD);
-            sta = ownerObj
-                    .getIntParam(PARAMS.INSTANT_TOUGHNESS_COST_MOD);
-        }
-        if (getHandler().isAttackOfOpportunityMode()) {
-            ap = ownerObj.getIntParam(PARAMS.AOO_PTS_COST_MOD);
-            sta = ownerObj
-                    .getIntParam(PARAMS.AOO_TOUGHNESS_COST_MOD);
-        }
-        if (ap != 0)
-            if (costs.getCost(PARAMS.AP_COST) != null)
-                costs.getCost(PARAMS.AP_COST).getPayment().getAmountFormula().applyModifier(ap);
-        if (sta != 0)
-            if (costs.getCost(PARAMS.TOU_COST) != null) {
-                costs.getCost(PARAMS.TOU_COST).getPayment().getAmountFormula().applyModifier(sta);
-            }
     }
 
 

@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.entity.obj.DC_Cell;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import libgdx.bf.grid.cell.GenericGridView;
 import libgdx.bf.grid.cell.GridCellContainer;
@@ -99,7 +99,7 @@ public class PlatformCell extends GridCellContainer {
                 unitView.getUserObject().setCoordinates(coordinates);
                 if (unitView.isMainHero()) {
                     update = true;
-                    Eidolons.onNonGdxThread(() -> {
+                    Core.onNonGdxThread(() -> {
                         DC_Game.game.getMovementManager().moved(unitView.getUserObject(), cell, false);
                         DC_Game.game.getManager().reset();
                     });

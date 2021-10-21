@@ -1,6 +1,6 @@
 package libgdx.gui.panels.headquarters.weave.model.classes;
 
-import eidolons.game.module.herocreator.logic.HeroClassMaster;
+import eidolons.game.module.herocreator.logic.passives.HeroClassMaster;
 import libgdx.gui.panels.headquarters.weave.Weave;
 import libgdx.gui.panels.headquarters.weave.WeaveTree;
 import libgdx.gui.panels.headquarters.weave.model.WeaveDataNode;

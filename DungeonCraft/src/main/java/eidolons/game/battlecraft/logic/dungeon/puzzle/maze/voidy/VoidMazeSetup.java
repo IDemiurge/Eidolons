@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy;
 
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazeSetup;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.dungeons.generator.model.RoomModel;
 import main.content.CONTENT_CONSTS;
@@ -55,12 +55,12 @@ public class VoidMazeSetup extends MazeSetup<VoidMaze> {
             }
         }
         for (Coordinates markedCell : puzzle. getHandler().markedCells) {
-            Eidolons.getGame().getCell(getAbsoluteCoordinate(markedCell)).
+            Core.getGame().getCell(getAbsoluteCoordinate(markedCell)).
                     getMarks().add(CONTENT_CONSTS.MARK.togglable);
         }
         if (puzzle.isMarkAroundEntrance()){
             for (Coordinates c : getEntranceCoordinates().getAdjacent()) {
-                Eidolons.getGame().getCell(c).
+                Core.getGame().getCell(c).
                         getMarks().add(CONTENT_CONSTS.MARK.togglable);
             }
         }

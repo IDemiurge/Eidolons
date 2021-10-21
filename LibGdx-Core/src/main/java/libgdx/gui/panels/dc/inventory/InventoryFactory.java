@@ -8,7 +8,7 @@ import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import libgdx.texture.TextureCache;
 import main.content.DC_TYPE;
 import main.entity.Entity;
@@ -36,7 +36,7 @@ public class InventoryFactory {
     public static String getTooltipsVals(Entity entity) {
         String text = "";
         if (entity != null) {
-            Ref ref = Eidolons.getMainHero().getRef().getCopy();
+            Ref ref = Core.getMainHero().getRef().getCopy();
             ref.setID(KEYS.SKILL, entity.getId());
             DC_TYPE t = (DC_TYPE) entity.getOBJ_TYPE_ENUM();
             if (entity.getOBJ_TYPE_ENUM() instanceof DC_TYPE) {

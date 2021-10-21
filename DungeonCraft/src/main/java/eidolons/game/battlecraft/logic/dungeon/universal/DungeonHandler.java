@@ -108,10 +108,6 @@ public class DungeonHandler {
         return master.getConstructor();
     }
 
-    public MissionOutcomeManager getOutcomeManager() {
-        return master.getOutcomeManager();
-    }
-
     public DungeonSequence getBattle() {
         return master.getMission();
     }

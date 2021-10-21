@@ -20,7 +20,7 @@ import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.cinematic.Cinematics;
 import eidolons.puzzle.gridobj.GridObject;
@@ -346,8 +346,8 @@ it sort of broke at some point - need to investigate!
     protected abstract GridOverlaysManager createOverlays();
 
     protected String getCellImagePath() {
-        if (Eidolons.getGame().getDungeon() != null) {
-            if (Eidolons.getGame().getDungeon().isSurface())
+        if (Core.getGame().getDungeon() != null) {
+            if (Core.getGame().getDungeon().isSurface())
                 return GridMaster.emptyCellPath;
         }
         return GridMaster.emptyCellPathFloor;
@@ -505,7 +505,7 @@ it sort of broke at some point - need to investigate!
     public void resetMaps() {
         if (gridManager.isResetting())
             return;
-        Eidolons.onNonGdxThread(GridManager::reset);
+        Core.onNonGdxThread(GridManager::reset);
     }
 
     public void setVoid(int x, int y, boolean animated) {
@@ -934,7 +934,7 @@ it sort of broke at some point - need to investigate!
 
         // ************* Step 7
         if (gridManager.getPlatformHandler().isActive()) {
-            UnitView baseView = (UnitView) viewMap.get(Eidolons.getMainHero());
+            UnitView baseView = (UnitView) viewMap.get(Core.getMainHero());
             float x = baseView.getX();
             float y = baseView.getY();
             if (baseView.getParent() instanceof PlatformCell) {

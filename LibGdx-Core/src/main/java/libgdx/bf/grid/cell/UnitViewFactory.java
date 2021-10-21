@@ -12,7 +12,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
 import eidolons.puzzle.gridobj.LinkedGridObject;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.cinematic.Cinematics;
 import libgdx.bf.mouse.BattleClickListener;
@@ -132,7 +132,7 @@ public class UnitViewFactory {
             if (type == null)
                 return null;
 
-            return (Eidolons.game.getVisionMaster().getVisibilityMaster()
+            return (Core.game.getVisionMaster().getVisibilityMaster()
                     .getImagePath(type, bfObj));
         });
     }
@@ -182,7 +182,7 @@ public class UnitViewFactory {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 int btn = event.getButton();
-                Eidolons.onNonGdxThread(() ->
+                Core.onNonGdxThread(() ->
                         tryDefaultAction(btn, event));
                 super.clicked(event, x, y);
             }

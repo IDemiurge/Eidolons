@@ -4,9 +4,8 @@ import eidolons.content.PROPS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.shop.Shop;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
-import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicEnums.AMBIENCE;
 import main.content.values.parameters.MACRO_PARAMS;
@@ -30,7 +29,6 @@ public class Town extends LightweightEntity {
     Shop shop;
 
     DequeImpl<Shop> shops = new DequeImpl<>();
-    DequeImpl<Party> parties = new DequeImpl<>();
     private Set<Quest> quests;
     private Set<DC_HeroItemObj> stash;
 
@@ -66,7 +64,7 @@ public class Town extends LightweightEntity {
     // }
 
     public void exited() {
-        Unit hero = Eidolons.getMainHero();
+        Unit hero = Core.getMainHero();
         for (Shop shop : shops) {
             shop.exited(hero);
         }
@@ -134,14 +132,14 @@ public class Town extends LightweightEntity {
          getProperty(MACRO_PROPS.TOWN_STASH))) {
             //gonna need to store durability etc...
         }
-        Unit hero = Eidolons.getMainHero();
+        Unit hero = Core.getMainHero();
         for (String substring : ContainerUtils.openContainer(
          hero.getProperty(PROPS.STASH))) {
             if (!NumberUtils.isInteger(substring)) {
                 continue;
             }
             int id = Integer.parseInt(substring);
-            Obj item = Eidolons.getGame().getObjectById(id);
+            Obj item = Core.getGame().getObjectById(id);
             if (item instanceof DC_HeroItemObj)
                 stash.add((DC_HeroItemObj) item);
         }

@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.kotcrab.vis.ui.widget.VisTree;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import libgdx.StyleHolder;
 import libgdx.gui.NinePatchFactory;
 import libgdx.gui.generic.ValueContainer;
@@ -106,7 +106,7 @@ public abstract class TreeX<T extends DataNode> extends VisTree {
 
     protected void click(int tapCount, InputEvent event, Node n, T node) {
         int button = event == null ? 0 : event.getButton();
-        Eidolons.onNonGdxThread(() -> clicked(tapCount, event, n, node, button));
+        Core.onNonGdxThread(() -> clicked(tapCount, event, n, node, button));
     }
 
     protected void clicked(int tapCount, InputEvent event, Node n, T node, int button) {
@@ -123,7 +123,7 @@ public abstract class TreeX<T extends DataNode> extends VisTree {
             }
         }
         if (n.getActor() instanceof Table) {
-            Eidolons.onGdxThread(() ->
+            Core.onGdxThread(() ->
                     ((Table) n.getActor()).setBackground(NinePatchFactory.getHighlightSmallDrawable()));
         }
     }

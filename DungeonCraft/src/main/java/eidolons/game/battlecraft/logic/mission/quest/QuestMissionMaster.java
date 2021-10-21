@@ -46,11 +46,6 @@ public class QuestMissionMaster extends MissionMaster<QuestMission> {
     }
 
     @Override
-    protected MissionOutcomeManager createOutcomeManager() {
-        return new MissionOutcomeManager(this);
-    }
-
-    @Override
     protected MissionConstructor createConstructor() {
         return new QuestMissionConstructor(this);
     }

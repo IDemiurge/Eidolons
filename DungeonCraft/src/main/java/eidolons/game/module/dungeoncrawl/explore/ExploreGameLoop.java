@@ -5,7 +5,7 @@ import eidolons.entity.handlers.active.Activator;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.EUtils;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.GameLoop;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.libgdx.GdxAdapter;
@@ -341,22 +341,23 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     @Override
     protected boolean roundLoop() {
         while (true) {
-            if (activeUnit != Eidolons.getMainHero()) {
-                setActiveUnit(Eidolons.getMainHero());
+            if (activeUnit != Core.getMainHero()) {
+                setActiveUnit(Core.getMainHero());
             }
 
             Boolean result = makeAction();
             if (exited)
                 return false;
             if (result != null) {
-                if (game.getMissionMaster().getOutcomeManager().checkOutcomeClear()) {
-                    break;
-                }
-                if (checkNextFloor()) {
-                    game.getMissionMaster().getOutcomeManager().next();
-                    game.getVisionMaster().refresh();
-                    break;
-                }
+                //TODO - NF explore
+                // if (game.getMissionMaster().getOutcomeManager().checkOutcomeClear()) {
+                //     break;
+                // }
+                // if (checkNextFloor()) {
+                //     game.getMissionMaster().getOutcomeManager().next();
+                //     game.getVisionMaster().refresh();
+                //     break;
+                // }
                 if (result) {
                     break;
                 }

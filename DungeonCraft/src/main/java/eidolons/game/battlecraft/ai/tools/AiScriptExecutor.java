@@ -15,7 +15,7 @@ import eidolons.game.battlecraft.ai.tools.path.ActionPath;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
 import eidolons.game.battlecraft.logic.mission.quest.CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.module.cinematic.Cinematics;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
@@ -92,7 +92,7 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
         ActionSequence sequence = null;
         GOAL_TYPE goal = getGoalType(function);
         if (unit == null) {
-            unit = (Unit) findUnit(Eidolons.getMainHero().getRef(), arg);
+            unit = (Unit) findUnit(Core.getMainHero().getRef(), arg);
         }
         Task task = new Task(true, unit.getAI(), goal, arg);
         UnitAI ai = unit.getAI();
@@ -240,7 +240,7 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
             case MAIN_HERO:
 
             case CLOSEST_ENEMY:
-                return getAnalyzer().getClosestEnemy(Eidolons.getMainHero());
+                return getAnalyzer().getClosestEnemy(Core.getMainHero());
         }
         return null;
     }

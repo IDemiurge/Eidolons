@@ -11,7 +11,6 @@ import eidolons.game.battlecraft.rules.combat.mechanics.BleedingRule;
 import eidolons.game.battlecraft.rules.combat.mechanics.MoraleKillingRule;
 import eidolons.game.battlecraft.rules.combat.misc.CleaveRule;
 import eidolons.game.battlecraft.rules.combat.misc.KnockdownRule;
-import eidolons.game.battlecraft.rules.combat.misc.TrampleRule;
 import eidolons.game.battlecraft.rules.counter.dmg.BlazeRule;
 import eidolons.game.battlecraft.rules.counter.dmg.BleedingDamageRule;
 import eidolons.game.battlecraft.rules.counter.dmg.PoisonRule;
@@ -24,7 +23,6 @@ import eidolons.game.battlecraft.rules.counter.natural.GreaseRule;
 import eidolons.game.battlecraft.rules.counter.natural.LavaRule;
 import eidolons.game.battlecraft.rules.counter.negative.*;
 import eidolons.game.battlecraft.rules.counter.psychic.RageRule;
-import eidolons.game.battlecraft.rules.mechanics.AshAnnihilationRule;
 import eidolons.game.battlecraft.rules.mechanics.CooldownRule;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
 import eidolons.game.battlecraft.rules.mechanics.AlertRule;
@@ -49,7 +47,6 @@ public class DC_Rules implements GameRules {
     private final DequeImpl<DC_RuleImpl> triggerRules = new DequeImpl<>();
     private final DequeImpl<DC_SecondsRule> secondsRules = new DequeImpl<>();
 
-    private WatchRule watchRule;
     private FocusRule focusRule;
     private EssenceRule essenceRule;
     private EssenceBuffRule essenceBuffRule;
@@ -70,19 +67,16 @@ public class DC_Rules implements GameRules {
     private DiseaseRule diseaseRule;
     private MoistRule moistRule;
     private EnsnaredRule ensnareRule;
-    private TrampleRule trampleRule;
     private CorrosionRule corrosionRule;
     private BlightRule blightRule;
     private BlazeRule blazeRule;
     private StackingRule stackingRule;
-    private WaterRule waterRule;
     private UnconsciousRule unconsciousRule;
     private GreaseRule greaseRule;
     private ClayRule clayRule;
     private EncaseRule encaseRule;
     private LavaRule lavaRule;
     private SuffocationRule suffocationRule;
-    private AshAnnihilationRule ashAnnihilationRule;
     private final DC_RuleMaster master;
     private Map<DamageCounterRule, TimedRule> timedRules;
     private DynamicBuffRules dynamicBuffRules;
@@ -105,14 +99,12 @@ public class DC_Rules implements GameRules {
         AlertRule.reset();
         dynamicBuffRules = new DynamicBuffRules(game);
         unconsciousRule = new UnconsciousRule(game);
-        watchRule = new WatchRule();
         stackingRule = new StackingRule(getGame());
         ensnareRule = new EnsnaredRule(getGame());
         stealthRule = new StealthRule(getGame());
         stackingRule = new StackingRule(getGame());
         HearingRule hearingRule = new HearingRule(getGame());
         actionRules.add(unconsciousRule);
-        actionRules.add(watchRule);
         actionRules.add(stealthRule);
         actionRules.add(ensnareRule);
         actionRules.add(stackingRule);
@@ -182,7 +174,6 @@ public class DC_Rules implements GameRules {
         if (!EidolonsGame.FOOTAGE) {
         getTriggerRules().add(durabilityRule = new DurabilityRule(getGame()));
         getTriggerRules().add(bleedingTriggerRule = new BleedingRule(game));
-        getTriggerRules().add(ashAnnihilationRule = new AshAnnihilationRule(game));
         }
 
         CounterMasterAdvanced.defineInteractions();
@@ -238,20 +229,12 @@ public class DC_Rules implements GameRules {
         return actionRules;
     }
 
-    public WatchRule getWatchRule() {
-        return watchRule;
-    }
-
     public FocusRule getFocusRule() {
         return focusRule;
     }
 
     public SuffocationRule getSuffocationRule() {
         return suffocationRule;
-    }
-
-    public AshAnnihilationRule getAshAnnihilationRule() {
-        return ashAnnihilationRule;
     }
 
     public EssenceBuffRule getEssenceBuffRule() {
@@ -322,10 +305,6 @@ public class DC_Rules implements GameRules {
         return ensnareRule;
     }
 
-    public TrampleRule getTrampleRule() {
-        return trampleRule;
-    }
-
     public CorrosionRule getCorrosionRule() {
         return corrosionRule;
     }
@@ -340,10 +319,6 @@ public class DC_Rules implements GameRules {
 
     public StackingRule getStackingRule() {
         return stackingRule;
-    }
-
-    public WaterRule getWaterRule() {
-        return waterRule;
     }
 
     public UnconsciousRule getUnconsciousRule() {

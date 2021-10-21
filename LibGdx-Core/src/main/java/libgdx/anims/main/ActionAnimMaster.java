@@ -3,7 +3,7 @@ package libgdx.anims.main;
 import eidolons.ability.effects.oneshot.move.MoveEffect;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.core.ActionInput;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.master.EffectMaster;
 import eidolons.system.libgdx.datasource.AnimContext;
@@ -53,7 +53,7 @@ public class ActionAnimMaster {
 
     public static void animate(ActionInput actionInput) {
         log("Animating: ", actionInput.getAction());
-        Eidolons.onGdxThread(()->
+        Core.onGdxThread(()->
         instance.initActionAnimation(actionInput.getAction(), (AnimContext) actionInput.getContext()));
         if (!isWait(actionInput.getAction())) {
             return;

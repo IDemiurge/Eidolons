@@ -1,13 +1,11 @@
 package libgdx.gui.panels.dc.menus.outcome;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.game.battlecraft.logic.mission.universal.stats.MissionStatManager.PLAYER_STATS;
 import eidolons.game.battlecraft.logic.mission.universal.stats.PlayerStats;
 import eidolons.game.battlecraft.logic.mission.universal.stats.UnitStats;
-import eidolons.game.core.Eidolons;
+import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import libgdx.gui.generic.ValueContainer;
-import libgdx.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
 
 import java.util.Arrays;
@@ -40,7 +38,7 @@ public class OutcomeDatasource {
 
     public UnitStats getHeroStats() {
         return game.getMissionMaster().getStatManager().
-         getStats().getUnitStats(Eidolons.getMainHero());
+         getStats().getUnitStats(Core.getMainHero());
     }
         private PlayerStats getPlayerStats() {
         return game.getMissionMaster().getStatManager().
@@ -73,15 +71,10 @@ public class OutcomeDatasource {
     }
 
     public Boolean getOutcome() {
-
         //null for surrender?
-        return game.getMissionMaster().getOutcomeManager().getOutcome();
+        // return game.getMissionMaster().getOutcomeManager().getOutcome();
+        return null;
     }
 
-    public List<TextureRegion> getStatUnitsPortraits() {
-        return game.getMetaMaster().getPartyManager().getParty().getMembers()
-         .stream().map(unit -> TextureCache.getOrCreateR(unit.getImagePath()
-         )).collect(Collectors.toList());
-    }
 
 }
