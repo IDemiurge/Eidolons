@@ -134,6 +134,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     public Unit(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
         if (isHero()) { //&& !(this instanceof HeroDataModel)
+            Core.setMainHero(this);
             String message = this + " hero created " + getId();
             // if (ScreenLoader.isInitRunning()) {
             //     if (Eidolons.MAIN_HERO != null) {

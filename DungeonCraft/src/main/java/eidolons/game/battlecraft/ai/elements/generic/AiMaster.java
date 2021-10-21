@@ -12,7 +12,7 @@ import eidolons.game.battlecraft.ai.elements.actions.sequence.PathSequenceConstr
 import eidolons.game.battlecraft.ai.elements.actions.sequence.TurnSequenceConstructor;
 import eidolons.game.battlecraft.ai.elements.goal.GoalManager;
 import eidolons.game.battlecraft.ai.elements.task.TaskManager;
-import eidolons.game.battlecraft.ai.logic.atomic.AtomicAi;
+import eidolons.game.battlecraft.ai.elements.atomic.AtomicAi;
 import eidolons.game.battlecraft.ai.tools.*;
 import eidolons.game.battlecraft.ai.tools.path.PathBuilder;
 import eidolons.game.battlecraft.ai.tools.path.PathBuilderAtomic;

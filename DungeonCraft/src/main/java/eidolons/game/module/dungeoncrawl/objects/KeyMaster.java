@@ -6,7 +6,7 @@ import eidolons.content.consts.VisualEnums;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.Floor;
 import eidolons.game.core.EUtils;
 import eidolons.system.libgdx.GdxStatic;
 import main.entity.Ref;

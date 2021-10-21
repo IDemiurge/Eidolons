@@ -92,8 +92,9 @@ public class AvManager {
             return;
         }
 
-        CharacterCreator.addHero(AV2.getSimulationHandler().getUnit(new ObjType(ArcaneVault
-                .getSelectedType())));
+        //TODO AV Review
+        // CharacterCreator.addHero(AV2.getSimulationHandler().getUnit(new ObjType(ArcaneVault
+        //         .getSelectedType())));
         ArcaneVault.setSimulationOn(false);
 
     }

@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.mission.universal;
 
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
-import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.Floor;
 import eidolons.game.battlecraft.logic.meta.scenario.Scenario;
 import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
 import main.data.filesys.PathFinder;

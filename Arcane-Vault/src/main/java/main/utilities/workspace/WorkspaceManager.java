@@ -70,32 +70,6 @@ public class WorkspaceManager extends AvHandler {
     }
 
 
-    // should support default workspace for simplicity!
-    public void newWorkspaceForParty() {
-        ObjType party = ArcaneVault.getSelectedType();
-        Set<ObjType> set = new HashSet<>();
-        for (String sub : ContainerUtils.open(party.getProperty(PROPS.MEMBERS))) {
-            ObjType type = DataManager.getType(sub, DC_TYPE.CHARS);
-
-            for (String item : ContainerUtils.open(type.getProperty(PROPS.SKILLS))) {
-                set.add(DataManager.getType(item, DC_TYPE.SKILLS));
-            }
-            for (String item : ContainerUtils.open(type.getProperty(PROPS.CLASSES))) {
-                set.add(DataManager.getType(item, DC_TYPE.CLASSES));
-            }
-
-            // for (String item:
-            // StringMaster.openContainer(type.getProperty(PROPS.VERBATIM_SPELLS)))
-            // set.add(DataManager.getType(item, OBJ_TYPES. SPELLS));
-            // for (String item:
-            // StringMaster.openContainer(type.getProperty(PROPS.SPELLBOOK)))
-            // set.add(DataManager.getType(item, OBJ_TYPES. SPELLS));
-        }
-        List<ObjType> typeList = new ArrayList<>(set);
-        Workspace ws = new Workspace(party.getName(), typeList);
-        addWorkspace(ws);
-        initWorkspace(ws);
-    }
 
     // save all upon exit?
     public void save() {

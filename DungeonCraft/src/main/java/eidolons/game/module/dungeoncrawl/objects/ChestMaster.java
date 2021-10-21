@@ -1,6 +1,6 @@
 package eidolons.game.module.dungeoncrawl.objects;
 
-import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.Floor;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 

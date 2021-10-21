@@ -71,9 +71,6 @@ public class XML_Transformer {
     private static void routine() {
         renameValue("STA_COST", PARAMS.TOU_COST.getName());
         renameValue("STAMINA_PENALTY", PARAMS.TOUGHNESS_COST_MOD.getName());
-        renameValue("AOO_STAMINA_PENALTY", PARAMS.AOO_TOUGHNESS_COST_MOD.getName());
-        renameValue("COUNTER_STAMINA_PENALTY", PARAMS.COUNTER_TOUGHNESS_COST_MOD.getName());
-        renameValue("INSTANT_STAMINA_PENALTY", PARAMS.INSTANT_TOUGHNESS_COST_MOD.getName());
         renameValue("MOVE_STA_PENALTY", PARAMS.MOVE_TOU_COST_MOD.getName());
 
 

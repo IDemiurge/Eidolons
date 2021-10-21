@@ -5,7 +5,6 @@ import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.module.dungeoncrawl.struct.LevelBlock;
 import eidolons.game.module.dungeoncrawl.struct.LevelZone;
 import main.data.xml.XmlNodeMaster;

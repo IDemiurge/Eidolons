@@ -2,7 +2,7 @@
 
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.Floor;
 import main.entity.type.ObjType;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.sim.LE_GameSim;

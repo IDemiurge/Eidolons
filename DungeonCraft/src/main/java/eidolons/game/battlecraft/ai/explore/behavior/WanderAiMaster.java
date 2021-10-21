@@ -12,7 +12,7 @@ import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.elements.task.Task;
 import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.Floor;
 import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.GOAL_TYPE;

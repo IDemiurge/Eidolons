@@ -432,4 +432,9 @@ public class AI_SpellMaster {
     public static SpellEnums.SPELL_CATEGORY getSpellCategory(ActiveObj spell) {
         return null;
     }
+
+    public static boolean isCounterModSpell(DC_ActiveObj active) {
+        return (EffectMaster.check(active.getAbilities(),
+         ModifyCounterEffect.class));
+    }
 }

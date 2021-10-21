@@ -2,7 +2,6 @@ package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
-import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
 import main.system.GuiEventManager;

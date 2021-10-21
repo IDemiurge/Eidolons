@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.mission.encounter;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.Floor;
 import eidolons.game.battlecraft.logic.mission.universal.MissionHandler;
 import eidolons.game.battlecraft.logic.mission.universal.MissionMaster;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;

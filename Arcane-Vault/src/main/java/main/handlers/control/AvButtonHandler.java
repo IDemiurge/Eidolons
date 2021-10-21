@@ -164,9 +164,4 @@ public class AvButtonHandler extends AvHandler   {
         // }
     }
 
-    protected VALUE[] getCopyVals() {
-        return new VALUE[]{PARAMS.FORCE, PARAMS.FORCE_SPELLPOWER_MOD, PARAMS.FORCE_DAMAGE_MOD,
-                PARAMS.FORCE_KNOCK_MOD, PARAMS.FORCE_PUSH_MOD,};
-    }
-
 }
