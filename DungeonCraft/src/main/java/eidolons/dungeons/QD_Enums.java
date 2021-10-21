@@ -1,4 +1,4 @@
-package eidolons.game.netherflame.dungeons;
+package eidolons.dungeons;
 
 public class QD_Enums {
 /*
@@ -8,7 +8,7 @@ approx. list of modules I'd want
     public enum DungeonProperty {
         location, tags, elevation, length, preset_floors
     }
-        public enum FloorProperty {
+    public enum FloorProperty {
         type, location, tags, elevation, length, preset_modules, dc_data
         //for preset modules and as requirements! / generated
     }

@@ -21,7 +21,7 @@ public class TableEditValueConsts {
             PROPS.CONTAINER_CONTENTS.name(),
             G_PROPS.PRINCIPLES.name(),
             "Encounter Subgroup", // contains()? otherwise overshadows
-            G_PROPS.SPECIAL_REQUIREMENTS.getName(), PROPS.FAVORED_SPELL_GROUPS.getName(),
+            G_PROPS.SPECIAL_REQUIREMENTS.getName(),
             PROPS.ATTRIBUTE_PROGRESSION.getName(), PROPS.MASTERY_PROGRESSION.getName(),
             PROPS.ROLL_TYPES_TO_DISPEL_EACH_TURN.getName(), PROPS.ROLL_TYPES_TO_SAVE.getName(),
 
@@ -81,8 +81,8 @@ public class TableEditValueConsts {
             PROPS.RESISTANCE_TYPE.name(), G_PROPS.TARGETING_MODE.name(), G_PROPS.RACE.name(),
             G_PROPS.ASPECT.name(),
             G_PROPS.SOUNDSET.name(),
-            G_PROPS.RANK.name(), PROPS.FAVORED_ASPECT.name(), PROPS.SECOND_FAVORED_ASPECT.name(),
-            PROPS.THIRD_FAVORED_ASPECT.name(), G_PROPS.SPELL_TYPE.name(),
+            G_PROPS.RANK.name(),
+            G_PROPS.SPELL_TYPE.name(),
             // "DEITY",
             PROPS.BF_OBJECT_SIZE.name(), PROPS.OBJECT_ARMOR_TYPE.name(), PROPS.DIMENSION.name()};
     public static final String[] MULTIPLE_ENUM_LIST_IDS = {
@@ -117,7 +117,7 @@ public class TableEditValueConsts {
     };
     public static final String[] MULTI_TYPE_LIST_IDS = {
             MACRO_PROPS.FACTIONS.getName(), MACRO_PROPS.AREAS.getName(),
-            G_PROPS.DEITY.getName(), PROPS.SPELL_PLAN.name(), PROPS.VERBATIM_PRIORITY.name(),
+            G_PROPS.DEITY.getName(),   PROPS.VERBATIM_PRIORITY.name(),
             PROPS.MEMORIZATION_PRIORITY.name(), PROPS.MAIN_HAND_REPERTOIRE.name(),
             PROPS.ARMOR_REPERTOIRE.name(), PROPS.OFF_HAND_REPERTOIRE.name(),
             PROPS.QUICK_ITEM_REPERTOIRE.name(),

@@ -1,16 +1,15 @@
 package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
-import eidolons.content.consts.VisualEnums;
+import eidolons.dungeons.QD_Enums;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
-import eidolons.game.netherflame.dungeons.QD_Enums;
 import eidolons.system.audio.MusicEnums;
-import eidolons.system.libgdx.datasource.AmbienceDataSource;
 import main.content.CONTENT_CONSTS;
 import main.content.enums.DungeonEnums;
 import main.content.enums.system.MetaEnums;
 import main.system.sound.AudioEnums;
 
-import static eidolons.content.consts.VisualEnums.*;
+import static eidolons.content.consts.VisualEnums.SHARD_TYPE;
+import static eidolons.content.consts.VisualEnums.VFX_TEMPLATE;
 
 public class LevelStructure {
     public enum EDIT_VALUE_TYPE {

@@ -1,4 +1,4 @@
-package eidolons.game.netherflame.dungeons.model.assembly;
+package main.level_editor.backend.sim.impl;
 
 import com.google.inject.internal.util.ImmutableSet;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
@@ -113,7 +113,7 @@ public class ModuleGridMapper {
 
         for (Point point : moduleGrid.keySet()) {
             Module module = moduleGrid.get(point);
-//            Coordinates at= getModulePlacement(module);
+            //            Coordinates at= getModulePlacement(module);
             int h = module.getEffectiveHeight(true)+1;
             MapMaster.addToIntegerMap(colMap, point.x, h);
             int w = module.getEffectiveWidth(true)+2;

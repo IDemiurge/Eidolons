@@ -8,7 +8,6 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.ModuleData;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.netherflame.dungeons.model.assembly.ModuleGridMapper;
 import libgdx.GdxMaster;
 import libgdx.utils.GdxDialogMaster;
 import eidolons.system.text.NameMaster;
@@ -115,13 +114,13 @@ public class LE_DataHandler extends LE_Handler {
             getModuleHandler().initVoidCells();
             getStructureHandler().resetWalls(getDungeonLevel());
         }
-        if (getModuleHandler().getModuleGrid() != null) {
-            ModuleGridMapper.calculateTotalSquareSize(getModuleHandler().getModuleGrid());
-            if (ModuleGridMapper.width > 0) {
-                getFloor().getWrapper().setWidth(ModuleGridMapper.width);
-                getFloor().getWrapper().setHeight(ModuleGridMapper.height);
-            }
-        }
+        // if (getModuleHandler().getModuleGrid() != null) {
+        //     ModuleGridMapper.calculateTotalSquareSize(getModuleHandler().getModuleGrid());
+        //     if (ModuleGridMapper.width > 0) {
+        //         getFloor().getWrapper().setWidth(ModuleGridMapper.width);
+        //         getFloor().getWrapper().setHeight(ModuleGridMapper.height);
+        //     }
+        // }
     }
 
     private boolean isResizingSupported() {

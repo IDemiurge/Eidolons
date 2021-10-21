@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.content.consts.VisualEnums;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.Floor;
 import libgdx.gui.generic.GroupX;
 import libgdx.particles.EmitterActor;
 import eidolons.content.consts.VisualEnums.VFX_TEMPLATE;

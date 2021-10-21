@@ -1,4 +1,4 @@
-package eidolons.game.battlecraft.logic.dungeon.universal;
+package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;

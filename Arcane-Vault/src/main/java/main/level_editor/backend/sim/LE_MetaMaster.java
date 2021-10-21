@@ -1,6 +1,7 @@
 package main.level_editor.backend.sim;
 
-import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.Floor;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.battlecraft.logic.meta.universal.MetaDataManager;
@@ -78,8 +79,11 @@ public class LE_MetaMaster extends ScenarioMetaMaster {
 
     @Override
     protected SpawnManager createSpawnManager() {
-        return new ScenarioPartyManager(this) {
-
+        return new SpawnManager(this) {
+            @Override
+            protected Unit findMainHero() {
+                return null;
+            }
         };
     }
 

@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.logic.mission.quest;
 import eidolons.content.PROPS;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
-import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.Floor;
 import eidolons.game.battlecraft.logic.mission.universal.MissionConstructor;
 import eidolons.game.battlecraft.logic.mission.universal.MissionMaster;
 import main.content.DC_TYPE;

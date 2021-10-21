@@ -4,7 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.consts.libgdx.WallMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
-import eidolons.game.battlecraft.logic.dungeon.universal.Floor;
+import eidolons.game.battlecraft.logic.dungeon.location.struct.Floor;
 import eidolons.game.core.game.DC_Game;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;

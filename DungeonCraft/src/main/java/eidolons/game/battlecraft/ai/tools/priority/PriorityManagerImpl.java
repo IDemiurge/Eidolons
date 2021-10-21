@@ -36,7 +36,6 @@ import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
 import eidolons.game.battlecraft.ai.tools.target.AI_SpellMaster;
-import eidolons.game.battlecraft.ai.tools.target.SpellAnalyzer;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
@@ -47,7 +46,6 @@ import eidolons.system.math.DC_CounterMaster;
 import eidolons.system.math.roll.RollMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
-import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.ability.effects.Effects;
 import main.ability.effects.common.OwnershipChangeEffect;
 import main.ability.effects.oneshot.InstantDeathEffect;
@@ -68,7 +66,6 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.parameters.Param;
 import main.content.values.properties.G_PROPS;
 import main.data.ConcurrentMap;
-import main.elements.costs.Costs;
 import main.elements.targeting.FixedTargeting;
 import main.elements.targeting.SelectiveTargeting;
 import main.elements.targeting.Targeting;
@@ -328,7 +325,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 break;
             case RESTORE:
             case DEBILITATE:
-                if (SpellAnalyzer.isCounterModSpell(action.getActive())) {
+                if (AI_SpellMaster.isCounterModSpell(action.getActive())) {
                     priority = getCounterModSpellPriority(action);
                 } else {
                     priority = getParamModSpellPriority(action, false);

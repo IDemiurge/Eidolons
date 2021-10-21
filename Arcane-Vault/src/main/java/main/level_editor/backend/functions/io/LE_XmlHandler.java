@@ -11,7 +11,6 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.struct.Entrance;
 import eidolons.game.module.dungeoncrawl.struct.LevelBlock;
 import eidolons.game.module.dungeoncrawl.struct.LevelZone;
-import eidolons.game.netherflame.dungeons.model.assembly.Transform;
 import main.data.xml.XML_Converter;
 import main.data.xml.XmlStringBuilder;
 import main.game.bf.Coordinates;
@@ -40,11 +39,8 @@ public class LE_XmlHandler extends LE_Handler {
         return toXml(floor, null);
     }
 
-    public String toXml(Location floor, Module standalone) {
-        return toXml(floor, standalone, null);
-    }
 
-    public String toXml(Location floor, Module standalone, Transform transform) {
+    public String toXml(Location floor, Module standalone) {
         XmlStringBuilder xmlBuilder = new XmlStringBuilder();
 
         //from old - dungeon params props etc
