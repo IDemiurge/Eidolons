@@ -38,7 +38,7 @@ public class MetaGameHandler<E extends MetaGame> {
         return master.getInitializer();
     }
 
-    public MetaDataManager getMetaDataManager() {
+    public MetaDataManager<E> getMetaDataManager() {
         return master.getMetaDataManager();
     }
 

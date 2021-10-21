@@ -8,7 +8,7 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Core;
-import eidolons.game.core.Core.SCOPE;
+import eidolons.game.core.Core.APPLICATION_SCOPE;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.cinematic.CinematicLib;
 import eidolons.game.module.cinematic.Cinematics;
@@ -132,7 +132,7 @@ public class GlobalController implements Controller {
                 return true;
             case Keys.F4:
                 if (Flags.isIDE())
-                    if (Core.getScope() != SCOPE.MENU) {
+                    if (Core.getScope() != APPLICATION_SCOPE.MENU) {
                         Core.exitToMenu();
                         return true;
                     }
@@ -302,7 +302,7 @@ public class GlobalController implements Controller {
         if (TownPanel.getActiveInstance() != null) {
             TownPanel.getActiveInstance().done();
         }
-        if (Core.getScope() == SCOPE.MENU) {
+        if (Core.getScope() == APPLICATION_SCOPE.MENU) {
             MainMenu.getInstance().getHandler().handle(MAIN_MENU_ITEM.PLAY);
             return true;
         }

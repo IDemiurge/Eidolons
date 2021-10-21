@@ -2,7 +2,7 @@ package libgdx.bf.mouse;
 
 import com.badlogic.gdx.InputProcessor;
 import eidolons.game.core.Core;
-import eidolons.game.core.Core.SCOPE;
+import eidolons.game.core.Core.APPLICATION_SCOPE;
 import libgdx.video.VideoMaster;
 
 /**
@@ -23,7 +23,7 @@ public class GlobalInputController implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        if (Core.getScope() == SCOPE.MENU) {
+        if (Core.getScope() == APPLICATION_SCOPE.MENU) {
             if (VideoMaster.player != null)
 //                if (VideoMaster.player.isPlaying()) {
                 VideoMaster.player.stop();

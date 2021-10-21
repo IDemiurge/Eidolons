@@ -84,7 +84,7 @@ public class PostFxUpdater {
     }
 
     public void update() {
-        Unit hero = Core.MAIN_HERO;
+        Unit hero = Core.mainHero;
         if (hero == null) {
             return;
         }

@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.universal;
 
 import eidolons.game.battlecraft.EngineLauncher;
-import eidolons.game.core.launch.CustomLaunch;
+import eidolons.game.core.launch.TestLaunch;
 
 /**
  * Created by JustMe on 5/8/2017.
@@ -23,11 +23,11 @@ public class MetaDataManager<E extends MetaGame> extends MetaGameHandler<E> {
     }
 
     public String getSoloDungeonPath() {
-        CustomLaunch customLaunch = EngineLauncher.getInstance().getCustomLaunch();
-        if (customLaunch !=null ){
+        TestLaunch testLaunch = EngineLauncher.getInstance().getCustomLaunch();
+        if (testLaunch !=null ){
                 main.system.auxiliary.log.LogMaster.important("*******Custom Launch xml path: " +
-                        customLaunch.getValue(CustomLaunch.CustomLaunchValue.xml_path));
-                return customLaunch.getValue(CustomLaunch.CustomLaunchValue.xml_path);
+                        testLaunch.getValue(TestLaunch.TestValue.module));
+                return testLaunch.getValue(TestLaunch.TestValue.module);
             }
         return missionPath;
     }

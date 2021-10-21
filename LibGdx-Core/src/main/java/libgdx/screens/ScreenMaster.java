@@ -158,7 +158,7 @@ public class ScreenMaster {
         if (resolution != null) {
             if (resolution != getResolution()) {
                 if (Core.getScope() != null)
-                    if (Core.getScope() != Core.SCOPE.MENU) {
+                    if (Core.getScope() != Core.APPLICATION_SCOPE.MENU) {
                         EUtils.onConfirm(
                                 "New resolution will be applied on restart... Ok?", true, OptionsMaster::saveOptions);
                         return;
@@ -183,10 +183,13 @@ public class ScreenMaster {
         }
     }
 
-    public static void screenSet(VisualEnums.SCREEN_TYPE type) {
+    public static boolean screenSet(VisualEnums.SCREEN_TYPE type) {
+        if (screenType==type)
+            return false;
         if (screenType != null)
             previousScreenType = screenType;
         screenType = type;
+        return true;
     }
 
     public static VisualEnums.SCREEN_TYPE getScreenType() {

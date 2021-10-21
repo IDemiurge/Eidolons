@@ -4,15 +4,17 @@ import main.system.data.DataUnit;
 
 import java.util.regex.Pattern;
 
-public class CustomLaunch extends DataUnit<CustomLaunch.CustomLaunchValue> {
+public class TestLaunch extends DataUnit<TestLaunch.TestValue> {
+    public TestLaunch() {
+    }
 
-    public CustomLaunch(String text) {
+    public TestLaunch(String text) {
         super(text);
     }
 
     @Override
     protected void handleMalformedData(String entry) {
-        setValue(CustomLaunchValue.xml_path, entry);
+        setValue(TestValue.module, entry);
     }
 
     @Override
@@ -26,14 +28,14 @@ public class CustomLaunch extends DataUnit<CustomLaunch.CustomLaunchValue> {
     }
 
     @Override
-    public Class<? extends CustomLaunchValue> getEnumClazz() {
-        return CustomLaunchValue.class;
+    public Class<? extends TestValue> getEnumClazz() {
+        return TestValue.class;
     }
 
-    public enum CustomLaunchValue{
-        xml_path,
-        party_members,
-        main_hero,
-
+    public enum TestValue {
+        module,
+        chain,
+        hero,
+        encounter,
     }
 }

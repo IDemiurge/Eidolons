@@ -41,6 +41,7 @@ public class PlayerManager<E extends DungeonSequence> extends MissionHandler<E> 
     public List<FLAG_COLOR> unusedPlayerColorsList;
     List<DC_Player> players = new ArrayList<>();
     private String data;
+    private DC_Player PC;
 
     public PlayerManager(MissionMaster<E> master) {
         super(master);
@@ -179,10 +180,16 @@ public class PlayerManager<E extends DungeonSequence> extends MissionHandler<E> 
     }
 
     public DC_Player getPlayer(boolean me) {
+        if (players == null) {
+            return null;
+        }
+        if (me)
+            if (PC!=null)
+                return PC;
         for (DC_Player player : players) {
             if (player.isMe())
                 if (me)
-                    return player;
+                    return PC = player;
             if (player.isEnemy())
                 if (!me)
                     return player;

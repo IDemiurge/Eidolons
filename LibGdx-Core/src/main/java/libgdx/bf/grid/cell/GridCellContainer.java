@@ -234,7 +234,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
             }
             if (actor instanceof GenericGridView) {
                 list.add((GenericGridView) actor);
-                if (actor.getUserObject() == Core.MAIN_HERO) {
+                if (actor.getUserObject() == Core.mainHero) {
                     mainHero = true;
                 }
             }
@@ -484,7 +484,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
             }
 
             BattleFieldObject userObject = (BattleFieldObject) actor.getUserObject();
-            if (userObject == Core.MAIN_HERO
+            if (userObject == Core.mainHero
                     || userObject instanceof Entrance)
                 mainHero = true;
             if (userObject.isWall()) {
@@ -558,7 +558,7 @@ public class GridCellContainer extends GridCell implements Hoverable {
     }
 
     private void removed(Actor actor) {
-        if (actor.getUserObject() == Core.MAIN_HERO)
+        if (actor.getUserObject() == Core.mainHero)
             mainHero = false;
         lightEmitter = false;
         if (wall) {

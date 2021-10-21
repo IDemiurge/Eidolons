@@ -4,9 +4,8 @@ import com.badlogic.gdx.Screen;
 import eidolons.content.consts.VisualEnums;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
-import eidolons.game.battlecraft.logic.meta.testenv.TestMeta;
+import eidolons.game.battlecraft.logic.meta.testenv.TestEnvMGM;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
@@ -69,9 +68,10 @@ public class ScreenLoader {
     }
 
     public void switchScreen(Supplier<ScreenWithLoader> factory, ScreenData meta) {
+        if (!ScreenMaster.screenSet(meta.getType()))
+            return;
         GdxMaster.setLoadingCursor();
         important("switchScreen " + meta.getType());
-        ScreenMaster.screenSet(meta.getType());
         final Screen oldScreen = genericLauncher.getScreen();
 
         //        oldScreen.getPostProcessing().end();
@@ -99,22 +99,12 @@ public class ScreenLoader {
         switch (data.getType()) {
             //TODO refactor THIS
             case DUNGEON:
-                if (!Flags.isMacro()) {
-                    if (firstInitDone)
-                        return;
-                    if (isInitRunning())
-                        return;
-                }
-                if (DC_Game.game != null) {
+                if (isSecondInit()){
+                    LogMaster.log(1, "*************** Second init attempted!");
                     return;
                 }
                 setInitRunning(true);
                 Core.onThisOrNonGdxThread(() -> {
-                    if (Core.getMainHero() != null) {
-                        LogMaster.log(1, "*************** Second init attempted!");
-                        return;
-                    }
-
                     GuiEventManager.trigger(GuiEventType.UPDATE_LOAD_STATUS, "Loading dungeon...");
                     initScenario(data, data.getName() );
                     GuiEventManager.trigger(GuiEventType.UPDATE_LOAD_STATUS, "Dungeon loaded - " + EidolonsGame.lvlPath);
@@ -133,6 +123,19 @@ public class ScreenLoader {
         }
     }
 
+    private boolean isSecondInit() {
+        if (!Flags.isMacro()) {
+            if (firstInitDone)
+                return true;
+            if (isInitRunning())
+                return true;
+        }
+        if (DC_Game.game != null ||  (Core.getMainHero() != null)) {
+            return true;
+        }
+        return false;
+    }
+
     public void loadScreen(EventCallbackParam param) {
         ScreenData newMeta = (ScreenData) param.get();
         important(newMeta.getType() + " loadScreen()");
@@ -146,7 +149,7 @@ public class ScreenLoader {
                     //TODO PITCH FIX - GET INSTANCE!
                     GuiEventManager.trigger(GuiEventType.UPDATE_LOAD_STATUS, "Loading game screen...");
                     switchScreen(DungeonScreen::new, newMeta);
-                    Core.setScope(Core.SCOPE.BATTLE);
+                    Core.setScope(Core.APPLICATION_SCOPE.BATTLE);
                     break;
                 case BRIEFING:
                 case CINEMATIC:
@@ -162,7 +165,7 @@ public class ScreenLoader {
                 case PRE_BATTLE:
                     break;
                 case MAIN_MENU:
-                    Core.setScope(Core.SCOPE.MENU);
+                    Core.setScope(Core.APPLICATION_SCOPE.MENU);
                     switchScreen(AnimatedMenuScreen::new, newMeta);
                     WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.GDX_READY, true);
                     WaitMaster.markAsComplete(WaitMaster.WAIT_OPERATIONS.GDX_READY);
@@ -200,7 +203,7 @@ public class ScreenLoader {
     }
 
     public MetaGameMaster createMetaForScenario(ScreenData data) {
-          return new ScenarioMetaMaster(data.getName());
+          return new TestEnvMGM(data.getName());
     }
 
     public static void setFirstInitDone(boolean firstInitDone) {

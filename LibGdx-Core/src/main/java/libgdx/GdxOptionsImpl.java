@@ -130,7 +130,7 @@ public class GdxOptionsImpl implements GdxOptions {
                 break;
 
             case FULLSCREEN:
-                if (Core.getScope() == Core.SCOPE.MENU)
+                if (Core.getScope() == Core.APPLICATION_SCOPE.MENU)
                     ScreenMaster.setFullscreen(bool);
                 break;
 

@@ -97,6 +97,7 @@ public class DC_Game extends GenericGame {
     protected DungeonMaster dungeonMaster;
     protected MissionMaster missionMaster;
     protected CombatMaster combatMaster;
+    protected MusicMaster musicMaster;
 
     protected InventoryTransactionManager inventoryTransactionManager;
     protected DC_InventoryManager inventoryManager;
@@ -128,7 +129,6 @@ public class DC_Game extends GenericGame {
     protected LaunchDataKeeper dataKeeper;
     @Refactor
     protected Map<BattleFieldObject, Map<String, DC_HeroAttachedObj>> simulationCache; //to simGame!
-    protected MusicMaster musicMaster;
     protected DC_BattleFieldGrid grid;
 
     public DC_Game() {
@@ -185,7 +185,7 @@ public class DC_Game extends GenericGame {
             visionMaster = createVisionMaster();
         mathManager = new DC_MathManager(this);
         effectManager = new DC_EffectManager(this);
-        setTestMaster(new TestMasterContent(this));
+        setTestMaster(createTestMaster());
         conditionMaster = new DC_ConditionMaster();
         if (!isSimulation()) {
             logManager = new DC_GameLogManager(this);
@@ -211,6 +211,10 @@ public class DC_Game extends GenericGame {
             return;
         missionMaster = createBattleMaster();
         musicMaster = MusicMaster.getInstance();
+    }
+
+    protected TestMasterContent createTestMaster() {
+        return new TestMasterContent(this);
     }
 
     protected VisionMaster createVisionMaster() {

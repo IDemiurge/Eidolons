@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.game.EidolonsGame;
 import eidolons.game.core.Core;
-import eidolons.game.core.Core.SCOPE;
+import eidolons.game.core.Core.APPLICATION_SCOPE;
 import libgdx.GDX;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
@@ -254,7 +254,7 @@ public abstract class SelectionPanel extends TablePanelX {
     }
 
     private void back() {
-        if (Core.getScope() == SCOPE.MENU)
+        if (Core.getScope() == APPLICATION_SCOPE.MENU)
             Core.showMainMenu();
     }
 

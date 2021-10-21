@@ -224,8 +224,8 @@ public class LogPanel extends ScrollTextWrapper {
         word = word.replace(".", "");
         if (previous == null) {
         }
-        if (Core.MAIN_HERO != null)
-            if (StringMaster.containsWord(Core.MAIN_HERO.getName(), word)
+        if (Core.mainHero != null)
+            if (StringMaster.containsWord(Core.mainHero.getName(), word)
             ) {
                 return GdxColorMaster.lighter(GdxColorMaster.getColor(Core.getMainHero().getOwner().getFlagColor().getColor()));
             }

@@ -1,22 +1,22 @@
 package eidolons.game.battlecraft;
 
-import eidolons.game.core.launch.CustomLaunch;
+import eidolons.game.core.launch.TestLaunch;
 
 public class EngineLauncher {
     private static EngineLauncher instance;
-    private CustomLaunch customLaunch;
+    private TestLaunch testLaunch;
 
     private EngineLauncher() {
         
     }
 
-    public   CustomLaunch getCustomLaunch() {
-        return customLaunch;
+    public TestLaunch getCustomLaunch() {
+        return testLaunch;
     }
 
-    public   void setCustomLaunch(CustomLaunch customLaunch) {
-        main.system.auxiliary.log.LogMaster.important("customLaunch set: " + customLaunch);
-        this.customLaunch = customLaunch;
+    public   void setTestLaunch(TestLaunch testLaunch) {
+        main.system.auxiliary.log.LogMaster.important("customLaunch set: " + testLaunch);
+        this.testLaunch = testLaunch;
     }
 
     public static EngineLauncher getInstance() {

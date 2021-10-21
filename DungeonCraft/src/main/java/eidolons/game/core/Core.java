@@ -28,6 +28,9 @@ import main.system.sound.AudioEnums;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 /**
@@ -44,14 +47,14 @@ public class Core {
 
     public static EidolonsGame mainGame;
 
-    private static Unit mainHero;
-    public static Unit MAIN_HERO;
-    private static boolean battleRunning;
-    private static SCOPE scope = SCOPE.MENU;
+    public static Unit mainHero;
+    private static APPLICATION_SCOPE scope = APPLICATION_SCOPE.MENU;
     private static boolean logicThreadBusy;
     private static int customThreadsUsed = 0;
     private static Unit bufferedMainHero;
     private static Supplier<GdxBeans> gdxBeansProvider;
+
+    private static ThreadPoolExecutor executor;
 
     public static boolean initScenario(MetaGameMaster master) {
         mainGame = new EidolonsGame();
@@ -77,7 +80,6 @@ public class Core {
 
     public static void setMainHero(Unit mainHero) {
         Core.mainHero = mainHero;
-        MAIN_HERO = mainHero;
     }
 
     public static Coordinates getPlayerCoordinates() {
@@ -88,14 +90,11 @@ public class Core {
         if (mainHero == null) {
             if (game == null)
                 return null;
-            if (mainHero == null) {
-                try {
+            if (mainHero == null && game != null) {
+                if (game.getPlayer(true) != null) {
                     mainHero = (Unit) game.getPlayer(true).getHeroObj();
-                } catch (Exception e) {
-                    //                    main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
-            MAIN_HERO = mainHero;
         }
         return mainHero;
     }
@@ -205,15 +204,20 @@ public class Core {
 
     public static void onNewThread(Runnable o) {
         //TODO
-        // ThreadPool
-        new Thread(o, "single task thread " + customThreadsUsed++).start();
+        // new DefaultDispatchService()
+        if (executor == null)
+            executor = new ThreadPoolExecutor(8, 20, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
+        // if (threadPool == null)
+        //     threadPool = ThreadPool.wrap(executor, 5);
+        executor.execute(o);
+        // new Thread(o, "single task thread " + customThreadsUsed++).start();
     }
 
-    public static SCOPE getScope() {
+    public static APPLICATION_SCOPE getScope() {
         return scope;
     }
 
-    public static void setScope(SCOPE scope) {
+    public static void setScope(APPLICATION_SCOPE scope) {
         Core.scope = scope;
     }
 
@@ -226,18 +230,6 @@ public class Core {
         }
     }
 
-    public static void bufferMainHero() {
-        bufferedMainHero = getMainHero();
-    }
-
-    public static void resetMainHero() {
-        if (bufferedMainHero == null) {
-            return;
-        }
-        setMainHero(bufferedMainHero);
-        bufferedMainHero = null;
-    }
-
     public static void setGdxBeansProvider(Supplier<GdxBeans> gdxBeansProvider) {
         Core.gdxBeansProvider = gdxBeansProvider;
     }
@@ -246,8 +238,7 @@ public class Core {
         return gdxBeansProvider;
     }
 
-
-    public enum SCOPE {
+    public enum APPLICATION_SCOPE {
         MENU, BATTLE, MAP
     }
 }
