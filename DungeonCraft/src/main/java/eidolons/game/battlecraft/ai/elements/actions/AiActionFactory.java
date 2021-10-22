@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.ai.elements.actions;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.active.DC_UnitAction;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import main.entity.Ref;
 

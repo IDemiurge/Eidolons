@@ -1,8 +1,8 @@
 package libgdx.gui.panels.headquarters.tabs.tree.classes;
 
-import eidolons.entity.obj.attach.HeroClass;
-import eidolons.entity.obj.attach.Perk;
-import eidolons.game.module.herocreator.logic.passives.PerkMaster;
+import eidolons.entity.unit.attach.HeroClass;
+import eidolons.entity.unit.attach.Perk;
+import eidolons.netherflame.eidolon.heromake.passives.PerkMaster;
 import libgdx.GdxImageMaster;
 import libgdx.gui.panels.headquarters.tabs.tree.HtNode;
 import libgdx.gui.panels.headquarters.tabs.tree.SlotSelectionRadialMenu;

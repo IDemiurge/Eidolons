@@ -3,7 +3,7 @@ package libgdx.adapters;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMapDataSource;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
+import eidolons.game.exploration.handlers.RealTimeGameLoop;
 import eidolons.system.libgdx.api.ScreenApi;
 import libgdx.screens.GameScreen;
 import libgdx.screens.dungeon.DungeonScreen;

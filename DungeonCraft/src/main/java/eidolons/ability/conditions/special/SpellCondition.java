@@ -1,7 +1,7 @@
 package eidolons.ability.conditions.special;
 
 import eidolons.entity.active.Spell;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref;
 

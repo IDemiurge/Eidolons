@@ -6,10 +6,8 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleRules;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
-import eidolons.game.module.dungeoncrawl.struct.LevelBlock;
+import eidolons.game.exploration.dungeons.struct.LevelBlock;
 import main.game.bf.Coordinates;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 
 import java.util.Map;

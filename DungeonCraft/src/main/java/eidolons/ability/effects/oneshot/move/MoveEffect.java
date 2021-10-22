@@ -1,7 +1,7 @@
 package eidolons.ability.effects.oneshot.move;
 
 import eidolons.ability.effects.DC_Effect;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.ability.effects.OneshotEffect;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;

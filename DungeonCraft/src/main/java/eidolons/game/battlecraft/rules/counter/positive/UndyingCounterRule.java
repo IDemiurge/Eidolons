@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules.counter.positive;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.TriggerRule;
 import eidolons.game.core.EUtils;
 import main.content.enums.entity.UnitEnums;

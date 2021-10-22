@@ -1,22 +1,20 @@
 package libgdx.gui.tooltips;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import eidolons.ability.conditions.special.ClearShotCondition;
 import eidolons.content.PARAMS;
-import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DefaultActionHandler;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.core.Core;
-import eidolons.game.module.dungeoncrawl.objects.ContainerObj;
+import eidolons.game.exploration.objects.ContainerObj;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.StyleHolder;
 import libgdx.bf.generic.ImageContainer;

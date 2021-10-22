@@ -1,6 +1,6 @@
 package eidolons.puzzle.portal;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.Core;
 import libgdx.gui.generic.btn.ButtonStyled;
 import libgdx.gui.generic.btn.SmartTextButton;

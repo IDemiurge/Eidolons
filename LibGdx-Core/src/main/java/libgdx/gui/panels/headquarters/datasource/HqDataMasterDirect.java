@@ -1,6 +1,6 @@
 package libgdx.gui.panels.headquarters.datasource;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.Core;
 import eidolons.system.libgdx.datasource.HeroDataModel;
 import libgdx.gui.panels.headquarters.HqPanel;

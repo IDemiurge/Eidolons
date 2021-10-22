@@ -2,13 +2,13 @@ package eidolons.game.battlecraft.ai.explore;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.advanced.engagement.EngageEvent;
 import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationHandler;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.exploration.handlers.ExplorationHandler;
+import eidolons.game.exploration.handlers.ExplorationMaster;
 import io.vertx.core.impl.ConcurrentHashSet;
 import main.content.enums.rules.VisionEnums;
 import main.entity.obj.Obj;

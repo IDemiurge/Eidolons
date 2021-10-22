@@ -11,7 +11,7 @@ import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.DC_Cell;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.master.EffectMaster;
 import libgdx.GdxMaster;

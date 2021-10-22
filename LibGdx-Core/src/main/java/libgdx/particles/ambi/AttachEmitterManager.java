@@ -3,7 +3,7 @@ package libgdx.particles.ambi;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import libgdx.GdxMaster;
 import libgdx.bf.grid.cell.BaseView;
 import main.content.enums.GenericEnums;

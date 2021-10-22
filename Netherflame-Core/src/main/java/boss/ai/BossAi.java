@@ -3,7 +3,7 @@ package boss.ai;
 import boss.BossHandler;
 import boss.logic.BossCycle;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.core.Core;
 import boss.BossManager;

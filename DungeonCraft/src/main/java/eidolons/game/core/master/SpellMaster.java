@@ -2,9 +2,9 @@ package eidolons.game.core.master;
 
 import eidolons.content.PROPS;
 import eidolons.entity.active.Spell;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.herocreator.logic.passives.SkillMaster;
+import eidolons.netherflame.eidolon.heromake.passives.SkillMaster;
 import eidolons.system.test.TestMasterContent;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;

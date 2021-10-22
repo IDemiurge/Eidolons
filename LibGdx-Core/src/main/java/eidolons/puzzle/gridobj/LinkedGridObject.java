@@ -1,7 +1,7 @@
 package eidolons.puzzle.gridobj;
 
 import com.badlogic.gdx.math.Vector2;
-import eidolons.dungeons.generator.model.AbstractCoordinates;
+import eidolons.game.exploration.dungeons.generator.model.AbstractCoordinates;
 import libgdx.bf.Fluctuating;
 import libgdx.bf.grid.cell.BaseView;
 import libgdx.bf.grid.cell.OverlayView;

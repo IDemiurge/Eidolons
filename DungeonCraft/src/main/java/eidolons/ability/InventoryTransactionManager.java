@@ -2,14 +2,13 @@ package eidolons.ability;
 
 import eidolons.content.PROPS;
 import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.item.DC_InventoryManager;
+import eidolons.entity.item.handlers.DC_InventoryManager;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.herocreator.CharacterCreator;
-import eidolons.game.module.herocreator.DC_HeroManager;
-import eidolons.game.module.herocreator.HeroManager;
+import eidolons.netherflame.eidolon.heromake.handlers.DC_HeroManager;
+import eidolons.netherflame.eidolon.heromake.handlers.HeroManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
@@ -29,8 +28,6 @@ public class InventoryTransactionManager {
     private boolean active;
 
     public InventoryTransactionManager(DC_Game game) {
-        HeroManager heroManager = new DC_HeroManager(game);
-        CharacterCreator.setDC_HeroManager(heroManager);
         this.game = game;
     }
 

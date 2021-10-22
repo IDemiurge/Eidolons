@@ -2,7 +2,7 @@ package boss.logic.entity;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_UnitAction;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import boss.BossManager;
 import boss.logic.BossCycle;

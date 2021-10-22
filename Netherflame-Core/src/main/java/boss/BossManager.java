@@ -9,7 +9,7 @@ import boss.logic.action.BossActionMaster;
 import boss.logic.entity.BossUnit;
 import boss.logic.rules.*;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.netherflame.boss.logic.rules.*;
+import eidolons.netherflame.boss.logic.rules.*;
 import main.content.CONTENT_CONSTS;
 import main.content.DC_TYPE;
 import main.data.DataManager;

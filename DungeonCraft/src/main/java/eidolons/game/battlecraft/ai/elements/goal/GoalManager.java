@@ -1,15 +1,13 @@
 package eidolons.game.battlecraft.ai.elements.goal;
 
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.tools.Analyzer;
-import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.battlecraft.ai.tools.target.AI_SpellMaster;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
-import main.content.enums.entity.UnitEnums;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;

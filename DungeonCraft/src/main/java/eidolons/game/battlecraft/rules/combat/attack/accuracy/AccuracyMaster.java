@@ -3,22 +3,18 @@ package eidolons.game.battlecraft.rules.combat.attack.accuracy;
 import eidolons.content.DC_Calculator;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.meta.universal.event.ChoiceEventMaster;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.battlecraft.rules.combat.attack.AttackCalculator;
 import eidolons.game.battlecraft.rules.combat.attack.DefenseAttackCalculator;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.math.roll.DiceMaster;
 import main.content.enums.entity.NewRpgEnums;
-import main.content.values.properties.G_PROPS;
 import main.system.auxiliary.EnumMaster;
 import main.system.math.MathMaster;
 
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
 
 import static main.content.enums.entity.NewRpgEnums.HitType.*;
 

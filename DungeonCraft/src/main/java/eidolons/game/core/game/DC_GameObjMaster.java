@@ -4,7 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.Structure;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import io.vertx.core.impl.ConcurrentHashSet;
 import main.data.XList;
 import main.entity.Ref;

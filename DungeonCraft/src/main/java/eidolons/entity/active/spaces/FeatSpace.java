@@ -1,6 +1,6 @@
 package eidolons.entity.active.spaces;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.content.enums.entity.NewRpgEnums;
 
 import java.util.ArrayList;

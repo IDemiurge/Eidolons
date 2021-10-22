@@ -1,8 +1,8 @@
 package libgdx.gui.panels.headquarters.tabs.tree.skill;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import eidolons.entity.obj.attach.DC_PassiveObj;
-import eidolons.game.module.herocreator.logic.passives.SkillMaster;
+import eidolons.entity.unit.attach.DC_PassiveObj;
+import eidolons.netherflame.eidolon.heromake.passives.SkillMaster;
 import libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import libgdx.gui.panels.headquarters.datasource.tree.HeroTreeDataSource;
 import libgdx.gui.panels.headquarters.datasource.tree.SkillsDataSource;

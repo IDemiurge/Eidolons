@@ -1,6 +1,6 @@
 package eidolons.ability.effects.containers.group;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import main.data.ability.AE_ConstrArgs;
 import main.elements.conditions.Condition;

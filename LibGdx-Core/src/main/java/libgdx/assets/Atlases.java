@@ -12,7 +12,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.game.battlecraft.rules.combat.attack.AttackTypes;
-import eidolons.game.module.herocreator.logic.items.ItemMaster;
+import eidolons.entity.item.handlers.ItemMaster;
 import libgdx.GdxImageMaster;
 import libgdx.GdxMaster;
 import libgdx.anims.sprite.SpriteAnimation;

@@ -1,6 +1,6 @@
 package eidolons.game.core;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.core.atb.AtbTurnManager;

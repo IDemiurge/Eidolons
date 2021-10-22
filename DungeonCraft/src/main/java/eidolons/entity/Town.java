@@ -2,10 +2,10 @@ package eidolons.entity;
 
 import eidolons.content.PROPS;
 import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.shop.Shop;
 import eidolons.game.core.Core;
-import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
+import eidolons.game.exploration.story.quest.advanced.Quest;
 import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicEnums.AMBIENCE;
 import main.content.values.parameters.MACRO_PARAMS;

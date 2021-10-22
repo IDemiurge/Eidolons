@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.mission.encounter.reinforce;
 
 import eidolons.content.PROPS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
 import eidolons.game.battlecraft.logic.mission.encounter.Encounter;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;

@@ -1,6 +1,6 @@
 package eidolons.ability.conditions;
 
-import eidolons.entity.obj.unit.DC_UnitModel;
+import eidolons.entity.unit.DC_UnitModel;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.elements.conditions.ConditionImpl;
 import main.entity.Ref;

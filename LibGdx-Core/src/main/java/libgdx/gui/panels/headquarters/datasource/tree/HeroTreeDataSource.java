@@ -1,6 +1,6 @@
 package libgdx.gui.panels.headquarters.datasource.tree;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 
 import java.util.List;
 

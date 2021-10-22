@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.ai.advanced.companion;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;

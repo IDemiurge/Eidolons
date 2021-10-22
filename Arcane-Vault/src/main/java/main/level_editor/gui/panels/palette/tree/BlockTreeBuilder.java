@@ -1,11 +1,11 @@
 package main.level_editor.gui.panels.palette.tree;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
-import eidolons.dungeons.generator.GeneratorEnums;
-import eidolons.dungeons.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
-import eidolons.dungeons.generator.model.RoomModel;
-import eidolons.dungeons.generator.model.RoomTemplateMaster;
-import eidolons.dungeons.generator.tilemap.TileMapper;
+import eidolons.game.exploration.dungeons.generator.GeneratorEnums;
+import eidolons.game.exploration.dungeons.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
+import eidolons.game.exploration.dungeons.generator.model.RoomModel;
+import eidolons.game.exploration.dungeons.generator.model.RoomTemplateMaster;
+import eidolons.game.exploration.dungeons.generator.tilemap.TileMapper;
 import main.data.filesys.PathFinder;
 import main.level_editor.LevelEditor;
 import main.system.auxiliary.data.FileManager;

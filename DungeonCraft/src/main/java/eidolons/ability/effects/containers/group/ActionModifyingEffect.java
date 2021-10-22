@@ -1,6 +1,6 @@
 package eidolons.ability.effects.containers.group;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.content.DC_TYPE;
 import main.elements.conditions.Condition;
 import main.entity.obj.Obj;

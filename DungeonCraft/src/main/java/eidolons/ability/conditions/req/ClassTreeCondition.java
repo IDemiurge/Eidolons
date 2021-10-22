@@ -1,8 +1,8 @@
 package eidolons.ability.conditions.req;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.attach.DC_PassiveObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.attach.DC_PassiveObj;
+import eidolons.entity.unit.Unit;
 import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;

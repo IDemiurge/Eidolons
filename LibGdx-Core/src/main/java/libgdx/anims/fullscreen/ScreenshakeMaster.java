@@ -1,7 +1,7 @@
 package libgdx.anims.fullscreen;
 
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.core.Core;
 import main.entity.Ref;

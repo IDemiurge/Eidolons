@@ -1,7 +1,7 @@
 package libgdx.adapters;
 
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.system.libgdx.api.DataSourceApi;
 import libgdx.gui.panels.dc.inventory.container.ContainerDataSource;
 import libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;

@@ -1,11 +1,11 @@
 package eidolons.game.battlecraft.logic.meta.testenv;
 
-import eidolons.entity.obj.unit.Unit;
-import eidolons.entity.obj.unit.netherflame.TrueForm;
+import eidolons.entity.unit.Unit;
+import eidolons.entity.unit.netherflame.TrueForm;
 import eidolons.game.battlecraft.EngineLauncher;
 import eidolons.game.battlecraft.logic.meta.universal.SpawnManager;
 import eidolons.game.core.launch.TestLaunch;
-import eidolons.game.eidolon.chain.EidolonChain;
+import eidolons.netherflame.eidolon.chain.EidolonChain;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;

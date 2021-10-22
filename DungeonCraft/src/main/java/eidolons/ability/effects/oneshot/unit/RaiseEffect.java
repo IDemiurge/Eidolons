@@ -4,7 +4,7 @@ import eidolons.ability.InventoryTransactionManager;
 import eidolons.ability.effects.attachment.AddBuffEffect;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.ability.effects.Effects;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.STD_UNDEAD_TYPES;
@@ -13,12 +13,10 @@ import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.Obj;
 import main.entity.type.impl.BuffType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.math.Formula;
 
 public class RaiseEffect extends SummonEffect {
 

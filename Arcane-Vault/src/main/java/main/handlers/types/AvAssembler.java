@@ -1,7 +1,7 @@
 package main.handlers.types;
 
 import eidolons.entity.TypeCombiner;
-import eidolons.game.module.herocreator.logic.UnitLevelManager;
+import eidolons.entity.unit.trainers.UnitLevelManager;
 import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;

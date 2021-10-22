@@ -2,7 +2,7 @@ package libgdx.gui.panels.quest;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
+import eidolons.game.exploration.story.quest.advanced.Quest;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
 import libgdx.anims.actions.ActionMasterGdx;

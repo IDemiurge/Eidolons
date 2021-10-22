@@ -1,7 +1,7 @@
 package boss.logic.rules;
 
 import boss.BossHandler;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.Core;
 import boss.BossManager;
 import boss.BossModel;

@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.mission.quest;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.mission.universal.stats.BattleStats;
 import eidolons.game.battlecraft.logic.mission.universal.stats.MissionStatManager;
 import eidolons.game.core.Core;

@@ -1,10 +1,7 @@
 package eidolons.content;
 
-import eidolons.entity.hero.AttributeConsts;
 import main.entity.Entity;
-import main.entity.Ref.KEYS;
 import main.system.auxiliary.Loop;
-import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 

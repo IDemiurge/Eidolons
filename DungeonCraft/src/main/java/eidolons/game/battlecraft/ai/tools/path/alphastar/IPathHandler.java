@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.ai.tools.path.alphastar;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;

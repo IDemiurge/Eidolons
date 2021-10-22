@@ -2,7 +2,7 @@ package libgdx.anims.std;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.ability.effects.oneshot.move.MoveEffect;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.art.ArtPuzzle;
 import eidolons.game.core.master.EffectMaster;
 import libgdx.anims.AnimData;

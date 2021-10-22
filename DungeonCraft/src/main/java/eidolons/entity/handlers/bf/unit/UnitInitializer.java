@@ -1,31 +1,25 @@
 package eidolons.entity.handlers.bf.unit;
 
 import com.graphbuilder.math.ExpressionParseException;
-import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.SimCache;
-import eidolons.entity.active.Spell;
 import eidolons.entity.handlers.bf.BfObjInitializer;
 import eidolons.entity.item.*;
-import eidolons.entity.obj.attach.DC_PassiveObj;
-import eidolons.entity.hero.DC_Attributes;
-import eidolons.entity.hero.DC_Masteries;
-import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.RuleEnums;
-import eidolons.game.battlecraft.rules.RuleKeeper;
+import eidolons.entity.unit.attach.DC_PassiveObj;
+import eidolons.netherflame.eidolon.heromake.model.DC_Attributes;
+import eidolons.netherflame.eidolon.heromake.model.DC_Masteries;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.SimulationGame;
-import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
-import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
-import eidolons.game.module.herocreator.logic.items.ItemGenerator;
-import eidolons.game.module.herocreator.logic.passives.SkillMaster;
+import eidolons.game.exploration.objects.ContainerMaster;
+import eidolons.game.exploration.objects.DungeonObj.DUNGEON_OBJ_TYPE;
+import eidolons.entity.item.handlers.ItemGenerator;
+import eidolons.netherflame.eidolon.heromake.passives.SkillMaster;
 import main.content.DC_TYPE;
-import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
 import main.content.mode.MODE;
 import main.content.mode.ModeImpl;
 import main.content.mode.STD_MODES;
-import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
@@ -38,9 +32,7 @@ import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static main.content.DC_TYPE.PERKS;
 

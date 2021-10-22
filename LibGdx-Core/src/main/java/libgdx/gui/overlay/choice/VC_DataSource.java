@@ -1,12 +1,9 @@
 package libgdx.gui.overlay.choice;
 
-import eidolons.game.netherflame.main.death.ChainHero;
-import eidolons.game.netherflame.main.soul.SoulforceMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 public class VC_DataSource {
 
@@ -37,9 +34,9 @@ public class VC_DataSource {
         return options;
     }
 
-    private VC_Option createHeroOption(ChainHero hero) {
-      return   new VC_Option(hero, hero.getUnit().getName(), hero.getUnit().getToolTip(), hero.getUnit().getImagePath());
-    }
+    // private VC_Option createHeroOption(ChainHero hero) {
+    //   return   new VC_Option(hero, hero.getUnit().getName(), hero.getUnit().getToolTip(), hero.getUnit().getImagePath());
+    // }
 
     private List<VC_Option> initOptions(VC_TYPE type) {
         List<VC_Option> options = new LinkedList<>();

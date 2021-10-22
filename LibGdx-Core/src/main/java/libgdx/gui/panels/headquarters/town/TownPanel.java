@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.game.core.EUtils;
-import eidolons.game.module.dungeoncrawl.quest.advanced.Quest;
+import eidolons.game.exploration.story.quest.advanced.Quest;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
 import libgdx.TiledNinePatchGenerator;

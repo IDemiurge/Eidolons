@@ -5,7 +5,7 @@ import eidolons.game.battlecraft.logic.battlefield.vision.VisionRule;
 import eidolons.game.battlecraft.rules.RuleEnums.RULE_SCOPE;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.core.Core;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationTimeMaster;
+import eidolons.game.exploration.handlers.ExplorationTimeMaster;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.data.MetaDataUnit;
 import eidolons.system.data.MetaDataUnit.META_DATA;

@@ -1,9 +1,8 @@
 package eidolons.game.battlecraft.ai.advanced.engagement;
 
-import eidolons.content.consts.VisualEnums;
 import eidolons.content.consts.VisualEnums.VIEW_ANIM;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.content.consts.GraphicData;
 import main.content.enums.rules.VisionEnums;
 import main.data.xml.XmlStringBuilder;

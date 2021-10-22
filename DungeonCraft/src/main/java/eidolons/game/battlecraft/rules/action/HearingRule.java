@@ -2,14 +2,12 @@ package eidolons.game.battlecraft.rules.action;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.audio.DC_SoundMaster;
-import eidolons.system.math.roll.RollMaster;
-import main.content.enums.GenericEnums;
 import main.content.enums.rules.VisionEnums;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;

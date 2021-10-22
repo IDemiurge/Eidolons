@@ -1,6 +1,6 @@
 package macro.entity.action;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.Eidolons;
 import macro.MacroGame;
 import macro.entity.MacroRef;

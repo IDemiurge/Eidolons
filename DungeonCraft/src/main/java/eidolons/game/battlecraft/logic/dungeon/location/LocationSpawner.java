@@ -1,14 +1,14 @@
 package eidolons.game.battlecraft.logic.dungeon.location;
 
 import eidolons.content.PROPS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.Floor;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
-import eidolons.game.module.dungeoncrawl.struct.LevelBlock;
-import eidolons.game.netherflame.lord.EidolonLord;
+import eidolons.game.exploration.dungeons.struct.LevelBlock;
+import eidolons.netherflame.lord.EidolonLord;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 

@@ -1,14 +1,6 @@
 package libgdx.bf.overlays;
 
-import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_UnitAction;
-import eidolons.game.core.Core;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import libgdx.anims.text.FloatingTextMaster;
-import main.content.enums.entity.ActionEnums;
 import main.entity.Entity;
-import main.entity.obj.Obj;
-import main.system.math.PositionMaster;
 
 /**
  * Created by JustMe on 5/12/2018.

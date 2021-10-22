@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.ai.advanced.companion;
 import eidolons.content.values.DC_ValueManager.VALUE_GROUP;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.system.auxiliary.EnumMaster;
 

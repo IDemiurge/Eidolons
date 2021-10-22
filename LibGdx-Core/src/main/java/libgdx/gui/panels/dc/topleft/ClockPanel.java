@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.exploration.handlers.ExplorationMaster;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
 import libgdx.bf.generic.FadeImageContainer;

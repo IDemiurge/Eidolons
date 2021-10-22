@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.Align;
 import eidolons.game.battlecraft.logic.mission.quest.QuestMissionStatManager;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Core;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.exploration.handlers.ExplorationMaster;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
 import libgdx.TiledNinePatchGenerator;

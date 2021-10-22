@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.ai.tools.time;
 
 import eidolons.game.battlecraft.ai.UnitAI;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.exploration.handlers.ExplorationMaster;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.system.auxiliary.StringMaster;

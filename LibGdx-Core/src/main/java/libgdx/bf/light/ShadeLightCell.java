@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.Align;
 import eidolons.content.consts.VisualEnums;
 import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.entity.obj.Structure;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.actions.FloatActionLimited;

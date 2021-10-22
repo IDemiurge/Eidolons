@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.ai.elements.actions;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.task.Task;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
 import eidolons.system.ObjUtilities;

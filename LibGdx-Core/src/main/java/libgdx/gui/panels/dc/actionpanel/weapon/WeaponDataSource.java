@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.item.DC_WeaponObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import libgdx.gui.datasource.EntityDataSource;
 import libgdx.gui.generic.btn.FlipDrawable;
 import libgdx.texture.TextureCache;

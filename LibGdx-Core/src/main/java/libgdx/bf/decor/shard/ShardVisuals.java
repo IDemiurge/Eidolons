@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.dungeons.generator.model.AbstractCoordinates;
+import eidolons.game.exploration.dungeons.generator.model.AbstractCoordinates;
 import libgdx.bf.GridMaster;
 import libgdx.bf.grid.GridLayer;
 import libgdx.bf.grid.GridPanel;

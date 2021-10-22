@@ -3,9 +3,9 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.maze;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.sub.CustomRoomTemplateMaster;
-import eidolons.dungeons.generator.GeneratorEnums;
-import eidolons.dungeons.generator.LevelData;
-import eidolons.dungeons.generator.model.RoomModel;
+import eidolons.game.exploration.dungeons.generator.GeneratorEnums;
+import eidolons.game.exploration.dungeons.generator.LevelData;
+import eidolons.game.exploration.dungeons.generator.model.RoomModel;
 import main.game.bf.Coordinates;
 
 import java.util.ArrayList;

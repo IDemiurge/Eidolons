@@ -1,8 +1,8 @@
 package libgdx.gui.panels.headquarters.tabs.stats;
 
 import eidolons.content.PARAMS;
-import eidolons.game.module.herocreator.logic.PointMaster;
-import eidolons.game.module.herocreator.logic.passives.SkillMaster;
+import eidolons.netherflame.eidolon.heromake.model.PointMaster;
+import eidolons.netherflame.eidolon.heromake.passives.SkillMaster;
 import libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import main.content.ContentValsManager;
 import main.content.values.parameters.PARAMETER;

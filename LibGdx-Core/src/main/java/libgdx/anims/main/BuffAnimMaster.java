@@ -1,6 +1,6 @@
 package libgdx.anims.main;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import libgdx.anims.construct.AnimConstructor;
 import libgdx.anims.std.BuffAnim;

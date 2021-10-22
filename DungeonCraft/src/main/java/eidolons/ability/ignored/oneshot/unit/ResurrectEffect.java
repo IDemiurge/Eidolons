@@ -3,7 +3,7 @@ package eidolons.ability.ignored.oneshot.unit;
 import eidolons.ability.InventoryTransactionManager;
 import eidolons.ability.effects.DC_Effect;
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.ability.effects.OneshotEffect;
 import main.content.enums.entity.UnitEnums;
 import main.system.math.Formula;

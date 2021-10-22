@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue;
 
 import com.badlogic.gdx.math.Interpolation;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
 import eidolons.game.core.game.DC_Game;
 import main.data.XLinkedMap;

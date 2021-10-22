@@ -1,9 +1,7 @@
 package eidolons.game.battlecraft.rules.counter.anew;
 
-import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;

@@ -3,7 +3,7 @@ package eidolons.entity.handlers.bf.structure;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.Structure;
-import eidolons.entity.obj.unit.DC_UnitModel;
+import eidolons.entity.unit.DC_UnitModel;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.entity.Ref.KEYS;
 import main.entity.handlers.EntityMaster;

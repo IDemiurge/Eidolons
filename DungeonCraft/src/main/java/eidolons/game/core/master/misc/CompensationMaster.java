@@ -1,6 +1,6 @@
 package eidolons.game.core.master.misc;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 
 /**
  * Created by JustMe on 4/25/2017.

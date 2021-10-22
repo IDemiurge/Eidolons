@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.logic;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.Spell;
 import eidolons.entity.item.DC_HeroSlotItem;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 
 import java.util.List;
 

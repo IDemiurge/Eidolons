@@ -1,7 +1,7 @@
 package boss.logic.entity;
 
 import eidolons.entity.handlers.bf.unit.UnitChecker;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.content.enums.entity.UnitEnums;
 
 public class BossChecker extends UnitChecker {

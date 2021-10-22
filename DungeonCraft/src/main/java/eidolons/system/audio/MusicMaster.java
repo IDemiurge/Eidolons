@@ -8,7 +8,7 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.core.Core;
-import eidolons.game.module.cinematic.Cinematics;
+import eidolons.game.exploration.story.cinematic.Cinematics;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SoundOptions.SOUND_OPTION;
 import main.data.XLinkedMap;

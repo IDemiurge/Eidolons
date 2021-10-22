@@ -2,10 +2,10 @@ package eidolons.puzzle.portal;
 
 import eidolons.content.consts.GraphicData;
 import eidolons.content.consts.Sprites;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.puzzle.gridobj.GridObject;
 import eidolons.game.core.EUtils;
-import eidolons.game.module.cinematic.CinematicLib;
+import eidolons.game.exploration.story.cinematic.CinematicLib;
 import libgdx.anims.main.AnimMaster;
 import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;

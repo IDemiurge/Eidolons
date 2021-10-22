@@ -4,7 +4,7 @@ import eidolons.ability.costs.DC_CostsFactory;
 import eidolons.ability.effects.oneshot.activation.ActivateEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_UnitAction;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.ability.Abilities;
 import main.ability.ActiveAbility;
 import main.ability.effects.Effects;

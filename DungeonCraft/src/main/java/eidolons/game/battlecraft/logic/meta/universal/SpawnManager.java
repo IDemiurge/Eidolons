@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.universal;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.Core;
 import main.content.DC_TYPE;
 import main.data.DataManager;

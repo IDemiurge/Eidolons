@@ -3,7 +3,7 @@ package eidolons.system.test;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.item.DC_WeaponObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentValsManager;

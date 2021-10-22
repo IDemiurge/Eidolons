@@ -1,6 +1,6 @@
 package eidolons.ability.effects.oneshot.item;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;

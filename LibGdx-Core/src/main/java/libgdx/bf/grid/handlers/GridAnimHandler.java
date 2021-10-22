@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.puzzle.gridobj.GridObject;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.anims.actions.ActionMasterGdx;

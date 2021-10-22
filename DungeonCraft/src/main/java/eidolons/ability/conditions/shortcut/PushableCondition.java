@@ -3,7 +3,7 @@ package eidolons.ability.conditions.shortcut;
 import eidolons.ability.conditions.DC_Condition;
 import eidolons.ability.conditions.special.ClearShotCondition;
 import eidolons.entity.obj.Structure;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.content.enums.entity.BfObjEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.EntityCheckMaster;

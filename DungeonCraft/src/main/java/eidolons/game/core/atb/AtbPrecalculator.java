@@ -3,8 +3,8 @@ package eidolons.game.core.atb;
 import com.badlogic.gdx.utils.Array;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.obj.unit.Unit;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.entity.unit.Unit;
+import eidolons.game.exploration.handlers.ExplorationMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 

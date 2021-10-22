@@ -11,7 +11,7 @@ import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.game.DC_BattleFieldGrid;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
+import eidolons.game.exploration.dungeons.struct.LevelStruct;
 import libgdx.bf.mouse.InputController;
 import libgdx.gui.NinePatchFactory;
 import libgdx.gui.generic.ValueContainer;

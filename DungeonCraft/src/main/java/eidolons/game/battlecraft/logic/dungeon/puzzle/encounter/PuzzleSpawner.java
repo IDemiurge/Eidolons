@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.encounter;
 
 import eidolons.content.PROPS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.generic.AiData;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;

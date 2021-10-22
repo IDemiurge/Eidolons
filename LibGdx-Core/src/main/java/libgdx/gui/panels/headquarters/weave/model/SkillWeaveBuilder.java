@@ -1,7 +1,7 @@
 package libgdx.gui.panels.headquarters.weave.model;
 
 import com.badlogic.gdx.math.Vector2;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import libgdx.gui.panels.headquarters.weave.Weave;
 import libgdx.gui.panels.headquarters.weave.WeaveSpace.WEAVE_VIEW_FILTER;

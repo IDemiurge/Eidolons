@@ -1,9 +1,9 @@
 package eidolons.entity.item;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.Core;
-import eidolons.game.module.dungeoncrawl.explore.vendor.GoldMaster;
+import eidolons.entity.item.vendor.GoldMaster;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.data.DataManager;

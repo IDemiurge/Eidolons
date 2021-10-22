@@ -1,7 +1,7 @@
 package libgdx.gui.panels.headquarters.weave.model.skills;
 
 import eidolons.content.DC_ContentValsManager;
-import eidolons.game.module.herocreator.logic.passives.SkillMaster;
+import eidolons.netherflame.eidolon.heromake.passives.SkillMaster;
 import libgdx.gui.panels.headquarters.weave.Weave;
 import libgdx.gui.panels.headquarters.weave.WeaveTree;
 import libgdx.gui.panels.headquarters.weave.model.WeaveDataNode;

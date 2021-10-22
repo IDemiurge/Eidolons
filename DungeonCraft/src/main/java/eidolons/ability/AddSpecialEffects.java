@@ -3,7 +3,7 @@ package eidolons.ability;
 import eidolons.ability.effects.attachment.AddTriggerEffect;
 import eidolons.ability.effects.containers.AbilityEffect;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.exploration.handlers.ExplorationMaster;
 import main.ability.ActiveAbility;
 import main.ability.effects.Effect;
 import main.ability.effects.MicroEffect;

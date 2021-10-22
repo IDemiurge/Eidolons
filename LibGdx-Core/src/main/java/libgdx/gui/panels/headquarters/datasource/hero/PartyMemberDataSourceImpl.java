@@ -1,6 +1,6 @@
 package libgdx.gui.panels.headquarters.datasource.hero;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import libgdx.gui.generic.ValueContainer;
 
 /**

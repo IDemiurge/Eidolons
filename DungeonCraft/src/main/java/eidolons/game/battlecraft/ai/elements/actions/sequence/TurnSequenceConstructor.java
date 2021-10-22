@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.ai.elements.actions.sequence;
 import eidolons.ability.conditions.FacingCondition;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;

@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 
 public interface IVoidGdxHandler {
     void initVisuals();

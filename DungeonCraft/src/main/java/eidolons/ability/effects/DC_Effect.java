@@ -2,7 +2,7 @@ package eidolons.ability.effects;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.MicroEffect;
 

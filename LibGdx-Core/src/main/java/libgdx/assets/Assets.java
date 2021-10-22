@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Array;
 import eidolons.content.consts.VisualEnums;
 import eidolons.content.consts.VisualEnums.VFX_ATLAS;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.Core;
 import libgdx.anims.construct.AnimConstructor;

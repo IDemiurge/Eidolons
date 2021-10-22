@@ -2,14 +2,14 @@ package libgdx.gui.panels.dc.inventory;
 
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.item.DC_ArmorObj;
-import eidolons.entity.item.DC_InventoryManager;
-import eidolons.entity.item.DC_InventoryManager.OPERATIONS;
+import eidolons.entity.item.handlers.DC_InventoryManager;
+import eidolons.entity.item.handlers.DC_InventoryManager.OPERATIONS;
 import eidolons.entity.item.DC_JewelryObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Core;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.module.herocreator.HeroManager;
+import eidolons.game.exploration.handlers.ExplorationMaster;
+import eidolons.netherflame.eidolon.heromake.handlers.HeroManager;
 import libgdx.anims.text.FloatingTextMaster;
 import libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.system.libgdx.datasource.HeroDataModel;

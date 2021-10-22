@@ -2,7 +2,7 @@ package macro.generation;
 
 import eidolons.content.PROPS;
 import eidolons.game.module.dungeoncrawl.struct.DungeonLevel;
-import eidolons.dungeons.generator.LevelGenerator;
+import eidolons.game.exploration.dungeons.generator.LevelGenerator;
 import eidolons.macro.map.Place;
 import eidolons.system.data.MetaDataUnit;
 import eidolons.system.data.MetaDataUnit.META_DATA;

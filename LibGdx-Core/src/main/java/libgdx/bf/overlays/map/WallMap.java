@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ObjectMap;
-import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_STATE;
+import eidolons.game.exploration.objects.DoorMaster.DOOR_STATE;
 import libgdx.bf.GridMaster;
 import libgdx.screens.ScreenMaster;
 import libgdx.texture.TextureCache;

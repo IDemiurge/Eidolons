@@ -1,7 +1,7 @@
 package eidolons.system.math;
 
 import eidolons.entity.obj.DC_Cell;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.data.XList;
 import main.game.bf.Coordinates;

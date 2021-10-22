@@ -5,7 +5,7 @@ import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.Floor;
 import eidolons.game.battlecraft.logic.mission.universal.MissionHandler;
 import eidolons.game.battlecraft.logic.mission.universal.MissionMaster;
-import eidolons.game.module.herocreator.logic.UnitLevelManager;
+import eidolons.entity.unit.trainers.UnitLevelManager;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;

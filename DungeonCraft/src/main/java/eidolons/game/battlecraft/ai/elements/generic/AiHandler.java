@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.ai.elements.generic;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.advanced.behavior.BehaviorMasterOld;
 import eidolons.game.battlecraft.ai.advanced.machine.AiConst;

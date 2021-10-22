@@ -2,7 +2,7 @@ package main.level_editor.backend.functions.advanced;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.module.dungeoncrawl.struct.LevelBlock;
+import eidolons.game.exploration.dungeons.struct.LevelBlock;
 import libgdx.bf.grid.moving.PlatformData;
 import main.game.bf.Coordinates;
 import main.level_editor.backend.LE_Handler;

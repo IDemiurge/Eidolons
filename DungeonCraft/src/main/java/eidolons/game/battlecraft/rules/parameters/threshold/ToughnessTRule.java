@@ -1,12 +1,11 @@
 package eidolons.game.battlecraft.rules.parameters.threshold;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.system.math.roll.Dice;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
 import main.system.auxiliary.data.MapBuilder;
-import main.system.auxiliary.data.MapConverter;
 
 import java.util.Map;
 

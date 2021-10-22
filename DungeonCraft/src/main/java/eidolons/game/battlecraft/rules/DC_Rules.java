@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.rules;
 
-import eidolons.entity.obj.attach.DynamicBuffRules;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.attach.DynamicBuffRules;
+import eidolons.entity.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer.BUFF_RULE;
 import eidolons.game.battlecraft.logic.battlefield.vision.advanced.StealthRule;

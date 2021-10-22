@@ -3,7 +3,7 @@ package eidolons.game.core.game;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.exploration.handlers.ExplorationMaster;
 import main.content.CONTENT_CONSTS;
 import main.entity.obj.Obj;
 import main.game.bf.BattleFieldGrid;

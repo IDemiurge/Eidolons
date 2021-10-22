@@ -3,7 +3,7 @@ package libgdx.map.obj;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.macro.entity.party.MacroParty;
 import eidolons.macro.map.MapVisionMaster.MAP_OBJ_INFO_LEVEL;
 import eidolons.content.consts.libgdx.GdxColorMaster;

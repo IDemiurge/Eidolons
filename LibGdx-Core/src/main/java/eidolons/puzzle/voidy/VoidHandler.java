@@ -3,7 +3,7 @@ package eidolons.puzzle.voidy;
 import com.google.inject.internal.util.ImmutableList;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.IVoidGdxHandler;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.VoidMaze;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.VoidMazeHandler;

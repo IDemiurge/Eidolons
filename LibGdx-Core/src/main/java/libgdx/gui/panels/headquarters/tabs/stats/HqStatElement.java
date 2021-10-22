@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.content.DescriptionMaster;
 import eidolons.content.PARAMS;
 import eidolons.game.core.EUtils;
-import eidolons.game.module.herocreator.logic.PointMaster;
+import eidolons.netherflame.eidolon.heromake.model.PointMaster;
 import libgdx.GDX;
 import libgdx.StyleHolder;
 import libgdx.gui.generic.ValueContainer;

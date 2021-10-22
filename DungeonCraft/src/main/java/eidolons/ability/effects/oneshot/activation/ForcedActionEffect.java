@@ -1,6 +1,6 @@
 package eidolons.ability.effects.oneshot.activation;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;

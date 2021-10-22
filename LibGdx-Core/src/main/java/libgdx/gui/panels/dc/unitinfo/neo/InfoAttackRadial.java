@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import libgdx.gui.controls.radial.RadialContainer;
 import libgdx.gui.panels.dc.actionpanel.weapon.QuickAttackRadial;
 import libgdx.gui.panels.dc.unitinfo.tooltips.ActionTooltip;

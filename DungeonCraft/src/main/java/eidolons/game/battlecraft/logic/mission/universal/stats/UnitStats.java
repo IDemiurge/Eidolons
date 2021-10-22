@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.mission.universal.stats;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.mission.universal.stats.MissionStatManager.COMBAT_STATS;
 import main.content.values.parameters.PARAMETER;
 

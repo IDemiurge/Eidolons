@@ -1,6 +1,6 @@
 package eidolons.ability.conditions.req;
 
-import eidolons.entity.obj.unit.DC_UnitModel;
+import eidolons.entity.unit.DC_UnitModel;
 import main.elements.conditions.standard.OccupiedCondition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;

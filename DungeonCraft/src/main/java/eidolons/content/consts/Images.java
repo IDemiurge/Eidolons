@@ -1,6 +1,6 @@
 package eidolons.content.consts;
 
-import eidolons.game.netherflame.main.NF_Images;
+import eidolons.netherflame.campaign.assets.NF_Images;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.data.filesys.PathFinder;
 import main.system.ExceptionMaster;

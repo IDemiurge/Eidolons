@@ -1,10 +1,10 @@
 package eidolons.system.audio;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.core.Core;
-import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.exploration.dungeons.struct.LevelStruct;
+import eidolons.game.exploration.handlers.ExplorationMaster;
 import eidolons.system.audio.MusicEnums.AMBIENCE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 

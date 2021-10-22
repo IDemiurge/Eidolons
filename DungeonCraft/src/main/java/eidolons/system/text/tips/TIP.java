@@ -4,7 +4,7 @@ import eidolons.content.consts.Images;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.mission.quest.CombatScriptExecutor;
 import eidolons.game.core.Core;
-import eidolons.game.netherflame.main.NF_Images;
+import eidolons.netherflame.campaign.assets.NF_Images;
 import main.data.DataManager;
 import main.system.threading.WaitMaster;
 

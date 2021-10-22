@@ -1,6 +1,6 @@
 package eidolons.game.core.atb;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 
 /**
  * Created by JustMe on 4/5/2018.

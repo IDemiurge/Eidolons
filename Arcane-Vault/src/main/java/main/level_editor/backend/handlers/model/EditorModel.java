@@ -2,9 +2,9 @@ package main.level_editor.backend.handlers.model;
 
 import eidolons.game.battlecraft.logic.dungeon.location.layer.Layer;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.module.dungeoncrawl.struct.LevelBlock;
-import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
-import eidolons.game.module.dungeoncrawl.struct.LevelZone;
+import eidolons.game.exploration.dungeons.struct.LevelBlock;
+import eidolons.game.exploration.dungeons.struct.LevelStruct;
+import eidolons.game.exploration.dungeons.struct.LevelZone;
 import main.data.tree.LayeredData;
 import main.data.tree.StructNode;
 import main.data.tree.StructTreeBuilder;

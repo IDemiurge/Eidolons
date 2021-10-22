@@ -1,6 +1,6 @@
 package libgdx.gui.controls.radial;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.entity.Entity;
 
 import java.util.List;

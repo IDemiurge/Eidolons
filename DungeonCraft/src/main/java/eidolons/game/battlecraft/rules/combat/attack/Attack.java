@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.rules.combat.attack;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import main.ability.effects.Effect;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;

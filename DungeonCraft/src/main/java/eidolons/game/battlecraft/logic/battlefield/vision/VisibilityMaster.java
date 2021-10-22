@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.battlefield.vision;
 
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.system.images.ImageManager;

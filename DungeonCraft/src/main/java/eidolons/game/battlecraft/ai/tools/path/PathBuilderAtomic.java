@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.ai.tools.path;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import main.game.bf.Coordinates;

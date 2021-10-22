@@ -4,7 +4,7 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.ManipulatorPuz
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
-import eidolons.game.module.dungeoncrawl.struct.LevelBlock;
+import eidolons.game.exploration.dungeons.struct.LevelBlock;
 import main.elements.conditions.Condition;
 import main.game.bf.Coordinates;
 

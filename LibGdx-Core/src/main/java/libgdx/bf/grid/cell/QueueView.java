@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.exploration.handlers.ExplorationMaster;
 import libgdx.GdxImageMaster;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;

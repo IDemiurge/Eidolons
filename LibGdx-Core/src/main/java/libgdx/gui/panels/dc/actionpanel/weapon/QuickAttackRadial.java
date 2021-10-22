@@ -2,7 +2,7 @@ package libgdx.gui.panels.dc.actionpanel.weapon;
 
 import com.badlogic.gdx.math.Vector2;
 import eidolons.entity.item.DC_WeaponObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import libgdx.gui.controls.radial.RadialContainer;
 import libgdx.gui.controls.radial.RadialManager;
 import libgdx.gui.controls.radial.RadialMenu;

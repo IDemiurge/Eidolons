@@ -1,6 +1,6 @@
 package libgdx.gui.menu.selection.town.quest;
 
-import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
+import eidolons.game.exploration.story.quest.DungeonQuest;
 import libgdx.gui.menu.selection.ItemListPanel;
 import libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import libgdx.gui.menu.selection.SelectableItemDisplayer;
@@ -8,14 +8,13 @@ import libgdx.gui.menu.selection.town.PlaceSelectionPanel;
 import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static eidolons.game.module.dungeoncrawl.quest.QuestMaster.isPrecreatedQuests;
+import static eidolons.game.exploration.story.quest.QuestMaster.isPrecreatedQuests;
 
 /**
  * Created by JustMe on 10/5/2018.

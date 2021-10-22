@@ -18,7 +18,7 @@ import eidolons.content.consts.libgdx.GdxColorMaster;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.game.core.Core;
-import eidolons.game.module.dungeoncrawl.explore.vendor.GoldMaster;
+import eidolons.entity.item.vendor.GoldMaster;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
 import libgdx.anims.actions.ActionMasterGdx;

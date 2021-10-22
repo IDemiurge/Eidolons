@@ -2,7 +2,7 @@ package libgdx.gui.panels.dc.inventory.shop;
 
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import libgdx.gui.generic.ValueContainer;
 import libgdx.gui.panels.dc.inventory.InvItemActor;
 import eidolons.content.consts.VisualEnums.CELL_TYPE;

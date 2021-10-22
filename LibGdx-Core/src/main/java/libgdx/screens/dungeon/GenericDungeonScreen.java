@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.cinematic.Cinematics;
+import eidolons.game.exploration.story.cinematic.Cinematics;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.GdxMaster;
 import eidolons.content.consts.GridCreateData;
@@ -31,9 +31,7 @@ import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
 import org.lwjgl.opengl.GL11;
 
-import static com.badlogic.gdx.graphics.GL20.GL_NICEST;
 import static main.system.GuiEventType.UPDATE_GUI;
-import static org.lwjgl.opengl.GL11.*;
 
 public abstract class GenericDungeonScreen extends GameScreen {
     protected GridStage gridStage;

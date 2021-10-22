@@ -5,7 +5,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.handlers.active.action.ActionActiveMaster;
 import eidolons.entity.handlers.active.action.ActionExecutor;
 import eidolons.entity.item.DC_WeaponObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.DC_RuleMaster;
 import eidolons.game.core.master.EffectMaster;
 import eidolons.system.audio.DC_SoundMaster;

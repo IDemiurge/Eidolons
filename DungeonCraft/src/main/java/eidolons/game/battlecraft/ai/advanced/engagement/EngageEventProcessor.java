@@ -1,9 +1,9 @@
 package eidolons.game.battlecraft.ai.advanced.engagement;
 
 import com.google.inject.internal.util.ImmutableList;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.exploration.handlers.ExplorationMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.rules.VisionEnums.ENGAGEMENT_LEVEL;
 import main.content.enums.rules.VisionEnums.PLAYER_STATUS;

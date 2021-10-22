@@ -4,7 +4,7 @@ import eidolons.entity.active.Spell;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Core;
 import eidolons.game.core.master.SpellMaster;
-import eidolons.game.module.herocreator.HeroManager;
+import eidolons.netherflame.eidolon.heromake.handlers.HeroManager;
 import libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.system.libgdx.datasource.HeroDataModel;
 

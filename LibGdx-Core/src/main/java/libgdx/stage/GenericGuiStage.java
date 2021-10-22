@@ -9,7 +9,7 @@ import com.kotcrab.vis.ui.widget.file.FileChooser;
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.core.EUtils;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.exploration.handlers.ExplorationMaster;
 import libgdx.GDX;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;

@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.rules.saves;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 
 public class SavesMaster {
 

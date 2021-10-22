@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.rules.parameters;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.DC_SecondsRule;
 
 public class FocusGrowthRule implements DC_SecondsRule {

@@ -1,6 +1,6 @@
 package libgdx.gui.panels.generic.story;
 
-import eidolons.game.netherflame.main.story.brief.BriefingData;
+import eidolons.game.exploration.story.cinematic.brief.BriefingData;
 import libgdx.stage.UiStage;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;

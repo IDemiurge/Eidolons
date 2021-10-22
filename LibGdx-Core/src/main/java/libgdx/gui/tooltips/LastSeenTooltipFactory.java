@@ -2,7 +2,7 @@ package libgdx.gui.tooltips;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import libgdx.bf.grid.cell.BaseView;
 import libgdx.gui.generic.ValueContainer;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;

@@ -3,8 +3,7 @@ package eidolons.entity.active.spaces;
 import eidolons.content.PARAMS;
 import eidolons.entity.item.DC_ArmorObj;
 import eidolons.entity.item.DC_QuickItemObj;
-import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.advanced.engagement.EngageEvent;
+import eidolons.entity.unit.Unit;
 import main.system.datatypes.DequeImpl;
 import org.apache.commons.lang3.text.StrBuilder;
 

@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazeSetup;
 import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
-import eidolons.dungeons.generator.model.RoomModel;
+import eidolons.game.exploration.dungeons.generator.model.RoomModel;
 import main.content.CONTENT_CONSTS;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.RandomWizard;

@@ -3,7 +3,7 @@ package eidolons.ability.effects.oneshot.item;
 import eidolons.ability.effects.DC_Effect;
 import eidolons.content.PROPS;
 import eidolons.entity.item.DC_WeaponObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.entity.Ref;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;

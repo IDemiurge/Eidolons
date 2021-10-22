@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.rules.parameters;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.DC_SecondsRule;
 import eidolons.game.core.game.DC_Game;
 import main.entity.Ref;

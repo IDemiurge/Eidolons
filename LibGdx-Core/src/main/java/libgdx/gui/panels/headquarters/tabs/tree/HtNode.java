@@ -3,9 +3,9 @@ package libgdx.gui.panels.headquarters.tabs.tree;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.utils.Align;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.EUtils;
-import eidolons.game.module.herocreator.logic.passives.HeroClassMaster;
+import eidolons.netherflame.eidolon.heromake.passives.HeroClassMaster;
 import libgdx.StyleHolder;
 import libgdx.bf.DynamicLayeredActor;
 import libgdx.gui.generic.ValueContainer;

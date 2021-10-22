@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.mission.universal;
 
 import eidolons.content.DC_ContentValsManager;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.mission.universal.BattleOptions.ARENA_GAME_OPTIONS;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;

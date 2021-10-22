@@ -1,9 +1,9 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
-import eidolons.game.module.herocreator.logic.UnitLevelManager;
+import eidolons.entity.unit.trainers.UnitLevelManager;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.enums.macro.MACRO_OBJ_TYPES;

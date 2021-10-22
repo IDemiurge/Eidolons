@@ -1,7 +1,7 @@
 package eidolons.system.math.roll;
 
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.content.enums.GenericEnums;
 import main.entity.obj.Obj;
 import main.system.auxiliary.NumberUtils;

@@ -1,7 +1,7 @@
 package eidolons.ability.effects;
 
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.magic.ResistanceRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.master.EffectMaster;

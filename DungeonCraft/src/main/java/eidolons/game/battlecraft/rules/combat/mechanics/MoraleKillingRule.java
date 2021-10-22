@@ -2,8 +2,8 @@ package eidolons.game.battlecraft.rules.combat.mechanics;
 
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.DC_UnitModel;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.DC_UnitModel;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.battlecraft.rules.DC_RuleImpl;
 import main.ability.effects.Effect.MOD;

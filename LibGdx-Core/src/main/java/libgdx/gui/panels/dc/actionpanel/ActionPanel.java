@@ -3,7 +3,7 @@ package libgdx.gui.panels.dc.actionpanel;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.Core;
 import libgdx.GdxMaster;
 import libgdx.anims.actions.ActionMasterGdx;

@@ -4,7 +4,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleHandler;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
-import eidolons.dungeons.generator.GeneratorEnums;
+import eidolons.game.exploration.dungeons.generator.GeneratorEnums;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
 

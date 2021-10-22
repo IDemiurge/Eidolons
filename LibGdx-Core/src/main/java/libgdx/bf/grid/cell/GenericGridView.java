@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.module.cinematic.Cinematics;
+import eidolons.game.exploration.story.cinematic.Cinematics;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
 import libgdx.anims.actions.ActionMasterGdx;

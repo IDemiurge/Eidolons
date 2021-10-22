@@ -5,7 +5,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.ClearshotMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.content.enums.entity.UnitEnums;

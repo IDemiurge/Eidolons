@@ -2,7 +2,7 @@ package eidolons.ability.effects.oneshot.item;
 
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_WeaponObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.content.enums.entity.ItemEnums;

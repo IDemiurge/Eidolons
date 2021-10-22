@@ -2,7 +2,7 @@ package libgdx.bf.overlays;
 
 import com.badlogic.gdx.math.Vector2;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import libgdx.bf.grid.cell.OverlayView;
 import libgdx.bf.overlays.map.WallMap;
 import main.entity.EntityCheckMaster;

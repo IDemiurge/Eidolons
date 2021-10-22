@@ -1,7 +1,7 @@
 package eidolons.ability.effects.oneshot.activation;
 
 import eidolons.ability.effects.DC_Effect;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.advanced.companion.Order;
 import eidolons.game.battlecraft.ai.advanced.companion.OrderFactory;
 import eidolons.game.battlecraft.ai.advanced.companion.OrderMaster;

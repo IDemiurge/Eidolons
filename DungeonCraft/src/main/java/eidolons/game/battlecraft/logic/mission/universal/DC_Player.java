@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.mission.universal;
 
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
 import eidolons.game.core.game.DC_Game;
 import main.entity.obj.Obj;

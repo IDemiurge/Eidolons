@@ -1,6 +1,6 @@
 package eidolons.game.core.atb;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.GenericTurnManager;
 import eidolons.game.core.game.DC_Game;
 

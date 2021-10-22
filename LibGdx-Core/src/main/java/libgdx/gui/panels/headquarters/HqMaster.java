@@ -1,9 +1,9 @@
 package libgdx.gui.panels.headquarters;
 
 import eidolons.entity.SimCache;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.Core;
-import eidolons.game.netherflame.lord.EidolonLord;
+import eidolons.netherflame.lord.EidolonLord;
 import libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import main.content.enums.system.MetaEnums;

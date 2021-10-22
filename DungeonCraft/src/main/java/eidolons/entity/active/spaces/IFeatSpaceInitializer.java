@@ -1,6 +1,6 @@
 package eidolons.entity.active.spaces;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 
 public interface IFeatSpaceInitializer {
 

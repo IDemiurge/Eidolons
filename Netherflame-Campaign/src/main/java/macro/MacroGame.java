@@ -1,7 +1,7 @@
 package macro;
 
 import eidolons.entity.DC_IdManager;
-import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
+import eidolons.game.module.dungeoncrawl.handlers.RealTimeGameLoop;
 import libgdx.map.editor.MapPointMaster;
 import eidolons.macro.entity.MacroRef;
 import eidolons.macro.entity.faction.Faction;

@@ -1,6 +1,6 @@
 package eidolons.ability.conditions.special;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;

@@ -4,16 +4,12 @@ import eidolons.ability.costs.DC_CostsFactory;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_UnitAction;
-import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.atb.AtbMaster;
 import eidolons.game.core.master.EffectMaster;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.values.properties.G_PROPS;
-import main.elements.costs.Cost;
 import main.elements.costs.CostImpl;
 import main.elements.costs.Costs;
 import main.elements.costs.Payment;
@@ -21,7 +17,6 @@ import main.entity.handlers.EntityInitializer;
 import main.entity.handlers.EntityMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.math.Formula;
 
 import java.util.ArrayList;
 

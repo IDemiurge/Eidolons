@@ -3,8 +3,7 @@ package eidolons.system.libgdx.api;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMapDataSource;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.module.dungeoncrawl.explore.ExploreGameLoop;
-import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
+import eidolons.game.exploration.handlers.RealTimeGameLoop;
 import main.system.datatypes.DequeImpl;
 
 import java.util.Set;

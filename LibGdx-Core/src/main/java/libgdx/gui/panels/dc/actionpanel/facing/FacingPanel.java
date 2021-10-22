@@ -3,7 +3,7 @@ package libgdx.gui.panels.dc.actionpanel.facing;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;

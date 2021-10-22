@@ -2,11 +2,10 @@ package eidolons.entity.handlers.active;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.system.libgdx.GdxAdapter;
 import main.content.enums.entity.UnitEnums;
-import main.content.mode.STD_MODES;
 import main.entity.Ref;
 import main.system.auxiliary.secondary.Bools;
 import main.system.launch.Flags;

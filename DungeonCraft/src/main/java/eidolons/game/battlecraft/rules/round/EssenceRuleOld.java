@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules.round;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.core.game.DC_Game;
 import main.content.values.parameters.PARAMETER;

@@ -4,7 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.spaces.FeatSpace;
 import eidolons.entity.active.spaces.Feat;
 import eidolons.entity.item.DC_QuickItemObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import libgdx.gui.UiMaster;
 import libgdx.gui.generic.ValueContainer;
 import libgdx.gui.panels.dc.actionpanel.spaces.ActionContainer;

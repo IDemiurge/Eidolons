@@ -8,7 +8,7 @@ import com.bitfire.postprocessing.demo.PostProcessing;
 import com.bitfire.postprocessing.effects.*;
 import com.bitfire.postprocessing.effects.Bloom.Settings;
 import eidolons.content.consts.VisualEnums;
-import eidolons.game.netherflame.main.NF_Images;
+import eidolons.netherflame.campaign.assets.NF_Images;
 import libgdx.GdxMaster;
 import libgdx.bf.Fluctuating;
 import libgdx.shaders.ShaderMaster.SHADER;

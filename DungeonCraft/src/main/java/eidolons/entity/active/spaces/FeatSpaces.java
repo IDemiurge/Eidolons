@@ -3,7 +3,7 @@ package eidolons.entity.active.spaces;
 import eidolons.ability.costs.DC_CostsFactory;
 import eidolons.content.DC_Calculator;
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.elements.costs.Cost;
 import main.elements.costs.Costs;
 

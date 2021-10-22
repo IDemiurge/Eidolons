@@ -1,7 +1,7 @@
 package libgdx.gui.menu.selection.scenario;
 
 import eidolons.content.consts.VisualEnums;
-import eidolons.game.netherflame.main.IntroLauncher;
+import eidolons.netherflame.main.IntroLauncher;
 import libgdx.gui.menu.selection.ItemListPanel;
 import libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import libgdx.gui.menu.selection.SelectableItemDisplayer;

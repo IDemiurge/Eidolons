@@ -1,7 +1,7 @@
 package macro.entity.town;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
 import eidolons.game.module.herocreator.logic.party.Party;
 import macro.AdventureInitializer;

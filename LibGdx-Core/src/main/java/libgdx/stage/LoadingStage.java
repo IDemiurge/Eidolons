@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.content.consts.VisualEnums;
 import eidolons.game.EidolonsGame;
-import eidolons.game.netherflame.main.IntroLauncher;
+import eidolons.netherflame.main.IntroLauncher;
 import eidolons.system.libgdx.datasource.ScreenData;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;

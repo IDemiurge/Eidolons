@@ -3,7 +3,7 @@ package libgdx.gui.panels.headquarters.datasource.hero;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import libgdx.gui.generic.ValueContainer;
 import libgdx.texture.TextureCache;
 import main.system.images.ImageManager;

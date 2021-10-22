@@ -2,8 +2,8 @@ package eidolons.ability.ignored.dialog;
 
 import eidolons.ability.InventoryTransactionManager;
 import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.obj.unit.Unit;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.entity.unit.Unit;
+import eidolons.game.exploration.handlers.ExplorationMaster;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.game.logic.event.Event;

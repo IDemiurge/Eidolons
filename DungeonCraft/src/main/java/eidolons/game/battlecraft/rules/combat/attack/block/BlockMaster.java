@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.rules.combat.attack.block;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.item.DC_WeaponObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.action.StackingRule;
 import eidolons.game.battlecraft.rules.combat.CombatFunctions;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;

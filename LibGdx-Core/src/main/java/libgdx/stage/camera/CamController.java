@@ -4,7 +4,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import libgdx.bf.grid.cell.BaseView;
 import libgdx.bf.grid.cell.UnitGridView;
 import libgdx.bf.grid.moving.PlatformCell;

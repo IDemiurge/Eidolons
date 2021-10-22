@@ -15,7 +15,7 @@ import boss.logic.rules.RoundRules;
 import eidolons.game.core.game.DC_Game;
 import boss.BossManager;
 import boss.ai.BossAi;
-import eidolons.game.netherflame.boss.demo.logic.*;
+import eidolons.netherflame.boss.demo.logic.*;
 
 public class DemoBossManager extends BossManager<DemoBoss> {
 

@@ -1,7 +1,7 @@
 package macro.entity.party;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.system.math.MathMaster;
 

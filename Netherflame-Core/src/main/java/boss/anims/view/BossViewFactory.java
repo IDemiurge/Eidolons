@@ -5,12 +5,12 @@ import boss.anims.generic.BossVisual;
 import boss.logic.BossCycle;
 import boss.logic.entity.BossUnit;
 import eidolons.game.core.Core;
-import eidolons.game.netherflame.boss.BossHandler;
-import eidolons.game.netherflame.boss.BossManager;
-import eidolons.game.netherflame.boss.BossModel;
-import eidolons.game.netherflame.boss.anims.generic.BossVisual;
-import eidolons.game.netherflame.boss.logic.BossCycle;
-import eidolons.game.netherflame.boss.logic.entity.BossUnit;
+import eidolons.netherflame.boss.BossHandler;
+import eidolons.netherflame.boss.BossManager;
+import eidolons.netherflame.boss.BossModel;
+import eidolons.netherflame.boss.anims.generic.BossVisual;
+import eidolons.netherflame.boss.logic.BossCycle;
+import eidolons.netherflame.boss.logic.entity.BossUnit;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 

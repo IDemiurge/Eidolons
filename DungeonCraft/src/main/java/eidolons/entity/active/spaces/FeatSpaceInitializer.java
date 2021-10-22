@@ -1,7 +1,7 @@
 package eidolons.entity.active.spaces;
 
 import eidolons.content.PROPS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.content.enums.entity.NewRpgEnums;
 import main.content.enums.entity.NewRpgEnums.FEAT_SPACE_VALUE;
 import main.content.values.properties.G_PROPS;

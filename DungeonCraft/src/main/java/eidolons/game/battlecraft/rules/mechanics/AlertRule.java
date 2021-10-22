@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules.mechanics;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.content.enums.system.MetaEnums;
 import main.game.core.game.Game;
 import main.system.auxiliary.log.LogMaster;

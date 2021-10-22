@@ -1,6 +1,6 @@
 package eidolons.entity.item;
 
-import eidolons.entity.obj.unit.DC_UnitModel;
+import eidolons.entity.unit.DC_UnitModel;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.enums.entity.ItemEnums;

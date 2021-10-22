@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import eidolons.content.consts.VisualEnums;
 import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.Core;
 import libgdx.GdxMaster;
 import libgdx.anims.actions.ActionMasterGdx;

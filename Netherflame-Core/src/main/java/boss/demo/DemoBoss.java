@@ -1,7 +1,7 @@
 package boss.demo;
 
 import boss.logic.BossCycle;
-import eidolons.dungeons.generator.model.AbstractCoordinates;
+import eidolons.game.exploration.dungeons.generator.model.AbstractCoordinates;
 import boss.BossModel;
 import main.game.bf.Coordinates;
 

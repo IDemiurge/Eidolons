@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.content.consts.VisualEnums;
 import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
+import eidolons.game.exploration.dungeons.struct.LevelStruct;
 import eidolons.system.libgdx.datasource.AmbienceDataSource;
 import libgdx.GdxMaster;
 import libgdx.bf.decor.shard.ShardEnums;

@@ -2,11 +2,11 @@ package libgdx.particles.ambi;
 
 import com.badlogic.gdx.graphics.Color;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
+import eidolons.game.exploration.dungeons.struct.LevelStruct;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import eidolons.system.libgdx.datasource.AmbienceDataSource;
 import libgdx.GdxMaster;

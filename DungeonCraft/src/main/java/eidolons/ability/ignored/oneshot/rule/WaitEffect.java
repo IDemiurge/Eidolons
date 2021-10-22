@@ -5,7 +5,7 @@ import eidolons.ability.effects.attachment.AddBuffEffect;
 import eidolons.ability.effects.attachment.AddTriggerEffect;
 import eidolons.ability.effects.continuous.SetCustomModeEffect;
 import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.mechanics.AlertRule;
 import main.ability.Ability;
 import main.ability.ActiveAbility;

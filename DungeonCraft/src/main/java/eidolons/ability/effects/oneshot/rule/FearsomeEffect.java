@@ -2,7 +2,7 @@ package eidolons.ability.effects.oneshot.rule;
 
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.OneshotEffect;
 import main.system.math.Formula;

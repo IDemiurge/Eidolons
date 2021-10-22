@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.logic.mission.universal;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.Floor;
 import eidolons.game.battlecraft.logic.meta.scenario.Scenario;
-import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
+import eidolons.game.exploration.dungeons.struct.LevelStruct;
 import main.data.filesys.PathFinder;
 import main.system.PathUtils;
 
@@ -15,6 +15,9 @@ public class DungeonSequence extends LevelStruct<Location, Location> {
 
     public DungeonSequence(Scenario scenario) {
         this.scenario = scenario;
+    }
+
+    public DungeonSequence() {
     }
 
     public String getResourceFolderPath() {

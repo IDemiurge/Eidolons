@@ -3,7 +3,7 @@ package eidolons.system.math.roll;
 import eidolons.ability.effects.oneshot.mechanic.RollEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.content.enums.GenericEnums;

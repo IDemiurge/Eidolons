@@ -1,10 +1,10 @@
 package eidolons.game.battlecraft.ai.elements.generic;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.logic.mission.encounter.Encounter;
-import eidolons.game.module.dungeoncrawl.struct.LevelBlock;
+import eidolons.game.exploration.dungeons.struct.LevelBlock;
 import main.content.enums.EncounterEnums;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.Strings;

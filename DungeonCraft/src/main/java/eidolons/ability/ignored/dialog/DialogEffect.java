@@ -1,7 +1,7 @@
 package eidolons.ability.ignored.dialog;
 
 import eidolons.ability.effects.DC_Effect;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.ability.effects.OneshotEffect;
 
 public abstract class DialogEffect extends DC_Effect implements OneshotEffect {

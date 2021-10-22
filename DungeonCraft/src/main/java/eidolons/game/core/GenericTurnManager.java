@@ -1,7 +1,7 @@
 package eidolons.game.core;
 
 import eidolons.content.DC_CONSTS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.mechanics.AlertRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.audio.DC_SoundMaster;

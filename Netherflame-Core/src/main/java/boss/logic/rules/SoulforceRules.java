@@ -1,6 +1,6 @@
 package boss.logic.rules;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.game.bf.Coordinates;
 
 public class SoulforceRules {

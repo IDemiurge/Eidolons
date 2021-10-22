@@ -2,7 +2,7 @@ package libgdx.gui.panels.headquarters.weave;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.Core;
 import libgdx.GdxMaster;
 import libgdx.gui.generic.GroupX;

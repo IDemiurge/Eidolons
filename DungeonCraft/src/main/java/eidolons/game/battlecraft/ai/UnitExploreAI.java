@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.ai;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior.BEHAVIOR_METHOD;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;

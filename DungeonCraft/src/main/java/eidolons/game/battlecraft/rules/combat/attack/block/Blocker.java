@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules.combat.attack.block;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.ability.effects.Effect;
 import main.content.enums.entity.NewRpgEnums;
 

@@ -1,7 +1,7 @@
 package libgdx.gui.panels.dc.inventory.datasource;
 
 import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.game.module.herocreator.logic.items.ItemMaster;
+import eidolons.entity.item.handlers.ItemMaster;
 import libgdx.gui.panels.dc.inventory.InvItemActor;
 import libgdx.gui.panels.dc.inventory.InventoryClickHandler;
 import eidolons.content.consts.VisualEnums.CELL_TYPE;

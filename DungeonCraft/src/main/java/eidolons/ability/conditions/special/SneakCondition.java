@@ -1,7 +1,7 @@
 package eidolons.ability.conditions.special;
 
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import main.content.enums.entity.UnitEnums;

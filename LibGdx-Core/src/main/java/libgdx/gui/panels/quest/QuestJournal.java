@@ -1,6 +1,6 @@
 package libgdx.gui.panels.quest;
 
-import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
+import eidolons.game.exploration.story.quest.DungeonQuest;
 import libgdx.gui.menu.selection.ItemListPanel;
 import libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import libgdx.gui.menu.selection.SelectableItemDisplayer;

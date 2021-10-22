@@ -4,7 +4,7 @@ package main.level_editor.backend;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
+import eidolons.game.exploration.dungeons.struct.LevelStruct;
 import main.game.bf.Coordinates;
 import main.level_editor.backend.display.LE_DisplayHandler;
 import main.level_editor.backend.functions.advanced.IPlatformHandlerImpl;

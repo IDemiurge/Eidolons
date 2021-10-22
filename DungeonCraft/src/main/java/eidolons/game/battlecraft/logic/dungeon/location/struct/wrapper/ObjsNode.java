@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.dungeon.location.struct.wrapper;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.struct.LevelBlock;
+import eidolons.game.exploration.dungeons.struct.LevelBlock;
 import main.content.DC_TYPE;
 import main.data.tree.LayeredData;
 

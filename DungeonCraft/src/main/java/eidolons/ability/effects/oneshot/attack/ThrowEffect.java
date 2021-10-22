@@ -2,7 +2,7 @@ package eidolons.ability.effects.oneshot.attack;
 
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.values.properties.G_PROPS;

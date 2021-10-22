@@ -1,7 +1,7 @@
 package eidolons.system.libgdx;
 
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMapDataSource;
 import eidolons.system.libgdx.datasource.ScreenData;
 import eidolons.system.libgdx.wrapper.VectorGdx;

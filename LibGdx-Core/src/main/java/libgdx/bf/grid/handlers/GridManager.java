@@ -2,9 +2,7 @@ package libgdx.bf.grid.handlers;
 
 import com.badlogic.gdx.graphics.Color;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMapDataSource;
-import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.exploration.handlers.ExplorationMaster;
 import libgdx.bf.decor.pillar.PillarManager;
 import libgdx.bf.decor.woods.Woods;
 import libgdx.bf.grid.GridPanel;

@@ -7,7 +7,7 @@ import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import eidolons.game.battlecraft.logic.mission.encounter.EncounterData;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
-import eidolons.game.module.dungeoncrawl.struct.Entrance;
+import eidolons.game.exploration.dungeons.struct.Entrance;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
 import main.data.DataManager;

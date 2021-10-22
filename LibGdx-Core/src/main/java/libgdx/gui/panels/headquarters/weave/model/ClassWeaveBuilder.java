@@ -1,6 +1,6 @@
 package libgdx.gui.panels.headquarters.weave.model;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import libgdx.gui.panels.headquarters.weave.Weave;
 import libgdx.gui.panels.headquarters.weave.actor.WeaveActorBuilder;

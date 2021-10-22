@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules.round;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 
 public abstract class RoundRule {

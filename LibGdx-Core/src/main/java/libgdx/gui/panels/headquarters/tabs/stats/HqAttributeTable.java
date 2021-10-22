@@ -2,7 +2,7 @@ package libgdx.gui.panels.headquarters.tabs.stats;
 
 import eidolons.content.ContentConsts;
 import eidolons.content.PARAMS;
-import eidolons.game.module.herocreator.logic.PointMaster;
+import eidolons.netherflame.eidolon.heromake.model.PointMaster;
 import libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import main.content.ContentValsManager;
 import main.content.values.parameters.PARAMETER;

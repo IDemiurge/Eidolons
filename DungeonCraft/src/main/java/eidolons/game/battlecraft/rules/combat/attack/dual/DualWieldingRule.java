@@ -7,7 +7,7 @@ import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.item.DC_WeaponObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.content.DC_Formulas;
 import main.ability.ActiveAbility;

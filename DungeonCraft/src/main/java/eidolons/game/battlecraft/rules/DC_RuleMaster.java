@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.rules;
 
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.counter.generic.DamageCounterRule;
 import eidolons.game.battlecraft.rules.counter.generic.timed.TimedRule;
 import eidolons.game.core.game.DC_Game;

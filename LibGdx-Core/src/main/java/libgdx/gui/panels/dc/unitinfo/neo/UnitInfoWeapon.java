@@ -1,7 +1,7 @@
 package libgdx.gui.panels.dc.unitinfo.neo;
 
 import com.badlogic.gdx.scenes.scene2d.EventListener;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import libgdx.gui.panels.dc.actionpanel.weapon.QuickAttackRadial;
 import libgdx.gui.panels.dc.actionpanel.weapon.QuickWeaponPanel;
 import libgdx.gui.panels.dc.actionpanel.weapon.WeaponDataSource;

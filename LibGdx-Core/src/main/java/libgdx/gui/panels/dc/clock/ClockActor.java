@@ -1,7 +1,7 @@
 package libgdx.gui.panels.dc.clock;
 
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.exploration.handlers.ExplorationMaster;
 import libgdx.GdxMaster;
 import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.generic.ImageContainer;

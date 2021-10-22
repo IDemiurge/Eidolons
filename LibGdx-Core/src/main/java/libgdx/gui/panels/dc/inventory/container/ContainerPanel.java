@@ -10,7 +10,7 @@ import eidolons.ability.InventoryTransactionManager;
 import eidolons.content.consts.VisualEnums;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
+import eidolons.game.exploration.objects.ContainerMaster;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
 import libgdx.TiledNinePatchGenerator;

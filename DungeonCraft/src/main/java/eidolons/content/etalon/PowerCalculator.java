@@ -1,7 +1,6 @@
 package eidolons.content.etalon;
 
-import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 
 public class PowerCalculator {
 /*

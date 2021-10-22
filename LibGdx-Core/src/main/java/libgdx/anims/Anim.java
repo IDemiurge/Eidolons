@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import eidolons.content.consts.VisualEnums;
-import eidolons.game.module.cinematic.Cinematics;
+import eidolons.game.exploration.story.cinematic.Cinematics;
 import libgdx.anims.ANIM_MODS.ANIM_MOD;
 import libgdx.anims.ANIM_MODS.CONTINUOUS_ANIM_MODS;
 import libgdx.anims.ANIM_MODS.OBJ_ANIMS;

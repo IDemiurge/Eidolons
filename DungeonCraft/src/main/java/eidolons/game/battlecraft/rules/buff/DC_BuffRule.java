@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.rules.buff;
 
 import eidolons.ability.effects.attachment.AddBuffEffect;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.DC_RuleImpl;
 import eidolons.game.battlecraft.rules.DC_RuleMaster;
 import eidolons.game.battlecraft.rules.RuleEnums.COMBAT_RULES;

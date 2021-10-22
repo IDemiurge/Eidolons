@@ -1,7 +1,7 @@
 package eidolons.game.core.atb;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.system.GuiEventManager;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.RandomWizard;

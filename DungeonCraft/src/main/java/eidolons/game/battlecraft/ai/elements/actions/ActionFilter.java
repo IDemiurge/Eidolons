@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.ai.elements.actions;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.handlers.bf.unit.UnitChecker;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.tools.target.AI_SpellMaster;
 import main.content.enums.entity.ActionEnums;

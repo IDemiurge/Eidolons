@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.rules.combat.attack.extra_attack;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
 import main.content.enums.entity.ActionEnums;
 import main.system.SortMaster;

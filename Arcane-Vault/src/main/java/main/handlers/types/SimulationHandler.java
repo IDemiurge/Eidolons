@@ -1,17 +1,14 @@
 package main.handlers.types;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
-import eidolons.game.core.game.DC_Game;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.handlers.AvHandler;
 import main.handlers.AvManager;
-import main.launch.ArcaneVault;
-import main.v2_0.AV2;
 
 import java.util.Arrays;
 import java.util.HashMap;

@@ -1,7 +1,7 @@
 
 package eidolons.entity.handlers.bf.unit;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import main.entity.handlers.EntityAnimator;
 import main.entity.handlers.EntityHandler;

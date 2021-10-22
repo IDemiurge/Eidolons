@@ -10,6 +10,8 @@ import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 
+import static main.system.auxiliary.log.LogMaster.log;
+
 /**
  * Created by JustMe on 5/7/2017.
  */
@@ -26,26 +28,15 @@ public class QuestMissionConstructor extends MissionConstructor<QuestMission> {
             type = new ObjType("Fake dungeon", DC_TYPE.FLOORS);
         }
         String levelPath = type.getProperty(PROPS.FLOOR_FILE_PATH);
-        //TODO gdx sync
-        // if (MainLauncher.levelPath != null) {
-        //     levelPath = MainLauncher.levelPath;
-        // } else if (CoreEngine.SELECT_LEVEL) {
-        //     levelPath = FileChooserX.chooseFile(PathFinder.getDungeonLevelFolder(), "xml",
-        //             DungeonScreen.getInstance().getOverlayStage());
-        //
-        // }
-        // levelPath = "crawl\\evarinath catacombs.xml";
-
-        main.system.auxiliary.log.LogMaster.log(1,"INIT: Level Path set to " +levelPath);
+        log(1,"INIT: Level Path set to " +levelPath);
 
         EidolonsGame.lvlPath = levelPath;
         getGame().getDataKeeper().getDungeonData().setValue(DUNGEON_VALUE.PATH,
                 levelPath);
         Floor mission = new Floor(type);
         mission.setLevelFilePath(levelPath);
-        //, getMaster().getMetaMaster().getMetaGame().getScenario()
-
         getMission().setFloor(mission);
+
 
         getMaster().getScriptManager().init();
 

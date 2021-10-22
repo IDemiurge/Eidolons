@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 
 public interface DC_SecondsRule {
 

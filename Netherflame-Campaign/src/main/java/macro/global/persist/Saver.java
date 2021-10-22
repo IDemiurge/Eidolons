@@ -3,7 +3,7 @@ package macro.global.persist;
 import eidolons.ability.InventoryTransactionManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.Eidolons;
 import main.content.VALUE;
 import main.content.values.properties.PROPERTY;

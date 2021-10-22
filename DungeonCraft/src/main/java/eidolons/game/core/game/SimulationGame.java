@@ -2,8 +2,8 @@ package eidolons.game.core.game;
 
 import eidolons.entity.DC_IdManager;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.attach.DC_HeroAttachedObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.attach.DC_HeroAttachedObj;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import main.content.values.properties.PROPERTY;
 import main.data.XLinkedMap;

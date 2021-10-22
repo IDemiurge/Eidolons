@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure.BLOCK_VALUE;
-import eidolons.game.module.dungeoncrawl.struct.LevelBlock;
+import eidolons.game.exploration.dungeons.struct.LevelBlock;
 import main.game.bf.Coordinates;
 
 import java.util.Arrays;

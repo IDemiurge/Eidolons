@@ -11,7 +11,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.Scene;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.SpeechDataSource;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript;
 import eidolons.game.core.Core;
-import eidolons.game.module.cinematic.Cinematics;
+import eidolons.game.exploration.story.cinematic.Cinematics;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
 import libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;

@@ -1,8 +1,7 @@
 package eidolons.game.battlecraft.ai;
 
 import eidolons.content.PROPS;
-import eidolons.content.consts.VisualEnums;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
 import eidolons.game.battlecraft.ai.advanced.companion.CompanionMaster;
 import eidolons.game.battlecraft.ai.anew.AiImpulse;

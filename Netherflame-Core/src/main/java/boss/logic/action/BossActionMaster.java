@@ -4,7 +4,7 @@ import boss.BossHandler;
 import boss.logic.entity.BossUnit;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import boss.BossManager;
 import boss.logic.BossCycle.BOSS_TYPE;
 import main.content.DC_TYPE;

@@ -1,7 +1,7 @@
 package eidolons.ability.effects.containers.customtarget;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.math.DC_PositionMaster;
 import main.ability.effects.Effect;

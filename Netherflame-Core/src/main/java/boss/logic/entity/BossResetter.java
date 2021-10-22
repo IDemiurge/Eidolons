@@ -1,7 +1,7 @@
 package boss.logic.entity;
 
 import eidolons.entity.handlers.bf.unit.UnitResetter;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.entity.handlers.EntityMaster;
 
 public class BossResetter extends UnitResetter {

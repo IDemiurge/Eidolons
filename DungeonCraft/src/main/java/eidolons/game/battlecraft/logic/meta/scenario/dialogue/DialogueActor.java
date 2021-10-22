@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue;
 
 import eidolons.content.PROPS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;

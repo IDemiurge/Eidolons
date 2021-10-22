@@ -1,6 +1,6 @@
 package eidolons.content;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.system.text.TextMaster;
 import main.content.CONTENT_CONSTS.DEITY;
 import main.content.enums.entity.SkillEnums;

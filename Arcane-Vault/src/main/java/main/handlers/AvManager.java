@@ -1,7 +1,5 @@
 package main.handlers;
 
-import eidolons.game.module.herocreator.CharacterCreator;
-import main.entity.type.ObjType;
 import main.gui.builders.MainBuilder;
 import main.gui.components.table.AvColorHandler;
 import main.gui.tree.AvTreeBuilder;
@@ -20,7 +18,6 @@ import main.handlers.types.AvCheckHandler;
 import main.handlers.types.AvTypeHandler;
 import main.handlers.types.SimulationHandler;
 import main.utilities.workspace.WsHandler;
-import main.v2_0.AV2;
 import main.launch.ArcaneVault;
 import main.utilities.workspace.WorkspaceManager;
 

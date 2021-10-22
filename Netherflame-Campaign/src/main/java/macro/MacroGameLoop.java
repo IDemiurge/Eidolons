@@ -4,7 +4,7 @@ import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.GameLoop;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
+import eidolons.game.module.dungeoncrawl.handlers.RealTimeGameLoop;
 import libgdx.screens.SCREEN_TYPE;
 import eidolons.system.libgdx.datasource.ScreenData;
 import libgdx.map.MapScreen;

@@ -1,7 +1,7 @@
 package libgdx.gui.panels.headquarters.tabs.tree.classes;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import eidolons.game.module.herocreator.logic.passives.HeroClassMaster;
+import eidolons.netherflame.eidolon.heromake.passives.HeroClassMaster;
 import libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import libgdx.gui.panels.headquarters.datasource.tree.ClassesDataSource;
 import libgdx.gui.panels.headquarters.datasource.tree.HeroTreeDataSource;

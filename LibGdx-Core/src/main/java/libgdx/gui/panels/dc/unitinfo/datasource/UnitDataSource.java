@@ -6,7 +6,7 @@ import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.item.DC_ArmorObj;
 import eidolons.entity.item.DC_WeaponObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import libgdx.StyleHolder;
 import libgdx.gui.UiMaster;
 import libgdx.gui.generic.ValueContainer;

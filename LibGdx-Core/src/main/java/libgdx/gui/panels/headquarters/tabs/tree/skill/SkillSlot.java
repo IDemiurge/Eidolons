@@ -1,7 +1,7 @@
 package libgdx.gui.panels.headquarters.tabs.tree.skill;
 
-import eidolons.entity.obj.attach.DC_PassiveObj;
-import eidolons.game.module.herocreator.logic.passives.SkillMaster;
+import eidolons.entity.unit.attach.DC_PassiveObj;
+import eidolons.netherflame.eidolon.heromake.passives.SkillMaster;
 import libgdx.GdxImageMaster;
 import libgdx.gui.panels.headquarters.tabs.tree.HtNode;
 import eidolons.content.consts.Images;

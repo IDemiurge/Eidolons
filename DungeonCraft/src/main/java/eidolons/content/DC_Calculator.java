@@ -1,6 +1,6 @@
 package eidolons.content;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 
 public class DC_Calculator {
     public static int getAS_AtbSwitchCost(Unit unit, int switched) {

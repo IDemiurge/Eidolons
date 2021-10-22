@@ -1,7 +1,7 @@
 package libgdx.gui.controls.radial;
 
 import eidolons.entity.active.Spell;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.content.enums.entity.SpellEnums.SPELL_GROUP;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;

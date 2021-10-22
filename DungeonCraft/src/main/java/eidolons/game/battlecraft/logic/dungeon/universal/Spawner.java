@@ -1,13 +1,13 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
-import eidolons.entity.obj.unit.trainers.UnitTrainingMaster;
+import eidolons.entity.unit.trainers.UnitTrainingMaster;
 import eidolons.content.consts.GridCreateData;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData.PARTY_VALUE;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.launch.LaunchDataKeeper;
-import eidolons.game.module.herocreator.logic.UnitLevelManager;
+import eidolons.entity.unit.trainers.UnitLevelManager;
 import eidolons.system.test.TestMasterContent;
 import main.content.C_OBJ_TYPE;
 import main.data.DataManager;

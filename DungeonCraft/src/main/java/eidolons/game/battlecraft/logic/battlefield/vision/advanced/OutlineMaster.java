@@ -2,10 +2,10 @@ package eidolons.game.battlecraft.logic.battlefield.vision.advanced;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.GammaMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
-import eidolons.game.module.dungeoncrawl.struct.Entrance;
+import eidolons.game.exploration.dungeons.struct.Entrance;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.OUTLINE_IMAGE;

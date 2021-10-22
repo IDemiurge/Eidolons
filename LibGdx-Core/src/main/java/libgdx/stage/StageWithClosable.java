@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.exploration.handlers.ExplorationMaster;
 import libgdx.gui.generic.GroupX;
 import eidolons.system.audio.DC_SoundMaster;
 import main.system.sound.AudioEnums;

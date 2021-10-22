@@ -1,6 +1,6 @@
 package eidolons.system.audio;
 
-import eidolons.game.module.cinematic.Cinematics;
+import eidolons.game.exploration.story.cinematic.Cinematics;
 import main.content.CONTENT_CONSTS.SOUNDSET;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;

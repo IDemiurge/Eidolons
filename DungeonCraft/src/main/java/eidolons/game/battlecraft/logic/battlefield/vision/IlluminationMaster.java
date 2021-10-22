@@ -2,10 +2,10 @@ package eidolons.game.battlecraft.logic.battlefield.vision;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.Floor;
 import eidolons.game.core.Core;
-import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
+import eidolons.game.exploration.dungeons.struct.LevelStruct;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.system.math.PositionMaster;

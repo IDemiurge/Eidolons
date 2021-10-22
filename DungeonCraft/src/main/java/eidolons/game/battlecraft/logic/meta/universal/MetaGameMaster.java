@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.universal;
 
 import eidolons.content.PROPS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.dungeon.module.ModuleMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
@@ -12,8 +12,8 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.intro.IntroFactory
 import eidolons.game.battlecraft.logic.mission.universal.MissionMaster;
 import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
-import eidolons.game.eidolon.event.GameEventHandler;
+import eidolons.game.exploration.story.quest.QuestMaster;
+import eidolons.netherflame.main.event.GameEventHandler;
 import eidolons.system.libgdx.GdxBeans;
 import main.content.DC_TYPE;
 import main.data.DataManager;

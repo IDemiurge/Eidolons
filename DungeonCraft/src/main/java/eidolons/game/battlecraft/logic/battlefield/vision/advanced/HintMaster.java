@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.battlefield.vision.advanced;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
 import eidolons.game.core.game.DC_Game;
 import main.content.enums.rules.VisionEnums;

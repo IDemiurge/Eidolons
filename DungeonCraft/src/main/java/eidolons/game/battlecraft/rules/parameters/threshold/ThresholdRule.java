@@ -1,14 +1,10 @@
 package eidolons.game.battlecraft.rules.parameters.threshold;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.system.math.roll.Dice;
 import eidolons.system.math.roll.DiceMaster;
-import eidolons.system.math.roll.Roll;
-import eidolons.system.math.roll.RollMaster;
-import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
-import main.system.entity.CounterMaster;
 
 import java.util.ArrayList;
 import java.util.List;

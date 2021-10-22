@@ -2,10 +2,10 @@ package eidolons.game.battlecraft.ai.advanced.engagement;
 
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.advanced.engagement.EngageEvent.ENGAGE_EVENT;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationHandler;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.exploration.handlers.ExplorationHandler;
+import eidolons.game.exploration.handlers.ExplorationMaster;
 import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.ENGAGEMENT_LEVEL;
 import main.system.auxiliary.RandomWizard;

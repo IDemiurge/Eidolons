@@ -2,10 +2,10 @@ package eidolons.game.battlecraft.ai.elements.generic;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.DC_Cell;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
-import eidolons.game.module.dungeoncrawl.struct.LevelBlock;
+import eidolons.game.exploration.dungeons.struct.LevelBlock;
 import main.content.enums.EncounterEnums;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;

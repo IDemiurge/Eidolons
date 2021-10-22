@@ -3,7 +3,7 @@ package eidolons.ability.effects.oneshot.attack;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.spaces.Feat;
 import eidolons.entity.item.DC_WeaponObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;

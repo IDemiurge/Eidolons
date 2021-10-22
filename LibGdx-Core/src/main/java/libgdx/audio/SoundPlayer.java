@@ -1,7 +1,7 @@
 package libgdx.audio;
 
 import com.badlogic.gdx.math.Vector2;
-import eidolons.game.module.cinematic.Cinematics;
+import eidolons.game.exploration.story.cinematic.Cinematics;
 import libgdx.bf.GridMaster;
 import libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;

@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.rules.counter.dmg;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.counter.generic.DamageCounterRule;
 import eidolons.game.battlecraft.rules.counter.generic.timed.TimedRule;
 import eidolons.game.core.game.DC_Game;

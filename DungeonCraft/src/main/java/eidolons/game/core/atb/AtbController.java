@@ -1,7 +1,7 @@
 package eidolons.game.core.atb;
 
 import com.badlogic.gdx.utils.Array;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.Core;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;

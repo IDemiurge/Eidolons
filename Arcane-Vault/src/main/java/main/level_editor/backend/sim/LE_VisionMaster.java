@@ -3,7 +3,7 @@ package main.level_editor.backend.sim;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.GammaMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
 import main.game.bf.Coordinates;

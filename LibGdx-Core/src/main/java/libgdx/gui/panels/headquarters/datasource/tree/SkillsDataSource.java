@@ -1,8 +1,8 @@
 package libgdx.gui.panels.headquarters.datasource.tree;
 
-import eidolons.entity.obj.attach.DC_PassiveObj;
-import eidolons.entity.obj.unit.Unit;
-import eidolons.game.module.herocreator.logic.passives.SkillMaster;
+import eidolons.entity.unit.attach.DC_PassiveObj;
+import eidolons.entity.unit.Unit;
+import eidolons.netherflame.eidolon.heromake.passives.SkillMaster;
 import main.content.enums.entity.SkillEnums.MASTERY;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;

@@ -2,8 +2,8 @@ package eidolons.entity.item;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.ChangeableType;
-import eidolons.entity.obj.attach.DC_HeroAttachedObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.attach.DC_HeroAttachedObj;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
 import eidolons.game.core.EUtils;
 import eidolons.system.math.DC_MathManager;

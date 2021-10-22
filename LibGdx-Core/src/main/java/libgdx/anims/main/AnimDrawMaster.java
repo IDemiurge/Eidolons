@@ -3,7 +3,7 @@ package libgdx.anims.main;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.exploration.handlers.ExplorationMaster;
 import libgdx.anims.Animation;
 import libgdx.anims.CompositeAnim;
 import libgdx.anims.sprite.FadeSprite;

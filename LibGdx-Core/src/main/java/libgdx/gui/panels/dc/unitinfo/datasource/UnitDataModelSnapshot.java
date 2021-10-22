@@ -1,7 +1,7 @@
 package libgdx.gui.panels.dc.unitinfo.datasource;
 
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.ability.AbilityObj;
 import main.content.OBJ_TYPE;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;

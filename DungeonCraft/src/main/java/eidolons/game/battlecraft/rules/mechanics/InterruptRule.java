@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.rules.mechanics;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.ignored.special.media.InfoTextEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;

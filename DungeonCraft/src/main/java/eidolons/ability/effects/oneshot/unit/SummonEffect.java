@@ -1,9 +1,9 @@
 package eidolons.ability.effects.oneshot.unit;
 
-import eidolons.entity.obj.unit.trainers.UnitTrainingMaster;
+import eidolons.entity.unit.trainers.UnitTrainingMaster;
 import eidolons.ability.effects.DC_Effect;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.EUtils;
 import eidolons.system.audio.DC_SoundMaster;

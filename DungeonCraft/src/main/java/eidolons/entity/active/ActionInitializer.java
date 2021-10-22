@@ -1,21 +1,16 @@
 package eidolons.entity.active;
 
-import eidolons.content.PROPS;
 import eidolons.entity.active.spaces.FeatSpaces;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.game.battlecraft.rules.combat.attack.dual.DualAttackMaster;
-import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;
-import main.data.DataManager;
-import main.data.ability.construct.VariableManager;
 import main.entity.Entity;
 import main.entity.obj.ActiveObj;
 import main.game.core.game.GenericGame;
-import main.system.auxiliary.ContainerUtils;
 import main.system.datatypes.DequeImpl;
 
 import java.util.*;

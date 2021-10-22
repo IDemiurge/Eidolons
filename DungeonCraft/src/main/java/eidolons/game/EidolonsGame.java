@@ -1,9 +1,9 @@
 package eidolons.game;
 
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.exploration.handlers.ExplorationMaster;
 import eidolons.system.hotkey.Accessibility;
 import main.content.values.parameters.PARAMETER;
 import main.data.StringMap;

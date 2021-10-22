@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner.SPAWN_MODE;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;

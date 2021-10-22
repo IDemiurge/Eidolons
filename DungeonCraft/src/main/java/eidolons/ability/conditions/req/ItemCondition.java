@@ -1,6 +1,6 @@
 package eidolons.ability.conditions.req;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.data.ability.AE_ConstrArgs;

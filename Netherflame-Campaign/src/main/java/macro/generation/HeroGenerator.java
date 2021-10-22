@@ -4,7 +4,7 @@ import eidolons.ability.UnitLibrary;
 import eidolons.ability.UnitShop;
 import eidolons.ability.UnitTrainer;
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import eidolons.macro.entity.town.Tavern;
 import eidolons.system.text.NameMaster;

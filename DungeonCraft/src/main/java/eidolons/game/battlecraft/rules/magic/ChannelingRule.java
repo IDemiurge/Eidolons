@@ -7,7 +7,7 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.mode.STD_MODES;
 import main.data.filesys.PathFinder;

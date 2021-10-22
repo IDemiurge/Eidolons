@@ -1,6 +1,6 @@
 package macro.entity.town;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import macro.entity.party.MacroParty;
 import macro.entity.party.MacroPartyUtils;
 import macro.global.time.TimeMaster;

@@ -1,7 +1,7 @@
 package eidolons.entity.handlers.bf.unit;
 
 import eidolons.content.values.ValuePages;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.entity.handlers.EntityLogger;

@@ -2,7 +2,7 @@ package eidolons.system.libgdx;
 
 import eidolons.system.libgdx.wrapper.VectorGdx;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import main.game.bf.Coordinates;
 
 public interface GdxEventAdapter {

@@ -3,7 +3,7 @@ package libgdx.gui.panels.dc.inventory.datasource;
 import eidolons.content.PARAMS;
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import libgdx.gui.panels.dc.inventory.*;
 import libgdx.gui.panels.dc.inventory.InvItemActor;
 import libgdx.gui.panels.dc.inventory.InventoryClickHandler;

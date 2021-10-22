@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.ability.effects.common.LightEmittingEffect;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.cinematic.Cinematics;
+import eidolons.game.exploration.story.cinematic.Cinematics;
 import libgdx.GdxMaster;
 import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.actions.FloatActionLimited;

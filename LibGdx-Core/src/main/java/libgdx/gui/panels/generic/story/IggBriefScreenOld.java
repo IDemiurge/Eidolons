@@ -4,7 +4,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import eidolons.system.libgdx.datasource.ScreenData;
 import libgdx.anims.fullscreen.BriefBackground;
-import eidolons.game.netherflame.main.story.brief.BriefingData;
+import eidolons.game.exploration.story.cinematic.brief.BriefingData;
 import libgdx.GdxMaster;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.screens.ScreenWithLoader;

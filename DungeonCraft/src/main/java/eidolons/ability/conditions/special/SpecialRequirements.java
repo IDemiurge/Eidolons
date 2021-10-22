@@ -1,6 +1,6 @@
 package eidolons.ability.conditions.special;
 
-import eidolons.entity.obj.unit.DC_UnitModel;
+import eidolons.entity.unit.DC_UnitModel;
 import main.content.CONTENT_CONSTS.SPECIAL_REQUIREMENTS;
 import main.elements.conditions.ConditionImpl;
 import main.entity.Ref;

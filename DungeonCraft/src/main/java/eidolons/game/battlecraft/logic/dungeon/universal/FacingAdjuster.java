@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.game.DC_Game.GAME_MODES;

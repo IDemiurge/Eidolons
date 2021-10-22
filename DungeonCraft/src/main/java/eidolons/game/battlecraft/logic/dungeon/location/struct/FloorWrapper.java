@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.logic.dungeon.location.struct;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
+import eidolons.game.exploration.dungeons.struct.LevelStruct;
 import main.content.enums.DungeonEnums;
 import main.entity.EntityWrapper;
 import main.game.bf.Coordinates;

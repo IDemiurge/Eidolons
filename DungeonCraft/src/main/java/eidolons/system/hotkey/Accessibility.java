@@ -1,7 +1,7 @@
 package eidolons.system.hotkey;
 
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.core.Core;
 import main.game.bf.directions.FACING_DIRECTION;

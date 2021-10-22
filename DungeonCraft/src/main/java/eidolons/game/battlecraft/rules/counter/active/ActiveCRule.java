@@ -1,15 +1,11 @@
 package eidolons.game.battlecraft.rules.counter.active;
 
-import eidolons.ability.EventAndCondition;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.counter.anew.ExertionRule;
 import eidolons.game.battlecraft.rules.counter.generic.CounterRule_10Up;
-import eidolons.game.battlecraft.rules.saves.SavesMaster;
 import eidolons.game.core.game.DC_Game;
-import main.ability.effects.Effect;
-import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
 
 public abstract class ActiveCRule extends CounterRule_10Up {

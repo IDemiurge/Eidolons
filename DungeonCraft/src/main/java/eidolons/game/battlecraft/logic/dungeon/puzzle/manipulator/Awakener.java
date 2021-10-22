@@ -2,12 +2,12 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator;
 
 import eidolons.content.PROPS;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.ai.advanced.engagement.EngageEvent;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.struct.LevelBlock;
-import eidolons.game.module.dungeoncrawl.struct.LevelStruct;
+import eidolons.game.exploration.dungeons.struct.LevelBlock;
+import eidolons.game.exploration.dungeons.struct.LevelStruct;
 import eidolons.content.consts.GraphicData;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.DC_TYPE;

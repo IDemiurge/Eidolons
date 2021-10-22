@@ -1,10 +1,10 @@
 package libgdx.gui.panels.headquarters.datasource.tree;
 
-import eidolons.entity.obj.attach.DC_PassiveObj;
-import eidolons.entity.obj.attach.Perk;
-import eidolons.entity.obj.unit.Unit;
-import eidolons.game.module.herocreator.logic.passives.HeroClassMaster;
-import eidolons.game.module.herocreator.logic.passives.PerkMaster;
+import eidolons.entity.unit.attach.DC_PassiveObj;
+import eidolons.entity.unit.attach.Perk;
+import eidolons.entity.unit.Unit;
+import eidolons.netherflame.eidolon.heromake.passives.HeroClassMaster;
+import eidolons.netherflame.eidolon.heromake.passives.PerkMaster;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 
 import java.util.ArrayList;

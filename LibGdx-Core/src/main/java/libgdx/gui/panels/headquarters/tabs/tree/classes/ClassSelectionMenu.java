@@ -1,7 +1,7 @@
 package libgdx.gui.panels.headquarters.tabs.tree.classes;
 
 import com.badlogic.gdx.math.Vector2;
-import eidolons.game.module.herocreator.logic.passives.HeroClassMaster;
+import eidolons.netherflame.eidolon.heromake.passives.HeroClassMaster;
 import libgdx.gui.panels.headquarters.tabs.tree.SlotSelectionRadialMenu;
 import eidolons.system.libgdx.datasource.HeroDataModel;
 import main.entity.type.ObjType;
