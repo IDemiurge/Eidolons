@@ -12,9 +12,9 @@ import libgdx.StyleHolder;
 import libgdx.bf.datasource.GraveyardDataSource;
 import libgdx.bf.mouse.BattleClickListener;
 import libgdx.gui.NinePatchFactory;
-import libgdx.gui.panels.TablePanel;
-import libgdx.gui.tooltips.DynamicTooltip;
-import libgdx.texture.TextureCache;
+import libgdx.gui.dungeon.panels.TablePanel;
+import libgdx.gui.dungeon.tooltips.DynamicTooltip;
+import libgdx.assets.texture.TextureCache;
 
 import java.util.Arrays;
 import java.util.List;

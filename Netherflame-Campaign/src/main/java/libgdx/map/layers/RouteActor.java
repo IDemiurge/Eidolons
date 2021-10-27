@@ -2,7 +2,7 @@ package libgdx.map.layers;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import libgdx.bf.generic.ImageContainer;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import eidolons.macro.map.Route;
 import main.system.PathUtils;
 import main.system.auxiliary.StringMaster;

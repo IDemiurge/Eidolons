@@ -5,7 +5,7 @@ import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneListener;
 import libgdx.gui.NinePatchFactory;
-import libgdx.gui.panels.TablePanelX;
+import libgdx.gui.dungeon.panels.TablePanelX;
 import main.level_editor.gui.panels.ClosablePanel;
 import main.level_editor.gui.panels.palette.tab.TabImpl;
 import main.system.GuiEventManager;

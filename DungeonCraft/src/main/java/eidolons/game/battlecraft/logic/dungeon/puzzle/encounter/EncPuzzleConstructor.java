@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.encounter;
 
+import eidolons.ability.conditions.DC_Condition;
 import eidolons.ability.conditions.shortcut.MainHeroCondition;
-import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleConstructor;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleResolution;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleRules;
@@ -78,10 +78,10 @@ public class EncPuzzleConstructor extends PuzzleConstructor<EncounterPuzzle> {
         puzzle.getCustomTriggers().add(
                 createTrigger(PUZZLE_TRIGGER.PUNISH, new MainHeroCondition(),
                         () -> puzzle.failed(), STANDARD_EVENT_TYPE.UNIT_IS_FALLING_UNCONSCIOUS));
-        puzzle.getCustomTriggers().add(createTrigger(PUZZLE_TRIGGER.SOLVE, new CustomCondition() {
+        puzzle.getCustomTriggers().add(createTrigger(PUZZLE_TRIGGER.SOLVE, new DC_Condition() {
                     @Override
                     public boolean check(Ref ref) {
-                        return AggroMaster.getAggroGroup().isEmpty();
+                        return getGame().getManager().getEnemies().isEmpty();
                     }
                 },
                 () -> puzzle.complete(), STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED));

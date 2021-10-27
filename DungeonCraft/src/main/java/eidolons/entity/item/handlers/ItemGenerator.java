@@ -742,12 +742,9 @@ public class ItemGenerator implements GenericItemGenerator {
         DataManager.setBaseItemTypes(baseItemTypes.toArray(new ObjType[0]));
         //Arrays.
         List<ObjType> list = new ArrayList<>(baseWeaponTypes);
-        if (!EidolonsGame.BRIDGE) {
-
             list.addAll(baseArmorTypes);
             list.addAll(baseJewelryTypes);
             list.addAll(baseItemTypes);
-        }
         DataManager.setBaseAllItemTypes(list.toArray(new ObjType[0]));
         //        defaultGenerator = new ItemGenerator(false);
         //        basicGenerator = new ItemGenerator(true);

@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
-import eidolons.game.exploration.dungeons.struct.LevelZone;
+import eidolons.game.exploration.dungeon.struct.LevelZone;
 
 import java.util.Arrays;
 import java.util.List;

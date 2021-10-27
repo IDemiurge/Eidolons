@@ -7,7 +7,7 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
-import eidolons.game.exploration.dungeons.struct.Entrance;
+import eidolons.game.exploration.dungeon.struct.Entrance;
 import eidolons.content.consts.CellData;
 import eidolons.content.consts.DecorData;
 import main.content.DC_TYPE;

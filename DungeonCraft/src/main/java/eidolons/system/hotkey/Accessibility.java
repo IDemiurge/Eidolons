@@ -58,25 +58,12 @@ public class Accessibility {
     }
 
     public static boolean isActionNotBlocked(DC_ActiveObj activeObj, boolean exploreMode) {
-        if (activeObj.getOwnerUnit() == Core.getMainHero())
-            if (EidolonsGame.TUTORIAL) {
-                if (EidolonsGame.TURNS_DISABLED)
-                    if (activeObj.isTurn())
-                        return false;
-                if (activeObj.isMove())
-                    if (EidolonsGame.MOVES_DISABLED) {
-                        return false;
-                    }
-                if (activeObj.isAttackAny())
-                    return !EidolonsGame.ATTACKS_DISABLED;
-
-                if (activeObj.isMode()) {
-                    return EidolonsGame.getActionSwitch(activeObj.getName());
-                }
-                if (!activeObj.isSpell()) {
-                    return EidolonsGame.getActionSwitch(activeObj.getName());
-                }
-            }
+                // if (activeObj.isMode()) {
+                //     return EidolonsGame.getActionSwitch(activeObj.getName());
+                // }
+                // if (!activeObj.isSpell()) {
+                //     return EidolonsGame.getActionSwitch(activeObj.getName());
+                // }
         return true;
     }
 }

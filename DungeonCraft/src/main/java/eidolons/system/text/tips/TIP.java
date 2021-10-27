@@ -25,25 +25,9 @@ public enum TIP implements TextEvent {
     first_battle_over(false, NF_Images.BRIEF_ART.SENTRIES.getPath(), "") {
 
     },
-    first_battle(false, NF_Images.BRIEF_ART.SENTRIES.getPath(), "") {
-        @Override
-        public void run() {
-            Core.getGame().getMissionMaster()
-                    .getScriptManager().execute(CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION.AGGRO, null);
-            EidolonsGame.FIRST_BATTLE_STARTED = true;
-        }
-    },
     cols(true, DataManager.getObjImage("Column"), ""),
     Container(true, DataManager.getObjImage("Enchanted Ash Urn"), ""),
 
-    sentries(false, NF_Images.BRIEF_ART.SENTRIES.getPath(), "") {
-        @Override
-        public void run() {
-            Core.getGame().getMissionMaster()
-                    .getScriptManager().execute(CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION.AGGRO, null);
-            EidolonsGame.FIRST_BATTLE_STARTED = true;
-        }
-    },
     Black_waters(false, NF_Images.BRIEF_ART.BLACK_WATERS.getPath(), ""),
 
     fractured_soul_harvester_comment(false, NF_Images.BRIEF_ART.HARVESTER.getPath(), ""),
@@ -80,18 +64,6 @@ public enum TIP implements TextEvent {
             "The Transformation has taken a heavy toll on me. Without Apholon and its thousand trapped souls, it is my own soul that must be bled to keep Eidolons from disintegrating. \n" +
                     "Fortunately, this place is filled with fragments of the Esoterica - albeit writ in crude runes of the dwarves. Still, each one will give me back a bit of my former Mastery."),
 
-
-    TUTORIAL_PATH(false, "", "Good choice! You will not be able to die on this path, but still getVar to try each of the 4 heroes. Try to collect all the Rune Inscriptions, and experiment freely!") {
-        public void run() {
-            EidolonsGame.TUTORIAL_PATH = true;
-        }
-    },
-    TUTORIAL_PATH_DONE(false, "", "Well done! If you wish to revisit the lessons learned, you can do so via Menu->Info->Journal - " +
-            "it will bring up your memory journal in form of a dialogue.") {
-        public void run() {
-            EidolonsGame.TUTORIAL_PATH = false;
-        }
-    },
     Gateway_Glyphs(true, Images.GATEWAY_GLYPH, ""),
 
     //ui

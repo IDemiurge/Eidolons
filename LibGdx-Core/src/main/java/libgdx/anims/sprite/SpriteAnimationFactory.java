@@ -10,7 +10,7 @@ import libgdx.assets.Assets;
 import libgdx.assets.Atlases;
 import eidolons.content.consts.Images;
 import eidolons.content.consts.Sprites;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;
 import main.system.launch.Flags;

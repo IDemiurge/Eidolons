@@ -1,22 +1,11 @@
 package eidolons.game.battlecraft.ai.advanced.behavior;
 
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.unit.Unit;
-import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
-import eidolons.game.battlecraft.ai.explore.PatrolMaster;
 import eidolons.game.battlecraft.ai.explore.behavior.AiBehavior;
 import eidolons.game.battlecraft.ai.explore.behavior.WanderAiMaster;
-import eidolons.game.battlecraft.ai.tools.path.ActionPath;
-import main.content.enums.entity.ActionEnums;
-import main.content.enums.system.AiEnums.GOAL_TYPE;
-import main.entity.Ref;
-import main.game.bf.Coordinates;
-import main.system.auxiliary.data.ListMaster;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -70,121 +59,6 @@ public class BehaviorMasterOld extends AiHandler {
         return behavior; // preCheck unit is viable?
     }
 
-
-    private Action getAction(GOAL_TYPE type, UnitAI ai) {
-
-        String action = null;
-        Integer target = null;
-
-        // doesn't the group have standing orders as a whole?..
-        Unit unit = ai.getUnit();
-        Ref ref = new Ref(unit);
-        GroupAI group = ai.getGroup();
-        // checkBehaviorChange(group); where does that happen?
-        switch (type) {
-            case AMBUSH:
-            case STALK:
-                break;
-            case STAND_GUARD:
-            case PATROL:
-                PatrolMaster.getPatrolAction(ai);
-            case SEARCH: // having already turned on the Mode
-            case WANDER:
-                if (ai.isLeader()) {
-                    Boolean change = WanderAiMaster.checkWanderDirectionChange(group, type);
-                    if (change == null) {
-                        action = getIdleAction(ai, type);
-                        change = true;
-                    }
-                    // TODO IDEA: change only on LEADER's TURN, and for others,
-                    // either proceed or WAIT; >> Updating blocked() status? or
-                    // maybe go meet leader if blocked... or something like it
-                    if (change) {
-                        group.getWanderStepCoordinateStack().push(
-                         group.getLeader().getCoordinates());
-                        WanderAiMaster.changeGroupMoveDirection(group, type);
-                    }
-                }
-                boolean wait = false;
-                // ActionSequenceConstructor.getSequence(targetAction, task)
-                Coordinates targetCoordinates = WanderAiMaster.getCoordinates(type, ai);
-                if (targetCoordinates == null) {
-                    wait = true;
-                    // if (!recursion)
-                    // return null;
-                    // recursion = true;
-                    // return getAction(type, ai);
-                } else {
-                    action = ActionEnums.STD_ACTIONS.Move.name();
-                    // if (!unit.getAction(action).canBeActivated()) {
-                    // }
-                    ActionPath path =
-                     getPathBuilder().init(
-                      new ListMaster<DC_ActiveObj>()
-                       .getList(unit.getAction(action)),
-                      new Action(unit.getAction(action),
-                       new Ref(unit))
-                     ).getPathByPriority(
-                      new ListMaster<Coordinates>()
-                       .getList(targetCoordinates));
-                    if (path == null) {
-
-                        ai.setPathBlocked(true); // TODO preCheck if path
-                        // appropriate
-                    } else {
-                        ai.setPathBlocked(false);
-                        return path.getActions().get(0);
-                    }
-                }
-                // null if waiting for catchers up or so... turning and resting
-                // etc
-
-                if (wait) {
-                    action = getIdleAction(ai, type);
-                } else {
-                    // if (change) {
-                    // targetCoordinates = WanderMaster.getCoordinates(type,
-                    // ai);
-                    // }
-                    // return path.getActions().getOrCreate(0);
-                }
-
-                // List<Action> s =
-                // ActionSequenceConstructor.getTurnSequence(FACING_SINGLE.IN_FRONT,
-                // unit, targetCoordinates);
-                // if (!s.isEmpty())
-                // return s.getOrCreate(0); // cache for speed-up immediate follow up
-                // target =
-                // ai.getUnit().getGame().getCellByCoordinate(targetCoordinates).getId();
-
-                // TODO if the unit is 'ahead' of his buddies, he should just
-                // wait
-                // so there is a 'target cell'? Or is it measured by distance?
-                // All going in same
-                // direction until a unit gets too far ahead/behind (?) then
-                // just wait till catch up (limit) and set new direction
-                // limit by max distance from *origin*...
-
-                // break;
-
-        }
-
-        DC_ActiveObj active = unit.getAction(action);
-
-        ref.setTarget(target);
-        boolean recursion = false;
-        return new Action(active, ref);
-
-    }
-
-    private String getIdleAction(UnitAI ai, GOAL_TYPE type) {
-        // TODO turn randomly?
-        return null;
-    }
-
-    public enum LOGIC {
-        AVOID_TRAPS,
-    }
 
     public enum TACTIC {
         DELAY, STALK, AMBUSH, ENGAGE

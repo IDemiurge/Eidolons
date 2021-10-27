@@ -2,7 +2,7 @@ package libgdx.gui;
 
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
 

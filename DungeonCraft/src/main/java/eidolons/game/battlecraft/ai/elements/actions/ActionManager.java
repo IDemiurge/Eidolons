@@ -11,7 +11,6 @@ import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.elements.goal.Goal;
-import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.battlecraft.ai.tools.AiLogger;
 import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
@@ -83,7 +82,7 @@ public class ActionManager extends AiHandler {
 
     public void initIntents() {
         Chronos.mark("initIntents");
-        for (Unit unit : AggroMaster.getAggroGroup()) {
+        for (Unit unit : game.getManager().getEnemies()) {
             if (unit.getAI().getCombatAI().getLastSequence() == null) {
                 Action action = chooseAction(true);
                 //check no side fx ?

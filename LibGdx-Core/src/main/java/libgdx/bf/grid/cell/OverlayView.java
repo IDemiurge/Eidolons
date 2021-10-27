@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.vision.colormap.LightConsts;
-import eidolons.game.exploration.objects.KeyMaster;
+import eidolons.game.exploration.dungeon.objects.KeyMaster;
 import libgdx.GdxMaster;
 import libgdx.anims.sprite.SpriteX;
 import libgdx.bf.GridMaster;

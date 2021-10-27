@@ -10,7 +10,7 @@ import libgdx.bf.grid.cell.OverlayView;
 import libgdx.bf.grid.cell.UnitGridView;
 import libgdx.bf.grid.cell.UnitViewFactory;
 import libgdx.bf.grid.cell.UnitViewOptions;
-import libgdx.gui.tooltips.DynamicTooltip;
+import libgdx.gui.dungeon.tooltips.DynamicTooltip;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;

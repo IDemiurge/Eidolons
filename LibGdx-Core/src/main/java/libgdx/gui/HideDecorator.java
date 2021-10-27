@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import libgdx.GDX;
 import libgdx.gui.generic.GroupX;
 import libgdx.gui.generic.btn.SmartTextButton;
-import libgdx.gui.panels.TablePanelX;
+import libgdx.gui.dungeon.panels.TablePanelX;
 import libgdx.gui.generic.btn.ButtonStyled;
 import main.game.bf.directions.DIRECTION;
 

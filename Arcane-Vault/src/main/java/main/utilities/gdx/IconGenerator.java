@@ -9,7 +9,7 @@ import eidolons.utils.GdxUtil;
 import libgdx.GDX;
 import libgdx.GdxImageMaster;
 import eidolons.content.consts.Images;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import main.data.filesys.PathFinder;
 import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;

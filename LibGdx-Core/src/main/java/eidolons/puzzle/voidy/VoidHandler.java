@@ -15,7 +15,7 @@ import libgdx.GdxMaster;
 import libgdx.bf.grid.DC_GridPanel;
 import libgdx.bf.grid.GridPanel;
 import libgdx.bf.grid.cell.GridCell;
-import libgdx.screens.ScreenMaster;
+import libgdx.screens.handlers.ScreenMaster;
 import main.content.CONTENT_CONSTS;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;

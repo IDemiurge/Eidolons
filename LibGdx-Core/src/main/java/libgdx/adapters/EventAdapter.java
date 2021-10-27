@@ -12,7 +12,7 @@ import libgdx.anims.text.FloatingText;
 import libgdx.anims.text.FloatingTextMaster;
 import libgdx.bf.GridMaster;
 import libgdx.bf.grid.handlers.GridCommentHandler;
-import libgdx.gui.tooltips.ValueTooltip;
+import libgdx.gui.dungeon.tooltips.ValueTooltip;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;

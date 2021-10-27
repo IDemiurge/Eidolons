@@ -3,6 +3,7 @@ package main.level_editor.gui.dialog.struct;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
+import main.level_editor.gui.dialog.struct.DataEditDialog;
 
 public class BlockEditDialog extends DataEditDialog<LevelStructure.BLOCK_VALUE, BlockData> {
     public BlockEditDialog() {

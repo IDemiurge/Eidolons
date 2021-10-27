@@ -13,7 +13,7 @@ import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import libgdx.bf.grid.cell.GenericGridView;
 import libgdx.bf.grid.cell.GridCellContainer;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;

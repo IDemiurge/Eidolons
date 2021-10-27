@@ -7,7 +7,7 @@ import eidolons.game.exploration.handlers.ExplorationMaster;
 import libgdx.anims.Animation;
 import libgdx.anims.CompositeAnim;
 import libgdx.anims.sprite.FadeSprite;
-import libgdx.screens.CustomSpriteBatch;
+import libgdx.screens.batch.CustomSpriteBatch;
 import main.game.logic.event.Event;
 import main.system.EventCallback;
 import main.system.EventCallbackParam;

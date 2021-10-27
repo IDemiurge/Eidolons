@@ -1,6 +1,6 @@
 package main.level_editor.gui.panels.palette.tree;
 
-import main.level_editor.gui.components.TreeX;
+import libgdx.gui.editor.components.TreeX;
 import main.level_editor.gui.dialog.BlockTemplateChooser;
 
 import java.util.Set;

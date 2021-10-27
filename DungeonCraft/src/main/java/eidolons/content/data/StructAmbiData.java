@@ -1,7 +1,7 @@
 package eidolons.content.data;
 
 import eidolons.content.consts.VisualEnums;
-import eidolons.game.exploration.dungeons.struct.LevelStruct;
+import eidolons.game.exploration.dungeon.struct.LevelStruct;
 import eidolons.system.audio.MusicEnums;
 import main.content.CONTENT_CONSTS;
 import main.content.enums.DungeonEnums;

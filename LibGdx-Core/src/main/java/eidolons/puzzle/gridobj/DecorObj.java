@@ -3,7 +3,7 @@ package eidolons.puzzle.gridobj;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.content.PROPS;
 import libgdx.gui.generic.GroupWithEmitters;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;

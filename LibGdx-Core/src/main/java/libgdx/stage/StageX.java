@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import libgdx.GdxMaster;
-import libgdx.screens.CustomSpriteBatch;
+import libgdx.screens.batch.CustomSpriteBatch;
 import main.system.auxiliary.secondary.ReflectionMaster;
 
 /**

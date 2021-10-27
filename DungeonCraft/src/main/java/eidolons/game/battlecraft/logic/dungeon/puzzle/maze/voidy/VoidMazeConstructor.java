@@ -7,7 +7,7 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzle;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzleConstructor;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
-import eidolons.game.exploration.dungeons.struct.LevelBlock;
+import eidolons.game.exploration.dungeon.struct.LevelBlock;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.NotCondition;

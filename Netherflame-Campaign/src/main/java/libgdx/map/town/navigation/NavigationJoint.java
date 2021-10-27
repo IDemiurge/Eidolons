@@ -1,8 +1,8 @@
 package libgdx.map.town.navigation;
 
 import libgdx.anims.actions.ActionMaster;
-import libgdx.gui.panels.ScrollPaneX;
-import libgdx.gui.panels.TablePanelX;
+import libgdx.gui.dungeon.panels.ScrollPaneX;
+import libgdx.gui.dungeon.panels.TablePanelX;
 import libgdx.map.town.navigation.data.Navigable;
 import libgdx.map.town.navigation.data.NavigationDataSource;
 

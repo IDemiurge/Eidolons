@@ -10,7 +10,7 @@ import libgdx.anims.actions.ActionMaster;
 import libgdx.bf.generic.ImageContainer;
 import libgdx.map.MapScreen;
 import libgdx.map.layers.LightLayer.LightContainer;
-import libgdx.texture.SmartTextureAtlas;
+import libgdx.assets.texture.SmartTextureAtlas;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.GenericEnums;

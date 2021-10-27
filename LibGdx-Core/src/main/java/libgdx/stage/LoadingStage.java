@@ -19,7 +19,7 @@ import libgdx.StyleHolder;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.particles.ambi.Ambience;
 import libgdx.particles.ambi.ParticleManager;
-import libgdx.screens.ScreenMaster;
+import libgdx.screens.handlers.ScreenMaster;
 import libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.text.TipMaster;
 import main.content.enums.GenericEnums;

@@ -5,7 +5,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.Floor;
 import eidolons.game.core.Core;
-import eidolons.game.exploration.dungeons.struct.LevelStruct;
+import eidolons.game.exploration.dungeon.struct.LevelStruct;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.system.math.PositionMaster;

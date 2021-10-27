@@ -8,16 +8,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.exploration.handlers.RealTimeGameLoop;
 import libgdx.anims.fullscreen.Screenshake;
 import libgdx.anims.sprite.SpriteAnimationFactory;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.bf.mouse.InputController;
-import libgdx.stage.ChainedStage;
+import libgdx.screens.generic.ScreenWithVideoLoader;
 import libgdx.stage.GenericGuiStage;
 import libgdx.stage.camera.CameraMan;
-import libgdx.texture.TextureCache;
-import libgdx.texture.TextureManager;
+import libgdx.assets.texture.TextureCache;
+import libgdx.assets.texture.TextureManager;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
 import main.system.GuiEventManager;
@@ -26,7 +25,7 @@ import main.system.datatypes.DequeImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-import static libgdx.texture.TextureCache.getOrCreateR;
+import static libgdx.assets.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.RESET_DUNGEON_BACKGROUND;
 import static main.system.GuiEventType.UPDATE_DUNGEON_BACKGROUND;
 
@@ -36,16 +35,16 @@ import static main.system.GuiEventType.UPDATE_DUNGEON_BACKGROUND;
 public abstract class GameScreen extends ScreenWithVideoLoader {
 
     public InputController controller;
-    protected ChainedStage dialogsStage = null;
-    protected ShaderProgram bufferedShader;
+
     protected Float speed;
-    protected TextureRegion backTexture;
+    protected ShaderProgram bufferedShader;
     protected GenericGuiStage guiStage;
-    protected RealTimeGameLoop realTimeGameLoop;
     protected List<Screenshake> shakes = new ArrayList<>();
     protected CameraMan cameraMan;
+
     protected String backgroundPath;
     protected String previousBg;
+    protected TextureRegion backTexture;
     protected FadeImageContainer background;
 
     public GameScreen() {
@@ -158,18 +157,6 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
             gl20.glEnable(GL20.GL_TEXTURE_2D);
             gl20.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         }
-    }
-
-    public TextureRegion getBackTexture() {
-        return backTexture;
-    }
-
-    public RealTimeGameLoop getRealTimeGameLoop() {
-        return realTimeGameLoop;
-    }
-
-    public void setRealTimeGameLoop(RealTimeGameLoop realTimeGameLoop) {
-        this.realTimeGameLoop = realTimeGameLoop;
     }
 
     public OrthographicCamera getCamera() {

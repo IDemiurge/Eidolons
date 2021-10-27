@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import eidolons.macro.map.MapVisionMaster.MAP_OBJ_INFO_LEVEL;
 import eidolons.macro.map.Place;
 import libgdx.map.ui.tooltips.PlaceTooltip;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
 
 /**

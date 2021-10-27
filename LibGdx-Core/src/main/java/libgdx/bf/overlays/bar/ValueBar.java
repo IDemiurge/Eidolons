@@ -11,7 +11,7 @@ import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.actions.FloatActionLimited;
 import libgdx.bf.GridMaster;
 import libgdx.bf.SuperActor;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.graphics.FontMaster;
 

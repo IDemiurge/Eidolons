@@ -7,7 +7,7 @@ import eidolons.game.battlecraft.DC_Engine;
 import libgdx.GDX;
 import libgdx.GdxImageMaster;
 import eidolons.content.consts.Images;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums;

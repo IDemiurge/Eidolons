@@ -2,7 +2,7 @@ package eidolons.ability.ignored.dialog;
 
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.unit.Unit;
-import eidolons.game.exploration.objects.ContainerMaster;
+import eidolons.game.exploration.dungeon.objects.ContainerMaster;
 import main.system.math.Formula;
 
 public class PickUpEffect extends InventoryDialogEffect {

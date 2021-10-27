@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.Logger;
 import libgdx.GDX;
 import libgdx.particles.EmitterPools;
 import libgdx.particles.ParticleEffectX;
-import libgdx.texture.SmartTextureAtlas;
+import libgdx.assets.texture.SmartTextureAtlas;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.FileLogManager;
 import main.system.auxiliary.secondary.ReflectionMaster;

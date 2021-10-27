@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import libgdx.gui.generic.btn.FlipDrawable;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 
 /**
  * Created by JustMe on 3/30/2018.

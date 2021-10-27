@@ -2,6 +2,7 @@ package main.level_editor.gui.dialog.struct;
 
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
+import main.level_editor.gui.dialog.struct.DataEditDialog;
 import main.system.threading.WaitMaster;
 
 public class PuzzleEditor extends DataEditDialog<PuzzleData.PUZZLE_VALUE , PuzzleData> {

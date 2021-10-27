@@ -15,7 +15,7 @@ import libgdx.bf.generic.Flippable;
 import libgdx.bf.generic.ImageContainer;
 import libgdx.gui.generic.GroupX;
 import libgdx.particles.EmitterActor;
-import libgdx.screens.ScreenMaster;
+import libgdx.screens.handlers.ScreenMaster;
 import main.system.auxiliary.RandomWizard;
 
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package libgdx.map.town.navigation;
 
-import libgdx.gui.menu.selection.DescriptionPanel;
-import libgdx.gui.panels.TablePanelX;
+import libgdx.gui.dungeon.menu.selection.DescriptionPanel;
+import libgdx.gui.dungeon.panels.TablePanelX;
 import libgdx.map.town.navigation.data.Navigable;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;

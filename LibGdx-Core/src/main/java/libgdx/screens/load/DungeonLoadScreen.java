@@ -2,7 +2,7 @@ package libgdx.screens.load;
 
 import eidolons.content.consts.VisualEnums;
 import libgdx.assets.AssetEnums;
-import libgdx.gui.generic.GearCluster;
+import libgdx.gui.generic.decor.GearCluster;
 
 import static libgdx.assets.AssetEnums.ATLAS.UI_DC;
 

@@ -15,7 +15,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.exploration.dungeons.struct.LevelStruct;
+import eidolons.game.exploration.dungeon.struct.LevelStruct;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.GridMaster;

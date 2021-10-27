@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.ai;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.explore.Patrol;
 import eidolons.game.battlecraft.logic.mission.encounter.Encounter;
-import eidolons.game.exploration.dungeons.struct.LevelBlock;
+import eidolons.game.exploration.dungeon.struct.LevelBlock;
 import main.content.enums.EncounterEnums.UNIT_GROUP_TYPE;
 import main.content.enums.rules.VisionEnums.ENGAGEMENT_LEVEL;
 import main.data.XStack;

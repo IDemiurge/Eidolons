@@ -1,7 +1,7 @@
 package libgdx.bf.generic;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import libgdx.screens.CustomSpriteBatch;
+import libgdx.screens.batch.CustomSpriteBatch;
 import main.content.enums.GenericEnums;
 
 public class BlendImageContainer extends FadeImageContainer {

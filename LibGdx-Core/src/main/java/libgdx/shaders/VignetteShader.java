@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import libgdx.GdxMaster;
 import libgdx.TiledNinePatchGenerator;
 import libgdx.bf.generic.SuperContainer;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import org.lwjgl.opengl.Display;
 

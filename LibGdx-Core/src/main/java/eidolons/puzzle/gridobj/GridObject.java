@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.game.core.Core;
-import eidolons.game.exploration.dungeons.generator.model.AbstractCoordinates;
+import eidolons.game.exploration.dungeon.generator.model.AbstractCoordinates;
 import libgdx.anims.sprite.SpriteX;
 import libgdx.bf.GridMaster;
 import libgdx.gui.generic.GroupWithEmitters;

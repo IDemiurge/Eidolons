@@ -9,12 +9,19 @@ import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
+/*
+what use is this abstraction?
+> progression perks - mild but there
+> Bosses? Separate Lord for Shadow when in double-mode?
+> SF management
+>
+ */
 public class EidolonLord extends LightweightEntity {
 
     public static EidolonLord lord;
     public Unit trueForm;
     protected EidolonChain chain;
-    // protected LordProgression progression;
+    protected LordProgression progression;
     /*
     1) consider persistence - unlocks, account, runs that were started
     Should we split some of this stuff into Netherflame-Core project?

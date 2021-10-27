@@ -13,7 +13,7 @@ import libgdx.bf.grid.GridPanel;
 import libgdx.bf.mouse.InputController;
 import libgdx.particles.EmitterPools;
 import libgdx.particles.ambi.ParticleManager;
-import libgdx.screens.ScreenWithLoader;
+import libgdx.screens.generic.ScreenWithLoader;
 import libgdx.screens.dungeon.GenericDungeonScreen;
 import libgdx.stage.GenericGuiStage;
 import libgdx.stage.GridStage;

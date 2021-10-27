@@ -14,9 +14,9 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.exploration.handlers.ExploreGameLoop;
-import eidolons.game.exploration.objects.DungeonObj;
-import eidolons.game.exploration.objects.InteractiveObj;
-import eidolons.game.exploration.objects.InteractiveObjMaster;
+import eidolons.game.exploration.dungeon.objects.DungeonObj;
+import eidolons.game.exploration.dungeon.objects.InteractiveObj;
+import eidolons.game.exploration.dungeon.objects.InteractiveObjMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.elements.targeting.SelectiveTargeting;
@@ -216,9 +216,6 @@ public class DefaultActionHandler {
             return moveToMotion( c);
         }
 
-        if (EidolonsGame.MOVES_DISABLED) {
-            return false;
-        }
         if (c.x - source.getX() > 1) {
             return false;
         }
@@ -242,9 +239,6 @@ public class DefaultActionHandler {
 
 
     private static boolean turnToMotion(Unit source, Coordinates coordinates) {
-        if (EidolonsGame.TURNS_DISABLED) {
-            return false;
-        }
         DC_ActiveObj action = getTurnToAction(source, coordinates);
         if (action == null) {
             return false;

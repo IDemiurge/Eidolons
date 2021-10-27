@@ -18,7 +18,7 @@ import libgdx.bf.generic.FadeImageContainer;
 import libgdx.bf.mouse.BattleClickListener;
 import libgdx.gui.generic.GroupX;
 import eidolons.content.consts.Images;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import main.content.CONTENT_CONSTS;
 import main.system.GuiEventManager;
 

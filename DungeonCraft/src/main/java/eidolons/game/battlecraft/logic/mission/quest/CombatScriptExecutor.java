@@ -2,9 +2,7 @@ package eidolons.game.battlecraft.logic.mission.quest;
 
 import eidolons.system.libgdx.wrapper.VectorGdx;
 import eidolons.content.PROPS;
-import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
-import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner.SPAWN_MODE;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitGroupMaster;
@@ -149,8 +147,6 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
                 return doCinematicScript(ref, args);
             case ESOTERICA:
                 return doEsoterica(ref, args);
-            case AGGRO:
-                return doAggro(ref, args);
             case SPAWN:
                 return doSpawn(ref, args);
             case DIALOGUE_TIP:
@@ -252,35 +248,6 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
         doCustomTip(ref, key); //multiple?
         //reward?
 
-
-        return true;
-    }
-
-    private boolean doAggro(Ref ref, String[] args) {
-        float dst = 6f;
-        boolean hasAggro = false;
-        for (String arg : args) {
-            if (NumberUtils.isNumber(arg, false)) {
-                dst = NumberUtils.getFloat(arg);
-            }
-            BattleFieldObject a = getGame().getObjMaster().getByName(arg, ref);
-            if (a != null) {
-                AggroMaster.aggro((Unit) a, Core.getMainHero());
-                hasAggro = true;
-            }
-        }
-        if (!hasAggro)
-            for (Unit unit : Core.getGame().getUnits()) {
-                if (Core.getPlayerCoordinates().dst(unit.getCoordinates()) < dst) {
-                    AggroMaster.aggro(unit, Core.getMainHero());
-                    hasAggro = true;
-                }
-            }
-        if (hasAggro) {
-            Core.getGame().getDungeonMaster().getExplorationMaster().switchExplorationMode(false);
-        } else {
-
-        }
 
         return true;
     }

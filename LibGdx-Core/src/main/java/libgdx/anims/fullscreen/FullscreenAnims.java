@@ -19,7 +19,7 @@ import libgdx.assets.Assets;
 import eidolons.content.consts.SpriteData;
 import libgdx.gui.generic.GroupX;
 import libgdx.gui.generic.NoHitImage;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.entity.obj.Obj;

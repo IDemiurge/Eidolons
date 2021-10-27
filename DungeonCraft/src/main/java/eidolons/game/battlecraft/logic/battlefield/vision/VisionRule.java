@@ -8,7 +8,7 @@ import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.counter.natural.ConcealmentRule;
 import eidolons.game.core.Core;
 import eidolons.game.exploration.story.cinematic.Cinematics;
-import eidolons.game.exploration.dungeons.struct.Entrance;
+import eidolons.game.exploration.dungeon.struct.Entrance;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.entity.UnitEnums;

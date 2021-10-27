@@ -46,7 +46,7 @@ public class MC_Tray implements MouseListener, ActionListener {
         switch (e.getActionCommand()) {
             case "showAll":
                 String path = MC_Funcs.showAll(false, false);
-                PlaylistHandler.play("", path);
+                PlaylistHandler.play(PlaylistHandler.ROOT_PATH_PICK, path);
         }
     }
 

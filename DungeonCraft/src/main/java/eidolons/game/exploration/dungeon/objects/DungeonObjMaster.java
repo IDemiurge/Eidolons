@@ -1,0 +1,90 @@
+package eidolons.game.exploration.dungeon.objects;
+
+import eidolons.ability.conditions.FacingCondition;
+import eidolons.ability.conditions.special.ClearShotCondition;
+import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.unit.Unit;
+import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import main.ability.AbilityType;
+import main.ability.ActiveAbilityObj;
+import main.content.DC_TYPE;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
+import main.content.enums.entity.UnitEnums.FACING_SINGLE;
+import main.data.DataManager;
+import main.elements.conditions.Conditions;
+import main.elements.conditions.DistanceCondition;
+import main.elements.targeting.SelectiveTargeting;
+import main.entity.Ref;
+import main.entity.obj.ActiveObj;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by JustMe on 9/23/2017.
+ * <p>
+ * functions for interacting with various objects
+ * <p>
+ * > Do I need a class for each?
+ */
+public abstract class DungeonObjMaster<T extends DUNGEON_OBJ_ACTION> {
+    DungeonMaster dungeonMaster;
+
+    public DungeonObjMaster(DungeonMaster dungeonMaster) {
+        this.dungeonMaster = dungeonMaster;
+    }
+
+    public void takeItem(DungeonObj obj) {
+
+    }
+
+    protected abstract boolean actionActivated(T sub,
+                                               Unit unit, DungeonObj obj);
+
+    public abstract List<DC_ActiveObj> getActions(DungeonObj obj, Unit unit);
+
+    public abstract void open(DungeonObj obj, Ref ref);
+
+    public DC_UnitAction createAction(T sub, Unit unit,
+                                      DungeonObj obj) {
+        return createAction(sub, unit, sub.toString(), obj);
+    }
+
+    public DC_UnitAction createAction(T sub, Unit unit, String typeName,
+                                      DungeonObj obj) {
+        //TODO CACHE
+        DC_UnitAction action =
+         unit.getGame().getActionManager().getOrCreateAction(typeName, unit);
+        action.setTargeting(new SelectiveTargeting(
+
+         new Conditions(new DistanceCondition("1", true)
+          ,  new ClearShotCondition(),new FacingCondition(FACING_SINGLE.IN_FRONT))));
+        action.setConstructed(true);
+        action.getTargeter().setTargetingInitialized(true);
+        action.setTargetingCachingOff(true);
+        action.setActionTypeGroup(ACTION_TYPE_GROUPS.STANDARD);
+        action.setAbilities(null);
+        List<ActiveObj> actives = new ArrayList<>();
+        actives.add(new ActiveAbilityObj((AbilityType)
+         DataManager.getType("Dummy Ability", DC_TYPE.ABILS),
+         unit.getRef(), unit.getOwner(), unit.getGame()) {
+            @Override
+            public boolean activatedOn(Ref ref) {
+                return actionActivated(sub, unit, obj);
+            }
+        });
+
+        action.setActives(actives);
+        action.setActionTypeGroup(ACTION_TYPE_GROUPS.DUNGEON);
+        return action;
+    }
+
+    public abstract DC_ActiveObj getDefaultAction(Unit source, DungeonObj target);
+
+    //     public abstract boolean isVisible(BattleFieldObject obj);
+//    isObstructing
+//     isPassable
+//    applyAction
+
+}

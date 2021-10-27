@@ -8,7 +8,7 @@ import eidolons.macro.global.time.TimeMaster;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
 import libgdx.gui.NinePatchFactory;
-import libgdx.gui.panels.TablePanel;
+import libgdx.gui.dungeon.panels.TablePanel;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
 import main.system.auxiliary.NumberUtils;

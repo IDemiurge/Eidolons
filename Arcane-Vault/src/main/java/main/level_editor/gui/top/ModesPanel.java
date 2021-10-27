@@ -1,6 +1,6 @@
 package main.level_editor.gui.top;
 
-import libgdx.gui.panels.TablePanelX;
+import libgdx.gui.dungeon.panels.TablePanelX;
 import main.level_editor.backend.handlers.LE_MenuHandler;
 
 public class ModesPanel extends TablePanelX {

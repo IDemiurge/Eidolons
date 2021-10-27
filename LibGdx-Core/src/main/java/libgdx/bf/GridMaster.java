@@ -12,7 +12,7 @@ import libgdx.bf.grid.GridPanel;
 import libgdx.bf.grid.cell.BaseView;
 import libgdx.bf.grid.cell.GridCellContainer;
 import libgdx.bf.grid.cell.UnitGridView;
-import libgdx.screens.ScreenMaster;
+import libgdx.screens.handlers.ScreenMaster;
 import libgdx.screens.dungeon.DungeonScreen;
 import main.content.enums.rules.VisionEnums;
 import main.game.bf.Coordinates;

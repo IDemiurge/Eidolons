@@ -160,18 +160,10 @@ public class DC_StateManager extends StateManager {
 
         game.fireEvent(new Event(STANDARD_EVENT_TYPE.RESET_STARTS, ref));
 
-        if (getGame().getDungeonMaster().getExplorationMaster() != null)
-            if (!getGame().getDungeonMaster().getExplorationMaster().isToggling()) {
-                getGame().getDungeonMaster().getExplorationMaster()
-                        .getAggroMaster().checkStatusUpdate();
-            }
-
         getGame().getDroppedItemManager().reset();
 
         if (getGame().isStarted() && ExplorationMaster.isExplorationOn()) {
             // we will need full reset: after traps or other spec. effects; for Cells/Illumination
-
-
             getGame().getDungeonMaster().getExplorationMaster().getResetter().resetAll();
             if (getGame().getDungeonMaster().getExplorationMaster().
                     getResetter().isResetNotRequired()) {

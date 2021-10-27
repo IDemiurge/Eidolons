@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.content.consts.VisualEnums;
 import eidolons.content.data.FlightData;
 import libgdx.gui.generic.GroupX;
-import libgdx.screens.CustomSpriteBatch;
+import libgdx.screens.batch.CustomSpriteBatch;
 import libgdx.shaders.ShaderDrawer;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;

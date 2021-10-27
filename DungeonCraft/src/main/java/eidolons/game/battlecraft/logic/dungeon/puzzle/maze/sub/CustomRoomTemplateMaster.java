@@ -1,9 +1,9 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.maze.sub;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
-import eidolons.game.exploration.dungeons.generator.model.RoomModel;
-import eidolons.game.exploration.dungeons.generator.model.RoomTemplateMaster;
-import eidolons.game.exploration.dungeons.generator.tilemap.TileMapper;
+import eidolons.game.exploration.dungeon.generator.model.RoomModel;
+import eidolons.game.exploration.dungeon.generator.model.RoomTemplateMaster;
+import eidolons.game.exploration.dungeon.generator.tilemap.TileMapper;
 import main.data.filesys.PathFinder;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.data.FileManager;
@@ -13,8 +13,8 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static eidolons.game.exploration.dungeons.generator.GeneratorEnums.EXIT_TEMPLATE;
-import static eidolons.game.exploration.dungeons.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
+import static eidolons.game.exploration.dungeon.generator.GeneratorEnums.EXIT_TEMPLATE;
+import static eidolons.game.exploration.dungeon.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
 import static main.system.auxiliary.log.LogMaster.log;
 
 public class CustomRoomTemplateMaster {

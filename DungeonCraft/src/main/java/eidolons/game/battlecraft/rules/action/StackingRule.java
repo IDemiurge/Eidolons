@@ -10,7 +10,7 @@ import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.exploration.dungeons.struct.Entrance;
+import eidolons.game.exploration.dungeon.struct.Entrance;
 import eidolons.game.exploration.handlers.ExplorationMaster;
 import eidolons.system.libgdx.GdxAdapter;
 import main.content.enums.entity.UnitEnums;

@@ -4,7 +4,7 @@ import eidolons.entity.unit.Unit;
 import eidolons.game.core.Core;
 import libgdx.gui.generic.btn.ButtonStyled;
 import libgdx.gui.generic.btn.SmartTextButton;
-import libgdx.gui.panels.TablePanelX;
+import libgdx.gui.dungeon.panels.TablePanelX;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;

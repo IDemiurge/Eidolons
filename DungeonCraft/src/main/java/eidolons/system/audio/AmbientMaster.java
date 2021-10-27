@@ -3,7 +3,7 @@ package eidolons.system.audio;
 import eidolons.entity.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.core.Core;
-import eidolons.game.exploration.dungeons.struct.LevelStruct;
+import eidolons.game.exploration.dungeon.struct.LevelStruct;
 import eidolons.game.exploration.handlers.ExplorationMaster;
 import eidolons.system.audio.MusicEnums.AMBIENCE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
@@ -42,25 +42,13 @@ public class AmbientMaster {
     }
 
     public static AMBIENCE getCurrentAmbience(boolean alt, boolean global) {
-        //        if (!ExplorationMaster.isExplorationOn()){
-        //            return null;
-        //        }
         if (!ExplorationMaster.isExplorationOn()) {
             return null;
-        }
-        if (EidolonsGame.BRIDGE) {
-            if (!EidolonsGame.INTRO_STARTED) {
-                return null;
-            }
-            return EVIL;
         }
         Unit hero = Core.getMainHero();
         if (hero == null)
             return DEFAULT_AMBIENCE;
 
-        // if (TownPanel.getActiveInstance() != null && Eidolons.getGame().getMetaMaster().getTownMaster().isInTown()) {
-        //     return Eidolons.getGame().getMetaMaster().getTownMaster().getTown().getAmbience();
-        // }
         LevelStruct lowestStruct = hero.getGame().getDungeonMaster().getStructMaster().
                 getLowestStruct(hero.getCoordinates());
         if (lowestStruct.getAmbiData().getAmbience()!=null ) {

@@ -2,11 +2,11 @@ package libgdx.screens.menu;
 
 
 import libgdx.GdxMaster;
-import libgdx.gui.menu.selection.SelectionPanel;
-import libgdx.gui.menu.selection.rng.RngSelectionPanel;
-import libgdx.gui.menu.selection.saves.SaveSelectionPanel;
-import libgdx.gui.menu.selection.scenario.ScenarioSelectionPanel;
-import libgdx.screens.ScreenWithVideoLoader;
+import libgdx.gui.dungeon.menu.selection.SelectionPanel;
+import libgdx.gui.dungeon.menu.selection.rng.RngSelectionPanel;
+import libgdx.gui.dungeon.menu.selection.saves.SaveSelectionPanel;
+import libgdx.gui.dungeon.menu.selection.scenario.ScenarioSelectionPanel;
+import libgdx.screens.generic.ScreenWithVideoLoader;
 import libgdx.video.VideoMaster;
 import eidolons.system.audio.MusicMaster;
 import main.content.DC_TYPE;

@@ -32,9 +32,6 @@ public class LaunchFlags {
                 engineLauncher.setTestLaunch(launch);
             }
 
-            if (arg.contains("town")) {
-                EidolonsGame.TOWN = true;
-            }
             CoreEngine.TEST_LAUNCH = arg.contains("test;");
             System.out.println("TEST LAUNCH =" + CoreEngine.TEST_LAUNCH);
 
@@ -43,29 +40,11 @@ public class LaunchFlags {
 
             Flags.setFastMode(CoreEngine.TEST_LAUNCH);
 
-            if (arg.contains("selecthero")) {
-                MainLauncher.HERO_INDEX = DialogMaster.inputInt(0);
-                if (MainLauncher.HERO_INDEX == -1) {
-                    EidolonsGame.SELECT_HERO = true;
-                }
-            }
             String[] parts = arg.split("--");
             if (parts.length > 1) {
                 OptionsMaster.setOptionsMode(parts[0]);
                 LogMaster.important(" Options Mode set: " + parts[0]);
                 arg = parts[1];
-            }
-            EidolonsGame.BOSS_FIGHT = arg.contains("BOSS");
-            EidolonsGame.BRIDGE = arg.contains("bridge");
-            EidolonsGame.FOOTAGE = arg.contains("footage");
-            EidolonsGame.PUZZLES = arg.contains("puzzle");
-
-
-            EidolonsGame.DUEL = arg.contains("duel");
-            EidolonsGame.DUEL_TEST = arg.contains("duel");
-
-            if (EidolonsGame.DUEL_TEST) {
-                EidolonsGame.BRIDGE = true;
             }
             Flags.setLevelTestMode(false);
             args = arg.split(";");
@@ -73,8 +52,6 @@ public class LaunchFlags {
         Flags.setSkillTestMode(args.length > 0);
         //        CoreEngine.setLiteLaunch(args.length > 0);
         //        CoreEngine.setContentTestMode(args.length > 2);
-        if (!EidolonsGame.BOSS_FIGHT)
-            Flags.setLevelTestMode(args.length > 4);
 
         if (!Flags.isIggDemo()) {
             Flags.setFastMode(args.length > 1);

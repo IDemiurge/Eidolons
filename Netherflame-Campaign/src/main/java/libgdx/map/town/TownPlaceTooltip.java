@@ -2,7 +2,7 @@ package libgdx.map.town;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.macro.entity.town.TownPlace;
-import libgdx.gui.tooltips.Tooltip;
+import libgdx.gui.dungeon.tooltips.Tooltip;
 
 /**
  * Created by JustMe on 3/14/2018.

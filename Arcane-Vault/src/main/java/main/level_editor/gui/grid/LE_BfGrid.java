@@ -16,7 +16,7 @@ import libgdx.bf.grid.moving.PlatformCell;
 import libgdx.bf.grid.moving.PlatformData;
 import libgdx.bf.grid.moving.PlatformDecor;
 import libgdx.bf.overlays.GridOverlaysManager;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.level_editor.LevelEditor;

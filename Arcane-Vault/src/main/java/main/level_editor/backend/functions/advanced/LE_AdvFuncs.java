@@ -3,7 +3,7 @@ package main.level_editor.backend.functions.advanced;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.core.EUtils;
-import eidolons.game.exploration.dungeons.struct.LevelStruct;
+import eidolons.game.exploration.dungeon.struct.LevelStruct;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;

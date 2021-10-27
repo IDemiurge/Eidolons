@@ -15,7 +15,7 @@ import libgdx.anims.actions.WaitAction;
 import libgdx.bf.GridMaster;
 import libgdx.gui.LabelX;
 import libgdx.gui.generic.GroupX;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import main.game.bf.Coordinates;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.auxiliary.StringMaster;

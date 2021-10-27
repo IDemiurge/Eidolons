@@ -1,6 +1,6 @@
 package libgdx.map.town.library.repertoire;
 
-import libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
+import libgdx.gui.dungeon.panels.dc.inventory.InventorySlotsPanel;
 
 /**
  * Created by JustMe on 11/30/2018.

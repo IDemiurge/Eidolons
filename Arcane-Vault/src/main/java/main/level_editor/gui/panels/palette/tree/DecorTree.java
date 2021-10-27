@@ -2,7 +2,7 @@ package main.level_editor.gui.panels.palette.tree;
 
 import main.data.tree.DataNode;
 import main.level_editor.backend.metadata.decor.LE_DecorHandler;
-import main.level_editor.gui.components.TreeX;
+import libgdx.gui.editor.components.TreeX;
 import main.level_editor.gui.panels.palette.table.DecorChooser;
 
 public class DecorTree extends TreeX {

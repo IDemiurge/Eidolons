@@ -1,7 +1,7 @@
 package libgdx.map.town.library.hero;
 
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import libgdx.gui.panels.TablePanelX;
+import libgdx.gui.dungeon.panels.TablePanelX;
 
 /**
  * Created by JustMe on 11/21/2018.

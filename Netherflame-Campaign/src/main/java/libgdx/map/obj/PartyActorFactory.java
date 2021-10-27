@@ -8,7 +8,7 @@ import eidolons.macro.entity.party.MacroParty;
 import eidolons.macro.map.MapVisionMaster.MAP_OBJ_INFO_LEVEL;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.map.ui.tooltips.PartyTooltip;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 
 /**
  * Created by JustMe on 2/7/2018.

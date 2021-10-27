@@ -45,6 +45,7 @@
         <module>Netherflame-Campaign</module>
         <module>LibGdx-Core</module>
         <module>C3</module>
+        <module>LevelEditor</module>
         <!--<module>resources</module>-->
     </modules>
 

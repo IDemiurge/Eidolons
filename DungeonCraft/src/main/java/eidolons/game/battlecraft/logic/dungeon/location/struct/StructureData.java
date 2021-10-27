@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import eidolons.game.exploration.dungeons.struct.LevelStruct;
+import eidolons.game.exploration.dungeon.struct.LevelStruct;
 import main.data.tree.LayeredData;
 import main.system.auxiliary.Strings;
 import main.system.data.DataUnit;

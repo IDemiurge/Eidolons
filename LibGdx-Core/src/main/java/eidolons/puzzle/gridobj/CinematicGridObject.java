@@ -1,6 +1,6 @@
 package eidolons.puzzle.gridobj;
 
-import eidolons.game.exploration.dungeons.generator.model.AbstractCoordinates;
+import eidolons.game.exploration.dungeon.generator.model.AbstractCoordinates;
 import libgdx.particles.EmitterActor;
 import main.content.enums.entity.BfObjEnums;
 import main.data.ability.construct.VariableManager;

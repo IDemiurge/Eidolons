@@ -5,8 +5,6 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.unit.Unit;
-import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.combat.attack.extra_attack.ExtraAttacksRule;
@@ -371,15 +369,6 @@ public class Executor extends ActiveHandler {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
 
-        if (result) {
-            if (getAction().getTargetObj() instanceof Unit)
-                if (getAction().getChecker().isPotentiallyHostile())
-                    if (getAction().getTargetObj().getOwner() !=
-                            getAction().getOwner()) {
-                        AggroMaster.unitAttacked(getAction(), getAction().getTargetObj());
-
-                    }
-        }
         getAction().setTargetGroup(null);
         getAction().setTargetObj(null);
 

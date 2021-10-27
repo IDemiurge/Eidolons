@@ -3,6 +3,7 @@ package main.level_editor.gui.dialog.struct;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.ZoneData;
 import eidolons.system.audio.MusicEnums;
+import main.level_editor.gui.dialog.struct.DataEditDialog;
 import main.content.enums.GenericEnums;
 
 import static eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure.EDIT_VALUE_TYPE;

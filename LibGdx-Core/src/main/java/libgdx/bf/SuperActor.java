@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.bf.mouse.InputController;
-import libgdx.screens.ScreenMaster;
+import libgdx.screens.handlers.ScreenMaster;
 import main.content.enums.GenericEnums;
 
 /**

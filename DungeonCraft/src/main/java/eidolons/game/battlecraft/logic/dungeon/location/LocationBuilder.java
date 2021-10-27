@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.dungeon.location;
 
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonBuilder;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
-import eidolons.game.exploration.dungeons.generator.init.RngXmlMaster;
+import eidolons.game.exploration.dungeon.generator.init.RngXmlMaster;
 import main.system.auxiliary.Refactor;
 import main.system.auxiliary.StringMaster;
 import org.w3c.dom.Node;

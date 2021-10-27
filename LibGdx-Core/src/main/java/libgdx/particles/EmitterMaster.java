@@ -15,8 +15,8 @@ import eidolons.content.consts.VisualEnums.ANIM_PART;
 import libgdx.assets.Assets;
 import libgdx.particles.Emitter.EMITTER_VALS_SCALED;
 import libgdx.particles.util.EmitterPresetMaster;
-import libgdx.texture.SmartTextureAtlas;
-import libgdx.texture.TexturePackerLaunch;
+import libgdx.assets.texture.SmartTextureAtlas;
+import libgdx.assets.texture.TexturePackerLaunch;
 
 import main.content.DC_TYPE;
 import main.data.DataManager;

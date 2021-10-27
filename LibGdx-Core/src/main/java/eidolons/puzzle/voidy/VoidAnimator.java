@@ -11,7 +11,7 @@ import libgdx.anims.std.HitAnim;
 import libgdx.anims.std.sprite.CustomSpriteAnim;
 import libgdx.bf.grid.cell.GridCell;
 import eidolons.system.audio.DC_SoundMaster;
-import libgdx.screens.ScreenMaster;
+import libgdx.screens.handlers.ScreenMaster;
 import main.content.enums.entity.BfObjEnums;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;

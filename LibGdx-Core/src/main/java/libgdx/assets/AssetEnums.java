@@ -1,7 +1,7 @@
 package libgdx.assets;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import libgdx.texture.SmartTextureAtlas;
+import libgdx.assets.texture.SmartTextureAtlas;
 import main.data.filesys.PathFinder;
 
 public class AssetEnums {

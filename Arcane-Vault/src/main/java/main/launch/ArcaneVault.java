@@ -133,7 +133,6 @@ public class ArcaneVault {
         XmlCleaner.cleanTypesXml(DC_TYPE.ENCOUNTERS);
         //        ContentGenerator.afterRead();
 
-        CharacterCreator.setAV(true);
     }
 
     public static DC_Game getGame() {

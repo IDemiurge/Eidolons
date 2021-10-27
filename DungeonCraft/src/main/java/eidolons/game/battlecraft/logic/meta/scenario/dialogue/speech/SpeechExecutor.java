@@ -21,7 +21,7 @@ import eidolons.game.battlecraft.logic.mission.quest.CombatScriptExecutor.COMBAT
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Core;
 import eidolons.game.exploration.story.cinematic.Cinematics;
-import eidolons.game.exploration.dungeons.generator.model.AbstractCoordinates;
+import eidolons.game.exploration.dungeon.generator.model.AbstractCoordinates;
 import eidolons.system.libgdx.GdxAdapter;
 import eidolons.content.consts.GraphicData;
 import eidolons.content.consts.SpriteData;

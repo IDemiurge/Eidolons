@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import libgdx.GdxMaster;
 import libgdx.gui.generic.btn.SmartButton;
-import libgdx.gui.panels.TablePanelX;
+import libgdx.gui.dungeon.panels.TablePanelX;
 
 public class ClosablePanel extends TablePanelX {
     SmartButton linkedButton;

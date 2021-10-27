@@ -10,7 +10,7 @@ import libgdx.bf.generic.ImageContainer;
 import libgdx.bf.generic.SuperContainer;
 import libgdx.gui.LabelX;
 import libgdx.gui.generic.ValueContainer;
-import libgdx.gui.panels.TablePanel;
+import libgdx.gui.dungeon.panels.TablePanel;
 import libgdx.map.MapScreen;
 import eidolons.macro.entity.party.MacroParty;
 import main.system.GuiEventManager;

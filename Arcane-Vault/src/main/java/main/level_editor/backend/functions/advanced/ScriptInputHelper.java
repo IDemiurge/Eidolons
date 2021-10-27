@@ -7,7 +7,7 @@ import eidolons.game.core.Core;
 import libgdx.gui.NinePatchFactory;
 import libgdx.gui.generic.btn.ButtonStyled;
 import libgdx.gui.generic.btn.SmartTextButton;
-import libgdx.gui.panels.TablePanelX;
+import libgdx.gui.dungeon.panels.TablePanelX;
 import libgdx.gui.utils.TextInputPanel;
 import main.level_editor.backend.LE_Manager;
 import main.system.auxiliary.ContainerUtils;

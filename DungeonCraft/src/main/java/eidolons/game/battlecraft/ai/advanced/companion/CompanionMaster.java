@@ -10,18 +10,17 @@ import main.system.auxiliary.EnumMaster;
 public class CompanionMaster {
 
     static AI_TYPE[] aiTypes = AI_TYPE.values();
-    private static boolean logged;
 
     /*
-         * give orders
-         *  * create self-orders
-         *
-         *  'behavior' vs battle
-         *
-         *  factors of intelligence, aggression, loyalty...
-         *  enemy preferences
-         *
-         */
+     * give orders
+     *  * create self-orders
+     *
+     *  'behavior' vs battle
+     *
+     *  factors of intelligence, aggression, loyalty...
+     *  enemy preferences
+     *
+     */
     public static void initCompanionAiParams(Unit u) {
         // prefs, ai type, ...
 
@@ -30,7 +29,7 @@ public class CompanionMaster {
 
     private static AI_TYPE getAiType(Unit hero) {
         AI_TYPE type = new EnumMaster<AI_TYPE>().retrieveEnumConst(AI_TYPE.class,
-         hero.getProperty(PROPS.AI_TYPE));
+                hero.getProperty(PROPS.AI_TYPE));
         if (type != null) {
             main.system.auxiliary.log.LogMaster.log(1, hero.getName() + "'s Ai Type is pre-set: " + type);
             return type;
@@ -42,18 +41,16 @@ public class CompanionMaster {
             int weight = getWeight(v, hero);
 
             total += weight;
-            if (logged)
-                main.system.auxiliary.log.LogMaster.log(1, v + "-Ai Type has " + weight + " weight for " + hero.getName()
-                );
+            main.system.auxiliary.log.LogMaster.log(1, v + "-Ai Type has " + weight + " weight for " + hero.getName());
             if (weight > maxWeight) {
                 maxWeight = weight;
                 type = v;
             }
         }
-//        int average = total / AI_TYPE.values().length;
-//        if (average > maxWeight/2)
-//            type = AI_TYPE.NORMAL;
-//        main.system.auxiliary.log.LogMaster.log(1, hero.getName() + "'s Ai Type chosen: " + type);
+        //        int average = total / AI_TYPE.values().length;
+        //        if (average > maxWeight/2)
+        //            type = AI_TYPE.NORMAL;
+        //        main.system.auxiliary.log.LogMaster.log(1, hero.getName() + "'s Ai Type chosen: " + type);
         return type;
     }
 
@@ -63,23 +60,23 @@ public class CompanionMaster {
                 return hero.getPower();
             case BRUTE:
                 return hero.getSumOfParams(PARAMS.ATTACK,
-                 PARAMS.OFF_HAND_ATTACK, PARAMS.STRENGTH,
-                 PARAMS.STRENGTH) / 2
-                 - hero.getSumOfParams(PARAMS.STEALTH, PARAMS.INTELLIGENCE)
-                 ;
+                        PARAMS.OFF_HAND_ATTACK, PARAMS.STRENGTH,
+                        PARAMS.STRENGTH) / 2
+                        - hero.getSumOfParams(PARAMS.STEALTH, PARAMS.INTELLIGENCE)
+                        ;
             case SNEAK:
                 return hero.getIntParam(PARAMS.STEALTH);
             case TANK:
                 return hero.getSumOfParams(PARAMS.VITALITY, PARAMS.VITALITY,
-                 PARAMS.WILLPOWER, PARAMS.ARMOR, PARAMS.STRENGTH) / 3
-                 + hero.getIntParam(PARAMS.DEFENSE) / 4
-                 ;
+                        PARAMS.WILLPOWER, PARAMS.ARMOR, PARAMS.STRENGTH) / 3
+                        + hero.getIntParam(PARAMS.DEFENSE) / 4
+                        ;
             case CASTER:
                 return (hero.getSumOfParams(PARAMS.SPELLPOWER, PARAMS.WISDOM, PARAMS.INTELLIGENCE) + hero.getSumOfParams(VALUE_GROUP.MAGIC.getParams())) / 2;
             case CASTER_MELEE:
                 return
-                 getWeight(AI_TYPE.BRUTE, hero) / 4 + getWeight(AI_TYPE.TANK, hero) / 4 +
-                  (hero.getSumOfParams(PARAMS.SPELLPOWER) + hero.getSumOfParams(VALUE_GROUP.COMBAT_MAGIC.getParams()) / 2);
+                        getWeight(AI_TYPE.BRUTE, hero) / 4 + getWeight(AI_TYPE.TANK, hero) / 4 +
+                                (hero.getSumOfParams(PARAMS.SPELLPOWER) + hero.getSumOfParams(VALUE_GROUP.COMBAT_MAGIC.getParams()) / 2);
             case CASTER_SUPPORT:
                 return hero.getSumOfParams(PARAMS.SPELLPOWER, PARAMS.WISDOM, PARAMS.INTELLIGENCE) + hero.getSumOfParams(VALUE_GROUP.SUPPORT_MAGIC.getParams());
             case CASTER_SUMMONER:
@@ -91,16 +88,13 @@ public class CompanionMaster {
                     return 0;
                 }
                 return
-                 (int)
-                  (Math.sqrt(hero.getRangedWeapon().getIntParam(PARAMS.GOLD_COST)) * 2
-                   + hero.getIntParam(PARAMS.MARKSMANSHIP_MASTERY) * 5);
+                        (int)
+                                (Math.sqrt(hero.getRangedWeapon().getIntParam(PARAMS.GOLD_COST)) * 2
+                                        + hero.getIntParam(PARAMS.MARKSMANSHIP_MASTERY) * 5);
 
         }
         return 0;
     }
 
-    public enum COMPANION_MODE {
-        FOLLOW, SCOUT, GUARD, IDLE, ORDERS, AGGRO, STEALTH,
-    }
 
 }

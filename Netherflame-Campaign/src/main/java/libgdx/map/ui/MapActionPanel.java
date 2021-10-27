@@ -2,9 +2,9 @@ package libgdx.map.ui;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import libgdx.gui.generic.ValueContainer;
-import libgdx.gui.panels.dc.actionpanel.ActionContainer;
-import libgdx.gui.panels.dc.actionpanel.BaseSlotPanel;
-import libgdx.texture.TextureCache;
+import libgdx.gui.dungeon.panels.dc.actionpanel.ActionContainer;
+import libgdx.gui.dungeon.panels.dc.actionpanel.BaseSlotPanel;
+import libgdx.assets.texture.TextureCache;
 import eidolons.macro.entity.action.MACRO_ACTION_GROUPS;
 import eidolons.macro.entity.action.MacroAction;
 import eidolons.macro.entity.action.MacroActionManager;

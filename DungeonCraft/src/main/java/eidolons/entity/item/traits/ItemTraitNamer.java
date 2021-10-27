@@ -12,7 +12,7 @@ import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.Localization;
+import main.system.text.locale.Localization;
 import main.system.auxiliary.StringMaster;
 import org.junit.Test;
 

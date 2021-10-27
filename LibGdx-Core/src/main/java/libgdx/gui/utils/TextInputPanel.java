@@ -13,7 +13,7 @@ import libgdx.gui.LabelX;
 import libgdx.gui.NinePatchFactory;
 import libgdx.gui.generic.btn.ButtonStyled;
 import libgdx.gui.generic.btn.SymbolButton;
-import libgdx.gui.panels.TablePanelX;
+import libgdx.gui.dungeon.panels.TablePanelX;
 import libgdx.stage.Blocking;
 import libgdx.stage.StageWithClosable;
 

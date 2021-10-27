@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import libgdx.bf.generic.FadeImageContainer;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.data.FileManager;

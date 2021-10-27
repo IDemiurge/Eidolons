@@ -9,9 +9,9 @@ import libgdx.GdxImageMaster;
 import libgdx.GdxMaster;
 import libgdx.assets.AssetEnums;
 import libgdx.bf.grid.cell.QueueView;
-import libgdx.gui.panels.dc.topleft.atb.AtbPanel;
-import libgdx.texture.TextureCache;
-import libgdx.texture.TexturePackerLaunch;
+import libgdx.gui.dungeon.panels.dc.topleft.atb.AtbPanel;
+import libgdx.assets.texture.TextureCache;
+import libgdx.assets.texture.TexturePackerLaunch;
 
 import main.data.filesys.PathFinder;
 import main.system.PathUtils;

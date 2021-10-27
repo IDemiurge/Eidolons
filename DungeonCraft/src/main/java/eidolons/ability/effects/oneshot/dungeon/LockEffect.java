@@ -1,7 +1,7 @@
 package eidolons.ability.effects.oneshot.dungeon;
 
 import eidolons.ability.effects.DC_Effect;
-import eidolons.game.exploration.objects.DungeonObj;
+import eidolons.game.exploration.dungeon.objects.DungeonObj;
 
 /**
  * Created by JustMe on 9/23/2017.

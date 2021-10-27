@@ -4,9 +4,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import eidolons.game.exploration.dungeons.generator.model.RoomModel;
-import eidolons.game.exploration.dungeons.generator.tilemap.TileMapper;
+import eidolons.game.exploration.dungeon.generator.model.RoomModel;
+import eidolons.game.exploration.dungeon.generator.tilemap.TileMapper;
 import libgdx.gui.NinePatchFactory;
+import libgdx.gui.editor.dialog.ChooserDialog;
+import libgdx.gui.editor.dialog.TileMapView;
 import main.level_editor.LevelEditor;
 
 import java.util.Collection;

@@ -18,7 +18,7 @@ import libgdx.bf.generic.FadeImageContainer;
 import libgdx.bf.grid.cell.OverlayView;
 import libgdx.bf.mouse.InputController;
 import libgdx.bf.overlays.OverlayingMaster;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;

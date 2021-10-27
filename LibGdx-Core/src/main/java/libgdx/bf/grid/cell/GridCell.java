@@ -30,7 +30,7 @@ import libgdx.bf.mouse.BattleClickListener;
 import libgdx.bf.overlays.GridOverlaysManager;
 import libgdx.gui.NinePatchFactory;
 import libgdx.gui.generic.BlockableGroup;
-import libgdx.gui.panels.TablePanelX;
+import libgdx.gui.dungeon.panels.TablePanelX;
 import libgdx.controls.GlobalController;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
@@ -40,7 +40,7 @@ import main.system.launch.Flags;
 
 import java.util.function.Function;
 
-import static libgdx.screens.ScreenMaster.getGrid;
+import static libgdx.screens.handlers.ScreenMaster.getGrid;
 import static main.system.GuiEventType.*;
 
 public abstract class GridCell extends BlockableGroup implements Borderable, Colored {

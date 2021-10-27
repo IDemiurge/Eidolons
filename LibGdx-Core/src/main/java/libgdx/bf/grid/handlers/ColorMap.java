@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.colormap.ColorMapDataSource;
 import libgdx.bf.Fluctuating;
-import libgdx.screens.ScreenMaster;
+import libgdx.screens.handlers.ScreenMaster;
 import main.game.bf.Coordinates;
 import main.system.datatypes.DequeImpl;
 

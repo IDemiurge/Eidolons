@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import libgdx.bf.generic.FadeImageContainer;
 import eidolons.system.libgdx.datasource.ScreenData;
-import libgdx.screens.ScreenWithLoader;
+import libgdx.screens.generic.ScreenWithLoader;
 import main.system.EventCallbackParam;
 
 public class LE_WaitingScreen extends ScreenWithLoader {

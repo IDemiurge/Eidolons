@@ -3,7 +3,7 @@ package libgdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.ObjectMap;
 import libgdx.screens.GameScreen;
-import libgdx.screens.ScreenMaster;
+import libgdx.screens.handlers.ScreenMaster;
 import main.system.*;
 
 import java.util.ArrayList;

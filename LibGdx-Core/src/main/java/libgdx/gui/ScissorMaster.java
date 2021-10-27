@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import libgdx.GdxMaster;
 import libgdx.shaders.ShaderDrawer;
-import libgdx.texture.Textures;
+import libgdx.assets.texture.Textures;
 
 public class ScissorMaster {
     public static void drawInRectangle(Actor actor, Batch batch, float x, float y, float v, float height) {

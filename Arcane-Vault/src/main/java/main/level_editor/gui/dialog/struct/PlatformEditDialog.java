@@ -2,6 +2,7 @@ package main.level_editor.gui.dialog.struct;
 
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import libgdx.bf.grid.moving.PlatformData;
+import main.level_editor.gui.dialog.struct.DataEditDialog;
 import main.system.threading.WaitMaster;
 
 import static main.system.threading.WaitMaster.WAIT_OPERATIONS.PLATFORM_EDIT_DONE;

@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import main.data.filesys.PathFinder;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.PathUtils;

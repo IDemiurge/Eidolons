@@ -8,7 +8,7 @@ import libgdx.anims.AnimData.ANIM_VALUES;
 import eidolons.content.consts.VisualEnums.ANIM_PART;
 import libgdx.anims.construct.AnimConstructor;
 import libgdx.bf.generic.FadeImageContainer;
-import libgdx.gui.panels.headquarters.HqSlotActor;
+import libgdx.gui.dungeon.panels.headquarters.HqSlotActor;
 import libgdx.particles.spell.SpellVfx;
 import libgdx.particles.spell.SpellVfxPool;
 

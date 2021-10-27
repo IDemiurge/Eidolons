@@ -8,7 +8,7 @@ import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.gui.generic.GroupX;
 import libgdx.gui.generic.btn.ButtonStyled;
 import libgdx.gui.generic.btn.SymbolButton;
-import libgdx.gui.panels.TablePanel;
+import libgdx.gui.dungeon.panels.TablePanel;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.images.ImageManager.STD_IMAGES;
 

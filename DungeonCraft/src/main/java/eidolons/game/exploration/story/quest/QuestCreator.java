@@ -2,8 +2,8 @@ package eidolons.game.exploration.story.quest;
 
 import eidolons.content.PARAMS;
 import eidolons.game.core.Core;
-import eidolons.game.exploration.objects.ContainerMaster;
-import eidolons.game.exploration.dungeons.generator.init.RngUnitProvider;
+import eidolons.game.exploration.dungeon.objects.ContainerMaster;
+import eidolons.game.exploration.dungeon.generator.init.RngUnitProvider;
 import eidolons.entity.item.handlers.ItemGenerator;
 import eidolons.entity.item.handlers.ItemMaster;
 import main.content.C_OBJ_TYPE;

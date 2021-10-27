@@ -7,7 +7,7 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.Core;
 import libgdx.bf.Borderable;
 import eidolons.content.consts.Images;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.sound.AudioEnums;
 

@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import libgdx.bf.generic.ImageContainer;
 import libgdx.map.layers.*;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import eidolons.macro.MacroGame;
 import libgdx.map.layers.MapAlphaLayers;
 import libgdx.map.layers.MapMoveLayers;
@@ -25,7 +25,7 @@ import main.system.launch.Flags;
 import java.util.ArrayList;
 import java.util.List;
 
-import static libgdx.texture.TextureCache.getOrCreateR;
+import static libgdx.assets.texture.TextureCache.getOrCreateR;
 import static main.system.MapEvent.UPDATE_MAP_BACKGROUND;
 
 /**

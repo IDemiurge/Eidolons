@@ -10,7 +10,7 @@ import main.game.bf.Coordinates;
 import main.level_editor.backend.LE_Handler;
 import main.level_editor.backend.LE_Manager;
 import main.level_editor.backend.handlers.operation.Operation;
-import main.level_editor.gui.components.DataTable;
+import libgdx.gui.editor.components.DataTable;
 import main.level_editor.gui.dialog.struct.DataEditDialog;
 import main.level_editor.gui.screen.LE_Screen;
 import main.system.GuiEventManager;

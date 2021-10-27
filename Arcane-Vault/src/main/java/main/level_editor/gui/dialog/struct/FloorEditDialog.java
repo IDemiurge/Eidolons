@@ -9,8 +9,8 @@ import main.content.enums.GenericEnums;
 import main.content.enums.system.MetaEnums;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.functions.io.LE_DataHandler;
-import main.level_editor.gui.components.DataTable;
-import main.level_editor.gui.components.EditValueContainer;
+import libgdx.gui.editor.components.DataTable;
+import libgdx.gui.editor.components.EditValueContainer;
 import main.system.auxiliary.data.FileManager;
 
 public class FloorEditDialog extends DataEditDialog<LevelStructure.FLOOR_VALUES, FloorData> {

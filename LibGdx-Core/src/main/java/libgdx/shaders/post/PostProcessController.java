@@ -16,7 +16,7 @@ import libgdx.shaders.post.fx.BloomFx;
 import libgdx.shaders.post.fx.BlurFx;
 import libgdx.shaders.post.fx.SaturateFx;
 import libgdx.shaders.post.spec.LocalFxProcessor;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.PostProcessingOptions;
 import eidolons.system.options.PostProcessingOptions.POST_PROCESSING_OPTIONS;

@@ -3,10 +3,11 @@ package main.level_editor.gui.dialog.struct;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
+import main.level_editor.gui.dialog.struct.DataEditDialog;
 import main.content.CONTENT_CONSTS;
 import main.game.bf.directions.FACING_DIRECTION;
-import main.level_editor.gui.components.DataTable;
-import main.level_editor.gui.components.EditValueContainer;
+import libgdx.gui.editor.components.DataTable;
+import libgdx.gui.editor.components.EditValueContainer;
 import main.system.threading.WaitMaster;
 
 import static eidolons.game.battlecraft.logic.dungeon.location.struct.LevelStructure.EDIT_VALUE_TYPE.*;

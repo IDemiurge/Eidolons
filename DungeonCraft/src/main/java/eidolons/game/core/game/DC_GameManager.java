@@ -44,6 +44,7 @@ import main.system.ExceptionMaster;
 import main.system.GuiEventManager;
 import main.system.auxiliary.Manager;
 import main.system.auxiliary.log.LogMaster;
+import main.system.datatypes.DequeImpl;
 import main.system.sound.AudioEnums;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 import main.system.threading.WaitMaster;
@@ -655,6 +656,10 @@ public class DC_GameManager extends GameManager {
 
     public boolean getWallResetRequired() {
         return wallResetRequired;
+    }
+
+    public DequeImpl<Unit> getEnemies() {
+        return  getGame().getMissionMaster().getEncounterSpawner().getCurrentEncounter().getUnits();
     }
 
     public static interface TargetRunnable {

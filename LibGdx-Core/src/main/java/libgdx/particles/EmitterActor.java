@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import libgdx.bf.SuperActor;
-import libgdx.screens.CustomSpriteBatch;
+import libgdx.screens.batch.CustomSpriteBatch;
 import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
 import main.system.PathUtils;

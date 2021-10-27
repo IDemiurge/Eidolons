@@ -1,6 +1,6 @@
 package libgdx.map.town.library.repertoire;
 
-import libgdx.gui.panels.TabbedPanel;
+import libgdx.gui.dungeon.panels.TabbedPanel;
 import libgdx.map.town.library.hero.SpellSlotsPanel;
 
 /**

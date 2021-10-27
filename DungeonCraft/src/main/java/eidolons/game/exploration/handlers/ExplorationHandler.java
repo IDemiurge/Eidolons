@@ -1,6 +1,5 @@
 package eidolons.game.exploration.handlers;
 
-import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.core.game.DC_Game;
 
 /**
@@ -59,10 +58,6 @@ public class ExplorationHandler {
 
     public ExplorationResetHandler getResetter() {
         return master.getResetter();
-    }
-
-    public AggroMaster getAggroMaster() {
-        return master.getAggroMaster();
     }
 
     public ExploreCleaner getCleaner() {

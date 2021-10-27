@@ -10,8 +10,8 @@ import com.badlogic.gdx.utils.StringBuilder;
 import libgdx.StyleHolder;
 import libgdx.bf.generic.ImageContainer;
 import libgdx.gui.LabelX;
-import libgdx.gui.panels.TablePanelX;
-import libgdx.gui.panels.headquarters.HqTooltipPanel;
+import libgdx.gui.dungeon.panels.TablePanelX;
+import libgdx.gui.dungeon.panels.headquarters.HqTooltipPanel;
 import org.apache.commons.lang3.StringUtils;
 
 public class ValueContainer extends TablePanelX implements AbstractValueContainer {

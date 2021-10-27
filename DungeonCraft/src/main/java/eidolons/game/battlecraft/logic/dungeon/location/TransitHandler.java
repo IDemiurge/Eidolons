@@ -4,7 +4,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonHandler;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Core;
-import eidolons.game.exploration.dungeons.struct.Entrance;
+import eidolons.game.exploration.dungeon.struct.Entrance;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;

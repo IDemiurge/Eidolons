@@ -10,10 +10,8 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import libgdx.shaders.ShaderMaster;
 import libgdx.shaders.ShaderMaster.SHADER;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import org.lwjgl.opengl.GL11;
-
-import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Created by JustMe on 12/2/2018.

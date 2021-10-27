@@ -2,11 +2,11 @@ package libgdx.map.town.library.hero;
 
 import libgdx.GDX;
 import libgdx.bf.generic.ImageContainer;
-import libgdx.gui.panels.headquarters.HqElement;
-import libgdx.gui.panels.headquarters.HqMaster;
-import libgdx.gui.panels.headquarters.tabs.spell.MemorizedContainer;
-import libgdx.gui.panels.headquarters.tabs.spell.SpellbookContainer;
-import libgdx.gui.panels.headquarters.tabs.spell.VerbatimContainer;
+import libgdx.gui.dungeon.panels.headquarters.HqElement;
+import libgdx.gui.dungeon.panels.headquarters.HqMaster;
+import libgdx.gui.dungeon.panels.headquarters.tabs.spell.MemorizedContainer;
+import libgdx.gui.dungeon.panels.headquarters.tabs.spell.SpellbookContainer;
+import libgdx.gui.dungeon.panels.headquarters.tabs.spell.VerbatimContainer;
 import eidolons.content.consts.Images;
 
 /**

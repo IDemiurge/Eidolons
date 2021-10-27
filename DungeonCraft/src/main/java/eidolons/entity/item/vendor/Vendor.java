@@ -1,6 +1,6 @@
 package eidolons.entity.item.vendor;
 
-import eidolons.game.exploration.objects.DungeonObj;
+import eidolons.game.exploration.dungeon.objects.DungeonObj;
 import main.entity.type.ObjType;
 
 public class Vendor extends DungeonObj {

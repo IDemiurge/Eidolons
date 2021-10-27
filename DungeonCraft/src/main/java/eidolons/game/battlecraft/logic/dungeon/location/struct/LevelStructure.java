@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
-import eidolons.game.exploration.dungeons.QD_Enums;
+import eidolons.game.exploration.dungeon.QD_Enums;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.system.audio.MusicEnums;
 import main.content.CONTENT_CONSTS;

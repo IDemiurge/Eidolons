@@ -8,7 +8,7 @@ import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums.PUZZLE_RES
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleTrigger;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.core.Core;
-import eidolons.game.exploration.dungeons.struct.LevelBlock;
+import eidolons.game.exploration.dungeon.struct.LevelBlock;
 import eidolons.system.ConditionsUtils;
 import eidolons.system.libgdx.GdxAdapter;
 import main.content.enums.GenericEnums;

@@ -25,7 +25,7 @@ import libgdx.anims.sprite.SpriteAnimation;
 import libgdx.anims.sprite.SpriteAnimationFactory;
 import libgdx.anims.text.FloatingText;
 import libgdx.anims.text.FloatingTextMaster;
-import libgdx.screens.ScreenMaster;
+import libgdx.screens.handlers.ScreenMaster;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.CONTENT_CONSTS.OBJECT_ARMOR_TYPE;

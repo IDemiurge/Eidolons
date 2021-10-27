@@ -6,8 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.game.core.Core;
-import libgdx.gui.panels.headquarters.HqPanel;
-import libgdx.screens.ScreenMaster;
+import libgdx.gui.dungeon.panels.headquarters.HqPanel;
+import libgdx.screens.handlers.ScreenMaster;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.OptionsMaster;
 

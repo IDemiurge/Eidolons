@@ -10,7 +10,7 @@ import eidolons.game.core.Core;
 import libgdx.StyleHolder;
 import libgdx.gui.generic.btn.ButtonStyled;
 import libgdx.gui.generic.btn.SmartTextButton;
-import libgdx.gui.panels.TablePanelX;
+import libgdx.gui.dungeon.panels.TablePanelX;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.LE_Manager;
 import main.system.SortMaster;

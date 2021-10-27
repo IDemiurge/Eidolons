@@ -7,7 +7,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.Floor;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
-import eidolons.game.exploration.dungeons.struct.LevelBlock;
+import eidolons.game.exploration.dungeon.struct.LevelBlock;
 import eidolons.netherflame.lord.EidolonLord;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;

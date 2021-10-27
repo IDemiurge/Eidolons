@@ -94,13 +94,6 @@ public class PostFxUpdater {
             applyFactors();
             return;
         }
-        if (EidolonsGame.BRIDGE) {
-//            apply(POST_FX_FACTOR.FADE_COLOR, 0.3f);
-//            apply(POST_FX_FACTOR.LIGHTEN, 0.8f);
-//            apply(POST_FX_FACTOR.BLOOM, 0.2f);
-//            apply(POST_FX_FACTOR.BLUR, 0.1f);
-//            applyFactors();
-        }
 
         if (isTestMode()) {
             applyTest(OptionsMaster.getPostProcessingOptions().getValue(

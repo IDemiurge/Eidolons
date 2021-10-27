@@ -3,7 +3,6 @@ package eidolons.game.exploration.handlers;
 import eidolons.game.battlecraft.ai.advanced.engagement.EngageEvent;
 import eidolons.game.battlecraft.ai.advanced.engagement.EngagementHandler;
 import eidolons.game.battlecraft.ai.advanced.engagement.PlayerStatus;
-import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.audio.MusicEnums;
 import eidolons.system.audio.MusicMaster;
@@ -28,14 +27,12 @@ public class ExplorationMaster {
     private final ExploreCleaner cleaner;
     private final ExplorationResetHandler resetter;
     private final ExplorationActionHandler actionHandler;
-    private final AggroMaster aggroMaster;
     private boolean toggling;
     private final EngagementHandler engagementHandler;
     private PlayerStatus playerStatus;
 
     public ExplorationMaster(DC_Game game) {
         this.game = game;
-        aggroMaster = new AggroMaster(this);
         aiMaster = new ExplorationAiMaster(this);
         timeMaster = new ExplorationTimeMaster(this);
         resetter = new ExplorationResetHandler(this);
@@ -137,9 +134,6 @@ public class ExplorationMaster {
         return resetter;
     }
 
-    public AggroMaster getAggroMaster() {
-        return aggroMaster;
-    }
 
     public ExploreCleaner getCleaner() {
         return cleaner;

@@ -6,7 +6,7 @@ import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
 import eidolons.content.consts.GraphicData;
 import eidolons.content.consts.GraphicData.GRAPHIC_VALUE;
-import libgdx.screens.ScreenMaster;
+import libgdx.screens.handlers.ScreenMaster;
 import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;

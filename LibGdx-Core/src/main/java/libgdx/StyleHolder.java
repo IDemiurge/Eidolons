@@ -19,7 +19,7 @@ import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.assets.AssetEnums;
 import libgdx.gui.NinePatchFactory;
 import libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;

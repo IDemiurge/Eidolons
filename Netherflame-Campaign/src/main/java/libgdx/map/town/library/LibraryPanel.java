@@ -1,8 +1,8 @@
 package libgdx.map.town.library;
 
 
-import libgdx.gui.panels.AdjustingVerticalGroup;
-import libgdx.gui.panels.TablePanelX;
+import libgdx.gui.dungeon.panels.AdjustingVerticalGroup;
+import libgdx.gui.dungeon.panels.TablePanelX;
 import libgdx.map.town.library.hero.HeroSpellPanel;
 import libgdx.map.town.library.repertoire.SpellRepertoirePanel;
 

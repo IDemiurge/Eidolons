@@ -4,7 +4,7 @@ import eidolons.content.consts.VisualEnums.FULLSCREEN_ANIM;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.Core;
-import libgdx.screens.ScreenMaster;
+import libgdx.screens.handlers.ScreenMaster;
 import libgdx.screens.dungeon.GenericDungeonScreen;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;

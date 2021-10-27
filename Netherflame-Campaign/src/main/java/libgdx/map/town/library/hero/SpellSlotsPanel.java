@@ -1,8 +1,8 @@
 package libgdx.map.town.library.hero;
 
 import libgdx.gui.generic.btn.SmartTextButton;
-import libgdx.gui.panels.ScrollPaneX;
-import libgdx.gui.panels.TablePanelX;
+import libgdx.gui.dungeon.panels.ScrollPaneX;
+import libgdx.gui.dungeon.panels.TablePanelX;
 
 /**
  * Created by JustMe on 11/21/2018.

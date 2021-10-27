@@ -14,7 +14,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.GdxSpeechAc
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.SpeechScript;
 import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.exploration.dungeons.struct.LevelStruct;
+import eidolons.game.exploration.dungeon.struct.LevelStruct;
 import libgdx.anims.SimpleAnim;
 import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.fullscreen.Screenshake;
@@ -22,7 +22,7 @@ import libgdx.anims.main.AnimMaster;
 import libgdx.bf.GridMaster;
 import libgdx.bf.grid.DC_GridPanel;
 import libgdx.bf.grid.cell.BaseView;
-import libgdx.screens.ScreenMaster;
+import libgdx.screens.handlers.ScreenMaster;
 import libgdx.screens.dungeon.DungeonScreen;
 import libgdx.stage.camera.MotionData;
 import main.content.enums.EncounterEnums;

@@ -7,8 +7,8 @@ import boss.anims.BossAnims;
 import boss.anims.view.BossQueueView;
 import libgdx.bf.grid.cell.QueueView;
 import libgdx.gui.generic.GroupX;
-import libgdx.gui.panels.dc.topleft.atb.AtbPanel;
-import libgdx.gui.tooltips.SmartClickListener;
+import libgdx.gui.dungeon.panels.dc.topleft.atb.AtbPanel;
+import libgdx.gui.dungeon.tooltips.SmartClickListener;
 import main.game.bf.Coordinates;
 import main.system.launch.CoreEngine;
 

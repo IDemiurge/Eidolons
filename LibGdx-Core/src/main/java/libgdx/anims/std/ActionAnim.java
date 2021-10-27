@@ -10,7 +10,7 @@ import libgdx.anims.Anim;
 import libgdx.anims.AnimData;
 import libgdx.anims.main.AnimMaster;
 import libgdx.bf.grid.cell.GridCellContainer;
-import libgdx.screens.ScreenMaster;
+import libgdx.screens.handlers.ScreenMaster;
 import main.ability.Ability;
 import main.entity.Entity;
 import main.system.GuiEventManager;

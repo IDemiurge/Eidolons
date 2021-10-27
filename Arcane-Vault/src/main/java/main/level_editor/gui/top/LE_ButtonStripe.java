@@ -6,7 +6,7 @@ import eidolons.game.core.Core;
 import libgdx.gui.NinePatchFactory;
 import libgdx.gui.generic.btn.ButtonStyled;
 import libgdx.gui.generic.btn.SymbolButton;
-import libgdx.gui.panels.TablePanelX;
+import libgdx.gui.dungeon.panels.TablePanelX;
 import main.level_editor.LevelEditor;
 
 public class LE_ButtonStripe extends HorizontalFlowGroup {

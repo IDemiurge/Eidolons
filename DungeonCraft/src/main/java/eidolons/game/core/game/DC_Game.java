@@ -569,12 +569,10 @@ public class DC_Game extends GenericGame {
         this.rules = rules;
     }
 
-    @Deprecated
     public GAME_MODES getGameMode() {
         return gameMode;
     }
 
-    @Deprecated
     public void setGameMode(GAME_MODES gameMode) {
         this.gameMode = gameMode;
     }
@@ -923,10 +921,7 @@ public class DC_Game extends GenericGame {
     }
 
     public boolean isBossFight() {
-        return EidolonsGame.BOSS_FIGHT;
-    }
-
-    public void setBossFight(boolean bossFight) {
+        return getGameMode()==GAME_MODES.BOSS_FIGHT;
     }
 
     public ColorMapDataSource getColorMapDS() {
@@ -942,11 +937,11 @@ public class DC_Game extends GenericGame {
     }
 
     public enum GAME_MODES {
-        ARENA, SIMULATION, DUEL, ENCOUNTER, DUNGEON_CRAWL, ARENA_ARCADE
+        ARENA, BOSS_FIGHT, SIMULATION, DUNGEON_CRAWL
     }
 
     public enum GAME_TYPE {
-        SCENARIO, ARCADE, SKIRMISH, TEST,
+         CRAWL, COMBAT, BOSS
 
     }
 

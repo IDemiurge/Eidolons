@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import eidolons.game.core.GameLoop;
 import eidolons.game.core.game.DC_Game;
 import libgdx.bf.menu.GameMenu.GAME_MENU_ITEM;
-import libgdx.gui.panels.headquarters.town.TownPanel;
+import libgdx.gui.dungeon.panels.headquarters.town.TownPanel;
 import libgdx.screens.menu.GenericMenu;
 import libgdx.screens.menu.MenuItem;
 import libgdx.gui.generic.btn.ButtonStyled;

@@ -5,12 +5,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import libgdx.StyleHolder;
 import libgdx.gui.generic.ValueContainer;
-import libgdx.gui.panels.TablePanelX;
-import libgdx.texture.TextureCache;
+import libgdx.gui.dungeon.panels.TablePanelX;
+import libgdx.assets.texture.TextureCache;
 import main.content.DC_TYPE;
 import main.entity.type.ObjType;
 import main.level_editor.LevelEditor;
-import main.level_editor.gui.components.TreeX;
+import libgdx.gui.editor.components.TreeX;
 import main.system.graphics.FontMaster;
 
 import java.util.List;

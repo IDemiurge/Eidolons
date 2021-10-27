@@ -1,7 +1,7 @@
 package libgdx.assets.utils;
 
 import libgdx.launch.GpuTester;
-import libgdx.texture.TexturePackerLaunch;
+import libgdx.assets.texture.TexturePackerLaunch;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.secondary.Bools;

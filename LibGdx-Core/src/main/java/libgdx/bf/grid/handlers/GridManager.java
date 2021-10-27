@@ -10,7 +10,7 @@ import libgdx.bf.grid.cell.BaseView;
 import libgdx.bf.grid.cell.HpBarView;
 import libgdx.bf.grid.moving.PlatformHandler;
 import libgdx.bf.overlays.bar.HpBarManager;
-import libgdx.screens.ScreenMaster;
+import libgdx.screens.handlers.ScreenMaster;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;

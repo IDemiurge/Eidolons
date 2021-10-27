@@ -207,8 +207,8 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                         //                         fullReset(input.getAction().getOwnerUnit());
                         game.getManager().reset();
 
-                        getGame().getDungeonMaster().getExplorationMaster()
-                                .getAggroMaster().checkStatusUpdate();
+                        // getGame().getDungeonMaster().getExplorationMaster()
+                        //         .getAggroMaster().checkStatusUpdate();
                         if (!ExplorationMaster.isExplorationOn()) {
                             return false;
                         }

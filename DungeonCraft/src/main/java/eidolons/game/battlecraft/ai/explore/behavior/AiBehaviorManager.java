@@ -206,9 +206,7 @@ public class AiBehaviorManager extends AiHandler {
 //        }
         UNIT_GROUP_TYPE t;
 
-        if (EidolonsGame.BOSS_FIGHT || EidolonsGame.TUTORIAL_MISSION)
-            t = EncounterEnums.UNIT_GROUP_TYPE.GUARDS;
-        else if (ai.getGroupAI() == null || ai.getGroupAI().getMembers().size() == 1) {
+        if (ai.getGroupAI() == null || ai.getGroupAI().getMembers().size() == 1) {
             t = EncounterEnums.UNIT_GROUP_TYPE.IDLERS;
         } else {
             t = ai.getGroupAI().getType();

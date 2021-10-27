@@ -10,7 +10,7 @@ import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.rules.combat.damage.armor.ArmorMaster;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.core.master.EffectMaster;
-import eidolons.game.exploration.dungeons.struct.Entrance;
+import eidolons.game.exploration.dungeon.struct.Entrance;
 import eidolons.system.libgdx.GdxStatic;
 import main.ability.effects.container.SpecialTargetingEffect;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
@@ -405,11 +405,6 @@ public class DamageDealer {
 
         processDamageEvent(null, ref, damageDealt, STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE);
 
-        if (attacked.isMine()) {
-            if (EidolonsGame.TUTORIAL_PATH) {
-                return damageDealt;
-            }
-        }
         boolean dead = attacked.checkBool(STD_BOOLS.FAUX)
                 || DamageCalculator.isDead(attacked);
 

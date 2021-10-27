@@ -20,18 +20,19 @@ import libgdx.bf.grid.moving.PlatformData;
 import libgdx.gui.NinePatchFactory;
 import libgdx.gui.generic.btn.ButtonStyled;
 import libgdx.gui.generic.btn.SymbolButton;
-import libgdx.gui.panels.TablePanelX;
-import libgdx.gui.tooltips.ToolTipManager;
+import libgdx.gui.dungeon.panels.TablePanelX;
+import libgdx.gui.dungeon.tooltips.ToolTipManager;
 import libgdx.stage.GenericGuiStage;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.functions.advanced.DecorInputHelper;
 import main.level_editor.backend.functions.advanced.ScriptInputHelper;
 import main.level_editor.backend.handlers.structure.FloorManager;
-import main.level_editor.gui.components.DataTable;
+import main.level_editor.gui.LE_DataTable;
+import libgdx.gui.editor.components.DataTable;
 import main.level_editor.gui.dialog.AiEditDialog;
 import main.level_editor.gui.dialog.BlockTemplateChooser;
-import main.level_editor.gui.dialog.ChooserDialog;
-import main.level_editor.gui.dialog.EnumChooser;
+import libgdx.gui.editor.dialog.ChooserDialog;
+import libgdx.gui.editor.dialog.EnumChooser;
 import main.level_editor.gui.dialog.entity.EncounterEditDialog;
 import main.level_editor.gui.dialog.struct.*;
 import main.level_editor.gui.panels.ClosablePanel;
@@ -121,7 +122,7 @@ public class LE_GuiStage extends GenericGuiStage {
         addActor(platformEditDialog = new PlatformEditDialog());
         addActor(decorEditor = new DecorEditor());
         addActor(puzzleEditor = new PuzzleEditor());
-        addActor(editTable = new DataTable(2, 50));
+        addActor(editTable = new LE_DataTable(2, 50));
 
         addActor(statusBar = new LE_StatusBar());
         GuiEventManager.bind(GuiEventType.LE_GUI_TOGGLE, p -> {
@@ -203,6 +204,8 @@ public class LE_GuiStage extends GenericGuiStage {
         super.act(delta);
 
         if (dialog != null) {
+            if (dialog.isVisible())
+                dialogActive=true;
             GdxMaster.center(dialog);
             dialog.setZIndex(Integer.MAX_VALUE);
         }

@@ -27,7 +27,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.LongMap;
 import com.bitfire.utils.Hash;
 import com.bitfire.utils.ItemsManager;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import main.data.filesys.PathFinder;
 
 public final class ResourceFactory {

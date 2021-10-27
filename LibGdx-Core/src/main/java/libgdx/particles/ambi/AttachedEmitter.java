@@ -1,7 +1,7 @@
 package libgdx.particles.ambi;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import libgdx.screens.CustomSpriteBatch;
+import libgdx.screens.batch.CustomSpriteBatch;
 import main.content.enums.GenericEnums;
 
 /**

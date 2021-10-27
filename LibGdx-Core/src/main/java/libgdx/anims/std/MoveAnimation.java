@@ -12,7 +12,7 @@ import libgdx.bf.GridMaster;
 import libgdx.bf.grid.cell.BaseView;
 import libgdx.bf.grid.cell.UnitGridView;
 import libgdx.particles.spell.SpellVfx;
-import libgdx.screens.ScreenMaster;
+import libgdx.screens.handlers.ScreenMaster;
 import libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.OptionsMaster;

@@ -8,7 +8,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.mission.encounter.Encounter;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.exploration.dungeons.generator.GeneratorEnums;
+import eidolons.game.exploration.dungeon.generator.GeneratorEnums;
 import eidolons.system.utils.content.PlaceholderGenerator;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;

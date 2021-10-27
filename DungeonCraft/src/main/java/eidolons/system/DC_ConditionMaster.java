@@ -8,7 +8,6 @@ import eidolons.ability.conditions.shortcut.*;
 import eidolons.ability.conditions.special.*;
 import eidolons.ability.conditions.special.SpellCondition.SPELL_CHECK;
 import eidolons.entity.unit.Unit;
-import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.exploration.handlers.ExplorationMaster;
 import main.content.CONTENT_CONSTS.RETAIN_CONDITIONS;
@@ -472,10 +471,10 @@ public class DC_ConditionMaster extends ConditionMaster {
                 }
                 case ENEMIES_LEFT:
                     Integer n = Integer.valueOf(str1);
-                    return new CustomCondition() {
+                    return new DC_Condition() {
                         @Override
                         public boolean check(Ref ref) {
-                            return AggroMaster.getAggroGroup().size()<=n;
+                            return getGame().getManager().getEnemies().size()<=n;
                         }
                     };
 

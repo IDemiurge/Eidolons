@@ -1,6 +1,6 @@
 package main.level_editor.backend.handlers;
 
-import libgdx.gui.overlay.choice.VC_DataSource;
+import libgdx.gui.dungeon.overlay.choice.VC_DataSource;
 import eidolons.system.text.tips.TIP;
 import eidolons.system.text.tips.TextEvent;
 import main.level_editor.backend.LE_Handler;

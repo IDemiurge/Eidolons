@@ -4,6 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.ai.elements.generic.AiData;
+import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitsData;
 import eidolons.game.battlecraft.logic.mission.quest.QuestMission;
@@ -24,6 +25,11 @@ import static main.system.auxiliary.log.LogMaster.log;
 
 
 public class EncounterSpawner extends MissionHandler<QuestMission> {
+
+    public Encounter getCurrentEncounter() {
+        //TODO
+        return null;
+    }
 
     public enum ENCOUNTER_STATUS {
         ENGAGED, ALERT, IDLE, REGROUPING

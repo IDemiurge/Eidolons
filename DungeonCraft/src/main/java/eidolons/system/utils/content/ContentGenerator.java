@@ -8,7 +8,7 @@ import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.exploration.objects.InteractiveObjMaster;
+import eidolons.game.exploration.dungeon.objects.InteractiveObjMaster;
 import eidolons.content.consts.Images;
 import eidolons.system.utils.file.ResourceMaster;
 import main.content.CONTENT_CONSTS.OBJECT_ARMOR_TYPE;

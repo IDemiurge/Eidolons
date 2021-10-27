@@ -23,7 +23,7 @@ import libgdx.anims.Animation;
 import libgdx.anims.CompositeAnim;
 import libgdx.bf.GridMaster;
 import libgdx.bf.grid.cell.BaseView;
-import libgdx.screens.ScreenMaster;
+import libgdx.screens.handlers.ScreenMaster;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.values.parameters.PARAMETER;
 import main.elements.costs.Cost;

@@ -13,7 +13,7 @@ import libgdx.StyleHolder;
 import libgdx.gui.LabelX;
 import libgdx.gui.NinePatchFactory;
 import libgdx.gui.generic.ValueContainer;
-import libgdx.gui.panels.TabbedPanel;
+import libgdx.gui.dungeon.panels.TabbedPanel;
 import libgdx.particles.ParticleEffectX;
 import libgdx.particles.util.EmitterMaster;
 import main.data.filesys.PathFinder;

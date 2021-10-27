@@ -11,7 +11,7 @@ import libgdx.GdxMaster;
 import libgdx.bf.generic.SuperContainer;
 import libgdx.bf.menu.GameMenu;
 import libgdx.gui.RollDecorator;
-import libgdx.gui.panels.TablePanel;
+import libgdx.gui.dungeon.panels.TablePanel;
 import libgdx.map.layers.LightLayer;
 import libgdx.map.obj.PartyActor;
 import libgdx.map.ui.*;

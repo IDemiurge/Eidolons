@@ -4,8 +4,6 @@ import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
-import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.core.Core;
 import eidolons.game.exploration.story.cinematic.Cinematics;
@@ -367,26 +365,17 @@ public class MusicMaster {
             return false;
         if (scope == MusicEnums.MUSIC_SCOPE.BATTLE) {
             //intro vs alt intro vs no intro...
-
-            if (EidolonsGame.BOSS_FIGHT) {
-                return fitTracks(track, 86, SUFFOCATION_LOOP, NIGHT_OF_DEMON);
-            }
-            if (EidolonsGame.TUTORIAL_PATH) {
-                return fitTracks(track, 70, SUFFOCATION_LOOP, TOWARDS_THE_UNKNOWN_LOOP);
-            }
             if (tracksPlayedInScope == 0) {
                 return fitTracks(track, 86, BATTLE_INTRO_LOOP);
             }
             if (tracksPlayedInScope == 1) {
                 return fitTracks(track, 86, BATTLE_LOOP);
             }
-
             Boolean intro = null;
-
-            int coef = AggroMaster.getBattleDifficulty();
-            if (coef > 50) {
-
-            }
+            // int coef = AggroMaster.getBattleDifficulty();
+            // if (coef > 50) {
+            //
+            // }
         }
         if (scope == MusicEnums.MUSIC_SCOPE.MENU) {
             if (tracksPlayedInScope == 0) {

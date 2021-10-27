@@ -2,7 +2,6 @@ package eidolons.game.core;
 
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.ai.explore.AggroMaster;
 import eidolons.game.core.atb.AtbTurnManager;
 import eidolons.game.core.game.DC_Game;
 
@@ -36,7 +35,7 @@ public class CombatLoop extends GameLoop {
         setActiveUnit(null );
         getGame().getTurnManager().resetQueue();
         getGame().getTurnManager().setActiveUnit(null );
-        for (Unit unit : AggroMaster.getLastAggroGroup()) {
+        for (Unit unit : game.getManager().getEnemies()) {
             unit.getAI().combatEnded();
         }
         getGame().getDungeonMaster().getExplorationMaster().switchExplorationMode(true);

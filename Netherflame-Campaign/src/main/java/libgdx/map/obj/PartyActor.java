@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import libgdx.anims.actions.ActionMaster;
 import libgdx.map.obj.PartyActorFactory.PartyActorParameters;
 import libgdx.map.path.SteerableParty;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import eidolons.macro.entity.party.MacroParty;
 import main.game.bf.Coordinates;
 import main.system.images.ImageManager.BORDER;

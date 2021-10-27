@@ -9,7 +9,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.struct.Floor;
 import libgdx.gui.generic.GroupX;
 import libgdx.particles.EmitterActor;
 import eidolons.content.consts.VisualEnums.VFX_TEMPLATE;
-import libgdx.screens.CustomSpriteBatch;
+import libgdx.screens.batch.CustomSpriteBatch;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.GenericEnums;

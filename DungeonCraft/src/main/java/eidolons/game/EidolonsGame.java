@@ -15,36 +15,22 @@ import java.util.Map;
  * Created by JustMe on 5/13/2017.
  */
 public class EidolonsGame {
-    public static  boolean BRIDGE = false; //TODO refactor it out!
-    public static boolean DEMO = false; //use for tut?
-
-
     public static boolean TESTER_VERSION = false;
-    public static boolean SELECT_HERO;
     public static boolean SELECT_SCENARIO;
     public static boolean FOOTAGE;
-    public static boolean DUEL_TEST;
-    // public static boolean IDE = Flags.isIDE();
-
-    public static boolean BOSS_FIGHT;
-    public static boolean TUTORIAL_MISSION;
-    public static boolean TUTORIAL_PATH;
-    public static boolean FIRST_BATTLE_STARTED;
-    public static boolean DUEL = false;
-
-    public static boolean INTRO_STARTED;
-    public static boolean ATTACKS_DISABLED;
-    public static boolean TURNS_DISABLED;
-    public static boolean MOVES_DISABLED;
-    public static boolean MOVES_FORWARD_ONLY;
-    public static boolean TUTORIAL;
-    public static boolean PUZZLES;
-    public static boolean TOWN;
     private static final Map<String, Boolean> varMap = new StringMap<>();
     private static final Map<String, Boolean> actionMap = new StringMap<>();
-
-    //convenience fields
     public static String lvlPath;
+
+    private MetaGameMaster metaMaster;
+    private boolean aborted;
+
+    public boolean isAborted() {
+        return aborted;
+    }
+
+    public EidolonsGame() {
+    }
 
     public static void reset() {
     }
@@ -108,10 +94,6 @@ public class EidolonsGame {
         actionMap.put(value, valueOf);
     }
 
-    private MetaGameMaster metaMaster;
-    private boolean aborted;
-
-    static Map<TUTORIAL_STAGE, Boolean> completionMap;
 
     public static boolean isHqEnabled() {
         return true;
@@ -121,15 +103,17 @@ public class EidolonsGame {
         return null;
     }
 
-    public static void stageDone(TUTORIAL_STAGE stage) {
-        completionMap.put(stage, true);
-    }
 
     public static boolean isLordPanelEnabled() {
         return false;
     }
 
 
+    static Map<TUTORIAL_STAGE, Boolean> completionMap;
+
+    public static void stageDone(TUTORIAL_STAGE stage) {
+        completionMap.put(stage, true);
+    }
     public enum TUTORIAL_STAGE {
 
         alert,
@@ -139,15 +123,7 @@ public class EidolonsGame {
 
     }
 
-    public static boolean isParamBlocked(PARAMETER parameter) {
-        return false;
-    }
-
     public static boolean isActionBlocked(DC_ActiveObj activeObj) {
-        /**
-         * boolean map?
-         *
-         */
         if (activeObj == null) {
             return false;
         }
@@ -155,24 +131,6 @@ public class EidolonsGame {
             return true;
         }
         if (!activeObj.getOwnerUnit().isPlayerCharacter()) {
-            return false;
-        }
-        if (activeObj.isMove()) {
-            if (MOVES_DISABLED) {
-                return true;
-            }
-            if (MOVES_FORWARD_ONLY) {
-                return !activeObj.getName().equalsIgnoreCase("Move");
-            }
-            return false;
-        }
-        if (activeObj.isTurn()) {
-            return TURNS_DISABLED;
-        }
-        if (!EidolonsGame.DUEL) {
-            return false;
-        }
-        if (!EidolonsGame.TUTORIAL) {
             return false;
         }
         if (!Accessibility.isActionNotBlocked(activeObj, ExplorationMaster.isExplorationOn())) {
@@ -202,14 +160,5 @@ public class EidolonsGame {
         metaMaster.init();
     }
 
-    public boolean isAborted() {
-        return aborted;
-    }
-
-    public void setAborted(boolean aborted) {
-        if (aborted) main.system.auxiliary.log.LogMaster.log
-                (1, "game aborted!!!!!!");
-        this.aborted = aborted;
-    }
 
 }

@@ -5,7 +5,7 @@ import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import libgdx.GdxMaster;
 import libgdx.anims.fullscreen.Screenshake;
-import libgdx.gui.panels.headquarters.town.TownPanel;
+import libgdx.gui.dungeon.panels.headquarters.town.TownPanel;
 import libgdx.stage.GuiStage;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;

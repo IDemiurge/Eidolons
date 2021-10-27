@@ -8,7 +8,7 @@ import eidolons.entity.unit.Unit;
 import libgdx.bf.grid.cell.BaseView;
 import libgdx.bf.grid.cell.UnitGridView;
 import libgdx.bf.grid.moving.PlatformCell;
-import libgdx.screens.ScreenMaster;
+import libgdx.screens.handlers.ScreenMaster;
 import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.log.LOG_CHANNEL;

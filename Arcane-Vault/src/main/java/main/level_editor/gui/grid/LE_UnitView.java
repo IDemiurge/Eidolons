@@ -9,7 +9,7 @@ import libgdx.bf.grid.cell.CellBorderManager;
 import libgdx.bf.grid.cell.UnitGridView;
 import libgdx.bf.grid.cell.UnitViewOptions;
 import libgdx.gui.LabelX;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import main.content.DC_TYPE;
 import main.level_editor.LevelEditor;
 import main.level_editor.backend.sim.LE_GameSim;

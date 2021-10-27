@@ -13,7 +13,7 @@ import eidolons.content.consts.VisualEnums.SHARD_TYPE;
 import libgdx.bf.generic.ImageContainer;
 import libgdx.bf.grid.handlers.GridManager;
 import libgdx.gui.LabelX;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import main.content.enums.GenericEnums;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;

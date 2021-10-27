@@ -127,22 +127,6 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         //        getGame().getDataKeeper().setDungeonData(new DungeonData(getMetaGame()));
 
     }
-    public boolean isCustomQuestsEnabled() {
-        return false;
-    }
-
-    //isTownNode
-    protected boolean isTownEnabled() {
-        if (EidolonsGame.TOWN)
-            return true;
-        if (Flags.isFullFastMode()) {
-            return false;
-        }
-        if (Flags.isMacro()) {
-            return false;
-        }
-        return game.getMetaMaster().isRngDungeon() || !Flags.isSafeMode();
-    }
 
     public boolean isRngQuestsEnabled() {
         if (Flags.isFullFastMode()) {

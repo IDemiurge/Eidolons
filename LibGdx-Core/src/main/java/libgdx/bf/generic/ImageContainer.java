@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import libgdx.assets.AssetEnums;
-import libgdx.texture.TextureCache;
+import libgdx.assets.texture.TextureCache;
 import main.entity.Entity;
 import main.system.auxiliary.StringMaster;
 

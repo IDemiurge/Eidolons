@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import libgdx.bf.GridMaster;
-import libgdx.screens.ScreenMaster;
+import libgdx.screens.handlers.ScreenMaster;
 import libgdx.stage.camera.CameraMan;
 import libgdx.stage.camera.MotionData;
 import main.entity.obj.Obj;
