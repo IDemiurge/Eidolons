@@ -188,14 +188,6 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         ai_delta += delta;
         ignore_reset_delta += delta;
 
-    if (!Flags.isActiveTestMode())
-        if (AiBehaviorManager.isNewAiOn()) {
-            boolean aiActs = master.getAiMaster().getExploreAiManager().getBehaviorManager().update();
-            master.getAiMaster().setAiActs(aiActs);
-            if (aiActs)
-                master.getGame().getLoop().signal();
-        } else
-            master.getAiMaster().checkAiActs();
         processTimedEffects();
         //TODO queue this on gameloop?
     }
@@ -211,25 +203,17 @@ public class ExplorationTimeMaster extends ExplorationHandler {
             ignore_reset_delta=0;
         }
 
-        master.getAiMaster().getAlliesAndActiveUnitAIs(false).forEach(ai -> {
-            if (ai.getUnit().getModeFinal() != null) {
-                processModeEffect(ai.getUnit(), ai.getUnit().getModeFinal());
-            } //modes could increase regen...
-            //bleeding? blaze?
-            processRegen(ai.getUnit());
-        });
-
         if (round_delta >= getRoundEffectPeriod()) {
             //            round_delta -= getRoundEffectPeriod();
             round_delta = 0;
             processEndOfRoundEffects();
             checkParamBuffs();
         }
-        if (ai_delta >= getAiCheckPeriod()) {
-            //            ai_delta -= getAiCheckPeriod();
-            ai_delta = 0;
-            processAiChecks();
-        }
+        // if (ai_delta >= getAiCheckPeriod()) {
+        //     //            ai_delta -= getAiCheckPeriod();
+        //     ai_delta = 0;
+        //     processAiChecks();
+        // }
         if (guiDirtyFlag) {
             GuiEventManager.trigger(GuiEventType.UPDATE_GUI);
             guiDirtyFlag = false;
@@ -250,10 +234,6 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         else
             //TODO img demo hack performance
             Core.getMainHero().applyBuffRules();
-    }
-
-    private void processAiChecks() {
-        master.getPartyMaster().timedCheck();
     }
 
     private float getAiCheckPeriod() {

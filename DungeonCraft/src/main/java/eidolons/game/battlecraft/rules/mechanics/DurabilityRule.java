@@ -61,8 +61,6 @@ public class DurabilityRule extends DC_RuleImpl {
         if (durabilityReductionEffect == null) {
             return 0;
         }
-        target.getGame().getDungeonMaster().getExplorationMaster().
-                getResetter().setResetNotRequired(false);
         return durabilityReductionEffect.getDurabilityLost();
     }
 

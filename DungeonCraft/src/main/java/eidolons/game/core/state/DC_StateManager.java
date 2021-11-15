@@ -162,17 +162,17 @@ public class DC_StateManager extends StateManager {
 
         getGame().getDroppedItemManager().reset();
 
+        //TODO Explo revamp
         if (getGame().isStarted() && ExplorationMaster.isExplorationOn()) {
             // we will need full reset: after traps or other spec. effects; for Cells/Illumination
-            getGame().getDungeonMaster().getExplorationMaster().getResetter().resetAll();
-            if (getGame().getDungeonMaster().getExplorationMaster().
-                    getResetter().isResetNotRequired()) {
-                objectsToReset.forEach(obj -> obj.setBufferedCoordinates(obj.getCoordinates()));
-                triggerOnResetGuiEvents();
-                return;
-            } else
-                getGame().getDungeonMaster().getExplorationMaster().getResetter().setResetNotRequired(true);
-
+            // getGame().getDungeonMaster().getExplorationMaster().getResetter().resetAll();
+            // if (getGame().getDungeonMaster().getExplorationMaster().
+            //         getResetter().isResetNotRequired()) {
+            //     objectsToReset.forEach(obj -> obj.setBufferedCoordinates(obj.getCoordinates()));
+            //     triggerOnResetGuiEvents();
+            //     return;
+            // } else
+            //     getGame().getDungeonMaster().getExplorationMaster().getResetter().setResetNotRequired(true);
         }
         getGame().getRules().getBuffRules().forEach(
                 buffRule -> buffRule.clearCache());

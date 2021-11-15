@@ -312,8 +312,6 @@ public class Executor extends ActiveHandler {
         }
         if (ExplorationMaster.isExplorationOn()) {
             getGame().getDungeonMaster().getExplorationMaster().getActionHandler().payCosts(getEntity());
-            getGame().getDungeonMaster().getExplorationMaster().getCleaner().cleanUpAfterAction(
-                    getEntity(), getOwnerObj());
         } else {
             reduceAtbReadiness();
         }

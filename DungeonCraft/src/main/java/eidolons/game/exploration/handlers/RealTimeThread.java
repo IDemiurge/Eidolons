@@ -34,12 +34,6 @@ public class RealTimeThread extends Thread {
     }
 
     protected void realTimeLogic() {
-        try {
-            Core.getGame().getDungeonMaster().getExplorationMaster().getPartyMaster().reset();
-            Core.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().reset();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
         float period = REAL_TIME_LOGIC_PERIOD;
         float checkPeriod = 0.5f;
         float timer = 0;

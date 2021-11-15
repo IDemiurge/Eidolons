@@ -20,12 +20,7 @@ public class ExplorationMaster {
     private static boolean realTimePaused;
     private static boolean waiting;
     DC_Game game;
-    ExplorationAiMaster aiMaster;
     ExplorationTimeMaster timeMaster;
-    private final ExploreEnemyPartyMaster enemyPartyMaster;
-    private final ExplorePartyMaster partyMaster;
-    private final ExploreCleaner cleaner;
-    private final ExplorationResetHandler resetter;
     private final ExplorationActionHandler actionHandler;
     private boolean toggling;
     private final EngagementHandler engagementHandler;
@@ -33,19 +28,13 @@ public class ExplorationMaster {
 
     public ExplorationMaster(DC_Game game) {
         this.game = game;
-        aiMaster = new ExplorationAiMaster(this);
         timeMaster = new ExplorationTimeMaster(this);
-        resetter = new ExplorationResetHandler(this);
-        cleaner = new ExploreCleaner(this);
         actionHandler = new ExplorationActionHandler(this);
-        partyMaster = new ExplorePartyMaster(this);
-        enemyPartyMaster = new ExploreEnemyPartyMaster(this);
         engagementHandler =new EngagementHandler(this);
     }
 
     public void act(float delta) {
         engagementHandler.act(delta);
-        aiMaster.act(delta);
     }
     public static boolean isWaiting() {
         return waiting;
@@ -83,14 +72,6 @@ public class ExplorationMaster {
         return explorationOn;
     }
 
-    public ExplorePartyMaster getPartyMaster() {
-        return partyMaster;
-    }
-
-    public ExploreEnemyPartyMaster getEnemyPartyMaster() {
-        return enemyPartyMaster;
-    }
-
     public void switchExplorationMode(boolean on) {
         if (explorationOn == on)
             return;
@@ -103,18 +84,14 @@ public class ExplorationMaster {
     private void explorationToggled() {
         if (isExplorationOn()) {
             //TODO quick-fix
-            cleaner.cleanUpAfterBattle();
             game.getLogManager().logBattleEnds();
             game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.COMBAT_ENDS, new Ref(game)));
-            getResetter().setResetNotRequired(false);
             MusicMaster.getInstance().scopeChanged(MusicEnums.MUSIC_SCOPE.ATMO);
         } else {
             GuiEventManager.trigger(GuiEventType.COMBAT_STARTED );
             game.fireEvent(new Event(Event.STANDARD_EVENT_TYPE.COMBAT_STARTS, new Ref(game)));
             game.getLogManager().logBattleStarts();
-            getResetter().setResetNotRequired(false);
         }
-        getResetter().setResetNotRequired(false);
         game.startGameLoop();
     }
 
@@ -122,23 +99,10 @@ public class ExplorationMaster {
         return game;
     }
 
-    public ExplorationAiMaster getAiMaster() {
-        return aiMaster;
-    }
 
     public ExplorationTimeMaster getTimeMaster() {
         return timeMaster;
     }
-
-    public ExplorationResetHandler getResetter() {
-        return resetter;
-    }
-
-
-    public ExploreCleaner getCleaner() {
-        return cleaner;
-    }
-
     public ExplorationActionHandler getActionHandler() {
         return actionHandler;
     }

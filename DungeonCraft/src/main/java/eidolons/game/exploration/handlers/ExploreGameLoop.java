@@ -92,7 +92,6 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     @Override
     protected Boolean checkEndRound(ActionInput input) {
         if (!input.getContext().getSourceObj().isMine()) {
-            if (!master.getResetter().isResetNeeded())
                 return false;
         }
         game.getManager().reset();
@@ -100,7 +99,6 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         if (skippingToNext)
             return true;
 
-        master.getResetter().setResetNeeded(false);
         return false;
     }
 
@@ -123,17 +121,15 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
             return true;
         if (isStopped())
             lock();
-        if (playerActionQueue.isEmpty()) {
-            if (!master.getAiMaster().isAiActs()) {
-                lock();
-            }
-        }
+        // if (playerActionQueue.isEmpty()) {
+        //     if (!master.getAiMaster().isAiActs()) {
+        //         lock();
+        //     }
+        // }
         if (resetRequired) {
             game.getManager().reset();
             resetRequired = false;
         }
-        if (!handleAi())
-            return true;
 
 
         //        if (activeUnit.getHandler().getChannelingSpellData() != null) {
@@ -148,8 +144,6 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         ActionInput playerAction = playerActionQueue.removeFirst();
 
         GuiEventManager.trigger(GuiEventType.ACTIVE_UNIT_SELECTED, getActiveUnit());
-        master.getAiMaster().reset();
-        master.getResetter().setResetNeeded(true);
         //recheck?!
         if (checkActionInputValid(playerAction)) {
             if (playerAction.getAction().isTurn()) {
@@ -179,56 +173,9 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         boolean result = playerAction.getAction().getHandler().isResult();
         master.getActionHandler().playerActionActivated(playerAction.getAction(), result);
         master.getTimeMaster().setGuiDirtyFlag(true);
-        master.getPartyMaster().leaderActionDone(playerAction); //for members to follow or so..
         getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().killVisibilityResetTimer(); //still relevant?
 
     }
-
-    protected boolean handleAi() {
-        if (master.getAiMaster().isAiActs()) {
-            DequeImpl<ActionInput> queue = getAiActionQueue();
-            while (!queue.isEmpty()) {
-                //            while (queue.size()>3) {
-                //sort? change display?
-                // active unit?
-                try {
-                    ActionInput input = queue.removeLast();
-                    activateAction(input);
-                    master.getTimeMaster().aiActionActivated(input.getAction().getOwnerUnit().getAI(), input.getAction());
-                    master.getPartyMaster().reset();
-
-                    if (input.getAction().getOwnerUnit().getAI().isLeader()) {
-                        //                        master.getEnemyPartyMaster().setGroupAI();
-                        master.getEnemyPartyMaster().leaderActionDone(input);
-                    }
-
-                    if (master.getResetter().isAggroCheckNeeded(input)) {
-                        //                        game.getVisionMaster().getVisionRule().
-                        //                         fullReset(input.getAction().getOwnerUnit());
-                        game.getManager().reset();
-
-                        // getGame().getDungeonMaster().getExplorationMaster()
-                        //         .getAggroMaster().checkStatusUpdate();
-                        if (!ExplorationMaster.isExplorationOn()) {
-                            return false;
-                        }
-                    }
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
-            }
-            master.getAiMaster().setAiActs(false);
-        }
-        return true;
-    }
-
-    protected DequeImpl<ActionInput> getAiActionQueue() {
-        if (AiBehaviorManager.isNewAiOn())
-            return game.getDungeonMaster().getExplorationMaster().getAiMaster().getExploreAiManager().getBehaviorManager().getAiActionQueue();
-
-        return master.getAiMaster().getAiActionQueue();
-    }
-
 
     protected boolean checkActionInputValid(ActionInput playerAction) {
         if (!playerAction.getAction().canBeActivated(playerAction.getContext(), true))
@@ -238,22 +185,6 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                 return playerAction.getAction().canBeTargeted(playerAction.getContext().getTarget());
         return true;
     }
-
-
-    protected int getAnimWaitPeriod() {
-        return 100;
-    }
-
-    protected int getMaxAnimWaitTime(ActionInput action) {
-        return OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.MAX_ANIM_WAIT_TIME);
-    }
-
-    //Gdx Review
-    // protected boolean isMustWaitForAnim(ActionInput action) {
-    //     return ScreenMaster.getGrid()
-    //             .getViewMap().get(activeUnit).getActions().size > 0 ;
-    //             // || AnimMaster.getInstance().isDrawingPlayer();
-    // }
 
     @Override
     public void queueActionInput(ActionInput actionInput) {

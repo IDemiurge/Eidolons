@@ -36,32 +36,11 @@ public class ExplorationHandler {
         return master.isInCombat();
     }
 
-    public ExplorePartyMaster getPartyMaster() {
-        return master.getPartyMaster();
-    }
-
-    public ExploreEnemyPartyMaster getEnemyPartyMaster() {
-        return master.getEnemyPartyMaster();
-    }
-
     public DC_Game getGame() {
         return master.getGame();
     }
-
-    public ExplorationAiMaster getAiMaster() {
-        return master.getAiMaster();
-    }
-
     public ExplorationTimeMaster getTimeMaster() {
         return master.getTimeMaster();
-    }
-
-    public ExplorationResetHandler getResetter() {
-        return master.getResetter();
-    }
-
-    public ExploreCleaner getCleaner() {
-        return master.getCleaner();
     }
 
     public ExplorationActionHandler getActionHandler() {

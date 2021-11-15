@@ -17,6 +17,7 @@ import java.util.List;
 /**
  * Created by JustMe on 9/10/2017.
  */
+@Deprecated
 public class ExplorationActionHandler extends ExplorationHandler {
     private static final List<PARAMETER> ignoredCosts = Arrays.asList(new PARAMETER[]{
             PARAMS.AP_COST,
@@ -32,6 +33,7 @@ public class ExplorationActionHandler extends ExplorationHandler {
         return false;
     }
 
+    @Deprecated
     public static float calcBlockingTime(DC_ActiveObj action) {
         float coef = 1f;
         if (action.isAttackAny()) {
@@ -39,19 +41,12 @@ public class ExplorationActionHandler extends ExplorationHandler {
         }
         coef /= action.getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().getSpeed();
         return AtbMaster.getReadinessCost(action) / 10000 * coef;
-
     }
 
     private static void adjustCosts(Costs costs) {
         costs.getCosts().removeIf(cost ->
                 ignoredCosts.contains(cost.getCostParam())
         );
-        //        for (PARAMETER p :     modifiedCosts) {
-        //            Cost sub = costs.getCost(p);
-        //            String modifier=  modifiedCosts.getVar(p);
-        //            sub.getPayment().getAmountFormula().append("*"+modifier);
-        //        }
-
         Cost sub = costs.getCost(PARAMS.TOU_COST);
         if (sub != null)
             sub.getPayment().getAmountFormula().append("*" + STA_MODIFIER);
@@ -62,22 +57,8 @@ public class ExplorationActionHandler extends ExplorationHandler {
 
     public void playerActionActivated(DC_ActiveObj activeObj, Boolean result) {
         WaitMaster.receiveInput(WAIT_OPERATIONS.PLAYER_ACTION_FINISHED, result);
-        //        int time = getTimeForAction(activeObj);
-        //        DequeImpl<UnitAI> aiList = master.getAiMaster().getActiveUnitAIs();
-        //        aiList.forEach(ai -> ai.setExplorationTimePassed(ai.getExplorationTimePassed() - time));
     }
 
-    public boolean isActivationDisabledByExploration(DC_ActiveObj action) {
-        switch (action.getName()) {
-            case "Defend":
-                return true;
-        }
-        return false;
-    }
-
-    public List<DC_ActiveObj> getExplorationActions(Unit unit) {
-        return new ArrayList<>();
-    }
 
     public void payCosts(DC_ActiveObj entity) {
         if (!entity.getOwnerObj().isMine())

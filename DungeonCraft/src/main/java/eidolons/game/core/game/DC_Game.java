@@ -303,7 +303,6 @@ public class DC_Game extends GenericGame {
         // getMetaMaster().loadingDone();
         if (AI_ON) {
             aiManager.init();
-            dungeonMaster.getExplorationMaster().getAiMaster().getExploreAiManager().initialize();
         }
         setBattleInit(true);
     }
@@ -867,10 +866,6 @@ public class DC_Game extends GenericGame {
             getState().addObject(sub);
         }
         getState().addObject(Core.getMainHero());
-        if (dungeonMaster.getExplorationMaster() != null) {
-            dungeonMaster.getExplorationMaster().
-                    getResetter().setResetNotRequired(false);
-        }
         visionMaster.reinit();
 
     }
