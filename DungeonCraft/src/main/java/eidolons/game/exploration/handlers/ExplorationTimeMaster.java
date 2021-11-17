@@ -158,7 +158,6 @@ public class ExplorationTimeMaster extends ExplorationHandler {
                             break;
                         }
                     }
-                    master.getAggroMaster().checkStatusUpdate();
                     if (!ExplorationMaster.isExplorationOn()) {
                         result = false;
                         break;
