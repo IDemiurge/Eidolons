@@ -28,7 +28,7 @@ public abstract class ChooserDialog<T, T1 extends Actor> extends ValueTable<T, T
     public ChooserDialog(int wrap, int size) {
         super(wrap, size);
         setVisible(false);
-        setBackground(NinePatchFactory.getLightPanelFilledDrawable());
+        setBackground(NinePatchFactory.getLightPanelFilled90Drawable());
     }
 
     @Override

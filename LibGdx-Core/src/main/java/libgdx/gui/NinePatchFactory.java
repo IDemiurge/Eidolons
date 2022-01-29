@@ -44,6 +44,10 @@ public class NinePatchFactory {
     private static final String LIGHT_PANEL_FILLED_SMALL_PATH =
             StrPathBuilder.build(PathFinder.getComponentsPath(),
                     "ninepatch", "std", "light ninepatch filled small.png");
+
+    private static final String LIGHT_PANEL_FILLED_90_PATH =
+            StrPathBuilder.build(PathFinder.getComponentsPath(),
+                    "ninepatch", "std", "light ninepatch filled 90.png");
     private static final java.lang.String SCROLL = "ui/components/generic/scroll/scroll.png";
     private static final java.lang.String SCROLL_KNOB_H = "ui/components/generic/scroll/scroll_knob h.png";
     private static final java.lang.String SCROLL_H = "ui/components/generic/scroll/scroll h.png";
@@ -114,6 +118,9 @@ public class NinePatchFactory {
     public static NinePatchDrawable getLightDecorPanelFilledDrawable() {
         return new NinePatchDrawable(getLightDecorPanelFilled());
     }
+    public static NinePatchDrawable getLightPanelFilled90Drawable() {
+        return new NinePatchDrawable(getLightPanelFilled90());
+    }
 
     public static NinePatchDrawable getLightDecorPanelFilledDrawableNoMinSize() {
         return getDrawableNoMinSize(getLightDecorPanelFilled());
@@ -177,6 +184,10 @@ public class NinePatchFactory {
     private static NinePatch getLightDecorPanelFilled() {
         return new NinePatch(TextureCache.getRegionUI(
                 LIGHT_DECOR_FILLED_PANEL_PATH), 10, 10, 10, 10);
+    }
+    private static NinePatch getLightPanelFilled90() {
+        return new NinePatch(TextureCache.getRegionUI(
+                LIGHT_PANEL_FILLED_90_PATH), 10, 10, 10, 10);
     }
 
     public static NinePatchDrawable getLightPanelDrawable() {

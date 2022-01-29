@@ -43,7 +43,7 @@ public abstract class EditDialog<T> extends ChooserDialog<T, EditValueContainer>
     }
 
     private Drawable getDefaultActorBackground() {
-        return NinePatchFactory.getLightPanelDrawable();
+        return NinePatchFactory.getLightPanelFilled90Drawable();
     }
 
     protected abstract void editItem(EditValueContainer actor, T item);

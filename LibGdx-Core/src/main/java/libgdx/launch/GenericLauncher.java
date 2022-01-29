@@ -6,7 +6,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.content.consts.VisualEnums;
@@ -71,7 +73,7 @@ public abstract class GenericLauncher extends Game {
         //move
         MusicMaster.preload(MusicEnums.MUSIC_SCOPE.MENU);
         MusicMaster.getInstance().scopeChanged(MusicEnums.MUSIC_SCOPE.MENU);
-        OrthographicCamera camera = new OrthographicCamera();
+        Camera camera =  new OrthographicCamera();
         viewport = new ScreenViewport(camera);
         ScreenMaster.setMainViewport(viewport);
         Launch.START(Launch.LaunchPhase._7_menu_show);
