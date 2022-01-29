@@ -23,7 +23,7 @@ public class C3DialogHandler extends C3Handler {
     }
 
     public static final C3Option[] topOptions =
-            {Session, Task, Query};
+            {New_Session ,Session, Task, Query};
 
     public void showBreakMenu(long breakTime) {
         playSound(C3Sound. PAUSE);
@@ -67,17 +67,12 @@ public class C3DialogHandler extends C3Handler {
     }
 
     public void showOptionsMenu() {
-
-        if (DialogMaster.confirm(manager.getSessionHandler().getSessionInfo()+
-                StringMaster.lineSeparator+
-                "Go to functions menu?")) {
             pick(topOptions);
-        }
-
     }
 
     public void pick(C3Option[] options) {
-        C3Option picked = (C3Option) DialogMaster.getChosenOption("", options);
+        C3Option picked = (C3Option) DialogMaster.getChosenOption(manager.getSessionHandler().getSessionInfo()+
+                StringMaster.lineSeparator, options);
         if (picked == null) {
             return;
         }
@@ -91,6 +86,9 @@ public class C3DialogHandler extends C3Handler {
 
     private void handleLeaf(C3Option picked) {
         switch (picked) {
+            case New_Session -> {
+                manager.getSessionHandler().initSession();
+            }
             case EZ_Choice -> {
                 ezChoiceDraft(manager.getSessionHandler().getCurrentSession());
             }

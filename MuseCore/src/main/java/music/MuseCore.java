@@ -75,8 +75,8 @@ public class MuseCore implements NativeKeyListener {
                         if (F11_12) {
                             index = nativeKeyEvent.getKeyCode() - 77;
                         }
-                        if (index == 3) {
-                            return; //ALT F4!
+                        if (index == 11 && !F11_12) {
+                            return; //other system keys
                         }
                         PlaylistHandler.PLAYLIST_TYPE type = PlaylistHandler.PLAYLIST_TYPE.values()[index];
 

@@ -17,7 +17,7 @@ public class C3     implements NativeKeyListener {
     private static final int ALT = NativeKeyEvent.ALT_MASK;
     private static final int CTRL = NativeKeyEvent.CTRL_MASK;
 
-    private static final int KEY_TASK = NativeKeyEvent.VC_APP_CALCULATOR ;
+    private static final int KEY_TASK = NativeKeyEvent.VC_SCROLL_LOCK ;
     private static final int KEY_QUERY = NativeKeyEvent.VC_PAUSE ;
 
     private C3Manager manager;
@@ -71,11 +71,12 @@ public class C3     implements NativeKeyListener {
             return;
         if ((SHIFT & nativeKeyEvent.getModifiers()) != 0) {
             if (nativeKeyEvent.getKeyCode() == KEY_QUERY) {
-                if (checkPendingQuery())
-                    return;
-                C3_Query query= manager.getQueryManager().createRandomQuery();
-                if (manager.getQueryResolver().resolve(query))
-                    manager.setCurrentQuery(query);
+                manager.getSessionHandler().initQuickSession();
+                // if (checkPendingQuery())
+                //     return;
+                // C3_Query query= manager.getQueryManager().createRandomQuery();
+                // if (manager.getQueryResolver().resolve(query))
+                //     manager.setCurrentQuery(query);
             } else
             if (nativeKeyEvent.getKeyCode() == KEY_TASK) {
                     manager.getSessionHandler().initSession();

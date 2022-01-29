@@ -77,7 +77,7 @@ public class C3Enums {
         }
     }
 
-    public enum C3Option {
+    public enum C3Option {New_Session,
         New_Task, Task_Report,
         EZ_Choice,
         Music_Reset,

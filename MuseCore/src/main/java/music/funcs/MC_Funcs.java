@@ -6,6 +6,7 @@ import music.PlaylistHandler.PLAYLIST_TYPE;
 
 import javax.swing.*;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +17,13 @@ public class MC_Funcs {
         history,
         showAll,
 
-
+    public static String showHistory(int pageSize) {
+        List<String> formattedHistory=
+        PlaylistHandler.getHistory().stream().map(list-> PathUtils.getLastPathSegment(list)).collect(Collectors.toList());
+        int n = DialogMaster.pagedOptions(formattedHistory, pageSize, false);
+        if (n<0)
+            return null;
+        return PlaylistHandler.getHistory().get(n);
     }
 
     public static String showAll(boolean alt, boolean shuffle) {

@@ -49,6 +49,9 @@ public class C3SessionHandler extends C3Handler {
     }
 
     // via separate launch?
+    public void initQuickSession() {
+
+    }
     public void initSession() {
         boolean manual = true;
         C3Enums.SessionType sessionType = null;
@@ -162,7 +165,9 @@ public class C3SessionHandler extends C3Handler {
 
 
     public String getSessionInfo() {
-
+        if (currentSession == null) {
+            return "Wazzup?";
+        }
         return currentSession.toString()+
                 StringMaster.lineSeparator+
                 currentSession.getDurationString()+

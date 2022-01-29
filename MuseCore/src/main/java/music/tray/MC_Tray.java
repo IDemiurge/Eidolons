@@ -44,6 +44,10 @@ public class MC_Tray implements MouseListener, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
+            case "history":
+                String toPlay = MC_Funcs.showHistory(10);
+                PlaylistHandler.play("", toPlay);
+                break;
             case "showAll":
                 String path = MC_Funcs.showAll(false, false);
                 PlaylistHandler.play(PlaylistHandler.ROOT_PATH_PICK, path);

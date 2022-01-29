@@ -26,7 +26,7 @@ public class PlaylistHandler {
         deep, //1
         ost, //2
         gym, //3
-        finest, //4
+        battles, //4
         fury, //5
         goodly, //6
         pagan, //7
@@ -119,6 +119,7 @@ public class PlaylistHandler {
             File properFile = FileManager.getFile(appendPath + path);
             if (properFile.exists()) {
                 Desktop.getDesktop().open(properFile);
+                history.add(0, properFile.getPath());
                 System.out.println("-- Playing" +
                         properFile.getPath() +
                         " --");
