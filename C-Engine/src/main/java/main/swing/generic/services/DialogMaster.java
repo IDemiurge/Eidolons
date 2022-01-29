@@ -139,6 +139,29 @@ public class DialogMaster {
         return showConfirmDialog == JOptionPane.YES_OPTION;
     }
 
+    public static int pagedOptions(List<String> optionsList, int batchSize, boolean alt) {
+        int n = 0;
+        int from = 0;
+        int to = Math.min(optionsList.size(), batchSize);
+        int pages = Math.max(1, optionsList.size() / batchSize);
+        while (n < pages) {
+            List<String> sub = optionsList.subList(from, to);
+            sub.add(0, alt ? "Next..." : "Next!");
+            Object[] options = sub.toArray();
+            int result = JOptionPane.showOptionDialog(null, "Pick one", "Draft",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, null);
+            if (result == -1)
+                return -1;
+            if (result >= 1) {
+                return n * batchSize + result - 1;
+            }
+            n++;
+            from += batchSize;
+            to += batchSize;
+        }
+        return -1;
+    }
+
     public enum CONTROLS_SCHEME {
 
     }

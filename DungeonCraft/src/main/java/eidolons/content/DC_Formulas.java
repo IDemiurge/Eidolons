@@ -130,7 +130,6 @@ public class DC_Formulas {
             i++;
         }
         return i - 1;
-
     }
 
     public static Integer getLevelForXp(int n) {
@@ -144,7 +143,6 @@ public class DC_Formulas {
                 break;
             }
             i++;
-
         }
         return i - 1;
     }
@@ -182,7 +180,14 @@ public class DC_Formulas {
 
     }
 
-
+    public static int calculateAccuracyRating(int defense, int attack) {
+        if (defense<0)
+        {
+            attack+=-defense;
+            defense = 1;
+        }
+        return MathMaster.getMinMax((int) ((attack-defense)/Math.sqrt(defense)*2+20), -20,  100);
+    }
 
     public static int getSkillDifficultyForXpCost(Integer xpCost) {
         return getFormulaArg(XP_COST_PER_SKILL_DIFFICULTY, xpCost);
@@ -192,15 +197,38 @@ public class DC_Formulas {
         return 100+25*lordLevel;
     }
 
-    public static int calculateAccuracyRating(int defense, int attack) {
-        if (defense<0)
-        {
-            attack+=-defense;
-            defense = 1;
-        }
-        return MathMaster.getMinMax((int) ((attack-defense)/Math.sqrt(defense)*2+20), -20,  100);
-    }
+
     public static int calculateAccuracyRatingSpell(int resist, int penetration) {
         return (int) ((penetration-resist)/Math.sqrt(resist)*2+50);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

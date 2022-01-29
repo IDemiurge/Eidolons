@@ -26,7 +26,7 @@ public class AttackTypes {
 
     public enum AttackType {
         standard(100, 35, 10),
-        quick(80, 25, 5),
+        quick(75, 25, 5),
         power(125, 50, 20),
         special(0, 0, 0),
         //unarmed? dual?
