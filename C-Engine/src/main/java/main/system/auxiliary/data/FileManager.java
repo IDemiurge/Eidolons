@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.zip.Inflater;
@@ -615,6 +616,10 @@ public class FileManager {
 
     public static List<File> getFilesFromDirectory(File folder, boolean allowDirectories,
                                                    boolean subDirectories) {
+        return getFilesFromDirectory(folder, allowDirectories, subDirectories, null);
+    }
+        public static List<File> getFilesFromDirectory(File folder, boolean allowDirectories,
+        boolean subDirectories, Comparator<File> fileComparator) {
 
         List<File> list = new ArrayList<>();
         for (File f : folder.listFiles()) {
@@ -634,6 +639,9 @@ public class FileManager {
                 continue;
             }
             list.add(f);
+        }
+        if (fileComparator!=null){
+            list.sort(fileComparator);
         }
         return list;
     }
@@ -772,5 +780,18 @@ public class FileManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static long getDateCreated(File file) {
+        BasicFileAttributes attr = null;
+        try {
+            attr = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return -1;
+        }
+        // System.out.println("lastAccessTime: " + attr.lastAccessTime());
+        // System.out.println("lastModifiedTime: " + attr.lastModifiedTime());
+        return attr.creationTime().toMillis();
     }
 }
