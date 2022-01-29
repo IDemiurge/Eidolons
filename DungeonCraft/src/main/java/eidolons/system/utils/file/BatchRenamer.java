@@ -1,7 +1,6 @@
 package eidolons.system.utils.file;
 
 import eidolons.content.PROPS;
-import eidolons.content.consts.VisualEnums;
 import eidolons.content.consts.VisualEnums.PROJECTION;
 import eidolons.game.battlecraft.DC_Engine;
 import main.content.DC_TYPE;
@@ -9,6 +8,7 @@ import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.PathUtils;
+import main.system.Sort;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
@@ -18,6 +18,7 @@ import main.system.util.DialogMaster;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 
 public class BatchRenamer {
@@ -46,9 +47,14 @@ public class BatchRenamer {
         }
     }
 
-    private static void appendFrameNumbersToFiles(String folder) {
+    private static void appendFrameNumbersToFiles(String folder, boolean byDate) {
         int i = 0;
-        for (File file : FileManager.getFilesFromDirectory(folder, false)) {
+        Comparator<File> sorter=null;
+        if (byDate){
+            sorter = new Sort<File>().getIntSorter(file -> Math.toIntExact(FileManager.getDateCreated(file)/10000));
+        }
+        for (File file : FileManager.getFilesFromDirectory(new File(folder), false, false,
+                sorter)) {
             String frame = "_" + NumberUtils.getFormattedTimeString(i++, 5);
             String pathname = folder + "\\" +
                     new File(folder).getName() + frame + StringMaster.getFormat(file.getName());
@@ -81,7 +87,7 @@ public class BatchRenamer {
             return;
         }
         if (DialogMaster.confirm("Append Frames?")) {
-            appendFrameNumbersToFiles(DialogMaster.inputText("Root?"));
+            appendFrameNumbersToFiles(DialogMaster.inputText("Root?"), DialogMaster.confirm("Sort by date?"));
             return;
         }
 
