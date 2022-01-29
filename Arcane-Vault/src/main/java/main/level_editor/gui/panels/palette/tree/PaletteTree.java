@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import libgdx.StyleHolder;
+import libgdx.gui.NinePatchFactory;
 import libgdx.gui.generic.ValueContainer;
 import libgdx.gui.dungeon.panels.TablePanelX;
 import libgdx.assets.texture.TextureCache;
@@ -30,16 +31,16 @@ public class PaletteTree extends TreeX<PaletteNode> {
         PaletteTreeBuilder builder = new PaletteTreeBuilder();
         builder.setShowLeaf(false);
         setUserObject(builder.buildPaletteTreeModel(type));
-//        addActor(new SmartButton(ButtonStyled.STD_BUTTON.UNDO,
-//                () -> collapseAll()));
+        //        addActor(new SmartButton(ButtonStyled.STD_BUTTON.UNDO,
+        //                () -> collapseAll()));
 
-//        addActor(new SmartButton(ButtonStyled.STD_BUTTON.UNDO, () -> collapseAll()));
+        //        addActor(new SmartButton(ButtonStyled.STD_BUTTON.UNDO, () -> collapseAll()));
     }
 
     public void reselect() {
-       if (!forceSelectByName(lastSelected )){
-           forceSelectByName(lastSelectedParent);
-       }
+        if (!forceSelectByName(lastSelected)) {
+            forceSelectByName(lastSelectedParent);
+        }
 
     }
 
@@ -78,7 +79,7 @@ public class PaletteTree extends TreeX<PaletteNode> {
         lastSelected = node.getData().toString();
         lastSelectedName = node.toString();
         if (n.getParent() != null) {
-             lastSelectedParent = n.getParent().toString();
+            lastSelectedParent = n.getParent().toString();
         }
         List<ObjType> types = LevelEditor.getCurrent().
                 getManager().getPaletteHandler().
@@ -101,7 +102,6 @@ public class PaletteTree extends TreeX<PaletteNode> {
             //emblem? auto-gen 32x32?
         }
         ValueContainer actor = new ValueContainer(style, texture, name, val);
-
         if (texture != null) {
             actor.getImageContainer().getActor().setScale(0.25f);
         }

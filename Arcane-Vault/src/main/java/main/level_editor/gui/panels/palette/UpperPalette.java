@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.kotcrab.vis.ui.widget.VisSplitPane;
 import libgdx.StyleHolder;
 import libgdx.gui.NinePatchFactory;
@@ -49,8 +50,8 @@ public class UpperPalette extends TablePanelX {
         if (isScrolled(value)) {
             tableContainer = new ScrollPaneX(container);
         }
-        add(split = new VisSplitPane(tableContainer, treeScroll, false, style)).fill().size(650, 750);
-        container.setBackground(NinePatchFactory.getLightPanelFilledDrawable());
+        add(split = new VisSplitPane(treeScroll, tableContainer, false, style)).fill().size(650, 750);
+        container.setBackground(getMainBg9Patch());
         split.setSplitAmount(0.5f);
         split.setFillParent(true);
         split.setSize(650, 750);
@@ -58,6 +59,9 @@ public class UpperPalette extends TablePanelX {
         split.setLayoutEnabled(true);
     }
 
+    protected NinePatchDrawable getMainBg9Patch() {
+        return NinePatchFactory.getLightPanelFilled90Drawable();
+    }
     private boolean isScrolled(HybridPalette.PALETTE value) {
         if (value== HybridPalette.PALETTE.blocks) return true;
         if (value== HybridPalette.PALETTE.custom) return true;
@@ -77,7 +81,7 @@ public class UpperPalette extends TablePanelX {
             return;
         }
         table = new PaletteTypesTable(0);
-        table.setBackground(NinePatchFactory.getLightPanelFilledDrawable());
+        // table.setBackground(NinePatchFactory.getLightPanelFilled90Drawable());
 
     }
 
@@ -109,7 +113,7 @@ public class UpperPalette extends TablePanelX {
         if (arg != null) {
             treeScroll = new ScrollPaneX(tree =new PaletteTree(arg, table)  );
         } else {
-
+            //?
         }
         // if (isScrolled(value)) {
         //     treeScroll = new ScrollPaneX(tree);

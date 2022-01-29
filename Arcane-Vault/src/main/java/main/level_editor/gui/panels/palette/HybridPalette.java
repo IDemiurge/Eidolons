@@ -1,6 +1,7 @@
 package main.level_editor.gui.panels.palette;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneListener;
@@ -21,19 +22,19 @@ public class HybridPalette extends ClosablePanel implements TabbedPaneListener {
     private UpperPalette customPalette;
     private UpperPalette blockPalette;
     private UpperPalette palette;
+    private final TablePanelX<Actor> table;
     private Tab lastSelected;
 
     public enum PALETTE {
         encounters, obj, unit, decor, custom, blocks,  //groups
     }
 
-    private final TablePanelX<Actor> table;
 
     public HybridPalette() {
-        add(tabs.getTabsPane().top()).height(60).width(500).top().row();
+        add(tabs.getTabsPane().top()).height(60).width(500).top().padTop(30).row();
         add(table = new TablePanelX<>()).height(700).width(500).bottom().left();
-        tabs.getTabsPane().setBackground(NinePatchFactory.getLightPanelFilledSmallDrawable());
-        table.setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+        // tabs.getTabsPane().setBackground(getMainBg9Patch());
+        table.setBackground(getMainBg9Patch());
         tabs.addListener(this);
 
         reload();
@@ -53,6 +54,10 @@ public class HybridPalette extends ClosablePanel implements TabbedPaneListener {
             switchedTab(tabMap.get(PALETTE.blocks));
             blockPalette.setUserObject(p.get());
         });
+    }
+
+    protected NinePatchDrawable getMainBg9Patch() {
+        return NinePatchFactory.getLightPanelFilled90Drawable();
     }
 
     public void reload() {

@@ -19,7 +19,7 @@ public class LE_TreeHolder extends ClosablePanel {
         add(scroll = new ScrollPane(treeView, StyleHolder.getScrollStyle())).width(300).height(900)
                 .top().left();
         scroll.setFadeScrollBars(true);
-        setBackground(NinePatchFactory.getLightPanelFilledDrawable());
+        setBackground(NinePatchFactory.getLightPanelFilled90Drawable());
 
         GuiEventManager.bind(GuiEventType.LE_TREE_RESET, p -> {
             setUserObject(p.get());

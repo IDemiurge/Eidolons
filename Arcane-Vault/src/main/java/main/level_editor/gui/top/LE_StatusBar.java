@@ -38,25 +38,25 @@ last
     ValueContainer palette = new ValueContainer(new TextureRegion(
             TextureCache.getMissingTexture()), "Palette: ", "");
     ValueContainer overlaying = new ValueContainer("Overlaying: ", "");
-    ValueContainer curCoordinate = new ValueContainer("Coord: ", "");
+    ValueContainer curCoordinate = new LE_StatusContainer("Coord: ", "");
 
-    ValueContainer dstUp = new ValueContainer("Up: ", "");
-    ValueContainer dstDown = new ValueContainer("Down: ", "");
-    ValueContainer dstRight = new ValueContainer("Right: ", "");
-    ValueContainer dstLeft = new ValueContainer("Left: ", "");
+    ValueContainer dstUp = new LE_StatusContainer("Up: ", "");
+    ValueContainer dstDown = new LE_StatusContainer("Down: ", "");
+    ValueContainer dstRight = new LE_StatusContainer("Right: ", "");
+    ValueContainer dstLeft = new LE_StatusContainer("Left: ", "");
 
-    ValueContainer selectionInfo = new ValueContainer("", "");
+    ValueContainer selectionInfo = new LE_StatusContainer("", "");
     ValueContainer structInfo = new ValueContainer("", "");
 
-    ValueContainer layerInfo = new ValueContainer("Layer: ", "");
-    ValueContainer zoomInfo = new ValueContainer("Zoom: ", "");
+    ValueContainer layerInfo = new LE_StatusContainer("Layer: ", "");
+    ValueContainer zoomInfo = new LE_StatusContainer("Zoom: ", "");
 
 
     public LE_StatusBar() {
         super(800, 40);
         // zoomInfo.addListener()  cycle zoom
         TablePanelX<Actor> table = new TablePanelX<>(190, 40);
-        table.setBackground(NinePatchFactory.getLightPanelFilledDrawable());
+        table.setBackground(NinePatchFactory.getLightPanelFilled90Drawable());
         table.add(zoomInfo).left();
         table.add(layerInfo).left();
 
@@ -68,17 +68,17 @@ last
             }
         });
         table.add(selectionInfo).left();
-        selectionInfo.setBackground(NinePatchFactory.getLightPanelFilledDrawable());
+        selectionInfo.setBackground(NinePatchFactory.getLightPanelFilled90Drawable());
         table.add(structInfo).left();
         add(table);
 
 
         table = new TablePanelX<>(100, 40);
-        table.setBackground(NinePatchFactory.getLightPanelFilledDrawable());
+        table.setBackground(NinePatchFactory.getLightPanelFilled90Drawable());
         table.add(curCoordinate).left();
         add(table);
         table = new TablePanelX<>(500, 40);
-        table.setBackground(NinePatchFactory.getLightPanelFilledDrawable());
+        table.setBackground(NinePatchFactory.getLightPanelFilled90Drawable());
         add(table);
         table.add(dstUp).uniformX().left();
         table.add(dstDown).uniformX().left();
@@ -86,11 +86,11 @@ last
         table.add(dstRight).uniformX().left();
         table.add(dstLeft).uniformX().left();
 
-        dstDown.setBackground(NinePatchFactory.getLightPanelFilledDrawable());
-        dstRight.setBackground(NinePatchFactory.getLightPanelFilledDrawable());
+        dstDown.setBackground(NinePatchFactory.getLightPanelFilled90Drawable());
+        dstRight.setBackground(NinePatchFactory.getLightPanelFilled90Drawable());
 
         table = new TablePanelX<>(180, 40);
-        table.setBackground(NinePatchFactory.getLightPanelFilledDrawable());
+        table.setBackground(NinePatchFactory.getLightPanelFilled90Drawable());
         add(table);
         table.add(palette);
         table.add(overlaying);

@@ -5,11 +5,14 @@ import main.level_editor.backend.metadata.decor.LE_DecorHandler;
 import libgdx.gui.editor.components.TreeX;
 import main.level_editor.gui.panels.palette.table.DecorChooser;
 
+import static libgdx.gui.NinePatchFactory.getLightPanelFilled90Drawable;
+
 public class DecorTree extends TreeX {
     private final DecorChooser table;
 
     public DecorTree(DecorChooser table) {
         this.table = table;
+        table.setBackground(getLightPanelFilled90Drawable());
         setUserObject(new DecorTreeBuilder().build());
     }
 
