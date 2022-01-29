@@ -1,7 +1,7 @@
 package eidolons.ability.effects.oneshot.puzzle;
 
 import eidolons.ability.effects.DC_Effect;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import main.content.CONTENT_CONSTS;
 import main.content.enums.DungeonEnums;
 
@@ -27,8 +27,8 @@ public class CellChangeEffect extends DC_Effect {
 
     @Override
     public boolean applyThis() {
-        if (getRef().getTargetObj() instanceof DC_Cell) {
-            DC_Cell cell = (DC_Cell) getRef().getTargetObj();
+        if (getRef().getTargetObj() instanceof GridCell) {
+            GridCell cell = (GridCell) getRef().getTargetObj();
             if (type != null)
                 cell.setCellSet(type);
             if (variant != null)

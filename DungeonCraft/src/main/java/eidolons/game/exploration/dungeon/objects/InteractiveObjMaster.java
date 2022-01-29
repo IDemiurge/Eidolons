@@ -3,7 +3,7 @@ package eidolons.game.exploration.dungeon.objects;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.Spell;
-import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.HeroItem;
 import eidolons.entity.item.ItemFactory;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
@@ -192,7 +192,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
     }
 
     private void pickup(InteractiveObj obj, Unit unit) {
-        DC_HeroItemObj item = createItemFromObj(obj);
+        HeroItem item = createItemFromObj(obj);
         if (!unit.addItemToInventory(item)) {
             return;
         }
@@ -208,7 +208,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
         unit.getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.ITEM_ACQUIRED, ref));
     }
 
-    private static DC_HeroItemObj createItemFromObj(InteractiveObj obj) {
+    private static HeroItem createItemFromObj(InteractiveObj obj) {
         String name = getConsumableItemName(obj.getName());
 
         return ItemFactory.createItemObj(name, DC_TYPE.ITEMS, true);

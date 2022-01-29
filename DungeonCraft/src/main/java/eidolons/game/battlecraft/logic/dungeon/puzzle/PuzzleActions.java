@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle;
 
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.manipulator.Awakener;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleElement;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums;
@@ -41,7 +41,7 @@ public class PuzzleActions extends PuzzleElement {
                 case ROTATE_MOSAIC_CELL_ANTICLOCKWISE:
                     arg = 1;
                 case ROTATE_MOSAIC_CELL_CLOCKWISE:
-                    DC_Cell cell = DC_Game.game.getCell(Core.getPlayerCoordinates());
+                    GridCell cell = DC_Game.game.getCell(Core.getPlayerCoordinates());
                     cell.setOverlayRotation(cell.getOverlayRotation() + 90 * (int) (arg));
 
                     if (cell.getOverlayRotation() % 360 == 0) {

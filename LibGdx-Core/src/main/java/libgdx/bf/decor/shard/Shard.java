@@ -3,7 +3,7 @@ package libgdx.bf.decor.shard;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.game.battlecraft.logic.battlefield.vision.colormap.LightHandler;
 import libgdx.GdxImageMaster;
 import libgdx.bf.SuperActor;
@@ -146,8 +146,8 @@ public class Shard extends SuperActor {
     @Override
     public void setUserObject(Object userObject) {
         super.setUserObject(userObject);
-        if (userObject instanceof DC_Cell) {
-            coord = ((DC_Cell) userObject).getCoordinates();
+        if (userObject instanceof GridCell) {
+            coord = ((GridCell) userObject).getCoordinates();
         }
     }
 
@@ -159,8 +159,8 @@ public class Shard extends SuperActor {
     }
 
     @Override
-    public DC_Cell getUserObject() {
-        return (DC_Cell) super.getUserObject();
+    public GridCell getUserObject() {
+        return (GridCell) super.getUserObject();
     }
 
     public SHARD_TYPE getType() {

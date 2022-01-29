@@ -1,8 +1,7 @@
-package eidolons.entity.item.garment;
+package eidolons.entity.item.trinket.garment;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.item.DC_ArmorObj;
-import eidolons.entity.item.DC_HeroSlotItem;
+import eidolons.entity.item.ArmorItem;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
@@ -13,7 +12,7 @@ import main.system.auxiliary.EnumMaster;
 
 import static main.content.enums.entity.ItemEnums.GARMENT_TYPE;
 
-public class Garment extends DC_ArmorObj {
+public class Garment extends ArmorItem {
     private final GARMENT_TYPE garment_type;
 
     // TODO GENERATION: material types? noise level...

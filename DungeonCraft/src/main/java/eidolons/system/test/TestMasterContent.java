@@ -2,7 +2,7 @@ package eidolons.system.test;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import main.content.C_OBJ_TYPE;
@@ -508,7 +508,7 @@ public class TestMasterContent {
         TestMasterContent.forceFree = forceFree;
     }
 
-    public static boolean isArtifact(DC_WeaponObj weapon) {
+    public static boolean isArtifact(WeaponItem weapon) {
         if (weapon.isNatural()) {
             return false;
         }

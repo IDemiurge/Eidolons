@@ -1,6 +1,6 @@
 package eidolons.ability.conditions.req;
 
-import eidolons.entity.unit.DC_UnitModel;
+import eidolons.entity.unit.UnitModel;
 import main.elements.conditions.standard.OccupiedCondition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -52,8 +52,8 @@ public class CellCondition extends OccupiedCondition {
         }
         Obj obj = ref.getObj(key);
         FACING_DIRECTION f = null;
-        if (obj instanceof DC_UnitModel) {
-            f = ((DC_UnitModel) obj).getFacing();
+        if (obj instanceof UnitModel) {
+            f = ((UnitModel) obj).getFacing();
         }
         if (f == null) {
             return null;

@@ -46,7 +46,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static main.system.GuiEventType.SHOW_MODE_ICON;
 
-public abstract class DC_UnitModel extends BattleFieldObject {
+public abstract class UnitModel extends BattleFieldObject {
 
     protected VISION_MODE vision_mode;
     protected MODE mode;
@@ -58,7 +58,7 @@ public abstract class DC_UnitModel extends BattleFieldObject {
     private FACING_DIRECTION tempFacing;
     private Coordinates tempCoordinates;
 
-    public DC_UnitModel(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
+    public UnitModel(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, owner, game, ref);
         if (this.game == null) {
             setGame(game);
@@ -71,7 +71,7 @@ public abstract class DC_UnitModel extends BattleFieldObject {
         }
     }
 
-    public DC_UnitModel(ObjType type, DC_Game game) {
+    public UnitModel(ObjType type, DC_Game game) {
         this(type, 0, 0, Player.NEUTRAL, game, new Ref(game));
 
     }

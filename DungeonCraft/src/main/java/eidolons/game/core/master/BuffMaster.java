@@ -6,7 +6,7 @@ import eidolons.ability.effects.common.ModifyPropertyEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.unit.attach.DC_BuffObj;
+import eidolons.entity.unit.attach.buff.DC_BuffObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;

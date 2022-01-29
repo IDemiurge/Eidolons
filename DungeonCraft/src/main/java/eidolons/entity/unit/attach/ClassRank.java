@@ -6,8 +6,8 @@ import main.entity.type.ObjType;
 /**
  * Created by JustMe on 5/7/2018.
  */
-public class HeroClass extends DC_PassiveObj {
-    public HeroClass(ObjType type, Unit hero) {
+public class ClassRank extends DC_PassiveObj {
+    public ClassRank(ObjType type, Unit hero) {
         super(type, hero.getRef());
     }
 }

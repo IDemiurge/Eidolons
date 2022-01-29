@@ -3,7 +3,7 @@ package libgdx.gui.dungeon.panels.dc.unitinfo.tooltips;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.utils.Align;
-import eidolons.entity.item.DC_HeroSlotItem;
+import eidolons.entity.item.HeroSlotItem;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
 import libgdx.gui.NinePatchFactory;
@@ -27,8 +27,8 @@ public class SlotItemTooltip extends ValueTooltip {
     @Override
     public SlotItemToolTipDataSource getUserObject() {
         Object obj = super.getUserObject();
-        if (obj instanceof DC_HeroSlotItem) {
-            return  new SlotItemToolTipDataSource((DC_HeroSlotItem) obj);
+        if (obj instanceof HeroSlotItem) {
+            return  new SlotItemToolTipDataSource((HeroSlotItem) obj);
         }
         return (SlotItemToolTipDataSource) obj;
     }

@@ -1,7 +1,7 @@
 package eidolons.entity;
 
 import eidolons.content.PROPS;
-import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.HeroItem;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.shop.Shop;
 import eidolons.game.core.Core;
@@ -30,7 +30,7 @@ public class Town extends LightweightEntity {
 
     DequeImpl<Shop> shops = new DequeImpl<>();
     private Set<Quest> quests;
-    private Set<DC_HeroItemObj> stash;
+    private Set<HeroItem> stash;
 
     public Town(ObjType type) {
         super(type);
@@ -99,7 +99,7 @@ public class Town extends LightweightEntity {
         return RandomWizard.random() ? MusicEnums.AMBIENCE.SHIP : MusicEnums.AMBIENCE.TOWN;
     }
 
-    public Set<DC_HeroItemObj> getStash() {
+    public Set<HeroItem> getStash() {
         return stash;
     }
 
@@ -114,7 +114,7 @@ public class Town extends LightweightEntity {
         return stash.size() >= getStashSize();
     }
 
-    public boolean removeFromStash(DC_HeroItemObj item) {
+    public boolean removeFromStash(HeroItem item) {
         if (!getStash().remove(item))
             return false;
         getStash().remove(item);
@@ -122,7 +122,7 @@ public class Town extends LightweightEntity {
         return true;
     }
 
-    public void addToStash(DC_HeroItemObj item) {
+    public void addToStash(HeroItem item) {
         getStash().add(item);
         item.setContainer(STASH);
     }
@@ -140,8 +140,8 @@ public class Town extends LightweightEntity {
             }
             int id = Integer.parseInt(substring);
             Obj item = Core.getGame().getObjectById(id);
-            if (item instanceof DC_HeroItemObj)
-                stash.add((DC_HeroItemObj) item);
+            if (item instanceof HeroItem)
+                stash.add((HeroItem) item);
         }
             for (Shop shop1 : shops) {
             shop1.handleDebt(hero);

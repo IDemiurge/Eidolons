@@ -1,11 +1,11 @@
 package libgdx.gui.dungeon.panels.dc.inventory;
 
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.item.DC_ArmorObj;
+import eidolons.entity.item.ArmorItem;
 import eidolons.entity.item.handlers.DC_InventoryManager;
 import eidolons.entity.item.handlers.DC_InventoryManager.OPERATIONS;
-import eidolons.entity.item.DC_JewelryObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.trinket.JewelryItem;
+import eidolons.entity.item.WeaponItem;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Core;
 import eidolons.game.exploration.handlers.ExplorationMaster;
@@ -197,22 +197,22 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
             case WEAPON_MAIN_RESERVE:
                 //                if (dragged)
             case WEAPON_MAIN:
-                if (dragged instanceof DC_WeaponObj)
+                if (dragged instanceof WeaponItem)
                     return HeroManager.canEquip(dataMaster.getHeroModel(), dragged,
                             getSlotArg(cell_type));
 
             case ARMOR:
-                return dragged instanceof DC_ArmorObj;
+                return dragged instanceof ArmorItem;
             case QUICK_SLOT:
                 return HeroManager.isQuickItem(dragged);
 
             case AMULET:
-                return dragged instanceof DC_JewelryObj
+                return dragged instanceof JewelryItem
                         && dragged.getProperty(G_PROPS.JEWELRY_TYPE).
                         equalsIgnoreCase(JEWELRY_TYPE.AMULET.toString());
 
             case RING:
-                return dragged instanceof DC_JewelryObj
+                return dragged instanceof JewelryItem
                         && dragged.getProperty(G_PROPS.JEWELRY_TYPE).
                         equalsIgnoreCase(JEWELRY_TYPE.RING.toString());
 
@@ -235,7 +235,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 
     protected Object getSecondArg(OPERATIONS operation, Entity type) {
         if (operation == OPERATIONS.EQUIP || operation == OPERATIONS.EQUIP_RESERVE) {
-            if (type instanceof DC_JewelryObj) {
+            if (type instanceof JewelryItem) {
                 return null;
             }
             ITEM_SLOT slot = HeroManager.getItemSlot(dataMaster.getHeroModel(), type);

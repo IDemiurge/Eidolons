@@ -4,7 +4,7 @@ import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.handlers.active.action.ActionActiveMaster;
 import eidolons.entity.handlers.active.action.ActionExecutor;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.DC_RuleMaster;
 import eidolons.game.core.master.EffectMaster;
@@ -64,7 +64,7 @@ public class DC_UnitAction extends DC_ActiveObj {
     }
 
     @Override
-    public DC_WeaponObj getActiveWeapon() {
+    public WeaponItem getActiveWeapon() {
         if (isUnarmed())
             return getOwnerUnit().getNaturalWeapon(isOffhand());
         return super.getActiveWeapon();

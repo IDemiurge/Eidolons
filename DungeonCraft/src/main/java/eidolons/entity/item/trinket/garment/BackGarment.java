@@ -1,6 +1,5 @@
-package eidolons.entity.item.garment;
+package eidolons.entity.item.trinket.garment;
 
-import main.content.values.parameters.PARAMETER;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.core.game.GenericGame;

@@ -2,7 +2,7 @@ package eidolons.game.exploration.story.quest;
 
 import eidolons.content.PARAMS;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.HeroItem;
 import eidolons.entity.item.ItemFactory;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.EUtils;
@@ -158,7 +158,7 @@ public class QuestReward extends DataUnit<QuestReward.REWARD_VALUE> {
              addGold(hero, gold);
             for (String s : ContainerUtils.openContainer(rewardItems)) {
                 if (DataManager.isTypeName(s, C_OBJ_TYPE.ITEMS)) {
-                    DC_HeroItemObj item = ItemFactory.createItemObj(DataManager.getType(s,
+                    HeroItem item = ItemFactory.createItemObj(DataManager.getType(s,
                             C_OBJ_TYPE.ITEMS), hero, false);
                     hero.addItemToInventory(item);
                     EUtils.showInfoText("Added to inventory: " + item);

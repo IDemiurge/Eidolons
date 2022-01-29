@@ -1,10 +1,10 @@
 package eidolons.ability.conditions;
 
-import eidolons.entity.item.DC_HeroSlotItem;
+import eidolons.entity.item.HeroSlotItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.attach.DC_HeroAttachedObj;
-import eidolons.entity.unit.DC_UnitModel;
+import eidolons.entity.unit.UnitModel;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
@@ -42,7 +42,7 @@ public class FacingCondition extends ConditionImpl {
 
     @Override
     public boolean check(Ref ref) {
-        if (!(ref.getSourceObj() instanceof DC_UnitModel)) {
+        if (!(ref.getSourceObj() instanceof UnitModel)) {
             return false;
         }
         BattleFieldObject obj1 = (BattleFieldObject) ref.getSourceObj();
@@ -55,7 +55,7 @@ public class FacingCondition extends ConditionImpl {
         DC_Obj obj2;
 
         if (!(ref.getObj(KEYS.MATCH) instanceof BfObj)) {
-            if (!(ref.getObj(KEYS.MATCH) instanceof DC_HeroSlotItem)) {
+            if (!(ref.getObj(KEYS.MATCH) instanceof HeroSlotItem)) {
                 return false;
             }
             obj2 = ((DC_HeroAttachedObj) ref.getObj(KEYS.MATCH)).getOwnerObj();

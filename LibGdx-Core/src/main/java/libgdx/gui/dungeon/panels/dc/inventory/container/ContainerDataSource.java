@@ -3,8 +3,8 @@ package libgdx.gui.dungeon.panels.dc.inventory.container;
 import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PARAMS;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.item.HeroItem;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.unit.Unit;
 import eidolons.game.exploration.dungeon.objects.ContainerObj;
 import eidolons.content.consts.libgdx.GdxColorMaster;
@@ -26,7 +26,7 @@ import java.util.List;
 public class ContainerDataSource implements InventoryTableDataSource {
 
     protected final Unit unit;
-    protected List<DC_HeroItemObj> items;
+    protected List<HeroItem> items;
     protected InventoryFactory factory;
     protected Obj obj;
     protected ContainerClickHandler handler;
@@ -38,7 +38,7 @@ public class ContainerDataSource implements InventoryTableDataSource {
         this.unit = unit;
         if (obj instanceof ContainerObj) {
             items = ((ContainerObj) obj).getItems();
-        } else if (obj instanceof DC_Cell) {
+        } else if (obj instanceof GridCell) {
             unit.getGame().getDroppedItemManager().reset(obj.getX(), obj.getY());
             items = unit.getGame().getDroppedItemManager().getDroppedItems(obj);
         }
@@ -96,7 +96,7 @@ public class ContainerDataSource implements InventoryTableDataSource {
          "lb";
     }
     @Override
-    public int getPrice(DC_HeroItemObj model, CELL_TYPE cellType) {
+    public int getPrice(HeroItem model, CELL_TYPE cellType) {
         return model.getIntParam(PARAMS.GOLD_COST);
     }
     public String getGoldInfo() {

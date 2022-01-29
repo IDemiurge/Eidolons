@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import eidolons.content.PROPS;
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
@@ -146,7 +146,7 @@ public class HitAnim extends ActionAnim {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-        if (spriteType == null || getRef().getObj(KEYS.BLOCK) instanceof DC_WeaponObj) {
+        if (spriteType == null || getRef().getObj(KEYS.BLOCK) instanceof WeaponItem) {
             spriteType = SPRITE_TYPE.SPARKS; //shield!
         }
         HIT hitType = getHitType(spriteType);

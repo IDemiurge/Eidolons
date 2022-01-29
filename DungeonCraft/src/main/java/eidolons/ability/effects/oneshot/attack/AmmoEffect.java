@@ -1,8 +1,8 @@
 package eidolons.ability.effects.oneshot.attack;
 
 import eidolons.ability.effects.DC_Effect;
-import eidolons.entity.item.DC_QuickItemObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.QuickItem;
+import eidolons.entity.item.WeaponItem;
 import main.entity.Ref.KEYS;
 
 /**
@@ -17,9 +17,9 @@ public class AmmoEffect extends DC_Effect {
 
     @Override
     public boolean applyThis() {
-        DC_WeaponObj rangedWeapon = (DC_WeaponObj) ref.getObj(KEYS.RANGED);
+        WeaponItem rangedWeapon = (WeaponItem) ref.getObj(KEYS.RANGED);
         if (add) {
-            DC_QuickItemObj ammo = (DC_QuickItemObj) ref.getActive().getRef().getObj(KEYS.AMMO);
+            QuickItem ammo = (QuickItem) ref.getActive().getRef().getObj(KEYS.AMMO);
 
             rangedWeapon.setAmmo(ammo);
         } else {

@@ -3,8 +3,8 @@ package eidolons.ability.ignored.oneshot.rule;
 import eidolons.ability.conditions.special.CanActCondition;
 import eidolons.ability.effects.DC_Effect;
 import eidolons.content.PARAMS;
-import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.item.DC_QuickItemObj;
+import eidolons.entity.item.HeroItem;
+import eidolons.entity.item.QuickItem;
 import eidolons.entity.unit.Unit;
 import eidolons.entity.item.handlers.ItemMaster;
 import eidolons.system.DC_ConditionMaster;
@@ -43,7 +43,7 @@ public class TossItemEffect extends DC_Effect implements OneshotEffect {
             ref.getActive().setCancelled(true);
             return false;
         }
-        DC_HeroItemObj item = (DC_HeroItemObj) REF.getTargetObj();
+        HeroItem item = (HeroItem) REF.getTargetObj();
         conditions = new Conditions(
          // ++ Max distance?
          new DistanceCondition(ref.getActive().getIntParam(PARAMS.RANGE, false) + ""),
@@ -61,8 +61,8 @@ public class TossItemEffect extends DC_Effect implements OneshotEffect {
         Unit unit = (Unit) REF.getTargetObj();
 
         boolean result = roll(source, unit, item);
-        if (item instanceof DC_QuickItemObj) {
-            DC_QuickItemObj quickItem = (DC_QuickItemObj) item;
+        if (item instanceof QuickItem) {
+            QuickItem quickItem = (QuickItem) item;
             source.removeQuickItem(quickItem);
             if (result) {
                 unit.addQuickItem(quickItem);
@@ -85,13 +85,13 @@ public class TossItemEffect extends DC_Effect implements OneshotEffect {
         return true;
     }
 
-    private boolean roll(Unit source, Unit unit, DC_HeroItemObj item) {
+    private boolean roll(Unit source, Unit unit, HeroItem item) {
         String fail = "5*1.5*sqrt"
          + StringMaster.wrapInParenthesis(""
          + (1 + PositionMaster.getDistance(unit, source)));
         // account for range
-        if (item instanceof DC_QuickItemObj) {
-            DC_QuickItemObj quickItemObj = (DC_QuickItemObj) item;
+        if (item instanceof QuickItem) {
+            QuickItem quickItemObj = (QuickItem) item;
         }
         Ref REF = ref.getCopy();
         REF.setTarget(source.getId());
@@ -109,13 +109,13 @@ public class TossItemEffect extends DC_Effect implements OneshotEffect {
         return false;
     }
 
-    private void dropped(DC_HeroItemObj item, Unit unit) {
+    private void dropped(HeroItem item, Unit unit) {
         // if potion - break; otherwise drop on the cell
         // ItemMaster.isWeapon(item);
         if (ItemMaster.isBreakable(item)) {
             item.broken(); // remove from game?
-            if (item instanceof DC_QuickItemObj) {
-                DC_QuickItemObj quickItemObj = (DC_QuickItemObj) item;
+            if (item instanceof QuickItem) {
+                QuickItem quickItemObj = (QuickItem) item;
                 if (quickItemObj.isConcoction()) {
                     quickItemObj.activate(Ref.getSelfTargetingRefCopy(unit)); // setForceTarget(true)
                 }

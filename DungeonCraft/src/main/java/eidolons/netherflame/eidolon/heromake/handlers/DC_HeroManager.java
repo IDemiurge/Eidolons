@@ -1,9 +1,9 @@
 package eidolons.netherflame.eidolon.heromake.handlers;
 
-import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.item.DC_JewelryObj;
-import eidolons.entity.item.DC_QuickItemObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.HeroItem;
+import eidolons.entity.item.trinket.JewelryItem;
+import eidolons.entity.item.QuickItem;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.ObjUtilities;
@@ -24,18 +24,18 @@ public class DC_HeroManager extends HeroManager {
 
     @Override
     protected int addJewelryItem(Unit hero, Entity type) {
-        DC_HeroItemObj item;
-        if (type instanceof DC_JewelryObj) {
-            item = (DC_HeroItemObj) type;
+        HeroItem item;
+        if (type instanceof JewelryItem) {
+            item = (HeroItem) type;
         } else {
-            item = (DC_HeroItemObj) ObjUtilities
+            item = (HeroItem) ObjUtilities
              .findObjByType(type, hero.getInventory());
         }
         int result = super.addJewelryItem(hero, type);
         if (result == 0) {
             return 0;
         }
-        hero.addJewelryItem((DC_JewelryObj) item);
+        hero.addJewelryItem((JewelryItem) item);
         hero.removeFromInventory(item);
         update(hero);
         return result;
@@ -43,7 +43,7 @@ public class DC_HeroManager extends HeroManager {
 
     @Override
     public void removeJewelryItem(Unit hero, Entity type) {
-        DC_HeroItemObj item = (DC_HeroItemObj) ObjUtilities.findObjByType(type, hero.getJewelry());
+        HeroItem item = (HeroItem) ObjUtilities.findObjByType(type, hero.getJewelry());
         hero.removeJewelryItem(item);
         hero.addItemToInventory(item);
         update(hero);
@@ -52,7 +52,7 @@ public class DC_HeroManager extends HeroManager {
     @Override
     public boolean addItem(Unit hero, Entity type, OBJ_TYPE TYPE, PROPERTY PROP) {
         Obj cell = game.getCell(hero.getCoordinates());
-        DC_HeroItemObj item = (DC_HeroItemObj) ObjUtilities.findObjByType(type, hero.getGame()
+        HeroItem item = (HeroItem) ObjUtilities.findObjByType(type, hero.getGame()
          .getDroppedItemManager().getDroppedItems(cell));
         boolean result = hero.getGame().getDroppedItemManager().pickUp(cell, item);
         if (!result) {
@@ -70,7 +70,7 @@ public class DC_HeroManager extends HeroManager {
     @Override
     public void removeItem(Unit hero, Entity type, PROPERTY prop, OBJ_TYPE TYPE, boolean free) {
         // TODO drop from inventory
-        for (DC_HeroItemObj item : hero.getInventory()) {
+        for (HeroItem item : hero.getInventory()) {
             if (item.getType() == type) {
                 hero.dropItemFromInventory(item);
                 break;
@@ -94,11 +94,11 @@ public class DC_HeroManager extends HeroManager {
 
     @Override
     public void removeQuickSlotItem(Unit hero, Entity type) {
-        DC_QuickItemObj item = null;
-        if (type instanceof DC_QuickItemObj) {
-            item = (DC_QuickItemObj) type;
+        QuickItem item = null;
+        if (type instanceof QuickItem) {
+            item = (QuickItem) type;
         }
-        for (DC_QuickItemObj itemObj : hero.getQuickItems()) {
+        for (QuickItem itemObj : hero.getQuickItems()) {
             if (itemObj.getType() == type) {
                 item = itemObj;
                 break;
@@ -111,16 +111,16 @@ public class DC_HeroManager extends HeroManager {
         update(hero);
     }
 
-    private int addQuickItem_(Unit hero, DC_HeroItemObj itemObj) {
+    private int addQuickItem_(Unit hero, HeroItem itemObj) {
         hero.removeFromInventory(itemObj);
         // if (itemObj instanceof Trap) {
         // } else
-        if (itemObj instanceof DC_WeaponObj) {
+        if (itemObj instanceof WeaponItem) {
             hero.getQuickItems().add(
-             new DC_QuickItemObj(itemObj.getType(), hero.getOwner(), game, hero
+             new QuickItem(itemObj.getType(), hero.getOwner(), game, hero
               .getRef(), true));
         } else {
-            hero.getQuickItems().add((DC_QuickItemObj) itemObj);
+            hero.getQuickItems().add((QuickItem) itemObj);
         }
         update(hero);
         return 1;
@@ -131,10 +131,10 @@ public class DC_HeroManager extends HeroManager {
         if (hero.isQuickSlotsFull()) {
             return 0;
         }
-        if (type instanceof DC_HeroItemObj) {
-            return addQuickItem_(hero, (DC_HeroItemObj) type);
+        if (type instanceof HeroItem) {
+            return addQuickItem_(hero, (HeroItem) type);
         }
-        for (DC_HeroItemObj itemObj : hero.getInventory()) {
+        for (HeroItem itemObj : hero.getInventory()) {
             if (itemObj.getType() == type) {
                 return addQuickItem_(hero, itemObj);
             }
@@ -153,16 +153,16 @@ public class DC_HeroManager extends HeroManager {
             }
             result++;
         }
-        DC_HeroItemObj slotItem = null;
-        DC_QuickItemObj quick = null;
-        if (type instanceof DC_QuickItemObj) {
-            quick = ((DC_QuickItemObj) type);
+        HeroItem slotItem = null;
+        QuickItem quick = null;
+        if (type instanceof QuickItem) {
+            quick = ((QuickItem) type);
             slotItem = quick.getWrappedWeapon();
         }
-        if (type instanceof DC_HeroItemObj) {
-            slotItem = (DC_HeroItemObj) type;
+        if (type instanceof HeroItem) {
+            slotItem = (HeroItem) type;
         } else {
-            for (DC_HeroItemObj item : hero.getInventory()) {
+            for (HeroItem item : hero.getInventory()) {
                 if (item.getType() == type) {
                     slotItem = item;
                     break;

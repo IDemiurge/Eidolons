@@ -6,7 +6,7 @@ import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_UnitAction;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.content.DC_Formulas;
@@ -90,7 +90,7 @@ public class DualWieldingRule {
             return;
         }
         Ref ref = new Ref(unit.getGame(), unit.getId());
-        DC_WeaponObj weapon = unit.getActiveWeapon(offhand);
+        WeaponItem weapon = unit.getActiveWeapon(offhand);
         List<Obj> targets = new ArrayList<>();
 
         if (unit.getWeapon(!offhand) != null) {

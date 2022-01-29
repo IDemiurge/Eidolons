@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.entity.active.DefaultActionHandler;
-import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
@@ -208,8 +207,8 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
 
 
     @Override
-    public DC_Cell getUserObject() {
-        return (DC_Cell) super.getUserObject();
+    public eidolons.entity.obj.GridCell getUserObject() {
+        return (eidolons.entity.obj.GridCell) super.getUserObject();
     }
 
     @Override
@@ -242,7 +241,7 @@ public abstract class GridCell extends BlockableGroup implements Borderable, Col
     }
 
     private CharSequence getInfoText() {
-        DC_Cell cell = getUserObject();
+        eidolons.entity.obj.GridCell cell = getUserObject();
         return ContainerUtils.build(getGridX(), ":", getGridY())
                 +  //TODO into method
                 "\n gamma=" + DC_Game.game.getVisionMaster().getGammaMaster().

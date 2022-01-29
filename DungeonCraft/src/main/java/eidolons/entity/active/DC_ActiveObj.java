@@ -7,7 +7,7 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.spaces.Feat;
 import eidolons.entity.handlers.active.*;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
@@ -537,7 +537,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements Feat, ActiveObj, In
         return getIntParam(PARAMS.RANGE);
     }
 
-    public DC_WeaponObj getActiveWeapon() {
+    public WeaponItem getActiveWeapon() {
         if (getOwnerUnit() == null) {
             return null;
         }
@@ -546,10 +546,10 @@ public abstract class DC_ActiveObj extends DC_Obj implements Feat, ActiveObj, In
                 return ((DC_QuickItemAction) this).getItem().getWrappedWeapon();
             }
         } else if (isRanged()) {
-            return (DC_WeaponObj) getOwnerUnit().getLinkedObj(IdKey.RANGED);
+            return (WeaponItem) getOwnerUnit().getLinkedObj(IdKey.RANGED);
         }
         IdKey key = (isOffhand() ? IdKey.OFFHAND : IdKey.WEAPON);
-        return (DC_WeaponObj) getOwnerUnit().getLinkedObj(key);
+        return (WeaponItem) getOwnerUnit().getLinkedObj(key);
     }
 
 

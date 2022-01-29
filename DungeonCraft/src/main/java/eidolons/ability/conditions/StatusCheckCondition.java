@@ -1,6 +1,6 @@
 package eidolons.ability.conditions;
 
-import eidolons.entity.unit.DC_UnitModel;
+import eidolons.entity.unit.UnitModel;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.elements.conditions.ConditionImpl;
 import main.entity.Ref;
@@ -23,8 +23,8 @@ public class StatusCheckCondition extends ConditionImpl {
     @Override
     public boolean check(Ref ref) {
         Obj obj = ref.getObj(obj_ref);
-        if (obj instanceof DC_UnitModel) {
-            return ((DC_UnitModel) obj).checkStatus(status);
+        if (obj instanceof UnitModel) {
+            return ((UnitModel) obj).checkStatus(status);
         }
         return false;
     }

@@ -15,12 +15,12 @@ import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
 
-public class DC_ArmorObj extends DC_HeroSlotItem {
+public class ArmorItem extends HeroSlotItem {
 
     private ARMOR_TYPE armorType;
     private ArmorMaster.ArmorLayer layer= ArmorMaster.ArmorLayer.Outer;
 
-    public DC_ArmorObj(ObjType armor_type, Player originalOwner, GenericGame game, Ref ref) {
+    public ArmorItem(ObjType armor_type, Player originalOwner, GenericGame game, Ref ref) {
         super(armor_type, originalOwner, game, ref, DC_ContentValsManager.getArmorModifyingParams());
     }
 

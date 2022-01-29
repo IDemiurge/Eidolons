@@ -1,7 +1,7 @@
 package eidolons.game.core.game;
 
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.exploration.handlers.ExplorationMaster;
 import main.content.CONTENT_CONSTS;
@@ -26,8 +26,8 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     private int w;
     private Module module;
     private final Set<Coordinates> coordinates;
-    private final Set<DC_Cell> cellsSet;
-    DC_Cell[][] cells;
+    private final Set<GridCell> cellsSet;
+    GridCell[][] cells;
     private final Set<Module> modules = new LinkedHashSet<>();
     private final Boolean[][] wallCache;
     private int x1;
@@ -39,12 +39,12 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         this.h = this.game.getDungeonMaster().getFloorWrapper().getHeight();
         coordinates = new LinkedHashSet<>();
         cellsSet = new LinkedHashSet<>();
-        cells = new DC_Cell[w][h];
+        cells = new GridCell[w][h];
         wallCache = new Boolean[w][h];
         for (int i = 0; i < w; i++) {
             for (int j = 0; j < h; j++) {
                 coordinates.add(Coordinates.get(i, j));
-                cellsSet.add(cells[i][j] = new DC_Cell(i, j, game));
+                cellsSet.add(cells[i][j] = new GridCell(i, j, game));
             }
         }
         setModule(module);
@@ -64,7 +64,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
             for (int i = module.getX(); i - module.getX() < this.module.getEffectiveWidth(true); i++) {
                 for (int j = module.getY(); j - module.getY() < this.module.getEffectiveHeight(true); j++) {
                     Coordinates o = Coordinates.get(i, j);
-                    DC_Cell cell = cells[i][j];
+                    GridCell cell = cells[i][j];
                     cell.setModule(module);
                     if (!inner.contains(o)) {
                         cell.setVOID(true);
@@ -104,7 +104,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         boolean weak = CoreEngine.isWeakCpu() || CoreEngine.isWeakGpu();
         for (int i = module.getX(); i - module.getX() < this.module.getEffectiveWidth(true); i++) {
             for (int j = module.getY(); j - module.getY() < this.module.getEffectiveHeight(true); j++) {
-                DC_Cell cell = cells[i][j];
+                GridCell cell = cells[i][j];
 
                 if (cell.isObjectsModified()
                         || (!weak && cell.isPlayerHasSeen() && !ExplorationMaster.isExplorationOn() && cell.isUnitsHaveMovedHere()))
@@ -233,7 +233,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     }
 
 
-    public DC_Cell getCell(int x, int y) {
+    public GridCell getCell(int x, int y) {
         try {
             return cells[x][y];
         } catch (Exception e) {
@@ -241,7 +241,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         }
     }
 
-    public DC_Cell getCell(Coordinates coordinates) {
+    public GridCell getCell(Coordinates coordinates) {
         //        coordinates = coordinates.getOffset(game.getModule().getOrigin().negative());
         try {
             return cells[coordinates.x][coordinates.y];
@@ -255,11 +255,11 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         return coordinates;
     }
 
-    public DC_Cell[][] getCells() {
+    public GridCell[][] getCells() {
         return cells;
     }
 
-    public Set<DC_Cell> getCellsSet() {
+    public Set<GridCell> getCellsSet() {
         return cellsSet;
     }
 

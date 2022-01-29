@@ -1,7 +1,7 @@
 package main.level_editor.backend.functions.io;
 
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.FloorLoader;
@@ -245,7 +245,7 @@ public class LE_XmlHandler extends LE_Handler {
 
         xmlBuilder.append("\n").open(FloorLoader.COORDINATES_VOID);
         for (Coordinates coordinates : module.initCoordinateSet(false)) {
-            DC_Cell cell = DC_Game.game.getCell(coordinates);
+            GridCell cell = DC_Game.game.getCell(coordinates);
             if (cell != null) //TODO buffer!
                 if (cell.isVOID()) {
                     xmlBuilder.append(cell.getCoordinates().toString()).append(";");

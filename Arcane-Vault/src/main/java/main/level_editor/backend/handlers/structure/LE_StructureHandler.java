@@ -3,7 +3,7 @@ package main.level_editor.backend.handlers.structure;
 import com.badlogic.gdx.graphics.Color;
 import com.google.inject.internal.util.ImmutableSet;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.BlockData;
@@ -550,9 +550,9 @@ public class LE_StructureHandler extends LE_Handler implements IStructureHandler
             type = DungeonEnums.CELL_SET.beige;
         }
         if (type != null) {
-            Set<DC_Cell> set = new LinkedHashSet<>();
+            Set<GridCell> set = new LinkedHashSet<>();
             for (Coordinates coordinates : layer.getCoordinatesSet()) {
-                DC_Cell cell = getGame().getCell(coordinates);
+                GridCell cell = getGame().getCell(coordinates);
                 if (cell != null) //TODO without buffer!
                 // if (cell.getCellType() != type || layer.getCellVersion()!= cell.getCellVariant())
                 {

@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.rules.combat.attack;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.attack.accuracy.AccuracyMaster;
@@ -63,8 +63,8 @@ public class DC_AttackMaster {
         game.getLogManager().log(message);
     }
 
-    public static DC_WeaponObj getAttackWeapon(Ref ref, boolean offhand) {
-        return (DC_WeaponObj) (offhand ? ref.getObj(KEYS.OFFHAND) : ref.getObj(KEYS.WEAPON));
+    public static WeaponItem getAttackWeapon(Ref ref, boolean offhand) {
+        return (WeaponItem) (offhand ? ref.getObj(KEYS.OFFHAND) : ref.getObj(KEYS.WEAPON));
     }
 
     private static boolean checkWeapon(Ref ref) {

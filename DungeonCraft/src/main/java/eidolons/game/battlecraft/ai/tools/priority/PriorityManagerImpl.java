@@ -16,9 +16,9 @@ import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.active.Spell;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.attach.DC_HeroAttachedObj;
 import eidolons.entity.unit.Unit;
@@ -890,7 +890,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     @Override
     public int getAttackPriority(ActionSequence as) {
         Action action = as.getLastAction();
-        if (action.getTarget() instanceof DC_Cell) {
+        if (action.getTarget() instanceof GridCell) {
             return 0;
         }
         Unit targetObj = (Unit) action.getTarget();
@@ -1047,7 +1047,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     }
 
     private void applyThrowPenalty(DC_ActiveObj active) {
-        DC_WeaponObj item;
+        WeaponItem item;
         boolean offhand = active.isOffhand();
         boolean quick = active instanceof DC_QuickItemAction;
         if (quick) {

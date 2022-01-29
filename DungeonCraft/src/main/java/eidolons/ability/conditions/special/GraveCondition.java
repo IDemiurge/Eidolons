@@ -1,6 +1,6 @@
 package eidolons.ability.conditions.special;
 
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import main.elements.Filter;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
@@ -36,7 +36,7 @@ public class GraveCondition extends MicroCondition {
         }
         Set<Entity> filtered = new Filter<>(deadUnits, ref, getConditions()).getObjects();
 
-        if (!(ref.getMatchObj() instanceof DC_Cell)) {
+        if (!(ref.getMatchObj() instanceof GridCell)) {
             return filtered.contains(ref.getMatchObj());
         }
         // for (Obj unit : //currently only top...

@@ -1,6 +1,6 @@
 package eidolons.entity.item;
 
-import eidolons.entity.unit.DC_UnitModel;
+import eidolons.entity.unit.UnitModel;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.enums.entity.ItemEnums;
@@ -15,10 +15,10 @@ import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
 
-public abstract class DC_HeroSlotItem extends DC_HeroItemObj {
+public abstract class HeroSlotItem extends HeroItem {
 
-    public DC_HeroSlotItem(ObjType type, Player owner, GenericGame game, Ref ref, PARAMETER[] params
-                           // , PROPERTY[] props
+    public HeroSlotItem(ObjType type, Player owner, GenericGame game, Ref ref, PARAMETER[] params
+                        // , PROPERTY[] props
     ) {
         super(type, owner, game, ref, params
          // , props
@@ -46,7 +46,7 @@ public abstract class DC_HeroSlotItem extends DC_HeroItemObj {
          getProperty(G_PROPS.MATERIAL));
     }
 
-    public void applySpecialEffects(SPECIAL_EFFECTS_CASE case_type, DC_UnitModel target, Ref REF) {
+    public void applySpecialEffects(SPECIAL_EFFECTS_CASE case_type, UnitModel target, Ref REF) {
         if (specialEffects == null) {
             return;
         }

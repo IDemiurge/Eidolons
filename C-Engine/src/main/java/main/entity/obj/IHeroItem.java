@@ -1,5 +1,5 @@
 package main.entity.obj;
 
-public interface HeroItem {
+public interface IHeroItem {
 
 }

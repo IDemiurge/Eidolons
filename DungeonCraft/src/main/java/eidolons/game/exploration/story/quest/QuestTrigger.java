@@ -1,6 +1,6 @@
 package eidolons.game.exploration.story.quest;
 
-import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.HeroItem;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.EUtils;
 import main.elements.conditions.Condition;
@@ -52,7 +52,7 @@ public class QuestTrigger extends Trigger {
                 Obj item = event.getRef().getObj(KEYS.ITEM);
                 EUtils.showInfoText("Quest item found: " + item.getName());
                 Unit hero = (Unit) event.getRef().getSourceObj();
-                hero.removeFromInventory((DC_HeroItemObj) item);
+                hero.removeFromInventory((HeroItem) item);
                 break;
             }
         }

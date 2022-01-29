@@ -4,10 +4,9 @@ import eidolons.content.DC_CONSTS.*;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.item.DC_ArmorObj;
-import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.item.DC_WeaponObj;
-import eidolons.game.EidolonsGame;
+import eidolons.entity.item.ArmorItem;
+import eidolons.entity.item.HeroItem;
+import eidolons.entity.item.WeaponItem;
 import eidolons.system.text.DC_Logger;
 import eidolons.system.utils.content.ContentGenerator;
 import main.content.C_OBJ_TYPE;
@@ -978,13 +977,13 @@ public class ItemGenerator implements GenericItemGenerator {
 
     }
 
-    public DC_HeroItemObj createItem(ObjType type, Ref ref, boolean addMaterialParams) {
+    public HeroItem createItem(ObjType type, Ref ref, boolean addMaterialParams) {
         // if (addMaterialParams)//if building from blueprint type
         // type = generateItem_(quality, material, type, params, mod_params);
         GenericGame game = (GenericGame) ref.getGame();
 
-        return (type.getOBJ_TYPE_ENUM() == DC_TYPE.WEAPONS) ? new DC_WeaponObj(
-                type, ref.getPlayer(), game, ref) : new DC_ArmorObj(type, ref.getPlayer(), game,
+        return (type.getOBJ_TYPE_ENUM() == DC_TYPE.WEAPONS) ? new WeaponItem(
+                type, ref.getPlayer(), game, ref) : new ArmorItem(type, ref.getPlayer(), game,
                 ref);
     }
 }

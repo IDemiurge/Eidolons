@@ -3,7 +3,7 @@ package libgdx.gui.dungeon.panels.dc.actionpanel.datasource;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.spaces.FeatSpace;
 import eidolons.entity.active.spaces.Feat;
-import eidolons.entity.item.DC_QuickItemObj;
+import eidolons.entity.item.QuickItem;
 import eidolons.entity.unit.Unit;
 import libgdx.gui.UiMaster;
 import libgdx.gui.generic.ValueContainer;
@@ -54,7 +54,7 @@ public class PanelActionsDataSource implements
 
     @Override
     public List<FeatContainer> getQuickSlotActions() {
-        final DequeImpl<DC_QuickItemObj> items = unit.getQuickItems();
+        final DequeImpl<QuickItem> items = unit.getQuickItems();
         //TODO real split!
         // unit.getCombatSpaces().getSpaces().stream().filter(space -> space.getType()== q).forEach(space ->
         //         space.getFeats());
@@ -62,7 +62,7 @@ public class PanelActionsDataSource implements
         //
         // }
         List<FeatContainer> list = items.stream()
-                .map((DC_QuickItemObj key) -> {
+                .map((QuickItem key) -> {
                     boolean valid = key.getActive().canBeManuallyActivated();
                     final ActionContainer valueContainer = new ActionContainer(()-> key.getCharges(),
                             UiMaster.getBottomQuickItemIconSize(),

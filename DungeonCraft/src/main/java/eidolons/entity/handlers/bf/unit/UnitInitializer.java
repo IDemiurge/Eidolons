@@ -6,6 +6,7 @@ import eidolons.content.PROPS;
 import eidolons.entity.SimCache;
 import eidolons.entity.handlers.bf.BfObjInitializer;
 import eidolons.entity.item.*;
+import eidolons.entity.item.trinket.JewelryItem;
 import eidolons.entity.unit.attach.DC_PassiveObj;
 import eidolons.netherflame.eidolon.heromake.model.DC_Attributes;
 import eidolons.netherflame.eidolon.heromake.model.DC_Masteries;
@@ -193,7 +194,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
             LogMaster.log(1, "failed to initQuickItems");
         }
 
-        getEntity().setWeapon((DC_WeaponObj) initItem(getEntity().getMainWeapon(), G_PROPS.MAIN_HAND_ITEM, DC_TYPE.WEAPONS));
+        getEntity().setWeapon((WeaponItem) initItem(getEntity().getMainWeapon(), G_PROPS.MAIN_HAND_ITEM, DC_TYPE.WEAPONS));
         if (getEntity().getNaturalWeapon(false) == null) {
             initNaturalWeapon(false);
         } else if (!getEntity().getNaturalWeapon(false).getType().getName().equalsIgnoreCase(
@@ -201,7 +202,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
             initNaturalWeapon(false);
         }
 
-        getEntity().setSecondWeapon((DC_WeaponObj) initItem(getEntity().getOffhandWeapon(), G_PROPS.OFF_HAND_ITEM,
+        getEntity().setSecondWeapon((WeaponItem) initItem(getEntity().getOffhandWeapon(), G_PROPS.OFF_HAND_ITEM,
                 DC_TYPE.WEAPONS));
 
         if (getEntity().getNaturalWeapon(true) == null) {
@@ -211,13 +212,13 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
             initNaturalWeapon(true);
         }
 
-        getEntity().setReserveMainWeapon((DC_WeaponObj) initItem(getEntity().getReserveMainWeapon(),
+        getEntity().setReserveMainWeapon((WeaponItem) initItem(getEntity().getReserveMainWeapon(),
                 G_PROPS.RESERVE_MAIN_HAND_ITEM, DC_TYPE.WEAPONS));
-        getEntity().setReserveOffhandWeapon((DC_WeaponObj) initItem(getEntity().getReserveOffhandWeapon(),
+        getEntity().setReserveOffhandWeapon((WeaponItem) initItem(getEntity().getReserveOffhandWeapon(),
                 G_PROPS.RESERVE_OFF_HAND_ITEM, DC_TYPE.WEAPONS));
 
 
-        getEntity().setArmor((DC_ArmorObj) initItem(getEntity().getArmor(), G_PROPS.ARMOR_ITEM, DC_TYPE.ARMOR));
+        getEntity().setArmor((ArmorItem) initItem(getEntity().getArmor(), G_PROPS.ARMOR_ITEM, DC_TYPE.ARMOR));
 
         getEntity().setItemsInitialized(true);
     }
@@ -237,7 +238,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
         if (weaponType == null) {
             return;
         }
-        DC_WeaponObj weapon = new DC_WeaponObj(weaponType, getEntity().getOwner(), getGame(), getRef(), !offhand);
+        WeaponItem weapon = new WeaponItem(weaponType, getEntity().getOwner(), getGame(), getRef(), !offhand);
         getEntity().setNaturalWeapon(offhand, weapon);
 
     }
@@ -266,7 +267,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
         return SkillMaster.createFeatObj(featType, getRef());
     }
 
-    public boolean checkItemChanged(DC_HeroItemObj item, G_PROPS prop, DC_TYPE TYPE) {
+    public boolean checkItemChanged(HeroItem item, G_PROPS prop, DC_TYPE TYPE) {
         if (game.isSimulation()) {
             if (CoreEngine.isArcaneVault())// TODO prevent from piling up?
             {
@@ -290,7 +291,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
         return !item.getId().toString().equals(value);
     }
 
-    public DC_HeroItemObj initItem(DC_HeroItemObj item, G_PROPS prop, DC_TYPE TYPE) {
+    public HeroItem initItem(HeroItem item, G_PROPS prop, DC_TYPE TYPE) {
         if (getEntity().isLoaded()) {
             return getLoadedItem(prop);
         }
@@ -306,10 +307,10 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
                     if (game.isSimulation()) {
                         if (item == null || !item.isSimulation()) {
                             if (item == null) {
-                                item = (DC_HeroItemObj) ((SimulationGame) game).getRealGame().getObjectById(StringMaster.toInt(property));
+                                item = (HeroItem) ((SimulationGame) game).getRealGame().getObjectById(StringMaster.toInt(property));
                             }
                             if (item != null) {
-                                DC_HeroItemObj simItem = createItem(prop, item.getType());
+                                HeroItem simItem = createItem(prop, item.getType());
                                  SimCache.getInstance().addSim(item, simItem);
                                 Integer durability = item.getIntParam(PARAMS.C_DURABILITY);
                                 simItem.setParam(PARAMS.C_DURABILITY, durability);
@@ -320,7 +321,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
                 } else if (initialized) {
                     int itemId = StringMaster.toInt(property);
                     if (itemId != -1) {
-                        item = ((DC_HeroItemObj) game.getObjectById(itemId));
+                        item = ((HeroItem) game.getObjectById(itemId));
                     }
                 } else {
                     if (StringMaster.isEmpty(property)) {
@@ -340,32 +341,32 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
         return item;
     }
 
-    private DC_HeroItemObj getLoadedItem(G_PROPS prop) {
+    private HeroItem getLoadedItem(G_PROPS prop) {
         //TODO macro Review
         // return Loader.getLoadedItem(getEntity(), prop);
         return null;
     }
 
-    private DC_HeroItemObj createItem(PROPERTY prop, ObjType type) {
-        return (prop != G_PROPS.ARMOR_ITEM) ? (new DC_WeaponObj(type,
+    private HeroItem createItem(PROPERTY prop, ObjType type) {
+        return (prop != G_PROPS.ARMOR_ITEM) ? (new WeaponItem(type,
                 getEntity().getOriginalOwner(), getGame(), getRef(),
 
-                prop == G_PROPS.MAIN_HAND_ITEM)) : (new DC_ArmorObj(type,
+                prop == G_PROPS.MAIN_HAND_ITEM)) : (new ArmorItem(type,
                 getEntity().getOriginalOwner(), getGame(), getRef()));
     }
 
 
     public void initJewelry() {
-        DequeImpl<? extends DC_HeroItemObj> items = initContainedItems(PROPS.JEWELRY, getEntity().getJewelry(),
+        DequeImpl<? extends HeroItem> items = initContainedItems(PROPS.JEWELRY, getEntity().getJewelry(),
                 false);
         if (items == getEntity().getJewelry()) {
             return;
         }
 
         getEntity().getJewelry().clear();
-        for (DC_HeroItemObj e : items) {
-            if (e instanceof DC_JewelryObj) {
-                getEntity().getJewelry().add((DC_JewelryObj) e);
+        for (HeroItem e : items) {
+            if (e instanceof JewelryItem) {
+                getEntity().getJewelry().add((JewelryItem) e);
             }
         }
 
@@ -375,7 +376,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
 
         // setQuickItems(new DequeImpl<DC_QuickItemObj>(
 
-        DequeImpl<? extends DC_HeroItemObj> items = initContainedItems(PROPS.QUICK_ITEMS,
+        DequeImpl<? extends HeroItem> items = initContainedItems(PROPS.QUICK_ITEMS,
                 getEntity().getQuickItems(), true)
                 // )) TODO
                 ;
@@ -383,8 +384,8 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
             return;
         }
         getEntity().setQuickItems(new DequeImpl<>());
-        for (DC_HeroItemObj e : items) {
-            getEntity().getQuickItems().add((DC_QuickItemObj) e);
+        for (HeroItem e : items) {
+            getEntity().getQuickItems().add((QuickItem) e);
         }
 
     }

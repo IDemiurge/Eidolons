@@ -5,10 +5,10 @@ import eidolons.content.DC_ContentValsManager.ATTRIBUTE;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.Spell;
-import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.item.DC_QuickItemObj;
+import eidolons.entity.item.HeroItem;
+import eidolons.entity.item.QuickItem;
 import eidolons.entity.unit.attach.DC_PassiveObj;
-import eidolons.entity.unit.DC_UnitModel;
+import eidolons.entity.unit.UnitModel;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.rules.combat.damage.ResistMaster;
@@ -79,7 +79,7 @@ public class UnitResetter extends EntityResetter<Unit> {
                 if (getEntity().getDirection() != null) {
                     FacingMaster.getFacingFromDirection(getEntity().getDirection());
                 } else if (getRef().getObj(KEYS.SUMMONER) != null) {
-                    facing = ((DC_UnitModel) getRef().getObj(KEYS.SUMMONER)).getFacing();
+                    facing = ((UnitModel) getRef().getObj(KEYS.SUMMONER)).getFacing();
                 } else {
                     facing = FacingMaster.getRandomFacing();
                 }
@@ -184,7 +184,7 @@ public class UnitResetter extends EntityResetter<Unit> {
     }
 
     public void resetQuickItemActives() {
-        for (DC_QuickItemObj q : getEntity().getQuickItems()) {
+        for (QuickItem q : getEntity().getQuickItems()) {
             q.afterEffects();
         }
     }
@@ -247,10 +247,10 @@ public class UnitResetter extends EntityResetter<Unit> {
             getEntity().getArmor().apply();
         }
         resetQuickSlotsNumber();
-        for (DC_HeroItemObj item : getEntity().getQuickItems()) {
+        for (HeroItem item : getEntity().getQuickItems()) {
             item.apply();
         }
-        for (DC_HeroItemObj item : getEntity().getJewelry()) {
+        for (HeroItem item : getEntity().getJewelry()) {
             item.apply();
         }
         // Chronos.logTimeElapsedForMark(toString() + " OBJECTS APPLY");

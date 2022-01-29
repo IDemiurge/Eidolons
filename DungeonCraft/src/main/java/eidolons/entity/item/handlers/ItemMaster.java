@@ -1,8 +1,8 @@
 package eidolons.entity.item.handlers;
 
 import eidolons.content.consts.VisualEnums.ITEM_FILTERS;
-import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.item.DC_QuickItemObj;
+import eidolons.entity.item.HeroItem;
+import eidolons.entity.item.QuickItem;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.ItemEnums;
@@ -23,9 +23,9 @@ public class ItemMaster {
     public static boolean isItemsDisabled() {
         return Flags.isJar();
     }
-    public static boolean isBreakable(DC_HeroItemObj item) {
-        if (item instanceof DC_QuickItemObj) {
-            DC_QuickItemObj q = (DC_QuickItemObj) item;
+    public static boolean isBreakable(HeroItem item) {
+        if (item instanceof QuickItem) {
+            QuickItem q = (QuickItem) item;
             if (q.isCoating()) {
                 return true;
             }
@@ -57,7 +57,7 @@ public class ItemMaster {
          type.getProperty(G_PROPS.ITEM_MATERIAL_GROUP), true);
     }
 
-    public static boolean checkFilter(DC_HeroItemObj item, ITEM_FILTERS filter) {
+    public static boolean checkFilter(HeroItem item, ITEM_FILTERS filter) {
         switch (filter) {
             case ALL:
                 return true;

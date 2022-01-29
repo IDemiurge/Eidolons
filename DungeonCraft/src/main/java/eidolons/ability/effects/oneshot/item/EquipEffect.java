@@ -1,7 +1,7 @@
 package eidolons.ability.effects.oneshot.item;
 
-import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.HeroItem;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
@@ -12,14 +12,14 @@ import main.entity.Ref.KEYS;
 
 public class EquipEffect extends MicroEffect implements OneshotEffect {
 
-    private DC_HeroItemObj item;
+    private HeroItem item;
     private final Boolean weapon;
     private Boolean quickItem = false;
 
     @OmittedConstructor
-    public EquipEffect(DC_HeroItemObj item) {
+    public EquipEffect(HeroItem item) {
         this.item = item;
-        weapon = item instanceof DC_WeaponObj;
+        weapon = item instanceof WeaponItem;
     }
 
     public EquipEffect() {
@@ -35,9 +35,9 @@ public class EquipEffect extends MicroEffect implements OneshotEffect {
     public boolean applyThis() {
         if (item == null) {
             if (quickItem) {
-                item = (DC_HeroItemObj) ref.getObj(KEYS.ITEM);
+                item = (HeroItem) ref.getObj(KEYS.ITEM);
             } else {
-                item = (DC_HeroItemObj) ref.getObj((weapon) ? KEYS.WEAPON
+                item = (HeroItem) ref.getObj((weapon) ? KEYS.WEAPON
                  : KEYS.ARMOR);
             }
         }

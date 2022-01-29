@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.battlefield.vision;
 
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.unit.Unit;
@@ -56,7 +56,7 @@ public class VisionRule {
 
 
     public void fullReset(Unit... observers) {
-        DC_Cell[][] array = master.getGame().getObjMaster().getCells();
+        GridCell[][] array = master.getGame().getObjMaster().getCells();
         Set<Unit> filteredObserver = new HashSet<>();
         for (Unit observer : observers) {
             if (isObserverResetRequired(observer))
@@ -79,7 +79,7 @@ public class VisionRule {
                         objects = master.getGame().getObjMaster().getObjects(
                                 i, j, false);
                     }
-                    DC_Cell cell = array[i][j];
+                    GridCell cell = array[i][j];
 
                     if (!isResetRequired(observer, cell))
                         continue;

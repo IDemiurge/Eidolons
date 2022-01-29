@@ -1,6 +1,6 @@
 package eidolons.game.exploration.dungeon.objects;
 
-import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.HeroItem;
 import main.entity.type.ObjType;
 
 /**
@@ -9,7 +9,7 @@ import main.entity.type.ObjType;
 public class HungItem extends DungeonObj {
 
 
-    private DC_HeroItemObj item;
+    private HeroItem item;
     private ObjType itemType;
 
     public HungItem(ObjType type, int x, int y, ObjType item) {
@@ -22,11 +22,11 @@ public class HungItem extends DungeonObj {
         return DUNGEON_OBJ_TYPE.ITEM;
     }
 
-    public DC_HeroItemObj getItem() {
+    public HeroItem getItem() {
         return item;
     }
 
-    public void setItem(DC_HeroItemObj item) {
+    public void setItem(HeroItem item) {
         this.item = item;
     }
 

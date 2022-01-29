@@ -1,4 +1,4 @@
-package eidolons.entity.unit.attach;
+package eidolons.entity.unit.attach.buff;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.unit.Unit;

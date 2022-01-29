@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.logic.battlefield.vision;
 import eidolons.ability.conditions.special.ClearShotCondition;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.ClearshotMaster;
@@ -133,7 +133,7 @@ public class SightMaster {
             removeList = new ArrayList<>();
         ClearshotMaster.filterWallObstructed(source.getCoordinates(), list);
         for (Coordinates c : list) {
-            DC_Cell cell = master.getGame().getObjMaster().getCellByCoordinate(c);
+            GridCell cell = master.getGame().getObjMaster().getCellByCoordinate(c);
             if (cell == null)
                 continue;
             Boolean clearShot = !isBlocked(cell, source, true);
@@ -382,7 +382,7 @@ public class SightMaster {
         resetUnitVision(observer, master.getGame().getStructures());
         resetUnitVision(observer, master.getGame().getUnits());
         //        master.getVisionController().getUnitVisionMapper().
-        Set<DC_Cell> cells = isFastMode() ? master.getGame().getBattleFieldManager().
+        Set<GridCell> cells = isFastMode() ? master.getGame().getBattleFieldManager().
                 getCellsWithinRange(observer, observer.getMaxVisionDistance()
                 ) : master.getGame().getCells();
         resetUnitVision(observer, cells);

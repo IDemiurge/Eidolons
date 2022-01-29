@@ -1,7 +1,7 @@
 package eidolons.ability.effects.oneshot.mechanic;
 
 import eidolons.content.DC_ContentValsManager;
-import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.HeroItem;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.ability.effects.ReducedEffect;
@@ -56,7 +56,7 @@ public class ModifyCounterEffect extends MicroEffect implements OneshotEffect, R
             amount = MathMaster.applyPercent(amount, getResistanceMod());
         }
         int mod = 0;
-        if (ref.getTargetObj() instanceof DC_HeroItemObj) {
+        if (ref.getTargetObj() instanceof HeroItem) {
             try {
                 mod = ref.getSourceObj().getIntParam(
                         DC_ContentValsManager.getCoatingAppliedModParam(CounterMaster

@@ -1,6 +1,6 @@
 package eidolons.puzzle.voidy;
 
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import libgdx.bf.grid.DC_GridPanel;
 import main.content.CONTENT_CONSTS;
 
@@ -16,7 +16,7 @@ public class DefVoidHandler extends VoidHandler{
     }
 
     @Override
-    protected boolean checkMarked(DC_Cell cell) {
+    protected boolean checkMarked(GridCell cell) {
         return cell.getMarks().contains(CONTENT_CONSTS.MARK._void)
                 || cell.getMarks().contains(CONTENT_CONSTS.MARK.togglable);
     }

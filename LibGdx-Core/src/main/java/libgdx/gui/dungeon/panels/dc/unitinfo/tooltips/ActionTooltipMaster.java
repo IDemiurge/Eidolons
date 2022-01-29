@@ -3,7 +3,7 @@ package libgdx.gui.dungeon.panels.dc.unitinfo.tooltips;
 import eidolons.content.values.DC_ValueManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.WeaponItem;
 import main.content.VALUE;
 import main.content.enums.entity.ActionEnums;
 import main.content.values.properties.G_PROPS;
@@ -16,7 +16,7 @@ import main.system.math.MathMaster;
 public class ActionTooltipMaster {
 
     private static String getDiceText(DC_ActiveObj action) {
-        DC_WeaponObj weapon = action.getActiveWeapon();
+        WeaponItem weapon = action.getActiveWeapon();
         int dieSize =
          MathMaster.applyPercent(
           weapon.getIntParam(PARAMS.DIE_SIZE),

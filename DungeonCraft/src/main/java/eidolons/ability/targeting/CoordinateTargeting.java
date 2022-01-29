@@ -3,7 +3,7 @@ package eidolons.ability.targeting;
 import eidolons.ability.effects.oneshot.unit.SummonEffect;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.DC_Obj;
 import main.ability.effects.continuous.CustomTargetEffect;
 import main.elements.targeting.TargetingImpl;
@@ -114,7 +114,7 @@ public class CoordinateTargeting extends TargetingImpl {
                     getObjectsOnCoordinate(coordinate, true); //TODO EA hack - overlaying!
         }
         if (objects.size() == 0 || cellTargeting) {
-            DC_Cell cell = obj.getGame().getCell(coordinate);
+            GridCell cell = obj.getGame().getCell(coordinate);
             if (cell == null) {
                 return false;
             }

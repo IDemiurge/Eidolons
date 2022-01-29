@@ -10,7 +10,7 @@ import eidolons.ability.effects.common.LightEmittingEffect;
 import eidolons.content.PROPS;
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
@@ -163,7 +163,7 @@ public class ShadowMap extends GroupX implements GridElement {
 
             for (int x = 0; x < grid.getModuleCols() ; x++) {
                 for (int y = 0; y < grid.getModuleRows(); y++) {
-                    DC_Cell cellObj = grid.getCells()[x1 + x][y1 + y].getUserObject();
+                    GridCell cellObj = grid.getCells()[x1 + x][y1 + y].getUserObject();
                     if (cellObj.isVOID()) {
                         if (type != VOID)
                             continue;

@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.ai.explore.behavior;
 
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
@@ -49,7 +49,7 @@ public class WanderAiMaster extends AiBehavior {
         DIRECTION d = ai.getGroup().getWanderDirection();
         // permittedCells = ai.getGroup().getWanderBlocks();
         List<DC_Obj> list = new ArrayList<>();
-        for (DC_Cell cell : Analyzer.getCells(ai, false, false, true)) {
+        for (GridCell cell : Analyzer.getCells(ai, false, false, true)) {
             if (d != null) {
                 if (DirectionMaster.getRelativeDirection(cell, ai.getUnit()) != d) {
                     continue;

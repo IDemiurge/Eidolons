@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import libgdx.bf.grid.cell.GenericGridView;
@@ -89,7 +89,7 @@ public class PlatformCell extends GridCellContainer {
 
     @Override
     public void setUserObject(Object userObject) {
-        DC_Cell cell = (DC_Cell) userObject;
+        GridCell cell = (GridCell) userObject;
         gridX = cell.getX();
         gridY = cell.getY();
         Coordinates coordinates = Coordinates.get(gridX, gridY);

@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.ai.elements.task;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
@@ -190,7 +190,7 @@ public class TaskManager extends AiHandler {
                     targets = (Analyzer.getUnits(ai, true, true, true, false));
                     //                    List<Set<BattleFieldObject>> objs = Analyzer.getCells(ai, true, true, false).stream().map(
                     //                            c -> game.getObjectsOnCoordinate(c.getCoordinates())).collect(Collectors.toList());
-                    for (DC_Cell cell : Analyzer.getCells(ai, true, false, false)) {
+                    for (GridCell cell : Analyzer.getCells(ai, true, false, false)) {
                         targets3.addAll(game.getObjectsOnCoordinateNoOverlaying(cell.getCoordinates()));
                     }
                 } else {

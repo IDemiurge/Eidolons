@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.game.DC_BattleFieldGrid;
@@ -126,7 +126,7 @@ last
             LE_GridCell.hoveredCell=null;
             return;
         }
-        DC_Cell[][] cells = grid.getCells();
+        GridCell[][] cells = grid.getCells();
         LevelStruct struct = DC_Game.game.getDungeonMaster().getStructMaster().getLowestStruct(c);
         if (struct != null) {
             CharSequence type = struct.getClass().getSimpleName();

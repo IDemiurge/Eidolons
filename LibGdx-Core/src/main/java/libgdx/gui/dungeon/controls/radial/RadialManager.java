@@ -6,10 +6,10 @@ import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.content.consts.VisualEnums;
 import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.entity.active.*;
-import eidolons.entity.item.DC_QuickItemObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.QuickItem;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
@@ -56,7 +56,7 @@ public class RadialManager {
 
     public static TextureRegion getTextureForActive(DC_ActiveObj obj, DC_Obj target) {
         if (obj.isAttackAny()) {
-            DC_WeaponObj weapon = obj.getActiveWeapon();
+            WeaponItem weapon = obj.getActiveWeapon();
             String path = GdxStringUtils.getAttackActionPath(obj, weapon);
             TextureRegion texture = TextureCache.getOrCreateR(path);
             if (texture.getRegionWidth() > 64) {
@@ -382,7 +382,7 @@ public class RadialManager {
         return null;
     }
 
-    protected static boolean isQuickItemShown(DC_QuickItemObj item, DC_Obj target) {
+    protected static boolean isQuickItemShown(QuickItem item, DC_Obj target) {
         if (target != item.getOwnerObj()) {
             if (!(item.getActive().getTargeting() instanceof SelectiveTargeting)) {
                 return false;
@@ -508,7 +508,7 @@ public class RadialManager {
             List<RadialContainer> list, RADIAL_PARENT_NODE parentNode, DC_Obj target, DC_ActiveObj parent) {
         if (parent.getActiveWeapon().isRanged()) {
             if (parent.getRef().getObj(Ref.KEYS.AMMO) == null) {
-                for (DC_QuickItemObj ammo : parent.getOwnerUnit().getQuickItems()) {
+                for (QuickItem ammo : parent.getOwnerUnit().getQuickItems()) {
                     final RadialContainer valueContainer = new RadialContainer(TextureCache.getOrCreateR(ammo.getImagePath()), getRunnable(target, ammo.getActive()));
                     addSimpleTooltip(valueContainer, ammo.getName());
                     list.add(valueContainer);
@@ -567,7 +567,7 @@ public class RadialManager {
             if (activeObj.getTargeting() instanceof SelectiveTargeting) {
                 return () -> {
                     if (activeObj.isMove()) {
-                        DC_Cell cell = target.getGame().getCell(target.getCoordinates());
+                        GridCell cell = target.getGame().getCell(target.getCoordinates());
                         if (!activeObj.getTargeter().canBeTargeted(cell.getId()))
                             return;
                     }

@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.battlefield.vision;
 
 import eidolons.content.consts.VisualEnums.SHADE_CELL;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
@@ -66,7 +66,7 @@ public class GammaMaster {
 
         Coordinates c = Core.getPlayerCoordinates();
         float alpha = 0;
-        DC_Cell cell = Core.game.getCell(
+        GridCell cell = Core.game.getCell(
                 master.getGame().getGrid().getModuleCoordinates(x, y));
         float gamma = getGammaForCell(cell);
 
@@ -110,7 +110,7 @@ public class GammaMaster {
         return MathMaster.minMax(alpha, 0, 1);
     }
 
-    protected float getLightAlpha(float gamma, DC_Cell cell, Coordinates observer) {
+    protected float getLightAlpha(float gamma, GridCell cell, Coordinates observer) {
         if (gamma < 0)
             return 0;
         if (!(cell.getUnitVisionStatus() == UNIT_VISION.IN_PLAIN_SIGHT
@@ -179,7 +179,7 @@ public class GammaMaster {
         return getGammaForCell(Core.game.getCell(Coordinates.get(x, y)));
     }
 
-    public float getGammaForCell(DC_Cell cell) {
+    public float getGammaForCell(GridCell cell) {
 
         if (cell == null) {
             return 0;
@@ -216,7 +216,7 @@ public class GammaMaster {
         return true;
     }
 
-    private float getBlockedGamma(DC_Cell cell) {
+    private float getBlockedGamma(GridCell cell) {
         if (cell.isPlayerHasSeen()) {
             return 0.25f;
         }

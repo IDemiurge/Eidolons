@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.art;
 
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleActions;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
@@ -25,7 +25,7 @@ import static eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleEnums.PUZ
 
 public class ArtSetup extends PuzzleSetup<ArtPuzzle, Object> {
 
-    Set<DC_Cell> mosaic = new LinkedHashSet<>();
+    Set<GridCell> mosaic = new LinkedHashSet<>();
 
     public ArtSetup(ArtPuzzle puzzle, PuzzleData data, String... mutatorArgs) {
         super(puzzle, data);
@@ -49,7 +49,7 @@ public class ArtSetup extends PuzzleSetup<ArtPuzzle, Object> {
     }
 
     public void setup(boolean on) {
-        for (DC_Cell cell : mosaic) {
+        for (GridCell cell : mosaic) {
             if (!on) {
                 cell.setOverlayData(null);
             } else {
@@ -89,7 +89,7 @@ public class ArtSetup extends PuzzleSetup<ArtPuzzle, Object> {
             for (int j = 0; j < puzzle.getHeight(); j++) {
                 //            for (int j = puzzle.getHeight()-1; j >= 0; j--) {
                 Coordinates root = c.getOffsetByY(j).getOffsetByX(i);
-                DC_Cell cell = Core.getGame().getCell(
+                GridCell cell = Core.getGame().getCell(
                         root);
                 mosaic.add(cell);
             }

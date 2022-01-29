@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.ai.elements.generic;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
@@ -73,7 +73,7 @@ public class AiAutoGroupHandler extends AiHandler {
                 )).collect(Collectors.toList());
 
                 for (Coordinates coordinates : sorted) {
-                    DC_Cell cell = game.getCell(coordinates);
+                    GridCell cell = game.getCell(coordinates);
                     switch (block.getTileMap().getMap().get(coordinates)) {
                         case DOOR:
                         case CONTAINER:
@@ -81,7 +81,7 @@ public class AiAutoGroupHandler extends AiHandler {
                     }
                 }
                 DIRECTION d = leader.getFacing().getDirection();
-                DC_Cell cell = game.getCell(leader.getCoordinates().getAdjacentCoordinate(
+                GridCell cell = game.getCell(leader.getCoordinates().getAdjacentCoordinate(
                         d).getAdjacentCoordinate(
                         d));
                 if (cell != null) {

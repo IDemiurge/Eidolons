@@ -9,8 +9,8 @@ import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.active.Spell;
-import eidolons.entity.item.DC_WeaponObj;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.item.WeaponItem;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.master.EffectMaster;
@@ -419,7 +419,7 @@ public class AnimConstructor {
                 return false;
         }
         if (!isCellAnimated(e)) {
-            if (e.getRef().getTargetObj() instanceof DC_Cell) {
+            if (e.getRef().getTargetObj() instanceof GridCell) {
 
                 return false;
             }
@@ -596,7 +596,7 @@ public class AnimConstructor {
         });
     }
 
-    public static CompositeAnim getParryAnim(DC_WeaponObj weaponObj, DC_ActiveObj attack) {
+    public static CompositeAnim getParryAnim(WeaponItem weaponObj, DC_ActiveObj attack) {
         Parry3dAnim parryAnim = new Parry3dAnim(weaponObj, attack);
         return new CompositeAnim(parryAnim);
     }

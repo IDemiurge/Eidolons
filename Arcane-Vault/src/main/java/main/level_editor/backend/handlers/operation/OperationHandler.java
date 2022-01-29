@@ -2,7 +2,7 @@ package main.level_editor.backend.handlers.operation;
 
 import eidolons.content.data.EntityData;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.StructureData;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.exploration.dungeon.struct.LevelBlock;
@@ -55,7 +55,7 @@ public class OperationHandler extends LE_Handler {
                 } else {
                     getFloorWrapper().getCellMap().put(c, cdata);
                 }
-                DC_Cell cell = getGame().getCell(c);
+                GridCell cell = getGame().getCell(c);
                 cdata.apply(cell);
                 GuiEventManager.trigger(event, cell);
                 break;

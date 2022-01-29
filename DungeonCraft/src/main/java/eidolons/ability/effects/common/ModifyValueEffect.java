@@ -17,7 +17,7 @@ import main.content.values.parameters.PARAMETER;
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.HeroItem;
+import main.entity.obj.IHeroItem;
 import main.entity.obj.Obj;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -181,7 +181,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
             return;
         }
 
-        if (ref.getTargetObj() instanceof HeroItem
+        if (ref.getTargetObj() instanceof IHeroItem
             // && !(ref.getTargetObj().getOBJ_TYPE().equals(OBJ_TYPES.ARMOR
             // .getName()))
          ) {

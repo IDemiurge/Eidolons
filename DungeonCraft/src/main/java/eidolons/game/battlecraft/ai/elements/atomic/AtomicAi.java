@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.ai.elements.atomic;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_UnitAction;
-import eidolons.entity.item.DC_QuickItemObj;
+import eidolons.entity.item.QuickItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
@@ -182,9 +182,9 @@ public class AtomicAi extends AiHandler {
     }
 
     private Action getReloadAction(UnitAI ai) {
-        DC_QuickItemObj ammo = null;
+        QuickItem ammo = null;
         Integer maxCost = 0;
-        for (DC_QuickItemObj a : ai.getUnit().getQuickItems()) {
+        for (QuickItem a : ai.getUnit().getQuickItems()) {
             if (a.isAmmo()) {
                 Integer cost = a.getWrappedWeapon().getIntParam(PARAMS.GOLD_COST);
                 if (cost > maxCost) {

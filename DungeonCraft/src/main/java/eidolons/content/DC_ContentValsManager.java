@@ -5,7 +5,7 @@ import eidolons.content.values.ValueInitializer;
 import eidolons.content.values.ValuePageManager;
 import eidolons.content.values.ValuePages;
 import eidolons.content.values.ValueTypePairs;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.attach.DC_PassiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.mechanics.CoatingRule;
@@ -713,8 +713,8 @@ public class DC_ContentValsManager extends ContentValsManager {
 
     }
 
-    public static DC_WeaponObj getDefaultWeapon(Unit heroObj) {
-        return new DC_WeaponObj(DataManager.getType(ContentConsts.DEFAULT_WEAPON, DC_TYPE.WEAPONS), heroObj);
+    public static WeaponItem getDefaultWeapon(Unit heroObj) {
+        return new WeaponItem(DataManager.getType(ContentConsts.DEFAULT_WEAPON, DC_TYPE.WEAPONS), heroObj);
     }
 
 

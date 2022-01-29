@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PARAMS;
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.item.DC_HeroSlotItem;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.HeroSlotItem;
+import eidolons.entity.item.WeaponItem;
 import eidolons.system.libgdx.GdxAdapter;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums;
@@ -52,7 +52,7 @@ public class GdxStringUtils {
         return getAttackActionPath(obj, obj.getActiveWeapon());
     }
 
-    public static String getAttackActionPath(DC_ActiveObj obj, DC_WeaponObj weapon) {
+    public static String getAttackActionPath(DC_ActiveObj obj, WeaponItem weapon) {
         return (!obj.isStandardAttack() || obj.isThrow()) ? getWeaponIconPath(weapon)
                 : getStandardAttackIcon(obj);
         //            if (obj.isOffhand()){
@@ -69,7 +69,7 @@ public class GdxStringUtils {
         return GdxStringUtils.getItemIconPath(entity);
     }
     private static String getStandardAttackIcon(DC_ActiveObj obj) {
-        DC_WeaponObj weapon = obj.getActiveWeapon();
+        WeaponItem weapon = obj.getActiveWeapon();
         return getStandardAttackIcon(obj.getType(), weapon.getType());
     }
 
@@ -148,8 +148,8 @@ public class GdxStringUtils {
         String typeName = entity.getName();
 
 
-        if (entity instanceof DC_HeroSlotItem) {
-            DC_HeroSlotItem item = ((DC_HeroSlotItem) entity);
+        if (entity instanceof HeroSlotItem) {
+            HeroSlotItem item = ((HeroSlotItem) entity);
             typeName = item.getBaseTypeName();
             boolean versioned=false;
             if (TYPE.getName().contains("Crossbow")){
@@ -158,8 +158,8 @@ public class GdxStringUtils {
             if (TYPE == DC_TYPE.ARMOR ) {
                 versioned =true;
             }
-            if (item instanceof DC_WeaponObj) {
-                versioned=((DC_WeaponObj) item).isAmmo();
+            if (item instanceof WeaponItem) {
+                versioned=((WeaponItem) item).isAmmo();
             }
             if (versioned){
                 int durability = DataManager.getType(item.getBaseTypeName(),

@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.rules.counter.negative;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_UnitAction;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.action.ActionRule;
@@ -164,7 +164,7 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
         int amount = 0;
         if (object instanceof Unit) {
             Unit unit = ((Unit) object);
-        DC_WeaponObj weapon = unit.getWeapon(offhand);
+        WeaponItem weapon = unit.getWeapon(offhand);
         if (weapon == null) {
             weapon = unit.getNaturalWeapon(offhand);
         }

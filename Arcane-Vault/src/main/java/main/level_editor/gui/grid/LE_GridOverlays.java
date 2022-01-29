@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.core.Core;
 import eidolons.game.exploration.dungeon.struct.LevelBlock;
@@ -79,7 +79,7 @@ public class LE_GridOverlays extends GridOverlaysManager {
 
     @Override
     protected void drawOverlaysForCell(GridCellContainer container, int x, int y, Batch batch) {
-        DC_Cell cell = container.getUserObject();
+        GridCell cell = container.getUserObject();
         if (getOverlayActor(container, INFO_TEXT) instanceof Label) {
             StringBuilder builder = new StringBuilder();
             if (mode.isShowCoordinates()) {
@@ -128,7 +128,7 @@ public class LE_GridOverlays extends GridOverlaysManager {
         return builder.toString();
     }
 
-    private void checkDrawForStruct(Batch batch, GridCellContainer container, DC_Cell cell, LevelStruct struct) {
+    private void checkDrawForStruct(Batch batch, GridCellContainer container, GridCell cell, LevelStruct struct) {
         boolean block = struct instanceof LevelBlock;
         if (block) {
             Color c = LevelEditor.getCurrent().getManager().getStructureHandler().

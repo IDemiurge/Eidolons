@@ -2,7 +2,7 @@ package eidolons.ability.effects.oneshot.item;
 
 import eidolons.ability.effects.DC_Effect;
 import eidolons.content.PROPS;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;
 import main.entity.Ref;
 import main.system.auxiliary.StringMaster;
@@ -22,7 +22,7 @@ public class CoatingEffect extends DC_Effect {
         Unit hero = (Unit) ref.getSourceObj();
         Integer val = new Formula(amount).applyFactor(StringMaster.getValueRef(Ref.KEYS.SOURCE, PROPS.COATING_MOD)).getInt(ref);
 
-        DC_WeaponObj offhand = hero.getOffhandWeapon();
+        WeaponItem offhand = hero.getOffhandWeapon();
 
         if (hero.getMainWeapon() != null)
             if (offhand != null) {

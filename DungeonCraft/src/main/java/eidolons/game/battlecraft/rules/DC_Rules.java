@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules;
 
-import eidolons.entity.unit.attach.DynamicBuffRules;
+import eidolons.entity.unit.attach.buff.DynamicBuffRules;
 import eidolons.entity.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer.BUFF_RULE;
@@ -103,12 +103,10 @@ public class DC_Rules implements GameRules {
         ensnareRule = new EnsnaredRule(getGame());
         stealthRule = new StealthRule(getGame());
         stackingRule = new StackingRule(getGame());
-        HearingRule hearingRule = new HearingRule(getGame());
         actionRules.add(unconsciousRule);
         actionRules.add(stealthRule);
         actionRules.add(ensnareRule);
         actionRules.add(stackingRule);
-        actionRules.add(hearingRule);
 //        actionRules.add(waterRule= new WaterRule(getGame()));
 
         cleaveRule = new CleaveRule(getGame());

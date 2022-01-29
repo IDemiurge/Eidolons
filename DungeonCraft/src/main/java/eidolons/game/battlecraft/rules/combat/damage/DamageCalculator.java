@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.rules.combat.damage;
 import eidolons.ability.effects.oneshot.DealDamageEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
@@ -121,7 +121,7 @@ public class DamageCalculator {
     }
 
     public static int precalculateDamage(int amount, DAMAGE_TYPE dmg_type, BattleFieldObject attacked,
-                                         BattleFieldObject attacker, DC_WeaponObj weapon, DC_ActiveObj action) {
+                                         BattleFieldObject attacker, WeaponItem weapon, DC_ActiveObj action) {
         if (dmg_type == DAMAGE_TYPE.PURE || dmg_type == DAMAGE_TYPE.POISON) {
             return amount;
         }
@@ -310,7 +310,7 @@ public class DamageCalculator {
 
     @Deprecated
     private static int initializeDamageModifiers(int amount, boolean offhand, BattleFieldObject unit,
-                                                 DC_WeaponObj weapon) {
+                                                 WeaponItem weapon) {
         amount += weapon.getDamageModifiers();
         amount += weapon.getIntParam(PARAMS.DAMAGE_BONUS);
         int hero_dmg_mod = unit.getIntParam((offhand) ? PARAMS.OFFHAND_DAMAGE_MOD
@@ -336,7 +336,7 @@ public class DamageCalculator {
     @Deprecated
     public static Integer getUnitAttackDamage(Unit unit, boolean offhand) {
         int amount = unit.getIntParam(PARAMS.BASE_DAMAGE);
-        DC_WeaponObj weapon = unit.getWeapon(offhand);
+        WeaponItem weapon = unit.getWeapon(offhand);
         if (weapon == null) {
             weapon = unit.getNaturalWeapon(offhand);
         }

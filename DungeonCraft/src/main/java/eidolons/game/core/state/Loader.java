@@ -3,13 +3,13 @@ package eidolons.game.core.state;
 import eidolons.entity.DC_IdManager;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.active.Spell;
-import eidolons.entity.item.DC_ArmorObj;
-import eidolons.entity.item.DC_JewelryObj;
-import eidolons.entity.item.DC_QuickItemObj;
-import eidolons.entity.item.DC_WeaponObj;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.item.ArmorItem;
+import eidolons.entity.item.trinket.JewelryItem;
+import eidolons.entity.item.QuickItem;
+import eidolons.entity.item.WeaponItem;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.Structure;
-import eidolons.entity.unit.attach.DC_BuffObj;
+import eidolons.entity.unit.attach.buff.DC_BuffObj;
 import eidolons.entity.unit.attach.DC_PassiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData;
@@ -217,16 +217,16 @@ public class Loader {
             case CLASSES:
                 return new DC_PassiveObj(type, owner, game, ref);
             case WEAPONS:
-                return new DC_WeaponObj(type, owner, game, ref);
+                return new WeaponItem(type, owner, game, ref);
             case ARMOR:
-                return new DC_ArmorObj(type, owner, game, ref);
+                return new ArmorItem(type, owner, game, ref);
             case ITEMS:
-                return new DC_QuickItemObj(type, owner, game, ref);
+                return new QuickItem(type, owner, game, ref);
             case JEWELRY:
-                return new DC_JewelryObj(type, owner, game, ref);
+                return new JewelryItem(type, owner, game, ref);
 
             case TERRAIN:
-                return new DC_Cell(type, x, y, game, ref
+                return new GridCell(type, x, y, game, ref
                  , game.getDungeon());
 
         }

@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.rules.combat.attack;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
@@ -55,7 +55,7 @@ public class AttackCalculator {
     protected final DC_ActiveObj action;
     protected final Unit attacker;
     protected BattleFieldObject attacked;
-    protected final DC_WeaponObj weapon;
+    protected final WeaponItem weapon;
     protected final Ref ref;
     protected final boolean counter, offhand, critical, sneak, AoO, instant ;
 
@@ -304,7 +304,7 @@ public class AttackCalculator {
             if (ranged == null) {
                 return; //TODO ??
             }
-            DC_Obj ammo = ((DC_WeaponObj) ranged).getAmmo();
+            DC_Obj ammo = ((WeaponItem) ranged).getAmmo();
             if (ammo != null) {
                 // weapon. //IN DC_WEAPONOBJ
                 // addSpecialEffect(SPECIAL_EFFECTS_CASE.ON_ATTACK,

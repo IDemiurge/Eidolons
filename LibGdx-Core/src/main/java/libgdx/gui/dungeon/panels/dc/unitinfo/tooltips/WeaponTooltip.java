@@ -1,9 +1,9 @@
 package libgdx.gui.dungeon.panels.dc.unitinfo.tooltips;
 
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.WeaponItem;
 
 public class WeaponTooltip extends SlotItemTooltip {
-    public WeaponTooltip(DC_WeaponObj weapon) {
+    public WeaponTooltip(WeaponItem weapon) {
         setUserObject(new SlotItemToolTipDataSource(weapon));
     }
 

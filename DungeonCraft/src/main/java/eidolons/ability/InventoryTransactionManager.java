@@ -1,14 +1,12 @@
 package eidolons.ability;
 
 import eidolons.content.PROPS;
-import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.HeroItem;
 import eidolons.entity.item.handlers.DC_InventoryManager;
-import eidolons.entity.item.DC_QuickItemObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.QuickItem;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
-import eidolons.netherflame.eidolon.heromake.handlers.DC_HeroManager;
-import eidolons.netherflame.eidolon.heromake.handlers.HeroManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
@@ -74,9 +72,9 @@ public class InventoryTransactionManager {
                 }
 
                 if (slot == null) {
-                    if (i instanceof DC_WeaponObj) {
+                    if (i instanceof WeaponItem) {
 
-                        DC_WeaponObj weaponObj = (DC_WeaponObj) i;
+                        WeaponItem weaponObj = (WeaponItem) i;
                         if (weaponObj.getWeaponClass() == ItemEnums.WEAPON_CLASS.MAIN_HAND_ONLY
                          || weaponObj.getWeaponClass() == ItemEnums.WEAPON_CLASS.TWO_HANDED
                          || weaponObj.getWeaponClass() == ItemEnums.WEAPON_CLASS.DOUBLE) {
@@ -94,9 +92,9 @@ public class InventoryTransactionManager {
                 i.setRef(to.getRef());
                 // equip() !
                 if (slot == null) {
-                    to.getQuickItems().add((DC_QuickItemObj) i);
+                    to.getQuickItems().add((QuickItem) i);
                 } else {
-                    to.equip((DC_HeroItemObj) i, slot);
+                    to.equip((HeroItem) i, slot);
                 }
             }
         }

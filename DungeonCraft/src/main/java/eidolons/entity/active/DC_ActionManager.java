@@ -5,8 +5,8 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.spaces.FeatSpaceInitializer;
 import eidolons.entity.active.spaces.IFeatSpaceInitializer;
-import eidolons.entity.item.DC_QuickItemObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.QuickItem;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.attach.DC_PassiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.RuleEnums;
@@ -279,7 +279,7 @@ public class DC_ActionManager implements ActionManager {
 
     }
 
-    public List<DC_UnitAction> getOrCreateWeaponActions(DC_WeaponObj weapon) {
+    public List<DC_UnitAction> getOrCreateWeaponActions(WeaponItem weapon) {
         if (weapon == null) {
             return new ArrayList<>();
         }
@@ -320,7 +320,7 @@ public class DC_ActionManager implements ActionManager {
         return "Throw " + itemName;
     }
 
-    protected boolean checkAddThrowAction(Unit unit, DC_WeaponObj weapon) {
+    protected boolean checkAddThrowAction(Unit unit, WeaponItem weapon) {
         if (!RuleKeeper.checkFeature(RuleEnums.FEATURE.THROW_WEAPON))
             return false;
         if (weapon == null) {
@@ -426,7 +426,7 @@ public class DC_ActionManager implements ActionManager {
                 active.initCosts();
             }
 
-            for (DC_QuickItemObj item : game.getManager().getActiveObj().getQuickItems()) {
+            for (QuickItem item : game.getManager().getActiveObj().getQuickItems()) {
                 if (item.getActive() != null) {
                     item.getActive().initCosts();
                 }

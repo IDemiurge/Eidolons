@@ -3,7 +3,7 @@ package libgdx.bf.decor.shard;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.exploration.dungeon.generator.model.AbstractCoordinates;
 import libgdx.bf.GridMaster;
@@ -235,7 +235,7 @@ public class ShardVisuals extends GridLayer<Shard> implements GridElement {
         }
     }
 
-    private DC_Cell getCellForShard(int x, int y) {
+    private GridCell getCellForShard(int x, int y) {
         if (y >= grid.getModuleRows()) {
             if (x >= grid.getModuleCols()) {
                 return (grid.getCell(x + 1, y + 1));

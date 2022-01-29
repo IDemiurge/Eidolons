@@ -2,7 +2,7 @@ package eidolons.ability.effects.oneshot.attack;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.spaces.Feat;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.core.game.DC_Game;
@@ -28,7 +28,7 @@ public class AttackEffect extends MicroEffect implements OneshotEffect {
     protected Effect onHit;
     protected Effect onKill;
     protected boolean offhand;
-    protected DC_WeaponObj weapon;
+    protected WeaponItem weapon;
     protected Attack attack;
 
     /*
@@ -91,7 +91,7 @@ public class AttackEffect extends MicroEffect implements OneshotEffect {
     }
 
     @OmittedConstructor
-    public AttackEffect(DC_WeaponObj weapon) {
+    public AttackEffect(WeaponItem weapon) {
         this(false, false, false);
         this.weapon = weapon;
     }
@@ -214,11 +214,11 @@ public class AttackEffect extends MicroEffect implements OneshotEffect {
         this.offhand = offhand;
     }
 
-    public DC_WeaponObj getWeapon() {
+    public WeaponItem getWeapon() {
         return weapon;
     }
 
-    public void setWeapon(DC_WeaponObj weapon) {
+    public void setWeapon(WeaponItem weapon) {
         this.weapon = weapon;
     }
 

@@ -4,9 +4,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.content.PARAMS;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.item.DC_QuickItemObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.HeroItem;
+import eidolons.entity.item.QuickItem;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.Core;
 import libgdx.assets.texture.TextureCache;
@@ -42,11 +42,11 @@ public class InventoryFactory {
             if (entity.getOBJ_TYPE_ENUM() instanceof DC_TYPE) {
                 switch (t) {
                     case WEAPONS:
-                        DC_WeaponObj weapon;
-                        if (entity instanceof DC_QuickItemObj) {
-                            weapon = ((DC_QuickItemObj) entity).getWrappedWeapon();
+                        WeaponItem weapon;
+                        if (entity instanceof QuickItem) {
+                            weapon = ((QuickItem) entity).getWrappedWeapon();
                         } else weapon =
-                         (DC_WeaponObj) entity;
+                         (WeaponItem) entity;
                         int min = weapon.calculateDamageMin(ref);
                         int max = min + weapon.calculateDiceMax();
                         text += "\n" + PARAMS.DAMAGE.getName() + ": " + min
@@ -99,9 +99,9 @@ public class InventoryFactory {
                     return container;
                 }
             }
-        DC_HeroItemObj item = null;
-        if (entity instanceof DC_HeroItemObj) {
-            item = (DC_HeroItemObj) entity;
+        HeroItem item = null;
+        if (entity instanceof HeroItem) {
+            item = (HeroItem) entity;
         } else {
             if (entity instanceof Unit) {
                 container = new InvItemActor(entity.getImagePath(), 128);

@@ -3,7 +3,7 @@ package eidolons.game.exploration.dungeon.objects;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.HeroItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.Floor;
@@ -73,9 +73,9 @@ public class KeyMaster {
         return type;
     }
 
-    public static DC_HeroItemObj getKey(Unit unit, String type) {
+    public static HeroItem getKey(Unit unit, String type) {
 
-        DC_HeroItemObj item = unit.findItem(type, true);
+        HeroItem item = unit.findItem(type, true);
         if (item != null) {
             return item;
         }
@@ -116,7 +116,7 @@ public class KeyMaster {
         if (Flags.isKeyCheat()) {
             return;
         }
-        DC_HeroItemObj key = unit.findItem(getRequiredKey(door), true);
+        HeroItem key = unit.findItem(getRequiredKey(door), true);
         if (key == null) {
             key = unit.findItem(getRequiredKey(door), false);
         }

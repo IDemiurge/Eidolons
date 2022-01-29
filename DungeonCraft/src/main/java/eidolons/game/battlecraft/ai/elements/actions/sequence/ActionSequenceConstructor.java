@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.ai.elements.actions.sequence;
 
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.item.DC_QuickItemObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.QuickItem;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
@@ -287,16 +287,16 @@ public class ActionSequenceConstructor extends AiHandler {
         Obj weapon = action.getActive().getRef().getObj(KEYS.RANGED);
         WEAPON_GROUP weapon_group = null;
         List<AiQuickItemAction> list = new ArrayList<>();
-        if (weapon instanceof DC_WeaponObj) {
-            DC_WeaponObj dc_WeaponObj = (DC_WeaponObj) weapon;
-            if (dc_WeaponObj.getWeaponGroup() == ItemEnums.WEAPON_GROUP.BOWS) {
+        if (weapon instanceof WeaponItem) {
+            WeaponItem _WeaponItem = (WeaponItem) weapon;
+            if (_WeaponItem.getWeaponGroup() == ItemEnums.WEAPON_GROUP.BOWS) {
                 weapon_group = ItemEnums.WEAPON_GROUP.ARROWS;
             }
-            if (dc_WeaponObj.getWeaponGroup() == ItemEnums.WEAPON_GROUP.CROSSBOWS) {
+            if (_WeaponItem.getWeaponGroup() == ItemEnums.WEAPON_GROUP.CROSSBOWS) {
                 weapon_group = ItemEnums.WEAPON_GROUP.BOLTS;
             }
 
-            for (DC_QuickItemObj ammo : action.getSource().getQuickItems()) {
+            for (QuickItem ammo : action.getSource().getQuickItems()) {
                 if (!ammo.isAmmo()) {
                     continue;
                 }

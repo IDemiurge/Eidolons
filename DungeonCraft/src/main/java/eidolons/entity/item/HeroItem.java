@@ -13,7 +13,7 @@ import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.entity.Ref;
 import main.entity.obj.BuffObj;
-import main.entity.obj.HeroItem;
+import main.entity.obj.IHeroItem;
 import main.entity.type.ObjType;
 import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
@@ -23,7 +23,7 @@ import main.system.auxiliary.Strings;
 
 import static eidolons.content.consts.VisualEnums.*;
 
-public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroItem, ChangeableType {
+public abstract class HeroItem extends DC_HeroAttachedObj implements IHeroItem, ChangeableType {
 
     private final ObjType originalType;
     protected boolean equipped;
@@ -33,8 +33,8 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
     private Unit originalUnit;
     private ObjType baseType;
 
-    public DC_HeroItemObj(ObjType type, Player owner, GenericGame game, Ref ref, PARAMETER[] params
-                          // , PROPERTY[] props
+    public HeroItem(ObjType type, Player owner, GenericGame game, Ref ref, PARAMETER[] params
+                    // , PROPERTY[] props
     ) {
         super(new ObjType(type), owner, game, ref);
         addDynamicValues();

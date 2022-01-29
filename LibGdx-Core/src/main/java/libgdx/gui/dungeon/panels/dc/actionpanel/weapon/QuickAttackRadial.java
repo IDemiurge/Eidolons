@@ -1,7 +1,7 @@
 package libgdx.gui.dungeon.panels.dc.actionpanel.weapon;
 
 import com.badlogic.gdx.math.Vector2;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;
 import libgdx.gui.dungeon.controls.radial.RadialContainer;
 import libgdx.gui.dungeon.controls.radial.RadialManager;
@@ -29,10 +29,10 @@ public class QuickAttackRadial extends RadialMenu {
     }
     @Override
     protected void triggered(EventCallbackParam obj) {
-        if (!(obj.get() instanceof DC_WeaponObj)) {
+        if (!(obj.get() instanceof WeaponItem)) {
             return;
         }
-        if (((DC_WeaponObj) obj.get()).isOffhand() != offhand) {
+        if (((WeaponItem) obj.get()).isOffhand() != offhand) {
             return;
         }
         openMenu();

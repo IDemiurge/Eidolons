@@ -4,7 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.entity.unit.attach.DC_PassiveObj;
-import eidolons.entity.unit.attach.HeroClass;
+import eidolons.entity.unit.attach.ClassRank;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.Core;
 import eidolons.system.libgdx.datasource.HeroDataModel;
@@ -31,7 +31,7 @@ import java.util.List;
 public class HeroClassMaster {
     public static final String CLASSES_TIER_ = "CLASSES_TIER_";
     private static ObjType openSlotType;
-    private static HeroClass openSlot;
+    private static ClassRank openSlot;
 
     public static boolean isMulticlass(Entity type) {
         return false; //TODO
@@ -173,9 +173,9 @@ public class HeroClassMaster {
         return lastData== getOpenSlot ();
     }
 
-    public static HeroClass getOpenSlot() {
+    public static ClassRank getOpenSlot() {
         if (openSlot == null) {
-            openSlot = new HeroClass(getOpenSlotType(), (Core.getMainHero()));
+            openSlot = new ClassRank(getOpenSlotType(), (Core.getMainHero()));
         }
         return openSlot;
     }

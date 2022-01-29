@@ -3,7 +3,7 @@ package eidolons.entity.handlers.active;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
-import eidolons.entity.item.DC_QuickItemObj;
+import eidolons.entity.item.QuickItem;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
@@ -189,7 +189,7 @@ public class Executor extends ActiveHandler {
 
     protected void syncActionRefWithSource() {
         if (getAction() instanceof DC_QuickItemAction) {
-            DC_QuickItemObj item = ((DC_QuickItemAction) getAction()).getItem();
+            QuickItem item = ((DC_QuickItemAction) getAction()).getItem();
             if (item.isAmmo()) {
                 getAction().getOwnerObj().getRef().setID(KEYS.AMMO, item.getId());
             }

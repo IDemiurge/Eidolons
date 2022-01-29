@@ -1,16 +1,16 @@
 package eidolons.game.battlecraft.ai.elements.actions;
 
-import eidolons.entity.item.DC_QuickItemObj;
+import eidolons.entity.item.QuickItem;
 import main.entity.Ref;
 
 public class AiQuickItemAction extends Action {
 
-    public AiQuickItemAction(DC_QuickItemObj item) {
+    public AiQuickItemAction(QuickItem item) {
         this(item, item.getRef());
 
     }
 
-    public AiQuickItemAction(DC_QuickItemObj item, Ref ref) {
+    public AiQuickItemAction(QuickItem item, Ref ref) {
         super(item.getActive(), ref);
     }
 

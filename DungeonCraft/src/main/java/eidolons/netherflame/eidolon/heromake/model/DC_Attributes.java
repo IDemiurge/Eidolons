@@ -105,7 +105,6 @@ public class DC_Attributes  {
                 break;
             case WISDOM:
                 mod(amount, AttributeConsts.WIS_ESSENCE_BONUS, attr, PARAMS.ESSENCE);
-                mod(amount, AttributeConsts.WIS_PERCEPTION_BONUS, attr, PARAMS.PERCEPTION);
                 mod(amount, AttributeConsts.WIS_SPIRIT_BONUS, attr, PARAMS.SPIRIT );
                 mod(amount, AttributeConsts.WIS_LUCK_BONUS, attr, PARAMS.LUCK );
                 mod(amount - 25, AttributeConsts.B25_WIS_ELEMENTAL_RES , attr, ELEMENTAL_RESISTANCES.getParams());

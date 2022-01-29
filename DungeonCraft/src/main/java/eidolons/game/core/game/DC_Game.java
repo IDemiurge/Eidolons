@@ -9,11 +9,10 @@ import eidolons.entity.DC_IdManager;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.item.handlers.DC_InventoryManager;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.unit.attach.DC_HeroAttachedObj;
 import eidolons.entity.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.logic.battlefield.DC_BattleFieldManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
@@ -483,7 +482,7 @@ public class DC_Game extends GenericGame {
         return getObjMaster().getObjectsOnCoordinate(c, overlayingIncluded);
     }
 
-    public Set<DC_Cell> getCellsForCoordinates(Set<Coordinates> coordinates) {
+    public Set<GridCell> getCellsForCoordinates(Set<Coordinates> coordinates) {
         return getObjMaster().getCellsForCoordinates(coordinates);
     }
 
@@ -520,7 +519,7 @@ public class DC_Game extends GenericGame {
         getObjMaster().removeUnit(unit);
     }
 
-    public Set<DC_Cell> getCells() {
+    public Set<GridCell> getCells() {
         return getObjMaster().getCellsSet();
     }
 
@@ -600,7 +599,7 @@ public class DC_Game extends GenericGame {
     }
 
     @Override
-    public DC_Cell getCell(Coordinates coordinates) {
+    public GridCell getCell(Coordinates coordinates) {
         return getObjMaster().getCellByCoordinate(coordinates);
     }
 

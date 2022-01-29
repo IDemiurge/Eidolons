@@ -5,7 +5,7 @@ import eidolons.ability.InventoryTransactionManager;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PROPS;
 import eidolons.entity.SimCache;
-import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.HeroItem;
 import eidolons.entity.unit.attach.DC_PassiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.Simulation;
@@ -90,10 +90,10 @@ public class HeroDataModel extends Unit {
         SimCache.getInstance().addSim(hero.getArmor(), hero.getArmor());
     }
 
-    protected void cacheSimItemContainer(DequeImpl<? extends DC_HeroItemObj> inventory,
-                                       DequeImpl<? extends DC_HeroItemObj> inventory1) {
+    protected void cacheSimItemContainer(DequeImpl<? extends HeroItem> inventory,
+                                       DequeImpl<? extends HeroItem> inventory1) {
         int i = 0;
-        for (DC_HeroItemObj real : inventory) {
+        for (HeroItem real : inventory) {
             SimCache.getInstance().addSim(real, inventory1.get(i++));
         }
     }

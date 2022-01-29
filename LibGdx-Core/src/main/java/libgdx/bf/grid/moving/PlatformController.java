@@ -3,7 +3,7 @@ package libgdx.bf.grid.moving;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.script.CellScriptData;
 import eidolons.game.core.game.DC_Game;
@@ -196,7 +196,7 @@ public class PlatformController extends MoveController {
     protected void coordinatesChanged() {
         log(LOG_CHANNEL.PLATFORM,getName() + " is at " + coordinates);
         for (PlatformCell cell : cells) {
-            DC_Cell dc_cell = DC_Game.game.getCell(coordinates.getOffset(
+            GridCell dc_cell = DC_Game.game.getCell(coordinates.getOffset(
                     cell.getOriginalX() - tip.getOriginalX(),
                     cell.getOriginalY() - tip.getOriginalY()));
             cell.setUserObject(dc_cell);

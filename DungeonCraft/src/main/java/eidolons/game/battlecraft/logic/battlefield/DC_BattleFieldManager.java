@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.battlefield;
 
 import eidolons.content.consts.libgdx.WallMaster;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.core.game.DC_Game;
@@ -232,8 +232,8 @@ public class DC_BattleFieldManager extends BattleFieldManager {
         return diagonalJoints;
     }
 
-    public Set<DC_Cell> getCellsWithinRange(BattleFieldObject observer, int i) {
-        HashSet<DC_Cell> set = new HashSet<>(game.getCells());
+    public Set<GridCell> getCellsWithinRange(BattleFieldObject observer, int i) {
+        HashSet<GridCell> set = new HashSet<>(game.getCells());
         set.removeIf(cell -> PositionMaster.getDistance(observer, cell) > i);
         return set;
     }

@@ -7,7 +7,7 @@ import eidolons.content.PROPS;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.unit.DC_UnitModel;
+import eidolons.entity.unit.UnitModel;
 import eidolons.entity.unit.Unit;
 import eidolons.content.DC_Formulas;
 import eidolons.system.math.roll.DiceMaster;
@@ -33,29 +33,29 @@ import main.system.math.MathMaster;
 
 import java.util.List;
 
-public class DC_WeaponObj extends DC_HeroSlotItem {
+public class WeaponItem extends HeroSlotItem {
 
     private boolean mainHand;
     private List<DC_UnitAction> attackActions;
-    private DC_QuickItemObj ammo;
-    private DC_QuickItemObj lastAmmo;
+    private QuickItem ammo;
+    private QuickItem lastAmmo;
     private GenericEnums.DieType die;
 
-    public DC_WeaponObj(ObjType type, Player owner, GenericGame game, Ref ref) {
+    public WeaponItem(ObjType type, Player owner, GenericGame game, Ref ref) {
         this(type, owner, game, ref, false);
     }
 
-    public DC_WeaponObj(ObjType type, Player owner, GenericGame game, Ref ref, boolean main_hand) {
+    public WeaponItem(ObjType type, Player owner, GenericGame game, Ref ref, boolean main_hand) {
         super(type, owner, game, ref, DC_ContentValsManager.getWeaponModifyingParams());
         this.setMainHand(main_hand);
     }
 
-    public DC_WeaponObj(ObjType type, Unit heroObj) {
+    public WeaponItem(ObjType type, Unit heroObj) {
         this(type, heroObj.getOwner(), heroObj.getGame(), heroObj.getRef(), true);
     }
 
     @Override
-    public void applySpecialEffects(SPECIAL_EFFECTS_CASE case_type, DC_UnitModel target, Ref REF) {
+    public void applySpecialEffects(SPECIAL_EFFECTS_CASE case_type, UnitModel target, Ref REF) {
         if (REF.getActive() instanceof DC_QuickItemAction) {
             DC_Obj weapon = (DC_Obj) REF.getActive().getRef().getObj(KEYS.ITEM);
             if (weapon != null) {
@@ -401,11 +401,11 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         this.attackActions = attackActions;
     }
 
-    public DC_QuickItemObj getAmmo() {
+    public QuickItem getAmmo() {
         return ammo;
     }
 
-    public void setAmmo(DC_QuickItemObj ammo) {
+    public void setAmmo(QuickItem ammo) {
         this.ammo = ammo;
         if (ammo == null) {
             getHero().getRef().removeValue(KEYS.AMMO);
@@ -419,7 +419,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
             lastAmmo = ammo;
     }
 
-    public DC_QuickItemObj getLastAmmo() {
+    public QuickItem getLastAmmo() {
         return lastAmmo;
     }
 

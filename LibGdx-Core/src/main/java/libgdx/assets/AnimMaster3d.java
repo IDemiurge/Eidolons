@@ -4,8 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
-import eidolons.entity.item.DC_QuickItemObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.QuickItem;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;
 import libgdx.anims.Animation;
 import libgdx.anims.CompositeAnim;
@@ -30,7 +30,7 @@ public class AnimMaster3d {
     public static void preloadAtlases(Unit unit) {
         if (isOff())
             return;
-        DC_WeaponObj weapon = unit.getWeapon(false);
+        WeaponItem weapon = unit.getWeapon(false);
         if (weapon != null)
             Atlases.preloadAtlas(weapon);
         weapon = unit.getWeapon(true);
@@ -42,7 +42,7 @@ public class AnimMaster3d {
         weapon = unit.getNaturalWeapon(true);
         if (weapon != null)
             Atlases.preloadAtlas(weapon);
-        for (DC_QuickItemObj sub : unit.getQuickItems()) {
+        for (QuickItem sub : unit.getQuickItems()) {
             if (sub.isAmmo()) {
                 Atlases.preloadAtlas(sub.getWrappedWeapon());
             } else {

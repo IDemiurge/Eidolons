@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.ai.elements.actions;
 
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.task.Task;
@@ -67,7 +67,7 @@ public class Action {
             return active.getName();
         if (ref.getTargetObj() != null) {
             String name = ref.getTargetObj().getName();
-            if (ref.getTargetObj() instanceof DC_Cell) {
+            if (ref.getTargetObj() instanceof GridCell) {
                 name = ref.getTargetObj().getProp("name")
                         + StringMaster.wrapInBrackets(ref.getTargetObj().getCoordinates().toString());
             }

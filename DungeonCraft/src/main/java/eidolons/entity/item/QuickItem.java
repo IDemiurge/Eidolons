@@ -16,7 +16,7 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.HeroItem;
+import main.entity.obj.IHeroItem;
 import main.entity.type.ObjType;
 import main.entity.type.TypeInitializer;
 import main.game.core.game.GenericGame;
@@ -30,17 +30,17 @@ import main.system.text.TextParser;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
-public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem, Feat {
+public class QuickItem extends HeroItem implements IHeroItem, Feat {
     private static final VALUE[] TRANSLATED_VALUES = {G_PROPS.STD_BOOLS,
             PARAMS.FORMULA, G_PROPS.DESCRIPTION,};
     // or aggregation?
     private DC_QuickItemAction active;
     private boolean wrapped;
 
-    private DC_WeaponObj wrappedWeapon;
+    private WeaponItem wrappedWeapon;
     private boolean ammo;
 
-    public DC_QuickItemObj(ObjType type, Player owner, GenericGame game, Ref ref) {
+    public QuickItem(ObjType type, Player owner, GenericGame game, Ref ref) {
         super(type, owner, game, ref, null);
         if (getOwnerObj().isPlayerCharacter()) {
             // generate active
@@ -48,7 +48,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem, Feat {
         }
     }
 
-    public DC_QuickItemObj(ObjType type, Player owner, GenericGame game, Ref ref, boolean wrapped) {
+    public QuickItem(ObjType type, Player owner, GenericGame game, Ref ref, boolean wrapped) {
         super(type, owner, game, ref, null);
         this.wrapped = wrapped;
         type.addProperty(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.WRAPPED_ITEM + "", true);
@@ -60,7 +60,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem, Feat {
         }
     }
 
-    public DC_QuickItemObj(DC_WeaponObj item) {
+    public QuickItem(WeaponItem item) {
         this(item.getType(), item.getOwner(), item.getGame(), item.getRef(), false);
         setWrappedWeapon(item);
     }
@@ -79,7 +79,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem, Feat {
     private void generateWrappedActive() {
         String typeName;
         if (wrappedWeapon == null)
-            setWrappedWeapon(new DC_WeaponObj(type, owner, getGame(), ref));
+            setWrappedWeapon(new WeaponItem(type, owner, getGame(), ref));
 
         if (checkProperty(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.AMMO + "")) {
             this.ammo = true;
@@ -409,13 +409,13 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem, Feat {
         this.active = active;
     }
 
-    public DC_WeaponObj getWrappedWeapon() {
+    public WeaponItem getWrappedWeapon() {
         if (!isConstructed())
             construct();
         return wrappedWeapon;
     }
 
-    public void setWrappedWeapon(DC_WeaponObj wrappedWeapon) {
+    public void setWrappedWeapon(WeaponItem wrappedWeapon) {
         this.wrappedWeapon = wrappedWeapon;
         wrapped = wrappedWeapon != null;
     }

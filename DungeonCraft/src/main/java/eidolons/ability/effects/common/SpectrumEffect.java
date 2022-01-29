@@ -3,7 +3,7 @@ package eidolons.ability.effects.common;
 import eidolons.ability.effects.DC_Effect;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.game.core.master.EffectMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
@@ -126,7 +126,7 @@ public class SpectrumEffect extends DC_Effect {
             DequeImpl<? extends Obj> objects = new DequeImpl<>(getGame().getObjectsOnCoordinate(
                c, false ));
             if (applyThrough) {
-                DC_Cell cell = getGame().getCell(c);
+                GridCell cell = getGame().getCell(c);
                 if (cell != null) {
                     objects.addCast(cell);
                 }

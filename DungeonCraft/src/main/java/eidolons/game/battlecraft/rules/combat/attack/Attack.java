@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.rules.combat.attack;
 
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
@@ -43,7 +43,7 @@ public class Attack {
     private boolean triggered;
     private List<Damage> rawDamage;
     private int damageDealt;
-    private DC_WeaponObj weapon;
+    private WeaponItem weapon;
     private boolean doubleStrike;
     private NewRpgEnums.HitType hitType;
     private int accuracyRate;
@@ -105,7 +105,7 @@ public class Attack {
     public DAMAGE_TYPE getDamageType() {
         DAMAGE_TYPE dmg_type = action.getDamageType();
         if (dmg_type == null) {
-            DC_WeaponObj weapon = getWeapon();
+            WeaponItem weapon = getWeapon();
             if (weapon == null) {
                 dmg_type = attacker.getDamageType();
             } else {
@@ -118,12 +118,12 @@ public class Attack {
     public void setDamageType(DAMAGE_TYPE dmg_type) {
     }
 
-    public DC_WeaponObj getWeapon() {
+    public WeaponItem getWeapon() {
         if (weapon == null) {
             if (offhand) {
-                weapon = (DC_WeaponObj) ref.getObj(KEYS.OFFHAND);
+                weapon = (WeaponItem) ref.getObj(KEYS.OFFHAND);
             } else {
-                weapon = (DC_WeaponObj) ref.getObj(KEYS.WEAPON);
+                weapon = (WeaponItem) ref.getObj(KEYS.WEAPON);
             }
         }
         if (weapon == null) {
@@ -294,9 +294,9 @@ public class Attack {
         return remainingDamage;
     }
 
-    public DC_WeaponObj getShield() {
+    public WeaponItem getShield() {
         if (attacked instanceof Unit) {
-            DC_WeaponObj weapon = ((Unit) attacked).getWeapon(true);
+            WeaponItem weapon = ((Unit) attacked).getWeapon(true);
             if (weapon != null) {
                 if (weapon.isShield()) {
                     return weapon;

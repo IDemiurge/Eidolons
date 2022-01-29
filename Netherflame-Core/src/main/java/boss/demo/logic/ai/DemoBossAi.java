@@ -2,7 +2,7 @@ package boss.demo.logic.ai;
 
 import boss.logic.action.BOSS_ACTION;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import boss.BossManager;
 import boss.ai.BossAi;
@@ -27,7 +27,7 @@ public class  DemoBossAi extends BossAi {
         return new Action(active, ref);
     }
 
-    private DC_Cell getTargetCell(DC_ActiveObj active) {
+    private GridCell getTargetCell(DC_ActiveObj active) {
        return getGame().getCell(Eidolons.getMainHero().getCoordinates());
     }
 

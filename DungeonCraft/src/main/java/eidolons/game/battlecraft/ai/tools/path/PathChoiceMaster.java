@@ -5,7 +5,7 @@ import eidolons.ability.effects.oneshot.move.SelfMoveEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
@@ -105,8 +105,8 @@ public class PathChoiceMaster {
 
                     List<Choice> choicesForAction = new ArrayList<>();
                     for (Object obj : objects) {
-                        if (obj instanceof DC_Cell) {
-                            Coordinates coordinates = ((DC_Cell) obj).getCoordinates();
+                        if (obj instanceof GridCell) {
+                            Coordinates coordinates = ((GridCell) obj).getCoordinates();
                             // if (a.getName().equals("Clumsy Leap"))
                             if (PositionMaster.getDistance(coordinates, c_coordinate) > Math.max(1,
                              a.getIntParam(PARAMS.RANGE))) {
@@ -120,7 +120,7 @@ public class PathChoiceMaster {
                             // choices?
 
                             Ref ref = unit.getRef().getCopy();
-                            ref.setTarget(((DC_Cell) obj).getId());
+                            ref.setTarget(((GridCell) obj).getId());
                             Choice choice = new Choice(coordinates, c_coordinate,
                              new Action(a, ref));
                             choicesForAction.add(choice);

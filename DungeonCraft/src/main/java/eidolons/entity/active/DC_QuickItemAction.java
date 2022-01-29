@@ -1,7 +1,7 @@
 package eidolons.entity.active;
 
 import eidolons.entity.handlers.active.item.ItemActiveMaster;
-import eidolons.entity.item.DC_QuickItemObj;
+import eidolons.entity.item.QuickItem;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
@@ -16,7 +16,7 @@ import main.system.sound.AudioEnums;
 
 public class DC_QuickItemAction extends DC_ActiveObj {
 
-    private DC_QuickItemObj item;
+    private QuickItem item;
 
     public DC_QuickItemAction(ObjType type, Player owner, GenericGame game, Ref ref) {
         super(type, owner, game, ref);
@@ -62,11 +62,11 @@ public class DC_QuickItemAction extends DC_ActiveObj {
 
     }
 
-    public DC_QuickItemObj getItem() {
+    public QuickItem getItem() {
         return item;
     }
 
-    public void setItem(DC_QuickItemObj dc_QuickItemObj) {
+    public void setItem(QuickItem dc_QuickItemObj) {
         this.item = dc_QuickItemObj;
     }
 

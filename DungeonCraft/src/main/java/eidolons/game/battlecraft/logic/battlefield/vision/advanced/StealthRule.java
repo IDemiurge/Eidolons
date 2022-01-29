@@ -4,7 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.unit.DC_UnitModel;
+import eidolons.entity.unit.UnitModel;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
@@ -147,9 +147,9 @@ public class StealthRule implements ActionRule {
         }
         Integer factor = 2 * source.getIntParam(PARAMS.SIGHT_RANGE);
 
-        if (FacingMaster.getSingleFacing((DC_UnitModel) source, (BfObj) target) == UnitEnums.FACING_SINGLE.BEHIND) {
+        if (FacingMaster.getSingleFacing((UnitModel) source, (BfObj) target) == UnitEnums.FACING_SINGLE.BEHIND) {
             factor = source.getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
-        } else if (FacingMaster.getSingleFacing((DC_UnitModel) source, (BfObj) target) == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
+        } else if (FacingMaster.getSingleFacing((UnitModel) source, (BfObj) target) == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
             factor -= source.getIntParam(PARAMS.SIDE_SIGHT_PENALTY);
         }
         if (action != null) {

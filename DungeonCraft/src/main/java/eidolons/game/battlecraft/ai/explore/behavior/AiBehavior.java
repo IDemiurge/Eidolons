@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.ai.explore.behavior;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
@@ -391,7 +391,7 @@ public abstract class AiBehavior {
          ai);
     }
 
-    protected DC_Cell getCell(Coordinates coordinates) {
+    protected GridCell getCell(Coordinates coordinates) {
         return ai.getUnit().getGame().getCell(coordinates);
     }
 

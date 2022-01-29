@@ -1,5 +1,6 @@
-package eidolons.entity.item;
+package eidolons.entity.item.trinket;
 
+import eidolons.entity.item.HeroItem;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ItemEnums.JEWELRY_TYPE;
@@ -10,9 +11,9 @@ import main.entity.type.ObjType;
 import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 
-public class DC_JewelryObj extends DC_HeroItemObj {
+public class JewelryItem extends HeroItem {
 
-    public DC_JewelryObj(ObjType type, Player owner, GenericGame game, Ref ref) {
+    public JewelryItem(ObjType type, Player owner, GenericGame game, Ref ref) {
         super(type, owner, game, ref, getJewelryParams());
     }
 

@@ -1,8 +1,8 @@
 package eidolons.entity.active.spaces;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.item.DC_ArmorObj;
-import eidolons.entity.item.DC_QuickItemObj;
+import eidolons.entity.item.ArmorItem;
+import eidolons.entity.item.QuickItem;
 import eidolons.entity.unit.Unit;
 import main.system.datatypes.DequeImpl;
 import org.apache.commons.lang3.text.StrBuilder;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class QuickItemFP {
 
-    public List<FeatSpaceData> split(DequeImpl<DC_QuickItemObj> items, Unit unit) {
+    public List<FeatSpaceData> split(DequeImpl<QuickItem> items, Unit unit) {
         List<FeatSpaceData> spaces =     new ArrayList<>();
         Integer bonus = unit.getIntParam(PARAMS.QUICK_SLOT_BONUS);
         //c_ is just useless now!
@@ -26,12 +26,12 @@ public class QuickItemFP {
         return spaces;
     }
 
-    private FeatSpaceData createQIFP(DC_ArmorObj armor, Integer bonus, DequeImpl<DC_QuickItemObj> items) {
+    private FeatSpaceData createQIFP(ArmorItem armor, Integer bonus, DequeImpl<QuickItem> items) {
         Integer n = armor.getIntParam(PARAMS.QUICK_SLOTS);
         n = Math.min(6, n + bonus);
         StrBuilder sbuilder = new StrBuilder();
         for (int i = 0; i < n; i++) {
-            DC_QuickItemObj item = items.pop();
+            QuickItem item = items.pop();
             sbuilder.append(item.getName());
         }
 

@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.content.PARAMS;
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_UnitAction;
-import eidolons.entity.item.DC_ArmorObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.ArmorItem;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;
 import libgdx.StyleHolder;
 import libgdx.gui.UiMaster;
@@ -312,7 +312,7 @@ public class UnitDataSource implements
 
     @Override
     public ValueContainer getArmorObj() {
-        final DC_ArmorObj armor = unit.getArmor();
+        final ArmorItem armor = unit.getArmor();
 
         final ValueContainer container;
 
@@ -332,7 +332,7 @@ public class UnitDataSource implements
 
     @Override
     public List<ValueContainer> getParamValues() {
-        final DC_ArmorObj armor = unit.getArmor();
+        final ArmorItem armor = unit.getArmor();
         List<ValueContainer> values = new ArrayList<>();
         if (armor != null) {
             final String cd = armor.getStrParam(PARAMS.C_DURABILITY);
@@ -374,42 +374,42 @@ public class UnitDataSource implements
 
     @Override
     public ValueContainer getOffWeapon() {
-        DC_WeaponObj mainWeapon = unit.getOffhandWeapon();
+        WeaponItem mainWeapon = unit.getOffhandWeapon();
 
         return getWeaponValueContainer(mainWeapon);
     }
 
     @Override
     public List<ValueContainer> getOffWeaponDetailInfo() {
-        DC_WeaponObj weapon = unit.getWeapon(true);
+        WeaponItem weapon = unit.getWeapon(true);
 
         return getWeaponDetail(weapon);
     }
 
     @Override
     public ValueContainer getNaturalOffWeapon() {
-        DC_WeaponObj mainWeapon = unit.getNaturalWeapon(true);
+        WeaponItem mainWeapon = unit.getNaturalWeapon(true);
 
         return getWeaponValueContainer(mainWeapon);
     }
 
     @Override
     public List<ValueContainer> getNaturalOffWeaponDetailInfo() {
-        DC_WeaponObj weapon = unit.getNaturalWeapon(true);
+        WeaponItem weapon = unit.getNaturalWeapon(true);
 
         return getWeaponDetail(weapon);
     }
 
     @Override
     public ValueContainer getMainWeapon() {
-        DC_WeaponObj mainWeapon = unit.getMainWeapon();
+        WeaponItem mainWeapon = unit.getMainWeapon();
 
         return getWeaponValueContainer(mainWeapon);
     }
 
     @Override
     public List<ValueContainer> getMainWeaponDetailInfo() {
-        DC_WeaponObj mainWeapon = unit.getMainWeapon();
+        WeaponItem mainWeapon = unit.getMainWeapon();
         try {
             return getWeaponDetail(mainWeapon);
         } catch (Exception e) {
@@ -420,19 +420,19 @@ public class UnitDataSource implements
 
     @Override
     public ValueContainer getNaturalMainWeapon() {
-        DC_WeaponObj weapon = unit.getNaturalWeapon(false);
+        WeaponItem weapon = unit.getNaturalWeapon(false);
 
         return getWeaponValueContainer(weapon);
     }
 
     @Override
     public List<ValueContainer> getNaturalMainWeaponDetailInfo() {
-        DC_WeaponObj weapon = unit.getNaturalWeapon(false);
+        WeaponItem weapon = unit.getNaturalWeapon(false);
 
         return getWeaponDetail(weapon);
     }
 
-    private List<ValueContainer> getWeaponDetail(DC_WeaponObj weapon) {
+    private List<ValueContainer> getWeaponDetail(WeaponItem weapon) {
         List<ValueContainer> result = new ArrayList<>();
 
         if (weapon != null) {
@@ -492,7 +492,7 @@ public class UnitDataSource implements
         return getStatsValueContainers(UNIT_INFO_PARAMS_MISC);
     }
 
-    private ValueContainer getWeaponValueContainer(DC_WeaponObj weapon) {
+    private ValueContainer getWeaponValueContainer(WeaponItem weapon) {
         TextureRegion image;
         if (weapon != null) {
             image = TextureCache.getOrCreateR(weapon.getImagePath());

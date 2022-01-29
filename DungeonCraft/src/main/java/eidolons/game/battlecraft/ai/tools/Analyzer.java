@@ -6,10 +6,9 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
@@ -47,7 +46,7 @@ public class Analyzer extends AiHandler {
         super(master);
     }
 
-    public static List<DC_Cell> getProtectCells(UnitAI ai) {
+    public static List<GridCell> getProtectCells(UnitAI ai) {
         List<Unit> list = getAllies(ai);
         //TODO filter
         return list.stream().map(unit -> unit.getGame().getCell(unit.getCoordinates())).collect(Collectors.toList());
@@ -205,8 +204,8 @@ public class Analyzer extends AiHandler {
 
     }
 
-    public static List<DC_Cell> getLastSeenEnemyCells(UnitAI ai) {
-        List<DC_Cell> list = new ArrayList<>();
+    public static List<GridCell> getLastSeenEnemyCells(UnitAI ai) {
+        List<GridCell> list = new ArrayList<>();
         for (DC_Obj obj : ai.getUnit().getOwner().getLastSeenCache().keySet()) {
             if (isEnemy(obj, ai.getUnit())) {
                 Coordinates coordinates = ai.getUnit().getOwner()
@@ -338,29 +337,29 @@ public class Analyzer extends AiHandler {
     }
 
 
-    public static List<DC_Cell> getSafeCells(UnitAI ai) {
+    public static List<GridCell> getSafeCells(UnitAI ai) {
         // TODO performance dicatates adjacent only...
         return getCells(ai, true, false, true);
     }
 
-    public static List<DC_Cell> getMoveTargetCells(UnitAI ai) {
+    public static List<GridCell> getMoveTargetCells(UnitAI ai) {
         return getCells(ai, true);
     }
 
-    public static List<DC_Cell> getCells(UnitAI ai, boolean detected) {
+    public static List<GridCell> getCells(UnitAI ai, boolean detected) {
         return getCells(ai, false, detected, true);
     }
 
-    public static List<DC_Cell> getCells(UnitAI ai, boolean adjacent,
-                                         boolean detected, boolean free) {
+    public static List<GridCell> getCells(UnitAI ai, boolean adjacent,
+                                          boolean detected, boolean free) {
         return getCells(ai.getUnit(), adjacent, detected, free);
     }
 
-    public static List<DC_Cell> getCells(Unit targetUnit,
-                                         boolean adjacent, boolean detected, boolean free) {
-        List<DC_Cell> list = new ArrayList<>();
+    public static List<GridCell> getCells(Unit targetUnit,
+                                          boolean adjacent, boolean detected, boolean free) {
+        List<GridCell> list = new ArrayList<>();
         for (Obj obj : targetUnit.getGame().getCells()) {
-            DC_Cell cell = (DC_Cell) obj;
+            GridCell cell = (GridCell) obj;
 
             if (adjacent) {
                 if (!obj.getCoordinates().isAdjacent(
@@ -385,7 +384,7 @@ public class Analyzer extends AiHandler {
         DIRECTION d = ai.getGroup().getWanderDirection();
         // permittedCells = ai.getGroup().getWanderBlocks();
         List<DC_Obj> list = new ArrayList<>();
-        for (DC_Cell cell : getCells(ai, false, false, true)) {
+        for (GridCell cell : getCells(ai, false, false, true)) {
             if (d != null) {
                 if (DirectionMaster.getRelativeDirection(cell, ai.getUnit()) != d) {
                     continue;
@@ -401,12 +400,12 @@ public class Analyzer extends AiHandler {
         return list;
     }
 
-    public static List<DC_Cell> getSummonCells(UnitAI ai, DC_ActiveObj action) {
+    public static List<GridCell> getSummonCells(UnitAI ai, DC_ActiveObj action) {
 
         if (EffectMaster.check(action, RaiseEffect.class)) {
             return new ArrayList<>(getCorpseCells(ai.getUnit()));
         }
-        List<DC_Cell> cells = getCells(ai, true, true, true);
+        List<GridCell> cells = getCells(ai, true, true, true);
         boolean melee = true;
         // try{
         // } preCheck melee TODO
@@ -429,16 +428,16 @@ public class Analyzer extends AiHandler {
         return cells;
     }
 
-    private static Set<DC_Cell> getCorpseCells(Unit unit) {
+    private static Set<GridCell> getCorpseCells(Unit unit) {
         return unit.getGame().getCellsForCoordinates(
                 unit.getGame().getGraveyardManager().getCorpseCells());
     }
 
     public static List<? extends DC_Obj> getZoneDamageCells(Unit unit) {
-        List<DC_Cell> cells = getCells(unit.getUnitAI(), false, false, true);
-        List<DC_Cell> remove_cells = new ArrayList<>();
+        List<GridCell> cells = getCells(unit.getUnitAI(), false, false, true);
+        List<GridCell> remove_cells = new ArrayList<>();
         loop:
-        for (DC_Cell c : cells) {
+        for (GridCell c : cells) {
             for (Coordinates c1 : c.getCoordinates().getAdjacentCoordinates()) {
                 Unit enemy = unit.getGame().getUnitByCoordinate(c1);
                 if (isEnemy(enemy, unit)) {
@@ -448,20 +447,20 @@ public class Analyzer extends AiHandler {
             remove_cells.add(c);
         }
 
-        for (DC_Cell c : remove_cells) {
+        for (GridCell c : remove_cells) {
             cells.remove(c);
         }
         return cells;
     }
 
-    public static List<DC_Cell> getSearchCells(UnitAI ai) {
-        List<DC_Cell> cells = getLastSeenEnemyCells(ai);
+    public static List<GridCell> getSearchCells(UnitAI ai) {
+        List<GridCell> cells = getLastSeenEnemyCells(ai);
         if (!cells.isEmpty()) {
-            return new ListMaster<DC_Cell>()
-                    .getList(new RandomWizard<DC_Cell>()
+            return new ListMaster<GridCell>()
+                    .getList(new RandomWizard<GridCell>()
                             .getRandomListItem(cells));
         }
-        return new ListMaster<DC_Cell>().getList(ai
+        return new ListMaster<GridCell>().getList(ai
                 .getUnit()
                 .getGame()
                 .getCell(

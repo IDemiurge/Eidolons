@@ -10,7 +10,7 @@ import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
@@ -342,7 +342,7 @@ public class DC_MovementManager implements MovementManager {
 
     }
 
-    public boolean move(BattleFieldObject obj, DC_Cell cell, boolean free, MOVE_MODIFIER mod,
+    public boolean move(BattleFieldObject obj, GridCell cell, boolean free, MOVE_MODIFIER mod,
                         Ref ref) {
         Ref REF = ref.getCopy();// new Ref(obj.getGame());
         REF.setTarget(cell.getId());
@@ -397,7 +397,7 @@ public class DC_MovementManager implements MovementManager {
         return moved(obj, cell, false);
     }
 
-    public boolean moved(BattleFieldObject obj, DC_Cell cell, boolean quiet) {
+    public boolean moved(BattleFieldObject obj, GridCell cell, boolean quiet) {
         Ref ref = Ref.getSelfTargetingRefCopy(obj);
         ref.setQuiet(quiet);
         return moved(obj, cell, ref);
@@ -407,7 +407,7 @@ public class DC_MovementManager implements MovementManager {
         moved(unit, game.getCell(unit.getCoordinates()), quiet);
     }
 
-    public boolean moved(BattleFieldObject obj, DC_Cell cell, Ref REF) {
+    public boolean moved(BattleFieldObject obj, GridCell cell, Ref REF) {
         anObjectMoved=true;
         DC_GameState.gridChanged=true;
         if (!REF.isQuiet())

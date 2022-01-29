@@ -1,7 +1,7 @@
 package eidolons.ability.effects.oneshot.rule;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.HeroItem;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.entity.Ref.KEYS;
@@ -35,13 +35,13 @@ public class DurabilityReductionEffect extends MicroEffect implements OneshotEff
             armor = armorItem.getIntParam(PARAMS.ARMOR);
         }
         if (attacker == null) {// spell
-            DC_HeroItemObj item = (DC_HeroItemObj) ref.getTargetObj();
+            HeroItem item = (HeroItem) ref.getTargetObj();
             // mod = ref.getActive().getIntParam(param, base)
             durabilityLost = item.reduceDurabilityForDamage(dmg_amount, armor, 100, false);
             return true;
         }
 
-        DC_HeroItemObj item = (DC_HeroItemObj) ((attacker) ? weapon : armorItem);
+        HeroItem item = (HeroItem) ((attacker) ? weapon : armorItem);
         if (item == null) {
             return false;
         }

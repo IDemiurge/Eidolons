@@ -3,9 +3,9 @@ package eidolons.netherflame.eidolon.heromake.handlers;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.DC_Formulas;
 import eidolons.content.PROPS;
-import eidolons.entity.item.DC_HeroSlotItem;
-import eidolons.entity.item.DC_JewelryObj;
-import eidolons.entity.item.DC_QuickItemObj;
+import eidolons.entity.item.HeroSlotItem;
+import eidolons.entity.item.trinket.JewelryItem;
+import eidolons.entity.item.QuickItem;
 import eidolons.entity.item.handlers.JewelryMaster;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.Core;
@@ -136,7 +136,7 @@ public class HeroManager {
     }
 
     public static boolean isQuickSlotOnly(Entity type) {
-        if (type instanceof DC_QuickItemObj)
+        if (type instanceof QuickItem)
             return true;
         return type.checkSingleProp(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.AMMO + "");
     }
@@ -344,7 +344,7 @@ public class HeroManager {
         if (hero == null) {
             return;
         }
-        for (DC_HeroSlotItem item : hero.getSlotItems()) {
+        for (HeroSlotItem item : hero.getSlotItems()) {
             if (item != null) {
                 if (item.getAttachments() != null) {
                     item.getAttachments().clear();
@@ -488,7 +488,7 @@ public class HeroManager {
 
     private List<ObjType> getSortedJewelry(Unit hero) {
         return JewelryMaster
-                .getSortedJewelryData(new ListMaster<DC_JewelryObj>().convertToTypeList(
+                .getSortedJewelryData(new ListMaster<JewelryItem>().convertToTypeList(
                         hero
                                 .getJewelry()));
     }

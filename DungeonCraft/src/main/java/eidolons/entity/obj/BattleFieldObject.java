@@ -6,8 +6,8 @@ import eidolons.content.PROPS;
 import eidolons.content.values.ValuePages;
 import eidolons.entity.ChangeableType;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.item.DC_ArmorObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.ArmorItem;
+import eidolons.entity.item.WeaponItem;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.mapper.SeenMapper;
@@ -563,11 +563,11 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         super.setRef(ref);
     }
 
-    public DC_WeaponObj getActiveWeapon(boolean offhand) {
+    public WeaponItem getActiveWeapon(boolean offhand) {
         return null;
     }
 
-    public DC_ArmorObj getArmor() {
+    public ArmorItem getArmor() {
         return null;
     }
 

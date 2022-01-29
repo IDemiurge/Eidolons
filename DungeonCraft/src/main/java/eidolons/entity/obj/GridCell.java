@@ -14,7 +14,7 @@ import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.Ref;
-import main.entity.obj.Cell;
+import main.entity.obj.ICell;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -30,7 +30,7 @@ import java.util.Set;
 import static main.content.CONTENT_CONSTS.COLOR_THEME;
 import static main.content.CONTENT_CONSTS.MARK;
 
-public class DC_Cell extends DC_Obj implements Cell {
+public class GridCell extends DC_Obj implements ICell {
 
     private static ObjType EMPTY_CELL_TYPE;
     private final Floor floor;
@@ -72,7 +72,7 @@ public class DC_Cell extends DC_Obj implements Cell {
     }
 
 
-    public DC_Cell(ObjType t, int i, int j, DC_Game game, Ref ref, Floor floor) {
+    public GridCell(ObjType t, int i, int j, DC_Game game, Ref ref, Floor floor) {
         super(t, Player.NEUTRAL, game, ref);
         this.x = i;
         this.y = j;
@@ -105,15 +105,15 @@ public class DC_Cell extends DC_Obj implements Cell {
         this.cellSet = cellSet;
     }
 
-    public DC_Cell(int i, int j, DC_Game game, Ref ref, Floor floor) {
+    public GridCell(int i, int j, DC_Game game, Ref ref, Floor floor) {
         this(getEMPTY_CELL_TYPE(), i, j, game, ref, floor);
     }
 
-    public DC_Cell(int x, int y, DC_Game game) {
+    public GridCell(int x, int y, DC_Game game) {
         this(x, y, game, new Ref(game), game.getDungeon());
     }
 
-    public DC_Cell(Coordinates c, DC_Game game) {
+    public GridCell(Coordinates c, DC_Game game) {
         this(c.x, c.y, game, new Ref(game), game.getDungeon());
     }
 

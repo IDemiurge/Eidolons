@@ -1,14 +1,14 @@
 package libgdx.gui.dungeon.panels.headquarters.tabs.inv;
 
-import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.HeroItem;
 import libgdx.gui.dungeon.panels.headquarters.HqSlotActor;
 import eidolons.content.consts.Images;
 
 /**
  * Created by JustMe on 4/18/2018.
  */
-public class ItemActor extends HqSlotActor<DC_HeroItemObj>{
-    public ItemActor(DC_HeroItemObj model) {
+public class ItemActor extends HqSlotActor<HeroItem>{
+    public ItemActor(HeroItem model) {
         super(model);
 //        int size = UiMaster.getIconSize();
 //        String path = getWeaponIconPath(entity);
@@ -20,7 +20,7 @@ public class ItemActor extends HqSlotActor<DC_HeroItemObj>{
     }
 
     @Override
-    protected String getOverlay(DC_HeroItemObj model) {
+    protected String getOverlay(HeroItem model) {
         return null;
     }
 

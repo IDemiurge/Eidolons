@@ -1,6 +1,6 @@
 package eidolons.ability.conditions.special;
 
-import eidolons.entity.unit.DC_UnitModel;
+import eidolons.entity.unit.UnitModel;
 import main.content.CONTENT_CONSTS.SPECIAL_REQUIREMENTS;
 import main.elements.conditions.ConditionImpl;
 import main.entity.Ref;
@@ -23,7 +23,7 @@ public class SpecialRequirements extends ConditionImpl {
     @Override
     public boolean check(Ref ref) {
         Coordinates c;
-        DC_UnitModel unit;
+        UnitModel unit;
         switch (template) {
             default:
                 break;

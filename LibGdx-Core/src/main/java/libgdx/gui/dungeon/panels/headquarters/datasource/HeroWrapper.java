@@ -9,10 +9,11 @@ import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.active.Spell;
 import eidolons.entity.handlers.bf.unit.*;
 import eidolons.entity.item.*;
+import eidolons.entity.item.trinket.JewelryItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.attach.DC_PassiveObj;
-import eidolons.entity.unit.attach.HeroClass;
+import eidolons.entity.unit.attach.ClassRank;
 import eidolons.entity.unit.attach.Perk;
 import eidolons.netherflame.eidolon.heromake.model.DC_Attributes;
 import eidolons.netherflame.eidolon.heromake.model.DC_Masteries;
@@ -565,7 +566,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public void setNaturalWeapon(boolean offhand, DC_WeaponObj weapon) {
+    public void setNaturalWeapon(boolean offhand, WeaponItem weapon) {
         getHero().setNaturalWeapon(offhand, weapon);
     }
 
@@ -580,12 +581,12 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public DC_WeaponObj getNaturalWeapon() {
+    public WeaponItem getNaturalWeapon() {
         return getHero().getNaturalWeapon();
     }
 
     @Override
-    public DC_WeaponObj getOffhandNaturalWeapon() {
+    public WeaponItem getOffhandNaturalWeapon() {
         return getHero().getOffhandNaturalWeapon();
     }
 
@@ -600,7 +601,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public DC_WeaponObj getNaturalWeapon(boolean offhand) {
+    public WeaponItem getNaturalWeapon(boolean offhand) {
         return getHero().getNaturalWeapon(offhand);
     }
 
@@ -635,7 +636,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public boolean removeJewelryItem(DC_HeroItemObj itemObj) {
+    public boolean removeJewelryItem(HeroItem itemObj) {
         return getHero().removeJewelryItem(itemObj);
     }
 
@@ -650,7 +651,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public void addQuickItem(DC_QuickItemObj itemObj) {
+    public void addQuickItem(QuickItem itemObj) {
         getHero().addQuickItem(itemObj);
     }
 
@@ -695,7 +696,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public boolean removeQuickItem(DC_HeroItemObj itemObj) {
+    public boolean removeQuickItem(HeroItem itemObj) {
         return getHero().removeQuickItem(itemObj);
     }
 
@@ -1172,7 +1173,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public void setWeapon(DC_WeaponObj weapon) {
+    public void setWeapon(WeaponItem weapon) {
         getHero().setWeapon(weapon);
     }
 
@@ -1232,27 +1233,27 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public DC_WeaponObj getMainWeapon() {
+    public WeaponItem getMainWeapon() {
         return getHero().getMainWeapon();
     }
 
     @Override
-    public DC_ArmorObj getArmor() {
+    public ArmorItem getArmor() {
         return getHero().getArmor();
     }
 
     @Override
-    public DC_WeaponObj getReserveMainWeapon() {
+    public WeaponItem getReserveMainWeapon() {
         return getHero().getReserveMainWeapon();
     }
 
     @Override
-    public DC_WeaponObj getReserveOffhandWeapon() {
+    public WeaponItem getReserveOffhandWeapon() {
         return getHero().getReserveOffhandWeapon();
     }
 
     @Override
-    public void setArmor(DC_ArmorObj armor) {
+    public void setArmor(ArmorItem armor) {
         getHero().setArmor(armor);
     }
 
@@ -1327,7 +1328,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public DC_WeaponObj getOffhandWeapon() {
+    public WeaponItem getOffhandWeapon() {
         return getHero().getOffhandWeapon();
     }
 
@@ -1337,7 +1338,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public void setSecondWeapon(DC_WeaponObj secondWeapon) {
+    public void setSecondWeapon(WeaponItem secondWeapon) {
         getHero().setSecondWeapon(secondWeapon);
     }
 
@@ -1690,12 +1691,12 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public DequeImpl<DC_QuickItemObj> getQuickItems() {
+    public DequeImpl<QuickItem> getQuickItems() {
         return getHero().getQuickItems();
     }
 
     @Override
-    public void setQuickItems(DequeImpl<DC_QuickItemObj> quickItems) {
+    public void setQuickItems(DequeImpl<QuickItem> quickItems) {
         getHero().setQuickItems(quickItems);
     }
 
@@ -1705,7 +1706,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public DC_HeroItemObj getItemFromInventory(String name) {
+    public HeroItem getItemFromInventory(String name) {
         return getHero().getItemFromInventory(name);
     }
 
@@ -1725,7 +1726,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public DC_QuickItemObj getQuickItem(String name) {
+    public QuickItem getQuickItem(String name) {
         return getHero().getQuickItem(name);
     }
 
@@ -1750,12 +1751,12 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public DequeImpl<DC_HeroItemObj> getInventory() {
+    public DequeImpl<HeroItem> getInventory() {
         return getHero().getInventory();
     }
 
     @Override
-    public void setInventory(DequeImpl<DC_HeroItemObj> inventory) {
+    public void setInventory(DequeImpl<HeroItem> inventory) {
         getHero().setInventory(inventory);
     }
 
@@ -1795,32 +1796,32 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public DequeImpl<HeroClass> getClasses() {
+    public DequeImpl<ClassRank> getClasses() {
         return getHero().getClasses();
     }
 
     @Override
-    public void setClasses(DequeImpl<HeroClass> classes) {
+    public void setClasses(DequeImpl<ClassRank> classes) {
         getHero().setClasses(classes);
     }
 
     @Override
-    public DC_WeaponObj getActiveWeapon(boolean offhand) {
+    public WeaponItem getActiveWeapon(boolean offhand) {
         return getHero().getActiveWeapon(offhand);
     }
 
     @Override
-    public DC_WeaponObj getWeapon(boolean offhand) {
+    public WeaponItem getWeapon(boolean offhand) {
         return getHero().getWeapon(offhand);
     }
 
     @Override
-    public boolean equip(DC_HeroItemObj item, ITEM_SLOT slot) {
+    public boolean equip(HeroItem item, ITEM_SLOT slot) {
         return getHero().equip(item, slot);
     }
 
     @Override
-    public boolean addItemToInventory(DC_HeroItemObj item) {
+    public boolean addItemToInventory(HeroItem item) {
         return getHero().addItemToInventory(item);
     }
 
@@ -1840,7 +1841,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public void setItem(DC_HeroItemObj item, ITEM_SLOT slot) {
+    public void setItem(HeroItem item, ITEM_SLOT slot) {
         getHero().setItem(item, slot);
     }
 
@@ -1890,7 +1891,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public DC_HeroItemObj getItem(ITEM_SLOT slot) {
+    public HeroItem getItem(ITEM_SLOT slot) {
         return getHero().getItem(slot);
     }
 
@@ -1935,7 +1936,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public boolean dropItemFromInventory(DC_HeroItemObj item, Coordinates c) {
+    public boolean dropItemFromInventory(HeroItem item, Coordinates c) {
         return getHero().dropItemFromInventory(item, c);
     }
 
@@ -1960,7 +1961,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public boolean dropItemFromInventory(DC_HeroItemObj item) {
+    public boolean dropItemFromInventory(HeroItem item) {
         return getHero().dropItemFromInventory(item);
     }
 
@@ -1970,7 +1971,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public boolean removeFromInventory(DC_HeroItemObj item) {
+    public boolean removeFromInventory(HeroItem item) {
         return getHero().removeFromInventory(item);
     }
 
@@ -2021,28 +2022,28 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public DequeImpl<DC_JewelryObj> getJewelry() {
+    public DequeImpl<JewelryItem> getJewelry() {
         return getHero().getJewelry();
     }
 
     @Override
-    public void setJewelry(DequeImpl<DC_JewelryObj> jewelry) {
+    public void setJewelry(DequeImpl<JewelryItem> jewelry) {
         getHero().setJewelry(jewelry);
     }
 
     @Override
-    public void addJewelryItem(DC_JewelryObj item) {
+    public void addJewelryItem(JewelryItem item) {
         getHero().addJewelryItem(item);
     }
 
     @Override
-    public DC_HeroItemObj unequip(ITEM_SLOT slot) {
+    public HeroItem unequip(ITEM_SLOT slot) {
         getHero().unequip(slot);
         return null;
     }
 
     @Override
-    public DC_HeroItemObj unequip(ITEM_SLOT slot, Boolean drop) {
+    public HeroItem unequip(ITEM_SLOT slot, Boolean drop) {
         getHero().unequip(slot, drop);
         return null;
     }
@@ -2088,7 +2089,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public void unequip(DC_HeroItemObj item, Boolean drop) {
+    public void unequip(HeroItem item, Boolean drop) {
         getHero().unequip(item, drop);
     }
 
@@ -2128,7 +2129,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public List<DC_HeroSlotItem> getSlotItems() {
+    public List<HeroSlotItem> getSlotItems() {
         return getHero().getSlotItems();
     }
 
@@ -2284,7 +2285,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public DC_HeroItemObj findItem(String typeName, Boolean quick_inv_slot) {
+    public HeroItem findItem(String typeName, Boolean quick_inv_slot) {
         return getHero().findItem(typeName, quick_inv_slot);
     }
 
@@ -2536,7 +2537,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public DequeImpl<DC_JewelryObj> getRings() {
+    public DequeImpl<JewelryItem> getRings() {
         return getHero().getRings();
     }
 
@@ -2546,7 +2547,7 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public DC_JewelryObj getAmulet() {
+    public JewelryItem getAmulet() {
         return getHero().getAmulet();
     }
 
@@ -2571,12 +2572,12 @@ public class HeroWrapper extends HeroDataModel {
     }
 
     @Override
-    public DC_WeaponObj getRangedWeapon() {
+    public WeaponItem getRangedWeapon() {
         return getHero().getRangedWeapon();
     }
 
     @Override
-    public void setRangedWeapon(DC_WeaponObj rangedWeapon) {
+    public void setRangedWeapon(WeaponItem rangedWeapon) {
         getHero().setRangedWeapon(rangedWeapon);
     }
     @Override
