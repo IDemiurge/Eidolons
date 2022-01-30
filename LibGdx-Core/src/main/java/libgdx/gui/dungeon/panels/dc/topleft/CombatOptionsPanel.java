@@ -90,7 +90,7 @@ public class CombatOptionsPanel extends TablePanelX {
         //can we add same comps as in OptionWindow?
         addOptionBoxes(table, list);
 
-        add(decorated = RollDecorator.decorate(table, DIRECTION.UP, true,
+        add(decorated = RollDecorator.decorate(table, FACING_DIRECTION.NORTH, true,
                 (ButtonStyled.STD_BUTTON.UP)));
 
     }

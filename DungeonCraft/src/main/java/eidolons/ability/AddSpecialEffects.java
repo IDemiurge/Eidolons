@@ -96,16 +96,6 @@ public class AddSpecialEffects extends MicroEffect {
             case SPELL_RESIST:
                 event = Event.STANDARD_EVENT_TYPE.SPELL_RESOLVED;
                 break;
-            case ON_TURN:
-                conditions.add(new CustomCondition() {
-                    @Override
-                    public boolean check(Ref ref) {
-                        return !ExplorationMaster.isExplorationOn();
-                    }
-                }) ;
-                event = Event.STANDARD_EVENT_TYPE.UNIT_HAS_CHANGED_FACING;
-                //TODO facing change
-                break;
             case MOVE:
                 conditions.add(new CustomCondition() {
                     @Override

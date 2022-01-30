@@ -14,7 +14,6 @@ import libgdx.gui.dungeon.panels.dc.actionpanel.bar.BodyParamsBar;
 import libgdx.gui.dungeon.panels.dc.actionpanel.bar.SoulParamsBar;
 import libgdx.gui.dungeon.panels.dc.actionpanel.datasource.ActiveQuickSlotsDataSource;
 import libgdx.gui.dungeon.panels.dc.actionpanel.datasource.PanelActionsDataSource;
-import libgdx.gui.dungeon.panels.dc.actionpanel.facing.FacingPanel;
 import libgdx.gui.dungeon.panels.dc.actionpanel.spaces.ActionContainer;
 import libgdx.gui.dungeon.panels.dc.actionpanel.spaces.DefaultActionsPanel;
 import libgdx.gui.dungeon.panels.dc.actionpanel.spaces.FeatSpacePanel;
@@ -51,7 +50,6 @@ public class ActionPanel extends GroupX {
     protected FadeImageContainer background;
     QuickWeaponPanel mainHand;
     QuickWeaponPanel offhand;
-    FacingPanel facingPanel;
 
     protected BuffPanelSimple buffPanelBody;
     protected BuffPanelSimple buffPanelSoul;
@@ -86,7 +84,6 @@ public class ActionPanel extends GroupX {
 
         addActor(bodyParamsBar);
         addActor(soulParamsBar);
-        addActor(facingPanel = new FacingPanel());
 
         addActor(mainHand = new QuickWeaponPanel(false));
         addActor(offhand = new QuickWeaponPanel(true));
@@ -127,10 +124,6 @@ public class ActionPanel extends GroupX {
                 bodyParamsBar.getY() + 22);
         offhand.setPosition(mainHand.getX() + 235 + 146 - 112,
                 mainHand.getY());
-
-        facingPanel.setPosition((mainHand.getX() + offhand.getX()) / 2,
-                bodyParamsBar.getY() + 52);
-
 
         x = spellSpacePanel.getX();
         soulParamsBar.setPosition(x + 11

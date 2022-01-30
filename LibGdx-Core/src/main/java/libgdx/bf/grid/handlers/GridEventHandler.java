@@ -56,20 +56,6 @@ public class GridEventHandler extends GridHandler {
                     GuiEventManager.trigger(EFFECT_APPLIED, effect);
                 }
                 caught = true;
-            } else if (type == UNIT_HAS_CHANGED_FACING
-                    || type == UNIT_HAS_TURNED_CLOCKWISE
-                    || type == UNIT_HAS_TURNED_ANTICLOCKWISE) {
-                if ((ref.getObj(Ref.KEYS.TARGET) instanceof BattleFieldObject)) {
-                    BattleFieldObject hero = (BattleFieldObject) ref.getObj(Ref.KEYS.TARGET);
-                    BaseView view = getViewMap().get(hero);
-                    if (view != null && view instanceof UnitGridView) {
-                        UnitGridView unitView = ((UnitGridView) view);
-                        unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
-                        if (hero instanceof Unit)
-                            DC_SoundMaster.playTurnSound(hero);
-                    }
-                }
-                caught = true;
             } else if (type == UNIT_HAS_FALLEN_UNCONSCIOUS
             ) {
                 GuiEventManager.trigger(UNIT_GREYED_OUT_ON, ref.getSourceObj());

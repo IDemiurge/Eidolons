@@ -198,7 +198,6 @@ public interface Effect extends Interruptable, Referred, XmlConvertable,
         SPELL_RESIST,
 
         MOVE,
-        ON_TURN,
         NEW_ROUND,
         END_ROUND,
         ON_COMBAT_END, ON_COMBAT_START, CUSTOM;

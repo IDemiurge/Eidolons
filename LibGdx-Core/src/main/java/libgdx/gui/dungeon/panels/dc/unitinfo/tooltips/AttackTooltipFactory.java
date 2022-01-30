@@ -24,6 +24,7 @@ import libgdx.assets.texture.TextureCache;
 import main.content.VALUE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.ActionEnums;
+import main.content.enums.entity.NewRpgEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
@@ -57,53 +58,31 @@ public class AttackTooltipFactory {
     public static AttackTooltip createAttackTooltip(DC_UnitAction activeObj, DC_Obj target) {
         return createAttackTooltip(activeObj, true, true, true, false, target);
     }
+//TODO LC 2.0 - HitType breakdown
+//     public static TablePanelX createCasesTable(Unit source, BattleFieldObject target) {
+//         TablePanelX table= new TablePanelX();
+//         table.setBackground(NinePatchFactory.getLightDecorPanelFilledDrawableNoMinSize());
+//
+//         Attack attack = DC_AttackMaster.getAttackFromAction(source.getAttackAction(false));
+//         Ref ref = source.getRef().getCopy();
+//         ref.setTarget(target.getId());
+//         for (ActionEnums.ATTACK_CASE value : ActionEnums.ATTACK_CASE.values()) {
+//             if (checkCase(value, ref)){
+//                 ValueContainer container = createContainer(value);
+//                 table.add(container).row();
+//             }
+//         }
+//         return table;
+//     }
 
-    public static TablePanelX createCasesTable(Unit source, BattleFieldObject target) {
-        TablePanelX table= new TablePanelX();
-        table.setBackground(NinePatchFactory.getLightDecorPanelFilledDrawableNoMinSize());
 
-        Attack attack = DC_AttackMaster.getAttackFromAction(source.getAttackAction(false));
-        Ref ref = source.getRef().getCopy();
-        ref.setTarget(target.getId());
-        for (ActionEnums.ATTACK_CASE value : ActionEnums.ATTACK_CASE.values()) {
-            if (checkCase(value, ref)){
-                ValueContainer container = createContainer(value);
-                table.add(container).row();
-            }
-
-        }
-
-        return table;
-    }
-
-    private static boolean checkCase(ActionEnums.ATTACK_CASE value, Ref ref) {
-        switch (value) {
-            case SNEAK:
-               return SneakRule.checkSneak(ref);
-            case SIDEWAYS:
-                return FacingMaster.getSingleFacing_(ref.getSourceObj(), ref.getTargetObj())== UnitEnums.FACING_SINGLE.TO_THE_SIDE;
-            case DIAGONAL:
-                return DirectionMaster.getRelativeDirection(ref.getSourceObj(), ref.getTargetObj()).isDiagonal();
-        }
-        return false;
-    }
-
-    private static ValueContainer createContainer(ActionEnums.ATTACK_CASE value) {
+    private static ValueContainer createContainer(NewRpgEnums.HitType value) {
         String pic="";
         String text = StringMaster.format(value.toString())+ " Attack";
         String tooltip=text + " modificators will apply";
         Color color = null;
         switch (value) {
-            case SNEAK:
-                tooltip="Target may have reduced defense";
-                color = GdxColorMaster.LILAC;
-                break;
-            case SIDEWAYS:
-                color = GdxColorMaster.YELLOW;
-                break;
-            case DIAGONAL:
-                color = GdxColorMaster.GREEN;
-                break;
+            //TODO
         }
 
         text = GdxStringUtils.wrapInColor(color, text);

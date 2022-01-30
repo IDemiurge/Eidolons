@@ -37,79 +37,79 @@ public class OverlayingMaster {
 
         return new Vector2(x, y);
     }
-
-    public static void moveOverlaying(BattleFieldObject target, Unit source, boolean push) {
-        Boolean clockwise = true;
-        DIRECTION d = target.getDirection();
-        DIRECTION relative = DirectionMaster.getRelativeDirection(target, source);
-        FACING_DIRECTION facing = source.getFacing();
-        if (d == null) {
-            clockwise = null;
-        } else
-            switch (relative) {
-                case UP:
-                    if (d.isDiagonal()) {
-                        clockwise = d.isGrowX();
-                    } else
-                        clockwise = null;
-                    break;
-                case UP_RIGHT:
-                case DOWN_LEFT:
-                    if (!facing.isVertical()) {
-                        clockwise = false;
-                    }
-                    break;
-                case UP_LEFT:
-                case DOWN_RIGHT:
-                    if (facing.isVertical()) {
-                        clockwise = false;
-                    }
-                    break;
-
-                case DOWN:
-                    if (d.isDiagonal()) {
-                        clockwise = !d.isGrowX();
-                    } else
-                        clockwise = null;
-                    break;
-
-                case LEFT:
-                    if (d.isDiagonal()) {
-                        clockwise = !d.isGrowY();
-                    } else
-                        clockwise = null;
-                    break;
-                case RIGHT:
-                    if (d.isDiagonal()) {
-                        clockwise = d.isGrowY();
-                    } else
-                        clockwise = null;
-                    break;
-            }
-        if (clockwise == null) {
-            if (d == null) {
-                d = facing.getDirection();
-                if (!push) {
-                    d = d.flip();
-                }
-            } else {
-                if (push) {
-                    d = null;
-                } else {
-                    //try to take/break?
-                }
-            }
-        } else {
-            if (!push) {
-                clockwise = !clockwise;
-            }
-            d = d.rotate45(clockwise);
-        }
-
-        target.setDirection(d);
-
-        GuiEventManager.trigger(GuiEventType.MOVE_OVERLAYING, target);
-    }
+//TODO cleanup
+    // public static void moveOverlaying(BattleFieldObject target, Unit source, boolean push) {
+    //     Boolean clockwise = true;
+    //     DIRECTION d = target.getDirection();
+    //     DIRECTION relative = DirectionMaster.getRelativeDirection(target, source);
+    //     FACING_DIRECTION facing = source.getFacing();
+    //     if (d == null) {
+    //         clockwise = null;
+    //     } else
+    //         switch (relative) {
+    //             case UP:
+    //                 if (d.isDiagonal()) {
+    //                     clockwise = d.isGrowX();
+    //                 } else
+    //                     clockwise = null;
+    //                 break;
+    //             case UP_RIGHT:
+    //             case DOWN_LEFT:
+    //                 if (!facing.isVertical()) {
+    //                     clockwise = false;
+    //                 }
+    //                 break;
+    //             case UP_LEFT:
+    //             case DOWN_RIGHT:
+    //                 if (facing.isVertical()) {
+    //                     clockwise = false;
+    //                 }
+    //                 break;
+    //
+    //             case DOWN:
+    //                 if (d.isDiagonal()) {
+    //                     clockwise = !d.isGrowX();
+    //                 } else
+    //                     clockwise = null;
+    //                 break;
+    //
+    //             case LEFT:
+    //                 if (d.isDiagonal()) {
+    //                     clockwise = !d.isGrowY();
+    //                 } else
+    //                     clockwise = null;
+    //                 break;
+    //             case RIGHT:
+    //                 if (d.isDiagonal()) {
+    //                     clockwise = d.isGrowY();
+    //                 } else
+    //                     clockwise = null;
+    //                 break;
+    //         }
+    //     if (clockwise == null) {
+    //         if (d == null) {
+    //             d = facing.getDirection();
+    //             if (!push) {
+    //                 d = d.flip();
+    //             }
+    //         } else {
+    //             if (push) {
+    //                 d = null;
+    //             } else {
+    //                 //try to take/break?
+    //             }
+    //         }
+    //     } else {
+    //         if (!push) {
+    //             clockwise = !clockwise;
+    //         }
+    //         d = d.rotate45(clockwise);
+    //     }
+    //
+    //     target.setDirection(d);
+    //
+    //     GuiEventManager.trigger(GuiEventType.MOVE_OVERLAYING, target);
+    // }
 
     public static Dimension getOffsetsForOverlaying(DIRECTION direction,
                                                     int width, int height) {

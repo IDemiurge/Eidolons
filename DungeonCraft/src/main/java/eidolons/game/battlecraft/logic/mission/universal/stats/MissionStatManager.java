@@ -92,7 +92,6 @@ public class MissionStatManager<E extends DungeonSequence> extends MissionHandle
                 case ATTACK_INSTANT:
 
                 case UNIT_HAS_BEEN_ANNIHILATED:
-                case UNIT_HAS_CHANGED_FACING:
                 case ITEM_BROKEN:
                 case ITEM_ACQUIRED:
                 case NEW_ROUND:

@@ -13,16 +13,8 @@ public class FullUnitDataSource extends EntityDataSource<Unit> {
         super(entity);
     }
 
-    public FACING_DIRECTION getFacingOrNull() {
-        return entity.getFacingOrNull();
-    }
-
     public DIRECTION getDirection() {
         return entity.getDirection();
-    }
-
-    public FACING_DIRECTION getFacing() {
-        return entity.getFacing();
     }
 
     public boolean isHero() {

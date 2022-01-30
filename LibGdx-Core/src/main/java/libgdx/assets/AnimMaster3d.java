@@ -150,8 +150,8 @@ public class AnimMaster3d {
     }
 
     public static VisualEnums.PROJECTION getProjection(Ref ref, DC_ActiveObj active) {
-        if (ref.getTargetObj() == null || ref == null)
-            return getProjectionByFacing(active.getOwnerUnit().getFacing());
+        // if (ref.getTargetObj() == null || ref == null)
+        //     return getProjectionByFacing(active.getOwnerUnit().getFacing());
         Boolean b =
                 PositionMaster.isAboveOr(ref.getSourceObj(), ref.getTargetObj());
         if (active.getOwnerUnit().getCoordinates().equals(ref.getTargetObj().getCoordinates()))

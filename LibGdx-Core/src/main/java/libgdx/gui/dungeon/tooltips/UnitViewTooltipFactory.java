@@ -244,15 +244,6 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
                 valueContainer.setNameAlignment(Align.left);
                 valueContainer.setValueAlignment(Align.right);
                 add(valueContainer);
-                if (object.getFacing() != null || object.getDirection() != null) {
-                    final String name = "direction: " + (object.getFacing() != null ?
-                            object.getFacing().getDirection() :
-                            object.getDirection());
-                    valueContainer = new ValueContainer(name, object.getCoordinates().toString());
-                    valueContainer.setNameAlignment(Align.left);
-                    valueContainer.setValueAlignment(Align.right);
-                    add(valueContainer);
-                }
             }
             if (object instanceof Unit) {
                 addPropStringToValues(object, G_PROPS.MODE);

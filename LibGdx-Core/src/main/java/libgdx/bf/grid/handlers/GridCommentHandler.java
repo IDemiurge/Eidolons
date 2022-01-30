@@ -111,7 +111,7 @@ public class GridCommentHandler extends GridHandler{
             } else {
                 f = FACING_DIRECTION.NORTH;
             }
-            comment(img, f, c, true, text, null);
+            comment(img,  c, true, text, null);
         }
     }
 
@@ -124,7 +124,7 @@ public class GridCommentHandler extends GridHandler{
         //TODO
     }
 
-    public void comment(String img, FACING_DIRECTION facingDirection, Coordinates c, boolean textOnTop, String text, Vector2 at) {
+    public void comment(String img, Coordinates c, boolean textOnTop, String text, Vector2 at) {
         text = parseColors(text);
 
         if (!isSequentialComment(text)) {
@@ -132,7 +132,7 @@ public class GridCommentHandler extends GridHandler{
 //            createFloatText(c, at, facingDirection, text, false);
             String finalText1 = text;
             Gdx.app.postRunnable(() ->
-                    commentGdx(img, facingDirection, c, textOnTop, finalText1, at, null, false));
+                    commentGdx(img, FACING_DIRECTION.NONE, c, textOnTop, finalText1, at, null, false));
         } else {
             text = removeSequentialKey(text);
             String finalText = text;
@@ -146,7 +146,7 @@ public class GridCommentHandler extends GridHandler{
 
             main.system.auxiliary.log.LogMaster.devLog(key + "Sequential comment: " + text);
 
-            Gdx.app.postRunnable(() -> commentGdx(img, facingDirection, c, textOnTop, finalText, at, finalKey, true));
+            Gdx.app.postRunnable(() -> commentGdx(img, FACING_DIRECTION.NONE, c, textOnTop, finalText, at, finalKey, true));
 
         }
     }
@@ -161,11 +161,6 @@ public class GridCommentHandler extends GridHandler{
 
         return FloatingTextMaster.getInstance().createFloatingText
                 (VisualEnums.TEXT_CASES.BATTLE_COMMENT, text, new DummyUnit() {
-                    @Override
-                    public FACING_DIRECTION getFacing() {
-                        return facingDirection;
-                    }
-
                     @Override
                     public Coordinates getCoordinates() {
                         return c;
@@ -195,7 +190,7 @@ public class GridCommentHandler extends GridHandler{
         portrait = ImageManager.getBlotch(unit);
 //        }
 
-        comment(portrait, unit.getFacing(), unit.getCoordinates(), textTop, text, at);
+        comment(portrait, unit.getCoordinates(), textTop, text, at);
         LogMaster.devLog(text + "\n - Comment by " + unit.getNameAndCoordinate());
         Core.getGame().getLogManager().log(unit.getName() + ": \n" +
                 StringMaster.removeNewLines(text).trim());
