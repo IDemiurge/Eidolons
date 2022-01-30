@@ -10,5 +10,4 @@ public interface ResistSource {
 
     List<Pair<PARAMETER, String>> getArmorResists();
 
-    List<Pair<PARAMETER, String>> getDurabilityResists();
 }

@@ -40,13 +40,9 @@ public class ValueInitializer {
         FOCUS.setColor(ColorManager.FOCUS);
         ESSENCE.setColor(ColorManager.ESSENCE);
 
-        GLORY.setDynamic(true);
-        GLORY.setWriteToType(true);
         GOLD.setWriteToType(true);
         ATTR_POINTS.setWriteToType(true);
         MASTERY_POINTS.setWriteToType(true);
-        IDENTITY_POINTS.setWriteToType(true);
-
         DC_TYPE.ARMOR.setParam(PARAMS.GOLD);
         DC_TYPE.JEWELRY.setParam(PARAMS.GOLD);
         DC_TYPE.ITEMS.setParam(PARAMS.GOLD);

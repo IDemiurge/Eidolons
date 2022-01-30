@@ -17,9 +17,6 @@ import java.util.Map;
 
 //Quantative properties of ..*what?*
 public enum PARAMS implements PARAMETER {
-    SLEIGHT_OF_HAND("chars", "", "", false, 0),
-    FORAGING("chars", "", "", false, 0),
-
     POWER_MOD(true, null, "", false, 100, "encounters"),
     POWER_MINIMUM(null, "", false, 0, "encounters"),
     POWER_BASE(null, "", false, 0, "encounters"),
@@ -28,49 +25,6 @@ public enum PARAMS implements PARAMETER {
     POWER_TOTAL(true, "units", "chars"),
     SP_PTS_SPENT(true, "units", "chars"),
     SK_PTS_SPENT(true, "units", "chars"),
-
-
-    FREE_MASTERIES(null, "", false, DC_MathManager.DEFAULT_FREE_MASTERY_COUNT, "chars"),
-    GLORY("party"),
-    MAX_HEROES(null, "", false, 0, "party", "arcades"),
-    ORDER_CHANCE_MOD(null, "", false, 100, "units", "chars", "perks"),
-    ORGANIZATION(null, "", true, 100, "units", "chars", "perks", "party"),
-    BATTLE_SPIRIT(null, "", true, 100, "units", "chars", "perks", "party"),
-    PRINCIPLE_CLASHES(null, "", true, 0, "units", "chars", "perks", "party"),
-    PRINCIPLE_CLASHES_REDUCTION(null, "", true, 0, "units", "chars", "perks", "party"),
-    WAR_ALIGNMENT(StringMaster.format("WAR_ALIGNMENT"), null, false, 0, "units", "chars"),
-    PEACE_ALIGNMENT(StringMaster.format("PEACE AL."), null, false, 0, "units", "chars"),
-    HONOR_ALIGNMENT(StringMaster.format("HONOR AL."), null, false, 0, "units", "chars"),
-    TREACHERY_ALIGNMENT(StringMaster.format("TREACHERY AL."), null, false, 0, "units", "chars"),
-    LAW_ALIGNMENT(StringMaster.format("LAW_ALIGNMENT"), null, false, 0, "units", "chars"),
-    FREEDOM_ALIGNMENT(StringMaster.format("FREEDOM AL."), null, false, 0, "units", "chars"),
-    CHARITY_ALIGNMENT(StringMaster.format("CHARITY AL."), null, false, 0, "units", "chars"),
-    AMBITION_ALIGNMENT(StringMaster.format("AMBITION AL."), null, false, 0, "units", "chars"),
-    TRADITION_ALIGNMENT(StringMaster.format("TRADITION AL."), null, false, 0, "units", "chars"),
-    PROGRESS_ALIGNMENT(StringMaster.format("PROGRESS AL."), null, false, 0, "units", "chars"),
-
-    WAR_IDENTITY(StringMaster.format("WAR_IDENTITY"), null, false, 0, "units", "chars"),
-    PEACE_IDENTITY(StringMaster.format("PEACE id."), null, false, 0, "units", "chars"),
-    HONOR_IDENTITY(StringMaster.format("HONOR id."), null, false, 0, "units", "chars"),
-    TREACHERY_IDENTITY(StringMaster.format("TREACHERY id."), null, false, 0, "units", "chars"),
-    LAW_IDENTITY(StringMaster.format("LAW_IDENTITY"), null, false, 0, "units", "chars"),
-    FREEDOM_IDENTITY(StringMaster.format("FREEDOM id."), null, false, 0, "units", "chars"),
-    CHARITY_IDENTITY(StringMaster.format("CHARITY id."), null, false, 0, "units", "chars"),
-    AMBITION_IDENTITY(StringMaster.format("AMBITION id."), null, false, 0, "units", "chars"),
-    TRADITION_IDENTITY(StringMaster.format("TRADITION id."), null, false, 0, "units", "chars"),
-    PROGRESS_IDENTITY(StringMaster.format("PROGRESS id."), null, false, 0, "units", "chars"),
-
-    IDENTITY_POINTS(null, "", true, 0, "chars", "classes", "deities"),
-    STARTING_IDENTITY_POINTS(null, "", false, 3, "chars"),
-    IDENTITY_POINTS_PER_LEVEL(null, "", false, 50, "chars"), // /100
-    TOTAL_IDENTITY_POINTS(null, "", true, 0, "chars"),
-
-    DEITY_CLASHES_REDUCTION(null, "", true, 0, "units", "chars", "perks", "party"),
-    SHARED_PRINCIPLES_BOOST(null, "", true, 0, "units", "chars", "perks", "party"),
-    SHARED_DEITIES_BOOST(null, "", true, 0, "units", "chars", "perks", "party"),
-    PRINCIPLE_CLASHES_REMOVED(null, "", true, 0, "units", "chars", "perks", "party"),
-    // comradeship, competition, love between each 2 heroes?
-    // affection, esteem, towards leader
 
 
     STR_DMG_MODIFIER("Str dmg mod", "", false, 0, "actions", "jewelry"), // HEAVY/MELEE
@@ -103,8 +57,6 @@ public enum PARAMS implements PARAMETER {
     COOLDOWN(null, "", false, 1, "items", "feats"),
     C_COOLDOWN(null, "", true, 1, "items", "feats"),
     // UNIT/CHAR
-
-
     TOUGHNESS(null, "", false, 0, "units", "chars", "perks", "bf obj"),
     C_TOUGHNESS(null, "", true, 0, "units", "chars", "perks", "bf obj"),
     ENDURANCE(null, "", false, 0, "units", "chars", "perks", "bf obj"),
@@ -117,9 +69,6 @@ public enum PARAMS implements PARAMETER {
     C_ESSENCE(null, "ESSENCE", true, 0, "units", "chars", "perks"),
     EXTRA_ATTACKS("Extra Attacks", "", false, 0, "units", "chars", "perks"),
     C_EXTRA_ATTACKS("Current Extra Attacks", "", true, 2, "units", "chars", "perks"),
-
-    EXTRA_MOVES("Extra Moves", "", false, 0, "units", "chars", "perks"),
-    C_EXTRA_MOVES("Current Extra Moves", "", true, 2, "units", "chars", "perks"),
 
     TOUGHNESS_RECOVERY(null, "", false, 25, "bf obj", "units", "chars", "perks"),
     TOUGHNESS_RETAINMENT(null, "", false, 25, "bf obj", "units", "chars", "perks"),
@@ -223,20 +172,6 @@ public enum PARAMS implements PARAMETER {
     BLUDGEONING_DURABILITY_MOD(true, "Bludgeoning", "", false, 0),
     SLASHING_DURABILITY_MOD(true, "Slashing", "", false, 0),
 
-    FIRE_DURABILITY_MOD(true, "Fire", "", false, 0),
-    COLD_DURABILITY_MOD(true, "Cold", "", false, 0),
-    ACID_DURABILITY_MOD(true, "Acid", "", false, 0),
-    LIGHTNING_DURABILITY_MOD(true, "Lightning", "", false, 0),
-    SONIC_DURABILITY_MOD(true, "Sonic", "", false, 0),
-    LIGHT_DURABILITY_MOD(true, "Light", "", false, 0),
-
-    HOLY_DURABILITY_MOD(true, "Fire", "", false, 0),
-    SHADOW_DURABILITY_MOD(true, "Cold", "", false, 0),
-    DEATH_DURABILITY_MOD(true, "Cold", "", false, 0),
-    ARCANE_DURABILITY_MOD(true, "Cold", "", false, 0),
-    CHAOS_DURABILITY_MOD(true, "Cold", "", false, 0),
-    PSIONIC_DURABILITY_MOD(true, "Cold", "", false, 0),
-
     //TODO saving throws revamp
     GRIT(null, "", false, 3, "units", "chars", "perks"),
     // willpower/spellpower
@@ -283,18 +218,9 @@ public enum PARAMS implements PARAMETER {
     GLOBAL_ILLUMINATION(null, null, false, 0, "dungeons"),
     LIGHT_EMISSION_MODIFIER(null, null, false, 0, "dungeons"),
 
-    PERCEPTION(null, null, false, 20, "bf obj", "units", "chars", "perks"),
-    NOISE(null, null, false, 50, "action", "spell", "bf obj", "units", "chars", "perks"),
-    REVEALMENT(null, null, false, 0, "action", "spell", "bf obj", "units", "chars", "perks"),
-
     SIGHT_RANGE(null, "Sight Range", false, 0, "bf obj", "units", "chars", "perks"),
-    BEHIND_SIGHT_BONUS("Behind Sight", "BEHIND_SIGHT_BONUS", false, 0, "bf obj", "units", "chars", "perks"),
-    SIDE_SIGHT_PENALTY("Sidesight pen.", "SIDE_SIGHT_PENALTY", false, 0, "bf obj", "units", "chars", "perks"),
-    // buff
     SIGHT_RANGE_EXPANSION(null, "", false, 200, "units", "chars", "perks"),
-    SIGHT_RANGE_EXPANSION_SIDES(null, "", false, 150, "units", "chars", "perks"),
-    SIGHT_RANGE_EXPANSION_BACKWARD(null, "", false, 200, "units", "chars", "perks"),
-    INTERRUPT_DAMAGE(null, "INTERRUPT_DAMAGE", false, 100, "units", "chars", "perks", "actions"),
+
     ENERGY(null, "", false, 0, C_OBJ_TYPE.ITEMS),
     C_ENERGY(null, "", true, 0, C_OBJ_TYPE.ITEMS),
     // ENERGY("bf obj", "ENERGY", "ENERGY", false, 100),
@@ -313,9 +239,6 @@ public enum PARAMS implements PARAMETER {
 
     // MECHANISMS
     // TODO separate move and attack and spell penalties!
-
-    CLAIMED_CRYSTALS("chars", "CRYSTALS_CLAIMED", "CRYSTALS_CLAIMED", true, 0),
-    CLAIMED_GATEWAYS("chars", "CRYSTALS_CLAIMED", "CRYSTALS_CLAIMED", true, 0),
 
     PIERCING_RESISTANCE("Piercing", "", false, 0, "units", "chars", "perks", "bf obj"),
     BLUDGEONING_RESISTANCE("Bludgeoning", "", false, 0, "units", "chars", "perks", "bf obj"),
@@ -342,8 +265,6 @@ public enum PARAMS implements PARAMETER {
     DEATH_RESISTANCE("Death", "", false, 0, "units", "chars", "perks", "bf obj"),
     PSIONIC_RESISTANCE("Psionic", "", false, 0, "units", "chars", "perks", "bf obj"),
 
-    QUANTITY(null, "", false, 1, "units"),
-
     // C_N_OF_ATTACKS("Number of Attacks", "", true, 2, "units", "chars", "perks"),
     // C_N_OF_MOVES("Number of Attacks", "", true, 2, "units", "chars", "perks"),
 
@@ -360,16 +281,6 @@ public enum PARAMS implements PARAMETER {
     // CONCENTRATION_BONUS("", "", false, 0, "units", "chars", "perks"),
     // ALERT_BONUS("", "", false, 0, "units", "chars", "perks"),
     // DEFEND_BONUS("", "", false, 0, "units", "chars", "perks"),
-
-    // PARAMS.ENCHANTER_MASTERY,
-    // PARAMS.JEWELER_MASTERY,
-    // LORE_MASTERY, PHILOSOPHY_MASTERY
-
-    INTEGRITY(null, "", false, 100, "chars"),
-    // INTEGRITY_MOD_DEEDS(null, "", true, 0, "chars"),
-    // INTIMIDATION,
-    // DIPLOMACY,
-    // BLUFF,
 
     TACTICS_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
     LEADERSHIP_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
@@ -432,8 +343,6 @@ public enum PARAMS implements PARAMETER {
     WITCHERY_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
     SHADOW_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
 
-
-
     ATTR_POINTS("Attribute points", "Attribute points", true, 0, "units", "chars", "perks"),
     ATTR_POINTS_PER_LEVEL("Attribute points", "Attribute points", false, 0, "units", "chars", "perks"),
     MASTERY_RANKS_PER_LEVEL("MASTERY points", "MASTERY points", false, 0, "units", "chars", "perks"),
@@ -449,12 +358,6 @@ public enum PARAMS implements PARAMETER {
     // CHANNELING_FOC_COST("spells", "CHANNELING", "", false, 0),
     // CHANNELING_STA_COST("spells", "CHANNELING", "", false, 0),
     // CHANNELING_END_COST("spells", "CHANNELING", "", false, 0),
-    DIVINATION_MAX_SD_MOD(true, "Divination max sd mod", "", false, 100, "chars"),
-    DIVINATION_POOL_MOD(true, null, "", false, 100, "chars"),
-    DIVINATION_CROP_FIRST(null, "", false, 0, "chars"),
-    DIVINATION_CROP_LAST(null, "", false, 0, "chars"),
-    DIVINATION_USE_FIRST(null, "", false, 0, "chars"),
-    DIVINATION_USE_LAST(null, "", false, 0, "chars"),
 
     SPELL_DIFFICULTY("spells", "Difficulty", "Difficulty", false, 10),
     ENERGY_COST("Energy Cost", " Cost in Energy", false, 0, "actions"),

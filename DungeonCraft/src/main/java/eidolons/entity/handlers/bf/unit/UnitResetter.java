@@ -272,10 +272,6 @@ public class UnitResetter extends EntityResetter<Unit> {
         if (getEntity().getBackgroundType() == null) {
             return;
         }
-        for (PARAMETER param : DC_ContentValsManager.getBackgroundDynamicParams()) {
-            Integer amount = getEntity().getBackgroundType().getIntParam(param);
-            getEntity().modifyParameter(param, amount);
-        }
 
     }
 

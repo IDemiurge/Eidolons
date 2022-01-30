@@ -93,7 +93,6 @@ public class ContentConsts {
     static VALUE[] displayedHeroProperties = new VALUE[]{
             G_PROPS.ASPECT, G_PROPS.DEITY, G_PROPS.BACKGROUND,
             G_PROPS.RACE, G_PROPS.MODE, G_PROPS.STATUS, G_PROPS.STANDARD_PASSIVES,
-            PARAMS.INTEGRITY,
 
     };
     static PARAMETER[] WEAPON_MODIFYING_PARAMS = {

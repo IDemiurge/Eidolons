@@ -44,6 +44,5 @@ public class ResistInfoTabsPanel extends TabbedPanel<ResistPanel> {
 
         tabsToNamesMap.get("Resistance").setUserObject((Supplier) source::getMagicResistList);
         tabsToNamesMap.get("Armor").setUserObject((Supplier) source::getArmorResists);
-        tabsToNamesMap.get("Durability").setUserObject((Supplier) source::getDurabilityResists);
     }
 }

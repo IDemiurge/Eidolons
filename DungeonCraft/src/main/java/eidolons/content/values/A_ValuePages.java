@@ -84,8 +84,6 @@ public class A_ValuePages {
             WEIGHT, CARRYING_CAPACITY,
 
             SIGHT_RANGE,
-            SIDE_SIGHT_PENALTY, BEHIND_SIGHT_BONUS,
-
             // ENDURANCE_REGEN, ESSENCE_REGEN, FOCUS_REGEN,
 
             EMPTY_VALUE,

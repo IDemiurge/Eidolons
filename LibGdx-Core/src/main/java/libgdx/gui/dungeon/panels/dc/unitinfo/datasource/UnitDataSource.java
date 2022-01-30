@@ -364,13 +364,6 @@ public class UnitDataSource implements
         }).collect(Collectors.toList());
     }
 
-    @Override
-    public List<Pair<PARAMETER, String>> getDurabilityResists() {
-        return Arrays.stream(DURABILITY_VS_DAMAGE_TYPES).map(p -> {
-            String ps = unit.getStrParam(p);
-            return new ImmutablePair<>(p, ps);
-        }).collect(Collectors.toList());
-    }
 
     @Override
     public ValueContainer getOffWeapon() {

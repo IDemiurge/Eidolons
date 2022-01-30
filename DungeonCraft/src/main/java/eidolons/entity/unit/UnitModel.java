@@ -150,9 +150,6 @@ public abstract class UnitModel extends BattleFieldObject {
 
     public void addDynamicValues() {
         super.addDynamicValues();
-        if (getChecker().isHero()) {
-            setParam(PARAMS.IDENTITY_POINTS, getIntParam(PARAMS.STARTING_IDENTITY_POINTS));
-        }
     }
 
 

@@ -120,13 +120,9 @@ public class KeyMaster {
         if (key == null) {
             key = unit.findItem(getRequiredKey(door), false);
         }
-        if (RandomWizard.chance(unit.getIntParam(PARAMS.SLEIGHT_OF_HAND))) {
-            EUtils.showInfoText(true, unit.getName() + " uses sleight of hand to retain " + key.getName());
-        } else {
             EUtils.showInfoText(true, unit.getName() + " uses " +
                     key.getName() + " to open " + door.getName());
             unit.removeFromInventory(key);
-        }
 
     }
 

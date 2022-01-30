@@ -63,77 +63,62 @@ public class ResistPanel extends TablePanel {
         switch (parameter) {
             case FIRE_RESISTANCE:
             case FIRE_ARMOR:
-            case FIRE_DURABILITY_MOD:
                 damageType = FIRE;
                 break;
             case COLD_RESISTANCE:
             case COLD_ARMOR:
-            case COLD_DURABILITY_MOD:
                 damageType = COLD;
                 break;
             case ACID_RESISTANCE:
             case ACID_ARMOR:
-            case ACID_DURABILITY_MOD:
                 damageType = ACID;
                 break;
             case LIGHTNING_RESISTANCE:
             case LIGHTNING_ARMOR:
-            case LIGHTNING_DURABILITY_MOD:
                 damageType = LIGHTNING;
                 break;
             case SONIC_RESISTANCE:
             case SONIC_ARMOR:
-            case SONIC_DURABILITY_MOD:
                 damageType = SONIC;
                 break;
             case LIGHT_RESISTANCE:
             case LIGHT_ARMOR:
-            case LIGHT_DURABILITY_MOD:
                 damageType = LIGHT;
                 break;
             case CHAOS_RESISTANCE:
             case CHAOS_ARMOR:
-            case CHAOS_DURABILITY_MOD:
                 damageType = CHAOS;
                 break;
             case ARCANE_RESISTANCE:
             case ARCANE_ARMOR:
-            case ARCANE_DURABILITY_MOD:
                 damageType = ARCANE;
                 break;
             case HOLY_RESISTANCE:
             case HOLY_ARMOR:
-            case HOLY_DURABILITY_MOD:
                 damageType = HOLY;
                 break;
             case SHADOW_RESISTANCE:
             case SHADOW_ARMOR:
-            case SHADOW_DURABILITY_MOD:
                 damageType = SHADOW;
                 break;
             case PSIONIC_RESISTANCE:
             case PSIONIC_ARMOR:
-            case PSIONIC_DURABILITY_MOD:
                 damageType = PSIONIC;
                 break;
             case DEATH_RESISTANCE:
             case DEATH_ARMOR:
-            case DEATH_DURABILITY_MOD:
                 damageType = DEATH;
                 break;
             case PIERCING_RESISTANCE:
             case PIERCING_ARMOR:
-            case PIERCING_DURABILITY_MOD:
                 damageType = PIERCING;
                 break;
             case BLUDGEONING_RESISTANCE:
             case BLUDGEONING_ARMOR:
-            case BLUDGEONING_DURABILITY_MOD:
                 damageType = BLUDGEONING;
                 break;
             case SLASHING_RESISTANCE:
             case SLASHING_ARMOR:
-            case SLASHING_DURABILITY_MOD:
                 damageType = SLASHING;
                 break;
             case POISON_RESISTANCE:

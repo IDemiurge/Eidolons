@@ -314,31 +314,6 @@ public class DC_ContentValsManager extends ContentValsManager {
         return !ContentConsts.NO_SHOW_NAME_VALUES.contains(value);
     }
 
-    public static List<PARAMETER> getBackgroundDynamicParams() {
-
-        if (ContentConsts.backgroundDynamicParams != null) {
-            return ContentConsts.backgroundDynamicParams;
-        }
-        ContentConsts.backgroundDynamicParams = new ArrayList<>();
-        ContentConsts.backgroundDynamicParams.addAll(Arrays.asList(ValuePages.PRINCIPLE_IDENTITIES));
-        // TODO anything else?!
-        ContentConsts.backgroundDynamicParams.add(PARAMS.IDENTITY_POINTS_PER_LEVEL);
-        return ContentConsts.backgroundDynamicParams;
-    }
-
-    public static List<VALUE> getBackgroundStaticValues() {
-        if (ContentConsts.backgroundValues != null) {
-            return ContentConsts.backgroundValues;
-        }
-        ContentConsts.backgroundValues = new ArrayList<>();
-        for (VALUE[] list : ValuePages.BACKGROUND_VALUES) {
-            ContentConsts.backgroundValues.addAll(Arrays.asList(list));
-        }
-        ContentConsts.backgroundValues.remove(PARAMS.IDENTITY_POINTS_PER_LEVEL);
-
-        return ContentConsts.backgroundValues;
-    }
-
     public static PARAMETER[] getWeaponWeightPenaltyParams() {
         return new PARAMETER[]{
          // PARAMS.ATTACK_MOD,

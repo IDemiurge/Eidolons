@@ -650,7 +650,6 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         int gold = getAmountOfGold(obj, totalCost);
         if (gold > 0) {
             int foodChance = Math.min(25, gold * 3);
-            MathMaster.addFactor(foodChance, Core.getMainHero().getIntParam(PARAMS.FORAGING));
 
             if (RandomWizard.chance(foodChance)) {
                 contents += "Food";
