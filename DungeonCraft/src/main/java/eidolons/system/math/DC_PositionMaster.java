@@ -18,21 +18,19 @@ import java.util.Set;
 
 public class DC_PositionMaster {
     public static Set<Coordinates> getShapedCoordinates(
-     Coordinates baseCoordinate, FACING_DIRECTION facing, int width,
-     int height, SHAPE shape) {
+     Coordinates baseCoordinate,  int width,
+     int height,DIRECTION direction, SHAPE shape) {
         Set<Coordinates> list = new HashSet<>();
         List<Coordinates> line;
-        DIRECTION direction = facing
-                .getDirection();
         switch (shape) {
             case CROSS:
                 list.addAll(getLine(direction, baseCoordinate, height));
-                list.addAll(getLine(FacingMaster.rotate180(facing)
-                        .getDirection(), baseCoordinate, height));
-                list.addAll(getLine(FacingMaster.rotate(facing, false)
-                        .getDirection(), baseCoordinate, width));
-                list.addAll(getLine(FacingMaster.rotate(facing, true)
-                        .getDirection(), baseCoordinate, width));
+                list.addAll(getLine(direction.flip()
+                        , baseCoordinate, height));
+                list.addAll(getLine(direction.rotate90(false)
+                        , baseCoordinate, width));
+                list.addAll(getLine(direction.rotate90(true)
+                        , baseCoordinate, width));
                 break;
             case STAR:
                 // four diagonals
@@ -50,10 +48,10 @@ public class DC_PositionMaster {
                 // getOrCreate horizontal lines of increasing width
                 for (int i = 0; i < height; i++) {
 
-                    list.addAll(getLine(FacingMaster.rotate(facing, false)
-                     .getDirection(), baseCoordinate, width));
-                    list.addAll(getLine(FacingMaster.rotate(facing, true)
-                     .getDirection(), baseCoordinate, width));
+                    list.addAll(getLine(direction.rotate90(false)
+                     , baseCoordinate, width));
+                    list.addAll(getLine(direction.rotate90(true)
+                     , baseCoordinate, width));
                     baseCoordinate = baseCoordinate
                      .getAdjacentCoordinate(direction);
                     if (baseCoordinate == null) {
@@ -68,26 +66,26 @@ public class DC_PositionMaster {
                  height));
                 line = getLine(direction, baseCoordinate, height);
                 for (Coordinates c : line) {
-                    list.addAll(getLine(FacingMaster.rotate(facing, false)
-                     .getDirection(), c, width));
-                    list.addAll(getLine(FacingMaster.rotate(facing, true)
-                     .getDirection(), c, width));
+                    list.addAll(getLine(direction.rotate90(false)
+                     , c, width));
+                    list.addAll(getLine(direction.rotate90(true)
+                     , c, width));
                 }
                 line.remove(baseCoordinate);
                 list.addAll(line);
                 // for (Coordinates c : getLine(FacingManager
-                // .rotate(facing, false).getDirection(), baseCoordinate,
+                // .rotate(facing, false), baseCoordinate,
                 // width)) {
                 // if (c == baseCoordinate)
                 // continue;
-                // list.addAll(getLine(facing.getDirection(), c, height));
+                // list.addAll(getLine(facing, c, height));
                 // }
                 // for (Coordinates c : getLine(FacingManager.rotate(facing,
                 // true)
-                // .getDirection(), baseCoordinate, width)) {
+                // , baseCoordinate, width)) {
                 // if (c == baseCoordinate)
                 // continue;
-                // list.addAll(getLine(facing.getDirection(), c, height));
+                // list.addAll(getLine(facing, c, height));
                 // }
                 break;
         }
@@ -95,22 +93,22 @@ public class DC_PositionMaster {
     }
 
     public static List<Coordinates> getRectangle(
-     FACING_DIRECTION lengthDirection, Coordinates baseCoordinate,
+     DIRECTION lengthDirection, Coordinates baseCoordinate,
      int length, int width) {
         return getRectangle(lengthDirection,
-         FacingMaster.rotate(lengthDirection, true), baseCoordinate,
+         lengthDirection.rotate90(true), baseCoordinate,
          length, width);
     }
 
     public static List<Coordinates> getRectangle(
-     FACING_DIRECTION lengthDirection, FACING_DIRECTION widthDirection,
+     DIRECTION lengthDirection, DIRECTION widthDirection,
      Coordinates baseCoordinate, int length, int width) {
         return getRectangle(false, lengthDirection, widthDirection,
          baseCoordinate, length, width);
     }
 
     public static List<Coordinates> getRectangle(boolean allowInvalid,
-                                                 FACING_DIRECTION lengthDirection, FACING_DIRECTION widthDirection,
+                                                 DIRECTION lengthDirection, DIRECTION widthDirection,
                                                  Coordinates baseCoordinate, int length, int width) {
         XList<Coordinates> list = new XList();
         length--;
@@ -122,11 +120,11 @@ public class DC_PositionMaster {
             return list;
         }
         List<Coordinates> line = getLine(allowInvalid,
-         lengthDirection.getDirection(), baseCoordinate, length);
+         lengthDirection, baseCoordinate, length);
         list.addAllUnique(line);
         for (Coordinates c : line) {
             list.addAllUnique(getLine(allowInvalid,
-             widthDirection.getDirection(), c, width));
+             widthDirection, c, width));
         }
         return list;
     }

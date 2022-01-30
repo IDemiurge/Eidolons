@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.logic.battlefield;
 
 import com.google.inject.internal.util.ImmutableList;
-import eidolons.ability.conditions.req.CellCondition;
 import eidolons.ability.conditions.shortcut.PushableCondition;
 import eidolons.ability.effects.oneshot.move.MoveEffect;
 import eidolons.ability.effects.oneshot.move.SelfMoveEffect;
@@ -13,7 +12,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.unit.Unit;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.actions.AiActionFactory;
 import eidolons.game.battlecraft.ai.elements.actions.AiUnitActionMaster;
 import eidolons.game.battlecraft.ai.tools.path.ActionPath;
@@ -26,7 +25,6 @@ import eidolons.game.core.master.EffectMaster;
 import eidolons.game.core.state.DC_GameState;
 import eidolons.game.exploration.handlers.ExploreGameLoop;
 import main.content.enums.entity.ActionEnums;
-import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.system.AiEnums;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
@@ -56,6 +54,8 @@ import static main.system.auxiliary.log.LogMaster.log;
 
 public class DC_MovementManager implements MovementManager {
 
+    public static final String STEP = "Step";
+    public static final String JUMP ="Jump" ;
     public static boolean anObjectMoved;
     Map<Unit, List<ActionPath>> pathCache = new HashMap<>();
     private final DC_Game game;
@@ -84,39 +84,16 @@ public class DC_MovementManager implements MovementManager {
         return active.getOwnerUnit().getCoordinates();
     }
 
-    public static Action getMoveAction(Unit unit, Coordinates coordinates) {
+    public static AiAction getMoveAction(Unit unit, Coordinates coordinates) {
         return getMoveAction(unit, unit.getCoordinates(), coordinates);
     }
 
-    public static Action getMoveAction(Unit unit, Coordinates from, Coordinates c) {
-
-        // if (diagAllowed){
-        if (from.x != c.x && from.y != c.y) {
-            Action leap = AiActionFactory.newAction("Clumsy Leap", unit.getAI());
-            leap.setRef(Ref.getCopy(leap.getRef()));
-            leap.getRef().setTarget(unit.getGame().getCell(c).getId());
-            return leap;
-        }
-        // }
-        FACING_SINGLE relative = FacingMaster.getSingleFacing(unit.getFacing(),
-                from, c);
-        if (relative == FACING_SINGLE.IN_FRONT) {
-            if (!new CellCondition(UNIT_DIRECTION.AHEAD).check(unit))
-                return null;
-            return AiActionFactory.newAction("Move", unit.getAI());
-        }
-        boolean left = (unit.getFacing().isVertical())
-
-                ? unit.getFacing().isCloserToZero() == PositionMaster.isToTheLeft(c, from)
-
-                : unit.getFacing().isCloserToZero() != PositionMaster.isAbove(c, from);
-        // if (!unit.getFacing().isCloserToZero()) {
-        //     left = !left;
-        // }
-
-        if (!new CellCondition(left ? UNIT_DIRECTION.LEFT : UNIT_DIRECTION.RIGHT).check(unit))
-            return null;
-        return AiActionFactory.newAction("Move " + (left ? "Left" : "Right"), unit.getAI());
+    public static AiAction getMoveAction(Unit unit, Coordinates from, Coordinates c) {
+        boolean diagonal = (from.x != c.x && from.y != c.y);
+        // if (!new CellCondition(left ? UNIT_DIRECTION.LEFT : UNIT_DIRECTION.RIGHT).check(unit))
+        //     return null; //TODO check?
+        String name=diagonal? DC_MovementManager.JUMP : DC_MovementManager.STEP ;
+        return AiActionFactory.newAction(name, unit.getAI());
     }
 
     public static List<DC_ActiveObj> getMoves(Unit unit) {
@@ -193,7 +170,7 @@ public class DC_MovementManager implements MovementManager {
             }
         }
         PathBuilder builder = PathBuilder.getInstance().init
-                (moves, new Action(unit.getAction("Move")));
+                (moves, new AiAction(unit.getAction("Move")));
         builder.simplified = true;
         List<ActionPath> paths = builder.build(new ListMaster<Coordinates>().getList(coordinates));
         builder.simplified = false;
@@ -267,11 +244,11 @@ public class DC_MovementManager implements MovementManager {
                 playerPath = path.choices.stream().map(Choice::getCoordinates).collect(Collectors.toList());
 
                 for (Choice choice : path.choices) {
-                    for (Action action : choice.getActions()) {
-                        log(action.getActive().getName() + " added to queue " + playerDestination);
+                    for (AiAction aiAction : choice.getActions()) {
+                        log(aiAction.getActive().getName() + " added to queue " + playerDestination);
                         Context context = new Context(unit,
                                 game.getCell(choice.getCoordinates()));
-                        ActionInput actionInput = new ActionInput(action.getActive(), context);
+                        ActionInput actionInput = new ActionInput(aiAction.getActive(), context);
                         actionInput.setAuto(true);
                         ((ExploreGameLoop) unit.getGame().getGameLoop()).tryAddPlayerActions(actionInput);
                         unit.getGame().getGameLoop().signal();
@@ -436,50 +413,6 @@ public class DC_MovementManager implements MovementManager {
         return PositionMaster.getDistance(obj1, obj2);
     }
 
-    @Override
-    public Coordinates getTemplateMoveCoordinate(MOVE_TEMPLATES template, FACING_DIRECTION facing,
-                                                 Obj obj, Ref ref) {
-        // getOrCreate some caching to optimize this!
-        UNIT_DIRECTION direction = template.getDirection();
-        String range = template.getRange();
-        Boolean selective = template.isSelectiveTargeting();
-
-        if (template.getVarClasses() != null) {
-            String vars = ref.getObj(KEYS.ACTIVE).getCustomProperty(
-                    DC_ValueManager.getVarEnumCustomValueName(MOVE_TEMPLATES.class));
-            List<String> varList = VariableManager.getVarList(vars);
-
-            range = varList.get(0);
-            if (varList.size() > 1) {
-                direction = new EnumMaster<UNIT_DIRECTION>().retrieveEnumConst(
-                        UNIT_DIRECTION.class, varList.get(1));
-            }
-
-            if (varList.size() > 2) {
-                selective = new Boolean(varList.get(2));
-            }
-
-        }
-        switch (template) {
-            // some custom templates
-        }
-        if (selective == null) {
-            selective = false;
-        }
-        if (selective) {
-            // create filter by directions and range!
-        } else {
-            if (range.equals("1")) {
-                return obj.getCoordinates().getAdjacentCoordinate(
-                        DirectionMaster.getDirectionByFacing(facing, direction));
-            }
-            // preCheck int >= formla
-
-        }
-
-        return null;
-
-    }
 
 
 }

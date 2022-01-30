@@ -1,6 +1,7 @@
 package main.game.bf;
 
 import main.game.bf.directions.DIRECTION;
+import main.game.bf.directions.DirectionMaster;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
@@ -353,6 +354,8 @@ public class Coordinates implements Serializable, Comparable<Coordinates> {
         }
         int x1 = x;
         int y1 = y;
+        if (direction==DIRECTION.NONE)
+            direction = DirectionMaster.getRandomDirection();
         switch (direction) {
             case DOWN:
                 y1++;

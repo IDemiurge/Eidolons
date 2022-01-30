@@ -50,17 +50,7 @@ public class CellCondition extends OccupiedCondition {
         if (direction == null) {
             return super.getCoordinates(ref);
         }
-        Obj obj = ref.getObj(key);
-        FACING_DIRECTION f = null;
-        if (obj instanceof UnitModel) {
-            f = ((UnitModel) obj).getFacing();
-        }
-        if (f == null) {
-            return null;
-        }
-
-        return super.getCoordinates(ref).getAdjacentCoordinate(
-         DirectionMaster.getDirectionByFacing(f, direction));
+        return null;
     }
 }
 // boolean result = (free) ? !super.preCheck() : super.preCheck();

@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.ai.explore.behavior;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 
 import java.util.ArrayList;
@@ -38,12 +38,12 @@ public abstract class AiGroupBehavior extends AiBehavior {
 
 
     @Override
-    protected boolean checkNextActionCanBeMade(Action action) {
-        if (action == null) {
+    protected boolean checkNextActionCanBeMade(AiAction aiAction) {
+        if (aiAction == null) {
             return false;
         }
         if (isLeader())
-            if (action.getActive().isMove()) {
+            if (aiAction.getActive().isMove()) {
                 return checkGroupIsKeepingUp();
             }
 

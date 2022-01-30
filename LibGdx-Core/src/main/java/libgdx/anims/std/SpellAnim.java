@@ -467,13 +467,14 @@ public class SpellAnim extends ActionAnim {
         SPRAY(300, 0, active -> {
             Set<Coordinates> set = active.getOwnerUnit().getCoordinates().
                     getAdjacentCoordinates();
-            set.removeIf(coordinates ->
-                    FacingMaster.getSingleFacing(active.getOwnerUnit().getFacing(),
-                            active.getOwnerUnit().getCoordinates(), coordinates) != UnitEnums.FACING_SINGLE.IN_FRONT);
+            //TODO LC 2.0
+            // set.removeIf(coordinates ->
+            //         FacingMaster.getSingleFacing(active.getOwnerUnit().getFacing(),
+            //                 active.getOwnerUnit().getCoordinates(), coordinates) != UnitEnums.FACING_SINGLE.IN_FRONT);
             return set.size();
         }) {
             public int getAdditionalDistance(DC_ActiveObj active) {
-                if (active.getOwnerUnit().getFacing().isVertical()) return GridMaster.CELL_H;
+                //TODO Grid 2.0
                 return GridMaster.CELL_W;
             }
         },

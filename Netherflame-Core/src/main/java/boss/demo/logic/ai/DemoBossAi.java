@@ -3,7 +3,7 @@ package boss.demo.logic.ai;
 import boss.logic.action.BOSS_ACTION;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.GridCell;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import boss.BossManager;
 import boss.ai.BossAi;
 import boss.demo.logic.DemoBossActionManager;
@@ -15,7 +15,7 @@ public class  DemoBossAi extends BossAi {
         super(manager);
     }
 
-    protected Action getSpell() {
+    protected AiAction getSpell() {
 
         BOSS_ACTION key=chooseSpellKey();
         DC_ActiveObj active=getActionMaster().getAction(key) ;
@@ -24,7 +24,7 @@ public class  DemoBossAi extends BossAi {
         // DC_Cell cell = getTargetCell(active);
         // ref.setTarget(cell.getId());
         ref.setTarget(Eidolons.getMainHero().getId());
-        return new Action(active, ref);
+        return new AiAction(active, ref);
     }
 
     private GridCell getTargetCell(DC_ActiveObj active) {

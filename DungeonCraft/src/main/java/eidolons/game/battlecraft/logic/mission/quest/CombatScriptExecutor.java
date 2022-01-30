@@ -487,7 +487,6 @@ public class CombatScriptExecutor extends ScriptManager<QuestMission, COMBAT_SCR
         SPAWN_MODE mode = SPAWN_MODE.SCRIPT;
 
         List<Unit> unitsList = getSpawner().spawn(unitData, player, mode);
-        getSpawner().getFacingAdjuster().adjustFacing(unitsList);
         return true;
     }
 

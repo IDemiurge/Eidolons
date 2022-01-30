@@ -25,7 +25,7 @@ import eidolons.entity.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.advanced.machine.AiConst;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.actions.AiActionFactory;
 import eidolons.game.battlecraft.ai.elements.actions.AiQuickItemAction;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
@@ -115,26 +115,26 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         setUnit(as.getAi().getUnit());
         GOAL_TYPE goal = as.getType();
         initLogChannel(goal);
-        Action action = as.getLastAction();
+        AiAction aiAction = as.getLastAction();
         try {
-            action.getActive().getGame().getEffectManager().setEffectRefs(
-                    action.getActive().getAbilities(), action.getRef());
+            aiAction.getActive().getGame().getEffectManager().setEffectRefs(
+                    aiAction.getActive().getAbilities(), aiAction.getRef());
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-        if (!action.getActive().getProperty(PROPS.AI_PRIORITY_FORMULA).isEmpty()) {
-            setBasePriority(evaluatePriorityFormula(action, action.getActive().getProperty(
+        if (!aiAction.getActive().getProperty(PROPS.AI_PRIORITY_FORMULA).isEmpty()) {
+            setBasePriority(evaluatePriorityFormula(aiAction, aiAction.getActive().getProperty(
                     PROPS.AI_PRIORITY_FORMULA)));
-            if (EffectMaster.check(action.getActive(), RollEffect.class)) {
+            if (EffectMaster.check(aiAction.getActive(), RollEffect.class)) {
                 try {
                     applyRollPriorityMod((RollEffect) EffectMaster.getEffectsOfClass(
-                            action.getActive(), RollEffect.class).get(0));
+                            aiAction.getActive(), RollEffect.class).get(0));
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
             try {
-                applyResistPenalty(action);
+                applyResistPenalty(aiAction);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -144,14 +144,14 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                     setBasePriority(getAttackPriority(as));
                     break;
                 case WAIT:
-                    setBasePriority(getWaitPriority(action));
+                    setBasePriority(getWaitPriority(aiAction));
                     break;
                 case DEFEND:
                 case PREPARE:
-                    setBasePriority(getModePriority(action));
+                    setBasePriority(getModePriority(aiAction));
                     break;
                 case SUMMONING:
-                    setBasePriority(getSummonPriority(action));
+                    setBasePriority(getSummonPriority(aiAction));
                     break;
                 case SEARCH:
                     // TODO sight range/detection factors,
@@ -164,7 +164,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                     setBasePriority(getRetreatPriority(as));
                     break;
                 case COATING:
-                    setBasePriority(getCoatingPriority(action.getActive(), action.getTarget()));
+                    setBasePriority(getCoatingPriority(aiAction.getActive(), aiAction.getTarget()));
                     break;
                 case AGGRO:
                 case AMBUSH:
@@ -180,7 +180,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 case ZONE_SPECIAL:
 
                 default:
-                    setBasePriority(getSpellPriority(goal, action));
+                    setBasePriority(getSpellPriority(goal, aiAction));
                     break;
             }
         }
@@ -227,7 +227,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     }
 
     @Override
-    public int evaluatePriorityFormula(Action action, String property) {
+    public int evaluatePriorityFormula(AiAction aiAction, String property) {
         Boolean less_or_more_for_health = null;
         if (EnumMaster.get(AiEnums.TOTAL_PRIORITY.class, property) != null) {
             AiEnums.TOTAL_PRIORITY total = (AiEnums.TOTAL_PRIORITY) EnumMaster.get(AiEnums.TOTAL_PRIORITY.class, property);
@@ -247,10 +247,10 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             float i = 1;
             switch (p) {
                 case DURATION:
-                    i = (float) getDurationMultiplier(action) / 100;
+                    i = (float) getDurationMultiplier(aiAction) / 100;
                     break;
                 case CAPACITY:
-                    i = calculateCapacity(action.getSource());
+                    i = calculateCapacity(aiAction.getSource());
                     break;
                 case DANGER:
                     // i = getSituationAnalyzer().getMeleeDangerFactor(getUnit(), false, true) / 100;
@@ -268,10 +268,10 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             property = property.replace("[more]", "");
         }
         if (less_or_more_for_health != null) {
-            int unitPriority = getUnitPriority(action.getTarget(), less_or_more_for_health);
+            int unitPriority = getUnitPriority(aiAction.getTarget(), less_or_more_for_health);
             property = property.replace("{target_power}", "" + unitPriority);
         }
-        return new Formula(property).getInt(action.getRef());
+        return new Formula(property).getInt(aiAction.getRef());
     }
 
     @Override
@@ -298,49 +298,49 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     }
 
     @Override
-    public int getSpellPriority(GOAL_TYPE type, Action action) {
+    public int getSpellPriority(GOAL_TYPE type, AiAction aiAction) {
         switch (type) {
 
             case ZONE_DAMAGE:
             case AUTO_DAMAGE:
-                priority = getZoneSpellPriority(action, true);
-                if (action.getSource().getAiType() == AiEnums.AI_TYPE.CASTER) {
+                priority = getZoneSpellPriority(aiAction, true);
+                if (aiAction.getSource().getAiType() == AiEnums.AI_TYPE.CASTER) {
                     applyMultiplier(150, "AI_TYPE.CASTER");
                 }
-                if (action.getSource().getAiType() == AiEnums.AI_TYPE.CASTER_OFFENSE) {
+                if (aiAction.getSource().getAiType() == AiEnums.AI_TYPE.CASTER_OFFENSE) {
                     applyMultiplier(200, "AI_TYPE.CASTER_OFFENSE");
                 }
                 break;
             case SELF:
-                priority = getSelfSpellPriority(action);
+                priority = getSelfSpellPriority(aiAction);
                 break; // could be a lot ...
             // ++ rolls effect, ++ behavior modes,
             case BUFF:
             case DEBUFF:
 
-                priority = getParamModSpellPriority(action, true);
-                if (action.getSource().getAiType() == AiEnums.AI_TYPE.CASTER_SUPPORT) {
+                priority = getParamModSpellPriority(aiAction, true);
+                if (aiAction.getSource().getAiType() == AiEnums.AI_TYPE.CASTER_SUPPORT) {
                     applyMultiplier(150, "AI_TYPE.CASTER_SUPPORT");
                 }
                 break;
             case RESTORE:
             case DEBILITATE:
-                if (AI_SpellMaster.isCounterModSpell(action.getActive())) {
-                    priority = getCounterModSpellPriority(action);
+                if (AI_SpellMaster.isCounterModSpell(aiAction.getActive())) {
+                    priority = getCounterModSpellPriority(aiAction);
                 } else {
-                    priority = getParamModSpellPriority(action, false);
+                    priority = getParamModSpellPriority(aiAction, false);
                 }
-                if (action.getSource().getAiType() == AiEnums.AI_TYPE.CASTER_SUPPORT) {
+                if (aiAction.getSource().getAiType() == AiEnums.AI_TYPE.CASTER_SUPPORT) {
                     applyMultiplier(150, "AI_TYPE.CASTER_SUPPORT");
                 }
                 break;
             case CUSTOM_HOSTILE:
-                priority = getSpellCustomHostilePriority(action);
+                priority = getSpellCustomHostilePriority(aiAction);
                 break;
 
         }
         if (FIRST_SPELL_MAX_PRIORITY)
-            if (!getUnitAi().getUsedActions().contains(action.getActive())) {
+            if (!getUnitAi().getUsedActions().contains(aiAction.getActive())) {
                 priority = (priority + 50) * 100;
             }
         if (getUnit().getAiType().isCaster()) {
@@ -350,63 +350,63 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     }
 
     @Override
-    public int getSelfSpellPriority(Action action) {
+    public int getSelfSpellPriority(AiAction aiAction) {
         Effects effects;
-        if (action instanceof AiQuickItemAction)
+        if (aiAction instanceof AiQuickItemAction)
             effects = EffectMaster.getEffectsFromSpell(
-                    ((DC_QuickItemAction) action.getActive()).getItem().getActives().get(0));
+                    ((DC_QuickItemAction) aiAction.getActive()).getItem().getActives().get(0));
         else effects =
-                EffectMaster.getEffectsFromSpell(action.getActive());
+                EffectMaster.getEffectsFromSpell(aiAction.getActive());
         if (effects.getEffects().isEmpty())
             return 0;
 
         setBasePriority(getUnitPriority(getUnit(), false));
         for (Effect e : effects) {
-            addEffectPriority(action, e);
+            addEffectPriority(aiAction, e);
         }
         return priority;
     }
 
     @Override
-    public void addEffectPriority(Action action, Effect e) {
+    public void addEffectPriority(AiAction aiAction, Effect e) {
         if (e instanceof AddBuffEffect) {
-            getParamModSpellPriority(action, true);
+            getParamModSpellPriority(aiAction, true);
         }
         if (e instanceof ModifyValueEffect) {
-            getParamModSpellPriority(action, false); // separate?
+            getParamModSpellPriority(aiAction, false); // separate?
         }
         if (e instanceof ModifyCounterEffect) {
-            getCounterModSpellPriority(action);
+            getCounterModSpellPriority(aiAction);
         }
     }
 
     @Override
-    public int getSpellCustomHostilePriority(Action action) {
-        Effects effects = EffectMaster.getEffectsFromSpell(action.getActive());
+    public int getSpellCustomHostilePriority(AiAction aiAction) {
+        Effects effects = EffectMaster.getEffectsFromSpell(aiAction.getActive());
         // TODO targets???
         for (Effect e : effects) {
-            addConstant(getSpellCustomHostileEffectPriority(action.getTarget(), action.getActive(),
+            addConstant(getSpellCustomHostileEffectPriority(aiAction.getTarget(), aiAction.getActive(),
                     e), e.toString());
         }
-        applyResistPenalty(action);
+        applyResistPenalty(aiAction);
         return priority;
     }
 
     @Override
-    public void applyResistPenalty(Action action) {
-        if (isResistApplied(action)) {
-            int factor = ParamPriorityAnalyzer.getResistanceFactor(action);
+    public void applyResistPenalty(AiAction aiAction) {
+        if (isResistApplied(aiAction)) {
+            int factor = ParamPriorityAnalyzer.getResistanceFactor(aiAction);
             addMultiplier(factor, "Resistance factor");
         }
     }
 
     @Override
-    public boolean isResistApplied(Action action) {
-        if (action.getActive().getProperty(PROPS.RESISTANCE_TYPE).equalsIgnoreCase(
+    public boolean isResistApplied(AiAction aiAction) {
+        if (aiAction.getActive().getProperty(PROPS.RESISTANCE_TYPE).equalsIgnoreCase(
                 SpellEnums.RESISTANCE_TYPE.IRRESISTIBLE + "")) {
             return false;
         }
-        return !action.getTarget().isOwnedBy(action.getSource().getOwner());
+        return !aiAction.getTarget().isOwnedBy(aiAction.getSource().getOwner());
     }
 
     @Override
@@ -479,10 +479,10 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     }
 
     @Override
-    public int getSummonPriority(Action action) {
+    public int getSummonPriority(AiAction aiAction) {
         // TODO precalculate summoned unit power, its initiative, its
         // positioning...
-        ObjType summoned = AI_SpellMaster.getSummonedUnit(action.getActive(), action.getRef());
+        ObjType summoned = AI_SpellMaster.getSummonedUnit(aiAction.getActive(), aiAction.getRef());
 
         Integer power = 0;
         if (summoned == null) {
@@ -490,7 +490,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         }
         try {
             SummonEffect summonEffect = (SummonEffect) EffectMaster.getEffectsOfClass(
-                    action.getActive().getAbilities(), SummonEffect.class).get(0);
+                    aiAction.getActive().getAbilities(), SummonEffect.class).get(0);
             //TODO AI Review
             if (summonEffect instanceof RaiseEffect) {
                 RaiseEffect raiseEffect = (RaiseEffect) summonEffect;
@@ -518,7 +518,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             //TODO
         }
         // try to getOrCreate as close to enemies as possible...
-        Coordinates coordinate = action.getRef().getTargetObj().getCoordinates();
+        Coordinates coordinate = aiAction.getRef().getTargetObj().getCoordinates();
         boolean prefer_melee = UnitAnalyzer.isMeleePreferred(summoned);
         if (prefer_melee) {
             prefer_melee = UnitAnalyzer.isOffensePreferred(summoned);
@@ -616,19 +616,19 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     }
 
     @Override
-    public int getZoneSpellPriority(Action action, boolean damage) {
+    public int getZoneSpellPriority(AiAction aiAction, boolean damage) {
         int base_priority = 0;
-        DC_ActiveObj active = action.getActive();
+        DC_ActiveObj active = aiAction.getActive();
         Targeting targeting = active.getTargeting();
 
         if (targeting instanceof FixedTargeting || targeting instanceof SelectiveTargeting) {
             targeting = TargetingMaster.getZoneEffect(active);
         }
         // Set<Obj> objects = targeting.getFilter().getObjects(action.getRef());
-        Ref REF = action.getRef().getCopy();
+        Ref REF = aiAction.getRef().getCopy();
         targeting.select(REF);
         List<Obj> objects = (REF.getGroup() != null) ? REF.getGroup().getObjects()
-                : new ArrayList<>(targeting.getFilter().getObjects(action.getRef()));
+                : new ArrayList<>(targeting.getFilter().getObjects(aiAction.getRef()));
         for (Obj obj : objects) { // getZoneTargets(active)
             // TODO
             if (obj instanceof Unit) {
@@ -637,7 +637,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 }
                 Unit target = (Unit) obj;
                 int p = (damage) ? getDamagePriority(active, target, false)
-                        : getParamModSpellPriority(action);
+                        : getParamModSpellPriority(aiAction);
                 Boolean less_or_more_for_health = null;
                 if (p == 200) {
                     less_or_more_for_health = null;// ?
@@ -646,15 +646,15 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
                 boolean ally = target.isOwnedBy(getUnit().getOwner());
                 if (ally) {
-                    if (action.getSource().checkAiMod(AI_MODIFIERS.CRUEL)) {
+                    if (aiAction.getSource().checkAiMod(AI_MODIFIERS.CRUEL)) {
                         p /= 2;
                     }
-                    if (action.getSource().checkAiMod(AI_MODIFIERS.MERCIFUL)) {
+                    if (aiAction.getSource().checkAiMod(AI_MODIFIERS.MERCIFUL)) {
                         p *= 2;
                     }
                     base_priority -= p;
                 } else {
-                    if (action.getSource().checkAiMod(AI_MODIFIERS.TRUE_BRUTE)) {
+                    if (aiAction.getSource().checkAiMod(AI_MODIFIERS.TRUE_BRUTE)) {
                         p *= 2;
                     }
                     base_priority += p;
@@ -672,14 +672,14 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     }
 
     @Override
-    public int getParamModSpellPriority(Action action) {
-        return getParamModSpellPriority(action, null);
+    public int getParamModSpellPriority(AiAction aiAction) {
+        return getParamModSpellPriority(aiAction, null);
     }
 
     @Override
-    public int getParamModSpellPriority(Action action, Boolean buff) {
-        DC_ActiveObj spell = action.getActive();
-        DC_Obj target = action.getTarget();
+    public int getParamModSpellPriority(AiAction aiAction, Boolean buff) {
+        DC_ActiveObj spell = aiAction.getActive();
+        DC_Obj target = aiAction.getTarget();
 
         if (buff == null) {
             buff = EffectMaster.check(spell.getAbilities(), AddBuffEffect.class);
@@ -728,12 +728,12 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
                     if (TextParser.checkHasValueRefs(valueEffect.getFormula().toString())) {
                         String parsed = TextParser.parse(valueEffect.getFormula().toString(),
-                                action.getRef(), TextParser.ACTIVE_PARSING_CODE);
+                                aiAction.getRef(), TextParser.ACTIVE_PARSING_CODE);
                         parsed = TextParser.replaceCodes(parsed);
                         valueEffect.setFormula(new Formula(parsed));
 
                     }
-                    int amount = valueEffect.getFormula().getInt(action.getRef());
+                    int amount = valueEffect.getFormula().getInt(aiAction.getRef());
 
                     if (valueEffect.getMod_type() == MOD.MODIFY_BY_PERCENT) {
                         amount = MathMaster.getFractionValueCentimal(target.getIntParam(param,
@@ -773,10 +773,10 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
             if (!buff) {
                 if (!ally && valid) {
-                    applyResistPenalty(action);
+                    applyResistPenalty(aiAction);
                 }
             } else {
-                priority = priority * (getDurationMultiplier(action)) / 100;
+                priority = priority * (getDurationMultiplier(aiAction)) / 100;
             }
         }
         if (!valid) {
@@ -787,12 +787,12 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     }
 
     @Override
-    public int getDurationMultiplier(Action action) {
+    public int getDurationMultiplier(AiAction aiAction) {
         int multiplier;
-        int duration = new Formula(action.getActive().getParam(G_PARAMS.DURATION)).getInt(action
+        int duration = new Formula(aiAction.getActive().getParam(G_PARAMS.DURATION)).getInt(aiAction
                 .getRef());
         duration = MathMaster
-                .addFactor(duration, ParamPriorityAnalyzer.getResistanceFactor(action));
+                .addFactor(duration, ParamPriorityAnalyzer.getResistanceFactor(aiAction));
         multiplier = (int) Math.sqrt(duration *
                 getConstInt(AiConst.GEN_SPELL_DURATION_SQRT_MULTIPLIER))
                 + getConstInt(AiConst.GEN_SPELL_DURATION_MULTIPLIER);
@@ -861,40 +861,40 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     }
 
     @Override
-    public int getCounterModSpellPriority(Action action) {
+    public int getCounterModSpellPriority(AiAction aiAction) {
         // preCheck immunity? find counter rule by name and preCheck....
 
-        List<Effect> effects = EffectMaster.getEffectsOfClass(action.getActive().getAbilities(),
+        List<Effect> effects = EffectMaster.getEffectsOfClass(aiAction.getActive().getAbilities(),
                 ModifyCounterEffect.class);
-        initRollMap(action.getActive(), effects);
+        initRollMap(aiAction.getActive(), effects);
         for (Effect e : effects) {
             if (e instanceof ModifyCounterEffect) {
                 ModifyCounterEffect modifyCounterEffect = (ModifyCounterEffect) e;
                 float mod = DC_CounterMaster.getCounterPriority(modifyCounterEffect
-                        .getCounterName(), action.getTarget());
+                        .getCounterName(), aiAction.getTarget());
                 if (rollMap.get(e) != null) {
                     mod = mod * 100 / getRollPriorityMod(rollMap.get(e));
                 }
 
-                int amount = modifyCounterEffect.getFormula().getInt(action.getRef());
-                setBasePriority(getUnitPriority(action.getTarget(), true));
+                int amount = modifyCounterEffect.getFormula().getInt(aiAction.getRef());
+                setBasePriority(getUnitPriority(aiAction.getTarget(), true));
                 addMultiplier(Math.round(mod * amount), modifyCounterEffect.getCounterName()
                         + StringMaster.wrapInParenthesis(amount + ""));
             }
         }
-        applyResistPenalty(action);
+        applyResistPenalty(aiAction);
 
         return priority;
     }
 
     @Override
     public int getAttackPriority(ActionSequence as) {
-        Action action = as.getLastAction();
-        if (action.getTarget() instanceof GridCell) {
+        AiAction aiAction = as.getLastAction();
+        if (aiAction.getTarget() instanceof GridCell) {
             return 0;
         }
-        Unit targetObj = (Unit) action.getTarget();
-        DC_ActiveObj active = action.getActive();
+        Unit targetObj = (Unit) aiAction.getTarget();
+        DC_ActiveObj active = aiAction.getActive();
         return getAttackPriority(active, targetObj);
 
     }
@@ -985,13 +985,13 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         // TODO spells!
         if (active instanceof Spell) {
             //check mod effects too
-            Action action = AiActionFactory.newAction(active,
+            AiAction aiAction = AiActionFactory.newAction(active,
                     new Context(getUnit(), targetObj));
             damage_priority +=
-                    getSpellPriority(GOAL_TYPE.DEBILITATE, action);
+                    getSpellPriority(GOAL_TYPE.DEBILITATE, aiAction);
             damage_priority +=
                     getSpellPriority(GOAL_TYPE.DEBUFF,
-                            action);
+                            aiAction);
             if (getUnit().getAiType().isCaster()) {
                 damage_priority *= 4;
             }
@@ -1180,9 +1180,6 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             if (unit_ai.getBehaviorMode() == AiEnums.BEHAVIOR_MODE.BERSERK) {
                 basePriority = 100;
             } else if (targetObj.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
-                if (!Analyzer.isBlockingMovement(unit_ai.getUnit(), target_unit)) {
-                    return 0;
-                }
                 basePriority = 20;
             }
         }
@@ -1224,7 +1221,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     }
 
     @Override
-    public int getModePriority(Action a) {
+    public int getModePriority(AiAction a) {
         STD_MODE_ACTIONS action = new EnumMaster<STD_MODE_ACTIONS>().retrieveEnumConst(
                 STD_MODE_ACTIONS.class, a.getActive().getName());
         if (action == null) {
@@ -1253,25 +1250,14 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     }
 
     @Override
-    public int getWaitPriority(Action action) {
-        Unit target = (Unit) action.getTarget();
+    public int getWaitPriority(AiAction aiAction) {
+        Unit target = (Unit) aiAction.getTarget();
         boolean ally = (target.getOwner().equals(getUnit().getOwner()));
         if (ally) {
             if (getUnitAi().getType() == AiEnums.AI_TYPE.CASTER || getUnitAi().getType() == AiEnums.AI_TYPE.ARCHER) {
                 if (!Analyzer.isBlocking(getUnit(), target)) {
                     return 0;
                 }
-            }
-            if (!Analyzer.isBlockingMovement(getUnit(), target)) // if I were sorting
-            // continuously even
-            // as I calculate, I
-            // could reference
-            // current top
-            // priority action
-            // to see what to
-            // wait for
-            {
-                return 0;
             }
         } else {
             if (Analyzer.checkRangedThreat(target)) {
@@ -1283,7 +1269,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
         }
 
-        int ap = action.getSource().getIntParam(PARAMS.C_ATB) - 1;
+        int ap = aiAction.getSource().getIntParam(PARAMS.C_ATB) - 1;
         // differentiate between waiting on enemy and ally?
         int base_priority = getConstInt(AiConst.WAIT_PRIORITY_FACTOR) * ap / 50;
 
@@ -1469,19 +1455,19 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     public void applyConvergingPathsPriorities(List<ActionSequence> actions) {
         // TODO make sure that they are not pruned at path-building phase!
         // split into groups and for each group, add bonus per group member!
-        Map<Action, List<ActionSequence>> asGroups = new HashMap<>();
+        Map<AiAction, List<ActionSequence>> asGroups = new HashMap<>();
         for (ActionSequence as : actions) {
-            Action firstAction = as.get(0);
-            List<ActionSequence> group = asGroups.get(firstAction);
+            AiAction firstAiAction = as.get(0);
+            List<ActionSequence> group = asGroups.get(firstAiAction);
             if (group == null) {
                 group = new ArrayList<>();
-                asGroups.put(firstAction, group);
+                asGroups.put(firstAiAction, group);
             }
             group.add(as);
         }
-        for (Action firstAction : asGroups.keySet()) {
-            for (ActionSequence as : asGroups.get(firstAction)) {
-                for (ActionSequence as2 : asGroups.get(firstAction)) {
+        for (AiAction firstAiAction : asGroups.keySet()) {
+            for (ActionSequence as : asGroups.get(firstAiAction)) {
+                for (ActionSequence as2 : asGroups.get(firstAiAction)) {
                     if (as2 == as) {
                         continue;
                     }
@@ -1491,7 +1477,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                         }
                     }
                     int bonus = MathMaster.round(as2.getPriority()
-                            / asGroups.get(firstAction).size() * (getConstInt(AiConst.CONVERGING_FACTOR)));
+                            / asGroups.get(firstAiAction).size() * (getConstInt(AiConst.CONVERGING_FACTOR)));
                     LogMaster.log(getLogChannel(), bonus
                             + " Converging Paths bonus added to " + as.getPriority()
                             + as.getActions() + " from " + as2.getPriority() + as2.getActions());
@@ -1520,7 +1506,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     }
 
 
-    public int getPriorityForEffect(AiEnums.AI_EFFECT_PRIORITIZING aep, Effect e, Action a) {
+    public int getPriorityForEffect(AiEnums.AI_EFFECT_PRIORITIZING aep, Effect e, AiAction a) {
         DC_Obj target = a.getTarget();
         switch (aep) {
             case COUNTER_MOD:

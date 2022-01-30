@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.ai.tools;
 
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.exploration.story.cinematic.Cinematics;
 import main.elements.targeting.SelectiveTargeting;
@@ -12,21 +12,21 @@ public class AiExecutor {
         // TODO Auto-generated constructor stub
     }
 
-    public boolean execute(Action action) {
-        return execute(action, false, true);
+    public boolean execute(AiAction aiAction) {
+        return execute(aiAction, false, true);
     }
 
-    public boolean execute(Action action, boolean free, boolean gameThread) {
+    public boolean execute(AiAction aiAction, boolean free, boolean gameThread) {
         boolean result = false;
-        Context ref = new Context(action.getRef());
+        Context ref = new Context(aiAction.getRef());
         if (Cinematics.ON || free) {
-            action.getActive().setFree(true);
+            aiAction.getActive().setFree(true);
         }
         try {
-                if (action.getSource().isAiControlled())
-                if (!action.getActive().isChanneling()) {
+                if (aiAction.getSource().isAiControlled())
+                if (!aiAction.getActive().isChanneling()) {
                     if (ref.getTargetObj() == null) {
-                        if ((action.getActive().getTargeting()
+                        if ((aiAction.getActive().getTargeting()
                                 instanceof SelectiveTargeting)) {
                             return false;
                         }
@@ -34,10 +34,10 @@ public class AiExecutor {
 
                 }
             if (gameThread) {
-                action.getActive().getHandler().activateOnGameLoopThread();
+                aiAction.getActive().getHandler().activateOnGameLoopThread();
                 result = true;
             } else {
-                action.getActive().getHandler().activateOn(ref);
+                aiAction.getActive().getHandler().activateOn(ref);
                 result = true;
             }
 
@@ -46,7 +46,7 @@ public class AiExecutor {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         } finally {
-            action.getActive().setFree(false);
+            aiAction.getActive().setFree(false);
         }
 
         return result;

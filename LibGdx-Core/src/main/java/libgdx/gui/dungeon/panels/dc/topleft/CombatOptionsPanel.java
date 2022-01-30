@@ -15,6 +15,7 @@ import eidolons.system.options.GameplayOptions;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.Options.OPTION;
 import eidolons.system.options.OptionsMaster;
+import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -89,7 +90,7 @@ public class CombatOptionsPanel extends TablePanelX {
         //can we add same comps as in OptionWindow?
         addOptionBoxes(table, list);
 
-        add(decorated = RollDecorator.decorate(table, FACING_DIRECTION.NORTH, true,
+        add(decorated = RollDecorator.decorate(table, DIRECTION.UP, true,
                 (ButtonStyled.STD_BUTTON.UP)));
 
     }

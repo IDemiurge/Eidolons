@@ -6,7 +6,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.AI_Manager;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.rules.RuleEnums;
@@ -320,7 +320,7 @@ public abstract class GameLoop {
         if (!firstActionDone) {
             Chronos.mark("First ai action");
         }
-        Action aiAction =
+        AiAction aiAction =
                 game.getAiManager().getAction(game.getManager().getActiveObj());
         if (!firstActionDone) {
             Long time = getWaitOnStartTime() - Chronos.getTimeElapsedForMark("First ai action");

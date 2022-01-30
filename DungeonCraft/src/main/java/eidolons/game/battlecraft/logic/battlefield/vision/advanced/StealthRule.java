@@ -147,11 +147,6 @@ public class StealthRule implements ActionRule {
         }
         Integer factor = 2 * source.getIntParam(PARAMS.SIGHT_RANGE);
 
-        if (FacingMaster.getSingleFacing((UnitModel) source, (BfObj) target) == UnitEnums.FACING_SINGLE.BEHIND) {
-            factor = source.getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
-        } else if (FacingMaster.getSingleFacing((UnitModel) source, (BfObj) target) == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
-            factor -= source.getIntParam(PARAMS.SIDE_SIGHT_PENALTY);
-        }
         if (action != null) {
             if (action.isAttackAny()) {
                 factor = factor * 2;
@@ -228,7 +223,7 @@ public class StealthRule implements ActionRule {
     }
 
     private double getMaxDistance(Unit source, DC_Obj unit) {
-        return (source.getSightRangeTowards(unit) + 1) * 2;
+        return (source.getSightRange() + 1) * 2;
     }
 
 //    private void checkSpotRoll(Unit spotter, Unit unit) {

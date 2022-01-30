@@ -371,8 +371,6 @@ public class RadialManager {
     protected static DC_ActiveObj getShortcut(RADIAL_ACTION_SHORTCUT sub,
                                               Unit sourceUnit, DC_Obj target) {
         switch (sub) {
-            case TURN_TO:
-                return DefaultActionHandler.getTurnToAction(sourceUnit, target.getCoordinates());
             case MOVE_TO:
                 return DefaultActionHandler.getMoveToCellAction(sourceUnit, target.getCoordinates());
             case ATTACK:

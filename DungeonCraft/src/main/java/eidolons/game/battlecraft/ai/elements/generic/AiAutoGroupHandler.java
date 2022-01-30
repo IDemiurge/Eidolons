@@ -80,14 +80,8 @@ public class AiAutoGroupHandler extends AiHandler {
                             return cell;
                     }
                 }
-                DIRECTION d = leader.getFacing().getDirection();
                 GridCell cell = game.getCell(leader.getCoordinates().getAdjacentCoordinate(
-                        d).getAdjacentCoordinate(
-                        d));
-                if (cell != null) {
-                    return cell;
-                }
-                cell = game.getCell(leader.getCoordinates().getAdjacentCoordinate(d));
+                        DIRECTION.NONE));
                 if (cell != null) {
                     return cell;
                 }

@@ -2,13 +2,8 @@ package eidolons.entity.unit;
 
 import main.entity.Entity;
 import main.entity.handlers.EntityMaster;
-import main.game.bf.directions.FACING_DIRECTION;
 
-public abstract class DummyUnit extends Entity implements FacingEntity {
-    @Override
-    public FACING_DIRECTION getFacing() {
-        return null;
-    }
+public abstract class DummyUnit extends Entity implements GridEntity {
 
     @Override
     public void init() {

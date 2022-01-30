@@ -1,10 +1,7 @@
 package eidolons.game.battlecraft.ai.tools.path;
 
-import eidolons.ability.effects.oneshot.mechanic.ChangeFacingEffect;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.actions.AiUnitActionMaster;
-import main.ability.effects.Effect;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.ContainerUtils;
 
@@ -18,17 +15,16 @@ import java.util.List;
 public class Choice {
     private final Coordinates coordinates;
     private Coordinates prevCoordinates;
-    private final List<Action> actions;
-    private Boolean[] turns;
+    private final List<AiAction> aiActions;
 
-    public Choice(Coordinates targetCoordinate, Action... actions) {
-        this(targetCoordinate, null, actions);
+    public Choice(Coordinates targetCoordinate, AiAction... aiActions) {
+        this(targetCoordinate, null, aiActions);
     }
 
-    public Choice(Coordinates targetCoordinate, Coordinates prevCoordinates, Action... actions) {
+    public Choice(Coordinates targetCoordinate, Coordinates prevCoordinates, AiAction... aiActions) {
         this.coordinates = targetCoordinate;
         this.prevCoordinates = prevCoordinates;
-        this.actions = new ArrayList<>(Arrays.asList(actions));
+        this.aiActions = new ArrayList<>(Arrays.asList(aiActions));
 
 
     }
@@ -43,40 +39,12 @@ public class Choice {
         return false;
     }
 
-    public Boolean[] getTurns() {
-        if (actions.size() == 1 || turns != null) {
-            return turns;
-        }
-        try {
-            List<Boolean> list = new ArrayList<>();
-            for (Action a : actions) {
-                DC_ActiveObj active = a.getActive();
-                if (active.getName().contains("lockwise")) {
-                    if (!active.isConstructed()) {
-                        active.construct();
-                    }
-                    for (Effect e : active.getAbilities().getEffects()) {
-                        if (e instanceof ChangeFacingEffect) {
-                            list.add(((ChangeFacingEffect) e).isClockwise());
-                        }
-                    }
-
-                }
-            }
-            turns = list.toArray(new Boolean[0]);
-            return turns;
-        } catch (Exception e) {
-
-        }
-        return null;
-    }
-
     public String toString() {
-        if (actions.size() == 1) {
-            return actions.get(0).getActive().getName() + " to " + coordinates;
+        if (aiActions.size() == 1) {
+            return aiActions.get(0).getActive().getName() + " to " + coordinates;
         }
         return ContainerUtils.joinStringList(ContainerUtils.toNameList(AiUnitActionMaster
-         .getActionObjectList(actions)), ", ")
+         .getActionObjectList(aiActions)), ", ")
          + " to " + coordinates;
     }
 
@@ -84,8 +52,8 @@ public class Choice {
         return coordinates;
     }
 
-    public List<Action> getActions() {
-        return actions;
+    public List<AiAction> getActions() {
+        return aiActions;
     }
 
     public Coordinates getPrevCoordinates() {

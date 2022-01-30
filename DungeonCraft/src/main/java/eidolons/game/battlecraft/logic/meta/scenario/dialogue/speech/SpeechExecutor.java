@@ -256,10 +256,6 @@ public class SpeechExecutor {
                     master.getGame().getVisionMaster().refresh();
                 }
                 break;
-            case TURN_AUTO:
-                getUnit(value).setFacing(
-                        FacingMaster.getFacing(vars.get(0)));
-                break;
             case ACTION:
                 if (vars.size() > 0) {
                     unit = getUnit(vars.get(0));

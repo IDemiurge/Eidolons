@@ -1,6 +1,5 @@
 package eidolons.game.exploration.dungeon.objects;
 
-import eidolons.ability.conditions.FacingCondition;
 import eidolons.ability.conditions.special.ClearShotCondition;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
@@ -59,7 +58,7 @@ public abstract class DungeonObjMaster<T extends DUNGEON_OBJ_ACTION> {
         action.setTargeting(new SelectiveTargeting(
 
          new Conditions(new DistanceCondition("1", true)
-          ,  new ClearShotCondition(),new FacingCondition(FACING_SINGLE.IN_FRONT))));
+          ,  new ClearShotCondition())));
         action.setConstructed(true);
         action.getTargeter().setTargetingInitialized(true);
         action.setTargetingCachingOff(true);

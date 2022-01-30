@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.ai.elements.actions.sequence;
 
 import eidolons.game.battlecraft.ai.UnitAI;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.task.Task;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.system.auxiliary.StringMaster;
@@ -14,39 +14,39 @@ public class ActionSequence {
     private GOAL_TYPE type;
     private Task task;
     // always re-generate or retain half-executed ones?
-    private List<Action> actions;
+    private List<AiAction> aiActions;
     private Integer priority;
     private int i = 0;
     private Integer priorityMultiplier;
 
-    public ActionSequence(GOAL_TYPE type, Action... actions) {
-        this(actions);
+    public ActionSequence(GOAL_TYPE type, AiAction... aiActions) {
+        this(aiActions);
         this.type = type;
     }
 
-    public ActionSequence(Action... actions) {
-        this(new ListMaster<Action>().getList(actions), null, null);
-        if (this.actions.isEmpty()) {
+    public ActionSequence(AiAction... aiActions) {
+        this(new ListMaster<AiAction>().getList(aiActions), null, null);
+        if (this.aiActions.isEmpty()) {
             setAi(getActions().get(0).getSource().getUnitAI());
         }
     }
 
-    public ActionSequence(List<Action> actions, UnitAI ai) {
-        this(actions, null, ai);
+    public ActionSequence(List<AiAction> aiActions, UnitAI ai) {
+        this(aiActions, null, ai);
     }
 
-    public ActionSequence(List<Action> actions, Task task, UnitAI ai) {
+    public ActionSequence(List<AiAction> aiActions, Task task, UnitAI ai) {
         if (task != null) {
             this.type = task.getType();
         }
         this.task = task;
         this.ai = ai;
-        this.actions = actions;
-        actions.forEach(action -> action.setTask(getTask()));
+        this.aiActions = aiActions;
+        aiActions.forEach(action -> action.setTask(getTask()));
     }
 
-    public ActionSequence(Task task2, UnitAI ai2, Action... actions) {
-        this(new ListMaster<Action>().getList(actions), task2, ai2);
+    public ActionSequence(Task task2, UnitAI ai2, AiAction... aiActions) {
+        this(new ListMaster<AiAction>().getList(aiActions), task2, ai2);
     }
 
     @Override
@@ -56,39 +56,39 @@ public class ActionSequence {
         //
         // }
         return StringMaster.toStringForm(getType())
-         + ":" + actions.toString()
+         + ":" + aiActions.toString()
          // + " priority: " + priority
          ;
 
     }
 
-    public Action getLastAction() {
-        return actions.get(actions.size() - 1);
+    public AiAction getLastAction() {
+        return aiActions.get(aiActions.size() - 1);
     }
 
     public void removeFirstAction() {
-        if (actions.isEmpty()) {
+        if (aiActions.isEmpty()) {
             return;
         }
-        actions.remove(0);
+        aiActions.remove(0);
     }
 
-    public Action getCurrentAction() {
-        return actions.get(i);
+    public AiAction getCurrentAction() {
+        return aiActions.get(i);
     }
 
-    public Action peekNextAction() {
-        if (actions.size() <= i) {
+    public AiAction peekNextAction() {
+        if (aiActions.size() <= i) {
             return null;
         }
-        return actions.get(i);
+        return aiActions.get(i);
     }
 
-    public Action popNextAction() {
-        if (actions.size() <= i) {
+    public AiAction popNextAction() {
+        if (aiActions.size() <= i) {
             return null;
         }
-        return actions.get(i++);
+        return aiActions.get(i++);
 
     }
 
@@ -121,8 +121,8 @@ public class ActionSequence {
         this.task = task;
     }
 
-    public List<Action> getActions() {
-        return actions;
+    public List<AiAction> getActions() {
+        return aiActions;
     }
 
     public int getPriority() {
@@ -136,12 +136,12 @@ public class ActionSequence {
         this.priority = priority;
     }
 
-    public Action get(int j) {
+    public AiAction get(int j) {
         return getActions().get(j);
     }
 
-    public void add(Action action) {
-        getActions().add(action);
+    public void add(AiAction aiAction) {
+        getActions().add(aiAction);
     }
 
     public Integer getPriorityMultiplier() {

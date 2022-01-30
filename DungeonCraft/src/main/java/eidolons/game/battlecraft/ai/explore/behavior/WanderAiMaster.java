@@ -6,10 +6,9 @@ import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
-import eidolons.game.battlecraft.ai.elements.task.Task;
 import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.struct.Floor;
@@ -22,7 +21,6 @@ import main.game.bf.directions.DirectionMaster;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.data.ListMaster;
 import main.system.math.PositionMaster;
 
 import java.util.ArrayList;
@@ -321,16 +319,6 @@ public class WanderAiMaster extends AiBehavior {
         if (c1 == null)
             c1 = (CoordinatesMaster.getRandomAdjacentCoordinate(ai.getUnit().getCoordinates()));
 
-        Task task = new Task(ai, GOAL_TYPE.WANDER, null);
-
-        if (c1 != null) {
-            List<Action> turnSequence = getMaster(ai).
-             getTurnSequenceConstructor().getTurnSequence(ai.getUnit(), c1);
-            if (ListMaster.isNotEmpty(turnSequence)) {
-                return new ActionSequence(turnSequence, task, ai);
-            }
-        }
-
         if (ai.isPathBlocked())
             return null;
 
@@ -338,14 +326,14 @@ public class WanderAiMaster extends AiBehavior {
         c.add(c1);
         getMaster(ai).setUnit(ai.getUnit());
 
-        Action action;
+        AiAction aiAction;
         if (c.get(0) != null)
-            action = getMaster(ai).getAtomicAi().getAtomicMove(c.get(0), ai.getUnit());
+            aiAction = getMaster(ai).getAtomicAi().getAtomicMove(c.get(0), ai.getUnit());
         else
-            action = getMaster(ai).getAtomicAi().getAtomicActionApproach(ai);
-        if (action == null)
+            aiAction = getMaster(ai).getAtomicAi().getAtomicActionApproach(ai);
+        if (aiAction == null)
             return null;
-        return new ActionSequence(GOAL_TYPE.WANDER, action);
+        return new ActionSequence(GOAL_TYPE.WANDER, aiAction);
 
         //        List<ActionSequence> sequences = getMaster(ai).getActionSequenceConstructor().
         //         getSequencesFromPaths(paths, task, action);

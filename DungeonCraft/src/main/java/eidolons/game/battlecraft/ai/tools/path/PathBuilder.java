@@ -2,18 +2,15 @@ package eidolons.game.battlecraft.ai.tools.path;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.unit.Unit;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.actions.ActionManager;
 import eidolons.game.battlecraft.ai.elements.actions.AiActionFactory;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.tools.AiLogger;
-import eidolons.game.battlecraft.ai.tools.target.ReasonMaster;
-import eidolons.game.battlecraft.ai.tools.target.ReasonMaster.FILTER_REASON;
 import eidolons.game.battlecraft.ai.tools.time.TimeLimitMaster;
 import eidolons.game.battlecraft.ai.tools.time.TimeLimitMaster.METRIC;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.EUtils;
 import eidolons.system.libgdx.GdxAdapter;
 import main.content.enums.entity.ActionEnums;
@@ -21,7 +18,6 @@ import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.elements.Filter;
 import main.elements.costs.Costs;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.Strings;
 import main.system.auxiliary.log.Chronos;
@@ -40,14 +36,11 @@ public class PathBuilder extends AiHandler {
     private static PathBuilder instance;
     protected Coordinates targetCoordinate;
     private Unit unit;
-    private Action targetAction;
+    private AiAction targetAiAction;
     private List<Coordinates> targetCells;
     private Coordinates originalCoordinate;
     private Coordinates c_coordinate;
     private Coordinates previousCoordinate;
-    private FACING_DIRECTION c_facing;
-    private FACING_DIRECTION originalFacing;
-    private FACING_DIRECTION previousFacing;
 
     // should these be dynamic? stronger units should getOrCreate more!
     private Choice base_choice;
@@ -75,41 +68,36 @@ public class PathBuilder extends AiHandler {
         return instance;
     }
 
-    public PathBuilder init(List<DC_ActiveObj> moveActions, Action targetAction) {
+    public PathBuilder init(List<DC_ActiveObj> moveActions, AiAction targetAiAction) {
 
         if (moveActions == null) {
             moveActions = new ArrayList<>(getUnit().getActionMap().get(ACTION_TYPE.STANDARD));
             moveActions.add(getUnit().getAction("Move"));
         }
-        if (targetAction == null) {
-            targetAction = AiActionFactory.newAction(("Move"), getUnitAi());
+        if (targetAiAction == null) {
+            targetAiAction = AiActionFactory.newAction(("Move"), getUnitAi());
         }
-        this.targetAction = targetAction;
+        this.targetAiAction = targetAiAction;
         init();
-        pathChoiceMaster.init(unit, targetAction, targetCoordinate, moveActions);
+        pathChoiceMaster.init(unit, targetAiAction, targetCoordinate, moveActions);
         return this;
     }
 
     private void init() {
         pathChoiceMaster = new PathChoiceMaster(this);
-        unit = targetAction.getSource();
+        unit = targetAiAction.getSource();
         originalCoordinate = unit.getCoordinates();
-        originalFacing = unit.getFacing();
     }
 
     private void reset() {
-        c_facing = originalFacing;
         c_coordinate = originalCoordinate;
         previousCoordinate = null;
-        previousFacing = null;
         failed = false;
 
     }
 
     private void resetUnit() {
         unit.removeTempCoordinates();
-        unit.removeTempFacing();
-
     }
 
     protected boolean checkEmpty(Coordinates c) {
@@ -121,15 +109,14 @@ public class PathBuilder extends AiHandler {
 
     protected void adjustUnit() {
         unit.setTempCoordinates(c_coordinate);
-        unit.setTempFacing(c_facing);
         unit.getGame().getRules().getStackingRule().clearCache();
     }
 
     public List<ActionPath> build(List<Coordinates> targetCoordinates
-            , List<DC_ActiveObj> moveActions, Action targetAction) {
-        this.targetAction = targetAction;
+            , List<DC_ActiveObj> moveActions, AiAction targetAiAction) {
+        this.targetAiAction = targetAiAction;
         init();
-        pathChoiceMaster.init(unit, targetAction, targetCoordinate, moveActions);
+        pathChoiceMaster.init(unit, targetAiAction, targetCoordinate, moveActions);
         return build(targetCoordinates);
     }
 
@@ -144,7 +131,7 @@ public class PathBuilder extends AiHandler {
             resetUnit();
         }
         main.system.auxiliary.log.LogMaster.log(1,
-                targetAction.getActive().getOwnerUnit().getNameAndCoordinate()
+                targetAiAction.getActive().getOwnerUnit().getNameAndCoordinate()
                         + "'s Paths: " + ContainerUtils.joinList(paths, Strings.NEW_LINE));
 
         try {
@@ -163,7 +150,7 @@ public class PathBuilder extends AiHandler {
     }
 
     private List<ActionPath> buildPaths(List<Coordinates> targetCoordinates) {
-        Chronos.mark(getChronosPrefix() + targetAction);
+        Chronos.mark(getChronosPrefix() + targetAiAction);
         paths = new ArrayList<>();
         bestResult = null;
         targetCells = targetCoordinates;
@@ -176,7 +163,7 @@ public class PathBuilder extends AiHandler {
             reset();
             path = new ActionPath(originalCoordinate);
             // TODO first step must be activateable!
-            List<Choice> choices = pathChoiceMaster.getChoices(simplified, path, c_coordinate, targetCoordinate, c_facing);
+            List<Choice> choices = pathChoiceMaster.getChoices(simplified, path, c_coordinate, targetCoordinate );
             for (Choice choice : choices) {
                 base_choice = choice;
                 Chronos.mark(getChronosPrefix() + base_choice);
@@ -205,7 +192,7 @@ public class PathBuilder extends AiHandler {
             }
         }
         if (unit.getUnitAI().getLogLevel() > AiLogger.LOG_LEVEL_BASIC) {
-            Chronos.logTimeElapsedForMark(getChronosPrefix() + targetAction);
+            Chronos.logTimeElapsedForMark(getChronosPrefix() + targetAiAction);
         }
         return paths;
     }
@@ -214,13 +201,6 @@ public class PathBuilder extends AiHandler {
     private void applyChoice(Choice choice) {
         previousCoordinate = c_coordinate;
         c_coordinate = choice.getCoordinates();
-        if (choice.getTurns() != null) {
-            previousFacing = c_facing;
-            for (Boolean turn : choice.getTurns()) {
-
-                c_facing = FacingMaster.rotate(c_facing, turn);
-            }
-        }
     }
 
     private boolean checkFinished() {
@@ -234,8 +214,7 @@ public class PathBuilder extends AiHandler {
         applyChoice(choice);
         path.add(choice);
         if (checkFinished()) {
-            if (targetAction.getActive().getActionGroup() != ActionEnums.ACTION_TYPE_GROUPS.MOVE) {
-                checkAddFaceTurn(); // TODO better preCheck?
+            if (targetAiAction.getActive().getActionGroup() != ActionEnums.ACTION_TYPE_GROUPS.MOVE) {
             }
             if (checkFailed()) {
                 return true;
@@ -245,13 +224,13 @@ public class PathBuilder extends AiHandler {
         }
         if (!TimeLimitMaster.checkTimeLimitForAi(getUnitAi()))
             return false;
-        if (Chronos.getTimeElapsedForMark(getChronosPrefix() + targetAction) >
+        if (Chronos.getTimeElapsedForMark(getChronosPrefix() + targetAiAction) >
                 (timeLimit > 0 ? timeLimit :
                         TimeLimitMaster.getTimeLimitForPathBuilding()
                                 * TimeLimitMaster.CRITICAL_FAIL_FACTOR)) {
-            Chronos.logTimeElapsedForMark(getChronosPrefix() + targetAction);
+            Chronos.logTimeElapsedForMark(getChronosPrefix() + targetAiAction);
             LogMaster.log(1, "*** CRITICAL_FAIL TimeLimitForPathBuilding "
-                    + targetAction);
+                    + targetAiAction);
             return false;
         }
         if (paths.size() > 0) {
@@ -265,7 +244,7 @@ public class PathBuilder extends AiHandler {
                     + targetCoordinate)) {
                 return false;
             }
-            if (!TimeLimitMaster.checkTimeLimit(METRIC.ACTION, getChronosPrefix() + targetAction)) {
+            if (!TimeLimitMaster.checkTimeLimit(METRIC.ACTION, getChronosPrefix() + targetAiAction)) {
                 return false;
             }
         }
@@ -273,7 +252,7 @@ public class PathBuilder extends AiHandler {
             return true;
         }
 
-        List<Choice> choices = pathChoiceMaster.getChoices(simplified, path, c_coordinate, targetCoordinate, c_facing);
+        List<Choice> choices = pathChoiceMaster.getChoices(simplified, path, c_coordinate, targetCoordinate);
         // depth first search
         for (Choice nextChoice : choices) {
             if (!step(nextChoice)) {
@@ -293,19 +272,6 @@ public class PathBuilder extends AiHandler {
         return paths.contains(path);
     }
 
-    private void checkAddFaceTurn() {
-        unit.setTempFacing(c_facing);
-        unit.setTempCoordinates(c_coordinate);
-        if (ReasonMaster.checkReasonCannotTarget(FILTER_REASON.FACING, targetAction)) {
-            List<Action> sequence = getTurnSequenceConstructor().getTurnSequence(targetAction);
-            for (Action a : sequence) {
-                path.add(new Choice(c_coordinate, a));
-            }
-        }
-        unit.setTempFacing(originalFacing);
-        unit.setTempCoordinates(originalCoordinate);
-    }
-
     private void clonePath() {
         path = new ActionPath(path);
         // reset();
@@ -319,10 +285,6 @@ public class PathBuilder extends AiHandler {
             c_coordinate = previousCoordinate;
         }
         previousCoordinate = null;
-        if (previousFacing != null) {
-            c_facing = previousFacing;
-        }
-        previousFacing = null;
     }
 
     private void finished() {
@@ -420,7 +382,7 @@ public class PathBuilder extends AiHandler {
             filteredPaths.add(p);
         }
         if (Log.check(Log.LOG_CASE.pathing))
-            main.system.auxiliary.log.LogMaster.log(1, targetAction + "'s Filtered Paths: " +
+            main.system.auxiliary.log.LogMaster.log(1, targetAiAction + "'s Filtered Paths: " +
                     ContainerUtils.joinList(filteredPaths, Strings.NEW_LINE));
 
     }
@@ -438,12 +400,12 @@ public class PathBuilder extends AiHandler {
         return this;
     }
 
-    public void init(Unit unit, List<DC_ActiveObj> moveActions, Action targetAction) {
+    public void init(Unit unit, List<DC_ActiveObj> moveActions, AiAction targetAiAction) {
         this.unit = unit;
-        if (targetAction == null) {
-            targetAction = new Action(unit.getTurnAction(true));
+        if (targetAiAction == null) {
+            targetAiAction = new AiAction(unit.getTurnAction(true));
         }
-        init(moveActions, targetAction);
+        init(moveActions, targetAiAction);
 
     }
 }

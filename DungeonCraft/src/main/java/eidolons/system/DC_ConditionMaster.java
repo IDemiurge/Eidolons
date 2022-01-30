@@ -72,8 +72,6 @@ public class DC_ConditionMaster extends ConditionMaster {
                 return new SpaceCondition();
             case RANGE:
                 return new RangeCondition();
-            case FACING:
-                return new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT);
             case VISION:
                 return new VisibilityCondition(UNIT_VISION.IN_SIGHT);
             case NO_VISION:
@@ -274,7 +272,6 @@ public class DC_ConditionMaster extends ConditionMaster {
             case BLAST: {
                 c.add(ConditionMaster.getUnit_Char_BfObj_TerrainTypeCondition());
                 c.add(getRangeCondition());
-                c.add(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT));
                 c.add(new NotCondition(ConditionMaster.getSelfFilterCondition()));
                 break;
             }
@@ -282,7 +279,6 @@ public class DC_ConditionMaster extends ConditionMaster {
             case SHOT:
                 c.add(ConditionMaster.getUnit_Char_BfObjTypeCondition());
                 c.add(new NotCondition(ConditionMaster.getSelfFilterCondition()));
-                c.add(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT));
                 c.add(getRangeCondition());
                 c.add(new OrConditions(new StdPassiveCondition(UnitEnums.STANDARD_PASSIVES.DARKVISION),
                         new NotCondition(new VisibilityCondition(UNIT_VISION.CONCEALED))));
@@ -326,9 +322,7 @@ public class DC_ConditionMaster extends ConditionMaster {
             case ATTACK:
                 c.add(new VisibilityCondition(UNIT_VISION.IN_SIGHT));
                 c.add(new OrConditions(
-                        new StatusCheckCondition(KEYS.SOURCE.toString(), UnitEnums.STATUS.DEFENDING),
-                         new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT)
-
+                        new StatusCheckCondition(KEYS.SOURCE.toString(), UnitEnums.STATUS.DEFENDING)
 //                        , TODO DC Review - do we support these passives?
 //                        new Conditions(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT, UnitEnums.FACING_SINGLE.BEHIND),
 //                                new StringComparison(StringMaster.getValueRef(KEYS.SOURCE,
@@ -462,8 +456,6 @@ public class DC_ConditionMaster extends ConditionMaster {
         Condition result = null;
         {
             switch (template) {
-                case FACING:
-                    return new FacingCondition(FacingMaster.getFacing(str1));
                 case ITEM: {
                     String prop = VariableManager.removeVarPart(str2);
                     String val = VariableManager.getVarPart(str2);

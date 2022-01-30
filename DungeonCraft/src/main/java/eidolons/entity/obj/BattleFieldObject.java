@@ -57,14 +57,12 @@ import java.util.List;
  */
 public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
 
-    protected FACING_DIRECTION facing;
     protected int maxVisionDistance;
     protected boolean hidden;
     private DIRECTION direction;
     private Coordinates bufferedCoordinates;
     private boolean sneaking;
     private Float lastSeenTime;
-    private FACING_DIRECTION lastSeenFacing;
     private Coordinates lastCoordinates;
     private OUTLINE_TYPE lastSeenOutline;
     private ObjType originalType;
@@ -418,20 +416,6 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         return true;
     }
 
-    public FACING_DIRECTION getFacing() {
-        if (facing == null) {
-            resetFacing();
-        }
-        return facing;
-    }
-
-    public void setFacing(FACING_DIRECTION facing) {
-        if (facing == null) {
-            return;
-        }
-        this.facing = facing;
-    }
-
     public boolean canCounter(DC_ActiveObj action, boolean sneak) {
         return false;
     }
@@ -503,15 +487,6 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     public void setLastSeenTime(Float lastSeenTime) {
         this.lastSeenTime = lastSeenTime;
     }
-
-    public FACING_DIRECTION getLastSeenFacing() {
-        return lastSeenFacing;
-    }
-
-    public void setLastSeenFacing(FACING_DIRECTION lastSeenFacing) {
-        this.lastSeenFacing = lastSeenFacing;
-    }
-
 
     public Coordinates getLastCoordinates() {
         return lastCoordinates;

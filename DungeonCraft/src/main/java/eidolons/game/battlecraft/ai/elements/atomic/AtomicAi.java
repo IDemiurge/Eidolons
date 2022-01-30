@@ -7,7 +7,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.advanced.machine.AiConst;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.actions.AiActionFactory;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
@@ -15,7 +15,6 @@ import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import eidolons.game.battlecraft.rules.action.StackingRule;
 import eidolons.game.core.Core;
@@ -23,16 +22,14 @@ import eidolons.game.exploration.dungeon.objects.Door;
 import eidolons.game.exploration.dungeon.objects.DoorMaster.DOOR_ACTION;
 import eidolons.game.exploration.dungeon.objects.DoorMaster.DOOR_STATE;
 import eidolons.game.exploration.dungeon.objects.DungeonObj.DUNGEON_OBJ_TYPE;
-import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.rules.VisionEnums;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.enums.system.AiEnums.ORDER_PRIORITY_MODS;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.FACING_DIRECTION;
+import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.auxiliary.secondary.Bools;
@@ -55,25 +52,22 @@ public class AtomicAi extends AiHandler {
         super(master);
     }
 
-    public Action getAtomicAction(UnitAI ai, AiEnums.AI_LOGIC_CASE atomic) {
-        Action action = null;
+    public AiAction getAtomicAction(UnitAI ai, AiEnums.AI_LOGIC_CASE atomic) {
+        AiAction aiAction = null;
         switch (atomic) {
             case FAR_UNSEEN:
                 if (ai.getType() == AI_TYPE.BRUTE ||
                         ai.getGroup().getBehavior()
                                 == UnitAI.AI_BEHAVIOR_MODE.AGGRO) {
-                    action = getAtomicActionApproach(ai);
+                    aiAction = getAtomicActionApproach(ai);
                     break;
                 }
             case RELOAD:
             case RESTORE:
-                action = getAtomicActionPrepare(ai);
-                break;
-            case TURN_AROUND:
-                action = getAtomicActionTurn(ai);
+                aiAction = getAtomicActionPrepare(ai);
                 break;
             case APPROACH:
-                action = getAtomicActionApproach(ai);
+                aiAction = getAtomicActionApproach(ai);
                 break;
         }
         // if (checkAtomicActionTurn(ai)) {
@@ -90,26 +84,26 @@ public class AtomicAi extends AiHandler {
         // }
         // if (checkAtomicActionApproach(ai))
         //     action = getAtomicActionApproach(ai);
-        if (action != null) {
-            String message = getUnit() + " chooses atomic action: " + action;
+        if (aiAction != null) {
+            String message = getUnit() + " chooses atomic action: " + aiAction;
             SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.AI, message);
         } else {
             SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.AI, getUnit() + " finds no atomic action!");
             return null;
         }
-        return action;
+        return aiAction;
     }
 
-    public Action getAtomicActionForced(UnitAI ai) {
-        Action action;
-        action = getAtomicActionDoor(ai);
-        if (action != null)
-            action.setTaskDescription("Door");
+    public AiAction getAtomicActionForced(UnitAI ai) {
+        AiAction aiAction;
+        aiAction = getAtomicActionDoor(ai);
+        if (aiAction != null)
+            aiAction.setTaskDescription("Door");
 
-        return action;
+        return aiAction;
     }
 
-    public Action getAtomicActionDoor(UnitAI ai) {
+    public AiAction getAtomicActionDoor(UnitAI ai) {
 
         Coordinates c = getDoorCoordinates(ai);
         if (c == null)
@@ -131,9 +125,6 @@ public class AtomicAi extends AiHandler {
             if (c == null) {
                 continue;
             }
-            if (FacingMaster.getSingleFacing(ai.getUnit().getFacing(), coordinates, c) != FACING_SINGLE.IN_FRONT) {
-                continue;
-            }
             DOOR_STATE state = game.getBattleFieldManager().getDoorMap().get(c);
             if (state == DOOR_STATE.CLOSED) {
                 return c;
@@ -142,7 +133,7 @@ public class AtomicAi extends AiHandler {
         return null;
     }
 
-    public Action getAtomicActionPrepare(UnitAI ai) {
+    public AiAction getAtomicActionPrepare(UnitAI ai) {
         //ammo
         //meditate
         // if (!checkAtomicActionCase(ATOMIC_LOGIC_CASE.PREPARE, ai)) {
@@ -160,10 +151,10 @@ public class AtomicAi extends AiHandler {
         if (ai.getType() == AI_TYPE.ARCHER)
             if (ai.getUnit().getRangedWeapon() != null)
                 if (ai.getUnit().getRangedWeapon().getAmmo() == null) {
-                    Action action = getReloadAction(ai);
-                    if (action != null) {
-                        action.setTaskDescription("Ammo Reload");
-                        return action;
+                    AiAction aiAction = getReloadAction(ai);
+                    if (aiAction != null) {
+                        aiAction.setTaskDescription("Ammo Reload");
+                        return aiAction;
                     }
                 }
 
@@ -176,12 +167,12 @@ public class AtomicAi extends AiHandler {
                         On_Alert.toString(), ai);
     }
 
-    public Action getAtomicWait(Unit unit) {
+    public AiAction getAtomicWait(Unit unit) {
         return AiActionFactory.newAction(unit.getAction(
                 Wait.toString()), Ref.getSelfTargetingRefCopy(unit));
     }
 
-    private Action getReloadAction(UnitAI ai) {
+    private AiAction getReloadAction(UnitAI ai) {
         QuickItem ammo = null;
         Integer maxCost = 0;
         for (QuickItem a : ai.getUnit().getQuickItems()) {
@@ -199,26 +190,11 @@ public class AtomicAi extends AiHandler {
         return null;
     }
 
-    public Action getAtomicActionApproach(UnitAI ai) {
+    public AiAction getAtomicActionApproach(UnitAI ai) {
         return getAtomicActionMove(ai, true);
     }
 
-    public Action getAtomicActionAttack(UnitAI ai) {
-        return null;
-    }
-
-    public Action getAtomicActionTurn(UnitAI ai) {
-        Coordinates pick =
-                getApproachCoordinate(ai);
-        if (pick == null) { //TODO AI Review
-            return null;
-            // return AiActionFactory.newAction(RandomWizard.random() ?
-            //         "Turn Clockwise" : "Turn Anticlockwise", ai);
-        }
-        List<Action> sequence = getTurnSequenceConstructor()
-                .getTurnSequence(FACING_SINGLE.IN_FRONT, getUnit(), pick);
-        if (ListMaster.isNotEmpty(sequence))
-            return sequence.get(0);
+    public AiAction getAtomicActionAttack(UnitAI ai) {
         return null;
     }
 
@@ -226,15 +202,9 @@ public class AtomicAi extends AiHandler {
         Collection<Unit> units = getAnalyzer().getVisibleEnemies(ai);
         if (units.isEmpty())
             return null;
-        FACING_DIRECTION facing = FacingMaster.
-                getOptimalFacingTowardsUnits(getUnit().getCoordinates(),
-                        units
-                        , t -> getThreat(ai, (Unit) t)
-                );
-        if (facing == null)
-            return null;
-        //TODO AI Review -
-        Coordinates c = getUnit().getCoordinates().getAdjacentCoordinate(facing.getDirection());
+        //TODO AI Review - LC 2.0
+        DIRECTION d=DIRECTION.NONE;
+        Coordinates c = getUnit().getCoordinates().getAdjacentCoordinate(d);
         if (new StackingRule(game).canBeMovedOnto(getUnit(), c)) {
             return c;
         }
@@ -242,12 +212,12 @@ public class AtomicAi extends AiHandler {
         double dst = target.dst_(getUnit().getCoordinates());
         for (BattleFieldObject object : getGame().getObjectsOnCoordinateNoOverlaying(c)) {
             if (object.getOwner() == (getUnit().getOwner())) {
-                return Positioner.adjustCoordinate(ai.getUnit(), c, facing,
+                return Positioner.adjustCoordinate(ai.getUnit(), c, d,
                         c1 -> c1.dst_(target) <= dst);
             }
         }
-        return Positioner.adjustCoordinate(ai.getUnit(), c, ai.getUnit().getFacing());
-
+        // return Positioner.adjustCoordinate(ai.getUnit(), c, d);
+        return c;
     }
 
     //TODO NF AI Revamp
@@ -255,7 +225,7 @@ public class AtomicAi extends AiHandler {
         return t.getLevel() * 5;
     }
 
-    public Action getAtomicActionMove(UnitAI ai, Boolean approach_retreat_search) {
+    public AiAction getAtomicActionMove(UnitAI ai, Boolean approach_retreat_search) {
         Coordinates pick;
         boolean b = isHotzoneMode();
         if (b) {
@@ -303,15 +273,11 @@ public class AtomicAi extends AiHandler {
         return pick;
     }
 
-    public Action getAtomicMove(Coordinates pick, Unit unit) {
-        List<Action> sequence = getTurnSequenceConstructor().getTurnSequence(FACING_SINGLE.IN_FRONT, unit, pick);
-        Action action = null;
-        if (!sequence.isEmpty()) {
-            action = sequence.get(0);
-        }
-        if (action == null) {
+    public AiAction getAtomicMove(Coordinates pick, Unit unit) {
+        AiAction aiAction = null;
+        if (aiAction == null) {
             try {
-                action = DC_MovementManager.getMoveAction(unit, pick);
+                aiAction = DC_MovementManager.getMoveAction(unit, pick);
                 //                main.system.auxiliary.log.LogMaster.log(1, " ATOMIC ACTION " + action +
                 //                 "  CHOSEN TO GET TO " + pick);
             } catch (Exception e) {
@@ -319,7 +285,7 @@ public class AtomicAi extends AiHandler {
                 //TODO what to return???
             }
         }
-        return action;
+        return aiAction;
     }
 
     private int getCellPriority(Coordinates c, UnitAI ai) {
@@ -391,8 +357,6 @@ public class AtomicAi extends AiHandler {
     public AiEnums.AI_LOGIC_CASE checkAtomicActionCase(ATOMIC_LOGIC_CASE CASE, UnitAI ai) {
 
         switch (CASE) {
-            case TURN:
-                return checkAtomicActionTurn(ai);
             case APPROACH:
                 return checkAtomicActionApproach(ai);
             case RETREAT:
@@ -405,43 +369,6 @@ public class AtomicAi extends AiHandler {
                 return checkAtomicActionPrepare(ai);
         }
         return null;
-    }
-
-    private AiEnums.AI_LOGIC_CASE checkAtomicActionTurn(UnitAI ai) {
-        //check that only enemy actions are needed
-        boolean result = false;
-        if (!ai.getType().isCaster()
-        ) {
-            //          FacingMaster.getOptimalFacingTowardsUnits()
-            BattleFieldObject enemy = getAnalyzer().getClosestEnemy(ai.getUnit());
-            //            for (BattleFieldObject enemy : Analyzer.getVisibleEnemies(ai))
-            FACING_DIRECTION facing = ai.getUnit().getFacing();
-            FACING_SINGLE relative = FacingMaster.getSingleFacing(facing, ai.getUnit(), enemy);
-
-            if (relative != FACING_SINGLE.IN_FRONT) {
-                if (!game.getVisionMaster().getSightMaster().getClearShotCondition().check(getUnit(), enemy))
-                    return null;
-                if (enemy.getCoordinates().dst_(ai.getUnit().getCoordinates()) >=
-                        (relative == FACING_SINGLE.BEHIND
-                                ? MAX_DST_TURN_BEHIND
-                                : MAX_DST_TURN)) {
-                    return null;
-                }
-                return AiEnums.AI_LOGIC_CASE.TURN_AROUND;
-            }
-            // else if (relative == FACING_SINGLE.TO_THE_SIDE) {
-            //     if (!ai.getUnit().checkPassive(STANDARD_PASSIVES.BROAD_REACH))
-            //         result = true;
-            // } else
-            //     result = false;
-            //if we need to getVar to a cell that is not 'facing' the target?!
-            // if (!result)
-            //     return null;
-            //TODO ai Review - ideally we need to check on the 'target cell', not enemy itself
-
-        }
-
-        return result ? AiEnums.AI_LOGIC_CASE.TURN_AROUND : null;
     }
 
     //TODO ai Review
@@ -476,7 +403,7 @@ public class AtomicAi extends AiHandler {
             return null;
         VisionEnums.UNIT_VISION v = ai.getUnit().getUnitVisionStatus(Core.getMainHero());
         float dst = v == VisionEnums.UNIT_VISION.BLOCKED ? 3.5f : 6 +
-                ai.getUnit().getSightRangeTowards(Core.getMainHero());
+                ai.getUnit().getSightRange();
         if (ai.getType().isCaster())
             dst *= 1.5f;
         if (ai.getType().isRanged())
@@ -572,7 +499,7 @@ public class AtomicAi extends AiHandler {
     }
 
     public enum ATOMIC_LOGIC_CASE {
-        TURN, APPROACH, RETREAT, SEARCH, ATTACK, PREPARE, DOOR(true),
+         APPROACH, RETREAT, SEARCH, ATTACK, PREPARE, DOOR(true),
         ;
 
         boolean forced;

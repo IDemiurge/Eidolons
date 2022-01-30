@@ -4,7 +4,7 @@ import boss.BossHandler;
 import boss.logic.BossCycle;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.unit.Unit;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.core.Core;
 import boss.BossManager;
 
@@ -15,7 +15,7 @@ public abstract class BossAi extends BossHandler {
         super(manager);
     }
 
-    public Action getAction(Unit unit) {
+    public AiAction getAction(Unit unit) {
         this.unit = unit;
         if (getEntity(BossCycle.BOSS_TYPE.caster)==unit) {
             return getSpell();
@@ -24,14 +24,14 @@ public abstract class BossAi extends BossHandler {
         return getAttack();
     }
 
-    protected Action getAttack() {
+    protected AiAction getAttack() {
         DC_ActiveObj active = unit.getAction(getActionMaster().getMainAttack());
         //zone ? it's also delayed!
-        return new Action(active, Core.getMainHero());
+        return new AiAction(active, Core.getMainHero());
     }
 
 
-    protected Action getSpell() {
+    protected AiAction getSpell() {
         return null;
     }
 

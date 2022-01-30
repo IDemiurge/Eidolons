@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.unit.FacingEntity;
+import eidolons.entity.unit.GridEntity;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.MultiDamage;
@@ -505,8 +505,8 @@ public class FloatingTextMaster {
         if (v == null) {
             if (atCursorStage != null)
                 v = GdxMaster.getCursorPosition(atCursorStage);
-            else if (entity instanceof FacingEntity) {
-                v = GridMaster.getCenteredPos(((FacingEntity) entity).getCoordinates());
+            else if (entity instanceof GridEntity) {
+                v = GridMaster.getCenteredPos(((GridEntity) entity).getCoordinates());
                 text.setPosition(v);
             } else {
                 if (entity instanceof DC_ActiveObj) {
@@ -523,27 +523,30 @@ public class FloatingTextMaster {
         //        }
         text.setPosition(v);
         if (at == null)
-            if (entity instanceof FacingEntity) {
+            if (entity instanceof GridEntity) {
                 float height = 629;// text.getHeight();
                 float width = 537;// text.getWidth();
                 if (overrideFont != null) {
                     width = 620;
                 }
-                FACING_DIRECTION f = ((FacingEntity) entity).getFacing().flip();
-                switch (f.rotate(f.isCloserToZero())) {
-                    case NORTH:
-                        text.setY(text.getY() + height / 2);
-                        break;
-                    case WEST:
-                        text.setX(text.getX() - width / 2);
-                        break;
-                    case EAST:
-                        text.setX(text.getX() + width / 2);
-                        break;
-                    case SOUTH:
-                        text.setY(text.getY() - height / 2);
-                        break;
-                }
+                text.setY(text.getY() + height / 2);
+                //TODO LC 2.0
+
+                // FACING_DIRECTION f = ((GridEntity) entity).getFacing().flip();
+                // switch (f.rotate(f.isCloserToZero())) {
+                //     case NORTH:
+                //         text.setY(text.getY() + height / 2);
+                //         break;
+                //     case WEST:
+                //         text.setX(text.getX() - width / 2);
+                //         break;
+                //     case EAST:
+                //         text.setX(text.getX() + width / 2);
+                //         break;
+                //     case SOUTH:
+                //         text.setY(text.getY() - height / 2);
+                //         break;
+                // }
             }
 
         text.setCase(CASE);

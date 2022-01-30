@@ -66,7 +66,6 @@ import main.entity.obj.BuffObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.action.context.Context.IdKey;
 import main.game.logic.battle.player.Player;
 import main.system.ExceptionMaster;
@@ -88,7 +87,7 @@ import java.util.stream.Collectors;
 import static eidolons.content.consts.VisualEnums.CONTAINER;
 import static eidolons.content.consts.VisualEnums.INTENT_ICON;
 
-public class Unit extends UnitModel implements FacingEntity {
+public class Unit extends UnitModel implements GridEntity {
     protected WeaponItem offhandNaturalWeapon;
     protected WeaponItem naturalWeapon;
     protected WeaponItem weapon;
@@ -145,12 +144,6 @@ public class Unit extends UnitModel implements FacingEntity {
             // }
             SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.MAIN, message);
 
-        } else {
-            try {
-                setFacing(FacingMaster.getRandomFacing());
-            } catch (Exception e) {
-                ExceptionMaster.printStackTrace(e);
-            }
         }
         //TODO make it more apparent why and how this is done
         //cleanRef();
@@ -1403,17 +1396,6 @@ public class Unit extends UnitModel implements FacingEntity {
         return true;
     }
 
-    @Override
-    public void resetFacing() {
-        //   TODO bugged? used to work
-        //     getResetter().resetFacing();
-    }
-
-    @Override
-    public void setFacing(FACING_DIRECTION facing) {
-        super.setFacing(facing);
-    }
-
     public DequeImpl<JewelryItem> getRings() {
         DequeImpl<JewelryItem> list = new DequeImpl<>(getJewelry());
         for (JewelryItem j : getJewelry()) {
@@ -1476,22 +1458,11 @@ public class Unit extends UnitModel implements FacingEntity {
     }
 
     public int getMaxVisionDistanceTowards(Coordinates c) {
-        return getSightRangeTowards(c) * 2 + 1;
+        return getSightRange() * 2 + 1;
     }
 
-    public int getSightRangeTowards(DC_Obj target) {
-        return getSightRangeTowards(target.getCoordinates());
-    }
-
-    public int getSightRangeTowards(Coordinates coordinates) {
+    public int getSightRange() {
         int sight = getIntParam(PARAMS.SIGHT_RANGE);
-        FACING_SINGLE singleFacing = FacingMaster.getSingleFacing(this.getFacing(), this.getCoordinates(),
-                coordinates);
-        if (singleFacing == FACING_SINGLE.BEHIND) {
-            sight = getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
-        } else if (singleFacing == FACING_SINGLE.TO_THE_SIDE) {
-            sight -= getIntParam(PARAMS.SIDE_SIGHT_PENALTY);
-        }
         return sight;
     }
 
@@ -1505,7 +1476,6 @@ public class Unit extends UnitModel implements FacingEntity {
 
     @Override
     public void toBase() {
-        removeTempFacing();
         removeTempCoordinates();
         if (!CoreEngine.isLevelEditor())
             if (getAI().isOutsideCombat()) {

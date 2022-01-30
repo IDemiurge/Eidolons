@@ -191,18 +191,6 @@ public class Analyzer extends AiHandler {
 
     }
 
-    public static boolean isBlockingMovement(Unit unit, BattleFieldObject target) {
-        if (!unit.getCoordinates().isAdjacent(target.getCoordinates())) {
-            return false;
-        }
-        Coordinates c = unit.getCoordinates().getAdjacentCoordinate(
-                unit.getFacing().getDirection());
-        if (c == null) {
-            return false;
-        }
-        return !StackingRule.checkCanPlace(c, unit, null);
-
-    }
 
     public static List<GridCell> getLastSeenEnemyCells(UnitAI ai) {
         List<GridCell> list = new ArrayList<>();

@@ -24,16 +24,16 @@ import java.util.List;
 public class AiUnitActionMaster {
     public static List<ActionSequence> splitRangedSequence(ActionSequence sequence) {
         ArrayList<ActionSequence> list = new ArrayList<>();
-        for (Action a : sequence.getActions()) {
+        for (AiAction a : sequence.getActions()) {
             if (a instanceof AiQuickItemAction) {
-                ArrayList<Action> actions = new ArrayList<>();
-                actions.add(a);
-                for (Action a1 : sequence.getActions()) {
+                ArrayList<AiAction> aiActions = new ArrayList<>();
+                aiActions.add(a);
+                for (AiAction a1 : sequence.getActions()) {
                     if (!(a1 instanceof AiQuickItemAction)) {
-                        actions.add(a1);
+                        aiActions.add(a1);
                     }
                 }
-                ActionSequence rangedSequence = new ActionSequence(actions, sequence.getTask(),
+                ActionSequence rangedSequence = new ActionSequence(aiActions, sequence.getTask(),
                  sequence.getAi());
                 list.add(rangedSequence);
             }
@@ -160,10 +160,10 @@ public class AiUnitActionMaster {
         return list;
     }
 
-    public static List<DC_ActiveObj> getActionObjectList(List<Action> actions) {
+    public static List<DC_ActiveObj> getActionObjectList(List<AiAction> aiActions) {
         List<DC_ActiveObj> activeList = new ArrayList<>();
-        if (actions != null) {
-            for (Action object : actions) {
+        if (aiActions != null) {
+            for (AiAction object : aiActions) {
                 if (object != null) {
                     activeList.add(object.getActive());
                 }

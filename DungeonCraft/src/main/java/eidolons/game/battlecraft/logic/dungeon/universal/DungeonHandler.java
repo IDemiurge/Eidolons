@@ -80,10 +80,6 @@ public class DungeonHandler {
         return master.getPositioner();
     }
 
-    public FacingAdjuster getFacingAdjuster() {
-        return master.getFacingAdjuster();
-    }
-
     public PlayerManager getPlayerManager() {
         return master.getPlayerManager();
     }

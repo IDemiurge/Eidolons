@@ -18,7 +18,7 @@ import main.entity.obj.Obj;
 import main.system.ExceptionMaster;
 import main.system.auxiliary.StringMaster;
 
-public class Action {
+public class AiAction {
     Ref ref;
     DC_ActiveObj active;
 
@@ -27,7 +27,7 @@ public class Action {
     private String taskDescription;
     private boolean order;
 
-    public Action(DC_ActiveObj actives, Ref ref) {
+    public AiAction(DC_ActiveObj actives, Ref ref) {
         this.active = actives;
         this.ref = ref;
         try {
@@ -37,12 +37,12 @@ public class Action {
         }
     }
 
-    public Action(DC_ActiveObj action) {
+    public AiAction(DC_ActiveObj action) {
         this(action, Ref.getCopy(action.getRef()));
 
     }
 
-    public Action(DC_ActiveObj action, Obj enemy) {
+    public AiAction(DC_ActiveObj action, Obj enemy) {
         this(action);
         setRef(enemy.getRef().getCopy());
         getRef().setTarget(enemy.getId());
@@ -52,10 +52,10 @@ public class Action {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Action) {
-            Action action = (Action) obj;
-            if (action.getActive().equals(getActive())) {
-                return ObjUtilities.compare(action.getTarget(), getTarget());
+        if (obj instanceof AiAction) {
+            AiAction aiAction = (AiAction) obj;
+            if (aiAction.getActive().equals(getActive())) {
+                return ObjUtilities.compare(aiAction.getTarget(), getTarget());
             }
         }
         return false;

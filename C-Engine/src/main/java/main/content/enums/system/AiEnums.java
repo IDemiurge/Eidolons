@@ -9,7 +9,7 @@ import main.system.auxiliary.StringMaster;
 public class AiEnums {
 
     public enum AI_LOGIC_CASE {
-        RELOAD, RESTORE, TURN_AROUND, APPROACH, FAR_UNSEEN
+        RELOAD, RESTORE, APPROACH, FAR_UNSEEN
     }
 
     public enum AI_LOGIC { // targeting prioritizing? should be of various

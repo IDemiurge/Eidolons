@@ -51,9 +51,6 @@ public class ActionTooltipMaster {
                 case INSTANT_ATTACK_MOD:
                 case INSTANT_DAMAGE_MOD:
                     return ActionEnums.MOD_IDENTIFIER.INSTANT_ATTACK.getImagePath();
-                case SIDE_ATTACK_MOD:
-                case SIDE_DAMAGE_MOD:
-                    return ActionEnums.MOD_IDENTIFIER.SIDE_ATTACK.getImagePath();
                 case DIAGONAL_ATTACK_MOD:
                 case DIAGONAL_DAMAGE_MOD:
                     return ActionEnums.MOD_IDENTIFIER.DIAGONAL_ATTACK.getImagePath();

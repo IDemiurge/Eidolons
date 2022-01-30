@@ -53,7 +53,6 @@ public class Spawner extends DungeonHandler {
 
     protected void spawnDone() {
         List<Unit> unitsList = new ArrayList<>(game.getUnits());
-        getFacingAdjuster().adjustFacing(unitsList);
 
         final Integer cellsX = Coordinates.getFloorWidth();
         final Integer cellsY = Coordinates.getFloorHeight();
@@ -144,18 +143,9 @@ public class Spawner extends DungeonHandler {
                 type = new UnitLevelManager().getLeveledType(type, levelUps);
             }
         }
-        FACING_DIRECTION facing_direction = FACING_DIRECTION.NORTH;
-        try {
-            facing_direction =
-                    facing == null
-                            ? getFacingAdjuster().getFacingForUnit(c, type.getName())
-                            : FacingMaster.getFacing(facing);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
         if (game.isStarted()) {
             try {
-                c = Positioner.adjustCoordinate(type, c, facing_direction);
+                c = Positioner.adjustCoordinate(type, c, FACING_DIRECTION.NONE);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -169,7 +159,6 @@ public class Spawner extends DungeonHandler {
             TestMasterContent.addTestItems(unit.getType(), false);
 
 
-        unit.setFacing(facing_direction);
         return unit;
     }
 

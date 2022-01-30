@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.ai.tools.target;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.AI_Manager;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
@@ -104,28 +104,28 @@ public class TargetingMaster extends AiHandler {
         return null;
     }
 
-    public static boolean isValidTargetingCell(Action targetAction, Coordinates c, Unit unit) {
+    public static boolean isValidTargetingCell(AiAction targetAiAction, Coordinates c, Unit unit) {
         // TODO this could be better done
         //AI FIX!
         return unit.getGame().getBattleFieldManager()
-                .canMoveOnto(targetAction.getSource(), c);
+                .canMoveOnto(targetAiAction.getSource(), c);
     }
 
 
-    public static boolean canBeTargeted(Action action, boolean ignoreFacing) {
-        return canBeTargeted(action, false, ignoreFacing);
+    public static boolean canBeTargeted(AiAction aiAction, boolean ignoreFacing) {
+        return canBeTargeted(aiAction, false, ignoreFacing);
     }
 
-    public static boolean canBeTargeted(Action action, boolean ignoreVisibility, boolean ignoreFacing) {
+    public static boolean canBeTargeted(AiAction aiAction, boolean ignoreVisibility, boolean ignoreFacing) {
 
-        if (action.canBeTargeted(action.getTarget().getId())) {
+        if (aiAction.canBeTargeted(aiAction.getTarget().getId())) {
             return true;
         }
 
         if (!ignoreFacing && !ignoreVisibility) {
             return false;
         }
-        List<FILTER_REASON> reasons = ReasonMaster.getReasonsCannotTarget(action);
+        List<FILTER_REASON> reasons = ReasonMaster.getReasonsCannotTarget(aiAction);
         if (AI_Manager.MELEE_HACK)
         if (!reasons.contains(FILTER_REASON.DISTANCE))
             return true;
@@ -170,7 +170,7 @@ public class TargetingMaster extends AiHandler {
             return Core.getMainHero().getId();
         } else
             for (Obj obj : objects) {
-                ActionSequence sequence = new ActionSequence(type, new Action(a, obj));
+                ActionSequence sequence = new ActionSequence(type, new AiAction(a, obj));
                 sequence.setAi(a.getOwnerUnit().getUnitAI());
                 sequence.setType(type);
                 int priority = DC_PriorityManager.getPriority(sequence);

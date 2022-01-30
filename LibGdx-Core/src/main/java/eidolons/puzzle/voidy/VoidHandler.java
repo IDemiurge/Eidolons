@@ -162,11 +162,11 @@ public   class VoidHandler extends PuzzleElement<VoidMaze> implements IVoidGdxHa
     }
 
     protected void autoRaiseFor(BattleFieldObject object) {
-        DIRECTION direction = null;
-        if (object instanceof Unit) {
-            FACING_DIRECTION facing = object.getFacing();
-            direction = facing.getDirection();
-        }
+        DIRECTION direction = DIRECTION.NONE;
+        // if (object instanceof Unit) {
+        //     FACING_DIRECTION facing = object.getFacing();
+        //     direction = facing.getDirection();
+        // }
         //TODO check diag adjacent
         if (!raiseOneMax) {
             checkRaise(object, direction);

@@ -6,7 +6,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import main.ability.effects.Effect;
@@ -31,28 +31,28 @@ public interface PriorityManager {
     int getPriority(ActionSequence sequence);
 
     //custom formula may be set for action/spell in AV!
-    int evaluatePriorityFormula(Action action, String property);
+    int evaluatePriorityFormula(AiAction aiAction, String property);
 
     //not the same as danger!
     float calculateCapacity(Unit unit);
 
 
-    int getSpellPriority(GOAL_TYPE type, Action action);
+    int getSpellPriority(GOAL_TYPE type, AiAction aiAction);
 
-    int getSelfSpellPriority(Action action);
+    int getSelfSpellPriority(AiAction aiAction);
 
-    void addEffectPriority(Action action, Effect e);
+    void addEffectPriority(AiAction aiAction, Effect e);
 
-    int getSpellCustomHostilePriority(Action action);
+    int getSpellCustomHostilePriority(AiAction aiAction);
 
-    void applyResistPenalty(Action action);
+    void applyResistPenalty(AiAction aiAction);
 
-    boolean isResistApplied(Action action);
+    boolean isResistApplied(AiAction aiAction);
 
     int getSpellCustomHostileEffectPriority(DC_Obj target, DC_ActiveObj action,
                                             Effect e);
 
-    int getSummonPriority(Action action);
+    int getSummonPriority(AiAction aiAction);
 
     void setBasePriority(int i);
 
@@ -66,20 +66,20 @@ public interface PriorityManager {
 
     int getCowerPriority(Unit unit);
 
-    int getZoneSpellPriority(Action action, boolean damage);
+    int getZoneSpellPriority(AiAction aiAction, boolean damage);
 
     int getSearchPriority(ActionSequence as);
 
-    int getParamModSpellPriority(Action action);
+    int getParamModSpellPriority(AiAction aiAction);
 
-    int getParamModSpellPriority(Action action, Boolean buff);
+    int getParamModSpellPriority(AiAction aiAction, Boolean buff);
 
-    int getDurationMultiplier(Action action);
+    int getDurationMultiplier(AiAction aiAction);
 
     float getParamModFactor(DC_Obj target, Effect e, PARAMETER param,
                             int amount);
 
-    int getCounterModSpellPriority(Action action);
+    int getCounterModSpellPriority(AiAction aiAction);
 
     int getAttackPriority(ActionSequence as);
 
@@ -109,11 +109,11 @@ public interface PriorityManager {
 
     int getHealthFactor(Obj targetObj, Boolean less_or_more_for_health);
 
-    int getModePriority(Action a);
+    int getModePriority(AiAction a);
 
     int getAlertPriority(Unit unit);
 
-    int getWaitPriority(Action action);
+    int getWaitPriority(AiAction aiAction);
 
     int getDefendPriority(UnitAI unit_ai);
 

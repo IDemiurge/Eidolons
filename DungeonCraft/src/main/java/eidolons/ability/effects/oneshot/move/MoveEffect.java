@@ -6,6 +6,7 @@ import main.ability.effects.OneshotEffect;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.UNIT_DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.game.bf.MovementManager.MOVE_MODIFIER;
@@ -77,8 +78,8 @@ public class MoveEffect extends DC_Effect implements OneshotEffect {
         origin = obj.getCoordinates();
         if (direction != null) {
             destination = obj.getCoordinates().getAdjacentCoordinate(
-             DirectionMaster.getDirectionByFacing(obj.getFacing(),
-              direction));
+                    //TODO LC 2.0 review
+             DIRECTION.NONE);
             game.getMovementManager().move(obj, destination, free,
              MOVE_MODIFIER.DISPLACEMENT, ref);
             return true;
@@ -88,10 +89,6 @@ public class MoveEffect extends DC_Effect implements OneshotEffect {
         game.getMovementManager().move(obj, destination, free,
          MOVE_MODIFIER.DISPLACEMENT, ref);
 
-        //
-        // FacingManager.
-
-        FACING_DIRECTION facing = obj.getFacing();
 //         direction = DirectionMaster.getDirectionByFacing(facing, d);
 
         return true;

@@ -137,7 +137,7 @@ public class GroupAI {
 
     public DIRECTION getWanderDirection() {
         if (wanderDirection == null) {
-            wanderDirection = getLeader().getFacing().getDirection();
+            wanderDirection = DIRECTION.NONE;
         }
         return wanderDirection;
     }

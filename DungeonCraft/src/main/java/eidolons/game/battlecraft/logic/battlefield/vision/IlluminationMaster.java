@@ -74,7 +74,7 @@ public class IlluminationMaster {
         double ilMod;
 
         double distance = PositionMaster.getExactDistance(source.getCoordinates(), target.getCoordinates());
-        Integer sight = source.getSightRangeTowards(target);
+        Integer sight = source.getSightRange();
         double diff = 1+sight*sight - distance*distance;
 
         if (diff < 0) {

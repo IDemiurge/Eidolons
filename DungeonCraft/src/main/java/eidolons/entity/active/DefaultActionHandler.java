@@ -3,12 +3,10 @@ package eidolons.entity.active;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
-import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.battlecraft.ai.tools.priority.PriorityManagerImpl;
 import eidolons.game.battlecraft.logic.battlefield.ClearshotMaster;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Core;
@@ -18,7 +16,6 @@ import eidolons.game.exploration.dungeon.objects.DungeonObj;
 import eidolons.game.exploration.dungeon.objects.InteractiveObj;
 import eidolons.game.exploration.dungeon.objects.InteractiveObjMaster;
 import main.content.enums.entity.ActionEnums;
-import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Ref;
 import main.entity.obj.Obj;
@@ -206,9 +203,6 @@ public class DefaultActionHandler {
             return false;
         Coordinates c = Coordinates.get(gridX, gridY);
 
-        if (turn) {
-            return turnToMotion(source, c);
-        }
         if (moveTo) {
             if (source.getGame().isDebugMode()) {
                 return doDebugStuffCell(source, c);
@@ -236,27 +230,6 @@ public class DefaultActionHandler {
         return activate(context, action);
 
     }
-
-
-    private static boolean turnToMotion(Unit source, Coordinates coordinates) {
-        DC_ActiveObj action = getTurnToAction(source, coordinates);
-        if (action == null) {
-            return false;
-        }
-        Context context = new Context(source, null);
-        return activate(context, action);
-    }
-
-    public static DC_ActiveObj getTurnToAction(Unit source, Coordinates coordinates) {
-
-        List<Action> sequence =
-                source.getGame().getAiManager().getTurnSequenceConstructor().
-                        getTurnSequence(FACING_SINGLE.IN_FRONT, source, coordinates);
-        if (sequence.isEmpty())
-            return null;
-        return sequence.get(0).getActive();
-    }
-
 
     private static boolean activate(Context context, DC_ActiveObj action) {
         if (!action.getActivator().canBeActivated(context, true)) {
@@ -288,40 +261,9 @@ public class DefaultActionHandler {
     public static DC_UnitAction getMoveToCellAction(Unit source, Coordinates c) {
         DIRECTION d = DirectionMaster.getRelativeDirection(source.getCoordinates(),
                 c);
-        FACING_SINGLE f = FacingMaster.getSingleFacing(source.getFacing(), source.getCoordinates(),
-                c);
-        String name = null;
-
-        switch (f) {
-            case IN_FRONT:
-                if (d.isDiagonal()) {
-                    //                    target = Eidolons.getGame().getCellByCoordinate(c);
-                    name =
-                            "Clumsy Leap";
-                    break;
-                }
-                name = "Move";
-                break;
-            case BEHIND:
-                if (d.isDiagonal())
-                    return null;
-                name = "Move Back";
-                break;
-            case TO_THE_SIDE:
-
-                boolean right =
-                        !source.getFacing().isVertical() ?
-                                d.growY : d.growX;
-                if (!source.getFacing().isVertical()) {
-                    if (source.getFacing().isCloserToZero())
-                        right = !right;
-                } else if (!source.getFacing().isCloserToZero())
-                    right = !right;
-                name = right ? "Move Right" :
-                        "Move Left";
-                break;
-            case NONE:
-                break;
+        String name= DC_MovementManager.STEP;
+        if (d.isDiagonal()) {
+            name= DC_MovementManager.JUMP;
         }
         if (name == null) {
             //            SoundController.getCustomEventSound(SOUND_EVENT.RADIAL_CLOSED);

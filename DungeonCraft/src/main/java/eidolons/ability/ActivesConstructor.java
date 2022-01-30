@@ -174,11 +174,11 @@ public class ActivesConstructor {
                 // bolt-targeting?
                 targeting = new TemplateSelectiveTargeting(SELECTIVE_TARGETING_TEMPLATES.UNOBSTRUCTED_SHOT);
                 break;
-            case FRONT_RANGE:
-                return new CoordinateTargeting(UNIT_DIRECTION.AHEAD, true);
-            case FRONT:
+            // case FRONT_RANGE:
+            // case FRONT:
+                //TODO LC 2.0
             case RAY_AUTO:
-                return new CoordinateTargeting(UNIT_DIRECTION.AHEAD);
+                return new CoordinateTargeting();
             case BF_OBJ:
                 targeting = new TemplateSelectiveTargeting(SELECTIVE_TARGETING_TEMPLATES.BF_OBJ);
                 break;

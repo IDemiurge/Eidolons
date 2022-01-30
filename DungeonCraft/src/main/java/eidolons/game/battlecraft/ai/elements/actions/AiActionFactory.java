@@ -15,17 +15,17 @@ public class AiActionFactory {
         return unit.getAction(name, true);
     }
 
-    public static Action newAction(DC_ActiveObj action, Ref ref) {
+    public static AiAction newAction(DC_ActiveObj action, Ref ref) {
         if (action instanceof DC_QuickItemAction) {
             DC_QuickItemAction itemActiveObj = (DC_QuickItemAction) action;
             return new AiQuickItemAction(itemActiveObj.getItem(), ref);
         }
         // my change!
 
-        return new Action(action, ref);
+        return new AiAction(action, ref);
     }
 
-    public static Action newAction(String string, UnitAI ai) {
+    public static AiAction newAction(String string, UnitAI ai) {
         return newAction(ai.getUnit().getActionOrSpell(string), ai.getUnit().getRef());
     }
 }

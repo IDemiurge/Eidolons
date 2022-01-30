@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.ai.elements.actions;
 import eidolons.entity.item.QuickItem;
 import main.entity.Ref;
 
-public class AiQuickItemAction extends Action {
+public class AiQuickItemAction extends AiAction {
 
     public AiQuickItemAction(QuickItem item) {
         this(item, item.getRef());

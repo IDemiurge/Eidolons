@@ -20,9 +20,6 @@ public interface MovementManager {
 
     boolean move(Obj obj, Coordinates c, boolean free, MOVE_MODIFIER mod, Ref ref);
 
-    Coordinates getTemplateMoveCoordinate(MOVE_TEMPLATES template, FACING_DIRECTION facing,
-                                          Obj obj, Ref ref);
-
     void moveTo(Obj objClicked);
 
     void promptContinuePath(Obj activeUnit);

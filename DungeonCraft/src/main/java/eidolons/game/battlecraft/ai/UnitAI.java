@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.ai;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.advanced.companion.Order;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.tools.AiExecutor;
 import eidolons.game.battlecraft.ai.tools.AiLogger;
@@ -275,7 +275,7 @@ public class UnitAI {
         combatAI.setEngaged(engaged);
     }
 
-    public List<Action> getForcedActions() {
+    public List<AiAction> getForcedActions() {
         return combatAI.getForcedActions();
     }
 

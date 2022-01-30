@@ -90,18 +90,6 @@ public class GuardAi extends AiBehavior {
 
 
     @Override
-    protected FACING_DIRECTION getRequiredFacing() {
-        if (needsToCheckGuarded)
-            for (FACING_DIRECTION newFacing : FACING_DIRECTION.normalFacing) {
-                if (FacingMaster.getSingleFacing(newFacing,
-                 getCoordinates(), target.getCoordinates()) == FACING_SINGLE.IN_FRONT) {
-                    return newFacing;
-                }
-            }
-        return super.getRequiredFacing();
-    }
-
-    @Override
     protected float getTimeBeforeFail() {
         return 50 / getSpeed();
     }

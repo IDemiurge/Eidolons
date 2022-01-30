@@ -38,7 +38,6 @@ public class SummonEffect extends DC_Effect implements OneshotEffect {
     boolean summoningSickness;
     private Formula summonedUnitXp;
     private Player owner;
-    private Boolean facingSummoner;
     Formula durationFormula;
 
     /*
@@ -143,21 +142,6 @@ public class SummonEffect extends DC_Effect implements OneshotEffect {
         applyLifetimeBuff();
 
         // UpkeepRule.addUpkeep(unit);
-        if (unit.getRef().getObj(KEYS.SUMMONER) instanceof Unit) {
-            Unit summoner = (Unit) unit.getRef().getObj(KEYS.SUMMONER);
-            FACING_DIRECTION f = summoner.getFacing();
-            if (facingSummoner == null) {
-                facingSummoner = active
-                        .checkProperty(G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.FACE_SUMMONER.toString());
-            }
-            if (active.checkProperty(G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.RANDOM_FACING.toString())) {
-                f = FacingMaster.getRandomFacing();
-            }
-            if (facingSummoner) {
-                f = f.flip();
-            }
-            unit.setFacing(f);
-        }
         if (effects != null) {
             REF.setTarget(getSourceUnitOrNull().getId());
             return effects.apply(REF);

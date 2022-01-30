@@ -28,8 +28,8 @@ import java.util.Map;
  * Created by JustMe on 2/25/2017.
  */
 public class Targeter extends ActiveHandler {
-    protected Map<Coordinates, Map<FACING_DIRECTION, Boolean>> targetingAnyCache;
-    protected Map<Coordinates, Map<FACING_DIRECTION, Map<Integer, Boolean>>> targetingCache;
+    protected Map<Coordinates,  Boolean> targetingAnyCache;
+    protected Map<Coordinates, Map<Integer, Boolean>> targetingCache;
 
     private Obj presetTarget;
     protected boolean forcePresetTarget;
@@ -143,18 +143,12 @@ public class Targeter extends ActiveHandler {
         if (!(targeting instanceof SelectiveTargeting)) {
             return true;
         }
-        Map<FACING_DIRECTION, Boolean> map = getTargetingAnyCache().get(
-                getOwnerObj().getCoordinates());
-        if (map == null) {
-            map = new HashMap<>();
-            targetingAnyCache.put(getOwnerObj().getCoordinates(), map);
-        }
-
-        Boolean canTargetAny = map.get(getOwnerObj().getFacing());
+        Coordinates c = getOwnerObj().getCoordinates();
+        Boolean canTargetAny = targetingAnyCache.get(c);
         if (canTargetAny == null) {
             canTargetAny = !targeting.getFilter().getObjects(getRef()).isEmpty();
         }
-        map.put(getOwnerObj().getFacing(), canTargetAny);
+        targetingAnyCache.put(c, canTargetAny);
         return canTargetAny;
     }
 
@@ -172,19 +166,14 @@ public class Targeter extends ActiveHandler {
         if (!(targeting instanceof SelectiveTargeting)) {
             return true;
         }
-        Map<FACING_DIRECTION, Map<Integer, Boolean>> map = getTargetingCache().get(
+        Map<Integer, Boolean> map = getTargetingCache().get(
                 getOwnerObj().getCoordinates());
 
         if (map == null) {
             map = new HashMap<>();
             getTargetingCache().put(getOwnerObj().getCoordinates(), map);
         }
-        Map<Integer, Boolean> map2 = map.get(getOwnerObj().getFacing());
-        if (map2 == null) {
-            map2 = new HashMap<>();
-            map.put(getOwnerObj().getFacing(), map2);
-        }
-        Boolean result = map2.get(id); //TODO for ai?
+        Boolean result = map.get(id); //TODO for ai?
         if (caching) {
             if (result != null)
                 return result;
@@ -236,7 +225,7 @@ public class Targeter extends ActiveHandler {
 
         getEntity().getRef().getSourceObj().getRef().setInfoEntity(getEntity());
         result = conditions.preCheck(REF);
-        map2.put(id, result);
+        map.put(id, result);
         return result;
 
     }
@@ -271,14 +260,14 @@ public class Targeter extends ActiveHandler {
         return targetingMode;
     }
 
-    public Map<Coordinates, Map<FACING_DIRECTION, Boolean>> getTargetingAnyCache() {
+    public Map<Coordinates, Boolean> getTargetingAnyCache() {
         if (targetingAnyCache == null) {
             targetingAnyCache = new HashMap<>();
         }
         return targetingAnyCache;
     }
 
-    public Map<Coordinates, Map<FACING_DIRECTION, Map<Integer, Boolean>>> getTargetingCache() {
+    public Map<Coordinates, Map<Integer, Boolean>> getTargetingCache() {
         if (targetingCache == null) {
             targetingCache = new HashMap<>();
         }

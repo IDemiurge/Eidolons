@@ -380,21 +380,6 @@ public class AttackCalculator {
                 posMap.put(ActionEnums.MOD_IDENTIFIER.DIAGONAL_ATTACK, diagonalMod);
             }
             // TODO DO FOR WEAPONS AND MAKE A SUB MAP!
-        } else if (FacingMaster.getSingleFacing(action.getOwnerUnit(), (BfObj) ref
-                .getTargetObj()) == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
-            Integer sideMod = action.getIntParam(PARAMS.SIDE_ATTACK_MOD) - 100;
-            if (sideMod != 0 && sideMod != -100) {
-                atk_mod += sideMod;
-                modMap.put(ActionEnums.MOD_IDENTIFIER.POS, sideMod); // TODO
-                posMap.put(ActionEnums.MOD_IDENTIFIER.SIDE_ATTACK, sideMod);
-            }
-            sideMod = action.getIntParam(PARAMS.SIDE_DAMAGE_MOD) - 100;
-            if (sideMod != 0 && sideMod != 100) {
-                // generic?
-                modMap.put(ActionEnums.MOD_IDENTIFIER.POS, sideMod);
-                dmg_mod += sideMod;
-                posMap.put(ActionEnums.MOD_IDENTIFIER.SIDE_ATTACK, sideMod);
-            }
         }
         if (sneak) {
             int rangedMod = 100;

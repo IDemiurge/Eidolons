@@ -13,13 +13,8 @@ public class ScreenshakeMaster {
     public static void shakeCamera(Ref ref, Damage damage) {
         boolean lethal = ref.getTargetObj().isDead();
         boolean meTarget = ref.getTargetObj() == Core.getMainHero();
-        boolean me = ref.getSourceObj() == Core.getMainHero();
 
         Boolean vertical = null;
-        if (me)
-            if (ref.getSourceObj() instanceof Unit) {
-                vertical = ((Unit) ref.getSourceObj()).getFacing().isVertical();
-            }
         float intensity = damage.getAmount() / 10;
         if (lethal) {
             intensity += 40;

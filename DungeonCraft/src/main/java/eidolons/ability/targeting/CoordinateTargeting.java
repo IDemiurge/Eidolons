@@ -22,14 +22,13 @@ import java.util.Set;
 
 public class CoordinateTargeting extends TargetingImpl {
     private static final KEYS DEFAULT_KEY = KEYS.SOURCE;
-    private final UNIT_DIRECTION unitDirection;
     private DIRECTION direction;
-    private final String facingKey;
-    private final String coordinateKey;
+    private  String facingKey;
+    private  String coordinateKey;
     boolean useActivesRange;
 
-    public CoordinateTargeting(UNIT_DIRECTION unitDirection, String facingKey, String coordinateKey) {
-        this.unitDirection = unitDirection;
+    //TODO Review LC 2.0
+    public CoordinateTargeting(String facingKey, String coordinateKey) {
         this.facingKey = facingKey;
         this.coordinateKey = coordinateKey;
     }
@@ -48,17 +47,8 @@ public class CoordinateTargeting extends TargetingImpl {
         this(DEFAULT_KEY.toString(), null);
     }
 
-    public CoordinateTargeting(String key, UNIT_DIRECTION d) {
-        this(d, key, key);
-    }
-
-    public CoordinateTargeting(UNIT_DIRECTION unitDirection, boolean useActivesRange) {
-        this(unitDirection);
+    public CoordinateTargeting( boolean useActivesRange) {
         this.useActivesRange = useActivesRange;
-    }
-
-    public CoordinateTargeting(UNIT_DIRECTION d) {
-        this(DEFAULT_KEY.toString(), d);
     }
 
     public boolean select(Ref ref) {
@@ -71,10 +61,6 @@ public class CoordinateTargeting extends TargetingImpl {
                 : ref.getObj(coordinateKey).getCoordinates();
 
         DIRECTION used_direction = direction;
-        if (unitDirection != null) {
-            BattleFieldObject unit = (BattleFieldObject) obj;
-            used_direction = DirectionMaster.getDirectionByFacing(unit.getFacing(), unitDirection);
-        }
         if (used_direction != null) {
             if (useActivesRange) {
                 if (ref.getActive() instanceof DC_ActiveObj) {

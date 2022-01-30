@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.ai;
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.unit.Unit;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.actions.ActionManager;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequenceConstructor;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
@@ -89,26 +89,26 @@ public class AI_Manager extends AiMaster {
         initialize();
     }
 
-    public Action getAction(Unit unit) {
+    public AiAction getAction(Unit unit) {
         if (unit.isMine()) {
             unit.getQuickItemActives();
         }
         messageBuilder = new StringBuffer();
-        Action action = null;
+        AiAction aiAction = null;
         running = true;
         setUnit(unit);
         Coordinates bufferedCoordinates = unit.getCoordinates();
         try {
-            action = actionManager.chooseAction();
+            aiAction = actionManager.chooseAction();
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             running = false;
         }
-        if (action == null) {
+        if (aiAction == null) {
             running = true;
             try {
-                action = actionManager.getForcedAction(getAI(unit));
+                aiAction = actionManager.getForcedAction(getAI(unit));
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
                 SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.AI, getUnit() +
@@ -117,12 +117,12 @@ public class AI_Manager extends AiMaster {
             } finally {
                 running = false;
                 SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.AI, getUnit() +
-                        " opts for Forced Action: " + action);
+                        " opts for Forced Action: " + aiAction);
             }
         } else {
             try {
-                getUnitAI().getUsedActions().add(action.getActive());
-                getMessageBuilder().append("Task: ").append(action.getTaskDescription());
+                getUnitAI().getUsedActions().add(aiAction.getActive());
+                getMessageBuilder().append("Task: ").append(aiAction.getTaskDescription());
                 if (!CoreEngine.isGraphicsOff()) {
                     if (game.isDebugMode())
                         GdxStatic.floatingText( VisualEnums.TEXT_CASES.BATTLE_COMMENT,
@@ -136,7 +136,7 @@ public class AI_Manager extends AiMaster {
             unit.setCoordinates(bufferedCoordinates);
         }
 
-        return action;
+        return aiAction;
     }
 
 
@@ -182,7 +182,7 @@ public class AI_Manager extends AiMaster {
         return true;
     }
 
-    public Action getDefaultAction(Unit activeUnit) {
+    public AiAction getDefaultAction(Unit activeUnit) {
         return getAtomicAi().getAtomicWait(activeUnit);
     }
 

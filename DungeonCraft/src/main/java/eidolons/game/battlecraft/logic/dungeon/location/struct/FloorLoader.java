@@ -283,16 +283,6 @@ public class FloorLoader extends DungeonHandler {
         return idMap;
     }
 
-    private Map<Coordinates, FACING_DIRECTION> createUnitFacingMap(String textContent) {
-        Map<Coordinates, FACING_DIRECTION> map = new HashMap<>();
-
-        DataUnit<FACING_DIRECTION> data = new DataUnit<>(textContent);
-        for (String s : data.getValues().keySet()) {
-            map.put(new Coordinates(s), FacingMaster.getFacing(data.getValues().get(s)));
-        }
-        return map;
-    }
-
     public void start() {
         entranceData = "";
     }

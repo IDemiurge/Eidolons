@@ -19,6 +19,7 @@ import main.content.values.parameters.G_PARAMS;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
@@ -198,10 +199,10 @@ public class SpellMultiplicator implements Runnable {
     private Collection<Coordinates> filterCoordinates(SPELL_ANIMS template, Set<Coordinates> coordinates) {
 
         if (template != null) {
-            FACING_DIRECTION facing = getActive().getOwnerObj().getFacing();
+            DIRECTION direction = null; //TODO LC 2.0
             List<Coordinates> filtered = new ArrayList<>(coordinates);
             Coordinates farthest = CoordinatesMaster.getFarmostCoordinateInDirection
-                    (facing.getDirection(),
+                    (direction,
                             new ArrayList<>(coordinates), null);
             switch (template) {
                 //                template.getNumberOfEmitters(getActive())
@@ -218,7 +219,7 @@ public class SpellMultiplicator implements Runnable {
                     break;
                 case WAVE:
                 case SPRAY: {
-                    boolean xOrY = !facing.isVertical();
+                    boolean xOrY = !direction.isVertical();
                     filtered.removeIf(c ->
                                     farthest.getXorY(xOrY) != c.getXorY(xOrY)
                             //                     PositionMaster.getDistance(farthest, anim.getOriginCoordinates())
@@ -232,7 +233,7 @@ public class SpellMultiplicator implements Runnable {
                                 farthest.getXorY(!xOrY) == c.getXorY(!xOrY)
                         );
                         Coordinates c = CoordinatesMaster.getFarmostCoordinateInDirection(
-                                facing.getDirection(),
+                                direction,
                                 list, null);
                         if (c != null)
                             filtered.add(c);

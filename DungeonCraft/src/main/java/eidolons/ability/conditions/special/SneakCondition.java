@@ -89,13 +89,14 @@ public class SneakCondition extends MicroCondition {
             // if (attacked.checkPassive(STANDARD_PASSIVES.VIGILANCE))
             // return false;
 
-            if (!action.isRanged()) {
+            if (!action.isRanged()) { //TODO review LC 2.0
                 if (attacker.getActivePlayerVisionStatus() == PLAYER_VISION.UNKNOWN
                  || !VisionHelper.checkVisible(attacker)) {
                     return true;
-                } else { //TODO allow sneak in front for specialists
-                    return FacingMaster.getSingleFacing(attacked, attacker) == UnitEnums.FACING_SINGLE.BEHIND;
                 }
+                // else { //TODO allow sneak in front for specialists
+                //     return FacingMaster.getSingleFacing(attacked, attacker) == UnitEnums.FACING_SINGLE.BEHIND;
+                // }
             }
         }
         return false;

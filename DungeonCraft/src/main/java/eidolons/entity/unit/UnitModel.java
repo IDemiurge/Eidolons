@@ -55,7 +55,6 @@ public abstract class UnitModel extends BattleFieldObject {
     protected UnitAI unitAI;
     protected ImageIcon emblem;
     protected Boolean unconscious;
-    private FACING_DIRECTION tempFacing;
     private Coordinates tempCoordinates;
 
     public UnitModel(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
@@ -259,10 +258,6 @@ public abstract class UnitModel extends BattleFieldObject {
 
     public DC_UnitAction getOffhandAttack() {
         return getAction(ActionEnums.OFFHAND_ATTACK);
-    }
-
-    public FACING_DIRECTION getFacingOrNull() {
-        return facing;
     }
 
     protected void initEmblem() {
@@ -505,19 +500,6 @@ public abstract class UnitModel extends BattleFieldObject {
         return mode;
     }
 
-    public void setTempFacing(FACING_DIRECTION tempFacing) {
-        this.tempFacing = tempFacing;
-    }
-
-    public void initTempFacing() {
-        setTempFacing(super.getFacing());
-    }
-
-    public void removeTempFacing() {
-        this.tempFacing = null;
-    }
-
-
     public void setTempCoordinates(Coordinates tempCoordinates) {
         this.tempCoordinates = tempCoordinates;
     }
@@ -541,14 +523,6 @@ public abstract class UnitModel extends BattleFieldObject {
             return tempCoordinates;
         }
         return super.getCoordinates();
-    }
-
-    @Override
-    public FACING_DIRECTION getFacing() {
-        if (tempFacing != null) {
-            return tempFacing;
-        }
-        return super.getFacing();
     }
 
 }

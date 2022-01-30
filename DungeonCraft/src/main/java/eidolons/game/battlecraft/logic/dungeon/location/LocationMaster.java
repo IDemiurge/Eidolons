@@ -54,11 +54,6 @@ public class LocationMaster extends DungeonMaster {
     }
 
     @Override
-    protected FacingAdjuster createFacingAdjuster() {
-        return new FacingAdjuster(this);
-    }
-
-    @Override
     protected Positioner createPositioner() {
         return new LocationPositioner(this);
     }

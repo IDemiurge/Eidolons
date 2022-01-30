@@ -55,15 +55,6 @@ public class BossUnit extends Unit {
     protected EntityMaster initMaster() {
         return new BossMaster(this);
     }
-    @Override
-    public FACING_DIRECTION getFacingOrNull() {
-        return FACING_DIRECTION.SOUTH;
-    }
-
-    @Override
-    public FACING_DIRECTION getFacing() {
-        return FACING_DIRECTION.SOUTH;
-    }
 
     public boolean isBoss() {
         return true;

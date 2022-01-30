@@ -95,8 +95,6 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
     protected boolean checkAction(Unit unit, Door door, DOOR_ACTION sub) {
         if (PositionMaster.getDistance(unit, door) > 1)
             return false;
-        if (FacingMaster.getSingleFacing(unit.getFacing(), unit, door) != FACING_SINGLE.IN_FRONT)
-            return false;
         switch (sub) {
             case OPEN:
 //            case LOCK: //TODO

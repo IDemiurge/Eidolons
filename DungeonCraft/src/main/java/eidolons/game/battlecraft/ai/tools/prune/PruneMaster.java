@@ -7,15 +7,13 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.advanced.machine.AiConst;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.elements.goal.GoalManager;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
-import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.bf.Coordinates;
 import main.system.SortMaster;
@@ -37,11 +35,11 @@ public class PruneMaster extends AiHandler {
         super(master);
     }
 
-    public List<Coordinates> pruneTargetCells(Action targetAction, Collection<Coordinates> list) {
+    public List<Coordinates> pruneTargetCells(AiAction targetAiAction, Collection<Coordinates> list) {
         TreeMap<Integer, Coordinates> map = new TreeMap<>(SortMaster
          .getNaturalIntegerComparator(false));
 
-        Coordinates coordinates = targetAction.getSource().getCoordinates();
+        Coordinates coordinates = targetAiAction.getSource().getCoordinates();
         for (Coordinates c : list) {
             int distance = 10 * PositionMaster.getDistance(coordinates, c);
             if (!PositionMaster.inLine(c, coordinates)) {
@@ -49,18 +47,6 @@ public class PruneMaster extends AiHandler {
             }
             if (PositionMaster.inLineDiagonally(c, coordinates)) {
                 distance += 2;
-            }
-            FACING_SINGLE facing = FacingMaster.getSingleFacing(targetAction.getSource()
-             .getFacing(), c, coordinates);
-            switch (facing) {
-                case BEHIND:
-                    distance += 12;
-                    break;
-                case IN_FRONT:
-                    break;
-                case TO_THE_SIDE:
-                    distance += 6;
-                    break;
             }
             map.put(distance, c); //TODO KEYS WILL OVERLAP!
         }
