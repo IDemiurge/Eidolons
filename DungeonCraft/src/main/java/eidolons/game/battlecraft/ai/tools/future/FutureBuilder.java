@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.ai.tools.future;
 
 import eidolons.ability.effects.oneshot.DealDamageEffect;
 import eidolons.ability.effects.oneshot.attack.AttackEffect;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
@@ -23,11 +23,11 @@ public class FutureBuilder {
     private static final Map<String, Integer> minCache = new HashMap<>();
     private static final Map<String, Integer> maxCache = new HashMap<>();
 
-    public static int precalculateDamage(DC_ActiveObj active, Obj targetObj, boolean attack) {
+    public static int precalculateDamage(ActiveObj active, Obj targetObj, boolean attack) {
         return precalculateDamage(active, targetObj, attack, null);
     }
 
-    public static int precalculateDamage(DC_ActiveObj active, Obj targetObj, boolean attack,
+    public static int precalculateDamage(ActiveObj active, Obj targetObj, boolean attack,
                                          Boolean min_max_normal) {
         // TODO basically, I have to use a copy of the gamestate...! To make it
         // precise...
@@ -53,7 +53,7 @@ public class FutureBuilder {
         return damage;
     }
 
-    private static String getCacheKey(DC_ActiveObj active, Obj targetObj) {
+    private static String getCacheKey(ActiveObj active, Obj targetObj) {
         return active.getNameAndId() + targetObj.getNameAndId();
     }
 
@@ -83,11 +83,11 @@ public class FutureBuilder {
         return maxCache;
     }
 
-    public static int getDamage(DC_ActiveObj active, Obj targetObj, Effect e) {
+    public static int getDamage(ActiveObj active, Obj targetObj, Effect e) {
         return getDamage(active, targetObj, e, null);
     }
 
-    public static int getDamage(DC_ActiveObj active, Obj targetObj, Effect e,
+    public static int getDamage(ActiveObj active, Obj targetObj, Effect e,
                                 Boolean min_max_normal) {
         Integer damage;
         Ref ref = active.getOwnerUnit().getRef().getCopy();

@@ -14,8 +14,8 @@ import eidolons.ability.effects.oneshot.unit.RaiseEffect;
 import eidolons.ability.effects.oneshot.unit.SummonEffect;
 import eidolons.ability.targeting.TemplateAutoTargeting;
 import eidolons.ability.targeting.TemplateSelectiveTargeting;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_QuickItemAction;
+import eidolons.entity.active.ActiveObj;
+import eidolons.entity.active.QuickItemAction;
 import eidolons.game.core.master.EffectMaster;
 import main.ability.Abilities;
 import main.ability.effects.Effect;
@@ -34,7 +34,7 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.type.ObjType;
 import main.system.auxiliary.log.LogMaster;
 import main.system.entity.CounterMaster;
@@ -42,7 +42,7 @@ import main.system.entity.CounterMaster;
 import java.util.List;
 
 public class AI_SpellMaster {
-    public static GOAL_TYPE getGoal(DC_ActiveObj spell) {
+    public static GOAL_TYPE getGoal(ActiveObj spell) {
         AI_LOGIC spellLogic = getSpellLogic(spell);
         spell.setSpellLogic(spellLogic);
         if (spellLogic == null) {
@@ -89,7 +89,7 @@ public class AI_SpellMaster {
         return AiEnums.GOAL_TYPE.OTHER;
     }
 
-    public static AI_LOGIC getSpellLogic(DC_ActiveObj spell) {
+    public static AI_LOGIC getSpellLogic(ActiveObj spell) {
         AI_LOGIC logic = spell.getAiLogic();
         // multiple? TODO
 
@@ -98,8 +98,8 @@ public class AI_SpellMaster {
         if (spell.isThrow()) {
             return AiEnums.AI_LOGIC.DAMAGE;
         }
-        if (spell instanceof DC_QuickItemAction) {
-            DC_QuickItemAction itemActiveObj = (DC_QuickItemAction) spell;
+        if (spell instanceof QuickItemAction) {
+            QuickItemAction itemActiveObj = (QuickItemAction) spell;
             if (itemActiveObj.getItem().isAmmo()) {
                 return AiEnums.AI_LOGIC.OTHER;
             }
@@ -192,7 +192,7 @@ public class AI_SpellMaster {
         return logic;
     }
 
-    private static AI_LOGIC getModValueLogic(DC_ActiveObj spell) {
+    private static AI_LOGIC getModValueLogic(ActiveObj spell) {
         Abilities actives = spell.getAbilities();
         List<Effect> effects = EffectMaster.getEffectsOfClass(actives,
          ModifyValueEffect.class);
@@ -221,7 +221,7 @@ public class AI_SpellMaster {
         return null;
     }
 
-    private static AI_LOGIC getBuffLogic(DC_ActiveObj spell) {
+    private static AI_LOGIC getBuffLogic(ActiveObj spell) {
         Abilities actives = spell.getAbilities();
         if (EffectMaster.check(actives, AddBuffEffect.class)) {
             if (((AddBuffEffect) EffectMaster.getEffectsOfClass(actives,
@@ -235,7 +235,7 @@ public class AI_SpellMaster {
         return null;
     }
 
-    private static AI_LOGIC getZoneLogic(DC_ActiveObj spell) {
+    private static AI_LOGIC getZoneLogic(ActiveObj spell) {
         List<Effect> zoneEffects = EffectMaster.getEffectsOfClass(spell,
          SpecialTargetingEffect.class);
         if (!zoneEffects.isEmpty()) {
@@ -291,7 +291,7 @@ public class AI_SpellMaster {
         return null;
     }
 
-    private static boolean isModifyValueEffectPositive(DC_ActiveObj spell,
+    private static boolean isModifyValueEffectPositive(ActiveObj spell,
                                                        Effect effect) {
         try {
             return effect.getFormula().getInt(spell.getOwnerUnit().getRef()) > 0;
@@ -300,7 +300,7 @@ public class AI_SpellMaster {
         }
     }
 
-    private static boolean isCounterEffectPositive(DC_ActiveObj spell,
+    private static boolean isCounterEffectPositive(ActiveObj spell,
                                                    ModifyCounterEffect counterEffect) {
         boolean positive = CounterMaster.isCounterPositive(counterEffect
          .getCounterName());
@@ -311,7 +311,7 @@ public class AI_SpellMaster {
         return positive;
     }
 
-    private static AI_LOGIC getLogicByTargeting(DC_ActiveObj spell) {
+    private static AI_LOGIC getLogicByTargeting(ActiveObj spell) {
         Targeting t = spell.getTargeting();
         TARGETING_MODE mode = spell.getTargetingMode();
         if (mode == null) {
@@ -404,7 +404,7 @@ public class AI_SpellMaster {
         return null;
     }
 
-    public static ObjType getSummonedUnit(DC_ActiveObj active, Ref ref) {
+    public static ObjType getSummonedUnit(ActiveObj active, Ref ref) {
         ObjType type;
 
         SummonEffect effect = null;
@@ -429,11 +429,11 @@ public class AI_SpellMaster {
         return null;
     }
 
-    public static SpellEnums.SPELL_CATEGORY getSpellCategory(ActiveObj spell) {
+    public static SpellEnums.SPELL_CATEGORY getSpellCategory(IActiveObj spell) {
         return null;
     }
 
-    public static boolean isCounterModSpell(DC_ActiveObj active) {
+    public static boolean isCounterModSpell(ActiveObj active) {
         return (EffectMaster.check(active.getAbilities(),
          ModifyCounterEffect.class));
     }

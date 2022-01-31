@@ -2,7 +2,7 @@ package eidolons.system.math.roll;
 
 import eidolons.ability.effects.oneshot.mechanic.RollEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import main.content.ContentValsManager;
 import main.content.VALUE;
@@ -146,12 +146,12 @@ public class RollMaster {
 
 
     //TODO
-    public static Boolean rollForceKnockdown(Unit target, DC_ActiveObj attack, int force) {
+    public static Boolean rollForceKnockdown(Unit target, ActiveObj attack, int force) {
         return null;
     }
 
     //TODO
-    public static Boolean makeReactionRoll(Unit unit, DC_ActiveObj action, DC_ActiveObj attack) {
+    public static Boolean makeReactionRoll(Unit unit, ActiveObj action, ActiveObj attack) {
         return null;
     }
 
@@ -221,7 +221,7 @@ public class RollMaster {
     }
 
 
-    public static int getDexterousModifier(Unit unit, DC_ActiveObj action) {
+    public static int getDexterousModifier(Unit unit, ActiveObj action) {
         int mod = 25;
         if (action.checkPassive(UnitEnums.STANDARD_PASSIVES.DEXTEROUS)) {
             mod += 25;
@@ -237,7 +237,7 @@ public class RollMaster {
 
     }
 
-    public static int getVigilanceModifier(Unit unit, DC_ActiveObj action) {
+    public static int getVigilanceModifier(Unit unit, ActiveObj action) {
         int mod = 10;
         if (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.VIGILANCE)) {
             mod += 40;

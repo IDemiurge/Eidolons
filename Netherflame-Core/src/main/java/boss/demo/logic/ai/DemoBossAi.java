@@ -1,7 +1,7 @@
 package boss.demo.logic.ai;
 
 import boss.logic.action.BOSS_ACTION;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.obj.GridCell;
 import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import boss.BossManager;
@@ -18,7 +18,7 @@ public class  DemoBossAi extends BossAi {
     protected AiAction getSpell() {
 
         BOSS_ACTION key=chooseSpellKey();
-        DC_ActiveObj active=getActionMaster().getAction(key) ;
+        ActiveObj active=getActionMaster().getAction(key) ;
         //can we re-use some of old ai? build possible sequences and decide?
         Ref ref=new Ref(getGame());
         // DC_Cell cell = getTargetCell(active);
@@ -27,7 +27,7 @@ public class  DemoBossAi extends BossAi {
         return new AiAction(active, ref);
     }
 
-    private GridCell getTargetCell(DC_ActiveObj active) {
+    private GridCell getTargetCell(ActiveObj active) {
        return getGame().getCell(Eidolons.getMainHero().getCoordinates());
     }
 

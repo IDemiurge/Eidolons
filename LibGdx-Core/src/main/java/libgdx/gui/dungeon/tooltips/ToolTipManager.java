@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.ActiveObj;
+import eidolons.entity.active.UnitAction;
 import eidolons.entity.obj.Structure;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
@@ -478,14 +478,14 @@ public class ToolTipManager extends TablePanel {
     }
 
     public void entityHoverOff(Entity entity) {
-        if (entity instanceof DC_ActiveObj) {
+        if (entity instanceof ActiveObj) {
             GuiEventManager.trigger(ACTION_HOVERED_OFF, entity);
             if (DC_Engine.isAtbMode())
                 if (!ExplorationMaster.isExplorationOn())
                     GuiEventManager.trigger(GuiEventType.ATB_POS_PREVIEW, null);
         }
-        if (entity instanceof DC_UnitAction) {
-            AnimMaster3d.hoverOff((DC_UnitAction) entity);
+        if (entity instanceof UnitAction) {
+            AnimMaster3d.hoverOff((UnitAction) entity);
         }
         if (guiStage instanceof GuiStage) {
             ((GuiStage) guiStage).getRadial().hoverOff(entity);
@@ -493,12 +493,12 @@ public class ToolTipManager extends TablePanel {
     }
 
     public void entityHover(Entity entity) {
-        if (entity instanceof DC_ActiveObj) {
+        if (entity instanceof ActiveObj) {
             GuiEventManager.trigger(ACTION_HOVERED, entity);
         }
-        if (entity instanceof DC_UnitAction) {
-            if (((DC_UnitAction) entity).isAttackAny())
-                AnimMaster3d.initHover((DC_UnitAction) entity);
+        if (entity instanceof UnitAction) {
+            if (((UnitAction) entity).isAttackAny())
+                AnimMaster3d.initHover((UnitAction) entity);
             return;
         }
 

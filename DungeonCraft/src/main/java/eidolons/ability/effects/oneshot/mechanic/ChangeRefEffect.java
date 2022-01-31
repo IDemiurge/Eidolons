@@ -1,6 +1,6 @@
 package eidolons.ability.effects.oneshot.mechanic;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.data.ability.AE_ConstrArgs;
@@ -45,8 +45,8 @@ public class ChangeRefEffect extends MicroEffect implements OneshotEffect {
         }
         Integer id = REF.getId(keyToAddOrRemoveForRef);
         if (id == null) {
-            if (ref.getActive() instanceof DC_ActiveObj) {
-                DC_ActiveObj activeObj = (DC_ActiveObj) ref.getActive();
+            if (ref.getActive() instanceof ActiveObj) {
+                ActiveObj activeObj = (ActiveObj) ref.getActive();
                 if (activeObj.getParentAction() != null) {
                     id = activeObj.getParentAction().getRef().getId(keyToAddOrRemoveForRef);
                 }

@@ -1,13 +1,13 @@
 package libgdx.anims.anim3d;
 
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 
 /**
  * Created by JustMe on 9/20/2017.
  */
 public class Reload3dAnim extends Weapon3dAnim {
-    public Reload3dAnim(DC_ActiveObj active) {
+    public Reload3dAnim(ActiveObj active) {
         super(active);
     }
 

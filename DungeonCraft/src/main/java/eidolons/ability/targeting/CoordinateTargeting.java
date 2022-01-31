@@ -1,7 +1,7 @@
 package eidolons.ability.targeting;
 
 import eidolons.ability.effects.oneshot.unit.SummonEffect;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.DC_Obj;
@@ -13,8 +13,6 @@ import main.entity.group.GroupImpl;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
-import main.game.bf.directions.DirectionMaster;
-import main.game.bf.directions.UNIT_DIRECTION;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -63,8 +61,8 @@ public class CoordinateTargeting extends TargetingImpl {
         DIRECTION used_direction = direction;
         if (used_direction != null) {
             if (useActivesRange) {
-                if (ref.getActive() instanceof DC_ActiveObj) {
-                    int r = ((DC_ActiveObj) ref.getActive()).getRange();
+                if (ref.getActive() instanceof ActiveObj) {
+                    int r = ((ActiveObj) ref.getActive()).getRange();
                     for (int i = 0; i < r; i++) {
                         if (coordinate.getAdjacentCoordinate(used_direction) == null) {
                             break;

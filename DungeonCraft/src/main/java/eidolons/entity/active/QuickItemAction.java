@@ -14,11 +14,11 @@ import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.system.sound.AudioEnums;
 
-public class DC_QuickItemAction extends DC_ActiveObj {
+public class QuickItemAction extends ActiveObj {
 
     private QuickItem item;
 
-    public DC_QuickItemAction(ObjType type, Player owner, GenericGame game, Ref ref) {
+    public QuickItemAction(ObjType type, Player owner, GenericGame game, Ref ref) {
         super(type, owner, game, ref);
     }
 

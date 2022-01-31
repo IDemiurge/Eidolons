@@ -581,7 +581,10 @@ could have other params - sf discounts,
 
     WEIGHT_PENALTY_REDUCTION(),
     DEITY_EFFECTS_MOD,
-    MASTERY_SCORE_MOD();
+    MASTERY_SCORE_MOD(),
+    ITEM_RARITY() //
+
+    ;
 
     boolean writeToType;
     Color color;

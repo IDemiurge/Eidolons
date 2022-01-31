@@ -1,7 +1,7 @@
 package eidolons.game.exploration.dungeon.objects;
 
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.ActiveObj;
+import eidolons.entity.active.UnitAction;
 import eidolons.entity.item.HeroItem;
 import eidolons.entity.item.QuickItem;
 import eidolons.entity.item.ItemFactory;
@@ -101,12 +101,12 @@ potions
          (GenericGame) ref.getGame(), ref, false);
     }
 
-    public List<DC_ActiveObj> getActions(DungeonObj obj, Unit unit) {
+    public List<ActiveObj> getActions(DungeonObj obj, Unit unit) {
         if (!(obj instanceof HungItem))
             return new ArrayList<>();
         //check intelligence, mastery
-        List<DC_ActiveObj> list = new ArrayList<>();
-        DC_UnitAction action;
+        List<ActiveObj> list = new ArrayList<>();
+        UnitAction action;
         for (HUNG_ITEM_ACTION sub : HUNG_ITEM_ACTION.values()) {
             if (checkAction(unit, (HungItem) obj, sub)) {
                 String name = StringMaster.format(sub.name()) + " Door";
@@ -142,7 +142,7 @@ potions
     }
 
     @Override
-    public DC_ActiveObj getDefaultAction(Unit source, DungeonObj target) {
+    public ActiveObj getDefaultAction(Unit source, DungeonObj target) {
         return null;
     }
 

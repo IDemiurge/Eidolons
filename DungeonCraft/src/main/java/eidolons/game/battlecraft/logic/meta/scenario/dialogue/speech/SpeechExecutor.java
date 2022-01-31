@@ -5,12 +5,11 @@ import eidolons.system.libgdx.GdxStatic;
 import eidolons.system.libgdx.datasource.FullscreenAnimDataSource;
 import eidolons.system.libgdx.wrapper.VectorGdx;
 import eidolons.content.consts.VisualEnums.FULLSCREEN_ANIM;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActor;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
@@ -170,7 +169,7 @@ public class SpeechExecutor {
                 finalScript = true;
                 break;
             case HIGHLIGHT_ACTION:
-                DC_ActiveObj a = Core.getMainHero().getActionOrSpell(value);
+                ActiveObj a = Core.getMainHero().getActionOrSpell(value);
                 if (vars.size() > 0) {
                     GuiEventManager.trigger(GuiEventType.HIGHLIGHT_ACTION_OFF, a);
                 } else
@@ -209,7 +208,7 @@ public class SpeechExecutor {
             case BLOCK_ACTION:
                 unit = getUnit(value);
                 if (unit instanceof Unit) {
-                    DC_ActiveObj active = ((Unit) unit).getActionOrSpell(vars.get(0));
+                    ActiveObj active = ((Unit) unit).getActionOrSpell(vars.get(0));
                     active.setDisabled(true);
                 }
                 break;

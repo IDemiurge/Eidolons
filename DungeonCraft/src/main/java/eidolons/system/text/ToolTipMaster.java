@@ -1,7 +1,7 @@
 package eidolons.system.text;
 
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.ActiveObj;
+import eidolons.entity.active.UnitAction;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
@@ -31,7 +31,7 @@ public class ToolTipMaster {
     public ToolTipMaster(DC_Game game) {
     }
 
-    public static String getActionTargetingTooltip(DC_Obj target, DC_ActiveObj active) {
+    public static String getActionTargetingTooltip(DC_Obj target, ActiveObj active) {
         if (active == null) {
             return "";
         }
@@ -39,7 +39,7 @@ public class ToolTipMaster {
         ACTION_TOOL_TIP_CASE _case = null;
         AI_LOGIC spellLogic = AI_SpellMaster.getSpellLogic(active);
         if (spellLogic == null) {
-            if (active instanceof DC_UnitAction) {
+            if (active instanceof UnitAction) {
                 if (active.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.ATTACK) {
                     _case = ACTION_TOOL_TIP_CASE.DAMAGE;
                 }

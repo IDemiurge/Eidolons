@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import eidolons.ability.conditions.special.ClearShotCondition;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.active.DefaultActionHandler;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
@@ -101,7 +101,7 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
             }
             if (object.checkSelectHighlighted()) {
                 String actionTargetingTooltip = "";
-                DC_ActiveObj action = (DC_ActiveObj) object.getGame().getManager().getActivatingAction();
+                ActiveObj action = (ActiveObj) object.getGame().getManager().getActivatingAction();
                 try {
                     actionTargetingTooltip = ToolTipMaster.getActionTargetingTooltip(object, action);
                 } catch (Exception e) {
@@ -346,7 +346,7 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
     }
 
     private ValueContainer getAttackTip(BattleFieldObject unit) {
-        DC_ActiveObj attackAction = DefaultActionHandler.getPreferredAttackAction(Core.getMainHero(), unit);
+        ActiveObj attackAction = DefaultActionHandler.getPreferredAttackAction(Core.getMainHero(), unit);
         if (attackAction != null) {
             String control =
                     "Click to attack with ";

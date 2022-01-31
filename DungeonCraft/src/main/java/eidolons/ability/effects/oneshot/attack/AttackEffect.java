@@ -1,6 +1,6 @@
 package eidolons.ability.effects.oneshot.attack;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.active.spaces.Feat;
 import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;
@@ -101,7 +101,7 @@ public class AttackEffect extends MicroEffect implements OneshotEffect {
         // new Attack(target, source).execute(effects); => to State's history!
         attack = null;
         Unit attacker = (Unit) ref.getSourceObj();
-        DC_ActiveObj activeObj = (DC_ActiveObj) getActiveObj();
+        ActiveObj activeObj = (ActiveObj) getActiveObj();
         if (!activeObj.isExtraAttackMode()) {
             if (!activeObj.isThrow()) {
                 if (!activeObj.isRanged()) {

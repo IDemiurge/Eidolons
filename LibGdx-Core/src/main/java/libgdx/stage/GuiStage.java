@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
@@ -489,7 +489,7 @@ public abstract class GuiStage extends GenericGuiStage implements StageWithClosa
             hideTooltip(actionTooltip, 0.5f);
         });
         GuiEventManager.bind(GuiEventType.ACTION_BEING_ACTIVATED, p -> {
-            DC_ActiveObj active = (DC_ActiveObj) p.get();
+            ActiveObj active = (ActiveObj) p.get();
             if (!active.isMine()) {
                 return;
             }

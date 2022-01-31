@@ -13,8 +13,8 @@ import eidolons.ability.effects.oneshot.unit.SummonEffect;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_QuickItemAction;
+import eidolons.entity.active.ActiveObj;
+import eidolons.entity.active.QuickItemAction;
 import eidolons.entity.active.Spell;
 import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.BattleFieldObject;
@@ -354,7 +354,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         Effects effects;
         if (aiAction instanceof AiQuickItemAction)
             effects = EffectMaster.getEffectsFromSpell(
-                    ((DC_QuickItemAction) aiAction.getActive()).getItem().getActives().get(0));
+                    ((QuickItemAction) aiAction.getActive()).getItem().getActives().get(0));
         else effects =
                 EffectMaster.getEffectsFromSpell(aiAction.getActive());
         if (effects.getEffects().isEmpty())
@@ -410,7 +410,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     }
 
     @Override
-    public int getSpellCustomHostileEffectPriority(DC_Obj target, DC_ActiveObj action,
+    public int getSpellCustomHostileEffectPriority(DC_Obj target, ActiveObj action,
                                                    Effect e) {
         if (e instanceof AddBuffEffect) {
             AddBuffEffect buffEffect = (AddBuffEffect) e;
@@ -618,7 +618,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     @Override
     public int getZoneSpellPriority(AiAction aiAction, boolean damage) {
         int base_priority = 0;
-        DC_ActiveObj active = aiAction.getActive();
+        ActiveObj active = aiAction.getActive();
         Targeting targeting = active.getTargeting();
 
         if (targeting instanceof FixedTargeting || targeting instanceof SelectiveTargeting) {
@@ -678,7 +678,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
     @Override
     public int getParamModSpellPriority(AiAction aiAction, Boolean buff) {
-        DC_ActiveObj spell = aiAction.getActive();
+        ActiveObj spell = aiAction.getActive();
         DC_Obj target = aiAction.getTarget();
 
         if (buff == null) {
@@ -837,7 +837,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         return (float) multiplier / 100;
     }
 
-    private void initRollMap(DC_ActiveObj spell, List<Effect> effects) {
+    private void initRollMap(ActiveObj spell, List<Effect> effects) {
         rollMap = new ConcurrentMap<>();
 
         List<RollEffect> rollEffects = EffectMaster.getRollEffects(spell);
@@ -894,13 +894,13 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             return 0;
         }
         Unit targetObj = (Unit) aiAction.getTarget();
-        DC_ActiveObj active = aiAction.getActive();
+        ActiveObj active = aiAction.getActive();
         return getAttackPriority(active, targetObj);
 
     }
 
     @Override
-    public int getCoatingPriority(DC_ActiveObj active, DC_Obj targetObj) {
+    public int getCoatingPriority(ActiveObj active, DC_Obj targetObj) {
         List<Effect> effects = EffectMaster.getEffectsOfClass(active, ModifyCounterEffect.class);
         if (effects.isEmpty()) {
             return priority;
@@ -929,7 +929,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     }
 
     @Override
-    public int getAttackPriority(DC_ActiveObj active, BattleFieldObject targetObj) {
+    public int getAttackPriority(ActiveObj active, BattleFieldObject targetObj) {
 
         if (getUnit().getBehaviorMode() != AiEnums.BEHAVIOR_MODE.BERSERK
                 && getUnit().getBehaviorMode() != AiEnums.BEHAVIOR_MODE.CONFUSED) {
@@ -1046,12 +1046,12 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         return false;
     }
 
-    private void applyThrowPenalty(DC_ActiveObj active) {
+    private void applyThrowPenalty(ActiveObj active) {
         WeaponItem item;
         boolean offhand = active.isOffhand();
-        boolean quick = active instanceof DC_QuickItemAction;
+        boolean quick = active instanceof QuickItemAction;
         if (quick) {
-            DC_QuickItemAction itemActiveObj = (DC_QuickItemAction) active;
+            QuickItemAction itemActiveObj = (QuickItemAction) active;
             item = itemActiveObj.getItem().getWrappedWeapon();
         } else {
             item = getUnit().getWeapon(offhand);
@@ -1074,23 +1074,23 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     }
 
     @Override
-    public int getCounterPenalty(DC_ActiveObj active, Unit targetObj) {
+    public int getCounterPenalty(ActiveObj active, Unit targetObj) {
         // TODO cache!
         Active action = game.getActionManager().getCounterAttackAction(targetObj, getUnit(), active);
         if (action == null)
             return 0;
         return Math.round(-getDamagePriority(
-                (DC_ActiveObj) action, getUnit())
+                (ActiveObj) action, getUnit())
                 * getConstInt(AiConst.COUNTER_FACTOR));
     }
 
     @Override
-    public int getDamagePriority(DC_ActiveObj action, Obj targetObj) {
+    public int getDamagePriority(ActiveObj action, Obj targetObj) {
         return getDamagePriority(action, targetObj, true);
     }
 
     @Override
-    public int getDamagePriority(DC_ActiveObj action, Obj targetObj, boolean attack) {
+    public int getDamagePriority(ActiveObj action, Obj targetObj, boolean attack) {
         int damage = 0;
         List<Effect> effects = EffectMaster.getEffectsOfClass(action, (attack) ? AttackEffect.class
                 : DealDamageEffect.class);
@@ -1136,7 +1136,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     }
 
     @Override
-    public boolean checkKillPrioritized(Obj targetObj, DC_ActiveObj action) {
+    public boolean checkKillPrioritized(Obj targetObj, ActiveObj action) {
         return !targetObj.isNeutral();
         // preCheck if action deals exceeding damage?
         // if (PositionMaster.getDistance(targetObj, unit) > 1) {

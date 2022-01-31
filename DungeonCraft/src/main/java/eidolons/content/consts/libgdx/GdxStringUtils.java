@@ -3,7 +3,7 @@ package eidolons.content.consts.libgdx;
 import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PARAMS;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.item.HeroSlotItem;
 import eidolons.entity.item.WeaponItem;
 import eidolons.system.libgdx.GdxAdapter;
@@ -48,11 +48,11 @@ public class GdxStringUtils {
         return s.replace(PathFinder.getImagePath().toLowerCase(), "");
     }
 
-    public static String getAttackActionPath(DC_ActiveObj obj) {
+    public static String getAttackActionPath(ActiveObj obj) {
         return getAttackActionPath(obj, obj.getActiveWeapon());
     }
 
-    public static String getAttackActionPath(DC_ActiveObj obj, WeaponItem weapon) {
+    public static String getAttackActionPath(ActiveObj obj, WeaponItem weapon) {
         return (!obj.isStandardAttack() || obj.isThrow()) ? getWeaponIconPath(weapon)
                 : getStandardAttackIcon(obj);
         //            if (obj.isOffhand()){
@@ -68,7 +68,7 @@ public class GdxStringUtils {
     public static String getWeaponIconPath(Entity entity) {
         return GdxStringUtils.getItemIconPath(entity);
     }
-    private static String getStandardAttackIcon(DC_ActiveObj obj) {
+    private static String getStandardAttackIcon(ActiveObj obj) {
         WeaponItem weapon = obj.getActiveWeapon();
         return getStandardAttackIcon(obj.getType(), weapon.getType());
     }

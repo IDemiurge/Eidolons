@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.rules.combat.damage;
 
 import eidolons.ability.effects.continuous.BonusDamageEffect;
 import eidolons.ability.effects.oneshot.DealDamageEffect;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.unit.attach.DC_HeroAttachedObj;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import main.content.enums.GenericEnums.DAMAGE_CASE;
@@ -112,8 +112,8 @@ public class DamageFactory {
         // if (ref.getActive().isSpell())
         DAMAGE_TYPE damageType = ref.getDamageType();
 
-        if (ref.getActive() instanceof DC_ActiveObj) {
-            DC_ActiveObj activeObj = (DC_ActiveObj) ref.getActive();
+        if (ref.getActive() instanceof ActiveObj) {
+            ActiveObj activeObj = (ActiveObj) ref.getActive();
             dmg.setAction(activeObj);
             if (damageType == null) {
                 damageType = activeObj.getDamageType();

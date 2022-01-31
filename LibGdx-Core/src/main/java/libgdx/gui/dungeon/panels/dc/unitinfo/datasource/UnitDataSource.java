@@ -3,7 +3,7 @@ package libgdx.gui.dungeon.panels.dc.unitinfo.datasource;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.content.PARAMS;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.UnitAction;
 import eidolons.entity.item.ArmorItem;
 import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;
@@ -429,7 +429,7 @@ public class UnitDataSource implements
         List<ValueContainer> result = new ArrayList<>();
 
         if (weapon != null) {
-            for (DC_UnitAction el : weapon.getOrCreateAttackActions()) {
+            for (UnitAction el : weapon.getOrCreateAttackActions()) {
                 final ValueContainer valueContainer = new ValueContainer(TextureCache.getOrCreateR(el.getImagePath()));
                 AttackTooltip toolTip = AttackTooltipFactory.createAttackTooltip(el);
                 valueContainer.addListener(toolTip.getController());

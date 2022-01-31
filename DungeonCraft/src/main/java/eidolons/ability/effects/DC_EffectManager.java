@@ -1,6 +1,6 @@
 package eidolons.ability.effects;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.magic.ResistanceRule;
 import eidolons.game.core.game.DC_Game;
@@ -44,7 +44,7 @@ public class DC_EffectManager implements EffectManager {
                 return true;
             }
             if (effect instanceof ReducedEffect) {
-                DC_ActiveObj spell = (DC_ActiveObj) ref.getActive();
+                ActiveObj spell = (ActiveObj) ref.getActive();
                 if (spell == null) {
                     return true;
                 }
@@ -70,7 +70,7 @@ public class DC_EffectManager implements EffectManager {
 
     private boolean checkResistanceAlreadyChecked(Effect effect) {
         try {
-            DC_ActiveObj spell = (DC_ActiveObj) effect.getRef().getActive();
+            ActiveObj spell = (ActiveObj) effect.getRef().getActive();
             boolean resistanceChecked = spell.isResistanceChecked();
             spell.setResistanceChecked(true);
             return resistanceChecked;

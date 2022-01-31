@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.game.core.EUtils;
 import eidolons.game.exploration.handlers.ExplorationMaster;
 import libgdx.GDX;
@@ -101,7 +101,7 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
             hideTooltip(infoTooltip, 1f);
         });
         GuiEventManager.bind(GuiEventType.ACTION_BEING_RESOLVED, p -> {
-            DC_ActiveObj active = (DC_ActiveObj) p.get();
+            ActiveObj active = (ActiveObj) p.get();
             if (ExplorationMaster.isExplorationOn()) {
                 return;
             }

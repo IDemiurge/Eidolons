@@ -1,6 +1,6 @@
 package eidolons.ability.effects.oneshot.activation;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.data.ability.OmittedConstructor;
@@ -8,11 +8,11 @@ import main.entity.Ref.KEYS;
 
 public class CostEffect extends MicroEffect implements OneshotEffect {
 
-    private DC_ActiveObj active;
+    private ActiveObj active;
     private KEYS key;
 
     @OmittedConstructor
-    public CostEffect(DC_ActiveObj active) {
+    public CostEffect(ActiveObj active) {
         this.active = active;
     }
 
@@ -24,7 +24,7 @@ public class CostEffect extends MicroEffect implements OneshotEffect {
     public boolean applyThis() {
         if (active == null) {
             try {
-                active = (DC_ActiveObj) ref.getObj(key);
+                active = (ActiveObj) ref.getObj(key);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }

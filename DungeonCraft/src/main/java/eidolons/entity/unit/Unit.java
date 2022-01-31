@@ -2,8 +2,8 @@ package eidolons.entity.unit;
 
 import eidolons.content.*;
 import eidolons.content.values.ValuePages;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_QuickItemAction;
+import eidolons.entity.active.ActiveObj;
+import eidolons.entity.active.QuickItemAction;
 import eidolons.entity.active.Spell;
 import eidolons.entity.active.spaces.Feat;
 import eidolons.entity.active.spaces.FeatSpaces;
@@ -23,7 +23,6 @@ import eidolons.entity.unit.attach.Perk;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.logic.mission.universal.PlayerManager;
 import eidolons.game.core.EUtils;
@@ -49,7 +48,6 @@ import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.enums.entity.HeroEnums.GENDER;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.enums.entity.UnitEnums;
-import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.AI_TYPE;
@@ -61,7 +59,7 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.handlers.EntityMaster;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.BuffObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
@@ -124,7 +122,7 @@ public class Unit extends UnitModel implements GridEntity {
     protected ObjType backgroundType;
     protected Unit engagementTarget;
     protected WeaponItem rangedWeapon;
-    private DC_ActiveObj lastAction;
+    private ActiveObj lastAction;
 
     public Unit(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
@@ -269,7 +267,7 @@ public class Unit extends UnitModel implements GridEntity {
 
 
     public void addAction(String string) {
-        ActiveObj action = game.getActionManager().getAction(string, this);
+        IActiveObj action = game.getActionManager().getAction(string, this);
         if (action != null) {
             actives.add(action);
         }
@@ -297,16 +295,16 @@ public class Unit extends UnitModel implements GridEntity {
         return getAI().isOutsideCombat();
     }
 
-    public List<DC_QuickItemAction> getQuickItemActives() {
+    public List<QuickItemAction> getQuickItemActives() {
         if (!ListMaster.isNotEmpty(getQuickItems())) {
             return new ArrayList<>();
         }
-        List<DC_QuickItemAction> qia = new ArrayList<>();
+        List<QuickItemAction> qia = new ArrayList<>();
         for (QuickItem q : getQuickItems()) {
             if (!q.isConstructed()) {
                 q.construct();
             }
-            DC_QuickItemAction active = q.getActive();
+            QuickItemAction active = q.getActive();
             if (active != null) {
                 qia.add(active);
             }
@@ -1196,7 +1194,7 @@ public class Unit extends UnitModel implements GridEntity {
         super.setCoordinates(coordinates);
     }
 
-    public DC_ActiveObj getAttackAction(boolean offhand) {
+    public ActiveObj getAttackAction(boolean offhand) {
 
         return getAction(offhand ? ActionEnums.OFFHAND_ATTACK :
                 ActionEnums.ATTACK);
@@ -1445,7 +1443,7 @@ public class Unit extends UnitModel implements GridEntity {
     }
 
 
-    public DC_ActiveObj getTurnAction(boolean clockwise) {
+    public ActiveObj getTurnAction(boolean clockwise) {
         return getAction(
                 clockwise
                         ? ActionEnums.STD_ACTIONS.Turn_Clockwise.toString()
@@ -1460,13 +1458,13 @@ public class Unit extends UnitModel implements GridEntity {
         this.perks = perks;
     }
 
-    public List<DC_ActiveObj> getActions() {
-        ArrayList<ActiveObj> list = new ArrayList<>(getActives());
-        list.removeIf(activeObj -> !(activeObj instanceof DC_ActiveObj));
-        return new ArrayList<>(new DequeImpl<DC_ActiveObj>().addAllCast(list));
+    public List<ActiveObj> getActions() {
+        ArrayList<IActiveObj> list = new ArrayList<>(getActives());
+        list.removeIf(activeObj -> !(activeObj instanceof ActiveObj));
+        return new ArrayList<>(new DequeImpl<ActiveObj>().addAllCast(list));
     }
 
-    public List<DC_ActiveObj> getMoveActions() {
+    public List<ActiveObj> getMoveActions() {
         return getActions().stream().filter(a -> a.getActionGroup() == ACTION_TYPE_GROUPS.MOVE).collect(Collectors.toList());
     }
 
@@ -1524,11 +1522,11 @@ public class Unit extends UnitModel implements GridEntity {
         return !offhand ? getReserveMainWeapon() : getReserveOffhandWeapon();
     }
 
-    public DC_ActiveObj getLastAction() {
+    public ActiveObj getLastAction() {
         return lastAction;
     }
 
-    public void setLastAction(DC_ActiveObj lastAction) {
+    public void setLastAction(ActiveObj lastAction) {
         this.lastAction = lastAction;
     }
 

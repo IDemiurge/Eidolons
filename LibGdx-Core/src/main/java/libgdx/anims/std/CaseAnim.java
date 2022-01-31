@@ -1,6 +1,6 @@
 package libgdx.anims.std;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import libgdx.anims.AnimData;
 import libgdx.anims.AnimData.ANIM_VALUES;
 import main.entity.Ref.KEYS;
@@ -10,19 +10,19 @@ import main.entity.Ref.KEYS;
  */
 public class CaseAnim extends ActionAnim {
 
-    public CaseAnim(DC_ActiveObj active,
+    public CaseAnim(ActiveObj active,
                     ANIM_CASES CASE) {
         super(active, getAnimData(active, CASE));
     }
 
-    private static AnimData getAnimData(DC_ActiveObj active, ANIM_CASES aCase) {
+    private static AnimData getAnimData(ActiveObj active, ANIM_CASES aCase) {
         AnimData data = new AnimData();
         String sprite = getSprite(active, aCase);
         data.setValue(ANIM_VALUES.SPRITES, sprite);
         return data;
     }
 
-    private static String getSprite(DC_ActiveObj active, ANIM_CASES aCase) {
+    private static String getSprite(ActiveObj active, ANIM_CASES aCase) {
         switch (aCase) {
             case BLOCK:
                 active.getRef().getTargetObj().getRef().getObj(KEYS.OFFHAND).getImagePath();

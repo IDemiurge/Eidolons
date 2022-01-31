@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.ai.tools.path;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.actions.ActionManager;
@@ -68,7 +68,7 @@ public class PathBuilder extends AiHandler {
         return instance;
     }
 
-    public PathBuilder init(List<DC_ActiveObj> moveActions, AiAction targetAiAction) {
+    public PathBuilder init(List<ActiveObj> moveActions, AiAction targetAiAction) {
 
         if (moveActions == null) {
             moveActions = new ArrayList<>(getUnit().getActionMap().get(ACTION_TYPE.STANDARD));
@@ -113,7 +113,7 @@ public class PathBuilder extends AiHandler {
     }
 
     public List<ActionPath> build(List<Coordinates> targetCoordinates
-            , List<DC_ActiveObj> moveActions, AiAction targetAiAction) {
+            , List<ActiveObj> moveActions, AiAction targetAiAction) {
         this.targetAiAction = targetAiAction;
         init();
         pathChoiceMaster.init(unit, targetAiAction, targetCoordinate, moveActions);
@@ -400,7 +400,7 @@ public class PathBuilder extends AiHandler {
         return this;
     }
 
-    public void init(Unit unit, List<DC_ActiveObj> moveActions, AiAction targetAiAction) {
+    public void init(Unit unit, List<ActiveObj> moveActions, AiAction targetAiAction) {
         this.unit = unit;
         if (targetAiAction == null) {
             targetAiAction = new AiAction(unit.getTurnAction(true));

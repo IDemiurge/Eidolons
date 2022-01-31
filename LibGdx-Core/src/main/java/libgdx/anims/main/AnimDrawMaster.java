@@ -2,7 +2,7 @@ package libgdx.anims.main;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.game.exploration.handlers.ExplorationMaster;
 import libgdx.anims.Animation;
 import libgdx.anims.CompositeAnim;
@@ -212,7 +212,7 @@ public class AnimDrawMaster extends Group {
         return leadAnimation;
     }
 
-    public Animation findAnimation(DC_ActiveObj action) {
+    public Animation findAnimation(ActiveObj action) {
         if (leadAnimation != null)
             if (leadAnimation.getActive() == action) {
                 return leadAnimation;

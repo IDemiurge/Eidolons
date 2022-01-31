@@ -3,7 +3,7 @@ package eidolons.entity.handlers.active;
 import eidolons.ability.costs.DC_CostsFactory;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActionManager;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.game.core.atb.AtbMaster;
 import eidolons.game.core.master.EffectMaster;
 import main.content.enums.entity.ActionEnums;
@@ -23,10 +23,10 @@ import java.util.ArrayList;
 /**
  * Created by JustMe on 2/23/2017.
  */
-public class ActiveObjInitializer extends EntityInitializer<DC_ActiveObj> {
+public class ActiveObjInitializer extends EntityInitializer<ActiveObj> {
 
 
-    public ActiveObjInitializer(DC_ActiveObj entity, EntityMaster<DC_ActiveObj> entityMaster) {
+    public ActiveObjInitializer(ActiveObj entity, EntityMaster<ActiveObj> entityMaster) {
         super(entity, entityMaster);
     }
 

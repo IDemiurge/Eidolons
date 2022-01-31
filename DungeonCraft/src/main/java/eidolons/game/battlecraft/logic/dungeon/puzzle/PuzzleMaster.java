@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.art.ArtPuzzleConstructor;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.encounter.EncPuzzleConstructor;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzleConstructor;
@@ -50,7 +50,7 @@ public class PuzzleMaster {
         return activePuzzles.get(0);
     }
 
-    public void playerActionDone(DC_ActiveObj action) {
+    public void playerActionDone(ActiveObj action) {
         for (Puzzle activePuzzle : activePuzzles) {
             activePuzzle.getHandler().playerActionDone(action);
         }

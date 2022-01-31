@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.game.battlecraft.rules.combat.attack.AttackCalculator;
 import eidolons.game.battlecraft.rules.combat.attack.DC_AttackMaster;
 import libgdx.GdxMaster;
@@ -24,7 +24,7 @@ import java.util.List;
 import static libgdx.assets.texture.TextureCache.getOrCreateR;
 
 public class AttackTooltip extends ActionTooltip {
-    private final DC_ActiveObj action;
+    private final ActiveObj action;
     private TablePanel baseTable;
     private TablePanel rangeTable;
 
@@ -34,7 +34,7 @@ public class AttackTooltip extends ActionTooltip {
     private TablePanel caseTable;
     private TablePanel breakdownTable;
 
-    public AttackTooltip(DC_ActiveObj el) {
+    public AttackTooltip(ActiveObj el) {
         super(el);
         action=el;
     }

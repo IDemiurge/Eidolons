@@ -6,7 +6,7 @@ import eidolons.entity.unit.Unit;
 import libgdx.gui.dungeon.controls.radial.RadialContainer;
 import libgdx.gui.dungeon.controls.radial.RadialManager;
 import libgdx.gui.dungeon.controls.radial.RadialMenu;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.system.EventCallbackParam;
 
 import java.util.List;
@@ -50,7 +50,7 @@ public class QuickAttackRadial extends RadialMenu {
 
     public void openMenu() {
         Unit source =getSource();
-        List<? extends ActiveObj> attacks = quickWeaponPanel.
+        List<? extends IActiveObj> attacks = quickWeaponPanel.
          getActiveWeaponDataSource().getActions();
         List<RadialContainer> nodes;
         try {
@@ -69,7 +69,7 @@ public class QuickAttackRadial extends RadialMenu {
     }
 
     protected List<RadialContainer> createNodes(Unit source,
-                                                List<? extends ActiveObj> attacks) {
+                                                List<? extends IActiveObj> attacks) {
         return RadialManager.createNodes(source, null, attacks, false);
     }
 

@@ -1,7 +1,7 @@
 package eidolons.game.core.state;
 
 import com.google.inject.internal.util.ImmutableList;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
@@ -148,7 +148,7 @@ public class DC_StateManager extends StateManager {
 
     private void resetAll() {
         Ref ref = new Ref(game);
-        DC_ActiveObj active = null;
+        ActiveObj active = null;
         if (getGame().getLoop().getLastAction() != null) {
             if (getGame().getLoop().getLastAction() == null) {
                 ref.setObj(KEYS.ACTIVE, active = getGame().getLoop().getLastActionEvent());

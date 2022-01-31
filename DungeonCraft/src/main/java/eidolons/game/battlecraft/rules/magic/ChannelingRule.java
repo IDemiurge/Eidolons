@@ -5,7 +5,7 @@ import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.entity.unit.Unit;
 import eidolons.system.audio.DC_SoundMaster;
@@ -116,7 +116,7 @@ public class ChannelingRule {
 
     }
 
-    public static void playChannelingSound(DC_ActiveObj active, boolean female) {
+    public static void playChannelingSound(ActiveObj active, boolean female) {
         // TODO try reverse the sounds too, who knows ;)
         String prop = active.getProperty(PROPS.CHANNELING_SOUND);
 
@@ -132,7 +132,7 @@ public class ChannelingRule {
         // refactor!
     }
 
-    private static String generateSoundForSpell(DC_ActiveObj spell) {
+    private static String generateSoundForSpell(ActiveObj spell) {
         // Aspect / Spell_type /
 
         // if (spell.getAspect()){

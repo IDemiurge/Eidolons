@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.ai.tools.priority;
 
 import eidolons.ability.effects.oneshot.mechanic.RollEffect;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
@@ -49,7 +49,7 @@ public interface PriorityManager {
 
     boolean isResistApplied(AiAction aiAction);
 
-    int getSpellCustomHostileEffectPriority(DC_Obj target, DC_ActiveObj action,
+    int getSpellCustomHostileEffectPriority(DC_Obj target, ActiveObj action,
                                             Effect e);
 
     int getSummonPriority(AiAction aiAction);
@@ -83,19 +83,19 @@ public interface PriorityManager {
 
     int getAttackPriority(ActionSequence as);
 
-    int getCoatingPriority(DC_ActiveObj active, DC_Obj targetObj);
+    int getCoatingPriority(ActiveObj active, DC_Obj targetObj);
 
     int getItemPriority(DC_Obj targetObj);
 
-    int getAttackPriority(DC_ActiveObj active, BattleFieldObject targetObj);
+    int getAttackPriority(ActiveObj active, BattleFieldObject targetObj);
 
-    int getCounterPenalty(DC_ActiveObj active, Unit targetObj);
+    int getCounterPenalty(ActiveObj active, Unit targetObj);
 
-    int getDamagePriority(DC_ActiveObj action, Obj targetObj);
+    int getDamagePriority(ActiveObj action, Obj targetObj);
 
-    int getDamagePriority(DC_ActiveObj action, Obj targetObj, boolean attack);
+    int getDamagePriority(ActiveObj action, Obj targetObj, boolean attack);
 
-    boolean checkKillPrioritized(Obj targetObj, DC_ActiveObj action);
+    boolean checkKillPrioritized(Obj targetObj, ActiveObj action);
 
     int getLethalDamagePriority();
 

@@ -1,7 +1,7 @@
 package eidolons.game.exploration.dungeon.objects;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.entity.item.HeroItem;
 import eidolons.entity.item.ItemFactory;
@@ -18,7 +18,7 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.type.ObjType;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -84,8 +84,8 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
     }
 
     @Override
-    public List<DC_ActiveObj> getActions(DungeonObj obj, Unit unit) {
-        return new ListMaster<DC_ActiveObj>().toList_(createAction(INTERACTION.USE, unit, obj));
+    public List<ActiveObj> getActions(DungeonObj obj, Unit unit) {
+        return new ListMaster<ActiveObj>().toList_(createAction(INTERACTION.USE, unit, obj));
     }
 
     @Override
@@ -94,7 +94,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
     }
 
     @Override
-    public DC_ActiveObj getDefaultAction(Unit source, DungeonObj target) {
+    public ActiveObj getDefaultAction(Unit source, DungeonObj target) {
         return createAction(INTERACTION.USE, source, target);
     }
 
@@ -177,7 +177,7 @@ public class InteractiveObjMaster extends DungeonObjMaster<INTERACTION> {
     }
 
     private boolean doSpecial(InteractiveObj obj, Unit unit) {
-        for (ActiveObj active : obj.getActives()) {
+        for (IActiveObj active : obj.getActives()) {
             Ref ref = obj.getRef().getCopy();
             ref.setTarget(unit.getId());
             active.activatedOn(ref);

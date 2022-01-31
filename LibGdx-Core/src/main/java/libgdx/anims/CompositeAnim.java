@@ -3,7 +3,7 @@ package libgdx.anims;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.content.consts.VisualEnums.ANIM_PART;
 import libgdx.anims.main.AnimMaster;
@@ -71,7 +71,7 @@ public class CompositeAnim implements Animation {
         reset();
     }
 
-    public CompositeAnim(DC_ActiveObj active) {
+    public CompositeAnim(ActiveObj active) {
         this(new XLinkedMap<>());
     }
 
@@ -595,8 +595,8 @@ public class CompositeAnim implements Animation {
 
     }
 
-    public DC_ActiveObj getActive_() {
-        return (DC_ActiveObj) getActive();
+    public ActiveObj getActive_() {
+        return (ActiveObj) getActive();
     }
 
     public Entity getActive() {

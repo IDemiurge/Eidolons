@@ -3,7 +3,7 @@ package eidolons.system.audio;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.consts.VisualEnums.ANIM_PART;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.BattleFieldObject;
@@ -265,7 +265,7 @@ public class DC_SoundMaster extends SoundMaster {
         playWeaponSound(weapon);
     }
 
-    public static void playSoundForModeToggle(boolean on_off, DC_ActiveObj action, String mode) {
+    public static void playSoundForModeToggle(boolean on_off, ActiveObj action, String mode) {
         // STD_ACTION_MODES
         if (on_off) {
             getPlayer().playStandardSound(AudioEnums.STD_SOUNDS.ON_OFF);
@@ -480,7 +480,7 @@ public class DC_SoundMaster extends SoundMaster {
         return getPath() + "soundsets/spells/";
     }
 
-    public static void playImpact(DC_ActiveObj activeObj) {
+    public static void playImpact(ActiveObj activeObj) {
         if (activeObj.isAttackAny()) {
             playAttackImpactSound(activeObj.getActiveWeapon(), activeObj.getOwnerUnit(), (Unit) activeObj.getRef().getTargetObj(),
                     activeObj.getIntParam(PARAMS.DAMAGE_LAST_DEALT),

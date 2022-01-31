@@ -45,16 +45,16 @@ public class DefaultActionHandler {
     public static void standardAction(DC_Obj target) {
     }
 
-    public static DC_ActiveObj getStandardAction(Unit source) {
+    public static ActiveObj getStandardAction(Unit source) {
         return source.getAttackOfType(ActionEnums.ATTACK_TYPE.STANDARD_ATTACK);
     }
 
     public static boolean standardAttack( DC_Obj target,Unit src) {
-        DC_ActiveObj atk = getStandardAction(src);
+        ActiveObj atk = getStandardAction(src);
         return activate(new Context(src, target), atk);
     }
 
-    public static boolean confirmAction(DC_Obj target, DC_ActiveObj action) {
+    public static boolean confirmAction(DC_Obj target, ActiveObj action) {
         return EUtils.waitConfirm("Do " + action.getName() + " on " + target + " ?");
     }
 
@@ -82,7 +82,7 @@ public class DefaultActionHandler {
 
         //        if (target.isMine())
         //            return false;
-        DC_ActiveObj action;
+        ActiveObj action;
         String msg = null;
         if (target instanceof DungeonObj) {
             action = getDungeonObjAction(source, (DungeonObj) target);
@@ -114,12 +114,12 @@ public class DefaultActionHandler {
 
     }
 
-    private static DC_ActiveObj getDungeonObjAction(Unit source, DungeonObj target) {
+    private static ActiveObj getDungeonObjAction(Unit source, DungeonObj target) {
         return target.getDM().getDefaultAction(source, target);
     }
 
-    public static DC_ActiveObj getPreferredAttackAction(Unit source, BattleFieldObject target) {
-        DC_ActiveObj action = getPreferredAttackAction(false, source, target);
+    public static ActiveObj getPreferredAttackAction(Unit source, BattleFieldObject target) {
+        ActiveObj action = getPreferredAttackAction(false, source, target);
         if (action == null) {
             action = getPreferredAttackAction(true, source, target);
         }
@@ -130,7 +130,7 @@ public class DefaultActionHandler {
         return action;
     }
 
-    public static DC_ActiveObj getPreferredAttackAction(boolean offhand, Unit source, BattleFieldObject target) {
+    public static ActiveObj getPreferredAttackAction(boolean offhand, Unit source, BattleFieldObject target) {
         // if (offhand)
         return source.getAttackOfType(ActionEnums.ATTACK_TYPE.STANDARD_ATTACK);
         //TODO DC revamp
@@ -145,11 +145,11 @@ public class DefaultActionHandler {
     }
 
     //
-    private static DC_ActiveObj pickAutomatically(List<DC_UnitAction> subActions,
-                                                  BattleFieldObject target) {
-        DC_ActiveObj pick = null;
+    private static ActiveObj pickAutomatically(List<UnitAction> subActions,
+                                               BattleFieldObject target) {
+        ActiveObj pick = null;
         int max = 0;
-        for (DC_ActiveObj attack : subActions) {
+        for (ActiveObj attack : subActions) {
             if (attack.isThrow()) {
                 continue;
             }
@@ -220,7 +220,7 @@ public class DefaultActionHandler {
             return false;
         }
 
-        DC_UnitAction action = getMoveToCellAction(source, c);
+        UnitAction action = getMoveToCellAction(source, c);
         if (action == null) {
             return false;
         }
@@ -231,7 +231,7 @@ public class DefaultActionHandler {
 
     }
 
-    private static boolean activate(Context context, DC_ActiveObj action) {
+    private static boolean activate(Context context, ActiveObj action) {
         if (!action.getActivator().canBeActivated(context, true)) {
             action.getActivator().cannotActivate();
             return false;
@@ -258,7 +258,7 @@ public class DefaultActionHandler {
         return true;
     }
 
-    public static DC_UnitAction getMoveToCellAction(Unit source, Coordinates c) {
+    public static UnitAction getMoveToCellAction(Unit source, Coordinates c) {
         DIRECTION d = DirectionMaster.getRelativeDirection(source.getCoordinates(),
                 c);
         String name= DC_MovementManager.STEP;

@@ -1,7 +1,7 @@
 package eidolons.entity.active.spaces;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import main.entity.OBJ;
 
 public interface Feat extends OBJ {
@@ -11,7 +11,7 @@ public interface Feat extends OBJ {
         return true;
     }
 
-    DC_ActiveObj getActive();
+    ActiveObj getActive();
 
     void invokeClicked();
 

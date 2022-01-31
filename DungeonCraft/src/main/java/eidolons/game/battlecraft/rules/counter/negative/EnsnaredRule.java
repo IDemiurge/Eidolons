@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.rules.counter.negative;
 
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.UnitAction;
 import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
@@ -18,7 +18,7 @@ import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.system.MetaEnums;
 import main.entity.Ref;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.system.math.MathMaster;
 
 /*
@@ -122,7 +122,7 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
     }
 
     @Override
-    public void actionComplete(ActiveObj activeObj) {
+    public void actionComplete(IActiveObj activeObj) {
 
     }
 
@@ -169,7 +169,7 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
             weapon = unit.getNaturalWeapon(offhand);
         }
 
-        DC_UnitAction attack_action = unit.getAction(offhand ? "Offhand Attack"
+        UnitAction attack_action = unit.getAction(offhand ? "Offhand Attack"
          : "Attack");
         if (!attack_action.canBeActivated(unit.getRef(), true)) // unit.getRef(),
         // true

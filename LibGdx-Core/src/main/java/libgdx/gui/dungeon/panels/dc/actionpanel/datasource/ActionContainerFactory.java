@@ -1,7 +1,7 @@
 package libgdx.gui.dungeon.panels.dc.actionpanel.datasource;
 
 import com.badlogic.gdx.utils.ObjectMap;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.active.spaces.Feat;
 import libgdx.gui.dungeon.panels.dc.actionpanel.spaces.ActionContainer;
 import libgdx.gui.dungeon.panels.dc.actionpanel.spaces.FeatContainer;
@@ -16,10 +16,10 @@ public class ActionContainerFactory {
 
     private ActionContainerFactory() {
         GuiEventManager.bind(GuiEventType.HIGHLIGHT_ACTION, p -> {
-            getValueContainer((DC_ActiveObj) p.get(), 64).setHighlight(true);
+            getValueContainer((ActiveObj) p.get(), 64).setHighlight(true);
         });
         GuiEventManager.bind(GuiEventType.HIGHLIGHT_ACTION_OFF, p -> {
-            getValueContainer((DC_ActiveObj) p.get(), 64).setHighlight(false);
+            getValueContainer((ActiveObj) p.get(), 64).setHighlight(false);
         });
     }
 

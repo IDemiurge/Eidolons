@@ -9,7 +9,7 @@ import main.content.values.parameters.PARAMETER;
 import main.entity.DataModel;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.Obj;
 import main.game.core.game.Game;
 import main.game.logic.event.Event;
@@ -194,7 +194,7 @@ public abstract class LogManager {
         log(LOG.GAME_INFO, entry);
     }
 
-    public void logActivation(ActiveObj active) {
+    public void logActivation(IActiveObj active) {
         Obj obj = active.getOwnerUnit();
         // preCheck visibility?
     }
@@ -343,7 +343,7 @@ public abstract class LogManager {
     public void logFastAction(Obj payee, Ref ref) {
 
         String text = " finishes ";
-        ActiveObj active = ref.getActive();
+        IActiveObj active = ref.getActive();
         if (active.getOBJ_TYPE_ENUM() == DC_TYPE.SPELLS) {
             text = " casts ";
             if (StringMaster.compare(active.getProp("spell tags"), "channeling", false)) {

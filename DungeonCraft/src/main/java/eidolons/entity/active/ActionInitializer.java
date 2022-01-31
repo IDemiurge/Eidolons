@@ -9,7 +9,7 @@ import eidolons.game.battlecraft.rules.combat.attack.dual.DualAttackMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Entity;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.game.core.game.GenericGame;
 import main.system.datatypes.DequeImpl;
 
@@ -28,7 +28,7 @@ public class ActionInitializer extends DC_ActionManager {
             return;
         }
         Unit unit = (Unit) entity;
-        DequeImpl<ActiveObj> actives;
+        DequeImpl<IActiveObj> actives;
         // #1: reset prop with ids if nothing is changed
         // #2: reset the list if prop has been modified (via Add/Remove effects
         // ++ items). They should set ActivesReady to false for that.
@@ -48,8 +48,8 @@ public class ActionInitializer extends DC_ActionManager {
         unit.setCombatSpaces(spaces);
     }
 
-    private DequeImpl<ActiveObj> createStandardActions(Unit unit) {
-        DequeImpl<ActiveObj> actives = new DequeImpl<>();
+    private DequeImpl<IActiveObj> createStandardActions(Unit unit) {
+        DequeImpl<IActiveObj> actives = new DequeImpl<>();
         // should be another passive to deny unit even those commodities...
         actives.add(getOrCreateAction(ActionEnums.DUMMY_ACTION, unit));
         if (unit.isBfObj()) {

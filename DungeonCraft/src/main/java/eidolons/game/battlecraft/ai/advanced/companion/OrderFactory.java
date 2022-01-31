@@ -5,7 +5,7 @@ import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.content.enums.system.AiEnums.ORDER_PRIORITY_MODS;
 import main.content.values.parameters.PARAMETER;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.system.auxiliary.data.MapMaster;
 
 import java.util.Arrays;
@@ -18,7 +18,7 @@ import java.util.Map;
 public class OrderFactory {
     private static final String PREFIX = "ORDER_PRIORITY_MOD_";
 
-    public static Order getOrder(boolean partyTargeting, ActiveObj active, ORDER_PRIORITY_MODS strictPriority) {
+    public static Order getOrder(boolean partyTargeting, IActiveObj active, ORDER_PRIORITY_MODS strictPriority) {
         String arg = null;
         Order order = new Order(arg);
         if (strictPriority != null) {

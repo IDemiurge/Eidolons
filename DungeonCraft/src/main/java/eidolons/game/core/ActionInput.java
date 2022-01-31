@@ -1,6 +1,6 @@
 package eidolons.game.core;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.obj.DC_Obj;
 import main.game.logic.action.context.Context;
 
@@ -8,22 +8,22 @@ import main.game.logic.action.context.Context;
  * Created by JustMe on 4/3/2017.
  */
 public class ActionInput {
-    private final DC_ActiveObj action;
+    private final ActiveObj action;
     private final Context context;
     private boolean auto;
 
-    public ActionInput(DC_ActiveObj action, Context context) {
+    public ActionInput(ActiveObj action, Context context) {
         this.action = action;
         this.context = context;
     }
 
-    public ActionInput(DC_ActiveObj action, DC_Obj target) {
+    public ActionInput(ActiveObj action, DC_Obj target) {
         this.action = action;
         context = new Context(action.getOwnerUnit().getRef());
         context.setTarget(target.getId());
     }
 
-    public DC_ActiveObj getAction() {
+    public ActiveObj getAction() {
         return action;
     }
 

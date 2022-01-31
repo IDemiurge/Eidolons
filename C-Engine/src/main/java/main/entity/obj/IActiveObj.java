@@ -8,7 +8,7 @@ import main.entity.group.GroupImpl;
 /**
  *
  */
-public interface ActiveObj extends Cancellable, Active, OBJ {
+public interface IActiveObj extends Cancellable, Active, OBJ {
 
     void playCancelSound();
 

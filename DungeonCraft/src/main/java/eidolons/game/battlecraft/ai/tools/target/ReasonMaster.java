@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.ai.tools.target;
 
 import eidolons.ability.conditions.VisibilityCondition;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReasonMaster {
-    public static boolean checkReasonCannotActivate(DC_ActiveObj action, String reason) {
+    public static boolean checkReasonCannotActivate(ActiveObj action, String reason) {
         List<String> reasons = ReasonMaster.getReasonsCannotActivate(action);
         for (String r : reasons) {
             if (StringMaster.compareByChar(r, reason, false)) {
@@ -45,7 +45,7 @@ public class ReasonMaster {
         return false;
     }
 
-    public static List<String> getReasonsCannotActivate(DC_ActiveObj action) {
+    public static List<String> getReasonsCannotActivate(ActiveObj action) {
 
         Ref REF = action.getRef().getCopy();
         REF.setMatch(action.getRef().getTarget());
@@ -71,7 +71,7 @@ public class ReasonMaster {
         // return reasons;
     }
 
-    public static List<String> getReasonsCannotActivate(DC_ActiveObj active, Ref REF) {
+    public static List<String> getReasonsCannotActivate(ActiveObj active, Ref REF) {
         List<String> reasons = new ArrayList<>();
         REF.setID(KEYS.PAYEE, REF.getSource());
         if (active.getCosts().canBePaid(REF)) {

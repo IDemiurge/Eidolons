@@ -1,7 +1,7 @@
 package eidolons.game.core.state;
 
 import eidolons.entity.DC_IdManager;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.UnitAction;
 import eidolons.entity.active.Spell;
 import eidolons.entity.item.ArmorItem;
 import eidolons.entity.item.trinket.JewelryItem;
@@ -210,7 +210,7 @@ public class Loader {
             case BUFFS:
                 return new DC_BuffObj(type, owner, game, ref);
             case ACTIONS:
-                return new DC_UnitAction(type, owner, game, ref);
+                return new UnitAction(type, owner, game, ref);
             case SPELLS:
                 return new Spell(type, owner, game, ref);
             case SKILLS:

@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.rules.magic;
 
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Ref;
@@ -40,7 +40,7 @@ public class ResistanceRule {
     }
 
     public static int getResistance(Ref ref) {
-        DC_ActiveObj spell = (DC_ActiveObj) ref.getObj(KEYS.SPELL);
+        ActiveObj spell = (ActiveObj) ref.getObj(KEYS.SPELL);
         if (spell == null) {
             return 0;
         }

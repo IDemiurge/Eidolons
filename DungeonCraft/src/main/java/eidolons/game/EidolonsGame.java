@@ -1,6 +1,6 @@
 package eidolons.game;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import main.data.StringMap;
 
@@ -113,7 +113,7 @@ public class EidolonsGame {
 
     }
 
-    public static boolean isActionBlocked(DC_ActiveObj activeObj) {
+    public static boolean isActionBlocked(ActiveObj activeObj) {
         if (activeObj == null) {
             return false;
         }

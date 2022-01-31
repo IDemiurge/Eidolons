@@ -8,8 +8,8 @@ import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.content.PARAMS;
 import eidolons.content.consts.VisualEnums;
 import eidolons.content.consts.libgdx.GdxStringUtils;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_QuickItemAction;
+import eidolons.entity.active.ActiveObj;
+import eidolons.entity.active.QuickItemAction;
 import eidolons.entity.item.WeaponItem;
 import eidolons.game.battlecraft.rules.combat.attack.AttackTypes;
 import eidolons.entity.item.handlers.ItemMaster;
@@ -153,7 +153,7 @@ public class Atlases {
     }
 
     public static String getAtlasFileKeyForAction(Boolean projection,
-                                                  DC_ActiveObj activeObj, VisualEnums.WEAPON_ANIM_CASE aCase) {
+                                                  ActiveObj activeObj, VisualEnums.WEAPON_ANIM_CASE aCase) {
         if (aCase == VisualEnums.WEAPON_ANIM_CASE.POTION)
             return getPotionKey(activeObj);
         WeaponItem weapon = activeObj.getActiveWeapon();
@@ -203,7 +203,7 @@ public class Atlases {
                 actionName, offhand);
     }
 
-    private static String getActionAtlasKey(DC_ActiveObj activeObj) {
+    private static String getActionAtlasKey(ActiveObj activeObj) {
         String name = activeObj
                 .getName().replace("Off Hand ", "");
         String substitute = substituteMap.get(name.toLowerCase());
@@ -247,22 +247,22 @@ public class Atlases {
     }
 
     public static SpriteAnimation getSpriteForAction(float duration,
-                                                     DC_ActiveObj activeObj,
+                                                     ActiveObj activeObj,
                                                      VisualEnums.WEAPON_ANIM_CASE aCase, VisualEnums.PROJECTION projection) {
         return getSpriteForAction(duration, activeObj,
                 aCase, projection.bool);
     }
 
-    private static String getPotionKey(DC_ActiveObj activeObj) {
-        DC_QuickItemAction action = (DC_QuickItemAction) activeObj;
+    private static String getPotionKey(ActiveObj activeObj) {
+        QuickItemAction action = (QuickItemAction) activeObj;
         boolean full = action.getItem().getIntParam(PARAMS.CHARGES) != 0;
         String suffix = full ? "_full" : "_half";
 
         return action.getItem().getName().replace(" ", "_") + suffix;
     }
 
-    static String getPotionAtlasPath(DC_ActiveObj activeObj) {
-        DC_QuickItemAction action = (DC_QuickItemAction) activeObj;
+    static String getPotionAtlasPath(ActiveObj activeObj) {
+        QuickItemAction action = (QuickItemAction) activeObj;
         String name = action.getItem().getName();
         String level = name.split(" ")[0];
         return StrPathBuilder.build(PathFinder.getImagePath(), PathFinder.getSpritesPath(),
@@ -271,7 +271,7 @@ public class Atlases {
     }
 
     public static SpriteAnimation getSpriteForAction(float duration,
-                                                     DC_ActiveObj activeObj,
+                                                     ActiveObj activeObj,
                                                      VisualEnums.WEAPON_ANIM_CASE aCase,
                                                      Boolean projection) {
         // loops,
@@ -298,7 +298,7 @@ public class Atlases {
                 getSpriteAnimation(regions, frameDuration, loops);
     }
 
-    public static Array<TextureAtlas.AtlasRegion> getRegions(VisualEnums.WEAPON_ANIM_CASE aCase, DC_ActiveObj activeObj, Boolean projection) {
+    public static Array<TextureAtlas.AtlasRegion> getRegions(VisualEnums.WEAPON_ANIM_CASE aCase, ActiveObj activeObj, Boolean projection) {
         String name = getAtlasFileKeyForAction(projection, activeObj, aCase);
 
         TextureAtlas atlas = getAtlas(activeObj, aCase);
@@ -332,13 +332,13 @@ public class Atlases {
         return regions;
     }
 
-    private static boolean isSearchAtlasRegions(DC_ActiveObj activeObj) {
+    private static boolean isSearchAtlasRegions(ActiveObj activeObj) {
         return false;
     }
 
     private static Array<TextureAtlas.AtlasRegion> findAtlasRegions(TextureAtlas atlas,
                                                                     Boolean projection,
-                                                                    DC_ActiveObj activeObj,
+                                                                    ActiveObj activeObj,
                                                                     boolean searchOtherWeaponOrAction) {
         String name = getAtlasFileKeyForAction(projection, activeObj, VisualEnums.WEAPON_ANIM_CASE.NORMAL);
         List<Entity> types;
@@ -365,7 +365,7 @@ public class Atlases {
 
     }
 
-    private static TextureAtlas getAtlas(DC_ActiveObj activeObj, VisualEnums.WEAPON_ANIM_CASE aCase
+    private static TextureAtlas getAtlas(ActiveObj activeObj, VisualEnums.WEAPON_ANIM_CASE aCase
     ) {
         if (aCase == VisualEnums.WEAPON_ANIM_CASE.POTION) {
             return getOrCreateAtlas(getPotionAtlasPath(activeObj));

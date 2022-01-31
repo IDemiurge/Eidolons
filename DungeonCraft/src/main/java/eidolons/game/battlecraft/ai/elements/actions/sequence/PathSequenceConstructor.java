@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.ai.elements.actions.sequence;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.AiAction;
@@ -49,7 +49,7 @@ public class PathSequenceConstructor extends AiHandler {
     }
 
     public ActionPath getOptimalPathSequence(UnitAI ai, Coordinates targetCell) {
-        List<DC_ActiveObj> moves =
+        List<ActiveObj> moves =
                 AiUnitActionMaster.getMoveActions(ai.getUnit());
         AiAction aiAction = AiActionFactory.newAction("Move", ai);
         List<Coordinates> coordinates = new ArrayList<>();
@@ -61,7 +61,7 @@ public class PathSequenceConstructor extends AiHandler {
         return paths.get(0);
     }
 
-    private List<ActionPath> getPathSequences(List<DC_ActiveObj> moveActions, AiAction aiAction,
+    private List<ActionPath> getPathSequences(List<ActiveObj> moveActions, AiAction aiAction,
                                               List<Coordinates> targetCells) {
         List<ActionPath> paths = pathCache.get(targetCells);
         if (isPathCacheOn() && ListMaster.isNotEmpty(paths)) {
@@ -96,7 +96,7 @@ public class PathSequenceConstructor extends AiHandler {
         return true;
     }
 
-    public List<ActionPath> getPathSequences(List<DC_ActiveObj> moveActions, AiAction aiAction) {
+    public List<ActionPath> getPathSequences(List<ActiveObj> moveActions, AiAction aiAction) {
         Chronos.mark("getTargetCells");
         // TODO need multiple, by level of priority
         List<Coordinates> targetCells = getTargetCells(aiAction, true);

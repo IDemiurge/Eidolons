@@ -7,7 +7,7 @@ import main.elements.triggers.Trigger;
 import main.entity.Ref;
 import main.entity.Referred;
 import main.entity.group.GroupImpl;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.Obj;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
@@ -85,7 +85,7 @@ public interface Effect extends Interruptable, Referred, XmlConvertable,
 
     void setTrigger(Trigger trigger);
 
-    ActiveObj getActiveObj();
+    IActiveObj getActiveObj();
 
     String getTooltip();
 

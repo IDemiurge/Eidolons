@@ -608,7 +608,7 @@ public class DataBackend {
     public   List<String> getTypesGroupNames(OBJ_TYPE TYPE, String group) {
         return toStringList(getTypesGroup(TYPE, group));
     }
-
+    //TODO performance - caching?
     public   List<ObjType> getTypesGroup(OBJ_TYPE TYPE, String group) {
         if (StringMaster.isEmpty(group)) {
             return getTypes(TYPE);

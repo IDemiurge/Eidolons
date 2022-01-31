@@ -1,7 +1,7 @@
 package eidolons.entity.handlers.active.spell;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.entity.handlers.active.ActiveMaster;
 import eidolons.entity.handlers.active.Executor;
@@ -29,7 +29,7 @@ public class SpellExecutor extends Executor {
 
     private boolean channeling;
 
-    public SpellExecutor(DC_ActiveObj active, ActiveMaster entityMaster) {
+    public SpellExecutor(ActiveObj active, ActiveMaster entityMaster) {
         super(active, entityMaster);
     }
 

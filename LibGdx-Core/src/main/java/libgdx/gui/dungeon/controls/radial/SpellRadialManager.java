@@ -1,7 +1,7 @@
 package libgdx.gui.dungeon.controls.radial;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
@@ -73,7 +73,7 @@ public class SpellRadialManager {
     }
 
     private static boolean checkForceTargeting(Unit source,
-                                               DC_Obj target, DC_ActiveObj action) {
+                                               DC_Obj target, ActiveObj action) {
 
 
         return false; //TODO
@@ -82,7 +82,7 @@ public class SpellRadialManager {
     private static RadialContainer createNodeBranch(RADIAL_ITEM object, Unit source, DC_Obj target) {
         RadialContainer valueContainer;
         if (object instanceof EntityNode) {
-            final DC_ActiveObj action = (DC_ActiveObj) object.getContents();
+            final ActiveObj action = (ActiveObj) object.getContents();
             valueContainer =
              RadialManager.configureActionNode(target, action);
 

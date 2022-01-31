@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import eidolons.content.PROPS;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
@@ -65,18 +65,18 @@ public class HitAnim extends ActionAnim {
     private float originalActorY;
     private DAMAGE_TYPE damageType;
 
-    public HitAnim(DC_ActiveObj active, AnimData data) {
+    public HitAnim(ActiveObj active, AnimData data) {
         this(active, data, active.getDamageType());
     }
 
-    public HitAnim(DC_ActiveObj active, AnimData data, DAMAGE_TYPE damageType) {
+    public HitAnim(ActiveObj active, AnimData data, DAMAGE_TYPE damageType) {
         this(active, data, false, null, null,
                 ImageManager.getDamageTypeImagePath(
                         damageType == null ? "Physical" : damageType.getName(), true));
         setDamageType(damageType);
     }
 
-    public HitAnim(DC_ActiveObj active, AnimData data, boolean blood, Color c,
+    public HitAnim(ActiveObj active, AnimData data, boolean blood, Color c,
                    String text, String imagePath) {
         super(active, data);
         if (blood) {

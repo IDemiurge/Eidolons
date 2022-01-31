@@ -3,8 +3,8 @@ package eidolons.game.battlecraft.ai.tools.path;
 import eidolons.ability.conditions.special.SneakCondition;
 import eidolons.ability.effects.oneshot.move.SelfMoveEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.ActiveObj;
+import eidolons.entity.active.UnitAction;
 import eidolons.entity.obj.GridCell;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.actions.AiAction;
@@ -27,8 +27,8 @@ import java.util.*;
  */
 public class PathChoiceMaster {
     protected PathBuilder pathBuilder;
-    protected List<DC_ActiveObj> moveActions; // only special here?
-    private DC_UnitAction stdMove;
+    protected List<ActiveObj> moveActions; // only special here?
+    private UnitAction stdMove;
     private final ArrayList<Object> sneakCells;
     private final ArrayList<Object> nonSneakCells;
     private Unit unit;
@@ -43,7 +43,7 @@ public class PathChoiceMaster {
     }
 
     public PathChoiceMaster init(Unit unit, AiAction targetAiAction, Coordinates targetCoordinate,
-                                 List<DC_ActiveObj> moveActions) {
+                                 List<ActiveObj> moveActions) {
         this.unit = unit;
         this.targetAiAction = targetAiAction;
         this.moveActions = moveActions;
@@ -71,7 +71,7 @@ public class PathChoiceMaster {
             // add special
             // will need to remove actions from list when used? preCheck CD
 
-            for (DC_ActiveObj a : moveActions) {
+            for (ActiveObj a : moveActions) {
 
                 Targeting targeting = a.getTargeting();
                 Collection<Obj> objects = null;
@@ -193,7 +193,7 @@ public class PathChoiceMaster {
         };
     }
 
-    private List<Choice> filterSpecialMoveChoices(List<Choice> choices, DC_ActiveObj a, Coordinates c_coordinate, ActionPath path) {
+    private List<Choice> filterSpecialMoveChoices(List<Choice> choices, ActiveObj a, Coordinates c_coordinate, ActionPath path) {
         int bestDistance_1 = 0;
         int bestDistance_2 = Integer.MAX_VALUE;
         Coordinates coordinates = targetAiAction.getTarget().getCoordinates();

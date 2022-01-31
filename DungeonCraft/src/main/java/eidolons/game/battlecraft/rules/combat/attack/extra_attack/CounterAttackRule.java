@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.rules.combat.attack.extra_attack;
 
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
@@ -26,7 +26,7 @@ public class CounterAttackRule {
         this.game = game;
     }
 
-    public static boolean canCounter(Unit attacked, DC_ActiveObj active) {
+    public static boolean canCounter(Unit attacked, ActiveObj active) {
         if (!attacked.canCounter()) {
             return false;
         }
@@ -39,15 +39,15 @@ public class CounterAttackRule {
         return !active.getOwnerUnit().checkPassive(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION);
     }
 
-    public DC_ActiveObj tryFindCounter(Attack attack) {
+    public ActiveObj tryFindCounter(Attack attack) {
         return tryFindCounter(attack, true);
     }
 
-    public DC_ActiveObj tryFindCounter(Attack attack, boolean checkAnimationFinished) {
+    public ActiveObj tryFindCounter(Attack attack, boolean checkAnimationFinished) {
         //        if (checkAnimationFinished) {
         //        }
 
-        DC_ActiveObj counter = null;
+        ActiveObj counter = null;
         if (!attack.isRanged())
             if (attack.getAttackedUnit() != null)
                 if (!attack.isCounter() &&
@@ -63,7 +63,7 @@ public class CounterAttackRule {
 
     }
 
-    public void counterWith(DC_ActiveObj action, DC_ActiveObj counter) {
+    public void counterWith(ActiveObj action, ActiveObj counter) {
         Unit attacker = action.getOwnerUnit();
         Unit attacked = counter.getOwnerUnit();
         game.getLogManager().log(LogMaster.LOG.GAME_INFO, attacked + " makes a counter-attack against " +
@@ -91,7 +91,7 @@ public class CounterAttackRule {
         }
     }
 
-    private DC_ActiveObj counter(DC_ActiveObj action, Unit attacked, Unit attacker) {
+    private ActiveObj counter(ActiveObj action, Unit attacked, Unit attacker) {
         //        game.getLog().combatLog();
 //        game.getLogManager().log(LogMaster.LOG.GAME_INFO, attacked + " tries to counter-attack against "
 //         + action.getOwnerUnit());

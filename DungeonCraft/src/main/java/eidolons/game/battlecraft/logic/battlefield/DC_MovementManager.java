@@ -4,10 +4,9 @@ import com.google.inject.internal.util.ImmutableList;
 import eidolons.ability.conditions.shortcut.PushableCondition;
 import eidolons.ability.effects.oneshot.move.MoveEffect;
 import eidolons.ability.effects.oneshot.move.SelfMoveEffect;
-import eidolons.content.values.DC_ValueManager;
 import eidolons.entity.active.DC_ActionManager;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.ActiveObj;
+import eidolons.entity.active.UnitAction;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.Structure;
@@ -27,21 +26,17 @@ import eidolons.game.exploration.handlers.ExploreGameLoop;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.system.AiEnums;
 import main.data.DataManager;
-import main.data.ability.construct.VariableManager;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.MovementManager;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.game.bf.directions.FACING_DIRECTION;
-import main.game.bf.directions.UNIT_DIRECTION;
 import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
@@ -68,7 +63,7 @@ public class DC_MovementManager implements MovementManager {
         DC_MovementManager instance = this;
     }
 
-    public static Coordinates getMovementDestinationCoordinate(DC_ActiveObj active) {
+    public static Coordinates getMovementDestinationCoordinate(ActiveObj active) {
         try {
             MoveEffect effect = (MoveEffect) EffectMaster.getEffectsOfClass(active.getAbilities(),
                     MoveEffect.class).get(0);
@@ -96,16 +91,16 @@ public class DC_MovementManager implements MovementManager {
         return AiActionFactory.newAction(name, unit.getAI());
     }
 
-    public static List<DC_ActiveObj> getMoves(Unit unit) {
-        List<DC_ActiveObj> moveActions = new ArrayList<>();
-        DequeImpl<DC_UnitAction> actions = unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_MOVE);
+    public static List<ActiveObj> getMoves(Unit unit) {
+        List<ActiveObj> moveActions = new ArrayList<>();
+        DequeImpl<UnitAction> actions = unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_MOVE);
         if (actions != null) {
-            moveActions = new ArrayList<>(Arrays.asList(actions.toArray(new DC_ActiveObj[0])));
+            moveActions = new ArrayList<>(Arrays.asList(actions.toArray(new ActiveObj[0])));
         }
         if (moveActions.isEmpty()) {
             moveActions.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE));
         } else {
-            for (DC_UnitAction a : unit.getActionMap().get(ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE)) {
+            for (UnitAction a : unit.getActionMap().get(ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE)) {
                 String name = a.getName();
                 switch (name) { // have a switch to turn off all default moves!
                     case "Clumsy Leap":
@@ -162,7 +157,7 @@ public class DC_MovementManager implements MovementManager {
     }
 
     public List<ActionPath> buildPath(Unit unit, Coordinates coordinates) {
-        List<DC_ActiveObj> moves = getMoves(unit);
+        List<ActiveObj> moves = getMoves(unit);
         if (isStarPath(unit, coordinates)) {
             ActionPath path = game.getAiManager().getStarBuilder().getPath(unit, unit.getCoordinates(), coordinates);
             if (path != null) {

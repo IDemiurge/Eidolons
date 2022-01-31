@@ -1,13 +1,13 @@
 package eidolons.system.libgdx;
 
 import eidolons.system.libgdx.wrapper.VectorGdx;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import main.game.bf.Coordinates;
 
 public interface GdxEventAdapter {
     void veil(Coordinates c, boolean black, boolean enter);
-    void cannotActivate(DC_ActiveObj e, String reason);
+    void cannotActivate(ActiveObj e, String reason);
 
     void tooltip(String description);
 

@@ -206,7 +206,7 @@ public class Obj extends Entity {
             return;
         }
         // getPassives().add(e);
-        ActiveObj abil = AbilityConstructor.newAbility(abilName, this, true);
+        IActiveObj abil = AbilityConstructor.newAbility(abilName, this, true);
         this.getPassiveAbils().add(abilName);
         this.passives.add((AbilityObj) abil);
         addProperty(G_PROPS.PASSIVES, abilName);

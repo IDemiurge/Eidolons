@@ -4,7 +4,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.oneshot.DealDamageEffect;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.anims.*;
 import libgdx.anims.ANIM_MODS.ANIM_MOD;
@@ -73,11 +73,11 @@ public class EffectAnimCreator {
     }
 
     private static Anim createAnim(Effect e) {
-        DC_ActiveObj active = (DC_ActiveObj) e.getActiveObj();
+        ActiveObj active = (ActiveObj) e.getActiveObj();
         return createEffectAnim(e, active, e.getClass());
     }
 
-    private static Anim createEffectAnim(Effect e, DC_ActiveObj active, Class<?> clazz) {
+    private static Anim createEffectAnim(Effect e, ActiveObj active, Class<?> clazz) {
 
         switch (clazz.getSimpleName().replace("Effect", "")) {
             case "DealDamage":

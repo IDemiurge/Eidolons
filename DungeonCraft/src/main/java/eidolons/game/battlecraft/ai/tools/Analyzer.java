@@ -2,8 +2,8 @@ package eidolons.game.battlecraft.ai.tools;
 
 import eidolons.ability.conditions.WaitingFilterCondition;
 import eidolons.ability.effects.oneshot.unit.RaiseEffect;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.ActiveObj;
+import eidolons.entity.active.UnitAction;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.GridCell;
@@ -128,11 +128,11 @@ public class Analyzer extends AiHandler {
 
 
     public static boolean hasSpecialActions(Unit unit) {
-        DequeImpl<DC_UnitAction> actions = ((unit.getActionMap().get(
+        DequeImpl<UnitAction> actions = ((unit.getActionMap().get(
                 ACTION_TYPE.SPECIAL_ACTION)));
         if (!ListMaster.isNotEmpty(actions))
             return false;
-        for (DC_UnitAction sub : actions) {
+        for (UnitAction sub : actions) {
             if (sub.getActionGroup() == ACTION_TYPE_GROUPS.SPECIAL) {
                 return true;
             }
@@ -388,7 +388,7 @@ public class Analyzer extends AiHandler {
         return list;
     }
 
-    public static List<GridCell> getSummonCells(UnitAI ai, DC_ActiveObj action) {
+    public static List<GridCell> getSummonCells(UnitAI ai, ActiveObj action) {
 
         if (EffectMaster.check(action, RaiseEffect.class)) {
             return new ArrayList<>(getCorpseCells(ai.getUnit()));

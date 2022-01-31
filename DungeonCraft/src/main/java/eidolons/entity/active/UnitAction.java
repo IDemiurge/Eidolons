@@ -25,16 +25,16 @@ import main.system.sound.AudioEnums;
 
 import java.util.List;
 
-public class DC_UnitAction extends DC_ActiveObj {
+public class UnitAction extends ActiveObj {
 
     private ACTION_TYPE actionType;
     private ModeEffect modeEffect;
 
-    public DC_UnitAction(ObjType type, Player owner, GenericGame game, Ref ref) {
+    public UnitAction(ObjType type, Player owner, GenericGame game, Ref ref) {
         super(type, owner, game, ref);
     }
 
-    public DC_UnitAction(ObjType type, Unit unit) {
+    public UnitAction(ObjType type, Unit unit) {
         super(type, unit.getOwner(), unit.getGame(), unit.getRef().getCopy());
     }
 

@@ -1,7 +1,7 @@
 package eidolons.entity.handlers.active;
 
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_QuickItemAction;
+import eidolons.entity.active.ActiveObj;
+import eidolons.entity.active.QuickItemAction;
 import eidolons.entity.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.system.libgdx.GdxAdapter;
@@ -18,9 +18,9 @@ public class Activator extends ActiveHandler {
 
     private Boolean canActivate;
     private boolean broken;
-    private DC_ActiveObj lastSubaction;
+    private ActiveObj lastSubaction;
 
-    public Activator(DC_ActiveObj entity, ActiveMaster entityMaster) {
+    public Activator(ActiveObj entity, ActiveMaster entityMaster) {
         super(entity, entityMaster);
     }
 
@@ -78,7 +78,7 @@ public class Activator extends ActiveHandler {
         }
         if (game.isDebugMode())
             return true;
-        if (getAction() instanceof DC_QuickItemAction) {
+        if (getAction() instanceof QuickItemAction) {
             return canBeActivated(getAction().getOwnerUnit().getRef(), true);
         }
         return canBeActivated(getRef(), true);
@@ -88,7 +88,7 @@ public class Activator extends ActiveHandler {
         cannotActivate_(getEntity(), getEntity().getCosts().getReasonsString());
     }
 
-    public static void cannotActivate_(DC_ActiveObj e, String reason) {
+    public static void cannotActivate_(ActiveObj e, String reason) {
         GdxAdapter.getInstance().getEventsAdapter().cannotActivate(e, reason);
 
     }
@@ -122,19 +122,19 @@ public class Activator extends ActiveHandler {
 
     }
 
-    public boolean tryOpportunityActivation(DC_ActiveObj triggeringAction) {
+    public boolean tryOpportunityActivation(ActiveObj triggeringAction) {
         return tryExtraAttackActivation(triggeringAction, null);
     }
 
-    public boolean tryInstantActivation(DC_ActiveObj triggeringAction) {
+    public boolean tryInstantActivation(ActiveObj triggeringAction) {
         return tryExtraAttackActivation(triggeringAction, true);
     }
 
-    public boolean tryCounterActivation(DC_ActiveObj triggeringAction) {
+    public boolean tryCounterActivation(ActiveObj triggeringAction) {
         return tryExtraAttackActivation(triggeringAction, false);
     }
 
-    public boolean tryExtraAttackActivation(DC_ActiveObj triggeringAction,
+    public boolean tryExtraAttackActivation(ActiveObj triggeringAction,
                                             Boolean instant_counter_opportunity) {
         getHandler().setExtraAttackMode(instant_counter_opportunity, true);
         try {
@@ -167,11 +167,11 @@ public class Activator extends ActiveHandler {
         this.broken = broken;
     }
 
-    public DC_ActiveObj getLastSubaction() {
+    public ActiveObj getLastSubaction() {
         return lastSubaction;
     }
 
-    public void setLastSubaction(DC_ActiveObj lastSubaction) {
+    public void setLastSubaction(ActiveObj lastSubaction) {
         this.lastSubaction = lastSubaction;
     }
 }

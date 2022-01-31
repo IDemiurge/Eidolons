@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules.counter.anew;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
@@ -34,7 +34,7 @@ public class ExertionRule {
         //TODO add Fatigue immediately?
     }
 
-    public static boolean isActionBlocked(DC_ActiveObj action) {
+    public static boolean isActionBlocked(ActiveObj action) {
         Unit source = (Unit) action.getOwnerObj();
 
         if (source.checkProperty(G_PROPS.MODE, EXERTION)) {

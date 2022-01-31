@@ -1,6 +1,6 @@
 package eidolons.entity.active.spaces;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
@@ -18,7 +18,7 @@ public class FeatSpaceHqHandler {
 
     }
 
-    public void upgrade(DC_ActiveObj active) {
+    public void upgrade(ActiveObj active) {
         updateGui();
     }
 
@@ -26,7 +26,7 @@ public class FeatSpaceHqHandler {
         GuiEventManager.trigger(GuiEventType.UPDATE_GUI); //TODO
     }
 
-    public boolean move(DC_ActiveObj active, FeatSpace space, int newIndex) {
+    public boolean move(ActiveObj active, FeatSpace space, int newIndex) {
         FeatSpaceData data = dataMap.get(space);
         String prev = data.getActive(newIndex);
         if (!StringMaster.isEmpty(prev)) {
@@ -38,12 +38,12 @@ public class FeatSpaceHqHandler {
         return true;
     }
 
-    public boolean add(DC_ActiveObj active, FeatSpace space) {
+    public boolean add(ActiveObj active, FeatSpace space) {
 
         return false;
     }
 
-    public void remove(DC_ActiveObj active, FeatSpace space) {
+    public void remove(ActiveObj active, FeatSpace space) {
 
     }
 

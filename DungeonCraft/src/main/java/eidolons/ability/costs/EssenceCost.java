@@ -5,11 +5,10 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.ai.tools.target.AI_SpellMaster;
 import eidolons.game.battlecraft.rules.parameters.EssenceRule;
 import main.content.enums.entity.SpellEnums;
-import main.content.values.parameters.PARAMETER;
 import main.elements.costs.CostImpl;
 import main.elements.costs.Payment;
 import main.entity.Ref;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 
 /**
  * When you pay essence - it goes into the spell's target? Or leaks kinda?
@@ -33,7 +32,7 @@ public class EssenceCost extends CostImpl {
         //measure how much was actually paid?
         //does it matter if spell was resisted etc?
         boolean result = super.pay(ref);
-        ActiveObj spell = ref.getActive();
+        IActiveObj spell = ref.getActive();
         spell.setOnComplete(()-> {
 
         int paid = getPayment().getLastPaid();

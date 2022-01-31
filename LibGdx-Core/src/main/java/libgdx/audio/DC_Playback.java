@@ -1,8 +1,7 @@
 package libgdx.audio;
 
-import eidolons.content.consts.VisualEnums;
 import eidolons.content.consts.VisualEnums.ANIM_PART;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
@@ -43,7 +42,7 @@ public class DC_Playback {
         //TODO ON SEPARATE THREAD!!!!
         GuiEventManager.bind(GuiEventType.ANIMATION_STARTED, p -> {
             Anim anim = (Anim) p.get();
-            DC_ActiveObj activeObj = (DC_ActiveObj) anim.getActive();
+            ActiveObj activeObj = (ActiveObj) anim.getActive();
             try {
                 playAnimStartSound(activeObj, anim.getPart());
             } catch (Exception e) {
@@ -52,7 +51,7 @@ public class DC_Playback {
         });
         GuiEventManager.bind(GuiEventType.COMPOSITE_ANIMATION_STARTED, p -> {
             CompositeAnim anim = (CompositeAnim) p.get();
-            DC_ActiveObj activeObj = (DC_ActiveObj) anim.getActive();
+            ActiveObj activeObj = (ActiveObj) anim.getActive();
             try {
                 playActionStartSound(activeObj);
             } catch (Exception e) {
@@ -61,11 +60,11 @@ public class DC_Playback {
         });
     }
 
-    private static void playActionStartSound(DC_ActiveObj activeObj) {
+    private static void playActionStartSound(ActiveObj activeObj) {
         //TODO
     }
 
-    public static void playAnimStartSound(DC_ActiveObj activeObj, ANIM_PART part) {
+    public static void playAnimStartSound(ActiveObj activeObj, ANIM_PART part) {
         if (activeObj instanceof Spell)
             switch (part) {
                 case PRECAST:

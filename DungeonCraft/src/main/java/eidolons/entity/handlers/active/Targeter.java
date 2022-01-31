@@ -2,7 +2,7 @@ package eidolons.entity.handlers.active;
 
 import eidolons.ability.ActivesConstructor;
 import eidolons.ability.targeting.TemplateSelectiveTargeting;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
 import main.ability.Ability;
 import main.content.enums.entity.AbilityEnums;
@@ -14,10 +14,9 @@ import main.elements.targeting.MultiTargeting;
 import main.elements.targeting.SelectiveTargeting;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LogMaster;
 
@@ -36,7 +35,7 @@ public class Targeter extends ActiveHandler {
     private TARGETING_MODE targetingMode;
     private boolean targetingInitialized;
 
-    public Targeter(DC_ActiveObj entity, ActiveMaster entityMaster) {
+    public Targeter(ActiveObj entity, ActiveMaster entityMaster) {
         super(entity, entityMaster);
     }
 
@@ -241,7 +240,7 @@ public class Targeter extends ActiveHandler {
     public void setForcePresetTarget(boolean b) {
         forcePresetTarget = b;
         if (getEntity().getActives() != null) {
-            for (ActiveObj a : getEntity().getActives()) {
+            for (IActiveObj a : getEntity().getActives()) {
                 a.setForcePresetTarget(b);
             }
         }

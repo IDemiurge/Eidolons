@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.ai.elements.goal;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
@@ -132,7 +132,7 @@ public class GoalManager extends AiHandler {
     }
 
 
-    public static GOAL_TYPE getGoalFromAction(DC_ActiveObj a) {
+    public static GOAL_TYPE getGoalFromAction(ActiveObj a) {
         switch (a.getActionGroup()) {
             case ATTACK:
                 return AiEnums.GOAL_TYPE.ATTACK;

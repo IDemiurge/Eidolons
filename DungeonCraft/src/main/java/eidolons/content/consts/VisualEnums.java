@@ -1,14 +1,13 @@
 package eidolons.content.consts;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import eidolons.ability.effects.common.ModifyStatusEffect;
 import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import eidolons.content.consts.libgdx.GdxStringUtils;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.game.core.master.EffectMaster;
 import main.content.VALUE;
 import main.content.enums.GenericEnums;
@@ -785,7 +784,7 @@ public class VisualEnums {
         ROLL,
         PARAM_MOD,
         COSTS(true, (e) -> {
-            DC_ActiveObj a = (DC_ActiveObj) e.getRef().getActive();
+            ActiveObj a = (ActiveObj) e.getRef().getActive();
             List<Cost> costs = a.getCosts().getCosts();
             costs.removeIf(c -> c.getPayment().getLastPaid() == 0
                     //            getAmountFormula().toString().isEmpty()
@@ -795,14 +794,14 @@ public class VisualEnums {
         STATUS(
                 false, (e) -> {
             ModifyStatusEffect ef = (ModifyStatusEffect)
-                    EffectMaster.getFirstEffectOfClass((DC_ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
+                    EffectMaster.getFirstEffectOfClass((ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
             //                if (ef==null )
             return ef.getValue().split(";");
         }),
         MODE(
                 false, (e) -> {
             ModeEffect ef = (ModeEffect)
-                    EffectMaster.getFirstEffectOfClass((DC_ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
+                    EffectMaster.getFirstEffectOfClass((ActiveObj) e.getRef().getActive(), ModifyStatusEffect.class);
             return new Object[]{
                     ef.getMode()
             };

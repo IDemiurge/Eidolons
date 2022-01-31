@@ -12,7 +12,7 @@ import main.content.enums.entity.UnitEnums;
 import main.elements.conditions.Conditions;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -44,7 +44,7 @@ public class MoraleKillingRule extends DC_RuleImpl {
         unitDied((UnitModel) ref.getSourceObj(), ref.getAnimationActive());
     }
 
-    public void unitDied(UnitModel unit, ActiveObj animationActive) {
+    public void unitDied(UnitModel unit, IActiveObj animationActive) {
         if (unit.getOwner() == Player.NEUTRAL) {
             return;
         }

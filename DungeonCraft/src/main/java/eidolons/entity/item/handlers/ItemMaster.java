@@ -10,6 +10,7 @@ import main.content.enums.entity.ItemEnums.ITEM_MATERIAL_GROUP;
 import main.content.enums.entity.ItemEnums.MATERIAL;
 import main.content.values.properties.G_PROPS;
 import main.entity.type.ObjType;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.Flags;
 
@@ -78,5 +79,11 @@ public class ItemMaster {
 
     public static boolean isGlovedFistOn() {
         return true;
+    }
+
+    public static ITEM_MATERIAL_GROUP getMaterialGroup(ObjType type) {
+        return new EnumMaster<ITEM_MATERIAL_GROUP>().retrieveEnumConst(ITEM_MATERIAL_GROUP
+                .class, type.getProperty(G_PROPS.ITEM_MATERIAL_GROUP));
+
     }
 }

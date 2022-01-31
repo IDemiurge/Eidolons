@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.ai;
 
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.actions.ActionManager;
@@ -29,7 +29,7 @@ public class AI_Manager extends AiMaster {
     public static final boolean MELEE_HACK = true;
     private static boolean running;
     private static boolean off;
-    private static final List<DC_ActiveObj> brokenActions = new ArrayList<>();
+    private static final List<ActiveObj> brokenActions = new ArrayList<>();
 
     public AI_Manager(DC_Game game) {
         super(game);
@@ -57,7 +57,7 @@ public class AI_Manager extends AiMaster {
         AI_Manager.off = off;
     }
 
-    public static List<DC_ActiveObj> getBrokenActions() {
+    public static List<ActiveObj> getBrokenActions() {
         return brokenActions;
     }
 

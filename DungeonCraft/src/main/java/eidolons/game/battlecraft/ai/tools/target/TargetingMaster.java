@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.ai.tools.target;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.elements.actions.AiAction;
@@ -18,7 +18,7 @@ import main.ability.effects.container.SpecialTargetingEffect;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.elements.targeting.SelectiveTargeting;
 import main.elements.targeting.Targeting;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.ClassMaster;
@@ -32,11 +32,11 @@ public class TargetingMaster extends AiHandler {
         super(master);
     }
 
-    public static Targeting findTargeting(ActiveObj active) {
+    public static Targeting findTargeting(IActiveObj active) {
         return findTargeting(active, null);
     }
 
-    public static Targeting getZoneEffect(DC_ActiveObj active) {
+    public static Targeting getZoneEffect(ActiveObj active) {
         List<Effect> zoneEffects = EffectMaster.getEffectsOfClass(active,
                 SpecialTargetingEffect.class);
         if (!zoneEffects.isEmpty()) {
@@ -49,7 +49,7 @@ public class TargetingMaster extends AiHandler {
         return active.getTargeting();
     }
 
-    public static Targeting findTargeting(ActiveObj active,
+    public static Targeting findTargeting(IActiveObj active,
                                           Class<SelectiveTargeting> CLASS) {
         Targeting t = active.getTargeting();
         if (checkTargeting(CLASS, t)) {
@@ -61,15 +61,15 @@ public class TargetingMaster extends AiHandler {
             return t;
         }
 
-        for (ActiveObj a : active.getActives()) {
-            if (active instanceof DC_ActiveObj)// 2 layers maximum, i hope
+        for (IActiveObj a : active.getActives()) {
+            if (active instanceof ActiveObj)// 2 layers maximum, i hope
             {
                 t = findTargeting(a, CLASS);
             }
             if (t != null) {
                 return t;
             } else {
-                for (ActiveObj a2 : a.getActives()) {
+                for (IActiveObj a2 : a.getActives()) {
                     t = findTargetingInAbils(a2, CLASS);
                     if (t != null) {
                         return t;
@@ -88,7 +88,7 @@ public class TargetingMaster extends AiHandler {
         return ClassMaster.isInstanceOf(t, CLASS);
     }
 
-    public static Targeting findTargetingInAbils(ActiveObj active,
+    public static Targeting findTargetingInAbils(IActiveObj active,
                                                  Class<SelectiveTargeting> CLASS) {
         if (active.getAbilities() != null) {
             for (Ability abil : active.getAbilities()) {
@@ -151,7 +151,7 @@ public class TargetingMaster extends AiHandler {
         return false;
     }
 
-    public static Integer selectTargetForAction(DC_ActiveObj a) {
+    public static Integer selectTargetForAction(ActiveObj a) {
         /*
          * getOrCreate possible targets init goal type prioritize
          */

@@ -1,6 +1,6 @@
 package eidolons.entity.handlers.active;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.exploration.handlers.ExplorationMaster;
@@ -19,9 +19,9 @@ import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 /**
  * Created by JustMe on 2/23/2017.
  */
-public class ActiveLogger extends EntityLogger<DC_ActiveObj> {
+public class ActiveLogger extends EntityLogger<ActiveObj> {
 
-    public ActiveLogger(DC_ActiveObj entity, EntityMaster<DC_ActiveObj> entityMaster) {
+    public ActiveLogger(ActiveObj entity, EntityMaster<ActiveObj> entityMaster) {
         super(entity, entityMaster);
     }
 

@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules.combat.damage;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
@@ -23,7 +23,7 @@ public class Damage {
     protected boolean offhand;
     protected DAMAGE_TYPE dmg_type;
     protected DAMAGE_MODIFIER[] modifiers;
-    protected DC_ActiveObj action;
+    protected ActiveObj action;
     protected Ref ref;
     private Attack attackObject;
     private NewRpgEnums.HitType hitType;
@@ -126,11 +126,11 @@ public class Damage {
         this.dmg_type = dmg_type;
     }
 
-    public DC_ActiveObj getAction() {
+    public ActiveObj getAction() {
         return action;
     }
 
-    public void setAction(DC_ActiveObj action) {
+    public void setAction(ActiveObj action) {
         this.action = action;
     }
 

@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.rules.combat.attack;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.master.EffectMaster;
@@ -22,7 +22,7 @@ import java.util.List;
 public class GuardRule {
     public static final boolean on = false;
 
-    public static BattleFieldObject checkTargetChanged(DC_ActiveObj action) {
+    public static BattleFieldObject checkTargetChanged(ActiveObj action) {
 
         BattleFieldObject target = (BattleFieldObject) action.getTargetObj();
 //         attack.getAttackedUnit();
@@ -79,7 +79,7 @@ public class GuardRule {
         return false;
     }
 
-    private static boolean checkDefenderTakesMissile(DC_ActiveObj action, Unit unit) {
+    private static boolean checkDefenderTakesMissile(ActiveObj action, Unit unit) {
         return false;
     }
 }

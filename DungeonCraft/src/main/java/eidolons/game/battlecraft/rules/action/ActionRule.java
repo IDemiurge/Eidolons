@@ -1,18 +1,18 @@
 package eidolons.game.battlecraft.rules.action;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.unit.Unit;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 
 public interface ActionRule {
 
-    void actionComplete(ActiveObj activeObj);
+    void actionComplete(IActiveObj activeObj);
 
     default boolean unitBecomesActive(Unit unit){
         return true;
     }
 
-    default boolean isAppliedOnExploreAction(DC_ActiveObj action) {
+    default boolean isAppliedOnExploreAction(ActiveObj action) {
         return false;
     }
 }

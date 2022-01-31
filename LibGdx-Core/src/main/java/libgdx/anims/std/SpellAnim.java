@@ -4,10 +4,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.math.MathUtils;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.game.EidolonsGame;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import libgdx.anims.AnimData;
 import libgdx.anims.main.AnimMaster;
 import libgdx.anims.sprite.SpriteAnimation;
@@ -16,7 +15,6 @@ import libgdx.bf.GridMaster;
 import libgdx.particles.spell.SpellVfx;
 import libgdx.particles.spell.SpellVfxPool;
 import main.content.enums.entity.SpellEnums;
-import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.G_PARAMS;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
@@ -70,7 +68,7 @@ public class SpellAnim extends ActionAnim {
 
     }
 
-    public static String getOverriddenVfx(DC_ActiveObj active, VisualEnums.ANIM_PART part) {
+    public static String getOverriddenVfx(ActiveObj active, VisualEnums.ANIM_PART part) {
         //could be a bit randomized too!
         // enum for vfx after all?
 
@@ -365,7 +363,7 @@ public class SpellAnim extends ActionAnim {
         return null;
     }
 
-    private boolean isVfxOverridden(DC_ActiveObj active, VisualEnums.ANIM_PART part) {
+    private boolean isVfxOverridden(ActiveObj active, VisualEnums.ANIM_PART part) {
         return getOverriddenVfx(active, part) != null;
     }
 
@@ -473,7 +471,7 @@ public class SpellAnim extends ActionAnim {
             //                 active.getOwnerUnit().getCoordinates(), coordinates) != UnitEnums.FACING_SINGLE.IN_FRONT);
             return set.size();
         }) {
-            public int getAdditionalDistance(DC_ActiveObj active) {
+            public int getAdditionalDistance(ActiveObj active) {
                 //TODO Grid 2.0
                 return GridMaster.CELL_W;
             }
@@ -481,7 +479,7 @@ public class SpellAnim extends ActionAnim {
         ;
 
         public int speed;
-        private Producer<DC_ActiveObj, Integer> numberOfEmitters;
+        private Producer<ActiveObj, Integer> numberOfEmitters;
         private boolean removeBaseEmitters = true;
 
         //emitter placement templates
@@ -489,21 +487,21 @@ public class SpellAnim extends ActionAnim {
 
         }
 
-        SPELL_ANIMS(int speed, int distance, Producer<DC_ActiveObj, Integer> numberOfEmittersSupplier) {
+        SPELL_ANIMS(int speed, int distance, Producer<ActiveObj, Integer> numberOfEmittersSupplier) {
             this.speed = speed;
             numberOfEmitters = numberOfEmittersSupplier;
         }
 
-        SPELL_ANIMS(Producer<DC_ActiveObj, Integer> numberOfEmittersSupplier) {
+        SPELL_ANIMS(Producer<ActiveObj, Integer> numberOfEmittersSupplier) {
             this(300, 0, numberOfEmittersSupplier);
         }
 
-        public int getAdditionalDistance(DC_ActiveObj active) {
+        public int getAdditionalDistance(ActiveObj active) {
 
             return 0;
         }
 
-        public int getNumberOfEmitters(DC_ActiveObj active) {
+        public int getNumberOfEmitters(ActiveObj active) {
             return numberOfEmitters.produce(active);
         }
 

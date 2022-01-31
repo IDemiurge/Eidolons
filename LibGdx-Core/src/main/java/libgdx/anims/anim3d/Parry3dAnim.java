@@ -1,6 +1,6 @@
 package libgdx.anims.anim3d;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.item.WeaponItem;
 import libgdx.anims.sprite.SpriteAnimation;
 
@@ -9,7 +9,7 @@ import libgdx.anims.sprite.SpriteAnimation;
  */
 public class Parry3dAnim extends Weapon3dAnim{
 
-    public Parry3dAnim(WeaponItem parryWeapon, DC_ActiveObj attack) {
+    public Parry3dAnim(WeaponItem parryWeapon, ActiveObj attack) {
         super(null );
     }
 

@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.utils.Array;
 import eidolons.content.consts.VisualEnums;
 import eidolons.content.consts.libgdx.GdxStringUtils;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import libgdx.anims.AnimData;
 import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.sprite.SpriteAnimation;
@@ -20,7 +20,6 @@ import libgdx.assets.AnimMaster3d;
 import libgdx.assets.Atlases;
 import main.content.enums.GenericEnums;
 import main.entity.Ref;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.Flags;
@@ -37,11 +36,11 @@ public class Weapon3dAnim extends ActionAnim {
     protected SpriteAnimation sprite;
     protected Map<VisualEnums.PROJECTION, SpriteAnimation> projectionsMap = new HashMap<>();
 
-    public Weapon3dAnim(DC_ActiveObj active) {
+    public Weapon3dAnim(ActiveObj active) {
         super(active, init3dAnimData(active));
     }
 
-    public static AnimData init3dAnimData(DC_ActiveObj active) {
+    public static AnimData init3dAnimData(ActiveObj active) {
         //duration, speed,
         //        ANIM_VALUES.SCALE;
         //        ANIM_VALUES.PARTICLE_EFFECTS;
@@ -129,7 +128,7 @@ public class Weapon3dAnim extends ActionAnim {
         Array<AtlasRegion> regions = sprite.getRegions();
         //backward?
         //TODO NF Rules revamp
-        List<DC_ActiveObj> subactions = new ArrayList<>();
+        List<ActiveObj> subactions = new ArrayList<>();
         subactions.remove(getActive());
         subactions.removeIf(a ->
                 a.isThrow() ||
@@ -220,7 +219,7 @@ public class Weapon3dAnim extends ActionAnim {
         return getProjection(getRef(), getActive());
     }
 
-    public VisualEnums.PROJECTION getProjection(Ref ref, DC_ActiveObj active) {
+    public VisualEnums.PROJECTION getProjection(Ref ref, ActiveObj active) {
         return AnimMaster3d.getProjection(ref, active);
     }
 

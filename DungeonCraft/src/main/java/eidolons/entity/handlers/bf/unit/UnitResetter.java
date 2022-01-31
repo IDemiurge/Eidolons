@@ -3,14 +3,11 @@ package eidolons.entity.handlers.bf.unit;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.DC_ContentValsManager.ATTRIBUTE;
 import eidolons.content.PARAMS;
-import eidolons.content.PROPS;
 import eidolons.entity.active.Spell;
 import eidolons.entity.item.HeroItem;
 import eidolons.entity.item.QuickItem;
 import eidolons.entity.unit.attach.DC_PassiveObj;
-import eidolons.entity.unit.UnitModel;
 import eidolons.entity.unit.Unit;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.rules.combat.damage.ResistMaster;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.exploration.handlers.ExplorationMaster;
@@ -20,13 +17,10 @@ import main.content.mode.STD_MODES;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
-import main.entity.Ref.KEYS;
 import main.entity.handlers.EntityMaster;
 import main.entity.handlers.EntityResetter;
-import main.entity.obj.ActiveObj;
-import main.game.bf.directions.FACING_DIRECTION;
+import main.entity.obj.IActiveObj;
 import main.system.GuiEventManager;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.launch.CoreEngine;
 
@@ -253,7 +247,7 @@ public class UnitResetter extends EntityResetter<Unit> {
 
 
     public void resetActives() {
-        for (ActiveObj active : getEntity().getActives()) {
+        for (IActiveObj active : getEntity().getActives()) {
             active.setRef(getRef());
             active.toBase();
         }

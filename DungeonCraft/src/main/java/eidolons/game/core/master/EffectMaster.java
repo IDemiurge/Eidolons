@@ -5,7 +5,7 @@ import eidolons.ability.effects.common.ModifyPropertyEffect;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.oneshot.attack.AttackEffect;
 import eidolons.ability.effects.oneshot.mechanic.RollEffect;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.core.game.DC_Game;
 import main.ability.Abilities;
@@ -20,7 +20,7 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
 import main.data.ability.construct.VariableManager;
 import main.entity.Ref;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.Attachment;
 import main.entity.obj.Obj;
 import main.system.auxiliary.ClassMaster;
@@ -42,8 +42,8 @@ public class EffectMaster extends Master {
         super(game);
     }
 
-    public static AttackEffect getAttackEffect(ActiveObj action) {
-        return (AttackEffect) getEffectsOfClass((DC_ActiveObj) action,
+    public static AttackEffect getAttackEffect(IActiveObj action) {
+        return (AttackEffect) getEffectsOfClass((ActiveObj) action,
          AttackEffect.class).get(0);
     }
 
@@ -61,7 +61,7 @@ public class EffectMaster extends Master {
         return effects;
     }
 
-    public static Effects getEffectsFromSpell(ActiveObj active) {
+    public static Effects getEffectsFromSpell(IActiveObj active) {
         Effects effects = new Effects();
         if (!active.isConstructed())
             active.construct();
@@ -70,7 +70,7 @@ public class EffectMaster extends Master {
                 effects.addAll(addEffectsFromAbility(a.getEffects()));
             }
         } else {
-            for (ActiveObj a : active.getActives()) {
+            for (IActiveObj a : active.getActives()) {
                 for (Ability a1 : a.getAbilities()) {
                     for (Effect e : a1.getEffects()) {
                         effects.add(e);
@@ -132,11 +132,11 @@ public class EffectMaster extends Master {
         return list;
     }
 
-    public static List<Effect> getEffectsOfClass(DC_ActiveObj active, Class<?> CLASS) {
+    public static List<Effect> getEffectsOfClass(ActiveObj active, Class<?> CLASS) {
         return getEffectsOfClass(getEffectsFromSpell(active), CLASS);
     }
 
-    public static Effect getFirstEffectOfClass(DC_ActiveObj active, Class<?> CLASS) {
+    public static Effect getFirstEffectOfClass(ActiveObj active, Class<?> CLASS) {
         List<Effect> list = getEffectsOfClass(getEffectsFromSpell(active), CLASS);
         if (list.isEmpty()) {
             return null;
@@ -185,7 +185,7 @@ public class EffectMaster extends Master {
         return (ClassMaster.isInstanceOf(e, CLASS));
     }
 
-    public static boolean check(DC_ActiveObj active, Class<?> CLASS) {
+    public static boolean check(ActiveObj active, Class<?> CLASS) {
         if (active == null) {
             return false;
         }
@@ -205,7 +205,7 @@ public class EffectMaster extends Master {
         return check(actives.getEffects(), CLASS);
     }
 
-    public static List<RollEffect> getRollEffects(DC_ActiveObj active) {
+    public static List<RollEffect> getRollEffects(ActiveObj active) {
         List<RollEffect> list = new ArrayList<>();
         for (Effect e : getEffectsOfClass(active, RollEffect.class)) {
             ((RollEffect) e).getEffect(); // construct!
@@ -259,7 +259,7 @@ public class EffectMaster extends Master {
         }
     }
 
-    public static Attack getAttackFromAction(DC_ActiveObj t) {
+    public static Attack getAttackFromAction(ActiveObj t) {
         List<Effect> eff = getEffectsOfClass(t, AttackEffect.class);
         AttackEffect e = (AttackEffect) eff.get(0);
         return e.getAttack();

@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy;
 
 import com.badlogic.gdx.math.Interpolation;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazeHandler;
@@ -32,7 +32,7 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
         return new VoidMazeSetup(getPuzzle());
     }
 
-    protected float getTimePenalty(DC_ActiveObj action) {
+    protected float getTimePenalty(ActiveObj action) {
         return collapsePeriod / getMaxMovesPeriod();// + getDefaultCollapsePeriod() * (0.01f + 0.0015f * actions);
     }
     protected float getMaxMovesPeriod() {
@@ -131,7 +131,7 @@ public class VoidMazeHandler extends MazeHandler<VoidMaze> {
     }
 
     @Override
-    public void playerActionDone(DC_ActiveObj action) {
+    public void playerActionDone(ActiveObj action) {
         if (!collapsing) {
             firstMoveDone();
         }

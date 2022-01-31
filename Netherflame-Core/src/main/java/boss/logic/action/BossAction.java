@@ -1,10 +1,10 @@
 package boss.logic.action;
 
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.UnitAction;
 import eidolons.entity.unit.Unit;
 import main.entity.type.ObjType;
 
-public class BossAction extends DC_UnitAction {
+public class BossAction extends UnitAction {
     public BossAction(ObjType type, Unit unit) {
         super(
                 type, unit

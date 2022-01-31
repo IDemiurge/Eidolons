@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.ai.elements.actions;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
@@ -20,14 +20,14 @@ import main.system.auxiliary.StringMaster;
 
 public class AiAction {
     Ref ref;
-    DC_ActiveObj active;
+    ActiveObj active;
 
     boolean complete;
     private Task task;
     private String taskDescription;
     private boolean order;
 
-    public AiAction(DC_ActiveObj actives, Ref ref) {
+    public AiAction(ActiveObj actives, Ref ref) {
         this.active = actives;
         this.ref = ref;
         try {
@@ -37,12 +37,12 @@ public class AiAction {
         }
     }
 
-    public AiAction(DC_ActiveObj action) {
+    public AiAction(ActiveObj action) {
         this(action, Ref.getCopy(action.getRef()));
 
     }
 
-    public AiAction(DC_ActiveObj action, Obj enemy) {
+    public AiAction(ActiveObj action, Obj enemy) {
         this(action);
         setRef(enemy.getRef().getCopy());
         getRef().setTarget(enemy.getId());
@@ -126,11 +126,11 @@ public class AiAction {
         this.ref = ref;
     }
 
-    public DC_ActiveObj getActive() {
+    public ActiveObj getActive() {
         return active;
     }
 
-    public void setActive(DC_ActiveObj active) {
+    public void setActive(ActiveObj active) {
         this.active = active;
     }
 

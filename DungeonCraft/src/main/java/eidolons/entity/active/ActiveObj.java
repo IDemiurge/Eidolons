@@ -38,7 +38,7 @@ import main.entity.Ref.KEYS;
 import main.entity.group.GroupImpl;
 import main.entity.handlers.EntityMaster;
 import main.entity.obj.Active;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.AttachedObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
@@ -59,7 +59,7 @@ import main.system.text.TextParser;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class DC_ActiveObj extends DC_Obj implements Feat, ActiveObj, Interruptable,
+public abstract class ActiveObj extends DC_Obj implements Feat, IActiveObj, Interruptable,
         AttachedObj {
 
     protected BattleFieldObject ownerObj;
@@ -81,7 +81,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements Feat, ActiveObj, In
     private AI_LOGIC aiLogic;
 
     private String customTooltip;
-    private DC_ActiveObj parentAction;
+    private ActiveObj parentAction;
     private boolean autoSelectionOn = false;
     private boolean continuous;
     private boolean resistanceChecked;
@@ -92,7 +92,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements Feat, ActiveObj, In
     private Runnable onComplete;
 
 
-    public DC_ActiveObj(ObjType type, Player owner, Game game, Ref ref) {
+    public ActiveObj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
         setRef(ref);
         this.ownerObj = (BattleFieldObject) ref.getSourceObj();
@@ -480,11 +480,11 @@ public abstract class DC_ActiveObj extends DC_Obj implements Feat, ActiveObj, In
     }
 
 
-    public DC_ActiveObj getParentAction() {
+    public ActiveObj getParentAction() {
         return parentAction;
     }
 
-    public void setParentAction(DC_ActiveObj activeObj) {
+    public void setParentAction(ActiveObj activeObj) {
         parentAction = activeObj;
 
     }
@@ -542,8 +542,8 @@ public abstract class DC_ActiveObj extends DC_Obj implements Feat, ActiveObj, In
             return null;
         }
         if (isThrow()) {
-            if (this instanceof DC_QuickItemAction) {
-                return ((DC_QuickItemAction) this).getItem().getWrappedWeapon();
+            if (this instanceof QuickItemAction) {
+                return ((QuickItemAction) this).getItem().getWrappedWeapon();
             }
         } else if (isRanged()) {
             return (WeaponItem) getOwnerUnit().getLinkedObj(IdKey.RANGED);
@@ -560,7 +560,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements Feat, ActiveObj, In
     //RESET
     //exec
 
-    public void addPendingAttackOpportunity(DC_ActiveObj attack) {
+    public void addPendingAttackOpportunity(ActiveObj attack) {
         getHandler().addPendingAttackOpportunity(attack);
 
     }
@@ -761,19 +761,19 @@ public abstract class DC_ActiveObj extends DC_Obj implements Feat, ActiveObj, In
         return getActivator().canBeActivatedAsAttackOfOpportunity(pending, target);
     }
 
-    public boolean tryOpportunityActivation(DC_ActiveObj triggeringAction) {
+    public boolean tryOpportunityActivation(ActiveObj triggeringAction) {
         return getActivator().tryOpportunityActivation(triggeringAction);
     }
 
-    public boolean tryInstantActivation(DC_ActiveObj triggeringAction) {
+    public boolean tryInstantActivation(ActiveObj triggeringAction) {
         return getActivator().tryInstantActivation(triggeringAction);
     }
 
-    public DC_ActiveObj getLastSubaction() {
+    public ActiveObj getLastSubaction() {
         return getActivator().getLastSubaction();
     }
 
-    public void setLastSubaction(DC_ActiveObj lastSubaction) {
+    public void setLastSubaction(ActiveObj lastSubaction) {
         getActivator().setLastSubaction(lastSubaction);
 
     }
@@ -906,13 +906,13 @@ public abstract class DC_ActiveObj extends DC_Obj implements Feat, ActiveObj, In
         return Flags.isTargetingResultCachingOn();
     }
 
-    public List<DC_ActiveObj> getValidSubactions() {
+    public List<ActiveObj> getValidSubactions() {
         return getValidSubactions(getRef(), null);
     }
 
     //TODO NF Rules revamp
-    public List<DC_ActiveObj> getValidSubactions(Ref ref, Integer target) {
-        List<DC_ActiveObj> subActions = new ArrayList<>();
+    public List<ActiveObj> getValidSubactions(Ref ref, Integer target) {
+        List<ActiveObj> subActions = new ArrayList<>();
         return subActions;
     }
 
@@ -945,12 +945,12 @@ public abstract class DC_ActiveObj extends DC_Obj implements Feat, ActiveObj, In
     }
 
     @Override
-    public DC_ActiveObj getActive() {
+    public ActiveObj getActive() {
         return this;
     }
 
     //TODO NF Rules revamp
-    public List<DC_ActiveObj> getAttackTypes() {
+    public List<ActiveObj> getAttackTypes() {
         return new ArrayList<>();
     }
 }

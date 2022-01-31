@@ -3,19 +3,11 @@ package libgdx.gui.dungeon.panels.dc.unitinfo.tooltips;
 import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PARAMS;
 import eidolons.content.consts.libgdx.GdxStringUtils;
-import eidolons.entity.active.DC_UnitAction;
-import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.active.UnitAction;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.rules.combat.attack.Attack;
-import eidolons.game.battlecraft.rules.combat.attack.DC_AttackMaster;
-import eidolons.game.battlecraft.rules.combat.attack.SneakRule;
-import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.gui.NinePatchFactory;
 import libgdx.gui.generic.ValueContainer;
-import libgdx.gui.dungeon.panels.TablePanelX;
 import libgdx.gui.dungeon.panels.dc.actionpanel.datasource.ActionCostSourceImpl;
 import libgdx.gui.dungeon.panels.dc.unitinfo.old.MultiValueContainer;
 import libgdx.gui.dungeon.tooltips.Tooltip;
@@ -23,15 +15,11 @@ import libgdx.gui.dungeon.tooltips.ValueTooltip;
 import libgdx.assets.texture.TextureCache;
 import main.content.VALUE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
-import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.NewRpgEnums;
-import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
-import main.entity.Ref;
 import main.entity.obj.BuffObj;
 import main.entity.obj.Obj;
-import main.game.bf.directions.DirectionMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.Strings;
 import main.system.auxiliary.log.LogMaster;
@@ -51,11 +39,11 @@ import static eidolons.content.values.UNIT_INFO_PARAMS.*;
  */
 public class AttackTooltipFactory {
 
-    public static AttackTooltip createAttackTooltip(DC_UnitAction el) {
+    public static AttackTooltip createAttackTooltip(UnitAction el) {
         return createAttackTooltip(el, false, true, true, false, null);
     }
 
-    public static AttackTooltip createAttackTooltip(DC_UnitAction activeObj, DC_Obj target) {
+    public static AttackTooltip createAttackTooltip(UnitAction activeObj, DC_Obj target) {
         return createAttackTooltip(activeObj, true, true, true, false, target);
     }
 //TODO LC 2.0 - HitType breakdown
@@ -92,7 +80,7 @@ public class AttackTooltipFactory {
         return container;
     }
 
-    private static ValueContainer createPrecalcRow(boolean precalc, DC_UnitAction el, DC_Obj target) {
+    private static ValueContainer createPrecalcRow(boolean precalc, UnitAction el, DC_Obj target) {
         if (!precalc) {
             return null;
         }
@@ -114,7 +102,7 @@ public class AttackTooltipFactory {
         return new ValueContainer(info, tooltip);
     }
 
-    public static AttackTooltip createAttackTooltip(DC_UnitAction el,
+    public static AttackTooltip createAttackTooltip(UnitAction el,
                                                     boolean precalc, boolean costs,
                                                     boolean additionalInfo, boolean combatMode, DC_Obj target) {
         Pair<PARAMS, PARAMS> pair = ACTION_TOOLTIPS_PARAMS_MAP.get(ACTION_TOOLTIP_HEADER_KEY);
@@ -191,7 +179,7 @@ public class AttackTooltipFactory {
     }
 
 
-    private static List<MultiValueContainer> extractActionValues(DC_UnitAction el
+    private static List<MultiValueContainer> extractActionValues(UnitAction el
      , VALUE[] baseKeys) {
         List<MultiValueContainer> list = new ArrayList<>();
         Pair<PARAMS, PARAMS> pair;

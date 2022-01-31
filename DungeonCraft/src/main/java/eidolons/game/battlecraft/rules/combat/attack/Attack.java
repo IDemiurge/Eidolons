@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules.combat.attack;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
@@ -35,7 +35,7 @@ public class Attack {
     private Effect onKill;
     private Effect onAttack;
     private Ref ref;
-    private DC_ActiveObj action;
+    private ActiveObj action;
     private Unit attacker;
     private BattleFieldObject attacked;
     private boolean countered;
@@ -61,7 +61,7 @@ public class Attack {
         try {
             attacker = (Unit) ref.getSourceObj();
             attacked = (BattleFieldObject) ref.getTargetObj();
-            action = (DC_ActiveObj) ref.getActive();
+            action = (ActiveObj) ref.getActive();
             // sneak = DC_AttackMaster.checkSneak(ref); elsewhere
         } catch (Exception e) {
             ExceptionMaster.printStackTrace(e);
@@ -233,11 +233,11 @@ public class Attack {
         this.ref = ref;
     }
 
-    public DC_ActiveObj getAction() {
+    public ActiveObj getAction() {
         return action;
     }
 
-    public void setAction(DC_ActiveObj action) {
+    public void setAction(ActiveObj action) {
         this.action = action;
     }
 

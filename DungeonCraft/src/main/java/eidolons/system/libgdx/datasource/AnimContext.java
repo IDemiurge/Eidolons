@@ -1,6 +1,6 @@
 package eidolons.system.libgdx.datasource;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import main.ability.effects.Effect;
 import main.entity.Ref;
 import main.entity.obj.Obj;
@@ -37,7 +37,7 @@ public class AnimContext extends Context {
 
     }
 
-    public AnimContext(DC_ActiveObj action) {
+    public AnimContext(ActiveObj action) {
         super(action.getRef());
         attachToNext = action.isCounterMode();
     }

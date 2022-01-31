@@ -1,8 +1,8 @@
 package libgdx.anims.main;
 
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_QuickItemAction;
+import eidolons.entity.active.ActiveObj;
+import eidolons.entity.active.QuickItemAction;
 import libgdx.anims.Anim;
 import eidolons.content.consts.VisualEnums.ANIM_PART;
 import libgdx.anims.anim3d.Potion3dAnim;
@@ -41,8 +41,8 @@ public class EventAnimCreator {
                     return new DeathAnim(e);
                 case UNIT_HAS_USED_QUICK_ITEM:
                     try {
-                        if (((DC_QuickItemAction) e.getRef().getActive()).getItem().isPotion())
-                            return new Potion3dAnim((DC_ActiveObj) e.getRef().getActive());
+                        if (((QuickItemAction) e.getRef().getActive()).getItem().isPotion())
+                            return new Potion3dAnim((ActiveObj) e.getRef().getActive());
                     } catch (Exception ex) {
                         main.system.ExceptionMaster.printStackTrace(ex);
                     }

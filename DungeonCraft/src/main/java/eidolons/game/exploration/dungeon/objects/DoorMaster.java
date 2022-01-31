@@ -1,17 +1,15 @@
 package eidolons.game.exploration.dungeon.objects;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.ActiveObj;
+import eidolons.entity.active.UnitAction;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.exploration.dungeon.objects.DoorMaster.DOOR_ACTION;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
-import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.game.logic.event.Event;
@@ -121,7 +119,7 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
     }
 
     @Override
-    public DC_ActiveObj getDefaultAction(Unit source, DungeonObj target) {
+    public ActiveObj getDefaultAction(Unit source, DungeonObj target) {
 
         for (DOOR_ACTION sub : DOOR_ACTION.values()) {
             if (checkAction(source, (Door) target, sub)) {
@@ -132,21 +130,21 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
     }
 
     @Override
-    public DC_UnitAction createAction(DOOR_ACTION sub, Unit unit, DungeonObj obj) {
+    public UnitAction createAction(DOOR_ACTION sub, Unit unit, DungeonObj obj) {
         return super.createAction(sub, unit,
          StringMaster.format(sub.name()) + " Door",
          obj);
     }
 
-    public List<DC_ActiveObj> getActions(DungeonObj door, Unit unit) {
+    public List<ActiveObj> getActions(DungeonObj door, Unit unit) {
         if (!(door instanceof Door))
             return new ArrayList<>();
         if (!checkUnitCanHandleActions(unit)) {
             return new ArrayList<>();
         }
         //check intelligence, mastery
-        List<DC_ActiveObj> list = new ArrayList<>();
-        DC_UnitAction action;
+        List<ActiveObj> list = new ArrayList<>();
+        UnitAction action;
         for (DOOR_ACTION sub : DOOR_ACTION.values()) {
 
             if (checkAction(unit, (Door) door, sub)) {

@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.rules.combat.attack;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
@@ -48,7 +48,7 @@ public class DC_AttackMaster {
         accuracyMaster = new AccuracyMaster(game);
     }
 
-    public static Attack getAttackFromAction(DC_ActiveObj attackAction) {
+    public static Attack getAttackFromAction(ActiveObj attackAction) {
         return EffectMaster.getAttackEffect(attackAction).getAttack();
     }
 
@@ -119,7 +119,7 @@ public class DC_AttackMaster {
         LogMaster.log(1, attack.getAttacker() + " attacks " +
                 attack.getAttacked() + " with " + attack.getAction());
 
-        DC_ActiveObj action = (DC_ActiveObj) ref.getObj(KEYS.ACTIVE);
+        ActiveObj action = (ActiveObj) ref.getObj(KEYS.ACTIVE);
         if (action.checkProperty(G_PROPS.ACTION_TAGS, "" + ActionEnums.ACTION_TAGS.OFF_HAND)) {
             offhand = true;
         }
@@ -138,7 +138,7 @@ public class DC_AttackMaster {
 
         if (result == null) { // first strike
             game.getLogManager().log(attack.getAttacked() + ": First Strike Counter-Attack!");
-            DC_ActiveObj counterAtk = counterRule.tryFindCounter(attack, false);
+            ActiveObj counterAtk = counterRule.tryFindCounter(attack, false);
             if (counterAtk != null) {
                 // AttackEffect effect = EffectMaster.getAttackEffect(counterAtk);
                 counterRule.counterWith(attack.getAction(), counterAtk);
@@ -170,7 +170,7 @@ public class DC_AttackMaster {
     /**
      * @return null  if attack has been delayed by target's first strike; false if target is killed; true otherwise
      */
-    private Boolean attackNow(Attack attack, DC_ActiveObj action, Ref ref, boolean free, boolean canCounter,
+    private Boolean attackNow(Attack attack, ActiveObj action, Ref ref, boolean free, boolean canCounter,
                               Effect onHit, Effect onKill, boolean offhand, boolean isCounter) {
         if (!(ref.getTargetObj() instanceof BattleFieldObject)) return true;
         BattleFieldObject attacked = (BattleFieldObject) ref.getTargetObj();

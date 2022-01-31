@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.UnitAction;
 import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;
 import libgdx.gui.dungeon.datasource.EntityDataSource;
@@ -36,7 +36,7 @@ public class WeaponDataSource extends EntityDataSource<WeaponItem> {
         return super.equals(obj);
     }
 
-    public List<DC_UnitAction> getActions() {
+    public List<UnitAction> getActions() {
         return new ArrayList<>(entity.getAttackActions());
     }
 

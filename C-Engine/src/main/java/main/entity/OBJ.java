@@ -5,7 +5,7 @@ import main.content.OBJ_TYPE;
 import main.content.enums.GenericEnums.STD_BOOLS;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.type.ObjType;
 
 import java.io.Serializable;
@@ -30,7 +30,7 @@ public interface OBJ extends Referred, Serializable, Runnable {
 
     void removeCounter(String name);
 
-    List<ActiveObj> getActives();
+    List<IActiveObj> getActives();
 
     List<AbilityObj> getPassives();
 

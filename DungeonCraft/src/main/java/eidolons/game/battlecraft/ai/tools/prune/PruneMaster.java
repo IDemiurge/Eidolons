@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.ai.tools.prune;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.active.Spell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
@@ -73,7 +73,7 @@ public class PruneMaster extends AiHandler {
     }
 
     public void pruneTargetsForAction(List<? extends DC_Obj> targets, GOAL_TYPE goal, UnitAI ai,
-                                      DC_ActiveObj action) {
+                                      ActiveObj action) {
         /*
          * cache for each goal?
 		 *
@@ -190,7 +190,7 @@ public class PruneMaster extends AiHandler {
 
     }
 
-    private int getPowerFactor(int limit, UnitAI ai, DC_ActiveObj action) {
+    private int getPowerFactor(int limit, UnitAI ai, ActiveObj action) {
         // cruel vs merciful
         ai.checkMod(AI_MODIFIERS.CRUEL);
         if (action.isMelee()) {
@@ -199,7 +199,7 @@ public class PruneMaster extends AiHandler {
         return 30 + limit * 2;
     }
 
-    private int getHeathPruneFactor(int limit, DC_Obj t, UnitAI ai, DC_ActiveObj action) {
+    private int getHeathPruneFactor(int limit, DC_Obj t, UnitAI ai, ActiveObj action) {
         if (action.isMelee()) {
             return 15 + limit * 3;
         }
@@ -208,14 +208,14 @@ public class PruneMaster extends AiHandler {
         // power/health/capacity/danger is prune factor!
     }
 
-    private int getCapacityPruneFactor(int limit, DC_Obj t, UnitAI ai, DC_ActiveObj action) {
+    private int getCapacityPruneFactor(int limit, DC_Obj t, UnitAI ai, ActiveObj action) {
         if (action.isMelee()) {
             return 15 + limit * 3;
         }
         return 10 + limit * 2;
     }
 
-    private int getDistancePruneFactor(int limit, DC_Obj t, UnitAI ai, DC_ActiveObj action) {
+    private int getDistancePruneFactor(int limit, DC_Obj t, UnitAI ai, ActiveObj action) {
         if (action.isRanged()) {
             return action.getIntParam(PARAMS.RANGE) * 3 / 2 - limit;
         }

@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import libgdx.anims.AnimData;
 import libgdx.anims.AnimData.ANIM_VALUES;
@@ -143,7 +143,7 @@ public class DeathAnim extends ActionAnim {
 //        return null;
     }
 
-    private DEATH_ANIM getTemplate(DC_ActiveObj active, BattleFieldObject unit) {
+    private DEATH_ANIM getTemplate(ActiveObj active, BattleFieldObject unit) {
 //        getRef().getEvent().getRef().getDamageType();
         return DEATH_ANIM.FADE;
     }

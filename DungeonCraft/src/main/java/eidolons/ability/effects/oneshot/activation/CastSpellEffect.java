@@ -1,6 +1,6 @@
 package eidolons.ability.effects.oneshot.activation;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.game.battlecraft.ai.tools.target.ReasonMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.MicroEffect;
@@ -12,12 +12,12 @@ import main.system.sound.AudioEnums;
 import java.util.List;
 
 public class CastSpellEffect extends MicroEffect implements OneshotEffect {
-    private DC_ActiveObj active;
+    private ActiveObj active;
     private KEYS key;
     private boolean forceTargeting;
 
     @OmittedConstructor
-    public CastSpellEffect(DC_ActiveObj active) {
+    public CastSpellEffect(ActiveObj active) {
         this.active = active;
     }
 
@@ -29,7 +29,7 @@ public class CastSpellEffect extends MicroEffect implements OneshotEffect {
     public boolean applyThis() {
         if (active == null) {
             try {
-                active = (DC_ActiveObj) ref.getObj(key);
+                active = (ActiveObj) ref.getObj(key);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }

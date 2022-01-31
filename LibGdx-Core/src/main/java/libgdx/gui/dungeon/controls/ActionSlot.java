@@ -1,7 +1,7 @@
 package libgdx.gui.dungeon.controls;
 
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import libgdx.gui.UiMaster;
 import libgdx.gui.dungeon.controls.radial.RadialMenu;
 import libgdx.gui.dungeon.panels.dc.actionpanel.ActionPanel;
@@ -13,7 +13,7 @@ import java.util.function.Supplier;
  * Created by JustMe on 11/13/2018.
  * TODO to replace the old item comps
  */
-public class ActionSlot extends HqSlotActor<DC_ActiveObj> {
+public class ActionSlot extends HqSlotActor<ActiveObj> {
 
     protected Supplier<String> infoTextSupplier;
     protected  ShaderProgram shader;
@@ -26,12 +26,12 @@ public class ActionSlot extends HqSlotActor<DC_ActiveObj> {
     protected RadialMenu customRadialMenu;
     
     
-    public ActionSlot(DC_ActiveObj model) {
+    public ActionSlot(ActiveObj model) {
         super(model);
     }
 
     @Override
-    protected String getOverlay(DC_ActiveObj model) {
+    protected String getOverlay(ActiveObj model) {
         return null;
     }
 

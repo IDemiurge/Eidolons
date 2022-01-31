@@ -24,7 +24,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.sound.AudioEnums;
 
-public class Spell extends DC_ActiveObj {
+public class Spell extends ActiveObj {
 
     private static final SPELL_TYPE DEFAULT_SPELL_TYPE = SPELL_TYPE.SORCERY;
     protected Costs channelingActivateCosts;

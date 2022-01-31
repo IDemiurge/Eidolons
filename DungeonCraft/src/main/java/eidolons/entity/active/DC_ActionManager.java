@@ -27,7 +27,7 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Active;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.core.game.GenericGame;
@@ -51,7 +51,7 @@ public class DC_ActionManager implements ActionManager {
     protected static ArrayList<ObjType> modeObjTypes;
     protected static ArrayList<ObjType> orderObjTypes;
     protected GenericGame game;
-    protected HashMap<Entity, Map<String, ActiveObj>> actionsCache = new HashMap<>();
+    protected HashMap<Entity, Map<String, IActiveObj>> actionsCache = new HashMap<>();
     private IFeatSpaceInitializer spaceManager;
 
     public DC_ActionManager(GenericGame game) {
@@ -69,9 +69,9 @@ public class DC_ActionManager implements ActionManager {
         }
     }
 
-    public static List<DC_ActiveObj> filterActionsByCanBePaid(List<DC_ActiveObj> actions) {
-        List<DC_ActiveObj> list = new ArrayList<>();
-        for (DC_ActiveObj action : actions) {
+    public static List<ActiveObj> filterActionsByCanBePaid(List<ActiveObj> actions) {
+        List<ActiveObj> list = new ArrayList<>();
+        for (ActiveObj action : actions) {
             if (action.canBeActivated()) {
                 list.add(action);
             }
@@ -80,7 +80,7 @@ public class DC_ActionManager implements ActionManager {
         return list;
     }
 
-    public static ACTION_TYPE_GROUPS getStdObjType(DC_ActiveObj activeObj) {
+    public static ACTION_TYPE_GROUPS getStdObjType(ActiveObj activeObj) {
         for (STD_ACTIONS action : STD_ACTIONS.values()) {
             if (action.toString().equals(activeObj.getType().getName())) {
                 switch (action) {
@@ -118,7 +118,7 @@ public class DC_ActionManager implements ActionManager {
         return null;
     }
 
-    protected void checkSetFeatRef(DC_UnitAction action) {
+    protected void checkSetFeatRef(UnitAction action) {
         DequeImpl<DC_PassiveObj> skills = new DequeImpl<>(action.getOwnerUnit().getSkills());
         skills.addAll(action.getOwnerUnit().getClasses());
         for (DC_PassiveObj s : skills) {
@@ -131,13 +131,13 @@ public class DC_ActionManager implements ActionManager {
     }
 
     @Override
-    public DC_UnitAction newAction(ObjType type, Ref ref, Player owner, GenericGame game) {
-        DC_UnitAction action = new DC_UnitAction(type, owner, game, ref);
+    public UnitAction newAction(ObjType type, Ref ref, Player owner, GenericGame game) {
+        UnitAction action = new UnitAction(type, owner, game, ref);
         game.getState().addObject(action);
         // to graveyard
         checkSetFeatRef(action);
 
-        Map<String, ActiveObj> map = actionsCache.get(ref.getSourceObj());
+        Map<String, IActiveObj> map = actionsCache.get(ref.getSourceObj());
         if (map == null) {
             map = new StringMap<>();
             actionsCache.put(ref.getSourceObj(), map);
@@ -149,7 +149,7 @@ public class DC_ActionManager implements ActionManager {
     public Spell newSpell(ObjType type, Ref ref, Player owner, GenericGame game) {
         Spell action = new Spell(type, owner, (DC_Game) game, ref);
         game.getState().addObject(action);
-        Map<String, ActiveObj> map = actionsCache.get(ref.getSourceObj());
+        Map<String, IActiveObj> map = actionsCache.get(ref.getSourceObj());
         if (map == null) {
             map = new StringMap<>();
             actionsCache.put(ref.getSourceObj(), map);
@@ -165,23 +165,23 @@ public class DC_ActionManager implements ActionManager {
         return action.activatedOn(ref);
     }
 
-    public boolean activateAttackOfOpportunity(ActiveObj action, Obj countering, boolean free) {
+    public boolean activateAttackOfOpportunity(IActiveObj action, Obj countering, boolean free) {
         return true;
     }
 
 
     @Override
-    public DC_ActiveObj findCounterAttack(ActiveObj action, Obj _countering) {
+    public ActiveObj findCounterAttack(IActiveObj action, Obj _countering) {
         Unit target = (Unit) action.getOwnerUnit();
         Unit source = (Unit) _countering;
-        return (DC_ActiveObj) getCounterAttackAction(target, source,
-                (DC_ActiveObj) action);
+        return (ActiveObj) getCounterAttackAction(target, source,
+                (ActiveObj) action);
     }
 
 
     public Active getCounterAttackAction(Unit countered, Unit countering,
-                                         DC_ActiveObj active) {
-        for (DC_ActiveObj attack : ExtraAttacksRule.getCounterAttacks(active, countering)) {
+                                         ActiveObj active) {
+        for (ActiveObj attack : ExtraAttacksRule.getCounterAttacks(active, countering)) {
             //            if (AnimMaster.isTestMode())
 
             if (attack.canBeActivatedAsCounter()) {
@@ -198,18 +198,18 @@ public class DC_ActionManager implements ActionManager {
     }
 
     @Override
-    public DC_UnitAction newAction(String typeName, Entity entity) {
-        return (DC_UnitAction) newActive(typeName, entity, false);
+    public UnitAction newAction(String typeName, Entity entity) {
+        return (UnitAction) newActive(typeName, entity, false);
     }
 
-    public DC_ActiveObj newActive(String typeName, Entity entity, boolean spell) {
-        Map<String, ActiveObj> map = actionsCache.get(entity);
+    public ActiveObj newActive(String typeName, Entity entity, boolean spell) {
+        Map<String, IActiveObj> map = actionsCache.get(entity);
         if (map == null) {
             map = new StringMap<>();
             actionsCache.put(entity, map);
         }
         if (map.get(typeName) != null) {
-            return (DC_UnitAction) map.get(typeName);
+            return (UnitAction) map.get(typeName);
         }
 
         ObjType type = DataManager.getType(typeName, spell ? DC_TYPE.SPELLS : DC_TYPE.ACTIONS);
@@ -225,30 +225,30 @@ public class DC_ActionManager implements ActionManager {
     }
 
     @Override
-    public DC_ActiveObj getAction(String typeName, Entity entity) {
+    public ActiveObj getAction(String typeName, Entity entity) {
         return getAction(typeName, entity, true);
     }
 
-    public DC_UnitAction getOrCreateAction(String typeName, Entity entity) {
-        return (DC_UnitAction) getAction(typeName, entity, false);
+    public UnitAction getOrCreateAction(String typeName, Entity entity) {
+        return (UnitAction) getAction(typeName, entity, false);
     }
 
-    public DC_ActiveObj getOrCreateActionOrSpell(String typeName, Entity entity) {
+    public ActiveObj getOrCreateActionOrSpell(String typeName, Entity entity) {
         return getAction(typeName, entity, false);
     }
 
-    public DC_ActiveObj getAction(String typeName, Entity entity, boolean onlyIfAlreadyPresent) {
+    public ActiveObj getAction(String typeName, Entity entity, boolean onlyIfAlreadyPresent) {
         typeName = typeName.trim();
         if (actionsCache.get(entity) == null) {
             actionsCache.put(entity, new StringMap<>());
         }
-        ActiveObj action = actionsCache.get(entity).get(typeName);
+        IActiveObj action = actionsCache.get(entity).get(typeName);
         if (action == null) {
 
             if (entity instanceof Unit) {
                 action = ((Unit) entity).getSpell(typeName);
                 if (action != null) {
-                    return (DC_ActiveObj) action;
+                    return (ActiveObj) action;
                 }
             }
 
@@ -270,7 +270,7 @@ public class DC_ActionManager implements ActionManager {
             }
             actionsCache.get(entity).put(typeName, action);
         }
-        return (DC_ActiveObj) action;
+        return (ActiveObj) action;
     }
 
 
@@ -279,7 +279,7 @@ public class DC_ActionManager implements ActionManager {
 
     }
 
-    public List<DC_UnitAction> getOrCreateWeaponActions(WeaponItem weapon) {
+    public List<UnitAction> getOrCreateWeaponActions(WeaponItem weapon) {
         if (weapon == null) {
             return new ArrayList<>();
         }
@@ -287,7 +287,7 @@ public class DC_ActionManager implements ActionManager {
         if (obj == null) {
             return new ArrayList<>();
         }
-        List<DC_UnitAction> list = weapon.getAttackActions();
+        List<UnitAction> list = weapon.getAttackActions();
         if (list != null) {
             return new ArrayList<>(list);
         }
@@ -296,7 +296,7 @@ public class DC_ActionManager implements ActionManager {
             if (!weapon.isMainHand()) {
                 typeName = ActionGenerator.getOffhandActionName(typeName);
             }
-            DC_UnitAction action = getOrCreateAction(typeName, obj);
+            UnitAction action = getOrCreateAction(typeName, obj);
 
             // action.setObjTypeGroup(ACTION_TYPE_GROUPS.HIDDEN);
             // TODO so it's inside normal attack then?
@@ -378,13 +378,13 @@ public class DC_ActionManager implements ActionManager {
         for (ACTION_TYPE sub : unit.getActionMap().keySet()) {
             unit.getActionMap().put(sub, new DequeImpl<>());
         }
-        for (ActiveObj active : unit.getActives()) {
-            DC_UnitAction action = (DC_UnitAction) active;
+        for (IActiveObj active : unit.getActives()) {
+            UnitAction action = (UnitAction) active;
             ACTION_TYPE type = action.getActionType();
             if (type == null) {
                 type = action.getActionType();
             }
-            DequeImpl<DC_UnitAction> list = unit.getActionMap().get(type);
+            DequeImpl<UnitAction> list = unit.getActionMap().get(type);
 
             if (!hiddenActions.contains(action.getType())) {
                 list.add(action);
@@ -393,14 +393,14 @@ public class DC_ActionManager implements ActionManager {
         }
     }
 
-    protected List<DC_UnitAction> getObjTypes(List<? extends ObjType> actionTypes,
-                                              Unit unit) {
-        List<DC_UnitAction> list = new ArrayList<>();
+    protected List<UnitAction> getObjTypes(List<? extends ObjType> actionTypes,
+                                           Unit unit) {
+        List<UnitAction> list = new ArrayList<>();
         for (ObjType type : actionTypes) {
             if (type == null)
                 continue;
             // Ref ref = Ref.getCopy(unit.getRef());
-            DC_UnitAction action = getOrCreateAction(type.getName(), unit);
+            UnitAction action = getOrCreateAction(type.getName(), unit);
             // = getOrCreateAction(type, ref, unit.getOwner(), game);
             list.add(action);
         }
@@ -416,13 +416,13 @@ public class DC_ActionManager implements ActionManager {
             }
             for (ACTION_TYPE key : game.getManager().getActiveObj().getActionMap()
                     .keySet()) {
-                for (DC_ActiveObj active : game.getManager().getActiveObj()
+                for (ActiveObj active : game.getManager().getActiveObj()
                         .getActionMap().get(key)) {
                     active.initCosts();
                 }
             }
 
-            for (DC_ActiveObj active : game.getManager().getActiveObj().getSpells()) {
+            for (ActiveObj active : game.getManager().getActiveObj().getSpells()) {
                 active.initCosts();
             }
 

@@ -1,6 +1,6 @@
 package eidolons.entity.unit.attach;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.active.spaces.Feat;
 import eidolons.entity.obj.DC_Obj;
 import main.entity.Ref;
@@ -26,7 +26,7 @@ public class TriggerPassive extends DC_Obj  implements Feat {
     }
 
     @Override
-    public DC_ActiveObj getActive() {
+    public ActiveObj getActive() {
         return null;
     }
 

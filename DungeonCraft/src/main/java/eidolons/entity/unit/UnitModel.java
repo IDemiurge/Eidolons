@@ -2,8 +2,8 @@ package eidolons.entity.unit;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.ActiveObj;
+import eidolons.entity.active.UnitAction;
 import eidolons.entity.handlers.bf.unit.UnitCalculator;
 import eidolons.entity.handlers.bf.unit.UnitChecker;
 import eidolons.entity.handlers.bf.unit.UnitInitializer;
@@ -26,10 +26,9 @@ import main.content.mode.MODE;
 import main.content.mode.STD_MODES;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -50,7 +49,7 @@ public abstract class UnitModel extends BattleFieldObject {
 
     protected VISION_MODE vision_mode;
     protected MODE mode;
-    protected Map<ACTION_TYPE, DequeImpl<DC_UnitAction>> actionMap;
+    protected Map<ACTION_TYPE, DequeImpl<UnitAction>> actionMap;
 
     protected UnitAI unitAI;
     protected ImageIcon emblem;
@@ -107,7 +106,7 @@ public abstract class UnitModel extends BattleFieldObject {
         else {
             if (checkSelectHighlighted()) {
                 String actionTargetingTooltip = "";
-                DC_ActiveObj action = (DC_ActiveObj) getGame().getManager().getActivatingAction();
+                ActiveObj action = (ActiveObj) getGame().getManager().getActivatingAction();
                 try {
                     actionTargetingTooltip = ToolTipMaster.getActionTargetingTooltip(this, action);
                 } catch (Exception e) {
@@ -175,10 +174,10 @@ public abstract class UnitModel extends BattleFieldObject {
     }
 
 
-    public DC_ActiveObj getStdAttack() {
+    public ActiveObj getStdAttack() {
         return getAttackOfType(ActionEnums.ATTACK_TYPE.STANDARD_ATTACK);
     }
-    public DC_ActiveObj getAttackOfType(ActionEnums.ATTACK_TYPE type) {
+    public ActiveObj getAttackOfType(ActionEnums.ATTACK_TYPE type) {
         return getAttack();
         //TODO NF Rules revamp
         // for (DC_UnitAction subAction : getAttack().getSubActions()) {
@@ -249,11 +248,11 @@ public abstract class UnitModel extends BattleFieldObject {
     }
 
 
-    public DC_UnitAction getAttack() {
+    public UnitAction getAttack() {
         return getAction(ActionEnums.ATTACK);
     }
 
-    public DC_UnitAction getOffhandAttack() {
+    public UnitAction getOffhandAttack() {
         return getAction(ActionEnums.OFFHAND_ATTACK);
     }
 
@@ -275,44 +274,44 @@ public abstract class UnitModel extends BattleFieldObject {
         // getVisibleCoordinates().clear();
     }
 
-    public Map<ACTION_TYPE, DequeImpl<DC_UnitAction>> getActionMap() {
+    public Map<ACTION_TYPE, DequeImpl<UnitAction>> getActionMap() {
         if (actionMap == null) {
             actionMap = new ConcurrentHashMap<>();
         }
         return actionMap;
     }
 
-    public void setActionMap(Map<ACTION_TYPE, DequeImpl<DC_UnitAction>> actionMap) {
+    public void setActionMap(Map<ACTION_TYPE, DequeImpl<UnitAction>> actionMap) {
         this.actionMap = actionMap;
     }
 
 
     public boolean checkActionCanBeActivated(String actionName) {
-        DC_UnitAction action = getAction(actionName);
+        UnitAction action = getAction(actionName);
         if (action == null) {
             return false;
         }
         return action.canBeActivated();
     }
 
-    public DC_ActiveObj getActionOrSpell(String name) {
+    public ActiveObj getActionOrSpell(String name) {
         return getGame().getActionManager().getAction(name, this, false);
     }
 
-    public DC_UnitAction getAction(String name) {
-        ActiveObj action = getGame().getActionManager().getAction(name, this);
-        if (action instanceof DC_UnitAction) {
-            return (DC_UnitAction) action;
+    public UnitAction getAction(String name) {
+        IActiveObj action = getGame().getActionManager().getAction(name, this);
+        if (action instanceof UnitAction) {
+            return (UnitAction) action;
         }
         return getAction(name, true); //TODO was non-strict required??
     }
 
-    public DC_UnitAction getAction(String action, boolean strict) {
+    public UnitAction getAction(String action, boolean strict) {
         if (StringMaster.isEmpty(action)) {
             return null;
         }
         for (ACTION_TYPE type : getActionMap().keySet()) {
-            for (DC_UnitAction a : getActionMap().get(type)) {
+            for (UnitAction a : getActionMap().get(type)) {
                 if (StringMaster.compare(action, a.getName(), true)) {
                     return a;
                 }
@@ -320,7 +319,7 @@ public abstract class UnitModel extends BattleFieldObject {
         }
         if (!strict) {
             for (ACTION_TYPE type : getActionMap().keySet()) {
-                for (DC_UnitAction a : getActionMap().get(type)) {
+                for (UnitAction a : getActionMap().get(type)) {
                     if (StringMaster.compare(action, a.getName(), false)) {
                         return a;
                     }
@@ -384,11 +383,11 @@ public abstract class UnitModel extends BattleFieldObject {
         return getChecker().canCounter();
     }
 
-    public boolean canCounter(DC_ActiveObj active) {
+    public boolean canCounter(ActiveObj active) {
         return getChecker().canCounter(active);
     }
 
-    public boolean canCounter(DC_ActiveObj active, boolean sneak) {
+    public boolean canCounter(ActiveObj active, boolean sneak) {
         return getChecker().canCounter(active, sneak);
     }
 
@@ -464,8 +463,8 @@ public abstract class UnitModel extends BattleFieldObject {
     }
 
 
-    public DC_ActiveObj getDummyAction() {
-        DC_UnitAction action = getAction("Dummy Action");
+    public ActiveObj getDummyAction() {
+        UnitAction action = getAction("Dummy Action");
         if (action == null) {
 
         }

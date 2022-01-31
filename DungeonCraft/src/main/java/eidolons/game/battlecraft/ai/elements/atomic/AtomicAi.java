@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.ai.elements.atomic;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.UnitAction;
 import eidolons.entity.item.QuickItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
@@ -109,7 +109,7 @@ public class AtomicAi extends AiHandler {
         if (c == null)
             return null;
         Door door = (Door) game.getObjectByCoordinate(c);
-        DC_UnitAction action = game.getDungeonMaster().getDungeonObjMaster(DUNGEON_OBJ_TYPE.DOOR).createAction(DOOR_ACTION.OPEN,
+        UnitAction action = game.getDungeonMaster().getDungeonObjMaster(DUNGEON_OBJ_TYPE.DOOR).createAction(DOOR_ACTION.OPEN,
                 ai.getUnit(), door);
         return AiActionFactory.newAction(action, ai.getUnit().getRef().getTargetingRef(door));
 

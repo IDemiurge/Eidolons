@@ -2,24 +2,21 @@ package eidolons.game.battlecraft.rules.combat.attack;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.system.math.roll.DiceMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.NewRpgEnums;
-import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.BfObj;
 import main.entity.obj.Obj;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -52,7 +49,7 @@ public class AttackCalculator {
     boolean precalc;
 
     protected final Attack attack;
-    protected final DC_ActiveObj action;
+    protected final ActiveObj action;
     protected final Unit attacker;
     protected BattleFieldObject attacked;
     protected final WeaponItem weapon;
@@ -137,7 +134,7 @@ public class AttackCalculator {
 
 
     protected Integer getDamageForHitType(Attack attack, Integer amount, Unit attacker,
-                                        BattleFieldObject attacked, DC_ActiveObj action, boolean offhand) {
+                                          BattleFieldObject attacked, ActiveObj action, boolean offhand) {
         int mod = HitTypeRule.getDamagePercentage(action, attacked, attack.getHitType());
         //TODO anything else?
         return mod;

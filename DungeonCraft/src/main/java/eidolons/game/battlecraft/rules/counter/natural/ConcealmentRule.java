@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.rules.counter.natural;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
@@ -23,7 +23,7 @@ public class ConcealmentRule {
 	 */
 
 
-    public static boolean checkMissed(DC_ActiveObj action) {
+    public static boolean checkMissed(ActiveObj action) {
         Unit source = action.getOwnerUnit();
         Obj target = action.getRef().getTargetObj();
         if (source == null || target == null) {
@@ -44,7 +44,7 @@ public class ConcealmentRule {
     }
 
     // DEPENDING ON VISIBILITY_LEVEL?
-    public static int getMissChance(DC_ActiveObj action) {
+    public static int getMissChance(ActiveObj action) {
         DC_Obj source = action.getOwnerUnit();
         Obj target = action.getRef().getTargetObj();
         Obj cell = source.getGame().getCell(source.getCoordinates());
@@ -75,7 +75,7 @@ public class ConcealmentRule {
         return (chance);
     }
 
-    public static void logMissed(LogManager logManager, DC_ActiveObj activeObj) {
+    public static void logMissed(LogManager logManager, ActiveObj activeObj) {
         logManager.log(StringMaster.getMessagePrefix(true,
          activeObj.getOwnerUnit().getOwner().isMe())
          + StringMaster.getPossessive(activeObj.getOwnerUnit().getName())

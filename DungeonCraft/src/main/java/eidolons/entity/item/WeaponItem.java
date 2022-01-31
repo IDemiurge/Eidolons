@@ -4,8 +4,8 @@ import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_QuickItemAction;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.QuickItemAction;
+import eidolons.entity.active.UnitAction;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.UnitModel;
 import eidolons.entity.unit.Unit;
@@ -36,7 +36,7 @@ import java.util.List;
 public class WeaponItem extends HeroSlotItem {
 
     private boolean mainHand;
-    private List<DC_UnitAction> attackActions;
+    private List<UnitAction> attackActions;
     private QuickItem ammo;
     private QuickItem lastAmmo;
     private GenericEnums.DieType die;
@@ -56,7 +56,7 @@ public class WeaponItem extends HeroSlotItem {
 
     @Override
     public void applySpecialEffects(SPECIAL_EFFECTS_CASE case_type, UnitModel target, Ref REF) {
-        if (REF.getActive() instanceof DC_QuickItemAction) {
+        if (REF.getActive() instanceof QuickItemAction) {
             DC_Obj weapon = (DC_Obj) REF.getActive().getRef().getObj(KEYS.ITEM);
             if (weapon != null) {
                 weapon.applySpecialEffects(case_type, target, REF);
@@ -387,17 +387,17 @@ public class WeaponItem extends HeroSlotItem {
 
     }
 
-    public List<DC_UnitAction> getOrCreateAttackActions() {
+    public List<UnitAction> getOrCreateAttackActions() {
         if (attackActions == null)
             setAttackActions(getGame().getActionManager().getOrCreateWeaponActions(this));
         return attackActions;
     }
 
-    public List<DC_UnitAction> getAttackActions() {
+    public List<UnitAction> getAttackActions() {
         return attackActions;
     }
 
-    public void setAttackActions(List<DC_UnitAction> attackActions) {
+    public void setAttackActions(List<UnitAction> attackActions) {
         this.attackActions = attackActions;
     }
 

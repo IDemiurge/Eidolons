@@ -9,7 +9,7 @@ import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.group.GroupImpl;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.Obj;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
@@ -20,7 +20,7 @@ import org.w3c.dom.Node;
 
 //obsolete version - too specific 
 
-public class AbilityObj extends Obj implements Ability, ActiveObj, Interruptable {
+public class AbilityObj extends Obj implements Ability, IActiveObj, Interruptable {
 
     protected Abilities abilities;
     protected boolean interrupted;

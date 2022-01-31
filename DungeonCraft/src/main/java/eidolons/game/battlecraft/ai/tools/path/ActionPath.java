@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.ai.tools.path;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.data.ListMaster;
@@ -41,7 +41,7 @@ public class ActionPath {
         return false;
     }
 
-    public boolean hasAction(DC_ActiveObj action) {
+    public boolean hasAction(ActiveObj action) {
         for (Choice choice : getChoices()) {
             for (AiAction a : choice.getActions()) {
                 if (a.getActive().equals(action)) {

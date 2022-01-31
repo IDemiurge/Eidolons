@@ -1,8 +1,7 @@
 package eidolons.game.exploration.handlers;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.unit.Unit;
+import eidolons.entity.active.ActiveObj;
 import eidolons.game.core.atb.AtbMaster;
 import main.content.values.parameters.PARAMETER;
 import main.elements.costs.Cost;
@@ -10,7 +9,6 @@ import main.elements.costs.Costs;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,7 +32,7 @@ public class ExplorationActionHandler extends ExplorationHandler {
     }
 
     @Deprecated
-    public static float calcBlockingTime(DC_ActiveObj action) {
+    public static float calcBlockingTime(ActiveObj action) {
         float coef = 1f;
         if (action.isAttackAny()) {
             coef = 2f;
@@ -55,12 +53,12 @@ public class ExplorationActionHandler extends ExplorationHandler {
             sub.getPayment().getAmountFormula().append("*" + FOC_MODIFIER);
     }
 
-    public void playerActionActivated(DC_ActiveObj activeObj, Boolean result) {
+    public void playerActionActivated(ActiveObj activeObj, Boolean result) {
         WaitMaster.receiveInput(WAIT_OPERATIONS.PLAYER_ACTION_FINISHED, result);
     }
 
 
-    public void payCosts(DC_ActiveObj entity) {
+    public void payCosts(ActiveObj entity) {
         if (!entity.getOwnerObj().isMine())
             return;
         adjustCosts(entity.getCosts());

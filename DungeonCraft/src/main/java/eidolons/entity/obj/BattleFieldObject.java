@@ -5,7 +5,7 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.values.ValuePages;
 import eidolons.entity.ChangeableType;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.item.ArmorItem;
 import eidolons.entity.item.WeaponItem;
 import eidolons.game.battlecraft.DC_Engine;
@@ -39,7 +39,6 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.game.core.game.Game;
 import main.game.logic.action.context.Context.IdKey;
 import main.game.logic.battle.player.Player;
@@ -416,7 +415,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         return true;
     }
 
-    public boolean canCounter(DC_ActiveObj action, boolean sneak) {
+    public boolean canCounter(ActiveObj action, boolean sneak) {
         return false;
     }
 
@@ -664,7 +663,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         return getGame().getDungeonMaster().getStructMaster().getLowestStruct(getCoordinates());
     }
 
-    public boolean checkCanDoFreeMove(DC_ActiveObj entity) {
+    public boolean checkCanDoFreeMove(ActiveObj entity) {
         return false;
     }
 }

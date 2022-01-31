@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.ai.elements.actions.sequence;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.item.QuickItem;
 import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;
@@ -80,10 +80,10 @@ public class ActionSequenceConstructor extends AiHandler {
 
     public List<ActionSequence> createActionSequencesForGoal(Goal goal, UnitAI ai) {
         List<ActionSequence> actionSequences = new ArrayList<>();
-        List<DC_ActiveObj> actions = AiUnitActionMaster.getFullActionList(goal.getTYPE(), ai.getUnit());
+        List<ActiveObj> actions = AiUnitActionMaster.getFullActionList(goal.getTYPE(), ai.getUnit());
         //TODO NF Rules revamp
         // actions.addAll(addSubactions(actions));
-        for (DC_ActiveObj action : actions) {
+        for (ActiveObj action : actions) {
             if (!TimeLimitMaster.checkTimeLimitForAi(getUnitAi()))
                 break;
 
@@ -119,7 +119,7 @@ public class ActionSequenceConstructor extends AiHandler {
         return actionSequences;
     }
 
-    private List<ActionSequence> getSequences(Task task, DC_ActiveObj active) {
+    private List<ActionSequence> getSequences(Task task, ActiveObj active) {
         List<ActionSequence> sequences = new ArrayList<>();
         Ref ref = task.getUnit().getRef().getCopy();
         Integer arg = TaskManager.checkTaskArgReplacement(task, active);
@@ -226,7 +226,7 @@ public class ActionSequenceConstructor extends AiHandler {
         }
 
         Unit unit = (Unit) aiAction.getRef().getSourceObj();
-        List<DC_ActiveObj> moveActions = getMoveActions(aiAction);
+        List<ActiveObj> moveActions = getMoveActions(aiAction);
 
         if (!ListMaster.isNotEmpty(moveActions)) {
             // [QUICK FIX]
@@ -317,7 +317,7 @@ public class ActionSequenceConstructor extends AiHandler {
         return "TIMED AI ACTION ";
     }
 
-    private List<DC_ActiveObj> getMoveActions(AiAction aiAction) {
+    private List<ActiveObj> getMoveActions(AiAction aiAction) {
         return DC_MovementManager.getMoves(unit);
     }
 

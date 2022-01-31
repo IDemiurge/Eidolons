@@ -1,14 +1,11 @@
 package eidolons.ability.effects.oneshot.attack;
 
 import eidolons.ability.effects.DC_Effect;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.core.EUtils;
-import eidolons.system.text.DC_Logger;
 import main.ability.effects.OneshotEffect;
-import main.elements.conditions.Condition;
-import main.entity.Ref;
 import main.system.auxiliary.RandomWizard;
 import main.system.launch.Flags;
 
@@ -20,7 +17,7 @@ public class AutoAttackEffect extends DC_Effect implements OneshotEffect {
 
     @Override
     public boolean applyThis() {
-        DC_ActiveObj attack = pickAttack();
+        ActiveObj attack = pickAttack();
         if (attack == null) {
                 ref.getActive().setCancelled(true);
                 EUtils.showInfoText("Could not find an attack!");
@@ -44,14 +41,14 @@ public class AutoAttackEffect extends DC_Effect implements OneshotEffect {
         return true;
     }
 
-    private int calculatePriority(DC_ActiveObj attack, BattleFieldObject target) {
+    private int calculatePriority(ActiveObj attack, BattleFieldObject target) {
         return DC_PriorityManager.getAttackPriority(attack, target);
     }
 
-    private DC_ActiveObj pickAttack() {
+    private ActiveObj pickAttack() {
         if (Flags.isSafeMode())
             return getSourceUnitOrNull().getStdAttack();
-        List<DC_ActiveObj> subActions = getActiveObj().getValidSubactions(ref, target);
+        List<ActiveObj> subActions = getActiveObj().getValidSubactions(ref, target);
 
         //TODO NF Rules revamp
         if (subActions.size() == 1) {
@@ -67,11 +64,11 @@ public class AutoAttackEffect extends DC_Effect implements OneshotEffect {
         return getActiveObj().isAutoSelectionOn();
     }
 
-    private DC_ActiveObj pickAutomatically(List<DC_ActiveObj> subActions) {
-        DC_ActiveObj pick = null;
+    private ActiveObj pickAutomatically(List<ActiveObj> subActions) {
+        ActiveObj pick = null;
         int max = Integer.MIN_VALUE;
 
-        for (DC_ActiveObj attack : subActions) {
+        for (ActiveObj attack : subActions) {
             int priority = calculatePriority(attack, getTarget());
             priority += RandomWizard.getRandomIntBetween(-2, 2);
             if (priority > max) {

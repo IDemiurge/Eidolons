@@ -9,7 +9,7 @@ import main.content.values.properties.PROPERTY;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.entity.group.GroupImpl;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by JustMe on 11/27/2017.
  */
-public class DummyAction implements ActiveObj {
+public class DummyAction implements IActiveObj {
     @Override
     public Ref getRef() {
         return null;
@@ -195,7 +195,7 @@ public class DummyAction implements ActiveObj {
     }
 
     @Override
-    public List<ActiveObj> getActives() {
+    public List<IActiveObj> getActives() {
         return null;
     }
 

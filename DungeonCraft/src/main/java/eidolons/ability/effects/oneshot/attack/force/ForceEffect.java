@@ -1,7 +1,6 @@
 package eidolons.ability.effects.oneshot.attack.force;
 
 import eidolons.ability.effects.DC_Effect;
-import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;

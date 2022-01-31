@@ -1,6 +1,6 @@
 package libgdx.gui.dungeon.panels.dc.unitinfo.tooltips;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import libgdx.gui.generic.ValueContainer;
 import libgdx.gui.dungeon.tooltips.Tooltip;
 import libgdx.screens.dungeon.DungeonScreen;
@@ -12,10 +12,10 @@ import java.util.List;
  * Created by JustMe on 9/20/2017.
  */
 public class ActionTooltip extends Tooltip {
-    private final DC_ActiveObj action;
+    private final ActiveObj action;
     private boolean radial;
 
-    public ActionTooltip(DC_ActiveObj el) {
+    public ActionTooltip(ActiveObj el) {
         this.action = el;
     }
 

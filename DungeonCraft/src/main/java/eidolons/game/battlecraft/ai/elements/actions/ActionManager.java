@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.ai.elements.actions;
 
 import eidolons.content.ContentConsts;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.UnitAction;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.UnitAI;
@@ -297,11 +297,11 @@ public class ActionManager extends AiHandler {
     }
 
     private void checkDeactivate() {
-        DequeImpl<DC_UnitAction> list = getUnit().getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ACTION);
+        DequeImpl<UnitAction> list = getUnit().getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ACTION);
         if (list == null) {
             return;
         }
-        for (DC_UnitAction a : list) {
+        for (UnitAction a : list) {
             if (a.isContinuousMode()) {
                 if (a.checkContinuousModeDeactivate()) {
                     boolean result = false;

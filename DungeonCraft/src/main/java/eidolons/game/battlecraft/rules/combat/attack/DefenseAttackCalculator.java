@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.rules.combat.attack;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import main.system.math.MathMaster;
 
@@ -19,7 +19,7 @@ public class DefenseAttackCalculator {
     }
 
     //
-    public static int getDefenseValue(BattleFieldObject attacker, BattleFieldObject attacked, DC_ActiveObj action) {
+    public static int getDefenseValue(BattleFieldObject attacker, BattleFieldObject attacked, ActiveObj action) {
         int defense = attacked.getIntParam(PARAMS.DEFENSE)
                 - attacker.getIntParam(PARAMS.DEFENSE_PENETRATION);
         defense = defense * (action.getIntParam(PARAMS.DEFENSE_MOD)) / 100;
@@ -28,7 +28,7 @@ public class DefenseAttackCalculator {
     }
 
     public static int getAttackValue(boolean offhand, BattleFieldObject attacker, BattleFieldObject attacked,
-                                     DC_ActiveObj action) {
+                                     ActiveObj action) {
         int attack = attacker.getIntParam((offhand) ? PARAMS.OFF_HAND_ATTACK : PARAMS.ATTACK);
         attack = MathMaster.applyPercent(attack,
                 action.getIntParam(PARAMS.ATTACK_MOD));

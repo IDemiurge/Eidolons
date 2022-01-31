@@ -5,7 +5,7 @@ import eidolons.content.DC_CONSTS.ITEM_LEVEL;
 import eidolons.content.DC_CONSTS.JEWELRY_ITEM_TRAIT;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
@@ -543,8 +543,8 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     @Override
-    public List<DC_ActiveObj> getActions(DungeonObj obj, Unit unit) {
-        List<DC_ActiveObj> list = new ArrayList<>();
+    public List<ActiveObj> getActions(DungeonObj obj, Unit unit) {
+        List<ActiveObj> list = new ArrayList<>();
         list.add(
                 createAction(CONTAINER_ACTION.OPEN, unit, obj));
         return list;
@@ -734,7 +734,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     @Override
-    public DC_ActiveObj getDefaultAction(Unit source, DungeonObj target) {
+    public ActiveObj getDefaultAction(Unit source, DungeonObj target) {
         return createAction(CONTAINER_ACTION.OPEN, source, target);
     }
 

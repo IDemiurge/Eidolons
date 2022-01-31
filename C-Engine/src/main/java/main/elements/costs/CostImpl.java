@@ -4,7 +4,7 @@ import main.content.values.parameters.PARAMETER;
 import main.elements.ReferredElement;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.Obj;
 
 import java.io.Serializable;
@@ -22,7 +22,7 @@ public class CostImpl extends ReferredElement implements Cost, Serializable {
     protected List<Payment> toPay = new ArrayList<>();
     protected boolean variable = false;
     protected String key = KEYS.SOURCE.toString();
-    protected ActiveObj activeObj;
+    protected IActiveObj activeObj;
     protected String reason;
     boolean paidAlt = false;
     private Integer active;

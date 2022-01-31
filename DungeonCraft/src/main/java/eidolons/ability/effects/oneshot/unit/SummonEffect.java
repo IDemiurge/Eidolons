@@ -4,7 +4,6 @@ import eidolons.entity.unit.trainers.UnitTrainingMaster;
 import eidolons.ability.effects.DC_Effect;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.EUtils;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.Effect;
@@ -17,13 +16,12 @@ import main.data.DataManager;
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.BuffObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.entity.type.impl.BuffType;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -120,7 +118,7 @@ public class SummonEffect extends DC_Effect implements OneshotEffect {
 
         getSourceUnitOrNull().getRef().setID(KEYS.SUMMONER, ref.getSource());
 
-        ActiveObj active = ref.getActive();
+        IActiveObj active = ref.getActive();
         if (active == null) {
             active = unit.getGame().getLoop().getLastActionInput().getAction();
         }

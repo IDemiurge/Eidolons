@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.rules.mechanics;
 
 import eidolons.content.DC_ContentValsManager;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_QuickItemAction;
+import eidolons.entity.active.ActiveObj;
+import eidolons.entity.active.QuickItemAction;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
@@ -64,7 +64,7 @@ public class CoatingRule {
     }
 
     public static void unitIsHit(BattleFieldObject target, Unit source,
-                                 boolean offhand, DC_ActiveObj action, Attack attack, DC_Obj weapon) {
+                                 boolean offhand, ActiveObj action, Attack attack, DC_Obj weapon) {
         boolean throwing = false;
 
         // if (weapon instanceof DC_WeaponObj) {
@@ -83,7 +83,7 @@ public class CoatingRule {
 
         // }
 
-        if (action instanceof DC_QuickItemAction) {
+        if (action instanceof QuickItemAction) {
             weapon = (DC_Obj) action.getRef().getObj(KEYS.ITEM);
             throwing = true;
         }
@@ -110,7 +110,7 @@ public class CoatingRule {
     }
 
     private static void applyCounters(BattleFieldObject target, DC_Obj item,
-                                      BattleFieldObject source, COUNTER c, DC_ActiveObj action,
+                                      BattleFieldObject source, COUNTER c, ActiveObj action,
                                       boolean throwing) {
         if (item.getCounter(c) <= 0) {
             return;

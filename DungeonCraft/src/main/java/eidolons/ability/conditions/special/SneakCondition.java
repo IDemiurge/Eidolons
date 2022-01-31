@@ -1,8 +1,7 @@
 package eidolons.ability.conditions.special;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.unit.Unit;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.STATUS;
@@ -59,7 +58,7 @@ public class SneakCondition extends MicroCondition {
 
         Unit attacker = (Unit) ref.getSourceObj();
 
-        DC_ActiveObj action = (DC_ActiveObj) ref.getObj(KEYS.ACTIVE);
+        ActiveObj action = (ActiveObj) ref.getObj(KEYS.ACTIVE);
 
         // if (attacked.checkPassive(STANDARD_PASSIVES.VIGILANCE))
         // return false;

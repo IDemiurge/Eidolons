@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.ai.elements.task;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.DC_Obj;
@@ -32,7 +32,7 @@ public class TaskManager extends AiHandler {
         super(master);
     }
 
-    public static Integer checkTaskArgReplacement(Task task, DC_ActiveObj action) {
+    public static Integer checkTaskArgReplacement(Task task, ActiveObj action) {
         // "custom targeting" of sorts !
         TARGETING_MODE mode = action.getTargetingMode();
         if (mode == null) {
@@ -94,11 +94,11 @@ public class TaskManager extends AiHandler {
         return (Integer) task.getArg();
     }
 
-    public List<Task> getTasks(GOAL_TYPE goal, UnitAI ai, DC_ActiveObj action) {
+    public List<Task> getTasks(GOAL_TYPE goal, UnitAI ai, ActiveObj action) {
         return getTasks(goal, ai, false, action);
     }
 
-    public List<Task> getTasks(GOAL_TYPE goal, UnitAI ai, boolean forced, DC_ActiveObj action) {
+    public List<Task> getTasks(GOAL_TYPE goal, UnitAI ai, boolean forced, ActiveObj action) {
         List<Task> list = new XList<>();
         if (ai.getCurrentOrder() != null)
             if (ai.getCurrentOrder().getArg() != null)
@@ -253,7 +253,7 @@ public class TaskManager extends AiHandler {
     }
 
     private void checkPrune(List<? extends DC_Obj> targets, GOAL_TYPE goal, UnitAI ai,
-                            DC_ActiveObj action) {
+                            ActiveObj action) {
         getPruneMaster().pruneTargetsForAction(targets, goal, ai, action);
     }
 

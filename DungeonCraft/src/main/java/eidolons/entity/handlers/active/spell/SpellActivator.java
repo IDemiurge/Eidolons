@@ -1,6 +1,6 @@
 package eidolons.entity.handlers.active.spell;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.handlers.active.Activator;
 import eidolons.entity.handlers.active.ActiveMaster;
 import main.entity.Ref;
@@ -10,7 +10,7 @@ import main.entity.Ref;
  */
 public class SpellActivator extends Activator {
 
-    public SpellActivator(DC_ActiveObj entity, ActiveMaster entityMaster) {
+    public SpellActivator(ActiveObj entity, ActiveMaster entityMaster) {
         super(entity, entityMaster);
     }
 

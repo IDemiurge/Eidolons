@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.content.consts.VisualEnums.ANIM_PART;
 import libgdx.anims.anim3d.Weapon3dAnim;
 import libgdx.anims.sprite.SpriteAnimation;
@@ -53,7 +53,7 @@ public class ForceAnim extends Weapon3dAnim {
     );
 
 
-    public ForceAnim(DC_ActiveObj active, ANIM_PART part) {
+    public ForceAnim(ActiveObj active, ANIM_PART part) {
         super(active);
         type = active.getActiveWeapon().getDamageType();
 

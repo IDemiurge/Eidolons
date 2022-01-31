@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.ai;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.advanced.companion.Order;
 import eidolons.game.battlecraft.ai.elements.actions.AiAction;
@@ -33,7 +33,7 @@ public class UnitAI {
     private ORDER_TYPE orderType;
     private Order currentOrder;
 
-    private List<DC_ActiveObj> usedActions;
+    private List<ActiveObj> usedActions;
     private boolean engagedOverride;
     ENGAGEMENT_LEVEL engagementLevel=ENGAGEMENT_LEVEL.UNSUSPECTING;
 
@@ -243,7 +243,7 @@ public class UnitAI {
     }
 
 
-    public List<DC_ActiveObj> getUsedActions() {
+    public List<ActiveObj> getUsedActions() {
         if (usedActions == null) {
             usedActions = new ArrayList<>();
         }

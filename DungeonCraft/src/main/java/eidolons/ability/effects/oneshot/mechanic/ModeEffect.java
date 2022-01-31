@@ -7,7 +7,7 @@ import eidolons.ability.effects.continuous.SetCustomModeEffect;
 import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
 import eidolons.ability.effects.oneshot.status.ImmobilizeEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
@@ -301,8 +301,8 @@ divination?
     private void addEndTurnEffect() {
         Condition condition = new StringComparison(prop, mode.toString(), true);
         String formula = mode.getFormula();
-        if (ref.getActive() instanceof DC_ActiveObj) {
-            DC_ActiveObj activeObj = (DC_ActiveObj) ref.getActive();
+        if (ref.getActive() instanceof ActiveObj) {
+            ActiveObj activeObj = (ActiveObj) ref.getActive();
             if (activeObj.getParam(PARAMS.FORMULA).contains(Strings.MOD)) {
                 formula = StringMaster.wrapInParenthesis(formula) + "*"
                         + activeObj.getParam(PARAMS.FORMULA) + "/100";

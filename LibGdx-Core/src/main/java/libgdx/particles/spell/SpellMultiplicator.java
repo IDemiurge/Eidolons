@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import eidolons.content.PROPS;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.ActiveObj;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import libgdx.anims.Anim;
 import libgdx.anims.actions.ActionMasterGdx;
@@ -20,7 +20,6 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
@@ -106,15 +105,15 @@ public class SpellMultiplicator implements Runnable {
         }
     }
 
-    public static boolean isMultiAnimRequired(DC_ActiveObj active_) {
+    public static boolean isMultiAnimRequired(ActiveObj active_) {
         return AnimConstructor.getTemplateForSpell(active_) != null;
     }
 
     public static MULTIPLICATION_METHOD getMethod(Anim anim) {
-        return getMethod((DC_ActiveObj) anim.getActive());
+        return getMethod((ActiveObj) anim.getActive());
     }
 
-    public static MULTIPLICATION_METHOD getMethod(DC_ActiveObj active) {
+    public static MULTIPLICATION_METHOD getMethod(ActiveObj active) {
         if (active.getProperty(PROPS.ANIM_MODS_VFX).contains("angle;")) {
             return MULTIPLICATION_METHOD.ANGLE;
         }
@@ -373,8 +372,8 @@ public class SpellMultiplicator implements Runnable {
         return action;
     }
 
-    public DC_ActiveObj getActive() {
-        return (DC_ActiveObj) anim.getActive();
+    public ActiveObj getActive() {
+        return (ActiveObj) anim.getActive();
     }
 
     public float getDuration() {

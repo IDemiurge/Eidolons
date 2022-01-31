@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.ai.elements.actions;
 
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.active.ActiveObj;
+import eidolons.entity.active.UnitAction;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.tools.target.AI_SpellMaster;
@@ -45,9 +45,9 @@ public class AiUnitActionMaster {
     }
 
     //returns all of unit's active that we want to preCheck for execution
-    public static List<DC_ActiveObj> getFullActionList(GOAL_TYPE type, Unit unit) {
+    public static List<ActiveObj> getFullActionList(GOAL_TYPE type, Unit unit) {
         // cache
-        List<DC_ActiveObj> actions = new XList<>();
+        List<ActiveObj> actions = new XList<>();
         switch (type) {
             case PROTECT:
                 actions.add(AiActionFactory.getUnitAction(unit, "Guard Mode"));
@@ -124,7 +124,7 @@ public class AiUnitActionMaster {
     }
 
     private static boolean checkAddStealth(boolean hidePref, Unit unit,
-                                           List<DC_ActiveObj> actions) {
+                                           List<ActiveObj> actions) {
         if (unit.getBuff("Stealth Mode") != null) {
             return false;
         }
@@ -149,9 +149,9 @@ public class AiUnitActionMaster {
 
     }
 
-    public static List<DC_ActiveObj> getMoveActions(Unit unit) {
-        List<DC_ActiveObj> list = new ArrayList<>(unit.getActionMap().get(ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE));
-        DequeImpl<DC_UnitAction> actionList = unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_MOVE);
+    public static List<ActiveObj> getMoveActions(Unit unit) {
+        List<ActiveObj> list = new ArrayList<>(unit.getActionMap().get(ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE));
+        DequeImpl<UnitAction> actionList = unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_MOVE);
         if (ListMaster.isNotEmpty(actionList)) {
             list.addAll(actionList);
         }
@@ -160,8 +160,8 @@ public class AiUnitActionMaster {
         return list;
     }
 
-    public static List<DC_ActiveObj> getActionObjectList(List<AiAction> aiActions) {
-        List<DC_ActiveObj> activeList = new ArrayList<>();
+    public static List<ActiveObj> getActionObjectList(List<AiAction> aiActions) {
+        List<ActiveObj> activeList = new ArrayList<>();
         if (aiActions != null) {
             for (AiAction object : aiActions) {
                 if (object != null) {
@@ -172,9 +172,9 @@ public class AiUnitActionMaster {
         return activeList;
     }
 
-    public static Collection<DC_ActiveObj> getSpells(AI_LOGIC logic, Unit unit) {
-        List<DC_ActiveObj> list = new ArrayList<>();
-        for (DC_ActiveObj spell : unit.getSpells()) {
+    public static Collection<ActiveObj> getSpells(AI_LOGIC logic, Unit unit) {
+        List<ActiveObj> list = new ArrayList<>();
+        for (ActiveObj spell : unit.getSpells()) {
             if (spell.getProperty(PROPS.AI_LOGIC).equalsIgnoreCase(logic.toString())) {
                 list.add(spell);
             } else {
