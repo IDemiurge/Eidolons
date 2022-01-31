@@ -69,7 +69,6 @@ public class Town extends LightweightEntity {
             shop.exited(hero);
         }
 
-        hero.setProperty(PROPS.STASH, ContainerUtils.toIdContainer(stash), true);
     }
     public Shop getShop(String tabName) {
         for (Shop s : getShops()) {
@@ -133,16 +132,16 @@ public class Town extends LightweightEntity {
             //gonna need to store durability etc...
         }
         Unit hero = Core.getMainHero();
-        for (String substring : ContainerUtils.openContainer(
-         hero.getProperty(PROPS.STASH))) {
-            if (!NumberUtils.isInteger(substring)) {
-                continue;
-            }
-            int id = Integer.parseInt(substring);
-            Obj item = Core.getGame().getObjectById(id);
-            if (item instanceof HeroItem)
-                stash.add((HeroItem) item);
-        }
+        // for (String substring : ContainerUtils.openContainer(
+        //  hero.getProperty(PROPS.STASH))) {
+        //     if (!NumberUtils.isInteger(substring)) {
+        //         continue;
+        //     }
+        //     int id = Integer.parseInt(substring);
+        //     Obj item = Core.getGame().getObjectById(id);
+        //     if (item instanceof HeroItem)
+        //         stash.add((HeroItem) item);
+        // }
             for (Shop shop1 : shops) {
             shop1.handleDebt(hero);
                 if (reenter) {

@@ -94,7 +94,7 @@ public class AbilityImpl extends ReferredElement implements Ability {
                     if (ref.getTarget() != null || ref.getGroup() != null) {
                         return resolve(); //without targeting.select()
                     } else {
-                        return false; // inconsistent src.main.data
+                        return false; // inconsistent data
                     }
                 }
             }

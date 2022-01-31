@@ -1108,7 +1108,7 @@ public class StringMaster {
     public static String[] splitLines(String data, boolean allowEmptyLines, String separator) {
         if (allowEmptyLines)
             return data.trim().split(separator);
-        //        src.main.data.contains(NEW_LINE)? StringMaster.NEW_LINE
+        //        data.contains(NEW_LINE)? StringMaster.NEW_LINE
         //       : "\n");
         List<String> list = Arrays.stream(data.trim().split(separator)).
                 filter(line -> !line.isEmpty()).collect(Collectors.toList());

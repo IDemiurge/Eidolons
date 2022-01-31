@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * common src.main.data?
+ * common data?
  *
  * @author JustMe
  */

@@ -121,7 +121,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     THIRD_CLASS("chars", "Third Class"),
     REQUIREMENTS("Requirements", true, "spells", "skills", "classes"),
     INVENTORY(null, true, "units", "chars"),
-    STASH(null, true, "chars"),
     QUICK_ITEMS(null, true, "units", "chars"),
     JEWELRY(null, true, "chars"),
     OFFHAND_NATURAL_WEAPON(null, false, "units", "chars"),
@@ -130,7 +129,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     // ALIGNMENTS(null, true, "units", "chars", "deities", "classes", "skills"),
     // IDENTITY(null, true, "units", "chars", "deities", "classes", "skills"),
 
-    ITEM_SPELL(null, false, "items"),
     // all spells except verbatim/memorized
     VERBATIM_SPELLS(null, true, "units", "chars", "actions", "spells", "skills"),
     // all spells
@@ -174,7 +172,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     PRE_BATTLE_EVENT("encounters", null),
     AFTER_BATTLE_EVENT("encounters", null),
 
-
+    @Deprecated
     DROPPED_ITEMS(null, true, "terrain"),
     BASE_CLASSES_ONE(null, true, "classes"),
     BASE_CLASSES_TWO(null, true, "classes"),
@@ -187,7 +185,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     ITEM_SHOP_CATEGORY(null, false, C_OBJ_TYPE.ITEMS),
     ITEM_RARITY(null, false, C_OBJ_TYPE.ITEMS),
 
-    ALT_BASE_LINKS(null, true, "skills", "classes"),
     ALT_BASE_TYPES(null, true, "skills", "classes"),
     PARAMETER_BONUSES(null, true, "skills", "classes", "perks"),
     ATTRIBUTE_BONUSES(null, true, "skills", "classes", "perks"),
@@ -195,7 +192,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
 
 
     TERRAIN_TYPE(null, false, "terrain"),
-
 
 
     RESIST_GRADE_PIERCING(StringMaster.format(StringMaster.getLastPart(

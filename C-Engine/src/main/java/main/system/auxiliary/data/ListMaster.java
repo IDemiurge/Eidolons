@@ -624,7 +624,7 @@ public class ListMaster<E> {
     public List<E> toObjList(List<E> tasks, List<ObjType> list) {
         List<E> filtered = new ArrayList<>();
         for (ObjType sub : list) {
-            //				if (src.main.framework.task.getType() == generic) {
+            //				if (framework.task.getType() == generic) {
             filtered.addAll(tasks);
             break;
         }

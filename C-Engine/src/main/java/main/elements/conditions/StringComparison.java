@@ -73,7 +73,7 @@ public class StringComparison extends ConditionImpl {
             }
         }
         if (!result) {
-            // LogMaster.src.main.system.log(LogMaster.CONDITION_DEBUG, "Comparing "
+            // LogMaster.system.log(LogMaster.CONDITION_DEBUG, "Comparing "
             // + ((strict) ? " strictly " : "") + this.val1 + " to "
             // + this.val2 + " => ");
         }

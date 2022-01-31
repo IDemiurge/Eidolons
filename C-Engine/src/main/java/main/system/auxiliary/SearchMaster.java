@@ -31,7 +31,7 @@ public class SearchMaster<T> {
     }
 
     public void bfs() {
-        // BFS uses Queue src.main.data structure
+        // BFS uses Queue data structure
 //        Queue queue = new ArrayList();
 //        queue.add(this.rootNode);
 //        printNode(this.rootNode);

@@ -26,7 +26,7 @@ With 200%+, unit is Immobilized.
 public class WeightBuffRule extends DC_BuffRule {
     // integral effect
     public static final String FORMULA = StringMaster.getValueRef(KEYS.SOURCE,
-     PARAMS.C_CARRYING_WEIGHT)
+     PARAMS.TOTAL_WEIGHT)
      + "-" + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.CARRYING_CAPACITY);
     public static final String[] buffNames = {MetaEnums.STD_BUFF_NAME.Immobilized.getName(), // TODO
      MetaEnums.STD_BUFF_NAME.Overburdened.getName(), MetaEnums.STD_BUFF_NAME.Encumbered.getName(),};

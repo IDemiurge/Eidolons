@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Created by JustMe on 11/19/2017.
  *
- * what we need to src.main.system.log?
+ * what we need to system.log?
  * > puzzle actions - important!
  * >
  *
@@ -72,7 +72,7 @@ public class SpecialLogger implements FileLogger {
         Thread thread = new Thread(() -> {
             WaitMaster.WAIT(WRITE_ALL_PERIOD);
             writeLogs();
-        }, "src.main.system.log writing thread");
+        }, "system.log writing thread");
         thread.start();
     }
 
@@ -145,7 +145,7 @@ public class SpecialLogger implements FileLogger {
         FileManager.write(string,
          PathFinder.getLogPath() + logName + PathUtils.getPathSeparator() +
           logName +
-          " src.main.system.log from" +
+          " system.log from" +
           getTimeStamp() +
           ".txt");
 

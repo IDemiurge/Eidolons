@@ -234,7 +234,6 @@ public class UnitResetter extends EntityResetter<Unit> {
         // Chronos.logTimeElapsedForMark(toString() + " OBJECTS APPLY");
 
 //        Chronos.mark(toString() + " activate PASSIVES");
-        getInitializer().initSpells(game.isSimulation());
         getEntity().activatePassives();
 
         // Chronos.logTimeElapsedForMark(toString() + " activate PASSIVES");

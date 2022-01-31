@@ -27,7 +27,7 @@ public class EntityResetter<E extends Entity> extends EntityHandler<E> {
         getEntity().getIntegerMap(false).clear(); // TODO [OPTIMIZED] no need to clear
         // type's map?
         if (getEntity().getModifierMaps() != null) {
-            getEntity().getModifierMaps().clear(); // remember? For interesting spells or src.main.system.log
+            getEntity().getModifierMaps().clear(); // remember? For interesting spells or system.log
         }
         // info...
         if (!getType().checkProperty(G_PROPS.DISPLAYED_NAME)) {

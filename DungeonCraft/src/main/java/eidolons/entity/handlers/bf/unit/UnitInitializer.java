@@ -109,11 +109,6 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
         master.getActionManager().resetActions(getEntity());
     }
 
-    public void initSpells(boolean reset) {
-        getEntity().setSpells(
-                getGame().getManager().getSpellMaster().getSpells(getEntity(), reset));
-    }
-
     public void initPerks() {
         getEntity().setPerks(new DequeImpl<>());
         initFeatContainer(PROPS.PERKS, PERKS,
@@ -373,21 +368,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     }
 
     public void initQuickItems() {
-
-        // setQuickItems(new DequeImpl<DC_QuickItemObj>(
-
-        DequeImpl<? extends HeroItem> items = initContainedItems(PROPS.QUICK_ITEMS,
-                getEntity().getQuickItems(), true)
-                // )) TODO
-                ;
-        if (items == getEntity().getQuickItems()) {
-            return;
-        }
-        getEntity().setQuickItems(new DequeImpl<>());
-        for (HeroItem e : items) {
-            getEntity().getQuickItems().add((QuickItem) e);
-        }
-
+        //TODO Spaces
     }
 
 }

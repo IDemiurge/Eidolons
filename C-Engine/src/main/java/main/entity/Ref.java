@@ -274,7 +274,7 @@ public class Ref implements Cloneable, Serializable {
         ref.setAnimationActive(animationActive);
         setValue(KEYS.AMOUNT, getValue(KEYS.AMOUNT));
         // if (refClones.size() % 100 == 5)
-        // main.system.auxiliary.LogMaster.src.main.system.log(1, " " + refClones.size());
+        // main.system.auxiliary.LogMaster.system.log(1, " " + refClones.size());
         // refClones.add(ref);
         return ref;
     }

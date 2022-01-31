@@ -130,10 +130,6 @@ public class QuickItem extends HeroItem implements IHeroItem, Feat {
         }
         super.construct();
 
-        if (!StringMaster.isEmpty(getProperty(PROPS.ITEM_SPELL))) {
-
-        }
-
         if (actives == null) // ?
         {
             return;

@@ -95,9 +95,10 @@ public class SpellbookContainer extends HqSpellContainer {
 
     protected List<Spell> getSpells() {
         List<Spell> list = new ArrayList<>();
-        if (getUserObject().getEntity().getSpellbook() != null) {
-            list.addAll(getUserObject().getEntity().getSpellbook());
-        }
+        //TODO Hero 2.0
+        // if (getUserObject().getEntity().getSpellbook() != null) {
+        //     list.addAll(getUserObject().getEntity().getSpellbook());
+        // }
         if (!filtersOn) {
             List<Spell> potential = SpellMaster.getPotentialSpellsForHero(getUserObject().getEntity());
             List<Spell> finalList = list;

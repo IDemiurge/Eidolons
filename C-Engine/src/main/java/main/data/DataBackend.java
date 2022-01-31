@@ -197,7 +197,7 @@ public class DataBackend {
 
         Map<String, ObjType> map = getTypeMap(TYPE);
         if (map == null) {
-            //main.system.auxiliary.src.main.system.log.LogMaster.src.main.system.log(src.main.system.log,"NO TYPE MAP: "+obj_type );
+            //main.system.auxiliary.system.log.LogMaster.system.log(system.log,"NO TYPE MAP: "+obj_type );
             return null;
         }
         ObjType type = map.get(typeName);
@@ -260,7 +260,7 @@ public class DataBackend {
         }
 
         if (obj_type.equals(DC_TYPE.JEWELRY)) {
-            //main.system.auxiliary.src.main.system.log.LogMaster.src.main.system.log(src.main.system.log,"NO JEWELRY!  "  );
+            //main.system.auxiliary.system.log.LogMaster.system.log(system.log,"NO JEWELRY!  "  );
             return null;
         }
         int i = 0;
@@ -366,7 +366,7 @@ public class DataBackend {
     public   void displayData() {
         for (Map<String, ObjType> m : getXmlReader().getTypeMaps().values()) {
             for (Entry<String, ObjType> t : m.entrySet()) {
-                //LogMaster.src.main.system.log(src.main.system.log, t.getKey() + " " + t.getValue().toString());
+                //LogMaster.system.log(system.log, t.getKey() + " " + t.getValue().toString());
             }
         }
     }

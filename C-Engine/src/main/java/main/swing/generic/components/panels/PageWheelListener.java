@@ -20,7 +20,7 @@ public class PageWheelListener implements MouseWheelListener {
         for (int i = 0; i < Math.abs(arg0.getWheelRotation()); i++) {
             pagedListPanel.flipPage(arg0.getWheelRotation() < 0);
         }
-        // main.system.auxiliary.LogMaster.src.main.system.log(1, "" + arg0.getWheelRotation());
+        // main.system.auxiliary.LogMaster.system.log(1, "" + arg0.getWheelRotation());
     }
 
     public List<Component> getComponents() {

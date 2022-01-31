@@ -168,7 +168,7 @@ public class ArrayMaster<T> {
 //    }
 
 //    public static boolean[][] getBooleanFalseArray(int i, int i1) {
-////        main.system.auxiliary.src.main.system.log.LogMaster.src.main.system.log(1, i + ":" + i1);
+////        main.system.auxiliary.system.log.LogMaster.system.log(1, i + ":" + i1);
 //        return booleanFalseArrays[i][i1];
 //    }
     /**

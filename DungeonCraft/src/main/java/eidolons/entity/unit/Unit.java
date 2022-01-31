@@ -103,15 +103,11 @@ public class Unit extends UnitModel implements GridEntity {
     protected DequeImpl<DC_PassiveObj> skills;
     protected DequeImpl<ClassRank> classes;
     protected DequeImpl<Perk> perks;
-    protected DequeImpl<QuickItem> quickItems;
     protected DequeImpl<JewelryItem> jewelry;
     protected DequeImpl<HeroItem> inventory;
 
     protected DC_Masteries masteries;
     protected DC_Attributes attrs;
-
-    protected List<Spell> spells;
-    protected List<Spell> spellbook;
 
     protected FeatSpaces spellSpaces;
     protected FeatSpaces combatSpaces;
@@ -226,7 +222,7 @@ public class Unit extends UnitModel implements GridEntity {
                     }
                 }
                 if (param.isDynamic()) {
-                    if (Debugger.isImmortalityOn() )
+                    if (Debugger.isImmortalityOn())
                         if (param == PARAMS.C_ENDURANCE || param == PARAMS.C_TOUGHNESS)
                             if (integer <= 0) {
                                 return;
@@ -412,29 +408,11 @@ public class Unit extends UnitModel implements GridEntity {
     }
 
     public void addQuickItem(QuickItem itemObj) {
-        if (getQuickItems() == null)
-            setQuickItems(new DequeImpl<>());
-        getQuickItems().add(itemObj);
-        itemObj.setRef(ref);
-        getResetter().resetQuickSlotsNumber();
-        itemObj.setContainer(CONTAINER.QUICK_SLOTS);
+        //TODO Spaces
     }
 
     public boolean removeQuickItem(HeroItem itemObj) {
-        if (getQuickItems() == null)
-            return false;
-        if (getQuickItems().remove(itemObj)) {
-            getResetter().resetQuickSlotsNumber();
-
-            type.removeProperty(PROPS.QUICK_ITEMS, itemObj.getName(), false);
-
-            removeProperty(PROPS.QUICK_ITEMS, "" + itemObj.getId(), true);
-
-            if (getQuickItems().isEmpty()) {
-                setQuickItems(null);
-            }
-            return true;
-        }
+        //TODO Spaces
         return false;
     }
 
@@ -488,11 +466,8 @@ public class Unit extends UnitModel implements GridEntity {
     }
 
     public List<Spell> getSpells() {
-
-        if (spells == null) {
-            spells = new ArrayList<>();
-        }
-        return spells;
+        //TODO Spaces
+        return null;
     }
 
     public FeatSpaces getSpellSpaces() {
@@ -509,10 +484,6 @@ public class Unit extends UnitModel implements GridEntity {
 
     public void setCombatSpaces(FeatSpaces combatSpaces) {
         this.combatSpaces = combatSpaces;
-    }
-
-    public void setSpells(List<Spell> spells) {
-        this.spells = spells;
     }
 
     public WeaponItem getOffhandWeapon() {
@@ -534,15 +505,6 @@ public class Unit extends UnitModel implements GridEntity {
             }
             setProperty(G_PROPS.OFF_HAND_ITEM, id);
         }
-    }
-
-
-    public List<Spell> getSpellbook() {
-        return spellbook;
-    }
-
-    public void setSpellbook(List<Spell> spellbook) {
-        this.spellbook = spellbook;
     }
 
     public void addFeat(DC_PassiveObj e) {
@@ -569,44 +531,27 @@ public class Unit extends UnitModel implements GridEntity {
     }
 
     public boolean isQuickSlotsFull() {
-        if (game.isSimulation()) {
-            return getIntParam(PARAMS.QUICK_SLOTS) <= ContainerUtils.openContainer(
-                    getProperty(PROPS.QUICK_ITEMS)).size();
-        }
-        if (quickItems == null) {
-            return false;
-        }
+        //TODO Spaces
         return getRemainingQuickSlots() <= 0;
     }
 
     public int getQuickSlotsMax() {
-        return getIntParam(PARAMS.QUICK_SLOTS);
+        //TODO Spaces
+        return 0;
     }
 
     public int getRemainingQuickSlots() {
-        if (quickItems == null) {
-            return getQuickSlotsMax();
-        }
-        return getIntParam(PARAMS.QUICK_SLOTS) - quickItems.size();
+        //TODO Spaces
+        return 0;
     }
 
     public int getOccupiedQuickSlots() {
-        if (quickItems == null) {
             return 0;
-        }
-        return quickItems.size();
     }
 
     public DequeImpl<QuickItem> getQuickItems() {
-        //        if (!isItemsInitialized()) {
-        if (quickItems == null) {
-            quickItems = new DequeImpl<>();
-        }
-        return quickItems;
-    }
-
-    public void setQuickItems(DequeImpl<QuickItem> quickItems) {
-        this.quickItems = quickItems;
+        //TODO Spaces
+        return null ;
     }
 
     public HeroItem getItemFromInventory(String name) {
@@ -1194,7 +1139,8 @@ public class Unit extends UnitModel implements GridEntity {
         }
         return item;
     }
-//TODO to Handler
+
+    //TODO to Handler
     public boolean removeItemsFromAnywhere(String name, int n) {
         for (int i = 0; i < n; i++) {
             HeroItem item = findItemAnywhere(name);
@@ -1320,7 +1266,6 @@ public class Unit extends UnitModel implements GridEntity {
     }
 
 
-
     public int calculateWeight() {
         return getCalculator().calculateWeight();
     }
@@ -1345,11 +1290,6 @@ public class Unit extends UnitModel implements GridEntity {
     public UnitInitializer getInitializer() {
         return super.getInitializer();
     }
-
-    public void initSpells(boolean reset) {
-        getInitializer().initSpells(reset);
-    }
-
 
     public void initSkills() {
         getInitializer().initSkills();
@@ -1648,8 +1588,9 @@ public class Unit extends UnitModel implements GridEntity {
             buff.remove();
         }
     }
+
     public List<Feat> getActiveFeats() {
-        List<Feat> feats=    new ArrayList<>() ;
+        List<Feat> feats = new ArrayList<>();
         feats.addAll(spellSpaces.getCurrent().getFeats());
         feats.addAll(combatSpaces.getCurrent().getFeats());
         return feats;

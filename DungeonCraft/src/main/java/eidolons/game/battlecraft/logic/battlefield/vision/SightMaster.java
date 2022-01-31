@@ -3,8 +3,11 @@ package eidolons.game.battlecraft.logic.battlefield.vision;
 import eidolons.ability.conditions.special.ClearShotCondition;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.GridCell;
+import eidolons.entity.obj.DC_Obj;
+import eidolons.entity.unit.Unit;
+import eidolons.game.battlecraft.logic.battlefield.ClearshotMaster;
+import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.enums.rules.VisionEnums.VISION_MODE;
@@ -13,7 +16,9 @@ import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.datatypes.DequeImpl;
+import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
 
 import java.util.*;
@@ -28,8 +33,96 @@ public class SightMaster {
     private final Map<DC_Obj, DequeImpl<Coordinates>> cacheSecondary = new HashMap<>();
     private final Map<BattleFieldObject, List<Coordinates>> blockedCache = new HashMap<>();
 
+    public DequeImpl<Coordinates> getCachedSpectrumCoordinates(DC_Obj obj) {
+        if (!cache.containsKey(obj)) {
+            return new DequeImpl<>();
+        }
+        return cache.get(obj);
+
+    }
+
     public SightMaster(VisionMaster visionManager) {
         master = visionManager;
+    }
+
+    public DequeImpl<Coordinates> getSpectrumCoordinates(Integer range,
+                                                         Integer side_penalty,
+                                                         Integer back_bonus,
+                                                         BattleFieldObject source, boolean vision,
+                                                         FACING_DIRECTION facing
+    ) {
+        return getSpectrumCoordinates(range,
+                side_penalty, back_bonus, source, vision,
+                facing, false);
+    }
+
+    public DequeImpl<Coordinates> getSpectrumCoordinates(Integer range,
+                                                         Integer side_penalty,
+                                                         Integer back_bonus,
+                                                         BattleFieldObject source,
+                                                         boolean vision,
+                                                         FACING_DIRECTION facing,
+                                                         boolean extended) {
+        DequeImpl<Coordinates> list = new DequeImpl<>();
+        Coordinates orig = source.getCoordinates();
+        DIRECTION direction;
+        if (facing == null) {
+            facing = FacingMaster.getRandomFacing();
+        }
+        direction = facing.getDirection();
+
+        if (range == null) {
+            range = source.getIntParam(PARAMS.SIGHT_RANGE);
+            if (extended) {
+                range = MathMaster.applyModIfNotZero(range, source
+                        .getIntParam(PARAMS.SIGHT_RANGE_EXPANSION));
+            }
+        }
+
+        addLine(orig.getAdjacentCoordinate(direction), range, list, direction, true);
+        addSides(list, orig, direction, range - side_penalty, false);
+        DIRECTION backDirection = DirectionMaster.flip(direction);
+        Coordinates backCoordinate = orig.getAdjacentCoordinate(backDirection);
+        if (back_bonus > 0) {
+            if (backCoordinate != null) {
+                addLine(backCoordinate, back_bonus, list, backDirection, true);
+                // if (back_bonus > side_penalty)
+                // addSides(list, backCoordinate, backDirection, back_bonus -
+                // side_penalty, false);
+            }
+        }
+        if (VisionHelper.isCinematicVision()) {
+            if (!extended)
+                list.addAll(getSpectrumCoordinates(range, 0, back_bonus, source, vision, facing.flip(), true));
+        } else {
+            Collection<Coordinates> blocked = getBlockedList(list, source);
+            list.removeAll(blocked);
+        }
+        list.add(source.getCoordinates());
+        return list;
+    }
+
+
+    // TODO
+    private Collection<Coordinates> getBlockedList(DequeImpl<Coordinates> list, BattleFieldObject source) {
+
+        List<Coordinates> removeList = blockedCache.get(source);
+        if (removeList != null) {
+            return removeList;
+        }
+        removeList = new ArrayList<>();
+        ClearshotMaster.filterWallObstructed(source.getCoordinates(), list);
+        for (Coordinates c : list) {
+            GridCell cell = master.getGame().getObjMaster().getCellByCoordinate(c);
+            if (cell == null)
+                continue;
+            Boolean clearShot = !isBlocked(cell, source, true);
+            if (!clearShot) {
+                removeList.add(c);
+            }
+        }
+        blockedCache.put(source, removeList);
+        return removeList;
     }
 
     private Boolean isBlocked(DC_Obj target, BattleFieldObject source, boolean light) {
@@ -140,10 +233,64 @@ public class SightMaster {
         return null;
     }
 
-    private DequeImpl<Coordinates> getVisibleCoordinatesNormalSight(BattleFieldObject source, boolean extended) {
-        //TODO LC 2.0
-        return null;
+    public DequeImpl<Coordinates> getVisibleCoordinatesNormalSight(BattleFieldObject source,
+                                                                   boolean extended) {
+        return getSpectrumCoordinates(null, null, null, source, true, null, extended);
     }
+
+    // returns direction of the shadowing
+    private DIRECTION getShadowingDirection(Unit source, DC_Obj obj) {
+        if (obj.isTransparent()) {
+            return null;
+        }
+        // if (objComp.getObj().isTransparent()) return false;
+        DIRECTION direction;
+        Coordinates orig = source.getCoordinates();
+        Coordinates c = obj.getCoordinates();
+
+        if (checkDirectVerticalShadowing(orig, c)) {
+
+            direction = (!PositionMaster.isAbove(orig, c)) ? DIRECTION.UP : DIRECTION.DOWN;
+
+            return direction;
+        }
+        if (checkDirectHorizontalShadowing(orig, c)) {
+            direction = (!PositionMaster.isToTheLeft(orig, c)) ? DIRECTION.LEFT : DIRECTION.RIGHT;
+            return direction;
+        }
+
+
+        if (PositionMaster.isAbove(orig, c)) {
+            if (PositionMaster.isToTheLeft(orig, c)) {
+                direction = DIRECTION.DOWN_RIGHT;
+            } else {
+                direction = DIRECTION.DOWN_LEFT;
+            }
+        } else {
+
+            if (PositionMaster.isToTheLeft(orig, c)) {
+                direction = DIRECTION.UP_RIGHT;
+            } else {
+                direction = DIRECTION.UP_LEFT;
+            }
+        }
+
+        return direction;
+
+    }
+
+    private boolean checkDirectHorizontalShadowing(Coordinates orig, Coordinates c) {
+        int horizontalDistance = Math.abs(orig.y - c.y);
+        return (horizontalDistance == 0);
+    }
+
+    private boolean checkDirectVerticalShadowing(Coordinates orig, Coordinates c) {
+
+        int verticalDistance = Math.abs(orig.x - c.x);
+
+        return (verticalDistance == 0);
+    }
+
     public UNIT_VISION getUnitVisibilityStatus(DC_Obj unit, BattleFieldObject activeUnit) {
         clearCacheForUnit(activeUnit);
         return getUnitVisionStatusPrivate(unit, activeUnit);

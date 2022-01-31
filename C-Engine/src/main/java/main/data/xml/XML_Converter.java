@@ -341,7 +341,7 @@ public class XML_Converter {
                 {
                     list.add(type);
                 }
-                // TODO each type node could have some spec src.main.data for workspace?
+                // TODO each type node could have some spec data for workspace?
             }
         }
 

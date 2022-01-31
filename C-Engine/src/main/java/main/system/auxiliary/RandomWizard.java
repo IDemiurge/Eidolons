@@ -72,7 +72,7 @@ public class RandomWizard<E> {
             n++;
         }
         int k = (averaged) ? i + MathMaster.round(n / 2) : i + randomGenerator.nextInt(n);
-        // main.system.auxiliary.LogMaster.src.main.system.log(1, "*** NEW RANDOM: " + k + "[" +
+        // main.system.auxiliary.LogMaster.system.log(1, "*** NEW RANDOM: " + k + "[" +
         // i + " - " + j + "], "
         // + randomGenerator);
         if (negative) {

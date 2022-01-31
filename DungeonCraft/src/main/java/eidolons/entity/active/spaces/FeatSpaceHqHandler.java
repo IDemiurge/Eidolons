@@ -8,7 +8,7 @@ import main.system.auxiliary.StringMaster;
 import java.util.Map;
 
 public class FeatSpaceHqHandler {
-    /*operations?     */
+    /* For the Feat Space TAB where we put 'em together  */
 
     FeatSpaceInitializer initializer;
     Map<FeatSpace, FeatSpaceData> dataMap;

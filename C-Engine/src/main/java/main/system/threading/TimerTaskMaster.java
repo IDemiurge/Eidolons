@@ -34,7 +34,7 @@ public class TimerTaskMaster {
                 @Override
                 public void run() {
                     try {
-//                        LogMaster.src.main.system.log(0, "Invoking " + methodName);
+//                        LogMaster.system.log(0, "Invoking " + methodName);
                         if (args == null) {
                             method.invoke(null);
                         } else {

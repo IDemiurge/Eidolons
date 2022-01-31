@@ -16,7 +16,7 @@ But let's use eXtreme - first write Builders
 
 
 
-src.main.data is taken from C engine, but it will be first made into Strings, then passed
+data is taken from C engine, but it will be first made into Strings, then passed
 to G classes. 
 
 I decided that I will try to use G Engine, but I won't cross the line of reason
