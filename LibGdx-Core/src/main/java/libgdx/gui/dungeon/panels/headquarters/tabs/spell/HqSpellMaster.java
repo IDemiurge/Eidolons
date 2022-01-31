@@ -53,7 +53,6 @@ public class HqSpellMaster {
 
     private static void spellsChanged(Unit hero) {
 
-        hero.initSpells(true);
     }
 
     public static void unmemorizeSpell(Unit hero, Spell spell) {

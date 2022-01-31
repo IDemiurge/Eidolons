@@ -534,7 +534,6 @@ public class HqDataMaster {
                 break;
         }
         reset();
-        hero.initSpells(true);
     }
 
     protected void reset() {
