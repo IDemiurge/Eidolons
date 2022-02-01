@@ -45,7 +45,7 @@ public class TestDialogMaster {
     private static PROPERTY prop(DC_TYPE t) {
         switch (t) {
             case SPELLS:
-                return PROPS.VERBATIM_SPELLS;
+                return PROPS.LEARNED_SPELLS;
             case SKILLS:
                 return PROPS.SKILLS;
             case PERKS:

@@ -4,8 +4,8 @@ import main.content.C_OBJ_TYPE;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
-import main.content.enums.entity.HeroEnums;
-import main.content.enums.entity.HeroEnums.PRINCIPLES;
+import main.content.enums.entity.RpgEnums.PRINCIPLES;
+import main.content.enums.entity.RpgEnums;
 import main.content.values.properties.PROPERTY;
 import main.system.auxiliary.StringMaster;
 
@@ -19,6 +19,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     // AGE(null, "chars"),
     DIALOGUE_DATA(null, false, "dialogue"),
 
+    //TODO cleanup - old scenario logic
     SCENARIO_TYPE(null, false, "scenarios"),
     SCENARIO_MISSIONS(null, true, "scenarios"),
     SCENARIO_PARTY(null, false, "scenarios"),
@@ -43,12 +44,16 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     MASTERY_GROUPS_WEAPONS(null, true, "units", "chars"),
     MASTERY_GROUPS_MISC(null, true, "units", "chars"),
 
-    ATTRIBUTE_PROGRESSION(null, true, "units", "chars"),
-    MASTERY_PROGRESSION(null, true, "units", "chars"),
 
     ACTION_PRIORITY_MODS(null, true, "units", "chars"),
     ACTION_PRIORITY_BONUSES(null, true, "units", "chars"),
 
+
+    //TODO LC 2.0 - Unit Progression
+    LVL_PLAN(null, true, "units"),
+    GOLD_PLAN(null, true, "units"),
+    ATTRIBUTE_PROGRESSION(null, true, "units", "chars"),
+    MASTERY_PROGRESSION(null, true, "units", "chars"),
     VERBATIM_PRIORITY(null, true, "units", "chars"),
     MEMORIZATION_PRIORITY(null, true, "units", "chars"),
 
@@ -63,8 +68,6 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     ALLOWED_MATERIAL(null, true, "units", "chars"),
 
     // quick items/jewelry?
-    LVL_PLAN(null, true, "units"),
-    GOLD_PLAN(null, true, "units"),
 
     AI_LOGIC(null, false, "actions", "spells"),
     AI_TYPE(null, false, "units", "chars"),
@@ -95,6 +98,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     CONTAINER_GROUP_SINGLE(null, false, "bf obj"),
     DIMENSION(null, false, "bf obj", "units", "chars"),
 
+    //into feats?
     SKILLS("Skills", true, "chars", "units"),
     SKILLS_TIER_1("Skills", true, "chars", "units"),
     SKILLS_TIER_2("Skills", true, "chars"),
@@ -116,25 +120,24 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     CLASSES_TIER_4("Classes", true, "chars"),
     CLASSES_TIER_5("Classes", true, "chars"),
 
+    REQUIREMENTS("Requirements", true, "spells", "skills", "classes"),
+    //TODO Cleanup
+    INVENTORY(null, true, "units", "chars"),
     FIRST_CLASS("chars", "First Class"),
     SECOND_CLASS("chars", "Second Class"),
     THIRD_CLASS("chars", "Third Class"),
-    REQUIREMENTS("Requirements", true, "spells", "skills", "classes"),
-    INVENTORY(null, true, "units", "chars"),
+
     QUICK_ITEMS(null, true, "units", "chars"),
     JEWELRY(null, true, "chars"),
     OFFHAND_NATURAL_WEAPON(null, false, "units", "chars"),
     NATURAL_WEAPON(null, false, "units", "chars"),
 
-    // ALIGNMENTS(null, true, "units", "chars", "deities", "classes", "skills"),
-    // IDENTITY(null, true, "units", "chars", "deities", "classes", "skills"),
-
-    // all spells except verbatim/memorized
-    VERBATIM_SPELLS(null, true, "units", "chars", "actions", "spells", "skills"),
     // all spells
-    KNOWN_SPELLS(null, true, "units", "chars"),
     LEARNED_SPELLS(null, true, "units", "chars"),
-    MEMORIZED_SPELLS(null, true, "units", "chars"),
+    LEARNED_ACTIONS(null, true, "units", "chars"),
+    LEARNED_PASSIVES(null, true, "units", "chars"),
+    TOKENS(null, true, "units", "chars"),
+
 
     BUFF_NAME(null, true, "spells", "actions", "items"),
     RESISTANCE_TYPE("spells", "Resistance type"),
@@ -149,7 +152,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     ON_ACTIVATE("", true, "spells", "actions"),
     ON_KILL("", true, "spells", "actions", "units", "chars", "weapons"),
     WEAPON_ATTACKS("", true, "weapons"),
-    ENCHANTMENT(null, true, "jewelry", "weapons", "armor"),
+
     JEWELRY_PASSIVE_ENCHANTMENT("jewelry", null),
     MAGICAL_ITEM_LEVEL("jewelry", null),
     MAGICAL_ITEM_TRAIT("jewelry", null),
@@ -305,13 +308,10 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
 
     //NF Rules
 
-    GRIMOIRE_SPACES(null, true, "units", "chars"),
-    MEMORIZED_SPACES(null, true, "units", "chars"),
-    VERBATIM_SPACES(null, true, "units", "chars"),
-    CUSTOM_SPACES(null, true, "units", "chars"),
-    DIVINED_SPACES(null, true, "units", "chars"),
+    SPELL_SPACES(null, true, "units", "chars"),
     COMBAT_SPACES(null, true, "units", "chars"),
     QUICK_ITEMS_SPACES(null, true, "units", "chars"),
+    // DIVINED_SPACES(null, true, "units", "chars"),
 
     BASE_CLASS(null, false, "units", "chars")
 
@@ -477,7 +477,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
 
 
     public boolean isPrinciple() {
-        for (PRINCIPLES p : HeroEnums.PRINCIPLES.values()) {
+        for (PRINCIPLES p : RpgEnums.PRINCIPLES.values()) {
             if (p.toString().equalsIgnoreCase(getName())) {
                 return true;
             }

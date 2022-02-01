@@ -42,7 +42,6 @@ public class DC_RequirementsManager implements RequirementsManager {
     public final static String OBJ_REF = KEYS.MATCH.toString();
     private static final String OR = " or ";
     private static final String NOT = "!=";
-    private static final int VERBATIM_MODE = RequirementsManager.VERBATIM_MODE;
 
     private Map<Entity, Requirements> reqMap;
 
@@ -361,7 +360,7 @@ public class DC_RequirementsManager implements RequirementsManager {
         Requirements req = new Requirements();
 
         String cost = (mode != NORMAL_MODE) ? HeroManager.getCost(type, getHero(), type
-                .getOBJ_TYPE_ENUM(), PROPS.VERBATIM_SPELLS) : HeroManager.getCost(type, getHero());
+                .getOBJ_TYPE_ENUM(), PROPS.LEARNED_SPELLS) : HeroManager.getCost(type, getHero());
 
         Condition paramCondition = ConditionMaster.getParamCondition(1, PARAMS.SPELL_POINTS_UNSPENT, PARAMS.CIRCLE);
         ((NumericCondition) paramCondition).setComparingValue(new Formula("" + cost));
@@ -376,13 +375,10 @@ public class DC_RequirementsManager implements RequirementsManager {
         if (mode != NORMAL_MODE) {
             req.add(new Requirement(ConditionMaster.getParamCondition(spellMastery.getName(), "1",
                     true), InfoMaster.getSpellMasteryReason(spellMastery)));
-            if (mode != VERBATIM_MODE) {
-                req.add(getParamRequirements(PARAMS.MEMORY_REMAINING, PARAMS.SPELL_DIFFICULTY, type));
-            }
             if (type.isUpgrade()) {
                 String base = type.getProperty(G_PROPS.BASE_TYPE);
                 req.add(new Requirement(ConditionMaster.getPropCondition(KEYS.SOURCE
-                        .toString(), PROPS.VERBATIM_SPELLS, base), InfoMaster.SPELL_BASE + base));
+                        .toString(), PROPS.LEARNED_SPELLS, base), InfoMaster.SPELL_BASE + base));
             }
 
             return req;
@@ -410,10 +406,10 @@ public class DC_RequirementsManager implements RequirementsManager {
         // NumericCondition(StringMaster.getValueRef(
         // KEYS.MATCH, PARAMS.SPELL_DIFFICULTY), "0", true)),
         // InfoMaster.UNDER_CONSTRUCTION));
-        Requirement unknownReq = new Requirement(new NotCondition(ConditionMaster.getPropCondition(
-                PROPS.KNOWN_SPELLS, G_PROPS.NAME, KEYS.SOURCE.toString(), KEYS.MATCH.toString())),
-                InfoMaster.SPELL_KNOWN);
-        req.add(unknownReq);
+        // Requirement unknownReq = new Requirement(new NotCondition(ConditionMaster.getPropCondition(
+        //         PROPS.KNOWN_SPELLS, G_PROPS.NAME, KEYS.SOURCE.toString(), KEYS.MATCH.toString())),
+        //         InfoMaster.SPELL_KNOWN);
+        // req.add(unknownReq);
         return req;
 
     }

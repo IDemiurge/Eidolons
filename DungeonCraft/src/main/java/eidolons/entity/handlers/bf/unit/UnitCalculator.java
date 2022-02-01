@@ -39,21 +39,6 @@ public class UnitCalculator extends EntityCalculator<Unit> {
         return (UnitResetter) super.getResetter();
     }
 
-    public int calculateRemainingMemory() {
-        int memory = getIntParam(PARAMS.MEMORIZATION_CAP) - calculateUsedMemory();
-        setParam(PARAMS.MEMORY_REMAINING, memory);
-        return memory;
-    }
-
-    public int calculateUsedMemory() {
-        int memory = 0;
-        for (ObjType type : DataManager.toTypeList(ContainerUtils
-         .openContainer(getProperty(PROPS.MEMORIZED_SPELLS)), DC_TYPE.SPELLS)) {
-            memory += type.getIntParam(PARAMS.SPELL_DIFFICULTY);
-        }
-        return memory;
-    }
-
     public int calculateWeight() {
         int weight = calculateCarryingWeight();
         setParam(PARAMS.C_CARRYING_WEIGHT, weight);

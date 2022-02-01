@@ -45,7 +45,7 @@ public class ItemReflector {
             int i = 0;
             for (ObjType type : objTypes) {
                 classes[i] = new EnumMaster<WEAPON_CLASS>().retrieveEnumConst(WEAPON_CLASS.class, type.getProperty(G_PROPS.WEAPON_CLASS));
-                sizes[i] = new EnumMaster<WEAPON_SIZE>().retrieveEnumConst(WEAPON_SIZE.class, type.getProperty(G_PROPS.WEAPON_SIZE));
+                sizes[i] =  new EnumMaster<WEAPON_SIZE>().retrieveEnumConst(WEAPON_SIZE.class, type.getProperty(G_PROPS.WEAPON_SIZE));
                 classes[i] = new EnumMaster<WEAPON_CLASS>().retrieveEnumConst(WEAPON_CLASS.class, type.getProperty(G_PROPS.WEAPON_CLASS));
                 groups[i++] = new EnumMaster<WEAPON_GROUP>().retrieveEnumConst(WEAPON_GROUP.class, type.getProperty(G_PROPS.WEAPON_GROUP));
             }

@@ -6,7 +6,7 @@ import eidolons.game.core.Core;
 import eidolons.game.core.master.SpellMaster;
 import eidolons.netherflame.eidolon.heromake.handlers.HeroManager;
 import libgdx.gui.dungeon.panels.headquarters.datasource.HqDataMaster;
-import eidolons.system.libgdx.datasource.HeroDataModel;
+import main.content.enums.entity.HeroEnums;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,11 +48,12 @@ public class SpellbookContainer extends HqSpellContainer {
     @Override
     protected void click(int button, Spell spell) {
         if (button == 1) {
-            if (HqSpellMaster.canMemorize(spell))
-                HqDataMaster.operation(getUserObject(), HeroDataModel.HERO_OPERATION.SPELL_MEMORIZED, spell);
-            else {
-                EUtils.showInfoTextStyled(LABEL_STYLE.AVQ_SMALL, "Cannot memorize " + spell.getName());
-            }
+            //TODO HQ 2.0
+            // if (HqSpellMaster.canMemorize(spell))
+            //     HqDataMaster.operation(getUserObject(), HeroEnums.HERO_OPERATION.SPELL_MEMORIZED, spell);
+            // else {
+            //     EUtils.showInfoTextStyled(LABEL_STYLE.AVQ_SMALL, "Cannot memorize " + spell.getName());
+            // }
         }
     }
 
@@ -66,19 +67,20 @@ public class SpellbookContainer extends HqSpellContainer {
         if (spell.getSpellPool() == null) {
             if (HqSpellMaster.canLearn(spell)) {
                 EUtils.onConfirm("Learn " + spell + " for " + HeroManager.getCost(spell, Core.getMainHero()) + " Experience Points?", true, () ->
-                        HqDataMaster.operation(getUserObject(), HeroDataModel.HERO_OPERATION.SPELL_LEARNED, spell));
+                        HqDataMaster.operation(getUserObject(), HeroEnums.HERO_OPERATION.SPELL_LEARNED, spell));
             } else {
                 EUtils.showInfoTextStyled(LABEL_STYLE.AVQ_SMALL, "Cannot learn " + spell.getName() + ":\n " +
                         spell.getGame().getRequirementsManager().check(Core.getMainHero(), spell));
             }
         } else {
 //        if (HqSpellMaster.canLearnEnVerbatim(spell))
-            if (HqSpellMaster.canLearnEnVerbatim(spell)) {
-                EUtils.onConfirm("Learn " + spell + " En Verbatim for " + HeroManager.getCost(spell, Core.getMainHero())
-                        + " Experience Points?", true, () ->
-                        HqDataMaster.operation(getUserObject(), HeroDataModel.HERO_OPERATION.SPELL_EN_VERBATIM, spell));
-            } else
-                EUtils.showInfoTextStyled(LABEL_STYLE.AVQ_SMALL, "Cannot learn En Verbatim " + spell.getName());
+            //TODO HQ 2.0
+            // if (HqSpellMaster.canLearnEnVerbatim(spell)) {
+            //     EUtils.onConfirm("Learn " + spell + " En Verbatim for " + HeroManager.getCost(spell, Core.getMainHero())
+            //             + " Experience Points?", true, () ->
+            //             HqDataMaster.operation(getUserObject(), HeroEnums.HERO_OPERATION.SPELL_EN_VERBATIM, spell));
+            // } else
+            //     EUtils.showInfoTextStyled(LABEL_STYLE.AVQ_SMALL, "Cannot learn En Verbatim " + spell.getName());
         }
     }
 

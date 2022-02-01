@@ -30,7 +30,7 @@ public class ArmorMaster {
     public enum ArmorLayer {
         Inner,
         Outer,
-        Cloak,
+        Cloak, //can we retain it without making it into a full Armor Item? Surely we don't want the mess - displaying it, durab. etc
         Helmet
     }
 

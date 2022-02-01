@@ -8,18 +8,14 @@ import eidolons.ability.conditions.shortcut.*;
 import eidolons.ability.conditions.special.*;
 import eidolons.ability.conditions.special.SpellCondition.SPELL_CHECK;
 import eidolons.entity.unit.Unit;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.exploration.handlers.ExplorationMaster;
 import main.content.CONTENT_CONSTS.RETAIN_CONDITIONS;
 import main.content.CONTENT_CONSTS.SPECIAL_REQUIREMENTS;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
+import main.content.enums.entity.*;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODIFIERS;
-import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
-import main.content.enums.entity.HeroEnums;
-import main.content.enums.entity.ItemEnums;
-import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.VariableManager;
@@ -84,12 +80,12 @@ public class DC_ConditionMaster extends ConditionMaster {
                 return new NotCondition(new OrConditions(new ClassificationCondition(
                         UnitEnums.CLASSIFICATIONS.UNDEAD),
                         new ClassificationCondition(UnitEnums.CLASSIFICATIONS.DEMON), new PropCondition(
-                        G_PROPS.PRINCIPLES, HeroEnums.PRINCIPLES.TREACHERY)));
+                        G_PROPS.PRINCIPLES, RpgEnums.PRINCIPLES.TREACHERY)));
             case ONLY_EVIL:
                 return new OrConditions(
                         new ClassificationCondition(UnitEnums.CLASSIFICATIONS.UNDEAD),
                         new ClassificationCondition(UnitEnums.CLASSIFICATIONS.DEMON), new PropCondition(
-                        G_PROPS.PRINCIPLES, HeroEnums.PRINCIPLES.TREACHERY));
+                        G_PROPS.PRINCIPLES, RpgEnums.PRINCIPLES.TREACHERY));
 
             case ONLY_UNDEAD:
                 return new ClassificationCondition(UnitEnums.CLASSIFICATIONS.UNDEAD);

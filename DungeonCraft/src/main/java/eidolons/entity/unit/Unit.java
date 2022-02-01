@@ -9,6 +9,7 @@ import eidolons.entity.active.spaces.Feat;
 import eidolons.entity.active.spaces.FeatSpaces;
 import eidolons.entity.handlers.bf.unit.*;
 import eidolons.entity.item.trinket.JewelryItem;
+import eidolons.entity.item.trinket.TokenItem;
 import eidolons.netherflame.eidolon.heromake.model.DC_Attributes;
 import eidolons.netherflame.eidolon.heromake.model.DC_Masteries;
 import eidolons.entity.item.*;
@@ -44,7 +45,7 @@ import main.content.VALUE;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
-import main.content.enums.entity.HeroEnums.BACKGROUND;
+import main.content.enums.entity.HeroEnums.SUBRACE;
 import main.content.enums.entity.HeroEnums.GENDER;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.enums.entity.UnitEnums;
@@ -89,19 +90,21 @@ public class Unit extends UnitModel implements GridEntity {
     protected WeaponItem offhandNaturalWeapon;
     protected WeaponItem naturalWeapon;
     protected WeaponItem weapon;
-    protected WeaponItem secondWeapon;
+    protected WeaponItem offhandWeapon;
     protected WeaponItem reserveMainWeapon;
     protected WeaponItem reserveOffhandWeapon;
 
     protected ArmorItem armor;
     protected ArmorItem innerArmor;
-    protected HeadGarment headGarment;
-    protected Garment garment;
 
     protected DequeImpl<DC_PassiveObj> skills;
     protected DequeImpl<ClassRank> classes;
     protected DequeImpl<Perk> perks;
+
     protected DequeImpl<JewelryItem> jewelry;
+    protected DequeImpl<Garment> garments;
+    protected DequeImpl<TokenItem> tokens;
+
     protected DequeImpl<HeroItem> inventory;
 
     protected DC_Masteries masteries;
@@ -441,12 +444,13 @@ public class Unit extends UnitModel implements GridEntity {
         return innerArmor;
     }
 
+    //TODO INV 2.0
     public Garment getGarment() {
-        return garment;
+        return null ;
     }
 
-    public HeadGarment getHeadwear() {
-        return headGarment;
+    public Garment getHeadwear() {
+        return null ;
     }
 
     public void setArmor(ArmorItem armor) {
@@ -485,21 +489,21 @@ public class Unit extends UnitModel implements GridEntity {
     }
 
     public WeaponItem getOffhandWeapon() {
-        return secondWeapon;
+        return offhandWeapon;
     }
 
-    public void setSecondWeapon(WeaponItem secondWeapon) {
-        this.secondWeapon = secondWeapon;
-        if (secondWeapon != null) {
-            secondWeapon.setMainHand(false);
+    public void setOffhandWeapon(WeaponItem offhandWeapon) {
+        this.offhandWeapon = offhandWeapon;
+        if (offhandWeapon != null) {
+            offhandWeapon.setMainHand(false);
         } else {
             ref.setID(KEYS.WEAPON, null);
         }
 
         if (!game.isSimulation() && !isLoaded()) {
             String id = "";
-            if (secondWeapon != null) {
-                id = secondWeapon.getId() + "";
+            if (offhandWeapon != null) {
+                id = offhandWeapon.getId() + "";
             }
             setProperty(G_PROPS.OFF_HAND_ITEM, id);
         }
@@ -736,7 +740,7 @@ public class Unit extends UnitModel implements GridEntity {
                 setWeapon((WeaponItem) item);
                 break;
             case OFF_HAND:
-                setSecondWeapon((WeaponItem) item);
+                setOffhandWeapon((WeaponItem) item);
                 break;
             case RESERVE_MAIN_HAND:
                 setReserveMainWeapon((WeaponItem) item);
@@ -811,7 +815,7 @@ public class Unit extends UnitModel implements GridEntity {
         resetPercentages();
         getCustomParamMap().clear();
         getCustomPropMap().clear();
-        game.getState().addObject(secondWeapon);
+        game.getState().addObject(offhandWeapon);
         game.getState().addObject(weapon);
         game.getState().addObject(armor);
         for (HeroItem item : getQuickItems()) {
@@ -822,15 +826,10 @@ public class Unit extends UnitModel implements GridEntity {
         }
     }
 
-    public BACKGROUND getBackground() {
-        BACKGROUND background = new EnumMaster<BACKGROUND>().retrieveEnumConst(BACKGROUND.class,
+    public SUBRACE getBackground() {
+        SUBRACE SUBRACE = new EnumMaster<SUBRACE>().retrieveEnumConst(SUBRACE.class,
                 getProperty(G_PROPS.BACKGROUND));
-        if (getGender() != null) {
-            return getGender() == GENDER.FEMALE
-                    ? background.getFemale()
-                    : background.getMale();
-        }
-        return background;
+        return SUBRACE;
     }
 
     public DequeImpl<JewelryItem> getJewelry() {
@@ -866,7 +865,7 @@ public class Unit extends UnitModel implements GridEntity {
                 break;
             case OFF_HAND:
                 item = getOffhandWeapon();
-                setSecondWeapon(null);
+                setOffhandWeapon(null);
                 break;
             case RESERVE_MAIN_HAND:
                 item = getReserveMainWeapon();
@@ -990,7 +989,7 @@ public class Unit extends UnitModel implements GridEntity {
 
     public List<HeroSlotItem> getSlotItems() {
         ListMaster<HeroSlotItem> listMaster = new ListMaster<>();
-        return listMaster.removeNulls(listMaster.getList(weapon, armor, secondWeapon));
+        return listMaster.removeNulls(listMaster.getList(weapon, armor, offhandWeapon));
     }
 
     public boolean hasBroadReach() {
@@ -1254,15 +1253,6 @@ public class Unit extends UnitModel implements GridEntity {
     public UnitCalculator getCalculator() {
         return super.getCalculator();
     }
-
-    public int calculateRemainingMemory() {
-        return getCalculator().calculateRemainingMemory();
-    }
-
-    public int calculateUsedMemory() {
-        return getCalculator().calculateUsedMemory();
-    }
-
 
     public int calculateWeight() {
         return getCalculator().calculateWeight();

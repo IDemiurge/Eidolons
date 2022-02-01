@@ -21,7 +21,6 @@ public class ValueInitializer {
         FACING_DIRECTION.setDynamic(true);
         VISIBILITY_STATUS.setDynamic(true);
         DETECTION_STATUS.setDynamic(true);
-        DC_TYPE.SPELLS.setUpgradeRequirementProp(KNOWN_SPELLS);
         DC_TYPE.CLASSES.setUpgradeRequirementProp(CLASSES);
         DC_TYPE.SKILLS.setUpgradeRequirementProp(SKILLS);
 

@@ -192,20 +192,13 @@ public class Spell extends ActiveObj {
         return false;
     }
 
-    public boolean isPrepared() {
-        // if (owner.isMe())
-        return true;
-        // return checkProperty(PROPS.STATUS, PREPARED);
-    }
-
-
     @Override
     public void invokeClicked() {
         if (getGame().getManager().isSelecting()) {
             getGame().getManager().objClicked(this);
             return;
         }
-        if (!isPrepared() || isBlocked()) {
+        if (isBlocked()) {
             return;
         }
 
@@ -224,21 +217,7 @@ public class Spell extends ActiveObj {
 
     public void remove() {
         getOwnerUnit().getSpells().remove(this);
-        getOwnerUnit().removeProperty(getSpellProp(), getName());
-
     }
-
-    private PROPERTY getSpellProp() {
-        switch (getSpellPool()) {
-            case MEMORIZED:
-                return PROPS.MEMORIZED_SPELLS;
-            case VERBATIM:
-                return PROPS.VERBATIM_SPELLS;
-
-        }
-        return null;
-    }
-
 
     public boolean isInstant() {
         return checkProperty(G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.INSTANT.toString());

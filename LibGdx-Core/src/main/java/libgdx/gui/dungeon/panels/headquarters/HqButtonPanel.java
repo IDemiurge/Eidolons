@@ -4,7 +4,7 @@ import libgdx.gui.generic.btn.SmartTextButton;
 import libgdx.gui.dungeon.panels.dc.unitinfo.datasource.UnitDataSource;
 import libgdx.gui.dungeon.panels.headquarters.datasource.HqDataMaster;
 import libgdx.gui.generic.btn.ButtonStyled;
-import eidolons.system.libgdx.datasource.HeroDataModel;
+import main.content.enums.entity.HeroEnums;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.launch.Flags;
@@ -57,7 +57,7 @@ public class HqButtonPanel extends HqElement {
     }
 
     private void levelUp() {
-        HqDataMaster.operation(dataSource, HeroDataModel.HERO_OPERATION.LEVEL_UP);
+        HqDataMaster.operation(dataSource, HeroEnums.HERO_OPERATION.LEVEL_UP);
     }
 
 }

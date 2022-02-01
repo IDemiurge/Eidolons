@@ -15,9 +15,11 @@ import main.content.*;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.ASPECT;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.entity.ClassEnums;
 import main.content.enums.entity.HeroEnums.*;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.WEAPON_SIZE;
+import main.content.enums.entity.RpgEnums;
 import main.content.enums.entity.SkillEnums;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.values.parameters.*;
@@ -38,7 +40,6 @@ import main.system.auxiliary.log.LogMaster;
 
 import java.util.*;
 
-import static main.content.enums.entity.HeroEnums.BACKGROUND.*;
 import static main.content.enums.entity.SkillEnums.MASTERY.*;
 
 public class DC_ContentValsManager extends ContentValsManager {
@@ -178,7 +179,7 @@ public class DC_ContentValsManager extends ContentValsManager {
     }
 
 
-    public static PARAMETER getAlignmentForPrinciple(PRINCIPLES principle) {
+    public static PARAMETER getAlignmentForPrinciple(RpgEnums.PRINCIPLES principle) {
         PARAMETER param = ContentConsts.alignmentMap.get(principle);
         if (param != null) {
             return param;
@@ -188,7 +189,7 @@ public class DC_ContentValsManager extends ContentValsManager {
         return param;
     }
 
-    public static PARAMETER getIdentityParamForPrinciple(PRINCIPLES principle) {
+    public static PARAMETER getIdentityParamForPrinciple(RpgEnums.PRINCIPLES principle) {
         // OPTIMIZATION: having a param field on each Principle const!?
         // faster...
         PARAMETER param = ContentConsts.identityMap.get(principle);
@@ -291,15 +292,13 @@ public class DC_ContentValsManager extends ContentValsManager {
         return ContentConsts.COST_PARAMS;
     }
 
+    @Deprecated
     public static PARAMETER getSpecialCostReductionParam(PARAMETER costParam, PROPERTY p) {
         String valueName = null;
-        if (p == PROPS.VERBATIM_SPELLS) {
+        if (p == PROPS.LEARNED_SPELLS) {
             valueName = costParam.getName() + Strings.REDUCTION + "_" + p.getName();
         }
         if (p == PROPS.SKILLS) {
-            valueName = costParam.getName() + Strings.REDUCTION + "_" + p.getName();
-        }
-        if (p == PROPS.LEARNED_SPELLS) {
             valueName = costParam.getName() + Strings.REDUCTION + "_" + p.getName();
         }
         return ContentValsManager.getPARAM(valueName);
@@ -537,11 +536,11 @@ public class DC_ContentValsManager extends ContentValsManager {
         return null;
     }
 
-    public static ObjType getBaseClassType(CLASS_GROUP classGroup) {
+    public static ObjType getBaseClassType(ClassEnums.CLASS_GROUP classGroup) {
         return DataManager.getType(getBaseClassTypeName(classGroup), DC_TYPE.CLASSES);
     }
 
-    private static String getBaseClassTypeName(CLASS_GROUP classGroup) {
+    private static String getBaseClassTypeName(ClassEnums.CLASS_GROUP classGroup) {
         switch (classGroup) {
             case RANGER:
                 return "Scout";
@@ -610,8 +609,8 @@ public class DC_ContentValsManager extends ContentValsManager {
         return list;
     }
 
-    public static CLASS_GROUP getMainClassGroup(Unit hero) {
-        return new EnumMaster<CLASS_GROUP>().retrieveEnumConst(CLASS_GROUP.class, hero
+    public static ClassEnums.CLASS_GROUP getMainClassGroup(Unit hero) {
+        return new EnumMaster<ClassEnums.CLASS_GROUP>().retrieveEnumConst(ClassEnums.CLASS_GROUP.class, hero
          .getProperty(PROPS.FIRST_CLASS));
 
     }
@@ -632,14 +631,14 @@ public class DC_ContentValsManager extends ContentValsManager {
         ContentConsts.editorMap = editorMap2;
     }
 
-    public static CLASS_GROUP getClassGroupsFromClassType(CLASS_TYPE type) {
+    public static ClassEnums.CLASS_GROUP getClassGroupsFromClassType(ClassEnums.CLASS_TYPE type) {
         // CLASS_GROUP group;
         // new ListMaster<>()
         return null;
     }
 
-    public static PRINCIPLES getPrinciple(PARAMETER param) {
-        return new EnumMaster<PRINCIPLES>().retrieveEnumConst(PRINCIPLES.class, ContainerUtils
+    public static RpgEnums.PRINCIPLES getPrinciple(PARAMETER param) {
+        return new EnumMaster<RpgEnums.PRINCIPLES>().retrieveEnumConst(RpgEnums.PRINCIPLES.class, ContainerUtils
          .openContainer(param.getName(), " ").get(0));
     }
 
@@ -655,7 +654,7 @@ public class DC_ContentValsManager extends ContentValsManager {
 
     public static String getMainAttributeForClass(DC_PassiveObj classObj) {
 
-        CLASS_GROUP group = new EnumMaster<CLASS_GROUP>().retrieveEnumConst(CLASS_GROUP.class,
+        ClassEnums.CLASS_GROUP group = new EnumMaster<ClassEnums.CLASS_GROUP>().retrieveEnumConst(ClassEnums.CLASS_GROUP.class,
          classObj.getProperty(G_PROPS.CLASS_GROUP));
         if (group != null) {
             switch (group) {
@@ -773,56 +772,38 @@ public class DC_ContentValsManager extends ContentValsManager {
         return C_OBJ_TYPE.ITEMS;
     }
 
-    public static BACKGROUND[] getSubraces(RACE race) {
+    public static SUBRACE[] getSubraces(RACE race) {
         switch (race) {
             case HUMAN:
-                return new BACKGROUND[]{
-                 BACKGROUND.MAN_OF_KINGS_REALM,
-                 BACKGROUND.MAN_OF_EAGLE_REALM,
-                 BACKGROUND.MAN_OF_GRIFF_REALM,
-                 BACKGROUND.MAN_OF_RAVEN_REALM,
-                 BACKGROUND.MAN_OF_WOLF_REALM,
-                 BACKGROUND.MAN_OF_EAST_EMPIRE,
+                return new SUBRACE[]{
+                 SUBRACE.MAN_OF_KINGS_REALM,
+                 SUBRACE.MAN_OF_EAGLE_REALM,
+                 SUBRACE.MAN_OF_GRIFF_REALM,
+                 SUBRACE.MAN_OF_RAVEN_REALM,
+                 SUBRACE.MAN_OF_WOLF_REALM,
                 };
             case ELF:
-                return new BACKGROUND[]{
-                 BACKGROUND.FEY_ELF,
-                 BACKGROUND.GREY_ELF,
-                 BACKGROUND.WOOD_ELF,
-                 BACKGROUND.HIGH_ELF,
+                return new SUBRACE[]{
+                 SUBRACE.FEY_ELF,
+                 SUBRACE.GREY_ELF,
+                 SUBRACE.WOOD_ELF,
+                 SUBRACE.HIGH_ELF,
                 };
             case DWARF:
-                return new BACKGROUND[]{
-                 BACKGROUND.MOONSILVER_DWARF,
-                 BACKGROUND.STONESHIELD_DWARF,
-                 BACKGROUND.IRONHELM_DWARF,
-                 BACKGROUND.WOLFSBANE_DWARF,
-                 BACKGROUND.RUNESMITH_DWARF,
-                 BACKGROUND.GRIMBART_DWARF,
+                return new SUBRACE[]{
+                 SUBRACE.MOONSILVER_DWARF,
+                 SUBRACE.STONESHIELD_DWARF,
+                 SUBRACE.IRONHELM_DWARF,
+                 SUBRACE.WOLFSBANE_DWARF,
+                 SUBRACE.RUNESMITH_DWARF,
+                 SUBRACE.GRIMBART_DWARF,
 
                  //                 BACKGROUND.FROSTBEARD_DWARF,
                  //                 BACKGROUND.WILDAXE_DWARF,
                  //                 BACKGROUND.REDBLAZE_DWARF,
                 };
-            case GOBLINOID:
-                return new BACKGROUND[]{
-                 RED_ORC,
-                 BLACK_ORC,
-                 PALE_ORC,
-                 GREEN_ORC
-                };
-            case DEMON:
-                return new BACKGROUND[]{
-                 INFERI_CHAOSBORN,
-                 INFERI_HELLSPAWN,
-                 INFERI_WARPBORN
-                };
-            case VAMPIRE:
-                return new BACKGROUND[]{
-                 VAMPIRE,
-                };
         }
-        return new BACKGROUND[0];
+        return new SUBRACE[0];
     }
 
     public static VALUE[] getDisplayedHeroProperties() {

@@ -3,7 +3,7 @@ package eidolons.entity.active.spaces;
 import eidolons.content.PROPS;
 import eidolons.entity.unit.Unit;
 import main.content.enums.entity.NewRpgEnums;
-import main.content.enums.entity.NewRpgEnums.FEAT_SPACE_VALUE;
+import main.content.enums.entity.NewRpgEnums.FeatSpaceValue;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
@@ -16,15 +16,12 @@ import java.util.Map;
 
 public class FeatSpaceInitializer implements IFeatSpaceInitializer {
     public static final PROPS[] featSpacePropsSpell = {
-            PROPS.VERBATIM_SPACES,
-            PROPS.MEMORIZED_SPACES,
-            PROPS.GRIMOIRE_SPACES,
-            PROPS.DIVINED_SPACES,
-            PROPS.CUSTOM_SPACES,
+            PROPS.SPELL_SPACES,
+            PROPS.QUICK_ITEMS,
     };
     public static final PROPS[] featSpaceProps = {
-            PROPS.QUICK_ITEMS,
             PROPS.COMBAT_SPACES,
+            PROPS.QUICK_ITEMS,
     };
     public static final int MAX_SLOTS = 6;
 
@@ -57,8 +54,8 @@ public class FeatSpaceInitializer implements IFeatSpaceInitializer {
         initDefaultSpellSpaces(unit);
     }
         public void initDefaultSpellSpaces(Entity unit) {
-            initSpaceProp(unit, PROPS.VERBATIM_SPELLS, PROPS.VERBATIM_SPACES, "Memorized");
-            initSpaceProp(unit, PROPS.MEMORIZED_SPELLS, PROPS.MEMORIZED_SPACES, "Verbatim");
+            initSpaceProp(unit, PROPS.LEARNED_SPELLS, PROPS.SPELL_SPACES, "Memorized");
+            // initSpaceProp(unit, PROPS.MEMORIZED_SPELLS, PROPS.SPELL_SPACES, "Verbatim");
             // initSpace(unit, PROPS.GRIMOIRE_SPELLS, PROPS.GRIMOIRE_SPACES, "grimoire");
     }
     public void initDefaultCombatSpaces(Entity unit) {
@@ -76,13 +73,13 @@ public class FeatSpaceInitializer implements IFeatSpaceInitializer {
             if (actives.size()<=i) break;
             data.setActive(i, actives.get(i));
         }
-        data.setValue(FEAT_SPACE_VALUE.feats, s);
-        data.setValue(FEAT_SPACE_VALUE.name, name);
+        data.setValue(FeatSpaceValue.feats, s);
+        data.setValue(FeatSpaceValue.name, name);
         unit.setProperty(spaceProp, data.toString());
     }
 
     private FeatSpace createSpace(int i, Unit unit, FeatSpaces spaces, FeatSpaceData data, boolean spellSpaces) {
-        NewRpgEnums.FEAT_SPACE_TYPE type = data.getType();
+        NewRpgEnums.FeatSpaceType type = data.getType();
         // mods = getGlobalMods(unit, type); //TODO
         Map<Integer, Feat> actives = createActives(unit, data);
         FeatSpace space = new FeatSpace(i, data.getName(), unit, type, data.getMode(), actives);
@@ -107,7 +104,7 @@ public class FeatSpaceInitializer implements IFeatSpaceInitializer {
     }
 
     public FeatSpace.ActiveSpaceMeta createMeta(FeatSpace space) {
-        FeatSpace.ActiveSpaceMeta meta = new FeatSpace.ActiveSpaceMeta(space.getName(), NewRpgEnums.FEAT_SPACE_SKIN.lite, false, false);
+        FeatSpace.ActiveSpaceMeta meta = new FeatSpace.ActiveSpaceMeta(space.getName(), NewRpgEnums.FeatSpaceSkin.lite, false, false);
         return meta;
     }
 }

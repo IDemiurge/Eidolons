@@ -10,7 +10,7 @@ import static main.content.enums.entity.NewRpgEnums.*;
     <ActiveSpacesProp>
     name=X; | name=X2; ...
      */
-public class FeatSpaceData extends DataUnit<FEAT_SPACE_VALUE> {
+public class FeatSpaceData extends DataUnit<FeatSpaceValue> {
     public FeatSpaceData(String string) {
         super(string);
     }
@@ -30,7 +30,7 @@ public class FeatSpaceData extends DataUnit<FEAT_SPACE_VALUE> {
     }
 
     public String getName() {
-        return getValue(FEAT_SPACE_VALUE.name);
+        return getValue(FeatSpaceValue.name);
     }
 
     public void setActive(int index, String name) {
@@ -42,19 +42,19 @@ public class FeatSpaceData extends DataUnit<FEAT_SPACE_VALUE> {
     }
 
     public String getActives() {
-        return getValue(FEAT_SPACE_VALUE.feats);
+        return getValue(FeatSpaceValue.feats);
     }
 
     public void set(int index, String active) {
         setValue("slot_" + index, active);
     }
 
-    public FEAT_SPACE_TYPE getType() {
-        return new EnumMaster<FEAT_SPACE_TYPE>().retrieveEnumConst(FEAT_SPACE_TYPE.class, getValue(FEAT_SPACE_VALUE.type));
+    public FeatSpaceType getType() {
+        return new EnumMaster<FeatSpaceType>().retrieveEnumConst(FeatSpaceType.class, getValue(FeatSpaceValue.type));
     }
 
-    public FEAT_SPACE_MODE getMode() {
-        return FEAT_SPACE_MODE.normal;
+    public FeatSpaceMode getMode() {
+        return FeatSpaceMode.normal;
     }
 
     public int indexOf(String name) {

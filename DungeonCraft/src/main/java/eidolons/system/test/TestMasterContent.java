@@ -165,7 +165,7 @@ public class TestMasterContent {
 
     public static boolean tryCheckHeroForTestSpell(ObjType type, String typeName, boolean last) {
 
-        if (type.checkProperty(PROPS.MEMORIZED_SPELLS, typeName)) {
+        if (type.checkProperty(PROPS.LEARNED_SPELLS, typeName)) {
             return false;
         }
         if (!char_test_active_filtering) {
@@ -290,7 +290,7 @@ public class TestMasterContent {
                     if (s.getIntParam(PARAMS.SPELL_DIFFICULTY) < 1) {
                         continue;
                     }
-                    type.addProperty(PROPS.VERBATIM_SPELLS, s.getName(), true);
+                    type.addProperty(PROPS.LEARNED_SPELLS, s.getName(), true);
                 }
                 for (ObjType s : DataManager.getTypes(DC_TYPE.SPELLS)) {
                     if (!s.isUpgrade()) {
@@ -299,7 +299,7 @@ public class TestMasterContent {
                     if (s.getIntParam(PARAMS.SPELL_DIFFICULTY) < 1) {
                         continue;
                     }
-                    type.addProperty(PROPS.MEMORIZED_SPELLS, s.getName(), true);
+                    type.addProperty(PROPS.LEARNED_SPELLS, s.getName(), true);
                 }
                 addTestActives(type, last);
             }
@@ -308,7 +308,7 @@ public class TestMasterContent {
 
     public static void addSpells(Entity type, String list) {
         for (String s : ContainerUtils.open(list)) {
-            type.addProperty(PROPS.VERBATIM_SPELLS, s
+            type.addProperty(PROPS.LEARNED_SPELLS, s
                     , true);
         }
 
@@ -333,7 +333,7 @@ public class TestMasterContent {
 
     public static void addGRAPHICS_TEST_Spells(Entity type) {
         for (String s : ContainerUtils.open(GRAPHICS_TEST_LIST)) {
-            type.addProperty(PROPS.VERBATIM_SPELLS, s
+            type.addProperty(PROPS.LEARNED_SPELLS, s
                     , true);
         }
     }
@@ -358,8 +358,8 @@ public class TestMasterContent {
     }
 
     private static void addTestSpells(ObjType type, boolean last) {
-        type.addProperty(PROPS.VERBATIM_SPELLS, "Psychic Projection;Blink"
-                // type.addProperty(PROPS.VERBATIM_SPELLS, "Blink;"
+        type.addProperty(PROPS.LEARNED_SPELLS, "Psychic Projection;Blink"
+                // type.addProperty(PROPS.LEARNED_SPELLS, "Blink;"
                 + getTEST_LIST(), true);
         if (!addSpells) {
             return;
@@ -371,22 +371,22 @@ public class TestMasterContent {
 
         for (String s : ContainerUtils.open(getFOCUS_LIST())) {
             if (checkHeroForTestSpell(type, s, last)) {
-                type.addProperty(PROPS.VERBATIM_SPELLS, s, true);
+                type.addProperty(PROPS.LEARNED_SPELLS, s, true);
             }
         }
         for (String s : ContainerUtils.open(TestMasterContent.getFIX_LIST())) {
             if (checkHeroForTestSpell(type, s, last)) {
-                type.addProperty(PROPS.VERBATIM_SPELLS, s, true);
+                type.addProperty(PROPS.LEARNED_SPELLS, s, true);
             }
         }
         for (String s : ContainerUtils.open(getTEST_LIST())) {
             if (checkHeroForTestSpell(type, s, last)) {
-                type.addProperty(PROPS.VERBATIM_SPELLS, s, true);
+                type.addProperty(PROPS.LEARNED_SPELLS, s, true);
             }
         }
         for (String s : ContainerUtils.open(getPOLISH_LIST())) {
             if (checkHeroForTestSpell(type, s, last)) {
-                type.addProperty(PROPS.VERBATIM_SPELLS, s, true);
+                type.addProperty(PROPS.LEARNED_SPELLS, s, true);
             }
         }
     }
@@ -400,7 +400,7 @@ public class TestMasterContent {
         for (ObjType s : DataManager.getTypes(DC_TYPE.SPELLS)) {
             builder.append(s.getName()).append(";");
         }
-        type.addProperty(PROPS.VERBATIM_SPELLS, builder.toString(), true);
+        type.addProperty(PROPS.LEARNED_SPELLS, builder.toString(), true);
     }
 
     public static void setAddAllSpells(boolean addAllSpells) {

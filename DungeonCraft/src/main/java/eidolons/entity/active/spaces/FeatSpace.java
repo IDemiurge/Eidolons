@@ -10,16 +10,16 @@ import java.util.Map;
 public class FeatSpace {
 
     protected int index;
-    protected NewRpgEnums.FEAT_SPACE_TYPE type;
-    protected NewRpgEnums.FEAT_SPACE_MODE mode;
+    protected NewRpgEnums.FeatSpaceType type;
+    protected NewRpgEnums.FeatSpaceMode mode;
     //protected  List<ActiveSpaceModifier> modifiers;
     protected String name;
     protected boolean locked, hidden, active;
     protected Map<Integer, Feat> featMap;
     protected Unit owner;
 
-    public FeatSpace(int index, String name, Unit owner, NewRpgEnums.FEAT_SPACE_TYPE type,
-                     NewRpgEnums.FEAT_SPACE_MODE mode, Map<Integer, Feat> featMap) {
+    public FeatSpace(int index, String name, Unit owner, NewRpgEnums.FeatSpaceType type,
+                     NewRpgEnums.FeatSpaceMode mode, Map<Integer, Feat> featMap) {
         this.name = name;
         this.owner = owner;
         this.type = type;
@@ -40,11 +40,11 @@ public class FeatSpace {
     public static class ActiveSpaceMeta {
         //for visuals?
         String description;
-        NewRpgEnums.FEAT_SPACE_SKIN skin;
+        NewRpgEnums.FeatSpaceSkin skin;
         boolean darkened;
         boolean grayOut;
 
-        public ActiveSpaceMeta(String description, NewRpgEnums.FEAT_SPACE_SKIN skin, boolean darkened, boolean grayOut) {
+        public ActiveSpaceMeta(String description, NewRpgEnums.FeatSpaceSkin skin, boolean darkened, boolean grayOut) {
             this.description = description;
             this.skin = skin;
             this.darkened = darkened;
@@ -56,11 +56,11 @@ public class FeatSpace {
         return featMap.get(slot);
     }
 
-    public NewRpgEnums.FEAT_SPACE_TYPE getType() {
+    public NewRpgEnums.FeatSpaceType getType() {
         return type;
     }
 
-    public NewRpgEnums.FEAT_SPACE_MODE getMode() {
+    public NewRpgEnums.FeatSpaceMode getMode() {
         return mode;
     }
 

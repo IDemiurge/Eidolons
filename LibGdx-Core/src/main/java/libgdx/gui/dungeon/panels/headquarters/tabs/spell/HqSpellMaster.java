@@ -14,6 +14,7 @@ import main.elements.conditions.RequirementsManager;
  * Created by JustMe on 4/17/2018.
  */
 public class HqSpellMaster {
+    @Deprecated
     public static String getOverlay(Spell sub
     ) {
         if (sub.getSpellPool() != null)
@@ -30,15 +31,6 @@ public class HqSpellMaster {
     }
     //DC Review - any global changes to spell sys?
 
-    public static void learnSpellEnVerbatim(Unit hero, Spell spell) {
-        //        LibraryManager.addVerbatimSpell(hero, spell.getType());
-        Integer cost = Integer.valueOf(HeroManager.getCost(spell, hero));
-        hero.modifyParameter(PARAMS.SPELL_POINTS_UNSPENT, -cost);
-        hero.addProperty(true, PROPS.VERBATIM_SPELLS, spell.getName());
-        spellsChanged(hero);
-
-    }
-
     public static void learnSpell(Unit hero, Spell spell) {
         Integer cost = Integer.valueOf(HeroManager.getCost(spell, hero));
         hero.modifyParameter(PARAMS.SPELL_POINTS_UNSPENT, -cost);
@@ -46,36 +38,12 @@ public class HqSpellMaster {
         spellsChanged(hero);
     }
 
-    public static void memorizeSpell(Unit hero, Spell spell) {
-        hero.addProperty(true, PROPS.MEMORIZED_SPELLS, spell.getName());
-        spellsChanged(hero);
-    }
-
     private static void spellsChanged(Unit hero) {
 
     }
 
-    public static void unmemorizeSpell(Unit hero, Spell spell) {
-        hero.removeProperty(true, PROPS.MEMORIZED_SPELLS, spell.getName());
-        spellsChanged(hero);
-    }
-
-    public static boolean canMemorize(Spell spell) {
-        if (spell.getSpellPool() != SPELL_POOL.SPELLBOOK)
-            return false;
-        if (spell.getOwnerUnit().calculateRemainingMemory() < spell.getIntParam(PARAMS.SPELL_DIFFICULTY))
-            return false;
-        return spell.getGame().getRequirementsManager().check(spell.getOwnerUnit(), spell
-                , RequirementsManager.ALT_MODE) == null;
-    }
-
     public static boolean canLearn(Spell spell) {
         return spell.getGame().getRequirementsManager().check(Core.getMainHero(), spell) == null;
-    }
-
-    public static boolean canLearnEnVerbatim(Spell spell) {
-        return spell.getGame().getRequirementsManager().check(spell.getOwnerUnit(), spell,
-                RequirementsManager.VERBATIM_MODE) == null;
     }
 
 }

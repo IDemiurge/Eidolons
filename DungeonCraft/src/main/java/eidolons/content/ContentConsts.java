@@ -2,7 +2,7 @@ package eidolons.content;
 
 import main.content.DC_TYPE;
 import main.content.VALUE;
-import main.content.enums.entity.HeroEnums;
+import main.content.enums.entity.RpgEnums;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -87,8 +87,8 @@ public class ContentConsts {
     static Map<String, EDITOR> editorMap;
     static List<VALUE> backgroundValues;
     static List<PARAMETER> backgroundDynamicParams;
-    static Map<HeroEnums.PRINCIPLES, PARAMETER> alignmentMap = new HashMap<>();
-    static Map<HeroEnums.PRINCIPLES, PARAMETER> identityMap = new HashMap<>();
+    static Map<RpgEnums.PRINCIPLES, PARAMETER> alignmentMap = new HashMap<>();
+    static Map<RpgEnums.PRINCIPLES, PARAMETER> identityMap = new HashMap<>();
     static ArrayList<PARAMETER> dynamicParams = new ArrayList<>();
     static VALUE[] displayedHeroProperties = new VALUE[]{
             G_PROPS.ASPECT, G_PROPS.DEITY, G_PROPS.BACKGROUND,

@@ -407,10 +407,6 @@ public class DC_GameManager extends GameManager {
 
     }
 
-    public void activateMySpell(int index) {
-        spellMaster.activateMySpell(index);
-    }
-
     public void selectMyHero() {
         getGame().getPlayer(true).getHeroObj().invokeClicked();
 

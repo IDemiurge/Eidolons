@@ -333,7 +333,6 @@ public class UnitResetter extends EntityResetter<Unit> {
         }
 
         getCalculator().calculateWeight();
-        getCalculator().calculateRemainingMemory();
 
         if (!game.isSimulation()) { // TODO perhaps I should apply and display
             // them!

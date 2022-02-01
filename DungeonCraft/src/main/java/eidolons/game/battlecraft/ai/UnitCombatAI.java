@@ -62,18 +62,6 @@ public class UnitCombatAI {
                 .getProperty(PROPS.ACTION_PRIORITY_BONUSES), C_OBJ_TYPE.ACTIVE);
         actionPriorityMods = RandomWizard.constructWeightMap(unit
                 .getProperty(PROPS.ACTION_PRIORITY_MODS), C_OBJ_TYPE.ACTIVE);
-
-        for (ObjType spell : DataManager.toTypeList(unit.getProperty(PROPS.VERBATIM_SPELLS),
-                DC_TYPE.SPELLS)) {
-            Integer mastery = unit.getIntParam(ContentValsManager.getSpellMasteryForSpell(spell));
-
-            // WHY VERBATIM? MAYBE FROM *TYPE*, YES...
-            int mod = DEFAULT_VERBATIM_MOD + mastery;
-        }
-        // default additions?
-        /*
-         * verbatim spell list per mastery
-         */
     }
 
     public AI_TYPE getType() {

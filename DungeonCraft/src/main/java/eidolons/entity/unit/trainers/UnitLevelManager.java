@@ -244,9 +244,6 @@ public class UnitLevelManager {
             }
             return newType.checkContainerProp(PROPS.QUICK_ITEMS, item);
         }
-        if (newType.checkContainerProp(PROPS.VERBATIM_SPELLS, item)) {
-            return true;
-        }
         if (newType.checkContainerProp(G_PROPS.ACTIVES, item)) {
             return true;
         }

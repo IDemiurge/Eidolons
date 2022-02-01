@@ -19,7 +19,6 @@ public class HqSpellTab extends HqElement {
     private ScrollPaneX scroll;
     SpellbookContainer spellbook;
     VerbatimContainer verbatim;
-    MemorizedContainer memorized;
 
     public HqSpellTab() {
         add(new ImageContainer(Images.SPELLBOOK))
@@ -36,7 +35,6 @@ public class HqSpellTab extends HqElement {
 
 
         add(verbatim = new VerbatimContainer());
-        add(memorized = new MemorizedContainer());
 
 //        add(new HqSpellScroll(spellbook = new SpellbookContainer(), 2))
 //         .colspan(2).row();

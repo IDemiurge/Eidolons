@@ -16,14 +16,15 @@ public class PtsItem {
     public PtsItem(String typeName) {
         this.type = DataManager.getType(typeName);
         switch (type.getOBJ_TYPE()) {
+            //TODO // prop = PROPS.LEARNED_PASSIVES;
             case ("skills"):
                 prop = PROPS.SKILLS;
                 break;
             case ("spells"):
-                prop = PROPS.VERBATIM_SPELLS;
+                prop = PROPS.LEARNED_SPELLS;
                 break;
             case ("actions"):
-                prop = G_PROPS.ACTIVES;
+                prop = PROPS.LEARNED_ACTIONS;
                 break;
         }
     }

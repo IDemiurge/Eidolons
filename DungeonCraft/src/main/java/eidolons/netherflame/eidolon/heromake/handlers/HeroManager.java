@@ -551,11 +551,6 @@ public class HeroManager {
     }
 
     private int getMode(OBJ_TYPE T, PROPERTY p) {
-        if (T == DC_TYPE.SPELLS) {
-            if (p == PROPS.VERBATIM_SPELLS) {
-                return RequirementsManager.VERBATIM_MODE;
-            }
-        }
         return RequirementsManager.NORMAL_MODE;
     }
 

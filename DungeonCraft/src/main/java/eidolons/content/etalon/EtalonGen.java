@@ -5,7 +5,7 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.game.core.game.DC_Game;
 import main.content.DC_TYPE;
-import main.content.enums.entity.HeroEnums;
+import main.content.enums.entity.ClassEnums;
 import main.content.enums.entity.SkillEnums;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -100,7 +100,7 @@ calculate the new rank set with closest ratio for N pts spent...
         return type;
     }
 
-    private static String getClassRank(HeroEnums.CLASS_GROUP baseClass) {
+    private static String getClassRank(ClassEnums.CLASS_GROUP baseClass) {
         switch (baseClass) {
             case SORCERER:
                 return "Apostate";

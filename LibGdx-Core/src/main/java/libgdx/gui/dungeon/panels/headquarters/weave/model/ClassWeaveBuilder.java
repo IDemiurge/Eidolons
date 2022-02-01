@@ -5,7 +5,7 @@ import libgdx.gui.dungeon.panels.headquarters.datasource.HqDataMaster;
 import libgdx.gui.dungeon.panels.headquarters.weave.Weave;
 import libgdx.gui.dungeon.panels.headquarters.weave.actor.WeaveActorBuilder;
 import libgdx.gui.dungeon.panels.headquarters.weave.model.classes.ClassWeave;
-import main.content.enums.entity.HeroEnums.CLASS_GROUP;
+import main.content.enums.entity.ClassEnums.CLASS_GROUP;
 import main.system.auxiliary.EnumMaster;
 import main.system.images.ImageManager;
 

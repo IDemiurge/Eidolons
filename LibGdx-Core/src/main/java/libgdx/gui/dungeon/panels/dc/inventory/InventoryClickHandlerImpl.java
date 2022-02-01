@@ -16,6 +16,7 @@ import eidolons.system.libgdx.datasource.HeroDataModel;
 import libgdx.gui.dungeon.panels.headquarters.datasource.HqDataMaster;
 import libgdx.screens.handlers.ScreenMaster;
 import main.content.DC_TYPE;
+import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.enums.entity.ItemEnums.JEWELRY_TYPE;
 import main.content.values.properties.G_PROPS;
@@ -247,30 +248,30 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         return null;
     }
 
-    protected HeroDataModel.HERO_OPERATION getHqOperation(OPERATIONS operation) {
+    protected HeroEnums.HERO_OPERATION getHqOperation(OPERATIONS operation) {
         switch (operation) {
             case PICK_UP:
-                return HeroDataModel.HERO_OPERATION.PICK_UP;
+                return HeroEnums.HERO_OPERATION.PICK_UP;
             case DROP:
-                return HeroDataModel.HERO_OPERATION.DROP;
+                return HeroEnums.HERO_OPERATION.DROP;
             case UNEQUIP:
-                return HeroDataModel.HERO_OPERATION.UNEQUIP;
+                return HeroEnums.HERO_OPERATION.UNEQUIP;
             case UNEQUIP_QUICK_SLOT:
-                return HeroDataModel.HERO_OPERATION.UNEQUIP_QUICK_SLOT;
+                return HeroEnums.HERO_OPERATION.UNEQUIP_QUICK_SLOT;
             case EQUIP_RESERVE:
-                return HeroDataModel.HERO_OPERATION.EQUIP_RESERVE;
+                return HeroEnums.HERO_OPERATION.EQUIP_RESERVE;
             case EQUIP:
-                return HeroDataModel.HERO_OPERATION.EQUIP;
+                return HeroEnums.HERO_OPERATION.EQUIP;
             case EQUIP_QUICK_SLOT:
-                return HeroDataModel.HERO_OPERATION.EQUIP_QUICK_SLOT;
+                return HeroEnums.HERO_OPERATION.EQUIP_QUICK_SLOT;
             case BUY:
-                return HeroDataModel.HERO_OPERATION.BUY;
+                return HeroEnums.HERO_OPERATION.BUY;
             case SELL:
-                return HeroDataModel.HERO_OPERATION.SELL;
+                return HeroEnums.HERO_OPERATION.SELL;
             case STASH:
-                return HeroDataModel.HERO_OPERATION.STASH;
+                return HeroEnums.HERO_OPERATION.STASH;
             case UNSTASH:
-                return HeroDataModel.HERO_OPERATION.UNSTASH;
+                return HeroEnums.HERO_OPERATION.UNSTASH;
         }
         return null;
     }

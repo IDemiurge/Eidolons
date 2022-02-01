@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.gui.generic.GroupX;
 import libgdx.particles.ambi.EmitterMap;
-import main.content.enums.entity.HeroEnums.CLASS_GROUP;
+import main.content.enums.entity.ClassEnums.CLASS_GROUP;
 import main.content.enums.entity.SkillEnums.SKILL_GROUP;
 
 import java.util.ArrayList;

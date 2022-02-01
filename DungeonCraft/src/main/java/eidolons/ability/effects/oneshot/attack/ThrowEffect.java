@@ -104,7 +104,7 @@ public class ThrowEffect extends AttackEffect {
                     if (!hero.getOffhandWeapon().isRanged()) {
                         if (hero.getOffhandWeapon().isWeapon()) {
                             hero.setWeapon(hero.getOffhandWeapon());
-                            hero.setSecondWeapon(null);
+                            hero.setOffhandWeapon(null);
                         }
                     }
                 }

@@ -197,7 +197,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
             initNaturalWeapon(false);
         }
 
-        getEntity().setSecondWeapon((WeaponItem) initItem(getEntity().getOffhandWeapon(), G_PROPS.OFF_HAND_ITEM,
+        getEntity().setOffhandWeapon((WeaponItem) initItem(getEntity().getOffhandWeapon(), G_PROPS.OFF_HAND_ITEM,
                 DC_TYPE.WEAPONS));
 
         if (getEntity().getNaturalWeapon(true) == null) {

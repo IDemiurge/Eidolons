@@ -13,9 +13,9 @@ import libgdx.gui.dungeon.panels.dc.inventory.InventoryClickHandlerImpl;
 import libgdx.gui.dungeon.panels.dc.inventory.datasource.InventoryDataSource;
 import libgdx.gui.dungeon.panels.dc.inventory.shop.ShopClickHandler;
 import libgdx.gui.dungeon.panels.headquarters.datasource.HqDataMaster;
-import eidolons.system.libgdx.datasource.HeroDataModel;
 import main.content.DC_TYPE;
 import main.content.enums.entity.BfObjEnums.BF_OBJ_SUB_TYPES_REMAINS;
+import main.content.enums.entity.HeroEnums;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.Ref;
@@ -119,7 +119,7 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
             if (container instanceof GridCell) {
                 item.getGame().getDroppedItemManager().pickedUp(item);
             }
-            dataMaster.operation(hero, HeroDataModel.HERO_OPERATION.PICK_UP, item);
+            dataMaster.operation(hero, HeroEnums.HERO_OPERATION.PICK_UP, item);
         }
         takeGold();
 
@@ -134,14 +134,14 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
                     continue;
                 }
                 if (GoldMaster.isGoldPack(item)) {
-                    dataMaster.operation(HeroDataModel.HERO_OPERATION.PICK_UP, item);
+                    dataMaster.operation(HeroEnums.HERO_OPERATION.PICK_UP, item);
                     return;
                 }
             }
         } else {
             Integer gold = container.getIntParam(PARAMS.GOLD);
             if (gold > 0) {
-                dataMaster.operation(HeroDataModel.HERO_OPERATION.ADD_PARAMETER, PARAMS.GOLD, gold);
+                dataMaster.operation(HeroEnums.HERO_OPERATION.ADD_PARAMETER, PARAMS.GOLD, gold);
                 container.setParam(PARAMS.GOLD, 0);
                 update();
             }
@@ -153,7 +153,7 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
         if (container instanceof GridCell) {
             item.getGame().getDroppedItemManager().pickedUp(item);
         }
-        dataMaster.operation(hero, HeroDataModel.HERO_OPERATION.PICK_UP, item);
+        dataMaster.operation(hero, HeroEnums.HERO_OPERATION.PICK_UP, item);
         Ref ref = hero.getHero().getRef().getCopy();
         ref.setObj(KEYS.ITEM, item);
         ref.setObj(KEYS.TARGET, item);

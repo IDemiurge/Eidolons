@@ -1,6 +1,5 @@
 package eidolons.content.values;
 
-import eidolons.content.PROPS;
 import main.content.VALUE;
 import main.content.values.properties.G_PROPS;
 
@@ -31,8 +30,7 @@ public class A_ValuePages {
             MASTERY_RANKS_3,
             PERKS,
             COMBAT_SPACES,
-            VERBATIM_SPACES,
-            MEMORIZED_SPACES,
+            SPELL_SPACES,
     };
 
     public static final VALUE[] AV_VALUES = {

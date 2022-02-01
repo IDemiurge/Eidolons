@@ -6,8 +6,8 @@ import eidolons.content.PROPS;
 import eidolons.game.battlecraft.DC_Engine;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
-import main.content.enums.entity.HeroEnums;
-import main.content.enums.entity.HeroEnums.PRINCIPLES;
+import main.content.enums.entity.RpgEnums.PRINCIPLES;
+import main.content.enums.entity.RpgEnums;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
@@ -210,7 +210,7 @@ public class TextMaster {
             FileManager.write(p.getParameter().getDescription(), getParamsPath() + "attributes/"
              + p.toString() + ".txt");
         }
-        for (PRINCIPLES p : HeroEnums.PRINCIPLES.values()) {
+        for (PRINCIPLES p : RpgEnums.PRINCIPLES.values()) {
             FileManager.write(p.getDescription(), getPropsPath() + "principles/" + p.toString()
              + ".txt");
         }

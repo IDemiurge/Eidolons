@@ -10,7 +10,7 @@ import eidolons.game.core.Core;
 import eidolons.system.libgdx.datasource.HeroDataModel;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
-import main.content.enums.entity.HeroEnums.CLASS_GROUP;
+import main.content.enums.entity.ClassEnums.CLASS_GROUP;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;

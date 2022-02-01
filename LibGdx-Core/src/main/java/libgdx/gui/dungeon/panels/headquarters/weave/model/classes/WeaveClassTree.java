@@ -3,7 +3,7 @@ package libgdx.gui.dungeon.panels.headquarters.weave.model.classes;
 import libgdx.gui.dungeon.panels.headquarters.datasource.hero.HqHeroDataSource;
 import libgdx.gui.dungeon.panels.headquarters.weave.WeaveTree;
 import main.content.DC_TYPE;
-import main.content.enums.entity.HeroEnums.CLASS_GROUP;
+import main.content.enums.entity.ClassEnums.CLASS_GROUP;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 

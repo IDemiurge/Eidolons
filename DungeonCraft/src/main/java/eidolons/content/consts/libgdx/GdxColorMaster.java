@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PARAMS;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
-import main.content.enums.entity.HeroEnums.CLASS_GROUP;
+import main.content.enums.entity.ClassEnums.CLASS_GROUP;
 import main.content.enums.entity.SkillEnums.SKILL_GROUP;
 import main.content.values.parameters.PARAMETER;
 import main.system.auxiliary.EnumMaster;
