@@ -94,4 +94,6 @@ public class Item2Enums {
             return magic;
         }
     }
+
+    //TODO Content missing - cloth, stone, ...
 }

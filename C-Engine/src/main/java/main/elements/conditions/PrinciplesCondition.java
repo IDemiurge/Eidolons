@@ -1,6 +1,6 @@
 package main.elements.conditions;
 
-import main.content.enums.entity.HeroEnums.PRINCIPLES;
+import main.content.enums.entity.RpgEnums.PRINCIPLES;
 import main.entity.Ref;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;

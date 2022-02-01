@@ -3,7 +3,7 @@ package main.entity;
 import main.content.DC_TYPE;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
-import main.content.enums.entity.HeroEnums.BACKGROUND;
+import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.GENDER;
 import main.content.enums.entity.HeroEnums.RACE;
 import main.content.enums.entity.UnitEnums;
@@ -47,8 +47,8 @@ public class EntityCheckMaster {
                 || entity.checkProperty(G_PROPS.BF_OBJECT_TAGS, BfObjEnums.BF_OBJECT_TAGS.WALL.toString());
     }
 
-    public static BACKGROUND getBackground(Entity hero) {
-        return new EnumMaster<BACKGROUND>().retrieveEnumConst(BACKGROUND.class, hero
+    public static HeroEnums.SUBRACE getBackground(Entity hero) {
+        return new EnumMaster<HeroEnums.SUBRACE>().retrieveEnumConst(HeroEnums.SUBRACE.class, hero
          .getProperty(G_PROPS.BACKGROUND));
 
     }
