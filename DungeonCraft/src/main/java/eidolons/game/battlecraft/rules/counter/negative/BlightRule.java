@@ -9,7 +9,8 @@ import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
-import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.entity.EffectEnums;
+import main.content.enums.entity.EffectEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 
 public class BlightRule extends DC_CounterRule {
@@ -37,7 +38,7 @@ public class BlightRule extends DC_CounterRule {
 
     @Override
     public COUNTER getCounter() {
-        return COUNTER.Blight;
+        return EffectEnums.COUNTER.Blight;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package eidolons.entity.item.handlers;
+package eidolons.entity.mngr.item;
 
 import eidolons.game.exploration.handlers.ExplorationMaster;
 

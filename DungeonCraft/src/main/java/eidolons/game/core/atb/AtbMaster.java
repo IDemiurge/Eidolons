@@ -1,7 +1,7 @@
 package eidolons.game.core.atb;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 import main.entity.obj.BuffObj;

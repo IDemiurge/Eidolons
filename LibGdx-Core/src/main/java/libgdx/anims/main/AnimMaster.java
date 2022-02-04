@@ -3,7 +3,7 @@ package libgdx.anims.main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;

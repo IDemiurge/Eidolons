@@ -1,6 +1,6 @@
 package eidolons.ability.effects.oneshot.mechanic;
 
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.data.ability.AE_ConstrArgs;

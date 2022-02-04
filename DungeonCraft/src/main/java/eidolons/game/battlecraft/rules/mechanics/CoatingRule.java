@@ -1,13 +1,14 @@
 package eidolons.game.battlecraft.rules.mechanics;
 
 import eidolons.content.DC_ContentValsManager;
-import eidolons.entity.active.ActiveObj;
-import eidolons.entity.active.QuickItemAction;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.QuickItemAction;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
-import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.entity.EffectEnums;
+import main.content.enums.entity.EffectEnums.COUNTER;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.system.math.MathMaster;
@@ -28,10 +29,10 @@ public class CoatingRule {
 	 */
 
     public static final COUNTER[] COATING_COUNTERS = {
-     COUNTER.Poison, COUNTER.Disease,
-     COUNTER.Blight, COUNTER.Corrosion,
-     COUNTER.Blaze, COUNTER.Chill,
-     COUNTER.Moist,};
+     EffectEnums.COUNTER.Poison, EffectEnums.COUNTER.Disease,
+     EffectEnums.COUNTER.Blight, EffectEnums.COUNTER.Corrosion,
+     EffectEnums.COUNTER.Blaze, EffectEnums.COUNTER.Chill,
+     EffectEnums.COUNTER.Moist,};
     public static final Integer RANGED_MOD = 2;
     public static final Integer THROWING_MOD = 5;
 

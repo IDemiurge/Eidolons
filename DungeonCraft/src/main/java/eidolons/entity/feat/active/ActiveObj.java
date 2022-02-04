@@ -1,11 +1,11 @@
-package eidolons.entity.active;
+package eidolons.entity.feat.active;
 
 import eidolons.ability.effects.attachment.AddBuffEffect;
 import eidolons.ability.effects.oneshot.DealDamageEffect;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.spaces.Feat;
+import eidolons.entity.feat.Feat;
 import eidolons.entity.handlers.active.*;
 import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.BattleFieldObject;
@@ -237,18 +237,14 @@ public abstract class ActiveObj extends DC_Obj implements Feat, IActiveObj, Inte
     }
 
     @Override
-    public Integer getCharges() {
-        return null;
-    }
-
-    @Override
     public Integer getCooldown() {
         return null;
     }
 
+    //TODO feature Review - Cooldown
     @Override
     public void cooldownActivated() {
-
+        // super.cooldownActivate();
     }
 
     @Override

@@ -4,7 +4,6 @@ import eidolons.content.values.ValuePages;
 import main.content.ContentValsManager;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
-import main.content.enums.entity.SkillEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.values.parameters.PARAMETER;
@@ -64,7 +63,7 @@ public class DC_CONSTS {
     public enum JEWELRY_ITEM_TRAIT {
         ATTRIBUTE_BONUS(5, "", 2, 4, 8, 15, 25, "Amulet;Power Ring", ContentValsManager
          .getFinalAttributes().toArray(
-          new PARAMETER[SkillEnums.ATTRIBUTE.values().length])),
+          new PARAMETER[ATTRIBUTE.values().length])),
         // TODO names!
         MAGIC_RESISTANCES(7, "", 15, 25, 40, 60, 85, "Magic Ring", ValuePages.MAGIC_RESISTANCES),
         PHYSICAL_RESISTANCES(10, "", 12, 18, 25, 35, 50, "Bracer", ValuePages.PHYSICAL_RESISTANCES),

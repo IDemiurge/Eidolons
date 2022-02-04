@@ -1,9 +1,9 @@
 package eidolons.entity.handlers.bf.unit;
 
 import eidolons.content.DC_ContentValsManager;
-import eidolons.content.DC_ContentValsManager.ATTRIBUTE;
+import eidolons.content.ATTRIBUTE;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.Spell;
 import eidolons.entity.item.HeroItem;
 import eidolons.entity.item.QuickItem;
 import eidolons.entity.unit.attach.DC_PassiveObj;
@@ -195,8 +195,8 @@ public class UnitResetter extends EntityResetter<Unit> {
                 feat.apply();
             }
         }
-        if (getEntity().getClasses() != null) {
-            for (DC_PassiveObj feat : getEntity().getClasses()) {
+        if (getEntity().getClassRanks() != null) {
+            for (DC_PassiveObj feat : getEntity().getClassRanks()) {
                 feat.apply();
             }
 

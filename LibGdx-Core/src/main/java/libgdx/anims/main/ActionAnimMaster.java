@@ -1,7 +1,7 @@
 package libgdx.anims.main;
 
 import eidolons.ability.effects.oneshot.move.MoveEffect;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;

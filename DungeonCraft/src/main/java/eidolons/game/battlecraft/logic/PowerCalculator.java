@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.Spell;
 import eidolons.entity.item.HeroSlotItem;
 import eidolons.entity.unit.Unit;
 

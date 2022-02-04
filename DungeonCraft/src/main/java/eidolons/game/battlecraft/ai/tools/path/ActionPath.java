@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.ai.tools.path;
 
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.data.ListMaster;

@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.ai;
 
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.actions.ActionManager;

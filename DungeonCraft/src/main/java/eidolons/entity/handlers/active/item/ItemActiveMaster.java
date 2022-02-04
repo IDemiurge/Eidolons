@@ -1,7 +1,7 @@
 package eidolons.entity.handlers.active.item;
 
-import eidolons.entity.active.ActiveObj;
-import eidolons.entity.active.QuickItemAction;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.QuickItemAction;
 import eidolons.entity.handlers.active.ActiveMaster;
 import eidolons.entity.handlers.active.ActiveResetter;
 import main.entity.handlers.EntityResetter;

@@ -1,7 +1,7 @@
 package libgdx.anims.anim3d;
 
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 
 /**
  * Created by JustMe on 9/9/2017.

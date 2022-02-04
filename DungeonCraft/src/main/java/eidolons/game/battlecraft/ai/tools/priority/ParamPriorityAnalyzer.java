@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.ai.tools.priority;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.actions.AiAction;

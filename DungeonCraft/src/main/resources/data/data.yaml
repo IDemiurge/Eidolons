@@ -1,0 +1,8 @@
+test: cool #shit...
+more: {
+  &anchortest
+  !yah {
+  one: 1,
+  two: 2
+  }
+}

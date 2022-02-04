@@ -2,8 +2,8 @@ package boss.logic.action;
 
 import boss.BossHandler;
 import boss.logic.entity.BossUnit;
-import eidolons.entity.active.DC_ActionManager;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.mngr.action.DC_ActionManager;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import boss.BossManager;
 import boss.logic.BossCycle.BOSS_TYPE;
@@ -118,8 +118,6 @@ public abstract class BossActionMaster<T extends BOSS_ACTION>  extends BossHandl
 
 
 
-    @Override
-    public void resetCostsInNewThread() {
 
-    }
+
 }

@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.rules.combat.attack.accuracy;
 
 import eidolons.content.DC_Calculator;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;

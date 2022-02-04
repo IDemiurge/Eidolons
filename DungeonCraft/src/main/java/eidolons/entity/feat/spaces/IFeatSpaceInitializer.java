@@ -1,4 +1,4 @@
-package eidolons.entity.active.spaces;
+package eidolons.entity.feat.spaces;
 
 import eidolons.entity.unit.Unit;
 

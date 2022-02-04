@@ -2,7 +2,7 @@ package eidolons.game.core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.AI_Manager;

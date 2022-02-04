@@ -4,7 +4,7 @@ import eidolons.ability.effects.EmptyEffect;
 import eidolons.ability.effects.attachment.AddBuffEffect;
 import eidolons.ability.effects.common.ModifyPropertyEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.attach.buff.DC_BuffObj;
 import eidolons.entity.unit.Unit;

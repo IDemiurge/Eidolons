@@ -4,7 +4,7 @@ import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.GenericEnums.RollType;
-import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.entity.EffectEnums.COUNTER;
 import main.content.values.parameters.PARAMETER;
 import main.entity.DataModel;
 import main.entity.Entity;

@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.ai.tools.target;
 
 import eidolons.ability.conditions.VisibilityCondition;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;

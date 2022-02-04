@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import libgdx.anims.ANIM_MODS.ANIM_MOD;
 import libgdx.anims.Anim;
 import libgdx.anims.AnimData;

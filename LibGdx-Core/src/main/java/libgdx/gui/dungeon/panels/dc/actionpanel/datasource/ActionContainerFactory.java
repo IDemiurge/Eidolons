@@ -1,8 +1,8 @@
 package libgdx.gui.dungeon.panels.dc.actionpanel.datasource;
 
 import com.badlogic.gdx.utils.ObjectMap;
-import eidolons.entity.active.ActiveObj;
-import eidolons.entity.active.spaces.Feat;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.Feat;
 import libgdx.gui.dungeon.panels.dc.actionpanel.spaces.ActionContainer;
 import libgdx.gui.dungeon.panels.dc.actionpanel.spaces.FeatContainer;
 import libgdx.gui.dungeon.panels.dc.actionpanel.tooltips.ActionCostTooltip;

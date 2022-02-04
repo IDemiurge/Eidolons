@@ -1,7 +1,7 @@
-package eidolons.entity.active.spaces;
+package eidolons.entity.feat;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import main.entity.OBJ;
 
 public interface Feat extends OBJ {

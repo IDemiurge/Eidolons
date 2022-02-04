@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import eidolons.content.PROPS;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import libgdx.anims.Anim;
 import libgdx.anims.actions.ActionMasterGdx;

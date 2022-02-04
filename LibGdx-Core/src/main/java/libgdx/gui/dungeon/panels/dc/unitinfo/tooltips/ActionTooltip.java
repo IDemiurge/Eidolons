@@ -1,6 +1,6 @@
 package libgdx.gui.dungeon.panels.dc.unitinfo.tooltips;
 
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import libgdx.gui.generic.ValueContainer;
 import libgdx.gui.dungeon.tooltips.Tooltip;
 import libgdx.screens.dungeon.DungeonScreen;

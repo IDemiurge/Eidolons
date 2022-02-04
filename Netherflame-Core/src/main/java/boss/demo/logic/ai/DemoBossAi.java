@@ -1,7 +1,7 @@
 package boss.demo.logic.ai;
 
 import boss.logic.action.BOSS_ACTION;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.GridCell;
 import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import boss.BossManager;

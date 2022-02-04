@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.battlefield;
 
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.core.master.EffectMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.container.SpecialTargetingEffect;

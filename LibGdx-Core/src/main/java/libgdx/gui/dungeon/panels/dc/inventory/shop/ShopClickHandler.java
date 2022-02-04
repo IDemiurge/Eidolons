@@ -4,7 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.item.HeroItem;
 import eidolons.entity.item.HeroSlotItem;
-import eidolons.entity.item.handlers.DC_InventoryManager.OPERATIONS;
+import eidolons.entity.mngr.item.DC_InventoryManager.OPERATIONS;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.EUtils;
 import libgdx.gui.dungeon.panels.dc.inventory.container.ContainerClickHandler;

@@ -1,7 +1,7 @@
 package eidolons.netherflame.eidolon.heromake.model;
 
 import com.badlogic.gdx.utils.ObjectMap;
-import eidolons.content.DC_ContentValsManager;
+import eidolons.content.ATTRIBUTE;
 import eidolons.content.PARAMS;
 import eidolons.entity.unit.Unit;
 import main.system.auxiliary.StringMaster;
@@ -66,7 +66,7 @@ public class AttributeConsts {
     public static final float B25_CHA_DISCOUNT = 1;
     public static final float A25_CHA_ASTRAL_RES = 1;
 
-    public static List<String> getAttributeBonusInfoStrings(DC_ContentValsManager.ATTRIBUTE attr, Unit hero) {
+    public static List<String> getAttributeBonusInfoStrings(ATTRIBUTE attr, Unit hero) {
         List<String> list = new ArrayList<>();
         Object key  = StringMaster.format(attr.name());
         for (PARAMS p : attr.getParams()) {

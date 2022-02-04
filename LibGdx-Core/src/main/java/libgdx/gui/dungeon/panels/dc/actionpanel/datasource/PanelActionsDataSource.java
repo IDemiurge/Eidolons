@@ -1,8 +1,8 @@
 package libgdx.gui.dungeon.panels.dc.actionpanel.datasource;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.spaces.FeatSpace;
-import eidolons.entity.active.spaces.Feat;
+import eidolons.entity.feat.spaces.FeatSpace;
+import eidolons.entity.feat.Feat;
 import eidolons.entity.item.QuickItem;
 import eidolons.entity.unit.Unit;
 import libgdx.gui.UiMaster;

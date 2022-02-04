@@ -4,7 +4,7 @@ import eidolons.ability.EventAndCondition;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.rules.saves.SavesMaster;
 import eidolons.game.core.game.DC_Game;
-import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.EffectEnums;
 import main.entity.Ref;
 import main.system.math.Formula;
 
@@ -70,7 +70,7 @@ public abstract class CounterRule_10Up extends DC_CounterRule {
         return false;
     }
 
-    protected UnitEnums.COUNTER getUpgraded() {
+    protected EffectEnums.COUNTER getUpgraded() {
         return getCounter().getUpgraded();
     }
 

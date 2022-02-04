@@ -1,6 +1,6 @@
-package eidolons.entity.active;
+package eidolons.entity.mngr.action;
 
-import eidolons.entity.active.spaces.FeatSpaces;
+import eidolons.entity.feat.spaces.FeatSpaces;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;

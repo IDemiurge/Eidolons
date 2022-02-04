@@ -12,8 +12,8 @@ import eidolons.game.Simulation;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.content.VALUE;
+import main.content.enums.entity.EffectEnums;
 import main.content.enums.entity.HeroEnums;
-import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.parameters.ParamMap;
 import main.content.values.properties.PROPERTY;
@@ -152,7 +152,7 @@ public class HeroDataModel extends Unit {
     }
 
     @Override
-    public boolean modifyCounter(UnitEnums.COUNTER counter, int modValue) {
+    public boolean modifyCounter(EffectEnums.COUNTER counter, int modValue) {
         return getHero().modifyCounter(counter, modValue);
     }
 

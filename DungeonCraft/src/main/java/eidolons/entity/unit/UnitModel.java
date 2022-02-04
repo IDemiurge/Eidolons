@@ -2,8 +2,8 @@ package eidolons.entity.unit;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.ActiveObj;
-import eidolons.entity.active.UnitAction;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.handlers.bf.unit.UnitCalculator;
 import eidolons.entity.handlers.bf.unit.UnitChecker;
 import eidolons.entity.handlers.bf.unit.UnitInitializer;
@@ -295,7 +295,7 @@ public abstract class UnitModel extends BattleFieldObject {
     }
 
     public ActiveObj getActionOrSpell(String name) {
-        return getGame().getActionManager().getAction(name, this, false);
+        return getGame().getActionManager().getAction(name, this);
     }
 
     public UnitAction getAction(String name) {

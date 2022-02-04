@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules.combat.attack;
 
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.Entity;
 import main.system.auxiliary.ContainerUtils;

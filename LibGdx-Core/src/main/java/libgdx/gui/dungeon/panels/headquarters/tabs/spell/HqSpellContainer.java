@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.Spell;
 import libgdx.gui.LabelX;
 import libgdx.gui.NinePatchFactory;
 import libgdx.gui.dungeon.panels.dc.actionpanel.tooltips.ActionCostTooltip;

@@ -1,8 +1,8 @@
 package libgdx.gui.dungeon.controls.radial;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import eidolons.entity.active.ActiveObj;
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.Spell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import libgdx.gui.UiMaster;

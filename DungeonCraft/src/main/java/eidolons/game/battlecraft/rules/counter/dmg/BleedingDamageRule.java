@@ -8,8 +8,9 @@ import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.entity.EffectEnums;
 import main.content.enums.entity.UnitEnums;
-import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.entity.EffectEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.system.MetaEnums;
 import main.entity.Ref.KEYS;
@@ -25,7 +26,7 @@ public class BleedingDamageRule extends DamageCounterRule  implements TimedRule 
 
     @Override
     public COUNTER getCounter() {
-        return COUNTER.Bleeding;
+        return EffectEnums.COUNTER.Bleeding;
     }
 
 

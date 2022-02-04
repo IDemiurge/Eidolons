@@ -1,5 +1,6 @@
 package eidolons.content.etalon;
 
+import eidolons.content.ATTRIBUTE;
 import eidolons.content.DC_ContentValsManager;
 import main.content.enums.entity.ClassEnums;
 import main.content.enums.entity.SkillEnums;
@@ -84,10 +85,10 @@ public class EtalonConsts {
 
     }
 
-    public static class AttributeData extends DataUnit<DC_ContentValsManager.ATTRIBUTE> {
+    public static class AttributeData extends DataUnit<ATTRIBUTE> {
         @Override
-        public Class<? extends DC_ContentValsManager.ATTRIBUTE> getEnumClazz() {
-            return DC_ContentValsManager.ATTRIBUTE.class;
+        public Class<? extends ATTRIBUTE> getEnumClazz() {
+            return ATTRIBUTE.class;
         }
 
         public AttributeData(String text) {

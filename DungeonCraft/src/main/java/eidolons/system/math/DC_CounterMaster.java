@@ -2,7 +2,7 @@ package eidolons.system.math;
 
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
-import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.entity.EffectEnums.COUNTER;
 import main.system.auxiliary.EnumMaster;
 import main.system.entity.CounterMaster;
 

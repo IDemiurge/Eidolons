@@ -1,8 +1,8 @@
 package eidolons.game.exploration.dungeon.objects;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.ActiveObj;
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.Spell;
 import eidolons.entity.item.HeroItem;
 import eidolons.entity.item.ItemFactory;
 import eidolons.entity.unit.Unit;

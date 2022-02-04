@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.ai.elements.actions.sequence;
 
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.item.QuickItem;
 import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;

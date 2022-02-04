@@ -4,9 +4,9 @@ import com.google.inject.internal.util.ImmutableList;
 import eidolons.ability.conditions.shortcut.PushableCondition;
 import eidolons.ability.effects.oneshot.move.MoveEffect;
 import eidolons.ability.effects.oneshot.move.SelfMoveEffect;
-import eidolons.entity.active.DC_ActionManager;
-import eidolons.entity.active.ActiveObj;
-import eidolons.entity.active.UnitAction;
+import eidolons.entity.mngr.action.ActionHelper;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.Structure;
@@ -122,7 +122,7 @@ public class DC_MovementManager implements MovementManager {
 
         moveActions.addAll(AiUnitActionMaster.getSpells(AiEnums.AI_LOGIC.MOVE, unit));
 
-        moveActions = DC_ActionManager.filterActionsByCanBePaid(moveActions);
+        moveActions = ActionHelper.filterActionsByCanBePaid(moveActions);
         return moveActions;
     }
 

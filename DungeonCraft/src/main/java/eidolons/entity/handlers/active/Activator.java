@@ -1,7 +1,7 @@
 package eidolons.entity.handlers.active;
 
-import eidolons.entity.active.ActiveObj;
-import eidolons.entity.active.QuickItemAction;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.QuickItemAction;
 import eidolons.entity.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.system.libgdx.GdxAdapter;

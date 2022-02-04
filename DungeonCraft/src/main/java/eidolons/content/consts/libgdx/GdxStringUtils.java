@@ -3,7 +3,7 @@ package eidolons.content.consts.libgdx;
 import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PARAMS;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.item.HeroSlotItem;
 import eidolons.entity.item.WeaponItem;
 import eidolons.system.libgdx.GdxAdapter;

@@ -1,7 +1,7 @@
 package libgdx.gui.dungeon.panels.dc.actionpanel.datasource;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.core.atb.AtbMaster;
 import libgdx.gui.generic.ValueContainer;
 import libgdx.assets.texture.TextureCache;

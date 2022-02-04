@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.ai.tools.prune;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.ActiveObj;
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.Spell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;

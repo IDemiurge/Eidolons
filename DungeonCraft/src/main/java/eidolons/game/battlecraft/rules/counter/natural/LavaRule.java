@@ -12,7 +12,8 @@ import main.ability.effects.Effects;
 import main.ability.effects.continuous.CustomTargetEffect;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
-import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.entity.EffectEnums;
+import main.content.enums.entity.EffectEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.elements.targeting.FixedTargeting;
 import main.entity.Ref.KEYS;
@@ -57,7 +58,7 @@ public class LavaRule extends DamageCounterRule  implements TimedRule {
 
     @Override
     public COUNTER getCounter() {
-        return COUNTER.Lava;
+        return EffectEnums.COUNTER.Lava;
     }
 
     @Override

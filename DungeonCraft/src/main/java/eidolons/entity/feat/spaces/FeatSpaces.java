@@ -1,4 +1,4 @@
-package eidolons.entity.active.spaces;
+package eidolons.entity.feat.spaces;
 
 import eidolons.ability.costs.DC_CostsFactory;
 import eidolons.content.DC_Calculator;
@@ -14,7 +14,7 @@ public class FeatSpaces implements Comparator<FeatSpace> {
     private List<FeatSpace> featSpaces;
     private FeatSpace current;
     private FeatSpace prev;
-    private int switched;
+    private int switchedThisRound;
     boolean spellSpaces;
 
     public FeatSpaces(Unit unit, boolean spellSpaces) {
@@ -41,7 +41,7 @@ public class FeatSpaces implements Comparator<FeatSpace> {
     }
 
     public void newRound() {
-        switched = 0;
+        switchedThisRound = 0;
         if (current == null || current.isLocked()) {
             current = getVisible().get(0);
         }
@@ -53,7 +53,7 @@ public class FeatSpaces implements Comparator<FeatSpace> {
 
     public void switchTo(FeatSpace space) {
         paySwitchCost(unit);
-        switched++;
+        switchedThisRound++;
         prev = current;
         current = space;
 
@@ -74,8 +74,8 @@ public class FeatSpaces implements Comparator<FeatSpace> {
     }
 
     private Costs getSwitchCosts(Unit unit) {
-        int atb = DC_Calculator.getAS_AtbSwitchCost(unit, switched);
-        int focus = DC_Calculator.getAS_FocusSwitchCost(unit, switched);
+        int atb = DC_Calculator.getAS_AtbSwitchCost(unit, switchedThisRound);
+        int focus = DC_Calculator.getAS_FocusSwitchCost(unit, switchedThisRound);
 
         List<Cost> costs = new ArrayList<>();
         Cost cost = DC_CostsFactory.getCost(atb, PARAMS.AP_COST, PARAMS.C_ATB, false);
@@ -98,8 +98,8 @@ public class FeatSpaces implements Comparator<FeatSpace> {
         return prev;
     }
 
-    public int getSwitched() {
-        return switched;
+    public int getSwitchedThisRound() {
+        return switchedThisRound;
     }
 
     @Override

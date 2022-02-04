@@ -2,7 +2,7 @@ package eidolons.ability.effects.containers.group;
 
 import eidolons.ability.effects.DC_Effect;
 import eidolons.ability.effects.attachment.AddBuffEffect;
-import eidolons.entity.active.UnitAction;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.master.EffectMaster;
 import main.ability.effects.Effect;

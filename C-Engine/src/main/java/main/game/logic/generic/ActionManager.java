@@ -22,5 +22,4 @@ public interface ActionManager {
 
     void resetActions(Entity entity);
 
-    void resetCostsInNewThread();
 }

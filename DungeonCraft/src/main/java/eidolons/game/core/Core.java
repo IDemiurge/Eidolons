@@ -1,7 +1,7 @@
 package eidolons.game.core;
 
 import com.badlogic.gdx.Gdx;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaDataManager;

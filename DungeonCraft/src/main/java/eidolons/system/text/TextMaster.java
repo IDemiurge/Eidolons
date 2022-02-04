@@ -1,6 +1,6 @@
 package eidolons.system.text;
 
-import eidolons.content.DC_ContentValsManager.ATTRIBUTE;
+import eidolons.content.ATTRIBUTE;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.DC_Engine;

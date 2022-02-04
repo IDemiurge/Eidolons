@@ -1,8 +1,8 @@
 package eidolons.game.core.state;
 
 import eidolons.entity.DC_IdManager;
-import eidolons.entity.active.UnitAction;
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.UnitAction;
+import eidolons.entity.feat.active.Spell;
 import eidolons.entity.item.ArmorItem;
 import eidolons.entity.item.trinket.JewelryItem;
 import eidolons.entity.item.QuickItem;

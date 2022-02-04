@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.encounter;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleHandler;

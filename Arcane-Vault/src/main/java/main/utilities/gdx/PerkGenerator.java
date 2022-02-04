@@ -10,10 +10,11 @@ import eidolons.content.consts.Images;
 import libgdx.assets.texture.TextureCache;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
-import main.content.enums.entity.HeroEnums;
-import main.content.enums.entity.HeroEnums.CLASS_GROUP;
-import main.content.enums.entity.HeroEnums.CLASS_PERK_GROUP;
-import main.content.enums.entity.HeroEnums.PERK_PARAM;
+import main.content.enums.entity.ClassEnums;
+import main.content.enums.entity.ClassEnums.CLASS_GROUP;
+import main.content.enums.entity.ClassEnums.CLASS_PERK_GROUP;
+import main.content.enums.entity.PerkEnums.PERK_PARAM;
+import main.content.enums.entity.PerkEnums;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -128,12 +129,12 @@ public class PerkGenerator {
                 string = class_group
                  + "_" + string;
             } else {
-                if (class_group == CLASS_GROUP.WIZARD)
+                if (class_group == ClassEnums.CLASS_GROUP.WIZARD)
                     string = "Wizard_Apprenctice";
                 else
                     string = class_group.toString();
             }
-            if (class_group == CLASS_GROUP.SORCERER)
+            if (class_group == ClassEnums.CLASS_GROUP.SORCERER)
                 string = string.replace(class_group.toString(), "Apostate");
 
             CLASS_PERK_GROUP group = new EnumMaster<CLASS_PERK_GROUP>().
@@ -148,7 +149,7 @@ public class PerkGenerator {
 
     private static void generateParameterPerks() {
         for (int level = 0; level < PERK_LEVELS; level++) {
-            for (PERK_PARAM sub : HeroEnums.PERK_PARAM.values()) {
+            for (PERK_PARAM sub : PerkEnums.PERK_PARAM.values()) {
                 PARAMETER param = ContentValsManager.getPARAM(sub.name());
                 ObjType type = new ObjType(getName(sub, level)
                  , DC_TYPE.PERKS);

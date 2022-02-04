@@ -8,19 +8,66 @@ import main.system.auxiliary.StringMaster;
  * Created by JustMe on 2/14/2017.
  */
 public class SkillEnums {
-    public enum ATTRIBUTE {
-        STRENGTH,
-        VITALITY,
-        AGILITY,
-        DEXTERITY,
-        WILLPOWER,
-        INTELLIGENCE,
-        WISDOM,
-        KNOWLEDGE,
-        SPELLPOWER,
-        CHARISMA,;
-    }
 
+    public enum MSTR {
+
+        PSYCHIC,
+        SHADOW,
+        WITCHERY,
+
+        REDEMPTION,
+        BENEDICTION,
+        CELESTIAL,
+
+        CONJURATION,
+        SORCERY,
+        ENCHANTMENT,
+
+        WARP,
+        DESTRUCTION,
+        DEMONOLOGY,
+
+        AFFLICTION,
+        BLOOD_MAGIC,
+        NECROMANCY,
+
+        TRANSMUTATION,
+        SAVAGE,
+        SYLVAN,
+
+        FIRE,
+        AIR,
+        WATER,
+        EARTH,
+
+        WIZARDRY,
+        SPELLCRAFT,
+        DIVINATION,
+
+        BLADE,
+        BLUNT,
+        AXE,
+        POLEARM,
+        UNARMED,
+        TWO_HANDED,
+        DUAL_WIELDING,
+
+        SHIELD,
+        ARMORER,
+        DEFENSE,
+
+        STEALTH,
+        DETECTION,
+        Mobility,
+        ATHLETICS,
+        MEDITATION,
+        DISCIPLINE,
+        MARKSMANSHIP,
+        ITEM,
+
+        LEADERSHIP,
+        TACTICS ;
+    }
     public enum MASTERY {
         PSYCHIC_MASTERY,
         SHADOW_MASTERY,
@@ -77,11 +124,15 @@ public class SkillEnums {
         ITEM_MASTERY,
 
         LEADERSHIP_MASTERY,
-        TACTICS_MASTERY,
-        WARCRY_MASTERY;
+        TACTICS_MASTERY ;
 
         MASTERY() {
 
+        }
+
+        @Override
+        public String toString() {
+            return StringMaster.format(super.toString().replace("_MASTERY", ""));
         }
 
         public PARAMETER getParam() {

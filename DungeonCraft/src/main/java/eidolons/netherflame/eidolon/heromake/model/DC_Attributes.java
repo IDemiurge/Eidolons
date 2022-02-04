@@ -1,7 +1,7 @@
 package eidolons.netherflame.eidolon.heromake.model;
 
 import eidolons.content.DC_ContentValsManager;
-import eidolons.content.DC_ContentValsManager.ATTRIBUTE;
+import eidolons.content.ATTRIBUTE;
 import eidolons.content.PARAMS;
 import eidolons.entity.unit.Unit;
 import main.content.values.parameters.PARAMETER;

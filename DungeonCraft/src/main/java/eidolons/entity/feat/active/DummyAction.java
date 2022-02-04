@@ -1,4 +1,4 @@
-package eidolons.entity.active;
+package eidolons.entity.feat.active;
 
 import main.ability.Abilities;
 import main.ability.AbilityObj;

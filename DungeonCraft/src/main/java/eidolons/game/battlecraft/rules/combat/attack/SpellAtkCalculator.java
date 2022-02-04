@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules.combat.attack;
 
-import eidolons.entity.active.spaces.Feat;
+import eidolons.entity.feat.Feat;
 
 public class SpellAtkCalculator extends AttackCalculator{
 

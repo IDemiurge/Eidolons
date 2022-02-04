@@ -1,7 +1,7 @@
 package eidolons.entity.handlers.bf.unit;
 
 import eidolons.content.PROPS;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.AI_Manager;

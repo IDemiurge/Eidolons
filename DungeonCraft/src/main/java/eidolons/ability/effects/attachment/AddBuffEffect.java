@@ -3,7 +3,7 @@ package eidolons.ability.effects.attachment;
 import eidolons.ability.effects.oneshot.status.ImmobilizeEffect;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.core.master.EffectMaster;
 import eidolons.system.DC_ConditionMaster;
 import main.ability.effects.*;

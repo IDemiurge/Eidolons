@@ -6,7 +6,7 @@ import eidolons.content.PROPS;
 import eidolons.entity.item.HeroSlotItem;
 import eidolons.entity.item.trinket.JewelryItem;
 import eidolons.entity.item.QuickItem;
-import eidolons.entity.item.handlers.JewelryMaster;
+import eidolons.entity.mngr.item.JewelryMaster;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.Core;
 import eidolons.game.core.EUtils;

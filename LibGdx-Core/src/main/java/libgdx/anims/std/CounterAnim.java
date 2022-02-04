@@ -1,6 +1,6 @@
 package libgdx.anims.std;
 
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import libgdx.anims.ANIM_MODS.ANIM_MOD;
 import libgdx.anims.AnimData;
 

@@ -2,7 +2,7 @@ package eidolons.system.math.roll;
 
 import eidolons.ability.effects.oneshot.mechanic.RollEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import main.content.ContentValsManager;
 import main.content.VALUE;

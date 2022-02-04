@@ -1,7 +1,7 @@
 package eidolons.ability.effects.containers.customtarget;
 
 import eidolons.ability.ActivesConstructor;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import main.ability.effects.Effect;
 import main.ability.effects.container.SpecialTargetingEffect;
 import main.content.C_OBJ_TYPE;

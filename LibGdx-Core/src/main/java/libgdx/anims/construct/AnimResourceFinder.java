@@ -2,7 +2,7 @@ package libgdx.anims.construct;
 
 import eidolons.content.PROPS;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.Spell;
 import libgdx.anims.AnimData.ANIM_VALUES;
 import eidolons.content.consts.VisualEnums.ANIM_PART;
 import main.content.values.properties.G_PROPS;

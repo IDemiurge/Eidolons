@@ -1,7 +1,7 @@
 package eidolons.ability.effects.oneshot.activation;
 
 import eidolons.ability.effects.DC_Effect;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import main.ability.effects.OneshotEffect;
 import main.entity.Ref;

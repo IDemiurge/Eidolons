@@ -2,8 +2,8 @@ package eidolons.entity.handlers.active.spell;
 
 import eidolons.ability.costs.DC_CostsFactory;
 import eidolons.ability.conditions.StatusCheckCondition;
-import eidolons.entity.active.ActiveObj;
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.Spell;
 import eidolons.entity.handlers.active.ActiveObjInitializer;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
 import main.content.enums.entity.UnitEnums;

@@ -3,7 +3,7 @@ package eidolons.entity.handlers.active;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.values.DC_ValueManager;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.exploration.handlers.ExplorationMaster;
 import main.content.enums.entity.ActionEnums;

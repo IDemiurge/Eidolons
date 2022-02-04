@@ -207,7 +207,7 @@ public class SkillMaster {
         DequeImpl<? extends DC_PassiveObj> container = hero.getSkills();
 
         if (arg.getOBJ_TYPE_ENUM() == DC_TYPE.CLASSES) {
-            container = hero.getClasses();
+            container = hero.getClassRanks();
         } else if (arg.getOBJ_TYPE_ENUM() == DC_TYPE.PERKS) {
             container = hero.getPerks();
         }

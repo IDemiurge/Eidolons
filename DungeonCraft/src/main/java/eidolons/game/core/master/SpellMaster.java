@@ -1,25 +1,17 @@
 package eidolons.game.core.master;
 
-import eidolons.content.PROPS;
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.Spell;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import eidolons.netherflame.eidolon.heromake.passives.SkillMaster;
-import eidolons.system.test.TestMasterContent;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
-import main.content.enums.entity.SpellEnums.SPELL_POOL;
 import main.content.values.parameters.PARAMETER;
-import main.content.values.properties.G_PROPS;
-import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.obj.MicroObj;
 import main.entity.type.ObjType;
 import main.game.logic.battle.player.Player;
-import main.system.auxiliary.ContainerUtils;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.log.LogMaster;
 
 import java.util.ArrayList;
 import java.util.HashMap;

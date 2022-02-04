@@ -1,4 +1,4 @@
-package eidolons.entity.item.handlers;
+package eidolons.entity.mngr.item;
 
 import eidolons.content.DC_CONSTS.*;
 import eidolons.content.DC_ContentValsManager;

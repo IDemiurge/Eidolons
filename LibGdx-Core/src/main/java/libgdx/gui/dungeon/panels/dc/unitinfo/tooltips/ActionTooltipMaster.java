@@ -2,7 +2,7 @@ package libgdx.gui.dungeon.panels.dc.unitinfo.tooltips;
 
 import eidolons.content.values.DC_ValueManager;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.item.WeaponItem;
 import main.content.VALUE;
 import main.content.enums.entity.ActionEnums;

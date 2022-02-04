@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.content.PROPS;
-import eidolons.entity.active.DefaultActionHandler;
+import eidolons.entity.mngr.action.DefaultActionHandler;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 import eidolons.game.EidolonsGame;

@@ -6,7 +6,7 @@ import eidolons.entity.item.HeroItem;
 import eidolons.entity.item.HeroSlotItem;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
-import eidolons.entity.item.handlers.ItemMaster;
+import eidolons.entity.mngr.item.ItemMaster;
 import eidolons.system.ObjUtilities;
 import main.content.enums.entity.ItemEnums;
 import main.content.values.properties.G_PROPS;

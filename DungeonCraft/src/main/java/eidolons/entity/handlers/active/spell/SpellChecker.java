@@ -1,7 +1,7 @@
 package eidolons.entity.handlers.active.spell;
 
-import eidolons.entity.active.ActiveObj;
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.Spell;
 import eidolons.entity.handlers.active.ActiveChecker;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;

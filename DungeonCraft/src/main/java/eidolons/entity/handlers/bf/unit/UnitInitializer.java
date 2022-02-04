@@ -14,7 +14,7 @@ import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.SimulationGame;
 import eidolons.game.exploration.dungeon.objects.ContainerMaster;
 import eidolons.game.exploration.dungeon.objects.DungeonObj.DUNGEON_OBJ_TYPE;
-import eidolons.entity.item.handlers.ItemGenerator;
+import eidolons.entity.mngr.item.ItemGenerator;
 import eidolons.netherflame.eidolon.heromake.passives.SkillMaster;
 import main.content.DC_TYPE;
 import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
@@ -116,9 +116,9 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     }
 
     public void initClasses() {
-        getEntity().setClasses(new DequeImpl<>());
+        getEntity().setClassRanks(new DequeImpl<>());
         initFeatContainer(PROPS.CLASSES, DC_TYPE.CLASSES,
-                getEntity().getClasses());
+                getEntity().getClassRanks());
     }
 
     public void initSkills() {

@@ -5,7 +5,7 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.values.ValuePages;
 import eidolons.entity.ChangeableType;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.item.ArmorItem;
 import eidolons.entity.item.WeaponItem;
 import eidolons.game.battlecraft.DC_Engine;

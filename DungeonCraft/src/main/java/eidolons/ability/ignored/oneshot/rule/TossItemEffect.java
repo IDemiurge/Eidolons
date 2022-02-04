@@ -6,7 +6,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.item.HeroItem;
 import eidolons.entity.item.QuickItem;
 import eidolons.entity.unit.Unit;
-import eidolons.entity.item.handlers.ItemMaster;
+import eidolons.entity.mngr.item.ItemMaster;
 import eidolons.system.DC_ConditionMaster;
 import main.ability.effects.OneshotEffect;
 import main.elements.conditions.*;

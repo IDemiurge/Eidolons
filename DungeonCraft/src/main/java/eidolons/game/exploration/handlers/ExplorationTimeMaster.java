@@ -2,7 +2,7 @@ package eidolons.game.exploration.handlers;
 
 import eidolons.content.ContentConsts;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.UnitAI;

@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.rules.counter.negative;
 
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.UnitAction;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
@@ -13,8 +13,9 @@ import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.content.enums.GenericEnums;
+import main.content.enums.entity.EffectEnums;
 import main.content.enums.entity.UnitEnums;
-import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.entity.EffectEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.system.MetaEnums;
 import main.entity.Ref;
@@ -58,12 +59,12 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
 
     @Override
     public String getCounterName() {
-        return COUNTER.Ensnared.getName();
+        return EffectEnums.COUNTER.Ensnared.getName();
     }
 
     @Override
     public COUNTER getCounter() {
-        return COUNTER.Ensnared;
+        return EffectEnums.COUNTER.Ensnared;
     }
 
     @Override

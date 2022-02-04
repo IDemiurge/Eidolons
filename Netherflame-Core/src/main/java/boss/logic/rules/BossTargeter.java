@@ -3,7 +3,7 @@ package boss.logic.rules;
 import boss.BossHandler;
 import boss.logic.action.BossAction;
 import boss.logic.entity.BossUnit;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import boss.BossManager;
 import boss.demo.DemoBoss;
 import main.elements.conditions.DistanceCondition;

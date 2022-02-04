@@ -1,6 +1,6 @@
 package eidolons.entity.handlers.active.spell;
 
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.handlers.active.Activator;
 import eidolons.entity.handlers.active.ActiveMaster;
 import main.entity.Ref;

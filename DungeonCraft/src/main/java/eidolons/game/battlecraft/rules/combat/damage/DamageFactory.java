@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.rules.combat.damage;
 
 import eidolons.ability.effects.continuous.BonusDamageEffect;
 import eidolons.ability.effects.oneshot.DealDamageEffect;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.attach.DC_HeroAttachedObj;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import main.content.enums.GenericEnums.DAMAGE_CASE;

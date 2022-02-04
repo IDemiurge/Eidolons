@@ -7,7 +7,7 @@ import eidolons.ability.effects.continuous.SetCustomModeEffect;
 import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
 import eidolons.ability.effects.oneshot.status.ImmobilizeEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;

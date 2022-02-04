@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.core.EUtils;
 import eidolons.game.exploration.handlers.ExplorationMaster;
 import libgdx.GDX;

@@ -1,6 +1,6 @@
 package libgdx.gui.dungeon.controls.radial;
 
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.Spell;
 import eidolons.entity.unit.Unit;
 import main.content.enums.entity.SpellEnums.SPELL_GROUP;
 

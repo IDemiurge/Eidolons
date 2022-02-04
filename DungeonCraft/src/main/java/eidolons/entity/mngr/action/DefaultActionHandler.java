@@ -1,5 +1,7 @@
-package eidolons.entity.active;
+package eidolons.entity.mngr.action;
 
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;

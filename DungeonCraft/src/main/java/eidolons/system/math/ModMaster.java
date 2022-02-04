@@ -1,7 +1,7 @@
 package eidolons.system.math;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import main.content.values.parameters.PARAMETER;
 import main.system.math.MathMaster;
 

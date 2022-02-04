@@ -12,8 +12,9 @@ import main.ability.effects.Effects;
 import main.ability.effects.continuous.CustomTargetEffect;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.entity.EffectEnums;
 import main.content.enums.entity.UnitEnums;
-import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.entity.EffectEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.system.MetaEnums;
 import main.elements.targeting.FixedTargeting;
@@ -58,7 +59,7 @@ public class BlazeRule extends DamageCounterRule implements TimedRule{
 
     @Override
     public COUNTER getCounter() {
-        return COUNTER.Blaze;
+        return EffectEnums.COUNTER.Blaze;
     }
 
     @Override

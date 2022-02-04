@@ -1,6 +1,6 @@
 package libgdx.gui.dungeon.panels.dc.actionpanel.datasource;
 
-import eidolons.entity.active.spaces.FeatSpace;
+import eidolons.entity.feat.spaces.FeatSpace;
 import libgdx.gui.generic.ValueContainer;
 
 import java.util.List;

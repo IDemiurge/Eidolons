@@ -12,7 +12,7 @@ import main.ability.effects.ReducedEffect;
 import main.ability.effects.ResistibleEffect;
 import main.content.ContentValsManager;
 import main.content.enums.GenericEnums;
-import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.EffectEnums;
 import main.content.values.parameters.PARAMETER;
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref;
@@ -264,7 +264,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
 
         if (param == null) {
             if (params == null) {
-                UnitEnums.COUNTER counter = CounterMaster.getCounter(sparam, false);
+                EffectEnums.COUNTER counter = CounterMaster.getCounter(sparam, false);
                 if (counter == null) {
                     return false;
                 }

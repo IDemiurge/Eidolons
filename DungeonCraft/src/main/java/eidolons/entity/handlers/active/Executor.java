@@ -1,8 +1,8 @@
 package eidolons.entity.handlers.active;
 
 import eidolons.content.PROPS;
-import eidolons.entity.active.ActiveObj;
-import eidolons.entity.active.QuickItemAction;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.QuickItemAction;
 import eidolons.entity.item.QuickItem;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.battlecraft.rules.RuleEnums;

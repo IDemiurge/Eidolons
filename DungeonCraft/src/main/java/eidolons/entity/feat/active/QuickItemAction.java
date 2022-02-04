@@ -1,4 +1,4 @@
-package eidolons.entity.active;
+package eidolons.entity.feat.active;
 
 import eidolons.entity.handlers.active.item.ItemActiveMaster;
 import eidolons.entity.item.QuickItem;

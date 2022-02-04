@@ -1,6 +1,6 @@
 package eidolons.netherflame.generic.spaces.model;
 
-import eidolons.entity.active.spaces.FeatSpaceData;
+import eidolons.entity.feat.spaces.FeatSpaceData;
 
 /**
  * Created by Alexander on 2/1/2022

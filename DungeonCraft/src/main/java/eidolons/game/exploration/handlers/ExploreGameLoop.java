@@ -1,6 +1,6 @@
 package eidolons.game.exploration.handlers;
 
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.handlers.active.Activator;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.EUtils;

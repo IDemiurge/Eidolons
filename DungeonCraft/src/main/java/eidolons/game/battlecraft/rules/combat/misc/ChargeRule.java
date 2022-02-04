@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules.combat.misc;
 
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;
 

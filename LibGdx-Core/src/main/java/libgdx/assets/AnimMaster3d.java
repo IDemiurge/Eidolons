@@ -2,8 +2,8 @@ package libgdx.assets;
 
 import com.badlogic.gdx.math.Vector2;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.ActiveObj;
-import eidolons.entity.active.UnitAction;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.item.QuickItem;
 import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;

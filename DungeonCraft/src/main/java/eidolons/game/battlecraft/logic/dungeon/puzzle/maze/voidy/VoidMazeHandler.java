@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy;
 
 import com.badlogic.gdx.math.Interpolation;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleSetup;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazeHandler;

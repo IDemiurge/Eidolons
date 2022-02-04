@@ -5,7 +5,7 @@ import eidolons.ability.effects.attachment.AddTriggerEffect;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.UnitAction;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;

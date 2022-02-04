@@ -1,6 +1,6 @@
 package eidolons.system.libgdx.datasource;
 
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import main.ability.effects.Effect;
 import main.entity.Ref;
 import main.entity.obj.Obj;

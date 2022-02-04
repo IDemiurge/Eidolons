@@ -1,6 +1,6 @@
 package eidolons.game.core.master.combat;
 
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.core.game.DC_Game;
 
 /**

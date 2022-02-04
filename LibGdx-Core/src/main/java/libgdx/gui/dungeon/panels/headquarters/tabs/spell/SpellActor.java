@@ -1,7 +1,7 @@
 package libgdx.gui.dungeon.panels.headquarters.tabs.spell;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.Spell;
 import libgdx.gui.dungeon.panels.headquarters.HqSlotActor;
 import libgdx.shaders.DarkGrayscaleShader;
 import libgdx.shaders.DarkShader;

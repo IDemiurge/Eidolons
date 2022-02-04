@@ -4,7 +4,8 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
-import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.entity.EffectEnums;
+import main.content.enums.entity.EffectEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 
 /**
@@ -19,7 +20,7 @@ public class ChargeCounterRule extends DC_CounterRule {
 
     @Override
     public COUNTER getCounter() {
-        return COUNTER.Charge;
+        return EffectEnums.COUNTER.Charge;
     }
 
     @Override

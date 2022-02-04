@@ -1,6 +1,6 @@
 package libgdx.gui.dungeon.panels.dc.actionpanel.spaces;
 
-import eidolons.entity.active.spaces.FeatSpace;
+import eidolons.entity.feat.spaces.FeatSpace;
 import main.content.enums.entity.NewRpgEnums;
 
 public class FeatSpaceDataSource {

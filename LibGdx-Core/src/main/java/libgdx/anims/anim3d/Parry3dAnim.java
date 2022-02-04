@@ -1,6 +1,6 @@
 package libgdx.anims.anim3d;
 
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.item.WeaponItem;
 import libgdx.anims.sprite.SpriteAnimation;
 

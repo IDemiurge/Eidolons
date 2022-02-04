@@ -1,6 +1,6 @@
 package libgdx.gui.dungeon.panels.headquarters.tabs.spell;
 
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.Spell;
 
 import java.util.List;
 import java.util.stream.Collectors;

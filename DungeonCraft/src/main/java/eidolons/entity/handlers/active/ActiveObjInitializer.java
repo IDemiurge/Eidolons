@@ -2,8 +2,8 @@ package eidolons.entity.handlers.active;
 
 import eidolons.ability.costs.DC_CostsFactory;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActionManager;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.mngr.action.ActionHelper;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.core.atb.AtbMaster;
 import eidolons.game.core.master.EffectMaster;
 import main.content.enums.entity.ActionEnums;
@@ -116,7 +116,7 @@ public class ActiveObjInitializer extends EntityInitializer<ActiveObj> {
             case SPECIAL_MOVE:
                 return ActionEnums.ACTION_TYPE_GROUPS.MOVE;
             case STANDARD:
-                return DC_ActionManager.getStdObjType(getEntity());
+                return ActionHelper.getStdObjType(getEntity());
 
         }
         return ActionEnums.ACTION_TYPE_GROUPS.SPELL;

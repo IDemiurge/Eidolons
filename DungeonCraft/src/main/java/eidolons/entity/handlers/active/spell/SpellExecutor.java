@@ -1,8 +1,8 @@
 package eidolons.entity.handlers.active.spell;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.ActiveObj;
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.Spell;
 import eidolons.entity.handlers.active.ActiveMaster;
 import eidolons.entity.handlers.active.Executor;
 import eidolons.entity.obj.BattleFieldObject;

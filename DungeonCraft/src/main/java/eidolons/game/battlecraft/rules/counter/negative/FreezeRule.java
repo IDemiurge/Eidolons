@@ -10,8 +10,9 @@ import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.ability.effects.container.ConditionalEffect;
+import main.content.enums.entity.EffectEnums;
 import main.content.enums.entity.UnitEnums;
-import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.entity.EffectEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.system.MetaEnums;
 import main.system.auxiliary.NumberUtils;
@@ -90,7 +91,7 @@ public class FreezeRule extends DC_CounterRule {
 
     @Override
     public COUNTER getCounter() {
-        return COUNTER.Chill;
+        return EffectEnums.COUNTER.Chill;
     }
 
     @Override
@@ -111,7 +112,7 @@ public class FreezeRule extends DC_CounterRule {
         }
         return COUNTERS_PER_TURN
          - Math.min(getNumberOfCounters(unit),
-         (unit.getCounter(COUNTER.Moist.getName())));
+         (unit.getCounter(EffectEnums.COUNTER.Moist.getName())));
     }
 
 }

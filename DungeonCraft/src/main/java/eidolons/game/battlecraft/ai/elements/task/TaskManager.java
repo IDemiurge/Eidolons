@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.ai.elements.task;
 
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.DC_Obj;

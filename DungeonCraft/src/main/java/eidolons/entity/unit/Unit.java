@@ -2,11 +2,11 @@ package eidolons.entity.unit;
 
 import eidolons.content.*;
 import eidolons.content.values.ValuePages;
-import eidolons.entity.active.ActiveObj;
-import eidolons.entity.active.QuickItemAction;
-import eidolons.entity.active.Spell;
-import eidolons.entity.active.spaces.Feat;
-import eidolons.entity.active.spaces.FeatSpaces;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.QuickItemAction;
+import eidolons.entity.feat.active.Spell;
+import eidolons.entity.feat.Feat;
+import eidolons.entity.feat.spaces.FeatSpaces;
 import eidolons.entity.handlers.bf.unit.*;
 import eidolons.entity.item.trinket.JewelryItem;
 import eidolons.entity.item.trinket.TokenItem;
@@ -14,7 +14,6 @@ import eidolons.netherflame.eidolon.heromake.model.DC_Attributes;
 import eidolons.netherflame.eidolon.heromake.model.DC_Masteries;
 import eidolons.entity.item.*;
 import eidolons.entity.item.trinket.garment.Garment;
-import eidolons.entity.item.trinket.garment.HeadGarment;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.handlers.KeyResolver;
@@ -98,7 +97,7 @@ public class Unit extends UnitModel implements GridEntity {
     protected ArmorItem innerArmor;
 
     protected DequeImpl<DC_PassiveObj> skills;
-    protected DequeImpl<ClassRank> classes;
+    protected DequeImpl<ClassRank> classRanks;
     protected DequeImpl<Perk> perks;
 
     protected DequeImpl<JewelryItem> jewelry;
@@ -513,7 +512,7 @@ public class Unit extends UnitModel implements GridEntity {
         if (e.getOBJ_TYPE_ENUM() == DC_TYPE.SKILLS) {
             getSkills().add(e);
         } else {
-            getClasses().addCast(e);
+            getClassRanks().addCast(e);
         }
     }
 
@@ -627,12 +626,12 @@ public class Unit extends UnitModel implements GridEntity {
         return ContainerUtils.openContainer(getProperty(prop)).size();
     }
 
-    public DequeImpl<ClassRank> getClasses() {
-        return classes;
+    public DequeImpl<ClassRank> getClassRanks() {
+        return classRanks;
     }
 
-    public void setClasses(DequeImpl<ClassRank> classes) {
-        this.classes = classes;
+    public void setClassRanks(DequeImpl<ClassRank> classRanks) {
+        this.classRanks = classRanks;
     }
 
     public WeaponItem getActiveWeapon(boolean offhand) {

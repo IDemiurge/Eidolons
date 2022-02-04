@@ -1,4 +1,4 @@
-package eidolons.entity.item.handlers;
+package eidolons.entity.mngr.item;
 
 import eidolons.content.consts.VisualEnums.ITEM_FILTERS;
 import eidolons.entity.item.HeroItem;

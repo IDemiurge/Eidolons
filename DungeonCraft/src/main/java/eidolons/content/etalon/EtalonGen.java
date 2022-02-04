@@ -1,6 +1,6 @@
 package eidolons.content.etalon;
 
-import eidolons.content.DC_ContentValsManager;
+import eidolons.content.ATTRIBUTE;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.game.core.game.DC_Game;
@@ -64,7 +64,7 @@ calculate the new rank set with closest ratio for N pts spent...
         type.setProperty(PROPS.BASE_CLASS, model.baseClass.getName());
 
         EtalonConsts.AttributeData attrs = createAttrData(model.attributeSet.weights, model.attributeSet.spentCoef, level);
-        for (DC_ContentValsManager.ATTRIBUTE attribute : DC_ContentValsManager.ATTRIBUTE.values()) {
+        for (ATTRIBUTE attribute : ATTRIBUTE.values()) {
             int base = type.getIntParam(attribute.getBaseParameter()
 
             ); //TODO

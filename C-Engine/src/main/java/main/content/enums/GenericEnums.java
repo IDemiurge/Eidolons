@@ -74,7 +74,10 @@ public class GenericEnums {
         ARMOR_AVERAGED
     }
 
-    public enum DAMAGE_TYPE {
+    public enum DAMAGE_TYPE_COMPOSITE {
+
+    }
+        public enum DAMAGE_TYPE {
         PIERCING(),
         BLUDGEONING(),
         SLASHING(),

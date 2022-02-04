@@ -1,7 +1,7 @@
 package libgdx.gui.dungeon.controls.radial;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.DC_Obj;
 import libgdx.gui.UiMaster;
 

@@ -7,8 +7,8 @@ import main.ability.AbilityObj;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.content.enums.GenericEnums;
+import main.content.enums.entity.EffectEnums;
 import main.content.enums.entity.SkillEnums;
-import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.VariableManager;
 import main.entity.Ref;
@@ -84,7 +84,7 @@ public class DynamicBuffRules {
             case BEFORE_HIT:
                 return ImageManager.getValueIconPath(PARAMS.TOUGHNESS);
             case ON_KILL:
-                return UnitEnums.COUNTER.Poison.getImagePath();
+                return EffectEnums.COUNTER.Poison.getImagePath();
             case ON_DEATH:
                 return ImageManager.getDamageTypeImagePath(GenericEnums.DAMAGE_TYPE.DEATH.getName(), true);
 

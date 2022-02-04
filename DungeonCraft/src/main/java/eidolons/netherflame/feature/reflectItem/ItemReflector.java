@@ -1,12 +1,11 @@
 package eidolons.netherflame.feature.reflectItem;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.item.handlers.ItemMaster;
+import eidolons.entity.mngr.item.ItemMaster;
 import eidolons.netherflame.feature.reflectItem.data.WeaponMasteryData;
 import eidolons.netherflame.feature.reflectItem.data.MaterialData;
 import main.content.DC_TYPE;
 import main.content.enums.entity.Item2Enums;
-import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.SkillEnums;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;

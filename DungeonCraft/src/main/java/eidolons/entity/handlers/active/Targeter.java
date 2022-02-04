@@ -2,7 +2,7 @@ package eidolons.entity.handlers.active;
 
 import eidolons.ability.ActivesConstructor;
 import eidolons.ability.targeting.TemplateSelectiveTargeting;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
 import main.ability.Ability;
 import main.content.enums.entity.AbilityEnums;

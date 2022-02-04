@@ -8,7 +8,7 @@ import main.content.OBJ_TYPE;
 import main.content.VALUE;
 import main.content.ValueMap;
 import main.content.enums.GenericEnums.STD_BOOLS;
-import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.entity.EffectEnums.COUNTER;
 import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.parameters.MultiParameter;
 import main.content.values.parameters.PARAMETER;

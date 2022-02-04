@@ -1,7 +1,7 @@
 package eidolons.game.exploration.dungeon.objects;
 
-import eidolons.entity.active.ActiveObj;
-import eidolons.entity.active.UnitAction;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.item.HeroItem;
 import eidolons.entity.item.QuickItem;
 import eidolons.entity.item.ItemFactory;

@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.utils.Array;
 import eidolons.content.consts.VisualEnums;
 import eidolons.content.consts.libgdx.GdxStringUtils;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import libgdx.anims.AnimData;
 import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.sprite.SpriteAnimation;

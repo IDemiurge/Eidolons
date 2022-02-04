@@ -3,7 +3,7 @@ package libgdx.gui.dungeon.panels.dc.unitinfo.tooltips;
 import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PARAMS;
 import eidolons.content.consts.libgdx.GdxStringUtils;
-import eidolons.entity.active.UnitAction;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
 import libgdx.gui.NinePatchFactory;

@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.RemoveActorAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import eidolons.entity.active.DefaultActionHandler;
+import eidolons.entity.mngr.action.DefaultActionHandler;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;

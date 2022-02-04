@@ -1,6 +1,6 @@
 package eidolons.entity.handlers.active;
 
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import main.entity.handlers.EntityCalculator;
 import main.entity.handlers.EntityMaster;
 

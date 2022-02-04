@@ -1,4 +1,4 @@
-package eidolons.entity.item.handlers;
+package eidolons.entity.mngr.item;
 
 /**
  * Created by JustMe on 4/8/2018.

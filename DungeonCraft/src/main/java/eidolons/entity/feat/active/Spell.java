@@ -1,7 +1,6 @@
-package eidolons.entity.active;
+package eidolons.entity.feat.active;
 
 import eidolons.content.PARAMS;
-import eidolons.content.PROPS;
 import eidolons.entity.handlers.active.spell.SpellActiveMaster;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
@@ -14,7 +13,6 @@ import main.content.enums.entity.SpellEnums.SPELL_GROUP;
 import main.content.enums.entity.SpellEnums.SPELL_POOL;
 import main.content.enums.entity.SpellEnums.SPELL_TYPE;
 import main.content.values.properties.G_PROPS;
-import main.content.values.properties.PROPERTY;
 import main.elements.costs.Costs;
 import main.entity.Ref;
 import main.entity.handlers.EntityMaster;

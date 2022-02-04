@@ -1,6 +1,6 @@
 package eidolons.game;
 
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import main.data.StringMap;
 

@@ -1,7 +1,7 @@
 package libgdx.anims.main;
 
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import libgdx.anims.Anim;
 import libgdx.anims.CompositeAnim;
 import libgdx.anims.std.DeathAnim;

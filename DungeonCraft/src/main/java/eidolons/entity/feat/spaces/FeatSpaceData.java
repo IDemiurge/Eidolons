@@ -1,4 +1,4 @@
-package eidolons.entity.active.spaces;
+package eidolons.entity.feat.spaces;
 
 import main.system.auxiliary.EnumMaster;
 import main.system.data.DataUnit;
@@ -33,15 +33,15 @@ public class FeatSpaceData extends DataUnit<FeatSpaceValue> {
         return getValue(FeatSpaceValue.name);
     }
 
-    public void setActive(int index, String name) {
+    public void setFeat(int index, String name) {
         setValue("slot_" + (1 + index), name);
     }
 
-    public String getActive(int index) {
+    public String getFeat(int index) {
         return getValue("slot_" + (1 + index));
     }
 
-    public String getActives() {
+    public String getFeats() {
         return getValue(FeatSpaceValue.feats);
     }
 
@@ -59,7 +59,7 @@ public class FeatSpaceData extends DataUnit<FeatSpaceValue> {
 
     public int indexOf(String name) {
         for (int i = 0; i < FeatSpaceInitializer.MAX_SLOTS; i++) {
-            if (getActive(i).equalsIgnoreCase(name)) {
+            if (getFeat(i).equalsIgnoreCase(name)) {
                 return i;
             }
         }

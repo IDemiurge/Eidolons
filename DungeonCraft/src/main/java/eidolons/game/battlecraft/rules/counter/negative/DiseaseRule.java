@@ -11,8 +11,9 @@ import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.entity.EffectEnums;
 import main.content.enums.entity.UnitEnums;
-import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.entity.EffectEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.system.MetaEnums;
 import main.system.math.Formula;
@@ -96,7 +97,7 @@ public class DiseaseRule extends DamageCounterRule  implements TimedRule {
 
     @Override
     public COUNTER getCounter() {
-        return COUNTER.Disease;
+        return EffectEnums.COUNTER.Disease;
     }
 
     private boolean checkVirulent(BattleFieldObject unit) {

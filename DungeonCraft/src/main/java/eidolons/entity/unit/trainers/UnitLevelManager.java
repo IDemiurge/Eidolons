@@ -1,6 +1,6 @@
 package eidolons.entity.unit.trainers;
 
-import eidolons.content.DC_ContentValsManager.ATTRIBUTE;
+import eidolons.content.ATTRIBUTE;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.values.ValuePages;

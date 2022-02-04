@@ -1,8 +1,8 @@
 package eidolons.game.exploration.dungeon.objects;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.ActiveObj;
-import eidolons.entity.active.UnitAction;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;

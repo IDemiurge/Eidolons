@@ -3,7 +3,7 @@ package libgdx.gui.dungeon.panels.dc.unitinfo.datasource;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.content.PARAMS;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.UnitAction;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.item.ArmorItem;
 import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;

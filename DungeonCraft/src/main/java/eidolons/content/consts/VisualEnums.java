@@ -7,7 +7,7 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import eidolons.content.consts.libgdx.GdxStringUtils;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.core.master.EffectMaster;
 import main.content.VALUE;
 import main.content.enums.GenericEnums;

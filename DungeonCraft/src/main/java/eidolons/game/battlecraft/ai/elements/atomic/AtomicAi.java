@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.ai.elements.atomic;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.UnitAction;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.item.QuickItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;

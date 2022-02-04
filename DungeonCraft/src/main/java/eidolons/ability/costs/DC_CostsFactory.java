@@ -1,7 +1,7 @@
 package eidolons.ability.costs;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.system.DC_ConditionMaster;
 import main.elements.conditions.Requirement;
 import main.elements.costs.*;

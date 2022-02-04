@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.ai.tools.priority;
 
 import eidolons.ability.effects.oneshot.mechanic.RollEffect;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;

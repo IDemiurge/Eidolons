@@ -12,7 +12,7 @@ import eidolons.ability.targeting.TemplateAutoTargeting;
 import eidolons.ability.targeting.TemplateSelectiveTargeting;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.system.DC_ConditionMaster;
 import main.ability.*;
 import main.ability.effects.Effect;

@@ -1,6 +1,6 @@
 package boss.logic.action;
 
-import eidolons.entity.active.UnitAction;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.unit.Unit;
 import main.entity.type.ObjType;
 

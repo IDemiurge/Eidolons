@@ -13,8 +13,9 @@ import main.ability.effects.Effects;
 import main.content.consts.Constants;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.entity.EffectEnums;
 import main.content.enums.entity.UnitEnums;
-import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.entity.EffectEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.system.MetaEnums;
 
@@ -75,7 +76,7 @@ public class PoisonRule extends DamageCounterRule implements TimedRule{
 
     @Override
     public COUNTER getCounter() {
-        return COUNTER.Poison;
+        return EffectEnums.COUNTER.Poison;
     }
 
     @Override

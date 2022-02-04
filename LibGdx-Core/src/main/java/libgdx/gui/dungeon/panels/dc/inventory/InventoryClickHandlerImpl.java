@@ -2,8 +2,8 @@ package libgdx.gui.dungeon.panels.dc.inventory;
 
 import eidolons.content.consts.VisualEnums;
 import eidolons.entity.item.ArmorItem;
-import eidolons.entity.item.handlers.DC_InventoryManager;
-import eidolons.entity.item.handlers.DC_InventoryManager.OPERATIONS;
+import eidolons.entity.mngr.item.DC_InventoryManager;
+import eidolons.entity.mngr.item.DC_InventoryManager.OPERATIONS;
 import eidolons.entity.item.trinket.JewelryItem;
 import eidolons.entity.item.WeaponItem;
 import eidolons.game.core.EUtils;

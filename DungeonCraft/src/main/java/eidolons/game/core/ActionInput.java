@@ -1,6 +1,6 @@
 package eidolons.game.core;
 
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.DC_Obj;
 import main.game.logic.action.context.Context;
 

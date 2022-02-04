@@ -1,6 +1,6 @@
 package eidolons.ability.effects.oneshot.activation;
 
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.battlecraft.ai.tools.target.ReasonMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.MicroEffect;

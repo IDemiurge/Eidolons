@@ -2,12 +2,11 @@ package eidolons.game.battlecraft.rules.counter.negative;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;
-import eidolons.game.battlecraft.rules.counter.generic.DamageCounterRule;
 import eidolons.game.battlecraft.rules.counter.generic.timed.TimedRule;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
-import main.content.enums.GenericEnums.DAMAGE_TYPE;
-import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.entity.EffectEnums;
+import main.content.enums.entity.EffectEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 
 /**
@@ -23,7 +22,7 @@ public class SuffocationRule extends DC_CounterRule implements TimedRule{
 
     @Override
     public COUNTER getCounter() {
-        return COUNTER.Suffocation;
+        return EffectEnums.COUNTER.Suffocation;
     }
 
     @Override

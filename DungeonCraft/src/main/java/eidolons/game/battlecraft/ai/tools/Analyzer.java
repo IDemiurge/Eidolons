@@ -2,9 +2,9 @@ package eidolons.game.battlecraft.ai.tools;
 
 import eidolons.ability.conditions.WaitingFilterCondition;
 import eidolons.ability.effects.oneshot.unit.RaiseEffect;
-import eidolons.entity.active.ActiveObj;
-import eidolons.entity.active.UnitAction;
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.UnitAction;
+import eidolons.entity.feat.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.DC_Obj;

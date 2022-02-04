@@ -1,6 +1,6 @@
 package eidolons.ability.effects.oneshot.activation;
 
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.Spell;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.entity.Ref;

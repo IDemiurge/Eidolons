@@ -4,7 +4,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.oneshot.DealDamageEffect;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.anims.*;
 import libgdx.anims.ANIM_MODS.ANIM_MOD;

@@ -1,6 +1,6 @@
 package eidolons.system.text;
 
-import eidolons.content.DC_ContentValsManager;
+import eidolons.content.ATTRIBUTE;
 import eidolons.content.DescriptionMaster;
 import eidolons.content.PARAMS;
 import eidolons.netherflame.eidolon.heromake.model.AttributeConsts;
@@ -209,7 +209,7 @@ public class DescriptionTooltips {
     private static String getSpecialForHero(PARAMETER value, Unit hero) {
         if (value.isAttribute()) {
             List<String> s = AttributeConsts.getAttributeBonusInfoStrings(
-                    DC_ContentValsManager.ATTRIBUTE.getForParameter(value), hero);
+                    ATTRIBUTE.getForParameter(value), hero);
             if (s.isEmpty()) {
                 return Strings.NEW_LINE + "[cannot display values provided!]";
             }

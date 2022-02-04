@@ -2,7 +2,7 @@ package eidolons.game.core.atb;
 
 import com.badlogic.gdx.utils.Array;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.exploration.handlers.ExplorationMaster;
 import main.system.GuiEventManager;

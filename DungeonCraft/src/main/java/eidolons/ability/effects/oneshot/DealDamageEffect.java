@@ -1,8 +1,8 @@
 package eidolons.ability.effects.oneshot;
 
 import eidolons.ability.effects.DC_Effect;
-import eidolons.entity.active.ActiveObj;
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;

@@ -1,9 +1,8 @@
 package libgdx.bf.grid.handlers;
 
 import com.badlogic.gdx.Gdx;
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.unit.Unit;
 import eidolons.game.core.Core;
 import eidolons.game.exploration.handlers.ExplorationMaster;
 import libgdx.anims.construct.AnimConstructor;
@@ -13,10 +12,8 @@ import libgdx.anims.std.MoveAnimation;
 import libgdx.bf.grid.GridPanel;
 import libgdx.bf.grid.cell.BaseView;
 import libgdx.bf.grid.cell.HpBarView;
-import libgdx.bf.grid.cell.UnitGridView;
 import libgdx.bf.overlays.bar.HpBar;
 import libgdx.bf.overlays.bar.HpBarManager;
-import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.Effect;
 import main.entity.Ref;
 import main.entity.obj.Obj;

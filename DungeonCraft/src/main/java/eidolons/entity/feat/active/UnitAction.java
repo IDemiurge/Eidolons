@@ -1,4 +1,4 @@
-package eidolons.entity.active;
+package eidolons.entity.feat.active;
 
 import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
 import eidolons.content.PARAMS;

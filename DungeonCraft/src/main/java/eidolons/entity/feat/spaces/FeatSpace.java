@@ -1,5 +1,6 @@
-package eidolons.entity.active.spaces;
+package eidolons.entity.feat.spaces;
 
+import eidolons.entity.feat.Feat;
 import eidolons.entity.unit.Unit;
 import main.content.enums.entity.NewRpgEnums;
 
@@ -9,11 +10,11 @@ import java.util.Map;
 
 public class FeatSpace {
 
+    protected String name;
     protected int index;
     protected NewRpgEnums.FeatSpaceType type;
     protected NewRpgEnums.FeatSpaceMode mode;
     //protected  List<ActiveSpaceModifier> modifiers;
-    protected String name;
     protected boolean locked, hidden, active;
     protected Map<Integer, Feat> featMap;
     protected Unit owner;

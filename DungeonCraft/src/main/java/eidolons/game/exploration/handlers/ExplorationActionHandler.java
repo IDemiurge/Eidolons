@@ -1,7 +1,7 @@
 package eidolons.game.exploration.handlers;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.core.atb.AtbMaster;
 import main.content.values.parameters.PARAMETER;
 import main.elements.costs.Cost;

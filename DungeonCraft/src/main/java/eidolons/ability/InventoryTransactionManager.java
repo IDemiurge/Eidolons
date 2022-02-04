@@ -2,7 +2,7 @@ package eidolons.ability;
 
 import eidolons.content.PROPS;
 import eidolons.entity.item.HeroItem;
-import eidolons.entity.item.handlers.DC_InventoryManager;
+import eidolons.entity.mngr.item.DC_InventoryManager;
 import eidolons.entity.item.QuickItem;
 import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;

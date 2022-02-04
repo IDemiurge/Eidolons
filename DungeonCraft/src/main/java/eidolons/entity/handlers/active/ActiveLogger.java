@@ -1,6 +1,6 @@
 package eidolons.entity.handlers.active;
 
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.exploration.handlers.ExplorationMaster;

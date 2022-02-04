@@ -1,7 +1,6 @@
-package eidolons.entity.unit.attach;
+package eidolons.entity.feat;
 
-import eidolons.entity.active.ActiveObj;
-import eidolons.entity.active.spaces.Feat;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.DC_Obj;
 import main.entity.Ref;
 import main.entity.type.ObjType;

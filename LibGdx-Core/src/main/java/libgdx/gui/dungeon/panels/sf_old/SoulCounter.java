@@ -16,7 +16,7 @@ import libgdx.gui.dungeon.panels.TablePanelX;
 import libgdx.gui.dungeon.tooltips.DynamicTooltip;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.GenericEnums;
-import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.EffectEnums;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -45,7 +45,7 @@ public class SoulCounter extends SuperActor {
                 return;
             }
             DC_SoundMaster.playCueSound(GenericEnums.SOUND_CUE.ghost);
-            Core.getMainHero().addCounter(UnitEnums.COUNTER.Undying.getName(), souls + "");
+            Core.getMainHero().addCounter(EffectEnums.COUNTER.Undying.getName(), souls + "");
             souls = 0;
             counter.setText("" + souls);
             SpeechExecutor.run("script=explosions(true)");

@@ -1,4 +1,4 @@
-package eidolons.entity.active.spaces;
+package eidolons.entity.feat.spaces;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.item.ArmorItem;
@@ -9,7 +9,7 @@ import org.apache.commons.lang3.text.StrBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Deprecated
 public class QuickItemFP {
 
     public List<FeatSpaceData> split(DequeImpl<QuickItem> items, Unit unit) {

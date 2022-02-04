@@ -2,7 +2,7 @@ package libgdx.adapters;
 
 import com.badlogic.gdx.math.Vector2;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.EUtils;
 import eidolons.system.libgdx.GdxEventAdapter;

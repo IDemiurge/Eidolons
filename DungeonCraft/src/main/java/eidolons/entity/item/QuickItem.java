@@ -2,8 +2,8 @@ package eidolons.entity.item;
 
 import eidolons.content.PARAMS;
 import eidolons.content.values.ValuePages;
-import eidolons.entity.active.QuickItemAction;
-import eidolons.entity.active.spaces.Feat;
+import eidolons.entity.feat.active.QuickItemAction;
+import eidolons.entity.feat.Feat;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.DC_TYPE;
 import main.content.VALUE;

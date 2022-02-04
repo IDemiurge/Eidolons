@@ -313,7 +313,11 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     QUICK_ITEMS_SPACES(null, true, "units", "chars"),
     // DIVINED_SPACES(null, true, "units", "chars"),
 
-    BASE_CLASS(null, false, "units", "chars")
+    BASE_CLASS(null, false, "units", "chars"),
+
+    FEAT_SPACES_COMBAT(null, true, "units", "chars"),
+    FEAT_SPACES_ITEMS(null, true, "units", "chars"),
+    FEAT_SPACES_SPELLS(null, true, "units", "chars"),
 
     ;
 

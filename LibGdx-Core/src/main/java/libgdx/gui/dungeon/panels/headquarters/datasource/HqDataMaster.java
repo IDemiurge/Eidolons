@@ -5,7 +5,7 @@ import eidolons.content.ContentConsts;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.Spell;
 import eidolons.netherflame.eidolon.heromake.NF_ProgressionMaster;
 import eidolons.entity.item.HeroItem;
 import eidolons.entity.item.trinket.JewelryItem;

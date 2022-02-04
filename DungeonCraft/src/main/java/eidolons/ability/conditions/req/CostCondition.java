@@ -1,6 +1,6 @@
 package eidolons.ability.conditions.req;
 
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref;

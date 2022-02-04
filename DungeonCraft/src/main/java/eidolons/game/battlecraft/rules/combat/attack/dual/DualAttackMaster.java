@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.rules.combat.attack.dual;
 import eidolons.ability.costs.DC_CostsFactory;
 import eidolons.ability.effects.oneshot.activation.ActivateEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.UnitAction;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.unit.Unit;
 import main.ability.Abilities;
 import main.ability.ActiveAbility;

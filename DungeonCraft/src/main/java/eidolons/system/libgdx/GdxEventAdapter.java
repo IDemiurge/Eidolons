@@ -1,7 +1,7 @@
 package eidolons.system.libgdx;
 
 import eidolons.system.libgdx.wrapper.VectorGdx;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import main.game.bf.Coordinates;
 

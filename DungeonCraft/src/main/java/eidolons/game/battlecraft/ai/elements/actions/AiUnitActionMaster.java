@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.ai.elements.actions;
 
 import eidolons.content.PROPS;
-import eidolons.entity.active.ActiveObj;
-import eidolons.entity.active.UnitAction;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.tools.target.AI_SpellMaster;

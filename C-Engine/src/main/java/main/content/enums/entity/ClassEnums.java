@@ -25,6 +25,9 @@ public class ClassEnums {
         }
     }
 
+    public enum CLASS_RANK {
+
+    }
     public enum CLASS_PERK_GROUP {
 
         FIGHTER(TOUGHNESS, ATTACK, ARMOR, FORTITUDE, ENDURANCE, CARRYING_CAPACITY),

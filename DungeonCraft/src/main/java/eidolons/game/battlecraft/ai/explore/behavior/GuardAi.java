@@ -5,10 +5,7 @@ import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
 
 import java.util.ArrayList;

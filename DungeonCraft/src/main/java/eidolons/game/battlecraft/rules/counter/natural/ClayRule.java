@@ -8,7 +8,8 @@ import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
-import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.entity.EffectEnums;
+import main.content.enums.entity.EffectEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 
 /**
@@ -36,7 +37,7 @@ public class ClayRule extends DC_CounterRule {
 
     @Override
     public COUNTER getCounter() {
-        return COUNTER.Clay;
+        return EffectEnums.COUNTER.Clay;
     }
 
     @Override

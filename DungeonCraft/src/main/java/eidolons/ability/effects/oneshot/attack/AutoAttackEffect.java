@@ -1,7 +1,7 @@
 package eidolons.ability.effects.oneshot.attack;
 
 import eidolons.ability.effects.DC_Effect;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.core.EUtils;

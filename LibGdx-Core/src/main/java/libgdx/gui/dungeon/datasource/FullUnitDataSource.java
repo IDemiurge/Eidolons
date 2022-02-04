@@ -1,6 +1,6 @@
 package libgdx.gui.dungeon.datasource;
 
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import main.game.bf.directions.DIRECTION;
 

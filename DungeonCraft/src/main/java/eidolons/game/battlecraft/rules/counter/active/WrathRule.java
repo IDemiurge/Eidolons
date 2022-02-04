@@ -5,6 +5,7 @@ import eidolons.content.PARAMS;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
+import main.content.enums.entity.EffectEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
 
@@ -19,7 +20,7 @@ public class WrathRule extends ActiveCRule{
     }
 
     @Override
-    public UnitEnums.COUNTER getCounter() {
+    public EffectEnums.COUNTER getCounter() {
         return null;
     }
 

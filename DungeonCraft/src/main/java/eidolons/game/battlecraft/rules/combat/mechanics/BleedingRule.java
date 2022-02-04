@@ -4,7 +4,7 @@ import eidolons.ability.effects.oneshot.mechanic.ModifyCounterEffect;
 import eidolons.game.battlecraft.rules.DC_RuleImpl;
 import main.ability.effects.Effect.MOD;
 import main.content.DC_TYPE;
-import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.entity.EffectEnums;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.NotCondition;
 import main.elements.conditions.NumericCondition;
@@ -48,7 +48,7 @@ public class BleedingRule extends DC_RuleImpl {
     @Override
     public void initEffects() {
         // LIMIT BY MAX
-        effects = new ModifyCounterEffect(COUNTER.Bleeding.getName(),
+        effects = new ModifyCounterEffect(EffectEnums.COUNTER.Bleeding.getName(),
                 MOD.MODIFY_BY_CONST,
 
                 "{SOURCE_BLEEDING_MOD}/100*" +

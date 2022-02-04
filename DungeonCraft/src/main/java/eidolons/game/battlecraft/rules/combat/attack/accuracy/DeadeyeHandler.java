@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules.combat.attack.accuracy;
 
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.battlecraft.logic.meta.universal.event.ChoiceEventMaster;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import main.content.enums.entity.NewRpgEnums;

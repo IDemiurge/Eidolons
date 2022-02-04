@@ -1,8 +1,8 @@
 package eidolons.entity.handlers.active.action;
 
 import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
-import eidolons.entity.active.ActiveObj;
-import eidolons.entity.active.UnitAction;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.handlers.active.Activator;
 import eidolons.entity.handlers.active.ActiveMaster;
 import eidolons.entity.handlers.active.Executor;

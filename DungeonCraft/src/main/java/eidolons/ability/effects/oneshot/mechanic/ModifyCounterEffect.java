@@ -6,7 +6,7 @@ import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.ability.effects.ReducedEffect;
 import main.ability.effects.ResistibleEffect;
-import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.entity.EffectEnums.COUNTER;
 import main.data.ability.AE_ConstrArgs;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;

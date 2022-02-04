@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle;
 
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.art.ArtPuzzleConstructor;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.encounter.EncPuzzleConstructor;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.MazePuzzleConstructor;

@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.rules;
 import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.exploration.handlers.ExplorationMaster;
-import eidolons.entity.item.handlers.ItemMaster;
+import eidolons.entity.mngr.item.ItemMaster;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.data.XLinkedMap;

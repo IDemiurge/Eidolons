@@ -1,7 +1,7 @@
 package libgdx.gui.dungeon.controls;
 
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import libgdx.gui.UiMaster;
 import libgdx.gui.dungeon.controls.radial.RadialMenu;
 import libgdx.gui.dungeon.panels.dc.actionpanel.ActionPanel;

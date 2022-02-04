@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.ai.elements.actions;
 
 import eidolons.content.ContentConsts;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.UnitAction;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.UnitAI;

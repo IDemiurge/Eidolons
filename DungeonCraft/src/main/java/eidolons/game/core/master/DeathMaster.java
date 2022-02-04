@@ -1,6 +1,6 @@
 package eidolons.game.core.master;
 
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.handlers.bf.unit.UnitChecker;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;

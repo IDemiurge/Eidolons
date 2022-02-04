@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.rules.magic;
 
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Ref;

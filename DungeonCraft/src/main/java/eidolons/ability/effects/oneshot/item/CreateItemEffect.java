@@ -2,7 +2,7 @@ package eidolons.ability.effects.oneshot.item;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.item.HeroItem;
-import eidolons.entity.item.handlers.ItemGenerator;
+import eidolons.entity.mngr.item.ItemGenerator;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.content.DC_TYPE;
