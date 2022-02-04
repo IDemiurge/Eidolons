@@ -1,0 +1,8 @@
+---
+  name: Skirmisher
+  group: Striker
+  description: Cool guy
+  mstrMap: {Mobility: 1,Athletics: 1,Dual_Wielding: 1}
+  attrMap: {Strength: 1,Vitality: -1}
+  optional: [Axe, Blade, Polearm, Blunt]
+...
