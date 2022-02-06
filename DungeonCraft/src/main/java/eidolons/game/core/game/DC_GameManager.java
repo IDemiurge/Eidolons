@@ -1,8 +1,8 @@
 package eidolons.game.core.game;
 
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
@@ -28,7 +28,7 @@ import main.elements.Filter;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.BuffObj;
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
@@ -89,11 +89,11 @@ public class DC_GameManager extends GameManager {
     public static boolean checkInterrupted(Ref ref) {
 
         if (ref.getObj(KEYS.ACTIVE) != null) {
-            return ((DC_ActiveObj) ref.getObj(KEYS.ACTIVE)).isInterrupted();
+            return ((ActiveObj) ref.getObj(KEYS.ACTIVE)).isInterrupted();
         }
 
         if (ref.getObj(KEYS.SPELL) != null) {
-            return ((DC_ActiveObj) ref.getObj(KEYS.SPELL)).isInterrupted();
+            return ((ActiveObj) ref.getObj(KEYS.SPELL)).isInterrupted();
         }
 
         return false;
@@ -158,7 +158,7 @@ public class DC_GameManager extends GameManager {
      * @param action
      * @param result false if turn should end
      */
-    public void unitActionCompleted(DC_ActiveObj action, Boolean result) {
+    public void unitActionCompleted(ActiveObj action, Boolean result) {
         if (action != null) {
             getGame().getState().getUnitActionStack(action.getOwnerUnit()).push(action);
         }
@@ -257,7 +257,7 @@ public class DC_GameManager extends GameManager {
         }
         if (!selectionObj) {
             // if (MessageManager.confirm(CANCEL_SELECTING)) {
-            ActiveObj activatingAction = getActivatingAction();
+            IActiveObj activatingAction = getActivatingAction();
             if (activatingAction != null) {
                 activatingAction.playCancelSound();
             }
@@ -307,7 +307,7 @@ public class DC_GameManager extends GameManager {
     @Override
     public Integer select(Set<Obj> selectingSet, Ref ref) {
         Pair<Set<Obj>, TargetRunnable> p = new ImmutablePair<>(selectingSet, (t) -> {
-            if (ref.getActive() instanceof DC_ActiveObj) {
+            if (ref.getActive() instanceof ActiveObj) {
                 //TODO CLICK ON ANY OTHER OBJ MUST RESULT IN SELECTION STOP!
                 //                    ((DC_ActiveObj) ref.getActive()).activateOnGameLoopThread(t);
                 //                    WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_BF_OBJ, t.getId());
@@ -368,7 +368,7 @@ public class DC_GameManager extends GameManager {
         unitDies(null, _killed, _killer, leaveCorpse, quietly);
     }
 
-    public void unitDies(DC_ActiveObj activeObj, Obj _killed, Obj _killer, boolean leaveCorpse, boolean quietly) {
+    public void unitDies(ActiveObj activeObj, Obj _killed, Obj _killer, boolean leaveCorpse, boolean quietly) {
         deathMaster.unitDies(activeObj, _killed, _killer, leaveCorpse, quietly);
     }
 
@@ -407,10 +407,6 @@ public class DC_GameManager extends GameManager {
 
     }
 
-    public void activateMySpell(int index) {
-        spellMaster.activateMySpell(index);
-    }
-
     public void selectMyHero() {
         getGame().getPlayer(true).getHeroObj().invokeClicked();
 
@@ -419,13 +415,13 @@ public class DC_GameManager extends GameManager {
     public void previewMyAction(int index, ACTION_TYPE group) {
         if (ExplorationMaster.isExplorationOn())
             return;
-        DC_UnitAction action = getActiveObj().getActionMap().get(group).get(index);
+        UnitAction action = getActiveObj().getActionMap().get(group).get(index);
         GuiEventManager.trigger(ACTION_HOVERED, action);
     }
 
     public void activateMyAction(String actionName) {
 
-        DC_UnitAction action = getActiveObj().getAction(actionName);
+        UnitAction action = getActiveObj().getAction(actionName);
         if (action != null) {
             action.invokeClicked();
         }
@@ -516,7 +512,7 @@ public class DC_GameManager extends GameManager {
     }
 
 
-    public void applyActionRules(DC_ActiveObj action) {
+    public void applyActionRules(ActiveObj action) {
         if (action != null) {
             for (ActionRule a : getGame().getRules().getActionRules()) {
                 if (a.isAppliedOnExploreAction(action)) try {

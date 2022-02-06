@@ -42,9 +42,6 @@ public class LE_UnitView extends UnitGridView {
             options.setHoverResponsive(false);
             options.setEmblem(
                     TextureCache.getOrCreateR("ui\\level_editor\\anew/jack.png"));
-            options.setDirectionPointerTexture(
-                    TextureCache.getOrCreateR("gen/perk/abil/1.png")
-            );
             options.setTeamColor(GdxColorMaster.BLUE);
         }
 //                    options.createFromGameObject();

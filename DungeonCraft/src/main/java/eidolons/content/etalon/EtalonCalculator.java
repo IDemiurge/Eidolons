@@ -1,7 +1,7 @@
 package eidolons.content.etalon;
 
 import eidolons.content.values.DC_ValueManager;
-import main.content.enums.entity.HeroEnums;
+import main.content.enums.entity.ClassEnums;
 import main.content.enums.entity.SkillEnums;
 import main.system.auxiliary.data.ArrayMaster;
 import main.system.math.MathMaster;
@@ -14,23 +14,23 @@ public class EtalonCalculator {
     private static final int MSTR_PER_LEVEL = 2;
     private static final int ATTR_PER_LEVEL = 5;
 
-    public static int getSkillPts(int level, HeroEnums.CLASS_GROUP baseClass, EtalonConsts.MASTERY_SET masterySet) {
+    public static int getSkillPts(int level, ClassEnums.CLASS_GROUP baseClass, EtalonConsts.MASTERY_SET masterySet) {
         int bonus = getBonusSkPts(level, baseClass);
         int result = bonus + getPts(false, level, masterySet);
         return result;
     }
 
-    public static int getSpellPts(int level, HeroEnums.CLASS_GROUP baseClass, EtalonConsts.MASTERY_SET masterySet) {
+    public static int getSpellPts(int level, ClassEnums.CLASS_GROUP baseClass, EtalonConsts.MASTERY_SET masterySet) {
         int bonus = getBonusSpPts(level, baseClass);
         int result = bonus + getPts(true, level, masterySet);
         return result;
     }
 
-    private static int getBonusSpPts(int level, HeroEnums.CLASS_GROUP baseClass) {
+    private static int getBonusSpPts(int level, ClassEnums.CLASS_GROUP baseClass) {
         return 0;
     }
 
-    private static int getBonusSkPts(int level, HeroEnums.CLASS_GROUP baseClass) {
+    private static int getBonusSkPts(int level, ClassEnums.CLASS_GROUP baseClass) {
         return 0;
     }
 
@@ -64,12 +64,12 @@ public class EtalonCalculator {
         return false;
     }
 
-    public static int getFreeMasteryRanks(int level, HeroEnums.CLASS_GROUP baseClass, float spentCoef) {
+    public static int getFreeMasteryRanks(int level, ClassEnums.CLASS_GROUP baseClass, float spentCoef) {
         int total = getTotalStat(level, false);
         return Math.round(total * spentCoef);
     }
 
-    public static int getFreeAttrs(int level, HeroEnums.CLASS_GROUP baseClass, float spentCoef) {
+    public static int getFreeAttrs(int level, ClassEnums.CLASS_GROUP baseClass, float spentCoef) {
         int total = getTotalStat(level, true);
         return Math.round(total * spentCoef);
     }

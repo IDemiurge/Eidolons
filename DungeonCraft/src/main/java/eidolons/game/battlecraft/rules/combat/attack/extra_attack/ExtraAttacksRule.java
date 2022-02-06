@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.rules.combat.attack.extra_attack;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
 import main.content.enums.entity.ActionEnums;
@@ -17,7 +17,7 @@ import java.util.List;
 public class ExtraAttacksRule {
 
     //TODO NF rev
-    public static boolean checkInterrupted(DC_ActiveObj action, ENTRY_TYPE enclosingEntryType) {
+    public static boolean checkInterrupted(ActiveObj action, ENTRY_TYPE enclosingEntryType) {
         boolean result = false;
         String message = StringMaster
          .getMessagePrefix(true, action.getOwnerObj().getOwner().isMe())
@@ -41,20 +41,20 @@ public class ExtraAttacksRule {
         return result;
     }
 
-    private static boolean checkSourceInterrupted(DC_ActiveObj action) {
+    private static boolean checkSourceInterrupted(ActiveObj action) {
         if (action.getOwnerObj().isDead()) {
             return true;
         }
         return action.getOwnerObj().isDisabled();
     }
 
-    public static List<DC_ActiveObj> getCounterAttacks(DC_ActiveObj triggeringAction,
-                                                       Unit unit) {
-        List<DC_ActiveObj> list = new ArrayList<>();
+    public static List<ActiveObj> getCounterAttacks(ActiveObj triggeringAction,
+                                                    Unit unit) {
+        List<ActiveObj> list = new ArrayList<>();
         if (unit.getActionMap().get(ActionEnums.ACTION_TYPE.STANDARD_ATTACK) == null) {
             return list;
         }
-        for (DC_UnitAction a : unit.getActionMap().get(ActionEnums.ACTION_TYPE.STANDARD_ATTACK)) {
+        for (UnitAction a : unit.getActionMap().get(ActionEnums.ACTION_TYPE.STANDARD_ATTACK)) {
             // offhand?
             if (a.isMelee() && !a.isAttackGeneric())
             // auto-atk range?
@@ -63,7 +63,7 @@ public class ExtraAttacksRule {
             }
         }
         SortMaster.sortEntitiesByExpression(list, action ->
-         FutureBuilder.precalculateDamage((DC_ActiveObj) action, triggeringAction.getOwnerObj(), true)
+         FutureBuilder.precalculateDamage((ActiveObj) action, triggeringAction.getOwnerObj(), true)
           * (action.getIntParam(PARAMS.COUNTER_MOD) +
           action.getIntParam(PARAMS.COUNTER_ATTACK_MOD)));
         return list;

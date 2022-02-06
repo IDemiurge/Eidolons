@@ -1,6 +1,6 @@
 package eidolons.ability.conditions.req;
 
-import eidolons.entity.unit.DC_UnitModel;
+import eidolons.entity.unit.UnitModel;
 import main.elements.conditions.standard.OccupiedCondition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -50,17 +50,7 @@ public class CellCondition extends OccupiedCondition {
         if (direction == null) {
             return super.getCoordinates(ref);
         }
-        Obj obj = ref.getObj(key);
-        FACING_DIRECTION f = null;
-        if (obj instanceof DC_UnitModel) {
-            f = ((DC_UnitModel) obj).getFacing();
-        }
-        if (f == null) {
-            return null;
-        }
-
-        return super.getCoordinates(ref).getAdjacentCoordinate(
-         DirectionMaster.getDirectionByFacing(f, direction));
+        return null;
     }
 }
 // boolean result = (free) ? !super.preCheck() : super.preCheck();

@@ -2,7 +2,7 @@ package main.system;
 
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
-import main.content.enums.entity.HeroEnums.BACKGROUND;
+import main.content.enums.entity.HeroEnums.SUBRACE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -80,7 +80,7 @@ public class SortMaster<T> {
     }
 
     public static Comparator<? super Entity> getHeroBackgroundSorter() {
-        return getSublistSorter(BACKGROUND.class);
+        return getSublistSorter(SUBRACE.class);
     }
 
     public static Comparator<? super Entity> getSublistSorter(final Class<?> enumClass) {

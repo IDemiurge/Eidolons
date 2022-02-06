@@ -3,16 +3,8 @@ package main.content.enums.entity;
 import main.system.auxiliary.StringMaster;
 
 public class NewRpgEnums {
-    public enum WORLD_VIEW {
-        faithless,
-        blackheart,
-        omnivalence,
-        tradition,
-        zeal;
 
-    }
-
-        public enum FEAT_SPACE_VALUE {
+    public enum FeatSpaceValue {
         name,
         type,
         mode,
@@ -28,26 +20,27 @@ public class NewRpgEnums {
         ;
 
     }
-    public enum FEAT_SPACE_SKIN {
+    public enum FeatSpaceSkin {
         lite, //all kinds for grimoires!
     }
 
-    public enum FEAT_SPACE_MODE {
+    public enum FeatSpaceMode {
         normal, auto, triggered,
     }
 
-    public enum FEAT_SPACE_TYPE {
+    public enum FeatSpaceType {
+        training(1), quickItems(12),
         memorized(2), verbatim(1), divined(5),
         grimoire(3), sphere(4), song(6), custom(10);
 
-            FEAT_SPACE_TYPE(int sortIndex) {
+            FeatSpaceType(int sortIndex) {
                 this.sortIndex = sortIndex;
             }
 
             public int sortIndex;
         }
 
-    public enum PERK_VALUES {
+    public enum PerkValue {
         perks_1,
         quirks_1,
         add_perks_1,
@@ -112,4 +105,9 @@ public class NewRpgEnums {
         shield, weapon, magic,
         ;
     }
+
+    public enum FeatGroup {
+        Quick_Item, Token, Spells, Actions, Passives
+    }
+
 }

@@ -3,23 +3,19 @@ package eidolons.game.battlecraft.ai.tools.path;
 import eidolons.ability.conditions.special.SneakCondition;
 import eidolons.ability.effects.oneshot.move.SelfMoveEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_UnitAction;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.UnitAction;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.unit.Unit;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import main.ability.effects.Effect;
 import main.content.enums.entity.ActionEnums;
-import main.content.enums.entity.UnitEnums;
-import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.elements.targeting.FixedTargeting;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.math.PositionMaster;
@@ -31,12 +27,12 @@ import java.util.*;
  */
 public class PathChoiceMaster {
     protected PathBuilder pathBuilder;
-    protected List<DC_ActiveObj> moveActions; // only special here?
-    private DC_UnitAction stdMove;
+    protected List<ActiveObj> moveActions; // only special here?
+    private UnitAction stdMove;
     private final ArrayList<Object> sneakCells;
     private final ArrayList<Object> nonSneakCells;
     private Unit unit;
-    private Action targetAction;
+    private AiAction targetAiAction;
 
     private boolean firstStep;
 
@@ -46,23 +42,24 @@ public class PathChoiceMaster {
         nonSneakCells = new ArrayList<>();
     }
 
-    public PathChoiceMaster init(Unit unit, Action targetAction, Coordinates targetCoordinate,
-                                 List<DC_ActiveObj> moveActions) {
+    public PathChoiceMaster init(Unit unit, AiAction targetAiAction, Coordinates targetCoordinate,
+                                 List<ActiveObj> moveActions) {
         this.unit = unit;
-        this.targetAction = targetAction;
+        this.targetAiAction = targetAiAction;
         this.moveActions = moveActions;
         stdMove = unit.getAction(ActionEnums.STD_ACTIONS.Move.name());
         return this;
     }
 
 
-    List<Choice> getChoices(boolean simplified, ActionPath path, Coordinates c_coordinate, Coordinates targetCoordinate, FACING_DIRECTION c_facing) {
+    List<Choice> getChoices(boolean simplified, ActionPath path, Coordinates c_coordinate, Coordinates targetCoordinate
+            ) {
         Chronos.mark("Finding choices for " + path);
         pathBuilder.adjustUnit();
 
         List<Choice> choices = new ArrayList<>();
         for (Coordinates c : getDefaultCoordinateTargets(path, c_coordinate)) {
-            Choice stdMoveChoice = constructStdMoveChoice(c, c_coordinate, c_facing);
+            Choice stdMoveChoice = constructStdMoveChoice(c, c_coordinate);
             if (stdMoveChoice != null) {
                 choices.add(stdMoveChoice);
             }
@@ -74,7 +71,7 @@ public class PathChoiceMaster {
             // add special
             // will need to remove actions from list when used? preCheck CD
 
-            for (DC_ActiveObj a : moveActions) {
+            for (ActiveObj a : moveActions) {
 
                 Targeting targeting = a.getTargeting();
                 Collection<Obj> objects = null;
@@ -105,8 +102,8 @@ public class PathChoiceMaster {
 
                     List<Choice> choicesForAction = new ArrayList<>();
                     for (Object obj : objects) {
-                        if (obj instanceof DC_Cell) {
-                            Coordinates coordinates = ((DC_Cell) obj).getCoordinates();
+                        if (obj instanceof GridCell) {
+                            Coordinates coordinates = ((GridCell) obj).getCoordinates();
                             // if (a.getName().equals("Clumsy Leap"))
                             if (PositionMaster.getDistance(coordinates, c_coordinate) > Math.max(1,
                              a.getIntParam(PARAMS.RANGE))) {
@@ -120,9 +117,9 @@ public class PathChoiceMaster {
                             // choices?
 
                             Ref ref = unit.getRef().getCopy();
-                            ref.setTarget(((DC_Cell) obj).getId());
+                            ref.setTarget(((GridCell) obj).getId());
                             Choice choice = new Choice(coordinates, c_coordinate,
-                             new Action(a, ref));
+                             new AiAction(a, ref));
                             choicesForAction.add(choice);
                         }
                     }
@@ -151,26 +148,15 @@ public class PathChoiceMaster {
     }
 
 
-    private Choice constructStdMoveChoice(Coordinates targetCoordinate, Coordinates c_coordinate, FACING_DIRECTION c_facing) {
-        FACING_SINGLE facing = FacingMaster.getSingleFacing(c_facing, c_coordinate,
-         targetCoordinate);
-        Action moveAction = getMoveAction();
-        if (facing == UnitEnums.FACING_SINGLE.IN_FRONT) {
-            if (firstStep) {
-                if (!moveAction.canBeActivated()) {
-                    return null;
-                }
-            }
-            return new Choice(targetCoordinate, c_coordinate, moveAction);
-        }
+    private Choice constructStdMoveChoice(Coordinates targetCoordinate, Coordinates c_coordinate) {
+        AiAction moveAiAction = getMoveAction();
         pathBuilder.adjustUnit();
-        Collection<Action> actions = pathBuilder.getTurnSequenceConstructor().getTurnSequence(
-         UnitEnums.FACING_SINGLE.IN_FRONT, unit, targetCoordinate);
-        actions.add(moveAction);
+        Collection<AiAction> aiActions = new LinkedList<>();
+        aiActions.add(moveAiAction);
         // resetUnit();// TODO is that right?
 
-        return new Choice(targetCoordinate, c_coordinate, actions
-         .toArray(new Action[0]));
+        return new Choice(targetCoordinate, c_coordinate, aiActions
+         .toArray(new AiAction[0]));
     }
 
     private void sortChoices(List<Choice> choices) {
@@ -178,8 +164,8 @@ public class PathChoiceMaster {
 
     }
 
-    private Action getMoveAction() {
-        return new Action(stdMove);
+    private AiAction getMoveAction() {
+        return new AiAction(stdMove);
     }
 
     private Comparator<? super Choice> getSorter() {
@@ -207,10 +193,10 @@ public class PathChoiceMaster {
         };
     }
 
-    private List<Choice> filterSpecialMoveChoices(List<Choice> choices, DC_ActiveObj a, Coordinates c_coordinate, ActionPath path) {
+    private List<Choice> filterSpecialMoveChoices(List<Choice> choices, ActiveObj a, Coordinates c_coordinate, ActionPath path) {
         int bestDistance_1 = 0;
         int bestDistance_2 = Integer.MAX_VALUE;
-        Coordinates coordinates = targetAction.getTarget().getCoordinates();
+        Coordinates coordinates = targetAiAction.getTarget().getCoordinates();
         for (Choice choice : choices) {
             Coordinates c = choice.getCoordinates();
 
@@ -240,7 +226,7 @@ public class PathChoiceMaster {
             {
                 filteredList.add(choice);
             } else if (PositionMaster.getDistance(coordinates, c) <= bestDistance_2
-             || c.isAdjacent(targetAction.getTarget().getCoordinates())) {
+             || c.isAdjacent(targetAiAction.getTarget().getCoordinates())) {
                 if (PositionMaster.getDistance(c_coordinate, c) <= bestDistance_1) {
                     filteredList.add(choice);
                 }
@@ -259,13 +245,13 @@ public class PathChoiceMaster {
         }
         unit.setTempCoordinates(c); // change facing
         // preCheck range
-        if (PositionMaster.getDistance(targetAction.getTarget().getCoordinates(), c) > targetAction
+        if (PositionMaster.getDistance(targetAiAction.getTarget().getCoordinates(), c) > targetAiAction
          .getActive().getIntParam(PARAMS.RANGE)) {
             nonSneakCells.add(c);
             return false;
         }
-        Ref ref = targetAction.getRef();
-        ref.setTarget(targetAction.getTarget().getId());
+        Ref ref = targetAiAction.getRef();
+        ref.setTarget(targetAiAction.getTarget().getId());
         boolean result = new SneakCondition().preCheck(ref);
 
         pathBuilder.adjustUnit();

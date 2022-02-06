@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import eidolons.content.PROPS;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import libgdx.anims.Anim;
 import libgdx.anims.actions.ActionMasterGdx;
@@ -19,7 +19,7 @@ import main.content.values.parameters.G_PARAMS;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.FACING_DIRECTION;
+import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
@@ -105,15 +105,15 @@ public class SpellMultiplicator implements Runnable {
         }
     }
 
-    public static boolean isMultiAnimRequired(DC_ActiveObj active_) {
+    public static boolean isMultiAnimRequired(ActiveObj active_) {
         return AnimConstructor.getTemplateForSpell(active_) != null;
     }
 
     public static MULTIPLICATION_METHOD getMethod(Anim anim) {
-        return getMethod((DC_ActiveObj) anim.getActive());
+        return getMethod((ActiveObj) anim.getActive());
     }
 
-    public static MULTIPLICATION_METHOD getMethod(DC_ActiveObj active) {
+    public static MULTIPLICATION_METHOD getMethod(ActiveObj active) {
         if (active.getProperty(PROPS.ANIM_MODS_VFX).contains("angle;")) {
             return MULTIPLICATION_METHOD.ANGLE;
         }
@@ -198,10 +198,10 @@ public class SpellMultiplicator implements Runnable {
     private Collection<Coordinates> filterCoordinates(SPELL_ANIMS template, Set<Coordinates> coordinates) {
 
         if (template != null) {
-            FACING_DIRECTION facing = getActive().getOwnerObj().getFacing();
+            DIRECTION direction = null; //TODO LC 2.0
             List<Coordinates> filtered = new ArrayList<>(coordinates);
             Coordinates farthest = CoordinatesMaster.getFarmostCoordinateInDirection
-                    (facing.getDirection(),
+                    (direction,
                             new ArrayList<>(coordinates), null);
             switch (template) {
                 //                template.getNumberOfEmitters(getActive())
@@ -218,7 +218,7 @@ public class SpellMultiplicator implements Runnable {
                     break;
                 case WAVE:
                 case SPRAY: {
-                    boolean xOrY = !facing.isVertical();
+                    boolean xOrY = !direction.isVertical();
                     filtered.removeIf(c ->
                                     farthest.getXorY(xOrY) != c.getXorY(xOrY)
                             //                     PositionMaster.getDistance(farthest, anim.getOriginCoordinates())
@@ -232,7 +232,7 @@ public class SpellMultiplicator implements Runnable {
                                 farthest.getXorY(!xOrY) == c.getXorY(!xOrY)
                         );
                         Coordinates c = CoordinatesMaster.getFarmostCoordinateInDirection(
-                                facing.getDirection(),
+                                direction,
                                 list, null);
                         if (c != null)
                             filtered.add(c);
@@ -372,8 +372,8 @@ public class SpellMultiplicator implements Runnable {
         return action;
     }
 
-    public DC_ActiveObj getActive() {
-        return (DC_ActiveObj) anim.getActive();
+    public ActiveObj getActive() {
+        return (ActiveObj) anim.getActive();
     }
 
     public float getDuration() {

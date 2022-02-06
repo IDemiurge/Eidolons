@@ -6,7 +6,7 @@ import main.entity.Ref;
 public class FilteringCondition extends ConditionImpl {
 
     public FilteringCondition(OBJ_TYPE TYPE) {
-        // game src.main.data manager => state.getObjects(TYPE)
+        // game data manager => state.getObjects(TYPE)
     }
 
     @Override

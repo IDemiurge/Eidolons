@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.ai.elements.actions;
 
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.handlers.bf.unit.UnitChecker;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.AI_Manager;
@@ -17,10 +17,10 @@ import java.util.List;
  * Created by JustMe on 3/3/2017.
  */
 public class ActionFilter {
-    static List<DC_ActiveObj> filterByCanActivate(Unit unit,
-                                                  List<DC_ActiveObj> actionsList) {
-        List<DC_ActiveObj> list = new ArrayList<>();
-        for (DC_ActiveObj a : actionsList) {
+    static List<ActiveObj> filterByCanActivate(Unit unit,
+                                               List<ActiveObj> actionsList) {
+        List<ActiveObj> list = new ArrayList<>();
+        for (ActiveObj a : actionsList) {
             if (a==null || unit == null ){
                 continue;
             } //a.getCosts().canBePaid(unit.getRef())
@@ -31,7 +31,7 @@ public class ActionFilter {
         return list;
     }
 
-    private static boolean checkException(DC_ActiveObj a) {
+    private static boolean checkException(ActiveObj a) {
         if (AI_Manager.getBrokenActions().contains(a))
             return true;
         if (a.isRanged()) {
@@ -40,10 +40,10 @@ public class ActionFilter {
         return false;
     }
 
-    static Collection<? extends DC_ActiveObj> filterActives(GOAL_TYPE type,
-                                                            List<? extends DC_ActiveObj> spells) {
-        List<DC_ActiveObj> list = new ArrayList<>();
-        for (DC_ActiveObj spell : spells) {
+    static Collection<? extends ActiveObj> filterActives(GOAL_TYPE type,
+                                                         List<? extends ActiveObj> spells) {
+        List<ActiveObj> list = new ArrayList<>();
+        for (ActiveObj spell : spells) {
             GOAL_TYPE goal = null;
             try {
                 goal = AI_SpellMaster.getGoal(spell);
@@ -59,9 +59,9 @@ public class ActionFilter {
         return list;
     }
 
-    public static void filterAttacks(List<DC_ActiveObj> actions, Unit unit) {
+    public static void filterAttacks(List<ActiveObj> actions, Unit unit) {
         actions.remove(AiActionFactory.getUnitAction(unit, ActionEnums.OFFHAND_ATTACK));
-        DC_UnitAction
+        UnitAction
                 action = unit.getAction(
                 "Throw", false);
         actions.remove(action);

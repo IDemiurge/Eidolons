@@ -14,7 +14,7 @@ import main.elements.targeting.Targeting;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.BfObj;
 import main.entity.type.impl.XmlHoldingType;
 import main.game.core.game.Game;
@@ -232,7 +232,7 @@ public class AbilityConstructor {
     }
 
     public static void constructActives(Entity entity) {
-        List<ActiveObj> abilities;
+        List<IActiveObj> abilities;
         boolean action = !(entity instanceof BfObj);
         if (action) {
             abilities = getAbilitiesList(G_PROPS.ACTIVES, entity);
@@ -298,15 +298,15 @@ public class AbilityConstructor {
         return (AbilityObj) newAbility(passive, entity, true);
     }
 
-    private static List<ActiveObj> getAbilitiesList(G_PROPS prop, Entity entity) {
+    private static List<IActiveObj> getAbilitiesList(G_PROPS prop, Entity entity) {
         if (entity.getProperty(prop) == "") {
             return null;
         }
-        List<ActiveObj> list = new ArrayList<>();
+        List<IActiveObj> list = new ArrayList<>();
 
         for (String abilTypeName : ContainerUtils.open(entity.getProperty(prop))) {
             if (abilTypeName.isEmpty()) continue;
-            ActiveObj ability;
+            IActiveObj ability;
             ability = newAbility(abilTypeName, entity, false);
             if (ability != null) {
                 list.add(ability);
@@ -336,7 +336,7 @@ public class AbilityConstructor {
 
     }
 
-    public static ActiveObj newAbility(String abilTypeName, Entity entity, boolean passive) {
+    public static IActiveObj newAbility(String abilTypeName, Entity entity, boolean passive) {
         TextParser.setAbilityParsing(true);
         if (!passive) {
             TextParser.setActiveParsing(true);

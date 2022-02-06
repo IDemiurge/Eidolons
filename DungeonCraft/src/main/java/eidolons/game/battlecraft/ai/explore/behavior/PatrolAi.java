@@ -124,7 +124,7 @@ public class PatrolAi extends CyclicGroupBehavior {
         return ((int) sinceLastAction) + " "
          + (ai.isLeader() ? cycledArgs == null ? "No cycled args" :
          Arrays.deepToString(Arrays.stream(cycledArgs).map(MicroObj::getCoordinates).toArray())
-         : ((queuedAction == null) ? "null" : queuedAction.getActive().getName()))
+         : ((queuedAiAction == null) ? "null" : queuedAiAction.getActive().getName()))
          + "\n" + ((target == null) ? "target =null" : "target " + target.getCoordinates())
          + "\n" + ((orders == null) ? "orders =null" : orders.getActionSequence())
          //         + "\n" + "origin " + origin + ", in " + origin.dst(getCoordinates())

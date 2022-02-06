@@ -25,7 +25,7 @@ public class ClassTreeCondition extends MicroCondition {
             return true;
         }
         Unit hero = (Unit) ref.getSourceObj();
-        for (DC_PassiveObj c : hero.getClasses()) {
+        for (DC_PassiveObj c : hero.getClassRanks()) {
             if (c.getType().equals(type)) {
                 return true;
             }

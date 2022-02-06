@@ -46,7 +46,6 @@ public abstract class DungeonMaster {
     protected DungeonBuilder builder;
     protected Positioner positioner;
     protected Spawner spawner;
-    protected FacingAdjuster facingAdjuster;
     private ExplorationMaster explorationMaster;
     private DoorMaster doorMaster;
     private LockMaster lockMaster;
@@ -74,7 +73,6 @@ public abstract class DungeonMaster {
         spawner = createSpawner();
         layerManager = createLayerManager();
         positioner = createPositioner();
-        facingAdjuster = createFacingAdjuster();
         builder = createBuilder();
         structMaster = new StructMaster(this);
         objInitializer = createObjInitializer();
@@ -199,8 +197,6 @@ public abstract class DungeonMaster {
         }
     }
 
-    protected abstract FacingAdjuster createFacingAdjuster();
-
     protected abstract Positioner createPositioner();
 
     protected abstract Spawner createSpawner();
@@ -217,10 +213,6 @@ public abstract class DungeonMaster {
 
     public DungeonInitializer getInitializer() {
         return initializer;
-    }
-
-    public FacingAdjuster getFacingAdjuster() {
-        return facingAdjuster;
     }
 
     public DungeonBuilder getBuilder() {

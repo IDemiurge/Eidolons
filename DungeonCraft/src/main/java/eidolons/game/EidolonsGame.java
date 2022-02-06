@@ -1,13 +1,8 @@
 package eidolons.game;
 
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.unit.Unit;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
-import eidolons.game.exploration.handlers.ExplorationMaster;
-import eidolons.system.hotkey.Accessibility;
-import main.content.values.parameters.PARAMETER;
 import main.data.StringMap;
-import main.game.bf.directions.FACING_DIRECTION;
 
 import java.util.Map;
 
@@ -99,11 +94,6 @@ public class EidolonsGame {
         return true;
     }
 
-    public static FACING_DIRECTION getPresetFacing(Unit unit) {
-        return null;
-    }
-
-
     public static boolean isLordPanelEnabled() {
         return false;
     }
@@ -123,7 +113,7 @@ public class EidolonsGame {
 
     }
 
-    public static boolean isActionBlocked(DC_ActiveObj activeObj) {
+    public static boolean isActionBlocked(ActiveObj activeObj) {
         if (activeObj == null) {
             return false;
         }
@@ -132,9 +122,6 @@ public class EidolonsGame {
         }
         if (!activeObj.getOwnerUnit().isPlayerCharacter()) {
             return false;
-        }
-        if (!Accessibility.isActionNotBlocked(activeObj, ExplorationMaster.isExplorationOn())) {
-            return true;
         }
         if (activeObj.isSpell()) {
             return false;

@@ -97,7 +97,7 @@ public abstract class UnitViewSprite extends UnitGridView {
 
         addActor(glow = new FadeImageContainer(VisualEnums.SHADE_CELL.LIGHT_EMITTER.getTexturePath()));
         glow.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.HIGHLIGHT);
-        super.init(arrowTexture, arrowRotation,  emblem);
+        super.init(emblem);
         glow.setScale(getWidth() / glow.getWidth());
         glow.setOrigin(glow.getWidth() / 2, glow.getHeight() / 2);
     }
@@ -128,7 +128,6 @@ public abstract class UnitViewSprite extends UnitGridView {
         super.act(delta);
         emblemImage.setVisible(false);
         emblemLighting.setVisible(false);
-        arrow.setVisible(false);
         if (border != null) {
             border.setVisible(false);
             float a = glow.getColor().a;

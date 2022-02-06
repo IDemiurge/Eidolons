@@ -1,9 +1,8 @@
 package eidolons.game.battlecraft.rules.combat.attack;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.content.DC_Formulas;
 import main.content.enums.entity.NewRpgEnums;
 import main.content.enums.entity.UnitEnums;
 import main.system.math.MathMaster;
@@ -17,7 +16,7 @@ public class HitTypeRule {
     private static final int DEFAULT_CRITICAL_FACTOR = 50;
     private static final int DEFAULT_DEADEYE_FACTOR =100 ;
 
-    public static int getDamagePercentage(DC_ActiveObj action, BattleFieldObject attacked, NewRpgEnums.HitType hitType) {
+    public static int getDamagePercentage(ActiveObj action, BattleFieldObject attacked, NewRpgEnums.HitType hitType) {
         if (attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.CRITICAL_IMMUNE)) {
             return 100;
         }

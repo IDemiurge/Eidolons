@@ -2,8 +2,8 @@ package eidolons.entity.handlers.bf.unit;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.HeroItem;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
 import eidolons.game.core.game.DC_Game;
@@ -37,21 +37,6 @@ public class UnitCalculator extends EntityCalculator<Unit> {
     @Override
     public UnitResetter getResetter() {
         return (UnitResetter) super.getResetter();
-    }
-
-    public int calculateRemainingMemory() {
-        int memory = getIntParam(PARAMS.MEMORIZATION_CAP) - calculateUsedMemory();
-        setParam(PARAMS.MEMORY_REMAINING, memory);
-        return memory;
-    }
-
-    public int calculateUsedMemory() {
-        int memory = 0;
-        for (ObjType type : DataManager.toTypeList(ContainerUtils
-         .openContainer(getProperty(PROPS.MEMORIZED_SPELLS)), DC_TYPE.SPELLS)) {
-            memory += type.getIntParam(PARAMS.SPELL_DIFFICULTY);
-        }
-        return memory;
     }
 
     public int calculateWeight() {
@@ -88,7 +73,7 @@ public class UnitCalculator extends EntityCalculator<Unit> {
             setParam(minDamage, dmg);
         }
         PARAMS damage = (offhand) ? PARAMS.OFF_HAND_DAMAGE : PARAMS.DAMAGE;
-        DC_WeaponObj weapon = getEntity().getWeapon(offhand);
+        WeaponItem weapon = getEntity().getWeapon(offhand);
         if (weapon == null) {
             weapon = getEntity().getNaturalWeapon(offhand);
         }
@@ -147,10 +132,10 @@ public class UnitCalculator extends EntityCalculator<Unit> {
             }
         } else {
 
-            for (DC_HeroItemObj item : getEntity().getInventory()) {
+            for (HeroItem item : getEntity().getInventory()) {
                 weight += item.getIntParam(PARAMS.WEIGHT);
             }
-            for (DC_HeroItemObj item : getEntity().getQuickItems()) {
+            for (HeroItem item : getEntity().getQuickItems()) {
                 weight += item.getIntParam(PARAMS.WEIGHT);
             }
         }

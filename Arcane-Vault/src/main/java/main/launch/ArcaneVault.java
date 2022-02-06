@@ -3,7 +3,7 @@ package main.launch;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.game.Simulation;
 import eidolons.game.core.game.DC_Game;
-import eidolons.entity.item.handlers.ItemGenerator;
+import eidolons.entity.mngr.item.ItemGenerator;
 import eidolons.system.utils.content.ContentGenerator;
 import eidolons.system.utils.XmlCleaner;
 import eidolons.system.utils.content.PlaceholderGenerator;

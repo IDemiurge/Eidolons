@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.rules.counter.positive;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.TriggerRule;
 import eidolons.game.core.EUtils;
-import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.EffectEnums;
 import main.game.logic.event.Event;
 import main.system.auxiliary.NumberUtils;
 import main.system.entity.CounterMaster;
@@ -20,7 +20,7 @@ public class UndyingCounterRule extends TriggerRule {
         if (n == 0) {
             return false;
         }
-        unit.modifyCounter(UnitEnums.COUNTER.Undying, -1);
+        unit.modifyCounter(EffectEnums.COUNTER.Undying, -1);
         unit.preventDeath();
 //     TODO shouldn't be necessary?
 //      unit.addProperty(G_PROPS.STANDARD_PASSIVES, UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE.getName());

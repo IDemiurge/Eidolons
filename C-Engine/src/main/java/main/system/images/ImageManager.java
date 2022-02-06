@@ -6,7 +6,7 @@ import main.content.VALUE;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.ASPECT;
 import main.content.enums.entity.HeroEnums;
-import main.content.enums.entity.HeroEnums.BACKGROUND;
+import main.content.enums.entity.HeroEnums.SUBRACE;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.values.parameters.MACRO_PARAMS;
@@ -84,10 +84,10 @@ public class ImageManager {
     private static final Map<String, ImageIcon> sizedImageStringCache = new HashMap<>();
     private static final Map<String, Image> sizedImageCache = new HashMap<>();
     private static Image DEFAULT_IMG;
-    private static HashMap<BACKGROUND, List<String>> portraitMap;
+    private static HashMap<HeroEnums.SUBRACE, List<String>> portraitMap;
     private static Map<COLOR_THEME, Map<String, String>> colorImgCache;
     private static final List<String> noColorTheme = new ArrayList<>();
-    private static HashMap<BACKGROUND, List<String>> extendedPortraitMap;
+    private static HashMap<SUBRACE, List<String>> extendedPortraitMap;
     private static Map<Obj, Map<String, ImageIcon>> customIconCache;
     private static final Map<String, JLabel> labelCache = new HashMap<>();
 
@@ -723,7 +723,7 @@ public class ImageManager {
         Loop loop = new Loop(10);
         while (loop.continues()) {
             try {
-                String bg = HeroEnums.BACKGROUND.values()[RandomWizard.getRandomIntBetween(0, HeroEnums.BACKGROUND
+                String bg = SUBRACE.values()[RandomWizard.getRandomIntBetween(0, SUBRACE
                         .values().length - 1)].toString();
                 List<String> portraitsForBackground = ImageManager.getPortraitsForBackground(bg);
                 int index = RandomWizard.getRandomIndex(portraitsForBackground);
@@ -737,11 +737,11 @@ public class ImageManager {
     }
 
     public static List<String> getPortraitsForBackground(String property, Boolean extended) {
-        BACKGROUND bg = new EnumMaster<BACKGROUND>().retrieveEnumConst(BACKGROUND.class, property);
+        HeroEnums.SUBRACE bg = new EnumMaster<HeroEnums.SUBRACE>().retrieveEnumConst(HeroEnums.SUBRACE.class, property);
         return getPortraitsForBackground(bg, extended);
     }
 
-    public static List<String> getPortraitsForBackground(BACKGROUND bg, Boolean extended) {
+    public static List<String> getPortraitsForBackground(HeroEnums.SUBRACE bg, Boolean extended) {
         List<String> list = getPortraitMap(extended).get(bg);
         if (ListMaster.isNotEmpty(list)) {
             return list;
@@ -750,158 +750,6 @@ public class ImageManager {
         File folder;
         List<String> paths = new ArrayList<>();
 
-        switch (bg) {
-            case DARK_ELF:
-                paths.add(PORTRAIT_ROOT_PATH + "elf/dark");
-                paths.add(PORTRAIT_ROOT_PATH + "elf/drow");
-                if (!extended) {
-                    break;
-                }
-                paths.add(PORTRAIT_ROOT_PATH + "elf/grey");
-                break;
-            case FEY_ELF:
-                paths.add(PORTRAIT_ROOT_PATH + "elf/fey");
-                if (!extended) {
-                    break;
-                }
-                paths.add(PORTRAIT_ROOT_PATH + "elf/wood");
-                paths.add(PORTRAIT_ROOT_PATH + "elf/ice");
-                paths.add(PORTRAIT_ROOT_PATH + "elf/grey");
-                break;
-            case GREY_ELF:
-                paths.add(PORTRAIT_ROOT_PATH + "elf/grey");
-                if (!extended) {
-                    break;
-                }
-                paths.add(PORTRAIT_ROOT_PATH + "elf/ice");
-                paths.add(PORTRAIT_ROOT_PATH + "elf/fey");
-                paths.add(PORTRAIT_ROOT_PATH + "elf/dark");
-                break;
-            case HIGH_ELF:
-                paths.add(PORTRAIT_ROOT_PATH + "elf/high");
-                paths.add(PORTRAIT_ROOT_PATH + "elf/ice");
-                break;
-            case WOOD_ELF:
-                paths.add(PORTRAIT_ROOT_PATH + "elf/wood");
-                // paths.add(PORTRAIT_ROOT_PATH + "elf/grey");
-                paths.add(PORTRAIT_ROOT_PATH + "elf/fey");
-                break;
-
-            case ELF:
-                paths.add(PORTRAIT_ROOT_PATH + "elf" + separator);
-                break;
-            case VAMPIRE:
-                paths.add(PORTRAIT_ROOT_PATH + "vampire" + separator);
-                break;
-
-            case INFERI_WARPBORN:
-                paths.add(PORTRAIT_ROOT_PATH + "demon/succubus");
-                break;
-            case INFERI_HELLSPAWN:
-                paths.add(PORTRAIT_ROOT_PATH + "demon/SPAWN");
-                break;
-            case INFERI_CHAOSBORN:
-                paths.add(PORTRAIT_ROOT_PATH + "demon/guard");
-                break;
-            case NORDHEIMER:
-                paths.add(PORTRAIT_ROOT_PATH + "human/Nordheim");
-                break;
-            case MAN_OF_EAST_EMPIRE:
-                paths.add(PORTRAIT_ROOT_PATH + "human/East");
-                break;
-
-            case WOMAN_OF_EAGLE_REALM:
-            case MAN_OF_EAGLE_REALM:
-                paths.add(PORTRAIT_ROOT_PATH + "human/Eagle Realm");
-                if (!extended) {
-                    break;
-                }
-                paths.add(PORTRAIT_ROOT_PATH + "human/Generic/4arcane");
-                paths.add(PORTRAIT_ROOT_PATH + "human/Generic/1misc");
-                break;
-            case WOMAN_OF_GRIFF_REALM:
-            case MAN_OF_GRIFF_REALM:
-                paths.add(PORTRAIT_ROOT_PATH + "human/Griff Realm");
-                if (!extended) {
-                    break;
-                }
-                paths.add(PORTRAIT_ROOT_PATH + "human/Generic/3warrior");
-                paths.add(PORTRAIT_ROOT_PATH + "human/Generic/1misc");
-                break;
-            case WOMAN_OF_KINGS_REALM:
-            case MAN_OF_KINGS_REALM:
-                paths.add(PORTRAIT_ROOT_PATH + "human/King Realm");
-                if (!extended) {
-                    break;
-                }
-                paths.add(PORTRAIT_ROOT_PATH + "human/Generic/1misc");
-                paths.add(PORTRAIT_ROOT_PATH + "human/Generic/3warrior");
-                paths.add(PORTRAIT_ROOT_PATH + "human/Generic/4arcane");
-                break;
-            case WOMAN_OF_RAVEN_REALM:
-            case MAN_OF_RAVEN_REALM:
-                paths.add(PORTRAIT_ROOT_PATH + "human/Raven Realm");
-                if (!extended) {
-                    break;
-                }
-                paths.add(PORTRAIT_ROOT_PATH + "human/Generic/4arcane");
-                paths.add(PORTRAIT_ROOT_PATH + "human/Generic/6dark");
-                paths.add(PORTRAIT_ROOT_PATH + "human/Generic/2rogue");
-                break;
-            case WOMAN_OF_WOLF_REALM:
-            case MAN_OF_WOLF_REALM:
-                paths.add(PORTRAIT_ROOT_PATH + "human/Wolf Realm");
-                if (!extended) {
-                    break;
-                }
-                paths.add(PORTRAIT_ROOT_PATH + "human/Generic/6dark");
-                paths.add(PORTRAIT_ROOT_PATH + "human/Generic/2rogue");
-                paths.add(PORTRAIT_ROOT_PATH + "human/Generic/3warrior");
-                break;
-            case STRANGER:
-                paths.add(PORTRAIT_ROOT_PATH + "human/Generic");
-                if (!extended) {
-                    break;
-                }
-                paths.add(PORTRAIT_ROOT_PATH + "human/King Realm");
-                paths.add(PORTRAIT_ROOT_PATH + "human/Griff Realm");
-                paths.add(PORTRAIT_ROOT_PATH + "human/Eagle Realm");
-                paths.add(PORTRAIT_ROOT_PATH + "human/Raven Realm");
-                paths.add(PORTRAIT_ROOT_PATH + "human/Wolf Realm");
-                break;
-
-            case DWARF:
-            case WILDAXE_DWARF:
-            case STONESHIELD_DWARF:
-            case IRONHELM_DWARF:
-            case GRIMBART_DWARF:
-            case REDBLAZE_DWARF:
-            case FROSTBEARD_DWARF:
-            case WOLFSBANE_DWARF:
-            case MOONSILVER_DWARF:
-                paths.add(PORTRAIT_ROOT_PATH + "dwarf" + separator);
-                break;
-            case RED_ORC:
-                paths.add(PORTRAIT_ROOT_PATH + "orc/red");
-                paths.add(PORTRAIT_ROOT_PATH + "orc/orc");
-                break;
-            case BLACK_ORC:
-                paths.add(PORTRAIT_ROOT_PATH + "orc/black");
-                paths.add(PORTRAIT_ROOT_PATH + "orc/orc");
-                break;
-            case PALE_ORC:
-                paths.add(PORTRAIT_ROOT_PATH + "orc/pale");
-                paths.add(PORTRAIT_ROOT_PATH + "orc/orc");
-                break;
-            case GREEN_ORC:
-                paths.add(PORTRAIT_ROOT_PATH + "orc/green");
-                paths.add(PORTRAIT_ROOT_PATH + "orc/orc");
-                break;
-
-            default:
-                break;
-
-        }
 
         for (String path : paths) {
             folder = FileManager.getFile(getImageFolderPath() + path);
@@ -957,7 +805,7 @@ public class ImageManager {
         return list;
     }
 
-    public static HashMap<BACKGROUND, List<String>> getPortraitMap(Boolean extended) {
+    public static HashMap<SUBRACE, List<String>> getPortraitMap(Boolean extended) {
         if (extended) {
             if (extendedPortraitMap == null) {
                 extendedPortraitMap = new HashMap<>();

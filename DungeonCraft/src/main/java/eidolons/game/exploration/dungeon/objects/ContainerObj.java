@@ -1,7 +1,7 @@
 package eidolons.game.exploration.dungeon.objects;
 
 import eidolons.content.PROPS;
-import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.HeroItem;
 import main.entity.type.ObjType;
 import main.system.datatypes.DequeImpl;
 
@@ -14,7 +14,7 @@ import static eidolons.content.consts.VisualEnums.CONTAINER.*;
  * Created by JustMe on 11/16/2017.
  */
 public class ContainerObj extends DungeonObj {
-    private List<DC_HeroItemObj> items;
+    private List<HeroItem> items;
     private boolean itemsInitialized;
 
     public ContainerObj(ObjType type, int x, int y) {
@@ -54,7 +54,7 @@ public class ContainerObj extends DungeonObj {
         return itemsInitialized;
     }
 
-    public List<DC_HeroItemObj> getItems() {
+    public List<HeroItem> getItems() {
         if (!itemsInitialized) {
             initInventory();
         }

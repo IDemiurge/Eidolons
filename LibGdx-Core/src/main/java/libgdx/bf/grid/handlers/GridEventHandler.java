@@ -1,9 +1,8 @@
 package libgdx.bf.grid.handlers;
 
 import com.badlogic.gdx.Gdx;
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.Spell;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.unit.Unit;
 import eidolons.game.core.Core;
 import eidolons.game.exploration.handlers.ExplorationMaster;
 import libgdx.anims.construct.AnimConstructor;
@@ -13,10 +12,8 @@ import libgdx.anims.std.MoveAnimation;
 import libgdx.bf.grid.GridPanel;
 import libgdx.bf.grid.cell.BaseView;
 import libgdx.bf.grid.cell.HpBarView;
-import libgdx.bf.grid.cell.UnitGridView;
 import libgdx.bf.overlays.bar.HpBar;
 import libgdx.bf.overlays.bar.HpBarManager;
-import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.Effect;
 import main.entity.Ref;
 import main.entity.obj.Obj;
@@ -54,20 +51,6 @@ public class GridEventHandler extends GridHandler {
                 Effect effect = event.getRef().getEffect();
                 if (AnimConstructor.isAnimated(effect)) {
                     GuiEventManager.trigger(EFFECT_APPLIED, effect);
-                }
-                caught = true;
-            } else if (type == UNIT_HAS_CHANGED_FACING
-                    || type == UNIT_HAS_TURNED_CLOCKWISE
-                    || type == UNIT_HAS_TURNED_ANTICLOCKWISE) {
-                if ((ref.getObj(Ref.KEYS.TARGET) instanceof BattleFieldObject)) {
-                    BattleFieldObject hero = (BattleFieldObject) ref.getObj(Ref.KEYS.TARGET);
-                    BaseView view = getViewMap().get(hero);
-                    if (view != null && view instanceof UnitGridView) {
-                        UnitGridView unitView = ((UnitGridView) view);
-                        unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
-                        if (hero instanceof Unit)
-                            DC_SoundMaster.playTurnSound(hero);
-                    }
                 }
                 caught = true;
             } else if (type == UNIT_HAS_FALLEN_UNCONSCIOUS

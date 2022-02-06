@@ -3,8 +3,8 @@ package libgdx.anims.main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
@@ -308,7 +308,7 @@ public class AnimMaster extends Group {
             try {
                 List z = (List) p.get();
                 String path = (String) z.get(0);
-                DC_ActiveObj active = (DC_ActiveObj) z.get(1);
+                ActiveObj active = (ActiveObj) z.get(1);
                 new CustomSpriteAnim(active, path).startAsSingleAnim();
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
@@ -335,8 +335,8 @@ public class AnimMaster extends Group {
         GuiEventManager.bind(GuiEventType.PARRY, p -> {
             List args = (List) p.get();
             Ref context = (Ref) args.get(0);
-            CompositeAnim animation = AnimConstructor.getParryAnim((DC_WeaponObj) args.get(1)
-                    , (DC_ActiveObj) args.get(2));
+            CompositeAnim animation = AnimConstructor.getParryAnim((WeaponItem) args.get(1)
+                    , (ActiveObj) args.get(2));
             drawer.add(animation);
 //            if (getParallelDrawing()) {
 //                animation.start(context);

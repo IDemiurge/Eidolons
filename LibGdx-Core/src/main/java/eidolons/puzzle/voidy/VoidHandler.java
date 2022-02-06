@@ -2,7 +2,7 @@ package eidolons.puzzle.voidy;
 
 import com.google.inject.internal.util.ImmutableList;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.IVoidGdxHandler;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.VoidMaze;
@@ -14,7 +14,6 @@ import eidolons.puzzle.gridobj.Veil;
 import libgdx.GdxMaster;
 import libgdx.bf.grid.DC_GridPanel;
 import libgdx.bf.grid.GridPanel;
-import libgdx.bf.grid.cell.GridCell;
 import libgdx.screens.handlers.ScreenMaster;
 import main.content.CONTENT_CONSTS;
 import main.game.bf.Coordinates;
@@ -71,8 +70,8 @@ public   class VoidHandler extends PuzzleElement<VoidMaze> implements IVoidGdxHa
 
     protected  GridPanel gridPanel;
     protected  Set<BattleFieldObject> autoRaise = new LinkedHashSet<>();
-    protected final Map<GridCell, DIRECTION> raised = new LinkedHashMap<>();
-    protected final Map<GridCell, DIRECTION> collapsed = new LinkedHashMap<>();
+    protected final Map<libgdx.bf.grid.cell.GridCell, DIRECTION> raised = new LinkedHashMap<>();
+    protected final Map<libgdx.bf.grid.cell.GridCell, DIRECTION> collapsed = new LinkedHashMap<>();
     protected float collapsePeriod;
     protected float collapseDelay;
     protected boolean canDropHero;
@@ -132,9 +131,9 @@ public   class VoidHandler extends PuzzleElement<VoidMaze> implements IVoidGdxHa
 
                 if (collapseDelay >= collapsePeriod) {
                     collapseDelay = 0;
-                    GridCell gridCell = raised.keySet().iterator().next();
+                    libgdx.bf.grid.cell.GridCell gridCell = raised.keySet().iterator().next();
                     raised.keySet().remove(gridCell);
-                    DC_Cell cell = gridCell.getUserObject();
+                    GridCell cell = gridCell.getUserObject();
                     if (canDropHero || !Core.getPlayerCoordinates().equals(cell.getCoordinates())) {
 
                         Coordinates c = cell.getCoordinates();
@@ -163,11 +162,11 @@ public   class VoidHandler extends PuzzleElement<VoidMaze> implements IVoidGdxHa
     }
 
     protected void autoRaiseFor(BattleFieldObject object) {
-        DIRECTION direction = null;
-        if (object instanceof Unit) {
-            FACING_DIRECTION facing = object.getFacing();
-            direction = facing.getDirection();
-        }
+        DIRECTION direction = DIRECTION.NONE;
+        // if (object instanceof Unit) {
+        //     FACING_DIRECTION facing = object.getFacing();
+        //     direction = facing.getDirection();
+        // }
         //TODO check diag adjacent
         if (!raiseOneMax) {
             checkRaise(object, direction);
@@ -191,7 +190,7 @@ public   class VoidHandler extends PuzzleElement<VoidMaze> implements IVoidGdxHa
         if (coordinate == null) {
             return false;
         }
-        DC_Cell cell = object.getGame().getCell(coordinate);
+        GridCell cell = object.getGame().getCell(coordinate);
         if (checkMarked(cell))
             if (cell.isVOID()) {
                 list.add(coordinate);
@@ -202,7 +201,7 @@ public   class VoidHandler extends PuzzleElement<VoidMaze> implements IVoidGdxHa
     }
 
 
-    protected boolean checkMarked(DC_Cell cell) {
+    protected boolean checkMarked(GridCell cell) {
         return VoidMazeHandler.TEST_MODE || cell.getMarks().contains(CONTENT_CONSTS.MARK.togglable);
     }
 
@@ -234,7 +233,7 @@ public   class VoidHandler extends PuzzleElement<VoidMaze> implements IVoidGdxHa
         int period = 0;
         for (Coordinates coordinate : coordinates) {
             //ensure they are sorted!
-            GridCell cell = gridPanel.getGridCell(coordinate);
+            libgdx.bf.grid.cell.GridCell cell = gridPanel.getGridCell(coordinate);
             if (cell.getActions().size > 0) {
                 continue; //TODO smarter check!
             }
@@ -276,7 +275,7 @@ public   class VoidHandler extends PuzzleElement<VoidMaze> implements IVoidGdxHa
 
     public void collapseAll() {
         LinkedHashMap<DIRECTION, List<Coordinates>> map = new LinkedHashMap<>();
-        for (GridCell gridCell : raised.keySet()) {
+        for (libgdx.bf.grid.cell.GridCell gridCell : raised.keySet()) {
             MapMaster.addToListMap(map, raised.get(gridCell), gridCell.getUserObject().getCoordinates());
         }
         for (DIRECTION direction : map.keySet()) {
@@ -293,7 +292,7 @@ public   class VoidHandler extends PuzzleElement<VoidMaze> implements IVoidGdxHa
         return false;
     }
 
-    protected   void onAnimate(GridCell cell) {
+    protected   void onAnimate(libgdx.bf.grid.cell.GridCell cell) {
 
     }
     public void cleanUp() {
@@ -355,11 +354,11 @@ public   class VoidHandler extends PuzzleElement<VoidMaze> implements IVoidGdxHa
         return autoRaise;
     }
 
-    public Map<GridCell, DIRECTION> getRaised() {
+    public Map<libgdx.bf.grid.cell.GridCell, DIRECTION> getRaised() {
         return raised;
     }
 
-    public Map<GridCell, DIRECTION> getCollapsed() {
+    public Map<libgdx.bf.grid.cell.GridCell, DIRECTION> getCollapsed() {
         return collapsed;
     }
 

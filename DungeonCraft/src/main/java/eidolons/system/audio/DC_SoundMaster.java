@@ -3,9 +3,9 @@ package eidolons.system.audio;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.consts.VisualEnums.ANIM_PART;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.Spell;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.Spell;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 import eidolons.game.exploration.story.cinematic.Cinematics;
@@ -50,7 +50,7 @@ public class DC_SoundMaster extends SoundMaster {
         soundPlayer= s;
     }
 
-    public static void playRangedAttack(DC_WeaponObj weapon) {
+    public static void playRangedAttack(WeaponItem weapon) {
         // TODO double weapon sound
         if (weapon.getWeaponGroup() == ItemEnums.WEAPON_GROUP.CROSSBOWS) {
             getPlayer().playRandomSoundVariant("soundsets/weapon/crossbow/" + weapon.getWeaponSize(), false);
@@ -103,7 +103,7 @@ public class DC_SoundMaster extends SoundMaster {
 
     }
 
-    public static void playMissedSound(BattleFieldObject attacker, DC_WeaponObj attackWeapon) {
+    public static void playMissedSound(BattleFieldObject attacker, WeaponItem attackWeapon) {
 
         getPlayer().playRandomSoundVariant("soundsets/combat/miss/", false);
 
@@ -191,7 +191,7 @@ public class DC_SoundMaster extends SoundMaster {
         getPlayer().playEffectSound(sound_type, obj);
     }
 
-    public static void playParrySound(BattleFieldObject attacked, DC_WeaponObj attackWeapon) {
+    public static void playParrySound(BattleFieldObject attacked, WeaponItem attackWeapon) {
         // TODO double weapon sound
         setPositionFor(attacked.getCoordinates());
 //        DC_WeaponObj parryWeapon = attacked.getActiveWeapon(true);
@@ -209,8 +209,8 @@ public class DC_SoundMaster extends SoundMaster {
             }
     }
 
-    public static void playBlockedSound(Obj attacker, Obj attacked, DC_WeaponObj shield,
-                                        DC_WeaponObj weaponObj, Integer blockValue, Integer damage) {
+    public static void playBlockedSound(Obj attacker, Obj attacked, WeaponItem shield,
+                                        WeaponItem weaponObj, Integer blockValue, Integer damage) {
 
         if (shield.getWeaponSize() == ItemEnums.WEAPON_SIZE.TINY
                 || shield.getWeaponSize() == ItemEnums.WEAPON_SIZE.SMALL) {
@@ -233,7 +233,7 @@ public class DC_SoundMaster extends SoundMaster {
 
     }
 
-    public static void playAttackImpactSound(DC_WeaponObj weapon, final BattleFieldObject attacker,
+    public static void playAttackImpactSound(WeaponItem weapon, final BattleFieldObject attacker,
                                              final BattleFieldObject attacked, Integer final_amount, int blocked) {
         // TODO getDamageSeverity(fin
         String armor_type = attacked.getProperty(PROPS.OBJECT_ARMOR_TYPE);
@@ -265,7 +265,7 @@ public class DC_SoundMaster extends SoundMaster {
         playWeaponSound(weapon);
     }
 
-    public static void playSoundForModeToggle(boolean on_off, DC_ActiveObj action, String mode) {
+    public static void playSoundForModeToggle(boolean on_off, ActiveObj action, String mode) {
         // STD_ACTION_MODES
         if (on_off) {
             getPlayer().playStandardSound(AudioEnums.STD_SOUNDS.ON_OFF);
@@ -276,7 +276,7 @@ public class DC_SoundMaster extends SoundMaster {
 
     }
 
-    private static void playWeaponSound(DC_WeaponObj weapon) {
+    private static void playWeaponSound(WeaponItem weapon) {
         // TODO Auto-generated method stub
         switch (weapon.getWeaponType()) {
 
@@ -480,7 +480,7 @@ public class DC_SoundMaster extends SoundMaster {
         return getPath() + "soundsets/spells/";
     }
 
-    public static void playImpact(DC_ActiveObj activeObj) {
+    public static void playImpact(ActiveObj activeObj) {
         if (activeObj.isAttackAny()) {
             playAttackImpactSound(activeObj.getActiveWeapon(), activeObj.getOwnerUnit(), (Unit) activeObj.getRef().getTargetObj(),
                     activeObj.getIntParam(PARAMS.DAMAGE_LAST_DEALT),

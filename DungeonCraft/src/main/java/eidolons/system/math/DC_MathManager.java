@@ -2,7 +2,7 @@ package eidolons.system.math;
 
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
-import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.HeroItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 import eidolons.netherflame.eidolon.heromake.model.PointMaster;
@@ -70,7 +70,7 @@ public class DC_MathManager extends MathMaster {
                 / DC_Formulas.DURABILITY_DAMAGE_FACTOR_WEAPON;
 
     }
-    public static int getDurabilityForDamage(int damage, int armor, DC_HeroItemObj item) {
+    public static int getDurabilityForDamage(int damage, int armor, HeroItem item) {
         // armor penetration
         // action ref
         return 0;

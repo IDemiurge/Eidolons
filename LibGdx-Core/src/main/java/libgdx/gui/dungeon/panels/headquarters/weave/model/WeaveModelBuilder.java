@@ -9,7 +9,7 @@ import libgdx.gui.dungeon.panels.headquarters.weave.actor.WeaveActorBuilder;
 import libgdx.gui.dungeon.panels.headquarters.weave.model.classes.ClassWeave;
 import libgdx.gui.dungeon.panels.headquarters.weave.model.skills.SkillWeave;
 import main.content.DC_TYPE;
-import main.content.enums.entity.HeroEnums.CLASS_GROUP;
+import main.content.enums.entity.ClassEnums.CLASS_GROUP;
 import main.content.enums.entity.SkillEnums.MASTERY;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;

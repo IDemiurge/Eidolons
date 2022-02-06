@@ -23,7 +23,7 @@ import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_TYPE;
 import main.content.enums.entity.HeroEnums;
-import main.content.enums.entity.HeroEnums.BACKGROUND;
+import main.content.enums.entity.HeroEnums.SUBRACE;
 import main.content.enums.entity.HeroEnums.GENDER;
 import main.content.enums.entity.HeroEnums.RACE;
 import main.content.enums.entity.ItemEnums;
@@ -1224,35 +1224,26 @@ public class ContentGenerator {
             case CHARS:
                 RACE race = new EnumMaster<RACE>().retrieveEnumConst(RACE.class, t
                         .getProperty(G_PROPS.RACE));
-                BACKGROUND bg = new EnumMaster<BACKGROUND>().retrieveEnumConst(BACKGROUND.class, t
+                SUBRACE bg = new EnumMaster<SUBRACE>().retrieveEnumConst(SUBRACE.class, t
                         .getProperty(G_PROPS.BACKGROUND));
                 GENDER g = new EnumMaster<GENDER>().retrieveEnumConst(GENDER.class, t
                         .getProperty(G_PROPS.GENDER));
                 if (race != null) {
                     switch (race) {
-                        case DEMON:
-                            height = 200;
-                            break;
                         case DWARF:
                             height = 130;
                             break;
                         case ELF:
                             height = 190;
                             break;
-                        case GOBLINOID:
-                            height = 160;
-                            break;
                         case HUMAN:
                             height = 180;
-                            if (bg == HeroEnums.BACKGROUND.MAN_OF_WOLF_REALM) {
+                            if (bg == HeroEnums.SUBRACE.MAN_OF_WOLF_REALM) {
                                 height += 10;
                             }
-                            if (bg == HeroEnums.BACKGROUND.MAN_OF_EAGLE_REALM) {
+                            if (bg == HeroEnums.SUBRACE.MAN_OF_EAGLE_REALM) {
                                 height += 15;
                             }
-                            break;
-                        case VAMPIRE:
-                            height = 180;
                             break;
                         default:
                             break;

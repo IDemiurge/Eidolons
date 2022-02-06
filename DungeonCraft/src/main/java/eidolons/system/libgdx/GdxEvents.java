@@ -1,9 +1,5 @@
 package eidolons.system.libgdx;
 
-import eidolons.entity.active.DC_ActiveObj;
-import main.game.bf.Coordinates;
-import main.system.GuiEventManager;
-
 public class GdxEvents {
 
 

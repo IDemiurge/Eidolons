@@ -1,7 +1,7 @@
 package libgdx.anims.main;
 
 import eidolons.ability.effects.oneshot.move.MoveEffect;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
@@ -30,14 +30,14 @@ public class ActionAnimMaster {
         instance = this;
     }
 
-    public static int getMaxAnimTime(DC_ActiveObj action) {
+    public static int getMaxAnimTime(ActiveObj action) {
         if (action.isAttackOfOpportunityMode() || action.isInstantMode()) {
             return (int) (2500/ AnimMaster.speedMod());
         }
         return (int) (3500/ AnimMaster.speedMod());
     }
 
-    public static boolean isWait(DC_ActiveObj action) {
+    public static boolean isWait(ActiveObj action) {
         if (action.getOwnerUnit().isAiControlled()) {
             if (action.isAttackAny()) {
                 return false;
@@ -71,12 +71,12 @@ public class ActionAnimMaster {
         }
     }
 
-    protected static void log(String s, DC_ActiveObj action) {
+    protected static void log(String s, ActiveObj action) {
         if (LOGGED)
             DC_Game.game.getLogManager().log(TimeMaster.getFormattedTime(true, true) + s + action.getName());
     }
 
-    protected void initActionAnimation(DC_ActiveObj activeObj, AnimContext context) {
+    protected void initActionAnimation(ActiveObj activeObj, AnimContext context) {
         CompositeAnim result = checkActionAnimates(activeObj, context);
         if (result != null) {
             current = result;
@@ -96,7 +96,7 @@ public class ActionAnimMaster {
         return true;
     }
 
-    protected CompositeAnim checkActionAnimates(DC_ActiveObj activeObj, AnimContext context) {
+    protected CompositeAnim checkActionAnimates(ActiveObj activeObj, AnimContext context) {
         if (isAnimationOffFor(activeObj.getOwnerObj(), null)) {
             return null;
         }

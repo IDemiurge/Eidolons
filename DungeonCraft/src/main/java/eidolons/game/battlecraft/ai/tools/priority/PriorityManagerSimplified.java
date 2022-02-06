@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.ai.tools.priority;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
@@ -30,7 +30,7 @@ public class PriorityManagerSimplified extends PriorityManagerImpl {
     }
 
     @Override
-    public int getCoatingPriority(DC_ActiveObj active, DC_Obj targetObj) {
+    public int getCoatingPriority(ActiveObj active, DC_Obj targetObj) {
         return super.getCoatingPriority(active, targetObj);
     }
 
@@ -40,7 +40,7 @@ public class PriorityManagerSimplified extends PriorityManagerImpl {
     }
 
     @Override
-    public int getCounterPenalty(DC_ActiveObj active, Unit targetObj) {
+    public int getCounterPenalty(ActiveObj active, Unit targetObj) {
         return super.getCounterPenalty(active, targetObj);
     }
 

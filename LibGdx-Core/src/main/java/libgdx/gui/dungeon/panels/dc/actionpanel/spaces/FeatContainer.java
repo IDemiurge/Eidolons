@@ -2,7 +2,7 @@ package libgdx.gui.dungeon.panels.dc.actionpanel.spaces;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.content.consts.Images;
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.Spell;
 import libgdx.GdxMaster;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.gui.generic.ValueContainer;

@@ -5,27 +5,23 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.advanced.companion.Order;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.actions.AiActionFactory;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.elements.task.Task;
 import eidolons.game.battlecraft.ai.tools.path.ActionPath;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
 import eidolons.game.battlecraft.logic.mission.quest.CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION;
 import eidolons.game.core.Core;
 import eidolons.game.exploration.story.cinematic.Cinematics;
-import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.data.DataManager;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
-
-import java.util.List;
 
 /**
  * Created by JustMe on 5/21/2017.
@@ -103,19 +99,6 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                         Coordinates.get(arg));
                 sequence = new ActionSequence(path.getActions(), task, unit.getAI());
                 break;
-            case TURN_TO:
-                //cell id
-                List<Action> turnSequence;
-                if (FacingMaster.getFacing(args[1].toString()) == null) {
-                    turnSequence = getTurnSequenceConstructor().getTurnSequence(FACING_SINGLE.IN_FRONT, unit,
-                            Coordinates.get(args[1].toString()));
-                } else {
-                    turnSequence = getTurnSequenceConstructor().getTurnSequence(FACING_SINGLE.IN_FRONT, unit,
-                            FacingMaster.getFacing(args[1].toString()));
-                }
-                sequence = new ActionSequence(
-                        turnSequence, task, unit.getAI());
-                break;
             case ACTION:
             case ORDER:
                 if (args.length > 1) {
@@ -123,15 +106,15 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                         arg = args[1].toString();
                     }
                 }
-                Action action = AiActionFactory.newAction(arg, ai);
+                AiAction aiAction = AiActionFactory.newAction(arg, ai);
                 sequence = //new ActionSequence();
-                        getActionSequenceConstructor().constructSingleActionSequence(action,
+                        getActionSequenceConstructor().constructSingleActionSequence(aiAction,
                                 new Task(ai, goal, null), true); //TODO target?
 
-                if (action.getTargeting() instanceof SelectiveTargeting) {
-                    if (action.getTarget() == null) {
-                        action.getRef().setTarget(selectTarget(
-                                unit, function, action, args));
+                if (aiAction.getTargeting() instanceof SelectiveTargeting) {
+                    if (aiAction.getTarget() == null) {
+                        aiAction.getRef().setTarget(selectTarget(
+                                unit, function, aiAction, args));
                     }
                 }
 
@@ -175,9 +158,9 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
 
     }
 
-    private Integer selectTarget(Unit unit, COMBAT_SCRIPT_FUNCTION function, Action action, Object[] args) {
+    private Integer selectTarget(Unit unit, COMBAT_SCRIPT_FUNCTION function, AiAction aiAction, Object[] args) {
 //        TODO other cases?
-        if (action.getActive().isMove()) {
+        if (aiAction.getActive().isMove()) {
             //string >> find unit
             for (Object arg : args) {
                 if (arg instanceof DC_Obj) {

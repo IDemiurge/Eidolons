@@ -13,9 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.kotcrab.vis.ui.building.utilities.Alignment;
 import eidolons.content.PARAMS;
-import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.HeroItem;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
@@ -30,7 +30,6 @@ import libgdx.bf.SuperActor;
 import libgdx.bf.grid.DC_GridPanel;
 import libgdx.bf.grid.GridPanel;
 import libgdx.bf.grid.cell.GenericGridView;
-import libgdx.bf.grid.cell.GridCell;
 import libgdx.bf.grid.cell.GridCellContainer;
 import libgdx.bf.grid.sub.GridElement;
 import libgdx.gui.dungeon.tooltips.SmartClickListener;
@@ -297,7 +296,7 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
             path = true;
         }
         if (debug || sightInfoDisplayed || path) {
-            DC_Cell cell = Core.getGame().getObjMaster().
+            GridCell cell = Core.getGame().getObjMaster().
                     getCellByCoordinate(c);
             if (debug || (sightInfoDisplayed&&Flags.isIDE())) {
                 drawOverlay(container, INFO_TEXT, batch, cell, x, y);
@@ -377,8 +376,8 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
     protected String getInfoText(DC_Obj obj) {
         StringBuilder builder = new StringBuilder();
         if (!VoidMazeHandler.TEST_MODE) {
-            if (obj instanceof DC_Cell) {
-                builder.append(ListMaster.toStringList(((DC_Cell) obj).getMarks())).append("\n");
+            if (obj instanceof GridCell) {
+                builder.append(ListMaster.toStringList(((GridCell) obj).getMarks())).append("\n");
             }
         } else {
             builder.append("Gamma: ").append(obj.getGamma()).append("\n");
@@ -549,8 +548,8 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
 
         switch (overlay) {
             case INFO_TEXT: {
-                if (parent instanceof GridCell) {
-                    return ((GridCell) parent).getInfoTextLabel();
+                if (parent instanceof libgdx.bf.grid.cell.GridCell) {
+                    return ((libgdx.bf.grid.cell.GridCell) parent).getInfoTextLabel();
                 }
                 GenericGridView view = (GenericGridView) parent;
                 return view.getInfoText();
@@ -602,7 +601,7 @@ public class GridOverlaysManager extends SuperActor implements GridElement {
         switch (overlay) {
             case BAG:
                 //TODO kill this shit
-                List<DC_HeroItemObj> items = Core.game.getDroppedItemManager().
+                List<HeroItem> items = Core.game.getDroppedItemManager().
                         getDroppedItems(coordinates);
                 if (items == null) {
                     Core.game.getDroppedItemManager().reset(coordinates.x, coordinates.y);

@@ -2,7 +2,7 @@ package eidolons.content;
 
 import main.content.DC_TYPE;
 import main.content.VALUE;
-import main.content.enums.entity.HeroEnums;
+import main.content.enums.entity.RpgEnums;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -37,9 +37,10 @@ public class ContentConsts {
             PARAMS.FOC_COST, PARAMS.TOU_COST, PARAMS.AP_COST,};
     public static final PARAMS[] PAY_PARAMS = {PARAMS.C_ESSENCE, PARAMS.C_ENDURANCE,
             PARAMS.C_FOCUS,};
-    final static PARAMETER[] ARMOR_MODIFYING_PARAMS = {PARAMS.NOISE, PARAMS.QUICK_SLOTS,
+    final static PARAMETER[] ARMOR_MODIFYING_PARAMS = {
+             PARAMS.QUICK_SLOTS,
             PARAMS.ARMOR, PARAMS.DEFENSE, PARAMS.TOUGHNESS, PARAMS.ENDURANCE,
-            PARAMS.SIDE_SIGHT_PENALTY, PARAMS.SIGHT_RANGE, PARAMS.STEALTH, PARAMS.DETECTION,
+            PARAMS.SIGHT_RANGE, PARAMS.STEALTH, PARAMS.DETECTION,
             PARAMS.TOUGHNESS_COST_MOD, PARAMS.FOCUS_COST_MOD, PARAMS.ATB_COST_MOD,
             PARAMS.ESSENCE_COST_MOD, PARAMS.SPELL_FOC_COST_MOD,
             PARAMS.SPELL_ATB_COST_MOD, PARAMS.SPELL_ESS_COST_MOD,
@@ -86,13 +87,12 @@ public class ContentConsts {
     static Map<String, EDITOR> editorMap;
     static List<VALUE> backgroundValues;
     static List<PARAMETER> backgroundDynamicParams;
-    static Map<HeroEnums.PRINCIPLES, PARAMETER> alignmentMap = new HashMap<>();
-    static Map<HeroEnums.PRINCIPLES, PARAMETER> identityMap = new HashMap<>();
+    static Map<RpgEnums.PRINCIPLES, PARAMETER> alignmentMap = new HashMap<>();
+    static Map<RpgEnums.PRINCIPLES, PARAMETER> identityMap = new HashMap<>();
     static ArrayList<PARAMETER> dynamicParams = new ArrayList<>();
     static VALUE[] displayedHeroProperties = new VALUE[]{
             G_PROPS.ASPECT, G_PROPS.DEITY, G_PROPS.BACKGROUND,
             G_PROPS.RACE, G_PROPS.MODE, G_PROPS.STATUS, G_PROPS.STANDARD_PASSIVES,
-            PARAMS.INTEGRITY,
 
     };
     static PARAMETER[] WEAPON_MODIFYING_PARAMS = {

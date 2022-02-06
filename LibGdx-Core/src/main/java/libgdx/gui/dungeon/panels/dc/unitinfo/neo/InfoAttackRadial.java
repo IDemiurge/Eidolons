@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import libgdx.gui.dungeon.controls.radial.RadialContainer;
 import libgdx.gui.dungeon.panels.dc.actionpanel.weapon.QuickAttackRadial;
@@ -13,7 +13,7 @@ import libgdx.gui.dungeon.panels.headquarters.datasource.hero.HqHeroDataSource;
 import libgdx.assets.texture.TextureCache;
 import libgdx.gui.generic.btn.ButtonStyled;
 import main.entity.Entity;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 
 import java.util.List;
 
@@ -91,11 +91,11 @@ public class InfoAttackRadial extends QuickAttackRadial {
     }
 
     @Override
-    protected List<RadialContainer> createNodes(Unit source, List<? extends ActiveObj> attacks) {
+    protected List<RadialContainer> createNodes(Unit source, List<? extends IActiveObj> attacks) {
         List<RadialContainer> list = super.createNodes(source, attacks);
         int i=0;
         for (RadialContainer node : list) {
-            ActiveObj a = attacks.get(i++);
+            IActiveObj a = attacks.get(i++);
             processNode(node, a);
         }
 //        for (int j = list.size(); j < SLOTS; j++) {
@@ -104,8 +104,8 @@ public class InfoAttackRadial extends QuickAttackRadial {
         return list;
     }
 
-    public void processNode(RadialContainer node, ActiveObj a){
-        ActionTooltip tooltip = new ActionTooltip((DC_ActiveObj) a);
+    public void processNode(RadialContainer node, IActiveObj a){
+        ActionTooltip tooltip = new ActionTooltip((ActiveObj) a);
         node.clearListeners();
         node.addListener(tooltip.getController());
         TextureRegion underlay= TextureCache.getOrCreateR(ButtonStyled.STD_BUTTON.CIRCLE.getPath() );

@@ -9,7 +9,7 @@ import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.ability.effects.common.AddStatusEffect;
 import main.ability.effects.continuous.ContinuousEffect;
-import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.entity.EffectEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.entity.Ref;
 import main.system.text.LogManager;

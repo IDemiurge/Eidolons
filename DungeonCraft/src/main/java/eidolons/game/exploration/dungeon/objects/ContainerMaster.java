@@ -5,7 +5,7 @@ import eidolons.content.DC_CONSTS.ITEM_LEVEL;
 import eidolons.content.DC_CONSTS.JEWELRY_ITEM_TRAIT;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
@@ -17,8 +17,8 @@ import eidolons.game.exploration.story.quest.DungeonQuest;
 import eidolons.game.exploration.story.quest.QuestMaster;
 import eidolons.game.exploration.story.quest.advanced.Quest;
 import eidolons.game.exploration.dungeon.objects.ContainerMaster.CONTAINER_ACTION;
-import eidolons.entity.item.handlers.ItemGenerator;
-import eidolons.entity.item.handlers.ItemMaster;
+import eidolons.entity.mngr.item.ItemGenerator;
+import eidolons.entity.mngr.item.ItemMaster;
 import eidolons.system.libgdx.GdxAdapter;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.C_OBJ_TYPE;
@@ -543,8 +543,8 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     @Override
-    public List<DC_ActiveObj> getActions(DungeonObj obj, Unit unit) {
-        List<DC_ActiveObj> list = new ArrayList<>();
+    public List<ActiveObj> getActions(DungeonObj obj, Unit unit) {
+        List<ActiveObj> list = new ArrayList<>();
         list.add(
                 createAction(CONTAINER_ACTION.OPEN, unit, obj));
         return list;
@@ -650,7 +650,6 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         int gold = getAmountOfGold(obj, totalCost);
         if (gold > 0) {
             int foodChance = Math.min(25, gold * 3);
-            MathMaster.addFactor(foodChance, Core.getMainHero().getIntParam(PARAMS.FORAGING));
 
             if (RandomWizard.chance(foodChance)) {
                 contents += "Food";
@@ -735,7 +734,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     }
 
     @Override
-    public DC_ActiveObj getDefaultAction(Unit source, DungeonObj target) {
+    public ActiveObj getDefaultAction(Unit source, DungeonObj target) {
         return createAction(CONTAINER_ACTION.OPEN, source, target);
     }
 

@@ -1,9 +1,9 @@
 package eidolons.ability.targeting;
 
 import eidolons.ability.effects.oneshot.unit.SummonEffect;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.DC_Obj;
 import main.ability.effects.continuous.CustomTargetEffect;
 import main.elements.targeting.TargetingImpl;
@@ -13,8 +13,6 @@ import main.entity.group.GroupImpl;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
-import main.game.bf.directions.DirectionMaster;
-import main.game.bf.directions.UNIT_DIRECTION;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,14 +20,13 @@ import java.util.Set;
 
 public class CoordinateTargeting extends TargetingImpl {
     private static final KEYS DEFAULT_KEY = KEYS.SOURCE;
-    private final UNIT_DIRECTION unitDirection;
     private DIRECTION direction;
-    private final String facingKey;
-    private final String coordinateKey;
+    private  String facingKey;
+    private  String coordinateKey;
     boolean useActivesRange;
 
-    public CoordinateTargeting(UNIT_DIRECTION unitDirection, String facingKey, String coordinateKey) {
-        this.unitDirection = unitDirection;
+    //TODO Review LC 2.0
+    public CoordinateTargeting(String facingKey, String coordinateKey) {
         this.facingKey = facingKey;
         this.coordinateKey = coordinateKey;
     }
@@ -48,17 +45,8 @@ public class CoordinateTargeting extends TargetingImpl {
         this(DEFAULT_KEY.toString(), null);
     }
 
-    public CoordinateTargeting(String key, UNIT_DIRECTION d) {
-        this(d, key, key);
-    }
-
-    public CoordinateTargeting(UNIT_DIRECTION unitDirection, boolean useActivesRange) {
-        this(unitDirection);
+    public CoordinateTargeting( boolean useActivesRange) {
         this.useActivesRange = useActivesRange;
-    }
-
-    public CoordinateTargeting(UNIT_DIRECTION d) {
-        this(DEFAULT_KEY.toString(), d);
     }
 
     public boolean select(Ref ref) {
@@ -71,14 +59,10 @@ public class CoordinateTargeting extends TargetingImpl {
                 : ref.getObj(coordinateKey).getCoordinates();
 
         DIRECTION used_direction = direction;
-        if (unitDirection != null) {
-            BattleFieldObject unit = (BattleFieldObject) obj;
-            used_direction = DirectionMaster.getDirectionByFacing(unit.getFacing(), unitDirection);
-        }
         if (used_direction != null) {
             if (useActivesRange) {
-                if (ref.getActive() instanceof DC_ActiveObj) {
-                    int r = ((DC_ActiveObj) ref.getActive()).getRange();
+                if (ref.getActive() instanceof ActiveObj) {
+                    int r = ((ActiveObj) ref.getActive()).getRange();
                     for (int i = 0; i < r; i++) {
                         if (coordinate.getAdjacentCoordinate(used_direction) == null) {
                             break;
@@ -114,7 +98,7 @@ public class CoordinateTargeting extends TargetingImpl {
                     getObjectsOnCoordinate(coordinate, true); //TODO EA hack - overlaying!
         }
         if (objects.size() == 0 || cellTargeting) {
-            DC_Cell cell = obj.getGame().getCell(coordinate);
+            GridCell cell = obj.getGame().getCell(coordinate);
             if (cell == null) {
                 return false;
             }

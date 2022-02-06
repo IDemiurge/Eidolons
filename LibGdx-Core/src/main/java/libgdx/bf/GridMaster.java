@@ -172,10 +172,6 @@ public class GridMaster {
                                 }
                 }
             }
-            if (view.getArrow() != null)
-                if (view.getArrow().getActions().size == 0)
-                    if (!AI_Manager.isRunning())
-                     view.validateArrowRotation();
 
         }
     }
@@ -229,7 +225,6 @@ public class GridMaster {
 
         Float time = obj.getGame().getLoop().getTime();
         obj.setLastSeenTime(time);
-        obj.setLastSeenFacing(obj.getFacing());
         obj.setLastSeenOutline(obj.getOutlineTypeForPlayer());
         //        main.system.auxiliary.log.LogMaster.log(1, obj.getOutlineTypeForPlayer()+ "LSV RESET FOR " + obj +
         //         time);

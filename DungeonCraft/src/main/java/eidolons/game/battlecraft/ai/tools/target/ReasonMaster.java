@@ -1,9 +1,8 @@
 package eidolons.game.battlecraft.ai.tools.target;
 
-import eidolons.ability.conditions.FacingCondition;
 import eidolons.ability.conditions.VisibilityCondition;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.DistanceCondition;
@@ -11,13 +10,12 @@ import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.system.auxiliary.StringMaster;
-import main.system.entity.ConditionMaster;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ReasonMaster {
-    public static boolean checkReasonCannotActivate(DC_ActiveObj action, String reason) {
+    public static boolean checkReasonCannotActivate(ActiveObj action, String reason) {
         List<String> reasons = ReasonMaster.getReasonsCannotActivate(action);
         for (String r : reasons) {
             if (StringMaster.compareByChar(r, reason, false)) {
@@ -32,8 +30,8 @@ public class ReasonMaster {
         return false;
     }
 
-    public static boolean checkReasonCannotActivate(Action action, String reason) {
-        List<String> reasons = ReasonMaster.getReasonsCannotActivate(action);
+    public static boolean checkReasonCannotActivate(AiAction aiAction, String reason) {
+        List<String> reasons = ReasonMaster.getReasonsCannotActivate(aiAction);
         for (String r : reasons) {
             if (StringMaster.compareByChar(r, reason, false)) {
                 return true;
@@ -47,7 +45,7 @@ public class ReasonMaster {
         return false;
     }
 
-    public static List<String> getReasonsCannotActivate(DC_ActiveObj action) {
+    public static List<String> getReasonsCannotActivate(ActiveObj action) {
 
         Ref REF = action.getRef().getCopy();
         REF.setMatch(action.getRef().getTarget());
@@ -55,12 +53,12 @@ public class ReasonMaster {
         return getReasonsCannotActivate(action, REF);
     }
 
-    public static List<String> getReasonsCannotActivate(Action action) {
+    public static List<String> getReasonsCannotActivate(AiAction aiAction) {
         // action.getActive().getCosts().getReasons()
-        Ref REF = action.getRef().getCopy();
-        REF.setMatch(action.getRef().getTarget());
-        REF.setID(KEYS.PAYEE, action.getSource().getId());
-        return getReasonsCannotActivate(action.getActive(), REF);
+        Ref REF = aiAction.getRef().getCopy();
+        REF.setMatch(aiAction.getRef().getTarget());
+        REF.setID(KEYS.PAYEE, aiAction.getSource().getId());
+        return getReasonsCannotActivate(aiAction.getActive(), REF);
         // Map<String, Condition> reqs =
         // action.getActive().getCosts().getRequirements().getReqMap();
         // for (Condition c : reqs.values()) {
@@ -73,7 +71,7 @@ public class ReasonMaster {
         // return reasons;
     }
 
-    public static List<String> getReasonsCannotActivate(DC_ActiveObj active, Ref REF) {
+    public static List<String> getReasonsCannotActivate(ActiveObj active, Ref REF) {
         List<String> reasons = new ArrayList<>();
         REF.setID(KEYS.PAYEE, REF.getSource());
         if (active.getCosts().canBePaid(REF)) {
@@ -82,15 +80,15 @@ public class ReasonMaster {
         return active.getCosts().getReasonList();
     }
 
-    public static boolean checkReasonCannotTarget(FILTER_REASON reason, Action action) {
-        return !getReasonsCannotTarget(action, false, false, reason).isEmpty();
+    public static boolean checkReasonCannotTarget(FILTER_REASON reason, AiAction aiAction) {
+        return !getReasonsCannotTarget(aiAction, false, false, reason).isEmpty();
     }
 
-    public static List<FILTER_REASON> getReasonsCannotTarget(Action action
-            //     , boolean ignoreOthersIfNotFacing
+    public static List<FILTER_REASON> getReasonsCannotTarget(AiAction aiAction
+                                                             //     , boolean ignoreOthersIfNotFacing
     ) {
 
-        List<FILTER_REASON> reasonsCannotTarget = getReasonsCannotTarget(action, true, false, null);
+        List<FILTER_REASON> reasonsCannotTarget = getReasonsCannotTarget(aiAction, true, false, null);
         // if reasons are something other than single FACING, we don't care about OTHERS
         if (!reasonsCannotTarget.isEmpty()) {
             if (reasonsCannotTarget.size() != 1
@@ -99,18 +97,18 @@ public class ReasonMaster {
             }
         }
 
-        reasonsCannotTarget = getReasonsCannotTarget(action, true, true, null);
+        reasonsCannotTarget = getReasonsCannotTarget(aiAction, true, true, null);
         return reasonsCannotTarget;
     }
 
-    public static List<FILTER_REASON> getReasonsCannotTarget(Action action,
+    public static List<FILTER_REASON> getReasonsCannotTarget(AiAction aiAction,
                                                              boolean useConditionResultCache, Boolean checkMiscOrOnly, FILTER_REASON searchedReason) {
-        Ref REF = action.getRef().getCopy();
-        REF.setMatch(action.getRef().getTarget());
-        Targeting targeting = action.getActive().getTargeting();
+        Ref REF = aiAction.getRef().getCopy();
+        REF.setMatch(aiAction.getRef().getTarget());
+        Targeting targeting = aiAction.getActive().getTargeting();
 
         if (targeting == null) {
-            targeting = TargetingMaster.findTargeting(action.getActive());
+            targeting = TargetingMaster.findTargeting(aiAction.getActive());
         }
         if (targeting == null) {
             return new ArrayList<>();
@@ -157,29 +155,19 @@ public class ReasonMaster {
             return FILTER_REASON.VISION;
         }
 
-        if (c instanceof FacingCondition) {
-            return FILTER_REASON.FACING;
-        }
-
         if (c instanceof DistanceCondition) {
             return FILTER_REASON.DISTANCE;
         }
 
-        if (c instanceof Conditions) // TODO ClassMaster
-        {
-            if (ConditionMaster.contains((Conditions) c, FacingCondition.class)) {
-                return FILTER_REASON.FACING;
-            }
-        }
         return FILTER_REASON.OTHER;
     }
 
-    public static boolean isAdjacentTargeting(Action targetAction) {
-        Targeting targeting = targetAction.getActive().getTargeting();
+    public static boolean isAdjacentTargeting(AiAction targetAiAction) {
+        Targeting targeting = targetAiAction.getActive().getTargeting();
         try {
             for (Condition c : targeting.getFilter().getConditions()) {
                 if (c instanceof DistanceCondition) {
-                    if (((DistanceCondition) c).getDistance().getInt(targetAction.getRef()) == 1) {
+                    if (((DistanceCondition) c).getDistance().getInt(targetAiAction.getRef()) == 1) {
                         return true;
                     }
                 }

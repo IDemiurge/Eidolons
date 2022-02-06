@@ -468,24 +468,8 @@ public class DC_GridPanel extends GridPanel {
 
     protected void update() {
         shadowMap.update();
-        updateTorches();
         updateRequired = false;
     }
-
-    //Light revamp - this could do with box2d
-    private void updateTorches() {
-        for (Obj object : viewMap.keys()) {
-            if (!(object instanceof Unit)) {
-                continue;
-            }
-            float alpha = 0; //TODO
-            GenericGridView view = (GenericGridView) viewMap.get(object);
-
-            if (Math.abs(view.torch.getBaseAlpha() - alpha) > 0.1f)
-                view.torch.setBaseAlpha(alpha);
-        }
-    }
-
 
     public VoidHandler getVoidHandler() {
         return voidHandler;

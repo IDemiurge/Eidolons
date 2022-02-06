@@ -1,6 +1,6 @@
 package eidolons.ability.conditions.special;
 
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.Spell;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.enums.entity.AbilityEnums;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODE;

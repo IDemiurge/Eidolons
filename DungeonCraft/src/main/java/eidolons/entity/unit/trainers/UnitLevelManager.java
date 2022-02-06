@@ -1,6 +1,6 @@
 package eidolons.entity.unit.trainers;
 
-import eidolons.content.DC_ContentValsManager.ATTRIBUTE;
+import eidolons.content.ATTRIBUTE;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.values.ValuePages;
@@ -243,9 +243,6 @@ public class UnitLevelManager {
                 return true;
             }
             return newType.checkContainerProp(PROPS.QUICK_ITEMS, item);
-        }
-        if (newType.checkContainerProp(PROPS.VERBATIM_SPELLS, item)) {
-            return true;
         }
         if (newType.checkContainerProp(G_PROPS.ACTIVES, item)) {
             return true;

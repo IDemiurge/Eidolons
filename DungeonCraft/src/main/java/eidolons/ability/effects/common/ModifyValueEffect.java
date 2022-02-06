@@ -12,12 +12,12 @@ import main.ability.effects.ReducedEffect;
 import main.ability.effects.ResistibleEffect;
 import main.content.ContentValsManager;
 import main.content.enums.GenericEnums;
-import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.EffectEnums;
 import main.content.values.parameters.PARAMETER;
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.HeroItem;
+import main.entity.obj.IHeroItem;
 import main.entity.obj.Obj;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -181,7 +181,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
             return;
         }
 
-        if (ref.getTargetObj() instanceof HeroItem
+        if (ref.getTargetObj() instanceof IHeroItem
             // && !(ref.getTargetObj().getOBJ_TYPE().equals(OBJ_TYPES.ARMOR
             // .getName()))
          ) {
@@ -264,7 +264,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
 
         if (param == null) {
             if (params == null) {
-                UnitEnums.COUNTER counter = CounterMaster.getCounter(sparam, false);
+                EffectEnums.COUNTER counter = CounterMaster.getCounter(sparam, false);
                 if (counter == null) {
                     return false;
                 }

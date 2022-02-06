@@ -1,10 +1,10 @@
 package eidolons.game.battlecraft.ai.tools.priority;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
@@ -251,11 +251,11 @@ public class ParamPriorityAnalyzer extends AiHandler {
         return 0;
     }
 
-    public static int getResistanceFactor(Action action) {
-        DC_ActiveObj active = action.getActive();
-        DC_Obj target = action.getTarget();
+    public static int getResistanceFactor(AiAction aiAction) {
+        ActiveObj active = aiAction.getActive();
+        DC_Obj target = aiAction.getTarget();
         Integer resistance = target.getIntParam(PARAMS.RESISTANCE);
-        resistance -= action.getSource().getIntParam(
+        resistance -= aiAction.getSource().getIntParam(
          PARAMS.RESISTANCE_PENETRATION);
         Integer mod = active.getIntParam(PARAMS.RESISTANCE_MODIFIER);
         if (mod > 0) {

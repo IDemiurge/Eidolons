@@ -2,7 +2,7 @@ package eidolons.game.core.atb;
 
 import com.badlogic.gdx.utils.Array;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.exploration.handlers.ExplorationMaster;
 import main.system.GuiEventManager;
@@ -25,7 +25,7 @@ public class AtbPrecalculator {
             if (ExplorationMaster.isExplorationOn())
                 return;
             Array<AtbUnit> units = this.controller.getUnits();
-            int index = getIndexAfterAction((DC_ActiveObj) p.get());
+            int index = getIndexAfterAction((ActiveObj) p.get());
             GuiEventManager.trigger(GuiEventType.
                     ATB_POS_PREVIEW, index);
             List<Integer> list = new ArrayList<>();
@@ -38,7 +38,7 @@ public class AtbPrecalculator {
         });
     }
 
-    public int getIndexAfterAction(DC_ActiveObj action) {
+    public int getIndexAfterAction(ActiveObj action) {
         float cost = AtbMaster.getReadinessCost(action);
         clone = getClone();
         AtbUnit atbUnit = clone.getAtbUnit(action.getOwnerUnit());

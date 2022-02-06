@@ -230,11 +230,6 @@ public class HqHeroDataSource extends EntityDataSource<HeroDataModel>
     }
 
     @Override
-    public List<Pair<PARAMETER, String>> getDurabilityResists() {
-        return unitDataSource.getDurabilityResists();
-    }
-
-    @Override
     public ValueContainer getOffWeapon() {
         return unitDataSource.getOffWeapon();
     }

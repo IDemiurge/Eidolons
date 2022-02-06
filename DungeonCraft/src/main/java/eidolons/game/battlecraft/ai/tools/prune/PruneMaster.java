@@ -1,21 +1,19 @@
 package eidolons.game.battlecraft.ai.tools.prune;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.Spell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.advanced.machine.AiConst;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.elements.goal.GoalManager;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
-import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.bf.Coordinates;
 import main.system.SortMaster;
@@ -37,11 +35,11 @@ public class PruneMaster extends AiHandler {
         super(master);
     }
 
-    public List<Coordinates> pruneTargetCells(Action targetAction, Collection<Coordinates> list) {
+    public List<Coordinates> pruneTargetCells(AiAction targetAiAction, Collection<Coordinates> list) {
         TreeMap<Integer, Coordinates> map = new TreeMap<>(SortMaster
          .getNaturalIntegerComparator(false));
 
-        Coordinates coordinates = targetAction.getSource().getCoordinates();
+        Coordinates coordinates = targetAiAction.getSource().getCoordinates();
         for (Coordinates c : list) {
             int distance = 10 * PositionMaster.getDistance(coordinates, c);
             if (!PositionMaster.inLine(c, coordinates)) {
@@ -49,18 +47,6 @@ public class PruneMaster extends AiHandler {
             }
             if (PositionMaster.inLineDiagonally(c, coordinates)) {
                 distance += 2;
-            }
-            FACING_SINGLE facing = FacingMaster.getSingleFacing(targetAction.getSource()
-             .getFacing(), c, coordinates);
-            switch (facing) {
-                case BEHIND:
-                    distance += 12;
-                    break;
-                case IN_FRONT:
-                    break;
-                case TO_THE_SIDE:
-                    distance += 6;
-                    break;
             }
             map.put(distance, c); //TODO KEYS WILL OVERLAP!
         }
@@ -87,7 +73,7 @@ public class PruneMaster extends AiHandler {
     }
 
     public void pruneTargetsForAction(List<? extends DC_Obj> targets, GOAL_TYPE goal, UnitAI ai,
-                                      DC_ActiveObj action) {
+                                      ActiveObj action) {
         /*
          * cache for each goal?
 		 *
@@ -204,7 +190,7 @@ public class PruneMaster extends AiHandler {
 
     }
 
-    private int getPowerFactor(int limit, UnitAI ai, DC_ActiveObj action) {
+    private int getPowerFactor(int limit, UnitAI ai, ActiveObj action) {
         // cruel vs merciful
         ai.checkMod(AI_MODIFIERS.CRUEL);
         if (action.isMelee()) {
@@ -213,7 +199,7 @@ public class PruneMaster extends AiHandler {
         return 30 + limit * 2;
     }
 
-    private int getHeathPruneFactor(int limit, DC_Obj t, UnitAI ai, DC_ActiveObj action) {
+    private int getHeathPruneFactor(int limit, DC_Obj t, UnitAI ai, ActiveObj action) {
         if (action.isMelee()) {
             return 15 + limit * 3;
         }
@@ -222,14 +208,14 @@ public class PruneMaster extends AiHandler {
         // power/health/capacity/danger is prune factor!
     }
 
-    private int getCapacityPruneFactor(int limit, DC_Obj t, UnitAI ai, DC_ActiveObj action) {
+    private int getCapacityPruneFactor(int limit, DC_Obj t, UnitAI ai, ActiveObj action) {
         if (action.isMelee()) {
             return 15 + limit * 3;
         }
         return 10 + limit * 2;
     }
 
-    private int getDistancePruneFactor(int limit, DC_Obj t, UnitAI ai, DC_ActiveObj action) {
+    private int getDistancePruneFactor(int limit, DC_Obj t, UnitAI ai, ActiveObj action) {
         if (action.isRanged()) {
             return action.getIntParam(PARAMS.RANGE) * 3 / 2 - limit;
         }

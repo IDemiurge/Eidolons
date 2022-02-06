@@ -43,9 +43,9 @@ import com.graphbuilder.math.func.*;
  * <li>ceil(x) &rarr; Math.ceil(double)</li>
  * <li>floor(x) &rarr; Math.floor(double)</li>
  * <li>exp(x) &rarr; <i>e</i><sup>x</sup></li>
- * <li>ln(x) &rarr; src.main.system.log<generic><i>e</i></generic>x</li>
- * <li>lg(x) &rarr; src.main.system.log<generic>2</generic>x</li>
- * <li>src.main.system.log(x) &rarr; src.main.system.log<generic>10</generic>x</li>
+ * <li>ln(x) &rarr; system.log<generic><i>e</i></generic>x</li>
+ * <li>lg(x) &rarr; system.log<generic>2</generic>x</li>
+ * <li>system.log(x) &rarr; system.log<generic>10</generic>x</li>
  * <li>sign(x) &rarr; x > 0 = 1, x < 0 = -1, else 0</li>
  * <li>fact(n) &rarr; n! = 1 * 2 * ... * (n - 1) * n</li>
  * <li>round(x) &rarr; Math.round(double)</li>
@@ -54,7 +54,7 @@ import com.graphbuilder.math.func.*;
  * <dt>2 Parameters</dt>
  * <dd>
  * <ul>
- * <li>src.main.system.log(x,y) &rarr; src.main.system.log<generic>y</generic>x</li>
+ * <li>system.log(x,y) &rarr; system.log<generic>y</generic>x</li>
  * <li>combin(n, r) &rarr; PascalsTriangle.nCr(n, r)</li>
  * <li>mod(x, y) &rarr; x % y</li>
  * <li>pow(x, y) &rarr; x<sup>y</sup></li>
@@ -139,7 +139,7 @@ public class FuncMap {
         setFunction("combin", new CombinFunction());
 
         // 1 or 2 parameters
-        setFunction("src.main.system.log", new LogFunction());
+        setFunction("system.log", new LogFunction());
     }
 
     /**

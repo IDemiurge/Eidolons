@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.rules.combat.attack.block;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.action.StackingRule;
 import eidolons.game.battlecraft.rules.combat.CombatFunctions;
@@ -139,7 +139,7 @@ public class BlockMaster {
         return list;
     }
 
-    private boolean isParryWeapon(DC_WeaponObj weapon) {
+    private boolean isParryWeapon(WeaponItem weapon) {
         if (weapon.isRanged()) {
             return false;
         }
@@ -155,11 +155,11 @@ public class BlockMaster {
         return true;
     }
 
-    private Blocker createShieldBlocker(DC_WeaponObj weapon) {
+    private Blocker createShieldBlocker(WeaponItem weapon) {
         return createWeaponBlocker(weapon, true);
     }
 
-    private Blocker createWeaponBlocker(DC_WeaponObj weapon, boolean shield) {
+    private Blocker createWeaponBlocker(WeaponItem weapon, boolean shield) {
         Supplier<Integer> base = () -> weapon.getIntParam(PARAMS.BLOCK_CHANCE);
         Supplier<Integer> bonus = () -> weapon.getOwnerObj().getIntParam(PARAMS.BLOCK_CHANCE_BONUS)
                 + weapon.getOwnerObj().getIntParam(

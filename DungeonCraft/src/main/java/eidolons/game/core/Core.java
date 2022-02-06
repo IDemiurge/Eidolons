@@ -1,7 +1,7 @@
 package eidolons.game.core;
 
 import com.badlogic.gdx.Gdx;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaDataManager;
@@ -149,7 +149,7 @@ public class Core {
         activateMainHeroAction(Core.getMainHero().getAction(action));
     }
 
-    public static void activateMainHeroAction(DC_ActiveObj action) {
+    public static void activateMainHeroAction(ActiveObj action) {
         Core.getGame().getLoop().actionInputManual(
                 new ActionInput((action), Core.getMainHero()));
     }

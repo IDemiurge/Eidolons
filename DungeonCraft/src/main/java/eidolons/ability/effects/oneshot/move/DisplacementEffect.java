@@ -2,6 +2,7 @@ package eidolons.ability.effects.oneshot.move;
 
 import eidolons.entity.unit.Unit;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.game.bf.MovementManager.MOVE_MODIFIER;
 import main.system.auxiliary.RandomWizard;
@@ -30,15 +31,17 @@ public class DisplacementEffect extends SelfMoveEffect {
     private boolean moveTarget() {
         Unit obj = (Unit) ref.getTargetObj();
         origin = obj.getCoordinates();
+        DIRECTION direction = DIRECTION.NONE;
         Coordinates coordinate = obj.getCoordinates().getAdjacentCoordinate(
-         obj.getFacing().getDirection());
+                //TODO LC 2.0 review
+         direction);
         Boolean result = tryMove(obj, coordinate);
         if (result != null) {
             return result;
         }
         boolean clockwise = RandomWizard.random();
         coordinate = obj.getCoordinates().getAdjacentCoordinate(
-         DirectionMaster.rotate45(obj.getFacing().getDirection(),
+         DirectionMaster.rotate45(direction,
           clockwise));
         result = tryMove(obj, coordinate);
         if (result != null) {
@@ -46,7 +49,7 @@ public class DisplacementEffect extends SelfMoveEffect {
         }
         clockwise = !clockwise;
         coordinate = obj.getCoordinates().getAdjacentCoordinate(
-         DirectionMaster.rotate45(obj.getFacing().getDirection(),
+         DirectionMaster.rotate45(direction,
           clockwise));
         result = tryMove(obj, coordinate);
         if (result == null) {

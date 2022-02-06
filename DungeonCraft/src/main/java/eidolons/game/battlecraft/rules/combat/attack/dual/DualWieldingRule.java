@@ -5,8 +5,8 @@ import eidolons.ability.effects.attachment.AddTriggerEffect;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_UnitAction;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.feat.active.UnitAction;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.content.DC_Formulas;
@@ -41,7 +41,7 @@ public class DualWieldingRule {
     public static final String buffTypeNameMainHand = StringMaster.format(MetaEnums.STD_BUFF_NAME.Main_Hand_Cadence.name());
     private static final Formula DURATION = new Formula("1");
 
-    private static boolean checkSingleWeaponCadence(Unit unit, DC_UnitAction action) {
+    private static boolean checkSingleWeaponCadence(Unit unit, UnitAction action) {
         if (unit.getActiveWeapon(action.isOffhand()).getIntParam(PARAMS.CADENCE_BONUS) > 0) {
             return true;
         }
@@ -50,7 +50,7 @@ public class DualWieldingRule {
 
     }
 
-    private static boolean checkFocusBonusApplies(Unit unit, DC_UnitAction action,
+    private static boolean checkFocusBonusApplies(Unit unit, UnitAction action,
                                                   boolean singleCadence) {
         BuffObj buff = unit.getBuff(buffTypeNameOffHand, false);
         if (buff == null) {
@@ -64,7 +64,7 @@ public class DualWieldingRule {
         // preCheck new weapon - ? Buff ref?
     }
 
-    public static void checkDualAttackCadence(DC_UnitAction action, Unit unit) {
+    public static void checkDualAttackCadence(UnitAction action, Unit unit) {
         if (action.getActionGroup() != ActionEnums.ACTION_TYPE_GROUPS.ATTACK) {
             return;
         }
@@ -90,7 +90,7 @@ public class DualWieldingRule {
             return;
         }
         Ref ref = new Ref(unit.getGame(), unit.getId());
-        DC_WeaponObj weapon = unit.getActiveWeapon(offhand);
+        WeaponItem weapon = unit.getActiveWeapon(offhand);
         List<Obj> targets = new ArrayList<>();
 
         if (unit.getWeapon(!offhand) != null) {

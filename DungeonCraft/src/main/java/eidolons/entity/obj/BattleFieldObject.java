@@ -5,9 +5,9 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.values.ValuePages;
 import eidolons.entity.ChangeableType;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.item.DC_ArmorObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.item.ArmorItem;
+import eidolons.entity.item.WeaponItem;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battlefield.vision.advanced.OutlineMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.mapper.SeenMapper;
@@ -39,7 +39,6 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.game.core.game.Game;
 import main.game.logic.action.context.Context.IdKey;
 import main.game.logic.battle.player.Player;
@@ -57,14 +56,12 @@ import java.util.List;
  */
 public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
 
-    protected FACING_DIRECTION facing;
     protected int maxVisionDistance;
     protected boolean hidden;
     private DIRECTION direction;
     private Coordinates bufferedCoordinates;
     private boolean sneaking;
     private Float lastSeenTime;
-    private FACING_DIRECTION lastSeenFacing;
     private Coordinates lastCoordinates;
     private OUTLINE_TYPE lastSeenOutline;
     private ObjType originalType;
@@ -418,21 +415,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         return true;
     }
 
-    public FACING_DIRECTION getFacing() {
-        if (facing == null) {
-            resetFacing();
-        }
-        return facing;
-    }
-
-    public void setFacing(FACING_DIRECTION facing) {
-        if (facing == null) {
-            return;
-        }
-        this.facing = facing;
-    }
-
-    public boolean canCounter(DC_ActiveObj action, boolean sneak) {
+    public boolean canCounter(ActiveObj action, boolean sneak) {
         return false;
     }
 
@@ -504,15 +487,6 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         this.lastSeenTime = lastSeenTime;
     }
 
-    public FACING_DIRECTION getLastSeenFacing() {
-        return lastSeenFacing;
-    }
-
-    public void setLastSeenFacing(FACING_DIRECTION lastSeenFacing) {
-        this.lastSeenFacing = lastSeenFacing;
-    }
-
-
     public Coordinates getLastCoordinates() {
         return lastCoordinates;
     }
@@ -563,11 +537,11 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         super.setRef(ref);
     }
 
-    public DC_WeaponObj getActiveWeapon(boolean offhand) {
+    public WeaponItem getActiveWeapon(boolean offhand) {
         return null;
     }
 
-    public DC_ArmorObj getArmor() {
+    public ArmorItem getArmor() {
         return null;
     }
 
@@ -689,7 +663,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
         return getGame().getDungeonMaster().getStructMaster().getLowestStruct(getCoordinates());
     }
 
-    public boolean checkCanDoFreeMove(DC_ActiveObj entity) {
+    public boolean checkCanDoFreeMove(ActiveObj entity) {
         return false;
     }
 }

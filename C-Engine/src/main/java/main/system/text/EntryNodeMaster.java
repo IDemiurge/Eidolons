@@ -68,13 +68,13 @@ public class EntryNodeMaster {
 
     public enum ENTRY_TYPE {
         // TODO longer versions? 2 lines? why not?
-        ATTACK(true, "{1} attacks {2} ({3})", "ui/BF/src.main.system.log icons/attack.png"),
-        COUNTER_ATTACK(true, "{1} counter-attacks {2} ({3})", "ui/BF/src.main.system.log icons/attack.png"),
-        INSTANT_ATTACK(true, "{1} - Instant Attack on {2} ({3})", "ui/BF/src.main.system.log icons/attack.png"),
-        ATTACK_OF_OPPORTUNITY(true, "{1} - Attack of Opportunity on  {2} ({3})", "ui/BF/src.main.system.log icons/attack.png"),
+        ATTACK(true, "{1} attacks {2} ({3})", "ui/BF/system.log icons/attack.png"),
+        COUNTER_ATTACK(true, "{1} counter-attacks {2} ({3})", "ui/BF/system.log icons/attack.png"),
+        INSTANT_ATTACK(true, "{1} - Instant Attack on {2} ({3})", "ui/BF/system.log icons/attack.png"),
+        ATTACK_OF_OPPORTUNITY(true, "{1} - Attack of Opportunity on  {2} ({3})", "ui/BF/system.log icons/attack.png"),
 
-        SPELL_DAMAGE(true, "{1} deals {2} damage {3}", "ui/BF/src.main.system.log icons/damage.png"),
-        DAMAGE(false, "{1} takes {2} damage {3}", "ui/BF/src.main.system.log icons/damage.png") {
+        SPELL_DAMAGE(true, "{1} deals {2} damage {3}", "ui/BF/system.log icons/damage.png"),
+        DAMAGE(false, "{1} takes {2} damage {3}", "ui/BF/system.log icons/damage.png") {
             @Override
             public String getHeader() {
                 return super.getHeader();
@@ -82,27 +82,27 @@ public class EntryNodeMaster {
         },
         DISPLACEMENT,
 
-        SELF_DAMAGE(true, "{1} inflicts {2} damage on self", "ui/BF/src.main.system.log icons/damage.png") {
+        SELF_DAMAGE(true, "{1} inflicts {2} damage on self", "ui/BF/system.log icons/damage.png") {
         },
-        PARRY(true, "{1} parries {2} ({3})", "ui/BF/src.main.system.log icons/attack.png"),
+        PARRY(true, "{1} parries {2} ({3})", "ui/BF/system.log icons/attack.png"),
         // TODO DAMAGE_ENDURANCE ("loses {1} Endurance and {2} Toughness)
-        ROLL_WON("{3} wins {1} roll", "ui/BF/src.main.system.log icons/attack.png"),
-        ROLL_LOST("{3} loses {1} roll", "ui/BF/src.main.system.log icons/attack.png"),
-        UNCONSCIOUS(true, "{1} falls unconscious", "ui/BF/src.main.system.log icons/FALL.png"),
-        KNOCKDOWN(true, "{1} is knocked down", "ui/BF/src.main.system.log icons/FALL.png"),
-        CONSCIOUS(true, "{1} regains consciousness", "ui/BF/src.main.system.log icons/Rise.png"),
-        DEATH(true, "{1} dies", "ui/BF/src.main.system.log icons/DEATH.png"),
-        FALL_UNCONSCIOUS(true, "dies", "ui/BF/src.main.system.log icons/attack.png"),
+        ROLL_WON("{3} wins {1} roll", "ui/BF/system.log icons/attack.png"),
+        ROLL_LOST("{3} loses {1} roll", "ui/BF/system.log icons/attack.png"),
+        UNCONSCIOUS(true, "{1} falls unconscious", "ui/BF/system.log icons/FALL.png"),
+        KNOCKDOWN(true, "{1} is knocked down", "ui/BF/system.log icons/FALL.png"),
+        CONSCIOUS(true, "{1} regains consciousness", "ui/BF/system.log icons/Rise.png"),
+        DEATH(true, "{1} dies", "ui/BF/system.log icons/DEATH.png"),
+        FALL_UNCONSCIOUS(true, "dies", "ui/BF/system.log icons/attack.png"),
 
-        CHANNELING_SPELL(true, "{1} resolves", "ui/BF/src.main.system.log icons/attack.png"),
-        ACTION(true, "{1} activates {2}", "ui/BF/src.main.system.log icons/ACTION.png"),
-        MOVE(true, "{1} activates {2}", "ui/BF/src.main.system.log icons/MOVE.png"),
+        CHANNELING_SPELL(true, "{1} resolves", "ui/BF/system.log icons/attack.png"),
+        ACTION(true, "{1} activates {2}", "ui/BF/system.log icons/ACTION.png"),
+        MOVE(true, "{1} activates {2}", "ui/BF/system.log icons/MOVE.png"),
 
-        NEW_ROUND(true, "Round {1} begins", "ui/BF/src.main.system.log icons/NEW_ROUND.png"),
-        ROUND_ENDS(true, "Round {1} ends", "ui/BF/src.main.system.log icons/ROUND_ENDS.png"),
-        TRIGGERS("{1} triggers", "ui/BF/src.main.system.log icons/attack.png"),
+        NEW_ROUND(true, "Round {1} begins", "ui/BF/system.log icons/NEW_ROUND.png"),
+        ROUND_ENDS(true, "Round {1} ends", "ui/BF/system.log icons/ROUND_ENDS.png"),
+        TRIGGERS("{1} triggers", "ui/BF/system.log icons/attack.png"),
 
-        ZONE_EFFECT(true, "{1} effect resolves", "ui/BF/src.main.system.log icons/zone.png"),
+        ZONE_EFFECT(true, "{1} effect resolves", "ui/BF/system.log icons/zone.png"),
         BLEEDING_RULE(false, "", ""),
         FOCUS_RULE,
         MORALE_RULE,

@@ -1,6 +1,6 @@
 package eidolons.game.core.state;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import main.game.core.game.GenericGame;
@@ -17,7 +17,7 @@ import java.util.Stack;
  */
 public class DC_GameState extends MicroGameState {
     public static boolean gridChanged;
-    private Map<Unit, Stack<DC_ActiveObj>> unitActionStack;
+    private Map<Unit, Stack<ActiveObj>> unitActionStack;
     private int chaosLevel;
 
 
@@ -45,15 +45,15 @@ public class DC_GameState extends MicroGameState {
     }
 
 
-    public Map<Unit, Stack<DC_ActiveObj>> getUnitActionStack() {
+    public Map<Unit, Stack<ActiveObj>> getUnitActionStack() {
         if (unitActionStack == null) {
             unitActionStack = new HashMap<>();
         }
         return unitActionStack;
     }
 
-    public Stack<DC_ActiveObj> getUnitActionStack(Unit ownerObj) {
-        Stack<DC_ActiveObj> stack = getUnitActionStack().get(ownerObj);
+    public Stack<ActiveObj> getUnitActionStack(Unit ownerObj) {
+        Stack<ActiveObj> stack = getUnitActionStack().get(ownerObj);
         if (stack == null) {
             stack = new Stack<>();
             getUnitActionStack().put(ownerObj, stack);

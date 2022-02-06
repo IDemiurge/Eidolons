@@ -1,7 +1,7 @@
 package libgdx.gui.dungeon.panels.dc.inventory.shop;
 
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.HeroItem;
 import eidolons.entity.unit.Unit;
 import libgdx.gui.generic.ValueContainer;
 import libgdx.gui.dungeon.panels.dc.inventory.InvItemActor;
@@ -33,7 +33,7 @@ public class ShopDataSource extends ContainerDataSource
     private static final Map<Shop, ShopClickHandler> handlerCache = new HashMap<>();
     private Shop shop;
     private InventoryDataSource invDataSource;
-    private Set<DC_HeroItemObj> stash;
+    private Set<HeroItem> stash;
 
     public ShopDataSource(Shop shop, Unit unit) {
         super(shop, unit);
@@ -161,7 +161,7 @@ public class ShopDataSource extends ContainerDataSource
         return new ValueContainer(TextureCache.getOrCreateR(shop.getImagePath()), "");
     }
 
-    public int getPrice(DC_HeroItemObj model, CELL_TYPE cellType) {
+    public int getPrice(HeroItem model, CELL_TYPE cellType) {
         return shop.getPrice(model, invDataSource.getUnit(), cellType == VisualEnums.CELL_TYPE.CONTAINER);
     }
 

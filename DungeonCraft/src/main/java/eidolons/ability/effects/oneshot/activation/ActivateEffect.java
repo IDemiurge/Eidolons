@@ -1,7 +1,7 @@
 package eidolons.ability.effects.oneshot.activation;
 
 import eidolons.ability.effects.DC_Effect;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import main.ability.effects.OneshotEffect;
 import main.entity.Ref;
@@ -33,7 +33,7 @@ public class ActivateEffect extends DC_Effect implements OneshotEffect {
     @Override
     public boolean applyThis() {
         Unit source = (Unit) ref.getObj(sourceKey);
-        DC_ActiveObj active;
+        ActiveObj active;
 
         if (!spell) {
             active = source.getAction(name);

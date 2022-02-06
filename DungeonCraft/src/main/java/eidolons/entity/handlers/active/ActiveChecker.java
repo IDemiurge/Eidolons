@@ -3,8 +3,8 @@ package eidolons.entity.handlers.active;
 import eidolons.ability.effects.containers.customtarget.ShapeEffect;
 import eidolons.ability.effects.containers.customtarget.ZoneEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_QuickItemAction;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.QuickItemAction;
 import eidolons.game.core.master.EffectMaster;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
@@ -23,13 +23,13 @@ import main.entity.handlers.EntityMaster;
 /**
  * Created by JustMe on 2/23/2017.
  */
-public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
+public class ActiveChecker extends EntityChecker<ActiveObj> {
 
     private Boolean zone;
     private Boolean missile;
 
-    public ActiveChecker(DC_ActiveObj entity,
-                         EntityMaster<DC_ActiveObj> entityMaster) {
+    public ActiveChecker(ActiveObj entity,
+                         EntityMaster<ActiveObj> entityMaster) {
         super(entity, entityMaster);
     }
 
@@ -42,8 +42,8 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
         if (getName().contains(ActionEnums.ACTION_TAGS.THROW.toString())) {
             return true;
         }
-        if (getEntity() instanceof DC_QuickItemAction) {
-            DC_QuickItemAction itemActiveObj = (DC_QuickItemAction) getEntity();
+        if (getEntity() instanceof QuickItemAction) {
+            QuickItemAction itemActiveObj = (QuickItemAction) getEntity();
             if (!itemActiveObj.getItem().isAmmo()) {
                 if (itemActiveObj.getItem().getWrappedWeapon() != null) {
                     return true;

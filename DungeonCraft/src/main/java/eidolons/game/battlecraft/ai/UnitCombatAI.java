@@ -5,7 +5,7 @@ import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
 import eidolons.game.battlecraft.ai.advanced.companion.CompanionMaster;
 import eidolons.game.battlecraft.ai.anew.AiImpulse;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.tools.AiExecutor;
 import main.content.C_OBJ_TYPE;
@@ -36,7 +36,7 @@ public class UnitCombatAI {
     Unit unit;
     private int engagementDuration;
     private boolean engaged;
-    private List<Action> forcedActions = new ArrayList<>();
+    private List<AiAction> forcedAiActions = new ArrayList<>();
     private Map<ObjType, Integer> actionPriorityMods;
     private Map<ObjType, Integer> actionPriorityBonuses;
     private boolean ordered;
@@ -62,18 +62,6 @@ public class UnitCombatAI {
                 .getProperty(PROPS.ACTION_PRIORITY_BONUSES), C_OBJ_TYPE.ACTIVE);
         actionPriorityMods = RandomWizard.constructWeightMap(unit
                 .getProperty(PROPS.ACTION_PRIORITY_MODS), C_OBJ_TYPE.ACTIVE);
-
-        for (ObjType spell : DataManager.toTypeList(unit.getProperty(PROPS.VERBATIM_SPELLS),
-                DC_TYPE.SPELLS)) {
-            Integer mastery = unit.getIntParam(ContentValsManager.getSpellMasteryForSpell(spell));
-
-            // WHY VERBATIM? MAYBE FROM *TYPE*, YES...
-            int mod = DEFAULT_VERBATIM_MOD + mastery;
-        }
-        // default additions?
-        /*
-         * verbatim spell list per mastery
-         */
     }
 
     public AI_TYPE getType() {
@@ -119,12 +107,12 @@ public class UnitCombatAI {
         this.engaged = engaged;
     }
 
-    public List<Action> getForcedActions() {
-        return forcedActions;
+    public List<AiAction> getForcedActions() {
+        return forcedAiActions;
     }
 
-    public void setForcedActions(List<Action> forcedActions) {
-        this.forcedActions = forcedActions;
+    public void setForcedActions(List<AiAction> forcedAiActions) {
+        this.forcedAiActions = forcedAiActions;
     }
 
     public Map<ObjType, Integer> getActionPriorityMods() {
@@ -175,10 +163,10 @@ public class UnitCombatAI {
         this.lastSequence = lastSequence;
     }
 
-    private INTENT_ICON initIntent(Action currentAction) {
-        AiEnums.GOAL_TYPE type = currentAction.getTask().getType();
+    private INTENT_ICON initIntent(AiAction currentAiAction) {
+        AiEnums.GOAL_TYPE type = currentAiAction.getTask().getType();
         if (type == null) {
-            if (currentAction.getActive().isMove()) {
+            if (currentAiAction.getActive().isMove()) {
                 return INTENT_ICON.ATTACK;
             }
 //            if (currentAction.getActive().isTurn()) {

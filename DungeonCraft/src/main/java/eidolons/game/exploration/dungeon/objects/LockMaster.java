@@ -1,6 +1,6 @@
 package eidolons.game.exploration.dungeon.objects;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
@@ -25,12 +25,12 @@ public class LockMaster extends DungeonObjMaster<LOCK_ACTIONS> {
     }
 
     @Override
-    public List<DC_ActiveObj> getActions(DungeonObj obj, Unit unit) {
+    public List<ActiveObj> getActions(DungeonObj obj, Unit unit) {
         return null;
     }
 
     @Override
-    public DC_ActiveObj getDefaultAction(Unit source, DungeonObj target) {
+    public ActiveObj getDefaultAction(Unit source, DungeonObj target) {
         return null;
     }
 

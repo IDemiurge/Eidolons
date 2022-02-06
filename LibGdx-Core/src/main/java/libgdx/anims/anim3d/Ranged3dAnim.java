@@ -1,7 +1,7 @@
 package libgdx.anims.anim3d;
 
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
 
@@ -9,7 +9,7 @@ import main.game.bf.Coordinates;
  * Created by JustMe on 9/9/2017.
  */
 public class Ranged3dAnim extends Weapon3dAnim {
-    public Ranged3dAnim(DC_ActiveObj active) {
+    public Ranged3dAnim(ActiveObj active) {
         super(active);
     }
 

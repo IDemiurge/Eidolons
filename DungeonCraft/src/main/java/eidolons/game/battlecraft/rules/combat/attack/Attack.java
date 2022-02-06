@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.rules.combat.attack;
 
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
@@ -35,7 +35,7 @@ public class Attack {
     private Effect onKill;
     private Effect onAttack;
     private Ref ref;
-    private DC_ActiveObj action;
+    private ActiveObj action;
     private Unit attacker;
     private BattleFieldObject attacked;
     private boolean countered;
@@ -43,7 +43,7 @@ public class Attack {
     private boolean triggered;
     private List<Damage> rawDamage;
     private int damageDealt;
-    private DC_WeaponObj weapon;
+    private WeaponItem weapon;
     private boolean doubleStrike;
     private NewRpgEnums.HitType hitType;
     private int accuracyRate;
@@ -61,7 +61,7 @@ public class Attack {
         try {
             attacker = (Unit) ref.getSourceObj();
             attacked = (BattleFieldObject) ref.getTargetObj();
-            action = (DC_ActiveObj) ref.getActive();
+            action = (ActiveObj) ref.getActive();
             // sneak = DC_AttackMaster.checkSneak(ref); elsewhere
         } catch (Exception e) {
             ExceptionMaster.printStackTrace(e);
@@ -105,7 +105,7 @@ public class Attack {
     public DAMAGE_TYPE getDamageType() {
         DAMAGE_TYPE dmg_type = action.getDamageType();
         if (dmg_type == null) {
-            DC_WeaponObj weapon = getWeapon();
+            WeaponItem weapon = getWeapon();
             if (weapon == null) {
                 dmg_type = attacker.getDamageType();
             } else {
@@ -118,12 +118,12 @@ public class Attack {
     public void setDamageType(DAMAGE_TYPE dmg_type) {
     }
 
-    public DC_WeaponObj getWeapon() {
+    public WeaponItem getWeapon() {
         if (weapon == null) {
             if (offhand) {
-                weapon = (DC_WeaponObj) ref.getObj(KEYS.OFFHAND);
+                weapon = (WeaponItem) ref.getObj(KEYS.OFFHAND);
             } else {
-                weapon = (DC_WeaponObj) ref.getObj(KEYS.WEAPON);
+                weapon = (WeaponItem) ref.getObj(KEYS.WEAPON);
             }
         }
         if (weapon == null) {
@@ -233,11 +233,11 @@ public class Attack {
         this.ref = ref;
     }
 
-    public DC_ActiveObj getAction() {
+    public ActiveObj getAction() {
         return action;
     }
 
-    public void setAction(DC_ActiveObj action) {
+    public void setAction(ActiveObj action) {
         this.action = action;
     }
 
@@ -294,9 +294,9 @@ public class Attack {
         return remainingDamage;
     }
 
-    public DC_WeaponObj getShield() {
+    public WeaponItem getShield() {
         if (attacked instanceof Unit) {
-            DC_WeaponObj weapon = ((Unit) attacked).getWeapon(true);
+            WeaponItem weapon = ((Unit) attacked).getWeapon(true);
             if (weapon != null) {
                 if (weapon.isShield()) {
                     return weapon;

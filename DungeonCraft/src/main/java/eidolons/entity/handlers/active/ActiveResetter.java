@@ -3,7 +3,7 @@ package eidolons.entity.handlers.active;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.values.DC_ValueManager;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.exploration.handlers.ExplorationMaster;
 import main.content.enums.entity.ActionEnums;
@@ -27,10 +27,10 @@ import static main.content.enums.system.MetaEnums.CUSTOM_VALUE_TEMPLATE.COST_RED
 /**
  * Created by JustMe on 2/23/2017.
  */
-public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
+public class ActiveResetter extends EntityResetter<ActiveObj> {
 
 
-    public ActiveResetter(DC_ActiveObj entity, EntityMaster<DC_ActiveObj> entityMaster) {
+    public ActiveResetter(ActiveObj entity, EntityMaster<ActiveObj> entityMaster) {
         super(entity, entityMaster);
     }
 

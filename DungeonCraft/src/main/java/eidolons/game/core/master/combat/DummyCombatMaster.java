@@ -1,6 +1,6 @@
 package eidolons.game.core.master.combat;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.core.game.DC_Game;
 
 /**
@@ -15,7 +15,7 @@ public class DummyCombatMaster extends CombatMaster {
     }
 
     @Override
-    public boolean isActionBlocked(DC_ActiveObj activeObj) {
+    public boolean isActionBlocked(ActiveObj activeObj) {
         if (blockActionExceptions != null)
             if (blockActionExceptions.contains(activeObj.getName()))
                 return false;

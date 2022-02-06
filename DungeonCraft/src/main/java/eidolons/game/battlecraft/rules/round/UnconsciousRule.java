@@ -17,7 +17,7 @@ import main.ability.effects.Effects;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
@@ -166,7 +166,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
 
 
     @Override
-    public void actionComplete(ActiveObj activeObj) {
+    public void actionComplete(IActiveObj activeObj) {
         for (Unit unit : game.getUnits()) {
             checkStatusUpdate(unit);
         }

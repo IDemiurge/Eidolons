@@ -1,6 +1,5 @@
 package eidolons.content.values;
 
-import eidolons.content.PROPS;
 import main.content.VALUE;
 import main.content.values.properties.G_PROPS;
 
@@ -15,7 +14,7 @@ public class A_ValuePages {
             G_PROPS.MAIN_HAND_ITEM, G_PROPS.OFF_HAND_ITEM,
             // G_PROPS.RESERVE_MAIN_HAND_ITEM, G_PROPS.RESERVE_OFF_HAND_ITEM,
             // PROPS.INVENTORY,PROPS.JEWELRY,PROPS.FIRST_CLASS, PROPS.SECOND_CLASS,PROPS.KNOWN_SPELLS, PROPS.LEARNED_SPELLS,
-            G_PROPS.ARMOR_ITEM, PROPS.QUICK_ITEMS,
+            G_PROPS.ARMOR_ITEM,
     };
     public static final VALUE[] HERO_PROPS = {
             CLASSES_TIER_1,
@@ -31,8 +30,7 @@ public class A_ValuePages {
             MASTERY_RANKS_3,
             PERKS,
             COMBAT_SPACES,
-            VERBATIM_SPACES,
-            MEMORIZED_SPACES,
+            SPELL_SPACES,
     };
 
     public static final VALUE[] AV_VALUES = {
@@ -84,8 +82,6 @@ public class A_ValuePages {
             WEIGHT, CARRYING_CAPACITY,
 
             SIGHT_RANGE,
-            SIDE_SIGHT_PENALTY, BEHIND_SIGHT_BONUS,
-
             // ENDURANCE_REGEN, ESSENCE_REGEN, FOCUS_REGEN,
 
             EMPTY_VALUE,

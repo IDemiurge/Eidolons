@@ -49,14 +49,19 @@ public class Positioner  extends DungeonHandler  {
     ) {
         return adjustCoordinate(entity, c, facing, null);
     }
-
     public static Coordinates adjustCoordinate(Entity entity,
                                                Coordinates c, FACING_DIRECTION facing
+            , Predicate<Coordinates> filterPredicate    ) {
+        return adjustCoordinate(entity, c, facing.getDirection(),filterPredicate);
+    }
+
+    public static Coordinates adjustCoordinate(Entity entity,
+                                               Coordinates c,  DIRECTION d
             , Predicate<Coordinates> filterPredicate    ) {
         if (canBeMovedOnto(entity, c )) {
             return c;
         }
-        Coordinates coordinate = c.getAdjacentCoordinate(facing.getDirection());
+        Coordinates coordinate = c.getAdjacentCoordinate(d);
         if (canBeMovedOnto(entity, coordinate )) {
             return coordinate;
         }
@@ -86,7 +91,7 @@ public class Positioner  extends DungeonHandler  {
 
             Coordinates adjacentCoordinate = c
                     .getAdjacentCoordinate(getRandomSpawnAdjustDirection());
-            coordinate = adjustCoordinate(adjacentCoordinate, facing);
+            coordinate = adjustCoordinate(adjacentCoordinate, FacingMaster.getFacingFromDirection(d));
         }
         if (coordinate.isInvalid()) {
             return null;
@@ -219,9 +224,6 @@ public class Positioner  extends DungeonHandler  {
         }
         Coordinates adjacentCoordinate = c.getAdjacentCoordinate(spawnSide);
         if (checkCanPlaceUnitOnCoordinate(adjacentCoordinate, objType)) {
-            getFacingAdjuster().unitPlaced(adjacentCoordinate,
-                    FacingMaster.getFacingFromDirection(
-                            DIRECTION.LEFT, false, false));
             return adjacentCoordinate;
         }
         DIRECTION direction = spawnSide;
@@ -232,8 +234,6 @@ public class Positioner  extends DungeonHandler  {
             direction = DirectionMaster.rotate90(direction, false);
             nextCoordinate = c.getAdjacentCoordinate(direction);
             if (checkCanPlaceUnitOnCoordinate(nextCoordinate, objType)) {
-                getFacingAdjuster().unitPlaced(nextCoordinate, FacingMaster.getFacingFromDirection(direction, true,
-                        true));
                 return nextCoordinate;
             }
             if (direction == spawnSide) {

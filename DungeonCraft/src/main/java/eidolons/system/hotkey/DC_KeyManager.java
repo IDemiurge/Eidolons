@@ -105,9 +105,6 @@ public class DC_KeyManager implements KeyListener {
 
 
     public boolean handleKeyTyped(int keyMod, char CHAR) {
-        if (OptionsMaster.getControlOptions().getBooleanValue(CONTROL_OPTION.WASD_INDEPENDENT_FROM_FACING)) {
-            CHAR = Accessibility.checkReplaceWasd(CHAR);
-        }
         int index = -1;
         String charString = CHAR + "";
         boolean preview = false;

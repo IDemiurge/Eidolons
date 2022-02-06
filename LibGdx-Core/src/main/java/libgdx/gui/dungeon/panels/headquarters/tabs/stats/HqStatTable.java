@@ -8,7 +8,7 @@ import libgdx.gui.dungeon.panels.TablePanel;
 import libgdx.gui.dungeon.panels.headquarters.ValueTable;
 import libgdx.gui.dungeon.panels.headquarters.datasource.HqDataMaster;
 import libgdx.gui.dungeon.panels.headquarters.datasource.hero.HqHeroDataSource;
-import eidolons.system.libgdx.datasource.HeroDataModel;
+import main.content.enums.entity.HeroEnums;
 import main.content.values.parameters.PARAMETER;
 
 /**
@@ -96,8 +96,8 @@ public abstract class HqStatTable extends ValueTable<PARAMS, HqStatElement> {
     protected   void modify(PARAMS datum){
         HqDataMaster.operation(getUserObject(),
          isMastery()
-          ? HeroDataModel.HERO_OPERATION.MASTERY_INCREMENT
-          : HeroDataModel.HERO_OPERATION.ATTRIBUTE_INCREMENT, datum);
+          ? HeroEnums.HERO_OPERATION.MASTERY_INCREMENT
+          : HeroEnums.HERO_OPERATION.ATTRIBUTE_INCREMENT, datum);
     }
 
     protected abstract boolean isMastery();

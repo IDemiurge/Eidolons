@@ -5,12 +5,12 @@ import eidolons.content.ContentConsts;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.Spell;
 import eidolons.netherflame.eidolon.heromake.NF_ProgressionMaster;
-import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.item.DC_JewelryObj;
-import eidolons.entity.item.DC_QuickItemObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.HeroItem;
+import eidolons.entity.item.trinket.JewelryItem;
+import eidolons.entity.item.QuickItem;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.DroppedItemManager;
 import eidolons.game.core.EUtils;
@@ -19,6 +19,7 @@ import eidolons.entity.item.vendor.GoldMaster;
 import eidolons.netherflame.eidolon.heromake.model.PointMaster;
 import eidolons.netherflame.eidolon.heromake.passives.SkillMaster;
 import eidolons.system.libgdx.datasource.HeroDataModel;
+import eidolons.system.libgdx.datasource.HeroOperation;
 import libgdx.gui.dungeon.panels.headquarters.HqMaster;
 import libgdx.gui.dungeon.panels.headquarters.HqPanel;
 import libgdx.gui.dungeon.panels.headquarters.datasource.hero.HqHeroDataSource;
@@ -29,6 +30,7 @@ import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.math.DC_MathManager;
 import eidolons.system.text.NameMaster;
 import main.content.DC_TYPE;
+import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.parameters.ParamMap;
@@ -55,7 +57,7 @@ import java.util.*;
 public class HqDataMaster {
     private static Map<Unit, HqDataMaster> map = new HashMap<>();
     protected boolean dirty;
-    protected Stack<List<HeroDataModel.HeroOperation>> undoStack = new Stack();
+    protected Stack<List<HeroOperation>> undoStack = new Stack();
     Unit hero;
     HeroDataModel heroModel;
     Stack<Pair<ParamMap, PropMap>> stack;
@@ -140,13 +142,13 @@ public class HqDataMaster {
     }
 
     public static void operation(HqHeroDataSource dataSource,
-                                 HeroDataModel.HERO_OPERATION operation,
+                                 HeroEnums.HERO_OPERATION operation,
                                  Object... args) {
         operation(dataSource.getEntity(), operation, args);
     }
 
     public static void operation(HeroDataModel model,
-                                 HeroDataModel.HERO_OPERATION operation,
+                                 HeroEnums.HERO_OPERATION operation,
                                  Object... args) {
         //        new Thread(() -> {
         Core.onThisOrNonGdxThread(() -> {
@@ -168,14 +170,14 @@ public class HqDataMaster {
         HqDataMaster.map = map;
     }
 
-    protected static DC_HeroItemObj getItem(Unit hero, Object arg) {
-        DC_HeroItemObj item = (DC_HeroItemObj) arg;
+    protected static HeroItem getItem(Unit hero, Object arg) {
+        HeroItem item = (HeroItem) arg;
         if (hero instanceof HeroDataModel) {
             if (item.isSimulation())
                 return item;
             else {
                 //create sim item
-                DC_HeroItemObj simItem = (DC_HeroItemObj) HqMaster.getSimCache().getSim(item);
+                HeroItem simItem = (HeroItem) HqMaster.getSimCache().getSim(item);
                 if (simItem == null) {
                     return item;
                 }
@@ -185,7 +187,7 @@ public class HqDataMaster {
             if (item.isSimulation())
             //                return (DC_HeroItemObj) hero.getGame().getObjectById(item.getId());
             {
-                DC_HeroItemObj realItem = (DC_HeroItemObj) HqMaster.getSimCache().getReal(item);
+                HeroItem realItem = (HeroItem) HqMaster.getSimCache().getReal(item);
                 if (realItem == null) {
                     return item;
                 }
@@ -260,7 +262,7 @@ public class HqDataMaster {
         return dataMaster;
     }
 
-    public void operation(HeroDataModel.HERO_OPERATION operation,
+    public void operation(HeroEnums.HERO_OPERATION operation,
                           Object... args) {
         applyOperation(heroModel,
                 operation, args);
@@ -284,7 +286,7 @@ public class HqDataMaster {
     public void undo_(boolean all) {
         if (heroModel.getModificationList().isEmpty())
             return;
-        List<HeroDataModel.HeroOperation> list = new ArrayList<>(heroModel.getModificationList());
+        List<HeroOperation> list = new ArrayList<>(heroModel.getModificationList());
 
         if (all)
             list.clear();
@@ -294,12 +296,12 @@ public class HqDataMaster {
         undo_(list);
     }
 
-    public void undo_(List<HeroDataModel.HeroOperation> list) {
+    public void undo_(List<HeroOperation> list) {
         undoStack.add(heroModel.getModificationList());
         setModificationList(list);
     }
 
-    public void setModificationList(List<HeroDataModel.HeroOperation> list) {
+    public void setModificationList(List<HeroOperation> list) {
         heroModel = createHeroDataModel(hero);
         heroModel.setModificationList(list);
         applyModifications(true);
@@ -310,7 +312,7 @@ public class HqDataMaster {
     }
 
     protected void redo_() {
-        List<HeroDataModel.HeroOperation> list = undoStack.pop();
+        List<HeroOperation> list = undoStack.pop();
         setModificationList(list);
     }
 
@@ -326,7 +328,7 @@ public class HqDataMaster {
         Unit hero = self ? heroModel : heroModel.getHero();
         //QUIET MODE ETC , LOCK THINGS!
         try {
-            for (HeroDataModel.HeroOperation operation : heroModel.getModificationList()) {
+            for (HeroOperation operation : heroModel.getModificationList()) {
                 applyOperation(hero, operation.getOperation(), operation.getArg());
             }
             if (!self) {
@@ -340,8 +342,8 @@ public class HqDataMaster {
         }
     }
 
-    public void applyItemOperation(Unit hero, HeroDataModel.HERO_OPERATION operation, Object... args) {
-        DC_HeroItemObj item = getItem(hero, args[0]);
+    public void applyItemOperation(Unit hero, HeroEnums.HERO_OPERATION operation, Object... args) {
+        HeroItem item = getItem(hero, args[0]);
         switch (operation) {
             //TODO macro update
             // case STASH:
@@ -356,9 +358,9 @@ public class HqDataMaster {
             //     break;
             case SELL:
             case BUY:
-                item = (DC_HeroItemObj) args[0]; //TODO fix?
+                item = (HeroItem) args[0]; //TODO fix?
                 Shop shop = (Shop) args[1];
-                if (operation == HeroDataModel.HERO_OPERATION.SELL) {
+                if (operation == HeroEnums.HERO_OPERATION.SELL) {
                     // if (!hero.removeFromInventory(item)) {
                     //     if (!Eidolons.getTown().removeFromStash(item))
                     //         return;
@@ -375,7 +377,7 @@ public class HqDataMaster {
                 DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__GOLD);
                 break;
             case PICK_UP:
-                item = (DC_HeroItemObj) args[0];
+                item = (HeroItem) args[0];
                 if (GoldMaster.checkGoldPack(item, hero)) {
                     DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.NEW__GOLD);
                 } else {
@@ -388,7 +390,7 @@ public class HqDataMaster {
                     EUtils.showInfoText("Cannot drop this");
                     return;
                 }
-                DC_HeroItemObj finalItem = item;
+                HeroItem finalItem = item;
                 GuiEventManager.trigger(GuiEventType.CONFIRM,
                         new ImmutableTriple<String, Runnable, Runnable>("Drop " + item.getName() + "?"
                                 , () -> {
@@ -416,24 +418,24 @@ public class HqDataMaster {
             case EQUIP:
             case EQUIP_RESERVE:
                 hero.removeFromInventory(item);
-                if (item instanceof DC_JewelryObj) {
-                    hero.addJewelryItem((DC_JewelryObj) item);
+                if (item instanceof JewelryItem) {
+                    hero.addJewelryItem((JewelryItem) item);
                 } else
                     hero.equip(item, (ITEM_SLOT) args[1]);
                 break;
             case EQUIP_QUICK_SLOT:
                 hero.unequip(item, false);
                 hero.removeFromInventory(item);
-                if (item instanceof DC_WeaponObj) {
-                    hero.addQuickItem(new DC_QuickItemObj(((DC_WeaponObj) item)));
+                if (item instanceof WeaponItem) {
+                    hero.addQuickItem(new QuickItem(((WeaponItem) item)));
 
                 } else
-                    hero.addQuickItem((DC_QuickItemObj) item);
+                    hero.addQuickItem((QuickItem) item);
                 break;
         }
     }
 
-    public void applyOperation(Unit hero, HeroDataModel.HERO_OPERATION operation, Object... args) {
+    public void applyOperation(Unit hero, HeroEnums.HERO_OPERATION operation, Object... args) {
 
         switch (operation) {
             case ADD_PARAMETER:
@@ -500,9 +502,6 @@ public class HqDataMaster {
             case CLASS_RANK:
                 break;
             case SPELL_LEARNED:
-            case SPELL_MEMORIZED:
-            case SPELL_EN_VERBATIM:
-            case SPELL_UNMEMORIZED:
                 applySpellOperation(hero, operation, args);
                 break;
             case LEVEL_UP:
@@ -516,25 +515,14 @@ public class HqDataMaster {
         }
     }
 
-    protected void applySpellOperation(Unit hero, HeroDataModel.HERO_OPERATION operation, Object... args) {
+    protected void applySpellOperation(Unit hero, HeroEnums.HERO_OPERATION operation, Object... args) {
         Spell spell = (Spell) args[0];
         switch (operation) {
             case SPELL_LEARNED:
                 HqSpellMaster.learnSpell(hero, spell);
                 break;
-            case SPELL_MEMORIZED:
-                HqSpellMaster.memorizeSpell(hero, spell);
-                break;
-            case SPELL_EN_VERBATIM:
-                HqSpellMaster.learnSpellEnVerbatim(hero, spell);
-                break;
-            case SPELL_UNMEMORIZED:
-                HqSpellMaster.unmemorizeSpell(hero, spell);
-                //                CharacterCreator.getHeroManager().removeContainerItem(hero, spell);
-                break;
         }
         reset();
-        hero.initSpells(true);
     }
 
     protected void reset() {

@@ -1,11 +1,11 @@
 package eidolons.game.battlecraft.rules.combat.misc;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.UnitEnums;
 
 public class ChargeRule {
-    public static Boolean checkRetainUnitTurn(DC_ActiveObj a) {
+    public static Boolean checkRetainUnitTurn(ActiveObj a) {
         if (a.getOwnerUnit().canActNow()) {
             if (a.getOwnerUnit().checkPassive(UnitEnums.STANDARD_PASSIVES.CHARGE)) {
                 if (a.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.MOVE) {

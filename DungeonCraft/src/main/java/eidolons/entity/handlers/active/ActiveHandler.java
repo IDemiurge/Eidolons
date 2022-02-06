@@ -1,6 +1,6 @@
 package eidolons.entity.handlers.active;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import main.entity.handlers.EntityHandler;
@@ -8,11 +8,11 @@ import main.entity.handlers.EntityHandler;
 /**
  * Created by JustMe on 2/24/2017.
  */
-public abstract class ActiveHandler extends EntityHandler<DC_ActiveObj> {
+public abstract class ActiveHandler extends EntityHandler<ActiveObj> {
 
 //    protected Unit ownerObj;
 
-    public ActiveHandler(DC_ActiveObj entity, ActiveMaster entityMaster) {
+    public ActiveHandler(ActiveObj entity, ActiveMaster entityMaster) {
         super(entity, entityMaster);
 //        ownerObj = entity.getOwnerUnit();
     }
@@ -26,7 +26,7 @@ public abstract class ActiveHandler extends EntityHandler<DC_ActiveObj> {
         return (ActiveMaster) super.getMaster();
     }
 
-    public DC_ActiveObj getAction() {
+    public ActiveObj getAction() {
         return super.getEntity();
     }
 

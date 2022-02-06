@@ -2,11 +2,10 @@ package eidolons.game.battlecraft.rules.combat.damage;
 
 import eidolons.content.PARAMS;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.unit.Unit;
-import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.rules.combat.damage.armor.ArmorMaster;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.core.master.EffectMaster;
@@ -19,7 +18,7 @@ import main.content.enums.entity.ActionEnums;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.EVENT_TYPE;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -139,7 +138,7 @@ public class DamageDealer {
                 CONSTRUCTED_EVENT_TYPE.UNIT_IS_DEALT_DAMAGE_OF_TYPE, damage_type.toString()))) {
             return 0;
         }
-        DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
+        ActiveObj active = (ActiveObj) ref.getActive();
         int damageDealt;
         if (damage_type == DAMAGE_TYPE.PURE) {
             damageDealt = dealPureDamage(targetObj, attacker,
@@ -162,8 +161,8 @@ public class DamageDealer {
     }
 
 
-    private static boolean isLogged(BattleFieldObject attacker, BattleFieldObject targetObj, ActiveObj active) {
-        if (active == null || EffectMaster.getFirstEffectOfClass((DC_ActiveObj) active, SpecialTargetingEffect.class) != null) {
+    private static boolean isLogged(BattleFieldObject attacker, BattleFieldObject targetObj, IActiveObj active) {
+        if (active == null || EffectMaster.getFirstEffectOfClass((ActiveObj) active, SpecialTargetingEffect.class) != null) {
             //don't log every crate being damaged...
             return !(targetObj instanceof Structure);
         }
@@ -188,7 +187,7 @@ public class DamageDealer {
             return 0;
         }
         ref = Ref.getCopy(ref);
-        DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
+        ActiveObj active = (ActiveObj) ref.getActive();
         BattleFieldObject attacker = (BattleFieldObject) ref.getSourceObj();
         BattleFieldObject attacked = (BattleFieldObject) ref.getTargetObj();
         if (dmg_type == null) {
@@ -257,7 +256,7 @@ public class DamageDealer {
     }
 
     // for floatingText anims
-    protected static void addDamageDealt(DC_ActiveObj active, DAMAGE_TYPE damage_type,
+    protected static void addDamageDealt(ActiveObj active, DAMAGE_TYPE damage_type,
                                          int amount, boolean main, Ref ref) {
         if (active == null)
             return;
@@ -454,7 +453,7 @@ public class DamageDealer {
 
 
     protected static boolean isAttack(Ref ref) {
-        DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
+        ActiveObj active = (ActiveObj) ref.getActive();
         if (active == null) {
             return false;
         }

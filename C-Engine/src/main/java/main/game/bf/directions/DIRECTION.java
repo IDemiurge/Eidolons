@@ -10,7 +10,8 @@ public enum DIRECTION {
     UP_LEFT(true, 135, true, false, false),
     UP_RIGHT(true, 45, true, true, false),
     DOWN_RIGHT(true, 315, true, true, true),
-    DOWN_LEFT(true, 225, true, false, true),;
+    DOWN_LEFT(true, 225, true, false, true),
+    NONE();
 
     public static final DIRECTION[] values = DIRECTION.values();
     public static final DIRECTION[] clockwise = {
@@ -24,9 +25,13 @@ public enum DIRECTION {
     };
     public Boolean growX;
     public Boolean growY;
-    private final boolean vertical;
+    private boolean vertical;
     private boolean diagonal;
     private int degrees;
+
+    DIRECTION(){
+
+    }
 
     DIRECTION(boolean diagonal, int degrees, boolean vertical,
               Boolean growX, Boolean growY) {

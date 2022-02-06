@@ -2,7 +2,7 @@ package libgdx.gui.dungeon.panels.dc.inventory.datasource;
 
 import eidolons.content.PARAMS;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.HeroItem;
 import eidolons.entity.unit.Unit;
 import libgdx.gui.dungeon.panels.dc.inventory.*;
 import libgdx.gui.dungeon.panels.dc.inventory.InvItemActor;
@@ -85,7 +85,7 @@ public class InventoryDataSource implements QuickSlotDataSource,
 
     @Override
     public List<InvItemActor> getQuickSlots() {
-        List<DC_HeroItemObj> slots = new ArrayList<>(unit.getQuickItems());
+        List<HeroItem> slots = new ArrayList<>(unit.getQuickItems());
         ListMaster.fillWithNullElements(slots
          , unit.getQuickSlotsMax());
         return getFactory().getList(slots, VisualEnums.CELL_TYPE.QUICK_SLOT);
@@ -114,12 +114,12 @@ public class InventoryDataSource implements QuickSlotDataSource,
     }
 
     @Override
-    public int getPrice(DC_HeroItemObj model, CELL_TYPE cellType) {
+    public int getPrice(HeroItem model, CELL_TYPE cellType) {
         return model.getIntParam(PARAMS.GOLD_COST);
     }
 
-    public List<InvItemActor> getInventorySlots(Collection<DC_HeroItemObj> items) {
-        List<DC_HeroItemObj> inv = applyFilter(items, filter);
+    public List<InvItemActor> getInventorySlots(Collection<HeroItem> items) {
+        List<HeroItem> inv = applyFilter(items, filter);
         ListMaster.fillWithNullElements(inv
          , InventorySlotsPanel.SIZE);
         return getFactory().getList(inv, VisualEnums.CELL_TYPE.INVENTORY);

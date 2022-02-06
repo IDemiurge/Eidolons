@@ -10,15 +10,6 @@ import main.system.data.DataUnit;
 public class BattleOptions extends DataUnit<ARENA_GAME_OPTIONS> {
     private int battleLevel;
 
-    public FACING_DIRECTION getPlayerPartySide() {
-        if (getValue(ARENA_GAME_OPTIONS.PLAYER_STARTING_SIDE) != null) {
-            return new EnumMaster<FACING_DIRECTION>().retrieveEnumConst(
-             FACING_DIRECTION.class,
-             getValue(ARENA_GAME_OPTIONS.PLAYER_STARTING_SIDE));
-        }
-        return main.game.bf.directions.FACING_DIRECTION.NONE;
-    }
-
     public DIFFICULTY getDifficulty() {
         if (getValue(ARENA_GAME_OPTIONS.DIFFICULTY) != null) {
             return new EnumMaster<DIFFICULTY>().retrieveEnumConst(

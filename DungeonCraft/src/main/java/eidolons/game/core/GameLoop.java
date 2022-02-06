@@ -2,11 +2,11 @@ package eidolons.game.core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.AI_Manager;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionHelper;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.rules.RuleEnums;
@@ -54,7 +54,7 @@ public abstract class GameLoop {
 
     protected Unit activeUnit;
     protected DC_Game game;
-    protected DC_ActiveObj activatingAction;
+    protected ActiveObj activatingAction;
     protected boolean paused;
     protected boolean aiFailNotified;
     protected boolean aftermath;
@@ -67,8 +67,8 @@ public abstract class GameLoop {
     protected boolean stopped;
     protected ActionInput lastActionInput;
     private boolean firstActionDone;
-    private DC_ActiveObj lastAction;
-    private DC_ActiveObj lastActionEvent;
+    private ActiveObj lastAction;
+    private ActiveObj lastActionEvent;
     private boolean logicWaiting;
     private boolean visualLock;
 
@@ -320,7 +320,7 @@ public abstract class GameLoop {
         if (!firstActionDone) {
             Chronos.mark("First ai action");
         }
-        Action aiAction =
+        AiAction aiAction =
                 game.getAiManager().getAction(game.getManager().getActiveObj());
         if (!firstActionDone) {
             Long time = getWaitOnStartTime() - Chronos.getTimeElapsedForMark("First ai action");
@@ -352,7 +352,7 @@ public abstract class GameLoop {
         return input;
     }
 
-    public DC_ActiveObj getActivatingAction() {
+    public ActiveObj getActivatingAction() {
         return activatingAction;
     }
 
@@ -569,19 +569,19 @@ public abstract class GameLoop {
         activateAction(new ActionInput(Core.getMainHero().getActionOrSpell(name), new Context(Core.getMainHero().getRef())));
     }
 
-    public DC_ActiveObj getLastAction() {
+    public ActiveObj getLastAction() {
         return lastAction;
     }
 
-    public void setLastAction(DC_ActiveObj lastAction) {
+    public void setLastAction(ActiveObj lastAction) {
         this.lastAction = lastAction;
     }
 
-    public void setLastActionEvent(DC_ActiveObj lastActionEvent) {
+    public void setLastActionEvent(ActiveObj lastActionEvent) {
         this.lastActionEvent = lastActionEvent;
     }
 
-    public DC_ActiveObj getLastActionEvent() {
+    public ActiveObj getLastActionEvent() {
         return lastActionEvent;
     }
 

@@ -39,10 +39,6 @@ public class LastSeenTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
                 OUTLINE_TYPE outline = object.getLastSeenOutline();
                 if (outline!=null )
                     name = outline.getName();
-            } else {
-                if (object instanceof Unit) {
-                    info+=", facing " + object.getLastSeenFacing();
-                }
             }
             list.add(new ValueContainer("You  recall...", info));
 

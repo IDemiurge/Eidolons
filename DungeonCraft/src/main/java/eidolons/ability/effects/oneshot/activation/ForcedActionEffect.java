@@ -1,7 +1,7 @@
 package eidolons.ability.effects.oneshot.activation;
 
 import eidolons.entity.unit.Unit;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.entity.Ref;
@@ -30,9 +30,9 @@ public class ForcedActionEffect extends MicroEffect implements OneshotEffect {
             REF.setTarget(ref.getId(key));
         }
 
-        Action action = new Action(unit.getAction(actionName), REF);
+        AiAction aiAction = new AiAction(unit.getAction(actionName), REF);
         unit.getGame().getAiManager().getAI(unit).getForcedActions()
-         .add(action);
+         .add(aiAction);
         return true;
     }
 }

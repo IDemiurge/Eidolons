@@ -27,8 +27,8 @@ import main.system.auxiliary.log.LogMaster;
 import java.util.Set;
 
 /**
- * With gamestate being mostly a src.main.data holder, this class is a method container
- * Selection Top level actions - kill(), ... (no direct src.main.data manipulations)
+ * With gamestate being mostly a data holder, this class is a method container
+ * Selection Top level actions - kill(), ... (no direct data manipulations)
  *
  * @author JustMe
  */
@@ -41,7 +41,7 @@ public abstract class GameManager implements GenericGameManager {
     protected GameObjMaster gameObjMaster;
     protected boolean selecting;
     protected Set<Obj> selectingSet;
-    private ActiveObj activatingAction;
+    private IActiveObj activatingAction;
     private boolean triggerBeingChecked;
     private boolean triggerBeingActivated;
 
@@ -211,11 +211,11 @@ public abstract class GameManager implements GenericGameManager {
     public abstract BuffObj createBuff(BuffType type, Obj active, Player player, Ref ref,
                                        Effect effect, int duration, Condition retainCondition);
 
-    public ActiveObj getActivatingAction() {
+    public IActiveObj getActivatingAction() {
         return activatingAction;
     }
 
-    public void setActivatingAction(ActiveObj activeObj) {
+    public void setActivatingAction(IActiveObj activeObj) {
         this.activatingAction = activeObj;
     }
 

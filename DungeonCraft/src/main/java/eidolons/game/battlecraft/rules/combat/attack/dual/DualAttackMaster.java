@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.rules.combat.attack.dual;
 import eidolons.ability.costs.DC_CostsFactory;
 import eidolons.ability.effects.oneshot.activation.ActivateEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.unit.Unit;
 import main.ability.Abilities;
 import main.ability.ActiveAbility;
@@ -29,8 +29,8 @@ import java.util.List;
  */
 @Deprecated
 public class DualAttackMaster {
-    public static List<DC_UnitAction> getDualAttacks(Unit unit) {
-        List<DC_UnitAction> list = new ArrayList<>();
+    public static List<UnitAction> getDualAttacks(Unit unit) {
+        List<UnitAction> list = new ArrayList<>();
         // DC Review
         // unit.getMainWeapon().getAttackActions().forEach(main -> {
         //     unit.getOffhandWeapon().getAttackActions().forEach(offhand -> {
@@ -43,7 +43,7 @@ public class DualAttackMaster {
         return list;
     }
 
-    private static boolean checkTypeCanMerge(DC_UnitAction main, DC_UnitAction offhand) {
+    private static boolean checkTypeCanMerge(UnitAction main, UnitAction offhand) {
         // good as counters?
         if (offhand.checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.TWO_HANDS.toString())) {
             return false;
@@ -51,14 +51,14 @@ public class DualAttackMaster {
         return !main.checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.TWO_HANDS.toString());
     }
 
-    private static boolean checkRangeCanMerge(DC_UnitAction main, DC_UnitAction offhand) {
+    private static boolean checkRangeCanMerge(UnitAction main, UnitAction offhand) {
         if (main.isRanged())
             return false;
         return main.getIntParam(PARAMS.RANGE) == offhand.getIntParam(PARAMS.RANGE);
     }
 
     //TODO core revamp - VIA EXTRA ATK only!
-    private static DC_UnitAction createDual(DC_UnitAction main, DC_UnitAction offhand) {
+    private static UnitAction createDual(UnitAction main, UnitAction offhand) {
         Costs costs = getDualCosts(main, offhand);
         ActiveAbility activateAttacks = new ActiveAbility(main.getTargeting(), new Effects(new ActivateEffect(main.getName(), true)
                 , new ActivateEffect(offhand.getName(), true)));
@@ -74,7 +74,7 @@ public class DualAttackMaster {
                 continue;
             newType.setParam(p, cost.getPayment().getAmountFormula().toString());
         }
-        DC_UnitAction dual = new DC_UnitAction(newType, main.getOwner(), main.getGame(), new Ref(main.getOwnerUnit()));
+        UnitAction dual = new UnitAction(newType, main.getOwner(), main.getGame(), new Ref(main.getOwnerUnit()));
         dual.setAbilities(abilities);
         dual.setCosts(costs);
         dual.setTargeting(main.getTargeting());
@@ -83,7 +83,7 @@ public class DualAttackMaster {
         return dual;
     }
 
-    private static Costs getDualCosts(DC_UnitAction main, DC_UnitAction offhand) {
+    private static Costs getDualCosts(UnitAction main, UnitAction offhand) {
         List<Cost> list = new ArrayList<>();
 
         Costs costsMain;
@@ -109,7 +109,7 @@ public class DualAttackMaster {
         return costsDual;
     }
 
-    private static boolean checkCostsCanMerge(DC_UnitAction main, DC_UnitAction offhand) {
+    private static boolean checkCostsCanMerge(UnitAction main, UnitAction offhand) {
         Costs costsMain;
         costsMain = DC_CostsFactory.getCostsForAction(main);
         Costs costsOffhand;

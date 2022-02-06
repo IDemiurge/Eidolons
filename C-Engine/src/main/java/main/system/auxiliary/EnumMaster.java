@@ -397,6 +397,9 @@ public class EnumMaster<T> {
     public T getRandomEnumConst(Class<T> CLASS) {
         return CLASS.getEnumConstants()[RandomWizard.getRandomInt(CLASS.getEnumConstants().length)];
     }
+    public T getRandomEnumConst(Class<T> CLASS, int offset) {
+        return CLASS.getEnumConstants()[RandomWizard.getRandomInt(CLASS.getEnumConstants().length-offset)];
+    }
 
     public List<T> getEnumList(Class<T> CLASS) {
         return new ArrayList<>(Arrays.asList(CLASS.getEnumConstants()));

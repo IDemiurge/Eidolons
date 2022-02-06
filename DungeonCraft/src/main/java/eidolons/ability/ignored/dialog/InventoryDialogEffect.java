@@ -1,7 +1,7 @@
 package eidolons.ability.ignored.dialog;
 
 import eidolons.ability.InventoryTransactionManager;
-import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.HeroItem;
 import eidolons.entity.unit.Unit;
 import eidolons.game.exploration.handlers.ExplorationMaster;
 import main.entity.Ref;
@@ -32,7 +32,7 @@ public class InventoryDialogEffect extends DialogEffect {
     @Override
     public boolean applyThis() {
         hero = (Unit) ref.getSourceObj();
-        List<DC_HeroItemObj> before = new ArrayList<>(hero.getInventory());
+        List<HeroItem> before = new ArrayList<>(hero.getInventory());
         getGame().getInventoryTransactionManager().setActive(true);
         Integer operations = numberOfOperations.getInt(ref);
 //        getGame().getInventoryManager().setHero(getSource());
@@ -56,8 +56,8 @@ public class InventoryDialogEffect extends DialogEffect {
         return result;
     }
 
-    private void firePickupEvents(List<DC_HeroItemObj> before) {
-        for (DC_HeroItemObj item : before) {
+    private void firePickupEvents(List<HeroItem> before) {
+        for (HeroItem item : before) {
             if (!hero.getInventory().contains(item)){
                 Ref ref = hero.getRef().getCopy();
                 ref.setObj(KEYS.ITEM, item);
@@ -65,7 +65,7 @@ public class InventoryDialogEffect extends DialogEffect {
             }
         }
 
-        for (DC_HeroItemObj item : hero.getInventory()) {
+        for (HeroItem item : hero.getInventory()) {
             if (!before.contains(item)){
                 Ref ref = hero.getRef().getCopy();
                 ref.setObj(KEYS.ITEM, item);

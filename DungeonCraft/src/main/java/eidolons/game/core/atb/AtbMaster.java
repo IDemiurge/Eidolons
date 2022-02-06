@@ -1,7 +1,7 @@
 package eidolons.game.core.atb;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 import main.entity.obj.BuffObj;
@@ -10,11 +10,11 @@ import main.entity.obj.BuffObj;
  * Created by JustMe on 3/26/2018.
  */
 public class AtbMaster {
-    public static float getDisplayedReadinessCost(DC_ActiveObj action) {
+    public static float getDisplayedReadinessCost(ActiveObj action) {
         return getReadinessCost(action) / 100;
     }
 
-    public static float getReadinessCost(DC_ActiveObj action) {
+    public static float getReadinessCost(ActiveObj action) {
         return (float) (
                 action.getParamDouble(PARAMS.AP_COST)
                         * AtbController.ATB_READINESS_PER_AP);
@@ -32,7 +32,7 @@ public class AtbMaster {
         return (float) max;
     }
 
-    public static double reduceReadiness(DC_ActiveObj action) {
+    public static double reduceReadiness(ActiveObj action) {
         float initiativeCost = getReadinessCost(action);
         if (initiativeCost <= 0)
             return 0;

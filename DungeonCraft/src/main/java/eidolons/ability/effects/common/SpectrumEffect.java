@@ -3,7 +3,7 @@ package eidolons.ability.effects.common;
 import eidolons.ability.effects.DC_Effect;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.game.core.master.EffectMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
@@ -30,7 +30,6 @@ public class SpectrumEffect extends DC_Effect {
     protected Condition filterConditions;
     protected String reductionForDistanceModifier;
     protected BattleFieldObject bfObj;
-    protected FACING_DIRECTION previousFacing;
     protected Integer range;
     String rangeFormula;
     KEYS source = KEYS.SOURCE;
@@ -92,11 +91,9 @@ public class SpectrumEffect extends DC_Effect {
         else {
             //TODO
         }
-        FACING_DIRECTION facing = bfObj.getFacing();
 
         if (circular) {
             backwardRange = range;
-            facing = main.game.bf.directions.FACING_DIRECTION.NORTH;
         } else {
             sidePenalty = 1;
         }
@@ -104,9 +101,8 @@ public class SpectrumEffect extends DC_Effect {
         if (isCoordinatesCached()) {
             coordinates = cached;
         }
-        if (coordinates == null)
-            coordinates =
-             getCoordinates(sidePenalty, backwardRange, facing);
+        // if (coordinates == null) //TODO LC 2.0
+        //     coordinates =getCoordinates(sidePenalty, backwardRange, facing);
         cached = coordinates;
 
 
@@ -126,7 +122,7 @@ public class SpectrumEffect extends DC_Effect {
             DequeImpl<? extends Obj> objects = new DequeImpl<>(getGame().getObjectsOnCoordinate(
                c, false ));
             if (applyThrough) {
-                DC_Cell cell = getGame().getCell(c);
+                GridCell cell = getGame().getCell(c);
                 if (cell != null) {
                     objects.addCast(cell);
                 }
@@ -184,17 +180,6 @@ public class SpectrumEffect extends DC_Effect {
         return false;
     }
 
-    private Collection<Coordinates> getCoordinates(Integer sidePenalty, Integer backwardRange, FACING_DIRECTION facing) {
-        return  getGame().getVisionMaster().getSightMaster()
-         .getSpectrumCoordinates(
-          range, sidePenalty, backwardRange, bfObj,
-          vision, facing);
-    }
-
-    // public Object getAppliedEffects() {
-    // // TODO Auto-generated method stub
-    // return null;
-    // }
     protected void initEffects() {
         ref.setID(KEYS.INFO, ref.getId(KEYS.ACTIVE));
         effects = EffectMaster.initParamModEffects(paramString, ref);

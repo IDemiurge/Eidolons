@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.content.consts.DecorData;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
@@ -243,7 +243,7 @@ it sort of broke at some point - need to investigate!
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                DC_Cell cell = DC_Game.game.getCell(Coordinates.get(x,
+                GridCell cell = DC_Game.game.getCell(Coordinates.get(x,
                         y));
                 if (y < y2 && y >= y1
                         && x < x2 && x >= x1) {
@@ -1073,11 +1073,11 @@ it sort of broke at some point - need to investigate!
         return gridManager;
     }
 
-    public DC_Cell getCell(Coordinates c) {
+    public GridCell getCell(Coordinates c) {
         return getCell(c.x, c.y);
     }
 
-    public DC_Cell getCell(int i, int i1) {
+    public GridCell getCell(int i, int i1) {
         if (cells[i][i1] == null) {
             return null;
         }
@@ -1209,11 +1209,11 @@ it sort of broke at some point - need to investigate!
             getCustomOverlayingObjects()[c.x][c.y] = (object);
         });
         GuiEventManager.bind(removePrevious, INIT_CELL_OVERLAY, (obj) -> {
-            DC_Cell cell;
+            GridCell cell;
             if (obj.get() instanceof Coordinates) {
                 cell = getCell(((Coordinates) obj.get()));
             } else
-                cell = (DC_Cell) obj.get();
+                cell = (GridCell) obj.get();
             GridCellContainer container = cells[cell.getX()][(cell.getY())];
             String overlayData = cell.getOverlayData();
             if (StringMaster.isEmpty(overlayData)) {
@@ -1235,7 +1235,7 @@ it sort of broke at some point - need to investigate!
         });
         GuiEventManager.bind(removePrevious, CELL_RESET, obj -> {
             try {
-                DC_Cell cell = (DC_Cell) obj.get();
+                GridCell cell = (GridCell) obj.get();
                 GridCellContainer container = cells[cell.getX()][(cell.getY())];
                 //overlays
                 container.getCellImage().setDrawable(
@@ -1363,7 +1363,7 @@ it sort of broke at some point - need to investigate!
     }
 
     public boolean isVoid(int x, int y) {
-        DC_Cell c = getCell(x, y);
+        GridCell c = getCell(x, y);
         if (c != null) {
             return c.isVOID();
         }

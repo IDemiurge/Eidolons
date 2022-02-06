@@ -1,7 +1,7 @@
 package libgdx.gui.dungeon.panels.dc.unitinfo.tooltips;
 
-import eidolons.entity.item.DC_ArmorObj;
-import eidolons.entity.item.DC_HeroSlotItem;
+import eidolons.entity.item.ArmorItem;
+import eidolons.entity.item.HeroSlotItem;
 import libgdx.gui.generic.ValueContainer;
 import main.content.values.properties.G_PROPS;
 import org.apache.commons.lang3.StringUtils;
@@ -14,10 +14,10 @@ import static eidolons.content.values.UNIT_INFO_PARAMS.ARMOR_TOOLTIP;
 
 public class ArmorTooltip extends SlotItemTooltip {
 
-    public ArmorTooltip(DC_ArmorObj armor) {
+    public ArmorTooltip(ArmorItem armor) {
         setUserObject(new SlotItemToolTipDataSource(null) {
             @Override
-            public DC_HeroSlotItem getItem() {
+            public HeroSlotItem getItem() {
                 return armor;
             }
 

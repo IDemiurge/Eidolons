@@ -3,7 +3,7 @@ package libgdx.gui.dungeon.panels.headquarters.tabs.tree.skill;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.netherflame.eidolon.heromake.passives.SkillMaster;
 import libgdx.gui.dungeon.panels.headquarters.tabs.tree.SlotSelectionRadialMenu;
-import eidolons.system.libgdx.datasource.HeroDataModel;
+import main.content.enums.entity.HeroEnums;
 import main.entity.type.ObjType;
 import main.system.EventType;
 import main.system.GuiEventType;
@@ -26,8 +26,8 @@ public class SkillSelectionMenu extends SlotSelectionRadialMenu {
     }
 
     @Override
-    protected HeroDataModel.HERO_OPERATION getOperation() {
-        return HeroDataModel.HERO_OPERATION.NEW_SKILL;
+    protected HeroEnums.HERO_OPERATION getOperation() {
+        return HeroEnums.HERO_OPERATION.NEW_SKILL;
     }
 
     @Override

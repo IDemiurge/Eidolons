@@ -4,7 +4,6 @@ import eidolons.entity.unit.trainers.UnitTrainingMaster;
 import eidolons.ability.effects.DC_Effect;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.EUtils;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.Effect;
@@ -17,13 +16,12 @@ import main.data.DataManager;
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.BuffObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.entity.type.impl.BuffType;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -38,7 +36,6 @@ public class SummonEffect extends DC_Effect implements OneshotEffect {
     boolean summoningSickness;
     private Formula summonedUnitXp;
     private Player owner;
-    private Boolean facingSummoner;
     Formula durationFormula;
 
     /*
@@ -121,7 +118,7 @@ public class SummonEffect extends DC_Effect implements OneshotEffect {
 
         getSourceUnitOrNull().getRef().setID(KEYS.SUMMONER, ref.getSource());
 
-        ActiveObj active = ref.getActive();
+        IActiveObj active = ref.getActive();
         if (active == null) {
             active = unit.getGame().getLoop().getLastActionInput().getAction();
         }
@@ -143,21 +140,6 @@ public class SummonEffect extends DC_Effect implements OneshotEffect {
         applyLifetimeBuff();
 
         // UpkeepRule.addUpkeep(unit);
-        if (unit.getRef().getObj(KEYS.SUMMONER) instanceof Unit) {
-            Unit summoner = (Unit) unit.getRef().getObj(KEYS.SUMMONER);
-            FACING_DIRECTION f = summoner.getFacing();
-            if (facingSummoner == null) {
-                facingSummoner = active
-                        .checkProperty(G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.FACE_SUMMONER.toString());
-            }
-            if (active.checkProperty(G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.RANDOM_FACING.toString())) {
-                f = FacingMaster.getRandomFacing();
-            }
-            if (facingSummoner) {
-                f = f.flip();
-            }
-            unit.setFacing(f);
-        }
         if (effects != null) {
             REF.setTarget(getSourceUnitOrNull().getId());
             return effects.apply(REF);

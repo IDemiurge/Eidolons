@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.ai.elements.actions;
 
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.tools.target.AI_SpellMaster;
@@ -24,16 +24,16 @@ import java.util.List;
 public class AiUnitActionMaster {
     public static List<ActionSequence> splitRangedSequence(ActionSequence sequence) {
         ArrayList<ActionSequence> list = new ArrayList<>();
-        for (Action a : sequence.getActions()) {
+        for (AiAction a : sequence.getActions()) {
             if (a instanceof AiQuickItemAction) {
-                ArrayList<Action> actions = new ArrayList<>();
-                actions.add(a);
-                for (Action a1 : sequence.getActions()) {
+                ArrayList<AiAction> aiActions = new ArrayList<>();
+                aiActions.add(a);
+                for (AiAction a1 : sequence.getActions()) {
                     if (!(a1 instanceof AiQuickItemAction)) {
-                        actions.add(a1);
+                        aiActions.add(a1);
                     }
                 }
-                ActionSequence rangedSequence = new ActionSequence(actions, sequence.getTask(),
+                ActionSequence rangedSequence = new ActionSequence(aiActions, sequence.getTask(),
                  sequence.getAi());
                 list.add(rangedSequence);
             }
@@ -45,9 +45,9 @@ public class AiUnitActionMaster {
     }
 
     //returns all of unit's active that we want to preCheck for execution
-    public static List<DC_ActiveObj> getFullActionList(GOAL_TYPE type, Unit unit) {
+    public static List<ActiveObj> getFullActionList(GOAL_TYPE type, Unit unit) {
         // cache
-        List<DC_ActiveObj> actions = new XList<>();
+        List<ActiveObj> actions = new XList<>();
         switch (type) {
             case PROTECT:
                 actions.add(AiActionFactory.getUnitAction(unit, "Guard Mode"));
@@ -124,7 +124,7 @@ public class AiUnitActionMaster {
     }
 
     private static boolean checkAddStealth(boolean hidePref, Unit unit,
-                                           List<DC_ActiveObj> actions) {
+                                           List<ActiveObj> actions) {
         if (unit.getBuff("Stealth Mode") != null) {
             return false;
         }
@@ -149,9 +149,9 @@ public class AiUnitActionMaster {
 
     }
 
-    public static List<DC_ActiveObj> getMoveActions(Unit unit) {
-        List<DC_ActiveObj> list = new ArrayList<>(unit.getActionMap().get(ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE));
-        DequeImpl<DC_UnitAction> actionList = unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_MOVE);
+    public static List<ActiveObj> getMoveActions(Unit unit) {
+        List<ActiveObj> list = new ArrayList<>(unit.getActionMap().get(ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE));
+        DequeImpl<UnitAction> actionList = unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_MOVE);
         if (ListMaster.isNotEmpty(actionList)) {
             list.addAll(actionList);
         }
@@ -160,10 +160,10 @@ public class AiUnitActionMaster {
         return list;
     }
 
-    public static List<DC_ActiveObj> getActionObjectList(List<Action> actions) {
-        List<DC_ActiveObj> activeList = new ArrayList<>();
-        if (actions != null) {
-            for (Action object : actions) {
+    public static List<ActiveObj> getActionObjectList(List<AiAction> aiActions) {
+        List<ActiveObj> activeList = new ArrayList<>();
+        if (aiActions != null) {
+            for (AiAction object : aiActions) {
                 if (object != null) {
                     activeList.add(object.getActive());
                 }
@@ -172,9 +172,9 @@ public class AiUnitActionMaster {
         return activeList;
     }
 
-    public static Collection<DC_ActiveObj> getSpells(AI_LOGIC logic, Unit unit) {
-        List<DC_ActiveObj> list = new ArrayList<>();
-        for (DC_ActiveObj spell : unit.getSpells()) {
+    public static Collection<ActiveObj> getSpells(AI_LOGIC logic, Unit unit) {
+        List<ActiveObj> list = new ArrayList<>();
+        for (ActiveObj spell : unit.getSpells()) {
             if (spell.getProperty(PROPS.AI_LOGIC).equalsIgnoreCase(logic.toString())) {
                 list.add(spell);
             } else {

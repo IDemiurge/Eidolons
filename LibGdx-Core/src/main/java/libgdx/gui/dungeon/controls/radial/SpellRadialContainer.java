@@ -1,7 +1,7 @@
 package libgdx.gui.dungeon.controls.radial;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.DC_Obj;
 import libgdx.gui.UiMaster;
 
@@ -13,7 +13,7 @@ public class SpellRadialContainer extends RadialContainer {
         super(texture, action);
     }
 
-    public SpellRadialContainer(TextureRegion textureRegion, Runnable runnable, boolean valid, DC_ActiveObj activeObj, DC_Obj target) {
+    public SpellRadialContainer(TextureRegion textureRegion, Runnable runnable, boolean valid, ActiveObj activeObj, DC_Obj target) {
         super(textureRegion, runnable, valid, activeObj, target);
     }
 

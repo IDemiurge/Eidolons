@@ -2,8 +2,8 @@ package libgdx.gui.dungeon.panels.dc.unitinfo.tooltips;
 
 import eidolons.content.values.DC_ValueManager;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.item.WeaponItem;
 import main.content.VALUE;
 import main.content.enums.entity.ActionEnums;
 import main.content.values.properties.G_PROPS;
@@ -15,8 +15,8 @@ import main.system.math.MathMaster;
  */
 public class ActionTooltipMaster {
 
-    private static String getDiceText(DC_ActiveObj action) {
-        DC_WeaponObj weapon = action.getActiveWeapon();
+    private static String getDiceText(ActiveObj action) {
+        WeaponItem weapon = action.getActiveWeapon();
         int dieSize =
          MathMaster.applyPercent(
           weapon.getIntParam(PARAMS.DIE_SIZE),
@@ -29,7 +29,7 @@ public class ActionTooltipMaster {
         return dice + "d" + dieSize;
     }
 
-    private static String getDamageText(DC_ActiveObj action) {
+    private static String getDamageText(ActiveObj action) {
 //    new AttackCalculator()
         int damage = MathMaster.applyPercent(
          action.getOwnerUnit().getIntParam(action.isOffhand() ? PARAMS.OFF_HAND_DAMAGE : PARAMS.DAMAGE),
@@ -51,9 +51,6 @@ public class ActionTooltipMaster {
                 case INSTANT_ATTACK_MOD:
                 case INSTANT_DAMAGE_MOD:
                     return ActionEnums.MOD_IDENTIFIER.INSTANT_ATTACK.getImagePath();
-                case SIDE_ATTACK_MOD:
-                case SIDE_DAMAGE_MOD:
-                    return ActionEnums.MOD_IDENTIFIER.SIDE_ATTACK.getImagePath();
                 case DIAGONAL_ATTACK_MOD:
                 case DIAGONAL_DAMAGE_MOD:
                     return ActionEnums.MOD_IDENTIFIER.DIAGONAL_ATTACK.getImagePath();
@@ -73,7 +70,7 @@ public class ActionTooltipMaster {
         return p == PARAMS.DAMAGE || p == PARAMS.ATTACK;
     }
 
-    public static String getValueForTableParam(PARAMS value, DC_ActiveObj action) {
+    public static String getValueForTableParam(PARAMS value, ActiveObj action) {
         if (isParamDisplayedAsCustomString(value)) {
             try {
                 return getStringForTableValue(value, action);
@@ -90,7 +87,7 @@ public class ActionTooltipMaster {
     }
 
     public static String getTextForTableValue(VALUE value,
-                                              DC_ActiveObj action) {
+                                              ActiveObj action) {
         if (value instanceof PARAMS) {
             PARAMS p = (PARAMS) value;
 //            if (isIgnoreIfZero(portrait) ) {
@@ -112,7 +109,7 @@ public class ActionTooltipMaster {
         return getStringForTableValue(value, action);
     }
 
-    public static String getStringForTableValue(VALUE value, DC_ActiveObj action) {
+    public static String getStringForTableValue(VALUE value, ActiveObj action) {
         try {
             return tryGetStringForTableValue(value, action);
         } catch (Exception e) {
@@ -121,7 +118,7 @@ public class ActionTooltipMaster {
         return "ERROR";
     }
 
-    public static String tryGetStringForTableValue(VALUE value, DC_ActiveObj action) {
+    public static String tryGetStringForTableValue(VALUE value, ActiveObj action) {
         if (value == G_PROPS.NAME) {
             return action.getName();
         }
@@ -169,12 +166,12 @@ public class ActionTooltipMaster {
     }
 
 
-    private static String getArmorPenetrationDescription(DC_ActiveObj action) {
+    private static String getArmorPenetrationDescription(ActiveObj action) {
         return "";
 
     }
 
-    public static void test(DC_ActiveObj action, PARAMS[] params) {
+    public static void test(ActiveObj action, PARAMS[] params) {
         for (PARAMS p : params) {
             String s = getStringForTableValue(p, action);
             if (s != null) {
@@ -183,20 +180,20 @@ public class ActionTooltipMaster {
         }
     }
 
-    private static String getBleedDescription(DC_ActiveObj action) {
+    private static String getBleedDescription(ActiveObj action) {
         return "Bleeding: Inflicts " + action.getIntParam(PARAMS.BLEEDING_MOD) + "% Bleed Counters";
 
     }
 
-    public static String getRange0(DC_ActiveObj action) {
+    public static String getRange0(ActiveObj action) {
         return "0";
     }
 
-    public static String getRange1(DC_ActiveObj action) {
+    public static String getRange1(ActiveObj action) {
         return String.valueOf(action.getIntParam(PARAMS.RANGE)); //AUTO_ATTACK_?
     }
 
-    public static String getRange2(DC_ActiveObj action) {
+    public static String getRange2(ActiveObj action) {
         return String.valueOf(action.getIntParam(PARAMS.RANGE) + 1) + "+";
     }
 

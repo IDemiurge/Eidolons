@@ -1,14 +1,10 @@
 package main.gui.components.table;
 
-import eidolons.content.DC_CONSTS;
-import eidolons.content.DC_ContentValsManager;
-import eidolons.content.PARAMS;
-import eidolons.content.PROPS;
+import eidolons.content.*;
 import eidolons.content.values.DC_ValueManager;
 import main.content.*;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.ItemEnums;
-import main.content.enums.entity.SkillEnums.ATTRIBUTE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.MACRO_PROPS;

@@ -9,7 +9,6 @@ import eidolons.game.battlecraft.ai.advanced.machine.AiPriorityConstantMaster;
 import eidolons.game.battlecraft.ai.elements.actions.ActionManager;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequenceConstructor;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.PathSequenceConstructor;
-import eidolons.game.battlecraft.ai.elements.actions.sequence.TurnSequenceConstructor;
 import eidolons.game.battlecraft.ai.elements.goal.GoalManager;
 import eidolons.game.battlecraft.ai.elements.task.TaskManager;
 import eidolons.game.battlecraft.ai.elements.atomic.AtomicAi;
@@ -49,7 +48,6 @@ public abstract class AiMaster {
     protected ActionSequenceConstructor actionSequenceConstructor;
     protected AiExecutor executor;
     protected PathSequenceConstructor pathSequenceConstructor;
-    protected TurnSequenceConstructor turnSequenceConstructor;
     protected SituationAnalyzer situationAnalyzer;
     protected BehaviorMasterOld behaviorMaster;
     protected AtomicAi atomicAi;
@@ -74,7 +72,6 @@ public abstract class AiMaster {
         handlers.add(paramAnalyzer = new ParamAnalyzer(this));
         handlers.add(situationAnalyzer = new SituationAnalyzer(this));
         handlers.add(pathSequenceConstructor = new PathSequenceConstructor(this));
-        handlers.add(turnSequenceConstructor = new TurnSequenceConstructor(this));
         handlers.add(behaviorMaster = new BehaviorMasterOld(this));
         handlers.add(atomicAi = new AtomicAi(this));
         handlers.add(scriptExecutor = new AiScriptExecutor(this));
@@ -169,10 +166,6 @@ public abstract class AiMaster {
 
     public PathSequenceConstructor getPathSequenceConstructor() {
         return pathSequenceConstructor;
-    }
-
-    public TurnSequenceConstructor getTurnSequenceConstructor() {
-        return turnSequenceConstructor;
     }
 
     public SituationAnalyzer getSituationAnalyzer() {

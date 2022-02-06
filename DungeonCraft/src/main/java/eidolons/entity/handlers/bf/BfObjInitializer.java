@@ -4,8 +4,8 @@ import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.SimCache;
-import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.item.DC_QuickItemObj;
+import eidolons.entity.item.HeroItem;
+import eidolons.entity.item.QuickItem;
 import eidolons.entity.item.ItemFactory;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
@@ -56,19 +56,12 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
 
     }
 
-    protected void addDefaultFacing() {
-        if (getEntity().getOwner() != null)
-            getEntity().setFacing(
-                    DC_MovementManager.getDefaultFacingDirection(getEntity().getOwner().isMe()));
-    }
-
     public void addDefaultValues() {
-        addDefaultFacing();
 
     }
 
-    public DequeImpl<? extends DC_HeroItemObj> initContainedItems(PROPS prop,
-                                                                  DequeImpl<? extends DC_HeroItemObj> list, boolean quick) {
+    public DequeImpl<? extends HeroItem> initContainedItems(PROPS prop,
+                                                            DequeImpl<? extends HeroItem> list, boolean quick) {
         // if (getEntity().isLoaded()) {
         //     return Loader.getLoadedItemContainer(getEntity(), prop);;
         // }
@@ -85,19 +78,19 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
         } else {
 
             List<String> idList = new ArrayList<>();
-            Collection<DC_HeroItemObj> items = new ArrayList<>();
+            Collection<HeroItem> items = new ArrayList<>();
             for (String subString : ContainerUtils.open(getProperty(prop))) {
-                DC_HeroItemObj item;
+                HeroItem item;
                 if (NumberUtils.isInteger(subString)) {
                     Integer id = NumberUtils
                             .getIntParse(subString);
                     if (!game.isSimulation()) {
-                        item = (DC_HeroItemObj) game.getObjectById(id);
+                        item = (HeroItem) game.getObjectById(id);
                     } else {
-                        item = (DC_HeroItemObj) ((SimulationGame) game).getRealGame().getObjectById(id);
+                        item = (HeroItem) ((SimulationGame) game).getRealGame().getObjectById(id);
                         if (item == null) {
                             try {
-                                item = (DC_HeroItemObj)  SimCache.getInstance().getById(subString);
+                                item = (HeroItem)  SimCache.getInstance().getById(subString);
                             } catch (Exception e) {
                                 main.system.ExceptionMaster.printStackTrace(e);
                                 continue;
@@ -108,15 +101,15 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
                                     quick));
                         }
                         Integer durability = null;
-                        if (item instanceof DC_QuickItemObj) {
-                            if (((DC_QuickItemObj) item).getWrappedWeapon() != null) {
-                                durability = ((DC_QuickItemObj) item).getWrappedWeapon()
+                        if (item instanceof QuickItem) {
+                            if (((QuickItem) item).getWrappedWeapon() != null) {
+                                durability = ((QuickItem) item).getWrappedWeapon()
                                         .getIntParam(PARAMS.C_DURABILITY);
                             }
                         } else {
                             durability = item.getIntParam(PARAMS.C_DURABILITY);
                         }
-                        item = (DC_HeroItemObj)  SimCache.getInstance().getSim(item);
+                        item = (HeroItem)  SimCache.getInstance().getSim(item);
                         if (durability != null)
                             item.setParam(PARAMS.C_DURABILITY, durability);
                     }

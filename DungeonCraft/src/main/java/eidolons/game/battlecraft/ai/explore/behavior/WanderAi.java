@@ -9,7 +9,6 @@ import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
 import main.system.launch.Flags;
 
@@ -31,7 +30,7 @@ public class WanderAi extends AiGroupBehavior {
     }
     public String getDebugInfo() {
         return ((int)sinceLastAction) + " "
-         +((queuedAction == null)? "null" : queuedAction.getActive().getName())
+         +((queuedAiAction == null)? "null" : queuedAiAction.getActive().getName())
          + "\n" + direction + "\n" +((target == null)?"null" : target.getCoordinates())
          +"\n" + origin.dst(getCoordinates())+ " " + ai.getGroupAI().getLeader().getName();
     }
@@ -42,13 +41,6 @@ public class WanderAi extends AiGroupBehavior {
     @Override
     protected double getDistanceForNearby() {
         return 2;//super.getDistanceForNearby();
-    }
-    @Override
-    protected FACING_DIRECTION getRequiredFacing() {
-        if (Math.abs(getUnit().getFacing().getDirection().getDegrees() -
-         direction.getDegrees()) <= 45)
-            return null;
-        return FacingMaster.getFacingFromDirection(direction, true, false);
     }
 
     @Override
@@ -96,8 +88,7 @@ public class WanderAi extends AiGroupBehavior {
 
     @Override
     protected boolean isProgressObstructed(UnitAI ai) {
-        return WanderAiMaster.isProgressObstructed(direction, ai, GOAL_TYPE.WANDER)
-         && WanderAiMaster.isProgressObstructed(getUnit().getFacing().getDirection(), ai, GOAL_TYPE.WANDER);
+        return false;
     }
 
     @Override
@@ -123,7 +114,7 @@ public class WanderAi extends AiGroupBehavior {
 
     protected DIRECTION checkUpdateDirection() {
         if (direction == null) {
-            return FacingMaster.getRandomFacing(getUnit().getFacing()).getDirection();
+            return FacingMaster.getRandomFacing().getDirection();
         }
         if (target != null) {
             //check if arrived

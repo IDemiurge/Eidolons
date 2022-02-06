@@ -1,7 +1,7 @@
 package main.level_editor.backend.sim;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.GammaMaster;
@@ -17,19 +17,19 @@ public class LE_VisionMaster extends VisionMaster {
         gammaMaster = new GammaMaster(this) {
             @Override
             public int getGamma(Unit source, DC_Obj target) {
-                if (target instanceof DC_Cell) {
-                    return (int) getGammaForCell((DC_Cell) target);
+                if (target instanceof GridCell) {
+                    return (int) getGammaForCell((GridCell) target);
                 }
                 return super.getGamma(source, target);
             }
 
             @Override
-            public float getGammaForCell(DC_Cell cell) {
+            public float getGammaForCell(GridCell cell) {
                 return cell.getIntParam(PARAMS.ILLUMINATION);
             }
 
             @Override
-            protected float getLightAlpha(float gamma, DC_Cell cell, Coordinates observer) {
+            protected float getLightAlpha(float gamma, GridCell cell, Coordinates observer) {
                 if (gamma <= 0)
                     return 0;
                 float alpha = (float) Math.min(Math.sqrt(gamma/120), gamma / 400);

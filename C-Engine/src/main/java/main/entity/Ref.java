@@ -5,7 +5,7 @@ import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.data.ConcurrentMap;
 import main.data.XLinkedMap;
 import main.entity.group.GroupImpl;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
@@ -48,7 +48,7 @@ public class Ref implements Cloneable, Serializable {
     ref replacement is there exactly to avoid putting the whole thing into map!
      */
     protected String str; //buffer field for cases when we're replacing keyword, e.g. *event_source* => event's ref's *source*
-    protected ActiveObj animationActive; //reference to the game object
+    protected IActiveObj animationActive; //reference to the game object
     protected Entity infoEntity; //reference to the game object
     protected Map<KEYS, String> values = new XLinkedMap<>(); //main value map
     protected Map<KEYS, String> removedValues; //map for values that were removeValue()-ed
@@ -274,7 +274,7 @@ public class Ref implements Cloneable, Serializable {
         ref.setAnimationActive(animationActive);
         setValue(KEYS.AMOUNT, getValue(KEYS.AMOUNT));
         // if (refClones.size() % 100 == 5)
-        // main.system.auxiliary.LogMaster.src.main.system.log(1, " " + refClones.size());
+        // main.system.auxiliary.LogMaster.system.log(1, " " + refClones.size());
         // refClones.add(ref);
         return ref;
     }
@@ -565,14 +565,14 @@ public class Ref implements Cloneable, Serializable {
         this.quiet = quiet;
     }
 
-    public ActiveObj getActive() {
+    public IActiveObj getActive() {
         Obj obj = getObj(KEYS.ACTIVE);
         if (obj == null) {
             obj = getObj(KEYS.SPELL);
         }
-        if (obj instanceof ActiveObj) // TODO QUICK ITEM INTERFACE
+        if (obj instanceof IActiveObj) // TODO QUICK ITEM INTERFACE
         {
-            return (ActiveObj) obj;
+            return (IActiveObj) obj;
         }
         return null;
     }
@@ -601,7 +601,7 @@ public class Ref implements Cloneable, Serializable {
         animationDisabled = b;
     }
 
-    public ActiveObj getAnimationActive() {
+    public IActiveObj getAnimationActive() {
         if (animationActive == null) {
 
             return getActive(); // TODO ?? ?
@@ -610,7 +610,7 @@ public class Ref implements Cloneable, Serializable {
         return animationActive;
     }
 
-    public void setAnimationActive(ActiveObj animationActive) {
+    public void setAnimationActive(IActiveObj animationActive) {
         this.animationActive = animationActive;
     }
 

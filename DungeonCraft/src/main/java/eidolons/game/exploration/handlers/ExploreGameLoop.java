@@ -1,8 +1,7 @@
 package eidolons.game.exploration.handlers;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.handlers.active.Activator;
-import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Core;
@@ -10,8 +9,6 @@ import eidolons.game.core.GameLoop;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.libgdx.GdxAdapter;
 import eidolons.system.libgdx.api.ScreenApi;
-import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
-import eidolons.system.options.OptionsMaster;
 import main.elements.targeting.SelectiveTargeting;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -19,7 +16,6 @@ import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
-import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
 import main.system.threading.WaitMaster;
@@ -219,7 +215,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         actionInput_(actionInput);
     }
 
-    private void notReady(DC_ActiveObj action) {
+    private void notReady(ActiveObj action) {
         Activator.cannotActivate_(action, "Not ready! (" +
                 NumberUtils.formatFloat(2, blockTimer) +
                 "s.)");

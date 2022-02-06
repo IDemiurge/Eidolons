@@ -2,7 +2,7 @@ package main.elements.costs;
 
 import main.content.values.parameters.PARAMETER;
 import main.entity.Ref;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.Obj;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -224,7 +224,7 @@ public class Costs extends CostImpl {
         this.costs = costs;
     }
 
-    public void setActive(ActiveObj active) {
+    public void setActive(IActiveObj active) {
         this.activeObj = active;
         setActiveId(activeObj.getId());
     }

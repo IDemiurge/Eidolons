@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.logic.battlefield.vision;
 import eidolons.ability.conditions.special.ClearShotCondition;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.ClearshotMaster;
@@ -65,11 +65,6 @@ public class SightMaster {
                                                          boolean extended) {
         DequeImpl<Coordinates> list = new DequeImpl<>();
         Coordinates orig = source.getCoordinates();
-        if (facing == null) {
-            if (source != null) {
-                facing = source.getFacing();
-            }
-        }
         DIRECTION direction;
         if (facing == null) {
             facing = FacingMaster.getRandomFacing();
@@ -82,21 +77,6 @@ public class SightMaster {
                 range = MathMaster.applyModIfNotZero(range, source
                         .getIntParam(PARAMS.SIGHT_RANGE_EXPANSION));
             }
-        }
-        if (side_penalty == null) {
-            side_penalty = source.getIntParam(PARAMS.SIDE_SIGHT_PENALTY);
-            if (extended) {
-                side_penalty = MathMaster.applyModIfNotZero(side_penalty, source
-                        .getIntParam(PARAMS.SIGHT_RANGE_EXPANSION_SIDES));
-            }
-        }
-        if (back_bonus == null) {
-            back_bonus = source.getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
-            if (!extended)
-                back_bonus--;
-            //                back_bonus = MathMaster.applyModIfNotZero(back_bonus, source
-            //                 .getIntParam(PARAMS.SIGHT_RANGE_EXPANSION_BACKWARD));
-
         }
 
         addLine(orig.getAdjacentCoordinate(direction), range, list, direction, true);
@@ -130,10 +110,10 @@ public class SightMaster {
         if (removeList != null) {
             return removeList;
         }
-            removeList = new ArrayList<>();
+        removeList = new ArrayList<>();
         ClearshotMaster.filterWallObstructed(source.getCoordinates(), list);
         for (Coordinates c : list) {
-            DC_Cell cell = master.getGame().getObjMaster().getCellByCoordinate(c);
+            GridCell cell = master.getGame().getObjMaster().getCellByCoordinate(c);
             if (cell == null)
                 continue;
             Boolean clearShot = !isBlocked(cell, source, true);
@@ -382,7 +362,7 @@ public class SightMaster {
         resetUnitVision(observer, master.getGame().getStructures());
         resetUnitVision(observer, master.getGame().getUnits());
         //        master.getVisionController().getUnitVisionMapper().
-        Set<DC_Cell> cells = isFastMode() ? master.getGame().getBattleFieldManager().
+        Set<GridCell> cells = isFastMode() ? master.getGame().getBattleFieldManager().
                 getCellsWithinRange(observer, observer.getMaxVisionDistance()
                 ) : master.getGame().getCells();
         resetUnitVision(observer, cells);

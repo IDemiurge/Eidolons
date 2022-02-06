@@ -2,7 +2,7 @@ package eidolons.system.text;
 
 import main.content.OBJ_TYPE;
 import main.content.enums.entity.HeroEnums;
-import main.content.enums.entity.HeroEnums.BACKGROUND;
+import main.content.enums.entity.HeroEnums.SUBRACE;
 import main.content.enums.entity.HeroEnums.RACE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
@@ -149,20 +149,20 @@ public class NameMaster {
     String orcNames = "Ormog;Nuglog;Usbrol;Buvlud;Xlirg;Xlard;Xumn;Yach-Yach;Guchruk;Durbul;Mubruk;Zurdun;Drufsin;";
 
     public static String generateNewHeroName(ObjType type) {
-        BACKGROUND bg = getBg(type);
+        HeroEnums.SUBRACE bg = getBg(type);
         return getFullNameForBackground(bg);
     }
 
-    public static String getFullNameForBackground(BACKGROUND bg) {
+    public static String getFullNameForBackground(HeroEnums.SUBRACE bg) {
         return getRandomName(bg) + " " + getRandomSecondName(bg);
     }
 
-    private static String getRandomSecondName(BACKGROUND bg) {
+    private static String getRandomSecondName(HeroEnums.SUBRACE bg) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private static String getRandomName(BACKGROUND bg) {
+    private static String getRandomName(SUBRACE bg) {
         switch (bg) {
 
         }
@@ -288,7 +288,7 @@ public class NameMaster {
         return nameGroup;
     }
 
-    public static String getNamesGroups(BACKGROUND bg) {
+    public static String getNamesGroups(SUBRACE bg) {
         if (bg.toString().contains("Raven")) {
             return (ravenNameGroups);
         }
@@ -312,12 +312,12 @@ public class NameMaster {
 
     public static String generateName(Entity hero) {
         RACE race = EntityCheckMaster.getRace(hero);
-        BACKGROUND bg = EntityCheckMaster.getBackground(hero);
+        SUBRACE bg = EntityCheckMaster.getBackground(hero);
         if (bg==null )
             return "Nobackground";
         return generateName(hero,race, bg);
     }
-        public static String generateName(Entity hero, RACE race, BACKGROUND bg) {
+        public static String generateName(Entity hero, RACE race, HeroEnums.SUBRACE bg) {
         switch (race) {
             case HUMAN:
                 if (bg.toString().contains("Raven")) {
@@ -343,15 +343,11 @@ public class NameMaster {
 
                 return generateName(hero, DEFAULT_NAME_GROUP);
             // TODO
-            case DEMON:
-                return generateName(hero, "Demon");
+            //     return generateName(hero, "Demon");
             case DWARF:
-            case GOBLINOID:
                 return generateName(hero, "Dwarven");
             case ELF:
                 return generateName(hero, "Elven");
-            case VAMPIRE:
-                return generateName(hero, ravenNameGroups);
         }
         return null;
     }
@@ -400,8 +396,8 @@ public class NameMaster {
         usedNames.clear();
     }
 
-    private static BACKGROUND getBg(Entity hero) {
-        return new EnumMaster<BACKGROUND>().retrieveEnumConst(BACKGROUND.class, hero
+    private static SUBRACE getBg(Entity hero) {
+        return new EnumMaster<HeroEnums.SUBRACE>().retrieveEnumConst(HeroEnums.SUBRACE.class, hero
          .getProperty(G_PROPS.BACKGROUND));
     }
 

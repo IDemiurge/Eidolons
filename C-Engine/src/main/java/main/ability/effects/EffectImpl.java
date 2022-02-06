@@ -10,7 +10,7 @@ import main.elements.triggers.Trigger;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.group.GroupImpl;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.Obj;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -130,8 +130,8 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     }
 
     @Override
-    public ActiveObj getActiveObj() {
-        if (getRef().getActive() instanceof ActiveObj) {
+    public IActiveObj getActiveObj() {
+        if (getRef().getActive() instanceof IActiveObj) {
             return getRef().getActive();
         }
         return null;

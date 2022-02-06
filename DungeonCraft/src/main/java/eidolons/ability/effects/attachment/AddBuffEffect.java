@@ -3,7 +3,7 @@ package eidolons.ability.effects.attachment;
 import eidolons.ability.effects.oneshot.status.ImmobilizeEffect;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.core.master.EffectMaster;
 import eidolons.system.DC_ConditionMaster;
 import main.ability.effects.*;
@@ -139,8 +139,8 @@ public class AddBuffEffect extends MultiEffect implements OneshotEffect, Resisti
         if (forcedLayer != null) {
             effect.setForcedLayer(forcedLayer);
         }
-        if ((getActive() instanceof DC_ActiveObj)) {
-            ((DC_ActiveObj) getActive()).setContinuous(true);
+        if ((getActive() instanceof ActiveObj)) {
+            ((ActiveObj) getActive()).setContinuous(true);
         }
         initDuration();
         baseDuration = duration;
@@ -248,7 +248,7 @@ public class AddBuffEffect extends MultiEffect implements OneshotEffect, Resisti
             duration = 0;
             return 0;
         }
-        if ((getActive() instanceof DC_ActiveObj)) {
+        if ((getActive() instanceof ActiveObj)) {
             if (getActive().getIntParam(G_PARAMS.DURATION) != 0) {
                 duration = getActive().getIntParam(G_PARAMS.DURATION);
             }

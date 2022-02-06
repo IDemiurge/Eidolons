@@ -1,6 +1,6 @@
 package eidolons.game.core.master;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.handlers.bf.unit.UnitChecker;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
@@ -58,11 +58,11 @@ public class DeathMaster extends Master {
 
     }
 
-    public void unitDies(DC_ActiveObj activeObj, Obj _killed, Obj _killer, boolean leaveCorpse, boolean quietly) {
+    public void unitDies(ActiveObj activeObj, Obj _killed, Obj _killer, boolean leaveCorpse, boolean quietly) {
         unitDies(activeObj, _killed, _killer, leaveCorpse, quietly, false);
     }
 
-    public void unitDies(DC_ActiveObj activeObj, Obj _killed, Obj _killer, boolean leaveCorpse, boolean quietly, boolean annihilate) {
+    public void unitDies(ActiveObj activeObj, Obj _killed, Obj _killer, boolean leaveCorpse, boolean quietly, boolean annihilate) {
         if (_killed.isDead())
             return;
         if (!quietly)

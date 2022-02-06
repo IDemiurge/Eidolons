@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.rules.combat.damage.armor;
 import com.google.inject.internal.util.ImmutableList;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
-import eidolons.entity.item.DC_ArmorObj;
+import eidolons.entity.item.ArmorItem;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
@@ -30,7 +30,7 @@ public class ArmorMaster {
     public enum ArmorLayer {
         Inner,
         Outer,
-        Cloak,
+        Cloak, //can we retain it without making it into a full Armor Item? Surely we don't want the mess - displaying it, durab. etc
         Helmet
     }
 
@@ -80,7 +80,7 @@ public class ArmorMaster {
         List<ArmorLayer> armorLayers = getLayersForHitType(hitType, sneak);
         int blocked = 0;
         for (ArmorLayer armorLayer : armorLayers) {
-            DC_ArmorObj armor = getArmor(armorLayer, (Unit) damage.getTarget());
+            ArmorItem armor = getArmor(armorLayer, (Unit) damage.getTarget());
             if (armor == null) {
                 continue;
             }
@@ -111,7 +111,7 @@ public class ArmorMaster {
         return  "Armor negates " + damage;
     }
 
-    private String getLoggedMsg(DC_ArmorObj armorObj, int blocked, Damage damage) {
+    private String getLoggedMsg(ArmorItem armorObj, int blocked, Damage damage) {
         return armorObj.getName() + " absorbs " + blocked + " from " + damage;
     }
 
@@ -119,7 +119,7 @@ public class ArmorMaster {
                                  DAMAGE_MODIFIER[] modifiers, Ref ref) {
         Unit attacker = (Unit) ref.getSourceObj();
         Unit attacked = (Unit) ref.getTargetObj();
-        DC_ArmorObj armor = getArmor(armorLayer, attacked);
+        ArmorItem armor = getArmor(armorLayer, attacked);
         if (armor == null) {
             return 0;
         }
@@ -139,7 +139,7 @@ public class ArmorMaster {
         return blocked;
     }
 
-    private DC_ArmorObj getArmor(ArmorLayer armorLayer, Unit attacked) {
+    private ArmorItem getArmor(ArmorLayer armorLayer, Unit attacked) {
         switch (armorLayer) {
             case Inner:
                 return attacked.getInnerArmor();
@@ -153,7 +153,7 @@ public class ArmorMaster {
         return attacked.getArmor();
     }
 
-    private int getAbsorbedPerc(DC_ArmorObj armor, DAMAGE_TYPE dmgType, DAMAGE_MODIFIER[] modifiers,
+    private int getAbsorbedPerc(ArmorItem armor, DAMAGE_TYPE dmgType, DAMAGE_MODIFIER[] modifiers,
                                 Unit attacker, Unit attacked, boolean average) {
         int tDice = DiceMaster.getDefaultDieNumber(attacked);
         int sDice = DiceMaster.getDefaultDieNumber(attacker); //TODO add 'case'
@@ -167,7 +167,7 @@ public class ArmorMaster {
         return base + tValue - sValue;
     }
 
-    private void absorbed(Integer base, DC_ArmorObj armor, DAMAGE_TYPE dmgType, int modifier) {
+    private void absorbed(Integer base, ArmorItem armor, DAMAGE_TYPE dmgType, int modifier) {
         DurabilityRule.spellDamage(base, dmgType, armor, modifier);
     }
 

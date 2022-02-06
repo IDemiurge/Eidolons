@@ -58,8 +58,6 @@ public class PuzzleRules extends PuzzleElement {
 
     protected Event.EVENT_TYPE getActionEvent() {
         switch (base) {
-            case FACING:
-                return Event.STANDARD_EVENT_TYPE.UNIT_HAS_CHANGED_FACING;
             case ACTION:
                 return Event.STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE;
             case MOVE:

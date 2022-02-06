@@ -19,9 +19,7 @@ public class UnitViewOptions {
     public boolean cellBackground;
     private Runnable runnable;
     private TextureRegion portraitTexture;
-    private TextureRegion directionPointerTexture;
     private TextureRegion emblem;
-    private int directionValue;
     private int clockValue;
     private Color teamColor;
     private boolean mainHero;
@@ -61,19 +59,9 @@ public class UnitViewOptions {
         return this.portraitTexture;
     }
 
-
-    public final TextureRegion getDirectionPointerTexture() {
-        return this.directionPointerTexture;
-    }
-
     public TextureRegion getEmblem() {
         return emblem;
     }
-
-    public final int getDirectionValue() {
-        return this.directionValue;
-    }
-
 
     public final int getClockValue() {
         return this.clockValue;
@@ -107,10 +95,6 @@ public class UnitViewOptions {
 
 
         } else if (obj instanceof Unit) {
-            this.directionValue = obj.getFacing().getDirection().getDegrees();
-            this.directionPointerTexture = TextureCache.getRegionUV(
-                    PathFinder.getUiPath() + "DIRECTION POINTER.png");
-
 
             String emblem = PathFinder.getEmblemAutoFindPath() + obj.getProperty(G_PROPS.EMBLEM, true);
             if (obj.isMine()) {
@@ -165,10 +149,6 @@ public class UnitViewOptions {
 
     public String getPortraitPath() {
         return portraitPath;
-    }
-
-    public void setDirectionPointerTexture(TextureRegion directionPointerTexture) {
-        this.directionPointerTexture = directionPointerTexture;
     }
 
     public void setEmblem(TextureRegion emblem) {

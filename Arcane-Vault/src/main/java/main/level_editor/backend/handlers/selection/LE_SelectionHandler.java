@@ -2,7 +2,7 @@ package main.level_editor.backend.handlers.selection;
 
 import com.google.inject.internal.util.ImmutableSet;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.core.EUtils;
@@ -128,7 +128,7 @@ public class LE_SelectionHandler extends LE_Handler implements ISelectionHandler
     }
 
     public boolean isSelected(DC_Obj obj) {
-        if (obj instanceof DC_Cell) {
+        if (obj instanceof GridCell) {
             if (getSelection().getCoordinates().contains(obj.getCoordinates())) {
                 return true;
             }

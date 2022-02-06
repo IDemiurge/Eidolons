@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.rules.parameters.threshold;
 import eidolons.entity.unit.Unit;
 import eidolons.system.math.roll.Dice;
 import eidolons.system.math.roll.DiceMaster;
-import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.EffectEnums;
 import main.content.values.parameters.PARAMETER;
 
 import java.util.ArrayList;
@@ -73,7 +73,7 @@ public abstract class ThresholdRule {
 
     protected abstract int[] getThresholdsUp();
 
-    protected abstract Map<UnitEnums.COUNTER, Dice> getCountersMapForThreshold(int n);
+    protected abstract Map<EffectEnums.COUNTER, Dice> getCountersMapForThreshold(int n);
 
     protected void update() {
         int threshold = getThreshold();
@@ -91,9 +91,9 @@ public abstract class ThresholdRule {
     }
 
     protected void applyThreshold(int n) {
-        Map<UnitEnums.COUNTER, Dice> map = getCountersMapForThreshold(n);
+        Map<EffectEnums.COUNTER, Dice> map = getCountersMapForThreshold(n);
 
-        for (UnitEnums.COUNTER counter : map.keySet()) {
+        for (EffectEnums.COUNTER counter : map.keySet()) {
             Dice dice = map.get(counter);
             int amount = DiceMaster.roll(dice, unit, true);
             //TODO fix up counters FGS!

@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.ai.elements.actions;
 
 import eidolons.content.ContentConsts;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.UnitAI;
@@ -26,8 +26,6 @@ import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
 import main.elements.costs.Cost;
 import main.elements.costs.Costs;
-import main.entity.obj.Obj;
-import main.game.bf.Coordinates;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
@@ -53,12 +51,12 @@ public class ActionManager extends AiHandler {
 
     }
 
-    public static Costs getTotalCost(List<Action> actions) {
+    public static Costs getTotalCost(List<AiAction> aiActions) {
         XLinkedMap<PARAMETER, Formula> map = new XLinkedMap<>();
         for (PARAMETER p : ContentConsts.PAY_PARAMS) {
             map.put(p, new Formula(""));
         }
-        for (Action a : actions) {
+        for (AiAction a : aiActions) {
             for (Cost c : a.getActive().getCosts().getCosts()) {
                 Formula formula = map.get(c.getPayment().getParamToPay());
                 if (formula != null) {
@@ -84,26 +82,26 @@ public class ActionManager extends AiHandler {
         Chronos.mark("initIntents");
         for (Unit unit : game.getManager().getEnemies()) {
             if (unit.getAI().getCombatAI().getLastSequence() == null) {
-                Action action = chooseAction(true);
+                AiAction aiAction = chooseAction(true);
                 //check no side fx ?
 
                 //don't pop the action?
-                main.system.auxiliary.log.LogMaster.log(1, unit + " has Intent action: " + action);
+                main.system.auxiliary.log.LogMaster.log(1, unit + " has Intent action: " + aiAction);
             }
 
         }
         Chronos.logTimeElapsedForMark("initIntents");
     }
 
-    public Action chooseAction() {
+    public AiAction chooseAction() {
         return chooseAction(false);
     }
 
-    public Action chooseAction(boolean intent) {
+    public AiAction chooseAction(boolean intent) {
         UnitAI ai = getMaster().getUnitAI();
         if (ai.checkStandingOrders(false)) {
             getUnitAi().getCombatAI().setLastSequence(ai.getStandingOrders());
-            Action ordered = ai.getStandingOrders().popNextAction();
+            AiAction ordered = ai.getStandingOrders().popNextAction();
             ordered.setOrder(true);
             if (ordered == ai.getStandingOrders().getLastAction()) {
                 ai.setStandingOrders(null);
@@ -122,26 +120,25 @@ public class ActionManager extends AiHandler {
         checkDeactivate();
 
         if (ListMaster.isNotEmpty(ai.getForcedActions())) {
-            Action action = ai.getForcedActions().get(0);
+            AiAction aiAction = ai.getForcedActions().get(0);
             ai.getForcedActions().remove(0);
-            return action;
+            return aiAction;
         }
 
-        unit.initTempFacing();
         unit.initTempCoordinates();
-        Action action = null;
+        AiAction aiAction = null;
         ActionSequence chosenSequence = null;
         if (isAtomicAiOn())
             try {
                 AiEnums.AI_LOGIC_CASE atomic = getAtomicAi().checkAtomicActionRequired(ai);
                 if (atomic != null)
-                    action = getAtomicAi().getAtomicAction(ai, atomic);
+                    aiAction = getAtomicAi().getAtomicAction(ai, atomic);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
 
 
-        if (action == null) {
+        if (aiAction == null) {
             List<ActionSequence> actions = new ArrayList<>();
             try {
                 List<ActionSequence> sequences = getActionSequenceConstructor().createActionSequences(ai);
@@ -158,20 +155,19 @@ public class ActionManager extends AiHandler {
                 main.system.ExceptionMaster.printStackTrace(e);
             } finally {
                 unit.removeTempCoordinates();
-                unit.removeTempFacing();
             }
 
         }
 
         if (chosenSequence == null) {
 
-            if (action == null) {
-                action = getForcedAction(ai);
+            if (aiAction == null) {
+                aiAction = getForcedAction(ai);
             }
 
-            ai.getCombatAI().setLastSequence(new ActionSequence(action));
+            ai.getCombatAI().setLastSequence(new ActionSequence(aiAction));
 
-            return action;
+            return aiAction;
         } else {
             //            if (chosenSequence.getType() == GOAL_TYPE.DEFEND)
             //                return chosenSequence.popNextAction(); what for?
@@ -196,44 +192,44 @@ public class ActionManager extends AiHandler {
     }
 
 
-    public Action getForcedAction(UnitAI ai) {
+    public AiAction getForcedAction(UnitAI ai) {
         BEHAVIOR_MODE behaviorMode = ai.getBehaviorMode();
         GOAL_TYPE goal = AiEnums.GOAL_TYPE.PREPARE;
 
-        Action action = null;
+        AiAction aiAction = null;
         if (behaviorMode != null) {
             if (behaviorMode == AiEnums.BEHAVIOR_MODE.PANIC) {
-                action = new Action(ai.getUnit().getAction(Cower_In_Terror.toString()));
+                aiAction = new AiAction(ai.getUnit().getAction(Cower_In_Terror.toString()));
             }
             if (behaviorMode == AiEnums.BEHAVIOR_MODE.CONFUSED) {
-                action = new Action(ai.getUnit().getAction(Stumble_About.toString()));
+                aiAction = new AiAction(ai.getUnit().getAction(Stumble_About.toString()));
             }
             if (behaviorMode == AiEnums.BEHAVIOR_MODE.BERSERK) {
                 // TODO make real
                 if (RandomWizard.chance(66)) {
-                    action = new Action(ai.getUnit().getAction(
+                    aiAction = new AiAction(ai.getUnit().getAction(
                             RandomWizard.random() ? "Turn Clockwise" :
                                     "Turn Anticlockwise"));
                 } else
-                    action = new Action(ai.getUnit().getAction("Move"));
+                    aiAction = new AiAction(ai.getUnit().getAction("Move"));
 
                 getGame().getLogManager().log(getUnit().getName() + "'s Fury forces him to "
-                        + action.getActive().getName());
+                        + aiAction.getActive().getName());
             }
 
-            action.setTaskDescription("Forced Behavior");
-            return action;
+            aiAction.setTaskDescription("Forced Behavior");
+            return aiAction;
         }
-        action = getAtomicAi().getAtomicActionForced(ai);
-        if (action != null)
-            return action;
+        aiAction = getAtomicAi().getAtomicActionForced(ai);
+        if (aiAction != null)
+            return aiAction;
         try {
-            action = getAtomicAi().getAtomicActionPrepare(getUnit().getAI());
+            aiAction = getAtomicAi().getAtomicActionPrepare(getUnit().getAI());
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-        if (action != null) {
-            return action;
+        if (aiAction != null) {
+            return aiAction;
         }
 
         List<ActionSequence> actions = getActionSequenceConstructor()
@@ -267,61 +263,45 @@ public class ActionManager extends AiHandler {
 
         getMaster().getMessageBuilder().append("Forced Task: ").append(sequence.getTask().toShortString());
 
-        action = sequence.popNextAction();
-        if (action == null) {
+        aiAction = sequence.popNextAction();
+        if (aiAction == null) {
             LogMaster.log(1, getUnit() + " has been Forced to Defend!");
             return getAction(getUnit(), ActionEnums.DEFAULT_ACTION.Defend.name(), null);
         }
-        return action;
+        return aiAction;
     }
 
-    private Action getForcedForBehavior(Unit unit, BEHAVIOR_MODE behaviorMode) {
+    private AiAction getForcedForBehavior(Unit unit, BEHAVIOR_MODE behaviorMode) {
         switch (behaviorMode) {
             case PANIC:
-                return new Action(unit.getAction("Cower in Terror"));
+                return new AiAction(unit.getAction("Cower in Terror"));
             case BERSERK:
-                return new Action(unit.getAction("Helpless Rage"));
+                return new AiAction(unit.getAction("Helpless Rage"));
             case CONFUSED:
-                return new Action(unit.getAction("Stumble About"));
+                return new AiAction(unit.getAction("Stumble About"));
         }
         return getAction(getUnit(), DEFAULT_ACTION.Wait.name(), null);
     }
 
-    private Integer checkWaitForBlockingAlly() {
+    private AiAction getAction(Unit unit, String name, Integer target) {
 
-        Coordinates c = getUnit().getCoordinates()
-                .getAdjacentCoordinate(getUnit().getFacing().getDirection());
-        Obj obj = getUnit().getGame().getObjectVisibleByCoordinate(c);
-        if (obj instanceof Unit) {
-            if (((Unit) obj).canActNow())
-            // if (!((DC_HeroObj) obj).checkStatus(STATUS.WAITING))
-            {
-                return obj.getId();
-            }
-        }
-        return null;
-
-    }
-
-    private Action getAction(Unit unit, String name, Integer target) {
-
-        Action action = new Action(AiActionFactory.getUnitAction(unit, name));
+        AiAction aiAction = new AiAction(AiActionFactory.getUnitAction(unit, name));
         if (target != null) {
-            action.getRef().setTarget(target);
+            aiAction.getRef().setTarget(target);
         }
-        return action;
+        return aiAction;
     }
 
-    private Action getAction(Unit unit, String name) {
-        return new Action(AiActionFactory.getUnitAction(unit, name));
+    private AiAction getAction(Unit unit, String name) {
+        return new AiAction(AiActionFactory.getUnitAction(unit, name));
     }
 
     private void checkDeactivate() {
-        DequeImpl<DC_UnitAction> list = getUnit().getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ACTION);
+        DequeImpl<UnitAction> list = getUnit().getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ACTION);
         if (list == null) {
             return;
         }
-        for (DC_UnitAction a : list) {
+        for (UnitAction a : list) {
             if (a.isContinuousMode()) {
                 if (a.checkContinuousModeDeactivate()) {
                     boolean result = false;

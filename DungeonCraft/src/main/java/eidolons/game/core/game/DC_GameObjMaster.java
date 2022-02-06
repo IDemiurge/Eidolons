@@ -2,7 +2,7 @@ package eidolons.game.core.game;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.unit.Unit;
 import io.vertx.core.impl.ConcurrentHashSet;
@@ -187,7 +187,7 @@ public class DC_GameObjMaster extends GameObjMaster {
         }
     }
 
-    public DC_Cell getCellByCoordinate(Coordinates coordinates) {
+    public GridCell getCellByCoordinate(Coordinates coordinates) {
         return getGame().getGrid().getCell(coordinates);
     }
 
@@ -225,8 +225,8 @@ public class DC_GameObjMaster extends GameObjMaster {
         //        return list; // TODO z-coordinate?
     }
 
-    public Set<DC_Cell> getCellsForCoordinates(Set<Coordinates> coordinates) {
-        Set<DC_Cell> list = new HashSet<>();
+    public Set<GridCell> getCellsForCoordinates(Set<Coordinates> coordinates) {
+        Set<GridCell> list = new HashSet<>();
         for (Coordinates c : coordinates) {
             list.add(getCellByCoordinate(c));
         }
@@ -278,11 +278,11 @@ public class DC_GameObjMaster extends GameObjMaster {
         getStructures().clear();
     }
 
-    public DC_Cell[][] getCells() {
+    public GridCell[][] getCells() {
         return (getGame().getGrid().getCells());
     }
 
-    public Set<DC_Cell> getCellsSet() {
+    public Set<GridCell> getCellsSet() {
         return new LinkedHashSet<>(getGame().getGrid().getCellsSet());
     }
 

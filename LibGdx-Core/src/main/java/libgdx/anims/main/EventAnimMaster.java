@@ -1,7 +1,7 @@
 package libgdx.anims.main;
 
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import libgdx.anims.Anim;
 import libgdx.anims.CompositeAnim;
 import libgdx.anims.std.DeathAnim;
@@ -111,7 +111,7 @@ public class EventAnimMaster {
     }
 
     private CompositeAnim getEventAttachAnim(Event event, Anim anim) {
-        DC_ActiveObj active = (DC_ActiveObj) event.getRef().getActive();
+        ActiveObj active = (ActiveObj) event.getRef().getActive();
         if (active != null) {
             //            if (event.getType() instanceof STANDARD_EVENT_TYPE) {
             ////                switch (((STANDARD_EVENT_TYPE) event.getType())) {

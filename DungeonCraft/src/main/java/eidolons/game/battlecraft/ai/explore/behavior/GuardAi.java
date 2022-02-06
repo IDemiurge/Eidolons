@@ -5,10 +5,7 @@ import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
 
 import java.util.ArrayList;
@@ -88,18 +85,6 @@ public class GuardAi extends AiBehavior {
         return AI_BEHAVIOR_MODE.GUARD;
     }
 
-
-    @Override
-    protected FACING_DIRECTION getRequiredFacing() {
-        if (needsToCheckGuarded)
-            for (FACING_DIRECTION newFacing : FACING_DIRECTION.normalFacing) {
-                if (FacingMaster.getSingleFacing(newFacing,
-                 getCoordinates(), target.getCoordinates()) == FACING_SINGLE.IN_FRONT) {
-                    return newFacing;
-                }
-            }
-        return super.getRequiredFacing();
-    }
 
     @Override
     protected float getTimeBeforeFail() {

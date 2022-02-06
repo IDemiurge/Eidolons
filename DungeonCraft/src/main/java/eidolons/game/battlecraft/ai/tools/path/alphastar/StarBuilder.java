@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.ai.tools.path.alphastar;
 
 import eidolons.entity.unit.Unit;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.tools.path.ActionPath;
@@ -43,40 +43,25 @@ public class StarBuilder extends AiHandler implements IPathHandler {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         } finally {
-            unit.removeTempFacing();
             unit.removeTempCoordinates();
         }
         return new ActionPath(path.endPoint, choices);
     }
 
     private Choice createChoice(Unit unit, Coordinates prev, Coordinates c) {
-        Action[] actions = getActions(unit, prev, c);
-        return new Choice(c, actions);
+        AiAction[] aiActions = getActions(unit, prev, c);
+        return new Choice(c, aiActions);
     }
 
-    private Action[] getActions(Unit unit, Coordinates prev, Coordinates c) {
-        FACING_DIRECTION facing = unit.getFacing();
-        List<Action> sequence = new ArrayList<>();
-        List<Action> turnSequence = getTurnSequenceConstructor().getTurnSequence(unit, c);
-        if (turnSequence.size() > 1 || PositionMaster.inLineDiagonally(prev, c)) {
-            //otherwise go with side-moves!
-            for (Action action : turnSequence) {
-                boolean clockwise = true;
-                if (action.getActive().getName().contains("Anticlockwise")) {
-                    clockwise = false;
-                }
-                facing = facing.rotate(clockwise);
-            }
-            unit.setTempFacing(facing);
-            sequence.addAll(turnSequence);
-        }
-        Action move = DC_MovementManager.getMoveAction(unit, prev, c);
+    private AiAction[] getActions(Unit unit, Coordinates prev, Coordinates c) {
+        List<AiAction> sequence = new ArrayList<>();
+        AiAction move = DC_MovementManager.getMoveAction(unit, prev, c);
         if (move == null) {
             return null ;
         }
         sequence.add(move);
         unit.setTempCoordinates(c);
-        return sequence.toArray(new Action[0]);
+        return sequence.toArray(new AiAction[0]);
     }
 
 

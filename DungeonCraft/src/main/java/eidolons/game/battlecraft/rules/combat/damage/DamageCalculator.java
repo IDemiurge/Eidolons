@@ -2,8 +2,8 @@ package eidolons.game.battlecraft.rules.combat.damage;
 
 import eidolons.ability.effects.oneshot.DealDamageEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
@@ -22,7 +22,7 @@ import main.content.enums.entity.NewRpgEnums;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.Obj;
 import main.system.auxiliary.StringMaster;
 
@@ -121,7 +121,7 @@ public class DamageCalculator {
     }
 
     public static int precalculateDamage(int amount, DAMAGE_TYPE dmg_type, BattleFieldObject attacked,
-                                         BattleFieldObject attacker, DC_WeaponObj weapon, DC_ActiveObj action) {
+                                         BattleFieldObject attacker, WeaponItem weapon, ActiveObj action) {
         if (dmg_type == DAMAGE_TYPE.PURE || dmg_type == DAMAGE_TYPE.POISON) {
             return amount;
         }
@@ -174,7 +174,7 @@ public class DamageCalculator {
     }
 
     private static NewRpgEnums.HitType getAverageHitType(BattleFieldObject sourceObj,
-                                                         Obj targetObj, ActiveObj active) {
+                                                         Obj targetObj, IActiveObj active) {
         //TODO AI revamp
         return NewRpgEnums.HitType.hit;
     }
@@ -253,13 +253,13 @@ public class DamageCalculator {
         }
         obj = (DC_Obj) ref.getObj(KEYS.ACTIVE);
 
-        if (obj instanceof DC_ActiveObj) {
+        if (obj instanceof ActiveObj) {
             for (DAMAGE_CASE e : obj.getBonusDamage().keySet()) {
                 if (e == CASE) {
                     list.addAll(obj.getBonusDamage().get(e));
                 }
             }
-            obj = ((DC_ActiveObj) obj).getActiveWeapon();
+            obj = ((ActiveObj) obj).getActiveWeapon();
             if (obj != null) {
                 for (DAMAGE_CASE e : obj.getBonusDamage().keySet()) {
                     if (e == CASE) {
@@ -310,7 +310,7 @@ public class DamageCalculator {
 
     @Deprecated
     private static int initializeDamageModifiers(int amount, boolean offhand, BattleFieldObject unit,
-                                                 DC_WeaponObj weapon) {
+                                                 WeaponItem weapon) {
         amount += weapon.getDamageModifiers();
         amount += weapon.getIntParam(PARAMS.DAMAGE_BONUS);
         int hero_dmg_mod = unit.getIntParam((offhand) ? PARAMS.OFFHAND_DAMAGE_MOD
@@ -336,7 +336,7 @@ public class DamageCalculator {
     @Deprecated
     public static Integer getUnitAttackDamage(Unit unit, boolean offhand) {
         int amount = unit.getIntParam(PARAMS.BASE_DAMAGE);
-        DC_WeaponObj weapon = unit.getWeapon(offhand);
+        WeaponItem weapon = unit.getWeapon(offhand);
         if (weapon == null) {
             weapon = unit.getNaturalWeapon(offhand);
         }

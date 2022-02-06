@@ -1,6 +1,6 @@
 package eidolons.entity.handlers;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import main.entity.obj.Obj;
@@ -27,7 +27,7 @@ public class KeyResolver {
         return null;
     }
 
-    public Obj getObj(ActionKey key, DC_ActiveObj unit) {
+    public Obj getObj(ActionKey key, ActiveObj unit) {
 
         switch (key) {
             case SOURCE:

@@ -6,9 +6,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.unit.FacingEntity;
+import eidolons.entity.unit.GridEntity;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.MultiDamage;
@@ -31,7 +31,6 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.GuiEventManager;
@@ -170,7 +169,7 @@ public class FloatingTextMaster {
                 return pair.getValue() + "";
             }
             case CANNOT_ACTIVATE:
-                DC_ActiveObj activeObj = (DC_ActiveObj) active;
+                ActiveObj activeObj = (ActiveObj) active;
                 return activeObj.getCosts().getReasonsString();
             case BONUS_DAMAGE:
                 return String.valueOf(((Damage) arg).getAmount());
@@ -262,7 +261,7 @@ public class FloatingTextMaster {
             anim = compositeAnim.getMap().values().iterator().next();
         }
         Object[] args = CASE.getArgs(e);
-        DC_ActiveObj active = (DC_ActiveObj) e.getRef().getActive();
+        ActiveObj active = (ActiveObj) e.getRef().getActive();
         float delay = 0;
         for (Object arg : args) {
             FloatingText floatingText = addFloatingText(active, CASE, arg, anim, delay);
@@ -374,7 +373,7 @@ public class FloatingTextMaster {
 
     }
 
-    private FloatingText addFloatingText(DC_ActiveObj active,
+    private FloatingText addFloatingText(ActiveObj active,
                                          VisualEnums.TEXT_CASES CASE, Object arg, Animation animation, float delay) {
         Anim anim;
         if (animation instanceof Anim) {
@@ -450,7 +449,7 @@ public class FloatingTextMaster {
             float delay = 0;
             for (Damage bonus : ((MultiDamage) damage).getAdditionalDamage()) {
                 FloatingText floatingText = addFloatingText(
-                        (DC_ActiveObj) damage.getRef()
+                        (ActiveObj) damage.getRef()
                                 .getObj(KEYS.ACTIVE),
                         VisualEnums.TEXT_CASES.BONUS_DAMAGE, bonus, anim, delay);
                 delay += floatingText.getDuration() / 2;
@@ -505,13 +504,13 @@ public class FloatingTextMaster {
         if (v == null) {
             if (atCursorStage != null)
                 v = GdxMaster.getCursorPosition(atCursorStage);
-            else if (entity instanceof FacingEntity) {
-                v = GridMaster.getCenteredPos(((FacingEntity) entity).getCoordinates());
+            else if (entity instanceof GridEntity) {
+                v = GridMaster.getCenteredPos(((GridEntity) entity).getCoordinates());
                 text.setPosition(v);
             } else {
-                if (entity instanceof DC_ActiveObj) {
+                if (entity instanceof ActiveObj) {
                     v = GridMaster.getCenteredPos(
-                            ((DC_ActiveObj) entity).getOwnerUnit().getCoordinates());
+                            ((ActiveObj) entity).getOwnerUnit().getCoordinates());
 
                 }
             }
@@ -523,27 +522,30 @@ public class FloatingTextMaster {
         //        }
         text.setPosition(v);
         if (at == null)
-            if (entity instanceof FacingEntity) {
+            if (entity instanceof GridEntity) {
                 float height = 629;// text.getHeight();
                 float width = 537;// text.getWidth();
                 if (overrideFont != null) {
                     width = 620;
                 }
-                FACING_DIRECTION f = ((FacingEntity) entity).getFacing().flip();
-                switch (f.rotate(f.isCloserToZero())) {
-                    case NORTH:
-                        text.setY(text.getY() + height / 2);
-                        break;
-                    case WEST:
-                        text.setX(text.getX() - width / 2);
-                        break;
-                    case EAST:
-                        text.setX(text.getX() + width / 2);
-                        break;
-                    case SOUTH:
-                        text.setY(text.getY() - height / 2);
-                        break;
-                }
+                text.setY(text.getY() + height / 2);
+                //TODO LC 2.0
+
+                // FACING_DIRECTION f = ((GridEntity) entity).getFacing().flip();
+                // switch (f.rotate(f.isCloserToZero())) {
+                //     case NORTH:
+                //         text.setY(text.getY() + height / 2);
+                //         break;
+                //     case WEST:
+                //         text.setX(text.getX() - width / 2);
+                //         break;
+                //     case EAST:
+                //         text.setX(text.getX() + width / 2);
+                //         break;
+                //     case SOUTH:
+                //         text.setY(text.getY() - height / 2);
+                //         break;
+                // }
             }
 
         text.setCase(CASE);

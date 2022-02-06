@@ -7,7 +7,7 @@ import com.badlogic.gdx.audio.Sound;
 import main.content.CONTENT_CONSTS.SOUNDSET;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
-import main.content.enums.entity.HeroEnums.HERO_SOUNDSET;
+import main.content.enums.entity.RpgEnums.HERO_SOUNDSET;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import libgdx.GdxMaster;
 import libgdx.anims.sprite.SpriteAnimation;
 import libgdx.assets.Atlases;
@@ -20,7 +20,7 @@ import main.game.bf.Coordinates;
  */
 public class Ready3dAnim extends Weapon3dAnim {
 
-    public Ready3dAnim(DC_ActiveObj active) {
+    public Ready3dAnim(ActiveObj active) {
         super(active);
     }
 

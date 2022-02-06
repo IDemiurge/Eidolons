@@ -2,7 +2,7 @@ package eidolons.entity.handlers.active;
 
 import eidolons.ability.ActivesConstructor;
 import eidolons.ability.targeting.TemplateSelectiveTargeting;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
 import main.ability.Ability;
 import main.content.enums.entity.AbilityEnums;
@@ -14,10 +14,9 @@ import main.elements.targeting.MultiTargeting;
 import main.elements.targeting.SelectiveTargeting;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LogMaster;
 
@@ -28,15 +27,15 @@ import java.util.Map;
  * Created by JustMe on 2/25/2017.
  */
 public class Targeter extends ActiveHandler {
-    protected Map<Coordinates, Map<FACING_DIRECTION, Boolean>> targetingAnyCache;
-    protected Map<Coordinates, Map<FACING_DIRECTION, Map<Integer, Boolean>>> targetingCache;
+    protected Map<Coordinates,  Boolean> targetingAnyCache;
+    protected Map<Coordinates, Map<Integer, Boolean>> targetingCache;
 
     private Obj presetTarget;
     protected boolean forcePresetTarget;
     private TARGETING_MODE targetingMode;
     private boolean targetingInitialized;
 
-    public Targeter(DC_ActiveObj entity, ActiveMaster entityMaster) {
+    public Targeter(ActiveObj entity, ActiveMaster entityMaster) {
         super(entity, entityMaster);
     }
 
@@ -143,18 +142,12 @@ public class Targeter extends ActiveHandler {
         if (!(targeting instanceof SelectiveTargeting)) {
             return true;
         }
-        Map<FACING_DIRECTION, Boolean> map = getTargetingAnyCache().get(
-                getOwnerObj().getCoordinates());
-        if (map == null) {
-            map = new HashMap<>();
-            targetingAnyCache.put(getOwnerObj().getCoordinates(), map);
-        }
-
-        Boolean canTargetAny = map.get(getOwnerObj().getFacing());
+        Coordinates c = getOwnerObj().getCoordinates();
+        Boolean canTargetAny = targetingAnyCache.get(c);
         if (canTargetAny == null) {
             canTargetAny = !targeting.getFilter().getObjects(getRef()).isEmpty();
         }
-        map.put(getOwnerObj().getFacing(), canTargetAny);
+        targetingAnyCache.put(c, canTargetAny);
         return canTargetAny;
     }
 
@@ -172,19 +165,14 @@ public class Targeter extends ActiveHandler {
         if (!(targeting instanceof SelectiveTargeting)) {
             return true;
         }
-        Map<FACING_DIRECTION, Map<Integer, Boolean>> map = getTargetingCache().get(
+        Map<Integer, Boolean> map = getTargetingCache().get(
                 getOwnerObj().getCoordinates());
 
         if (map == null) {
             map = new HashMap<>();
             getTargetingCache().put(getOwnerObj().getCoordinates(), map);
         }
-        Map<Integer, Boolean> map2 = map.get(getOwnerObj().getFacing());
-        if (map2 == null) {
-            map2 = new HashMap<>();
-            map.put(getOwnerObj().getFacing(), map2);
-        }
-        Boolean result = map2.get(id); //TODO for ai?
+        Boolean result = map.get(id); //TODO for ai?
         if (caching) {
             if (result != null)
                 return result;
@@ -236,7 +224,7 @@ public class Targeter extends ActiveHandler {
 
         getEntity().getRef().getSourceObj().getRef().setInfoEntity(getEntity());
         result = conditions.preCheck(REF);
-        map2.put(id, result);
+        map.put(id, result);
         return result;
 
     }
@@ -252,7 +240,7 @@ public class Targeter extends ActiveHandler {
     public void setForcePresetTarget(boolean b) {
         forcePresetTarget = b;
         if (getEntity().getActives() != null) {
-            for (ActiveObj a : getEntity().getActives()) {
+            for (IActiveObj a : getEntity().getActives()) {
                 a.setForcePresetTarget(b);
             }
         }
@@ -271,14 +259,14 @@ public class Targeter extends ActiveHandler {
         return targetingMode;
     }
 
-    public Map<Coordinates, Map<FACING_DIRECTION, Boolean>> getTargetingAnyCache() {
+    public Map<Coordinates, Boolean> getTargetingAnyCache() {
         if (targetingAnyCache == null) {
             targetingAnyCache = new HashMap<>();
         }
         return targetingAnyCache;
     }
 
-    public Map<Coordinates, Map<FACING_DIRECTION, Map<Integer, Boolean>>> getTargetingCache() {
+    public Map<Coordinates, Map<Integer, Boolean>> getTargetingCache() {
         if (targetingCache == null) {
             targetingCache = new HashMap<>();
         }

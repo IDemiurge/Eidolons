@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.rules.combat.attack.accuracy;
 
 import eidolons.content.DC_Calculator;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
@@ -44,7 +44,7 @@ public class AccuracyMaster {
         return getHitType(accuracy);
     }
 
-    private int rollAccuracy(int defense, int attackValue, BattleFieldObject attacked, Unit attacker, DC_ActiveObj action) {
+    private int rollAccuracy(int defense, int attackValue, BattleFieldObject attacked, Unit attacker, ActiveObj action) {
         if (action.isSpell()) {
             //TODO chaos level applies?
         }
@@ -57,7 +57,7 @@ public class AccuracyMaster {
         return result;
     }
 
-    private int getDiceNumberForAttack(DC_ActiveObj action, BattleFieldObject unit, boolean attacker) {
+    private int getDiceNumberForAttack(ActiveObj action, BattleFieldObject unit, boolean attacker) {
         return 1 + game.getState().getChaosLevel();
     }
 

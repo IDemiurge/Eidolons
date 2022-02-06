@@ -2,27 +2,27 @@ package eidolons.entity.unit;
 
 import eidolons.content.*;
 import eidolons.content.values.ValuePages;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_QuickItemAction;
-import eidolons.entity.active.Spell;
-import eidolons.entity.active.spaces.Feat;
-import eidolons.entity.active.spaces.FeatSpaces;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.QuickItemAction;
+import eidolons.entity.feat.active.Spell;
+import eidolons.entity.feat.Feat;
+import eidolons.entity.feat.spaces.FeatSpaces;
 import eidolons.entity.handlers.bf.unit.*;
+import eidolons.entity.item.trinket.JewelryItem;
+import eidolons.entity.item.trinket.TokenItem;
 import eidolons.netherflame.eidolon.heromake.model.DC_Attributes;
 import eidolons.netherflame.eidolon.heromake.model.DC_Masteries;
 import eidolons.entity.item.*;
-import eidolons.entity.item.garment.Garment;
-import eidolons.entity.item.garment.HeadGarment;
+import eidolons.entity.item.trinket.garment.Garment;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.handlers.KeyResolver;
 import eidolons.entity.unit.attach.DC_PassiveObj;
-import eidolons.entity.unit.attach.HeroClass;
+import eidolons.entity.unit.attach.ClassRank;
 import eidolons.entity.unit.attach.Perk;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.battlecraft.logic.mission.universal.PlayerManager;
 import eidolons.game.core.EUtils;
@@ -44,11 +44,10 @@ import main.content.VALUE;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
-import main.content.enums.entity.HeroEnums.BACKGROUND;
+import main.content.enums.entity.HeroEnums.SUBRACE;
 import main.content.enums.entity.HeroEnums.GENDER;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.enums.entity.UnitEnums;
-import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.AI_TYPE;
@@ -60,12 +59,11 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.handlers.EntityMaster;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.BuffObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.action.context.Context.IdKey;
 import main.game.logic.battle.player.Player;
 import main.system.ExceptionMaster;
@@ -87,31 +85,29 @@ import java.util.stream.Collectors;
 import static eidolons.content.consts.VisualEnums.CONTAINER;
 import static eidolons.content.consts.VisualEnums.INTENT_ICON;
 
-public class Unit extends DC_UnitModel implements FacingEntity {
-    protected DC_WeaponObj offhandNaturalWeapon;
-    protected DC_WeaponObj naturalWeapon;
-    protected DC_WeaponObj weapon;
-    protected DC_WeaponObj secondWeapon;
-    protected DC_WeaponObj reserveMainWeapon;
-    protected DC_WeaponObj reserveOffhandWeapon;
+public class Unit extends UnitModel implements GridEntity {
+    protected WeaponItem offhandNaturalWeapon;
+    protected WeaponItem naturalWeapon;
+    protected WeaponItem weapon;
+    protected WeaponItem offhandWeapon;
+    protected WeaponItem reserveMainWeapon;
+    protected WeaponItem reserveOffhandWeapon;
 
-    protected DC_ArmorObj armor;
-    protected DC_ArmorObj innerArmor;
-    protected HeadGarment headGarment;
-    protected Garment garment;
+    protected ArmorItem armor;
+    protected ArmorItem innerArmor;
 
     protected DequeImpl<DC_PassiveObj> skills;
-    protected DequeImpl<HeroClass> classes;
+    protected DequeImpl<ClassRank> classRanks;
     protected DequeImpl<Perk> perks;
-    protected DequeImpl<DC_QuickItemObj> quickItems;
-    protected DequeImpl<DC_JewelryObj> jewelry;
-    protected DequeImpl<DC_HeroItemObj> inventory;
+
+    protected DequeImpl<JewelryItem> jewelry;
+    protected DequeImpl<Garment> garments;
+    protected DequeImpl<TokenItem> tokens;
+
+    protected DequeImpl<HeroItem> inventory;
 
     protected DC_Masteries masteries;
     protected DC_Attributes attrs;
-
-    protected List<Spell> spells;
-    protected List<Spell> spellbook;
 
     protected FeatSpaces spellSpaces;
     protected FeatSpaces combatSpaces;
@@ -127,8 +123,8 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     protected FLIP flip;
     protected ObjType backgroundType;
     protected Unit engagementTarget;
-    protected DC_WeaponObj rangedWeapon;
-    private DC_ActiveObj lastAction;
+    protected WeaponItem rangedWeapon;
+    private ActiveObj lastAction;
 
     public Unit(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
@@ -144,12 +140,6 @@ public class Unit extends DC_UnitModel implements FacingEntity {
             // }
             SpecialLogger.getInstance().appendAnalyticsLog(SPECIAL_LOG.MAIN, message);
 
-        } else {
-            try {
-                setFacing(FacingMaster.getRandomFacing());
-            } catch (Exception e) {
-                ExceptionMaster.printStackTrace(e);
-            }
         }
         //TODO make it more apparent why and how this is done
         //cleanRef();
@@ -232,7 +222,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
                     }
                 }
                 if (param.isDynamic()) {
-                    if (Debugger.isImmortalityOn() )
+                    if (Debugger.isImmortalityOn())
                         if (param == PARAMS.C_ENDURANCE || param == PARAMS.C_TOUGHNESS)
                             if (integer <= 0) {
                                 return;
@@ -279,7 +269,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
 
 
     public void addAction(String string) {
-        ActiveObj action = game.getActionManager().getAction(string, this);
+        IActiveObj action = game.getActionManager().getAction(string, this);
         if (action != null) {
             actives.add(action);
         }
@@ -307,16 +297,16 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         return getAI().isOutsideCombat();
     }
 
-    public List<DC_QuickItemAction> getQuickItemActives() {
+    public List<QuickItemAction> getQuickItemActives() {
         if (!ListMaster.isNotEmpty(getQuickItems())) {
             return new ArrayList<>();
         }
-        List<DC_QuickItemAction> qia = new ArrayList<>();
-        for (DC_QuickItemObj q : getQuickItems()) {
+        List<QuickItemAction> qia = new ArrayList<>();
+        for (QuickItem q : getQuickItems()) {
             if (!q.isConstructed()) {
                 q.construct();
             }
-            DC_QuickItemAction active = q.getActive();
+            QuickItemAction active = q.getActive();
             if (active != null) {
                 qia.add(active);
             }
@@ -354,7 +344,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         super.activatePassives();
     }
 
-    public void setWeapon(DC_WeaponObj weapon) {
+    public void setWeapon(WeaponItem weapon) {
         this.weapon = weapon;
         if (weapon != null) {
             weapon.setMainHand(true);
@@ -384,7 +374,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     }
 
 
-    public void setNaturalWeapon(boolean offhand, DC_WeaponObj weapon) {
+    public void setNaturalWeapon(boolean offhand, WeaponItem weapon) {
         if (offhand) {
             offhandNaturalWeapon = weapon;
         } else {
@@ -392,16 +382,16 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         }
     }
 
-    public DC_WeaponObj getNaturalWeapon() {
+    public WeaponItem getNaturalWeapon() {
         return getNaturalWeapon(false);
     }
 
-    public DC_WeaponObj getOffhandNaturalWeapon() {
+    public WeaponItem getOffhandNaturalWeapon() {
         return getNaturalWeapon(true);
     }
 
-    public DC_WeaponObj getNaturalWeapon(boolean offhand) {
-        DC_WeaponObj weaponObj = (!offhand) ? naturalWeapon : offhandNaturalWeapon;
+    public WeaponItem getNaturalWeapon(boolean offhand) {
+        WeaponItem weaponObj = (!offhand) ? naturalWeapon : offhandNaturalWeapon;
         if (weaponObj == null) {
             initNaturalWeapon(offhand);
         }
@@ -409,7 +399,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         return weaponObj;
     }
 
-    public boolean removeJewelryItem(DC_HeroItemObj itemObj) {
+    public boolean removeJewelryItem(HeroItem itemObj) {
         boolean result = getJewelry().remove(itemObj);
         if (getJewelry().isEmpty()) {
             setJewelry(null);
@@ -417,30 +407,12 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         return result;
     }
 
-    public void addQuickItem(DC_QuickItemObj itemObj) {
-        if (getQuickItems() == null)
-            setQuickItems(new DequeImpl<>());
-        getQuickItems().add(itemObj);
-        itemObj.setRef(ref);
-        getResetter().resetQuickSlotsNumber();
-        itemObj.setContainer(CONTAINER.QUICK_SLOTS);
+    public void addQuickItem(QuickItem itemObj) {
+        //TODO Spaces
     }
 
-    public boolean removeQuickItem(DC_HeroItemObj itemObj) {
-        if (getQuickItems() == null)
-            return false;
-        if (getQuickItems().remove(itemObj)) {
-            getResetter().resetQuickSlotsNumber();
-
-            type.removeProperty(PROPS.QUICK_ITEMS, itemObj.getName(), false);
-
-            removeProperty(PROPS.QUICK_ITEMS, "" + itemObj.getId(), true);
-
-            if (getQuickItems().isEmpty()) {
-                setQuickItems(null);
-            }
-            return true;
-        }
+    public boolean removeQuickItem(HeroItem itemObj) {
+        //TODO Spaces
         return false;
     }
 
@@ -452,34 +424,35 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         super.newRound();
     }
 
-    public DC_WeaponObj getMainWeapon() {
+    public WeaponItem getMainWeapon() {
         return weapon;
     }
 
-    public DC_ArmorObj getArmor(boolean inner) {
+    public ArmorItem getArmor(boolean inner) {
         return inner ? innerArmor : armor;
     }
 
-    public DC_ArmorObj getArmor() {
+    public ArmorItem getArmor() {
         if (armor == null) {
             return innerArmor;
         }
         return armor;
     }
 
-    public DC_ArmorObj getInnerArmor() {
+    public ArmorItem getInnerArmor() {
         return innerArmor;
     }
 
+    //TODO INV 2.0
     public Garment getGarment() {
-        return garment;
+        return null ;
     }
 
-    public HeadGarment getHeadwear() {
-        return headGarment;
+    public Garment getHeadwear() {
+        return null ;
     }
 
-    public void setArmor(DC_ArmorObj armor) {
+    public void setArmor(ArmorItem armor) {
         this.armor = armor;
         if (armor == null) {
             ref.setID(KEYS.ARMOR, null);
@@ -494,11 +467,8 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     }
 
     public List<Spell> getSpells() {
-
-        if (spells == null) {
-            spells = new ArrayList<>();
-        }
-        return spells;
+        //TODO Spaces
+        return null;
     }
 
     public FeatSpaces getSpellSpaces() {
@@ -517,45 +487,32 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         this.combatSpaces = combatSpaces;
     }
 
-    public void setSpells(List<Spell> spells) {
-        this.spells = spells;
+    public WeaponItem getOffhandWeapon() {
+        return offhandWeapon;
     }
 
-    public DC_WeaponObj getOffhandWeapon() {
-        return secondWeapon;
-    }
-
-    public void setSecondWeapon(DC_WeaponObj secondWeapon) {
-        this.secondWeapon = secondWeapon;
-        if (secondWeapon != null) {
-            secondWeapon.setMainHand(false);
+    public void setOffhandWeapon(WeaponItem offhandWeapon) {
+        this.offhandWeapon = offhandWeapon;
+        if (offhandWeapon != null) {
+            offhandWeapon.setMainHand(false);
         } else {
             ref.setID(KEYS.WEAPON, null);
         }
 
         if (!game.isSimulation() && !isLoaded()) {
             String id = "";
-            if (secondWeapon != null) {
-                id = secondWeapon.getId() + "";
+            if (offhandWeapon != null) {
+                id = offhandWeapon.getId() + "";
             }
             setProperty(G_PROPS.OFF_HAND_ITEM, id);
         }
-    }
-
-
-    public List<Spell> getSpellbook() {
-        return spellbook;
-    }
-
-    public void setSpellbook(List<Spell> spellbook) {
-        this.spellbook = spellbook;
     }
 
     public void addFeat(DC_PassiveObj e) {
         if (e.getOBJ_TYPE_ENUM() == DC_TYPE.SKILLS) {
             getSkills().add(e);
         } else {
-            getClasses().addCast(e);
+            getClassRanks().addCast(e);
         }
     }
 
@@ -575,52 +532,35 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     }
 
     public boolean isQuickSlotsFull() {
-        if (game.isSimulation()) {
-            return getIntParam(PARAMS.QUICK_SLOTS) <= ContainerUtils.openContainer(
-                    getProperty(PROPS.QUICK_ITEMS)).size();
-        }
-        if (quickItems == null) {
-            return false;
-        }
+        //TODO Spaces
         return getRemainingQuickSlots() <= 0;
     }
 
     public int getQuickSlotsMax() {
-        return getIntParam(PARAMS.QUICK_SLOTS);
+        //TODO Spaces
+        return 0;
     }
 
     public int getRemainingQuickSlots() {
-        if (quickItems == null) {
-            return getQuickSlotsMax();
-        }
-        return getIntParam(PARAMS.QUICK_SLOTS) - quickItems.size();
+        //TODO Spaces
+        return 0;
     }
 
     public int getOccupiedQuickSlots() {
-        if (quickItems == null) {
             return 0;
-        }
-        return quickItems.size();
     }
 
-    public DequeImpl<DC_QuickItemObj> getQuickItems() {
-        //        if (!isItemsInitialized()) {
-        if (quickItems == null) {
-            quickItems = new DequeImpl<>();
-        }
-        return quickItems;
+    public DequeImpl<QuickItem> getQuickItems() {
+        //TODO Spaces
+        return null ;
     }
 
-    public void setQuickItems(DequeImpl<DC_QuickItemObj> quickItems) {
-        this.quickItems = quickItems;
+    public HeroItem getItemFromInventory(String name) {
+        return new SearchMaster<HeroItem>().find(name, getInventory());
     }
 
-    public DC_HeroItemObj getItemFromInventory(String name) {
-        return new SearchMaster<DC_HeroItemObj>().find(name, getInventory());
-    }
-
-    public DC_QuickItemObj getQuickItem(String name) {
-        return new SearchMaster<DC_QuickItemObj>().find(name, getQuickItems());
+    public QuickItem getQuickItem(String name) {
+        return new SearchMaster<QuickItem>().find(name, getQuickItems());
     }
 
     public Entity getItem(String name) {
@@ -636,7 +576,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         return new SearchMaster<Entity>().find(name, list);
     }
 
-    public DequeImpl<DC_HeroItemObj> getInventory() {
+    public DequeImpl<HeroItem> getInventory() {
         //        if (!isItemsInitialized()) {
         if (inventory == null) {
             inventory = new DequeImpl<>();
@@ -644,7 +584,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         return inventory;
     }
 
-    public void setInventory(DequeImpl<DC_HeroItemObj> inventory) {
+    public void setInventory(DequeImpl<HeroItem> inventory) {
         if (inventory == null) {
             LogMaster.log(1, "Inventory nullified  " + this);
         }
@@ -686,16 +626,16 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         return ContainerUtils.openContainer(getProperty(prop)).size();
     }
 
-    public DequeImpl<HeroClass> getClasses() {
-        return classes;
+    public DequeImpl<ClassRank> getClassRanks() {
+        return classRanks;
     }
 
-    public void setClasses(DequeImpl<HeroClass> classes) {
-        this.classes = classes;
+    public void setClassRanks(DequeImpl<ClassRank> classRanks) {
+        this.classRanks = classRanks;
     }
 
-    public DC_WeaponObj getActiveWeapon(boolean offhand) {
-        DC_WeaponObj weapon = getWeapon(offhand);
+    public WeaponItem getActiveWeapon(boolean offhand) {
+        WeaponItem weapon = getWeapon(offhand);
 
         if (weapon == null) {
             weapon = getNaturalWeapon(offhand);
@@ -708,15 +648,15 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         return weapon;
     }
 
-    public DC_WeaponObj getWeapon(boolean offhand) {
+    public WeaponItem getWeapon(boolean offhand) {
         return (offhand) ? getOffhandWeapon() : getMainWeapon();
     }
 
-    public boolean equip(DC_HeroItemObj item, ITEM_SLOT slot) {
+    public boolean equip(HeroItem item, ITEM_SLOT slot) {
         if (item == null) {
             return false;
         }
-        DC_HeroItemObj prevItem = getItem(slot);
+        HeroItem prevItem = getItem(slot);
         setItem(item, slot);
         item.equipped(ref);
 
@@ -734,17 +674,17 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         return true;
     }
 
-    public boolean addItemToInventory(DC_HeroItemObj item) {
+    public boolean addItemToInventory(HeroItem item) {
         return addItemToInventory(item, false);
     }
 
-    public boolean addItemToInventory(DC_HeroItemObj item, boolean quiet) {
+    public boolean addItemToInventory(HeroItem item, boolean quiet) {
         if (isInventoryFull())
             return false;
         if (getInventory() == null) { //TODO EA check - INV system is loose?
             setProperty(PROPS.INVENTORY, getType().getProperty(getProperty(PROPS.INVENTORY)));
             itemsInitialized = false;
-            inventory = (DequeImpl<DC_HeroItemObj>) getInitializer().
+            inventory = (DequeImpl<HeroItem>) getInitializer().
                     initContainedItems(PROPS.INVENTORY, null, false);
         }
         try {
@@ -778,10 +718,10 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         super.applyType(type);
     }
 
-    public void setItem(DC_HeroItemObj item, ITEM_SLOT slot) {
-        if (item instanceof DC_QuickItemObj) {
-            if (((DC_QuickItemObj) item).getWrappedWeapon() != null) {
-                item = ((DC_QuickItemObj) item).getWrappedWeapon();
+    public void setItem(HeroItem item, ITEM_SLOT slot) {
+        if (item instanceof QuickItem) {
+            if (((QuickItem) item).getWrappedWeapon() != null) {
+                item = ((QuickItem) item).getWrappedWeapon();
             }
         }
         if (item != null) {
@@ -793,19 +733,19 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         }
         switch (slot) {
             case ARMOR:
-                setArmor((DC_ArmorObj) item);
+                setArmor((ArmorItem) item);
                 break;
             case MAIN_HAND:
-                setWeapon((DC_WeaponObj) item);
+                setWeapon((WeaponItem) item);
                 break;
             case OFF_HAND:
-                setSecondWeapon((DC_WeaponObj) item);
+                setOffhandWeapon((WeaponItem) item);
                 break;
             case RESERVE_MAIN_HAND:
-                setReserveMainWeapon((DC_WeaponObj) item);
+                setReserveMainWeapon((WeaponItem) item);
                 break;
             case RESERVE_OFF_HAND:
-                setReserveOffhandWeapon((DC_WeaponObj) item);
+                setReserveOffhandWeapon((WeaponItem) item);
                 break;
         }
         if (item != null) {
@@ -816,7 +756,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         }
     }
 
-    public DC_HeroItemObj getItem(ITEM_SLOT slot) {
+    public HeroItem getItem(ITEM_SLOT slot) {
         switch (slot) {
             case ARMOR:
                 return getArmor();
@@ -836,7 +776,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         this.itemsInitialized = itemsInitialized;
     }
 
-    public boolean dropItemFromInventory(DC_HeroItemObj item, Coordinates c) {
+    public boolean dropItemFromInventory(HeroItem item, Coordinates c) {
         removeFromInventory(item);
         if (!isSimulation()) //sim just remembers for real hero to drop via operation
         {
@@ -848,11 +788,11 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         return true;
     }
 
-    public boolean dropItemFromInventory(DC_HeroItemObj item) {
+    public boolean dropItemFromInventory(HeroItem item) {
         return dropItemFromInventory(item, getCoordinates());
     }
 
-    public boolean removeFromInventory(DC_HeroItemObj item) {
+    public boolean removeFromInventory(HeroItem item) {
         if (!getInventory().remove(item))
             return false;
         if (getInventory().isEmpty()) {
@@ -874,50 +814,45 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         resetPercentages();
         getCustomParamMap().clear();
         getCustomPropMap().clear();
-        game.getState().addObject(secondWeapon);
+        game.getState().addObject(offhandWeapon);
         game.getState().addObject(weapon);
         game.getState().addObject(armor);
-        for (DC_HeroItemObj item : getQuickItems()) {
+        for (HeroItem item : getQuickItems()) {
             game.getState().addObject(item);
         }
-        for (DC_HeroItemObj item : getInventory()) {
+        for (HeroItem item : getInventory()) {
             game.getState().addObject(item);
         }
     }
 
-    public BACKGROUND getBackground() {
-        BACKGROUND background = new EnumMaster<BACKGROUND>().retrieveEnumConst(BACKGROUND.class,
+    public SUBRACE getBackground() {
+        SUBRACE SUBRACE = new EnumMaster<SUBRACE>().retrieveEnumConst(SUBRACE.class,
                 getProperty(G_PROPS.BACKGROUND));
-        if (getGender() != null) {
-            return getGender() == GENDER.FEMALE
-                    ? background.getFemale()
-                    : background.getMale();
-        }
-        return background;
+        return SUBRACE;
     }
 
-    public DequeImpl<DC_JewelryObj> getJewelry() {
+    public DequeImpl<JewelryItem> getJewelry() {
         if (jewelry == null) {
             jewelry = new DequeImpl<>();
         }
         return jewelry;
     }
 
-    public void setJewelry(DequeImpl<DC_JewelryObj> jewelry) {
+    public void setJewelry(DequeImpl<JewelryItem> jewelry) {
         this.jewelry = jewelry;
     }
 
-    public void addJewelryItem(DC_JewelryObj item) {
+    public void addJewelryItem(JewelryItem item) {
         getJewelry().add(item);
         item.setRef(ref);
     }
 
-    public DC_HeroItemObj unequip(ITEM_SLOT slot) {
+    public HeroItem unequip(ITEM_SLOT slot) {
         return unequip(slot, false);
     }
 
-    public DC_HeroItemObj unequip(ITEM_SLOT slot, Boolean drop) {
-        DC_HeroItemObj item = null;
+    public HeroItem unequip(ITEM_SLOT slot, Boolean drop) {
+        HeroItem item = null;
         switch (slot) {
             case ARMOR:
                 item = getArmor();
@@ -929,7 +864,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
                 break;
             case OFF_HAND:
                 item = getOffhandWeapon();
-                setSecondWeapon(null);
+                setOffhandWeapon(null);
                 break;
             case RESERVE_MAIN_HAND:
                 item = getReserveMainWeapon();
@@ -940,8 +875,8 @@ public class Unit extends DC_UnitModel implements FacingEntity {
                 setReserveOffhandWeapon(null);
                 break;
         }
-        if (item instanceof DC_WeaponObj) {
-            if (((DC_WeaponObj) item).isRanged()) {
+        if (item instanceof WeaponItem) {
+            if (((WeaponItem) item).isRanged()) {
                 setRangedWeapon(null);
             }
         }
@@ -978,7 +913,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         super.applySpecialEffects(case_type, target, REF);
     }
 
-    public void unequip(DC_HeroItemObj item, Boolean drop) {
+    public void unequip(HeroItem item, Boolean drop) {
         if (getWeapon(false) == item) {
             unequip(ITEM_SLOT.MAIN_HAND, drop);
             return;
@@ -997,7 +932,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         }
         boolean result = removeJewelryItem(item);
         if (!result)
-            if (item instanceof DC_QuickItemObj)
+            if (item instanceof QuickItem)
                 result = removeQuickItem(item);
         if (result) {
             boolean full = !addItemToInventory(item, true);
@@ -1013,8 +948,8 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         int size = getQuickItems().size();
         if (size <= n)
             return;
-        List<DC_QuickItemObj> toRemove = new ArrayList<>(getQuickItems()).subList(n - 1, size - 1);
-        for (DC_QuickItemObj q : toRemove) {
+        List<QuickItem> toRemove = new ArrayList<>(getQuickItems()).subList(n - 1, size - 1);
+        for (QuickItem q : toRemove) {
             unequip(q, false);
         }
     }
@@ -1046,14 +981,14 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         return null;
     }
 
-    public List<DC_HeroSlotItem> getReserveItems() {
-        ListMaster<DC_HeroSlotItem> listMaster = new ListMaster<>();
+    public List<HeroSlotItem> getReserveItems() {
+        ListMaster<HeroSlotItem> listMaster = new ListMaster<>();
         return listMaster.removeNulls(listMaster.getList(reserveMainWeapon, reserveOffhandWeapon));
     }
 
-    public List<DC_HeroSlotItem> getSlotItems() {
-        ListMaster<DC_HeroSlotItem> listMaster = new ListMaster<>();
-        return listMaster.removeNulls(listMaster.getList(weapon, armor, secondWeapon));
+    public List<HeroSlotItem> getSlotItems() {
+        ListMaster<HeroSlotItem> listMaster = new ListMaster<>();
+        return listMaster.removeNulls(listMaster.getList(weapon, armor, offhandWeapon));
     }
 
     public boolean hasBroadReach() {
@@ -1071,7 +1006,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         if (offhand != null) {
             return (getActiveWeapon(offhand).checkPassive(passive));
         }
-        DC_WeaponObj activeWeapon = getActiveWeapon(true);
+        WeaponItem activeWeapon = getActiveWeapon(true);
         if (activeWeapon != null) {
             if (activeWeapon.checkPassive(passive)) {
                 return true;
@@ -1190,8 +1125,8 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         return isEnemyTo(player);
     }
 
-    public DC_HeroItemObj findItemAnywhere(String typeName) {
-        DC_HeroItemObj item = findItem(typeName, false);
+    public HeroItem findItemAnywhere(String typeName) {
+        HeroItem item = findItem(typeName, false);
         if (item == null) {
             item = findItem(typeName, true);
         }
@@ -1200,10 +1135,11 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         }
         return item;
     }
-//TODO to Handler
+
+    //TODO to Handler
     public boolean removeItemsFromAnywhere(String name, int n) {
         for (int i = 0; i < n; i++) {
-            DC_HeroItemObj item = findItemAnywhere(name);
+            HeroItem item = findItemAnywhere(name);
             if (!removeFromInventory(item))
                 if (!removeJewelryItem(item))
                     if (!removeQuickItem(item)) {
@@ -1215,13 +1151,13 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         return true;
     }
 
-    public DC_HeroItemObj findItem(String typeName, Boolean quick_inv_slot) {
+    public HeroItem findItem(String typeName, Boolean quick_inv_slot) {
         if (quick_inv_slot == null) {
-            return new ListMaster<DC_HeroSlotItem>().findType(typeName, new ArrayList<>(
+            return new ListMaster<HeroSlotItem>().findType(typeName, new ArrayList<>(
                     getSlotItems()));
         }
-        return !quick_inv_slot ? new ListMaster<DC_HeroItemObj>().findType(typeName,
-                new ArrayList<>(getInventory())) : new ListMaster<DC_QuickItemObj>().findType(
+        return !quick_inv_slot ? new ListMaster<HeroItem>().findType(typeName,
+                new ArrayList<>(getInventory())) : new ListMaster<QuickItem>().findType(
                 typeName, new ArrayList<>(getQuickItems()));
     }
 
@@ -1256,7 +1192,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         super.setCoordinates(coordinates);
     }
 
-    public DC_ActiveObj getAttackAction(boolean offhand) {
+    public ActiveObj getAttackAction(boolean offhand) {
 
         return getAction(offhand ? ActionEnums.OFFHAND_ATTACK :
                 ActionEnums.ATTACK);
@@ -1317,16 +1253,6 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         return super.getCalculator();
     }
 
-    public int calculateRemainingMemory() {
-        return getCalculator().calculateRemainingMemory();
-    }
-
-    public int calculateUsedMemory() {
-        return getCalculator().calculateUsedMemory();
-    }
-
-
-
     public int calculateWeight() {
         return getCalculator().calculateWeight();
     }
@@ -1351,11 +1277,6 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     public UnitInitializer getInitializer() {
         return super.getInitializer();
     }
-
-    public void initSpells(boolean reset) {
-        getInitializer().initSpells(reset);
-    }
-
 
     public void initSkills() {
         getInitializer().initSkills();
@@ -1402,20 +1323,9 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         return true;
     }
 
-    @Override
-    public void resetFacing() {
-        //   TODO bugged? used to work
-        //     getResetter().resetFacing();
-    }
-
-    @Override
-    public void setFacing(FACING_DIRECTION facing) {
-        super.setFacing(facing);
-    }
-
-    public DequeImpl<DC_JewelryObj> getRings() {
-        DequeImpl<DC_JewelryObj> list = new DequeImpl<>(getJewelry());
-        for (DC_JewelryObj j : getJewelry()) {
+    public DequeImpl<JewelryItem> getRings() {
+        DequeImpl<JewelryItem> list = new DequeImpl<>(getJewelry());
+        for (JewelryItem j : getJewelry()) {
             if (j.isAmulet()) {
                 list.remove(j);
             }
@@ -1423,8 +1333,8 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         return list;
     }
 
-    public DC_JewelryObj getAmulet() {
-        for (DC_JewelryObj j : getJewelry()) {
+    public JewelryItem getAmulet() {
+        for (JewelryItem j : getJewelry()) {
             if (j.isAmulet()) {
                 return j;
             }
@@ -1441,11 +1351,11 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         return new KeyResolver().getObj(key, this);
     }
 
-    public DC_WeaponObj getRangedWeapon() {
+    public WeaponItem getRangedWeapon() {
         return rangedWeapon;
     }
 
-    public void setRangedWeapon(DC_WeaponObj rangedWeapon) {
+    public void setRangedWeapon(WeaponItem rangedWeapon) {
         this.rangedWeapon = rangedWeapon;
     }
 
@@ -1475,22 +1385,11 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     }
 
     public int getMaxVisionDistanceTowards(Coordinates c) {
-        return getSightRangeTowards(c) * 2 + 1;
+        return getSightRange() * 2 + 1;
     }
 
-    public int getSightRangeTowards(DC_Obj target) {
-        return getSightRangeTowards(target.getCoordinates());
-    }
-
-    public int getSightRangeTowards(Coordinates coordinates) {
+    public int getSightRange() {
         int sight = getIntParam(PARAMS.SIGHT_RANGE);
-        FACING_SINGLE singleFacing = FacingMaster.getSingleFacing(this.getFacing(), this.getCoordinates(),
-                coordinates);
-        if (singleFacing == FACING_SINGLE.BEHIND) {
-            sight = getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
-        } else if (singleFacing == FACING_SINGLE.TO_THE_SIDE) {
-            sight -= getIntParam(PARAMS.SIDE_SIGHT_PENALTY);
-        }
         return sight;
     }
 
@@ -1504,7 +1403,6 @@ public class Unit extends DC_UnitModel implements FacingEntity {
 
     @Override
     public void toBase() {
-        removeTempFacing();
         removeTempCoordinates();
         if (!CoreEngine.isLevelEditor())
             if (getAI().isOutsideCombat()) {
@@ -1534,7 +1432,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
     }
 
 
-    public DC_ActiveObj getTurnAction(boolean clockwise) {
+    public ActiveObj getTurnAction(boolean clockwise) {
         return getAction(
                 clockwise
                         ? ActionEnums.STD_ACTIONS.Turn_Clockwise.toString()
@@ -1549,13 +1447,13 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         this.perks = perks;
     }
 
-    public List<DC_ActiveObj> getActions() {
-        ArrayList<ActiveObj> list = new ArrayList<>(getActives());
-        list.removeIf(activeObj -> !(activeObj instanceof DC_ActiveObj));
-        return new ArrayList<>(new DequeImpl<DC_ActiveObj>().addAllCast(list));
+    public List<ActiveObj> getActions() {
+        ArrayList<IActiveObj> list = new ArrayList<>(getActives());
+        list.removeIf(activeObj -> !(activeObj instanceof ActiveObj));
+        return new ArrayList<>(new DequeImpl<ActiveObj>().addAllCast(list));
     }
 
-    public List<DC_ActiveObj> getMoveActions() {
+    public List<ActiveObj> getMoveActions() {
         return getActions().stream().filter(a -> a.getActionGroup() == ACTION_TYPE_GROUPS.MOVE).collect(Collectors.toList());
     }
 
@@ -1567,16 +1465,16 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         getResetter().applyBuffRules();
     }
 
-    public DC_WeaponObj getReserveMainWeapon() {
+    public WeaponItem getReserveMainWeapon() {
         return reserveMainWeapon;
     }
 
-    public DC_WeaponObj getReserveOffhandWeapon() {
+    public WeaponItem getReserveOffhandWeapon() {
         return reserveOffhandWeapon;
     }
 
 
-    public void setReserveMainWeapon(DC_WeaponObj reserveMainWeapon) {
+    public void setReserveMainWeapon(WeaponItem reserveMainWeapon) {
         this.reserveMainWeapon = reserveMainWeapon;
         if (reserveMainWeapon != null) {
             reserveMainWeapon.setMainHand(true);
@@ -1592,7 +1490,7 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         }
     }
 
-    public void setReserveOffhandWeapon(DC_WeaponObj reserveOffhandWeapon) {
+    public void setReserveOffhandWeapon(WeaponItem reserveOffhandWeapon) {
 
         this.reserveOffhandWeapon = reserveOffhandWeapon;
         if (reserveOffhandWeapon != null) {
@@ -1609,15 +1507,15 @@ public class Unit extends DC_UnitModel implements FacingEntity {
         }
     }
 
-    public DC_HeroItemObj getReserveWeapon(boolean offhand) {
+    public HeroItem getReserveWeapon(boolean offhand) {
         return !offhand ? getReserveMainWeapon() : getReserveOffhandWeapon();
     }
 
-    public DC_ActiveObj getLastAction() {
+    public ActiveObj getLastAction() {
         return lastAction;
     }
 
-    public void setLastAction(DC_ActiveObj lastAction) {
+    public void setLastAction(ActiveObj lastAction) {
         this.lastAction = lastAction;
     }
 
@@ -1677,8 +1575,9 @@ public class Unit extends DC_UnitModel implements FacingEntity {
             buff.remove();
         }
     }
+
     public List<Feat> getActiveFeats() {
-        List<Feat> feats=    new ArrayList<>() ;
+        List<Feat> feats = new ArrayList<>();
         feats.addAll(spellSpaces.getCurrent().getFeats());
         feats.addAll(combatSpaces.getCurrent().getFeats());
         return feats;

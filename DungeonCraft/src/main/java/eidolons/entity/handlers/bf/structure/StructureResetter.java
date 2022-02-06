@@ -3,7 +3,7 @@ package eidolons.entity.handlers.bf.structure;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.Structure;
-import eidolons.entity.unit.DC_UnitModel;
+import eidolons.entity.unit.UnitModel;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.entity.Ref.KEYS;
 import main.entity.handlers.EntityMaster;
@@ -33,26 +33,4 @@ public class StructureResetter extends EntityResetter<Structure> {
         firstResetDone=true;
     }
 
-    public void resetFacing() {
-        FACING_DIRECTION facing = null;
-        if (facing != null) {
-            setProperty(PROPS.FACING_DIRECTION, facing.getName());
-        } else {
-            String name = getProperty(PROPS.FACING_DIRECTION);
-            facing = (new EnumMaster<FACING_DIRECTION>().retrieveEnumConst(FACING_DIRECTION.class,
-             name));
-            if (facing == null) {
-                if (getEntity().getDirection() != null) {
-                    FacingMaster.getFacingFromDirection(getEntity().getDirection());
-                } else if (getRef().getObj(KEYS.SUMMONER) != null) {
-                    facing = ((DC_UnitModel) getRef().getObj(KEYS.SUMMONER)).getFacing();
-                } else {
-                    facing = FacingMaster.getRandomFacing();
-                }
-            }
-
-        }
-        getEntity().setFacing(facing);
-//        getEntity().setFacing(facing);
-    }
 }

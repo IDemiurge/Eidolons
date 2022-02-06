@@ -12,7 +12,7 @@ import eidolons.ability.targeting.TemplateAutoTargeting;
 import eidolons.ability.targeting.TemplateSelectiveTargeting;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.system.DC_ConditionMaster;
 import main.ability.*;
 import main.ability.effects.Effect;
@@ -42,8 +42,7 @@ import main.elements.targeting.Targeting;
 import main.entity.Entity;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Active;
-import main.entity.obj.ActiveObj;
-import main.game.bf.directions.UNIT_DIRECTION;
+import main.entity.obj.IActiveObj;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -92,7 +91,7 @@ public class ActivesConstructor {
     }
 
 
-    public static void constructActive(TARGETING_MODE mode, DC_ActiveObj entity) {
+    public static void constructActive(TARGETING_MODE mode, ActiveObj entity) {
         if (mode == AbilityEnums.TARGETING_MODE.MULTI) {
             addMultiTargetingMods(entity);
             return;
@@ -104,7 +103,7 @@ public class ActivesConstructor {
             return;
         }
 
-        List<ActiveObj> list = new ArrayList<>(entity.getActives());
+        List<IActiveObj> list = new ArrayList<>(entity.getActives());
 
         Effects effects = new Effects();
         for (Active active : list) {
@@ -151,7 +150,7 @@ public class ActivesConstructor {
 
     }
 
-    public static void addMultiTargetingMods(DC_ActiveObj entity) {
+    public static void addMultiTargetingMods(ActiveObj entity) {
         for (Active active : entity.getActives()) {
             for (Ability abil : ((AbilityObj) active).getAbilities().getAbils()) {
                 addTargetingMods(abil.getTargeting(), entity);
@@ -161,24 +160,24 @@ public class ActivesConstructor {
 
     }
 
-    public static Targeting getDefaultSingleTargeting(DC_ActiveObj entity) {
+    public static Targeting getDefaultSingleTargeting(ActiveObj entity) {
         Conditions conditions = new Conditions(DC_ConditionMaster
                 .getSelectiveTargetingTemplateConditions(DEFAULT_TARGETING_TEMPLATE));
         return new SelectiveTargeting(conditions);
     }
 
-    public static Targeting getTargeting(TARGETING_MODE mode, DC_ActiveObj obj) {
+    public static Targeting getTargeting(TARGETING_MODE mode, ActiveObj obj) {
         Targeting targeting = null;
         switch (mode) {
             case UNOBSTRUCTED_SHOT:
                 // bolt-targeting?
                 targeting = new TemplateSelectiveTargeting(SELECTIVE_TARGETING_TEMPLATES.UNOBSTRUCTED_SHOT);
                 break;
-            case FRONT_RANGE:
-                return new CoordinateTargeting(UNIT_DIRECTION.AHEAD, true);
-            case FRONT:
+            // case FRONT_RANGE:
+            // case FRONT:
+                //TODO LC 2.0
             case RAY_AUTO:
-                return new CoordinateTargeting(UNIT_DIRECTION.AHEAD);
+                return new CoordinateTargeting();
             case BF_OBJ:
                 targeting = new TemplateSelectiveTargeting(SELECTIVE_TARGETING_TEMPLATES.BF_OBJ);
                 break;
@@ -296,11 +295,11 @@ public class ActivesConstructor {
         return targeting;
     }
 
-    public static Targeting getSelfTargeting(DC_ActiveObj obj) {
+    public static Targeting getSelfTargeting(ActiveObj obj) {
         return new FixedTargeting(KEYS.SOURCE);
     }
 
-    public static void addTargetingMods(Targeting targeting, DC_ActiveObj obj) {
+    public static void addTargetingMods(Targeting targeting, ActiveObj obj) {
         Conditions c = new Conditions();
         String property = obj.getProperty(PROPS.TARGETING_MODIFIERS);
         if (obj.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.MOVE) {
@@ -424,7 +423,7 @@ public class ActivesConstructor {
         return effects;
     }
 
-    public static Effect wrapEffects(TARGETING_MODE mode, Effect effects, DC_ActiveObj entity) {
+    public static Effect wrapEffects(TARGETING_MODE mode, Effect effects, ActiveObj entity) {
         Formula radius = new Formula(entity.getParam(G_PARAMS.RADIUS));
         Formula range = new Formula(entity.getParam(PARAMS.RANGE));
         Boolean allyOrEnemyOnly = null;
@@ -477,15 +476,15 @@ public class ActivesConstructor {
         return effects;
     }
 
-    public static void constructSingleTargeting(DC_ActiveObj obj) {
+    public static void constructSingleTargeting(ActiveObj obj) {
         Targeting t = getSingleTargeting(obj);
         if (t != null) {
             obj.setTargeting(t);
         }
     }
 
-    public static Targeting getSingleTargeting(DC_ActiveObj obj) {
-        List<ActiveObj> actives = obj.getActives();
+    public static Targeting getSingleTargeting(ActiveObj obj) {
+        List<IActiveObj> actives = obj.getActives();
         if (actives == null) {
             return null;
         }

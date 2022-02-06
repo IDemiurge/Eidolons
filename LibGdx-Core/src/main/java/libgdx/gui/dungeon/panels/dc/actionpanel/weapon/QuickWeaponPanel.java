@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.core.ActionInput;
 import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.text.FloatingTextMaster;
@@ -217,7 +217,7 @@ public class QuickWeaponPanel extends TablePanelX {
                                 //                    if (DC_Game.game.getManager().isSelecting()){
                                 return false;
                     //                    }
-                    DC_ActiveObj attack = getDataSource().getOwnerObj().getAttackAction(offhand);
+                    ActiveObj attack = getDataSource().getOwnerObj().getAttackAction(offhand);
 //                    if (attack != null && attack.isAttackGeneric()) {
 //                        main.system.auxiliary.log.LogMaster.log(1, "GENERIC ATK WAS CHOSEN!");
 //                        attack = null; TODO wrong place

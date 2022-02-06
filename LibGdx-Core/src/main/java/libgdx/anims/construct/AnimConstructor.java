@@ -6,11 +6,11 @@ import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.containers.customtarget.ShapeEffect;
 import eidolons.ability.effects.oneshot.DealDamageEffect;
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_QuickItemAction;
-import eidolons.entity.active.Spell;
-import eidolons.entity.item.DC_WeaponObj;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.QuickItemAction;
+import eidolons.entity.feat.active.Spell;
+import eidolons.entity.item.WeaponItem;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.master.EffectMaster;
@@ -48,7 +48,7 @@ import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.Ref;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.BuffObj;
 import main.entity.type.ObjType;
 import main.game.logic.battle.player.Player;
@@ -72,7 +72,7 @@ import static eidolons.content.consts.VisualEnums.anim_vals;
  * Created by JustMe on 1/11/2017.
  */
 public class AnimConstructor {
-    static ObjectMap<DC_ActiveObj, CompositeAnim> map = new ObjectMap<>(200);
+    static ObjectMap<ActiveObj, CompositeAnim> map = new ObjectMap<>(200);
     private static final boolean autoconstruct = false;
 
     private AnimConstructor() {
@@ -84,8 +84,8 @@ public class AnimConstructor {
         AnimMaster3d.preloadAtlases(unit);
     }
 
-    public static CompositeAnim getCached(ActiveObj active) {
-        CompositeAnim anim = map.get((DC_ActiveObj) active);
+    public static CompositeAnim getCached(IActiveObj active) {
+        CompositeAnim anim = map.get((ActiveObj) active);
         if (anim != null) {
             anim.reset();
             return anim;
@@ -93,13 +93,13 @@ public class AnimConstructor {
         return anim;
     }
 
-    public static CompositeAnim getOrCreate(ActiveObj active) {
+    public static CompositeAnim getOrCreate(IActiveObj active) {
         if (active == null) {
             return null;
         }
-        if (!checkAnimationSupported((DC_ActiveObj) active))
+        if (!checkAnimationSupported((ActiveObj) active))
             return null;
-        CompositeAnim anim = map.get((DC_ActiveObj) active);
+        CompositeAnim anim = map.get((ActiveObj) active);
         if (!isReconstruct()) {
             if (anim != null) {
                 anim.reset();
@@ -107,14 +107,14 @@ public class AnimConstructor {
             }
         }
         try {
-            anim = construct((DC_ActiveObj) active);
+            anim = construct((ActiveObj) active);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         return anim;
     }
 
-    private static boolean checkAnimationSupported(DC_ActiveObj active) {
+    private static boolean checkAnimationSupported(ActiveObj active) {
         if (active.getActionGroup() == ACTION_TYPE_GROUPS.HIDDEN)
             return false;
         return active.getActionGroup() != ACTION_TYPE_GROUPS.TURN;
@@ -131,7 +131,7 @@ public class AnimConstructor {
                 }));
     }
 
-    public static void preconstruct(DC_ActiveObj active) {
+    public static void preconstruct(ActiveObj active) {
 
         if (GdxMaster.isLwjglThread()) {
             getOrCreate(active);
@@ -141,7 +141,7 @@ public class AnimConstructor {
             }));
     }
 
-    private static CompositeAnim construct(DC_ActiveObj active) {
+    private static CompositeAnim construct(ActiveObj active) {
         if (active instanceof Spell) {
             main.system.auxiliary.log.LogMaster.log(1, "Construct spell anim for: " + active);
         }
@@ -171,7 +171,7 @@ public class AnimConstructor {
         return anim;
     }
 
-    public static Anim getPartAnim(DC_ActiveObj active, ANIM_PART part, CompositeAnim anim) {
+    public static Anim getPartAnim(ActiveObj active, ANIM_PART part, CompositeAnim anim) {
         AnimData data = new AnimData();
         for (VALUE val : anim_vals) {
             if (val instanceof PARAMETER ||
@@ -186,7 +186,7 @@ public class AnimConstructor {
     }
 
 
-    private static Anim getPartAnim(AnimData data, DC_ActiveObj active,
+    private static Anim getPartAnim(AnimData data, ActiveObj active,
                                     ANIM_PART part, CompositeAnim composite) {
         //TODO if (!checkAnimValid())
         //    return null ;
@@ -210,17 +210,17 @@ public class AnimConstructor {
         return anim;
     }
 
-    private static Anim createAnim(DC_ActiveObj active, AnimData data, ANIM_PART part) {
+    private static Anim createAnim(ActiveObj active, AnimData data, ANIM_PART part) {
         if (active.isMove()) {
             return MoveAnimation.isOn() ? new MoveAnimation(active, data) : null;
         }
-        if (active instanceof DC_QuickItemAction) {
-            if (((DC_QuickItemAction) active).getItem().isAmmo()) {
+        if (active instanceof QuickItemAction) {
+            if (((QuickItemAction) active).getItem().isAmmo()) {
                 return new Reload3dAnim(active);
             } else {
-                if (((DC_QuickItemAction) active).getItem().isPotion())
+                if (((QuickItemAction) active).getItem().isPotion())
                     return new Potion3dAnim(active);
-                return new QuickItemAnim(((DC_QuickItemAction) active).getItem());
+                return new QuickItemAnim(((QuickItemAction) active).getItem());
             }
 
         }
@@ -263,11 +263,11 @@ public class AnimConstructor {
         return new ActionAnim(active, data);
     }
 
-    public static SPELL_ANIMS getTemplateForSpell(DC_ActiveObj active) {
+    public static SPELL_ANIMS getTemplateForSpell(ActiveObj active) {
         return getTemplateFromTargetMode(active);
     }
 
-    public static SPELL_ANIMS getTemplateFromTargetMode(DC_ActiveObj activeObj) {
+    public static SPELL_ANIMS getTemplateFromTargetMode(ActiveObj activeObj) {
 
         TARGETING_MODE targetingMode = activeObj.getTargetingMode();
         switch (targetingMode) {
@@ -295,7 +295,7 @@ public class AnimConstructor {
 
     }
 
-    private static boolean isForceAnim(DC_ActiveObj active, ANIM_PART part) {
+    private static boolean isForceAnim(ActiveObj active, ANIM_PART part) {
         if (active.getActiveWeapon().getWeaponGroup() == ItemEnums.WEAPON_GROUP.FORCE) {
             return true;
         }
@@ -309,7 +309,7 @@ public class AnimConstructor {
 
 
     private static boolean initAnim(AnimData data,
-                                    DC_ActiveObj active, ANIM_PART part, Anim anim) {
+                                    ActiveObj active, ANIM_PART part, Anim anim) {
         boolean exists = false;
         List<SpriteAnimation> sprites = new ArrayList<>();
         for (String path :
@@ -361,7 +361,7 @@ public class AnimConstructor {
         return exists;
     }
 
-    private static boolean checkForcedAnimation(DC_ActiveObj active, ANIM_PART part) {
+    private static boolean checkForcedAnimation(ActiveObj active, ANIM_PART part) {
         switch (part) {
             case MISSILE:
                 return (active.isMove() || active.isAttackAny() || active.isTurn());
@@ -381,7 +381,7 @@ public class AnimConstructor {
             //
 
             case CAST:
-                if (active instanceof DC_QuickItemAction)
+                if (active instanceof QuickItemAction)
                     return true;
                 if (active.isRanged())
                     return true;
@@ -398,7 +398,7 @@ public class AnimConstructor {
         LogMaster.log(LogMaster.ANIM_DEBUG, "EFFECT ANIM CONSTRUCTED FOR " + e + e.getRef().getInfoString());
         Anim effectAnim = EffectAnimCreator.getOrCreateEffectAnim(e);
         try {
-            initAnim(effectAnim.getData(), (DC_ActiveObj) effectAnim.getActive(),
+            initAnim(effectAnim.getData(), (ActiveObj) effectAnim.getActive(),
                     effectAnim.getPart(),
                     effectAnim);
         } catch (Exception e1) {
@@ -419,7 +419,7 @@ public class AnimConstructor {
                 return false;
         }
         if (!isCellAnimated(e)) {
-            if (e.getRef().getTargetObj() instanceof DC_Cell) {
+            if (e.getRef().getTargetObj() instanceof GridCell) {
 
                 return false;
             }
@@ -511,7 +511,7 @@ public class AnimConstructor {
     }
 
     public static void removeCache(Anim anim) {
-        map.remove((DC_ActiveObj) anim.getActive());
+        map.remove((ActiveObj) anim.getActive());
     }
 
     private boolean isPartIgnored(String partPath) {
@@ -561,9 +561,9 @@ public class AnimConstructor {
 
     public static BuffAnim getBuffAnim(BuffObj buff) {
         BuffAnim anim = new BuffAnim(buff);
-        DC_ActiveObj active = null;
-        if (buff.getActive() instanceof DC_ActiveObj) {
-            active = (DC_ActiveObj) buff.getActive();
+        ActiveObj active = null;
+        if (buff.getActive() instanceof ActiveObj) {
+            active = (ActiveObj) buff.getActive();
         }
         initAnim(anim.getData(), active, anim.getPart(), anim);
         if (!isValid(anim)) {
@@ -596,7 +596,7 @@ public class AnimConstructor {
         });
     }
 
-    public static CompositeAnim getParryAnim(DC_WeaponObj weaponObj, DC_ActiveObj attack) {
+    public static CompositeAnim getParryAnim(WeaponItem weaponObj, ActiveObj attack) {
         Parry3dAnim parryAnim = new Parry3dAnim(weaponObj, attack);
         return new CompositeAnim(parryAnim);
     }

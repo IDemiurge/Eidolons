@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft;
 
 import eidolons.content.DC_ContentValsManager;
-import eidolons.entity.active.DC_ActionManager;
+import eidolons.entity.mngr.action.DC_ActionManager;
 import main.system.launch.Launch;
 import eidolons.system.DC_ConditionMaster;
 import eidolons.system.options.OptionsMaster;

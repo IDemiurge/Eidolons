@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules.combat.attack.accuracy;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.battlecraft.logic.meta.universal.event.ChoiceEventMaster;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import main.content.enums.entity.NewRpgEnums;
@@ -22,7 +22,7 @@ public class DeadeyeHandler {
     }
 
     private Deadeye[] getDeadEyeOptions(Attack attack) {
-        DC_ActiveObj action = attack.getAction();
+        ActiveObj action = attack.getAction();
         Set<Deadeye> set = new LinkedHashSet<>();
         NewRpgEnums.DeadeyeType type = getKillDeadeye(action);
         set.add(createDeadeye(attack, type));
@@ -38,15 +38,15 @@ public class DeadeyeHandler {
         return new Deadeye(attack, type);
     }
 
-    private NewRpgEnums.DeadeyeType getSpecialDeadeye(DC_ActiveObj action) {
+    private NewRpgEnums.DeadeyeType getSpecialDeadeye(ActiveObj action) {
         return NewRpgEnums.DeadeyeType.maim;
     }
 
-    private NewRpgEnums.DeadeyeType getKillDeadeye(DC_ActiveObj action) {
+    private NewRpgEnums.DeadeyeType getKillDeadeye(ActiveObj action) {
         return NewRpgEnums.DeadeyeType.decapitate;
     }
 
-    private NewRpgEnums.DeadeyeType getStdDeadeye(DC_ActiveObj action) {
+    private NewRpgEnums.DeadeyeType getStdDeadeye(ActiveObj action) {
         return NewRpgEnums.DeadeyeType.heartseeker;
 
     }

@@ -10,7 +10,7 @@ import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.entity.handlers.*;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
@@ -48,7 +48,7 @@ import java.util.Map;
 public abstract class Entity extends DataModel implements OBJ {
 
     protected List<AbilityObj> passives = new ArrayList<>();
-    protected List<ActiveObj> actives = new ArrayList<>();
+    protected List<IActiveObj> actives = new ArrayList<>();
 
     protected boolean dead = false;
     protected Player originalOwner;
@@ -149,7 +149,7 @@ public abstract class Entity extends DataModel implements OBJ {
         //         getIntegerMap(false).clear(); // TODO [OPTIMIZED] no need to clear
         //         // type's map?
         //         if (modifierMaps != null) {
-        //             modifierMaps.clear(); // remember? For interesting spells or src.main.system.log
+        //             modifierMaps.clear(); // remember? For interesting spells or system.log
         //         }
         //         // info...
         //         if (!type.checkProperty(G_PROPS.DISPLAYED_NAME)) {
@@ -157,7 +157,7 @@ public abstract class Entity extends DataModel implements OBJ {
         //         }
         //
         //         if (this.owner != getOriginalOwner()) {
-        //             LogMaster.src.main.system.log(LogMaster.CORE_DEBUG, getName()
+        //             LogMaster.system.log(LogMaster.CORE_DEBUG, getName()
         //              + ": original owner restored!");
         //             this.owner = getOriginalOwner();
         //         }
@@ -367,11 +367,11 @@ public abstract class Entity extends DataModel implements OBJ {
         return null;
     }
 
-    public List<ActiveObj> getActives() {
+    public List<IActiveObj> getActives() {
         return actives;
     }
 
-    public void setActives(List<ActiveObj> list) {
+    public void setActives(List<IActiveObj> list) {
         this.actives = list;
     }
 

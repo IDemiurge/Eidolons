@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import libgdx.gui.NinePatchFactory;
 import libgdx.gui.generic.ValueContainer;
 import libgdx.gui.dungeon.panels.TablePanel;
@@ -20,7 +20,7 @@ public class ActionCostTooltip extends ActionTooltip {
 //    ValueContainer description;
 //    private Cell costTable;
 
-    public ActionCostTooltip(DC_ActiveObj el) {
+    public ActionCostTooltip(ActiveObj el) {
         super(el);
         name = addElement(null);
         row();

@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules.saves;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 
@@ -54,7 +54,7 @@ public class SavesMaster {
     //     }
     // }
 
-    private SaveType getSaveType(DC_ActiveObj action, Unit target) {
+    private SaveType getSaveType(ActiveObj action, Unit target) {
         //check substitution
         return null;
     }

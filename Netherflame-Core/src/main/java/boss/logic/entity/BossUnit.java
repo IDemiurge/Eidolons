@@ -1,7 +1,7 @@
 package boss.logic.entity;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import boss.BossManager;
@@ -10,10 +10,9 @@ import main.content.enums.rules.VisionEnums;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.handlers.EntityMaster;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.battle.player.Player;
 
 import java.util.List;
@@ -55,15 +54,6 @@ public class BossUnit extends Unit {
     protected EntityMaster initMaster() {
         return new BossMaster(this);
     }
-    @Override
-    public FACING_DIRECTION getFacingOrNull() {
-        return FACING_DIRECTION.SOUTH;
-    }
-
-    @Override
-    public FACING_DIRECTION getFacing() {
-        return FACING_DIRECTION.SOUTH;
-    }
 
     public boolean isBoss() {
         return true;
@@ -83,10 +73,10 @@ public class BossUnit extends Unit {
     }
 
     @Override
-    public DC_UnitAction getAction(String name) {
-        for (ActiveObj active : getActives()) {
+    public UnitAction getAction(String name) {
+        for (IActiveObj active : getActives()) {
             if (active.getName().equalsIgnoreCase(name)) {
-                return (DC_UnitAction) active;
+                return (UnitAction) active;
             }
         }
         return null ;

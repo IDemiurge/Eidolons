@@ -4,7 +4,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
 import main.content.VALUE;
 import main.content.enums.GenericEnums.STD_BOOLS;
-import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.entity.EffectEnums.COUNTER;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.parameters.ParamMap;
 import main.content.values.properties.PROPERTY;

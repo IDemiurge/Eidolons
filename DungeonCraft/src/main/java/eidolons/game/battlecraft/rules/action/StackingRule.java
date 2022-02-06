@@ -1,9 +1,9 @@
 
 package eidolons.game.battlecraft.rules.action;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.maze.voidy.VoidMaze;
 import eidolons.game.battlecraft.rules.RuleEnums;
@@ -18,7 +18,7 @@ import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
 import main.entity.EntityCheckMaster;
 import main.entity.Ref;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.RandomWizard;
@@ -63,7 +63,7 @@ public class StackingRule implements ActionRule {
     }
 
 
-    public static void actionMissed(DC_ActiveObj action) {
+    public static void actionMissed(ActiveObj action) {
         if (RuleKeeper.isRuleOn(RuleEnums.RULE.MISSED_ATTACK_REDIRECTION))
             return;
         Ref ref = action.getRef();
@@ -142,11 +142,11 @@ public class StackingRule implements ActionRule {
             }
         }
         if (unit != null) {
-                DC_Cell cell;
+                GridCell cell;
                 if (!game.isSimulation()) {
                     cell = game.getCell(c);
                 } else {
-                    cell = new DC_Cell(c, game); //TODO this is a hack...
+                    cell = new GridCell(c, game); //TODO this is a hack...
                 }
                 if (cell.isVOID()) {
                     if (unit != Core.getMainHero() || !Flags.isIDE() || game.getDungeonMaster().getPuzzleMaster().getCurrent() instanceof VoidMaze)// || !VoidHandler.TEST_MODE)
@@ -177,12 +177,12 @@ public class StackingRule implements ActionRule {
     }
 
     @Override
-    public void actionComplete(ActiveObj activeObj) {
+    public void actionComplete(IActiveObj activeObj) {
         clearCache();
     }
 
     @Override
-    public boolean isAppliedOnExploreAction(DC_ActiveObj action) {
+    public boolean isAppliedOnExploreAction(ActiveObj action) {
         return true;
     }
 

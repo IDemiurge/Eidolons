@@ -2,9 +2,9 @@ package libgdx.gui.dungeon.panels.dc.inventory.shop;
 
 import eidolons.content.PARAMS;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.item.DC_HeroSlotItem;
-import eidolons.entity.item.handlers.DC_InventoryManager.OPERATIONS;
+import eidolons.entity.item.HeroItem;
+import eidolons.entity.item.HeroSlotItem;
+import eidolons.entity.mngr.item.DC_InventoryManager.OPERATIONS;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.EUtils;
 import libgdx.gui.dungeon.panels.dc.inventory.container.ContainerClickHandler;
@@ -112,8 +112,8 @@ public class ShopClickHandler extends ContainerClickHandler {
             case QUICK_SLOT:
             case AMULET:
             case RING:
-                if (dragged instanceof DC_HeroItemObj) {
-                    switch (((DC_HeroItemObj) dragged).getContainer()) {
+                if (dragged instanceof HeroItem) {
+                    switch (((HeroItem) dragged).getContainer()) {
                         case EQUIPPED:
                             return OPERATIONS.UNEQUIP;
                         case QUICK_SLOTS:
@@ -171,7 +171,7 @@ public class ShopClickHandler extends ContainerClickHandler {
 
     @Override
     protected boolean canDoOperation(OPERATIONS operation, Entity type, Object arg) {
-        DC_HeroItemObj item = (DC_HeroItemObj) type;
+        HeroItem item = (HeroItem) type;
         switch (operation) {
             // case STASH:
             //     return !Eidolons.getTown().isStashFull();
@@ -240,7 +240,7 @@ public class ShopClickHandler extends ContainerClickHandler {
 
     public void askRepair() {
         int gold = 0;
-        for (DC_HeroSlotItem item : hero.getSlotItems()) {
+        for (HeroSlotItem item : hero.getSlotItems()) {
             int percentage = 100 -
              item.getIntParam(PARAMS.C_DURABILITY) * 100 / item.getIntParam(PARAMS.DURABILITY);
             Integer price = shop.getPrice(item, hero, false) * percentage / 100;
@@ -263,7 +263,7 @@ public class ShopClickHandler extends ContainerClickHandler {
     }
 
     private void repairEquipped() {
-        for (DC_HeroSlotItem item : hero.getSlotItems()) {
+        for (HeroSlotItem item : hero.getSlotItems()) {
             item.setParam(PARAMS.C_DURABILITY, item.getIntParam(PARAMS.DURABILITY));
         }
         DC_SoundMaster.playStandardSound(AudioEnums.STD_SOUNDS.CHAIN);

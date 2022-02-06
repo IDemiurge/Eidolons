@@ -7,7 +7,7 @@ import main.content.OBJ_TYPE;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.entity.DataModel;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.BfObj;
 import main.game.bf.Coordinates;
 
@@ -127,7 +127,7 @@ public class UnitDataModelSnapshot extends DataModel implements BfObj {
     }
 
     @Override
-    public List<ActiveObj> getActives() {
+    public List<IActiveObj> getActives() {
         return null;
     }
 

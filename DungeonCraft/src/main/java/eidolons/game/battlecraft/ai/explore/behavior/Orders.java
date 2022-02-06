@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.ai.explore.behavior;
 
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 
 /**
@@ -18,11 +18,11 @@ public class Orders {
         getActionSequence().removeFirstAction();
     }
 
-    public Action peekNextAction() {
+    public AiAction peekNextAction() {
         return getActionSequence().peekNextAction();
     }
 
-    public Action popNextAction() {
+    public AiAction popNextAction() {
         return getActionSequence().popNextAction();
     }
 

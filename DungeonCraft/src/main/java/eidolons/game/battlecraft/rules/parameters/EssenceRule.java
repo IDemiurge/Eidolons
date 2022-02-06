@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.rules.parameters;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.DC_SecondsRule;
 import eidolons.game.core.game.DC_Game;
@@ -86,18 +86,18 @@ public class EssenceRule implements DC_SecondsRule {
         if (essence.value == 0)
             return;
 
-        List<DC_Cell> cells = Arrays.stream(essence.source.getCoordinates().getAdjacent()).map(c -> game.getCell(c)).collect(Collectors.toList());
+        List<GridCell> cells = Arrays.stream(essence.source.getCoordinates().getAdjacent()).map(c -> game.getCell(c)).collect(Collectors.toList());
 
         int remainder = essence.value % cells.size();
         int n = essence.value / cells.size();
-        for (DC_Cell cell : cells) {
+        for (GridCell cell : cells) {
             cellAbsorbs(cell, remainder-- > 0 ? n + 1 : n);
         }
         //first split between units, then cells/..
 
     }
 
-    private static void cellAbsorbs(DC_Cell cell, int i) {
+    private static void cellAbsorbs(GridCell cell, int i) {
         cell.addParam(PARAMS.C_ESSENCE, i);
         //TODO make sure it doesn't change due to some bs logic!
     }

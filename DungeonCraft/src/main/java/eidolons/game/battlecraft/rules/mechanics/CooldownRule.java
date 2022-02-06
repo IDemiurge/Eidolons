@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.rules.mechanics;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.spaces.Feat;
+import eidolons.entity.feat.Feat;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.DC_SecondsRule;
 

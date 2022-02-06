@@ -2,8 +2,8 @@ package eidolons.game.battlecraft.rules.counter.negative;
 
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_UnitAction;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.feat.active.UnitAction;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.rules.action.ActionRule;
@@ -13,12 +13,13 @@ import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.content.enums.GenericEnums;
+import main.content.enums.entity.EffectEnums;
 import main.content.enums.entity.UnitEnums;
-import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.entity.EffectEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.system.MetaEnums;
 import main.entity.Ref;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.system.math.MathMaster;
 
 /*
@@ -58,12 +59,12 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
 
     @Override
     public String getCounterName() {
-        return COUNTER.Ensnared.getName();
+        return EffectEnums.COUNTER.Ensnared.getName();
     }
 
     @Override
     public COUNTER getCounter() {
-        return COUNTER.Ensnared;
+        return EffectEnums.COUNTER.Ensnared;
     }
 
     @Override
@@ -122,7 +123,7 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
     }
 
     @Override
-    public void actionComplete(ActiveObj activeObj) {
+    public void actionComplete(IActiveObj activeObj) {
 
     }
 
@@ -164,12 +165,12 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
         int amount = 0;
         if (object instanceof Unit) {
             Unit unit = ((Unit) object);
-        DC_WeaponObj weapon = unit.getWeapon(offhand);
+        WeaponItem weapon = unit.getWeapon(offhand);
         if (weapon == null) {
             weapon = unit.getNaturalWeapon(offhand);
         }
 
-        DC_UnitAction attack_action = unit.getAction(offhand ? "Offhand Attack"
+        UnitAction attack_action = unit.getAction(offhand ? "Offhand Attack"
          : "Attack");
         if (!attack_action.canBeActivated(unit.getRef(), true)) // unit.getRef(),
         // true

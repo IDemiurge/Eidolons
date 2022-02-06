@@ -2,7 +2,7 @@ package main.system.graphics;
 
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.ASPECT;
-import main.content.enums.entity.HeroEnums.CLASS_GROUP;
+import main.content.enums.entity.ClassEnums.CLASS_GROUP;
 import main.content.enums.entity.SkillEnums.SKILL_GROUP;
 import main.content.values.properties.G_PROPS;
 import main.entity.type.ObjType;

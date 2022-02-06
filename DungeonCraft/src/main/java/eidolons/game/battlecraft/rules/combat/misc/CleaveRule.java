@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.rules.combat.misc;
 
 import eidolons.content.PARAMS;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
@@ -27,7 +27,7 @@ public class CleaveRule {
     private DC_Obj currentTarget;
     private Unit source;
     private Integer jumpsRemaining;
-    private DC_ActiveObj action;
+    private ActiveObj action;
     private Attack attack;
     private final DC_Game game;
 
@@ -69,7 +69,7 @@ public class CleaveRule {
 
         attack.damageDealt(attack.getRemainingDamage() * (100 - mod) / 100);
 
-        action = (DC_ActiveObj) ref.getObj(KEYS.ACTIVE);
+        action = (ActiveObj) ref.getObj(KEYS.ACTIVE);
         // clockwise = false; // for two-handed and normal main-hand it's only
         // // anticlockwise?
         // if (attack.isOffhand())

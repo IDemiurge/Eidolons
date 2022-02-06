@@ -2,15 +2,15 @@ package eidolons.entity.unit.trainers;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.item.DC_JewelryObj;
-import eidolons.entity.item.DC_QuickItemObj;
+import eidolons.entity.item.HeroItem;
+import eidolons.entity.item.trinket.JewelryItem;
+import eidolons.entity.item.QuickItem;
 import eidolons.entity.item.ItemFactory;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import eidolons.netherflame.eidolon.heromake.handlers.HeroManager;
-import eidolons.entity.item.handlers.ItemGenerator;
-import eidolons.entity.item.handlers.ItemMaster;
+import eidolons.entity.mngr.item.ItemGenerator;
+import eidolons.entity.mngr.item.ItemMaster;
 import eidolons.game.battlecraft.logic.meta.universal.shop.ShopMaster;
 import eidolons.content.DC_Formulas;
 import main.content.CONTENT_CONSTS2.SHOP_LEVEL;
@@ -271,7 +271,7 @@ public class UnitShop {
 //            return buy(repertoire, unit, slot, OBJ_TYPE_ENUM);
             return false;
         }
-        DC_HeroItemObj item = buy(itemType, unit);
+        HeroItem item = buy(itemType, unit);
         equip(unit, item, slot);
         return true;
     }
@@ -437,7 +437,7 @@ public class UnitShop {
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
-            DC_HeroItemObj item = null;
+            HeroItem item = null;
             for (ObjType type : itemPool) {
                 // sort by cost? then go from top to bottom trying to buy...
                 if (!checkCost(type, unit)) {
@@ -493,22 +493,22 @@ public class UnitShop {
         return StringMaster.compare(type.getProperty(G_PROPS.MATERIAL), property, false);
     }
 
-    private static void equip(Unit unit, DC_HeroItemObj item, ITEM_SLOT slot) {
+    private static void equip(Unit unit, HeroItem item, ITEM_SLOT slot) {
         if (slot != null) {
             if (!unit.equip(item, slot)) {
                 LogMaster.devLog(unit.getName() + " failed to equip "
                         + item.getName());
             }
         } else {
-            if (item instanceof DC_JewelryObj) {
-                unit.addJewelryItem((DC_JewelryObj) item);
+            if (item instanceof JewelryItem) {
+                unit.addJewelryItem((JewelryItem) item);
             } else {
-                if (item instanceof DC_QuickItemObj) {
-                    unit.getQuickItems().add((DC_QuickItemObj) item);
+                if (item instanceof QuickItem) {
+                    unit.getQuickItems().add((QuickItem) item);
                 } else {
-                    DC_HeroItemObj itemObj = ItemFactory.createItemObj(item.getType(), unit
+                    HeroItem itemObj = ItemFactory.createItemObj(item.getType(), unit
                             .getOriginalOwner(), unit.getGame(), unit.getRef(), true);
-                    unit.getQuickItems().add((DC_QuickItemObj) itemObj);
+                    unit.getQuickItems().add((QuickItem) itemObj);
                 }
             }
         }
@@ -535,7 +535,7 @@ public class UnitShop {
         return heroManager;
     }
 
-    private static DC_HeroItemObj buy(ObjType type, Unit unit) {
+    private static HeroItem buy(ObjType type, Unit unit) {
         unit.modifyParameter(PARAMS.GOLD, -type.getIntParam(PARAMS.GOLD_COST));
         main.system.auxiliary.log.LogMaster.devLog(">>>>>>> " + unit + " buys " + type
                 + " gold remains: " +

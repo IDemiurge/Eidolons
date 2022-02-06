@@ -1,9 +1,9 @@
 package eidolons.game.battlecraft.ai;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.advanced.companion.Order;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.tools.AiExecutor;
 import eidolons.game.battlecraft.ai.tools.AiLogger;
@@ -33,7 +33,7 @@ public class UnitAI {
     private ORDER_TYPE orderType;
     private Order currentOrder;
 
-    private List<DC_ActiveObj> usedActions;
+    private List<ActiveObj> usedActions;
     private boolean engagedOverride;
     ENGAGEMENT_LEVEL engagementLevel=ENGAGEMENT_LEVEL.UNSUSPECTING;
 
@@ -243,7 +243,7 @@ public class UnitAI {
     }
 
 
-    public List<DC_ActiveObj> getUsedActions() {
+    public List<ActiveObj> getUsedActions() {
         if (usedActions == null) {
             usedActions = new ArrayList<>();
         }
@@ -275,7 +275,7 @@ public class UnitAI {
         combatAI.setEngaged(engaged);
     }
 
-    public List<Action> getForcedActions() {
+    public List<AiAction> getForcedActions() {
         return combatAI.getForcedActions();
     }
 

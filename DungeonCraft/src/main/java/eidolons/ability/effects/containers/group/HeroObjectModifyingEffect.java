@@ -2,7 +2,7 @@ package eidolons.ability.effects.containers.group;
 
 import eidolons.ability.effects.DC_Effect;
 import eidolons.ability.effects.attachment.AddBuffEffect;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.master.EffectMaster;
 import main.ability.effects.Effect;
@@ -265,7 +265,7 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
             case ACTIONS:
                 for (ACTION_TYPE a : ActionEnums.ACTION_TYPE.values()) {
                     if (hero.getActionMap().get(a) != null) {
-                        for (DC_UnitAction action : hero.getActionMap().get(a)) {
+                        for (UnitAction action : hero.getActionMap().get(a)) {
                             list.add(action.getId());
                         }
                     }

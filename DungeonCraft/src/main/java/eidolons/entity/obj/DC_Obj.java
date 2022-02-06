@@ -23,7 +23,7 @@ import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
 import main.content.enums.GenericEnums.DAMAGE_CASE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
-import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.entity.EffectEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;

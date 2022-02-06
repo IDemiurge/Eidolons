@@ -1,7 +1,7 @@
 package eidolons.entity.unit.attach;
 
 import eidolons.content.DC_ContentValsManager;
-import eidolons.content.DC_ContentValsManager.ATTRIBUTE;
+import eidolons.content.ATTRIBUTE;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.unit.Unit;

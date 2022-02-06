@@ -10,7 +10,7 @@ import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.system.auxiliary.EnumMaster;
 
 public class UnitAnalyzer {
@@ -59,7 +59,7 @@ public class UnitAnalyzer {
     public static boolean hasFocusBlockedActions(Unit unit) {
         int focus = unit.getIntParam(PARAMS.C_FOCUS);
 
-        for (ActiveObj a : unit.getActives()) {
+        for (IActiveObj a : unit.getActives()) {
             if (a.getIntParam(PARAMS.FOC_REQ, false) > focus) {
                 return true;
             }

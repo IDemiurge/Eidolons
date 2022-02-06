@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.game.core.Core;
 import libgdx.bf.mouse.InputController;
 import libgdx.gui.generic.ContainerGroup;
@@ -21,7 +21,7 @@ visibility from cell - ideally separate for vfx/textures
 public class CellDecor extends ContainerGroup {
     Actor actor;
     private final int sightRange; //TODO we actually need to DARKEN it if...
-    private final DC_Cell cell; //can we place it on a platform?..
+    private final GridCell cell; //can we place it on a platform?..
     private final boolean hideOrDarken;
     float x1, x2, y1, y2;
     private boolean withinCamera;
@@ -30,7 +30,7 @@ public class CellDecor extends ContainerGroup {
     private EmitterActor emitterActor;
     private Color baseColor;
 
-    public CellDecor(Actor actor, int sightRange, DC_Cell cell, boolean hideOrDarken) {
+    public CellDecor(Actor actor, int sightRange, GridCell cell, boolean hideOrDarken) {
         addActor(this.actor = actor);
         this.sightRange = sightRange;
         this.cell = cell;
@@ -46,7 +46,7 @@ public class CellDecor extends ContainerGroup {
     }
 
     public CellDecor(EmitterActor emitterActor, Actor actor, int defaultSightRange,
-                     DC_Cell cell, boolean sprite) {
+                     GridCell cell, boolean sprite) {
         this(actor, defaultSightRange, cell, sprite);
         addActor(this.emitterActor = emitterActor);
         emitterActor.start();

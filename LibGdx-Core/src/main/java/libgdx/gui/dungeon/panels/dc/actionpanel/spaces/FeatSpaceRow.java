@@ -1,7 +1,7 @@
 package libgdx.gui.dungeon.panels.dc.actionpanel.spaces;
 
 import com.kotcrab.vis.ui.layout.HorizontalFlowGroup;
-import eidolons.entity.active.spaces.Feat;
+import eidolons.entity.feat.Feat;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.gui.dungeon.panels.TablePanel;
 

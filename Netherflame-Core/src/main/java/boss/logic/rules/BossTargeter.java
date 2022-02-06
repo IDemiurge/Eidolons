@@ -3,7 +3,7 @@ package boss.logic.rules;
 import boss.BossHandler;
 import boss.logic.action.BossAction;
 import boss.logic.entity.BossUnit;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import boss.BossManager;
 import boss.demo.DemoBoss;
 import main.elements.conditions.DistanceCondition;
@@ -26,7 +26,7 @@ public class BossTargeter extends BossHandler<DemoBoss> {
         //dynamic?
         return false;
     }
-    public boolean actionCanTargetBoss(DC_ActiveObj action, BossUnit bossUnit){
+    public boolean actionCanTargetBoss(ActiveObj action, BossUnit bossUnit){
         // normal targeting check?
         // the trick is that boss being at 10:10 with size 3x3 should be targetable at 7:7 etc
 

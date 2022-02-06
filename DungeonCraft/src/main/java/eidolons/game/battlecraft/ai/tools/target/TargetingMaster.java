@@ -1,9 +1,9 @@
 package eidolons.game.battlecraft.ai.tools.target;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.AI_Manager;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
@@ -18,7 +18,7 @@ import main.ability.effects.container.SpecialTargetingEffect;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.elements.targeting.SelectiveTargeting;
 import main.elements.targeting.Targeting;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.ClassMaster;
@@ -32,11 +32,11 @@ public class TargetingMaster extends AiHandler {
         super(master);
     }
 
-    public static Targeting findTargeting(ActiveObj active) {
+    public static Targeting findTargeting(IActiveObj active) {
         return findTargeting(active, null);
     }
 
-    public static Targeting getZoneEffect(DC_ActiveObj active) {
+    public static Targeting getZoneEffect(ActiveObj active) {
         List<Effect> zoneEffects = EffectMaster.getEffectsOfClass(active,
                 SpecialTargetingEffect.class);
         if (!zoneEffects.isEmpty()) {
@@ -49,7 +49,7 @@ public class TargetingMaster extends AiHandler {
         return active.getTargeting();
     }
 
-    public static Targeting findTargeting(ActiveObj active,
+    public static Targeting findTargeting(IActiveObj active,
                                           Class<SelectiveTargeting> CLASS) {
         Targeting t = active.getTargeting();
         if (checkTargeting(CLASS, t)) {
@@ -61,15 +61,15 @@ public class TargetingMaster extends AiHandler {
             return t;
         }
 
-        for (ActiveObj a : active.getActives()) {
-            if (active instanceof DC_ActiveObj)// 2 layers maximum, i hope
+        for (IActiveObj a : active.getActives()) {
+            if (active instanceof ActiveObj)// 2 layers maximum, i hope
             {
                 t = findTargeting(a, CLASS);
             }
             if (t != null) {
                 return t;
             } else {
-                for (ActiveObj a2 : a.getActives()) {
+                for (IActiveObj a2 : a.getActives()) {
                     t = findTargetingInAbils(a2, CLASS);
                     if (t != null) {
                         return t;
@@ -88,7 +88,7 @@ public class TargetingMaster extends AiHandler {
         return ClassMaster.isInstanceOf(t, CLASS);
     }
 
-    public static Targeting findTargetingInAbils(ActiveObj active,
+    public static Targeting findTargetingInAbils(IActiveObj active,
                                                  Class<SelectiveTargeting> CLASS) {
         if (active.getAbilities() != null) {
             for (Ability abil : active.getAbilities()) {
@@ -104,28 +104,28 @@ public class TargetingMaster extends AiHandler {
         return null;
     }
 
-    public static boolean isValidTargetingCell(Action targetAction, Coordinates c, Unit unit) {
+    public static boolean isValidTargetingCell(AiAction targetAiAction, Coordinates c, Unit unit) {
         // TODO this could be better done
         //AI FIX!
         return unit.getGame().getBattleFieldManager()
-                .canMoveOnto(targetAction.getSource(), c);
+                .canMoveOnto(targetAiAction.getSource(), c);
     }
 
 
-    public static boolean canBeTargeted(Action action, boolean ignoreFacing) {
-        return canBeTargeted(action, false, ignoreFacing);
+    public static boolean canBeTargeted(AiAction aiAction, boolean ignoreFacing) {
+        return canBeTargeted(aiAction, false, ignoreFacing);
     }
 
-    public static boolean canBeTargeted(Action action, boolean ignoreVisibility, boolean ignoreFacing) {
+    public static boolean canBeTargeted(AiAction aiAction, boolean ignoreVisibility, boolean ignoreFacing) {
 
-        if (action.canBeTargeted(action.getTarget().getId())) {
+        if (aiAction.canBeTargeted(aiAction.getTarget().getId())) {
             return true;
         }
 
         if (!ignoreFacing && !ignoreVisibility) {
             return false;
         }
-        List<FILTER_REASON> reasons = ReasonMaster.getReasonsCannotTarget(action);
+        List<FILTER_REASON> reasons = ReasonMaster.getReasonsCannotTarget(aiAction);
         if (AI_Manager.MELEE_HACK)
         if (!reasons.contains(FILTER_REASON.DISTANCE))
             return true;
@@ -151,7 +151,7 @@ public class TargetingMaster extends AiHandler {
         return false;
     }
 
-    public static Integer selectTargetForAction(DC_ActiveObj a) {
+    public static Integer selectTargetForAction(ActiveObj a) {
         /*
          * getOrCreate possible targets init goal type prioritize
          */
@@ -170,7 +170,7 @@ public class TargetingMaster extends AiHandler {
             return Core.getMainHero().getId();
         } else
             for (Obj obj : objects) {
-                ActionSequence sequence = new ActionSequence(type, new Action(a, obj));
+                ActionSequence sequence = new ActionSequence(type, new AiAction(a, obj));
                 sequence.setAi(a.getOwnerUnit().getUnitAI());
                 sequence.setType(type);
                 int priority = DC_PriorityManager.getPriority(sequence);

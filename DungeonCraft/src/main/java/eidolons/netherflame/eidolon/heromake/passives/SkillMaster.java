@@ -5,7 +5,7 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.consts.libgdx.GdxStringUtils;
 import eidolons.entity.unit.attach.DC_PassiveObj;
-import eidolons.entity.unit.attach.HeroClass;
+import eidolons.entity.unit.attach.ClassRank;
 import eidolons.entity.unit.attach.Perk;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.Core;
@@ -177,7 +177,7 @@ public class SkillMaster {
             case PERKS:
                 return new Perk(featType, (Unit) ref.getSourceObj());
             case CLASSES:
-                return new HeroClass(featType, (Unit) ref.getSourceObj());
+                return new ClassRank(featType, (Unit) ref.getSourceObj());
         }
         return new DC_PassiveObj(featType, ref);
     }
@@ -207,7 +207,7 @@ public class SkillMaster {
         DequeImpl<? extends DC_PassiveObj> container = hero.getSkills();
 
         if (arg.getOBJ_TYPE_ENUM() == DC_TYPE.CLASSES) {
-            container = hero.getClasses();
+            container = hero.getClassRanks();
         } else if (arg.getOBJ_TYPE_ENUM() == DC_TYPE.PERKS) {
             container = hero.getPerks();
         }

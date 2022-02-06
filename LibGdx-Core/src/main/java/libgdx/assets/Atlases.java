@@ -8,11 +8,11 @@ import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.content.PARAMS;
 import eidolons.content.consts.VisualEnums;
 import eidolons.content.consts.libgdx.GdxStringUtils;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_QuickItemAction;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.QuickItemAction;
+import eidolons.entity.item.WeaponItem;
 import eidolons.game.battlecraft.rules.combat.attack.AttackTypes;
-import eidolons.entity.item.handlers.ItemMaster;
+import eidolons.entity.mngr.item.ItemMaster;
 import libgdx.GdxImageMaster;
 import libgdx.GdxMaster;
 import libgdx.anims.sprite.SpriteAnimation;
@@ -51,7 +51,7 @@ public class Atlases {
     public static final List<AssetEnums.ATLAS> all = new LinkedList<>();
     private static final Map<String, Array<TextureAtlas.AtlasRegion>> atlasRegionsCache = new HashMap<>();
     // private static final Map<String, TextureAtlas> atlasMap = new HashMap<>();
-    private static final List<DC_WeaponObj> broken = new ArrayList<>();
+    private static final List<WeaponItem> broken = new ArrayList<>();
     static final Map<String, TextureAtlas> atlasMap = new ConcurrentHashMap<>();
     static ObjectMap<String, String> substituteMap;
 
@@ -153,10 +153,10 @@ public class Atlases {
     }
 
     public static String getAtlasFileKeyForAction(Boolean projection,
-                                                  DC_ActiveObj activeObj, VisualEnums.WEAPON_ANIM_CASE aCase) {
+                                                  ActiveObj activeObj, VisualEnums.WEAPON_ANIM_CASE aCase) {
         if (aCase == VisualEnums.WEAPON_ANIM_CASE.POTION)
             return getPotionKey(activeObj);
-        DC_WeaponObj weapon = activeObj.getActiveWeapon();
+        WeaponItem weapon = activeObj.getActiveWeapon();
         String actionName;
         String projectionString;
 
@@ -203,7 +203,7 @@ public class Atlases {
                 actionName, offhand);
     }
 
-    private static String getActionAtlasKey(DC_ActiveObj activeObj) {
+    private static String getActionAtlasKey(ActiveObj activeObj) {
         String name = activeObj
                 .getName().replace("Off Hand ", "");
         String substitute = substituteMap.get(name.toLowerCase());
@@ -213,7 +213,7 @@ public class Atlases {
         return name;
     }
 
-    public static String getWeaponAtlasKey(DC_WeaponObj weapon) {
+    public static String getWeaponAtlasKey(WeaponItem weapon) {
         String name = weapon.getBaseTypeName();
         String substitute = substituteMap.get(name.toLowerCase());
         if (substitute != null) {
@@ -231,7 +231,7 @@ public class Atlases {
         return name;
     }
 
-    public static String getAtlasPath(DC_WeaponObj weapon, String name) {
+    public static String getAtlasPath(WeaponItem weapon, String name) {
         if (weapon.getWeaponGroup() == null) {
             log(1, "Invalid weapon group " + weapon.getProperty(G_PROPS.WEAPON_GROUP));
             return "Invalid weapon group " + weapon.getProperty(G_PROPS.WEAPON_GROUP);
@@ -247,22 +247,22 @@ public class Atlases {
     }
 
     public static SpriteAnimation getSpriteForAction(float duration,
-                                                     DC_ActiveObj activeObj,
+                                                     ActiveObj activeObj,
                                                      VisualEnums.WEAPON_ANIM_CASE aCase, VisualEnums.PROJECTION projection) {
         return getSpriteForAction(duration, activeObj,
                 aCase, projection.bool);
     }
 
-    private static String getPotionKey(DC_ActiveObj activeObj) {
-        DC_QuickItemAction action = (DC_QuickItemAction) activeObj;
+    private static String getPotionKey(ActiveObj activeObj) {
+        QuickItemAction action = (QuickItemAction) activeObj;
         boolean full = action.getItem().getIntParam(PARAMS.CHARGES) != 0;
         String suffix = full ? "_full" : "_half";
 
         return action.getItem().getName().replace(" ", "_") + suffix;
     }
 
-    static String getPotionAtlasPath(DC_ActiveObj activeObj) {
-        DC_QuickItemAction action = (DC_QuickItemAction) activeObj;
+    static String getPotionAtlasPath(ActiveObj activeObj) {
+        QuickItemAction action = (QuickItemAction) activeObj;
         String name = action.getItem().getName();
         String level = name.split(" ")[0];
         return StrPathBuilder.build(PathFinder.getImagePath(), PathFinder.getSpritesPath(),
@@ -271,7 +271,7 @@ public class Atlases {
     }
 
     public static SpriteAnimation getSpriteForAction(float duration,
-                                                     DC_ActiveObj activeObj,
+                                                     ActiveObj activeObj,
                                                      VisualEnums.WEAPON_ANIM_CASE aCase,
                                                      Boolean projection) {
         // loops,
@@ -298,7 +298,7 @@ public class Atlases {
                 getSpriteAnimation(regions, frameDuration, loops);
     }
 
-    public static Array<TextureAtlas.AtlasRegion> getRegions(VisualEnums.WEAPON_ANIM_CASE aCase, DC_ActiveObj activeObj, Boolean projection) {
+    public static Array<TextureAtlas.AtlasRegion> getRegions(VisualEnums.WEAPON_ANIM_CASE aCase, ActiveObj activeObj, Boolean projection) {
         String name = getAtlasFileKeyForAction(projection, activeObj, aCase);
 
         TextureAtlas atlas = getAtlas(activeObj, aCase);
@@ -332,13 +332,13 @@ public class Atlases {
         return regions;
     }
 
-    private static boolean isSearchAtlasRegions(DC_ActiveObj activeObj) {
+    private static boolean isSearchAtlasRegions(ActiveObj activeObj) {
         return false;
     }
 
     private static Array<TextureAtlas.AtlasRegion> findAtlasRegions(TextureAtlas atlas,
                                                                     Boolean projection,
-                                                                    DC_ActiveObj activeObj,
+                                                                    ActiveObj activeObj,
                                                                     boolean searchOtherWeaponOrAction) {
         String name = getAtlasFileKeyForAction(projection, activeObj, VisualEnums.WEAPON_ANIM_CASE.NORMAL);
         List<Entity> types;
@@ -365,12 +365,12 @@ public class Atlases {
 
     }
 
-    private static TextureAtlas getAtlas(DC_ActiveObj activeObj, VisualEnums.WEAPON_ANIM_CASE aCase
+    private static TextureAtlas getAtlas(ActiveObj activeObj, VisualEnums.WEAPON_ANIM_CASE aCase
     ) {
         if (aCase == VisualEnums.WEAPON_ANIM_CASE.POTION) {
             return getOrCreateAtlas(getPotionAtlasPath(activeObj));
         }
-        DC_WeaponObj weapon = activeObj.getActiveWeapon();
+        WeaponItem weapon = activeObj.getActiveWeapon();
         if (aCase.isMissile()) {
             if (weapon.getLastAmmo() == null)
                 return null;
@@ -379,7 +379,7 @@ public class Atlases {
         return getOrCreateAtlas(weapon);
     }
 
-    public static void preloadAtlas(DC_WeaponObj weapon) {
+    public static void preloadAtlas(WeaponItem weapon) {
         if (GdxMaster.isLwjglThread())
             loadAtlasForWeapon(weapon);
         else
@@ -388,7 +388,7 @@ public class Atlases {
             });
     }
 
-    private static void loadAtlasForWeapon(DC_WeaponObj weapon) {
+    private static void loadAtlasForWeapon(WeaponItem weapon) {
         if (!Assets.isOn()) {
             getOrCreateAtlas(weapon);
             return;
@@ -420,7 +420,7 @@ public class Atlases {
         //        atlasMap.put(path, null);
     }
 
-    public static TextureAtlas getOrCreateAtlas(DC_WeaponObj weapon) {
+    public static TextureAtlas getOrCreateAtlas(WeaponItem weapon) {
         if (broken.contains(weapon))
             return null;
         String path =
@@ -604,7 +604,7 @@ public class Atlases {
         return atlasMap;
     }
 
-    public static String getFullAtlasPath(DC_WeaponObj weapon) {
+    public static String getFullAtlasPath(WeaponItem weapon) {
         try {
             return TextureCache.formatTexturePath(PathFinder.getImagePath()
                     + getAtlasPath(weapon, getWeaponAtlasKey(weapon)));

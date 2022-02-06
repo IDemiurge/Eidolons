@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.logic;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.Spell;
-import eidolons.entity.item.DC_HeroSlotItem;
+import eidolons.entity.feat.active.Spell;
+import eidolons.entity.item.HeroSlotItem;
 import eidolons.entity.unit.Unit;
 
 import java.util.List;
@@ -49,7 +49,7 @@ public class PowerCalculator {
         return 0;
     }
 
-    private int calcSlotItemsPower(Unit unit, List<DC_HeroSlotItem> slotItems) {
+    private int calcSlotItemsPower(Unit unit, List<HeroSlotItem> slotItems) {
         //perhaps via balance parameters after all?
         return 0;
     }

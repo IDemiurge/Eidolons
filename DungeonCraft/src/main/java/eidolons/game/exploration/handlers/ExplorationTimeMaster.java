@@ -2,11 +2,10 @@ package eidolons.game.exploration.handlers;
 
 import eidolons.content.ContentConsts;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.UnitAI;
-import eidolons.game.battlecraft.ai.explore.behavior.AiBehaviorManager;
 import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;
 import eidolons.game.battlecraft.rules.round.RoundRule;
 import eidolons.game.core.Core;
@@ -62,7 +61,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         });
     }
 
-    public void aiActionActivated(UnitAI ai, DC_ActiveObj activeObj) {
+    public void aiActionActivated(UnitAI ai, ActiveObj activeObj) {
         //        int time = getTimeForAction(activeObj);
         //        ai.setExplorationTimePassed(ai.getExplorationTimePassed() + time);
         ai.setExplorationTimeOfLastAction(time);
@@ -76,7 +75,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         //        return TimeMaster.getFormattedTime((long) time, true, false);
     }
 
-    public int getTimeForAction(DC_ActiveObj activeObj) {
+    public int getTimeForAction(ActiveObj activeObj) {
         //speed factor of the unit?
         return (int) Math.round(secondsPerAP * activeObj.getParamDouble(PARAMS.AP_COST));
     }

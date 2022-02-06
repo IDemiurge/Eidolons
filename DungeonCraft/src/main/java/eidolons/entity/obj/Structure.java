@@ -110,21 +110,6 @@ public class Structure extends BattleFieldObject {
         return false;
     }
 
-    public void resetFacing() {
-        //        getResetter().setFacing();
-        if (getDirection() != null) {
-            setFacing(FacingMaster.getFacingFromDirection(getDirection()));
-        } else {
-            setFacing(main.game.bf.directions.FACING_DIRECTION.NONE);
-        }
-    }
-
-    @Override
-    public FACING_DIRECTION getFacing() {
-        resetFacing();
-        return super.getFacing();
-    }
-
     public boolean isWater() {
         if (water != null) {
             return water;

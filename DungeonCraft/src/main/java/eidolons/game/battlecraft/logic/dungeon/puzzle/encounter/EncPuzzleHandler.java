@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.encounter;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.PuzzleHandler;
@@ -110,7 +110,7 @@ public class EncPuzzleHandler extends PuzzleHandler<EncounterPuzzle> {
     }
 
     @Override
-    protected void playerActionDone(DC_ActiveObj action) {
+    protected void playerActionDone(ActiveObj action) {
         super.playerActionDone(action);
         //check if need dynamic reinforcements
         if (puzzle.isEndless())

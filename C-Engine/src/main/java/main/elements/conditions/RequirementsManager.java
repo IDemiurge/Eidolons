@@ -7,7 +7,6 @@ public interface RequirementsManager {
 
     int ALT_MODE = 1;
 
-    int VERBATIM_MODE = 2;
     int RANK_MODE = 6;
 
     String check(Entity hero, Entity type);

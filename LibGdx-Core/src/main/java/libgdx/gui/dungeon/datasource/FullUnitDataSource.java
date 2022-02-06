@@ -1,9 +1,8 @@
 package libgdx.gui.dungeon.datasource;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import main.game.bf.directions.DIRECTION;
-import main.game.bf.directions.FACING_DIRECTION;
 
 /**
  * Created by JustMe on 3/30/2018.
@@ -13,16 +12,8 @@ public class FullUnitDataSource extends EntityDataSource<Unit> {
         super(entity);
     }
 
-    public FACING_DIRECTION getFacingOrNull() {
-        return entity.getFacingOrNull();
-    }
-
     public DIRECTION getDirection() {
         return entity.getDirection();
-    }
-
-    public FACING_DIRECTION getFacing() {
-        return entity.getFacing();
     }
 
     public boolean isHero() {
@@ -45,7 +36,7 @@ public class FullUnitDataSource extends EntityDataSource<Unit> {
         return entity.isImmobilized();
     }
 
-    public DC_ActiveObj getTurnAction(boolean clockwise) {
+    public ActiveObj getTurnAction(boolean clockwise) {
         return entity.getTurnAction(clockwise);
     }
 }

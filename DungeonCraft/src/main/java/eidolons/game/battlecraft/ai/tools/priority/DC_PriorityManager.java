@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.ai.tools.priority;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
@@ -52,7 +52,7 @@ public class DC_PriorityManager {
         return impl.getAttackPriority(as);
     }
 
-    public static int getAttackPriority(DC_ActiveObj active, BattleFieldObject targetObj) {
+    public static int getAttackPriority(ActiveObj active, BattleFieldObject targetObj) {
         Unit unit = mainImpl.getMaster().getUnit();
         mainImpl.getMaster().setUnit(active.getOwnerUnit());
         //        toggleImplementation(new PriorityManagerImpl(mainImpl.getMaster()) {

@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.universal.shop;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.HeroItem;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.scenario.hq.ShopInterface;
 import main.content.CONTENT_CONSTS2.SHOP_LEVEL;
@@ -98,7 +98,7 @@ public class Shop extends Obj implements ShopInterface {
         return shopModifier;
     }
 
-    public Collection<DC_HeroItemObj> getItems() {
+    public Collection<HeroItem> getItems() {
         return itemManager.getItems();
     }
 
@@ -112,27 +112,27 @@ public class Shop extends Obj implements ShopInterface {
 
     }
 
-    public Integer buyItemFrom(DC_HeroItemObj t, Unit buyer) {
+    public Integer buyItemFrom(HeroItem t, Unit buyer) {
         return itemManager.buyItemFrom(t, buyer);
     }
 
-    public Integer sellItemTo(DC_HeroItemObj t, Unit seller) {
+    public Integer sellItemTo(HeroItem t, Unit seller) {
         return itemManager.sellItemTo(t, seller);
     }
 
-    public boolean canSellTo(DC_HeroItemObj item, Unit seller, boolean canUseDebt) {
+    public boolean canSellTo(HeroItem item, Unit seller, boolean canUseDebt) {
         return itemManager.canSellTo(item, seller, canUseDebt);
     }
 
-    public boolean canBuy(DC_HeroItemObj item, Unit seller, boolean canUseDebt) {
+    public boolean canBuy(HeroItem item, Unit seller, boolean canUseDebt) {
         return itemManager.canBuy(item, seller, canUseDebt);
     }
 
-    public int getBalanceForBuy(DC_HeroItemObj item, Unit hero, boolean heroBuys) {
+    public int getBalanceForBuy(HeroItem item, Unit hero, boolean heroBuys) {
         return itemManager.getBalanceForBuy(item, hero, heroBuys);
     }
 
-    public Integer getPrice(DC_HeroItemObj t, Unit unit, boolean buy) {
+    public Integer getPrice(HeroItem t, Unit unit, boolean buy) {
         return itemManager.getPrice(t, unit, buy);
     }
 

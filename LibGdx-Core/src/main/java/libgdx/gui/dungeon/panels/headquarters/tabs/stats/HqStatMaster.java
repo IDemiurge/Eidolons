@@ -2,6 +2,7 @@ package libgdx.gui.dungeon.panels.headquarters.tabs.stats;
 
 import eidolons.system.libgdx.datasource.HeroDataModel;
 import libgdx.gui.dungeon.panels.headquarters.datasource.HqDataMaster;
+import main.content.enums.entity.HeroEnums;
 import main.content.values.parameters.PARAMETER;
 
 /**
@@ -24,7 +25,7 @@ public class HqStatMaster {
 //              entity, Eidolons.getScreen().getGuiStage());
 //            return false;
 //        }
-        HqDataMaster.operation(entity, HeroDataModel.HERO_OPERATION.NEW_MASTERY, datum);
+        HqDataMaster.operation(entity, HeroEnums.HERO_OPERATION.NEW_MASTERY, datum);
 
 //        entity.modifyParameter(PARAMS.GOLD, -costGold);
 //        entity.modifyParameter(PARAMS.XP, -cost);

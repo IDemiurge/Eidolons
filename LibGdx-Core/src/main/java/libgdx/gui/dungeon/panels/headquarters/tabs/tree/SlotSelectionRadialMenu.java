@@ -20,8 +20,8 @@ import libgdx.gui.dungeon.tooltips.DynamicTooltip;
 import libgdx.gui.dungeon.tooltips.SmartClickListener;
 import libgdx.shaders.GrayscaleShader;
 import libgdx.assets.texture.TextureCache;
-import eidolons.system.libgdx.datasource.HeroDataModel;
 import main.content.DC_TYPE;
+import main.content.enums.entity.HeroEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -110,7 +110,7 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
                 getOperation(), type, tier, slot);
     }
 
-    protected abstract HeroDataModel.HERO_OPERATION getOperation();
+    protected abstract HeroEnums.HERO_OPERATION getOperation();
 
     @Override
     protected Vector2 getInitialPosition() {

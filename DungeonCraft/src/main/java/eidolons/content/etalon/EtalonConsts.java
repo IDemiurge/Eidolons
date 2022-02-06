@@ -1,7 +1,8 @@
 package eidolons.content.etalon;
 
+import eidolons.content.ATTRIBUTE;
 import eidolons.content.DC_ContentValsManager;
-import main.content.enums.entity.HeroEnums;
+import main.content.enums.entity.ClassEnums;
 import main.content.enums.entity.SkillEnums;
 import main.system.auxiliary.StringMaster;
 import main.system.data.DataUnit;
@@ -10,21 +11,21 @@ public class EtalonConsts {
 
     public enum EtalonType {
         //TODO use combinatorics for race!
-        fighter_defense("Human", 6, HeroEnums.CLASS_GROUP.FIGHTER, MASTERY_SET.fighter_defense, ATTRIBUTE_SET.fighter_defense),
-        fighter_offense("Human",6, HeroEnums.CLASS_GROUP.FIGHTER, MASTERY_SET.fighter_offense, ATTRIBUTE_SET.fighter_offense),
-        fighter_offense_alt("Human",6, HeroEnums.CLASS_GROUP.FIGHTER, MASTERY_SET.fighter_offense_alt, ATTRIBUTE_SET.fighter_offense_alt),
-        rogue_offense("Human",6, HeroEnums.CLASS_GROUP.ROGUE, MASTERY_SET.rogue_offense, ATTRIBUTE_SET.rogue_offense),
-        rogue_specialist("Human",6, HeroEnums.CLASS_GROUP.ROGUE, MASTERY_SET.rogue_specialist, ATTRIBUTE_SET.rogue_specialist),
+        fighter_defense("Human", 6, ClassEnums.CLASS_GROUP.FIGHTER, MASTERY_SET.fighter_defense, ATTRIBUTE_SET.fighter_defense),
+        fighter_offense("Human",6, ClassEnums.CLASS_GROUP.FIGHTER, MASTERY_SET.fighter_offense, ATTRIBUTE_SET.fighter_offense),
+        fighter_offense_alt("Human",6, ClassEnums.CLASS_GROUP.FIGHTER, MASTERY_SET.fighter_offense_alt, ATTRIBUTE_SET.fighter_offense_alt),
+        rogue_offense("Human",6, ClassEnums.CLASS_GROUP.ROGUE, MASTERY_SET.rogue_offense, ATTRIBUTE_SET.rogue_offense),
+        rogue_specialist("Human",6, ClassEnums.CLASS_GROUP.ROGUE, MASTERY_SET.rogue_specialist, ATTRIBUTE_SET.rogue_specialist),
         ;
 
         public int maxLevel;
         public String name;
         public String baseType;
-        HeroEnums.CLASS_GROUP baseClass;
+        ClassEnums.CLASS_GROUP baseClass;
         EtalonConsts.MASTERY_SET masterySet;
         ATTRIBUTE_SET attributeSet;
 
-        EtalonType(String race,int maxLevel, HeroEnums.CLASS_GROUP baseClass, MASTERY_SET masterySet, ATTRIBUTE_SET attributeSet) {
+        EtalonType(String race, int maxLevel, ClassEnums.CLASS_GROUP baseClass, MASTERY_SET masterySet, ATTRIBUTE_SET attributeSet) {
             this.maxLevel = maxLevel;
             this.baseClass = baseClass;
             this.masterySet = masterySet;
@@ -84,10 +85,10 @@ public class EtalonConsts {
 
     }
 
-    public static class AttributeData extends DataUnit<DC_ContentValsManager.ATTRIBUTE> {
+    public static class AttributeData extends DataUnit<ATTRIBUTE> {
         @Override
-        public Class<? extends DC_ContentValsManager.ATTRIBUTE> getEnumClazz() {
-            return DC_ContentValsManager.ATTRIBUTE.class;
+        public Class<? extends ATTRIBUTE> getEnumClazz() {
+            return ATTRIBUTE.class;
         }
 
         public AttributeData(String text) {

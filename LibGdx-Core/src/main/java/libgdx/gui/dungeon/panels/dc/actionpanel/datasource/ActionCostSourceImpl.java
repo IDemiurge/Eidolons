@@ -1,7 +1,7 @@
 package libgdx.gui.dungeon.panels.dc.actionpanel.datasource;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.core.atb.AtbMaster;
 import libgdx.gui.generic.ValueContainer;
 import libgdx.assets.texture.TextureCache;
@@ -20,13 +20,13 @@ import static libgdx.assets.texture.TextureCache.getOrCreateR;
  * Created by JustMe on 9/20/2017.
  */
 public class ActionCostSourceImpl implements ActionCostSource {
-    private final DC_ActiveObj action;
+    private final ActiveObj action;
 
-    public ActionCostSourceImpl(DC_ActiveObj action) {
+    public ActionCostSourceImpl(ActiveObj action) {
         this.action = action;
     }
 
-    public static List<ValueContainer> getActionCostList(DC_ActiveObj activeObj) {
+    public static List<ValueContainer> getActionCostList(ActiveObj activeObj) {
         List<ValueContainer> costsList = new ArrayList<>();
         for (int i = 0, costsLength = RESOURCE_COSTS.length; i < costsLength; i++) {
             PARAMETER cost = RESOURCE_COSTS[i];

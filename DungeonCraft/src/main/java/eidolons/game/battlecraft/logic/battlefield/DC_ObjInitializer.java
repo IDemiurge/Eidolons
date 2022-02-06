@@ -41,7 +41,6 @@ public class DC_ObjInitializer extends DungeonHandler {
 
     public static final String OBJ_SEPARATOR = StringMaster.getAltSeparator();
     public static final String COORDINATES_OBJ_SEPARATOR = StringMaster.getAltPairSeparator();
-    private static final String MULTI_DIRECTION_SUFFIX = "MULTI_DIRECTION-";
     private ObjType borderType;
     private Map<Integer, DIRECTION> directionMap = new HashMap<>();
 

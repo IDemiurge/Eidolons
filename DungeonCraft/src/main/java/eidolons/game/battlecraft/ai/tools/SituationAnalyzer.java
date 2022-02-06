@@ -1,13 +1,13 @@
 package eidolons.game.battlecraft.ai.tools;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import main.content.enums.system.AiEnums;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 
 /**
  * Created by JustMe on 4/9/2017.
@@ -42,8 +42,8 @@ public class SituationAnalyzer extends AiHandler {
     }
 
     public boolean canAttackNow(UnitAI ai) {
-        for (ActiveObj a : ai.getUnit().getActives()) {
-            DC_ActiveObj action = (DC_ActiveObj) a;
+        for (IActiveObj a : ai.getUnit().getActives()) {
+            ActiveObj action = (ActiveObj) a;
             if (action.isAttackAny())
                 if (!action.isAttackGeneric())
                     for (DC_Obj enemy : getAnalyzer().getEnemies(ai.getUnit(), false, false,

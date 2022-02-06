@@ -15,6 +15,7 @@ import eidolons.system.options.GameplayOptions;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.Options.OPTION;
 import eidolons.system.options.OptionsMaster;
+import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;

@@ -1,11 +1,11 @@
 package libgdx.gui.dungeon.panels.dc.inventory;
 
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.item.DC_ArmorObj;
-import eidolons.entity.item.handlers.DC_InventoryManager;
-import eidolons.entity.item.handlers.DC_InventoryManager.OPERATIONS;
-import eidolons.entity.item.DC_JewelryObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.ArmorItem;
+import eidolons.entity.mngr.item.DC_InventoryManager;
+import eidolons.entity.mngr.item.DC_InventoryManager.OPERATIONS;
+import eidolons.entity.item.trinket.JewelryItem;
+import eidolons.entity.item.WeaponItem;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Core;
 import eidolons.game.exploration.handlers.ExplorationMaster;
@@ -16,6 +16,7 @@ import eidolons.system.libgdx.datasource.HeroDataModel;
 import libgdx.gui.dungeon.panels.headquarters.datasource.HqDataMaster;
 import libgdx.screens.handlers.ScreenMaster;
 import main.content.DC_TYPE;
+import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.enums.entity.ItemEnums.JEWELRY_TYPE;
 import main.content.values.properties.G_PROPS;
@@ -197,22 +198,22 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
             case WEAPON_MAIN_RESERVE:
                 //                if (dragged)
             case WEAPON_MAIN:
-                if (dragged instanceof DC_WeaponObj)
+                if (dragged instanceof WeaponItem)
                     return HeroManager.canEquip(dataMaster.getHeroModel(), dragged,
                             getSlotArg(cell_type));
 
             case ARMOR:
-                return dragged instanceof DC_ArmorObj;
+                return dragged instanceof ArmorItem;
             case QUICK_SLOT:
                 return HeroManager.isQuickItem(dragged);
 
             case AMULET:
-                return dragged instanceof DC_JewelryObj
+                return dragged instanceof JewelryItem
                         && dragged.getProperty(G_PROPS.JEWELRY_TYPE).
                         equalsIgnoreCase(JEWELRY_TYPE.AMULET.toString());
 
             case RING:
-                return dragged instanceof DC_JewelryObj
+                return dragged instanceof JewelryItem
                         && dragged.getProperty(G_PROPS.JEWELRY_TYPE).
                         equalsIgnoreCase(JEWELRY_TYPE.RING.toString());
 
@@ -235,7 +236,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 
     protected Object getSecondArg(OPERATIONS operation, Entity type) {
         if (operation == OPERATIONS.EQUIP || operation == OPERATIONS.EQUIP_RESERVE) {
-            if (type instanceof DC_JewelryObj) {
+            if (type instanceof JewelryItem) {
                 return null;
             }
             ITEM_SLOT slot = HeroManager.getItemSlot(dataMaster.getHeroModel(), type);
@@ -247,30 +248,30 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         return null;
     }
 
-    protected HeroDataModel.HERO_OPERATION getHqOperation(OPERATIONS operation) {
+    protected HeroEnums.HERO_OPERATION getHqOperation(OPERATIONS operation) {
         switch (operation) {
             case PICK_UP:
-                return HeroDataModel.HERO_OPERATION.PICK_UP;
+                return HeroEnums.HERO_OPERATION.PICK_UP;
             case DROP:
-                return HeroDataModel.HERO_OPERATION.DROP;
+                return HeroEnums.HERO_OPERATION.DROP;
             case UNEQUIP:
-                return HeroDataModel.HERO_OPERATION.UNEQUIP;
+                return HeroEnums.HERO_OPERATION.UNEQUIP;
             case UNEQUIP_QUICK_SLOT:
-                return HeroDataModel.HERO_OPERATION.UNEQUIP_QUICK_SLOT;
+                return HeroEnums.HERO_OPERATION.UNEQUIP_QUICK_SLOT;
             case EQUIP_RESERVE:
-                return HeroDataModel.HERO_OPERATION.EQUIP_RESERVE;
+                return HeroEnums.HERO_OPERATION.EQUIP_RESERVE;
             case EQUIP:
-                return HeroDataModel.HERO_OPERATION.EQUIP;
+                return HeroEnums.HERO_OPERATION.EQUIP;
             case EQUIP_QUICK_SLOT:
-                return HeroDataModel.HERO_OPERATION.EQUIP_QUICK_SLOT;
+                return HeroEnums.HERO_OPERATION.EQUIP_QUICK_SLOT;
             case BUY:
-                return HeroDataModel.HERO_OPERATION.BUY;
+                return HeroEnums.HERO_OPERATION.BUY;
             case SELL:
-                return HeroDataModel.HERO_OPERATION.SELL;
+                return HeroEnums.HERO_OPERATION.SELL;
             case STASH:
-                return HeroDataModel.HERO_OPERATION.STASH;
+                return HeroEnums.HERO_OPERATION.STASH;
             case UNSTASH:
-                return HeroDataModel.HERO_OPERATION.UNSTASH;
+                return HeroEnums.HERO_OPERATION.UNSTASH;
         }
         return null;
     }

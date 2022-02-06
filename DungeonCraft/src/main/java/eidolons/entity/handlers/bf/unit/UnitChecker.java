@@ -1,7 +1,7 @@
 package eidolons.entity.handlers.bf.unit;
 
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.ai.AI_Manager;
@@ -262,11 +262,11 @@ public class UnitChecker extends EntityChecker<Unit> {
         return getEntity().getAttack().canBeActivated(getRef(), true);
     }
 
-    public boolean canCounter(DC_ActiveObj active) {
+    public boolean canCounter(ActiveObj active) {
         return canCounter(active, false);
     }
 
-    public boolean canCounter(DC_ActiveObj active, boolean sneak) {
+    public boolean canCounter(ActiveObj active, boolean sneak) {
         if (!canCounter()) {
             return false;
         }

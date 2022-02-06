@@ -1,9 +1,9 @@
 package eidolons.entity.handlers.active;
 
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_QuickItemAction;
-import eidolons.entity.item.DC_QuickItemObj;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.QuickItemAction;
+import eidolons.entity.item.QuickItem;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.battlecraft.rules.RuleEnums;
 import eidolons.game.battlecraft.rules.RuleKeeper;
@@ -54,7 +54,7 @@ public class Executor extends ActiveHandler {
     private boolean interrupted;
     private final Activator activator;
     private final Targeter targeter;
-    private List<DC_ActiveObj> pendingAttacksOpportunity;
+    private List<ActiveObj> pendingAttacksOpportunity;
     private boolean failedLast;
     private boolean instantMode;
     private boolean counterMode;
@@ -62,17 +62,17 @@ public class Executor extends ActiveHandler {
     private Boolean cancelled;
     private boolean triggered;
 
-    public Executor(DC_ActiveObj active, ActiveMaster entityMaster) {
+    public Executor(ActiveObj active, ActiveMaster entityMaster) {
         super(active, entityMaster);
         targeter = createTargeter(active, entityMaster);
         activator = createActivator(active, entityMaster);
     }
 
-    protected Targeter createTargeter(DC_ActiveObj active, ActiveMaster entityMaster) {
+    protected Targeter createTargeter(ActiveObj active, ActiveMaster entityMaster) {
         return new Targeter(active, entityMaster);
     }
 
-    protected Activator createActivator(DC_ActiveObj active, ActiveMaster entityMaster) {
+    protected Activator createActivator(ActiveObj active, ActiveMaster entityMaster) {
         return new Activator(active, entityMaster);
     }
 
@@ -188,8 +188,8 @@ public class Executor extends ActiveHandler {
     }
 
     protected void syncActionRefWithSource() {
-        if (getAction() instanceof DC_QuickItemAction) {
-            DC_QuickItemObj item = ((DC_QuickItemAction) getAction()).getItem();
+        if (getAction() instanceof QuickItemAction) {
+            QuickItem item = ((QuickItemAction) getAction()).getItem();
             if (item.isAmmo()) {
                 getAction().getOwnerObj().getRef().setID(KEYS.AMMO, item.getId());
             }
@@ -380,11 +380,11 @@ public class Executor extends ActiveHandler {
         return targeter;
     }
 
-    public void addPendingAttackOpportunity(DC_ActiveObj attack) {
+    public void addPendingAttackOpportunity(ActiveObj attack) {
         getPendingAttacksOpportunity().add(attack);
     }
 
-    private List<DC_ActiveObj> getPendingAttacksOpportunity() {
+    private List<ActiveObj> getPendingAttacksOpportunity() {
         if (pendingAttacksOpportunity == null) {
             pendingAttacksOpportunity = new ArrayList<>();
         }
@@ -396,7 +396,7 @@ public class Executor extends ActiveHandler {
         if (getAction().getOwnerUnit() == null) {
             return; //objects...
         }
-        for (DC_ActiveObj attack : new ArrayList<>(getPendingAttacksOpportunity())) {
+        for (ActiveObj attack : new ArrayList<>(getPendingAttacksOpportunity())) {
             // if (!AttackOfOpportunityRule.checkPendingAttackProceeds(getAction().getOwnerUnit(), attack)) {
             //     continue;
             // }

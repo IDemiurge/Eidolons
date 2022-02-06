@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.universal.shop;
 
-import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.HeroItem;
 import eidolons.game.core.EUtils;
 import main.system.datatypes.WeightMap;
 
@@ -10,7 +10,7 @@ import main.system.datatypes.WeightMap;
 public class ShopTransactions {
     static boolean confirmOff;
 
-    public static boolean confirm(int debt, int max, DC_HeroItemObj item, Shop shop, boolean heroBuys) {
+    public static boolean confirm(int debt, int max, HeroItem item, Shop shop, boolean heroBuys) {
         if (confirmOff)
             return true;
         String text;

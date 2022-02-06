@@ -15,8 +15,8 @@ import eidolons.content.consts.Images;
 import eidolons.content.consts.VisualEnums;
 import eidolons.content.consts.VisualEnums.CELL_TYPE;
 import eidolons.content.consts.libgdx.GdxColorMaster;
-import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.item.DC_HeroSlotItem;
+import eidolons.entity.item.HeroItem;
+import eidolons.entity.item.HeroSlotItem;
 import eidolons.game.core.Core;
 import eidolons.entity.item.vendor.GoldMaster;
 import libgdx.GdxMaster;
@@ -66,7 +66,7 @@ public class InvItemActor extends ItemActor {
         return model + "'s Actor";
     }
 
-    public InvItemActor(DC_HeroItemObj model, CELL_TYPE cellType, InventoryClickHandler handler) {
+    public InvItemActor(HeroItem model, CELL_TYPE cellType, InventoryClickHandler handler) {
         super(model);
         this.cellType = cellType;
         this.handler = handler;
@@ -117,7 +117,7 @@ public class InvItemActor extends ItemActor {
         return new FadeImageContainer(Images.ITEM_BACKGROUND);
     }
 
-    protected FadeImageContainer createBackgroundOverlay(DC_HeroItemObj model) {
+    protected FadeImageContainer createBackgroundOverlay(HeroItem model) {
         String path = getUnderlayPathForItem(model);
         if (path == null) {
             return null;
@@ -129,9 +129,9 @@ public class InvItemActor extends ItemActor {
         return overlay;
     }
 
-    private String getUnderlayPathForItem(DC_HeroItemObj model) {
-        if (model instanceof DC_HeroSlotItem) {
-        ItemEnums.QUALITY_LEVEL qualityLevel =  ((DC_HeroSlotItem) model).getQuality();
+    private String getUnderlayPathForItem(HeroItem model) {
+        if (model instanceof HeroSlotItem) {
+        ItemEnums.QUALITY_LEVEL qualityLevel =  ((HeroSlotItem) model).getQuality();
             switch (qualityLevel) {
 
                 case ANCIENT:
@@ -160,7 +160,7 @@ public class InvItemActor extends ItemActor {
     }
 
     @Override
-    protected String getImagePath(DC_HeroItemObj model) {
+    protected String getImagePath(HeroItem model) {
         return UiMaster.getSprite(super.getImagePath(model));
     }
 

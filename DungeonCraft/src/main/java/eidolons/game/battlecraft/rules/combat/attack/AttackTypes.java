@@ -1,13 +1,11 @@
 package eidolons.game.battlecraft.rules.combat.attack;
 
-import eidolons.entity.active.DC_ActiveObj;
-import main.content.enums.GenericEnums;
+import eidolons.entity.feat.active.ActiveObj;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.Entity;
 import main.system.auxiliary.ContainerUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.*;
 
@@ -16,11 +14,11 @@ import static main.content.enums.GenericEnums.DAMAGE_TYPE.*;
 public class AttackTypes {
 
     //TODO NF Rules
-    public static boolean canActivateAny(DC_ActiveObj active) {
+    public static boolean canActivateAny(ActiveObj active) {
         return true;
     }
 
-    public static List<Entity> getAttackTypes(DC_ActiveObj activeObj) {
+    public static List<Entity> getAttackTypes(ActiveObj activeObj) {
         return null;
     }
 

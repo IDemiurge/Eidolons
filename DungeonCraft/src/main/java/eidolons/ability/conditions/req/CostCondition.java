@@ -1,6 +1,6 @@
 package eidolons.ability.conditions.req;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref;
@@ -23,7 +23,7 @@ public class CostCondition extends MicroCondition {
     public boolean check(Ref ref) {
         Unit hero = (Unit) ref.getTargetObj();
 
-        DC_ActiveObj action;
+        ActiveObj action;
 
         if (spell) {
             action = hero.getSpell(actionName);

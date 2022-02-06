@@ -1,7 +1,7 @@
 package eidolons.entity.handlers.active.action;
 
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.handlers.active.ActiveChecker;
 import eidolons.entity.handlers.active.ActiveMaster;
 import eidolons.entity.handlers.active.ActiveResetter;
@@ -15,23 +15,23 @@ import main.entity.handlers.EntityResetter;
  * Created by JustMe on 2/26/2017.
  */
 public class ActionActiveMaster extends ActiveMaster {
-    public ActionActiveMaster(DC_ActiveObj entity) {
+    public ActionActiveMaster(ActiveObj entity) {
         super(entity);
     }
 
 
     @Override
-    public DC_UnitAction getEntity() {
-        return (DC_UnitAction) super.getEntity();
+    public UnitAction getEntity() {
+        return (UnitAction) super.getEntity();
     }
 
     @Override
-    protected EntityChecker<DC_ActiveObj> createEntityChecker() {
+    protected EntityChecker<ActiveObj> createEntityChecker() {
         return new ActiveChecker(getEntity(), this);
     }
 
     @Override
-    protected EntityResetter<DC_ActiveObj> createResetter() {
+    protected EntityResetter<ActiveObj> createResetter() {
         return new ActiveResetter(getEntity(), this) {
             @Override
             public void toBase() {

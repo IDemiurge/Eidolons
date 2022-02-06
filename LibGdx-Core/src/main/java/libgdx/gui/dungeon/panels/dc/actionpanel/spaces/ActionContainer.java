@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.handlers.active.Activator;
 import eidolons.game.EidolonsGame;
 import libgdx.anims.actions.ActionMasterGdx;
@@ -263,7 +263,7 @@ public class ActionContainer extends FeatContainer {
     }
 
     private boolean isBlocked() {
-        return EidolonsGame.isActionBlocked((DC_ActiveObj) getUserObject());
+        return EidolonsGame.isActionBlocked((ActiveObj) getUserObject());
     }
 
     @Override
@@ -273,7 +273,7 @@ public class ActionContainer extends FeatContainer {
 
     @Override
     protected Class<?> getUserObjectClass() {
-        return DC_ActiveObj.class;
+        return ActiveObj.class;
     }
 
     public void setCustomRadialMenu(RadialMenu customRadialMenu) {
@@ -315,7 +315,7 @@ public class ActionContainer extends FeatContainer {
 
     public Runnable getClickAction() {
         if (isBlocked()) {
-            Activator.cannotActivate_((DC_ActiveObj) getUserObject(), "Blocked");
+            Activator.cannotActivate_((ActiveObj) getUserObject(), "Blocked");
             return null;
         }
         return clickAction;

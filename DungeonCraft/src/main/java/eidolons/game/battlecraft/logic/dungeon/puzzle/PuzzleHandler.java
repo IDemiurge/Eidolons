@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.battlecraft.ai.advanced.engagement.PlayerStatus;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleData;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.sub.PuzzleElement;
@@ -50,7 +50,7 @@ public abstract class PuzzleHandler<T extends Puzzle> extends PuzzleElement<T> {
         GuiEventManager.trigger(QUEST_UPDATE, puzzle.quest);
     }
 
-    protected void playerActionDone(DC_ActiveObj action) {
+    protected void playerActionDone(ActiveObj action) {
 
     }
 

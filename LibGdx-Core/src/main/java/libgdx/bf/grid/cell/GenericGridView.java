@@ -24,13 +24,10 @@ import main.system.auxiliary.StrPathBuilder;
  */
 public class GenericGridView extends UnitView {
     public static final int ARROW_ROTATION_OFFSET = 90;
-    protected NoHitGroup arrow;
     protected Image icon;
-    protected int arrowRotation;
     protected float alpha = 1f;
     protected boolean cellBackground;
     protected LastSeenView lastSeenView;
-    public FadeImageContainer torch;
     private boolean stackView;
     private boolean invisible;
     private final Label infoText = new Label("", StyleHolder.getDebugLabelStyle());
@@ -38,7 +35,7 @@ public class GenericGridView extends UnitView {
     public GenericGridView(BattleFieldObject obj, UnitViewOptions o) {
         super(o);
         setUserObject(obj);
-        init(o.getDirectionPointerTexture(), o.getDirectionValue(), o.getEmblem());
+        init(o.getEmblem());
         cellBackground = o.cellBackground;
         setVisible(false);
 
@@ -56,57 +53,13 @@ public class GenericGridView extends UnitView {
             if (getTeamColor() != null)
                 emblemLighting.setColor(getTeamColor());
         }
-        if (arrow != null) {
-            arrow.setPosition(getWidth() / 2 //- arrow.getWidth() / 2
-                    , 0);
-//            arrow.setRotation(arrowRotation);
-        }
-
     }
 
-    protected void init(TextureRegion arrowTexture, int arrowRotation,
-                        TextureRegion emblem) {
-        if (arrowTexture != null) {
-            initArrow(arrowTexture, arrowRotation);
-        }
+    protected void init(TextureRegion emblem) {
         if (emblem != null) {
             initEmblem(emblem);
         }
         setInitialized(true);
-    }
-
-    protected void initArrow(TextureRegion arrowTexture, int arrowRotation) {
-
-        if (arrowTexture != null) {
-            arrow = new NoHitGroup();
-            arrow.addActor(new Image(arrowTexture));
-            arrow.setSize(arrowTexture.getRegionWidth(), arrowTexture.getRegionHeight());
-            arrow.addActor(torch = new FadeImageContainer(StrPathBuilder.build("ui", "unit light directional.png")) {
-                @Override
-                public boolean isAlphaFluctuationOn() {
-                    return getBaseAlpha() > 0;
-                }
-
-                @Override
-                public void setBaseAlpha(float baseAlpha) {
-                    super.setBaseAlpha(baseAlpha / 2);
-                }
-
-                @Override
-                public void setColor(Color color) {
-                    super.setColor(color);
-                }
-            });
-            torch.setPosition(GdxMaster.centerWidth(torch) - 3, arrow.getHeight() - torch.getHeight());
-            torch.getColor().a = 0;
-            torch.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.LIGHT_EMITTER_RAYS);
-
-            addActor(arrow);
-//            arrow.setPosition(getWidth() / 2 - arrow.getWidth() / 2, 0);
-            arrow.setOrigin(getWidth() / 2, getHeight() / 2);
-            this.arrowRotation = arrowRotation;
-            updateRotation();
-        }
     }
 
     @Override
@@ -151,38 +104,6 @@ public class GenericGridView extends UnitView {
     }
 
 
-    public void updateRotation() {
-        updateRotation(arrowRotation, false);
-    }
-
-    public void updateRotation(int val) {
-        if ((arrow.getRotation() - ARROW_ROTATION_OFFSET) % 360 == val % 360 || arrowRotation % 360 == val % 360) {
-            return;
-        }
-        updateRotation(val, isVisible());
-    }
-
-    public void updateRotation(int val, boolean animated) {
-        if (arrow != null) {
-            val = val % 360;
-            if (animated)
-                ActionMasterGdx.addRotateByAction(arrow, arrowRotation + ARROW_ROTATION_OFFSET,
-                        val + ARROW_ROTATION_OFFSET);
-            else
-                arrow.setRotation(val + ARROW_ROTATION_OFFSET);
-        }
-        if (spritesContainersUnder != null) {
-            ActionMasterGdx.addRotateByAction(spritesContainersUnder, arrowRotation + ARROW_ROTATION_OFFSET,
-                    val + ARROW_ROTATION_OFFSET);
-        }
-        if (spritesContainers != null) {
-            ActionMasterGdx.addRotateByAction(spritesContainers, arrowRotation + ARROW_ROTATION_OFFSET,
-                    val + ARROW_ROTATION_OFFSET);
-        }
-        arrowRotation = val;
-    }
-
-
     public boolean isHpBarVisible() {
         if (!isVisible())
             return false;
@@ -207,16 +128,11 @@ public class GenericGridView extends UnitView {
                 border.setVisible(false);
             }
         }
-        if (torch != null) {
-            torch.setVisible(Cinematics.ON);
-        }
         if (getOutline() != null) {
             if (emblemImage != null)
                 emblemImage.setVisible(false);
             if (modeImage != null)
                 modeImage.setVisible(false);
-            if (arrow != null)
-                arrow.setVisible(false);
             if (getHpBar() != null)
                 getHpBar().setVisible(false);
 
@@ -225,8 +141,6 @@ public class GenericGridView extends UnitView {
                 emblemImage.setVisible(true);
             if (modeImage != null)
                 modeImage.setVisible(true);
-            if (arrow != null)
-                arrow.setVisible(true);
             if (getHpBar() != null)
                 getHpBar().setVisible(isHpBarVisible());
         }
@@ -254,14 +168,6 @@ public class GenericGridView extends UnitView {
         if (icon != null) {
             icon.setPosition(0, getHeight() - icon.getImageHeight());
         }
-
-        if (arrow != null) {
-            arrow.setOrigin(arrow.getWidth() / 2, getHeight() / 2);
-            arrow.setX(getWidth() / 2 - arrow.getWidth() / 2);
-//       TODO was it ever necessary?
-//        arrow.setRotation(arrowRotation);
-        }
-
         if (getScaledWidth() == 0)
             return;
         if (getScaledHeight() == 0)

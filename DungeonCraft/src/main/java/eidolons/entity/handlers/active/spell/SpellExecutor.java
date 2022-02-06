@@ -1,12 +1,12 @@
 package eidolons.entity.handlers.active.spell;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.Spell;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.Spell;
 import eidolons.entity.handlers.active.ActiveMaster;
 import eidolons.entity.handlers.active.Executor;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.unit.DC_UnitModel;
+import eidolons.entity.unit.UnitModel;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
 import eidolons.game.core.ActionInput;
@@ -29,7 +29,7 @@ public class SpellExecutor extends Executor {
 
     private boolean channeling;
 
-    public SpellExecutor(DC_ActiveObj active, ActiveMaster entityMaster) {
+    public SpellExecutor(ActiveObj active, ActiveMaster entityMaster) {
         super(active, entityMaster);
     }
 
@@ -181,13 +181,13 @@ public class SpellExecutor extends Executor {
 
         // TODO spell itself should also have special effects available and
         // separate from unit's!
-        if (getRef().getTargetObj() instanceof DC_UnitModel) {
+        if (getRef().getTargetObj() instanceof UnitModel) {
             getAction().getOwnerObj().applySpecialEffects(case_type, (BattleFieldObject) getRef().getTargetObj(), getRef());
         }
         if (getRef().getGroup() != null) {
             for (Obj unit : getRef().getGroup().getObjects()) {
                 if (unit != getRef().getTargetObj()) {
-                    if (unit instanceof DC_UnitModel) {
+                    if (unit instanceof UnitModel) {
                         getAction().getOwnerObj().applySpecialEffects(case_type, (BattleFieldObject) unit, getRef());
                     }
                 }

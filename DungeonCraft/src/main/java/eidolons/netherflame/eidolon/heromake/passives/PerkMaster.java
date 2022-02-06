@@ -6,8 +6,8 @@ import eidolons.content.consts.VisualEnums;
 import eidolons.entity.unit.attach.Perk;
 import eidolons.entity.unit.Unit;
 import main.content.DC_TYPE;
-import main.content.enums.entity.HeroEnums.CLASS_PERK_GROUP;
-import main.content.enums.entity.HeroEnums.PERK_PARAM;
+import main.content.enums.entity.ClassEnums.CLASS_PERK_GROUP;
+import main.content.enums.entity.PerkEnums.PERK_PARAM;
 import main.content.enums.entity.NewRpgEnums;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  */
 public class PerkMaster {
 
-    public static class PerkData extends DataUnit<NewRpgEnums.PERK_VALUES> {
+    public static class PerkData extends DataUnit<NewRpgEnums.PerkValue> {
         public PerkData(String text) {
             super(text);
         }

@@ -118,9 +118,6 @@ class Portal extends GridObject {
     }
 
     protected void exited(Unit unit) {
-        if (exitFacing != null) {
-            unit.setFacing(exitFacing);
-        }
         unit.setCoordinates(coordinates);
         unit.getGame().getMovementManager().moved(unit, true);
         open = true;

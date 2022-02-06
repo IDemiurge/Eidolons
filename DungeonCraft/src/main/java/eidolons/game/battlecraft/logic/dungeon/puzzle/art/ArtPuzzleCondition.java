@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.puzzle.art;
 
 import eidolons.ability.conditions.DC_Condition;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.game.battlecraft.logic.dungeon.puzzle.Puzzle;
 import main.entity.Ref;
 
@@ -20,7 +20,7 @@ public class ArtPuzzleCondition extends DC_Condition {
 
         for (int i = 0; i < puzzle.getWidth(); i++) {
             for (int j = 0; j < puzzle.getHeight(); j++) {
-                DC_Cell cell = getGame().getCell(puzzle.getAbsoluteCoordinate(i, j));
+                GridCell cell = getGame().getCell(puzzle.getAbsoluteCoordinate(i, j));
                 if (cell.getOverlayRotation()%360 != 0) {
                     return false;
                 }

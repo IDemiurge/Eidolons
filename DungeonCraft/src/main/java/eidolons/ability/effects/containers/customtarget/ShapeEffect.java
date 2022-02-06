@@ -1,7 +1,6 @@
 package eidolons.ability.effects.containers.customtarget;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.math.DC_PositionMaster;
 import main.ability.effects.Effect;
@@ -18,7 +17,7 @@ import main.elements.targeting.AutoTargeting;
 import main.entity.group.GroupImpl;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.FACING_DIRECTION;
+import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.entity.FilterMaster;
@@ -31,6 +30,7 @@ public class ShapeEffect extends SpecialTargetingEffect {
     private Formula radius;
     private Formula distance;
     private final OBJ_TYPE targetType;
+    private DIRECTION facing; //TODO LC 2.0 - should pass from targeting!
 
     public ShapeEffect(Effect effects, String shape) {
         this(effects, new EnumMaster<SHAPE>().retrieveEnumConst(SHAPE.class, shape));
@@ -73,7 +73,7 @@ public class ShapeEffect extends SpecialTargetingEffect {
                 this.distance.getInt(ref);
 
         coordinates = DC_PositionMaster.getShapedCoordinates(baseCoordinate,
-                getFacing(), base_width, distance, getShape());
+                base_width, distance,  getDirection(),getShape());
 
         DequeImpl<Obj> objects = new DequeImpl<>();
         objects.addAllCast(
@@ -98,7 +98,9 @@ public class ShapeEffect extends SpecialTargetingEffect {
         setFilteringConditions(new Conditions());
         targeting.setConditions(getFilteringConditions());
     }
-
+    protected DIRECTION getDirection() {
+        return facing;
+    }
 
     public SHAPE getShape() {
         return shape;
@@ -108,7 +110,4 @@ public class ShapeEffect extends SpecialTargetingEffect {
         return ref.getSourceObj().getCoordinates();
     }
 
-    protected FACING_DIRECTION getFacing() {
-        return ((Unit) ref.getSourceObj()).getFacing();
-    }
 }

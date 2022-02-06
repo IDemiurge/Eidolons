@@ -2,9 +2,9 @@ package libgdx.gui.dungeon.panels.dc.inventory.container;
 
 import eidolons.content.PARAMS;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.item.handlers.DC_InventoryManager.OPERATIONS;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.item.HeroItem;
+import eidolons.entity.mngr.item.DC_InventoryManager.OPERATIONS;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.EUtils;
 import eidolons.entity.item.vendor.GoldMaster;
@@ -13,9 +13,9 @@ import libgdx.gui.dungeon.panels.dc.inventory.InventoryClickHandlerImpl;
 import libgdx.gui.dungeon.panels.dc.inventory.datasource.InventoryDataSource;
 import libgdx.gui.dungeon.panels.dc.inventory.shop.ShopClickHandler;
 import libgdx.gui.dungeon.panels.headquarters.datasource.HqDataMaster;
-import eidolons.system.libgdx.datasource.HeroDataModel;
 import main.content.DC_TYPE;
 import main.content.enums.entity.BfObjEnums.BF_OBJ_SUB_TYPES_REMAINS;
+import main.content.enums.entity.HeroEnums;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.Ref;
@@ -40,23 +40,23 @@ import static main.system.GuiEventType.SHOW_LOOT_PANEL;
 public class ContainerClickHandler extends InventoryClickHandlerImpl {
     protected final Obj container;
     protected String containerImagePath;
-    protected Collection<DC_HeroItemObj> items;
+    protected Collection<HeroItem> items;
     protected CharSequence containerName;
 
     public ContainerClickHandler(
             String containerImagePath,
-            Collection<DC_HeroItemObj> items, Unit unit, Obj container) {
+            Collection<HeroItem> items, Unit unit, Obj container) {
         this(HqDataMaster.getInstance(unit),
                 containerImagePath, items, container);
     }
 
     public ContainerClickHandler(HqDataMaster dataMaster,
                                  String containerImagePath,
-                                 Collection<DC_HeroItemObj> items, Obj container) {
+                                 Collection<HeroItem> items, Obj container) {
         super(dataMaster, dataMaster.getHeroModel());
         this.containerImagePath = containerImagePath;
         this.containerName = container.getName();
-        if (container instanceof DC_Cell) {
+        if (container instanceof GridCell) {
             this.containerName = "Dropped Items";
             try {
                 this.containerImagePath = DataManager.getType(BF_OBJ_SUB_TYPES_REMAINS.REMAINS.getName(),
@@ -75,7 +75,7 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
         if (cellContents == null) {
             return false;
         }
-        DC_HeroItemObj item = (DC_HeroItemObj) cellContents;
+        HeroItem item = (HeroItem) cellContents;
         if (!GoldMaster.isGoldPack(item) && hero.isInventoryFull()) {
             FloatingTextMaster.getInstance().createFloatingText(VisualEnums.TEXT_CASES.DEFAULT,
                     "Inventory is full!", hero);
@@ -106,7 +106,7 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
     }
 
     public void takeAllClicked() {
-        for (DC_HeroItemObj item : new ArrayList<>(items)) {
+        for (HeroItem item : new ArrayList<>(items)) {
             if (item == null)
                 continue;
             if (hero.isInventoryFull()) {
@@ -116,10 +116,10 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
                 return;
             }
             items.remove(item);
-            if (container instanceof DC_Cell) {
+            if (container instanceof GridCell) {
                 item.getGame().getDroppedItemManager().pickedUp(item);
             }
-            dataMaster.operation(hero, HeroDataModel.HERO_OPERATION.PICK_UP, item);
+            dataMaster.operation(hero, HeroEnums.HERO_OPERATION.PICK_UP, item);
         }
         takeGold();
 
@@ -129,31 +129,31 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
     public void takeGold() {
         if (GoldMaster.isGoldPacksOn()) {
 
-            for (DC_HeroItemObj item : items) {
+            for (HeroItem item : items) {
                 if (item == null) {
                     continue;
                 }
                 if (GoldMaster.isGoldPack(item)) {
-                    dataMaster.operation(HeroDataModel.HERO_OPERATION.PICK_UP, item);
+                    dataMaster.operation(HeroEnums.HERO_OPERATION.PICK_UP, item);
                     return;
                 }
             }
         } else {
             Integer gold = container.getIntParam(PARAMS.GOLD);
             if (gold > 0) {
-                dataMaster.operation(HeroDataModel.HERO_OPERATION.ADD_PARAMETER, PARAMS.GOLD, gold);
+                dataMaster.operation(HeroEnums.HERO_OPERATION.ADD_PARAMETER, PARAMS.GOLD, gold);
                 container.setParam(PARAMS.GOLD, 0);
                 update();
             }
         }
     }
 
-    protected void pickUp(DC_HeroItemObj item) {
+    protected void pickUp(HeroItem item) {
         items.remove(item);
-        if (container instanceof DC_Cell) {
+        if (container instanceof GridCell) {
             item.getGame().getDroppedItemManager().pickedUp(item);
         }
-        dataMaster.operation(hero, HeroDataModel.HERO_OPERATION.PICK_UP, item);
+        dataMaster.operation(hero, HeroEnums.HERO_OPERATION.PICK_UP, item);
         Ref ref = hero.getHero().getRef().getCopy();
         ref.setObj(KEYS.ITEM, item);
         ref.setObj(KEYS.TARGET, item);

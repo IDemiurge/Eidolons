@@ -69,7 +69,6 @@ public class Illumination {
         } else {
             lerp = heroLight.lerp;
         }
-        DIRECTION direction = Core.getMainHero().getFacing().getDirection();
         Coordinates coordinates = Core.getPlayerCoordinates();
         for (DIRECTION d : DIRECTION.clockwise) {
             Coordinates c = coordinates.getAdjacentCoordinate(d);
@@ -78,9 +77,6 @@ public class Illumination {
             }
             Float value = lerp.get(c);
             float def = 0.55f;
-            if (d == direction) {
-                def = 0.88f;
-            }
             if (value == null) {
                 value = def;
             } else {

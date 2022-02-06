@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import libgdx.anims.ANIM_MODS.ANIM_MOD;
 import libgdx.anims.Anim;
 import libgdx.anims.AnimData;
@@ -30,7 +30,7 @@ public class ActionAnim extends Anim {
         super(active, params);
     }
 
-    public ActionAnim(DC_ActiveObj active, AnimData animData, Supplier<String> imagePath,
+    public ActionAnim(ActiveObj active, AnimData animData, Supplier<String> imagePath,
                       ANIM_MOD[] anim_mods) {
         super(active, animData);
         mods = anim_mods;
@@ -87,8 +87,8 @@ public class ActionAnim extends Anim {
     }
 
     @Override
-    public DC_ActiveObj getActive() {
-        return (DC_ActiveObj) super.getActive();
+    public ActiveObj getActive() {
+        return (ActiveObj) super.getActive();
     }
 
     public Actor getActor() {

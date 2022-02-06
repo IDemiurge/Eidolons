@@ -91,7 +91,7 @@ public class WeightMap<E> extends XLinkedMap<E, Integer> {
                     if (objType != null) {
                         ObjType type = (ObjType) e;
 //                        if (type == null) {
-//                            main.system.auxiliary.src.main.system.log.LogMaster.src.main.system.log(1,"No such type: " +e);
+//                            main.system.auxiliary.system.log.LogMaster.system.log(1,"No such type: " +e);
 //                            continue;
 //                        }
                         put((E) type, original.get(e));

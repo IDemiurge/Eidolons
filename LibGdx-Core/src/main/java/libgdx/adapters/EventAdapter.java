@@ -2,7 +2,7 @@ package libgdx.adapters;
 
 import com.badlogic.gdx.math.Vector2;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.EUtils;
 import eidolons.system.libgdx.GdxEventAdapter;
@@ -28,7 +28,7 @@ public class EventAdapter implements GdxEventAdapter {
     }
 
     @Override
-    public void cannotActivate(DC_ActiveObj e, String reason) {
+    public void cannotActivate(ActiveObj e, String reason) {
         VisualEnums.TEXT_CASES CASE = VisualEnums.TEXT_CASES.DEFAULT;
         if (!StringMaster.isEmpty(e.getCosts().getReasonsString())) {
             reason = e.getCosts().getReasonsString();

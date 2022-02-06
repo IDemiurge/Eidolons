@@ -2,10 +2,10 @@ package libgdx.assets;
 
 import com.badlogic.gdx.math.Vector2;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_UnitAction;
-import eidolons.entity.item.DC_QuickItemObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.UnitAction;
+import eidolons.entity.item.QuickItem;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;
 import libgdx.anims.Animation;
 import libgdx.anims.CompositeAnim;
@@ -30,7 +30,7 @@ public class AnimMaster3d {
     public static void preloadAtlases(Unit unit) {
         if (isOff())
             return;
-        DC_WeaponObj weapon = unit.getWeapon(false);
+        WeaponItem weapon = unit.getWeapon(false);
         if (weapon != null)
             Atlases.preloadAtlas(weapon);
         weapon = unit.getWeapon(true);
@@ -42,7 +42,7 @@ public class AnimMaster3d {
         weapon = unit.getNaturalWeapon(true);
         if (weapon != null)
             Atlases.preloadAtlas(weapon);
-        for (DC_QuickItemObj sub : unit.getQuickItems()) {
+        for (QuickItem sub : unit.getQuickItems()) {
             if (sub.isAmmo()) {
                 Atlases.preloadAtlas(sub.getWrappedWeapon());
             } else {
@@ -62,7 +62,7 @@ public class AnimMaster3d {
     }
 
 
-    public static Vector2 getOffset(DC_ActiveObj activeObj) {
+    public static Vector2 getOffset(ActiveObj activeObj) {
         return null;
     }
 
@@ -81,7 +81,7 @@ public class AnimMaster3d {
     }
 
 
-    public static int getWeaponActionSpeed(DC_ActiveObj active) {
+    public static int getWeaponActionSpeed(ActiveObj active) {
         if (active.isRanged())
             return 400;
         if (active.getActiveWeapon().isTwoHanded())
@@ -89,14 +89,14 @@ public class AnimMaster3d {
         return 50;
     }
 
-    public static void hoverOff(DC_UnitAction entity) {
+    public static void hoverOff(UnitAction entity) {
         if (!isReadyAnimSupported(entity))
             return;
         Animation anim = getReadyAnim(entity);
         anim.setDone(true);
     }
 
-    public static void initHover(DC_UnitAction entity) {
+    public static void initHover(UnitAction entity) {
         if (!isReadyAnimSupported(entity))
             return;
         Animation anim = getReadyAnim(entity);
@@ -108,13 +108,13 @@ public class AnimMaster3d {
         //counter?
     }
 
-    protected static boolean isReadyAnimSupported(DC_UnitAction entity) {
+    protected static boolean isReadyAnimSupported(UnitAction entity) {
         return false;
         //        return is3dAnim(entity);
         //        return entity.getActiveWeapon().getName().contains("Short Sword");
     }
 
-    protected static Animation getReadyAnim(DC_UnitAction entity) {
+    protected static Animation getReadyAnim(UnitAction entity) {
         CompositeAnim composite = AnimConstructor.getOrCreate(entity);
         Animation anim = composite.getContinuous();
         if (anim == null) {
@@ -149,9 +149,9 @@ public class AnimMaster3d {
         return facing == main.game.bf.directions.FACING_DIRECTION.NORTH ? VisualEnums.PROJECTION.TO : VisualEnums.PROJECTION.FROM;
     }
 
-    public static VisualEnums.PROJECTION getProjection(Ref ref, DC_ActiveObj active) {
-        if (ref.getTargetObj() == null || ref == null)
-            return getProjectionByFacing(active.getOwnerUnit().getFacing());
+    public static VisualEnums.PROJECTION getProjection(Ref ref, ActiveObj active) {
+        // if (ref.getTargetObj() == null || ref == null)
+        //     return getProjectionByFacing(active.getOwnerUnit().getFacing());
         Boolean b =
                 PositionMaster.isAboveOr(ref.getSourceObj(), ref.getTargetObj());
         if (active.getOwnerUnit().getCoordinates().equals(ref.getTargetObj().getCoordinates()))

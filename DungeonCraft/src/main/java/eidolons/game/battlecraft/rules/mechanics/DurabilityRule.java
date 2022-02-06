@@ -3,8 +3,8 @@ package eidolons.game.battlecraft.rules.mechanics;
 import eidolons.ability.conditions.req.ItemCondition;
 import eidolons.ability.effects.oneshot.rule.DurabilityReductionEffect;
 import eidolons.content.DC_ContentValsManager;
-import eidolons.entity.item.DC_HeroSlotItem;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.HeroSlotItem;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.rules.DC_RuleImpl;
 import eidolons.game.battlecraft.rules.RuleEnums;
@@ -31,12 +31,12 @@ public class DurabilityRule extends DC_RuleImpl {
         setOn(false);
     }
 
-    public static void itemBlocked(Integer dmgBlocked, DC_WeaponObj weapon) {
+    public static void itemBlocked(Integer dmgBlocked, WeaponItem weapon) {
         new DurabilityReductionEffect(false, dmgBlocked).apply(Ref.getSelfTargetingRefCopy(weapon));
     }
 
     private static int physicalDamage(int damage, int blocked, DAMAGE_TYPE damage_type,
-                                      DC_HeroSlotItem armor, DC_WeaponObj weapon, BattleFieldObject target) {
+                                      HeroSlotItem armor, WeaponItem weapon, BattleFieldObject target) {
         MATERIAL m1;
         if (armor != null)
             m1 = armor.getMaterial();
@@ -68,7 +68,7 @@ public class DurabilityRule extends DC_RuleImpl {
         return MATERIAL.PETTY;
     }
 
-    private static void reduceDurability(boolean attacker, DC_HeroSlotItem item, DC_WeaponObj weapon, MATERIAL m1,
+    private static void reduceDurability(boolean attacker, HeroSlotItem item, WeaponItem weapon, MATERIAL m1,
                                          MATERIAL m2, int damage, int blocked, int self_damage_mod) {
 
         if (self_damage_mod == 0)
@@ -95,7 +95,7 @@ public class DurabilityRule extends DC_RuleImpl {
     }
 
     public static int spellDamage(int blocked, DAMAGE_TYPE damage_type,
-                                  DC_HeroSlotItem armor, int modifier) {
+                                  HeroSlotItem armor, int modifier) {
         int self_damage_mod = armor.getIntParam(DC_ContentValsManager
                 .getArmorSelfDamageParamForDmgType(damage_type));
         // special cases may apply for Damage
@@ -121,15 +121,15 @@ public class DurabilityRule extends DC_RuleImpl {
     }
 
 
-    public static int damageDealt(int blocked, DC_HeroSlotItem obj, DAMAGE_TYPE dmg_type,
-                                  DC_WeaponObj activeWeapon, int amount,
+    public static int damageDealt(int blocked, HeroSlotItem obj, DAMAGE_TYPE dmg_type,
+                                  WeaponItem activeWeapon, int amount,
                                   BattleFieldObject attacked) {
         return damageDealt(blocked, obj, false, dmg_type, activeWeapon, amount, attacked);
     }
 
 
-    public static int damageDealt(int blocked, DC_HeroSlotItem armorObj, boolean spell,
-                                  DAMAGE_TYPE damage_type, DC_WeaponObj weapon, int damage,
+    public static int damageDealt(int blocked, HeroSlotItem armorObj, boolean spell,
+                                  DAMAGE_TYPE damage_type, WeaponItem weapon, int damage,
                                   BattleFieldObject target) {
         if (!RuleKeeper.isRuleOn(RuleEnums.RULE.DURABILITY))
             return 0;

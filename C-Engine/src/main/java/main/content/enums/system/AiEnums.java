@@ -9,7 +9,7 @@ import main.system.auxiliary.StringMaster;
 public class AiEnums {
 
     public enum AI_LOGIC_CASE {
-        RELOAD, RESTORE, TURN_AROUND, APPROACH, FAR_UNSEEN
+        RELOAD, RESTORE, APPROACH, FAR_UNSEEN
     }
 
     public enum AI_LOGIC { // targeting prioritizing? should be of various
@@ -103,7 +103,7 @@ public class AiEnums {
 
 
     // AI_TYPE can influence preferred goals
-    // getting src.main.framework.task arguments based on GOAL TYPE???
+    // getting framework.task arguments based on GOAL TYPE???
     public enum GOAL_TYPE {
         ATTACK, // ALL HOSTILE GOALS
         APPROACH,

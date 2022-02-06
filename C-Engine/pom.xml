@@ -13,6 +13,18 @@
     </parent>
     <dependencies>
         <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.30</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.snakeyaml</groupId>
+            <artifactId>snakeyaml-engine</artifactId>
+            <version>2.3</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.github.weisj</groupId>
             <artifactId>darklaf-core</artifactId>
             <version>2.5.5</version>

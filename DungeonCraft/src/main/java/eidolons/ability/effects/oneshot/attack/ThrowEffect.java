@@ -1,7 +1,7 @@
 package eidolons.ability.effects.oneshot.attack;
 
-import eidolons.entity.item.DC_QuickItemObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.QuickItem;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.unit.Unit;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
@@ -33,9 +33,9 @@ public class ThrowEffect extends AttackEffect {
     public boolean applyThis() {
         if (stormOfMissiles) {
             fromHand = true;
-            DC_WeaponObj weapon = (DC_WeaponObj) ref.getObj(KEYS.WEAPON);
+            WeaponItem weapon = (WeaponItem) ref.getObj(KEYS.WEAPON);
             boolean result = throwWeapon(weapon);
-            weapon = (DC_WeaponObj) ref.getObj(KEYS.OFFHAND);
+            weapon = (WeaponItem) ref.getObj(KEYS.OFFHAND);
             if (weapon != null) {
                 offhand = true;
                 result = throwWeapon(weapon);
@@ -43,7 +43,7 @@ public class ThrowEffect extends AttackEffect {
 
             Unit hero = (Unit) ref.getObj(KEYS.SOURCE);
             fromHand = false;
-            for (DC_QuickItemObj q : hero.getQuickItems()) {
+            for (QuickItem q : hero.getQuickItems()) {
                 weapon = q.getWrappedWeapon();
                 if (weapon != null) {
                     result &= throwWeapon(weapon);
@@ -51,16 +51,16 @@ public class ThrowEffect extends AttackEffect {
             }
             return result;
         }
-        DC_WeaponObj weapon = (DC_WeaponObj) ref.getObj(KEYS.WEAPON);
+        WeaponItem weapon = (WeaponItem) ref.getObj(KEYS.WEAPON);
         if (!fromHand)
         {
-            weapon =  ((DC_QuickItemObj) ref.getObj(KEYS.ITEM)).getWrappedWeapon();
+            weapon =  ((QuickItem) ref.getObj(KEYS.ITEM)).getWrappedWeapon();
         }
         try {
             if (offhand
              || ref.getObj(KEYS.ACTIVE).checkProperty(G_PROPS.ACTION_TAGS,
              "" + ActionEnums.ACTION_TAGS.OFF_HAND)) {
-                weapon = (DC_WeaponObj) ref.getObj(KEYS.OFFHAND);
+                weapon = (WeaponItem) ref.getObj(KEYS.OFFHAND);
                 offhand = true;
             }
             // offhand mods?
@@ -79,7 +79,7 @@ public class ThrowEffect extends AttackEffect {
         return throwWeapon(weapon);
     }
 
-    private boolean throwWeapon(DC_WeaponObj weapon) {
+    private boolean throwWeapon(WeaponItem weapon) {
         if (ref.getTargetObj()==ref.getSourceObj()){
             Unit hero = (Unit) ref.getSourceObj();
             if (!hero.equip(weapon, ITEM_SLOT.MAIN_HAND)){
@@ -104,7 +104,7 @@ public class ThrowEffect extends AttackEffect {
                     if (!hero.getOffhandWeapon().isRanged()) {
                         if (hero.getOffhandWeapon().isWeapon()) {
                             hero.setWeapon(hero.getOffhandWeapon());
-                            hero.setSecondWeapon(null);
+                            hero.setOffhandWeapon(null);
                         }
                     }
                 }

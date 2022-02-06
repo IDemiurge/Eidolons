@@ -1,8 +1,8 @@
 package eidolons.game.core.master.combat;
 
-import eidolons.entity.active.ActionInitializer;
-import eidolons.entity.active.DC_ActionManager;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.mngr.action.ActionInitializer;
+import eidolons.entity.mngr.action.DC_ActionManager;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.battlecraft.logic.battlefield.DC_GraveyardManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.rules.combat.attack.DC_AttackMaster;
@@ -98,7 +98,7 @@ public class CombatMaster {
         this.rollsAverage = rollsAverage;
     }
 
-    public boolean isActionBlocked(DC_ActiveObj activeObj) {
+    public boolean isActionBlocked(ActiveObj activeObj) {
         return false;
     }
 

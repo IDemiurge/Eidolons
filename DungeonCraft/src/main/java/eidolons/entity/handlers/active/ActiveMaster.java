@@ -1,34 +1,34 @@
 package eidolons.entity.handlers.active;
 
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.game.core.game.DC_Game;
 import main.entity.handlers.*;
 
 /**
  * Created by JustMe on 2/23/2017.
  */
-public class ActiveMaster extends EntityMaster<DC_ActiveObj> {
-    public ActiveMaster(DC_ActiveObj entity) {
+public class ActiveMaster extends EntityMaster<ActiveObj> {
+    public ActiveMaster(ActiveObj entity) {
         super(entity);
     }
 
     @Override
-    protected EntityInitializer<DC_ActiveObj> createInitializer() {
+    protected EntityInitializer<ActiveObj> createInitializer() {
         return new ActiveObjInitializer(getEntity(), this);
     }
 
     @Override
-    protected EntityChecker<DC_ActiveObj> createEntityChecker() {
+    protected EntityChecker<ActiveObj> createEntityChecker() {
         return new ActiveChecker(getEntity(), this);
     }
 
     @Override
-    protected EntityResetter<DC_ActiveObj> createResetter() {
+    protected EntityResetter<ActiveObj> createResetter() {
         return new ActiveResetter(getEntity(), this);
     }
 
     @Override
-    protected EntityCalculator<DC_ActiveObj> createCalculator() {
+    protected EntityCalculator<ActiveObj> createCalculator() {
         return new ActiveCalculator(getEntity(), this);
     }
 
@@ -43,12 +43,12 @@ public class ActiveMaster extends EntityMaster<DC_ActiveObj> {
     }
 
     @Override
-    protected EntityAnimator<DC_ActiveObj> createEntityAnimator() {
+    protected EntityAnimator<ActiveObj> createEntityAnimator() {
         return new EntityAnimator<>(getEntity(), this);
     }
 
     @Override
-    protected EntityLogger<DC_ActiveObj> createEntityLogger() {
+    protected EntityLogger<ActiveObj> createEntityLogger() {
         return new ActiveLogger(getEntity(), this);
     }
 
@@ -78,7 +78,7 @@ public class ActiveMaster extends EntityMaster<DC_ActiveObj> {
     }
 
     @Override
-    public DC_ActiveObj getEntity() {
+    public ActiveObj getEntity() {
         return super.getEntity();
     }
 

@@ -1,7 +1,7 @@
 package libgdx.gui.dungeon.panels.dc.inventory.datasource;
 
-import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.item.handlers.ItemMaster;
+import eidolons.entity.item.HeroItem;
+import eidolons.entity.mngr.item.ItemMaster;
 import libgdx.gui.dungeon.panels.dc.inventory.InvItemActor;
 import libgdx.gui.dungeon.panels.dc.inventory.InventoryClickHandler;
 import eidolons.content.consts.VisualEnums.CELL_TYPE;
@@ -14,8 +14,8 @@ import java.util.List;
 public interface InventoryTableDataSource {
     void setFilter(ITEM_FILTERS filter);
 
-    default List<DC_HeroItemObj> applyFilter(Collection<DC_HeroItemObj> items, ITEM_FILTERS filter) {
-        List<DC_HeroItemObj> list = new ArrayList<>(items);
+    default List<HeroItem> applyFilter(Collection<HeroItem> items, ITEM_FILTERS filter) {
+        List<HeroItem> list = new ArrayList<>(items);
         if (filter != null)
             list.removeIf(item -> !ItemMaster.checkFilter(item, filter));
         return list;
@@ -25,5 +25,5 @@ public interface InventoryTableDataSource {
 
     InventoryClickHandler getClickHandler();
 
-     int getPrice(DC_HeroItemObj model, CELL_TYPE cellType);
+     int getPrice(HeroItem model, CELL_TYPE cellType);
 }

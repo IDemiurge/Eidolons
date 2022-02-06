@@ -1,6 +1,6 @@
 package libgdx.gui.dungeon.panels.headquarters.tabs.tree.classes;
 
-import eidolons.entity.unit.attach.HeroClass;
+import eidolons.entity.unit.attach.ClassRank;
 import eidolons.entity.unit.attach.Perk;
 import eidolons.netherflame.eidolon.heromake.passives.PerkMaster;
 import libgdx.GdxImageMaster;
@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class PerkSlot extends HtNode {
 
-    private Triple<Perk, HeroClass, HeroClass> data;
+    private Triple<Perk, ClassRank, ClassRank> data;
     private List<ObjType> available;
 
     public PerkSlot(int tier,int slot) {
@@ -43,7 +43,7 @@ public class PerkSlot extends HtNode {
     @Override
     public void setUserObject(Object userObject) {
         super.setUserObject(userObject);
-        data = (Triple<Perk, HeroClass, HeroClass>) userObject;
+        data = (Triple<Perk, ClassRank, ClassRank>) userObject;
     }
 
     @Override
@@ -98,8 +98,8 @@ public class PerkSlot extends HtNode {
         } else if (data.getRight() != null && data.getMiddle() != null) {
 
             resetToOriginal();
-            HeroClass c1 = data.getMiddle();
-            HeroClass c2 = data.getRight();
+            ClassRank c1 = data.getMiddle();
+            ClassRank c2 = data.getRight();
             available = PerkMaster.getAvailablePerks(getHero(),
                     tier, c1, c2);
 //            if (available.isEmpty())

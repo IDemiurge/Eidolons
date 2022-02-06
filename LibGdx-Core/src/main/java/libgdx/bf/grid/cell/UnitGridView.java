@@ -320,28 +320,6 @@ public class UnitGridView extends GenericGridView {
         super.setPosition(x, y);
     }
 
-    public Actor getArrow() {
-        return arrow;
-    }
-
-    public void validateArrowRotation() {
-        int real = getUserObject().getFacing().getDirection().getDegrees() % 360;
-        if (Math.abs(((arrow.getRotation()+ARROW_ROTATION_OFFSET)  % 360 - real)) > 0) {
-        // if (Math.abs((arrow.getRotation() + 360 - 4) % 360 - real) > ARROW_ROTATION_OFFSET - 3) {
-            LogMaster.verbose(arrow.getRotation()
-                    + " raw rotation val, to real => " + real);
-            updateRotation(real);
-
-            if (real % 360 != arrowRotation) {
-                LogMaster.verbose(
-                        getUserObject() + "'s " +
-                                arrowRotation
-                                + " rotation updated to  " + arrowRotation);
-                arrowRotation = real;
-            }
-        }
-    }
-
     public PlatformController getPlatformController() {
         return platformController;
     }

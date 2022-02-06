@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.DC_Obj;
 import libgdx.GdxMaster;
 import libgdx.anims.actions.ActionMasterGdx;
@@ -118,7 +118,7 @@ public class RadialMenu extends Group implements Closable {
     protected void triggered(EventCallbackParam obj) {
         if (!(obj.get() instanceof DC_Obj))
             return;
-        if ((obj.get() instanceof DC_WeaponObj))
+        if ((obj.get() instanceof WeaponItem))
             return;
         DC_Obj dc_obj = (DC_Obj) obj.get();
         init(RadialManager.getOrCreateRadialMenu(dc_obj));

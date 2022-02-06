@@ -2,24 +2,21 @@ package eidolons.game.battlecraft.rules.combat.attack;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.item.WeaponItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.unit.Unit;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.system.math.roll.DiceMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.NewRpgEnums;
-import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.BfObj;
 import main.entity.obj.Obj;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -52,10 +49,10 @@ public class AttackCalculator {
     boolean precalc;
 
     protected final Attack attack;
-    protected final DC_ActiveObj action;
+    protected final ActiveObj action;
     protected final Unit attacker;
     protected BattleFieldObject attacked;
-    protected final DC_WeaponObj weapon;
+    protected final WeaponItem weapon;
     protected final Ref ref;
     protected final boolean counter, offhand, critical, sneak, AoO, instant ;
 
@@ -137,7 +134,7 @@ public class AttackCalculator {
 
 
     protected Integer getDamageForHitType(Attack attack, Integer amount, Unit attacker,
-                                        BattleFieldObject attacked, DC_ActiveObj action, boolean offhand) {
+                                          BattleFieldObject attacked, ActiveObj action, boolean offhand) {
         int mod = HitTypeRule.getDamagePercentage(action, attacked, attack.getHitType());
         //TODO anything else?
         return mod;
@@ -304,7 +301,7 @@ public class AttackCalculator {
             if (ranged == null) {
                 return; //TODO ??
             }
-            DC_Obj ammo = ((DC_WeaponObj) ranged).getAmmo();
+            DC_Obj ammo = ((WeaponItem) ranged).getAmmo();
             if (ammo != null) {
                 // weapon. //IN DC_WEAPONOBJ
                 // addSpecialEffect(SPECIAL_EFFECTS_CASE.ON_ATTACK,
@@ -380,21 +377,6 @@ public class AttackCalculator {
                 posMap.put(ActionEnums.MOD_IDENTIFIER.DIAGONAL_ATTACK, diagonalMod);
             }
             // TODO DO FOR WEAPONS AND MAKE A SUB MAP!
-        } else if (FacingMaster.getSingleFacing(action.getOwnerUnit(), (BfObj) ref
-                .getTargetObj()) == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
-            Integer sideMod = action.getIntParam(PARAMS.SIDE_ATTACK_MOD) - 100;
-            if (sideMod != 0 && sideMod != -100) {
-                atk_mod += sideMod;
-                modMap.put(ActionEnums.MOD_IDENTIFIER.POS, sideMod); // TODO
-                posMap.put(ActionEnums.MOD_IDENTIFIER.SIDE_ATTACK, sideMod);
-            }
-            sideMod = action.getIntParam(PARAMS.SIDE_DAMAGE_MOD) - 100;
-            if (sideMod != 0 && sideMod != 100) {
-                // generic?
-                modMap.put(ActionEnums.MOD_IDENTIFIER.POS, sideMod);
-                dmg_mod += sideMod;
-                posMap.put(ActionEnums.MOD_IDENTIFIER.SIDE_ATTACK, sideMod);
-            }
         }
         if (sneak) {
             int rangedMod = 100;

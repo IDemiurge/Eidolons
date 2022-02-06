@@ -1,16 +1,13 @@
 package eidolons.entity.handlers.bf.unit;
 
 import eidolons.content.DC_ContentValsManager;
-import eidolons.content.DC_ContentValsManager.ATTRIBUTE;
+import eidolons.content.ATTRIBUTE;
 import eidolons.content.PARAMS;
-import eidolons.content.PROPS;
-import eidolons.entity.active.Spell;
-import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.item.DC_QuickItemObj;
+import eidolons.entity.feat.active.Spell;
+import eidolons.entity.item.HeroItem;
+import eidolons.entity.item.QuickItem;
 import eidolons.entity.unit.attach.DC_PassiveObj;
-import eidolons.entity.unit.DC_UnitModel;
 import eidolons.entity.unit.Unit;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.rules.combat.damage.ResistMaster;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.exploration.handlers.ExplorationMaster;
@@ -20,13 +17,10 @@ import main.content.mode.STD_MODES;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
-import main.entity.Ref.KEYS;
 import main.entity.handlers.EntityMaster;
 import main.entity.handlers.EntityResetter;
-import main.entity.obj.ActiveObj;
-import main.game.bf.directions.FACING_DIRECTION;
+import main.entity.obj.IActiveObj;
 import main.system.GuiEventManager;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.launch.CoreEngine;
 
@@ -65,28 +59,6 @@ public class UnitResetter extends EntityResetter<Unit> {
     public void reset() {
         getGame().getStateManager().reset(getEntity());
 
-    }
-
-    public void resetFacing() {
-        FACING_DIRECTION facing = null;
-        if (facing != null) {
-            setProperty(PROPS.FACING_DIRECTION, facing.getName());
-        } else {
-            String name = getProperty(PROPS.FACING_DIRECTION);
-            facing = (new EnumMaster<FACING_DIRECTION>().retrieveEnumConst(FACING_DIRECTION.class,
-                    name));
-            if (facing == null) {
-                if (getEntity().getDirection() != null) {
-                    FacingMaster.getFacingFromDirection(getEntity().getDirection());
-                } else if (getRef().getObj(KEYS.SUMMONER) != null) {
-                    facing = ((DC_UnitModel) getRef().getObj(KEYS.SUMMONER)).getFacing();
-                } else {
-                    facing = FacingMaster.getRandomFacing();
-                }
-            }
-
-        }
-        getEntity().setFacing(facing);
     }
 
     @Override
@@ -184,7 +156,7 @@ public class UnitResetter extends EntityResetter<Unit> {
     }
 
     public void resetQuickItemActives() {
-        for (DC_QuickItemObj q : getEntity().getQuickItems()) {
+        for (QuickItem q : getEntity().getQuickItems()) {
             q.afterEffects();
         }
     }
@@ -223,8 +195,8 @@ public class UnitResetter extends EntityResetter<Unit> {
                 feat.apply();
             }
         }
-        if (getEntity().getClasses() != null) {
-            for (DC_PassiveObj feat : getEntity().getClasses()) {
+        if (getEntity().getClassRanks() != null) {
+            for (DC_PassiveObj feat : getEntity().getClassRanks()) {
                 feat.apply();
             }
 
@@ -247,16 +219,15 @@ public class UnitResetter extends EntityResetter<Unit> {
             getEntity().getArmor().apply();
         }
         resetQuickSlotsNumber();
-        for (DC_HeroItemObj item : getEntity().getQuickItems()) {
+        for (HeroItem item : getEntity().getQuickItems()) {
             item.apply();
         }
-        for (DC_HeroItemObj item : getEntity().getJewelry()) {
+        for (HeroItem item : getEntity().getJewelry()) {
             item.apply();
         }
         // Chronos.logTimeElapsedForMark(toString() + " OBJECTS APPLY");
 
 //        Chronos.mark(toString() + " activate PASSIVES");
-        getInitializer().initSpells(game.isSimulation());
         getEntity().activatePassives();
 
         // Chronos.logTimeElapsedForMark(toString() + " activate PASSIVES");
@@ -276,7 +247,7 @@ public class UnitResetter extends EntityResetter<Unit> {
 
 
     public void resetActives() {
-        for (ActiveObj active : getEntity().getActives()) {
+        for (IActiveObj active : getEntity().getActives()) {
             active.setRef(getRef());
             active.toBase();
         }
@@ -293,10 +264,6 @@ public class UnitResetter extends EntityResetter<Unit> {
         }
         if (getEntity().getBackgroundType() == null) {
             return;
-        }
-        for (PARAMETER param : DC_ContentValsManager.getBackgroundDynamicParams()) {
-            Integer amount = getEntity().getBackgroundType().getIntParam(param);
-            getEntity().modifyParameter(param, amount);
         }
 
     }
@@ -366,7 +333,6 @@ public class UnitResetter extends EntityResetter<Unit> {
         }
 
         getCalculator().calculateWeight();
-        getCalculator().calculateRemainingMemory();
 
         if (!game.isSimulation()) { // TODO perhaps I should apply and display
             // them!

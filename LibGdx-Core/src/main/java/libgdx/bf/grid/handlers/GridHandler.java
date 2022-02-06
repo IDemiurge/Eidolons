@@ -2,11 +2,10 @@ package libgdx.bf.grid.handlers;
 
 import com.badlogic.gdx.utils.ObjectMap;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.puzzle.gridobj.GridObject;
 import libgdx.bf.grid.GridPanel;
 import libgdx.bf.grid.cell.BaseView;
-import libgdx.bf.grid.cell.GridCell;
 import libgdx.bf.grid.cell.GridCellContainer;
 import libgdx.bf.grid.cell.UnitView;
 import main.entity.obj.Obj;
@@ -48,7 +47,7 @@ public abstract class GridHandler {
         return grid.getCells();
     }
 
-    public DC_Cell getCell(int i, int i1) {
+    public GridCell getCell(int i, int i1) {
         return grid.getCell(i, i1);
     }
 
@@ -68,7 +67,7 @@ public abstract class GridHandler {
         return grid.getGridCell(x, y);
     }
 
-    public GridCell getGridCell(Coordinates coordinate) {
+    public libgdx.bf.grid.cell.GridCell getGridCell(Coordinates coordinate) {
         return grid.getGridCell(coordinate);
     }
 

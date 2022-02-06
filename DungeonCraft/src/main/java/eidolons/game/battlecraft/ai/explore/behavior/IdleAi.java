@@ -38,11 +38,6 @@ public class IdleAi extends AiBehavior {
     }
 
     @Override
-    protected FACING_DIRECTION getRequiredFacing() {
-        return FacingMaster.getRandomFacing();
-    }
-
-    @Override
     protected float getTimeBeforeFail() {
         return 12;
     }
@@ -50,11 +45,6 @@ public class IdleAi extends AiBehavior {
     @Override
     protected float getDefaultSpeed() {
         return 0.65f*super.getDefaultSpeed();
-    }
-
-    @Override
-    protected boolean isFacingChangeRequired() {
-        return true;
     }
 
     @Override

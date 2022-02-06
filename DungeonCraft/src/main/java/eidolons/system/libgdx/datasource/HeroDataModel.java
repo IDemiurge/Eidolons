@@ -5,14 +5,15 @@ import eidolons.ability.InventoryTransactionManager;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PROPS;
 import eidolons.entity.SimCache;
-import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.HeroItem;
 import eidolons.entity.unit.attach.DC_PassiveObj;
 import eidolons.entity.unit.Unit;
 import eidolons.game.Simulation;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.content.VALUE;
-import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.EffectEnums;
+import main.content.enums.entity.HeroEnums;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.parameters.ParamMap;
 import main.content.values.properties.PROPERTY;
@@ -39,6 +40,7 @@ public class HeroDataModel extends Unit {
     protected List<HeroOperation> modificationList = new ArrayList<>();
     protected Unit hero;
     protected boolean resetting;
+    private boolean featsGenerated;
 
     public HeroDataModel(Unit hero) {
         this(new ObjType(hero.getType(), true), hero.getX(), hero.getY(),
@@ -90,15 +92,15 @@ public class HeroDataModel extends Unit {
         SimCache.getInstance().addSim(hero.getArmor(), hero.getArmor());
     }
 
-    protected void cacheSimItemContainer(DequeImpl<? extends DC_HeroItemObj> inventory,
-                                       DequeImpl<? extends DC_HeroItemObj> inventory1) {
+    protected void cacheSimItemContainer(DequeImpl<? extends HeroItem> inventory,
+                                       DequeImpl<? extends HeroItem> inventory1) {
         int i = 0;
-        for (DC_HeroItemObj real : inventory) {
+        for (HeroItem real : inventory) {
             SimCache.getInstance().addSim(real, inventory1.get(i++));
         }
     }
 
-    public HeroOperation modified(HERO_OPERATION operation, Object... arg) {
+    public HeroOperation modified(HeroEnums.HERO_OPERATION operation, Object... arg) {
         HeroOperation o = new HeroOperation(operation, arg);
         modificationList.add(o);
         return o;
@@ -150,7 +152,7 @@ public class HeroDataModel extends Unit {
     }
 
     @Override
-    public boolean modifyCounter(UnitEnums.COUNTER counter, int modValue) {
+    public boolean modifyCounter(EffectEnums.COUNTER counter, int modValue) {
         return getHero().modifyCounter(counter, modValue);
     }
 
@@ -667,45 +669,12 @@ public class HeroDataModel extends Unit {
          skill ? PROPS.SKILLS : PROPS.CLASSES);
     }
 
-    public enum HERO_OPERATION {
-        PICK_UP, DROP, UNEQUIP,  UNEQUIP_QUICK_SLOT, EQUIP, EQUIP_QUICK_SLOT, UNEQUIP_JEWELRY,
-        ATTRIBUTE_INCREMENT,
-        MASTERY_INCREMENT,
-        NEW_MASTERY,
-
-        NEW_SKILL, SKILL_RANK,
-        NEW_CLASS, CLASS_RANK,
-
-        SPELL_LEARNED,
-        SPELL_MEMORIZED,
-        SPELL_EN_VERBATIM,
-        SPELL_UNMEMORIZED, NEW_PERK, LEVEL_UP,
-        SET_PROPERTY, SET_PARAMETER,   ADD_PARAMETER,
-
-
-        APPLY_TYPE,
-
-        BUY, SELL, UNSTASH, STASH, EQUIP_RESERVE,
-
-
-
+    public boolean isFeatsGenerated() {
+        return featsGenerated;
     }
 
-    public static class HeroOperation {
-        HERO_OPERATION operation;
-        Object[] arg;
-
-        public HeroOperation(HERO_OPERATION operation, Object... arg) {
-            this.operation = operation;
-            this.arg = arg;
-        }
-
-        public HERO_OPERATION getOperation() {
-            return operation;
-        }
-
-        public Object[] getArg() {
-            return arg;
-        }
+    public void setFeatsGenerated(boolean featsGenerated) {
+        this.featsGenerated = featsGenerated;
     }
+
 }

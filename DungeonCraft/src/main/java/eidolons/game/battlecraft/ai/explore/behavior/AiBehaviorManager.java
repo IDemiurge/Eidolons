@@ -7,7 +7,7 @@ import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
 import eidolons.game.battlecraft.ai.UnitExploreAI;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.core.ActionInput;
@@ -16,6 +16,7 @@ import main.content.enums.EncounterEnums;
 import main.content.enums.EncounterEnums.UNIT_GROUP_TYPE;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
+import main.game.bf.directions.DIRECTION;
 import main.game.logic.action.context.Context;
 import main.system.SortMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
@@ -124,16 +125,16 @@ public class AiBehaviorManager extends AiHandler {
                 }
 
                 if (behavior.canAct()) {
-                    Action action = behavior.nextAction();
+                    AiAction aiAction = behavior.nextAction();
                     // check action has been executed?
-                    if (action == null) {
+                    if (aiAction == null) {
                         main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.AI_DEBUG,
                                 "No action for " + ai);
                         return false;
                     }
 
-                    aiActionQueue.add(new ActionInput(action.getActive(),
-                            new Context(action.getRef())));
+                    aiActionQueue.add(new ActionInput(aiAction.getActive(),
+                            new Context(aiAction.getRef())));
                     return true;
                 } else {
                     behavior.queueNextAction();
@@ -175,8 +176,7 @@ public class AiBehaviorManager extends AiHandler {
                 if (ai.getGroupAI().getArg() == null) {
                     try {
                         ai.getGroupAI().setArg(game.getCell(
-                                ai.getGroupAI().getLeader().getCoordinates().getAdjacentCoordinate(
-                                        ai.getGroup().getLeader().getFacing().getDirection())));
+                                ai.getGroupAI().getLeader().getCoordinates().getAdjacentCoordinate(DIRECTION.NONE)));
                     } catch (Exception e) {
 //                        CoordinatesMaster.getra
                         main.system.ExceptionMaster.printStackTrace(e);

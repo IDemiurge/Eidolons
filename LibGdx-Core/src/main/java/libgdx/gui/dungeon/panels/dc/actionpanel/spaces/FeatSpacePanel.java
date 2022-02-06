@@ -1,7 +1,7 @@
 package libgdx.gui.dungeon.panels.dc.actionpanel.spaces;
 
 import com.badlogic.gdx.utils.Align;
-import eidolons.entity.active.spaces.FeatSpace;
+import eidolons.entity.feat.spaces.FeatSpace;
 import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.gui.generic.GroupX;

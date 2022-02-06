@@ -1,9 +1,9 @@
 package eidolons.game.exploration.dungeon.objects;
 
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_UnitAction;
-import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.item.DC_QuickItemObj;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.UnitAction;
+import eidolons.entity.item.HeroItem;
+import eidolons.entity.item.QuickItem;
 import eidolons.entity.item.ItemFactory;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.unit.Unit;
@@ -74,14 +74,14 @@ potions
         HungItem hungObj = ((HungItem) obj);
         switch (sub) {
             case TAKE:
-                DC_HeroItemObj item = hungObj.getItem();
+                HeroItem item = hungObj.getItem();
                 if (item == null) {
                     item = generateItem(hungObj);
                 }
                 //quick slot?
                 if (!unit.isQuickSlotsFull()
-                 && item instanceof DC_QuickItemObj) {
-                    unit.addQuickItem((DC_QuickItemObj) item);
+                 && item instanceof QuickItem) {
+                    unit.addQuickItem((QuickItem) item);
                 } else {
                     unit.addItemToInventory(item);
                 }
@@ -95,18 +95,18 @@ potions
         return true;
     }
 
-    private DC_HeroItemObj generateItem(HungItem hungObj) {
+    private HeroItem generateItem(HungItem hungObj) {
         Ref ref = new Ref();
         return ItemFactory.createItemObj(hungObj.getItemType(), DC_Player.NEUTRAL,
          (GenericGame) ref.getGame(), ref, false);
     }
 
-    public List<DC_ActiveObj> getActions(DungeonObj obj, Unit unit) {
+    public List<ActiveObj> getActions(DungeonObj obj, Unit unit) {
         if (!(obj instanceof HungItem))
             return new ArrayList<>();
         //check intelligence, mastery
-        List<DC_ActiveObj> list = new ArrayList<>();
-        DC_UnitAction action;
+        List<ActiveObj> list = new ArrayList<>();
+        UnitAction action;
         for (HUNG_ITEM_ACTION sub : HUNG_ITEM_ACTION.values()) {
             if (checkAction(unit, (HungItem) obj, sub)) {
                 String name = StringMaster.format(sub.name()) + " Door";
@@ -142,7 +142,7 @@ potions
     }
 
     @Override
-    public DC_ActiveObj getDefaultAction(Unit source, DungeonObj target) {
+    public ActiveObj getDefaultAction(Unit source, DungeonObj target) {
         return null;
     }
 

@@ -271,14 +271,6 @@ public class AvAdjuster {
     }
 
     private static void resetAltBaseTypes(ObjType type) {
-        String altBases = type.getProperty(PROPS.ALT_BASE_LINKS);
-        if (!altBases.isEmpty()) {
-            String altBaseNames = "";
-            for (String s : ContainerUtils.open(altBases)) {
-                altBaseNames += VariableManager.removeVarPart(s) + ";";
-            }
-            type.setProperty(PROPS.ALT_BASE_TYPES, "" + altBaseNames);
-        }
     }
 
     public static void autoAdjustSkills() {

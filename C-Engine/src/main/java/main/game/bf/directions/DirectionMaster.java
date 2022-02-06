@@ -11,11 +11,6 @@ public class DirectionMaster {
     public static final DIRECTION FLIP_DIRECTION = DIRECTION.LEFT;
     private static DIRECTION[][] relative_directions;
 
-    public static DIRECTION getDirectionByFacing(FACING_DIRECTION f, UNIT_DIRECTION d) {
-        return getDirectionByDegree(f.getDirection().getDegrees() + d.getDegrees());
-
-    }
-
     public static DIRECTION getDirectionByDegree(int degrees) {
         degrees %= 360;
         if (degrees < 0) {
@@ -224,7 +219,7 @@ public class DirectionMaster {
     }
 
     public static DIRECTION getRandomDirection() {
-        return new EnumMaster<DIRECTION>().getRandomEnumConst(DIRECTION.class);
+        return new EnumMaster<DIRECTION>().getRandomEnumConst(DIRECTION.class, 1);
     }
 
     public static void initCache(Integer cellsX, Integer cellsY) {

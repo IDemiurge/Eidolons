@@ -1,7 +1,7 @@
 package libgdx.gui.dungeon.panels.headquarters.tabs.tree.classes;
 
 import eidolons.content.PROPS;
-import eidolons.entity.unit.attach.HeroClass;
+import eidolons.entity.unit.attach.ClassRank;
 import eidolons.netherflame.eidolon.heromake.passives.HeroClassMaster;
 import libgdx.gui.dungeon.panels.headquarters.tabs.tree.HtNode;
 import eidolons.content.consts.Images;
@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class ClassSlot extends HtNode {
     private List<ObjType> available;
-    private HeroClass data;
+    private ClassRank data;
 
     public ClassSlot(int tier, int slot) {
         super(tier, Images.TIER, Images.CIRCLE_OVERLAY, Images.CIRCLE_UNDERLAY, slot);
@@ -52,7 +52,7 @@ public class ClassSlot extends HtNode {
     @Override
     public void setUserObject(Object userObject) {
         super.setUserObject(userObject);
-        data = (HeroClass) userObject;
+        data = (ClassRank) userObject;
     }
 
     @Override

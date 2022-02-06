@@ -76,13 +76,9 @@ public class DC_Masteries {
             case DETECTION_MASTERY:
                 mod(mastery, amount, PARAMS.DETECTION,
                         MOD.MODIFY_BY_CONST);
-                mod(mastery, amount / 2, PARAMS.PERCEPTION,
-                        MOD.MODIFY_BY_CONST);
                 break;
             case STEALTH_MASTERY:
                 mod(mastery, amount, PARAMS.STEALTH,
-                        MOD.MODIFY_BY_CONST);
-                mod(mastery, -amount / 2, PARAMS.NOISE,
                         MOD.MODIFY_BY_CONST);
                 break;
 

@@ -1,8 +1,8 @@
 package eidolons.ability.effects.oneshot.item;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.item.handlers.ItemGenerator;
+import eidolons.entity.item.HeroItem;
+import eidolons.entity.mngr.item.ItemGenerator;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.content.DC_TYPE;
@@ -111,7 +111,7 @@ public class CreateItemEffect extends MicroEffect implements OneshotEffect {
 
         type.setParam(PARAMS.DURABILITY, durability);
 
-        DC_HeroItemObj item = ItemGenerator.getDefaultGenerator().createItem(
+        HeroItem item = ItemGenerator.getDefaultGenerator().createItem(
          type, ref, false); // init
 
         String itemName = prefix + item.getName();

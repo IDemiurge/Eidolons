@@ -1,14 +1,11 @@
 package eidolons.game.battlecraft.logic.mission.universal;
 
-import eidolons.content.DC_ContentValsManager;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.mission.universal.BattleOptions.ARENA_GAME_OPTIONS;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DIFFICULTY;
-import main.content.enums.entity.SkillEnums.ATTRIBUTE;
-import main.content.values.parameters.PARAMETER;
 import main.system.auxiliary.EnumMaster;
 import main.system.launch.Flags;
 
@@ -101,7 +98,7 @@ public class MissionOptionManager<E extends DungeonSequence> extends MissionHand
 //        }
         return true;
     }
-
+    //TODO Status: Review
     public void applyDifficulty(Unit unit) {
         if (unit.isMine()){
             return;
@@ -111,13 +108,13 @@ public class MissionOptionManager<E extends DungeonSequence> extends MissionHand
         }
         if (!unit.isEnemyTo(game.getPlayer(true)))
             return;
-        PARAMETER[] attrs = DC_ContentValsManager.getFinalAttributes().toArray(
-         new PARAMETER[ATTRIBUTE.values().length]);
-        unit.modifyParamByPercent(attrs, getDifficulty().getAttributePercentage()-100);
-
-        attrs = DC_ContentValsManager.getMasteryScores() .toArray(
-         new PARAMETER[ATTRIBUTE.values().length]);
-        unit.modifyParamByPercent(attrs, getDifficulty().getMasteryPercentage()-100);
+        // PARAMETER[] attrs = DC_ContentValsManager.getFinalAttributes().toArray(
+        //  new PARAMETER[ATTRIBUTE.values().length]);
+        // unit.modifyParamByPercent(attrs, getDifficulty().getAttributePercentage()-100);
+        //
+        // attrs = DC_ContentValsManager.getMasteryScores() .toArray(
+        //  new PARAMETER[ATTRIBUTE.values().length]);
+        // unit.modifyParamByPercent(attrs, getDifficulty().getMasteryPercentage()-100);
 
         // sight,
     }

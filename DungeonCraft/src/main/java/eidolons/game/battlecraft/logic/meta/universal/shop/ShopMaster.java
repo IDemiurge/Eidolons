@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.logic.meta.universal.shop;
 
 import eidolons.game.battlecraft.logic.meta.scenario.hq.ShopInterface;
-import eidolons.entity.item.handlers.ItemGenerator;
-import eidolons.entity.item.handlers.ItemMaster;
+import eidolons.entity.mngr.item.ItemGenerator;
+import eidolons.entity.mngr.item.ItemMaster;
 import main.content.CONTENT_CONSTS2.SHOP_LEVEL;
 import main.content.CONTENT_CONSTS2.SHOP_MODIFIER;
 import main.content.CONTENT_CONSTS2.SHOP_TYPE;

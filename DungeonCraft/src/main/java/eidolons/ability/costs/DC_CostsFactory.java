@@ -1,7 +1,7 @@
 package eidolons.ability.costs;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.system.DC_ConditionMaster;
 import main.elements.conditions.Requirement;
 import main.elements.costs.*;
@@ -15,11 +15,11 @@ import java.util.List;
 
 public class DC_CostsFactory {
 
-    public static Costs getCostsForAction(DC_ActiveObj type) {
+    public static Costs getCostsForAction(ActiveObj type) {
         return getCostsForSpell(type, false);
     }
 
-    public static Costs getCostsForSpell(DC_ActiveObj spell, boolean isSpell) {
+    public static Costs getCostsForSpell(ActiveObj spell, boolean isSpell) {
         List<Cost> costs = new ArrayList<>();
         Cost cost;
 
@@ -66,12 +66,12 @@ public class DC_CostsFactory {
                 : new DC_ActionCosts(requirements, costs);
     }
 
-    private static Cost getEssenceCost(DC_ActiveObj spell) {
+    private static Cost getEssenceCost(ActiveObj spell) {
         return new EssenceCost(spell.getIntParam(PARAMS.ESS_COST));
     }
 
     private static void addSpecialRequirements(CostRequirements requirements,
-                                               DC_ActiveObj spell) {
+                                               ActiveObj spell) {
         if (StringMaster.isEmpty(spell.getSpecialRequirements())) {
             return;
         }

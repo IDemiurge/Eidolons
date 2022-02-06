@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.location.struct;
 
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
@@ -283,16 +283,6 @@ public class FloorLoader extends DungeonHandler {
         return idMap;
     }
 
-    private Map<Coordinates, FACING_DIRECTION> createUnitFacingMap(String textContent) {
-        Map<Coordinates, FACING_DIRECTION> map = new HashMap<>();
-
-        DataUnit<FACING_DIRECTION> data = new DataUnit<>(textContent);
-        for (String s : data.getValues().keySet()) {
-            map.put(new Coordinates(s), FacingMaster.getFacing(data.getValues().get(s)));
-        }
-        return map;
-    }
-
     public void start() {
         entranceData = "";
     }
@@ -362,7 +352,7 @@ public class FloorLoader extends DungeonHandler {
     private void initCells(Map<Coordinates, CellData> cellDataMap) {
         for (Coordinates coordinates : cellDataMap.keySet()) {
             CellData data = cellDataMap.get(coordinates);
-            DC_Cell cell = getGame().getCell(coordinates);
+            GridCell cell = getGame().getCell(coordinates);
             data.apply(cell);
         }
     }
@@ -372,7 +362,7 @@ public class FloorLoader extends DungeonHandler {
             String string = textDataMap.get(coordinates).getValue(CellScriptData.CELL_SCRIPT_VALUE.marks);
             for (String substring : ContainerUtils.openContainer(string)) {
                 MARK mark = new EnumMaster<MARK>().retrieveEnumConst(MARK.class, substring);
-                DC_Cell cell = getGame().getCell(coordinates);
+                GridCell cell = getGame().getCell(coordinates);
                 cell.getMarks().add(mark);
                 if (mark == MARK._void) {
                     cell.setVOID(true);

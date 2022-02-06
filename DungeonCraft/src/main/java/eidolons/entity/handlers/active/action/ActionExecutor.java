@@ -1,8 +1,8 @@
 package eidolons.entity.handlers.active.action;
 
 import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.handlers.active.Activator;
 import eidolons.entity.handlers.active.ActiveMaster;
 import eidolons.entity.handlers.active.Executor;
@@ -26,7 +26,7 @@ import main.system.entity.ConditionMaster;
  * Created by JustMe on 2/26/2017.
  */
 public class ActionExecutor extends Executor {
-    public ActionExecutor(DC_ActiveObj active, ActiveMaster entityMaster) {
+    public ActionExecutor(ActiveObj active, ActiveMaster entityMaster) {
         super(active, entityMaster);
     }
 
@@ -108,8 +108,8 @@ public class ActionExecutor extends Executor {
     }
 
     @Override
-    public DC_UnitAction getAction() {
-        return (DC_UnitAction) super.getAction();
+    public UnitAction getAction() {
+        return (UnitAction) super.getAction();
     }
 
     @Override
@@ -123,7 +123,7 @@ public class ActionExecutor extends Executor {
     }
 
     @Override
-    protected Targeter createTargeter(DC_ActiveObj active, ActiveMaster entityMaster) {
+    protected Targeter createTargeter(ActiveObj active, ActiveMaster entityMaster) {
         return new Targeter(active, entityMaster) {
 
             @Override
@@ -137,7 +137,7 @@ public class ActionExecutor extends Executor {
                 if (getAction().isAttackGeneric()) {
                     Conditions conditions = new OrConditions();
                     int maxRange = 0;
-                    for (DC_ActiveObj attack : getAction().getAttackTypes()) {
+                    for (ActiveObj attack : getAction().getAttackTypes()) {
                         if (attack.isThrow()) {
                             continue;
                         }
@@ -164,11 +164,11 @@ public class ActionExecutor extends Executor {
     }
 
     @Override
-    protected Activator createActivator(DC_ActiveObj active, ActiveMaster entityMaster) {
+    protected Activator createActivator(ActiveObj active, ActiveMaster entityMaster) {
         return new Activator(active, entityMaster) {
             @Override
-            public DC_UnitAction getAction() {
-                return (DC_UnitAction) super.getAction();
+            public UnitAction getAction() {
+                return (UnitAction) super.getAction();
             }
 
             @Override

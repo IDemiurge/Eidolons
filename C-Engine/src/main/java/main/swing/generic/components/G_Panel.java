@@ -502,7 +502,7 @@ public class G_Panel extends G_Component implements VisualComponent {
         MAP_VIEW_BUTTON("ui/components/new/map view.png"),
         MINIMAP_GRID_BUTTON("ui/components/new/map grid.png"),
         CHAR_BUTTON("ui/components/new/char.png"),
-        LOG_BUTTON("ui/components/new/src.main.system.log.png"),
+        LOG_BUTTON("ui/components/new/system.log.png"),
         OPTIONS_BUTTON("ui/components/new/gears.png"),
         CONTROL_PANEL_HORIZONTAL("ui/components/new/control panel.png"),
         VALUE_ORB("ui/components/new/orb.png"),

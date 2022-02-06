@@ -10,10 +10,9 @@ import main.content.enums.GenericEnums.DAMAGE_CASE;
 import main.content.enums.entity.AbilityEnums;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.UnitEnums;
-import main.content.enums.entity.UnitEnums.COUNTER;
-import main.content.enums.entity.UnitEnums.COUNTER_INTERACTION;
-import main.content.enums.entity.UnitEnums.COUNTER_OPERATION;
-import main.content.enums.entity.UnitEnums.FACING_SINGLE;
+import main.content.enums.entity.EffectEnums.COUNTER;
+import main.content.enums.entity.EffectEnums.COUNTER_INTERACTION;
+import main.content.enums.entity.EffectEnums.COUNTER_OPERATION;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.enums.system.AiEnums.ORDER_PRIORITY_MODS;
@@ -112,7 +111,6 @@ public enum ARGS implements Argument {
 
     BIND_TYPE(BIND_TYPE.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
 
-    FACING_TEMPLATE(FACING_SINGLE.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
     TARGETING_MODE(AbilityEnums.TARGETING_MODE.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
     EFFECTS_WRAP(AbilityEnums.EFFECTS_WRAP.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
     CLASSIFICATIONS(UnitEnums.CLASSIFICATIONS.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),

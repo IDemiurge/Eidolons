@@ -14,8 +14,9 @@ import main.ability.effects.Effect.MOD_PROP_TYPE;
 import main.ability.effects.Effects;
 import main.ability.effects.common.AddStatusEffect;
 import main.ability.effects.container.ConditionalEffect;
+import main.content.enums.entity.EffectEnums;
 import main.content.enums.entity.UnitEnums;
-import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.entity.EffectEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.MetaEnums;
@@ -45,7 +46,7 @@ public class RageRule extends DC_CounterRule {
 
     @Override
     public COUNTER getCounter() {
-        return COUNTER.Rage;
+        return EffectEnums.COUNTER.Rage;
     }
 
     @Override

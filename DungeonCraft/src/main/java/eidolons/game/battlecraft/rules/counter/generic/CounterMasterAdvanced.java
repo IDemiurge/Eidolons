@@ -1,9 +1,10 @@
 package eidolons.game.battlecraft.rules.counter.generic;
 
 import eidolons.entity.obj.BattleFieldObject;
-import main.content.enums.entity.UnitEnums.COUNTER;
-import main.content.enums.entity.UnitEnums.COUNTER_INTERACTION;
-import main.content.enums.entity.UnitEnums.COUNTER_OPERATION;
+import main.content.enums.entity.EffectEnums;
+import main.content.enums.entity.EffectEnums.COUNTER;
+import main.content.enums.entity.EffectEnums.COUNTER_INTERACTION;
+import main.content.enums.entity.EffectEnums.COUNTER_OPERATION;
 import main.data.XLinkedMap;
 import main.system.entity.CounterMaster;
 
@@ -15,7 +16,7 @@ import java.util.Map;
  */
 public class CounterMasterAdvanced {
     public static void defineInteractions() {
-        for (COUNTER s : COUNTER.values()) {
+        for (COUNTER s : EffectEnums.COUNTER.values()) {
             defineInteractions(s);
         }
     }
@@ -125,44 +126,44 @@ public class CounterMasterAdvanced {
         s.setInteractionMap(map);
         switch (s) {
             case Blaze:
-                s.setDown(COUNTER.Corrosion);
-                s.setUp(COUNTER.Charge);
+                s.setDown(EffectEnums.COUNTER.Corrosion);
+                s.setUp(EffectEnums.COUNTER.Charge);
                 break;
             case Chill:
-                s.setDown(COUNTER.Encase);
-                s.setUp(COUNTER.Moist);
-                initInteraction(s, COUNTER.Blaze, COUNTER_INTERACTION.MUTUAL_DELETION);
-                map.put(COUNTER.Moist, COUNTER_INTERACTION.GROW_SELF);
+                s.setDown(EffectEnums.COUNTER.Encase);
+                s.setUp(EffectEnums.COUNTER.Moist);
+                initInteraction(s, EffectEnums.COUNTER.Blaze, EffectEnums.COUNTER_INTERACTION.MUTUAL_DELETION);
+                map.put(EffectEnums.COUNTER.Moist, EffectEnums.COUNTER_INTERACTION.GROW_SELF);
                 break;
             case Blight:
-                s.setDown(COUNTER.Poison);
-                s.setUp(COUNTER.Corrosion);
+                s.setDown(EffectEnums.COUNTER.Poison);
+                s.setUp(EffectEnums.COUNTER.Corrosion);
                 break;
             case Corrosion:
-                s.setDown(COUNTER.Blight);
-                s.setUp(COUNTER.Blaze);
+                s.setDown(EffectEnums.COUNTER.Blight);
+                s.setUp(EffectEnums.COUNTER.Blaze);
                 break;
             case Charge:
-                s.setDown(COUNTER.Blaze);
-                s.setUp(COUNTER.Magnetized);
+                s.setDown(EffectEnums.COUNTER.Blaze);
+                s.setUp(EffectEnums.COUNTER.Magnetized);
                 break;
             case Moist:
-                s.setDown(COUNTER.Chill);
-                s.setUp(COUNTER.Corrosion);
+                s.setDown(EffectEnums.COUNTER.Chill);
+                s.setUp(EffectEnums.COUNTER.Corrosion);
                 break;
             case Grease:
-                s.setDown(COUNTER.Clay);
-                s.setUp(COUNTER.Moist);
+                s.setDown(EffectEnums.COUNTER.Clay);
+                s.setUp(EffectEnums.COUNTER.Moist);
                 break;
             case Clay:
-                s.setDown(COUNTER.Encase);
-                s.setUp(COUNTER.Grease);
+                s.setDown(EffectEnums.COUNTER.Encase);
+                s.setUp(EffectEnums.COUNTER.Grease);
                 break;
             case Encase:
-                s.setUp(COUNTER.Ensnared);
+                s.setUp(EffectEnums.COUNTER.Ensnared);
                 break;
             case Ensnared:
-                s.setDown(COUNTER.Encase);
+                s.setDown(EffectEnums.COUNTER.Encase);
                 break;
             case Bleeding:
             case Mutagen:

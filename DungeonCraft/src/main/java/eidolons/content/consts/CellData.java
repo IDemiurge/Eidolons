@@ -1,6 +1,6 @@
 package eidolons.content.consts;
 
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import main.system.data.DataUnit;
 
 public class CellData extends DataUnit<CellData.CELL_VALUE> {
@@ -24,7 +24,7 @@ public class CellData extends DataUnit<CellData.CELL_VALUE> {
         return super.getPairSeparator();
     }
 
-    public void apply(DC_Cell cell) {
+    public void apply(GridCell cell) {
         if (getIntValue(CELL_VALUE.cell_variant)!=0) {
         cell.setCellVariant(getIntValue(CELL_VALUE.cell_variant));
         }

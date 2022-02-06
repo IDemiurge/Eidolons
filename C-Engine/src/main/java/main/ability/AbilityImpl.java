@@ -7,7 +7,7 @@ import main.elements.targeting.AutoTargeting;
 import main.elements.targeting.FixedTargeting;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
-import main.entity.obj.ActiveObj;
+import main.entity.obj.IActiveObj;
 import main.system.auxiliary.log.LogMaster;
 
 public class AbilityImpl extends ReferredElement implements Ability {
@@ -94,14 +94,14 @@ public class AbilityImpl extends ReferredElement implements Ability {
                     if (ref.getTarget() != null || ref.getGroup() != null) {
                         return resolve(); //without targeting.select()
                     } else {
-                        return false; // inconsistent src.main.data
+                        return false; // inconsistent data
                     }
                 }
             }
         }
 
         boolean selectResult = targeting.select(ref);
-        ActiveObj a = ref.getActive();
+        IActiveObj a = ref.getActive();
         if (selectResult) {
             if (a != null) {
                 a.setCancelled(null);

@@ -11,7 +11,8 @@ import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.ability.effects.continuous.CustomTargetEffect;
-import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.entity.EffectEnums;
+import main.content.enums.entity.EffectEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.elements.targeting.FixedTargeting;
 import main.entity.Ref.KEYS;
@@ -52,7 +53,7 @@ public class CorrosionRule extends DC_CounterRule {
 
     @Override
     public COUNTER getCounter() {
-        return COUNTER.Corrosion;
+        return EffectEnums.COUNTER.Corrosion;
     }
 
     @Override

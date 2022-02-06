@@ -2,14 +2,14 @@ package eidolons.game.battlecraft.logic.meta.universal.shop;
 
 import eidolons.content.PARAMS;
 import eidolons.content.consts.VisualEnums;
-import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.HeroItem;
 import eidolons.entity.item.ItemFactory;
 import eidolons.entity.unit.Unit;
 import eidolons.game.battlecraft.logic.mission.universal.DC_Player;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.game.DC_Game;
-import eidolons.entity.item.handlers.ItemGenerator;
-import eidolons.entity.item.handlers.ItemMaster;
+import eidolons.entity.mngr.item.ItemGenerator;
+import eidolons.entity.mngr.item.ItemMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.CONTENT_CONSTS2.SHOP_TYPE;
 import main.content.C_OBJ_TYPE;
@@ -41,7 +41,7 @@ import java.util.*;
 public class ShopItemManager extends EntityHandler<Shop> {
     protected static final boolean TEST_MODE = true;
     protected int playerDebt=0;
-    protected List<DC_HeroItemObj> items;
+    protected List<HeroItem> items;
     protected int goldToSpendPercentage = 100;
     protected int spareGoldPercentage = 20;
     protected Map<Integer, Integer> priceCache; //current session, fixed prices for sell/buy
@@ -56,13 +56,13 @@ public class ShopItemManager extends EntityHandler<Shop> {
         return playerDebt;
     }
 
-    public int getBalanceForBuy(DC_HeroItemObj item, Unit hero, boolean heroBuys) {
+    public int getBalanceForBuy(HeroItem item, Unit hero, boolean heroBuys) {
         Integer price = getPrice(item, hero, heroBuys);
         return heroBuys ? hero.getGold() - price
          : getGold() - price;
     }
 
-    public boolean canBuy(DC_HeroItemObj item, Unit buyer, boolean canUseDebt) {
+    public boolean canBuy(HeroItem item, Unit buyer, boolean canUseDebt) {
         Integer price = getPrice(item, buyer, true);
         if (canUseDebt) {
             price -= getMaxDebt() - playerDebt;
@@ -70,7 +70,7 @@ public class ShopItemManager extends EntityHandler<Shop> {
         return buyer.getGold() >= price;
     }
 
-    public boolean canSellTo(DC_HeroItemObj item, Unit seller, boolean canUseDebt) {
+    public boolean canSellTo(HeroItem item, Unit seller, boolean canUseDebt) {
         Integer price = getPrice(item, seller, false);
         if (canUseDebt) {
             price += getMinBalance()+ playerDebt;
@@ -135,13 +135,13 @@ public class ShopItemManager extends EntityHandler<Shop> {
             if (cost > getIntParam(PARAMS.GOLD) * goldToSpendPercentage / 100) {
                 return false;
             }
-        DC_HeroItemObj item = createItem(t);
+        HeroItem item = createItem(t);
         itemBought(item, cost, null );
         return true;
     }
 
-    protected DC_HeroItemObj createItem(ObjType t) {
-        DC_HeroItemObj item = ItemFactory.createItemObj(t, DC_Player.NEUTRAL,
+    protected HeroItem createItem(ObjType t) {
+        HeroItem item = ItemFactory.createItemObj(t, DC_Player.NEUTRAL,
          DC_Game.game, new Ref(), false);
 
         item.getRef().setID(KEYS.THIS, item.getId());
@@ -171,7 +171,7 @@ public class ShopItemManager extends EntityHandler<Shop> {
             ObjType itemType = DataManager.getType(ItemMaster.FOOD, DC_TYPE.ITEMS);
             int n = Math.round(RandomWizard.getRandomFloat() *getIntParam(MACRO_PARAMS.SHOP_INCOME)* timeCoef / itemType.getIntParam(PARAMS.GOLD_COST));
             for (int i = 0; i < n; i++) {
-                DC_HeroItemObj item = createItem(itemType);
+                HeroItem item = createItem(itemType);
                 itemBought(item, 0, null );
             }
             //         TODO    itemType = DataManager.getType(ItemMaster.TORCH, DC_TYPE.ITEMS);
@@ -188,7 +188,7 @@ public class ShopItemManager extends EntityHandler<Shop> {
 
     // generateCustomItems(); randomly based on the repertoire spectrum
 
-    public Integer buyItemFrom(DC_HeroItemObj seller, Unit buyer) {
+    public Integer buyItemFrom(HeroItem seller, Unit buyer) {
         if (!items.remove(seller))
             return null;
         // some items should be infinite though... perhaps based on shop level?
@@ -199,7 +199,7 @@ public class ShopItemManager extends EntityHandler<Shop> {
         return price;
     }
 
-    public Integer sellItemTo(DC_HeroItemObj t, Unit seller) {
+    public Integer sellItemTo(HeroItem t, Unit seller) {
         Integer price = getPrice(t, seller, false);
         priceCache.put(t.getId(), price);
 
@@ -208,7 +208,7 @@ public class ShopItemManager extends EntityHandler<Shop> {
         return price;
     }
 
-    protected int itemBought(DC_HeroItemObj itemObj, int cost, Unit hero) {
+    protected int itemBought(HeroItem itemObj, int cost, Unit hero) {
         items.add(itemObj);
         itemObj.setContainer(VisualEnums.CONTAINER.SHOP);
         return givesGold(cost, hero );
@@ -262,7 +262,7 @@ public class ShopItemManager extends EntityHandler<Shop> {
             playerDebt +=cost - paid  ;
     }
 
-    public Integer getPrice(DC_HeroItemObj t, Unit unit, boolean buy) {
+    public Integer getPrice(HeroItem t, Unit unit, boolean buy) {
         Integer price = getPriceCache().get(t.getId());
         if (price == null) {
             price = t.getIntParam(PARAMS.GOLD_COST);
@@ -385,7 +385,7 @@ public class ShopItemManager extends EntityHandler<Shop> {
         }
     }
 
-    public Collection<DC_HeroItemObj> getItems() {
+    public Collection<HeroItem> getItems() {
         if (items == null) {
             initItems();
         }

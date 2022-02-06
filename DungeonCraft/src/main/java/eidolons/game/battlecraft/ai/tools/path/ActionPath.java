@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.ai.tools.path;
 
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.data.ListMaster;
 
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ActionPath {
 
-    public List<Action> actions; //dynamic field - will be changed!
+    public List<AiAction> aiActions; //dynamic field - will be changed!
 
     public List<Choice> choices;
 
@@ -41,9 +41,9 @@ public class ActionPath {
         return false;
     }
 
-    public boolean hasAction(DC_ActiveObj action) {
+    public boolean hasAction(ActiveObj action) {
         for (Choice choice : getChoices()) {
-            for (Action a : choice.getActions()) {
+            for (AiAction a : choice.getActions()) {
                 if (a.getActive().equals(action)) {
                     return true;
                 }
@@ -73,15 +73,15 @@ public class ActionPath {
     }
 
     private void initActions() {
-        actions = new ArrayList<>();
+        aiActions = new ArrayList<>();
         for (Choice choice : choices) {
-            actions.addAll(choice.getActions());
+            aiActions.addAll(choice.getActions());
         }
     }
 
-    public List<Action> getActions() {
+    public List<AiAction> getActions() {
         initActions();
-        return actions;
+        return aiActions;
     }
 
     public void add(Choice choice) {

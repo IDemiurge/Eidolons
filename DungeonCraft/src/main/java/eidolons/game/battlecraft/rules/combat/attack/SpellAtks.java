@@ -1,7 +1,5 @@
 package eidolons.game.battlecraft.rules.combat.attack;
 
-import eidolons.entity.active.spaces.Feat;
-
 public class SpellAtks extends AttackTypes{
 
     /*

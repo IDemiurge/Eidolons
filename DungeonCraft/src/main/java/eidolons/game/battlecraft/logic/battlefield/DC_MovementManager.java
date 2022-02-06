@@ -1,19 +1,17 @@
 package eidolons.game.battlecraft.logic.battlefield;
 
 import com.google.inject.internal.util.ImmutableList;
-import eidolons.ability.conditions.req.CellCondition;
 import eidolons.ability.conditions.shortcut.PushableCondition;
 import eidolons.ability.effects.oneshot.move.MoveEffect;
 import eidolons.ability.effects.oneshot.move.SelfMoveEffect;
-import eidolons.content.values.DC_ValueManager;
-import eidolons.entity.active.DC_ActionManager;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.mngr.action.ActionHelper;
+import eidolons.entity.feat.active.ActiveObj;
+import eidolons.entity.feat.active.UnitAction;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.GridCell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.unit.Unit;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.AiAction;
 import eidolons.game.battlecraft.ai.elements.actions.AiActionFactory;
 import eidolons.game.battlecraft.ai.elements.actions.AiUnitActionMaster;
 import eidolons.game.battlecraft.ai.tools.path.ActionPath;
@@ -26,24 +24,19 @@ import eidolons.game.core.master.EffectMaster;
 import eidolons.game.core.state.DC_GameState;
 import eidolons.game.exploration.handlers.ExploreGameLoop;
 import main.content.enums.entity.ActionEnums;
-import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.system.AiEnums;
 import main.data.DataManager;
-import main.data.ability.construct.VariableManager;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.MovementManager;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.game.bf.directions.FACING_DIRECTION;
-import main.game.bf.directions.UNIT_DIRECTION;
 import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
@@ -56,6 +49,8 @@ import static main.system.auxiliary.log.LogMaster.log;
 
 public class DC_MovementManager implements MovementManager {
 
+    public static final String STEP = "Step";
+    public static final String JUMP ="Jump" ;
     public static boolean anObjectMoved;
     Map<Unit, List<ActionPath>> pathCache = new HashMap<>();
     private final DC_Game game;
@@ -68,7 +63,7 @@ public class DC_MovementManager implements MovementManager {
         DC_MovementManager instance = this;
     }
 
-    public static Coordinates getMovementDestinationCoordinate(DC_ActiveObj active) {
+    public static Coordinates getMovementDestinationCoordinate(ActiveObj active) {
         try {
             MoveEffect effect = (MoveEffect) EffectMaster.getEffectsOfClass(active.getAbilities(),
                     MoveEffect.class).get(0);
@@ -84,51 +79,28 @@ public class DC_MovementManager implements MovementManager {
         return active.getOwnerUnit().getCoordinates();
     }
 
-    public static Action getMoveAction(Unit unit, Coordinates coordinates) {
+    public static AiAction getMoveAction(Unit unit, Coordinates coordinates) {
         return getMoveAction(unit, unit.getCoordinates(), coordinates);
     }
 
-    public static Action getMoveAction(Unit unit, Coordinates from, Coordinates c) {
-
-        // if (diagAllowed){
-        if (from.x != c.x && from.y != c.y) {
-            Action leap = AiActionFactory.newAction("Clumsy Leap", unit.getAI());
-            leap.setRef(Ref.getCopy(leap.getRef()));
-            leap.getRef().setTarget(unit.getGame().getCell(c).getId());
-            return leap;
-        }
-        // }
-        FACING_SINGLE relative = FacingMaster.getSingleFacing(unit.getFacing(),
-                from, c);
-        if (relative == FACING_SINGLE.IN_FRONT) {
-            if (!new CellCondition(UNIT_DIRECTION.AHEAD).check(unit))
-                return null;
-            return AiActionFactory.newAction("Move", unit.getAI());
-        }
-        boolean left = (unit.getFacing().isVertical())
-
-                ? unit.getFacing().isCloserToZero() == PositionMaster.isToTheLeft(c, from)
-
-                : unit.getFacing().isCloserToZero() != PositionMaster.isAbove(c, from);
-        // if (!unit.getFacing().isCloserToZero()) {
-        //     left = !left;
-        // }
-
-        if (!new CellCondition(left ? UNIT_DIRECTION.LEFT : UNIT_DIRECTION.RIGHT).check(unit))
-            return null;
-        return AiActionFactory.newAction("Move " + (left ? "Left" : "Right"), unit.getAI());
+    public static AiAction getMoveAction(Unit unit, Coordinates from, Coordinates c) {
+        boolean diagonal = (from.x != c.x && from.y != c.y);
+        // if (!new CellCondition(left ? UNIT_DIRECTION.LEFT : UNIT_DIRECTION.RIGHT).check(unit))
+        //     return null; //TODO check?
+        String name=diagonal? DC_MovementManager.JUMP : DC_MovementManager.STEP ;
+        return AiActionFactory.newAction(name, unit.getAI());
     }
 
-    public static List<DC_ActiveObj> getMoves(Unit unit) {
-        List<DC_ActiveObj> moveActions = new ArrayList<>();
-        DequeImpl<DC_UnitAction> actions = unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_MOVE);
+    public static List<ActiveObj> getMoves(Unit unit) {
+        List<ActiveObj> moveActions = new ArrayList<>();
+        DequeImpl<UnitAction> actions = unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_MOVE);
         if (actions != null) {
-            moveActions = new ArrayList<>(Arrays.asList(actions.toArray(new DC_ActiveObj[0])));
+            moveActions = new ArrayList<>(Arrays.asList(actions.toArray(new ActiveObj[0])));
         }
         if (moveActions.isEmpty()) {
             moveActions.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE));
         } else {
-            for (DC_UnitAction a : unit.getActionMap().get(ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE)) {
+            for (UnitAction a : unit.getActionMap().get(ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE)) {
                 String name = a.getName();
                 switch (name) { // have a switch to turn off all default moves!
                     case "Clumsy Leap":
@@ -150,7 +122,7 @@ public class DC_MovementManager implements MovementManager {
 
         moveActions.addAll(AiUnitActionMaster.getSpells(AiEnums.AI_LOGIC.MOVE, unit));
 
-        moveActions = DC_ActionManager.filterActionsByCanBePaid(moveActions);
+        moveActions = ActionHelper.filterActionsByCanBePaid(moveActions);
         return moveActions;
     }
 
@@ -185,7 +157,7 @@ public class DC_MovementManager implements MovementManager {
     }
 
     public List<ActionPath> buildPath(Unit unit, Coordinates coordinates) {
-        List<DC_ActiveObj> moves = getMoves(unit);
+        List<ActiveObj> moves = getMoves(unit);
         if (isStarPath(unit, coordinates)) {
             ActionPath path = game.getAiManager().getStarBuilder().getPath(unit, unit.getCoordinates(), coordinates);
             if (path != null) {
@@ -193,7 +165,7 @@ public class DC_MovementManager implements MovementManager {
             }
         }
         PathBuilder builder = PathBuilder.getInstance().init
-                (moves, new Action(unit.getAction("Move")));
+                (moves, new AiAction(unit.getAction("Move")));
         builder.simplified = true;
         List<ActionPath> paths = builder.build(new ListMaster<Coordinates>().getList(coordinates));
         builder.simplified = false;
@@ -267,11 +239,11 @@ public class DC_MovementManager implements MovementManager {
                 playerPath = path.choices.stream().map(Choice::getCoordinates).collect(Collectors.toList());
 
                 for (Choice choice : path.choices) {
-                    for (Action action : choice.getActions()) {
-                        log(action.getActive().getName() + " added to queue " + playerDestination);
+                    for (AiAction aiAction : choice.getActions()) {
+                        log(aiAction.getActive().getName() + " added to queue " + playerDestination);
                         Context context = new Context(unit,
                                 game.getCell(choice.getCoordinates()));
-                        ActionInput actionInput = new ActionInput(action.getActive(), context);
+                        ActionInput actionInput = new ActionInput(aiAction.getActive(), context);
                         actionInput.setAuto(true);
                         ((ExploreGameLoop) unit.getGame().getGameLoop()).tryAddPlayerActions(actionInput);
                         unit.getGame().getGameLoop().signal();
@@ -342,7 +314,7 @@ public class DC_MovementManager implements MovementManager {
 
     }
 
-    public boolean move(BattleFieldObject obj, DC_Cell cell, boolean free, MOVE_MODIFIER mod,
+    public boolean move(BattleFieldObject obj, GridCell cell, boolean free, MOVE_MODIFIER mod,
                         Ref ref) {
         Ref REF = ref.getCopy();// new Ref(obj.getGame());
         REF.setTarget(cell.getId());
@@ -397,7 +369,7 @@ public class DC_MovementManager implements MovementManager {
         return moved(obj, cell, false);
     }
 
-    public boolean moved(BattleFieldObject obj, DC_Cell cell, boolean quiet) {
+    public boolean moved(BattleFieldObject obj, GridCell cell, boolean quiet) {
         Ref ref = Ref.getSelfTargetingRefCopy(obj);
         ref.setQuiet(quiet);
         return moved(obj, cell, ref);
@@ -407,7 +379,7 @@ public class DC_MovementManager implements MovementManager {
         moved(unit, game.getCell(unit.getCoordinates()), quiet);
     }
 
-    public boolean moved(BattleFieldObject obj, DC_Cell cell, Ref REF) {
+    public boolean moved(BattleFieldObject obj, GridCell cell, Ref REF) {
         anObjectMoved=true;
         DC_GameState.gridChanged=true;
         if (!REF.isQuiet())
@@ -436,50 +408,6 @@ public class DC_MovementManager implements MovementManager {
         return PositionMaster.getDistance(obj1, obj2);
     }
 
-    @Override
-    public Coordinates getTemplateMoveCoordinate(MOVE_TEMPLATES template, FACING_DIRECTION facing,
-                                                 Obj obj, Ref ref) {
-        // getOrCreate some caching to optimize this!
-        UNIT_DIRECTION direction = template.getDirection();
-        String range = template.getRange();
-        Boolean selective = template.isSelectiveTargeting();
-
-        if (template.getVarClasses() != null) {
-            String vars = ref.getObj(KEYS.ACTIVE).getCustomProperty(
-                    DC_ValueManager.getVarEnumCustomValueName(MOVE_TEMPLATES.class));
-            List<String> varList = VariableManager.getVarList(vars);
-
-            range = varList.get(0);
-            if (varList.size() > 1) {
-                direction = new EnumMaster<UNIT_DIRECTION>().retrieveEnumConst(
-                        UNIT_DIRECTION.class, varList.get(1));
-            }
-
-            if (varList.size() > 2) {
-                selective = new Boolean(varList.get(2));
-            }
-
-        }
-        switch (template) {
-            // some custom templates
-        }
-        if (selective == null) {
-            selective = false;
-        }
-        if (selective) {
-            // create filter by directions and range!
-        } else {
-            if (range.equals("1")) {
-                return obj.getCoordinates().getAdjacentCoordinate(
-                        DirectionMaster.getDirectionByFacing(facing, direction));
-            }
-            // preCheck int >= formla
-
-        }
-
-        return null;
-
-    }
 
 
 }

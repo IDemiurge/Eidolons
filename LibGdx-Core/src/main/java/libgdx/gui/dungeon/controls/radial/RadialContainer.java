@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.feat.active.ActiveObj;
 import eidolons.entity.obj.DC_Obj;
 import libgdx.StyleHolder;
 import libgdx.bf.mouse.BattleClickListener;
@@ -96,7 +96,7 @@ public class RadialContainer extends ActionContainer {
     }
 
 
-    public RadialContainer(TextureRegion textureRegion, Runnable runnable, boolean valid, DC_ActiveObj activeObj, DC_Obj target) {
+    public RadialContainer(TextureRegion textureRegion, Runnable runnable, boolean valid, ActiveObj activeObj, DC_Obj target) {
         this(textureRegion, runnable);
         this.setValid(valid);
         try {
