@@ -69,7 +69,7 @@ public class MuseCore implements NativeKeyListener {
                 boolean F11_12 = (nativeKeyEvent.getKeyCode() == 87 || nativeKeyEvent.getKeyCode() == 88);
                 if (
                         F11_12 || //F11 F12
-                                nativeKeyEvent.getKeyCode() <= 58 + PlaylistHandler.PLAYLIST_TYPE.values().length) {
+                                nativeKeyEvent.getKeyCode() <= 58 + PLAYLIST_TYPE.values().length) {
                     try {
                         int index = nativeKeyEvent.getKeyCode() - 59;
                         if (F11_12) {
@@ -78,12 +78,12 @@ public class MuseCore implements NativeKeyListener {
                         if (index == 11 && !F11_12) {
                             return; //other system keys
                         }
-                        PlaylistHandler.PLAYLIST_TYPE type = PlaylistHandler.PLAYLIST_TYPE.values()[index];
+                        PLAYLIST_TYPE type = PLAYLIST_TYPE.values()[index];
 
                         if (caps) {
                             PlaylistHandler.play("", MC_Funcs.showAll(alt, false, type));
                         } else
-                            PlaylistHandler.playRandom(alt, type);
+                            PlaylistHandler.play(alt, type);
                     } catch (Exception e) {
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
@@ -103,7 +103,7 @@ public class MuseCore implements NativeKeyListener {
             //     }
             // }
             //            default:
-            //                main.system.auxiliary.src.main.system.log.LogMaster.src.main.system.log(1, " nativeKeyEvent.getModifiers()=" +
+            //                main.system.auxiliary.system.log.LogMaster.system.log(1, " nativeKeyEvent.getModifiers()=" +
             //                        nativeKeyEvent.getModifiers());
         }
 
