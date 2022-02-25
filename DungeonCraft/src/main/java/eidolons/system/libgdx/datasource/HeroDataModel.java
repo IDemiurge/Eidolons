@@ -8,6 +8,7 @@ import eidolons.entity.SimCache;
 import eidolons.entity.item.HeroItem;
 import eidolons.entity.unit.attach.DC_PassiveObj;
 import eidolons.entity.unit.Unit;
+import eidolons.entity.unit.netherflame.HeroUnit;
 import eidolons.game.Simulation;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
@@ -36,7 +37,7 @@ import java.util.List;
  * ok, but at least share among the models ?
  * yes, just equip the one that is displayed
  */
-public class HeroDataModel extends Unit {
+public class HeroDataModel extends HeroUnit {
     protected List<HeroOperation> modificationList = new ArrayList<>();
     protected Unit hero;
     protected boolean resetting;

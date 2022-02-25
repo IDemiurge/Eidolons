@@ -8,17 +8,21 @@ import java.util.*;
 /**
  * Generic logic for rolling 2 rows to match into slots
  * Usages planned:
- * 1) Hero Draft
- * 2) Inventory prisms-slots
- * 3) Loot
+ * 1) Eidolon Chain creation
+ * 2) Eidolon Mass-Adjustment - Inventory prisms-slots and Sigils
+ * 3) Loot - Essence templates and new Prisms
  * 4) Essence Imbue
+ * 5) Feat Space constructor
+ * 6) Dual Level Up
+ * 7) True Form Artifact upgrade
+ *
  */
 public abstract class MatchLogic<T, C, B> {
 
     public static class MatchResult<T, C, B> {
-        T top;
-        C center;
-        B bottom;
+        public final T top;
+        public final C center;
+        public final B bottom;
 
         public MatchResult(T top, C center, B bottom) {
             this.top = top;

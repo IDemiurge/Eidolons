@@ -343,6 +343,8 @@ public enum PARAMS implements PARAMETER {
     WITCHERY_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
     SHADOW_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
 
+
+
     ATTR_POINTS("Attribute points", "Attribute points", true, 0, "units", "chars", "perks"),
     ATTR_POINTS_PER_LEVEL("Attribute points", "Attribute points", false, 0, "units", "chars", "perks"),
     MASTERY_RANKS_PER_LEVEL("MASTERY points", "MASTERY points", false, 0, "units", "chars", "perks"),
