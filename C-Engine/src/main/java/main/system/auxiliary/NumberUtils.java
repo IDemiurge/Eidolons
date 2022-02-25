@@ -5,6 +5,7 @@ import main.content.values.parameters.PARAMETER;
 import main.data.xml.XML_Converter;
 import main.entity.Entity;
 import main.entity.Ref;
+import main.game.bf.Coordinates;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 
@@ -314,5 +315,12 @@ public class NumberUtils {
             set.add(Integer.valueOf(id));
         }
         return set;
+    }
+
+    //TODO  >>> Review <<<
+    public static int[] getCoordinatesFromString(String s) {
+         getIntParse(Coordinates. splitCoordinateString(s)[0].trim());
+         getIntParse(Coordinates.splitCoordinateString(s)[1].trim());
+        return new int[0];
     }
 }
