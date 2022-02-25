@@ -1,1 +1,1 @@
-C:\code\Eidolons\Arcane-Vault\target\xml\dungeons\levels\templates\Soul Spire.xml
+C:\code\Eidolons\Arcane-Vault\target\xml\dungeons\levels\templates\hoe.xml
