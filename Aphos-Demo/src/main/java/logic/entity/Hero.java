@@ -1,0 +1,23 @@
+package logic.entity;
+
+import logic.lane.HeroPos;
+
+import java.util.Map;
+
+public class Hero extends Entity {
+
+    private HeroPos pos;
+
+    public Hero(HeroPos pos, Map<String, Object> valueMap) {
+        super(valueMap);
+        this.pos = pos;
+    }
+
+    public HeroPos getPos() {
+        return pos;
+    }
+
+    public void setPos(HeroPos pos) {
+        this.pos = pos;
+    }
+}

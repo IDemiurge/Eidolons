@@ -2,8 +2,8 @@ package gdx.controls;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import logic.Unit;
-import logic.combat.CombatController;
+import logic.entity.Unit;
+import logic.functions.combat.CombatController;
 
 public class AUnitClicker extends ClickListener {
 

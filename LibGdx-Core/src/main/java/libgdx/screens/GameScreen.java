@@ -1,6 +1,7 @@
 package libgdx.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -8,24 +9,23 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
+import eidolons.system.options.GraphicsOptions;
+import eidolons.system.options.OptionsMaster;
 import libgdx.anims.fullscreen.Screenshake;
 import libgdx.anims.sprite.SpriteAnimationFactory;
+import libgdx.assets.texture.TextureCache;
+import libgdx.assets.texture.TextureManager;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.bf.mouse.InputController;
 import libgdx.screens.generic.ScreenWithVideoLoader;
 import libgdx.stage.GenericGuiStage;
 import libgdx.stage.camera.CameraMan;
-import libgdx.assets.texture.TextureCache;
-import libgdx.assets.texture.TextureManager;
-import eidolons.system.options.GraphicsOptions;
-import eidolons.system.options.OptionsMaster;
 import main.system.GuiEventManager;
 import main.system.datatypes.DequeImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static libgdx.assets.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.RESET_DUNGEON_BACKGROUND;
 import static main.system.GuiEventType.UPDATE_DUNGEON_BACKGROUND;
 
@@ -159,7 +159,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
         }
     }
 
-    public OrthographicCamera getCamera() {
+    public Camera getCamera() {
         return getCam();
     }
 
@@ -167,7 +167,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
         return cameraMan;
     }
 
-    public OrthographicCamera getCam() {
+    public Camera getCam() {
         if (cameraMan != null) {
             return cameraMan.getCam();
         }

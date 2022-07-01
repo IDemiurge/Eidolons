@@ -20,7 +20,7 @@ public class StageX extends Stage {
     public Batch getBatch() {
         return GdxMaster.getMainBatch();
     }
-
+    //TODO 2022 Review - why the heck ignore this parameters?
     public StageX(Viewport viewport, Batch batch) {
         super(viewport, GdxMaster.getMainBatch());
     }

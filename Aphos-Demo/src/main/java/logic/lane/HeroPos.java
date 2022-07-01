@@ -1,11 +1,19 @@
 package logic.lane;
 
 public class HeroPos {
-    int lane;
-    boolean half;
+    private final int cell;
+    private final boolean leftSide;
 
-    /*
-    like clock?
+    public HeroPos(int cell, boolean leftSide) {
+        this.cell = cell;
+        this.leftSide = leftSide;
+    }
 
-     */
+    public int getCell() {
+        return cell;
+    }
+
+    public boolean isLeftSide() {
+        return leftSide;
+    }
 }

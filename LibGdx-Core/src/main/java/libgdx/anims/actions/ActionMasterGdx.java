@@ -12,8 +12,8 @@ import com.badlogic.gdx.utils.Predicate;
 import libgdx.anims.main.AnimMaster;
 import libgdx.bf.grid.cell.BaseView;
 import libgdx.gui.generic.BlockableGroup;
-import libgdx.gui.generic.decor.GearCluster;
 import libgdx.gui.generic.btn.SmartTextButton;
+import libgdx.gui.generic.decor.GearCluster;
 import libgdx.particles.EmitterActor;
 import main.system.auxiliary.ClassMaster;
 import main.system.auxiliary.StringMaster;
@@ -387,7 +387,7 @@ public class ActionMasterGdx {
         addAction(actor, delayAction);
     }
 
-    public static Action getScaleAction(float scale, float v) {
+    public static ScaleToAction getScaleAction(float scale, float v) {
         ScaleToAction action = (ScaleToAction) getAction(ScaleToAction.class);
         action.setScale(scale);
         action.setDuration(v);

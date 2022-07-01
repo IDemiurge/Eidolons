@@ -2,14 +2,17 @@ package gdx.views;
 
 import gdx.controls.AUnitClicker;
 import gdx.dto.UnitDto;
-import libgdx.gui.generic.GroupX;
 
-public class UnitView extends GroupX {
+public class UnitView extends FieldView<UnitDto> {
 
-    private final UnitDto dto;
+    public UnitView(boolean side) {
+        super(side);
+    }
 
-    public UnitView(UnitDto dto) {
-        this.dto = dto;
+    @Override
+    protected void update() {
+        super.update();
+        clearListeners();
         addListener(new AUnitClicker(dto.getUnit()));
     }
 }

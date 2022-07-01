@@ -2,6 +2,7 @@ package gdx.controls;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import logic.functions.GameController;
 
 public class AKeyListener extends InputAdapter {
 
@@ -17,8 +18,8 @@ public class AKeyListener extends InputAdapter {
         return super.keyDown(keycode);
     }
 
-    private void move(int i, boolean b) {
-
+    private void move(int length, boolean direction) {
+        GameController.move(length, direction);
     }
     private void showAttackMenu() {
 

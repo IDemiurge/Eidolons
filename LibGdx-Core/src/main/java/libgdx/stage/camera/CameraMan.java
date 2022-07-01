@@ -1,7 +1,7 @@
 package libgdx.stage.camera;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
@@ -10,14 +10,12 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.unit.Unit;
 import eidolons.game.core.Core;
 import eidolons.game.exploration.story.cinematic.Cinematics;
+import eidolons.system.options.ControlOptions;
+import eidolons.system.options.OptionsMaster;
 import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.main.AnimMaster;
 import libgdx.bf.GridMaster;
-import libgdx.bf.mouse.InputController;
-import libgdx.screens.GameScreen;
 import libgdx.utils.ActTimer;
-import eidolons.system.options.ControlOptions;
-import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.system.GuiEventManager;
@@ -40,8 +38,8 @@ public class CameraMan {
     private final CamController camController = new CamController(this);
 
     private boolean firstCenteringDone;
-    private final GameScreen screen;
-    OrthographicCamera cam;
+    Camera cam;
+    private final Runnable cameraZoomChangedCallback;
 
     private FloatAction zoomAction;
     private final Set<CameraMotion> motions = new LinkedHashSet<>();
@@ -50,6 +48,7 @@ public class CameraMan {
     Map<DIRECTION, CameraMotion> moveMap = new HashMap<>();
 
     private BattleFieldObject pendingPanTarget;
+
 
 
     public void unitActive(BattleFieldObject hero) {
@@ -82,26 +81,27 @@ public class CameraMan {
     }
 
     public void defaultZoom() {
-        getCam().zoom = 1;
+        setZoom(1);
     }
 
-    public void maxZoom() {
-        screen.getController().maxZoom();
-    }
+//    public void maxZoom() {
+//        screen.getController().maxZoom();
+//    }
 
 
     public void centerCam() {
         Unit mainHero = Core.getMainHero();
         if (mainHero != null) {
             centerCameraOnMainHero();
-        } else
-            screen.getController().centerCam();
+        }
+//        else
+//            screen.getController().centerCam();
     }
 
 
-    public CameraMan(OrthographicCamera cam, GameScreen screen) {
+    public CameraMan(Camera cam, Runnable cameraZoomChangedCallback) {
         this.cam = cam;
-        this.screen = screen;
+        this.cameraZoomChangedCallback = cameraZoomChangedCallback;
         CameraOptions.update(OptionsMaster.getControlOptions());
         cameraTimer = new ActTimer(CameraOptions.options.CENTER_CAMERA_AFTER_TIME, () -> {
             if (!firstCenteringDone) {
@@ -160,15 +160,23 @@ public class CameraMan {
         GuiEventManager.bind(CAMERA_ZOOM, param -> {
             MotionData data = (MotionData) param.get();
             zoomAction = (FloatAction) ActionMasterGdx.getAction(FloatAction.class);
-            zoomAction.setStart(getCam().zoom);
+            zoomAction.setStart(getZoom());
             zoomAction.setEnd(data.zoom);
             if (data.duration <= 0) {
-                data.duration = Math.abs(cam.zoom - data.zoom) * 15;
+                data.duration = Math.abs(getZoom() - data.zoom) * 15;
             }
             zoomAction.setDuration(data.duration);
             zoomAction.setInterpolation(data.interpolation);
             devLog("Zooming to " + data.zoom);
         });
+    }
+
+    public void zoom(float zoom){
+        zoomAction = (FloatAction) ActionMasterGdx.getAction(FloatAction.class);
+        zoomAction.setStart(getZoom());
+        zoomAction.setEnd(getZoom()+zoom);
+        zoomAction.setDuration(0.5f);
+        zoomAction.setInterpolation(Interpolation.smooth);
     }
 
     private void follow(Unit unit) {
@@ -191,8 +199,8 @@ public class CameraMan {
         if (zoomAction != null) {
             if (zoomAction.getTime() < zoomAction.getDuration()) {
                 zoomAction.act(delta);
-                getCam().zoom = zoomAction.getValue();
-                getController().cameraZoomChanged();
+                setZoom (zoomAction.getValue());
+                cameraZoomChanged();
                 getCam().update();
             }
         }
@@ -203,32 +211,36 @@ public class CameraMan {
                 }
             }
         }
-        if (camController.isBorderMouseMotionsOn()) {
-            DIRECTION mouseBorder = screen.getController().getMouseBorder();
-            if (mouseBorder != null) {
-                switch (mouseBorder) {
-                    case UP:
-                        camController.keyDown(Input.Keys.UP, delta * 100);
-                        break;
-                    case DOWN:
-                        camController.keyDown(Input.Keys.DOWN, delta * 100);
-                        break;
-                    case LEFT:
-                        camController.keyDown(Input.Keys.LEFT, delta * 100);
-                        break;
-                    case RIGHT:
-                        camController.keyDown(Input.Keys.RIGHT, delta * 100);
-                        break;
-                }
-            }
-        }
+//        if (camController.isBorderMouseMotionsOn()) {
+//            DIRECTION mouseBorder = screen.getController().getMouseBorder();
+//            if (mouseBorder != null) {
+//                switch (mouseBorder) {
+//                    case UP:
+//                        camController.keyDown(Input.Keys.UP, delta * 100);
+//                        break;
+//                    case DOWN:
+//                        camController.keyDown(Input.Keys.DOWN, delta * 100);
+//                        break;
+//                    case LEFT:
+//                        camController.keyDown(Input.Keys.LEFT, delta * 100);
+//                        break;
+//                    case RIGHT:
+//                        camController.keyDown(Input.Keys.RIGHT, delta * 100);
+//                        break;
+//                }
+//            }
+//        }
+    }
+
+    private void cameraZoomChanged() {
+        cameraZoomChangedCallback.run();
     }
 
     public void move(DIRECTION direction, float delta) {
 
         float xDiff = 0;
         float yDiff = 0;
-        float step = 200 * cam.zoom * cam.zoom * delta;
+        float step = 200 * getZoom() * getZoom() * delta;
         switch (direction) {
             case UP:
                 yDiff = step;
@@ -258,6 +270,18 @@ public class CameraMan {
         motion.getSpeedActionX().setEnd(x + xDiff);
         motion.getSpeedActionY().setEnd(y + yDiff);
         motions.add(motion);
+    }
+
+    protected void setZoom(float i) {
+        if (cam instanceof OrthographicCamera){
+             ((OrthographicCamera) cam).zoom = i;
+        }
+    }
+    protected float getZoom() {
+        if (cam instanceof OrthographicCamera){
+            return ((OrthographicCamera) cam).zoom;
+        }
+        return 0;
     }
 
     private void doMotions(float delta) {
@@ -328,11 +352,12 @@ public class CameraMan {
         // devLog("cameraPan to " + destination);
         float dst = getCam().position.dst(destination.x, destination.y, 0f);// / getCameraDistanceFactor();
 
-        if (overrideCheck == null)
-            if (CameraOptions.options.CAMERA_ON_ACTIVE) {
-                overrideCheck = !getController().isWithinCamera(destination.x, destination.y, 128, 128);
-            } else
-                overrideCheck = false;
+            //TODO
+//        if (overrideCheck == null)
+//            if (CameraOptions.options.CAMERA_ON_ACTIVE) {
+//                overrideCheck = !getController().isWithinCamera(destination.x, destination.y, 128, 128);
+//            } else
+//                overrideCheck = false;
 
         if (!overrideCheck && !Cinematics.ON)  //&& !EidolonsGame.DUEL
             if (dst < getCameraMinCameraPanDist())
@@ -354,9 +379,6 @@ public class CameraMan {
         return 200 * CameraOptions.options.CENTER_CAMERA_DISTANCE_MOD; //TODO if too close to the edge also
     }
 
-    public InputController getController() {
-        return screen.getController();
-    }
 
     public void cameraStop(boolean fullstop) {
         if (fullstop) {
@@ -396,7 +418,7 @@ public class CameraMan {
     }
 
 
-    public OrthographicCamera getCam() {
+    public Camera getCam() {
         return cam;
     }
 

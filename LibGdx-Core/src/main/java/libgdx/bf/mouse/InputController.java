@@ -8,14 +8,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.game.core.Core;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.exploration.story.cinematic.Cinematics;
 import eidolons.game.exploration.handlers.ExplorationMaster;
+import eidolons.game.exploration.story.cinematic.Cinematics;
+import eidolons.system.options.ControlOptions.CONTROL_OPTION;
+import eidolons.system.options.OptionsMaster;
 import libgdx.GdxMaster;
 import libgdx.bf.GridMaster;
 import libgdx.bf.menu.GameMenu;
 import libgdx.screens.GameScreen;
-import eidolons.system.options.ControlOptions.CONTROL_OPTION;
-import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.system.datatypes.DequeImpl;
@@ -303,17 +303,20 @@ public abstract class InputController implements InputProcessor {
             return Cinematics.ON;
         return false;
     }
+    protected abstract GameScreen getScreen();
 
     protected void cameraStop() {
         getScreen().cameraStop(false);
     }
 
-    protected abstract GameScreen getScreen();
 
     public boolean isLeftPressed() {
         return isLeftPressed;
     }
 
+    protected boolean isFreeDrag() {
+        return true;
+    }
     protected void tryPullCameraY(int screenY) {
         float diffY = (yTouchPos - screenY) * camera.zoom * getDragCoef();
         if (isFreeDrag()){
@@ -329,9 +332,6 @@ public abstract class InputController implements InputProcessor {
         cameraPosChanged();
     }
 
-    protected boolean isFreeDrag() {
-        return true;
-    }
 
     protected void tryPullCameraX(int screenX) {
         //TODO custom bounds

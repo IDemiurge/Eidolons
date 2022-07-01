@@ -4,10 +4,10 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import eidolons.content.consts.Images;
 import libgdx.bf.generic.FadeImageContainer;
 import libgdx.gui.dungeon.panels.headquarters.weave.ui.WeaveUi;
 import libgdx.screens.GameScreen;
-import eidolons.content.consts.Images;
 
 /**
  * Created by JustMe on 6/4/2018.
@@ -51,7 +51,7 @@ public class WeaveScreen extends GameScreen {
         if (inputController == null)
             inputController =
              new InputMultiplexer(
-              new WeaveInputController(getCam()),
+//              new WeaveInputController(getCam()),
               ui, space,
               new WeaveKeyController());
         return inputController;

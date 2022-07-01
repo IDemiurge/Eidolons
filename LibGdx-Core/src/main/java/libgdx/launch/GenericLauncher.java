@@ -8,32 +8,31 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import eidolons.content.consts.Images;
 import eidolons.content.consts.VisualEnums;
+import eidolons.system.audio.MusicEnums;
+import eidolons.system.audio.MusicMaster;
+import eidolons.system.data.MetaDataUnit;
+import eidolons.system.data.MetaDataUnit.META_DATA;
 import eidolons.system.libgdx.GdxAdapter;
+import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
+import eidolons.system.options.OptionsMaster;
 import libgdx.Adapter;
 import libgdx.GdxEvents;
 import libgdx.GdxMaster;
 import libgdx.adapters.ScreenApiImpl;
 import libgdx.assets.Assets;
+import libgdx.assets.texture.TextureCache;
 import libgdx.screens.GameScreen;
-import libgdx.screens.handlers.ScreenMaster;
+import libgdx.screens.dungeon.DungeonScreen;
 import libgdx.screens.generic.ScreenWithAssets;
 import libgdx.screens.generic.ScreenWithLoader;
-import libgdx.screens.dungeon.DungeonScreen;
 import libgdx.screens.handlers.ScreenLoader;
-import eidolons.content.consts.Images;
-import libgdx.assets.texture.TextureCache;
+import libgdx.screens.handlers.ScreenMaster;
 import libgdx.utils.GdxTimeMaster;
 import libgdx.video.VideoMaster;
-import eidolons.system.audio.MusicEnums;
-import eidolons.system.audio.MusicMaster;
-import eidolons.system.data.MetaDataUnit;
-import eidolons.system.data.MetaDataUnit.META_DATA;
-import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
-import eidolons.system.options.OptionsMaster;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -120,7 +119,6 @@ public abstract class GenericLauncher extends Game {
                 getConf()));
         if (!CoreEngine.isLevelEditor())
             OptionsMaster.applyGraphicsOptions();
-        // Eidolons.setLauncher(this);
     }
 
 
