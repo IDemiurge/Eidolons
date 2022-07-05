@@ -175,7 +175,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
     }
 
     public void setCam(OrthographicCamera cam) {
-        cameraMan = new CameraMan(cam, this);
+        cameraMan = new CameraMan(cam, ()-> controller.cameraPosChanged());
     }
 
     public void cameraStop(boolean full) {

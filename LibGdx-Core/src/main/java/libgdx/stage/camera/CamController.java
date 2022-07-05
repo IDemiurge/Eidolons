@@ -80,8 +80,8 @@ public class CamController {
                         if (RandomWizard.chance(1)) {
                             main.system.auxiliary.log.LogMaster.devLog(LOG_CHANNEL.CAMERA, " Following: " + v);
                         }
-                        cameraMan.getController().cameraPosChanged();
-                        cameraMan.getController().resetZoom();
+                        cameraMan.cameraChanged();
+//                        cameraMan.getController().resetZoom();
                         return true;
                     }
             }

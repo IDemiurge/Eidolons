@@ -23,7 +23,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.Stack;
 
-import static main.content.enums.GenericEnums.*;
+import static main.content.enums.GenericEnums.BLENDING;
 import static main.system.auxiliary.log.LogMaster.log;
 
 /*
@@ -59,7 +59,7 @@ public class FlyingObjs extends GroupX {
         //concurrent instances, distance, ...
         this.angle = platform.angle;
         this.intensity = intensity;
-        camera = ScreenMaster.getScreen().getCamera();
+        camera = (OrthographicCamera) ScreenMaster.getScreen().getCamera();
         initialDelay = maxDelay * 3;
     }
 

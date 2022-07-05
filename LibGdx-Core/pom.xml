@@ -10,6 +10,19 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>LibGdx-Core</artifactId>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>14</source>
+                    <target>14</target>
+                    <compilerArgs>--enable-preview</compilerArgs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <properties>
         <maven.compiler.source>15</maven.compiler.source>
@@ -164,57 +177,57 @@
             <version>0.13.6</version>
         </dependency>
     </dependencies>
-    <build>
+<!--    <build>-->
 
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <transformers>
-                                <transformer
-                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>libgdx.launch.MainLauncher</mainClass>
-                                    <!--<mainClass>eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner</mainClass>-->
-                                    <!--<mainClass>eidolons.test.frontend.ScenarioLauncher</mainClass>-->
-                                    <!--<mainClass>eidolons.test.frontend.FAST_DC</mainClass>-->
-                                </transformer>
-                            </transformers>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>14</source>
-                    <target>14</target>
-                </configuration>
-            </plugin>
-            <!--            <plugin>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
 <!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-assembly-plugin</artifactId>-->
+<!--                <artifactId>maven-shade-plugin</artifactId>-->
+<!--                <version>3.0.0</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>shade</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <transformers>-->
+<!--                                <transformer-->
+<!--                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
+<!--                                    <mainClass>libgdx.launch.MainLauncher</mainClass>-->
+<!--                                    &lt;!&ndash;<mainClass>eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner</mainClass>&ndash;&gt;-->
+<!--                                    &lt;!&ndash;<mainClass>eidolons.test.frontend.ScenarioLauncher</mainClass>&ndash;&gt;-->
+<!--                                    &lt;!&ndash;<mainClass>eidolons.test.frontend.FAST_DC</mainClass>&ndash;&gt;-->
+<!--                                </transformer>-->
+<!--                            </transformers>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-compiler-plugin</artifactId>-->
 <!--                <configuration>-->
-<!--                    <archive>-->
-<!--                        <manifest>-->
-<!--                            <mainClass>libgdx.launch.MainLauncher</mainClass>-->
-<!--                            &lt;!&ndash;<mainClass>eidolons.test.frontend.ScenarioLauncher</mainClass>&ndash;&gt;-->
-<!--                            &lt;!&ndash;<mainClass>eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner</mainClass>&ndash;&gt;-->
-<!--                        </manifest>-->
-<!--                    </archive>-->
-<!--                    <descriptorRefs>-->
-<!--                        <descriptorRef>jar-with-dependencies</descriptorRef>-->
-<!--                    </descriptorRefs>-->
+<!--                    <source>14</source>-->
+<!--                    <target>14</target>-->
 <!--                </configuration>-->
 <!--            </plugin>-->
-        </plugins>
-    </build>
+<!--            &lt;!&ndash;            <plugin>&ndash;&gt;-->
+<!--&lt;!&ndash;                <groupId>org.apache.maven.plugins</groupId>&ndash;&gt;-->
+<!--&lt;!&ndash;                <artifactId>maven-assembly-plugin</artifactId>&ndash;&gt;-->
+<!--&lt;!&ndash;                <configuration>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <archive>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <manifest>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <mainClass>libgdx.launch.MainLauncher</mainClass>&ndash;&gt;-->
+<!--&lt;!&ndash;                            &lt;!&ndash;<mainClass>eidolons.test.frontend.ScenarioLauncher</mainClass>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                            &lt;!&ndash;<mainClass>eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner</mainClass>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                        </manifest>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </archive>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <descriptorRefs>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <descriptorRef>jar-with-dependencies</descriptorRef>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </descriptorRefs>&ndash;&gt;-->
+<!--&lt;!&ndash;                </configuration>&ndash;&gt;-->
+<!--&lt;!&ndash;            </plugin>&ndash;&gt;-->
+<!--        </plugins>-->
+<!--    </build>-->
 </project>

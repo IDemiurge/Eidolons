@@ -13,10 +13,11 @@ public class TestUnitContent {
         ;
         private Map<String, Object> map;
 
-        TestHero(String stringMap, TestUnit... template ) {
+        TestHero(String stringMap, TestUnit... template) {
             //add up?
         }
-            TestHero(TestUnit template, String stringMap) {
+
+        TestHero(TestUnit template, String stringMap) {
             this.map = new LinkedHashMap<>();
             this.map.putAll(template.getValues());
             this.map.putAll(new DataUnit<>(stringMap).getValues());
@@ -47,10 +48,10 @@ public class TestUnitContent {
         private final float damage;
         private final float ranged;
         private final int aoe;
-        String image;
+        private final String image;
         private final Map<String, Object> values = new LinkedHashMap<>();
 
-        TestUnit(float hp, float damage, int armor, float ranged, float attack, float defense, float initiative, int aoe, String s) {
+        TestUnit(float hp, float damage, int armor, float ranged, float attack, float defense, float initiative, int aoe, String image) {
             this.hp = hp;
             this.armor = armor;
             this.initiative = initiative;
@@ -59,6 +60,7 @@ public class TestUnitContent {
             this.damage = damage;
             this.ranged = ranged;
             this.aoe = aoe;
+            this.image = image;
             init(this);
         }
 

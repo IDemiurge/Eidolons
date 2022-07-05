@@ -4,14 +4,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import eidolons.content.consts.GridCreateData;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
-import eidolons.game.core.EUtils;
 import eidolons.game.core.Core;
+import eidolons.game.core.EUtils;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.exploration.handlers.ExplorationMaster;
+import eidolons.system.audio.MusicMaster;
 import libgdx.GdxMaster;
 import libgdx.assets.Assets;
 import libgdx.audio.DC_Playback;
@@ -28,7 +30,6 @@ import libgdx.shaders.GrayscaleShader;
 import libgdx.stage.BattleGuiStage;
 import libgdx.stage.GridStage;
 import libgdx.stage.GuiStage;
-import eidolons.system.audio.MusicMaster;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -121,7 +122,7 @@ public class DungeonScreen extends GameScreenWithTown {
         Gdx.gl20.glHint(GL11.GL_POLYGON_SMOOTH_HINT, GL20.GL_NICEST);
 
         super.afterLoad();
-        controller = new DungeonInputController(getCamera());
+        controller = new DungeonInputController((OrthographicCamera) getCamera());
 
         soundPlayback = new DC_Playback(this);
 

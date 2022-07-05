@@ -200,7 +200,7 @@ public class CameraMan {
             if (zoomAction.getTime() < zoomAction.getDuration()) {
                 zoomAction.act(delta);
                 setZoom (zoomAction.getValue());
-                cameraZoomChanged();
+                cameraChanged();
                 getCam().update();
             }
         }
@@ -232,7 +232,7 @@ public class CameraMan {
 //        }
     }
 
-    private void cameraZoomChanged() {
+    public void cameraChanged() {
         cameraZoomChangedCallback.run();
     }
 
@@ -289,7 +289,7 @@ public class CameraMan {
             if (!motion.act(delta)) {
                 motions.remove(motion);
             } else {
-                getController().cameraPosChanged();
+                cameraZoomChangedCallback.run();
             }
         }
     }
