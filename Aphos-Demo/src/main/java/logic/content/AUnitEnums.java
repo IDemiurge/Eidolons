@@ -1,6 +1,9 @@
 package logic.content;
 
 public class AUnitEnums {
+    public static final String NAME = "NAME";
+    public static final String IMAGE = "IMAGE";
+
     public static final String HP = "HP";
     public static final String INITIATIVE = "INITIATIVE";
     public static final String ARMOR = "ARMOR";

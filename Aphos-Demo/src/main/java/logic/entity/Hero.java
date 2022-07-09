@@ -20,4 +20,9 @@ public class Hero extends Entity {
     public void setPos(HeroPos pos) {
         this.pos = pos;
     }
+
+    @Override
+    public String toString() {
+        return "Hero - " + name ;
+    }
 }

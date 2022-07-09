@@ -11,7 +11,7 @@ import libgdx.bf.grid.DC_GridPanel;
 import libgdx.bf.grid.moving.PlatformController;
 import libgdx.particles.ParticlesSprites;
 import libgdx.screens.handlers.ScreenMaster;
-import libgdx.stage.camera.MotionData;
+import libgdx.stage.camera.generic.MotionData;
 import main.entity.Entity;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;

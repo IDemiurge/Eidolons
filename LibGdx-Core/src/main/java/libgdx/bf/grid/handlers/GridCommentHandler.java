@@ -28,7 +28,7 @@ import libgdx.bf.grid.cell.BaseView;
 import libgdx.gui.generic.GroupX;
 import libgdx.gui.generic.NoHitGroup;
 import libgdx.gui.dungeon.tooltips.SmartClickListener;
-import libgdx.stage.camera.MotionData;
+import libgdx.stage.camera.generic.MotionData;
 import eidolons.content.consts.Images;
 import eidolons.content.consts.Sprites;
 import libgdx.assets.texture.TextureCache;

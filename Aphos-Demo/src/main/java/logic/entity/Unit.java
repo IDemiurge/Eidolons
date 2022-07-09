@@ -18,4 +18,9 @@ public class Unit extends Entity {
     public void setPos(LanePos pos) {
         this.pos = pos;
     }
+
+    @Override
+    public String toString() {
+        return "Unit - " + name ;
+    }
 }

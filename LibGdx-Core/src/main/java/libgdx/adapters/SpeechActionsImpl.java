@@ -24,7 +24,7 @@ import libgdx.bf.grid.DC_GridPanel;
 import libgdx.bf.grid.cell.BaseView;
 import libgdx.screens.handlers.ScreenMaster;
 import libgdx.screens.dungeon.DungeonScreen;
-import libgdx.stage.camera.MotionData;
+import libgdx.stage.camera.generic.MotionData;
 import main.content.enums.EncounterEnums;
 import main.content.enums.entity.BfObjEnums;
 import main.game.bf.Coordinates;

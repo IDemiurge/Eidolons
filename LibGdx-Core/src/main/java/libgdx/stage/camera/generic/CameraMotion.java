@@ -1,9 +1,10 @@
-package libgdx.stage.camera;
+package libgdx.stage.camera.generic;
 
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
 import libgdx.anims.actions.FloatActionLimited;
+import libgdx.stage.camera.CameraMan;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
 import main.system.text.Log;

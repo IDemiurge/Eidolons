@@ -26,6 +26,11 @@
     <dependencies>
         <dependency>
             <groupId>eidolons</groupId>
+            <artifactId>Eidolon-Core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>eidolons</groupId>
             <artifactId>LibGdx-Core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
@@ -42,8 +47,8 @@
     </dependencies>
 
     <properties>
-        <maven.compiler.source>15</maven.compiler.source>
-        <maven.compiler.target>15</maven.compiler.target>
+        <maven.compiler.source>14</maven.compiler.source>
+        <maven.compiler.target>14</maven.compiler.target>
     </properties>
 
 </project>

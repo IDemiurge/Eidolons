@@ -11,7 +11,7 @@ public class AphosDemo {
 
         Map<String, Object> values = parseArgs(args);
         values.put("fullscreen", false);
-        new DemoApp(values).create();
+        new DemoApp(values).start();
     }
 
     private static Map<String, Object> parseArgs(String[] args) {

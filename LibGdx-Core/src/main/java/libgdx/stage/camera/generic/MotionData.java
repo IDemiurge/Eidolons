@@ -1,4 +1,4 @@
-package libgdx.stage.camera;
+package libgdx.stage.camera.generic;
 
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;

@@ -3,9 +3,11 @@ package libgdx;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Cursor;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.PixmapIO;
+import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Affine2;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -27,6 +29,7 @@ import libgdx.screens.dungeon.DungeonScreen;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
 import libgdx.screens.handlers.ScreenMaster;
+import main.content.enums.GenericEnums;
 import main.data.filesys.PathFinder;
 import main.game.bf.directions.DIRECTION;
 import main.system.launch.Flags;
@@ -38,6 +41,7 @@ import java.util.List;
  * Created by JustMe on 8/30/2017.
  */
 public class GdxMaster {
+    private static final boolean DUMMY = true;
     public static final float fontSizeAdjustCoef = 0.15f;
     public static final float sizeAdjustCoef = 0.25f;
     public static final boolean FULLHD_ONLY = false;
@@ -591,6 +595,9 @@ public class GdxMaster {
     }
 
     public static CustomSpriteBatch createBatchInstance( ) {
+        if (DUMMY){
+
+        }
         if (COLORFUL){
             return new ColorBatch();
         }

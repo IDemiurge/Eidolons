@@ -570,16 +570,6 @@ public abstract class InputController implements InputProcessor {
         return true;
     }
 
-    public DIRECTION getMouseBorder() {
-        float mouseBorderBuffer=100*camera.zoom;
-        float min=camera.position.x - halfWidth*camera.zoom + mouseBorderBuffer;
-        if (Gdx.input.getX()<min)
-            return DIRECTION.LEFT;
-        float max=camera.position.x + halfWidth*camera.zoom - mouseBorderBuffer;
-        if (Gdx.input.getX()>=max)
-            return DIRECTION.RIGHT;
-        return null;
-    }
 
     public void resetZoom() {
         setZoom(defaultZoom);

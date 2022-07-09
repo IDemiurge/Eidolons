@@ -6,25 +6,29 @@ import gdx.dto.LaneDto;
 import gdx.dto.LaneFieldDto;
 import logic.content.test.TestUnitContent;
 import logic.entity.Entity;
+import logic.lane.HeroPos;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static logic.content.test.TestUnitContent.TestUnit.*;
 
 public class LaunchData {
 
     public static final String HERO = TestUnitContent.TestHero.Elberen.toString();
 
     public static final String[][] LANEDATA = {
+            {Zombie.getName(), "", "", "",}, //1st is frontline
             {"", "", "", "",},
-            {"", "", "", "",},
-            {"", "", "", "",},
+            {Rogue.getName(), "", "", "",},
 
+            {Fiend.getName(), "", "", "",},
             {"", "", "", "",},
-            {"", "", "", "",},
-            {"", "", "", "",},
+            {Zombie.getName(), "", "", "",},
     };
     private static final String TXT = "";
     private static final String TXT2 = "";
+    private static final String BG = "bg/shrine overlay.png";
 
     public String hero;
     public String[][] frontData;
@@ -55,22 +59,29 @@ public class LaunchData {
         for (int i = 0; i < laneData.length; i++) {
             lanes.add(new LaneDto(game.createUnitsOnLane(i, laneData)));
         }
-        String img = "gate";
+        String img = BG;
         return new LaneFieldDto(img, lanes);
     }
 
     public FrontLineDto initHeroDto(Game game) {
         List<Entity> side=     new ArrayList<>() ;
         List<Entity> side2=     new ArrayList<>() ;
+            int i=0;
+        HeroPos pos=null;
         for (String s : frontData[0]) {
             if (!s.isEmpty()) {
-                side.add(game.createHeroOrObject(s));
+                pos = new HeroPos(i, true);
+                side.add(game.createHeroOrObject(s, pos));
             }
+            i++;
         }
-        for (String s : frontData[0]) {
+         i=0;
+        for (String s : frontData[1]) {
             if (!s.isEmpty()) {
-                side2.add(game.createHeroOrObject(s));
+                pos = new HeroPos(i, false);
+                side2.add(game.createHeroOrObject(s, pos));
             }
+            i++;
         }
         return new FrontLineDto(side, side2);
     }

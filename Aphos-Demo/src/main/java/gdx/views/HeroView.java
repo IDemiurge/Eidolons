@@ -1,5 +1,6 @@
 package gdx.views;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import gdx.dto.HeroDto;
 
 public class HeroView extends FieldView<HeroDto> {
@@ -24,5 +25,10 @@ public class HeroView extends FieldView<HeroDto> {
     @Override
     protected void update() {
         super.update();
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
     }
 }

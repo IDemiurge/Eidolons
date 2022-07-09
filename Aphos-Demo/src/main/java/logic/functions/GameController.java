@@ -12,7 +12,7 @@ import java.util.List;
 public class GameController { //manager + handler architecture
 
     private final List<LogicController> controllers;
-    protected CombatController combat;
+    protected CombatController combatController;
     private static GameController instance;
 
     private Hero hero;
@@ -25,7 +25,7 @@ public class GameController { //manager + handler architecture
 
     public GameController() {
         controllers = new LinkedList<>();
-        controllers.add(combat = new CombatController(this));
+        controllers.add(combatController = new CombatController(this));
     }
 
     public static GameController getInstance() {
@@ -49,14 +49,13 @@ public class GameController { //manager + handler architecture
 //            GuiEventManager.trigger(GuiEventType. )
         } else {
             //direct call - but we can't do it all from logic thread, eh?
-
             ActionAnims.moveHero(view, prev, pos);
         }
     }
 
-    public static void move(int length, boolean direction) {
+    public static void heroMove(int length, boolean direction) {
         //comes from GDX thread!
-        move(length, direction);
+       instance.move_(length, direction);
     }
 
     public void setHero(Hero hero) {
@@ -67,5 +66,17 @@ public class GameController { //manager + handler architecture
     public void setHeroView(HeroView view) {
         this.view = view;
         controllers.forEach(c-> c.setView(view));
+    }
+
+    public List<LogicController> getControllers() {
+        return controllers;
+    }
+
+    public CombatController getCombatController() {
+        return combatController;
+    }
+
+    public Hero getHero() {
+        return hero;
     }
 }

@@ -1,4 +1,4 @@
-package libgdx.stage.camera;
+package libgdx.stage.camera.generic;
 
 import eidolons.system.options.ControlOptions;
 

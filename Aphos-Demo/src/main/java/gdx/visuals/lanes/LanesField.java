@@ -3,6 +3,7 @@ package gdx.visuals.lanes;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import gdx.dto.LaneDto;
 import gdx.dto.LaneFieldDto;
+import gdx.general.AScreen;
 import gdx.general.view.ADtoView;
 import libgdx.gui.generic.GroupX;
 
@@ -10,22 +11,21 @@ public class LanesField extends ADtoView<LaneFieldDto> {
 
 
     private final int laneCount = LaneConsts.LANES_PER_SIDE;
-    private final Lane[] lanes = new Lane[laneCount];
+    private final Lane[] lanes = new Lane[laneCount*2];
 
     public LanesField() {
         boolean[] sides = {true, false};
 
         for (boolean side : sides) {
             GroupX laneSide = new GroupX();
-            for (int i = 0; i < laneCount; i++) {
+            int max = side?laneCount : laneCount*2;
+            int i = side? 0: laneCount;
+            for (; i < max; i++) {
                 Lane lane = new Lane(i, side);
                 laneSide.addActor(lane);
                 lanes[i] = lane;
             }
             addActor(laneSide);
-            if (!side){
-                laneSide.setX(getWidth()/2);
-            }
         }
     }
 
@@ -44,7 +44,7 @@ public class LanesField extends ADtoView<LaneFieldDto> {
     protected void update() {
         int i = 0;
         for (LaneDto lDto : dto.getLanes()) {
-            lanes[i].setDto(lDto);
+            lanes[i++].setDto(lDto);
         }
     }
 }

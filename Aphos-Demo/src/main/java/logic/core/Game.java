@@ -3,7 +3,9 @@ package logic.core;
 import gdx.dto.UnitDto;
 import logic.content.test.TestUnitContent;
 import logic.entity.Entity;
+import logic.entity.Hero;
 import logic.entity.Unit;
+import logic.lane.HeroPos;
 import logic.lane.LanePos;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -17,7 +19,7 @@ public class Game {
     // New Game just via this?!
     public Game(LaunchData data) {
         GuiEventManager.trigger(GuiEventType.DTO_FrontField, data.initFFDto(this));
-        GuiEventManager.trigger(GuiEventType.DTO_HeroLines, data.initHeroDto(this));
+        GuiEventManager.trigger(GuiEventType.DTO_HeroZone, data.initHeroDto(this));
         GuiEventManager.trigger(GuiEventType.DTO_LaneField, data.initLfDto(this));
     }
 
@@ -42,7 +44,10 @@ public class Game {
         return unit;
     }
 
-    public Entity createHeroOrObject(String s) {
-        return null;
+    public Entity createHeroOrObject(String s, HeroPos pos) {
+        TestUnitContent.TestHero template = TestUnitContent.TestHero.valueOf(s);
+        Map<String, Object> values = template.getValues();
+        Hero hero= new Hero(pos, values);
+        return hero;
     }
 }

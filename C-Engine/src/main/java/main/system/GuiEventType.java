@@ -13,7 +13,7 @@ import main.system.launch.CoreEngine;
 //}
 public enum GuiEventType implements EventType {
     DTO_FrontField,
-    DTO_HeroLines,
+    DTO_HeroZone,
     DTO_LaneField,
     ///////////////////
     HC_PORTRAIT_CHOSEN, HC_GENDER_CHOSEN, HC_RACE_CHOSEN, HC_SUBRACE_CHOSEN, HC_SHOW,

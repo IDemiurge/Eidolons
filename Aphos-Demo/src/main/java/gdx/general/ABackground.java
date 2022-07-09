@@ -21,6 +21,7 @@ public class ABackground {
 
     public ABackground(Batch batch) {
         this.batch = batch;
+        background = new FadeImageContainer();
     }
 
     public void setBackgroundPath(String backgroundPath) {
@@ -31,6 +32,9 @@ public class ABackground {
         } else {
             //TODO
         }
+        AScreen.setWidth(background.getWidth());
+        AScreen.setHeight(background.getHeight());
+//        Geom2D
     }
 
     protected void draw(float delta) {
@@ -39,7 +43,7 @@ public class ABackground {
         if (backgroundSprite == null && background != null) {
             background.act(delta);
             //scale?
-            GdxMaster.center(background);
+//            GdxMaster.center(background);
             background.draw(batch, 1f);
         } else if (backTexture != null) {
             float colorBits = GdxColorMaster.WHITE.toFloatBits();

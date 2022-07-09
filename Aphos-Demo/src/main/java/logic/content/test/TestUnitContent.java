@@ -1,5 +1,7 @@
 package logic.content.test;
 
+import content.LinkedStringMap;
+import main.data.StringMap;
 import main.system.data.DataUnit;
 
 import java.lang.reflect.Field;
@@ -9,7 +11,7 @@ import java.util.Map;
 public class TestUnitContent {
 
     public enum TestHero implements ContentEnum {
-        Elberen(TestUnit.Rogue, "soundset:dark elf;"),
+        Elberen(TestUnit.Rogue, "image:heroes/gwyn token.png;"),
         ;
         private Map<String, Object> map;
 
@@ -18,7 +20,7 @@ public class TestUnitContent {
         }
 
         TestHero(TestUnit template, String stringMap) {
-            this.map = new LinkedHashMap<>();
+            this.map = new LinkedStringMap<>();
             this.map.putAll(template.getValues());
             this.map.putAll(new DataUnit<>(stringMap).getValues());
             // parseStringMap(stringMap)
@@ -31,9 +33,9 @@ public class TestUnitContent {
     }
 
     public enum TestUnit implements ContentEnum {
-        Zombie(50, 10, 2, 0, 5, 5, 3, 0, "main//undead//Zombie.png"),
-        Fiend(35, 15, 4, 0, 12, 6, 5, 0, "main//undead//Zombie.png"),
-        Rogue(20, 12, 1, 0, 15, 12, 7, 0, "main//undead//Zombie.png"), //will be a lot more... but we could pack it into modular structs
+        Zombie(50, 10, 2, 0, 5, 5, 3, 0, "units/Zombie.png"),
+        Fiend(35, 15, 4, 0, 12, 6, 5, 0, "units/haunter.png"),
+        Rogue(20, 12, 1, 0, 15, 12, 7, 0, "units/silent.png"), //will be a lot more... but we could pack it into modular structs
         Archer(20, 5, 1, 6, 10, 5, 6, 0, "main//undead//Zombie.png"),
 
         ;
@@ -48,10 +50,12 @@ public class TestUnitContent {
         private final float damage;
         private final float ranged;
         private final int aoe;
+        private final String name;
         private final String image;
-        private final Map<String, Object> values = new LinkedHashMap<>();
+        private final Map<String, Object> values = new LinkedStringMap<>();
 
         TestUnit(float hp, float damage, int armor, float ranged, float attack, float defense, float initiative, int aoe, String image) {
+            this.name = toString();
             this.hp = hp;
             this.armor = armor;
             this.initiative = initiative;
@@ -71,7 +75,7 @@ public class TestUnitContent {
                     Object o = null;
                     try {
                         o = field.get(testUnit);
-                        testUnit.values.put(field.getName(), o);
+                        testUnit.values.put(field.getName().toUpperCase(), o);
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }

@@ -5,6 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import gdx.views.HeroView;
 import gdx.views.UnitView;
+import gdx.visuals.front.HeroZone;
+import gdx.visuals.front.ViewManager;
 import libgdx.anims.actions.ActionMasterGdx;
 import logic.lane.HeroPos;
 import logic.lane.LanePos;
@@ -22,61 +24,39 @@ public class ActionAnims {
         if (prevPos.lane != pos.lane){
 //            jumpLane()
         }
-        float scale = getScale(pos.pos);
+        float scale = ViewManager.getScale(pos.cell);
         float dur= 1;
         ScaleToAction scaleAction = ActionMasterGdx.getScaleAction(scale, dur);
         scaleAction.setInterpolation(Interpolation.smooth);
         scaleAction.setTarget(view);
         view.addAction(scaleAction);
 
-        MoveToAction moveToAction = ActionMasterGdx.getMoveToAction(getX(pos), getY(pos), dur);
+        MoveToAction moveToAction = ActionMasterGdx.getMoveToAction(ViewManager.getX(pos), ViewManager.getYInverse(pos), dur);
         scaleAction.setInterpolation(Interpolation.smooth);
         scaleAction.setTarget(view);
         view.addAction(scaleAction);
 
     }
 
-    private static float getScale(int pos) {
-        return 1 - pos*0.15f + pos*pos*0.015f;
-        /*
-        return 1 - pos*0.2f + pos*pos*0.02f;
-        1: 0.82
-        2: 0.66
-        3: 0.56
-        4: 0.52
-         */
-    }
-
     public  static void moveHero(HeroView view, HeroPos prevPos, HeroPos pos) {
         boolean jump = Math.abs(pos.getCell() - prevPos.getCell()) >=2;
         MoveToAction moveToAction = new MoveToAction();
-        moveToAction.setInterpolation(jump ? Interpolation.swingIn : Interpolation.smooth);
+        moveToAction.setInterpolation(jump ? Interpolation.sineOut : Interpolation.smooth);
+        //TODO for real jump we'll need separate actions for Y and X !
 
         float dur = 1;
         moveToAction.setDuration(dur);
-        float x = getX(pos);
-        float y = getY(pos);
+        float x = ViewManager.getHeroX(pos);
+        float y = HeroZone.HEIGHT;
+        y = y - ViewManager.getHeroYInverse(pos);
+        if (pos.isLeftSide())
+        System.out.printf("Moved to %2.0f on left side (%2.0f:%2.0f)\n", (float) pos.getCell(), x, y);
+        else
+        System.out.printf("Moved to %2.0f on right side (%2.0f:%2.0f)\n", (float) pos.getCell(), x, y);
         moveToAction.setPosition(x, y);
         moveToAction.setTarget(view);
         view.addAction(moveToAction);
 
     }
 
-    private static float getY(LanePos pos) {
-        return 0;
-    }
-
-    private static float getX(LanePos pos) {
-        //TODO
-        return 0;
-    }
-    private static float getY(HeroPos pos) {
-        //Just Diagonal? Aye, but not 45 degrees, or?
-        return 0;
-    }
-
-    private static float getX(HeroPos pos) {
-        //TODO
-        return 0;
-    }
 }

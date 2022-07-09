@@ -13,14 +13,21 @@ public class AKeyListener extends InputAdapter {
         } else
         if (keycode == Input.Keys.Q){
             move(1, false);
+        } else
+        if (keycode == Input.Keys.R || keycode == Input.Keys.D){
+            move(2, true);
+        } else
+        if (keycode == Input.Keys.E){
+            move(1, true);
         }
 
         return super.keyDown(keycode);
     }
 
     private void move(int length, boolean direction) {
-        GameController.move(length, direction);
+        GameController.heroMove(length, direction);
     }
+
     private void showAttackMenu() {
 
     }

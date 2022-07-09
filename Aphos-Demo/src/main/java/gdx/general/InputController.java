@@ -109,8 +109,14 @@ public class InputController implements InputProcessor {
 //        if (isManualCameraDisabled())
 //            return false;
         if (mouseButtonPressed == Input.Buttons.LEFT) {
-            tryPullCameraX(screenX);
-            tryPullCameraY(screenY);
+//            System.out.printf("dragged to %2.0f:%2.0f", camera.position.x, camera.position.y);
+//            camera.position.x += screenX;
+//            camera.position.y += screenY;
+//            if (is)
+//            tryPullCameraX(screenX);
+//            tryPullCameraY(screenY);
+
+            cameraMan.drag(screenX, screenY);
             cameraStop();
         }
 
@@ -140,8 +146,8 @@ public class InputController implements InputProcessor {
                     halfHeight - getMargin(),
                     getHeight() - halfHeight + getMargin());
         yTouchPos = screenY;
-
-        Gdx.input.setCursorPosition(Gdx.input.getX(), (int) yTouchPos);
+//is it useful to push cursor as well?
+//        Gdx.input.setCursorPosition(Gdx.input.getX(), (int) yTouchPos);
     }
 
 
@@ -156,7 +162,7 @@ public class InputController implements InputProcessor {
                     halfWidth - getMargin(),
                     getWidth() - halfWidth + getMargin());
         xTouchPos = screenX;
-        Gdx.input.setCursorPosition((int) xTouchPos, Gdx.input.getY());
+//        Gdx.input.setCursorPosition((int) xTouchPos, Gdx.input.getY());
     }
 
     protected float getDragCoef() {

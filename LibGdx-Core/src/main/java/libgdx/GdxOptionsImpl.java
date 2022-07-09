@@ -22,7 +22,7 @@ import libgdx.particles.ambi.EmitterMap;
 import libgdx.particles.ambi.ParticleManager;
 import libgdx.screens.handlers.ScreenMaster;
 import libgdx.stage.GuiVisualEffects;
-import libgdx.stage.camera.CameraOptions;
+import libgdx.stage.camera.generic.CameraOptions;
 import main.system.auxiliary.EnumMaster;
 
 public class GdxOptionsImpl implements GdxOptions {

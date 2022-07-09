@@ -3,6 +3,7 @@ package gdx;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -12,6 +13,8 @@ import eidolons.content.consts.VisualEnums;
 import eidolons.system.options.GraphicsOptions;
 import eidolons.system.options.OptionsMaster;
 import gdx.general.AScreen;
+import gdx.general.Textures;
+import libgdx.GdxEvents;
 import libgdx.GdxMaster;
 import libgdx.assets.Assets;
 import libgdx.assets.texture.TextureCache;
@@ -45,23 +48,27 @@ public class DemoApp extends Game {
         fullscreen = (boolean) launchParameters.get("fullscreen");
     }
 
+    public void start() {
+        ScreenMaster.setApplication(new LwjglApplication(this,
+                getConf()));
+    }
     @Override
     public void create() {
-
-        TextureCache.getInstance(); //will we use the same?
+        Textures.init(); //will we use the same?
         GdxMaster.setLoadingCursor();
-        Camera camera =  new OrthographicCamera();
+        GuiEventManager.setManager(new GdxEvents());
+        Camera camera = new OrthographicCamera();
         viewport = new ScreenViewport(camera);
         ScreenMaster.setMainViewport(viewport);
         AphosEngine.start();
 
-        Screen combatScreen= new AScreen();
+        Screen combatScreen = new AScreen();
         setScreen(combatScreen);
     }
 
     protected String getTitle() {
         return "APHOS v" + AphosDemo.VERSION +
-                (Flags.isIDE() ? " [IDE]" : "")+
+                (Flags.isIDE() ? " [IDE]" : "") +
                 (Flags.isJar() ? " [JAR]" : "");
     }
 
@@ -73,12 +80,12 @@ public class DemoApp extends Game {
         //conf.useGL30 = true;
         conf.resizable = false;
         conf.samples = 4;
-        conf.fullscreen = false;
-        if (!CoreEngine.isLevelEditor())
-            fullscreen = OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.FULLSCREEN);
-        if (Flags.isGraphicTestMode()) {
-            fullscreen = true;
-        }
+//        if (!CoreEngine.isLevelEditor())
+//            fullscreen = OptionsMaster.getGraphicsOptions().getBooleanValue(GraphicsOptions.GRAPHIC_OPTION.FULLSCREEN);
+//        if (Flags.isGraphicTestMode()) {
+//            fullscreen = true;
+//        }
+        conf.fullscreen = fullscreen;
         conf.foregroundFPS = FRAMERATE;
         if (!Flags.isJar())
             conf.backgroundFPS = isStopOnInactive() ? 1 : FRAMERATE;
@@ -88,6 +95,8 @@ public class DemoApp extends Game {
         initResolution(conf);
         initIcon(conf);
 
+        ////TODO could break?
+        conf.vSyncEnabled = false;
         return conf;
     }
 
@@ -138,6 +147,10 @@ public class DemoApp extends Game {
                         dimension.getHeight();
                 conf.width = w;
                 conf.height = h;
+                if (Flags.isIDE()){
+                    conf.width = (int) (w*1.25f);
+                    conf.height = (int) (h*1.2f);
+                }
                 if (w < 1500)
                     conf.useGL30 = false;
                 System.out.println("resolution width " + w);
@@ -177,19 +190,19 @@ public class DemoApp extends Game {
                 ((ScreenWithLoader) getScreen()).loadTick();
             }
         } else {
-            getScreen().assetsLoaded();
+//            getScreen().assetsLoaded();
         }
     }
 
     @Override
-    public ScreenWithAssets getScreen() {
-        return (ScreenWithAssets) super.getScreen();
+    public Screen getScreen() {
+        return super.getScreen();
     }
 
     @Override
     public void setScreen(Screen screen) {
         super.setScreen(screen);
-        if (screen instanceof GameScreen){
+        if (screen instanceof GameScreen) {
 //            ScreenApiImpl api = new ScreenApiImpl(gameScreen);
 //            this.gameScreen = (GameScreen) screen;
 //            GdxAdapter.getInstance().setScreen(api);

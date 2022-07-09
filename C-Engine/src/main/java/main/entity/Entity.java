@@ -40,10 +40,12 @@ import java.util.Map;
  * toBase() is called whenever we need to update them - first they are set to their base, then modified by various
  * effects
  * <portrait>
- * resetObjects, afterEffects (apply masteries/attributes), preCheck parameter buff rules (focus, stamina, …) :: Dynamic
- * values are not reset to base on toBase() :: Properties – container (; separated), variable(value), :: Parameters –
- * formula syntax: {ref_value}, e.g. {source_base strength}, event_ prefix checked first, replaced ref with event’s ref
- * if necessary :: Buffs – created with a duration or a retainCondition, add ContinuousEffect’s while in game
+ * resetObjects, afterEffects (apply masteries/attributes), preCheck parameter buff rules (focus, stamina, …)
+ * :: Dynamic values are not reset to base on toBase()
+ * :: Properties – container (; separated), variable(value),
+ * :: Parameters – formula syntax: {ref_value}, e.g. {source_base strength}, event_ prefix checked first, replaced ref with event’s ref
+ * if necessary
+ * :: Buffs – created with a duration or a retainCondition, add ContinuousEffect’s while in game
  */
 public abstract class Entity extends DataModel implements OBJ {
 

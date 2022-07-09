@@ -1,128 +1,60 @@
 package libgdx.stage.camera;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.unit.Unit;
-import eidolons.game.core.Core;
 import eidolons.game.exploration.story.cinematic.Cinematics;
-import eidolons.system.options.ControlOptions;
 import eidolons.system.options.OptionsMaster;
-import libgdx.anims.actions.ActionMasterGdx;
-import libgdx.anims.main.AnimMaster;
 import libgdx.bf.GridMaster;
-import libgdx.utils.ActTimer;
+import libgdx.stage.camera.generic.CameraMotion;
+import libgdx.stage.camera.generic.CameraOptions;
+import libgdx.stage.camera.generic.MotionData;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LOG_CHANNEL;
-import main.system.auxiliary.secondary.Bools;
-import main.system.text.Log;
-import main.system.threading.WaitMaster;
 
 import java.util.*;
 
 import static main.system.GuiEventType.*;
 import static main.system.auxiliary.log.LogMaster.devLog;
 
-/**
- * smooth camera movement
- */
 public class CameraMan {
 
-    private final CamController camController = new CamController(this);
-
-    private boolean firstCenteringDone;
-    Camera cam;
+    private Camera cam;
     private final Runnable cameraZoomChangedCallback;
+    private final DragCamControl dragController;
+    private final BorderCamControl borderController;
+    private final ZoomCamControl zoomController;
+    private final PanCamControl panCamControl;
+    List<CamControl> controls = new ArrayList<>(4);
 
-    private FloatAction zoomAction;
     private final Set<CameraMotion> motions = new LinkedHashSet<>();
-    private final ActTimer cameraTimer;
-    private boolean mustFinish;
-    Map<DIRECTION, CameraMotion> moveMap = new HashMap<>();
-
-    private BattleFieldObject pendingPanTarget;
-
-
-
-    public void unitActive(BattleFieldObject hero) {
-
-        if (Log.check(Log.LOG_CASE.camera))
-            devLog(LOG_CHANNEL.CAMERA, "Request pan camera to active unit" + hero);
-        if (pendingPanTarget == hero) {
-            return;
-        }
-        pendingPanTarget = hero;
-        int time = 1500;
-        if (AnimMaster.getInstance().isDrawingPlayer()) {
-            time = 2200;
-        }
-        if (hero.isPlayerCharacter()) {
-            time = 1000;
-        }
-        if (!CameraOptions.options.AUTO_CAMERA_OFF)
-            WaitMaster.doAfterWait(time, () -> {
-                if (hero.getGame().getManager().getActiveObj() == hero) {
-                    motions.clear();
-                    centerCameraOn(hero);
-                    pendingPanTarget = null;
-                    //                mustFinish=true;
-
-                    if (Log.check(Log.LOG_CASE.camera))
-                        devLog(LOG_CHANNEL.CAMERA, "Panning camera to active unit" + hero);
-                }
-            });
-    }
-
-    public void defaultZoom() {
-        setZoom(1);
-    }
-
-//    public void maxZoom() {
-//        screen.getController().maxZoom();
-//    }
-
-
-    public void centerCam() {
-        Unit mainHero = Core.getMainHero();
-        if (mainHero != null) {
-            centerCameraOnMainHero();
-        }
-//        else
-//            screen.getController().centerCam();
-    }
+    protected float width,height,halfWidth,halfHeight;
 
 
     public CameraMan(Camera cam, Runnable cameraZoomChangedCallback) {
         this.cam = cam;
         this.cameraZoomChangedCallback = cameraZoomChangedCallback;
+
+        controls.add(dragController = new DragCamControl(this));
+        controls.add(borderController = new BorderCamControl(this));
+        controls.add(panCamControl = new PanCamControl(this));
+        controls.add(zoomController = new ZoomCamControl(this));
+
         CameraOptions.update(OptionsMaster.getControlOptions());
-        cameraTimer = new ActTimer(CameraOptions.options.CENTER_CAMERA_AFTER_TIME, () -> {
-            if (!firstCenteringDone) {
-                centerCameraOn(Core.getMainHero());
-                firstCenteringDone = true;
-            }
-            if (!CameraOptions.options.AUTO_CAMERA_OFF)
-                if (Core.getGame().getManager().checkAutoCameraCenter()) {
-                    if (!Core.getMainHero().isDead()) //for Shade
-                        centerCameraOn(Core.getMainHero());
-                }
-        });
 
-        GuiEventManager.bind(CAMERA_FOLLOW_OFF, p -> {
-            camController.follow(null);
-        });
-        GuiEventManager.bind(GuiEventType.CAMERA_FOLLOW_MAIN, p -> {
-            camController.follow(Core.getMainHero());
-        });
+        bindEvents();
+    }
 
-        GuiEventManager.bind(GuiEventType.CAMERA_OFFSET, p -> {
+    private void bindEvents() {
+        GuiEventManager.bind(CAMERA_ZOOM, param -> {
+            MotionData data = (MotionData) param.get();
+            zoomController.zoom(data);
+        });
+        GuiEventManager.bind(CAMERA_OFFSET, p -> {
             Vector2 v;
             if (p.get() instanceof Coordinates) {
                 v = GridMaster.getCenteredPos((Coordinates) p.get());
@@ -134,156 +66,46 @@ public class CameraMan {
             getCam().position.set(x + v.x, y + v.y, 0);
 
         });
-        GuiEventManager.bind(GuiEventType.CAMERA_SET_TO, p -> {
+        GuiEventManager.bind(CAMERA_SET_TO, p -> {
             getCam().position.set((Vector2) p.get(), 0);
         });
-        GuiEventManager.bind(CAMERA_PAN_TO, param -> {
-            if (param.get() instanceof MotionData) {
-                cameraPan((MotionData) param.get());
-            } else
-                cameraPan(new MotionData(param.get()));
-        });
-        GuiEventManager.bind(CAMERA_PAN_TO_COORDINATE, param -> {
-            if (param.get() instanceof MotionData) {
-                cameraPan((MotionData) param.get());
-            } else
-                cameraPan(new MotionData(param.get()));
-        });
-        GuiEventManager.bind(CAMERA_PAN_TO_UNIT, param -> {
-            if (param.get() instanceof MotionData) {
-                cameraPan((MotionData) param.get());
-            } else
-                cameraPan(new MotionData(param.get()));
-        });
-
-
-        GuiEventManager.bind(CAMERA_ZOOM, param -> {
-            MotionData data = (MotionData) param.get();
-            zoomAction = (FloatAction) ActionMasterGdx.getAction(FloatAction.class);
-            zoomAction.setStart(getZoom());
-            zoomAction.setEnd(data.zoom);
-            if (data.duration <= 0) {
-                data.duration = Math.abs(getZoom() - data.zoom) * 15;
-            }
-            zoomAction.setDuration(data.duration);
-            zoomAction.setInterpolation(data.interpolation);
-            devLog("Zooming to " + data.zoom);
-        });
+//        GuiEventManager.bind(CAMERA_PAN_TO, param -> {
+//            if (param.get() instanceof MotionData) {
+//                cameraPan((MotionData) param.get());
+//            } else
+//                cameraPan(new MotionData(param.get()));
+//        });
+//        GuiEventManager.bind(CAMERA_PAN_TO_COORDINATE, param -> {
+//            if (param.get() instanceof MotionData) {
+//                cameraPan((MotionData) param.get());
+//            } else
+//                cameraPan(new MotionData(param.get()));
+//        });
+//        GuiEventManager.bind(CAMERA_PAN_TO_UNIT, param -> {
+//            if (param.get() instanceof MotionData) {
+//                cameraPan((MotionData) param.get());
+//            } else
+//                cameraPan(new MotionData(param.get()));
+//        });
     }
 
-    public void zoom(float zoom){
-        zoomAction = (FloatAction) ActionMasterGdx.getAction(FloatAction.class);
-        zoomAction.setStart(getZoom());
-        zoomAction.setEnd(getZoom()+zoom);
-        zoomAction.setDuration(0.5f);
-        zoomAction.setInterpolation(Interpolation.smooth);
+    public void drag(int screenX, int screenY) {
+        dragController.drag(screenX, screenY);
     }
 
-    private void follow(Unit unit) {
-        camController.follow(unit);
+    public void zoom(float zoom) {
+        zoomController.zoom(zoom);
     }
-
 
     public void act(float delta) {
-        // cameraTimer.setPeriod(options.CENTER_CAMERA_AFTER_TIME);
-        // cameraTimer.act(delta);
-        // gdx review - is this a useful feature?
-        if (!Core.getGame().isPaused())
-            if (!Core.getGame().isDebugMode())
-                if (motions.isEmpty()) {
-                    if (camController.checkFollow(delta))
-                        return;
-                }
-
         doMotions(delta);
-        if (zoomAction != null) {
-            if (zoomAction.getTime() < zoomAction.getDuration()) {
-                zoomAction.act(delta);
-                setZoom (zoomAction.getValue());
-                cameraChanged();
-                getCam().update();
-            }
+        for (CamControl control : controls) {
+            control.act(delta);
         }
-        if (camController.isArrowMotionsOn()) {
-            for (int key : CamController.keys) {
-                if (Gdx.input.isKeyPressed(key)) {
-                    camController.keyDown(key, delta);
-                }
-            }
-        }
-//        if (camController.isBorderMouseMotionsOn()) {
-//            DIRECTION mouseBorder = screen.getController().getMouseBorder();
-//            if (mouseBorder != null) {
-//                switch (mouseBorder) {
-//                    case UP:
-//                        camController.keyDown(Input.Keys.UP, delta * 100);
-//                        break;
-//                    case DOWN:
-//                        camController.keyDown(Input.Keys.DOWN, delta * 100);
-//                        break;
-//                    case LEFT:
-//                        camController.keyDown(Input.Keys.LEFT, delta * 100);
-//                        break;
-//                    case RIGHT:
-//                        camController.keyDown(Input.Keys.RIGHT, delta * 100);
-//                        break;
-//                }
-//            }
-//        }
+        CameraMotion motion = borderController.getMotion();
+        if (motion != null)
+            motions.add(motion);
     }
-
-    public void cameraChanged() {
-        cameraZoomChangedCallback.run();
-    }
-
-    public void move(DIRECTION direction, float delta) {
-
-        float xDiff = 0;
-        float yDiff = 0;
-        float step = 200 * getZoom() * getZoom() * delta;
-        switch (direction) {
-            case UP:
-                yDiff = step;
-                break;
-            case DOWN:
-                yDiff = -step;
-                break;
-            case LEFT:
-                xDiff = -step;
-                break;
-            case RIGHT:
-                xDiff = step;
-                break;
-        }
-        CameraMotion motion = moveMap.get(direction);
-        float x;
-        float y;
-        x = cam.position.x;
-        y = cam.position.y;
-        if (motion == null) {
-            moveMap.put(direction, motion = new CameraMotion(this, 0.1f, new Vector2(x, y), Interpolation.fade));
-        } else {
-            motion.reset(0.1f);
-        }
-        motion.getSpeedActionX().setStart(x);
-        motion.getSpeedActionY().setStart(y);
-        motion.getSpeedActionX().setEnd(x + xDiff);
-        motion.getSpeedActionY().setEnd(y + yDiff);
-        motions.add(motion);
-    }
-
-    protected void setZoom(float i) {
-        if (cam instanceof OrthographicCamera){
-             ((OrthographicCamera) cam).zoom = i;
-        }
-    }
-    protected float getZoom() {
-        if (cam instanceof OrthographicCamera){
-            return ((OrthographicCamera) cam).zoom;
-        }
-        return 0;
-    }
-
     private void doMotions(float delta) {
         for (CameraMotion motion : new ArrayList<>(motions)) {
             if (!motion.act(delta)) {
@@ -294,132 +116,65 @@ public class CameraMan {
         }
     }
 
-    private boolean isOldCamera() {
-        return false;
+    public void cameraChanged() {
+        cameraZoomChangedCallback.run();
     }
 
+    public void centerCam(float x, float y) {
+        getCam().position.x = x;
+        getCam().position.x = y;
+    }
+
+
+    //TODO
     public void centerCameraOnMainHero() {
-        Vector2 v = GridMaster.getCenteredPos(Core.getPlayerCoordinates());
-        cam.position.x=v.x;
-        cam.position.y=v.y;
-        centerCameraOn(Core.getMainHero(), true);
     }
 
-    public static void setCameraPanMod(float mod) {
-        Float cameraPanMod = mod;
+
+    //TODO
+    public void unitActive(BattleFieldObject hero) {
     }
-
-    protected boolean isCameraPanningOff() {
-        return OptionsMaster.getControlOptions().getBooleanValue(ControlOptions.CONTROL_OPTION.AUTO_CAMERA_OFF); //TODO
-    }
-
-    private void cameraPan(MotionData motionData) {
-        //        if (motionData.exclusive)
-        if (motions.isEmpty()) {
-            mustFinish = false;
-        }
-        if (!motions.isEmpty()) {
-            if (!mustFinish || motionData.exclusive) {
-                devLog(LOG_CHANNEL.CAMERA, "cleared pan motions! ");
-                motions.clear();
-            } else {
-                devLog(LOG_CHANNEL.CAMERA, "mustFinish pan motions! ");
-                return;
-            }
-            //                return;
-        }
-        cameraPan(motionData.dest, motionData.duration, motionData.interpolation, null);
-
-    }
-
-    protected void cameraPan(Vector2 unitPosition, Boolean overrideCheck) {
-        cameraPan(unitPosition, 0, Interpolation.fade, overrideCheck);
-    }
-
-    protected void cameraPan(Vector2 destination, float duration, Interpolation interpolation, Boolean overrideCheck) {
-        if (!Cinematics.ON)
-            if (isCameraPanningOff()) {
-                return;
-            }
-        if (destination == null) {
-            return;
-        }
-        if (Cinematics.ON) {
-            destination.y = destination.y - 210;
-        } else {
-            //            destination.y= destination.y+100;
-        }
-        // devLog("cameraPan to " + destination);
-        float dst = getCam().position.dst(destination.x, destination.y, 0f);// / getCameraDistanceFactor();
-
-            //TODO
-//        if (overrideCheck == null)
-//            if (CameraOptions.options.CAMERA_ON_ACTIVE) {
-//                overrideCheck = !getController().isWithinCamera(destination.x, destination.y, 128, 128);
-//            } else
-//                overrideCheck = false;
-
-        if (!overrideCheck && !Cinematics.ON)  //&& !EidolonsGame.DUEL
-            if (dst < getCameraMinCameraPanDist())
-                return;
-
-
-        if (duration == 0) {
-            duration = 1 + dst / getPanSpeed();
-        }
-        motions.add(new CameraMotion(this, duration, destination, interpolation));
-
-    }
-
-    private float getPanSpeed() {
-        return 450;
-    }
-
-    protected float getCameraMinCameraPanDist() {
-        return 200 * CameraOptions.options.CENTER_CAMERA_DISTANCE_MOD; //TODO if too close to the edge also
-    }
-
 
     public void cameraStop(boolean fullstop) {
         if (fullstop) {
             //            lastPos = new Vector3(getCam().position);
         }
         motions.clear();
-        cameraTimer.reset();
     }
 
 
+    @Deprecated
     public void centerCameraOn(BattleFieldObject hero) {
-        centerCameraOn(hero, null);
     }
 
+    @Deprecated
     public void centerCameraOn(BattleFieldObject hero, Boolean force) {
-        if (!CameraOptions.options.CAMERA_ON_ACTIVE) //TODO refactor this shit
-            if (!Bools.isTrue(force))
-                if (!hero.isMine())
-                    return;
-        cameraPan(new MotionData(hero, 2f));
-        // Vector2 unitPosition = GridMaster.getCenteredPos(hero.getCoordinates());
-        // cameraPan(unitPosition, force);
 
-
-    }
-
-    //TODO
-    public void setCameraTimer(int intValue) {
-        if (cameraTimer == null) {
-            return;
-        }
-        cameraTimer.setPeriod(intValue);
     }
 
     public Vector2 getCameraCenter() {
         return new Vector2(getCam().position.x, getCam().position.y);
     }
 
-
     public Camera getCam() {
         return cam;
     }
 
+    public void setWidth(float width) {
+        this.width = width;
+        this.halfWidth = width/2;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+        this.halfHeight = height/2;
+    }
+
+    public float getHeight() {
+        return height;
+    }
 }
