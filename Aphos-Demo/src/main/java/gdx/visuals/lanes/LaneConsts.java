@@ -7,4 +7,6 @@ public class LaneConsts {
     public static final int LANES_PER_SIDE = 3;
     public static final float FRONTLINE_X  = 400;
     public static final float FRONTLINE_Y = 400;
+
+    public static final int CELLS_PER_SIDE = 7;
 }

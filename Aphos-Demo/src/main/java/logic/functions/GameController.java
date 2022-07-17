@@ -1,10 +1,8 @@
 package logic.functions;
 
-import gdx.general.anims.ActionAnims;
 import gdx.views.HeroView;
 import logic.entity.Hero;
-import logic.functions.combat.CombatController;
-import logic.lane.HeroPos;
+import logic.functions.combat.CombatLogic;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -12,20 +10,19 @@ import java.util.List;
 public class GameController { //manager + handler architecture
 
     private final List<LogicController> controllers;
-    protected CombatController combatController;
     private static GameController instance;
+    protected CombatLogic combatLogic;
+    protected MoveLogic moveLogic;
 
     private Hero hero;
     private HeroView view;
     private int round;
 
-    public void active(Hero hero){
-        setHero(hero);
-    }
 
     public GameController() {
         controllers = new LinkedList<>();
-        controllers.add(combatController = new CombatController(this));
+        controllers.add(combatLogic = new CombatLogic(this));
+        controllers.add(moveLogic = new MoveLogic(this));
     }
 
     public static GameController getInstance() {
@@ -35,48 +32,36 @@ public class GameController { //manager + handler architecture
         return instance;
     }
 
-    public void move_(int length, boolean direction) {
-
-        HeroPos prev= hero.getPos();
-        if (prev.isLeftSide())
-            direction = !direction;
-        int mod = direction ? length : -length;
-        HeroPos pos = new HeroPos(prev.getCell() + mod, prev.isLeftSide()); //TODO
-        hero.setPos(pos);
-        boolean triggered=false;
-//        HeroView view = FrontField.get().getView(hero);
-        if (triggered){
-//            GuiEventManager.trigger(GuiEventType. )
-        } else {
-            //direct call - but we can't do it all from logic thread, eh?
-            ActionAnims.moveHero(view, prev, pos);
-        }
+    public void active(Hero hero) {
+        setHero(hero);
     }
-
     public static void heroMove(int length, boolean direction) {
         //comes from GDX thread!
-       instance.move_(length, direction);
+        instance.getMoveLogic().move_(length, direction);
     }
-
     public void setHero(Hero hero) {
         this.hero = hero;
-        controllers.forEach(c-> c.setHero(hero));
+        controllers.forEach(c -> c.setHero(hero));
+    }
+    public Hero getHero() {
+        return hero;
     }
 
     public void setHeroView(HeroView view) {
         this.view = view;
-        controllers.forEach(c-> c.setView(view));
+        controllers.forEach(c -> c.setView(view));
     }
 
     public List<LogicController> getControllers() {
         return controllers;
     }
 
-    public CombatController getCombatController() {
-        return combatController;
+    public MoveLogic getMoveLogic() {
+        return moveLogic;
     }
 
-    public Hero getHero() {
-        return hero;
+    public CombatLogic getCombatLogic() {
+        return combatLogic;
     }
+
 }

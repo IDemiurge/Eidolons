@@ -48,11 +48,6 @@ public class CameraMotion {
     public boolean act(float delta) {
         speedActionX.act(delta);
         speedActionY.act(delta);
-        if (speedActionX.getTime() >= speedActionX.getDuration()) {
-            if (speedActionY.getTime() >= speedActionY.getDuration()) {
-                return false;
-            }
-        }
         float offsetX = lastCamX == -1 ? 0 : cameraMan.getCam().position.x - lastCamX;
         float offsetY = lastCamY == -1 ? 0 : cameraMan.getCam().position.y - lastCamY;
         float x = Math.round(speedActionX.getValue()) + offsetX;
@@ -61,6 +56,12 @@ public class CameraMotion {
 
         lastCamX = cameraMan.getCam().position.x;
         lastCamY = cameraMan.getCam().position.y;
+
+        if (speedActionX.getTime() >= speedActionX.getDuration()) {
+            if (speedActionY.getTime() >= speedActionY.getDuration()) {
+                return false;
+            }
+        }
         return true;
     }
 

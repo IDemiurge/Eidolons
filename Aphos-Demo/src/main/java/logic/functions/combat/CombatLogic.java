@@ -7,10 +7,10 @@ import logic.functions.GameController;
 import logic.functions.LogicController;
 import main.system.auxiliary.RandomWizard;
 
-public class CombatController extends LogicController {
+public class CombatLogic extends LogicController {
     private static final int BASE_HIT_CHANCE = 75;
 
-    public CombatController(GameController controller) {
+    public CombatLogic(GameController controller) {
         super(controller);
     }
 

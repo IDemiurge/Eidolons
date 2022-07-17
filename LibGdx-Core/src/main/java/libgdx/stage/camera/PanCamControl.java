@@ -65,4 +65,11 @@ public class PanCamControl extends CamControl {
     protected void cameraPan(Vector2 unitPosition, Boolean overrideCheck) {
         cameraPan(unitPosition, 0, Interpolation.fade, overrideCheck);
     }
+
+    public void centerCam() {
+        centerCam(cameraMan.halfWidth,  cameraMan.halfHeight  -100);
+    }
+    public void centerCam(float x, float y) {
+        cameraMan.addMotion(new CameraMotion(cameraMan, 4f, new Vector2(x, y), Interpolation.pow2Out));
+    }
 }

@@ -12,16 +12,29 @@ public class ZoomCamControl extends CamControl {
 
     public ZoomCamControl(CameraMan cameraMan) {
         super(cameraMan);
+        cam.zoom = 0.5f;
+        initialMotion();
+    }
+
+    private void initialMotion() {
+        zoom(1f, 4f, true);
     }
 
     public void zoom(float zoom) {
+        zoom(zoom, 0.5f, false);
+    }
+
+    public void zoom(float zoom, float duration, boolean setTo) {
         if (zoomAction != null)
             if (zoomAction.getTime() < zoomAction.getDuration())
                 return;
         zoomAction = (FloatAction) ActionMasterGdx.getAction(FloatAction.class);
         zoomAction.setStart(getZoom());
-        zoomAction.setEnd(getZoom() + zoom);
-        zoomAction.setDuration(0.5f);
+        if (setTo)
+            zoomAction.setEnd( zoom);
+        else
+            zoomAction.setEnd(getZoom() + zoom);
+        zoomAction.setDuration(duration);
         zoomAction.setInterpolation(Interpolation.smooth);
     }
 

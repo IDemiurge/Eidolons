@@ -41,17 +41,19 @@ public class DemoApp extends Game {
     public GameScreen gameScreen;
     protected ScreenViewport viewport;
     protected boolean fullscreen;
-    private final Map<String, Object> launchParameters;
+    private final Map<String, String> launchParameters;
 
-    public DemoApp(Map<String, Object> values) {
+    public DemoApp(Map<String, String> values) {
         this.launchParameters = values;
-        fullscreen = (boolean) launchParameters.get("fullscreen");
+        if (launchParameters.containsKey("fullscreen"))
+            fullscreen = Boolean.parseBoolean(launchParameters.get("fullscreen"));
     }
 
     public void start() {
         ScreenMaster.setApplication(new LwjglApplication(this,
                 getConf()));
     }
+
     @Override
     public void create() {
         Textures.init(); //will we use the same?
@@ -147,9 +149,9 @@ public class DemoApp extends Game {
                         dimension.getHeight();
                 conf.width = w;
                 conf.height = h;
-                if (Flags.isIDE()){
-                    conf.width = (int) (w*1.25f);
-                    conf.height = (int) (h*1.2f);
+                if (Flags.isIDE()) {
+                    conf.width = (int) (w * 1.25f);
+                    conf.height = (int) (h * 1.2f);
                 }
                 if (w < 1500)
                     conf.useGL30 = false;

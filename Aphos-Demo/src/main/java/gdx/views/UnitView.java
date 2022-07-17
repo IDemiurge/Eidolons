@@ -1,6 +1,7 @@
 package gdx.views;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import gdx.controls.AUnitClicker;
 import gdx.dto.UnitDto;
@@ -23,13 +24,13 @@ public class UnitView extends FieldView<UnitDto> {
         Label label;
         addActor(label=new Label(pos+"", StyleHolder.getAVQLabelStyle(18)));
         label.pack();
-//        GdxMaster.center(label);
     }
 
     @Override
     protected void update() {
         super.update();
         clearListeners();
+        setTouchable(Touchable.enabled);
         addListener(new AUnitClicker(dto.getUnit()));
     }
 

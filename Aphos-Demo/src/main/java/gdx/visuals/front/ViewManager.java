@@ -11,7 +11,7 @@ import logic.lane.HeroPos;
 import logic.lane.LanePos;
 
 public class ViewManager {
-    private static final int LANE_OFFSET_Y = 120;
+    private static final int LANE_OFFSET_Y = 160;
     private static final int LANE_OFFSET_X = 180;
     private static final int UV_OFFSET_Y = 200;
     private static final int UV_OFFSET_X = 140;
@@ -22,6 +22,7 @@ public class ViewManager {
 //    public static final int[][] cacheX= new int[10][];
 //    public static final int[][] cacheY= new int[10][];
 
+    public static final int[] FIX_POS = {}; //then we must do it all via fixpos?
 
     public static HeroView createView(boolean side, Entity entity) {
         HeroView heroView = new HeroView(side, new HeroDto((Hero) entity));
@@ -30,30 +31,49 @@ public class ViewManager {
         return heroView;
     }
 
+    public static boolean isFixPos() {
+        return true;
+    }
+
+
+    public static float getHeroX(HeroPos pos) {
+        int offset = pos.getCell() * HV_OFFSET_X / 2;
+        if (!pos.isFront()) {
+            offset += HV_OFFSET_X / 2;
+        }
+        if (pos.isLeftSide()) {
+            offset += HV_OFFSET_X;
+        }
+        // it goes more or less like diagonal with ... %2
+        int x = AScreen.geometry.fromCenterX(offset, pos.isLeftSide());
+        return x;
+    }
+
     public static float getHeroYInverse(HeroPos pos) {
         int offset = pos.getCell() * 70;
-        if (!pos.isFront()) {
+        if (pos.isFront()) {
             offset += 60;
         }
         return offset;
     }
 
 
+    ///////////////// LANES
+
     public static float getYInverse(LanePos pos) {
 //        if (cache)
-        float y = getLaneYFromTop(pos.lane);
+        float y = getLaneYFromTop(pos.lane, pos.leftSide);
         y -= pos.cell * UV_OFFSET_Y;
         return y;
     }
 
-    public static float getLaneYFromTop(int lane) {
-        int posY = lane;
-        if (lane > LaneConsts.LANES_PER_SIDE) {
+    public static float getLaneYFromTop(int lane, boolean leftSide) {
+        int posY = lane-1;
+        if (!leftSide) {
             posY -= LaneConsts.LANES_PER_SIDE;
         }
-        return posY * LANE_OFFSET_Y;
+        return posY * LANE_OFFSET_Y - 50;
     }
-    ///////////////// CENTER-based
 
     public static float getX(LanePos pos) {
         float offset = getLaneX(pos.lane, pos.leftSide);
@@ -65,21 +85,9 @@ public class ViewManager {
 
     public static float getLaneX(int lane, boolean leftSide) {
         if (leftSide) {
-            return LANE_OFFSET_X * (1+lane);
+            return LANE_OFFSET_X * (3 + lane);
         }
-        return LANE_OFFSET_X * (1+lane-LaneConsts.LANES_PER_SIDE);
-    }
-    public static float getHeroX(HeroPos pos) {
-        int offset = pos.getCell() * HV_OFFSET_X/2;
-        if (pos.isFront()) {
-            offset += HV_OFFSET_X/2;
-        }
-        if (pos.isLeftSide()){
-            offset += HV_OFFSET_X;
-        }
-        // it goes more or less like diagonal with ... %2
-        int x = AScreen.geometry.fromCenterX(offset, pos.isLeftSide());
-        return x;
+        return LANE_OFFSET_X * (2 + lane - LaneConsts.LANES_PER_SIDE);
     }
 
     public static float getScale(int pos) {

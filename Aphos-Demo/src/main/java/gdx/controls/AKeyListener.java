@@ -3,11 +3,17 @@ package gdx.controls;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import logic.functions.GameController;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 public class AKeyListener extends InputAdapter {
 
     @Override
     public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.SPACE){
+            GuiEventManager.trigger(GuiEventType.RESET_CAMERA);
+            return super.keyDown(keycode);
+        }
         if (keycode == Input.Keys.LEFT || keycode == Input.Keys.A){
             move(2, false);
         } else

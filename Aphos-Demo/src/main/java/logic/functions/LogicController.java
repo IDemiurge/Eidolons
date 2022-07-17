@@ -19,4 +19,8 @@ public class LogicController {
     public void setView(HeroView view) {
         this.view = view;
     }
+
+    protected void inputError(String s) {
+        System.out.println("ERROR: " + s);
+    }
 }

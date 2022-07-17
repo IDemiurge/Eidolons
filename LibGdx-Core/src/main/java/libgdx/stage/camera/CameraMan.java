@@ -32,7 +32,7 @@ public class CameraMan {
     List<CamControl> controls = new ArrayList<>(4);
 
     private final Set<CameraMotion> motions = new LinkedHashSet<>();
-    protected float width,height,halfWidth,halfHeight;
+    protected float width, height, halfWidth, halfHeight;
 
 
     public CameraMan(Camera cam, Runnable cameraZoomChangedCallback) {
@@ -47,6 +47,7 @@ public class CameraMan {
         CameraOptions.update(OptionsMaster.getControlOptions());
 
         bindEvents();
+
     }
 
     private void bindEvents() {
@@ -65,6 +66,9 @@ public class CameraMan {
             float y = getCam().position.y;
             getCam().position.set(x + v.x, y + v.y, 0);
 
+        });
+        GuiEventManager.bind(RESET_CAMERA, p -> {
+            panCamControl.centerCam();
         });
         GuiEventManager.bind(CAMERA_SET_TO, p -> {
             getCam().position.set((Vector2) p.get(), 0);
@@ -97,15 +101,22 @@ public class CameraMan {
         zoomController.zoom(zoom);
     }
 
+    public void zoom(float zoom, float v) {
+        zoomController.zoom(zoom, v, false);
+    }
+
     public void act(float delta) {
         doMotions(delta);
         for (CamControl control : controls) {
             control.act(delta);
         }
-        CameraMotion motion = borderController.getMotion();
-        if (motion != null)
-            motions.add(motion);
+        if (motions.isEmpty()) {
+            CameraMotion motion = borderController.getMotion();
+            if (motion != null)
+                motions.add(motion);
+        }
     }
+
     private void doMotions(float delta) {
         for (CameraMotion motion : new ArrayList<>(motions)) {
             if (!motion.act(delta)) {
@@ -116,13 +127,12 @@ public class CameraMan {
         }
     }
 
-    public void cameraChanged() {
-        cameraZoomChangedCallback.run();
+    public void addMotion(CameraMotion cameraMotion) {
+        motions.add(cameraMotion);
     }
 
-    public void centerCam(float x, float y) {
-        getCam().position.x = x;
-        getCam().position.x = y;
+    public void cameraChanged() {
+        cameraZoomChangedCallback.run();
     }
 
 
@@ -162,7 +172,7 @@ public class CameraMan {
 
     public void setWidth(float width) {
         this.width = width;
-        this.halfWidth = width/2;
+        this.halfWidth = width / 2;
     }
 
     public float getWidth() {
@@ -171,10 +181,14 @@ public class CameraMan {
 
     public void setHeight(float height) {
         this.height = height;
-        this.halfHeight = height/2;
+        this.halfHeight = height / 2;
     }
 
     public float getHeight() {
         return height;
+    }
+
+    public void centerCam() {
+        panCamControl.centerCam();
     }
 }

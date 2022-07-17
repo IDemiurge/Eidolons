@@ -1,5 +1,7 @@
 package gdx;
 
+import main.system.data.DataUnit;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,14 +10,15 @@ public class AphosDemo {
 
     public static void main(String[] args) {
         //value map from args? would be easier...
-
-        Map<String, Object> values = parseArgs(args);
-        values.put("fullscreen", false);
+        Map<String, String> values = new HashMap<>();
+        if (args.length > 0) {
+            values = parseLaunchVals(args[0]);
+        }
+//        values.put("fullscreen", false);
         new DemoApp(values).start();
     }
 
-    private static Map<String, Object> parseArgs(String[] args) {
-        Map<String, Object> map = new HashMap<>();
-        return map;
+    private static Map<String, String> parseLaunchVals(String args) {
+        return new DataUnit<>(args).getValues();
     }
 }

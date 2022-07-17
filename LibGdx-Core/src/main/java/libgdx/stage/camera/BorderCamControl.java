@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BorderCamControl extends CamControl {
-    private final float period= 2f;
+    private final float period = 2f;
     private boolean reset;
     DIRECTION mouseBorder;
     private final ActTimer cameraTimer;
@@ -20,18 +20,20 @@ public class BorderCamControl extends CamControl {
 
     public BorderCamControl(CameraMan cameraMan) {
         super(cameraMan);
-        cameraTimer = new ActTimer(period, ()-> this.reset = false);
+        cameraTimer = new ActTimer(period, () -> this.reset = false);
     }
 
     boolean isBorderMouseMotionsOn() {
-        return true;
+        return false;
     }
+
     public CameraMotion getMotion() {
         return motion;
     }
+
     public void act(float delta) {
         if (!isBorderMouseMotionsOn())
-            return ;
+            return;
         cameraTimer.act(delta);
         if (reset)
             return;
@@ -39,17 +41,8 @@ public class BorderCamControl extends CamControl {
 
         //support same logic via arrows?
         if (mouseBorder != null) {
-            switch (mouseBorder) {
-                case UP:
-                    motion = move(mouseBorder);
-                    break;
-                case DOWN:
-                    break;
-                case LEFT:
-                    break;
-                case RIGHT:
-                    break;
-            }
+            motion = move(mouseBorder);
+            System.out.printf("Mouse Border = %s%n", mouseBorder);
             reset = true;
             //push mouse back from screen edge!
 //                Gdx.input.setCursorPosition( Gdx.input.getX()+diffX, Gdx.input.getY()+diffY);
@@ -57,13 +50,21 @@ public class BorderCamControl extends CamControl {
     }
 
     public DIRECTION getMouseBorder() {
-        float mouseBorderBuffer=100*cam.zoom;
-        float min=getX() -cameraMan.halfWidth*cam.zoom + mouseBorderBuffer;
-        if (Gdx.input.getX()<min)
+        float mouseBorderBuffer = 50 * cam.zoom;
+        float min = getX() - cameraMan.halfWidth * cam.zoom + mouseBorderBuffer*3;
+        if (Gdx.input.getX() < min)
             return DIRECTION.LEFT;
-        float max=getX() + cameraMan.halfWidth*cam.zoom - mouseBorderBuffer;
-        if (Gdx.input.getX()>=max)
+        float max = getX() + cameraMan.halfWidth * cam.zoom - mouseBorderBuffer*3;
+        if (Gdx.input.getX() >= max)
             return DIRECTION.RIGHT;
+
+        min = getY() - cameraMan.halfHeight * cam.zoom + mouseBorderBuffer;
+        if (Gdx.input.getY() < min)
+            return DIRECTION.UP;
+        max = getY() + cameraMan.halfHeight * cam.zoom - mouseBorderBuffer;
+        if (Gdx.input.getY() >= max)
+        return DIRECTION.DOWN;
+
         return null;
     }
 
@@ -72,7 +73,7 @@ public class BorderCamControl extends CamControl {
         float xDiff = 0;
         float yDiff = 0;
         // ???????
-        float step = 200 * getZoom() * getZoom() ;
+        float step = 200 * getZoom() * getZoom();
         switch (direction) {
             case UP:
                 yDiff = step;
@@ -87,17 +88,12 @@ public class BorderCamControl extends CamControl {
                 xDiff = step;
                 break;
         }
-        CameraMotion motion = moveMap.get(direction);
         //this may be wrong design!
         float x;
         float y;
         x = cam.position.x;
         y = cam.position.y;
-        if (motion == null) {
-            moveMap.put(direction, motion = new CameraMotion(cameraMan, 0.1f, new Vector2(x, y), Interpolation.pow2Out));
-        } else {
-            motion.reset(0.1f);
-        }
+        motion = new CameraMotion(cameraMan, 1f, new Vector2(x, y), Interpolation.pow2Out);
         motion.getSpeedActionX().setStart(x);
         motion.getSpeedActionY().setStart(y);
         motion.getSpeedActionX().setEnd(x + xDiff);

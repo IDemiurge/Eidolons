@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import gdx.dto.FrontFieldDto;
 import gdx.general.Textures;
 import gdx.general.view.ADtoView;
+import gdx.visuals.lanes.LaneConsts;
 import libgdx.GdxMaster;
 import libgdx.assets.texture.TextureCache;
 import logic.lane.HeroPos;
@@ -23,7 +24,7 @@ public class FrontField extends ADtoView<FrontFieldDto> {
 
     @Override
     protected void update() {
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < LaneConsts.CELLS_PER_SIDE; i++) {
             for (boolean side : new boolean[]{true, false}) {
                 Image img = null;
                 HeroPos pos = new HeroPos(i, side);

@@ -40,6 +40,9 @@ public class AScreen extends ScreenAdapter {
         CustomSpriteBatch batch = GdxMaster.getMainBatch();
         cameraMan = new CameraMan(viewport.getCamera(), ()-> controller.cameraZoomChanged());
 
+        cameraMan.setWidth(viewport.getScreenWidth());
+        cameraMan.setHeight(viewport.getScreenHeight());
+
         controller = new InputController(cameraMan);
 
         lanesStage = new ALanesStage(viewport, batch);
@@ -55,14 +58,13 @@ public class AScreen extends ScreenAdapter {
             LaneFieldDto dto = (LaneFieldDto) p.get();
             setBackground(dto.getFocusAreaImage());
             lanesStage.getLaneField().setDto(dto);
-            cameraMan.centerCam(getWidth()/2, getHeight()/2); //smooth?
+            cameraMan.getCam().position.x = 0;
+            cameraMan.centerCam();
         } );
     }
 
     public void setBackground(String bg){
         background.setBackgroundPath(bg);
-        cameraMan.setWidth(getWidth());
-        cameraMan.setHeight(getHeight());
     }
 
     @Override
