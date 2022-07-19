@@ -28,7 +28,7 @@ public class LaunchData {
     };
     private static final String TXT = "";
     private static final String TXT2 = "";
-    private static final String BG = "bg/shrine overlay.png";
+    private static final String BG = "bg/shrine.png";
 
     public String hero;
     public String[][] frontData;

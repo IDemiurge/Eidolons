@@ -36,4 +36,14 @@ public class HeroPos {
     public boolean isFront() {
         return getCell() % 2==1;
     }
+
+    public int dst(HeroPos pos) {
+        int cell = pos.getCell();
+        if (pos.isLeftSide() != isLeftSide()){
+            if (cell > getCell())
+                return cell - getCell() + 1;
+            return cell - getCell() - 1;
+        }
+        return cell - getCell();
+    }
 }

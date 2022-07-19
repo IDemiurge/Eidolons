@@ -70,6 +70,9 @@ public class CameraMan {
         GuiEventManager.bind(RESET_CAMERA, p -> {
             panCamControl.centerCam();
         });
+        GuiEventManager.bind(RESET_CAMERA, p -> {
+            zoomController.resetZoom();
+        });
         GuiEventManager.bind(CAMERA_SET_TO, p -> {
             getCam().position.set((Vector2) p.get(), 0);
         });
@@ -97,8 +100,8 @@ public class CameraMan {
         dragController.drag(screenX, screenY);
     }
 
-    public void zoom(float zoom) {
-        zoomController.zoom(zoom);
+    public void zoom(float i) {
+        zoomController.zoom(i);
     }
 
     public void zoom(float zoom, float v) {
@@ -168,6 +171,22 @@ public class CameraMan {
 
     public Camera getCam() {
         return cam;
+    }
+
+    public DragCamControl getDragController() {
+        return dragController;
+    }
+
+    public BorderCamControl getBorderController() {
+        return borderController;
+    }
+
+    public ZoomCamControl getZoomController() {
+        return zoomController;
+    }
+
+    public PanCamControl getPanCamControl() {
+        return panCamControl;
     }
 
     public void setWidth(float width) {

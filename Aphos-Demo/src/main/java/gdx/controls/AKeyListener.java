@@ -2,7 +2,9 @@ package gdx.controls;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import gdx.general.AScreen;
 import logic.functions.GameController;
+import main.game.bf.directions.DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -12,22 +14,36 @@ public class AKeyListener extends InputAdapter {
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.SPACE){
             GuiEventManager.trigger(GuiEventType.RESET_CAMERA);
+            GuiEventManager.trigger(GuiEventType.RESET_ZOOM);
             return super.keyDown(keycode);
         }
-        if (keycode == Input.Keys.LEFT || keycode == Input.Keys.A){
+        if (keycode == Input.Keys.A){
             move(2, false);
         } else
         if (keycode == Input.Keys.Q){
             move(1, false);
         } else
-        if (keycode == Input.Keys.R || keycode == Input.Keys.D){
+        if (keycode == Input.Keys.D){
             move(2, true);
         } else
         if (keycode == Input.Keys.E){
             move(1, true);
+        } else if (keycode == Input.Keys.LEFT) {
+            //start / stop?
+//            AScreen.instance.getCameraMan().getBorderController().arrowMove(DIRECTION.LEFT);
         }
 
         return super.keyDown(keycode);
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return super.keyUp(keycode);
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return super.keyTyped(character);
     }
 
     private void move(int length, boolean direction) {

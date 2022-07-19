@@ -19,9 +19,27 @@ public class ZoomCamControl extends CamControl {
     private void initialMotion() {
         zoom(1f, 4f, true);
     }
+    private void fitScreenMotion() {
+        //TODO
+    }
 
-    public void zoom(float zoom) {
-        zoom(zoom, 0.5f, false);
+    public void resetZoom() {
+        zoom(1f, 2f, true);
+    }
+    public void zoom(float i) {
+        zoom( getZoomStep(i), getZoomDuration(i), false);
+    }
+
+    private float getZoomDuration(float i) {
+        i = Math.abs(i);
+        return 0.2f + 0.1f*i;
+    }
+
+    private float getZoomStep(float i) {
+        //more I, more inertia! Via interpollation
+        if (i>0)
+            return 0.1f + 0.1f*i;
+        return -0.1f + 0.1f*i;
     }
 
     public void zoom(float zoom, float duration, boolean setTo) {
@@ -62,4 +80,5 @@ public class ZoomCamControl extends CamControl {
             }
         }
     }
+
 }

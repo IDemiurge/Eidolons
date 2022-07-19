@@ -5,6 +5,7 @@ import logic.content.test.TestUnitContent;
 import logic.entity.Entity;
 import logic.entity.Hero;
 import logic.entity.Unit;
+import logic.functions.MoveLogic;
 import logic.lane.HeroPos;
 import logic.lane.LanePos;
 import main.system.GuiEventManager;
@@ -48,6 +49,7 @@ public class Game {
         TestUnitContent.TestHero template = TestUnitContent.TestHero.valueOf(s);
         Map<String, Object> values = template.getValues();
         Hero hero= new Hero(pos, values);
+        MoveLogic.newPosition(hero, pos);
         return hero;
     }
 }

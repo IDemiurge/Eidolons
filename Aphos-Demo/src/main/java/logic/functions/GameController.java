@@ -3,6 +3,8 @@ package logic.functions;
 import gdx.views.HeroView;
 import logic.entity.Hero;
 import logic.functions.combat.CombatLogic;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -37,7 +39,8 @@ public class GameController { //manager + handler architecture
     }
     public static void heroMove(int length, boolean direction) {
         //comes from GDX thread!
-        instance.getMoveLogic().move_(length, direction);
+        GuiEventManager.triggerWithParams(GuiEventType.INPUT_MOVE, length, direction );
+//        instance.getMoveLogic().move_(length, direction);
     }
     public void setHero(Hero hero) {
         this.hero = hero;

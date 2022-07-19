@@ -2,7 +2,12 @@ package logic.functions;
 
 import gdx.general.anims.ActionAnims;
 import gdx.visuals.lanes.LaneConsts;
+import logic.entity.Hero;
 import logic.lane.HeroPos;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
+
+import java.util.List;
 
 public class MoveLogic extends LogicController {
     public static final int INVALID_STEP = -1;
@@ -15,7 +20,12 @@ public class MoveLogic extends LogicController {
 
     public MoveLogic(GameController controller) {
         super(controller);
+        GuiEventManager.bind(GuiEventType.INPUT_MOVE , p-> {
+            List params = (List) p.get();
+            move_((int)params.get(0), (Boolean) params.get(1));
+        });
     }
+
 
     public void move_(int length, boolean direction) {
         HeroPos prev = hero.getPos();
@@ -36,7 +46,7 @@ public class MoveLogic extends LogicController {
             direction = !direction;
         int mod = direction ? length : -length;
         HeroPos pos = new HeroPos(prev.getCell() + mod, prev.isLeftSide()); //TODO
-        hero.setPos(pos);
+        newPosition(hero, pos);
         boolean triggered = false;
 //        HeroView view = FrontField.get().getView(hero);
         if (triggered) {
@@ -47,17 +57,35 @@ public class MoveLogic extends LogicController {
         }
     }
 
+    public static void newPosition(Hero hero, HeroPos pos) {
+        hero.setPos(pos);
+//        controller.setHeroPos(pos);
+        GuiEventManager.trigger(GuiEventType.POS_UPDATE, pos);
+    }
+
     private void sideJump(HeroPos prev, boolean mid) {
         HeroPos pos = new HeroPos(prev.getCell(), !prev.isLeftSide());
         hero.setPos(pos);
         ActionAnims.sideJump(mid, view, prev, pos);
     }
 
+    public static boolean isReachable(HeroPos heroPos, HeroPos pos, int i) {
+        if (heroPos.isLeftSide() != pos.isLeftSide()) {
+            if (i < 2)
+                return false;
+            if (heroPos.getCell() != pos.getCell())
+                return false;
+        }
+        if (Math.abs(heroPos.getCell() - pos.getCell()) > i)
+            return false;
+        return true;
+    }
+
     private int getMoveType(HeroPos prev, int length, boolean direction) {
         int cell = prev.getCell();
 //        int toEdge = Math.min(Math.abs(LaneConsts.CELLS_PER_SIDE - cell), cell);
 
-        int destination=0;
+        int destination = 0;
 
         if (!prev.isLeftSide())
             direction = !direction;
@@ -68,19 +96,27 @@ public class MoveLogic extends LogicController {
 
         System.out.println("Destination: " + destination);
 
-        if (destination==-1 || destination== LaneConsts.CELLS_PER_SIDE){
+        if (destination == -1 || destination == LaneConsts.CELLS_PER_SIDE) {
             if (length > 1)
                 return INVALID_JUMP;
             return INVALID_STEP;
         }
-        if (destination < -1){
+        if (destination < -1) {
             return MID_JUMP;
         }
-        if (destination >  LaneConsts.CELLS_PER_SIDE){
+        if (destination > LaneConsts.CELLS_PER_SIDE) {
             return REVERSE_JUMP;
         }
         return NORMAL;
     }
 
 
+    public void cellClicked(HeroPos pos) {
+        HeroPos heroPos = hero.getPos();
+        int length = heroPos.dst(pos);
+        Boolean direction = length > 0;
+        length = Math.abs(length);
+        //could offer some special moves on hover or click via small overlay menu!
+        move_(length, direction);
+    }
 }

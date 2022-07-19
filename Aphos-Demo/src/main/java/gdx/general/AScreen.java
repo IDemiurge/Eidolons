@@ -23,6 +23,7 @@ public class AScreen extends ScreenAdapter {
 
     public InputController controller;
     public static Geom2D geometry;
+    public static AScreen instance;
     private static float width,height;
 
     protected AGuiStage guiStage;
@@ -32,6 +33,7 @@ public class AScreen extends ScreenAdapter {
     private boolean initialized;
 
     public AScreen() {
+        instance = this;
     }
 
 
@@ -90,6 +92,14 @@ public class AScreen extends ScreenAdapter {
         guiStage.draw();
         lanesStage.draw();
         cameraMan.act(delta);
+    }
+
+    public InputController getController() {
+        return controller;
+    }
+
+    public CameraMan getCameraMan() {
+        return cameraMan;
     }
 
     public static void setWidth(float width) {

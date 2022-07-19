@@ -12,7 +12,10 @@ import main.system.launch.CoreEngine;
 //
 //}
 public enum GuiEventType implements EventType {
+    INPUT_MOVE,
+    POS_UPDATE,
     RESET_CAMERA,
+    RESET_ZOOM,
     DTO_FrontField,
     DTO_HeroZone,
     DTO_LaneField,

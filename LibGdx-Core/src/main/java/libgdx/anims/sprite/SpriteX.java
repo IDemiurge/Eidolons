@@ -98,7 +98,12 @@ public class SpriteX extends SuperActor implements Flippable, Blended {
 
     @Override
     public Actor hit(float x, float y, boolean touchable) {
-        return null;
+//        if ()
+//        return null;
+        Actor hit = super.hit(x, y, touchable);
+        if (hit==null)
+            return null;
+        return hit;
     }
 
     public void setSprite(String path) {

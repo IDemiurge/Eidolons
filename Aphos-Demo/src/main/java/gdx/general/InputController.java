@@ -225,9 +225,5 @@ public class InputController implements InputProcessor {
         halfHeight = height / 2;
     }
 
-    private void setZoom(float zoom) {
-        camera.zoom = zoom;
-        cameraZoomChanged();
-    }
 
 }
