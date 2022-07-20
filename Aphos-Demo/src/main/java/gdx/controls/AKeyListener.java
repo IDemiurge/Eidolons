@@ -28,21 +28,48 @@ public class AKeyListener extends InputAdapter {
         } else
         if (keycode == Input.Keys.E){
             move(1, true);
-        } else if (keycode == Input.Keys.LEFT) {
-            //start / stop?
-//            AScreen.instance.getCameraMan().getBorderController().arrowMove(DIRECTION.LEFT);
         }
 
+        if (keycode == Input.Keys.LEFT) {
+            AScreen.instance.getCameraMan().arrowMove(3, DIRECTION.LEFT);
+            return true;
+        }
+        if (keycode == Input.Keys.UP) {
+            AScreen.instance.getCameraMan().arrowMove(3, DIRECTION.UP);
+            return true;
+        }
+        if (keycode == Input.Keys.DOWN) {
+            AScreen.instance.getCameraMan().arrowMove(3, DIRECTION.DOWN);
+            return true;
+        }
+        if (keycode == Input.Keys.RIGHT) {
+            AScreen.instance.getCameraMan().arrowMove(3, DIRECTION.RIGHT);
+            return true;
+        }
         return super.keyDown(keycode);
     }
 
     @Override
     public boolean keyUp(int keycode) {
+        AScreen.instance.getCameraMan().stopMove();
+//        if (keycode == Input.Keys.LEFT) {
+//            AScreen.instance.getCameraMan().arrowMove(DIRECTION.LEFT);
+//        }
+//        if (keycode == Input.Keys.UP) {
+//            AScreen.instance.getCameraMan().arrowMove(DIRECTION.UP);
+//        }
+//        if (keycode == Input.Keys.DOWN) {
+//            AScreen.instance.getCameraMan().arrowMove(DIRECTION.DOWN);
+//        }
+//        if (keycode == Input.Keys.RIGHT) {
+//            AScreen.instance.getCameraMan().arrowMove(DIRECTION.RIGHT);
+//        }
         return super.keyUp(keycode);
     }
 
     @Override
     public boolean keyTyped(char character) {
+
         return super.keyTyped(character);
     }
 

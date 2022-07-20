@@ -14,6 +14,9 @@ public class CustomSpriteAnim extends ActionAnim {
 
     protected SpriteAnimation sprite;
 
+    public CustomSpriteAnim(String path) {
+        this(null , path);
+    }
     public CustomSpriteAnim(Entity active, SpriteAnimation sprite) {
         this(active, "");
         this.sprite = sprite;

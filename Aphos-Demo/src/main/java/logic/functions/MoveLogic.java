@@ -1,6 +1,7 @@
 package logic.functions;
 
 import gdx.general.anims.ActionAnims;
+import gdx.visuals.front.FrontCell;
 import gdx.visuals.lanes.LaneConsts;
 import logic.entity.Hero;
 import logic.lane.HeroPos;
@@ -29,7 +30,7 @@ public class MoveLogic extends LogicController {
 
     public void move_(int length, boolean direction) {
         HeroPos prev = hero.getPos();
-        int move = getMoveType(prev, length, direction);
+        int move = getMoveType(prev, length, direction, 2);
         switch (move) {
             case INVALID_STEP -> inputError(INVALID_MOVE_1);
             case INVALID_JUMP -> inputError(INVALID_MOVE_2);
@@ -73,15 +74,19 @@ public class MoveLogic extends LogicController {
         if (heroPos.isLeftSide() != pos.isLeftSide()) {
             if (i < 2)
                 return false;
-            if (heroPos.getCell() != pos.getCell())
-                return false;
+            if (heroPos.getCell() == pos.getCell())
+                if (heroPos.getCell() == 0  || pos.getCell() == HeroPos.MAX_INDEX)
+                    return true;
+            return false;
         }
         if (Math.abs(heroPos.getCell() - pos.getCell()) > i)
             return false;
         return true;
     }
 
-    private int getMoveType(HeroPos prev, int length, boolean direction) {
+    private int getMoveType(HeroPos prev, int length, boolean direction, int max_length) {
+        if (length>max_length)
+            return INVALID_STEP;
         int cell = prev.getCell();
 //        int toEdge = Math.min(Math.abs(LaneConsts.CELLS_PER_SIDE - cell), cell);
 
@@ -114,7 +119,7 @@ public class MoveLogic extends LogicController {
     public void cellClicked(HeroPos pos) {
         HeroPos heroPos = hero.getPos();
         int length = heroPos.dst(pos);
-        Boolean direction = length > 0;
+        Boolean direction = length  < 0;
         length = Math.abs(length);
         //could offer some special moves on hover or click via small overlay menu!
         move_(length, direction);

@@ -11,6 +11,7 @@ import gdx.dto.LaneFieldDto;
 import gdx.general.stage.AGuiStage;
 import gdx.general.stage.ALanesStage;
 import libgdx.GdxMaster;
+import libgdx.anims.fullscreen.Screenshake;
 import libgdx.screens.batch.CustomSpriteBatch;
 import libgdx.screens.handlers.ScreenMaster;
 import libgdx.stage.camera.CameraMan;
@@ -18,6 +19,8 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import math.geom.Geom2D;
 import org.lwjgl.opengl.GL11;
+
+import java.util.ArrayList;
 
 public class AScreen extends ScreenAdapter {
 
@@ -119,4 +122,21 @@ public class AScreen extends ScreenAdapter {
     public static float getHeight() {
         return height;
     }
+
+
+//    protected void processShakes(float delta) {
+//        if (!shakes.isEmpty()) {
+//            for (Screenshake shake : new ArrayList<>(shakes)) {
+//                try {
+//                    if (!shake.update(delta, getCam(), getCameraMan().getCameraCenter())) {
+//                        shakes.remove(shake);
+//                    }
+//                } catch (Exception e) {
+//                    main.system.ExceptionMaster.printStackTrace(e);
+//                    shakes.remove(shake);
+//                }
+//            }
+//            getCam().update();
+//        }
+//    }
 }

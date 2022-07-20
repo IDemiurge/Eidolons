@@ -29,6 +29,8 @@ public class FrontCell extends GroupX {
     public static final int STATE_REACHABLE_HOVER = 4;
     public static final int STATE_REACHABLE2_HOVER = 5;
     private static final int FPS = 12;
+    private static final boolean TEST = true;
+    private static final boolean COLOR_MODE = true;
     private static FrontCell hovered;
     private HeroPos pos;
     private SpriteX sprite;
@@ -40,12 +42,17 @@ public class FrontCell extends GroupX {
 
     public FrontCell(HeroPos pos) {
         this.pos = pos;
-        addActor(sprite = new SpriteX("sprite\\cell\\veil.txt"));
+//        addActor(sprite = new SpriteX("sprite\\cell\\veil.txt"));
+        addActor(sprite = new SpriteX("sprite\\cell\\cell_rotate_warp.txt"));
         addActor(overlay = new SpriteX("sprite\\cell\\cell_rotate_warp.txt"));
 
         sprite.setBlending(GenericEnums.BLENDING.SCREEN); //inverse if..?
         sprite.setFlipX(pos.isLeftSide());
         sprite.setFlipY(pos.isFront());
+
+        overlay.setFlipX(!pos.isLeftSide());
+        overlay.setFlipY(!pos.isFront());
+
         sprite.setFps(FPS);
         sprite.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.SUN);
         GuiEventManager.bind(GuiEventType.POS_UPDATE, p -> resetReachable((HeroPos) p.get()));
@@ -61,10 +68,12 @@ public class FrontCell extends GroupX {
 
         addListener(new CellMouseListener(c -> hover(c), () -> GameController.getInstance().getMoveLogic().cellClicked(pos)));
         setTouchable(Touchable.enabled);
+        if (TEST && !COLOR_MODE) {
+            debugAll();
+            setState(STATE_REACHABLE2_HOVER);
+        } else
+            setState(STATE_NORMAL);
 
-        setState(STATE_NORMAL);
-
-        debugAll();
     }
 
     private void resetReachable(HeroPos heroPos) {
@@ -89,13 +98,15 @@ public class FrontCell extends GroupX {
     }
 
     private void reset() {
-            if (jumpReachable) {
-                setState(hover ? STATE_REACHABLE2_HOVER : STATE_REACHABLE2);
-            } else if (stepReachable) {
-                setState(hover ? STATE_REACHABLE_HOVER : STATE_REACHABLE);
-            } else
-                setState(hover ? STATE_HOVER : STATE_NORMAL);
-            overlay.fadeIn();
+        if (TEST&& !COLOR_MODE)
+            return;
+        if (jumpReachable) {
+            setState(hover ? STATE_REACHABLE2_HOVER : STATE_REACHABLE2);
+        } else if (stepReachable) {
+            setState(hover ? STATE_REACHABLE_HOVER : STATE_REACHABLE);
+        } else
+            setState(hover ? STATE_HOVER : STATE_NORMAL);
+        overlay.fadeIn();
     }
 
     @Override
@@ -118,6 +129,16 @@ public class FrontCell extends GroupX {
             case STATE_REACHABLE_HOVER -> setVals(0.85f);
             case STATE_REACHABLE2_HOVER -> setVals(1);
         }
+        if (COLOR_MODE){
+            switch (state) {
+                case STATE_NORMAL -> setColor(GdxColorMaster.darker(Color.WHITE, 0.0065f));
+                case STATE_REACHABLE -> setColor(GdxColorMaster.darker(Color.YELLOW, 0.0055f));
+                case STATE_REACHABLE2 -> setColor(GdxColorMaster.darker(Color.GREEN, 0.0045f));
+                case STATE_HOVER -> setColor(GdxColorMaster.darker(Color.CYAN, 0.0025f));
+                case STATE_REACHABLE_HOVER -> setColor(GdxColorMaster.darker(Color.GOLD, 0.0015f));
+                case STATE_REACHABLE2_HOVER -> setColor(Color.ORANGE);
+            }
+        } else
         switch (state) {
             case STATE_NORMAL -> setColor(GdxColorMaster.darker(Color.WHITE, 0.65f));
             case STATE_REACHABLE -> setColor(GdxColorMaster.darker(Color.WHITE, 0.55f));
@@ -146,8 +167,8 @@ public class FrontCell extends GroupX {
         adjustAction.setStart(sprite.getBaseAlpha()); // ?
         adjustAction.setEnd(i);
         adjustAction.setDuration(1.5f);
-        sprite.setBaseAlpha(i);
-        sprite.setFps((int) (FPS * i));
+//        sprite.setBaseAlpha(i);
+//        sprite.setFps((int) (FPS * i));
         // overlay
     }
 
@@ -155,12 +176,12 @@ public class FrontCell extends GroupX {
     public void act(float delta) {
         super.act(delta);
         //TODO
-        if (adjustAction !=null)
-            if (adjustAction.getTime() >= adjustAction.getDuration()){
-            float i = adjustAction.getValue();
-            sprite.setBaseAlpha(i);
-            sprite.setFps((int) (FPS*i));
-        }
+        if (adjustAction != null)
+            if (adjustAction.getTime() >= adjustAction.getDuration()) {
+                float i = adjustAction.getValue();
+                sprite.setBaseAlpha(i);
+                sprite.setFps((int) (FPS * i));
+            }
     }
 
     @Override

@@ -1,12 +1,17 @@
 package logic.content.test;
 
 import content.LinkedStringMap;
+import logic.content.AUnitEnums;
 import main.data.StringMap;
+import main.system.auxiliary.StringMaster;
 import main.system.data.DataUnit;
 
 import java.lang.reflect.Field;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import static logic.content.AUnitEnums.*;
+import static logic.content.AUnitEnums.UnitType.*;
 
 public class TestUnitContent {
 
@@ -31,30 +36,51 @@ public class TestUnitContent {
             return map;
         }
     }
-
+public static void initAbils(){
+//        TestUnit.Lancer.abil("");
+}
     public enum TestUnit implements ContentEnum {
-        Zombie(50, 10, 2, 0, 5, 5, 3, 0, "units/Zombie.png"),
-        Fiend(35, 15, 4, 0, 12, 6, 5, 0, "units/haunter.png"),
-        Rogue(20, 12, 1, 0, 15, 12, 7, 0, "units/silent.png"), //will be a lot more... but we could pack it into modular structs
-        Archer(20, 5, 1, 6, 10, 5, 6, 0, "main//undead//Zombie.png"),
+        //will be a lot more... but we could pack it into modular structs - such as WEAPON, MAGIC
+        /*            hp|damage|armor|initiative|attack|defense|ranged|   aoe |         */
+        Fiend        (35,  13,     7,      13,      16,    11,     0,      0, Melee, ""),
+        Lancer       (30,  12,     10,      11,      12,    14,     1,      0, Melee, ""),
+        Rogue        (25,  10,     3,      15,      15,     5,     1,      0, Sneak, ""),
+//        Silent        (25,  10,     3,      15,      15,     5,     1,      0, Sneak, ""),
+        Archer       (15,  8,     5,      10,      12,     5,     3,      0, Ranged, "", val("body", Body.bone)),
+//        Deepeye       (15,  8,     5,      10,      12,     5,     3,      0, Ranged, "", val("body", Body.bone)),
+        Zombie       (50,  10,     6,      6,      5,      5,      0,      0, Guard, ""),
+        Golem        (25,  12,     15,      5,      10,     10,    0,      0, Guard, "", val("body", Body.metal)),
+        Haunter      (18,  6,     4,      12,      10,     8,     2,      1, Caster, "", val("body", Body.dust)),
+//        Alchemist      (18,  6,     4,      12,      10,     8,     2,      1, Caster, "", val("body", Body.dust)),
+        Bull        (75,  10,      0,      8,        6,      2,    0,      1, Explode, "", val("explode", 40)),
+//        Mother        (75,  10,      0,      8,        6,      2,    0,      1, Explode, "", val("explode", 40)),
+        //Knight multi
+
 
         ;
-        /*
-        soundset
-         */
-        private final float hp;
-        private final int armor;
-        private final float initiative;
-        private final float attack;
-        private final float defense;
-        private final float damage;
-        private final float ranged;
-        private final int aoe;
-        private final String name;
+
+
+
+
+
+
+
+
+
+
+
+
+
+        private final UnitType type;
+        private final int hp,armor, initiative, attack, defense, damage, ranged, aoe;
+        public final String name;
         private final String image;
+
         private final Map<String, Object> values = new LinkedStringMap<>();
 
-        TestUnit(float hp, float damage, int armor, float ranged, float attack, float defense, float initiative, int aoe, String image) {
+        TestUnit( int hp, int damage, int armor, int initiative,int attack, int defense,  int ranged, int aoe, UnitType type,String image,
+                 String... additional) {
+            this.type = type;
             this.name = toString();
             this.hp = hp;
             this.armor = armor;
@@ -64,9 +90,13 @@ public class TestUnitContent {
             this.damage = damage;
             this.ranged = ranged;
             this.aoe = aoe;
+            if (image.isEmpty())
+                image = "units/"+name().toLowerCase() +".png";
             this.image = image;
             init(this);
+            initAdditional(additional);
         }
+
 
         private void init(TestUnit testUnit) {
             for (Field field : testUnit.getClass().getDeclaredFields()) {
@@ -82,7 +112,16 @@ public class TestUnitContent {
                 }
             }
         }
+        private void initAdditional(String[] additional) {
+            for (String s : additional) {
+                String[] split = s.split(":");
+                values.put(split[0].toUpperCase(), split[1]);
+            }
+        }
 
+        private static String val(String name, Object o) {
+            return name+":" + o.toString();
+        }
         @Override
         public Map<String, Object> getValues() {
             return values;

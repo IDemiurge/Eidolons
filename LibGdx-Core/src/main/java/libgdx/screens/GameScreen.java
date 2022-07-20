@@ -67,6 +67,11 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
 
     @Override
     public void render(float delta) {
+        processShakes(delta);
+        super.render(delta);
+    }
+
+    protected void processShakes(float delta) {
         if (!shakes.isEmpty()) {
             for (Screenshake shake : new ArrayList<>(shakes)) {
                 try {
@@ -80,7 +85,6 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
             }
             getCam().update();
         }
-        super.render(delta);
     }
 
     protected void resetBackground() {

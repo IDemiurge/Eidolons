@@ -12,6 +12,8 @@ import main.system.launch.CoreEngine;
 //
 //}
 public enum GuiEventType implements EventType {
+    DUMMY_ANIM_ATK, DUMMY_ANIM_DEATH, DUMMY_ANIM_HIT,
+
     INPUT_MOVE,
     POS_UPDATE,
     RESET_CAMERA,
@@ -191,7 +193,7 @@ public enum GuiEventType implements EventType {
     PLATFORM_REMOVE(false, true), LE_DESELECT, FLIGHT_START, FLIGHT_END,
     CELL_DECOR_RESET(false, true), CELL_DECOR_INIT(false, true),
     KEY_TYPED, ADD_BOSS_VIEW, BORDER_MAP_UPDATE, PILLAR_MAP_UPDATE, CELL_MAP_RESET, PILLAR_COLOR_MAP_UPDATE,
-    WALL_PILLAR_MAP_UPDATE, SHOW_CUSTOM_PANEL, HIDE_CUSTOM_PANEL, UPDATE_LOAD_STATUS;
+    WALL_PILLAR_MAP_UPDATE, SHOW_CUSTOM_PANEL, HIDE_CUSTOM_PANEL, UPDATE_LOAD_STATUS, ;
 
     private boolean screenCheck;
     private boolean multiArgs;

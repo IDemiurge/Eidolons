@@ -1,10 +1,14 @@
 package logic.functions.combat;
 
+import eidolons.game.core.Core;
+import libgdx.GdxMaster;
 import logic.content.AUnitEnums;
 import logic.entity.Entity;
 import logic.entity.Unit;
 import logic.functions.GameController;
 import logic.functions.LogicController;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
 
 public class CombatLogic extends LogicController {
@@ -14,13 +18,24 @@ public class CombatLogic extends LogicController {
         super(controller);
     }
 
-    public boolean attackedBy(Unit unit) {
-        return attack(unit, hero);
+//    public boolean attackedBy(Unit unit) {
+//        return doAttack(unit, hero);
+//    }
+    public void attack(Unit unit) {
+        Core.onThisOrNonGdxThread(()-> attack(hero, unit));
     }
-    public boolean attack(Unit unit) {
-        return attack(hero, unit);
+    public void attack(Entity source, Entity target) {
+        GuiEventManager.trigger(GuiEventType.DUMMY_ANIM_ATK, target);
+        boolean result = doAttack(source, target);
+        if (result){
+            //hit
+            GuiEventManager.trigger(GuiEventType.DUMMY_ANIM_HIT, target);
+        } else {
+            //die
+            GuiEventManager.trigger(GuiEventType.DUMMY_ANIM_DEATH, target);
+        }
     }
-    public boolean attack(Entity source, Entity target) {
+    private boolean doAttack(Entity source, Entity target) {
 
         boolean result = true;
 

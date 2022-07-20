@@ -33,7 +33,6 @@ public class FrontField extends ADtoView<FrontFieldDto> {
                     cell.act(5*RandomWizard.getRandomFloat());
             }
         }
-        debugAll();
 
         //TODO How will it really work? Maybe just by coordinates, without cell actors?
 //        TextureRegion cell= Textures.getOrCreateR(dto.getTxt());

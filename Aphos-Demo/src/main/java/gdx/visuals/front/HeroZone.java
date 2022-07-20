@@ -2,10 +2,13 @@ package gdx.visuals.front;
 
 import com.google.inject.internal.util.ImmutableList;
 import gdx.dto.FrontLineDto;
+import gdx.dto.HeroDto;
 import gdx.general.view.ADtoView;
+import gdx.views.FieldView;
 import gdx.views.HeroView;
 import logic.entity.Entity;
 import logic.entity.Hero;
+import logic.functions.GameController;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -14,16 +17,19 @@ import java.util.*;
 public class HeroZone extends ADtoView<FrontLineDto> {
 
     public static final float HEIGHT = 700;
-    Map<Hero, HeroView> heroes;
+    public static final Map<Hero, HeroView> heroes= new HashMap<>();
 
     public HeroZone() {
-
         GuiEventManager.bind(GuiEventType.DTO_HeroZone, p -> setDto((FrontLineDto) p.get()));
+    }
+
+    public static FieldView getView(Entity entity) {
+        return heroes.get(entity);
     }
 
     @Override
     protected void update() {
-        heroes = new HashMap<>();
+        //when else to update this?
         boolean left = true;
         setHeight(700);
         for (List<Entity> side : ImmutableList.of(dto.getSide(), dto.getSide2()))
@@ -32,7 +38,7 @@ public class HeroZone extends ADtoView<FrontLineDto> {
                     Hero hero = ((Hero) entity);
                     HeroView view = heroes.get(hero);
                     if (view == null) {
-                        view = ViewManager.createView(left, hero);
+                        view = createView(left, hero);
                         addActor(view);
                         heroes.put(hero, view);
                     }
@@ -47,4 +53,10 @@ public class HeroZone extends ADtoView<FrontLineDto> {
     }
 //    List<ObjView> heroes;
 
+    public static HeroView createView(boolean side, Entity entity) {
+        HeroView heroView = new HeroView(side, new HeroDto((Hero) entity));
+        GameController.getInstance().setHeroView(heroView);
+        GameController.getInstance().setHero((Hero) entity);
+        return heroView;
+    }
 }

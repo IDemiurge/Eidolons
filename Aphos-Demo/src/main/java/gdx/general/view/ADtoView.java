@@ -28,4 +28,8 @@ public abstract class ADtoView<T extends DtoManager.Dto> extends GroupX {
     }
 
     protected abstract void update();
+
+    public T getDto() {
+        return dto;
+    }
 }

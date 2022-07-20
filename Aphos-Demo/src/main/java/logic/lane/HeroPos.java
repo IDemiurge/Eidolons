@@ -3,6 +3,7 @@ package logic.lane;
 import java.util.Objects;
 
 public class HeroPos {
+    public   static int MAX_INDEX = 6;
     private final int cell;
     private final boolean leftSide;
 
@@ -40,9 +41,13 @@ public class HeroPos {
     public int dst(HeroPos pos) {
         int cell = pos.getCell();
         if (pos.isLeftSide() != isLeftSide()){
-            if (cell > getCell())
-                return cell - getCell() + 1;
-            return cell - getCell() - 1;
+            //dst to closest edge + 1
+            int toEdge1 = getCell() + cell; //via mid, negative
+            int toEdge2 = MAX_INDEX - getCell() +  MAX_INDEX - cell;
+
+            if (toEdge1  < toEdge2)
+                return -toEdge1 - 1;
+            return toEdge2 + 1;
         }
         return cell - getCell();
     }

@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.core.Core;
+import eidolons.game.core.EUtils;
 import eidolons.game.exploration.story.cinematic.Cinematics;
 import eidolons.system.options.OptionsMaster;
 import libgdx.bf.GridMaster;
@@ -12,9 +14,11 @@ import libgdx.stage.camera.generic.CameraMotion;
 import libgdx.stage.camera.generic.CameraOptions;
 import libgdx.stage.camera.generic.MotionData;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LOG_CHANNEL;
+import main.system.threading.WaitMaster;
 
 import java.util.*;
 
@@ -33,6 +37,7 @@ public class CameraMan {
 
     private final Set<CameraMotion> motions = new LinkedHashSet<>();
     protected float width, height, halfWidth, halfHeight;
+    private boolean moving;
 
 
     public CameraMan(Camera cam, Runnable cameraZoomChangedCallback) {
@@ -209,5 +214,27 @@ public class CameraMan {
 
     public void centerCam() {
         panCamControl.centerCam();
+    }
+
+    public void stopMove() {
+        moving = false;
+    }
+    public void arrowMove(float i, DIRECTION direction) {
+        moving = true;
+        Core.onNewThread(()-> {
+            while(moving){
+                switch (direction) {
+                    case UP -> cam.position.y =cam.position.y+i;
+                    case DOWN -> cam.position.y =cam.position.y-i;
+                    case LEFT -> cam.position.x =cam.position.x-i;
+                    case RIGHT -> cam.position.x =cam.position.x+i;
+                }
+                WaitMaster.WAIT(10);
+            }
+        });
+    }
+    public void arrowMove(DIRECTION direction) {
+        CameraMotion move = borderController.move(direction);
+        addMotion(move);
     }
 }

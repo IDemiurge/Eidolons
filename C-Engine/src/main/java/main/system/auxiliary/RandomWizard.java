@@ -244,6 +244,10 @@ public class RandomWizard<E> {
         return  amount * (1 - randomness + getRandomFloatBetween(0, randomness*2));
     }
 
+    public static <T> T getRandomFrom(T... s) {
+        return s[getRandomInt(s.length)];
+    }
+
     public E getObjectByWeight(String string, Class<? extends E> CLASS) {
         return getObjectByWeight(constructWeightMap(string, CLASS));
     }

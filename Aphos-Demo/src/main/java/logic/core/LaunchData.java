@@ -18,13 +18,13 @@ public class LaunchData {
     public static final String HERO = TestUnitContent.TestHero.Elberen.toString();
 
     public static final String[][] LANEDATA = {
-            {Zombie.getName(), "", "", "",}, //1st is frontline
-            {"", "", "", "",},
-            {Rogue.getName(), "", "", "",},
+            {Golem.name, Archer.name, "", "",}, //1st is frontline
+            {"", Fiend.name, Golem.name, "",},
+            {Rogue.name, "", "", Haunter.name,},
 
-            {Fiend.getName(), "", "", "",},
-            {"", "", "", "",},
-            {Zombie.getName(), "", "", "",},
+            {Fiend.name, "", Haunter.name, "",},
+            {"", Rogue.name, "", "",},
+            {Fiend.name, Archer.name, "", "",},
     };
     private static final String TXT = "";
     private static final String TXT2 = "";
