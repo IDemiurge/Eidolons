@@ -11,13 +11,12 @@ import libgdx.anims.actions.FloatActionLimited;
 import libgdx.anims.sprite.SpriteX;
 import libgdx.gui.generic.GroupX;
 import libgdx.screens.batch.CustomSpriteBatch;
-import logic.functions.GameController;
-import logic.functions.MoveLogic;
+import logic.core.Aphos;
+import logic.functions.combat.HeroMoveLogic;
 import logic.lane.HeroPos;
 import main.content.enums.GenericEnums;
 import main.system.GuiEventManager;
-import main.system.GuiEventType;
-import main.system.graphics.ColorManager;
+import content.AphosEvent;
 
 import java.util.Collection;
 
@@ -55,7 +54,7 @@ public class FrontCell extends GroupX {
 
         sprite.setFps(FPS);
         sprite.setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE.SUN);
-        GuiEventManager.bind(GuiEventType.POS_UPDATE, p -> resetReachable((HeroPos) p.get()));
+        GuiEventManager.bind(AphosEvent.POS_UPDATE, p -> resetReachable((HeroPos) p.get()));
 
         setWidth(sprite.getWidth());
         setHeight(sprite.getHeight());
@@ -66,7 +65,7 @@ public class FrontCell extends GroupX {
 //        sprite.addListener(new CellMouseListener(c -> hover(c), ()-> clicked()));
 //        sprite.setTouchable(Touchable.enabled);
 
-        addListener(new CellMouseListener(c -> hover(c), () -> GameController.getInstance().getMoveLogic().cellClicked(pos)));
+        addListener(new CellMouseListener(c -> hover(c), () -> Aphos.controller().getHeroMoveLogic().cellClicked(pos)));
         setTouchable(Touchable.enabled);
         if (TEST && !COLOR_MODE) {
             debugAll();
@@ -79,11 +78,11 @@ public class FrontCell extends GroupX {
     private void resetReachable(HeroPos heroPos) {
         jumpReachable = false;
         stepReachable = false;
-        if (MoveLogic.isReachable(heroPos, pos, 2)) {
+        if (HeroMoveLogic.isReachable(heroPos, pos, 2)) {
             jumpReachable = true;
             stepReachable = true;
         } else
-            stepReachable = MoveLogic.isReachable(heroPos, pos, 1);
+            stepReachable = HeroMoveLogic.isReachable(heroPos, pos, 1);
         reset();
     }
 

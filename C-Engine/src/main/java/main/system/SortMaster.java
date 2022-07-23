@@ -164,8 +164,13 @@ public class SortMaster<T> {
         Collections.sort(list, getSorterByExpression_(  function));
     }
 
+    public static <A> Comparator<? super A> sort
+            (Function<A, Integer> function) {
+        return new SortMaster<A>().getSorterByExpression_(function);
+    }
+
     public static Comparator<? super Object> getSorterByExpression
-     (Function<Object, Integer> function) {
+            (Function<Object, Integer> function) {
         return getSorterByExpression(false, function);
     }
 

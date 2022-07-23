@@ -1,21 +1,38 @@
 package gdx.views;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import eidolons.content.consts.libgdx.GdxColorMaster;
 import gdx.dto.EntityDto;
 import gdx.general.view.ADtoView;
+import libgdx.StyleHolder;
 import libgdx.bf.generic.FadeImageContainer;
+import libgdx.gui.LabelX;
 import libgdx.screens.batch.CustomSpriteBatch;
 import libgdx.shaders.ShaderDrawer;
+import logic.content.AUnitEnums;
 import main.content.enums.GenericEnums;
 
 public class FieldView<T extends EntityDto> extends ADtoView<T> {
 
-    private final FadeImageContainer portrait = new FadeImageContainer(); //empty mirror?
-    private final boolean side;
+    protected final FadeImageContainer portrait = new FadeImageContainer(); //empty mirror?
+    protected final boolean side;
+    protected boolean active;
+    protected LabelX atb;
 
     public FieldView(boolean side) {
         this.side = side;
         addActor(portrait);
+        initAtbLabel();
+    }
+
+    protected void initAtbLabel() {
+        addActor(atb = new LabelX());
+        atb.setStyle(StyleHolder.getAVQLabelStyle(16));
+    }
+
+    public void setAtb(int val) {
+        atb.setText("" + val);
+        atb.setColor(GdxColorMaster.getColorForAtbValue(val));
     }
 
     @Override
@@ -25,12 +42,36 @@ public class FieldView<T extends EntityDto> extends ADtoView<T> {
     }
 
     @Override
+    public void act(float delta) {
+        super.act(delta);
+        if (dto != null)
+            if (dto.getEntity() != null) {
+            if (dto.getEntity().isOnAtb()) {
+                setAtb(dto.getEntity().getInt(AUnitEnums.ATB));
+                if (active){
+                    /*
+                    some interesting dynamic effect?
+                     */
+                }
+            }
+        }
+    }
+
+    @Override
     protected void update() {
         //TODO hierarchy of DTOs - good idea?
-        portrait.setImage(dto.getEntity().getImagePath());
-        if (!side) {
-            portrait.setFlipX(true);
+        if (dto.getEntity() == null) {
+            portrait.setImage("");
+        } else {
+            portrait.setImage(dto.getEntity().getImagePath());
+            if (!side) {
+                portrait.setFlipX(true);
+            }
         }
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public void setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE alphaTemplate) {

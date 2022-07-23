@@ -16,7 +16,8 @@ import libgdx.screens.batch.CustomSpriteBatch;
 import libgdx.screens.handlers.ScreenMaster;
 import libgdx.stage.camera.CameraMan;
 import main.system.GuiEventManager;
-import main.system.GuiEventType;
+import content.AphosEvent;
+import main.system.threading.WaitMaster;
 import math.geom.Geom2D;
 import org.lwjgl.opengl.GL11;
 
@@ -54,21 +55,24 @@ public class AScreen extends ScreenAdapter {
 
         lanesStage = new ALanesStage(viewport, batch);
         guiStage = new AGuiStage(viewport, batch);
-        background = new ABackground( batch);
-
-//        lanesStage.setDebugAll(true);
-
-        Gdx.input.setInputProcessor(new InputMultiplexer(controller, lanesStage, guiStage,
-                new AKeyListener()));
-
-        GuiEventManager.bind(GuiEventType.DTO_LaneField , p->{
+        GuiEventManager.bind(AphosEvent.DTO_LaneField , p->{
             LaneFieldDto dto = (LaneFieldDto) p.get();
             setBackground(dto.getFocusAreaImage());
             lanesStage.getLaneField().setDto(dto);
             cameraMan.getCam().position.x = 0;
             cameraMan.centerCam();
         } );
-        GuiEventManager.bind(GuiEventType.CAMERA_SHAKE, p -> {
+
+        WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.GUI_READY, true);
+        WaitMaster.markAsComplete(WaitMaster.WAIT_OPERATIONS.GUI_READY);
+        background = new ABackground( batch);
+
+//        lanesStage.setDebugAll(true);
+
+        Gdx.input.setInputProcessor(new InputMultiplexer(controller, lanesStage, guiStage,
+                new AKeyListener(), cameraMan.getDragController().createDragGestureHandler()));
+
+        GuiEventManager.bind(AphosEvent.CAMERA_SHAKE, p -> {
             shakes.add((Screenshake) p.get());
         });
     }

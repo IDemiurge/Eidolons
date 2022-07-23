@@ -611,6 +611,14 @@ public class ListMaster<E> {
         // // 4->2; 6->4;8->6;...
     }
 
+    public static <E> List<E> merge(List<E>... lists) {
+        List<E> result = new ArrayList<>();
+        for (List<E> sub : lists) {
+            result.addAll(sub);
+        }
+        return result;
+
+    }
     public List<E> mergeShuffle(List<E>... lists) {
         List<E> result = new ArrayList<>();
         for (List<E> sub : lists) {

@@ -108,19 +108,17 @@ public class InputController implements InputProcessor {
 //            return false;
 //        if (isManualCameraDisabled())
 //            return false;
-        if (mouseButtonPressed == Input.Buttons.LEFT) {
+//        if (mouseButtonPressed == Input.Buttons.LEFT) {
 //            System.out.printf("dragged to %2.0f:%2.0f", camera.position.x, camera.position.y);
 //            camera.position.x += screenX;
 //            camera.position.y += screenY;
 //            if (is)
 //            tryPullCameraX(screenX);
 //            tryPullCameraY(screenY);
-
-            cameraMan.drag(screenX, screenY);
-            cameraStop();
-        }
-
-        return true;
+//            cameraMan.drag(screenX, screenY);
+//            cameraStop();
+//        }
+        return false;
     }
 
     private void cameraStop() {

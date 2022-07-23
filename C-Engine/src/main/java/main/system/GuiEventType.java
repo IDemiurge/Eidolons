@@ -2,25 +2,7 @@ package main.system;
 
 import main.system.launch.CoreEngine;
 
-//public enum GUI_EVENT implements GraphicEvent{
-//
-//}
-//public enum ANIMATION_EVENT implements GraphicEvent{
-//
-//}
-//public enum GRID_EVENT implements GraphicEvent{
-//
-//}
 public enum GuiEventType implements EventType {
-    DUMMY_ANIM_ATK, DUMMY_ANIM_DEATH, DUMMY_ANIM_HIT,
-
-    INPUT_MOVE,
-    POS_UPDATE,
-    RESET_CAMERA,
-    RESET_ZOOM,
-    DTO_FrontField,
-    DTO_HeroZone,
-    DTO_LaneField,
     ///////////////////
     HC_PORTRAIT_CHOSEN, HC_GENDER_CHOSEN, HC_RACE_CHOSEN, HC_SUBRACE_CHOSEN, HC_SHOW,
     HC_DEITY_ASPECT_CHOSEN, HC_BACKGROUND_CHOSEN,
@@ -193,7 +175,7 @@ public enum GuiEventType implements EventType {
     PLATFORM_REMOVE(false, true), LE_DESELECT, FLIGHT_START, FLIGHT_END,
     CELL_DECOR_RESET(false, true), CELL_DECOR_INIT(false, true),
     KEY_TYPED, ADD_BOSS_VIEW, BORDER_MAP_UPDATE, PILLAR_MAP_UPDATE, CELL_MAP_RESET, PILLAR_COLOR_MAP_UPDATE,
-    WALL_PILLAR_MAP_UPDATE, SHOW_CUSTOM_PANEL, HIDE_CUSTOM_PANEL, UPDATE_LOAD_STATUS, ;
+    WALL_PILLAR_MAP_UPDATE, SHOW_CUSTOM_PANEL, HIDE_CUSTOM_PANEL, UPDATE_LOAD_STATUS;
 
     private boolean screenCheck;
     private boolean multiArgs;

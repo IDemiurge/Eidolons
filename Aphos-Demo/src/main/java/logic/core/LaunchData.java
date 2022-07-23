@@ -5,7 +5,9 @@ import gdx.dto.FrontLineDto;
 import gdx.dto.LaneDto;
 import gdx.dto.LaneFieldDto;
 import logic.content.test.TestUnitContent;
+import logic.core.game.Game;
 import logic.entity.Entity;
+import logic.entity.Hero;
 import logic.lane.HeroPos;
 
 import java.util.ArrayList;
@@ -64,26 +66,25 @@ public class LaunchData {
     }
 
     public FrontLineDto initHeroDto(Game game) {
-        List<Entity> side=     new ArrayList<>() ;
-        List<Entity> side2=     new ArrayList<>() ;
+        List<Entity> heroes=     new ArrayList<>() ;
             int i=0;
         HeroPos pos=null;
-        for (String s : frontData[0]) {
-            if (!s.isEmpty()) {
-                pos = new HeroPos(i, true);
-                side.add(game.createHeroOrObject(s, pos));
+        boolean left = true;
+        Entity initial=null ;
+        for (int j = 0; j < 2; j++) {
+            for (String s : frontData[j]) {
+                if (!s.isEmpty()) {
+                    pos = new HeroPos(i, left);
+                    Entity hero = game.createHeroOrObject(s, pos);
+                    if (hero.getName().equals(HERO))
+                        initial = hero;
+                    heroes.add(hero);
+                }
+                i++;
             }
-            i++;
+            left = !left;
         }
-         i=0;
-        for (String s : frontData[1]) {
-            if (!s.isEmpty()) {
-                pos = new HeroPos(i, false);
-                side2.add(game.createHeroOrObject(s, pos));
-            }
-            i++;
-        }
-        return new FrontLineDto(side, side2);
+        return new FrontLineDto(heroes, (Hero) initial);
     }
 
     public FrontFieldDto initFFDto(Game game) {

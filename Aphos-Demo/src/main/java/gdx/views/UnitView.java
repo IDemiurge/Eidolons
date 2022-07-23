@@ -41,6 +41,11 @@ public class UnitView extends FieldView<UnitDto> {
         addListener(new AUnitClicker(dto.getUnit()));
     }
 
+    @Override
+    protected void initAtbLabel() {
+        super.initAtbLabel();
+        atb.setPosition(50, 100);
+    }
 
     @Override
     public String toString() {

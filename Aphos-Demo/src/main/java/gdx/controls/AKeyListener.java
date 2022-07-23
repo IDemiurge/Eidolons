@@ -6,15 +6,15 @@ import gdx.general.AScreen;
 import logic.functions.GameController;
 import main.game.bf.directions.DIRECTION;
 import main.system.GuiEventManager;
-import main.system.GuiEventType;
+import content.AphosEvent;
 
 public class AKeyListener extends InputAdapter {
 
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.SPACE){
-            GuiEventManager.trigger(GuiEventType.RESET_CAMERA);
-            GuiEventManager.trigger(GuiEventType.RESET_ZOOM);
+            GuiEventManager.trigger(AphosEvent.RESET_CAMERA);
+            GuiEventManager.trigger(AphosEvent.RESET_ZOOM);
             return super.keyDown(keycode);
         }
         if (keycode == Input.Keys.A){
@@ -74,7 +74,7 @@ public class AKeyListener extends InputAdapter {
     }
 
     private void move(int length, boolean direction) {
-        GameController.heroMove(length, direction);
+        GuiEventManager.triggerWithParams(AphosEvent.INPUT_MOVE, length, direction );
     }
 
     private void showAttackMenu() {

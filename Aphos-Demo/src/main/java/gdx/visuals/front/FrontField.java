@@ -1,23 +1,18 @@
 package gdx.visuals.front;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import gdx.dto.FrontFieldDto;
-import gdx.general.Textures;
 import gdx.general.view.ADtoView;
 import gdx.visuals.lanes.LaneConsts;
-import libgdx.GdxMaster;
-import libgdx.assets.texture.TextureCache;
 import logic.lane.HeroPos;
 import main.system.GuiEventManager;
-import main.system.GuiEventType;
+import content.AphosEvent;
 import main.system.auxiliary.RandomWizard;
 
 public class FrontField extends ADtoView<FrontFieldDto> {
     FrontCells left, right;
 
     public FrontField() {
-        GuiEventManager.bind(GuiEventType.DTO_FrontField, p -> setDto((FrontFieldDto) p.get()));
+        GuiEventManager.bind(AphosEvent.DTO_FrontField, p -> setDto((FrontFieldDto) p.get()));
     }
 
     @Override

@@ -2,7 +2,9 @@ package libgdx.stage.camera;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
@@ -64,5 +66,9 @@ public class DragCamControl extends CamControl {
 //                }
 //            }
 //        }
+    }
+
+    public InputProcessor createDragGestureHandler() {
+        return new GestureDetector(new DragGestureHandler(cam));
     }
 }

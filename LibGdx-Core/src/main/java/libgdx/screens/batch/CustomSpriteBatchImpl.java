@@ -32,13 +32,13 @@ public class CustomSpriteBatchImpl extends ShaderBatch implements CustomSpriteBa
     }
 
 
-    BlackSprite blackSprite = new BlackSprite();
+    BlackSprite blackSprite;
 
     @Override
     public void drawBlack(float alpha, boolean whiteout) {
         //        draw();
         begin();
-        blackSprite.resetColor(alpha);
+        getBlackSprite().resetColor(alpha);
         if (whiteout)
             setBlending(GenericEnums.BLENDING.SCREEN);
         else
@@ -47,6 +47,13 @@ public class CustomSpriteBatchImpl extends ShaderBatch implements CustomSpriteBa
         resetBlending();
         end();
 
+    }
+
+    public BlackSprite getBlackSprite() {
+        if (blackSprite == null) {
+             blackSprite = new BlackSprite();
+        }
+        return blackSprite;
     }
 
     @Override

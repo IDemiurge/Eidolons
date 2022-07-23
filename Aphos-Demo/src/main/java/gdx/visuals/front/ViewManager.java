@@ -15,6 +15,11 @@ import logic.entity.Unit;
 import logic.functions.GameController;
 import logic.lane.HeroPos;
 import logic.lane.LanePos;
+import main.system.auxiliary.data.ListMaster;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Consumer;
 
 public class ViewManager {
     private static final int LANE_OFFSET_Y = 160;
@@ -28,6 +33,14 @@ public class ViewManager {
 //    public static final int[][] cacheX= new int[10][];
 //    public static final int[][] cacheY= new int[10][];
 
+    public static void onViews(Consumer<FieldView> toRun) {
+        HeroZone.heroes.values().forEach(view -> toRun.accept(view));
+        LanesField.views.values().forEach(view -> toRun.accept(view));
+
+    }
+//        public static List<FieldView> getViews() {
+//        return ListMaster.merge(LanesField.getViews(), HeroZone.getViews());
+//    }
     public static FieldView getView(Entity entity) {
         if (entity instanceof Unit) {
            return  LanesField.getView((Unit) entity);

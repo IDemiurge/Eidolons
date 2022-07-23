@@ -58,7 +58,7 @@ public class ABackground {
                 int y = (GdxMaster.getHeight() - h) / 2;
                 batch.draw(backTexture, x, y, w, h);
             } else {
-                //TODO max
+                //TODO parallax - at camera * coef?
                 batch.draw(backTexture, 0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
             }
 
@@ -68,10 +68,11 @@ public class ABackground {
     }
 
     private boolean isCenteredBackground() {
-        if (backgroundSprite != null) {
-            return true;
-        }
-        return !ScreenMaster.isFullscreen();
+//        if (backgroundSprite != null) {
+//            return true;
+//        }
+//        return !ScreenMaster.isFullscreen();
+        return false;
     }
 
     private void drawSpriteBg(Batch batch) {

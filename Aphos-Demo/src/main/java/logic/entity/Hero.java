@@ -24,8 +24,19 @@ public class Hero extends Entity {
     public boolean isLeftSide() {
         return pos.isLeftSide();
     }
+
     @Override
     public String toString() {
-        return "Hero - " + name ;
+        return "Hero - " + name;
+    }
+
+    public boolean isPlayerControlled() {
+        return true;
+    }
+    public boolean isOnAtb() {
+        return true;
+    }
+    public int getLane() {
+        return pos.getLane();
     }
 }

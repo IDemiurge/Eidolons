@@ -1,16 +1,18 @@
-package logic.functions;
+package logic.functions.combat;
 
 import gdx.general.anims.ActionAnims;
-import gdx.visuals.front.FrontCell;
 import gdx.visuals.lanes.LaneConsts;
+import logic.core.Aphos;
 import logic.entity.Hero;
+import logic.functions.GameController;
+import logic.functions.LogicController;
 import logic.lane.HeroPos;
 import main.system.GuiEventManager;
-import main.system.GuiEventType;
+import content.AphosEvent;
 
 import java.util.List;
 
-public class MoveLogic extends LogicController {
+public class HeroMoveLogic extends LogicController {
     public static final int INVALID_STEP = -1;
     public static final int INVALID_JUMP = -2;
     public static final int MID_JUMP = 0;
@@ -19,27 +21,30 @@ public class MoveLogic extends LogicController {
     public static final String INVALID_MOVE_1 = "Can't step over Barrier, only jump";
     public static final String INVALID_MOVE_2 = "Can't jump into Barrier!";
 
-    public MoveLogic(GameController controller) {
+    public HeroMoveLogic(GameController controller) {
         super(controller);
-        GuiEventManager.bind(GuiEventType.INPUT_MOVE , p-> {
+        GuiEventManager.bind(AphosEvent.INPUT_MOVE, p -> {
             List params = (List) p.get();
-            move_((int)params.get(0), (Boolean) params.get(1));
+            move_((int) params.get(0), (Boolean) params.get(1));
         });
     }
 
 
     public void move_(int length, boolean direction) {
-        HeroPos prev = hero.getPos();
+        HeroPos prev = Aphos.hero.getPos();
         int move = getMoveType(prev, length, direction, 2);
+        boolean sideJump = false;
         switch (move) {
             case INVALID_STEP -> inputError(INVALID_MOVE_1);
             case INVALID_JUMP -> inputError(INVALID_MOVE_2);
 
-            case MID_JUMP -> sideJump(prev, true);
-            case REVERSE_JUMP -> sideJump(prev, false);
+            case MID_JUMP, REVERSE_JUMP -> {
+                sideJump(prev, move == MID_JUMP);
+                sideJump = true;
+            }
             case NORMAL -> step(length, direction, prev);
         }
-
+        controller.getAtbLogic().atbMove(Aphos.hero, length, sideJump);
     }
 
     private void step(int length, boolean direction, HeroPos prev) {
@@ -47,27 +52,27 @@ public class MoveLogic extends LogicController {
             direction = !direction;
         int mod = direction ? length : -length;
         HeroPos pos = new HeroPos(prev.getCell() + mod, prev.isLeftSide()); //TODO
-        newPosition(hero, pos);
+        newPosition(Aphos.hero, pos);
         boolean triggered = false;
 //        HeroView view = FrontField.get().getView(hero);
         if (triggered) {
-//            GuiEventManager.trigger(GuiEventType. )
+//            GuiEventManager.trigger(AphosEvent. )
         } else {
             //direct call - but we can't do it all from logic thread, eh?
-            ActionAnims.moveHero(view, prev, pos, NORMAL);
+            ActionAnims.moveHero(Aphos.view, prev, pos, NORMAL);
         }
     }
 
     public static void newPosition(Hero hero, HeroPos pos) {
         hero.setPos(pos);
 //        controller.setHeroPos(pos);
-        GuiEventManager.trigger(GuiEventType.POS_UPDATE, pos);
+        GuiEventManager.trigger(AphosEvent.POS_UPDATE, pos);
     }
 
     private void sideJump(HeroPos prev, boolean mid) {
         HeroPos pos = new HeroPos(prev.getCell(), !prev.isLeftSide());
-        hero.setPos(pos);
-        ActionAnims.sideJump(mid, view, prev, pos);
+        Aphos.hero.setPos(pos);
+        ActionAnims.sideJump(mid, Aphos.view, prev, pos);
     }
 
     public static boolean isReachable(HeroPos heroPos, HeroPos pos, int i) {
@@ -75,7 +80,7 @@ public class MoveLogic extends LogicController {
             if (i < 2)
                 return false;
             if (heroPos.getCell() == pos.getCell())
-                if (heroPos.getCell() == 0  || pos.getCell() == HeroPos.MAX_INDEX)
+                if (heroPos.getCell() == 0 || pos.getCell() == HeroPos.MAX_INDEX)
                     return true;
             return false;
         }
@@ -85,7 +90,7 @@ public class MoveLogic extends LogicController {
     }
 
     private int getMoveType(HeroPos prev, int length, boolean direction, int max_length) {
-        if (length>max_length)
+        if (length > max_length)
             return INVALID_STEP;
         int cell = prev.getCell();
 //        int toEdge = Math.min(Math.abs(LaneConsts.CELLS_PER_SIDE - cell), cell);
@@ -115,13 +120,32 @@ public class MoveLogic extends LogicController {
         return NORMAL;
     }
 
-
     public void cellClicked(HeroPos pos) {
-        HeroPos heroPos = hero.getPos();
+        HeroPos heroPos = Aphos.hero.getPos();
         int length = heroPos.dst(pos);
-        Boolean direction = length  < 0;
+        Boolean direction = length < 0;
         length = Math.abs(length);
         //could offer some special moves on hover or click via small overlay menu!
         move_(length, direction);
     }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -2,6 +2,10 @@ package logic.entity;
 
 import content.LinkedStringMap;
 import logic.content.AUnitEnums;
+import logic.core.Aphos;
+import logic.lane.LanePos;
+import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.data.MapMaster;
 
 import java.util.Map;
 
@@ -19,6 +23,7 @@ public class Entity {
 
         ////TODO refactor
         this.name = valueMap.get(AUnitEnums.NAME).toString();
+        Aphos.game.add(this);
     }
 
     public String getName() {
@@ -39,10 +44,13 @@ public class Entity {
 
     public int getInt(Object identifier) {
         Object o = getValueMap().get(identifier.toString());
-        return Integer.parseInt(o.toString());
+        if (o == null)
+            return 0;
+        return NumberUtils.getIntParse(o.toString());
+
     }
 
-    public void setValue(String name, int val) {
+    public void setValue(String name, Object val) {
         getValueMap().put(name, val);
     }
 
@@ -57,5 +65,33 @@ public class Entity {
 
     public Object getValue(String s) {
         return valueMap.get(s);
+    }
+
+    public boolean isPlayerControlled() {
+        return false;
+    }
+
+    public boolean isOnAtb() {
+        return false;
+    }
+
+    public void killed(Entity source) {
+        Aphos.game.getController().getDeathLogic().killed(this, source);
+    }
+
+    public void modVal(String key, int n) {
+        MapMaster.addToIntegerMap(valueMap, key, n);
+    }
+
+    public float getFloat(String atb) {
+        Object o = valueMap.get(atb);
+        if (o == null) {
+            return 0f;
+        }
+        return Float.parseFloat(o.toString());
+    }
+
+    public int getLane() {
+        return 0;
     }
 }

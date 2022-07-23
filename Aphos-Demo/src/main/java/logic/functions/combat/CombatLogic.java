@@ -1,15 +1,18 @@
 package logic.functions.combat;
 
 import com.badlogic.gdx.Input;
+import content.LOG;
 import eidolons.game.core.Core;
 import libgdx.GdxMaster;
 import logic.content.AUnitEnums;
+import logic.core.Aphos;
 import logic.entity.Entity;
+import logic.entity.Hero;
 import logic.entity.Unit;
 import logic.functions.GameController;
 import logic.functions.LogicController;
 import main.system.GuiEventManager;
-import main.system.GuiEventType;
+import content.AphosEvent;
 import main.system.auxiliary.RandomWizard;
 import main.system.threading.WaitMaster;
 
@@ -20,6 +23,28 @@ public class CombatLogic extends LogicController {
     private static final int BASE_HIT_CHANCE = 75;
     private static final int PWR_HIT_CHANCE = 65;
     private static final int QK_HIT_CHANCE = 50;
+
+    public boolean canAttack(Entity attacker, Entity target) {
+        if (attacker instanceof Unit){
+            if (!canUnitAttack((Unit) attacker, target)) {
+                return false;
+            }
+        }
+        int diff = Math.abs(attacker.getLane() - target.getLane());
+        if (attacker.getInt(AUnitEnums.RANGE) < diff)
+            return false;
+        return true;
+    }
+
+    public boolean canUnitAttack(Unit attacker, Entity target) {
+        if (attacker.getPos().cell != 0) {
+            return false;
+        }
+        int diff = Math.abs(attacker.getLane() - target.getLane());
+        if (attacker.getInt(AUnitEnums.RANGE) < diff)
+            return false;
+        return true;
+    }
 
     public enum ATK_OUTCOME {
         Lethal, Ineffective, Hit, Miss
@@ -35,6 +60,10 @@ public class CombatLogic extends LogicController {
     }
 
     public void attack(Unit unit) {
+        if (canAttack(Aphos.hero, unit)) {
+            LOG.log("Cannot attack ", unit);
+            return;
+        }
         ATK_TYPE type = ATK_TYPE.Standard;
         boolean ctrl = GdxMaster.isKeyPressed(Input.Keys.CONTROL_LEFT);
         boolean alt = GdxMaster.isKeyPressed(Input.Keys.ALT_LEFT);
@@ -44,20 +73,21 @@ public class CombatLogic extends LogicController {
         if (!shift && ctrl && alt)
             type = Power;
         ATK_TYPE finalType = type;
-        Core.onThisOrNonGdxThread(() -> getAtbLogic().attackAction(hero, finalType));
-        Core.onThisOrNonGdxThread(() -> attack(hero, unit, finalType));
+        Core.onThisOrNonGdxThread(() -> getAtbLogic().attackAction(Aphos.hero, finalType));
+        Core.onThisOrNonGdxThread(() -> attack(Aphos.hero, unit, finalType));
     }
 
     public void attack(Entity source, Entity target, ATK_TYPE type) {
         ATK_OUTCOME result = doAttack(source, target, type);
-        GuiEventManager.triggerWithParams(GuiEventType.DUMMY_ANIM_ATK, target, result, type);
+        GuiEventManager.triggerWithParams(AphosEvent.DUMMY_ANIM_ATK, target, result, type);
         WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.ATK_ANIMATION_FINISHED);//, 1000, ActionAnims.DUMMY_ANIM_TYPE.atk);
         switch (result) {
             case Lethal:
-                GuiEventManager.triggerWithParams(GuiEventType.DUMMY_ANIM_DEATH, target, result);
+                target.killed(source);
+                GuiEventManager.triggerWithParams(AphosEvent.DUMMY_ANIM_DEATH, target, result);
             case Hit:
             case Ineffective:
-                GuiEventManager.triggerWithParams(GuiEventType.DUMMY_ANIM_HIT, target, result);
+                GuiEventManager.triggerWithParams(AphosEvent.DUMMY_ANIM_HIT, target, result);
                 break;
             case Miss:
                 break;

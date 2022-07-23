@@ -1,37 +1,25 @@
 package logic.functions;
 
-import gdx.views.HeroView;
-import logic.entity.Hero;
+import logic.core.game.Game;
 import logic.functions.atb.AtbLogic;
 import logic.functions.combat.CombatLogic;
+import logic.functions.combat.HeroMoveLogic;
 
 public class LogicController {
     protected final GameController controller;
-    protected Hero hero;
-    protected HeroView view;
+    protected Game game;
 
     public LogicController(GameController controller) {
         this.controller = controller;
-    }
-
-    public void setHero(Hero hero) {
-        this.hero = hero;
-    }
-
-    public void setView(HeroView view) {
-        this.view = view;
+        this.game = controller.game;
     }
 
     protected void inputError(String s) {
         System.out.println("ERROR: " + s);
     }
 
-    public Hero getHero() {
-        return controller.getHero();
-    }
-
-    public MoveLogic getMoveLogic() {
-        return controller.getMoveLogic();
+    public HeroMoveLogic getMoveLogic() {
+        return controller.getHeroMoveLogic();
     }
 
     public CombatLogic getCombatLogic() {

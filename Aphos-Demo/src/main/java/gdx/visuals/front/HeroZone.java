@@ -6,11 +6,11 @@ import gdx.dto.HeroDto;
 import gdx.general.view.ADtoView;
 import gdx.views.FieldView;
 import gdx.views.HeroView;
+import logic.core.Aphos;
 import logic.entity.Entity;
 import logic.entity.Hero;
-import logic.functions.GameController;
 import main.system.GuiEventManager;
-import main.system.GuiEventType;
+import content.AphosEvent;
 
 import java.util.*;
 
@@ -20,7 +20,7 @@ public class HeroZone extends ADtoView<FrontLineDto> {
     public static final Map<Hero, HeroView> heroes= new HashMap<>();
 
     public HeroZone() {
-        GuiEventManager.bind(GuiEventType.DTO_HeroZone, p -> setDto((FrontLineDto) p.get()));
+        GuiEventManager.bind(AphosEvent.DTO_HeroZone, p -> setDto((FrontLineDto) p.get()));
     }
 
     public static FieldView getView(Entity entity) {
@@ -30,10 +30,9 @@ public class HeroZone extends ADtoView<FrontLineDto> {
     @Override
     protected void update() {
         //when else to update this?
-        boolean left = true;
         setHeight(700);
-        for (List<Entity> side : ImmutableList.of(dto.getSide(), dto.getSide2()))
-            for (Entity entity : side) {
+            for (Entity entity : dto.getHeroes()) {
+                boolean left = entity.isLeftSide();
                 if (entity instanceof Hero) {
                     Hero hero = ((Hero) entity);
                     HeroView view = heroes.get(hero);
@@ -42,21 +41,19 @@ public class HeroZone extends ADtoView<FrontLineDto> {
                         addActor(view);
                         heroes.put(hero, view);
                     }
-
                     float x = ViewManager.getHeroX(hero.getPos());
                     float y = ViewManager.getHeroYInverse(hero.getPos());
                     y =getHeight()-y;
                     view.setPosition(x, y);
                 }
-                left = !left;
             }
     }
 //    List<ObjView> heroes;
 
     public static HeroView createView(boolean side, Entity entity) {
         HeroView heroView = new HeroView(side, new HeroDto((Hero) entity));
-        GameController.getInstance().setHeroView(heroView);
-        GameController.getInstance().setHero((Hero) entity);
+        Aphos.view = (heroView);
         return heroView;
     }
+
 }

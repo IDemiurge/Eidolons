@@ -1,13 +1,10 @@
 package libgdx.stage.camera;
 
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import content.AphosEvent;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.core.Core;
-import eidolons.game.core.EUtils;
-import eidolons.game.exploration.story.cinematic.Cinematics;
 import eidolons.system.options.OptionsMaster;
 import libgdx.bf.GridMaster;
 import libgdx.stage.camera.generic.CameraMotion;
@@ -16,14 +13,12 @@ import libgdx.stage.camera.generic.MotionData;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.system.GuiEventManager;
-import main.system.GuiEventType;
-import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.threading.WaitMaster;
 
-import java.util.*;
-
-import static main.system.GuiEventType.*;
-import static main.system.auxiliary.log.LogMaster.devLog;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 public class CameraMan {
 
@@ -56,11 +51,11 @@ public class CameraMan {
     }
 
     private void bindEvents() {
-        GuiEventManager.bind(CAMERA_ZOOM, param -> {
+        GuiEventManager.bind(AphosEvent.CAMERA_ZOOM, param -> {
             MotionData data = (MotionData) param.get();
             zoomController.zoom(data);
         });
-        GuiEventManager.bind(CAMERA_OFFSET, p -> {
+        GuiEventManager.bind(AphosEvent.CAMERA_OFFSET, p -> {
             Vector2 v;
             if (p.get() instanceof Coordinates) {
                 v = GridMaster.getCenteredPos((Coordinates) p.get());
@@ -72,13 +67,13 @@ public class CameraMan {
             getCam().position.set(x + v.x, y + v.y, 0);
 
         });
-        GuiEventManager.bind(RESET_CAMERA, p -> {
+        GuiEventManager.bind(AphosEvent.RESET_CAMERA, p -> {
             panCamControl.centerCam();
         });
-        GuiEventManager.bind(RESET_CAMERA, p -> {
+        GuiEventManager.bind(AphosEvent.RESET_CAMERA, p -> {
             zoomController.resetZoom();
         });
-        GuiEventManager.bind(CAMERA_SET_TO, p -> {
+        GuiEventManager.bind(AphosEvent.CAMERA_SET_TO, p -> {
             getCam().position.set((Vector2) p.get(), 0);
         });
 //        GuiEventManager.bind(CAMERA_PAN_TO, param -> {

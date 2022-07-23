@@ -359,4 +359,16 @@ public class GdxColorMaster {
      //gdx review - use POOL!
         return temp.set(color);
     }
+
+    public static Color getColorForAtbValue(int val) {
+        if (val>30)
+            return ORANGE;
+        if (val>50)
+            return Color.YELLOW;
+        if (val>75)
+            return Color.GREEN;
+        if (val==100)
+            return Color.PURPLE;
+        return Color.RED;
+    }
 }

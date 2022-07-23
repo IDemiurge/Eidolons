@@ -156,6 +156,7 @@ public class GdxEvents implements GenericGuiEventManager {
 
     public void trigger_(final EventType type, final EventCallbackParam obj) {
         EventCallback event = eventMap.get(type);
+        System.out.println(event +" triggered with " + obj.get());
         if (event != null) {
             lock.lock();
             try {

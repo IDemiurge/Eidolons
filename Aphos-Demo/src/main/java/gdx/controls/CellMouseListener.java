@@ -1,15 +1,10 @@
 package gdx.controls;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import logic.functions.GameController;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 public class CellMouseListener extends ClickListener {
 

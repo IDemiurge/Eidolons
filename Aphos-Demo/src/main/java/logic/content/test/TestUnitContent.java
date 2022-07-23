@@ -35,21 +35,26 @@ static{
         private Map<String, Object> map;
 
         TestHero(String stringMap, TestUnit... template) {
+            this();
             Map<String, Float> floatMap = new HashMap<>();
             for (TestUnit unit : template) {
-                Unit inst = new Unit(null, unit.getValues());
                 for (String key : mergeCoefMap.keySet()) {
-                    int val = inst.getInt(key);
+                    int val = (int) unit.getValues().get(key);
                     Float coef = mergeCoefMap.get(key);
                     MapMaster.addToFloatMap(floatMap, key, coef*val);
                 }
             }
-
             this.map.putAll(floatMap);
             this.map.putAll(new DataUnit<>(stringMap).getValues());
         }
 
+        TestHero() {
+            map = new HashMap<>();
+            map.put(NAME, toString());
+
+        }
         TestHero(TestUnit template, String stringMap) {
+            this();
             this.map = new LinkedStringMap<>();
             this.map.putAll(template.getValues());
             this.map.putAll(new DataUnit<>(stringMap).getValues());
@@ -120,6 +125,7 @@ public static void initAbils(){
             this.image = image;
             init(this);
             initAdditional(additional);
+            values.put(TYPE, type);
         }
 
 

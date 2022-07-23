@@ -20,7 +20,7 @@ public class LanesField extends ADtoView<LaneFieldDto> {
 
     private final int laneCount = LaneConsts.LANES_PER_SIDE;
     private final Lane[] lanes = new Lane[laneCount*2];
-    private final static Map<LanePos, UnitView> views= new HashMap<>();
+    public final static Map<LanePos, UnitView> views= new HashMap<>();
 
     public LanesField() {
         boolean[] sides = {true, false};

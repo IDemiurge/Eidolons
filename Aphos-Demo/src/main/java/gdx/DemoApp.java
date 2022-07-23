@@ -17,14 +17,12 @@ import gdx.general.Textures;
 import libgdx.GdxEvents;
 import libgdx.GdxMaster;
 import libgdx.assets.Assets;
-import libgdx.assets.texture.TextureCache;
 import libgdx.screens.GameScreen;
-import libgdx.screens.generic.ScreenWithAssets;
 import libgdx.screens.generic.ScreenWithLoader;
 import libgdx.screens.handlers.ScreenLoader;
 import libgdx.screens.handlers.ScreenMaster;
 import libgdx.video.VideoMaster;
-import logic.AphosEngine;
+import logic.core.Aphos;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.auxiliary.EnumMaster;
@@ -62,7 +60,7 @@ public class DemoApp extends Game {
         Camera camera = new OrthographicCamera();
         viewport = new ScreenViewport(camera);
         ScreenMaster.setMainViewport(viewport);
-        AphosEngine.start();
+        Aphos.start();
 
         Screen combatScreen = new AScreen();
         setScreen(combatScreen);

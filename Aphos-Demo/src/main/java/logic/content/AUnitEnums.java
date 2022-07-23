@@ -3,6 +3,7 @@ package logic.content;
 public class AUnitEnums {
     public static final String NAME = "NAME";
     public static final String IMAGE = "IMAGE";
+    public static final String TYPE = "UNIT TYPE";
 
     public static final String HP = "HP";
     public static final String INITIATIVE = "INITIATIVE";
@@ -11,6 +12,9 @@ public class AUnitEnums {
     public static final String DEFENSE = "DEFENSE";
     public static final String ATTACK = "ATTACK";
     public static final String BODY = "BODY";
+    public static final String RANGE = "RANGE";
+    // DYNAMIC
+    public static final String ATB = "ATB";
 
     public enum Body{
         stone, bone, dust, blood, metal

@@ -1,11 +1,9 @@
 package gdx.controls;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import libgdx.GdxMaster;
+import logic.core.Aphos;
 import logic.entity.Unit;
-import logic.functions.GameController;
 
 public class AUnitClicker extends ClickListener {
 
@@ -19,7 +17,7 @@ public class AUnitClicker extends ClickListener {
     public void clicked(InputEvent event, float x, float y) {
         if (event.getButton() == 0) {
             System.out.println("Attack on " + unit);
-            GameController.getInstance().getCombatLogic().attack(unit);
+          Aphos.game.getController().getCombatLogic().attack(unit);
         } else {
         }
 

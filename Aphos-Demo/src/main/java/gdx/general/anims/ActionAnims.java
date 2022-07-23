@@ -2,11 +2,10 @@ package gdx.general.anims;
 
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import content.RNG;
 import eidolons.content.consts.VisualEnums;
+import gdx.dto.UnitDto;
 import gdx.views.FieldView;
 import gdx.views.HeroView;
 import gdx.views.UnitView;
@@ -17,31 +16,23 @@ import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.actions.AfterActionSmart;
 import libgdx.anims.fullscreen.Screenshake;
 import libgdx.bf.generic.FadeImageContainer;
-import logic.content.AUnitEnums;
-import logic.content.AUnitEnums.Body;
-import logic.core.Aphos;
 import logic.entity.Entity;
-import logic.functions.GameController;
-import logic.functions.combat.CombatLogic;
+import logic.entity.Unit;
 import logic.functions.combat.CombatLogic.ATK_OUTCOME;
 import logic.lane.HeroPos;
-import logic.lane.LanePos;
 import main.system.GuiEventManager;
-import main.system.GuiEventType;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.data.FileManager;
+import content.AphosEvent;
 import main.system.threading.WaitMaster;
 
 import java.util.List;
 
-import static logic.functions.MoveLogic.*;
+import static logic.functions.combat.HeroMoveLogic.*;
 
 public class ActionAnims {
     static {
-        GuiEventManager.bind(GuiEventType.DUMMY_ANIM_ATK, p -> atk((List) p.get()));
-        GuiEventManager.bind(GuiEventType.DUMMY_ANIM_HIT, p -> hit((List) p.get()));
-        GuiEventManager.bind(GuiEventType.DUMMY_ANIM_DEATH, p -> death((List) p.get()));
+        GuiEventManager.bind(AphosEvent.DUMMY_ANIM_ATK, p -> atk((List) p.get()));
+        GuiEventManager.bind(AphosEvent.DUMMY_ANIM_HIT, p -> hit((List) p.get()));
+        GuiEventManager.bind(AphosEvent.DUMMY_ANIM_DEATH, p -> death((List) p.get()));
     }
 
     public enum DUMMY_ANIM_TYPE {
@@ -98,52 +89,31 @@ public class ActionAnims {
                 animDrawer.add(GdxMaster.offset(pos, RNG.integer(-10, 10), RNG.integer(-10, 10)), spritePath, type);
             }
         }
-        //proper remove - ?
-        if (type == DUMMY_ANIM_TYPE.death)
-        {
+        //proper remove - ?  THIS IS UPSIDE DOWN - we don't depend on DeathAnim to do kill()!
+        if (type == DUMMY_ANIM_TYPE.death) {
             animation.addOnFinish(() -> screenAnim(view));
             animation.addOnFinish(() -> view.kill());
         }
 
         if (type == DUMMY_ANIM_TYPE.hit)
             animation.addOnFinish(() ->
-                    GuiEventManager.trigger(GuiEventType.CAMERA_SHAKE, new Screenshake(0.5f, true, VisualEnums.ScreenShakeTemplate.MEDIUM)));
+                    GuiEventManager.trigger(AphosEvent.CAMERA_SHAKE, new Screenshake(0.5f, true, VisualEnums.ScreenShakeTemplate.MEDIUM)));
 
         if (type == DUMMY_ANIM_TYPE.atk)
             animation.addOnFinish(() ->
                     WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.ATK_ANIMATION_FINISHED, type));
     }
 
-    //TODO
-    private static void screenAnim(FieldView view) {
-        //            Action screenAction= new TemporalAction(0.5f, Interpolation.pow4Out) {
-//                @Override
-//                protected void update(float percent) {
-//                    if (percent <0.5f)
-//                        view.setScreenOverlay(percent*2);
-//                    else
-//                        view.setScreenOverlay(1-percent*2);
-//                }
-//            };
-//            view.addAction(screenAction);
-    }
 
 
-    public static void moveUnit(UnitView view, LanePos prevPos, LanePos pos) {
-        if (prevPos.lane != pos.lane) {
-//            jumpLane()
-        }
-        float scale = ViewManager.getScale(pos.cell);
-        float dur = 1;
-        ScaleToAction scaleAction = ActionMasterGdx.getScaleAction(scale, dur);
-        scaleAction.setInterpolation(Interpolation.smooth);
-        scaleAction.setTarget(view);
-        view.addAction(scaleAction);
-
-        MoveToAction moveToAction = ActionMasterGdx.getMoveToAction(ViewManager.getX(pos), ViewManager.getYInverse(pos), dur);
-        scaleAction.setInterpolation(Interpolation.smooth);
-        scaleAction.setTarget(view);
-        view.addAction(scaleAction);
+    /*
+    what happens is that we fade out on prev and fade in on cur!
+    All we need here is some VFX
+    Maybe later we can have some interesting shader-based effects like ... pull image out
+     */
+    public static void moveUnit(UnitView prev, UnitView cur, Unit unit) {
+        prev.setDto(new UnitDto(null));
+        cur.setDto(new UnitDto(unit));
 
     }
 
@@ -186,5 +156,35 @@ public class ActionAnims {
 
     public static void setAnimDrawer(AnimDrawer animDrawer) {
         ActionAnims.animDrawer = animDrawer;
+    }
+
+    //useless?
+//    public static void moveUnit(UnitView view, LanePos prevPos, LanePos pos) {
+//        if (prevPos.lane != pos.lane) {
+////            jumpLane()
+//        }
+//        float scale = ViewManager.getScale(pos.cell);
+//        float dur = 1;
+//        ScaleToAction scaleAction = ActionMasterGdx.getScaleAction(scale, dur);
+//        scaleAction.setInterpolation(Interpolation.smooth);
+//        scaleAction.setTarget(view);
+//        view.addAction(scaleAction);
+//        MoveToAction moveToAction = ActionMasterGdx.getMoveToAction(ViewManager.getX(pos), ViewManager.getYInverse(pos), dur);
+//        scaleAction.setInterpolation(Interpolation.smooth);
+//        scaleAction.setTarget(view);
+//        view.addAction(scaleAction);
+//    }
+    //TODO
+    private static void screenAnim(FieldView view) {
+        //            Action screenAction= new TemporalAction(0.5f, Interpolation.pow4Out) {
+//                @Override
+//                protected void update(float percent) {
+//                    if (percent <0.5f)
+//                        view.setScreenOverlay(percent*2);
+//                    else
+//                        view.setScreenOverlay(1-percent*2);
+//                }
+//            };
+//            view.addAction(screenAction);
     }
 }

@@ -4,10 +4,8 @@ import logic.content.AUnitEnums;
 import logic.core.Aphos;
 import logic.entity.Entity;
 import logic.functions.combat.CombatLogic;
-import main.content.enums.entity.ActionEnums;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.data.FileManager;
 
 public class SpriteFinder {
     //TODO
