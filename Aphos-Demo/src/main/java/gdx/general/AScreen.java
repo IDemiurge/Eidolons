@@ -21,6 +21,7 @@ import math.geom.Geom2D;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AScreen extends ScreenAdapter {
 
@@ -34,6 +35,7 @@ public class AScreen extends ScreenAdapter {
     protected CameraMan cameraMan;
     protected ABackground background;
     private boolean initialized;
+    List<Screenshake> shakes = new ArrayList<>();
 
     public AScreen() {
         instance = this;
@@ -66,6 +68,9 @@ public class AScreen extends ScreenAdapter {
             cameraMan.getCam().position.x = 0;
             cameraMan.centerCam();
         } );
+        GuiEventManager.bind(GuiEventType.CAMERA_SHAKE, p -> {
+            shakes.add((Screenshake) p.get());
+        });
     }
 
     public void setBackground(String bg){
@@ -85,7 +90,6 @@ public class AScreen extends ScreenAdapter {
             Gdx.gl20.glHint(GL11.GL_POLYGON_SMOOTH_HINT, GL20.GL_NICEST);
             initialized=true;
         }
-
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
 
@@ -95,6 +99,7 @@ public class AScreen extends ScreenAdapter {
         guiStage.draw();
         lanesStage.draw();
         cameraMan.act(delta);
+        processShakes(delta);
     }
 
     public InputController getController() {
@@ -124,19 +129,19 @@ public class AScreen extends ScreenAdapter {
     }
 
 
-//    protected void processShakes(float delta) {
-//        if (!shakes.isEmpty()) {
-//            for (Screenshake shake : new ArrayList<>(shakes)) {
-//                try {
-//                    if (!shake.update(delta, getCam(), getCameraMan().getCameraCenter())) {
-//                        shakes.remove(shake);
-//                    }
-//                } catch (Exception e) {
-//                    main.system.ExceptionMaster.printStackTrace(e);
-//                    shakes.remove(shake);
-//                }
-//            }
-//            getCam().update();
-//        }
-//    }
+    protected void processShakes(float delta) {
+        if (!shakes.isEmpty()) {
+            for (Screenshake shake : new ArrayList<>(shakes)) {
+                try {
+                    if (!shake.update(delta, getCameraMan().getCam(), getCameraMan().getCameraCenter())) {
+                        shakes.remove(shake);
+                    }
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                    shakes.remove(shake);
+                }
+            }
+            getCameraMan().getCam().update();
+        }
+    }
 }

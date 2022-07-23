@@ -2,29 +2,46 @@ package gdx.general.anims;
 
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
+import content.RNG;
+import eidolons.content.consts.VisualEnums;
 import gdx.views.FieldView;
 import gdx.views.HeroView;
 import gdx.views.UnitView;
 import gdx.visuals.front.HeroZone;
 import gdx.visuals.front.ViewManager;
+import libgdx.GdxMaster;
 import libgdx.anims.actions.ActionMasterGdx;
+import libgdx.anims.actions.AfterActionSmart;
+import libgdx.anims.fullscreen.Screenshake;
+import libgdx.bf.generic.FadeImageContainer;
 import logic.content.AUnitEnums;
+import logic.content.AUnitEnums.Body;
+import logic.core.Aphos;
 import logic.entity.Entity;
+import logic.functions.GameController;
+import logic.functions.combat.CombatLogic;
+import logic.functions.combat.CombatLogic.ATK_OUTCOME;
 import logic.lane.HeroPos;
 import logic.lane.LanePos;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.data.FileManager;
+import main.system.threading.WaitMaster;
+
+import java.util.List;
 
 import static logic.functions.MoveLogic.*;
 
 public class ActionAnims {
     static {
-        GuiEventManager.bind(GuiEventType.DUMMY_ANIM_ATK, p -> atk((Entity) p.get()));
-        GuiEventManager.bind(GuiEventType.DUMMY_ANIM_HIT, p -> hit((Entity) p.get()));
-        GuiEventManager.bind(GuiEventType.DUMMY_ANIM_DEATH, p -> death((Entity) p.get()));
+        GuiEventManager.bind(GuiEventType.DUMMY_ANIM_ATK, p -> atk((List) p.get()));
+        GuiEventManager.bind(GuiEventType.DUMMY_ANIM_HIT, p -> hit((List) p.get()));
+        GuiEventManager.bind(GuiEventType.DUMMY_ANIM_DEATH, p -> death((List) p.get()));
     }
 
     public enum DUMMY_ANIM_TYPE {
@@ -33,55 +50,84 @@ public class ActionAnims {
 
     private static AnimDrawer animDrawer;
 
-    public static void atk(Entity entity) {
-        animOn(entity, DUMMY_ANIM_TYPE.atk);
+    public static void atk(List params) {
+        animOn((Entity) params.get(0), DUMMY_ANIM_TYPE.atk, (ATK_OUTCOME) params.get(1), params.get(2));
     }
 
-    public static void death(Entity entity) {
-        animOn(entity, DUMMY_ANIM_TYPE.death);
+    public static void death(List params) {
+        animOn((Entity) params.get(0), DUMMY_ANIM_TYPE.death, (ATK_OUTCOME) params.get(1));
     }
 
-    public static void hit(Entity entity) {
-        animOn(entity, DUMMY_ANIM_TYPE.hit);
+    public static void hit(List params) {
+        animOn((Entity) params.get(0), DUMMY_ANIM_TYPE.hit, (ATK_OUTCOME) params.get(1));
     }
 
-    public static void animOn(Entity entity, DUMMY_ANIM_TYPE type) {
+    public static void animOn(Entity entity, DUMMY_ANIM_TYPE type, ATK_OUTCOME outcome, Object... args) {
+        //int intensity - for shake, ..
+        //use hit anims to 'spray'
+
+
         FieldView view = ViewManager.getView(entity);
         Vector2 pos = ViewManager.getAbsPos(view);
 //        viewMotion; shake, flash, scale, x to y,
 //        screenShake;
-        String spritePath = getSpritePath(type, entity);
+
+        if (type == DUMMY_ANIM_TYPE.hit) {
+//            Vector2 start=pos;
+            FadeImageContainer portrait = view.getPortrait();
+            Vector2 dest = new Vector2();
+            dest = entity.isLeftSide() ? dest.add(-50, 30) : dest.add(50, 30);
+            MoveToAction moveToAction = ActionMasterGdx.getMoveToAction(dest.x, dest.y, 0.2f);
+            ActionMasterGdx.addAction(portrait, moveToAction);
+
+            MoveToAction moveBack = ActionMasterGdx.getCopy(moveToAction, MoveToAction.class);
+            moveBack.setPosition(0, 0);
+            AfterActionSmart after = new AfterActionSmart();
+            after.setAction(moveBack);
+            ActionMasterGdx.addAction(portrait, after);
+            after.setAction(moveBack);
+
+
+        }
+        String spritePath = SpriteFinder.getSpritePath(type, entity, outcome, args);
         SpriteAnim animation = animDrawer.add(pos, spritePath, type);
-        //proper remove - ?
-        animation.setOnFinish( ()-> view.fadeOut());
-    }
-
-
-    //TODO
-    private static String getSpritePath(DUMMY_ANIM_TYPE anim, Entity entity) {
-        switch (anim) {
-            case hit -> {
-//                Object type = entity.getValueMap().get(AUnitEnums.BODY);
-                String base = "sprite/hit/";
-//                return base+"blood/shower.txt";
-                return "sprite\\hit\\blood\\shower.txt";
-//                if (type==null)
-//                switch (type.toString()) {
-//
-//                }
-//                return RandomWizard.getRandomFrom(base + "", base + "");
-                //blood / bone / ..
-            }
-            case atk -> {
-                String base = "sprite/atk/";
-                base += "blade\\scimitar\\slash.txt";
-                return  "sprite\\atk\\blade\\scimitar\\slash\\slash.txt";
-            }
-            case death -> {
+        if (type == DUMMY_ANIM_TYPE.hit) {
+            //add 'spray' copies
+            for (int i = 0; i < 5; i++) {
+                spritePath = SpriteFinder.getSpritePath(type, entity, outcome, args); //randomize
+                animDrawer.add(GdxMaster.offset(pos, RNG.integer(-10, 10), RNG.integer(-10, 10)), spritePath, type);
             }
         }
-        return null;
+        //proper remove - ?
+        if (type == DUMMY_ANIM_TYPE.death)
+        {
+            animation.addOnFinish(() -> screenAnim(view));
+            animation.addOnFinish(() -> view.kill());
+        }
+
+        if (type == DUMMY_ANIM_TYPE.hit)
+            animation.addOnFinish(() ->
+                    GuiEventManager.trigger(GuiEventType.CAMERA_SHAKE, new Screenshake(0.5f, true, VisualEnums.ScreenShakeTemplate.MEDIUM)));
+
+        if (type == DUMMY_ANIM_TYPE.atk)
+            animation.addOnFinish(() ->
+                    WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.ATK_ANIMATION_FINISHED, type));
     }
+
+    //TODO
+    private static void screenAnim(FieldView view) {
+        //            Action screenAction= new TemporalAction(0.5f, Interpolation.pow4Out) {
+//                @Override
+//                protected void update(float percent) {
+//                    if (percent <0.5f)
+//                        view.setScreenOverlay(percent*2);
+//                    else
+//                        view.setScreenOverlay(1-percent*2);
+//                }
+//            };
+//            view.addAction(screenAction);
+    }
+
 
     public static void moveUnit(UnitView view, LanePos prevPos, LanePos pos) {
         if (prevPos.lane != pos.lane) {

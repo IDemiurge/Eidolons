@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.Predicate;
+import eidolons.system.libgdx.wrapper.Color;
 import libgdx.anims.main.AnimMaster;
 import libgdx.bf.grid.cell.BaseView;
 import libgdx.gui.generic.BlockableGroup;
@@ -108,8 +109,54 @@ public class ActionMasterGdx {
         addSetVisibleAfter(actor, false);
     }
 
-    public static MoveByAction getMoveByAction(Vector2 origin, Vector2 destination,
-                                               EmitterActor actor, int pixelsPerSecond) {
+    public static <T extends TemporalAction> T getReverse(T action, Class c){
+        T reverse = getCopy(action, c);
+        switch (c.getSimpleName()) {
+            case "MoveToAction" ->{
+                ((MoveToAction)reverse).setPosition(action.getActor().getX(),action.getActor().getY());
+            }
+        }
+        reverse.setReverse(true);
+        return reverse;
+    }
+
+    public static <T extends TemporalAction> T getCopy(T action, Class c) {
+        T copy =(T) getAction(c);
+        setFields(action, copy);
+        return copy;
+    }
+
+    private static <T extends TemporalAction> void setFields(T action, T copy) {
+        copy.setDuration(action.getDuration());
+        copy.setInterpolation(action.getInterpolation());
+        copy.setTarget(action.getTarget());
+        copy.setActor(action.getActor());
+        if (action instanceof MoveByAction) {
+            float x = ((MoveByAction) action).getAmountX();
+            float y = ((MoveByAction) action).getAmountY();
+            ((MoveByAction) copy).setAmount(x, y);
+        }
+        if (action instanceof MoveToAction) {
+
+        }
+        if (action instanceof AlphaAction) {
+
+        }
+        if (action instanceof ColorAction) {
+
+        }
+        if (action instanceof ScaleToAction) {
+
+        }
+        if (action instanceof RotateToAction) {
+
+        }
+//        copy.setReverse(action.getDuration());
+//        copy.setActor(action.getDuration());
+    }
+
+    public static MoveByAction getAndAddMoveByAction(Vector2 origin, Vector2 destination,
+                                                     Actor actor, int pixelsPerSecond) {
 
         MoveByAction action = (MoveByAction) getAction(MoveByAction.class);// new MoveByAction();
         float x = destination.x - origin.x;

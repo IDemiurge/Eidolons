@@ -7,6 +7,7 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Predicate;
 
 public class Waiter {
     private static final long default_time_limit = 100000; // what if user is
@@ -21,6 +22,7 @@ public class Waiter {
     private WAIT_OPERATIONS operation;
     private boolean interrupted;
     private int n = 0;
+    private Object expected;
 
     public Waiter(WAIT_OPERATIONS operation) {
         this.operation = operation;
@@ -87,8 +89,12 @@ public class Waiter {
             Chronos.mark(getId());
             startPingingThread();
         }
+        Predicate<Object> predicate =
+                expected == null
+                        ? input -> input == null
+                        : input -> input != expected;
 
-        while (input == null && interrupted == false) {
+        while (predicate.test(input) && interrupted == false) {
             if (timeLimit != null) {
                 if (timeElapsed >= timeLimit) {
                     break;
@@ -98,7 +104,7 @@ public class Waiter {
             }
             if (timeLimit != null)
                 try {
-                    wait(500);
+                    wait(50);
                 } catch (InterruptedException e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
@@ -159,5 +165,9 @@ public class Waiter {
 
     public void setInterrupted(boolean interrupted) {
         this.interrupted = interrupted;
+    }
+
+    public void setExpected(Object expected) {
+        this.expected = expected;
     }
 }

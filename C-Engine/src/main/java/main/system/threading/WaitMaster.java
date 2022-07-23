@@ -30,9 +30,9 @@ public class WaitMaster {
             main.system.auxiliary.log.LogMaster.important("NO LOCK " + o);
             return;
         }
-        main.system.auxiliary.log.LogMaster.important( "UNLOCKING " + o);
+        main.system.auxiliary.log.LogMaster.important("UNLOCKING " + o);
         lock.lock();
-         conditions.remove(lock).signal();
+        conditions.remove(lock).signal();
         lock.newCondition().signal();
         lock.unlock();
 //        main.system.auxiliary.system.log.LogMaster.dev("UNLOCKED " + o);
@@ -64,7 +64,7 @@ public class WaitMaster {
                 waiting.await();
         } catch (Exception e1) {
             e1.printStackTrace();
-        } finally{
+        } finally {
             lock.unlock();
         }
     }
@@ -111,6 +111,11 @@ public class WaitMaster {
 
     public static Object waitForInput(WAIT_OPERATIONS operation,
                                       int maxTime) {
+        return waitForInput(operation, maxTime, null);
+    }
+
+    public static Object waitForInput(WAIT_OPERATIONS operation,
+                                      int maxTime, Object expected) {
         if (getCompleteOperations().contains(operation)) {
             return true;
         }
@@ -126,10 +131,10 @@ public class WaitMaster {
             waiters.remove(operation);
             return waiter.getInput();
         }
-
+        waiter.setExpected(expected);
         Object result = waiter.startWaiting(maxTime == 0 ? null : (long) maxTime);
         LogMaster.log(LogMaster.WAIT_DEBUG, "INPUT RETURNED: " + result
-        +" for " + operation);
+                + " for " + operation);
         waiters.remove(operation);
         return result;
     }
@@ -167,7 +172,7 @@ public class WaitMaster {
 
     private static boolean isLogged(WAIT_OPERATIONS operation) {
         switch (operation) {
-            case TOWN_DONE:
+            case ANIMATION_FINISHED:
                 return true;
         }
         return false;
@@ -208,7 +213,7 @@ public class WaitMaster {
     }
 
     public static WAIT_OPERATIONS getOperation(String value) {
-        return new EnumMaster<WAIT_OPERATIONS>().retrieveEnumConst(WAIT_OPERATIONS.class, value, true, false );
+        return new EnumMaster<WAIT_OPERATIONS>().retrieveEnumConst(WAIT_OPERATIONS.class, value, true, false);
     }
 
     public static void waitForCondition(Predicate<Float> p, int max) {
@@ -230,6 +235,10 @@ public class WaitMaster {
 
     // additional identifying for batch operations?
     public enum WAIT_OPERATIONS {
+        ATK_ANIMATION_FINISHED,
+        HIT_ANIMATION_FINISHED,
+        DEATH_ANIMATION_FINISHED,
+
         SELECT_BF_OBJ,
         PRECOMBAT,
         TEST_MODE,

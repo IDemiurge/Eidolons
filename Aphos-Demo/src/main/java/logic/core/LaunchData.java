@@ -15,7 +15,7 @@ import static logic.content.test.TestUnitContent.TestUnit.*;
 
 public class LaunchData {
 
-    public static final String HERO = TestUnitContent.TestHero.Elberen.toString();
+    public static final String HERO = TestUnitContent.TestHero.Valen.toString();
 
     public static final String[][] LANEDATA = {
             {Golem.name, Archer.name, "", "",}, //1st is frontline

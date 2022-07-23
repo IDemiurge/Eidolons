@@ -2,11 +2,14 @@ package logic.content.test;
 
 import content.LinkedStringMap;
 import logic.content.AUnitEnums;
+import logic.entity.Unit;
 import main.data.StringMap;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.MapMaster;
 import main.system.data.DataUnit;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -14,14 +17,36 @@ import static logic.content.AUnitEnums.*;
 import static logic.content.AUnitEnums.UnitType.*;
 
 public class TestUnitContent {
-
+    static Map<String, Float> mergeCoefMap = new HashMap<>();
+static{
+    mergeCoefMap.put(UnitVal.HP.toString(), 0.75f);
+    mergeCoefMap.put(UnitVal.DAMAGE.toString(), 0.5f);
+    mergeCoefMap.put(UnitVal.ATTACK.toString(), 0.5f);
+    mergeCoefMap.put(UnitVal.DEFENSE.toString(), 0.5f);
+    mergeCoefMap.put(UnitVal.INITIATIVE.toString(), 0.25f);
+    mergeCoefMap.put(UnitVal.ARMOR.toString(), 0.25f);
+}
     public enum TestHero implements ContentEnum {
-        Elberen(TestUnit.Rogue, "image:heroes/gwyn token.png;"),
+        Elberen(TestUnit.Rogue, "image:heroes/gwyn token.png;weapon:Scimitar"),
+        Valen("image:heroes/valen token.png;weapon:Sword", TestUnit.Lancer, TestUnit.Rogue, TestUnit.Fiend),
+        Sabia(TestUnit.Rogue, "image:heroes/valen token.png;weapon:Scimitar"),
+        Harlen(TestUnit.Rogue, "image:heroes/valen token.png;"),
         ;
         private Map<String, Object> map;
 
         TestHero(String stringMap, TestUnit... template) {
-            //add up?
+            Map<String, Float> floatMap = new HashMap<>();
+            for (TestUnit unit : template) {
+                Unit inst = new Unit(null, unit.getValues());
+                for (String key : mergeCoefMap.keySet()) {
+                    int val = inst.getInt(key);
+                    Float coef = mergeCoefMap.get(key);
+                    MapMaster.addToFloatMap(floatMap, key, coef*val);
+                }
+            }
+
+            this.map.putAll(floatMap);
+            this.map.putAll(new DataUnit<>(stringMap).getValues());
         }
 
         TestHero(TestUnit template, String stringMap) {

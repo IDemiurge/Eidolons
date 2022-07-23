@@ -4,10 +4,13 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import gdx.dto.EntityDto;
 import gdx.general.view.ADtoView;
 import libgdx.bf.generic.FadeImageContainer;
+import libgdx.screens.batch.CustomSpriteBatch;
+import libgdx.shaders.ShaderDrawer;
+import main.content.enums.GenericEnums;
 
 public class FieldView<T extends EntityDto> extends ADtoView<T> {
 
-    FadeImageContainer portrait= new FadeImageContainer(); //empty mirror?
+    private final FadeImageContainer portrait = new FadeImageContainer(); //empty mirror?
     private final boolean side;
 
     public FieldView(boolean side) {
@@ -16,34 +19,57 @@ public class FieldView<T extends EntityDto> extends ADtoView<T> {
     }
 
     @Override
+    public void setScale(float scaleXY) {
+        portrait.setScale(scaleXY);
+        super.setScale(scaleXY);
+    }
+
+    @Override
     protected void update() {
         //TODO hierarchy of DTOs - good idea?
         portrait.setImage(dto.getEntity().getImagePath());
-        if (!side){
+        if (!side) {
             portrait.setFlipX(true);
         }
     }
 
-    @Override
-    public void setPosition(float x, float y) {
-
-        System.out.printf(this+ " Pos set: x=%2.0f,y=%2.0f \n", x, y);
-        super.setPosition(x, y);
+    public void setAlphaTemplate(GenericEnums.ALPHA_TEMPLATE alphaTemplate) {
+        portrait.setAlphaTemplate(alphaTemplate);
     }
 
-    @Override
-    public void setX(float x) {
-        System.out.printf(this+ " x=%2.0f\n", x);
-        super.setX(x);
+    public void setScreenOverlay(float screenOverlay) {
+        portrait.setScreenOverlay(screenOverlay);
     }
-    @Override
-    public void setY(float y) {
-        System.out.printf(this+ " y=%2.0f\n", y);
-        super.setY(y);
+
+    public void setScreenEnabled(boolean screenEnabled) {
+        portrait.setScreenEnabled(screenEnabled);
+    }
+
+    public void setBaseAlpha(float s) {
+        portrait.setBaseAlpha(s);
+    }
+
+    public FadeImageContainer getPortrait() {
+        return portrait;
+    }
+
+    public void kill() {
+        portrait.setImage("");
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
+        if (portrait.getScreenOverlay() > 0) {
+            if (parentAlpha == ShaderDrawer.SUPER_DRAW) {
+                super.draw(batch, 1f);
+                return;
+            }
+            ((CustomSpriteBatch) batch).resetBlending();
+            drawScreen(batch, false);
+            drawScreen(batch, true);
+            ((CustomSpriteBatch) batch).resetBlending();
+        } else
+            super.draw(batch, 1f);
+//        setColor(colorAction);
     }
 }

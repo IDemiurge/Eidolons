@@ -2,6 +2,8 @@ package logic.functions;
 
 import gdx.views.HeroView;
 import logic.entity.Hero;
+import logic.functions.atb.AtbLogic;
+import logic.functions.combat.CombatLogic;
 
 public class LogicController {
     protected final GameController controller;
@@ -22,5 +24,21 @@ public class LogicController {
 
     protected void inputError(String s) {
         System.out.println("ERROR: " + s);
+    }
+
+    public Hero getHero() {
+        return controller.getHero();
+    }
+
+    public MoveLogic getMoveLogic() {
+        return controller.getMoveLogic();
+    }
+
+    public CombatLogic getCombatLogic() {
+        return controller.getCombatLogic();
+    }
+
+    public AtbLogic getAtbLogic() {
+        return controller.getAtbLogic();
     }
 }

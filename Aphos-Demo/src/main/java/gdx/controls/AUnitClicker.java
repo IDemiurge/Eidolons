@@ -1,7 +1,9 @@
 package gdx.controls;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import libgdx.GdxMaster;
 import logic.entity.Unit;
 import logic.functions.GameController;
 

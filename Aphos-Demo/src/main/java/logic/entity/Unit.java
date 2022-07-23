@@ -19,6 +19,9 @@ public class Unit extends Entity {
         this.pos = pos;
     }
 
+    public boolean isLeftSide() {
+        return pos.leftSide;
+    }
     @Override
     public String toString() {
         return "Unit - " + name ;

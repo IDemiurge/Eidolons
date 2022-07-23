@@ -12,18 +12,25 @@ import logic.lane.LanePos;
 
 public class UnitView extends FieldView<UnitDto> {
 
+    private final ImageContainer frame;
     private LanePos pos;
 
     public UnitView(boolean side, LanePos pos) {
         super(side);
         this.pos = pos;
-        ImageContainer frame = new ImageContainer("ui/views/uv_frame.png");
+        frame = new ImageContainer("ui/views/uv_frame.png");
         frame.setFlipX(side);
         addActor(frame);
         frame.setZIndex(0);
         Label label;
         addActor(label=new Label(pos+"", StyleHolder.getAVQLabelStyle(18)));
         label.pack();
+    }
+
+    @Override
+    public void setScale(float scaleXY) {
+        frame.setScale(scaleXY);
+        super.setScale(scaleXY);
     }
 
     @Override

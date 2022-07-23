@@ -647,6 +647,10 @@ public class GdxMaster {
         return 0;
     }
 
+    public static Vector2 offset(Vector2 pos, int x, int y) {
+        return new Vector2(pos.x+x, pos.y+y);
+    }
+
     //    protected static void setAttackTargetingCursor() {
     //        Pixmap pm = new Pixmap(GDX.file(PathFinder.getTargetingCursorPath()));
     //        Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 0, 0));

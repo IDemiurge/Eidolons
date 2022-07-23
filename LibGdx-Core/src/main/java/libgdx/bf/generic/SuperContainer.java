@@ -128,7 +128,8 @@ public class SuperContainer extends SuperActor {
 
     @Override
     public void setScale(float scaleXY) {
-        getContent().setScale(scaleXY);
+        super.setScale(scaleXY);
+//        getContent().setScale(scaleXY);
     }
 
     @Override

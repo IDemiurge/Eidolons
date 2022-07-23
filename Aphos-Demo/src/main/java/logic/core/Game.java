@@ -5,6 +5,7 @@ import logic.content.test.TestUnitContent;
 import logic.entity.Entity;
 import logic.entity.Hero;
 import logic.entity.Unit;
+import logic.functions.GameController;
 import logic.functions.MoveLogic;
 import logic.lane.HeroPos;
 import logic.lane.LanePos;
@@ -22,6 +23,12 @@ public class Game {
         GuiEventManager.trigger(GuiEventType.DTO_FrontField, data.initFFDto(this));
         GuiEventManager.trigger(GuiEventType.DTO_HeroZone, data.initHeroDto(this));
         GuiEventManager.trigger(GuiEventType.DTO_LaneField, data.initLfDto(this));
+
+        startLoop();
+    }
+
+    private void startLoop() {
+        //TODO
     }
 
     public List<UnitDto> createUnitsOnLane(int i, String[][] laneData) {

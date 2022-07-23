@@ -21,6 +21,9 @@ public class Hero extends Entity {
         this.pos = pos;
     }
 
+    public boolean isLeftSide() {
+        return pos.isLeftSide();
+    }
     @Override
     public String toString() {
         return "Hero - " + name ;

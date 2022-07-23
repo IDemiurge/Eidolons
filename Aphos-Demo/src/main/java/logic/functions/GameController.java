@@ -1,7 +1,9 @@
 package logic.functions;
 
 import gdx.views.HeroView;
+import logic.core.Aphos;
 import logic.entity.Hero;
+import logic.functions.atb.AtbLogic;
 import logic.functions.combat.CombatLogic;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -15,6 +17,7 @@ public class GameController { //manager + handler architecture
     private static GameController instance;
     protected CombatLogic combatLogic;
     protected MoveLogic moveLogic;
+    protected AtbLogic atbLogic;
 
     private Hero hero;
     private HeroView view;
@@ -25,6 +28,7 @@ public class GameController { //manager + handler architecture
         controllers = new LinkedList<>();
         controllers.add(combatLogic = new CombatLogic(this));
         controllers.add(moveLogic = new MoveLogic(this));
+        controllers.add(atbLogic = new AtbLogic(this));
     }
 
     public static GameController getInstance() {
@@ -45,6 +49,7 @@ public class GameController { //manager + handler architecture
     public void setHero(Hero hero) {
         this.hero = hero;
         controllers.forEach(c -> c.setHero(hero));
+        Aphos.hero = hero;
     }
     public Hero getHero() {
         return hero;
@@ -67,4 +72,7 @@ public class GameController { //manager + handler architecture
         return combatLogic;
     }
 
+    public AtbLogic getAtbLogic() {
+        return atbLogic;
+    }
 }

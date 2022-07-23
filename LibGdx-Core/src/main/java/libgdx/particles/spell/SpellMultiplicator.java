@@ -306,7 +306,7 @@ public class SpellMultiplicator implements Runnable {
             );
             speed = template.speed;
         }
-        MoveByAction action = ActionMasterGdx.getMoveByAction(getOrigin(), v, actor, (int) speed);
+        MoveByAction action = ActionMasterGdx.getAndAddMoveByAction(getOrigin(), v, actor, (int) speed);
 
         if (anim.getPart() == VisualEnums.ANIM_PART.IMPACT) {
             duration = 1f / 100;

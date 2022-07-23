@@ -50,4 +50,12 @@ public class Entity {
     public String toString() {
         return name;
     }
+
+    public boolean isLeftSide() {
+        return false;
+    }
+
+    public Object getValue(String s) {
+        return valueMap.get(s);
+    }
 }

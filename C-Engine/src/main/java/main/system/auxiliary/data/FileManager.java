@@ -794,4 +794,8 @@ public class FileManager {
         // System.out.println("lastModifiedTime: " + attr.lastModifiedTime());
         return attr.creationTime().toMillis();
     }
+
+    public static boolean isLeafDirectory(File file) {
+        return getFilesFromDirectory(file, true, false).stream().filter(f->f.isDirectory()).count()==0;
+    }
 }

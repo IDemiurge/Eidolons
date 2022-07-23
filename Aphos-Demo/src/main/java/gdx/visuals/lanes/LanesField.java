@@ -7,6 +7,7 @@ import gdx.dto.LaneFieldDto;
 import gdx.general.AScreen;
 import gdx.general.view.ADtoView;
 import gdx.views.UnitView;
+import gdx.visuals.front.ViewManager;
 import libgdx.gui.generic.GroupX;
 import logic.entity.Unit;
 import logic.lane.LanePos;
@@ -39,6 +40,7 @@ public class LanesField extends ADtoView<LaneFieldDto> {
 
     public static Actor createView(boolean side, LanePos pos) {
         UnitView unitView = new UnitView(side, pos);
+        unitView.setScale(ViewManager.getScale(pos.cell));
         views.put(pos, unitView);
         return unitView;
     }
