@@ -64,6 +64,9 @@ public class GuiEventManager {
         trigger(GuiEventManager.getEvent(type), params);
     }
 
+    public static void triggerWithNamedParams(final EventType type, Object... params) {
+        trigger(type, new EventCallbackParam(true, params));
+    }
     public static void triggerWithParams(final EventType type, Object... params) {
         Object obj = null;
         if (params != null) {

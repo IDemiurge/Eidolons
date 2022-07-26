@@ -8,11 +8,13 @@ import gdx.dto.UnitDto;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
 import libgdx.bf.generic.ImageContainer;
+import logic.content.AUnitEnums;
 import logic.lane.LanePos;
 
 public class UnitView extends FieldView<UnitDto> {
 
     private final ImageContainer frame;
+    private final Label infoLabel;
     private LanePos pos;
 
     public UnitView(boolean side, LanePos pos) {
@@ -22,9 +24,8 @@ public class UnitView extends FieldView<UnitDto> {
         frame.setFlipX(side);
         addActor(frame);
         frame.setZIndex(0);
-        Label label;
-        addActor(label=new Label(pos+"", StyleHolder.getAVQLabelStyle(18)));
-        label.pack();
+        addActor(infoLabel=new Label("", StyleHolder.getAVQLabelStyle(18)));
+
     }
 
     @Override
@@ -32,6 +33,16 @@ public class UnitView extends FieldView<UnitDto> {
         frame.setScale(scaleXY);
         super.setScale(scaleXY);
     }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        infoLabel.pack();
+        infoLabel.setX(GdxMaster.centerWidth(infoLabel));
+        if (!isEmpty())
+            infoLabel.setText(dto.getUnit().getName()+ ": "+ dto.getUnit().getString(AUnitEnums.HP));
+    }
+
 
     @Override
     protected void update() {
@@ -44,7 +55,7 @@ public class UnitView extends FieldView<UnitDto> {
     @Override
     protected void initAtbLabel() {
         super.initAtbLabel();
-        atb.setPosition(50, 100);
+        atb.setY(-15);
     }
 
     @Override

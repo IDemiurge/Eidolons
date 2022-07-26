@@ -1,17 +1,13 @@
 package logic.functions.atb;
 
+import content.LOG;
 import logic.content.AUnitEnums;
-import logic.core.Aphos;
 import logic.entity.Entity;
 import logic.entity.Hero;
-import logic.entity.Unit;
 import logic.functions.GameController;
 import logic.functions.LogicController;
 import logic.functions.combat.CombatLogic;
-import main.system.auxiliary.NumberUtils;
 import main.system.threading.WaitMaster;
-
-import static logic.content.consts.CombatConsts.*;
 
 public class AtbLogic extends LogicController {
     private AtbLoop loop;
@@ -23,28 +19,29 @@ public class AtbLogic extends LogicController {
 
     public void atbMove(Hero hero, int length, boolean sideJump) {
         if (sideJump)
-            atbAction(hero, 75);
+            atbAction("Side Jump", hero, 75);
         else {
             if (length==2)
-                atbAction(hero, 40);
+                atbAction("Jump", hero, 40);
             if (length==1)
-                atbAction(hero, 25);
+                atbAction("Step", hero, 25);
         }
     }
 
     public void attackAction(Entity source, CombatLogic.ATK_TYPE type) {
         switch (type) {
-            case Power -> atbAction(source, 100);
-            case Standard -> atbAction(source, 75);
-            case Quick -> atbAction(source, 50);
+            case Power -> atbAction("Power Attack", source, 100);
+            case Standard -> atbAction("Standard Attack", source, 75);
+            case Quick -> atbAction("Quick Attack", source, 50);
         }
     }
     public void waits(Entity source) {
-        atbAction(source, 25);
+        atbAction("Wait", source, 25);
     }
 
-    public void atbAction(Entity source, int cost) {
-        source.modVal(AUnitEnums.ATB, -cost);
+    public void atbAction(String action, Entity source, int cost) {
+        source.modVal(AUnitEnums.ATB, - (float) cost);
+        LOG.log(source," does [", action, "] for ATB: ", cost);
         WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.ACTION_COMPLETE, source);
     }
 

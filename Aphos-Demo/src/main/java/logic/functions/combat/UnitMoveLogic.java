@@ -16,7 +16,7 @@ public class UnitMoveLogic extends LogicController {
     public void unitMoveForward(Unit unit, int i) {
         LanePos pos = new LanePos(unit.getPos().lane, unit.getPos().cell - i);
         unit.setPos(pos);
-        GuiEventManager.triggerWithParams(AphosEvent.UNIT_MOVE, unit, pos);
+        GuiEventManager.triggerWithNamedParams(AphosEvent.UNIT_MOVE, "unit",unit, "pos", pos);
     }
 
     public int maxDstMoveForward(Unit unit) {

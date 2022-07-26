@@ -150,6 +150,19 @@ public class ArrayMaster<T> {
     public static Object getLastElement(Object[] args) {
         return args[args.length-1];
     }
+
+    public static float floatOrElse(Object  arg, float defVal) {
+        if (arg instanceof Float)
+            return (float) arg;
+        return defVal;
+    }
+    public static float floatOrElse(Object[] args, int index, float defVal) {
+        if (args.length <=index)
+            return defVal;
+        if (args[index] instanceof Float)
+            return (float) args[index];
+        return defVal;
+    }
 //    private static boolean[][][][] booleanFalseArrays = new boolean[100][100][1][1]; // speed up clearshot if we can
 
 //    public static void resetBufferArray() {

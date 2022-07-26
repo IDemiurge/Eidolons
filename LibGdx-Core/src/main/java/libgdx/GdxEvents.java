@@ -6,10 +6,7 @@ import libgdx.screens.GameScreen;
 import libgdx.screens.handlers.ScreenMaster;
 import main.system.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -156,8 +153,8 @@ public class GdxEvents implements GenericGuiEventManager {
 
     public void trigger_(final EventType type, final EventCallbackParam obj) {
         EventCallback event = eventMap.get(type);
-        System.out.println(event +" triggered with " + obj.get());
         if (event != null) {
+            System.out.println(type +" triggered with " + obj.get());
             lock.lock();
             try {
                 eventQueue.add(() -> event.call(obj));
@@ -168,6 +165,7 @@ public class GdxEvents implements GenericGuiEventManager {
 
             }
         } else {
+            System.out.println(type +" put on demand callback with " + obj.get());
             //            if (obj instanceof OnDemandCallback) {
             //            onDemand.put(type, obj);
             if (isOnDemandCallback(type)) {

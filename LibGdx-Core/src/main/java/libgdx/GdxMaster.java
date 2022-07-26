@@ -146,6 +146,13 @@ public class GdxMaster {
         return GdxMaster.getWidth() / 2 - actor.getWidth() / 2;
     }
 
+    public static Vector2 getAbsolutePosition(Actor actor) {
+        Vector2 pos = new Vector2(actor.getX(), actor.getY());
+        for (Group ancestor : getAncestors(actor)) {
+            pos.add(ancestor.getX(), ancestor.getY());
+        }
+        return pos;
+    }
     public static float centerWidth(Actor actor) {
         if (actor.getParent() != null)
             if (actor.getParent().getWidth() != 0)

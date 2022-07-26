@@ -45,6 +45,7 @@ public class FrontCell extends GroupX {
         addActor(sprite = new SpriteX("sprite\\cell\\cell_rotate_warp.txt"));
         addActor(overlay = new SpriteX("sprite\\cell\\cell_rotate_warp.txt"));
 
+        overlay.setBlending(GenericEnums.BLENDING.SCREEN);
         sprite.setBlending(GenericEnums.BLENDING.SCREEN); //inverse if..?
         sprite.setFlipX(pos.isLeftSide());
         sprite.setFlipY(pos.isFront());

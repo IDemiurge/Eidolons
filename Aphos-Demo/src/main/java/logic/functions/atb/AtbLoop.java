@@ -137,7 +137,7 @@ public class AtbLoop implements Comparator<Entity> {
 //                    GuiEventManager.trigger(AphosEvent.NEW_ATB_TIME, finalTime);
                 }
         );
-        GuiEventManager.trigger(AphosEvent.TIME_PASSED, time);
+//        GuiEventManager.trigger(AphosEvent.TIME_PASSED, time);
         if (time > 0)
             LOG.log(AtbHelper.getTimeString(time), " passed, ",
                     AtbHelper.getTimeString(SECONDS_IN_ROUND - this.time),

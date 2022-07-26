@@ -1,6 +1,5 @@
 package logic.core.game;
 
-import eidolons.game.battlecraft.rules.combat.attack.block.BlockMaster;
 import eidolons.game.core.Core;
 import gdx.dto.FrontFieldDto;
 import gdx.dto.FrontLineDto;
@@ -17,6 +16,7 @@ import logic.entity.Hero;
 import logic.entity.Unit;
 import logic.functions.GameController;
 import logic.functions.combat.HeroMoveLogic;
+import logic.functions.meta.core.CoreHandler;
 import logic.lane.HeroPos;
 import logic.lane.LanePos;
 import main.system.GuiEventManager;

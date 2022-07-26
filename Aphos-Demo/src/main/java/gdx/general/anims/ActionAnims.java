@@ -11,100 +11,122 @@ import gdx.views.HeroView;
 import gdx.views.UnitView;
 import gdx.visuals.front.HeroZone;
 import gdx.visuals.front.ViewManager;
+import gdx.visuals.lanes.LanesField;
 import libgdx.GdxMaster;
-import libgdx.anims.actions.ActionMasterGdx;
-import libgdx.anims.actions.AfterActionSmart;
 import libgdx.anims.fullscreen.Screenshake;
-import libgdx.bf.generic.FadeImageContainer;
+import logic.core.Aphos;
 import logic.entity.Entity;
+import logic.entity.Hero;
 import logic.entity.Unit;
 import logic.functions.combat.CombatLogic.ATK_OUTCOME;
 import logic.lane.HeroPos;
+import logic.lane.LanePos;
+import main.game.bf.directions.DIRECTION;
+import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import content.AphosEvent;
+import main.system.auxiliary.data.ArrayMaster;
 import main.system.threading.WaitMaster;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static logic.functions.combat.HeroMoveLogic.*;
 
 public class ActionAnims {
-    static {
-        GuiEventManager.bind(AphosEvent.DUMMY_ANIM_ATK, p -> atk((List) p.get()));
-        GuiEventManager.bind(AphosEvent.DUMMY_ANIM_HIT, p -> hit((List) p.get()));
-        GuiEventManager.bind(AphosEvent.DUMMY_ANIM_DEATH, p -> death((List) p.get()));
-    }
-
-    public enum DUMMY_ANIM_TYPE {
-        hit, atk, death
-    }
-
     private static AnimDrawer animDrawer;
 
-    public static void atk(List params) {
-        animOn((Entity) params.get(0), DUMMY_ANIM_TYPE.atk, (ATK_OUTCOME) params.get(1), params.get(2));
+    public enum DUMMY_ANIM_TYPE {
+        lane_hit, lane_atk, hero_atk, lane_death, hero_death, hero_hit, explode,
+    }
+    static {
+        GuiEventManager.bind(AphosEvent.UNIT_MOVE, p -> moveUnit(p.get("unit", Unit.class), p.get("pos", LanePos.class)));
+
+        GuiEventManager.bind(AphosEvent.DUMMY_ANIM_ATK, p -> animOn(p,  DUMMY_ANIM_TYPE.lane_atk));
+        GuiEventManager.bind(AphosEvent.DUMMY_ANIM_HIT, p -> animOn(p,  DUMMY_ANIM_TYPE.lane_hit));
+        GuiEventManager.bind(AphosEvent.DUMMY_ANIM_DEATH, p -> animOn(p,  DUMMY_ANIM_TYPE.lane_death));
+
+        GuiEventManager.bind(AphosEvent.DUMMY_ANIM_EXPLODE, p -> animOn(p,  DUMMY_ANIM_TYPE.explode));
+
+        GuiEventManager.bind(AphosEvent.DUMMY_ANIM_HIT_HERO, p -> animOn(p,  DUMMY_ANIM_TYPE.hero_hit));
+        GuiEventManager.bind(AphosEvent.DUMMY_ANIM_DEATH_HERO, p -> animOn(p,  DUMMY_ANIM_TYPE.hero_death));
+        GuiEventManager.bind(AphosEvent.DUMMY_ANIM_ATK_HERO, p -> animOn(p,  DUMMY_ANIM_TYPE.hero_atk));
+
     }
 
-    public static void death(List params) {
-        animOn((Entity) params.get(0), DUMMY_ANIM_TYPE.death, (ATK_OUTCOME) params.get(1));
+    private static void animOn(EventCallbackParam p, DUMMY_ANIM_TYPE type) {
+        animOn(p.get("target", Entity.class), type, p.get("atk_outcome", ATK_OUTCOME.class), p.getNamedArgs());
     }
 
-    public static void hit(List params) {
-        animOn((Entity) params.get(0), DUMMY_ANIM_TYPE.hit, (ATK_OUTCOME) params.get(1));
-    }
-
-    public static void animOn(Entity entity, DUMMY_ANIM_TYPE type, ATK_OUTCOME outcome, Object... args) {
+    public static void animOn(Entity entity, DUMMY_ANIM_TYPE type, ATK_OUTCOME outcome, Map<String, Object> namedArgs) {
         //int intensity - for shake, ..
         //use hit anims to 'spray'
 
-
         FieldView view = ViewManager.getView(entity);
         Vector2 pos = ViewManager.getAbsPos(view);
-//        viewMotion; shake, flash, scale, x to y,
-//        screenShake;
-
-        if (type == DUMMY_ANIM_TYPE.hit) {
-//            Vector2 start=pos;
-            FadeImageContainer portrait = view.getPortrait();
-            Vector2 dest = new Vector2();
-            dest = entity.isLeftSide() ? dest.add(-50, 30) : dest.add(50, 30);
-            MoveToAction moveToAction = ActionMasterGdx.getMoveToAction(dest.x, dest.y, 0.2f);
-            ActionMasterGdx.addAction(portrait, moveToAction);
-
-            MoveToAction moveBack = ActionMasterGdx.getCopy(moveToAction, MoveToAction.class);
-            moveBack.setPosition(0, 0);
-            AfterActionSmart after = new AfterActionSmart();
-            after.setAction(moveBack);
-            ActionMasterGdx.addAction(portrait, after);
-            after.setAction(moveBack);
-
-
-        }
-        String spritePath = SpriteFinder.getSpritePath(type, entity, outcome, args);
+        String spritePath = SpriteFinder.getSpritePath(type, entity, outcome, namedArgs);
         SpriteAnim animation = animDrawer.add(pos, spritePath, type);
-        if (type == DUMMY_ANIM_TYPE.hit) {
-            //add 'spray' copies
-            for (int i = 0; i < 5; i++) {
-                spritePath = SpriteFinder.getSpritePath(type, entity, outcome, args); //randomize
-                animDrawer.add(GdxMaster.offset(pos, RNG.integer(-10, 10), RNG.integer(-10, 10)), spritePath, type);
+
+        switch (type) {
+            case explode ->{
+                animation.addOnFinish(() -> {
+                    Map<Unit, ATK_OUTCOME> target_units = (Map<Unit, ATK_OUTCOME>) namedArgs.get("target_units");
+                    for (Unit target_unit : target_units.keySet()) {
+                        animOn(target_unit, DUMMY_ANIM_TYPE.lane_hit, target_units.get(target_unit), new HashMap<>());
+                    }
+                    Map<Hero, ATK_OUTCOME> target_heroes = (Map<Hero, ATK_OUTCOME>) namedArgs.get("target_heroes");
+                    for (Hero target_hero : target_heroes.keySet()) {
+                        animOn(target_hero, DUMMY_ANIM_TYPE.hero_hit, target_units.get(target_hero), new HashMap<>());
+                    }
+                });
+                GuiEventManager.trigger(AphosEvent.CAMERA_SHAKE, new Screenshake(1.5f, false, VisualEnums.ScreenShakeTemplate.MEDIUM));
+                /*
+
+                 */
+            }
+            case lane_hit -> {
+               GdxActions.addDisplace(view.getPortrait(), entity.isLeftSide() ? DIRECTION.UP_LEFT : DIRECTION.UP_RIGHT,
+                        ArrayMaster.floatOrElse(namedArgs.get("intensity"), 50f));
+                for (int i = 0; i < 5; i++) {
+                    //add 'spray' copies
+                    spritePath = SpriteFinder.getSpritePath(type, entity, outcome, namedArgs); //randomize
+                    animDrawer.add(GdxMaster.offset(pos, RNG.integer(-10, 10), RNG.integer(-10, 10)), spritePath, type);
+                }
+                animation.addOnFinish(() ->
+                        GuiEventManager.trigger(AphosEvent.CAMERA_SHAKE, new Screenshake(0.5f, true, VisualEnums.ScreenShakeTemplate.MEDIUM)));
+            }
+            case lane_atk -> {
+                GdxActions.addDisplace(Aphos.view.getPortrait(), entity.isLeftSide() ? DIRECTION.UP_LEFT : DIRECTION.UP_RIGHT,
+                        ArrayMaster.floatOrElse(namedArgs.get("intensity"), 50f));
+                animation.addOnFinish(() ->
+                        WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.ATK_ANIMATION_FINISHED, type));
+            }
+            case lane_death -> {
+                animation.addOnFinish(() -> screenAnim(view));
+                animation.addOnFinish(() -> view.kill());
+            }
+
+
+            case hero_atk -> {
+            }
+            case hero_hit -> {
+                GdxActions.addDisplace(view.getPortrait(), entity.isLeftSide() ? DIRECTION.DOWN_RIGHT : DIRECTION.DOWN_LEFT,
+                        ArrayMaster.floatOrElse(namedArgs.get("intensity"), 30f));
+            }
+            case hero_death -> {
             }
         }
         //proper remove - ?  THIS IS UPSIDE DOWN - we don't depend on DeathAnim to do kill()!
-        if (type == DUMMY_ANIM_TYPE.death) {
-            animation.addOnFinish(() -> screenAnim(view));
-            animation.addOnFinish(() -> view.kill());
-        }
 
-        if (type == DUMMY_ANIM_TYPE.hit)
-            animation.addOnFinish(() ->
-                    GuiEventManager.trigger(AphosEvent.CAMERA_SHAKE, new Screenshake(0.5f, true, VisualEnums.ScreenShakeTemplate.MEDIUM)));
 
-        if (type == DUMMY_ANIM_TYPE.atk)
-            animation.addOnFinish(() ->
-                    WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.ATK_ANIMATION_FINISHED, type));
     }
 
-
+    private static void moveUnit(Unit unit, LanePos pos) {
+        UnitView view = LanesField.getView(unit.getPrevPos());
+        UnitView newView = LanesField.getView(pos);
+        moveUnit(view, newView, unit);
+    }
 
     /*
     what happens is that we fade out on prev and fade in on cur!

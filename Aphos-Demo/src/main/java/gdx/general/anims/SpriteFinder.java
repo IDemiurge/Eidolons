@@ -7,11 +7,19 @@ import logic.functions.combat.CombatLogic;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 
+import java.util.Map;
+
 public class SpriteFinder {
     //TODO
-    public static String getSpritePath(ActionAnims.DUMMY_ANIM_TYPE anim, Entity entity, CombatLogic.ATK_OUTCOME outcome, Object... args) {
+    public static String getSpritePath(ActionAnims.DUMMY_ANIM_TYPE anim, Entity entity, CombatLogic.ATK_OUTCOME outcome, Map<String, Object> args) {
         switch (anim) {
-            case hit -> {
+
+            case lane_hit -> {
+                if (outcome== CombatLogic.ATK_OUTCOME.Miss) {
+                    return "";
+                }
+//                if (args.get(""))
+
 //                return "sprite\\hit\\blood\\shower.txt";
                 String base = "sprite/hit/";
                 Object type = null;
@@ -39,17 +47,26 @@ public class SpriteFinder {
                     }
                 }
             }
-            case atk -> {
+            case explode -> {
+                return "sprite/explode/light impact large 5 4.png";
+            }
+            case hero_atk -> {
                 Object weapon = Aphos.hero.getValue("Weapon");
-                String attack = getAtkName(args[0], weapon);
+                String attack = getAtkName(args.get("atk_type"), weapon);
                 String base = "sprite/atk/"+weapon+"/"+attack+"/"+attack;
 //                base += "blade\\scimitar\\slash.txt";
 //                return  "sprite\\atk\\blade\\scimitar\\slash\\slash.txt";
                 return base+".txt";
             }
-            case death -> {
+            case lane_death -> {
                 return  "sprite\\death\\soul 5 6.png";
                 // some SPELL FX?
+            }
+            case lane_atk -> {
+            }
+            case hero_death -> {
+            }
+            case hero_hit -> {
             }
         }
         return null;

@@ -9,10 +9,12 @@ import com.badlogic.gdx.utils.Align;
 import eidolons.content.consts.VisualEnums;
 import libgdx.bf.SuperActor;
 import libgdx.bf.generic.Flippable;
+import libgdx.screens.batch.CustomSpriteBatch;
 import libgdx.shaders.ShaderDrawer;
 import libgdx.shaders.ShaderMaster;
 import main.content.enums.GenericEnums;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.TimeMaster;
 
 
 public class SpriteX extends SuperActor implements Flippable, Blended {
@@ -85,6 +87,17 @@ public class SpriteX extends SuperActor implements Flippable, Blended {
         }
     }
 
+    @Override
+    public void fadeIn() {
+//        System.out.println("Jeez in " + TimeMaster.getTimeStamp());
+        super.fadeIn();
+    }
+
+    @Override
+    public void fadeOut() {
+//        System.out.println("Jeez out " + TimeMaster.getTimeStamp());
+        super.fadeOut();
+    }
 
     private void initSprite() {
         sprite.setCustomAct(true);
@@ -170,6 +183,10 @@ public class SpriteX extends SuperActor implements Flippable, Blended {
             sprite.setAlpha(parentAlpha);
 
         done = !sprite.draw(batch);
+        if (batch instanceof CustomSpriteBatch) {
+            ((CustomSpriteBatch) batch).resetBlending();
+        }
+
         //        sprite.setFlipX(true);
         //        debug();
         //        Gdx.gl20.glDisable(GL_BLEND);

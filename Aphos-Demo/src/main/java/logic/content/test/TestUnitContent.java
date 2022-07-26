@@ -82,7 +82,7 @@ public static void initAbils(){
         Golem        (25,  12,     15,      5,      10,     10,    0,      0, Guard, "", val("body", Body.metal)),
         Haunter      (18,  6,     4,      12,      10,     8,     2,      1, Caster, "", val("body", Body.dust)),
 //        Alchemist      (18,  6,     4,      12,      10,     8,     2,      1, Caster, "", val("body", Body.dust)),
-        Bull        (75,  10,      0,      8,        6,      2,    0,      1, Explode, "", val("explode", 40)),
+        Bull        (75,  10,      0,      5,        6,      2,    0,      1, Explode, "", val("explode", 40)),
 //        Mother        (75,  10,      0,      8,        6,      2,    0,      1, Explode, "", val("explode", 40)),
         //Knight multi
 

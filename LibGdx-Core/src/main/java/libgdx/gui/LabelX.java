@@ -3,7 +3,10 @@ package libgdx.gui;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import libgdx.StyleHolder;
+import libgdx.gui.generic.GroupX;
 import main.system.text.TextWrapper;
+
+import static libgdx.gui.generic.GroupX.TOTAL_DEBUG;
 
 /**
  * Created by JustMe on 4/16/2018.
@@ -69,6 +72,14 @@ public class LabelX extends VisLabel {
         getStyle().fontColor.a = getColor().a * parentAlpha;
         super.draw(batch, parentAlpha);
         getStyle().fontColor.a = a;
+
+        if (isTotalDebug()) {
+            GroupX.drawDebug(batch, this);
+        }
+    }
+
+    protected boolean isTotalDebug() {
+        return TOTAL_DEBUG;
     }
 
     public void setZigZagLines(boolean zigZagLines) {

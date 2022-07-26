@@ -11,10 +11,13 @@ import logic.entity.Hero;
 import logic.entity.Unit;
 import logic.functions.GameController;
 import logic.functions.LogicController;
+import logic.lane.LanePos;
 import main.system.GuiEventManager;
 import content.AphosEvent;
 import main.system.auxiliary.RandomWizard;
 import main.system.threading.WaitMaster;
+
+import java.util.*;
 
 import static logic.functions.combat.CombatLogic.ATK_TYPE.Power;
 import static logic.functions.combat.CombatLogic.ATK_TYPE.Quick;
@@ -25,14 +28,21 @@ public class CombatLogic extends LogicController {
     private static final int QK_HIT_CHANCE = 50;
 
     public boolean canAttack(Entity attacker, Entity target) {
-        if (attacker instanceof Unit){
+        //TODO front ?
+        if (attacker instanceof Unit) {
             if (!canUnitAttack((Unit) attacker, target)) {
                 return false;
             }
+        } else {
+            if (!attacker.isInFrontLine()) {
+                return false;
+            }
+            int diffX = Math.abs(attacker.getLane() - target.getLane());
+            int diffY = Math.abs(attacker.getCell() - target.getCell());
+            long diff = Math.round(Math.hypot(diffX, diffY));
+            if (attacker.getInt(AUnitEnums.RANGE) < diff)
+                return false;
         }
-        int diff = Math.abs(attacker.getLane() - target.getLane());
-        if (attacker.getInt(AUnitEnums.RANGE) < diff)
-            return false;
         return true;
     }
 
@@ -60,7 +70,7 @@ public class CombatLogic extends LogicController {
     }
 
     public void attack(Unit unit) {
-        if (canAttack(Aphos.hero, unit)) {
+        if (!canAttack(Aphos.hero, unit)) {
             LOG.log("Cannot attack ", unit);
             return;
         }
@@ -77,19 +87,62 @@ public class CombatLogic extends LogicController {
         Core.onThisOrNonGdxThread(() -> attack(Aphos.hero, unit, finalType));
     }
 
+    public void explode(Unit source) {
+        Map<Unit, ATK_OUTCOME> impactedUnits = new LinkedHashMap<>();
+        Map<Hero, ATK_OUTCOME> impactedHeroes = new LinkedHashMap<>();
+        int dst = source.getInt(AUnitEnums.AOE);
+        int damage = source.getInt(AUnitEnums.EXPLODE);
+        LanePos pos = source.getPos();
+
+        if (pos.dst(Aphos.hero.getPos()) <= dst) {
+            ATK_OUTCOME outcome = explodeImpact(Aphos.hero, damage);
+            impactedHeroes.put(Aphos.hero, outcome);
+        }
+        Aphos.game.getUnits().stream().filter(unit -> unit.getPos().dst(pos) <= dst).forEach(
+                unit -> impactedUnits.put(unit, explodeImpact(Aphos.hero, damage))
+        );
+        boolean coreImpact = source.getPos().cell == 0;
+        //checkblock
+        if (coreImpact) {
+            game.getCoreHandler().explodeDamage(damage);
+            //core
+        }
+        kill(source, source);
+        GuiEventManager.triggerWithNamedParams(AphosEvent.DUMMY_ANIM_EXPLODE, "source", source,
+                "target_heroes", impactedHeroes, "target_units", impactedUnits);
+
+    }
+
+    private ATK_OUTCOME explodeImpact(Entity target, int damage) {
+        int resist = target.getInt(AUnitEnums.RESIST);
+        if (resist >=100)
+            return ATK_OUTCOME.Ineffective;
+        damage = damage - damage*resist/100;
+
+        if (!target.damage(damage))
+            return ATK_OUTCOME.Lethal;
+
+        return ATK_OUTCOME.Hit;
+    }
+
+    private void kill(Entity target, Entity source) {
+        target.killed(source);
+        GuiEventManager.triggerWithNamedParams(AphosEvent.DUMMY_ANIM_DEATH, "target", target);
+        //TODO ?!
+
+    }
+
     public void attack(Entity source, Entity target, ATK_TYPE type) {
         ATK_OUTCOME result = doAttack(source, target, type);
-        GuiEventManager.triggerWithParams(AphosEvent.DUMMY_ANIM_ATK, target, result, type);
+        GuiEventManager.triggerWithNamedParams(AphosEvent.DUMMY_ANIM_ATK, "target", target, "outcome", result, "atk_type", type);
         WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.ATK_ANIMATION_FINISHED);//, 1000, ActionAnims.DUMMY_ANIM_TYPE.atk);
         switch (result) {
             case Lethal:
-                target.killed(source);
-                GuiEventManager.triggerWithParams(AphosEvent.DUMMY_ANIM_DEATH, target, result);
+                kill(target, source);
             case Hit:
-            case Ineffective:
-                GuiEventManager.triggerWithParams(AphosEvent.DUMMY_ANIM_HIT, target, result);
-                break;
             case Miss:
+            case Ineffective:
+                GuiEventManager.triggerWithNamedParams(AphosEvent.DUMMY_ANIM_HIT, "target", target, "outcome", result);
                 break;
         }
     }

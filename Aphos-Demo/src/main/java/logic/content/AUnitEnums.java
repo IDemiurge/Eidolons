@@ -13,8 +13,11 @@ public class AUnitEnums {
     public static final String ATTACK = "ATTACK";
     public static final String BODY = "BODY";
     public static final String RANGE = "RANGE";
+    public static final String EXPLODE = "EXPLODE";
+    public static final String RESIST = "RESIST";
     // DYNAMIC
     public static final String ATB = "ATB";
+    public static final String AOE = "AOE";
 
     public enum Body{
         stone, bone, dust, blood, metal

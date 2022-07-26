@@ -9,10 +9,12 @@ import gdx.general.AScreen;
 import gdx.general.anims.ActionAnims;
 import gdx.general.anims.AnimDrawer;
 import gdx.views.FieldView;
+import gdx.visuals.centre.CentreArea;
 import gdx.visuals.front.FrontField;
 import gdx.visuals.front.HeroZone;
 import gdx.visuals.front.ViewManager;
 import gdx.visuals.lanes.LanesField;
+import libgdx.GdxMaster;
 import libgdx.anims.std.ActionAnim;
 import logic.entity.Entity;
 import main.system.GuiEventManager;
@@ -23,6 +25,7 @@ public class ALanesStage extends Stage {
     private final LanesField laneField;
     private final HeroZone heroZone;
     private final AnimDrawer animDrawer;
+    private final CentreArea centre;
 //    CentreVisuals centre;
     /*
     decor? overlays? vfx?
@@ -33,7 +36,10 @@ public class ALanesStage extends Stage {
         addActor(laneField = new LanesField());
         addActor(heroZone = new HeroZone());
         addActor(frontField = new FrontField());
+        addActor(centre = new CentreArea());
         addActor(animDrawer = new AnimDrawer());
+
+        centre.setPosition(GdxMaster.getWidth()/2, 300);
         ActionAnims.setAnimDrawer(animDrawer);
 
         GuiEventManager.bind(AphosEvent. ATB_ACTIVE, p->{

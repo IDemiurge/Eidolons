@@ -1,5 +1,8 @@
 package logic.lane;
 
+import gdx.visuals.lanes.LaneConsts;
+import main.system.math.MathMaster;
+
 import java.util.Objects;
 
 public class LanePos {
@@ -10,7 +13,7 @@ public class LanePos {
     public LanePos(int lane, int cell) {
         this.lane = lane;
         this.cell = cell;
-        if (lane<3)
+        if (lane < LaneConsts.LANES_PER_SIDE)
             leftSide=true;
     }
 
@@ -32,5 +35,13 @@ public class LanePos {
     public String toString() {
         return "|lane " + lane +
                 ", pos " + cell + "|";
+    }
+
+    public int dst(LanePos pos) {
+        //TODO precise position pls!
+        return  Math.abs(pos.lane - lane) + Math.abs(pos.cell - cell);
+    }
+    public int dst(HeroPos pos) {
+        return Math.abs(pos.getLane() - lane) + cell;
     }
 }

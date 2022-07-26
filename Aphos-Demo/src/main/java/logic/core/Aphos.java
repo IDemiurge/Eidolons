@@ -10,6 +10,7 @@ public class Aphos {
     public static Game game;
     public static Hero hero;
     public static HeroView view;
+    public static logic.functions.meta.core.Core core;
 
     public static void start() {
         Core.onNewThread(() ->

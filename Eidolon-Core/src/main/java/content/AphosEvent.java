@@ -20,5 +20,10 @@ public enum AphosEvent implements EventType {
     RESET_ZOOM,
     DTO_FrontField,
     DTO_HeroZone,
-    DTO_LaneField, CAMERA_SHAKE, CAMERA_OFFSET, CAMERA_SET_TO, NEW_ATB_TIME, TIME_PASSED, ATB_ACTIVE, CAMERA_ZOOM
+    DTO_LaneField, CAMERA_SHAKE, CAMERA_OFFSET, CAMERA_SET_TO, NEW_ATB_TIME, TIME_PASSED, ATB_ACTIVE, CAMERA_ZOOM, DUMMY_ANIM_EXPLODE, DUMMY_ANIM_HIT_HERO, DUMMY_ANIM_ATK_HERO, DUMMY_ANIM_DEATH_HERO;
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

@@ -1,18 +1,21 @@
-package logic.core.game;
+package logic.functions.meta.core;
 
 import content.LOG;
 import logic.content.AUnitEnums;
+import logic.core.Aphos;
+import logic.core.game.Game;
 import logic.core.game.handlers.GameHandler;
 import logic.entity.Entity;
 import logic.functions.combat.CombatLogic;
 
 public class CoreHandler extends GameHandler {
 
-    private int coreHp = 100;
-    private int coreArmor = 5;
+    Core core;
 
     public CoreHandler(Game game) {
         super(game);
+        core = new Core();
+        Aphos.core=core;
     }
 
     public void attacked(Entity entity, CombatLogic.ATK_TYPE atkType) {
@@ -21,16 +24,15 @@ public class CoreHandler extends GameHandler {
             case Power -> damage = damage * 3 / 2;
             case Quick -> damage = damage / 3 * 2;
         }
-        damage -= coreArmor;
-        if (damage <= 0) {
-            LOG.log("Core resisted damage ", damage);
-            return;
-        }
-        coreHp -= damage;
-        if (coreHp <= 0)
+        boolean result = core.dealDamage(damage);
+        if (!result)
+                game.getRoundHandler().setGameOver(true);
+
+    }
+
+    public void explodeDamage(int damage) {
+        boolean result = core.dealDamage(damage);
+        if (!result)
             game.getRoundHandler().setGameOver(true);
-        LOG.log("Core damaged by ", damage);
-        LOG.log("Core hp left: ", coreHp);
-        //callback to update a label?
     }
 }

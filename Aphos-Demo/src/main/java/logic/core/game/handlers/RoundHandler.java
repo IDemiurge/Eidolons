@@ -1,6 +1,7 @@
 package logic.core.game.handlers;
 
 import content.LOG;
+import gdx.general.AScreen;
 import logic.core.game.Game;
 import logic.entity.Entity;
 import logic.functions.atb.AtbEntity;
@@ -35,6 +36,7 @@ public class RoundHandler extends GameHandler {
 
             roundEnded = active(next.getEntity());
             updateAtbUnits();
+            next=null;
         }
         round++;
         return isGameOver();
@@ -70,5 +72,6 @@ public class RoundHandler extends GameHandler {
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
         LOG.log("GAMEOVER!");
+        AScreen.instance.kill();
     }
 }

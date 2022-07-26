@@ -11,6 +11,7 @@ import static logic.content.AUnitEnums.*;
 public class Unit extends Entity {
     LanePos pos;
     private UnitType type;
+    private LanePos prevPos;
 
     public Unit(LanePos pos, Map<String, Object> valueMap) {
         super(valueMap);
@@ -22,6 +23,7 @@ public class Unit extends Entity {
     }
 
     public void setPos(LanePos pos) {
+        prevPos = this.pos;
         this.pos = pos;
     }
 
@@ -34,15 +36,21 @@ public class Unit extends Entity {
         return pos.lane;
     }
 
+    public int getCell() {
+        return pos.cell;
+    }
     @Override
     public String toString() {
         return "Unit - " + name;
     }
 
     public boolean isOnAtb() {
-        return pos.cell == 0;
+        return isInFrontLine();
     }
 
+    public boolean isInFrontLine() {
+        return pos.cell == 0;
+    }
     public UnitType getType() {
         if (type == null) {
             Object value = getValue(TYPE);
@@ -52,6 +60,10 @@ public class Unit extends Entity {
                 type = new EnumMaster<UnitType>().retrieveEnumConst(UnitType.class, value.toString());
         }
         return type;
+    }
+
+    public LanePos getPrevPos() {
+        return prevPos;
     }
 
 }

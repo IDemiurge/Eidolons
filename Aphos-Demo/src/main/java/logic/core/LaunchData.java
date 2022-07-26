@@ -21,11 +21,11 @@ public class LaunchData {
 
     public static final String[][] LANEDATA = {
             {Golem.name, Archer.name, "", "",}, //1st is frontline
-            {"", Fiend.name, Golem.name, "",},
+            {Bull.name, Fiend.name, Golem.name, "",},
             {Rogue.name, "", "", Haunter.name,},
 
             {Fiend.name, "", Haunter.name, "",},
-            {"", Rogue.name, "", "",},
+            {Bull.name, Rogue.name, "", "",},
             {Fiend.name, Archer.name, "", "",},
     };
     private static final String TXT = "";

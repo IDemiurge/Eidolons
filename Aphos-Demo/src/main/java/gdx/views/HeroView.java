@@ -15,17 +15,25 @@ public class HeroView extends FieldView<HeroDto> {
         super(side);
         setDto(dto);
         addActor(infoLabel = new LabelX(""));
-
     }
+
+    @Override
+    protected void initAtbLabel() {
+        super.initAtbLabel();
+        atb.setY(120);
+    }
+
     @Override
     protected void update() {
         super.update();
+        setSize(portrait.getWidth(), portrait.getHeight());
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        infoLabel.setText(dto.getEntity().getPos().getCell()+"");
+
+//        infoLabel.setText(dto.getEntity().getPos().getCell()+"");
     }
 
     @Override

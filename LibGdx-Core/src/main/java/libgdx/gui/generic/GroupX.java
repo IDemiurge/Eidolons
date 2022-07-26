@@ -8,12 +8,16 @@ import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import libgdx.GdxMaster;
+import libgdx.StyleHolder;
 import libgdx.anims.actions.ActionMasterGdx;
 import libgdx.anims.sprite.Blended;
+import libgdx.gui.LabelX;
 import libgdx.shaders.ShaderDrawer;
 import main.system.auxiliary.ClassMaster;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by JustMe on 3/2/2018.
@@ -22,6 +26,48 @@ public class GroupX extends Group {
 
     static private final Vector2 tmp_ = new Vector2();
     boolean autoSize;
+
+    public static final boolean TOTAL_DEBUG = false;
+    public static final LabelX xXx = new LabelX(StyleHolder.getAVQLabelStyle(17)){
+        @Override
+        protected boolean isTotalDebug() {
+            return false;
+        }
+    };
+    public static final Map<Vector2, Map<Object, Integer>> offsets = new HashMap<>();
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+        if (TOTAL_DEBUG) {
+            drawDebug(batch, this);
+        }
+    }
+
+    public static void drawDebug(Batch batch, Actor actor) {
+        Vector2 pos = GdxMaster.getAbsolutePosition(actor);
+        xXx.setText(actor.getName()==null ? actor.getClass().getSimpleName() : actor.getName() + " " + pos.x + " " + pos.y);
+        Map<Object, Integer> offsetMap = offsets.get(pos);
+        if (offsetMap == null){
+            offsets.put(pos, new HashMap<>());
+            xXx.setPosition(pos.x, pos.y);
+        }
+        else{
+            Integer offset = offsetMap.get(actor);
+            if (offset == null) {
+                offset = offsetMap.size() * 20;
+                offsetMap.put(actor, offset);
+            }
+            xXx.setPosition(pos.x, pos.y + offset);
+        }
+        //add runnable with pos?
+        xXx.draw(batch, 1f);
+    }
+
+    public void addActor(String name, Actor actor) {
+        super.addActor(actor);
+        actor.setName(name);
+    }
 
     public GroupX(boolean autoSize) {
         this();
@@ -35,7 +81,7 @@ public class GroupX extends Group {
 
     @Override
     public void setRotation(float degrees) {
-        if (getRotation()==degrees) {
+        if (getRotation() == degrees) {
             return;
         }
         super.setRotation(degrees);
@@ -78,6 +124,7 @@ public class GroupX extends Group {
         }
         return null;
     }
+
     public void initPos(Actor actor, int align) {
         if ((align & Align.right) != 0) {
             GdxMaster.right(actor);
@@ -275,9 +322,9 @@ public class GroupX extends Group {
             if (child instanceof GroupX && !(isBlendContainer())) {
                 float x = child.getX();
                 float y = child.getY();
-                child.setPosition(x +getX(), child.getY()+getY());
+                child.setPosition(x + getX(), child.getY() + getY());
                 ((GroupX) child).drawScreen(batch, screen);
-                child.setPosition(x , y );
+                child.setPosition(x, y);
             } else {
                 draw = true;
                 if (child instanceof Blended) {

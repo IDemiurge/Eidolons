@@ -6,6 +6,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import eidolons.content.consts.VisualEnums;
 import gdx.controls.AKeyListener;
 import gdx.dto.LaneFieldDto;
 import gdx.general.stage.AGuiStage;
@@ -105,6 +106,13 @@ public class AScreen extends ScreenAdapter {
         cameraMan.act(delta);
         processShakes(delta);
     }
+    public void kill() {
+        setBackground("bg/eldritch red.png");
+        //fullscreen anims?
+        shakes.add(new Screenshake(3f, true, VisualEnums.ScreenShakeTemplate.HARD));
+        cameraMan.centerCam();
+        cameraMan.zoom(10, 5);
+    }
 
     public InputController getController() {
         return controller;
@@ -148,4 +156,5 @@ public class AScreen extends ScreenAdapter {
             getCameraMan().getCam().update();
         }
     }
+
 }

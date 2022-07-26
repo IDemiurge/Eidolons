@@ -3,7 +3,6 @@ package logic.entity;
 import content.LinkedStringMap;
 import logic.content.AUnitEnums;
 import logic.core.Aphos;
-import logic.lane.LanePos;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.MapMaster;
 
@@ -62,11 +61,17 @@ public class Entity {
     public boolean isLeftSide() {
         return false;
     }
+    public boolean isInFrontLine() {
+        return false;
+    }
 
     public Object getValue(String s) {
         return valueMap.get(s);
     }
 
+    public String getString(String s) {
+        return valueMap.get(s).toString();
+    }
     public boolean isPlayerControlled() {
         return false;
     }
@@ -79,6 +84,9 @@ public class Entity {
         Aphos.game.getController().getDeathLogic().killed(this, source);
     }
 
+    public void modVal(String key, float n) {
+        MapMaster.addToFloatMap(valueMap, key, n);
+    }
     public void modVal(String key, int n) {
         MapMaster.addToIntegerMap(valueMap, key, n);
     }
@@ -93,5 +101,13 @@ public class Entity {
 
     public int getLane() {
         return 0;
+    }
+    public int getCell() {
+        return 0;
+    }
+
+    public boolean damage(int damage) {
+        modVal(AUnitEnums.HP, damage);
+        return getInt(AUnitEnums.HP) > 0;
     }
 }

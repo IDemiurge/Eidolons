@@ -13,7 +13,7 @@ public class DragGestureHandler  extends GestureDetector.GestureAdapter  {
 
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
-        cam.position.x += deltaX;
+        cam.position.x += -deltaX;
         cam.position.y += deltaY;
         cam.update();
         return false;

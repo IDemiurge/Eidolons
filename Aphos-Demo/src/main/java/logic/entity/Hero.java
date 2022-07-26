@@ -1,5 +1,6 @@
 package logic.entity;
 
+import logic.core.Aphos;
 import logic.lane.HeroPos;
 
 import java.util.Map;
@@ -38,5 +39,15 @@ public class Hero extends Entity {
     }
     public int getLane() {
         return pos.getLane();
+    }
+
+    public boolean isInFrontLine() {
+        return pos.getCell() % 2 == 1;
+    }
+    @Override
+    public void killed(Entity source) {
+        super.killed(source);
+        if (Aphos.hero==this)
+            Aphos.game.getRoundHandler().setGameOver(true);
     }
 }

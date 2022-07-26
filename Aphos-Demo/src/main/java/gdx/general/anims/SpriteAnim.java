@@ -7,12 +7,9 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
-import content.LinkedStringMap;
 import gdx.general.Textures;
 import gdx.general.anims.ActionAnims.DUMMY_ANIM_TYPE;
-import libgdx.anims.AnimData;
 import libgdx.anims.sprite.SpriteAnimation;
-import libgdx.assets.texture.TextureManager;
 import main.data.filesys.PathFinder;
 
 import java.util.HashMap;
@@ -24,7 +21,7 @@ public class SpriteAnim extends Actor {
     private Runnable onFinish;
 
     public SpriteAnim(String spritePath, Vector2 pos, DUMMY_ANIM_TYPE type) {
-        if (type == DUMMY_ANIM_TYPE.death) {
+        if (type == DUMMY_ANIM_TYPE.lane_death || type == DUMMY_ANIM_TYPE.explode) {
             Texture texture = Textures.getOrCreateTexture(spritePath);
             //TODO refactor + cache
             //regions = TextureManager.getSpriteSheetFrames(spritePath, false, texture);
@@ -36,7 +33,7 @@ public class SpriteAnim extends Actor {
                 cache.put(spritePath, regions);
             }
             float frameDur=0.05f;
-            if (type==DUMMY_ANIM_TYPE.hit)
+            if (type==DUMMY_ANIM_TYPE.lane_hit)
                 frameDur = 0.07f;
             sprite = new SpriteAnimation(frameDur, false, regions);
         }
