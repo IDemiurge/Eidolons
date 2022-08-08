@@ -39,17 +39,10 @@ public class ALanesStage extends Stage {
         addActor(centre = new CentreArea());
         addActor(animDrawer = new AnimDrawer());
 
-        centre.setPosition(GdxMaster.getWidth()/2, 300);
+        centre.setPosition(ViewManager.getCorePos().x, ViewManager.getCorePos().y);
+
         ActionAnims.setAnimDrawer(animDrawer);
 
-        GuiEventManager.bind(AphosEvent. ATB_ACTIVE, p->{
-            Entity e = (Entity) p.get();
-            ViewManager.onViews(view -> view.setActive(false));
-            FieldView view = ViewManager.getView(e);
-            view.setActive(true);
-
-
-        } );
 //        heroZone.setPosition(840, 200);
 //        laneField.setPosition(-880, 0);
 //        addActor(centre = new CentreField());

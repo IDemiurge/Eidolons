@@ -33,7 +33,7 @@ import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.List;
 
-public class GenericGuiStage extends StageX  implements StageWithClosable{
+public class GenericGuiStage extends StageX implements StageWithClosable {
 
     protected final LabelX actionTooltip = new LabelX("", StyleHolder.getDefaultInfoStyle());
     protected final LabelX infoTooltip = new LabelX("", StyleHolder.getDefaultInfoStyle());
@@ -52,7 +52,7 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
     protected LargeText largeText;
     protected CursorDecorator cursorDecorator = CursorDecorator.getInstance();
 
-    protected  OverlayPanel overlayPanel;
+    protected OverlayPanel overlayPanel;
 
     public GenericGuiStage(Viewport viewport, Batch batch) {
         super(viewport == null
@@ -60,13 +60,13 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
                         GdxMaster.getHeight(), new OrthographicCamera())
                         : viewport,
                 batch == null
-                        ?  GdxMaster.createBatchInstance()
+                        ? GdxMaster.createBatchInstance()
                         : batch);
 
         initTooltipsAndMisc();
         GuiEventManager.bind(GuiEventType.SHOW_LARGE_TEXT, p -> {
-            List list= (List) p.get();
-            largeText.show((String) list.get(0),(String)  list.get(1), (Float) list.get(2));
+            List list = (List) p.get();
+            largeText.show((String) list.get(0), (String) list.get(1), (Float) list.get(2));
         });
 
         GuiEventManager.bind(GuiEventType.SHOW_INFO_TEXT, p -> {
@@ -84,7 +84,7 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
                 //                textToShow.add() queue!
                 infoTooltipContainer.setContents(infoTooltip);
                 hideTooltip(actionTooltip, 1f);
-                showTooltip(style, false, text, infoTooltip, 2f);
+                showTooltip(style, false, text, infoTooltip, p.getOrDefault("dur", 2f));
             }
         });
 
@@ -135,13 +135,13 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
                         Runnable onCancel,
                         boolean recursion) {
         if (tipMessageWindow != null)
-        if (tipMessageWindow.isVisible()) {
+            if (tipMessageWindow.isVisible()) {
 //                tipMessageWindow.getOnClose() TODO
-            tipMessageWindow.setOnClose(() -> {
-                confirm(text, canCancel, onConfirm, onCancel, true);
-            });
-            return;
-        }
+                tipMessageWindow.setOnClose(() -> {
+                    confirm(text, canCancel, onConfirm, onCancel, true);
+                });
+                return;
+            }
         if (!recursion)
             if (confirmationPanel.isVisible()) {
                 confirmationPanel.setOnConfirm(
@@ -170,7 +170,9 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
 
         addActor(cursorDecorator);
 
-        addActor(tooltips = createToolTipManager( ));
+        tooltips = createToolTipManager();
+        if (tooltips != null)
+            addActor(tooltips);
 
         addActor(infoTooltipContainer = new SuperContainer(infoTooltip) {
             @Override
@@ -208,6 +210,9 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
         showTooltip(null, action, s, tooltip, dur);
     }
 
+    protected void showTooltip( String text) {
+        showTooltip(null, false, text, infoTooltip, 0);
+    }
     protected void showTooltip(VisualEnums.LABEL_STYLE style, boolean action, String s, LabelX tooltip, float dur) {
 
         infoTooltip.setVisible(true);
@@ -271,9 +276,10 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
 
     public void textInput(Input.TextInputListener textInputListener,
                           String title, String text, String hint) {
-        textInput(false,textInputListener, title, text, hint);
+        textInput(false, textInputListener, title, text, hint);
     }
-    public void textInput(boolean script,Input.TextInputListener textInputListener, String title, String text, String hint) {
+
+    public void textInput(boolean script, Input.TextInputListener textInputListener, String title, String text, String hint) {
         textInputPanel = new TextInputPanel(title, text, hint, textInputListener);
         addActor(textInputPanel);
         textInputPanel.setPosition(GdxMaster.centerWidth(textInputPanel), GdxMaster.centerHeight(textInputPanel));
@@ -284,7 +290,7 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
 
     @Override
     public boolean keyDown(int keyCode) {
-        if (keyCode== Input.Keys.ENTER) {
+        if (keyCode == Input.Keys.ENTER) {
         }
         return super.keyDown(keyCode);
     }
@@ -336,6 +342,6 @@ public class GenericGuiStage extends StageX  implements StageWithClosable{
     }
 
     public TextInputPanel getTextInputPanel() {
-       return textInputPanel;
+        return textInputPanel;
     }
 }

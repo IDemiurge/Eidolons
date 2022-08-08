@@ -14,6 +14,7 @@ public class RoundHandler extends GameHandler {
     private RoundActions actions;
     private int round=1;
     private boolean gameOver;
+    private boolean forceEndRound;
 
     public RoundHandler(Game game) {
         super(game);
@@ -29,6 +30,7 @@ public class RoundHandler extends GameHandler {
         //TODO
         AtbEntity next = null;
         boolean roundEnded = false;
+        forceEndRound = false;
         while (!roundEnded) {
 
             while (next == null)
@@ -66,7 +68,11 @@ public class RoundHandler extends GameHandler {
         } else {
             game.getAiHandler().act(entity);
         }
-        return loop.isNextTurn();
+        return loop.isNextTurn() || forceEndRound;
+    }
+
+    public void setForceEndRound(boolean forceEndRound) {
+        this.forceEndRound = forceEndRound;
     }
 
     public void setGameOver(boolean gameOver) {

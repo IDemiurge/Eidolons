@@ -1,7 +1,9 @@
 package logic.functions.meta.core;
 
+import content.AphosEvent;
 import content.LOG;
 import eidolons.system.libgdx.wrapper.Color;
+import main.system.GuiEventManager;
 
 public class Core {
     /*
@@ -43,7 +45,7 @@ public class Core {
         }
         LOG.log("Core hp left: ", hp);
         //callback to update a label?
-
+        GuiEventManager.trigger(AphosEvent.CORE_HP, hp);
         return true;
     }
 

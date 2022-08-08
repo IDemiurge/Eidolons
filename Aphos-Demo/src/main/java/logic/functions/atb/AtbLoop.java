@@ -3,8 +3,6 @@ package logic.functions.atb;
 import content.LOG;
 import eidolons.game.core.Core;
 import logic.entity.Entity;
-import main.system.GuiEventManager;
-import content.AphosEvent;
 import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
@@ -114,7 +112,7 @@ public class AtbLoop implements Comparator<Entity> {
     protected void processTimeElapsed(Float time) {
         addTime(time);
         for (AtbEntity unit : this.unitsInAtb) {
-            unit.setAtbReadiness(unit.getAtbReadiness() + AtbHelper.getAtbGainForEntity(time, unit));
+            unit.setAtbReadiness(unit.getAtbReadiness() + AtbHelper.getAtbGain(time, unit));
         }
 
         if (isPrecalc()) {

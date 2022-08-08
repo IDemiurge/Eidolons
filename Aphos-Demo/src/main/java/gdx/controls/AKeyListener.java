@@ -3,6 +3,7 @@ package gdx.controls;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import gdx.general.AScreen;
+import logic.core.Aphos;
 import logic.functions.GameController;
 import main.game.bf.directions.DIRECTION;
 import main.system.GuiEventManager;
@@ -12,7 +13,15 @@ public class AKeyListener extends InputAdapter {
 
     @Override
     public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.ENTER){
+            Aphos.game.getRoundHandler().setForceEndRound(true);
+            return super.keyDown(keycode);
+        }
         if (keycode == Input.Keys.SPACE){
+            if (!Aphos.started){
+                Aphos.start();
+                return true;
+            }
             GuiEventManager.trigger(AphosEvent.RESET_CAMERA);
             GuiEventManager.trigger(AphosEvent.RESET_ZOOM);
             return super.keyDown(keycode);

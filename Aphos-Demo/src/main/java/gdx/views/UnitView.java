@@ -31,6 +31,7 @@ public class UnitView extends FieldView<UnitDto> {
     @Override
     public void setScale(float scaleXY) {
         frame.setScale(scaleXY);
+//        frame.pack();
         super.setScale(scaleXY);
     }
 

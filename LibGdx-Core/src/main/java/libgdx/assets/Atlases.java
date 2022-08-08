@@ -47,6 +47,7 @@ import static main.system.auxiliary.log.LogMaster.important;
 import static main.system.auxiliary.log.LogMaster.log;
 
 public class Atlases {
+    private static final boolean LOGGED = false;
 
     public static final List<AssetEnums.ATLAS> all = new LinkedList<>();
     private static final Map<String, Array<TextureAtlas.AtlasRegion>> atlasRegionsCache = new HashMap<>();
@@ -547,7 +548,8 @@ public class Atlases {
                 //                }
 
                 while (!Assets.get().getManager().isLoaded(path)) {
-                    log(1, "... loading " + path);
+                    if (LOGGED)
+                        log(1, "... loading " + path);
                     //                    if (Assets.get().getManager().update(5000))
                     if (Assets.get().getManager().update(10))
                         break;

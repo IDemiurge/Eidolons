@@ -16,6 +16,7 @@ public class Unit extends Entity {
     public Unit(LanePos pos, Map<String, Object> valueMap) {
         super(valueMap);
         this.pos = pos;
+        initAtb();
     }
 
     public LanePos getPos() {
@@ -23,8 +24,21 @@ public class Unit extends Entity {
     }
 
     public void setPos(LanePos pos) {
+        boolean checkSetAtb=false;
+        if (!isOnAtb())
+            checkSetAtb = true;
         prevPos = this.pos;
         this.pos = pos;
+        if (checkSetAtb)
+            initAtb();
+
+    }
+
+
+    @Override
+    protected void initAtb() {
+        if (isOnAtb())
+            setValue(AUnitEnums.ATB, 25);
     }
 
     public boolean isLeftSide() {
@@ -39,6 +53,7 @@ public class Unit extends Entity {
     public int getCell() {
         return pos.cell;
     }
+
     @Override
     public String toString() {
         return "Unit - " + name;
@@ -51,6 +66,7 @@ public class Unit extends Entity {
     public boolean isInFrontLine() {
         return pos.cell == 0;
     }
+
     public UnitType getType() {
         if (type == null) {
             Object value = getValue(TYPE);

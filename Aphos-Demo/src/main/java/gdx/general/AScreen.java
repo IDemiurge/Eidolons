@@ -55,7 +55,7 @@ public class AScreen extends ScreenAdapter {
         controller = new InputController(cameraMan);
 
         lanesStage = new ALanesStage(viewport, batch);
-        guiStage = new AGuiStage(viewport, batch);
+        guiStage = new AGuiStage(null, batch);
         GuiEventManager.bind(AphosEvent.DTO_LaneField , p->{
             LaneFieldDto dto = (LaneFieldDto) p.get();
             setBackground(dto.getFocusAreaImage());
@@ -157,4 +157,11 @@ public class AScreen extends ScreenAdapter {
         }
     }
 
+    public AGuiStage getGuiStage() {
+        return guiStage;
+    }
+
+    public ALanesStage getLanesStage() {
+        return lanesStage;
+    }
 }

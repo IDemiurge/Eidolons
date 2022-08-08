@@ -107,7 +107,7 @@ public class TextureManager {
         if (FRAME_ROWS == 0) {
             FRAME_ROWS = 1;
         }
-        Texture sheet = path == null ? texture : TextureCache.getOrCreate(path);
+        Texture sheet = texture != null ? texture : TextureCache.getOrCreate(path);
         if (sheet == TextureCache.getMissingTexture()) {
             main.system.auxiliary.log.LogMaster.log(1, ">>>>>>>> Sprite not found: " + path);
         }

@@ -9,4 +9,5 @@ public class LaneConsts {
     public static final float FRONTLINE_Y = 400;
 
     public static final int CELLS_PER_SIDE = 7;
+    public static final float LANEFIELD_HEIGHT = 600;
 }

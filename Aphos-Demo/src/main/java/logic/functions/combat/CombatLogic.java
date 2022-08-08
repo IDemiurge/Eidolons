@@ -108,16 +108,16 @@ public class CombatLogic extends LogicController {
             //core
         }
         kill(source, source);
-        GuiEventManager.triggerWithNamedParams(AphosEvent.DUMMY_ANIM_EXPLODE, "source", source,
+        GuiEventManager.triggerWithNamedParams(AphosEvent.DUMMY_ANIM_EXPLODE, "source", source, "target", source,
                 "target_heroes", impactedHeroes, "target_units", impactedUnits);
 
     }
 
     private ATK_OUTCOME explodeImpact(Entity target, int damage) {
         int resist = target.getInt(AUnitEnums.RESIST);
-        if (resist >=100)
+        if (resist >= 100)
             return ATK_OUTCOME.Ineffective;
-        damage = damage - damage*resist/100;
+        damage = damage - damage * resist / 100;
 
         if (!target.damage(damage))
             return ATK_OUTCOME.Lethal;
@@ -127,14 +127,18 @@ public class CombatLogic extends LogicController {
 
     private void kill(Entity target, Entity source) {
         target.killed(source);
-        GuiEventManager.triggerWithNamedParams(AphosEvent.DUMMY_ANIM_DEATH, "target", target);
-        //TODO ?!
+        if (target == Aphos.hero) {
+            GuiEventManager.triggerWithNamedParams(AphosEvent.DUMMY_ANIM_DEATH_HERO, "source", target, "target", target);
+        } else
+            GuiEventManager.triggerWithNamedParams(AphosEvent.DUMMY_ANIM_DEATH, "source", target, "target", target);
 
     }
 
     public void attack(Entity source, Entity target, ATK_TYPE type) {
+        boolean hero_or_lane = target instanceof Hero;
+
         ATK_OUTCOME result = doAttack(source, target, type);
-        GuiEventManager.triggerWithNamedParams(AphosEvent.DUMMY_ANIM_ATK, "target", target, "outcome", result, "atk_type", type);
+        GuiEventManager.triggerWithNamedParams(hero_or_lane ? AphosEvent.DUMMY_ANIM_ATK_HERO : AphosEvent.DUMMY_ANIM_ATK, "source", source, "target", target, "outcome", result, "atk_type", type);
         WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.ATK_ANIMATION_FINISHED);//, 1000, ActionAnims.DUMMY_ANIM_TYPE.atk);
         switch (result) {
             case Lethal:
@@ -142,7 +146,7 @@ public class CombatLogic extends LogicController {
             case Hit:
             case Miss:
             case Ineffective:
-                GuiEventManager.triggerWithNamedParams(AphosEvent.DUMMY_ANIM_HIT, "target", target, "outcome", result);
+                GuiEventManager.triggerWithNamedParams(hero_or_lane ? AphosEvent.DUMMY_ANIM_HIT_HERO : AphosEvent.DUMMY_ANIM_HIT, "source", target, "target", target, "outcome", result);
                 break;
         }
     }

@@ -25,6 +25,7 @@ import libgdx.video.VideoMaster;
 import logic.core.Aphos;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.launch.CoreEngine;
 import main.system.launch.Flags;
@@ -60,10 +61,10 @@ public class DemoApp extends Game {
         Camera camera = new OrthographicCamera();
         viewport = new ScreenViewport(camera);
         ScreenMaster.setMainViewport(viewport);
-        Aphos.start();
 
-        Screen combatScreen = new AScreen();
+        AScreen combatScreen = new AScreen();
         setScreen(combatScreen);
+        GuiEventManager.triggerWithNamedParams(GuiEventType.SHOW_INFO_TEXT,"", "---Press [space] to Start---", "dur", 100f);
     }
 
     protected String getTitle() {

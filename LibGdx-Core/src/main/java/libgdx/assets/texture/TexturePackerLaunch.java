@@ -270,7 +270,12 @@ public class TexturePackerLaunch {
         with subfolders as separate atlases !
 
          */
-        String root = "C:\\Aphos\\resources\\img\\sprite\\atk";
+        String root = "C:\\Aphos\\resources\\img\\sprite\\atk\\";
+        if (confirm("For Units?")){
+            root += "units/";
+        } else {
+            root += "heroes/";
+        }
         defaultOptions.put("atlas name?", "");
         defaultOptions.put("Best settings?", true);
         defaultOptions.put("Customize Settings?", false);

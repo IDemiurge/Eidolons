@@ -8,22 +8,20 @@ import main.system.auxiliary.data.MapMaster;
 
 import java.util.Map;
 
-public class Entity {
+public abstract class Entity {
     protected String name;
     protected Map<String, Object> valueMap; // from yaml, xml, enum
 
     public Entity(Map<String, Object> valueMap) {
-        if (valueMap instanceof LinkedStringMap) {
-            this.valueMap = valueMap;
-        } else {
-            this.valueMap = new LinkedStringMap<>();
-            this.valueMap.putAll(valueMap);
-        }
+        this.valueMap = new LinkedStringMap<>();
+        this.valueMap.putAll(valueMap);
 
         ////TODO refactor
         this.name = valueMap.get(AUnitEnums.NAME).toString();
         Aphos.game.add(this);
     }
+
+    protected abstract void initAtb();
 
     public String getName() {
         return name;
@@ -61,6 +59,7 @@ public class Entity {
     public boolean isLeftSide() {
         return false;
     }
+
     public boolean isInFrontLine() {
         return false;
     }
@@ -72,6 +71,7 @@ public class Entity {
     public String getString(String s) {
         return valueMap.get(s).toString();
     }
+
     public boolean isPlayerControlled() {
         return false;
     }
@@ -87,6 +87,7 @@ public class Entity {
     public void modVal(String key, float n) {
         MapMaster.addToFloatMap(valueMap, key, n);
     }
+
     public void modVal(String key, int n) {
         MapMaster.addToIntegerMap(valueMap, key, n);
     }
@@ -102,6 +103,7 @@ public class Entity {
     public int getLane() {
         return 0;
     }
+
     public int getCell() {
         return 0;
     }

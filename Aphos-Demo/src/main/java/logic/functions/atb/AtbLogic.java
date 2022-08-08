@@ -40,7 +40,7 @@ public class AtbLogic extends LogicController {
     }
 
     public void atbAction(String action, Entity source, int cost) {
-        source.modVal(AUnitEnums.ATB, - (float) cost);
+        source.modVal(AUnitEnums.ATB, - (float) cost/10);
         LOG.log(source," does [", action, "] for ATB: ", cost);
         WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.ACTION_COMPLETE, source);
     }

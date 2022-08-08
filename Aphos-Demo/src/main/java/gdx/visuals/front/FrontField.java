@@ -22,9 +22,7 @@ public class FrontField extends ADtoView<FrontFieldDto> {
                 HeroPos pos = new HeroPos(i, side);
                     FrontCell cell = new FrontCell(pos);
                     addActor(cell);
-                    float y = HeroZone.HEIGHT;
-                    y = y - ViewManager.getHeroYInverse(pos);
-                    cell.setPosition(ViewManager.getHeroX(pos), y);
+                    cell.setPosition(ViewManager.getHeroX(pos),ViewManager.getHeroY(pos));
                     cell.act(5*RandomWizard.getRandomFloat());
             }
         }

@@ -1,6 +1,5 @@
 package gdx.visuals.front;
 
-import com.google.inject.internal.util.ImmutableList;
 import gdx.dto.FrontLineDto;
 import gdx.dto.HeroDto;
 import gdx.general.view.ADtoView;
@@ -42,8 +41,7 @@ public class HeroZone extends ADtoView<FrontLineDto> {
                         heroes.put(hero, view);
                     }
                     float x = ViewManager.getHeroX(hero.getPos());
-                    float y = ViewManager.getHeroYInverse(hero.getPos());
-                    y =getHeight()-y;
+                    float y = ViewManager.getHeroY(hero.getPos());
                     view.setPosition(x, y);
                 }
             }

@@ -1,5 +1,6 @@
 package logic.functions.atb;
 
+import content.LOG;
 import logic.content.AUnitEnums;
 import logic.entity.Entity;
 
@@ -22,6 +23,7 @@ public class AtbEntityImpl implements AtbEntity {
     @Override
     public void setAtbReadiness(float v) {
         unit.setValue(AUnitEnums.ATB, v);
+        LOG.log(unit, " has ", v, " ATB");
     }
 
     @Override
@@ -42,6 +44,7 @@ public class AtbEntityImpl implements AtbEntity {
     @Override
     public void setTimeTillTurn(float timeTillTurn) {
         this.timeTillTurn = timeTillTurn;
+        LOG.log(unit, " is ", timeTillTurn, " sec away from ready");
     }
 
     @Override

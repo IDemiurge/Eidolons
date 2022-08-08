@@ -2,6 +2,7 @@ package gdx.visuals.centre;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import content.AphosEvent;
 import eidolons.content.consts.libgdx.GdxColorMaster;
 import libgdx.GdxMaster;
 import libgdx.StyleHolder;
@@ -12,6 +13,7 @@ import libgdx.screens.batch.CustomSpriteBatch;
 import libgdx.screens.handlers.ScreenMaster;
 import logic.core.Aphos;
 import main.content.enums.GenericEnums;
+import main.system.GuiEventManager;
 
 public class CentreArea extends GroupX {
 
@@ -35,6 +37,12 @@ public class CentreArea extends GroupX {
         setWidth(gate.getWidth());
         GdxMaster.centerWidth(dummyInfo);
 
+        GuiEventManager.bind(AphosEvent.CORE_HP , p-> setTextForHP((Integer) p.get()));
+    }
+
+    private void setTextForHP(int hp) {
+        dummyInfo.setText("" + hp);
+        dummyInfo.setColor(GdxColorMaster.getColorForAtbValue(hp));
     }
 
     @Override
@@ -48,8 +56,6 @@ public class CentreArea extends GroupX {
     @Override
     public void act(float delta) {
         super.act(delta);
-        dummyInfo.setText("" + Aphos.core.getHp());
-        dummyInfo.setColor(GdxColorMaster.getColorForAtbValue(Aphos.core.getHp()));
         gate.setFps(11);// + 8 * (100 - Aphos.core.getHp()));
         //color too?
         GdxMaster.centerWidth(dummyInfo);

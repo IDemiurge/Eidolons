@@ -14,7 +14,7 @@ public class SpriteFinder {
     public static String getSpritePath(ActionAnims.DUMMY_ANIM_TYPE anim, Entity entity, CombatLogic.ATK_OUTCOME outcome, Map<String, Object> args) {
         switch (anim) {
 
-            case lane_hit -> {
+            case hero_hit, lane_hit -> {
                 if (outcome== CombatLogic.ATK_OUTCOME.Miss) {
                     return "";
                 }
@@ -50,10 +50,12 @@ public class SpriteFinder {
             case explode -> {
                 return "sprite/explode/light impact large 5 4.png";
             }
-            case hero_atk -> {
-                Object weapon = Aphos.hero.getValue("Weapon");
+            case lane_atk,hero_atk -> {
+                Object weapon = entity.getValue("Weapon");
                 String attack = getAtkName(args.get("atk_type"), weapon);
-                String base = "sprite/atk/"+weapon+"/"+attack+"/"+attack;
+                String base = "sprite/atk/";
+                base += anim == ActionAnims.DUMMY_ANIM_TYPE.hero_atk ? "units/" : "heroes/";
+                base+=weapon+"/"+attack+"/"+attack;
 //                base += "blade\\scimitar\\slash.txt";
 //                return  "sprite\\atk\\blade\\scimitar\\slash\\slash.txt";
                 return base+".txt";
@@ -62,11 +64,7 @@ public class SpriteFinder {
                 return  "sprite\\death\\soul 5 6.png";
                 // some SPELL FX?
             }
-            case lane_atk -> {
-            }
             case hero_death -> {
-            }
-            case hero_hit -> {
             }
         }
         return null;
@@ -76,26 +74,50 @@ public class SpriteFinder {
         if (arg instanceof CombatLogic.ATK_TYPE) {
             switch (((CombatLogic.ATK_TYPE) arg)) {
                 case Standard -> {
-                    switch (weapon.toString()){
-                        case "Sword":
-                            return "Thrust";
-                        case "Scimitar":
-                            return "Swing";
+                    switch (weapon.toString().toLowerCase()){
+                        case "dagger":
+                            return "thrust";
+                        case "spear":
+                            return "thrust";
+                        case "claws":
+                            return "rip";
+                        case "fangs":
+                            return "tear";
+                        case "sword":
+                            return "thrust";
+                        case "scimitar":
+                            return "swing";
                     }
                 }
                 case Quick -> {
-                    switch (weapon.toString()){
-                        case "Sword":
+                    switch (weapon.toString().toLowerCase()){
+                        case "dagger":
+                            return "slash";
+                        case "spear":
                             return "Swing";
-                        case "Scimitar":
+                        case "claws":
+                            return "slice";
+                        case "fangs":
+                            return "bite";
+                        case "sword":
+                            return "Swing";
+                        case "scimitar":
                             return "Slash";
                     }
                 }
                 case Power -> {
-                    switch (weapon.toString()){
-                        case "Sword":
+                    switch (weapon.toString().toLowerCase()){
+                        case "dagger":
+                            return "stab";
+                        case "spear":
+                            return "impale";
+                        case "claws":
+                            return "rend";
+                        case "fangs":
+                            return "dig into";
+                        case "sword":
                             return "Swing";
-                        case "Scimitar":
+                        case "scimitar":
                             return "Swing";
                     }
                 }

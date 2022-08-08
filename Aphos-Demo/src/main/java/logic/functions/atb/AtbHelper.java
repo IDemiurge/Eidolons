@@ -7,8 +7,11 @@ import static logic.content.consts.CombatConsts.ATB_PER_INITIATIVE_PER_SEC;
 import static logic.content.consts.CombatConsts.ATB_TO_READY;
 
 public class AtbHelper {
-    protected static float getAtbGainForEntity(Float time, AtbEntity unit) {
+    protected static float getAtbGain(Float time, AtbEntity unit) {
         return time * unit.getInitiative() * ATB_PER_INITIATIVE_PER_SEC;
+    }
+    protected static float getTimedToGainAtb(Float time, AtbEntity unit) {
+        return time / unit.getInitiative() / ATB_PER_INITIATIVE_PER_SEC;
     }
 
     protected static String getTimeString(float v) {
@@ -16,7 +19,7 @@ public class AtbHelper {
     }
 
     protected static float calculateTimeTillTurn(AtbEntity unit) {
-        float time = getAtbGainForEntity((ATB_TO_READY - unit.getAtbReadiness()), unit);
+        float time = getTimedToGainAtb((ATB_TO_READY - unit.getAtbReadiness()), unit);
         //TODO
 //        if (unit.isImmobilized()) {
 //            float duration = AtbMaster.getImmobilizingBuffsMaxDuration(unit.getEntity());

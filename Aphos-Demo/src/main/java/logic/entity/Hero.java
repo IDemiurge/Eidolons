@@ -1,5 +1,6 @@
 package logic.entity;
 
+import logic.content.AUnitEnums;
 import logic.core.Aphos;
 import logic.lane.HeroPos;
 
@@ -12,6 +13,7 @@ public class Hero extends Entity {
     public Hero(HeroPos pos, Map<String, Object> valueMap) {
         super(valueMap);
         this.pos = pos;
+        initAtb();
     }
 
     public HeroPos getPos() {
@@ -24,6 +26,11 @@ public class Hero extends Entity {
 
     public boolean isLeftSide() {
         return pos.isLeftSide();
+    }
+
+    @Override
+    protected void initAtb() {
+        setValue(AUnitEnums.ATB, 25);
     }
 
     @Override
