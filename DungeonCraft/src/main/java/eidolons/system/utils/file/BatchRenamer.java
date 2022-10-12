@@ -8,7 +8,7 @@ import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.PathUtils;
-import main.system.Sort;
+import main.system.SortMaster;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
@@ -27,7 +27,7 @@ public class BatchRenamer {
     private static void moveFilesToPartFolders(String folder, int maxFilesPerFolder) {
         int i = 0;
         int suffix = 1;
-//        C:\drive\[2019]\Team\AE\tests\netherflame\misc\icons\skill\Symbols 128 square
+        //        C:\drive\[2019]\Team\AE\tests\netherflame\misc\icons\skill\Symbols 128 square
         for (File file : FileManager.getFilesFromDirectory(folder, false)) {
 
             String folderName = "part_" + (suffix + 1);
@@ -42,16 +42,16 @@ public class BatchRenamer {
             if (i++ >= maxFilesPerFolder) {
                 suffix++;
                 i = 0;
-//                appendFrameNumbersToFiles(folder + "\\" + folderName+ "\\");
+                //                appendFrameNumbersToFiles(folder + "\\" + folderName+ "\\");
             }
         }
     }
 
     private static void appendFrameNumbersToFiles(String folder, boolean byDate) {
         int i = 0;
-        Comparator<File> sorter=null;
-        if (byDate){
-            sorter = new Sort<File>().getIntSorter(file -> Math.toIntExact(FileManager.getDateCreated(file)/10000));
+        Comparator<File> sorter = null;
+        if (byDate) {
+            sorter = SortMaster.getSorterByDate(true);
         }
         for (File file : FileManager.getFilesFromDirectory(new File(folder), false, false,
                 sorter)) {
@@ -68,7 +68,7 @@ public class BatchRenamer {
     public static void main(String[] a) {
         ANIM_ROOT = "C:\\drive\\[2019]\\Team\\AE\\" +
                 "tests\\netherflame\\misc\\weapons\\Battle Spear\\";
-        for (File folder : FileManager.getFilesFromDirectory(ANIM_ROOT+ "to rename", true, false)) {
+        for (File folder : FileManager.getFilesFromDirectory(ANIM_ROOT + "to rename", true, false)) {
             if (folder.isDirectory()) {
                 try {
                     renameAnimsInFolder(folder);
@@ -80,9 +80,9 @@ public class BatchRenamer {
 
         if (DialogMaster.confirm("process AE Directory?")) {
             processAE_Dir();
-            return ;
+            return;
         }
-            if (DialogMaster.confirm("Move into subfolders?")) {
+        if (DialogMaster.confirm("Move into subfolders?")) {
             moveFilesToPartFolders(DialogMaster.inputText("Root?"), 5000);
             return;
         }
@@ -99,9 +99,9 @@ public class BatchRenamer {
         String root = DialogMaster.inputText("Root?");
         String type = ListChooser.chooseType(DC_TYPE.WEAPONS);
         generateAnimFolders(root, DataManager.getType(type, DC_TYPE.WEAPONS));
-/**
- *
- */
+        /**
+         *
+         */
         DialogMaster.confirm("Manual folders?");
 
 
@@ -113,6 +113,7 @@ public class BatchRenamer {
         processAE_Dir(rawFolder, root); //String... frameNames
 
     }
+
     private static void processAE_Dir(String rawFolder, String outputFolder) {
         int i = 0;
         List<File> rawFiles = FileManager.getFilesFromDirectory(rawFolder, false);
@@ -144,13 +145,13 @@ public class BatchRenamer {
 
     }
 
-    private static void syncNamesForProcessedFiles(File folder)   {
+    private static void syncNamesForProcessedFiles(File folder) {
 
     }
-        private static void renameAnimsInFolder(File folder) throws IOException {
-        for (File proj : FileManager.getFilesFromDirectory(folder.getPath(), true))
-        {
-            int i=0;
+
+    private static void renameAnimsInFolder(File folder) throws IOException {
+        for (File proj : FileManager.getFilesFromDirectory(folder.getPath(), true)) {
+            int i = 0;
             if (proj.isDirectory())
                 for (File file : FileManager.getFilesFromDirectory(proj.getPath(), false)) {
 
@@ -162,7 +163,7 @@ public class BatchRenamer {
 
                     name += ContainerUtils.construct("_", weapon, action, proj.getName());
 
-                    name += NumberUtils.getFormattedTimeString(i++, 4)+ ".png";
+                    name += NumberUtils.getFormattedTimeString(i++, 4) + ".png";
                     File newFile = new File(name);
 
                     if (!file.renameTo(newFile)) {

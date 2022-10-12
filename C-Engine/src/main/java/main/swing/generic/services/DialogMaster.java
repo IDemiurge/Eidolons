@@ -4,6 +4,7 @@ import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
@@ -13,6 +14,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DialogMaster {
 

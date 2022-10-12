@@ -21,6 +21,7 @@ public class FileLogManager {
     public static boolean on= !Flags.isIDE() ;
     private static PrintStream console;
     private static Iterator<LOG_OUTPUT> iterator= Arrays.asList(LOG_OUTPUT.values()).iterator();
+    private static boolean fullLoggingConsole= Flags.isCombatGame();
 
     public static void writeStatInfo(String toString) {
         //TODO
@@ -28,7 +29,7 @@ public class FileLogManager {
 
 
     public static boolean isFullLoggingConsole() {
-        return true;
+        return fullLoggingConsole;
     }
 
     public enum LOG_OUTPUT {

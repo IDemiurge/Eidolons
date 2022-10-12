@@ -19,13 +19,15 @@ import java.util.Set;
 public class Coordinates implements Serializable, Comparable<Coordinates> {
 
 
-    public static Coordinates[][] coordinates = new Coordinates[100][100];
+    private static final int Z = 10;
+    public static Coordinates[][][] coordinates = new Coordinates[100][100][Z];
     public static int moduleWidth = 9;
     public static int moduleHeight = 7;
     public static int floorWidth;
     public static int floorHeight;
     public int x;
     public int y;
+    public int z;
 
     protected Coordinates[] adjacent;
     protected Coordinates[] adjacenctNoDiags;
@@ -46,11 +48,31 @@ public class Coordinates implements Serializable, Comparable<Coordinates> {
     }
 
     public Coordinates(boolean allowinvalid, int x, int y) {
-        this.x = x;
-        this.y = y;
+        this(allowinvalid, x, y, 0);
+
+    }
+
+    public Coordinates(String s) {
+        this(false, s);
+    }
+
+    public Coordinates(boolean allowinvalid, String s) {
+       int[] coords =  NumberUtils.getCoordinatesFromString(s);
         if (!allowinvalid) {
             checkInvalid();
         }
+    }
+    public Coordinates(boolean allowinvalid, int x, int y, int z) {
+        init(x, y, z);
+        if (!allowinvalid) {
+            checkInvalid();
+        }
+    }
+
+    private void init(int x, int y, int z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
         if (flipX) {
             this.x = getFloorWidth() - this.x;
         }
@@ -63,31 +85,6 @@ public class Coordinates implements Serializable, Comparable<Coordinates> {
             this.y = buffer;
         }
     }
-
-    public Coordinates(String s) {
-        this(false, s);
-    }
-
-    public Coordinates(double x, double y) {
-        this((int) x, (int) y);
-    }
-
-    public Coordinates(boolean custom, String s) {
-        this(custom, NumberUtils.getIntParse(splitCoordinateString(s)[0].trim()), NumberUtils
-                .getIntParse(splitCoordinateString(s)[1].trim()));
-    }
-
-    public static void resetCaches() {
-//    TODO     adjacenctDirectionMap.clear();
-//        adjacenctMap.clear();
-//        adjacenctMapNoDiags.clear();
-//        adjacenctMapDiagsOnly.clear();
-//        int w = GuiManager.getBF_CompDisplayedCellsX();
-//        int h = GuiManager.getBF_CompDisplayedCellsY();
-//        coordinates = new Coordinates[MAX_WIDTH][MAX_HEIGHT]; //just in case... memory be damned
-
-    }
-
 
     public static boolean withinBounds(int x, int y) {
         if (x < 0) {
@@ -110,8 +107,8 @@ public class Coordinates implements Serializable, Comparable<Coordinates> {
                     Strings.COORDINATES_SEPARATOR_ALT);
         }
         if (cropped.startsWith("-")) {
-            cropped=cropped.substring(1 ).replaceFirst("-", "temp");
-            return ("-"+cropped).split("temp");
+            cropped = cropped.substring(1).replaceFirst("-", "temp");
+            return ("-" + cropped).split("temp");
         }
         return cropped.split(
                 Strings.COORDINATES_SEPARATOR);
@@ -152,10 +149,10 @@ public class Coordinates implements Serializable, Comparable<Coordinates> {
         if (CoreEngine.isLevelEditor()) {
             return false;
         }
-        if ( getFloorWidth()==0) {
+        if (getFloorWidth() == 0) {
             return false;
         }
-        if (getFloorHeight()==0) {
+        if (getFloorHeight() == 0) {
             return false;
         }
         if (c.x >= getFloorWidth()) {
@@ -208,27 +205,29 @@ public class Coordinates implements Serializable, Comparable<Coordinates> {
     }
 
     public static Coordinates getLimited(int x, int y) {
-        if (x>=coordinates.length)
-            x = coordinates.length-1;
-        if (y>=coordinates[0].length)
-            y = coordinates[0].length-1;
-        if (y< 0)
+        if (x >= coordinates.length)
+            x = coordinates.length - 1;
+        if (y >= coordinates[0].length)
+            y = coordinates[0].length - 1;
+        if (y < 0)
             y = 0;
-        if (x< 0)
+        if (x < 0)
             x = 0;
         return get(x, y);
     }
-        public static Coordinates get(int x, int y) {
-        Coordinates c = coordinates[x][y];
-        if (c == null) {
-            c = new Coordinates(true, x, y);
-            coordinates[x][y] = c;
-        }
-        return c;
+
+    public static Coordinates get(int x, int y) {
+        // Coordinates c = coordinates[x][y][z];
+        // if (c == null) {
+        //     c = new Coordinates(true, x, y);
+        //     coordinates[x][y][z] = c;
+        // }
+        // return c;
+        return null;
     }
 
     public static void initCache(int w, int h) {
-        coordinates = new Coordinates[w][h];
+        coordinates = new Coordinates[w][h][Z];
     }
 
     public static void setModuleHeight(int moduleHeight) {
@@ -269,7 +268,7 @@ public class Coordinates implements Serializable, Comparable<Coordinates> {
 
     public int hashCode() {
 
-        return x * 10 + y;
+        return z * 100 + x * 10 + y;
     }
 
     @Override
@@ -292,7 +291,7 @@ public class Coordinates implements Serializable, Comparable<Coordinates> {
 
     @Override
     public String toString() {
-        if (x<0 || y<0)
+        if (x < 0 || y < 0)
             return x + Strings.COORDINATES_SEPARATOR_ALT + y;
         return x + Strings.COORDINATES_SEPARATOR + y
                 // + (z != 0 ? "; sublevel (Z): " + z : "")
@@ -354,7 +353,7 @@ public class Coordinates implements Serializable, Comparable<Coordinates> {
         }
         int x1 = x;
         int y1 = y;
-        if (direction==DIRECTION.NONE)
+        if (direction == DIRECTION.NONE)
             direction = DirectionMaster.getRandomDirection();
         switch (direction) {
             case DOWN:
@@ -603,7 +602,7 @@ public class Coordinates implements Serializable, Comparable<Coordinates> {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-        return get(0,0);
+        return get(0, 0);
     }
 
     public Coordinates getOffset(Coordinates coordinates) {
@@ -652,10 +651,10 @@ public class Coordinates implements Serializable, Comparable<Coordinates> {
     public int compareTo(Coordinates c) {
         int val = -getX() * 10 - getY();
         int val2 = -c.getX() * 10 - c.getY();
-        if (val>val2) {
+        if (val > val2) {
             return 1;
         }
-        if (val<val2) {
+        if (val < val2) {
             return -1;
         }
         return 0;

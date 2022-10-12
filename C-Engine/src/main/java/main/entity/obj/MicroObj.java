@@ -15,9 +15,9 @@ public class MicroObj extends Obj {
 
     protected int x;
     protected int y;
+    protected int z;
     protected Coordinates coordinates;
     protected boolean overlaying;
-    protected int z;
     protected Boolean overlayingInitialized;
     protected Coordinates originalCoordinates;
     private boolean invalidCoordinates;

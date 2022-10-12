@@ -1,6 +1,7 @@
 package music;
 
 import main.system.PathUtils;
+import main.system.SortMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -19,41 +20,27 @@ public class PlaylistHandler {
     private static final String ROOT_PATH = "C:\\music\\playlists\\";
     private static final Map<PLAYLIST_TYPE, List<File>> cache = new HashMap<>();
     private static final Map<PLAYLIST_TYPE, List<File>> cacheAlt = new HashMap<>();
-    public static int draft=0;
+    private static final int MAX_ATTEMPTS = 12;
+    public static int draft = 0;
+    private static List<String> history = new ArrayList<>(100);
+    private static PlayMode playMode = PlayMode.Random;
+    private static boolean resetList;
 
-
-    public enum PLAYLIST_TYPE {
-        deep, //1
-        ost, //2
-        gym, //3
-        battles, //4
-        fury, //5
-        goodly, //6
-        pagan, //7
-        dark, //8
-        warmup, //9
-        rpg, //10
-        metal, //11
-        future //12
-
-        ,
-        auto,
-        coding,
-        design,
-        writing,
+    public enum PlayMode {
+        Random, Newest, Oldest, Alphabetic
     }
 
     public static int draft(List<File> fileList, int n) {
-        if (n>fileList.size())
+        if (n > fileList.size())
             n = fileList.size();
 
-        int from=0;
-        int to=n;
+        int from = 0;
+        int to = n;
         //TODO
         List<File> list = fileList.subList(from, to);
 
         List<String> collect = list.stream().
-                map(file->  StringMaster.format( StringMaster.cropFormat(file.getName()))).
+                map(file -> StringMaster.format(StringMaster.cropFormat(file.getName()))).
                 collect(Collectors.toList());
         Object[] options = collect.toArray();
         return
@@ -61,13 +48,33 @@ public class PlaylistHandler {
 
     }
 
-    public static void playRandom(boolean alt, PLAYLIST_TYPE type) {
-        for (int i = 0; i < 12; i++) {
-            List<File> fileList = getPlaylistFiles(alt, type);
-            if (playRandom(fileList)) {
-                return;
+    public static void play(boolean alt, PLAYLIST_TYPE type) {
+        List<File> fileList = getPlaylistFiles(alt, type);
+        if (getPlayMode() == PlayMode.Random) {
+            for (int i = 0; i < MAX_ATTEMPTS; i++) {
+                if (playRandom(fileList)) {
+                    return;
+                }
             }
         }
+        Comparator<File> sorter = null;
+        switch (getPlayMode()) {
+            case Newest:
+                sorter = SortMaster.getSorterByDate(true);
+                break;
+            case Oldest:
+                sorter = SortMaster.getSorterByDate(false);
+                break;
+            case Alphabetic:
+                sorter = Comparator.naturalOrder();
+                // sorter = SortMaster.getAlphabeticSorter();
+                break;
+        }
+        fileList.sort(sorter);
+        for (int i = 0; i < MAX_ATTEMPTS; i++)
+            if (play(fileList, 0)) {
+                return;
+            }
     }
 
     public static Map<PLAYLIST_TYPE, List<File>> getCache(boolean a) {
@@ -77,8 +84,13 @@ public class PlaylistHandler {
     public static List<File> getPlaylistFiles(boolean alt, PLAYLIST_TYPE type) {
         return getPlaylistFiles(true, alt, type);
     }
+
     public static List<File> getPlaylistFiles(boolean useCache, boolean alt, PLAYLIST_TYPE type) {
         List<File> fileList = getCache(alt).get(type);
+        if (resetList) {
+            useCache = false;
+            resetList = false;
+        }
         if (!useCache || !ListMaster.isNotEmpty(fileList)) {
             String path = ROOT_PATH_PICK + type;
             if (alt) {
@@ -89,10 +101,15 @@ public class PlaylistHandler {
         }
         return fileList;
     }
+
     private static boolean playRandom(List<File> fileList) {
         int randomIndex = getRandomIndex(fileList);
+        return play(fileList, randomIndex);
+    }
 
-        File file = fileList.remove(randomIndex);
+    private static boolean play(List<File> fileList, int index) {
+
+        File file = fileList.remove(index);
         if (isTryRootPathAlways()) {
             if (play(ROOT_PATH, file.getName()))
                 return true;
@@ -136,5 +153,22 @@ public class PlaylistHandler {
 
     private static boolean isTryRootPathAlways() {
         return true;
+    }
+
+    public static List<String> getHistory() {
+        return history;
+    }
+
+    public static void setPlayMode(PlayMode playMode) {
+        PlaylistHandler.playMode = playMode;
+        setResetList(true);
+    }
+
+    public static void setResetList(boolean resetList) {
+        PlaylistHandler.resetList = resetList;
+    }
+
+    public static PlayMode getPlayMode() {
+        return playMode;
     }
 }

@@ -12,6 +12,7 @@ import main.data.XLinkedMap;
 import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +45,8 @@ public class DC_Masteries {
 
     private void initMastery(PARAMS mastery) {
         int amount = hero.getIntParam(ContentValsManager.getMasteryScore(mastery));
+        //TODO By RANK, not SCORE! Then Score = rank*5
+        // >> It is clear that enum-based values are not effective or need radical revamp.
         if (amount <= 0) {
             return;
         }
@@ -108,7 +111,7 @@ public class DC_Masteries {
                 mod(mastery, amount, //MasteryConsts.WIZARDRY_KN_PERC
                         1, PARAMS.KNOWLEDGE, MOD.MODIFY_BY_PERCENT);
                 mod(mastery, amount, //MasteryConsts.WIZARDRY_INT_PERC
-                       1 , PARAMS.INTELLIGENCE, MOD.MODIFY_BY_PERCENT);
+                        1, PARAMS.INTELLIGENCE, MOD.MODIFY_BY_PERCENT);
                 break;
             default:
                 break;
@@ -139,6 +142,9 @@ public class DC_Masteries {
 
     }
 
+    public Collection<MASTERY> getList() {
+        return new ArrayList<>(map.keySet());
+    }
 } // for (DC_SpellObj spell : hero.getSpells()) {
 // String mod = DC_Formulas
 // .getEssCostReductionFromSpellcraft(amount);

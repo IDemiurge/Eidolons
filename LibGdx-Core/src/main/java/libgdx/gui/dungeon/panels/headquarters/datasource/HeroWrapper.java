@@ -12,6 +12,7 @@ import main.game.logic.battle.player.Player;
 
 /**
  * Created by JustMe on 10/18/2018.
+ * Used for what???
  */
 public class HeroWrapper extends HeroDataModel {
     public HeroWrapper(Unit hero) {

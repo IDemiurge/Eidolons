@@ -15,8 +15,10 @@ import main.swing.listeners.ListChooserSortOptionListener.SORT_TEMPLATE;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -28,7 +30,7 @@ public class SortMaster<T> {
 
     public static List<? extends Entity> sortByValue(List<? extends Entity> listData,
                                                      VALUE sortValue) {
-        return sortByValue(listData,  sortValue, true);
+        return sortByValue(listData, sortValue, true);
     }
 
     public static List<? extends Entity> sortByValue(List<? extends Entity> pool, VALUE p,
@@ -97,8 +99,8 @@ public class SortMaster<T> {
             public int compare(Entity o1, Entity o2) {
                 /*
                  * get background type from bg prop OR just race get id -> sort
-				 * into sublists by id sort sublists by name
-				 */
+                 * into sublists by id sort sublists by name
+                 */
                 int result = checkHeroSubList(o1, o2);
                 if (result != 0) {
                     return result;
@@ -120,9 +122,9 @@ public class SortMaster<T> {
     }
 
     //        public static Comparator<? super Entity> getSorterByNaturalOrder
-//        (Function<Entity, Integer> function) {
-//        return Comparator.naturalOrder(portrait -> function.apply(portrait));
-//    }
+    //        (Function<Entity, Integer> function) {
+    //        return Comparator.naturalOrder(portrait -> function.apply(portrait));
+    //    }
     public static Comparator<? super Entity> getEntitySorterByExpression
     (Function<Entity, Integer> function) {
         return Comparator.comparingInt(o -> function.apply((Entity) o)).reversed();
@@ -130,27 +132,27 @@ public class SortMaster<T> {
     }
 
     public static void sortEntitiesByExpression
-     (List<? extends Entity> list, Function<Entity, Integer> function) {
+            (List<? extends Entity> list, Function<Entity, Integer> function) {
         Collections.sort(list, getEntitySorterByExpression(function));
     }
 
     public static Comparator<? super Obj> getObjSorterByExpression
-     (Function<Obj, Integer> function) {
+            (Function<Obj, Integer> function) {
         return Comparator.comparingInt(o -> function.apply(o));
 
     }
 
     public static void sortByExpression
-     (List<? extends Object> list, Function<Object, Integer> function) {
+            (List<? extends Object> list, Function<Object, Integer> function) {
         sortByExpression(false, list, function);
     }
 
     public static void sortByExpression
-     (boolean ascending, List<? extends Object> list, Function<Object, Integer> function) {
+            (boolean ascending, List<? extends Object> list, Function<Object, Integer> function) {
         Collections.sort(list, getSorterByExpression(ascending, function));
     }
 
-    public static  Comparator<? super Coordinates> getGridCoordSorter() {
+    public static Comparator<? super Coordinates> getGridCoordSorter() {
         return (Comparator<Coordinates>) (o1, o2) -> {
             if (-o1.x * 1000 - o1.y < -o2.x * 1000 - o2.y) {
                 return 1;
@@ -159,9 +161,26 @@ public class SortMaster<T> {
         };
     }
 
-    public   void sortByExpression_
-     (  List<? extends T> list, Function<T, Integer> function) {
-        Collections.sort(list, getSorterByExpression_(  function));
+    public static Comparator<File> getSorterByDate(boolean newestFirst) {
+        return getIntSorter(file -> Math.toIntExact(FileManager.getDateCreated(file) / 10000), newestFirst);
+    }
+
+    public static <T> Comparator<T> getIntSorter(Function<T, Integer> func, boolean ascending) {
+        int n = ascending ? -1 : 1;
+        return (o1, o2) -> {
+            Integer res1 = n * func.apply(o1);
+            Integer res2 = n * func.apply(o2);
+            if (res1 > res2)
+                return 1;
+            if (res1 < res2)
+                return -1;
+            return 0;
+        };
+    }
+
+    public void sortByExpression_
+            (List<? extends T> list, Function<T, Integer> function) {
+        Collections.sort(list, getSorterByExpression_(function));
     }
 
     public static <A> Comparator<? super A> sort
@@ -175,7 +194,7 @@ public class SortMaster<T> {
     }
 
     public static Comparator<? super Object> getSorterByExpression
-     (boolean ascending, Function<Object, Integer> function) {
+            (boolean ascending, Function<Object, Integer> function) {
         if (ascending)
             return Comparator.comparingInt(o -> function.apply(o));
         else
@@ -184,13 +203,13 @@ public class SortMaster<T> {
     }
 
     public static void sortByParameter
-     (Entity entity, List<? extends PARAMETER> list, boolean descending
-     ) {
+            (Entity entity, List<? extends PARAMETER> list, boolean descending
+            ) {
         Collections.sort(list, getParameterSorter(entity, descending));
     }
 
     public static Comparator<? super PARAMETER> getParameterSorter
-     (Entity entity, boolean descending) {
+            (Entity entity, boolean descending) {
         return (Comparator<PARAMETER>) (o1, o2) -> {
             if (entity.getIntParam(o1) == entity.getIntParam(o2))
                 return 0;
@@ -290,7 +309,7 @@ public class SortMaster<T> {
     }
 
     public Comparator<? super T> getSorterByExpression_
-     (Function<T, Integer> function) {
+            (Function<T, Integer> function) {
         return Comparator.comparingInt(o -> function.apply((T) o)).reversed();
 
     }
