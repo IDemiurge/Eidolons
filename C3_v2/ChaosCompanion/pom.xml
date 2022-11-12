@@ -16,8 +16,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>eidolons</groupId>
-            <artifactId>battlecraft-core</artifactId>
+            <groupId>aphos</groupId>
+            <artifactId>core-engine</artifactId>
             <version>1.1-SNAPSHOT</version>
         </dependency>
     <dependency>

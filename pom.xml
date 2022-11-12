@@ -10,8 +10,8 @@
     <properties>
         <libgdx.version>1.9.7</libgdx.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>15</maven.compiler.source>
+        <maven.compiler.target>15</maven.compiler.target>
     </properties>
 
     <repositories>
@@ -38,11 +38,11 @@
 
 
     <modules>
-        <module>Aphos-Demo</module>
-        <module>Arcane-Vault</module>
         <module>C-Engine</module>
         <module>Eidolon-Core</module>
         <module>LibGdx-Core</module>
+        <module>Aphos-Demo</module>
+        <module>Arcane-Vault</module>
     </modules>
 
     <dependencies>

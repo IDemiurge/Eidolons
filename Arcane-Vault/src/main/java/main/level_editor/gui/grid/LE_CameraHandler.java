@@ -6,7 +6,7 @@ import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import libgdx.bf.GridMaster;
 import libgdx.screens.handlers.ScreenMaster;
 import libgdx.stage.camera.CameraMan;
-import libgdx.stage.camera.MotionData;
+import libgdx.stage.camera.generic.MotionData;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -66,10 +66,10 @@ public class LE_CameraHandler extends LE_Handler {
     private void setCameraMode(int cameraMode) {
         switch (cameraMode) {
             case 0:
-                getCameraMan().maxZoom();
+                // getCameraMan().maxZoom();
                 break;
             case 1:
-                getCameraMan().defaultZoom();
+                // getCameraMan().defaultZoom();
                 break;
             case 2:
                 getCameraMan().centerCam();

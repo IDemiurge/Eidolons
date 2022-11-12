@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.dungeon.module.Module;
 import eidolons.game.core.game.DC_Game;
@@ -130,7 +131,7 @@ public class LE_Screen extends GenericDungeonScreen {
     @Override
     protected InputProcessor createInputController() {
         if (processor == null) {
-            processor = new LE_InputController(getCamera(), floor);
+            processor = new LE_InputController((OrthographicCamera) getCamera(), floor);
         }
         return processor;
     }

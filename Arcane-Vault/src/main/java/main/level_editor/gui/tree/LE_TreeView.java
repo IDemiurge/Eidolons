@@ -29,7 +29,7 @@ import libgdx.bf.grid.moving.PlatformController;
 import libgdx.bf.grid.moving.PlatformData;
 import libgdx.gui.generic.ValueContainer;
 import libgdx.screens.handlers.ScreenMaster;
-import libgdx.stage.camera.MotionData;
+import libgdx.stage.camera.generic.MotionData;
 import eidolons.content.consts.Images;
 import libgdx.assets.texture.TextureCache;
 import main.content.DC_TYPE;
