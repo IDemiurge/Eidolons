@@ -2,8 +2,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>eidolons</groupId>
-    <artifactId>eidolons-parent</artifactId>
+    <groupId>aphos</groupId>
+    <artifactId>aphos-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
 
@@ -38,15 +38,11 @@
 
 
     <modules>
+        <module>Aphos-Demo</module>
         <module>Arcane-Vault</module>
         <module>C-Engine</module>
-        <module>DungeonCraft</module>
-        <module>Netherflame-Arena</module>
-        <module>Netherflame-Campaign</module>
+        <module>Eidolon-Core</module>
         <module>LibGdx-Core</module>
-        <module>C3</module>
-        <module>LevelEditor</module>
-        <!--<module>resources</module>-->
     </modules>
 
     <dependencies>
