@@ -8,6 +8,7 @@ import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 
 import java.awt.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class C3     implements NativeKeyListener {
@@ -46,6 +47,7 @@ public class C3     implements NativeKeyListener {
         GlobalScreen.addNativeKeyListener(this);
         Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
         logger.setUseParentHandlers(false);
+        logger.setLevel(Level.WARNING);
 
         try {
             manager.getTrayHandler().displayTray();
