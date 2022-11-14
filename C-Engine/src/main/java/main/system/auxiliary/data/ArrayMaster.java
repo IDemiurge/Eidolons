@@ -1,6 +1,7 @@
 package main.system.auxiliary.data;
 
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class ArrayMaster<T> {
@@ -148,42 +149,57 @@ public class ArrayMaster<T> {
     }
 
     public static Object getLastElement(Object[] args) {
-        return args[args.length-1];
+        return args[args.length - 1];
     }
 
-    public static float floatOrElse(Object  arg, float defVal) {
+    public static float floatOrElse(Object arg, float defVal) {
         if (arg instanceof Float)
             return (float) arg;
         return defVal;
     }
+
     public static float floatOrElse(Object[] args, int index, float defVal) {
-        if (args.length <=index)
+        if (args.length <= index)
             return defVal;
         if (args[index] instanceof Float)
             return (float) args[index];
         return defVal;
     }
-//    private static boolean[][][][] booleanFalseArrays = new boolean[100][100][1][1]; // speed up clearshot if we can
 
-//    public static void resetBufferArray() {
-//        booleanFalseArrays = new boolean[100][100][1][1];
-//        for (int i = 0; i < 100; i++) {
-//            for (int j = 0; j < 100; j++) {
-//                booleanFalseArrays[i][j] = new boolean[i][j];
-//            }
-//        }
-//    }
-//    public static boolean  isClearshotCached(  Obj source,
-//                                                   Obj target) {
-//       result= cacheMap.get(getKey(source, target))!=null ;
-//        cacheMap.put(getKey(source, target), true);
-//        return result;
-//    }
+    public static boolean isArray(Object obj) {
+        return obj != null && obj.getClass().isArray();
+    }
 
-//    public static boolean[][] getBooleanFalseArray(int i, int i1) {
-////        main.system.auxiliary.system.log.LogMaster.system.log(1, i + ":" + i1);
-//        return booleanFalseArrays[i][i1];
-//    }
+    public static Object[] checkNestedArray(Object[] array) {
+        for (Object o : array) {
+            if (isArray(o)) {
+                return (Object[]) o;
+            }
+        }
+        return array;
+    }
+    //    private static boolean[][][][] booleanFalseArrays = new boolean[100][100][1][1]; // speed up clearshot if we can
+
+    //    public static void resetBufferArray() {
+    //        booleanFalseArrays = new boolean[100][100][1][1];
+    //        for (int i = 0; i < 100; i++) {
+    //            for (int j = 0; j < 100; j++) {
+    //                booleanFalseArrays[i][j] = new boolean[i][j];
+    //            }
+    //        }
+    //    }
+    //    public static boolean  isClearshotCached(  Obj source,
+    //                                                   Obj target) {
+    //       result= cacheMap.get(getKey(source, target))!=null ;
+    //        cacheMap.put(getKey(source, target), true);
+    //        return result;
+    //    }
+
+    //    public static boolean[][] getBooleanFalseArray(int i, int i1) {
+    ////        main.system.auxiliary.system.log.LogMaster.system.log(1, i + ":" + i1);
+    //        return booleanFalseArrays[i][i1];
+    //    }
+
     /**
      * This method rotates the matrix 90 degrees counter clockwise without using extra buffer..
      */
@@ -275,9 +291,9 @@ public class ArrayMaster<T> {
     }
 
     public String[][] rotate2dStringArray(String[][] matrix, boolean clockwise) {
-//        if (matrix.length == matrix[0].length)
-//            return clockwise ? rotateMatrixInPlaceClockwise(matrix) :
-//             rotateMatrixInPlaceAnticlockwise(matrix);
+        //        if (matrix.length == matrix[0].length)
+        //            return clockwise ? rotateMatrixInPlaceClockwise(matrix) :
+        //             rotateMatrixInPlaceAnticlockwise(matrix);
         return clockwise ? rotateStringMatrixClockwise(matrix) :
                 rotateStringMatrixAnticlockwise(matrix);
     }
@@ -343,11 +359,11 @@ public class ArrayMaster<T> {
     }
 
     public Set<T> flattenToSet(T[][] o) {
-        Set<T> set=new LinkedHashSet<>();
-            for (T[] ts : o) {
-                for (T t : ts) {
-                    set.add(t);
-                }
+        Set<T> set = new LinkedHashSet<>();
+        for (T[] ts : o) {
+            for (T t : ts) {
+                set.add(t);
+            }
         }
         return set;
     }

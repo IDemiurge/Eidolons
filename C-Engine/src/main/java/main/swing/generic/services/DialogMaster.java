@@ -4,7 +4,7 @@ import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ArrayMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
@@ -14,7 +14,6 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class DialogMaster {
 
@@ -87,6 +86,7 @@ public class DialogMaster {
     }
 
     public static Object getChosenOption(String message, Object... array) {
+        array = ArrayMaster.checkNestedArray(array);
         int optionChoice = optionChoice(array, message);
         if (optionChoice == -1) {
             return null;
@@ -95,6 +95,7 @@ public class DialogMaster {
     }
 
     public static int optionChoice(Object[] array, String message) {
+        array = ArrayMaster.checkNestedArray(array);
         array = ListMaster.toStringList(array).toArray();
         return JOptionPane.showOptionDialog(null, message, "Choose...",
          JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, array, array[0]);
