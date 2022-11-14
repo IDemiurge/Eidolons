@@ -3,6 +3,7 @@ package framework.session;
 import data.C3Enums;
 import framework.C3Item;
 import framework.task.C3_Task;
+import gui.TextRenderMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
 
@@ -54,7 +55,15 @@ public class C3Session extends C3Item<C3Enums.Direction> {
                 StringMaster.lineSeparator+ getTimeString();
     }
     public String getDurationString() {
-        return "Duration: "+ StringMaster.getCurOutOfMax(minutesLeft + "", "" + duration)                ;
+        int percent = getPercentCompleted();
+        return TextRenderMaster.getProgressBar(percent)+
+                // StringMaster.lineSeparator+
+                "Duration: "+ StringMaster.getCurOutOfMax(minutesLeft + "", "" + duration)                ;
+    }
+    private int getPercentCompleted() {
+        if (minutesLeft==0)
+            return 0;
+        return   (duration-minutesLeft)*100 / (duration);
     }
     public String getTasksString() {
         return "Tasks Pending: "+ StringMaster.formatList(getTasksPending())

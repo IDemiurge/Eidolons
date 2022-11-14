@@ -27,7 +27,7 @@ public class C3Enums {
         Night_Long(3,5),
 
         Freedom(4,8),
-        ;
+        auto_quick(2, 4);
 
         private int minBreaks;
         private int maxBreaks;
@@ -93,15 +93,16 @@ public class C3Enums {
     public enum EZ_Option {
         comfy_chair,
         query,
-        shift_break
+        music, shift_break
     }
 
     public enum BreakTip{
         Breath,
         Hydrate,
+        Body_scan,
         Sit_Up,
         Commit(Direction.Code),
-        // Try_Silence,
+        Try_Silence,
         Do_the_main_thing,
         Stretch,
         Dance,

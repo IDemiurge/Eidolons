@@ -51,7 +51,7 @@ public class C3TimerHandler extends C3Handler {
         return timer.init();
     }
 
-    public void shiftBreak() {
+    public void takeBreak() {
         keyTimers.get(0).paused();
         manager.getDialogHandler().showBreakMenu( keyTimers.get(0).getInterval());
         keyTimers.get(0).resumed();

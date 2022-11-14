@@ -44,7 +44,7 @@ public class C3TrayHandler extends C3Handler implements MouseListener, ActionLis
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
             case "Break":
-                manager.getTimerHandler().shiftBreak();
+                manager.getTimerHandler().takeBreak();
                 break;
             case "New_Query":
                 C3_Query randomQuery = manager.getQueryManager().createRandomQuery();

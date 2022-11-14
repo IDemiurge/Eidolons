@@ -14,6 +14,7 @@ import framework.task.C3TaskManager;
 import framework.task.C3TaskResolver;
 import framework.task.C3_Task;
 import gui.tray.C3TrayHandler;
+import system.hotkey.C3KeyResolver;
 import system.log.C3Logger;
 
 public class C3Manager {
@@ -32,12 +33,14 @@ public class C3Manager {
     protected  C3SessionHandler sessionHandler;
     protected C3_Query currentQuery;
     protected C3_Task currentTask;
-    private SessionLogger sessionLogger;
-    private C3DialogHandler dialogHandler;
+    protected SessionLogger sessionLogger;
+    protected C3DialogHandler dialogHandler;
+    protected C3KeyResolver keys;
 
     public C3Manager( ) {
         reader = new C3Reader(this);
         writer = new C3Writer(this);
+        keys = new C3KeyResolver(this);
         qlogger = new C3Logger(this, true);
         tlogger = new C3Logger(this, false);
         dialogHandler = new C3DialogHandler(this);
@@ -132,4 +135,7 @@ public class C3Manager {
         return dialogHandler;
     }
 
+    public C3KeyResolver getKeys() {
+        return keys;
+    }
 }

@@ -4,30 +4,38 @@ import data.C3Enums;
 import framework.C3Handler;
 import framework.C3Manager;
 import framework.task.C3_Task;
+import gui.TextRenderMaster;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.*;
 import main.system.auxiliary.data.FileManager;
 import main.system.util.DialogMaster;
 import music.PlaylistHandler;
+import org.jnativehook.GlobalScreen;
+import org.jnativehook.NativeHookException;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class C3SessionHandler extends C3Handler {
+    public static final String MUS = "Want some mus?";
+    public static final String TASKS = "Choose tasks?";
+    public static final String TIMING = "What's the timing?";
+    public static final String BREAK_INTERVAL = "Break interval?";
     //TODO pomodoro mode!
     private C3Session currentSession;
     public static final long musicMaxChoiceSize = 5;
+
+    private Map<String, Object> defaultOptions = new HashMap<>();
+
 
     public C3SessionHandler(C3Manager manager) {
         super(manager);
     }
 
-    private Integer getInterval(C3Session currentSession) {
-        Object chosenOption = DialogMaster.getChosenOption("Break interval?", new Integer[]{
+    private Integer getIntervals() {
+        Object chosenOption = prompt(BREAK_INTERVAL, new Integer[]{
                 10, 15, 20, 25
         });
         return (Integer) chosenOption;
@@ -40,7 +48,7 @@ public class C3SessionHandler extends C3Handler {
         for (int i = minBreaks; i <= max; i++) {
             list.add(i);
         }
-        return list.stream().map(i-> i*interval).collect(Collectors.toList()).toArray(new Integer[0]);
+        return list.stream().map(i -> i * interval).collect(Collectors.toList()).toArray(new Integer[0]);
     }
 
     public void abortSession(C3Session session) {
@@ -48,53 +56,109 @@ public class C3SessionHandler extends C3Handler {
         manager.getSessionLogger().aborted(session);
     }
 
-    // via separate launch?
-    public void initQuickSession() {
+
+    public enum PromptType {
+        text_input,
+        option_choice,
+        confirm,
 
     }
+
+    private Object prompt(String query, Object arg, PromptType type) {
+        Object o = defaultOptions.get(query);
+        if (o != null)
+            return o;
+        switch (type) {
+            case text_input -> {
+                return DialogMaster.inputText(query); //, arg
+            }
+            case option_choice -> {
+                return optionChoice(arg);
+            }
+            case confirm -> {
+                return DialogMaster.confirm(query) ? new Object() : null;
+            }
+        }
+        return o;
+    }
+
+    private boolean confirm(String query) {
+        Object result = prompt(query, null, PromptType.confirm);
+        if (result instanceof Boolean)
+            return (boolean) result;
+        return result !=null ;
+    }
+    private Object prompt(String query, Object arg) {
+        return prompt(query, arg, PromptType.option_choice);
+    }
+
+    private Object optionChoice(Object arg) {
+        Object options = arg;
+        if (arg instanceof Class) {
+            options = EnumMaster.getEnumConstants((Class<?>) arg).toArray();
+        }
+        return DialogMaster.getChosenOption("Choose one", options);
+    }
+
+    // via separate launch?
+    public void initQuickSession() {
+        defaultOptions.put(BREAK_INTERVAL, 20);
+        defaultOptions.put(TIMING, 60);
+        defaultOptions.put(MUS, false);
+        defaultOptions.put(TASKS, false);
+        defaultOptions.put(C3Enums.SessionType.class.getName(), C3Enums.SessionType.auto_quick);
+        defaultOptions.put(C3Enums.Direction.class.getName(), C3Enums.Direction.Design);
+        //auto-music
+
+        initSession();
+        defaultOptions.clear();
+    }
+
     public void initSession() {
         boolean manual = true;
         C3Enums.SessionType sessionType = null;
         if (manual) {
-            sessionType = new EnumMaster<C3Enums.SessionType>().selectEnum(C3Enums.SessionType.class);
+            // sessionType = new EnumMaster<C3Enums.SessionType>().selectEnum(C3Enums.SessionType.class);
+            sessionType = (C3Enums.SessionType) prompt(C3Enums.SessionType.class.getName(), C3Enums.SessionType.class);
         } else {
             sessionType = getSessionTypeAuto();
         }
+        if (sessionType == null)
+            return;
+        C3Enums.Direction direction = (C3Enums.Direction) prompt(C3Enums.Direction.class.getName(), C3Enums.Direction.class);
+        // C3Enums.Direction direction = new EnumMaster<C3Enums.Direction>().selectEnum(C3Enums.Direction.class);
+        Integer interval = getIntervals();
+        Integer[] durationOptions = getDurationOptions(sessionType.getMinBreaks(), sessionType.getMaxBreaks(), interval);
 
-        C3Enums.Direction direction = new EnumMaster<C3Enums.Direction>().selectEnum(C3Enums.Direction.class);
-        Integer interval = getInterval(currentSession);
-        Integer[] durationOptions = getDurationOptions(sessionType. getMinBreaks( ),sessionType. getMaxBreaks( ), interval);
-
-        Integer duration =(Integer) DialogMaster.getChosenOption("What's the timing?", durationOptions);
+        Integer duration = (Integer) prompt(TIMING, durationOptions);
 
         if (currentSession != null && !currentSession.isFinished()) {
             abortSession(currentSession);
         }
         currentSession = new C3Session(sessionType, direction, duration, "", "");
         currentSession.setMinsBreakInverval(interval);
-        if (DialogMaster.confirm("Want some mus?"))
+        if (confirm(MUS))
             try {
                 initSessionMusic(sessionType, direction);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
-        if (DialogMaster.confirm("Choose tasks?")) initTasks(currentSession);
+        if (confirm(TASKS)) initTasks(currentSession);
         manager.getTimerHandler().initTimer(currentSession);
     }
 
 
-
     private void initTasks(C3Session currentSession) {
-        while (DialogMaster.confirm("Add custom framework.task?")) {
+        while (confirm("Add custom framework.task?")) {
             addTask(true);
         }
-        if (!DialogMaster.confirm("Add prepared tasks?"))
+        if (!confirm("Add prepared tasks?"))
             return;
         C3Enums.TaskCategory[] categories = getCategories(currentSession.getDirection());
         List<String> names = manager.getTaskManager().getTaskNamesFor(categories);
         String picked = ListChooser.chooseStrings(names);
         List<String> list = ContainerUtils.openContainer(picked);
-        List<C3_Task> tasks = manager.getTaskManager().getTasksFor(list );
+        List<C3_Task> tasks = manager.getTaskManager().getTasksFor(list);
         currentSession.setTasksPending(tasks);
     }
 
@@ -129,7 +193,7 @@ public class C3SessionHandler extends C3Handler {
 
     public void displayActiveTasks() {
         if (!currentSession.getTasksPending().isEmpty()) {
-            DialogMaster.inform(                    "Pending tasks: \n"+
+            DialogMaster.inform("Pending tasks: \n" +
                     StringMaster.formatList(currentSession.getTasksPending()));
         }
     }
@@ -166,14 +230,19 @@ public class C3SessionHandler extends C3Handler {
 
     public String getSessionInfo() {
         if (currentSession == null) {
-            return "Wazzup?";
+            return "Null session?";
         }
-        return currentSession.toString()+
-                StringMaster.lineSeparator+
-                currentSession.getDurationString()+
-                StringMaster.lineSeparator+
-                currentSession.getTasksString();
+        return currentSession.toString() +
+                StringMaster.lineSeparator
+                // +"<html><center><u>"
+                +currentSession.getDurationString()
+                // +"</u></center></html>"
+                //TODO +
+                // StringMaster.lineSeparator +
+                // currentSession.getGoal()
+                ;
     }
+
 
     public void finished(C3Session session) {
         taskDone();

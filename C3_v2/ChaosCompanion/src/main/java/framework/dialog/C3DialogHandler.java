@@ -33,14 +33,18 @@ public class C3DialogHandler extends C3Handler {
             @Override
             public void run() {
                 playSound(RandomWizard.random()? C3Sound.BACK_TO_WORK : C3Sound.GET_INTO_IT);
+                DialogMaster.inform("Wazzup?");
             }
         };
         breakTimer.schedule(t, breakTime);
-        boolean result = DialogMaster.confirm(manager.getSessionHandler().getSessionInfo()
+        boolean result = DialogMaster.confirm(
+
+                manager.getSessionHandler().getSessionInfo()
                 + StringMaster.lineSeparator
                 + "Pro Tip >>>>  " + tip + "!!!"
                 + StringMaster.lineSeparator +
-                "Ready to bounce back?!");
+                "Ready to bounce back?!"
+        );
         if (result) {
             playSound(C3Sound.ONWARD);
         } else {
@@ -90,7 +94,7 @@ public class C3DialogHandler extends C3Handler {
                 manager.getSessionHandler().initSession();
             }
             case EZ_Choice -> {
-                ezChoiceDraft(manager.getSessionHandler().getCurrentSession());
+                ezChoiceDraft();
             }
             case Music_Reset -> {
                 manager.getSessionHandler().resetMusic();
@@ -104,23 +108,23 @@ public class C3DialogHandler extends C3Handler {
         }
     }
 
-    private void ezChoiceDraft(C3Session currentSession) {
+    public void ezChoiceDraft() {
         EZ_Option[] options = new EZ_Option[]{
-                EZ_Option.comfy_chair,
                 EZ_Option.query,
-                EZ_Option.shift_break
+                EZ_Option.shift_break,
+                EZ_Option.music
         };
         EZ_Option picked = (EZ_Option) DialogMaster.getChosenOption("", options);
 
         switch (picked) {
-            case comfy_chair -> {
-                DialogMaster.inform("You got it!");
+            case music -> {
+                manager.getSessionHandler().resetMusic();
             }
             case query -> {
                 manager.getQueryManager().createRandomQuery();
             }
             case shift_break -> {
-                manager.getTimerHandler().shiftBreak();
+                manager.getTimerHandler().takeBreak();
             }
         }
     }
