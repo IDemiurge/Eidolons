@@ -1,3 +1,4 @@
+resources/*
 *.jar
 .classpath
 .project
