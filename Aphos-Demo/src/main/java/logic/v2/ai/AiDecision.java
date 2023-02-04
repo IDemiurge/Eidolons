@@ -1,6 +1,6 @@
 package logic.v2.ai;
 
-import logic.v2.ai.generic.AiAction;
+import logic.v2.ai.generic.action.AiAction;
 import logic.v2.ai.generic.AiConsts;
 import logic.v2.ai.generic.AiHandler;
 import logic.v2.ai.generic.AiMaster;
