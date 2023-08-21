@@ -402,6 +402,12 @@ public class StringMaster {
         return isEmpty(string);
     }
 
+    public static boolean isEmpty(Object o) {
+        if (o == null) {
+            return true;
+        }
+        return isEmpty(o.toString());
+    }
     public static boolean isEmpty(String string) {
         if (string == null) {
             return true;
