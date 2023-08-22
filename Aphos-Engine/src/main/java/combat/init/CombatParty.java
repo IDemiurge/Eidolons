@@ -1,4 +1,4 @@
-package combat;
+package combat.init;
 
 /**
  * Created by Alexander on 8/21/2023

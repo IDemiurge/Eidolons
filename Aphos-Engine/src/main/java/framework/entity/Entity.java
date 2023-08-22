@@ -1,48 +1,38 @@
 package framework.entity;
 
-import content.LinkedStringMap;
-import elements.content.enums.EnumFinder;
-import elements.content.stats.Property;
+import elements.stats.Property;
+import elements.stats.Stat;
 import main.system.auxiliary.NumberUtils;
-import main.system.auxiliary.StringMaster;
 
 import java.util.Map;
 
 /**
  * Created by Alexander on 6/10/2023
+ * <p>
+ * Q: toBase() required or not? Suppose there is an AURA that boosts some stats; and may be disabled or just move
+ * somewhere >> I'd say we should rather define this on a case-by-case basis via bonus_x params or such
  */
 public abstract class Entity {
     protected String name;
-    protected Map<String, Object> valueMap; // from yaml, xml, enum
-    protected Map<String, Object> baseValueMap;
+    protected int id;
+    protected EntityData data;
+    // protected Map<String, Object> valueMap; // from yaml, xml, enum
+    // protected Map<String, Integer> intMap = new LinkedStringMap<>();
+    // protected Map<String, String> stringMap = new LinkedStringMap<>();
+    // protected Map<String, Boolean> boolMap = new LinkedStringMap<>();
+
+
+    // protected Map<String, Object> baseValueMap;
+    //MAYBE a map per Integer/Boolean/String?
+    //Container properties are still a must - but more atomization would be nice
+
+    //maybe this DATA thingy can be used like ObjType before? Clone units with it?
 
     public Entity(Map<String, Object> valueMap) {
-        this.valueMap = new LinkedStringMap<>();
-        this.valueMap.putAll(valueMap);
-        this.baseValueMap.putAll(valueMap);
-
-
-        this.name = valueMap.get(Property.Name).toString();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getImagePath() {
-        Object o = valueMap.get(Property.Image);
-        if (o == null) {
-            throw new RuntimeException(this + " has no image!");
-        }
-        return o.toString();
-    }
-
-    public Object getValue(String name) {
-        return valueMap.get(name);
-    }
-
-    public void setValue(Object key, Object val) {
-        valueMap.put(key.toString(), val);
+        data = new EntityData(valueMap);
+        this.name = data.get(Property.Name).toString();
+        //TODO
+        // id = combat.Battle.current.getIdManager().nextId();
     }
 
     @Override
@@ -50,17 +40,72 @@ public abstract class Entity {
         return name;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void toBase() {
+        data.toBase();
+        //check visibility?
+    }
+
+    //////////////// SETTERS ///////////////////
+    public void setValue(Stat key, Object val) {
+        data.set(key, val);
+    }
+
+    public void setValue(String key, Object val) {
+        data.set(key, val);
+    }
+
+    public void addIntValue(Stat key, int i) {
+        setValue(key, getInt(key) + i);
+    }
+
+    //////////////// GETTERS ///////////////////
     public int getInt(Object identifier) {
-        Object o = valueMap.get(identifier.toString());
+        Object o = data.get(identifier.toString());
         if (o == null)
             return 0;
         return NumberUtils.getIntParse(o.toString());
     }
 
     public <T> T getEnum(String name, Class<T> className) {
-        Object value = valueMap.get(name);
-        if (StringMaster.isEmpty(value))
-            return null;
-        return EnumFinder.get(className, value);
+        return data.getEnum(name, className);
+    }
+
+    public String getString(String name) {
+        return data.getS(name);
+    }
+
+    public Boolean getBoolean(String name) {
+        return data.getB(name);
+    }
+
+    public String getString(Stat key) {
+        return data.getS(key);
+    }
+
+    public Boolean getBoolean(Stat key) {
+        return data.getB(key);
+    }
+
+    ////////////////// SHORTCUTS ////////////////////
+
+    public String getName() {
+        return name;
+    }
+
+    public String getImagePath() {
+        Object o = data.get(Property.Image);
+        if (o == null) {
+            throw new RuntimeException(this + " has no image!");
+        }
+        return o.toString();
+    }
+
+
+    public boolean isDead() {
+        return data.getB("dead");
     }
 }

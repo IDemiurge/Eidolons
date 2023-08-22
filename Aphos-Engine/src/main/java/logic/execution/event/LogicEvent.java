@@ -1,4 +1,4 @@
-package elements.event;
+package logic.execution.event;
 
 public interface LogicEvent {
 }

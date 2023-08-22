@@ -15,4 +15,8 @@ public class UnitSubEntity extends Entity {
         super(valueMap);
         this.unit = unit;
     }
+
+    public Unit getUnit() {
+        return unit;
+    }
 }

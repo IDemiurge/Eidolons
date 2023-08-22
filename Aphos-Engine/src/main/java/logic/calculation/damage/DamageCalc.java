@@ -1,11 +1,12 @@
 package logic.calculation.damage;
 
-import elements.EntityRef;
-import elements.content.stats.ActionParam;
-import elements.content.stats.UnitParam;
+import elements.exec.EntityRef;
+import elements.stats.ActionParam;
+import elements.stats.UnitParam;
 import framework.entity.field.FieldEntity;
 import framework.entity.field.Unit;
 import framework.entity.sub.UnitAction;
+import main.system.auxiliary.RandomWizard;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -98,6 +99,7 @@ public class DamageCalc {
     }
 
     private int random(int anInt, int anInt1) {
+        return RandomWizard.getRandomIntBetween(anInt, anInt1);
     }
 
 

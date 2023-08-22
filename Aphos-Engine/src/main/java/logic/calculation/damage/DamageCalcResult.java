@@ -1,11 +1,9 @@
 package logic.calculation.damage;
 
-import elements.EntityRef;
-import elements.content.enums.types.CombatTypes;
+import elements.exec.EntityRef;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
-import java.util.Map;
 
 import static elements.content.enums.types.CombatTypes.*;
 

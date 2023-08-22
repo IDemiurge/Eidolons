@@ -1,6 +1,6 @@
 package elements.exec.targeting;
 
-import combat.battlefield.BattleFieldConsts;
+import elements.content.enums.FieldEnums;
 import framework.field.FieldPos;
 
 import java.util.LinkedHashSet;
@@ -36,7 +36,7 @@ public class Targeting {
             return set;
         }
         set = new LinkedHashSet<>();
-        for (FieldPos fieldPos : BattleFieldConsts.all) {
+        for (FieldPos fieldPos : FieldEnums.all) {
             // if (checkCanTarget(from, fieldPos))
             //     set.add(fieldPos);
         }

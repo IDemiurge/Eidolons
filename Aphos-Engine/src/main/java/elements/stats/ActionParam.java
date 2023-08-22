@@ -1,9 +1,9 @@
-package elements.content.stats;
+package elements.stats;
 
 /**
  * Created by Alexander on 8/2/2023
  */
-public enum ActionParam {
+public enum ActionParam implements Stat {
 
         Burn_Requirement,
 

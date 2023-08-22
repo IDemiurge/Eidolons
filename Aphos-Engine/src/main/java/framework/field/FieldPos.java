@@ -9,12 +9,13 @@ package framework.field;
  */
 public class FieldPos {
     private FieldPos[] areaPos;
-    private CellType type;
-    private int number; //from bottom up, or main to additional
+    private final CellType type;
+    private final Integer number; //from bottom up, or main to additional
 
     public FieldPos(FieldPos... pos) {
         areaPos=pos;
         type = CellType.Multi;
+        number = null;
     }
     public FieldPos(CellType type) {
         this(type, 0);

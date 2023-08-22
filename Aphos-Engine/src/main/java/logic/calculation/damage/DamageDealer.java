@@ -1,7 +1,8 @@
 package logic.calculation.damage;
 
-import elements.EntityRef;
-import elements.content.stats.UnitParam;
+import elements.exec.EntityRef;
+import elements.stats.UnitParam;
+import elements.stats.UnitProp;
 import framework.entity.Entity;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -9,6 +10,9 @@ import static elements.content.enums.types.CombatTypes.*;
 
 /**
  * Created by Alexander on 8/21/2023
+ * <p>
+ * How to produce the right kind of Events that we could process visually in a transparent and effective way? E.g. how
+ * much damage was absorbed etc
  */
 public class DamageDealer {
     public static boolean deal(DamageCalcResult result) {
@@ -44,23 +48,38 @@ public class DamageDealer {
                 }
                 target.setValue(value, 0);
                 target.setValue(value + "_broken", true);
+                if (!hp){
+                    //TODO
+                    // int excessDamage = damage - current;
+                    // Wounds.apply(excessDamage, value, ref);
+                }
+
+                damage = remainder;
             }
         }
+
+
         value = hp ? UnitParam.Hp : UnitParam.Soul;
         Integer current = target.getInt(value);
 
         boolean lethal = false;//checkLethal(ref);
         boolean canKill = threshold_condition || lethal;
 
+        if (damage > current) {
+            if (canKill) {
+                target.setValue(value, Integer.MIN_VALUE);
+                return false;
+            }
+        }
 
-        // target.addIntValue(value, -damage);
+        target.addIntValue(value, -damage); //reduce hp or soul
+
         int excessDamage = damage - current;
         // if (excessDamage> threshold) kill()  => Can a single blow kill? With LETHAL perk
-        // WoundRule woundRule = getWoundRule(hp, ref);
-        // woundRule.apply(excessDamage, ref); //will also set to Death's Door or Madness/Nigredo
+        logic.rules.combat.wounds.Wounds.apply(excessDamage, value, ref);
 
-         return true;
-}
+        return true;
+    }
 
 
 }

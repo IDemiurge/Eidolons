@@ -17,4 +17,12 @@ public class FieldEntity extends Entity {
         super(valueMap);
         this.pos = pos;
     }
+
+    public FieldPos getPos() {
+        return pos;
+    }
+
+    public Visibility getEnemyVisibility() {
+        return visibility;
+    }
 }
