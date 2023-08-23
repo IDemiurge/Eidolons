@@ -14,9 +14,9 @@ import static combat.sub.BattleManager.combat;
 public abstract class TriggerRule {
 
     public void initTrigger(){
-        Trigger trigger = new Trigger(getCondition(), ref -> execute(ref));
+        // Trigger trigger = new Trigger(getCondition(), ref -> execute(ref));
         // trigger.setName(getName());
-        combat().getEventHandler().addTrigger(trigger, getEventType());
+        // combat().getEventHandler().addTrigger(trigger, getEventType());
     }
 
     protected abstract Condition getCondition();

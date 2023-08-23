@@ -2,6 +2,8 @@ package framework.entity.field;
 
 import elements.content.enums.FieldConsts;
 import elements.stats.UnitParam;
+import elements.stats.generic.StatConsts;
+import framework.entity.sub.ActionSet;
 import framework.field.FieldPos;
 
 import java.util.Map;
@@ -14,10 +16,10 @@ import java.util.Map;
 public class Unit extends FieldEntity {
     protected final Boolean ally;
 
-    // ActionSet actionSet; //HeroActionSet?
-    // PassiveSet passiveSet;
-    // OmenStack omens;
-    // CountersSet counters; //we can intercept get() for calc of formulas and so keep the valueMap free of these!
+    protected ActionSet actionSet; //HeroActionSet?
+    // protected PassiveSet passiveSet;
+    // protected OmenStack omens;
+    // protected CountersSet counters; //we can intercept get() for calc of formulas and so keep the valueMap free of these!
 
     public Unit(Map<String, Object> valueMap, Boolean ally) {
         this(valueMap, ally, new FieldPos(ally ?  FieldConsts.Cell.Reserve_ally : FieldConsts.Cell.Reserve_enemy));
@@ -28,19 +30,15 @@ public class Unit extends FieldEntity {
         super(valueMap, pos);
         this.ally = ally;
         initCurrentValues();
+        actionSet =combat.init. ActionInitializer.initActionSet(this);
     }
 
-    UnitParam[] curVals = {
-            UnitParam.Moves_Max,
-            UnitParam.AP_Max,
-            UnitParam.Sanity_Max,
-            UnitParam.Faith_Max,
-            UnitParam.Hp_Max,
-            UnitParam.Soul_Max,
-    };
+    public ActionSet getActionSet() {
+        return actionSet;
+    }
 
     private void initCurrentValues() {
-        for (UnitParam val : curVals) {
+        for (UnitParam val : StatConsts.unitCurrentVals) {
             Integer value = getInt(val);
             String cur = val.getName().split("_")[0];
             data.setCur(cur, value);

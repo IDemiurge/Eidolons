@@ -4,42 +4,22 @@ import campaign.run.battle.BattleBuilder;
 import combat.Battle;
 import combat.init.BattleSetup;
 import framework.AphosTest;
+import framework.Core;
 import framework.data.DataManager;
 
 import static combat.sub.BattleManager.combat;
 import static org.junit.Assert.assertTrue;
+import static resources.TestData.*;
 
 /**
  * Created by Alexander on 8/22/2023
  */
 public class BattleInitTest extends AphosTest  {
 
-    private String name1= "dampling";
-    private String name2= "dummling";
-
-    static String[][] entityData = {
-            {
-                    "name=dummling",
-                    "type=Unit",
-                    "hp_max=5",
-                    "moves_max=1"
-            },
-
-            {
-                    "name=dampling",
-                    "type=Unit",
-                    "hp_max=11",
-                    "moves_max=1"
-            }
-    };
-    String[] battleData = {
-            "battle_data::battle_type=skirmish;base_flame=1;night=false",
-            "allies::3=dampling;4=dampling;",
-            "enemies::12=dummling"
-    };
     @Override
     public void test() {
         // new MockRun();
+        Core.init();
         DataManager.init(entityData);
         BattleSetup setup = new BattleBuilder().build(battleData);
         Battle battle = new Battle(setup);
@@ -48,9 +28,7 @@ public class BattleInitTest extends AphosTest  {
         //after this, we can use combat() freely?
 
         assertTrue(combat().getEntities().getUnits().size()== 3);
-        assertTrue(combat().getUnitById(0).getName().equals(name1));
-        assertTrue(combat().getUnitById(1).getName().equals(name1));
-        assertTrue(combat().getUnitById(2).getName().equals(name2));
+        assertTrue(combat().getUnitById(0).getName().equals(unit_name_ally));
         assertTrue(combat().getBattleState().getRound() == 1);
     }
 }

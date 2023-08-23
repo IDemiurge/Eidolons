@@ -10,6 +10,11 @@ import logic.calculation.damage.DamageDealer;
  */
 public class DamageEffect extends Effect{
 
+    @Override
+    public String[] getArgNames() {
+        return new String[0];
+    }
+
     public boolean apply(EntityRef ref){
         int amount = 0; //formula.getInt(ref);
         ref.setValueInt(amount);

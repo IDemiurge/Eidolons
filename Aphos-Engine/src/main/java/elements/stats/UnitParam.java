@@ -26,15 +26,17 @@ public enum UnitParam implements Stat {
         AP_Max,
         Moves_Max,
 
-        Min_Attack,
-        Min_Defense,
-        Min_Resistance,
-        Base_Attack,
-        Base_Defense,
-        Base_Resistance,
-        Max_Attack,
-        Max_Defense,
-        Max_Resistance,
+        Attack_Min,
+        Attack_Base,
+        Attack_Max,
+
+        Defense_Min,
+        Defense_Base,
+        Defense_Max,
+
+        Resistance_Min,
+        Resistance_Base,
+        Resistance_Max,
 
         Bonus_,
 

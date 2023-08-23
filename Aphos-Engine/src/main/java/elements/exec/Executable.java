@@ -1,10 +1,12 @@
 package elements.exec;
 
+import elements.exec.effect.Effect;
 import elements.exec.targeting.TargetGroup;
+import elements.exec.targeting.Targeting;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.List;
 
 public interface Executable {
-    boolean execute(EntityRef ref);
-    default TargetGroup selectTargets() {
-        return null;
-    }
+    List<Pair<Targeting, Effect>> getTargetedEffects();
 }

@@ -83,6 +83,13 @@ public abstract class Entity {
         return data.get(stat);
     }
 
+    public String getS(String name) {
+        return data.getS(name);
+    }
+    public String getS(Stat stat) {
+        return getS(stat.getName());
+    }
+
     public Boolean isTrue(String name) {
         return data.isTrue(name);
     }
@@ -108,5 +115,13 @@ public abstract class Entity {
 
     public boolean isDead() {
         return data.isTrue("dead");
+    }
+
+    public void modifyValue(String valueName, Object value) {
+        if (value instanceof Integer) {
+            data.addIntValue(valueName, (Integer) value);
+        } else {
+            data.set(valueName, value);
+        }
     }
 }

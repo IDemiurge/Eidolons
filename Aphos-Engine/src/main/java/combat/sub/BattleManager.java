@@ -10,6 +10,7 @@ import combat.state.BattleState;
 import elements.exec.EntityRef;
 import framework.entity.Entity;
 import framework.entity.field.Unit;
+import logic.execution.ActionExecutor;
 import logic.execution.event.combat.CombatEvent;
 import logic.execution.event.combat.CombatEventHandler;
 import logic.execution.event.combat.CombatEventType;
@@ -30,6 +31,7 @@ public class BattleManager {
     private final BattleField battleField;
     private final BattleState battleState;
     private final CombatEventHandler eventHandler;
+    private final ActionExecutor executor;
 
     public BattleManager(BattleSetup battleSetup) {
         this.battleSetup = battleSetup;
@@ -38,9 +40,11 @@ public class BattleManager {
         handlers.add(battleState = new BattleState(this));
         handlers.add(eventHandler = new CombatEventHandler(this));
         handlers.add(battleInit = new BattleInitializer(this, battleSetup));
+        handlers.add(executor = new ActionExecutor(this));
         // what should we do with ALL handlers?
         // on game end? On event?
     }
+    //////////////////region UNIVERSAL METHODS
     public void resetAll() {
         handlers.forEach(handler -> handler.reset());
     }
@@ -53,7 +57,9 @@ public class BattleManager {
     public void battleEnds() {
         handlers.forEach(handler -> handler.battleEnds());
     }
+    //endregion
 
+    //////////////////region GETTERS
     public BattleEntities getEntities() {
         return battleEntities;
     }
@@ -74,13 +80,18 @@ public class BattleManager {
         return eventHandler;
     }
 
+    public ActionExecutor getExecutor() {
+        return executor;
+    }
+    //endregion
+
     public void event(CombatEventType type, EntityRef ref, Object... args) {
         Map<Class, Object> map=  system.MapMaster.toClassMap(args);
         CombatEvent event= new CombatEvent(type, ref,  map);
         EventResult result = eventHandler.handle(event);
         //wazzup here?
     }
-    //////////////////SHORTCUTS
+    //////////////////region SHORTCUTS
 
     public Unit getUnitById(Integer id) {
         return getById(id, Unit.class);
@@ -90,6 +101,7 @@ public class BattleManager {
         return getEntities().getEntityById(id, entityClass);
     }
     //endregion
+
 
     public static BattleManager combat(){
         return Battle.current.getManager();

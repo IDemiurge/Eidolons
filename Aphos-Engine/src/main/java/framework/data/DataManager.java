@@ -40,15 +40,18 @@ public class DataManager {
         return map;
     }
 
-    private static Object getRawValue(String value) {
-        if (NumberUtils.isNumber(value, true)) {
-            return  NumberUtils.getInt(value);
-        } else if (value.equals("true")) {
-           return  true;
-        } else if (value.equals("false")) {
-           return  false;
+    public static Object getRawValue(Object value) {
+        if (value instanceof Integer || value instanceof Boolean)
+            return value;
+        String string = (String) value;
+        if (NumberUtils.isNumber(string, true)) {
+            return  NumberUtils.getInt(string);
+        } else if (string.equals("true")) {
+            return  true;
+        } else if (string.equals("false")) {
+            return  false;
         } else {
-            return  value.toString();
+            return  string;
         }
     }
 

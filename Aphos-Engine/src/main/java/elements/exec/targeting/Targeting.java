@@ -1,79 +1,67 @@
 package elements.exec.targeting;
 
-import elements.content.enums.FieldConsts;
-import framework.field.FieldPos;
-
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 // import com.google.common.collect.ImmutableSet;
 
 
+import elements.exec.EntityRef;
+import elements.exec.condition.Condition;
+import elements.exec.preset.ConstructTemplates;
+import framework.entity.Entity;
+import framework.entity.EntityData;
+import framework.entity.field.FieldEntity;
+
+import java.util.List;
+
+import static combat.sub.BattleManager.combat;
+
 /**
- * Created by Alexander on 6/11/2023 Special rules will be for Flank-to-Flank etc
+ * Created by Alexander on 6/11/2023 Special rules will be for Flank-to-Flank etc * or should these all be aggregated
+ * behavior methods? * Targeting should actually be more like... data object, not an executor! * So all we need is: *
+ * Template * Conditions * Args (e.g. number of targets?) * * Usage cases * >> Depending on target, action has diff
+ * effects (WH's pierce, Soldier's spear..) * >>
+ * <p>
+ * <p>
+ * Let's really examine our targeting reqs: 1) Selective for action is DIFF 2)
  */
 public class Targeting {
-    //then we'll need CustomTargeting too
-    boolean all_in_range; //if true, action affects all units that match the Targeting condition
-    boolean friendly_fire;
-    boolean left_right; //for ray only?
-    TargetingType type;
+    protected EntityData data;
+    protected Condition condition;
 
-    public enum TargetingType {
-        Close_Quarters,
-        Melee,
-        Long_Range,
-        Range,
-        Ray,
-        Ray_2x,
-        Any,
+    // boolean all_in_range; //if true, action affects all units that match the Targeting condition
+    // //E.G. - All Melee, All Range (1), All Enemy, All <...>
+    // boolean friendly_fire;
+    // boolean left_right; //for ray only?
+    // maybe these can be part of TARGETING DATA? Parsed same way as for entity?
+
+    public void setCondition(Condition condition) {
+        this.condition = condition;
     }
 
-    public Set<FieldPos> getArea(FieldPos from) {
-        Set<FieldPos> set = getPreset(from);
-        //some cases are easier to do with just 'add()', others with mass-check via generic method
-        if (set!=null){
-            return set;
+    public void select(EntityRef ref) {
+
+        //if there is only Self - will auto-target (if some option is checked)
+
+        //modify conditions based on data
+
+        List<Entity> fieldEntities = combat().getEntities().getFieldEntities();//should we always start with that list? then remove omens/obst/..
+        // filter( condition.check())
+
+        //how to easily assemble filters? Should have some MNGR for that
+
+        //here we determine if there is Manual Selection
+
+        fieldEntities.removeIf(e -> !condition.check(ref.setMatch(e)));
+        // single = true;
+        if (fieldEntities.size() == 1) {
+            ref.setTarget(fieldEntities.get(0));
+        } else {
+            //TODO
+            List<FieldEntity> entities = null;
+            ref.setGroup(new TargetGroup(entities));
         }
-        set = new LinkedHashSet<>();
-        for (FieldPos fieldPos : FieldConsts.all) {
-            // if (checkCanTarget(from, fieldPos))
-            //     set.add(fieldPos);
-        }
-        return set;
     }
 
-    private Set<FieldPos> getPreset(FieldPos from) {
-        // switch (type) {
-        //     case Long_Range, Melee, Close_Quarters -> {
-        //         // if (from.isFlank()){
-        //         //     return ImmutableSet.of(from.getOppositeFlank(), type==Long_Range ? from.getNearestFront() : null);
-        //         // }
-        //         // if (from.isVanguard()){
-        //         //     return ImmutableSet.of(type== Close_Quarters? from.getMelee() : from.getEnemyFront(), from.getOtherVanguard());
-        //         // }
-        //         // return ImmutableSet.of(from.getInFront());
-        //     }
-        //     case Range -> {
-        //     }
-        //     // case Ray , Ray_2x -> {
-        //         //can hit flanks?
-        //     //     front = from.getInFront();
-        //     //     Set<FieldPos> set = front.getAllInFront(friendly_fire);
-        //     //     if (type == Ray_2x){
-        //     //         set.addAll(front.getAllInFront(friendly_fire));
-        //     //     }
-        //     //     return set;
-        //     // }
-        //     // case Any -> {
-        //     //     if (friendly_fire){
-        //     //         return ImmutableSet.of(FieldPos.all);
-        //     //     }
-        //     //     return ImmutableSet.of(from.getEnemyCells());
-        //     // }
-        // }
-        return null;
-    }
+
 }
 
 
