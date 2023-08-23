@@ -1,7 +1,7 @@
 package combat;
 
 import combat.battlefield.BattleField;
-import combat.state.BattleData;
+import combat.state.BattleEntities;
 import combat.state.BattleState;
 import combat.sub.BattleManager;
 
@@ -28,8 +28,8 @@ public abstract class BattleHandler {
         manager.resetAll();
     }
 
-    public BattleData getData() {
-        return manager.getData();
+    public BattleEntities getData() {
+        return manager.getEntities();
     }
 
     public BattleField getField() {

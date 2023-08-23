@@ -1,4 +1,4 @@
-package elements.stats;
+package elements.stats.generic;
 
 public interface Stat {
     default String getName(){

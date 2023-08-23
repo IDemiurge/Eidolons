@@ -17,7 +17,7 @@ public class ActionExecutor extends BattleHandler {
     public ActionExecutor(BattleManager manager) {
         super(manager);
         UserEventHandler.bind(UserEventType.activate_action, p ->
-                activate(manager.getData().getEntityById(p.getInt("action"), UnitAction.class)));
+                activate(manager.getEntities().getEntityById(p.getInt("action"), UnitAction.class)));
     }
 
     public void activate(UnitAction action){

@@ -1,5 +1,7 @@
 package elements.stats;
 
+import elements.stats.generic.Stat;
+
 /**
  * Created by Alexander on 8/2/2023
  */

@@ -1,7 +1,7 @@
 package tests.basic;
 
+import elements.content.enums.FieldConsts;
 import framework.AphosTest;
-import framework.entity.Entity;
 import framework.entity.field.FieldEntity;
 import framework.field.FieldPos;
 
@@ -19,7 +19,7 @@ public class EntityCreateTest extends AphosTest {
     public void test() {
         Map<String, Object> map =
                 framework.data.DataManager.getEntityData(name);
-        FieldPos pos = new FieldPos(FieldPos.CellType.Reserve_ally);
+        FieldPos pos = new FieldPos(FieldConsts.Cell.Reserve_ally);
         FieldEntity entity = new FieldEntity(map, pos);
 
         assertTrue(entity.getName().equals(name));

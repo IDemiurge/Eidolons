@@ -9,7 +9,7 @@ import framework.entity.sub.UnitAction;
 public class ExecBuilder {
 
     public static Executable initExecutable(UnitAction unitAction) {
-        String data = unitAction.getString(ActionProp.Exec_data);
+        String data = unitAction.get(ActionProp.Exec_data).toString();
         ActionExecutable executable = new ActionExecutable();
         // executable.setTargeting(targeting);
         // executable.addEffect(targeting, effect);

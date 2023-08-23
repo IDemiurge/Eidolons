@@ -1,13 +1,9 @@
 package combat;
 
-import combat.battlefield.BattleField;
 import combat.init.BattleSetup;
-import combat.state.BattleData;
 import combat.sub.BattleManager;
 import combat.sub.skirmish.SkirmishManager;
 import elements.content.enums.types.MiscTypes;
-import framework.entity.Entity;
-import framework.entity.field.Unit;
 
 /**
  * Created by Alexander on 6/10/2023 Replay - set of states?

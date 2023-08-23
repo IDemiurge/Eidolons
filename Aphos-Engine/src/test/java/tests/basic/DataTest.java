@@ -1,5 +1,6 @@
 package tests.basic;
 
+import framework.data.DataManager;
 import framework.entity.Entity;
 import framework.entity.EntityData;
 import org.junit.Test;
@@ -14,7 +15,7 @@ public class DataTest {
 
     @Test
     public void blast(){
-        EntityData entityData = new EntityData("ghast=true;dummy=false;hp=5");
+        EntityData entityData = new EntityData(DataManager.deconstructDataString("ghast=true;dummy=false;hp=5"));
         assertTrue((Boolean) entityData. get("ghast"));
         assertTrue(!(Boolean) entityData. get("dummy"));
         assertTrue((Integer) entityData. get("hp")==5);

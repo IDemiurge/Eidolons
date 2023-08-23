@@ -21,13 +21,15 @@ public class BattleInitTest extends AphosTest  {
             {
                     "name=dummling",
                     "type=Unit",
-                    "hp=5"
+                    "hp_max=5",
+                    "moves_max=1"
             },
 
             {
                     "name=dampling",
                     "type=Unit",
-                    "hp=11"
+                    "hp_max=11",
+                    "moves_max=1"
             }
     };
     String[] battleData = {
@@ -43,8 +45,9 @@ public class BattleInitTest extends AphosTest  {
         Battle battle = new Battle(setup);
         // battle.init();
         battle.start();
+        //after this, we can use combat() freely?
 
-        assertTrue(combat().getData().getUnits().size()== 3);
+        assertTrue(combat().getEntities().getUnits().size()== 3);
         assertTrue(combat().getUnitById(0).getName().equals(name1));
         assertTrue(combat().getUnitById(1).getName().equals(name1));
         assertTrue(combat().getUnitById(2).getName().equals(name2));

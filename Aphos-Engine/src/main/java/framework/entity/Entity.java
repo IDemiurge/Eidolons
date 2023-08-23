@@ -1,8 +1,7 @@
 package framework.entity;
 
-import elements.stats.Property;
-import elements.stats.Stat;
-import main.system.auxiliary.NumberUtils;
+import elements.stats.generic.Property;
+import elements.stats.generic.Stat;
 
 import java.util.Map;
 
@@ -34,7 +33,7 @@ public abstract class Entity {
         data = new EntityData(valueMap);
         this.name = data.get(Property.Name).toString();
         //TODO
-        id = combat().getData().addEntity(this);
+        id = combat().getEntities().addEntity(this);
 
     }
 
@@ -61,36 +60,35 @@ public abstract class Entity {
         data.set(key, val);
     }
 
-    public void addIntValue(Stat key, int i) {
-        setValue(key, getInt(key) + i);
+    public void addCurValue(Stat key, int i) {
+        data.addCurValue(key, i);
     }
 
     //////////////// GETTERS ///////////////////
-    public int getInt(Object identifier) {
-        Object o = data.get(identifier.toString());
-        if (o == null)
-            return 0;
-        return NumberUtils.getIntParse(o.toString());
+    public int getInt(Stat stat) {
+        return data.getInt(stat);
+    }
+    public int getInt(String key) {
+        return data.getInt(key);
     }
 
     public <T> T getEnum(String name, Class<T> className) {
         return data.getEnum(name, className);
     }
 
-    public String getString(String name) {
-        return data.getS(name);
+    public Object get(String name) {
+        return data.get(name);
+    }
+    public Object get(Stat stat) {
+        return data.get(stat);
     }
 
-    public Boolean getBoolean(String name) {
-        return data.getB(name);
+    public Boolean isTrue(String name) {
+        return data.isTrue(name);
     }
 
-    public String getString(Stat key) {
-        return data.getS(key);
-    }
-
-    public Boolean getBoolean(Stat key) {
-        return data.getB(key);
+    public Boolean isTrue(Stat key) {
+        return data.isTrue(key);
     }
 
     ////////////////// SHORTCUTS ////////////////////
@@ -109,6 +107,6 @@ public abstract class Entity {
 
 
     public boolean isDead() {
-        return data.getB("dead");
+        return data.isTrue("dead");
     }
 }

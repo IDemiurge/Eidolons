@@ -31,8 +31,8 @@ public class DamageDealer {
     private static boolean dealDamage(EntityRef ref, boolean hp, Integer damage) {
         Entity target = ref.get("target");
         UnitParam
-                value = hp ? UnitParam.Hp : target.getBoolean(UnitProp.Pure) ? UnitParam.Faith : UnitParam.Sanity,
-                soulBlocker = target.getBoolean(UnitProp.Pure) ? UnitParam.Faith : UnitParam.Sanity;
+                value = hp ? UnitParam.Hp : target.isTrue(UnitProp.Pure) ? UnitParam.Faith : UnitParam.Sanity,
+                soulBlocker = target.isTrue(UnitProp.Pure) ? UnitParam.Faith : UnitParam.Sanity;
 
         boolean threshold_condition = target.getInt(value) <= 0; //death's door, Madness/Nigredo
 
@@ -72,7 +72,7 @@ public class DamageDealer {
             }
         }
 
-        target.addIntValue(value, -damage); //reduce hp or soul
+        target.addCurValue(value, -damage); //reduce hp or soul
 
         int excessDamage = damage - current;
         // if (excessDamage> threshold) kill()  => Can a single blow kill? With LETHAL perk

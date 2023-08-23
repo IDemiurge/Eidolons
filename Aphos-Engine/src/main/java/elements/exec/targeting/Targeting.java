@@ -1,6 +1,6 @@
 package elements.exec.targeting;
 
-import elements.content.enums.FieldEnums;
+import elements.content.enums.FieldConsts;
 import framework.field.FieldPos;
 
 import java.util.LinkedHashSet;
@@ -36,7 +36,7 @@ public class Targeting {
             return set;
         }
         set = new LinkedHashSet<>();
-        for (FieldPos fieldPos : FieldEnums.all) {
+        for (FieldPos fieldPos : FieldConsts.all) {
             // if (checkCanTarget(from, fieldPos))
             //     set.add(fieldPos);
         }

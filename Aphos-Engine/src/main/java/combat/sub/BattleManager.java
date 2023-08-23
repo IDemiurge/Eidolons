@@ -5,7 +5,7 @@ import combat.BattleHandler;
 import combat.battlefield.BattleField;
 import combat.init.BattleInitializer;
 import combat.init.BattleSetup;
-import combat.state.BattleData;
+import combat.state.BattleEntities;
 import combat.state.BattleState;
 import elements.exec.EntityRef;
 import framework.entity.Entity;
@@ -26,14 +26,14 @@ public class BattleManager {
     private final BattleInitializer battleInit;
     private final BattleSetup battleSetup;
     private final List<BattleHandler> handlers = new ArrayList<>();
-    private final BattleData battleData;
+    private final BattleEntities battleEntities;
     private final BattleField battleField;
     private final BattleState battleState;
     private final CombatEventHandler eventHandler;
 
     public BattleManager(BattleSetup battleSetup) {
         this.battleSetup = battleSetup;
-        handlers.add(battleData = new BattleData(this));
+        handlers.add(battleEntities = new BattleEntities(this));
         handlers.add(battleField = new BattleField(this));
         handlers.add(battleState = new BattleState(this));
         handlers.add(eventHandler = new CombatEventHandler(this));
@@ -54,8 +54,8 @@ public class BattleManager {
         handlers.forEach(handler -> handler.battleEnds());
     }
 
-    public BattleData getData() {
-        return battleData;
+    public BattleEntities getEntities() {
+        return battleEntities;
     }
 
     public BattleField getField() {
@@ -87,7 +87,7 @@ public class BattleManager {
     }
 
     public <T extends Entity> T getById(Integer id, Class<T> entityClass) {
-        return getData().getEntityById(id, entityClass);
+        return getEntities().getEntityById(id, entityClass);
     }
     //endregion
 
