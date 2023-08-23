@@ -29,7 +29,7 @@ public class EntityData {
     private final Map<String, Boolean> boolMapBase = new LinkedStringMap<>();
 
     private final Map<Class, Map> maps = new HashMap<>();
-    private final Map<String, Map<String, Object>> cache = new HashMap<>();
+    private final Map<String, Map<String, Object>> cache = new LinkedStringMap<>();
 
     public static Map<String, Object> deconstructDataString(String dataString) {
         Map<String, Object> map = new XLinkedMap<>();

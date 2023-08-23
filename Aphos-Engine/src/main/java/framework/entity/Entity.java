@@ -6,6 +6,8 @@ import main.system.auxiliary.NumberUtils;
 
 import java.util.Map;
 
+import static combat.sub.BattleManager.combat;
+
 /**
  * Created by Alexander on 6/10/2023
  * <p>
@@ -32,7 +34,8 @@ public abstract class Entity {
         data = new EntityData(valueMap);
         this.name = data.get(Property.Name).toString();
         //TODO
-        // id = combat.Battle.current.getIdManager().nextId();
+        id = combat().getData().addEntity(this);
+
     }
 
     @Override

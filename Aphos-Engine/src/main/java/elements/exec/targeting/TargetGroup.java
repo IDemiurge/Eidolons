@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static combat.sub.BattleManager.combat;
+
 /**
  * Created by Alexander on 8/22/2023
  */
@@ -24,7 +26,7 @@ public class TargetGroup {
     public TargetGroup(String ids) {
         this. ids = Arrays.asList(ids.split(system.consts.StringConsts.CONTAINER_SEPARATOR))
                 .stream().map(s -> NumberUtils.getInt(s)).collect(Collectors.toList());
-        this.targets = this.ids.stream().map(id -> Battle.current.getById(id, Unit.class)).collect(Collectors.toList());
+        this.targets = this.ids.stream().map(id -> combat().getById(id, Unit.class)).collect(Collectors.toList());
     }
     public List<FieldEntity> getTargets() {
         return targets;

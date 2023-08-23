@@ -1,12 +1,15 @@
 package combat.sub;
 
+import combat.Battle;
 import combat.BattleHandler;
 import combat.battlefield.BattleField;
+import combat.init.BattleInitializer;
 import combat.init.BattleSetup;
 import combat.state.BattleData;
 import combat.state.BattleState;
 import elements.exec.EntityRef;
-import framework.field.FieldPos;
+import framework.entity.Entity;
+import framework.entity.field.Unit;
 import logic.execution.event.combat.CombatEvent;
 import logic.execution.event.combat.CombatEventHandler;
 import logic.execution.event.combat.CombatEventType;
@@ -20,12 +23,13 @@ import java.util.Map;
  * Created by Alexander on 8/22/2023
  */
 public class BattleManager {
-    private BattleSetup battleSetup;
-    private List<BattleHandler> handlers = new ArrayList<>();
-    private BattleData battleData;
-    private BattleField battleField;
-    private BattleState battleState;
-    private CombatEventHandler eventHandler;
+    private final BattleInitializer battleInit;
+    private final BattleSetup battleSetup;
+    private final List<BattleHandler> handlers = new ArrayList<>();
+    private final BattleData battleData;
+    private final BattleField battleField;
+    private final BattleState battleState;
+    private final CombatEventHandler eventHandler;
 
     public BattleManager(BattleSetup battleSetup) {
         this.battleSetup = battleSetup;
@@ -33,11 +37,21 @@ public class BattleManager {
         handlers.add(battleField = new BattleField(this));
         handlers.add(battleState = new BattleState(this));
         handlers.add(eventHandler = new CombatEventHandler(this));
+        handlers.add(battleInit = new BattleInitializer(this, battleSetup));
         // what should we do with ALL handlers?
         // on game end? On event?
     }
     public void resetAll() {
         handlers.forEach(handler -> handler.reset());
+    }
+    public void newRound() {
+        handlers.forEach(handler -> handler.newRound());
+    }
+    public void battleStarts() {
+        handlers.forEach(handler -> handler.battleStarts());
+    }
+    public void battleEnds() {
+        handlers.forEach(handler -> handler.battleEnds());
     }
 
     public BattleData getData() {
@@ -65,6 +79,19 @@ public class BattleManager {
         CombatEvent event= new CombatEvent(type, ref,  map);
         EventResult result = eventHandler.handle(event);
         //wazzup here?
+    }
+    //////////////////SHORTCUTS
 
+    public Unit getUnitById(Integer id) {
+        return getById(id, Unit.class);
+    }
+
+    public <T extends Entity> T getById(Integer id, Class<T> entityClass) {
+        return getData().getEntityById(id, entityClass);
+    }
+    //endregion
+
+    public static BattleManager combat(){
+        return Battle.current.getManager();
     }
 }

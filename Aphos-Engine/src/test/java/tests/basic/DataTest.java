@@ -1,3 +1,5 @@
+package tests.basic;
+
 import framework.entity.Entity;
 import framework.entity.EntityData;
 import org.junit.Test;

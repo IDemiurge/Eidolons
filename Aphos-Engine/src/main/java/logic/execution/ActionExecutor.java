@@ -14,7 +14,6 @@ import logic.execution.event.user.UserEventType;
  */
 public class ActionExecutor extends BattleHandler {
 
-
     public ActionExecutor(BattleManager manager) {
         super(manager);
         UserEventHandler.bind(UserEventType.activate_action, p ->

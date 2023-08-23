@@ -17,6 +17,12 @@ public abstract class BattleHandler {
 
     public void reset(){
     }
+    public void newRound(){
+    }
+    public void battleStarts(){
+    }
+    public void battleEnds(){
+    }
 
     public void resetAll() {
         manager.resetAll();

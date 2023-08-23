@@ -14,7 +14,6 @@ import framework.entity.field.Unit;
 import framework.field.Environment;
 import framework.field.FieldPos;
 import framework.field.Visibility;
-import logic.execution.event.combat.CombatEvent;
 import logic.execution.event.combat.CombatEventType;
 
 import java.util.HashSet;
@@ -96,6 +95,18 @@ public class BattleField extends BattleHandler {
             if (((FieldEntity) unit).getPos().equals(pos)) {
                 return (FieldEntity) unit;
             }
+        }
+        return null;
+    }
+
+    public FieldPos getPos(int cardinal) {
+        return cells[cardinal];
+    }
+    public FieldPos getPos(Boolean ally, String s) {
+        //TODO do we need string syntax?
+        //should we just have some ID's for each position?!
+        if (s.contains("flank")){
+
         }
         return null;
     }

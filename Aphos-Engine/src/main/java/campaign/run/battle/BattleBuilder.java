@@ -2,24 +2,36 @@ package campaign.run.battle;
 
 import campaign.run.RunHandler;
 import combat.init.BattleSetup;
-import combat.init.CombatParty;
+import framework.data.DataManager;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by Alexander on 8/22/2023
- *
- * Consider now how to MOCK this for our DEMO's ! Without any RUN or CAMPAIGN!
- * Layers, aye, but not bindings!
+ * <p>
+ * Consider now how to MOCK this for our DEMO's ! Without any RUN or CAMPAIGN! Layers, aye, but not bindings!
  */
 public class BattleBuilder extends RunHandler {
 
-    public BattleSetup build(){
-        Map<String, Object> data = new HashMap<>();
-        CombatParty allies = null;
-        CombatParty enemies = null;
-        BattleSetup setup= new BattleSetup(data, allies, enemies);
+    public BattleSetup build(String[] data) {
+        Map<String, Object> map = new HashMap<>();
+        BattleSetup.CombatParty allies = null;
+        BattleSetup.CombatParty enemies = null;
+        for (String datum : data) {
+            String key = datum.split("::")[0];
+            String value = datum.split("::")[1];
+            if (key.equalsIgnoreCase("allies")) {
+                allies = new BattleSetup.CombatParty(value, true);
+            } else
+            if (key.equalsIgnoreCase("enemies")) {
+                enemies = new BattleSetup.CombatParty(value, false);
+            } else {
+                map = DataManager.stringArrayToMap(value.split(";"));
+            }
+        }
+
+        BattleSetup setup = new BattleSetup(map, allies, enemies);
 
         return setup;
     }

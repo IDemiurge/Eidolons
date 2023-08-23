@@ -16,8 +16,16 @@ public class BattleState extends BattleHandler {
     }
 
     @Override
+    public void newRound() {
+        round++;
+    }
+
+    @Override
     public void reset() {
 
+    }
 
+    public int getRound() {
+        return round;
     }
 }

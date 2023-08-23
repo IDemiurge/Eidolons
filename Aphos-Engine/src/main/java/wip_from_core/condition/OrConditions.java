@@ -6,7 +6,7 @@ import main.elements.conditions.Conditions;
 import main.entity.Ref;
 
 import java.util.Arrays;
-
+@Deprecated
 public class OrConditions extends Conditions {
 
     public OrConditions(Condition c1, Condition c2) {
@@ -45,20 +45,21 @@ public class OrConditions extends Conditions {
 
     @Override
     public boolean checkAny(Ref ref) {
-        isTrue = false;
-        for (int i = 0; i < this.size(); i++) {
-            isTrue |= this.get(i).preCheck(ref);
-            // if ((isTrue & negative))
-            if (isTrue) {
-                if (isFastFailOnCheck()) {
-                    break;
-                } else {
-                    this.setLastCheckedCondition(get(i));
-                }
-            }
-
-        }
-
-        return isTrue;
+        // isTrue = false;
+        // for (int i = 0; i < this.size(); i++) {
+        //     isTrue |= this.get(i).preCheck(ref);
+        //     // if ((isTrue & negative))
+        //     if (isTrue) {
+        //         if (isFastFailOnCheck()) {
+        //             break;
+        //         } else {
+        //             this.setLastCheckedCondition(get(i));
+        //         }
+        //     }
+        //
+        // }
+        //
+        // return isTrue;
+        return false;
     }
 }

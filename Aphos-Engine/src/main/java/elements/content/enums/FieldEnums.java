@@ -38,31 +38,29 @@ public class FieldEnums { //extends BattleHandler
         }
     }
     public static final FieldPos[] all = {
-            new FieldPos(FieldPos.CellType.Vanguard_Bot, 0),
-            new FieldPos(FieldPos.CellType.Vanguard_Bot, 1),
+            new FieldPos(FieldPos.CellType.Vanguard_Bot, 0), //0
+            new FieldPos(FieldPos.CellType.Vanguard_Bot, 1), //1
 
-            new FieldPos(FieldPos.CellType.Top_Flank_Enemy, 0),
-            new FieldPos(FieldPos.CellType.Top_Flank_Player, 0),
-            new FieldPos(FieldPos.CellType.Bottom_Flank_Enemy, 0),
-            new FieldPos(FieldPos.CellType.Bottom_Flank_Player, 0),
-            new FieldPos(FieldPos.CellType.Rear_Enemy, 0),
-            new FieldPos(FieldPos.CellType.Rear_Player, 0),
+            new FieldPos(FieldPos.CellType.Top_Flank_Player, 0), //2
+            new FieldPos(FieldPos.CellType.Front_Player, 0), //3
+            new FieldPos(FieldPos.CellType.Front_Player, 1), //4
+            new FieldPos(FieldPos.CellType.Front_Player, 2), //5
+            new FieldPos(FieldPos.CellType.Back_Player, 0), //6
+            new FieldPos(FieldPos.CellType.Back_Player, 1), //7
+            new FieldPos(FieldPos.CellType.Back_Player, 2), //8
+            new FieldPos(FieldPos.CellType.Bottom_Flank_Player, 0), //9
+            new FieldPos(FieldPos.CellType.Rear_Player, 0), //10
 
-            new FieldPos(FieldPos.CellType.Front_Enemy, 0),
-            new FieldPos(FieldPos.CellType.Front_Enemy, 1),
-            new FieldPos(FieldPos.CellType.Front_Enemy, 2),
+            new FieldPos(FieldPos.CellType.Top_Flank_Enemy, 0), //11
+            new FieldPos(FieldPos.CellType.Front_Enemy, 0), //12
+            new FieldPos(FieldPos.CellType.Front_Enemy, 1), //13
+            new FieldPos(FieldPos.CellType.Front_Enemy, 2), //14
+            new FieldPos(FieldPos.CellType.Back_Enemy, 0), //15
+            new FieldPos(FieldPos.CellType.Back_Enemy, 1), //16
+            new FieldPos(FieldPos.CellType.Back_Enemy, 2), //17
+            new FieldPos(FieldPos.CellType.Bottom_Flank_Enemy, 0), //18
+            new FieldPos(FieldPos.CellType.Rear_Enemy, 0), //19
 
-            new FieldPos(FieldPos.CellType.Front_Player, 0),
-            new FieldPos(FieldPos.CellType.Front_Player, 1),
-            new FieldPos(FieldPos.CellType.Front_Player, 2),
-
-            new FieldPos(FieldPos.CellType.Back_Enemy, 0),
-            new FieldPos(FieldPos.CellType.Back_Enemy, 1),
-            new FieldPos(FieldPos.CellType.Back_Enemy, 2),
-
-            new FieldPos(FieldPos.CellType.Back_Player, 0),
-            new FieldPos(FieldPos.CellType.Back_Player, 1),
-            new FieldPos(FieldPos.CellType.Back_Player, 2),
     };
 
 }
