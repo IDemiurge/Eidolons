@@ -29,6 +29,7 @@ public class DamageCalc {
         this.ref = ref;
     }
     // for precalc?
+    @Deprecated
     public DamageCalcResult calculate(boolean precalc){
         this.precalc = precalc; //what side effects could there be?
         result = new DamageCalcResult(ref);
@@ -60,7 +61,6 @@ public class DamageCalc {
 
     public Damage getDamage(RollGrade grade) {
         UnitAction attack = (UnitAction) ref.get("action");
-
 
         Unit attacker = (Unit) ref.get("attacker");
         FieldEntity attacked = (FieldEntity) ref.get("attacked");

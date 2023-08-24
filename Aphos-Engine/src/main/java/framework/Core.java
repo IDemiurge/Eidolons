@@ -1,5 +1,6 @@
 package framework;
 
+import elements.content.enums.EnumFinder;
 import elements.exec.preset.ExecPresets;
 
 /**
@@ -8,6 +9,6 @@ import elements.exec.preset.ExecPresets;
 public class Core {
     public static void init(){
         ExecPresets.initAllPresets();
-
+        EnumFinder.initEnumMap();
     }
 }

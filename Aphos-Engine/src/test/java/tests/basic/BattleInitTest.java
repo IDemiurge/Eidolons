@@ -6,6 +6,8 @@ import combat.init.BattleSetup;
 import framework.AphosTest;
 import framework.Core;
 import framework.data.DataManager;
+import framework.entity.field.Unit;
+import framework.field.FieldPos;
 
 import static combat.sub.BattleManager.combat;
 import static org.junit.Assert.assertTrue;
@@ -15,6 +17,9 @@ import static resources.TestData.*;
  * Created by Alexander on 8/22/2023
  */
 public class BattleInitTest extends AphosTest  {
+
+    protected Unit ally;
+    protected Unit enemy;
 
     @Override
     public void test() {
@@ -28,7 +33,10 @@ public class BattleInitTest extends AphosTest  {
         //after this, we can use combat() freely?
 
         assertTrue(combat().getEntities().getUnits().size()== 3);
-        assertTrue(combat().getUnitById(0).getName().equals(unit_name_ally));
+         ally = combat().getUnitById(0);
+         enemy = (Unit) combat().getField().getByPos(new FieldPos(12));
+        assertTrue(ally.getName().equals(unit_name_ally));
+        assertTrue(ally.getName().equals(unit_name_enemy));
         assertTrue(combat().getBattleState().getRound() == 1);
     }
 }

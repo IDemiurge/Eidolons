@@ -35,6 +35,7 @@ public class BattleManager {
 
     public BattleManager(BattleSetup battleSetup) {
         this.battleSetup = battleSetup;
+        //order of handlers matters!
         handlers.add(battleEntities = new BattleEntities(this));
         handlers.add(battleField = new BattleField(this));
         handlers.add(battleState = new BattleState(this));
