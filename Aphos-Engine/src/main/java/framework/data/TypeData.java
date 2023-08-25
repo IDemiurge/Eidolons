@@ -23,7 +23,11 @@ public class TypeData {
     protected final Map<String, String> stringMap = new LinkedStringMap<>();
     protected final Map<String, Boolean> boolMap = new LinkedStringMap<>();
     protected final Map<Class, Map> maps = new HashMap<>();
-    private final Map<String, Function<String, Object>> cache = new LinkedStringMap<>();
+    private final Map<String, Function<String, Object>> getterCache = new LinkedStringMap<>();
+
+    public TypeData() {
+        this(new LinkedStringMap<>());
+    }
 
     public TypeData(Map<String, Object> valueMap) {
         maps.put(Boolean.class, boolMap);
@@ -33,6 +37,14 @@ public class TypeData {
         for (String key : valueMap.keySet()) {
             initValue(key, valueMap.get(key));
         }
+    }
+
+    @Override
+    public String toString() {
+        // StringBuilder builder = new StringBuilder();
+        // "Data: ";
+        // MapMapster.represent(stringMap);
+        return super.toString();
     }
 
     protected Object initValue(String key, Object o) {
@@ -86,22 +98,22 @@ public class TypeData {
     }
 
     public Object get(String key) {
-        if (cache.containsKey(key)) {
-            return cache.get(key).apply(key);
+        if (getterCache.containsKey(key)) {
+            return getterCache.get(key).apply(key);
         }
         Integer i = getInt(key);
         if (i != MathConsts.minValue) {
-            cache.put(key, s -> getInt(s));
+            getterCache.put(key, s -> getInt(s));
             return i;
         }
         Boolean b = getB(key);
         if (b != null) {
-            cache.put(key, s -> getB(s));
+            getterCache.put(key, s -> getB(s));
             return b;
         }
         String str = getS(key);
         if (str != null) {
-            cache.put(key, s -> getS(s));
+            getterCache.put(key, s -> getS(s));
             return str;
         }
         //TODO NOTE ERROR

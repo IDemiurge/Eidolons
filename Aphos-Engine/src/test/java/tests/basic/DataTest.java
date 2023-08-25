@@ -10,7 +10,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by Alexander on 8/22/2023
  */
-
+@Deprecated
 public class DataTest {
 
     @Test

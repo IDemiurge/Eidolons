@@ -9,6 +9,7 @@ import static combat.sub.BattleManager.combat;
 /**
  * Created by Alexander on 8/22/2023
  */
+@Deprecated
 public class DefenseActionTest extends BattleInitTest {
     @Override
     public void test() {

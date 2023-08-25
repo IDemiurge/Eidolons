@@ -21,7 +21,7 @@ import static elements.content.enums.types.CombatTypes.*;
 public class DamageDealer {
 
     public static DamageResult deal(DamageCalcResult calc) {
-        DamageResult result = null;
+        DamageResult result = new DamageResult();
         EntityRef ref = calc.getRef();
 
         MultiDamage multiDamage = calc.getDamageToDeal();

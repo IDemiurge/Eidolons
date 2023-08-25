@@ -47,6 +47,7 @@ public class TestData {
                     "moves_max=1",
                     "dr=0",
                     "hp_max=11",
+                    "armor_max=5",
                     "standard_attack=sword swing",
                     "defense_action=brace",
                     "attack_base=3",

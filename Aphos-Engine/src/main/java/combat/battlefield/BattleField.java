@@ -3,7 +3,7 @@ package combat.battlefield;
 import combat.BattleHandler;
 import combat.sub.BattleManager;
 import elements.exec.condition.Condition;
-import elements.exec.condition.EntityCondition;
+import elements.exec.condition.ConditionImpl;
 import elements.exec.targeting.TargetGroup;
 import elements.exec.targeting.Targeting;
 import elements.stats.UnitParam;
@@ -48,7 +48,7 @@ public class BattleField extends BattleHandler {
 
     ///////////////// region CELLS ///////////////////
 
-    public boolean isCellFree(FieldPos pos, boolean allVisible, EntityCondition swap) {
+    public boolean isCellFree(FieldPos pos, boolean allVisible, ConditionImpl swap) {
         FieldEntity entity = getByPos(pos);
         if (entity == null)
             return true;
@@ -98,8 +98,8 @@ public class BattleField extends BattleHandler {
                     // set.removeIf(pos -> pos.getTeam() != unit.isAlly());
                 }
                 for (FieldPos cell : set) {
-                    EntityCondition<Unit> swapCondition = null; //  e -> e.canMoveDst(e.getPos().dst(unit.getPos()));
-                    if (isCellFree(cell, false, swapCondition)) {
+                    // ConditionImpl<Unit> swapCondition = null; //  e -> e.canMoveDst(e.getPos().dst(unit.getPos()));
+                    if (isCellFree(cell, false, null )) {
                         if (!canMove(unit, cell))
                             continue;
                         if (dst(cell, unit.getPos()) > moves)

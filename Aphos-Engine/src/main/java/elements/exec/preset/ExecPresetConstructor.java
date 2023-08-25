@@ -35,7 +35,9 @@ public class ExecPresetConstructor {
         Effect effect= createEffect(effectTmlt, conditionTmlt, fxArgs, cndArgs);
         if (continuous){
             //check?
-            effect = new ContinuousEffect(effect);
+            //TODO
+            Map map=null;
+            effect = new ContinuousEffect(effect, elements.exec.condition.ConditionBuilder.build(conditionTmlt, map));
         }
         toExecute.add(new ImmutablePair<>(targeting, effect));
         Executable exec = new ActionExecutable(toExecute);
@@ -52,7 +54,7 @@ public class ExecPresetConstructor {
         TypeData data = createData(effect.getArgNames(), fxArgs);
         effect.setData(data);
         if (conditionTmlt!=null){
-            //wrap
+            //wrap -  use for both continuous wrap and oneshot conditional ; just make sure it isn't used by both...
         }
         return effect;
     }

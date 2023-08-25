@@ -2,11 +2,12 @@ package logic.calculation.damage;
 
 import elements.exec.EntityRef;
 import framework.data.Datum;
+import framework.data.statistics.Result;
 
 /**
  * Created by Alexander on 8/21/2023
  */
-public class DamageCalcResult extends Datum {
+public class DamageCalcResult extends Result {
     private final EntityRef ref;
     private MultiDamage damageToDeal;
     private boolean miss;

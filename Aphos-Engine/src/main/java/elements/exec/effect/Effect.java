@@ -35,4 +35,5 @@ public abstract class Effect {
     public EffectResult getResult() {
         return effectResult;
     }
+
 }

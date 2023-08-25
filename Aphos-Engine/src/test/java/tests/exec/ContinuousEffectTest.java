@@ -8,7 +8,7 @@ import static combat.sub.BattleManager.combat;
 /**
  * Created by Alexander on 8/23/2023
  *
- * oneshot, continuous
+ * with retain condition also?
  */
 public class ContinuousEffectTest extends BattleInitTest {
     @Override

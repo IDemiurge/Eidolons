@@ -3,7 +3,7 @@ package combat.sub;
 import combat.Battle;
 import combat.BattleHandler;
 import combat.battlefield.BattleField;
-import combat.init.BattleInitializer;
+import combat.init.PartyInitializer;
 import combat.init.BattleSetup;
 import combat.state.BattleEntities;
 import combat.state.BattleState;
@@ -24,8 +24,9 @@ import java.util.Map;
  * Created by Alexander on 8/22/2023
  */
 public class BattleManager {
-    private final BattleInitializer battleInit;
+    private final BattleStatistics statistics= new BattleStatistics();
     private final BattleSetup battleSetup;
+
     private final List<BattleHandler> handlers = new ArrayList<>();
     private final BattleEntities battleEntities;
     private final BattleField battleField;
@@ -40,7 +41,6 @@ public class BattleManager {
         handlers.add(battleField = new BattleField(this));
         handlers.add(battleState = new BattleState(this));
         handlers.add(eventHandler = new CombatEventHandler(this));
-        handlers.add(battleInit = new BattleInitializer(this, battleSetup));
         handlers.add(executor = new ActionExecutor(this));
         // what should we do with ALL handlers?
         // on game end? On event?
@@ -53,6 +53,8 @@ public class BattleManager {
         handlers.forEach(handler -> handler.newRound());
     }
     public void battleStarts() {
+        PartyInitializer battleInit = new PartyInitializer(battleField, battleSetup);
+        battleInit.initParties();
         handlers.forEach(handler -> handler.battleStarts());
     }
     public void battleEnds() {
@@ -67,10 +69,6 @@ public class BattleManager {
 
     public BattleField getField() {
         return battleField;
-    }
-
-    public BattleSetup getSetup() {
-        return battleSetup;
     }
 
     public BattleState getBattleState() {
@@ -106,5 +104,9 @@ public class BattleManager {
 
     public static BattleManager combat(){
         return Battle.current.getManager();
+    }
+
+    public BattleStatistics stats() {
+        return statistics;
     }
 }

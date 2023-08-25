@@ -17,17 +17,22 @@ import static resources.TestData.*;
 /**
  * Created by Alexander on 8/22/2023
  */
+@Deprecated
 public class BattleInitTest extends AphosTest  {
 
     protected Unit ally;
     protected Unit enemy;
+    private static boolean testInitDone;
 
     @Override
     public void test() {
         // new MockRun();
+        if (!testInitDone){
         Core.init();
         DataManager.init(entityData);
         TestData.initAllPresets();
+            testInitDone= true;
+        }
         
         BattleSetup setup = new BattleBuilder().build(battleData);
         Battle battle = new Battle(setup);

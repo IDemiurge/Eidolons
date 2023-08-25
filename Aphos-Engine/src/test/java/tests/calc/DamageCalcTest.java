@@ -15,6 +15,7 @@ import tests.basic.BattleInitTest;
  * Some real numbers? Real content
  *
  */
+@Deprecated
 public class DamageCalcTest extends BattleInitTest {
 
     @Override

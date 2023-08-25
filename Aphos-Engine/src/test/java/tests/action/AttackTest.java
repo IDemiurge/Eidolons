@@ -15,6 +15,7 @@ import static framework.client.ClientConnector.client;
 /**
  * Created by Alexander on 8/22/2023
  */
+@Deprecated
 public class AttackTest extends BattleInitTest {
     @Override
     public void test() {

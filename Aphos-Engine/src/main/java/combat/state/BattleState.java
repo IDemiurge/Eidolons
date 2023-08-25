@@ -4,18 +4,18 @@ import combat.Battle;
 import combat.BattleHandler;
 import combat.sub.BattleManager;
 import elements.exec.EntityRef;
+import elements.exec.condition.Condition;
 import elements.exec.effect.Effect;
+import elements.exec.effect.framework.TargetedEffect;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Alexander on 8/22/2023
  */
 public class BattleState extends BattleHandler {
-
-    Map<EntityRef, Effect> effects = new LinkedHashMap<>();
+    List<TargetedEffect> effects = new ArrayList<>();
+    // Map<EntityRef, Effect> effects = new LinkedHashMap<>();
     int round;
     // Seals seals;
 
@@ -31,8 +31,9 @@ public class BattleState extends BattleHandler {
     @Override
     public void reset() {
         //check remove
-        for (EntityRef ref : effects.keySet()) {
-            effects.get(ref).apply(ref);
+        effects.removeIf(ef-> ef.checkRemove());
+        for (TargetedEffect ef : effects) {
+            ef.apply();
         }
     }
 
@@ -40,7 +41,7 @@ public class BattleState extends BattleHandler {
         return round;
     }
 
-    public void addEffect(EntityRef ref, Effect effect) {
-        effects.put(ref, effect);
+    public void addEffect(EntityRef ref, Effect effect, Condition retainCondition) {
+        effects.add(new TargetedEffect(ref, effect).setRetainCondition(retainCondition));
     }
 }

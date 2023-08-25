@@ -11,6 +11,7 @@ import java.util.Map;
 /**
  * Created by Alexander on 8/25/2023
  */
+@Deprecated
 public class GradeCalcTest extends AphosTest {
 
     @Override

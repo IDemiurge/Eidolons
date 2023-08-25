@@ -1,6 +1,7 @@
 package elements.exec.condition;
 
 import elements.exec.EntityRef;
+import framework.data.TypeData;
 import framework.entity.Entity;
 
 /**
@@ -9,4 +10,16 @@ import framework.entity.Entity;
 @FunctionalInterface
 public interface Condition  {
     boolean check(EntityRef ref);
+
+    default String[] getArgs() {
+        return new String[0];
+    }
+    default TypeData getData() {
+        return null;
+    }
+
+    default Condition setContext(ConditionContext context) {
+        return this;
+    }
+
 }
