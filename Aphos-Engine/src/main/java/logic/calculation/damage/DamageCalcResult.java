@@ -1,32 +1,37 @@
 package logic.calculation.damage;
 
 import elements.exec.EntityRef;
-import org.apache.commons.lang3.tuple.Pair;
-
-import java.util.List;
-
-import static elements.content.enums.types.CombatTypes.*;
+import framework.data.Datum;
 
 /**
  * Created by Alexander on 8/21/2023
  */
-public class DamageCalcResult {
+public class DamageCalcResult extends Datum {
     private final EntityRef ref;
-    private List<Pair<DamageType, Integer>> damageDealt;
+    private MultiDamage damageToDeal;
+    private boolean miss;
 
     public DamageCalcResult(EntityRef ref) {
         this.ref = ref;
-    }
-
-    public void add(DamageType type, int amount){
-
     }
 
     public EntityRef getRef() {
         return ref;
     }
 
-    public List<Pair<DamageType, Integer>> getDamageDealt() {
-        return damageDealt;
+    public void setMiss(boolean miss) {
+        this.miss = miss;
+    }
+
+    public boolean isMiss() {
+        return miss;
+    }
+
+    public void setDamageToDeal(MultiDamage damageToDeal) {
+        this.damageToDeal = damageToDeal;
+    }
+
+    public MultiDamage getDamageToDeal() {
+        return damageToDeal;
     }
 }

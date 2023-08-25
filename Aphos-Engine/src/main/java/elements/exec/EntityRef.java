@@ -1,11 +1,16 @@
 package elements.exec;
 
 import content.LinkedStringMap;
+import elements.content.enums.types.CombatTypes;
 import elements.exec.targeting.TargetGroup;
 import framework.entity.Entity;
+import framework.entity.field.FieldEntity;
+import framework.entity.field.Unit;
+import framework.entity.sub.UnitAction;
 import logic.execution.event.IdRef;
 
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Created by Alexander on 8/21/2023 Transparent Freeze to changes sometimes Clone vs Modify - careful
@@ -23,10 +28,11 @@ public class EntityRef {
     private String valueString = null;
     private TargetGroup group;
     private Entity match;
-    private Entity source;
-    private Entity target;
+    private Unit source;
+    private FieldEntity target;
+    private CombatTypes.DamageType damageType;
 
-    public EntityRef(Entity source) {
+    public EntityRef(Unit source) {
         set(ReferenceKey.Source, source);
         setSource(source);
     }
@@ -39,6 +45,11 @@ public class EntityRef {
 
     public EntityRef() {
     }
+
+    public UnitAction getAction() {
+        return (UnitAction) get("action");
+    }
+
 
     public enum ReferenceKey {
         Source("Attacker,Source,Self"),
@@ -84,11 +95,11 @@ public class EntityRef {
         return match;
     }
 
-    public Entity getSource() {
+    public Unit getSource() {
         return source;
     }
 
-    public Entity getTarget() {
+    public FieldEntity getTarget() {
         return target;
     }
 
@@ -97,10 +108,18 @@ public class EntityRef {
     }
 
 
+    public CombatTypes.DamageType getDamageType() {
+        return damageType;
+    }
     public Integer getValueInt() {
         return valueInt;
     }
 
+    public void applyToTargets(Consumer<FieldEntity> toApply) {
+        if (group !=null)
+            group.getTargets().forEach(toApply);
+        toApply.accept(getTarget());
+    }
     public TargetGroup getGroup() {
         return group;
     }
@@ -158,16 +177,20 @@ public class EntityRef {
         return this;
     }
 
-    public EntityRef setSource(Entity source) {
+    public EntityRef setSource(Unit source) {
         this.source = source;
         set(ReferenceKey.Source, source);
         return this;
     }
 
-    public EntityRef setTarget(Entity target) {
+    public EntityRef setTarget(FieldEntity target) {
         this.target = target;
         set(ReferenceKey.Target, target);
         return this;
+    }
+
+    public void setDamageType(CombatTypes.DamageType damageType) {
+        this.damageType = damageType;
     }
     //endregion
 }

@@ -9,6 +9,7 @@ import framework.data.TypeData;
 import framework.entity.Entity;
 import framework.entity.EntityData;
 import framework.entity.field.FieldEntity;
+import main.system.threading.WaitMaster;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class Targeting {
     protected TypeData data;
     protected Condition condition;
 
+    public TargetingTemplates.TargetingType type;
     // boolean all_in_range; //if true, action affects all units that match the Targeting condition
     // //E.G. - All Melee, All Range (1), All Enemy, All <...>
     // boolean friendly_fire;
@@ -43,7 +45,13 @@ public class Targeting {
 
         //modify conditions based on data
 
-        List<Entity> fieldEntities = combat().getEntities().getFieldEntities();//should we always start with that list? then remove omens/obst/..
+        /*
+        FIXED - single always?
+        ALL
+        SELECTIVE (++ multi hits)
+
+         */
+        List<FieldEntity> fieldEntities = combat().getEntities().getFieldEntities();//should we always start with that list? then remove omens/obst/..
         // filter( condition.check())
 
         //how to easily assemble filters? Should have some MNGR for that
@@ -52,13 +60,32 @@ public class Targeting {
 
         fieldEntities.removeIf(e -> !condition.check(ref.setMatch(e)));
         // single = true;
-        if (fieldEntities.size() == 1) {
-            ref.setTarget(fieldEntities.get(0));
-        } else {
-            //TODO
-            List<FieldEntity> entities = null;
-            ref.setGroup(new TargetGroup(entities));
+
+        if (type == TargetingTemplates.TargetingType.FIXED){
+            if (fieldEntities.size() == 1) {
+                ref.setTarget(fieldEntities.get(0));
+            } else {
+                //same as ALL!?
+                //a bit weird, or? Maybe use this for something else
+                ref.setGroup(new TargetGroup(fieldEntities));
+            }
+        } else
+        if (type == TargetingTemplates.TargetingType.SELECTIVE){
+            WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.SELECTION, fieldEntities);
+            Object o = WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.SELECT_BF_OBJ);
+            fieldEntities = (List<FieldEntity>) o;
+            if (fieldEntities.size() == 1) {
+                ref.setTarget(fieldEntities.get(0));
+            } else {
+                //same as ALL!?
+                //a bit weird, or? Maybe use this for something else
+                ref.setGroup(new TargetGroup(fieldEntities));
+            }
+        } else
+        if (type == TargetingTemplates.TargetingType.ALL){
+            ref.setGroup(new TargetGroup(fieldEntities));
         }
+
     }
 
 

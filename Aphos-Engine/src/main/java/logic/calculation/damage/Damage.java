@@ -8,21 +8,41 @@ import java.util.Map;
 /**
  * Created by Alexander on 8/20/2023
  * is there anything more to this?
+ *
+ * PAIRS vs MAP - what if some action will have multiple atks of same dmg type?
  */
 public class Damage {
-    Map<CombatTypes.DamageType, Integer> damageMap= new LinkedHashMap<>();
+    CombatTypes.DamageType type;
+    Integer amount;
 
-    public Damage() {
+    public Damage(CombatTypes.DamageType type, Integer amount) {
+        this.type = type;
+        this.amount = amount;
     }
 
-    public Damage(Map<CombatTypes.DamageType, Integer> damageMap) {
-        this.damageMap = damageMap;
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
-    //modifiers - periodic? self-inflicted? etc etc
-    //sources and REF SYSTEM?
+
+    public Integer getAmount() {
+        return amount;
+    }
+    public CombatTypes.DamageType getType() {
+        return type;
+    }
+    // Map<CombatTypes.DamageType, Integer> damageMap= new LinkedHashMap<>();
     //
-
-    public Map<CombatTypes.DamageType, Integer> getDamageMap() {
-        return damageMap;
-    }
+    // public Damage() {
+    // }
+    //
+    // public Damage(Map<CombatTypes.DamageType, Integer> damageMap) {
+    //     this.damageMap = damageMap;
+    // }
+    // //modifiers - periodic? self-inflicted? etc etc
+    // //sources and REF SYSTEM?
+    // //
+    //
+    // public Map<CombatTypes.DamageType, Integer> getDamageMap() {
+    //     return damageMap;
+    // }
 }

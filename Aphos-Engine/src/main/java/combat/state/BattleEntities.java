@@ -60,15 +60,16 @@ public class BattleEntities extends BattleHandler {
         return (List<T>) entityMaps.get(clazz).values().stream().collect(Collectors.toList());
     }
 
-    public List<Entity> getMergedEntityList(Class... clazz) {
-        List<Entity> merged = new ArrayList<>();
+    public <T extends Entity> List<T> getMergedEntityList(Class<? extends T>... clazz) {
+        List<T>  merged = new ArrayList<>();
         for (Class aClass : clazz) {
-            merged.addAll(entityMaps.get(aClass).values().stream().collect(Collectors.toList()));
+            List<T> collect = (List<T>) entityMaps.get(aClass).values().stream().collect(Collectors.toList());
+            merged.addAll(collect);
         }
         return merged;
     }
 
-    public List<Entity> getFieldEntities() {
+    public List<FieldEntity> getFieldEntities() {
         return getMergedEntityList(FieldEntity.class, Unit.class);
     }
 

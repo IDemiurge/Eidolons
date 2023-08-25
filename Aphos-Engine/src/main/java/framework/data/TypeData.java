@@ -19,7 +19,6 @@ import static framework.data.DataManager.getRawValue;
  * Created by Alexander on 8/23/2023
  */
 public class TypeData {
-    private static final int minValue = Integer.MIN_VALUE;
     protected final Map<String, Integer> intMap = new LinkedStringMap<>();
     protected final Map<String, String> stringMap = new LinkedStringMap<>();
     protected final Map<String, Boolean> boolMap = new LinkedStringMap<>();
@@ -91,7 +90,7 @@ public class TypeData {
             return cache.get(key).apply(key);
         }
         Integer i = getInt(key);
-        if (i != minValue) {
+        if (i != MathConsts.minValue) {
             cache.put(key, s -> getInt(s));
             return i;
         }
@@ -112,7 +111,7 @@ public class TypeData {
     public Integer getInt(String key) {
         Integer integer = intMap.get(key.toString());
         if (integer == null) {
-            return minValue;
+            return MathConsts.minValue;
         }
         return integer;
     }

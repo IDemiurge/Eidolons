@@ -1,9 +1,15 @@
 package framework.entity.field;
 
 import elements.content.enums.FieldConsts;
+import elements.exec.EntityRef;
 import elements.stats.UnitParam;
+import elements.stats.UnitProp;
+import elements.stats.generic.Stat;
 import elements.stats.generic.StatConsts;
+import framework.entity.Entity;
 import framework.entity.sub.ActionSet;
+import framework.entity.sub.OmenStack;
+import framework.entity.sub.UnitAction;
 import framework.field.FieldPos;
 
 import java.util.Map;
@@ -18,7 +24,7 @@ public class Unit extends FieldEntity {
 
     protected ActionSet actionSet; //HeroActionSet?
     // protected PassiveSet passiveSet;
-    // protected OmenStack omens;
+    protected OmenStack omens;
     // protected CountersSet counters; //we can intercept get() for calc of formulas and so keep the valueMap free of these!
 
     public Unit(Map<String, Object> valueMap, Boolean ally) {
@@ -43,5 +49,26 @@ public class Unit extends FieldEntity {
             String cur = val.getName().split("_")[0];
             data.setCur(cur, value);
         }
+    }
+
+    public int getAtkOrSp(UnitAction action, EntityRef ref) {
+        Boolean min_base_max = null;//        omen.current.get();
+        if (action.isSpell()){
+        //sp coef and all that?!
+        }
+      return getInt(StatConsts.getAtkVal(min_base_max));
+    }
+
+    public int getDefOrRes(UnitAction action, EntityRef ref) {
+        Boolean min_base_max = null;//        omen.current.get();
+        return getInt(action.isSpell()
+                ? StatConsts.getResVal(min_base_max)
+                : StatConsts.getDefVal(min_base_max));
+    }
+    public Object get(UnitParam stat) {
+        return super.get(stat);
+    }
+    public Object get(UnitProp stat) {
+        return super.get(stat);
     }
 }

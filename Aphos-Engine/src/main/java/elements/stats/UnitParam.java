@@ -41,7 +41,8 @@ public enum UnitParam implements Stat {
         Bonus_,
 
 
-        Damage_Reduction,
+        DR, //DR - make duplicate entries in map? Not the best idea
+        DR_Soul,
         Melee_block,
         Ranged_block,
         Spell_block,

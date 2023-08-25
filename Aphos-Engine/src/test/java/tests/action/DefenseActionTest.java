@@ -2,7 +2,6 @@ package tests.action;
 
 import framework.entity.field.Unit;
 import framework.entity.sub.UnitAction;
-import logic.execution.ActionExecutor;
 import tests.basic.BattleInitTest;
 
 import static combat.sub.BattleManager.combat;
@@ -10,7 +9,7 @@ import static combat.sub.BattleManager.combat;
 /**
  * Created by Alexander on 8/22/2023
  */
-public class ActionTest extends BattleInitTest {
+public class DefenseActionTest extends BattleInitTest {
     @Override
     public void test() {
         super.test();

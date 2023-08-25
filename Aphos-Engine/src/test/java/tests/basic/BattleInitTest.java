@@ -8,6 +8,7 @@ import framework.Core;
 import framework.data.DataManager;
 import framework.entity.field.Unit;
 import framework.field.FieldPos;
+import resources.TestData;
 
 import static combat.sub.BattleManager.combat;
 import static org.junit.Assert.assertTrue;
@@ -26,6 +27,8 @@ public class BattleInitTest extends AphosTest  {
         // new MockRun();
         Core.init();
         DataManager.init(entityData);
+        TestData.initAllPresets();
+        
         BattleSetup setup = new BattleBuilder().build(battleData);
         Battle battle = new Battle(setup);
         // battle.init();

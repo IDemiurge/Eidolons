@@ -13,6 +13,7 @@ import java.util.Map;
 public class TriggerList {
 
     private List<Trigger> triggers = new ArrayList<>();
+    //make part of triggers via common interface
 
     public void cleanUp(){
         //TODO

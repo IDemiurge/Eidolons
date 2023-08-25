@@ -11,7 +11,7 @@ import framework.entity.sub.UnitAction;
  */
 public class ActionInitializer {
     public static ActionSet initActionSet(Unit unit) {
-        UnitAction std =null;// initAction(unit, unit.getS(UnitProp.Standard_Attack));
+        UnitAction std = initAction(unit, unit.getS(UnitProp.Standard_Attack));
         UnitAction pwr =null;// initAction(unit, unit.getS(UnitProp.Power_Attack));
         UnitAction def = initAction(unit, unit.getS(UnitProp.Defense_Action ));
         return new ActionSet(std, pwr, def);

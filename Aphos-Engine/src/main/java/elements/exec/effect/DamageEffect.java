@@ -20,6 +20,14 @@ import logic.calculation.damage.DamageDealer;
  */
 public class DamageEffect extends Effect{
 
+    private final CombatTypes.DamageType type;
+    private final Object formula;
+
+    public DamageEffect(CombatTypes.DamageType type, Object formula) {
+        this.type = type;
+        this.formula = formula;
+    }
+
     @Override
     public String[] getArgNames() {
         return new String[0];
@@ -29,6 +37,7 @@ public class DamageEffect extends Effect{
         //TODO
         int amount = system.math.Formula.getInt(formula); //formula.getInt(ref);
         ref.setValueInt(amount);
+        ref.setDamageType(type);
         DamageCalcResult result = new DamageCalc(ref).calculate(false);
        DamageDealer.deal(result);
         // boolean dead =!ref.get("target").isDead()

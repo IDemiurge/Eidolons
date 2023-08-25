@@ -8,8 +8,8 @@ import framework.entity.field.Unit;
 import framework.entity.sub.UnitAction;
 import main.system.auxiliary.RandomWizard;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import static elements.content.enums.types.CombatTypes.*;
 
@@ -32,9 +32,9 @@ public class DamageCalc {
     public DamageCalc(EntityRef ref) {
         this.ref = ref;
     }
-    // for precalc?
-    @Deprecated
-    public DamageCalcResult calculate(boolean precalc){
+
+    // for precalc? NO WARDS e.g.!
+    public DamageCalcResult calculate(boolean precalc) {
         this.precalc = precalc; //what side effects could there be?
         result = new DamageCalcResult(ref);
 
@@ -43,49 +43,78 @@ public class DamageCalc {
 
         return result;
     }
+
     /*
     what happens when we deal dmg of 2 types in a single attack? each instance is blocked separately?
     but for an action...
      */
-    public int getHpLost(Damage damage) {
-        int armor = ref.get("attacked").getInt(UnitParam.Armor);
-        int dr = ref.get("attacked").getInt(UnitParam.Damage_Reduction);
-        BlockType blockType = ref.get("attack").getEnum("block type", BlockType.class);
-        UnitParam blockParam = blockType.getParam();
-        int block = blockParam == null ? 0 : ref.get("attacked").getInt(blockParam);
-        int hpLost = 0;
-        for (DamageType damageType : damage.getDamageMap().keySet()) {
-            if (!damageType.isHp()) {
-                continue;
-            }
-            int amount;
-        }
-        return hpLost;
+    public Damage applyReductions(Damage damage) {
+        //does this apply to each type? Might be logical!
+
+        int dr = ref.get("attacked").getInt(UnitParam.DR);
+        int drSoul = ref.get("attacked").getInt(UnitParam.DR_Soul);
+
+        boolean hp = damage.getType().isHp();
+        Integer integer = damage.getAmount();
+        int reduced = Math.max(0, integer + (hp ? -dr : -drSoul));
+        // int reducedBy = integer - reduced;
+        // result.add(hp ? TOTAL_REDUCED : TOTAL_REDUCED_SOUL, reducedBy);
+        damage.setAmount(reduced);
+        return damage;
     }
 
-    public Damage getDamage(RollGrade grade) {
-        UnitAction attack = (UnitAction) ref.get("action");
+    public MultiDamage getDamage(RollGrade grade) {
+        return getDamage(grade, 1);
+    }
 
+    public MultiDamage getDamage(RollGrade grade, int attacks) {
+        UnitAction attack = (UnitAction) ref.get("action");
         Unit attacker = (Unit) ref.get("attacker");
         FieldEntity attacked = (FieldEntity) ref.get("attacked");
+
         if (grade == RollGrade.Miss) {
             // Events.fire(x)
-            return new Damage();
+            result.setMiss(true);
+            return new MultiDamage();
         }
-        int baseAmount = getBaseAmount(grade, attack);
-        float mod = getUltimateModifier(attack, attacker, attacked);
-        //random -
 
+        List<Damage> list = new ArrayList<>();
+        for (int i = 0; i < attacks; i++) {
+            //add pair
+            int amount = 0;
+            if (grade == null || attack == null) {
+                amount = ref.getValueInt();
+            } else {
+                int baseAmount = getBaseAmount(grade, attack);
+                float mod = getUltimateModifier(attack, attacker, attacked);
+                amount = Math.round(baseAmount * mod);
+            }
 
-        Map<DamageType, Integer> map = new LinkedHashMap<>();
-        return new Damage(map);
+            Damage damage = new Damage(ref.getDamageType(), amount);
+            applyReductions(damage);
+            if (damage.getAmount() > 0) {
+                if (isWardBlock(damage, ref))
+                    continue;
+            }
+
+            list.add(damage);
+            Object args = null;
+            // EventResult fire = combat().getEventHandler().fire(CombatEventType.Damage_Being_Dealt, ref, map);
+            //may have modified the damage map!
+
+        }
+        return new MultiDamage(list);
+    }
+
+    private boolean isWardBlock(Damage damage, EntityRef ref) {
+        return false;
     }
 
     private int getBaseAmount(RollGrade grade, UnitAction attack) {
         ActionParam
-                minValue = ActionParam.Min_Value,
-                value = ActionParam.Base_Value,
-                maxValue = ActionParam.Max_Value;
+                minValue = ActionParam.Value_Min,
+                value = ActionParam.Value_Base,
+                maxValue = ActionParam.Value_Max;
         switch (grade) {
             case Ultimate:
             case Max:

@@ -11,10 +11,10 @@ import java.util.Map;
  */
 public class CombatEvent {
     private final CombatEventType type;
-    private final Map<Class, Object> argMap;
+    private final Map argMap;
     private EntityRef ref;
 
-    public CombatEvent(CombatEventType type, EntityRef ref, Map<Class, Object> argMap) {
+    public CombatEvent(CombatEventType type, EntityRef ref, Map argMap) {
         this.type = type;
         this.argMap = argMap;
         setRef(ref);
@@ -32,7 +32,7 @@ public class CombatEvent {
         this.ref = ref;
     }
 
-    public Map<Class, Object> getArgMap() {
+    public Map getArgMap() {
         return argMap;
     }
 }

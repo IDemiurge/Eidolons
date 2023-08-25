@@ -12,6 +12,7 @@ public class StatConsts {
             UnitParam.Sanity_Max,
             UnitParam.Faith_Max,
             UnitParam.Hp_Max,
+            UnitParam.Armor_Max,
             UnitParam.Soul_Max,
     };
     public static final UnitParam[] roundlyParams = {
@@ -31,4 +32,19 @@ public class StatConsts {
         // ARRAYS.for
     }
 
+    public static final UnitParam getAtkVal( Boolean minBaseMax) {
+        if (minBaseMax==null)
+            return UnitParam.Attack_Base;
+        return minBaseMax ? UnitParam.Attack_Max : UnitParam.Attack_Min;
+    }
+    public static final UnitParam getDefVal( Boolean minBaseMax) {
+        if (minBaseMax==null)
+            return UnitParam.Defense_Base;
+        return minBaseMax ? UnitParam.Defense_Max : UnitParam.Defense_Min;
+    }
+    public static final UnitParam getResVal( Boolean minBaseMax) {
+        if (minBaseMax==null)
+            return UnitParam.Resistance_Base;
+        return minBaseMax ? UnitParam.Resistance_Max : UnitParam.Resistance_Min;
+    }
 }

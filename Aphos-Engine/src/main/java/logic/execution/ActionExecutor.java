@@ -40,6 +40,7 @@ public class ActionExecutor extends BattleHandler {
 
         // action.getCost().pay();
         //set each action to disabled after a toBase() if can't pay; are there any fringe cases?
+
     }
 
     private boolean applyEffects(Effect effect, EntityRef ref) {

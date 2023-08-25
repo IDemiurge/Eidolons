@@ -1,6 +1,8 @@
 package framework.entity.field;
 
+import elements.exec.EntityRef;
 import framework.entity.Entity;
+import framework.entity.sub.UnitAction;
 import framework.field.FieldPos;
 import framework.field.Visibility;
 
@@ -30,5 +32,13 @@ public class FieldEntity extends Entity {
     public void setPos(FieldPos pos) {
         prevPos = this.pos;
         this.pos = pos;
+    }
+
+    public int getAtkOrSp(UnitAction action, EntityRef ref) {
+        return 0;
+    }
+
+    public int getDefOrRes(UnitAction action, EntityRef ref) {
+        return 0;
     }
 }

@@ -54,10 +54,10 @@ public class GradeCalc {
             if (result) successes++;
             else failures++;
         }
-        return getGrade(MathMaster.getMinMax(successes - failures + autoGradeOffset, -3, 3));
+        return getGradeConst(MathMaster.getMinMax(successes - failures + autoGradeOffset, -3, 3));
     }
 
-    public static CombatTypes.RollGrade getGrade(int offset) {
+    private static CombatTypes.RollGrade getGradeConst(int offset) {
         int inverted = 3 - offset;
         return grades[inverted];
     }

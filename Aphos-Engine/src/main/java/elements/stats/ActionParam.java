@@ -12,9 +12,9 @@ public enum ActionParam implements Stat {
         AP_Cost,
         MP_Cost,
 
-        Min_Value, //can be heal or other stuff like counters
-        Base_Value,
-        Max_Value,
+        Value_Min, //can be heal or other stuff like counters
+        Value_Base,
+        Value_Max,
 
 
         Hp_Cost,

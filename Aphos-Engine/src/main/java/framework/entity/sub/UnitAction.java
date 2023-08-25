@@ -26,4 +26,8 @@ public class UnitAction extends UnitSubEntity {
     public Executable getExecutable() {
         return executable;
     }
+
+    public boolean isSpell() {
+        return false;
+    }
 }

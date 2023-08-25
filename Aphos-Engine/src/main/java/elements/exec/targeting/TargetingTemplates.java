@@ -6,6 +6,8 @@ import elements.exec.targeting.area.RangeTargeter;
 
 import java.util.function.Supplier;
 
+import static elements.exec.targeting.TargetingTemplates.TargetingType.*;
+
 
 /**
  * Created by Alexander on 8/23/2023
@@ -26,7 +28,8 @@ public class TargetingTemplates {
         public final TargetingType type;
         public final Supplier<Condition> supplier;
 
-        TargetingTemplate(Supplier<Condition> supplier) {
+        TargetingTemplate(TargetingType type, Supplier<Condition> supplier) {
+            this.type = type;
             this.supplier = supplier;
         }
     }

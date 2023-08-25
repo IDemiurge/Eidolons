@@ -4,7 +4,11 @@ import elements.exec.EntityRef;
 import elements.stats.UnitParam;
 import elements.stats.UnitProp;
 import framework.entity.Entity;
+import framework.entity.field.FieldEntity;
+import logic.rules.combat.wounds.Wounds;
 import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.Map;
 
 import static elements.content.enums.types.CombatTypes.*;
 
@@ -15,21 +19,28 @@ import static elements.content.enums.types.CombatTypes.*;
  * much damage was absorbed etc
  */
 public class DamageDealer {
-    public static boolean deal(DamageCalcResult result) {
-        EntityRef ref = result.getRef();
-        // ref.get("target").getInt("hp").var
-        for (Pair<DamageType, Integer> pair : result.getDamageDealt()) {
-            if (!dealDamage(ref, pair.getLeft().isHp(), pair.getRight())) {
-                // interrupted = true;
+
+    public static DamageResult deal(DamageCalcResult calc) {
+        DamageResult result = null;
+        EntityRef ref = calc.getRef();
+
+        MultiDamage multiDamage = calc.getDamageToDeal();
+        for (Damage damage : multiDamage.getDamageList()) {
+            if (!dealDamage(ref, damage.getType().isHp(), damage.getAmount())) {
+                // interrupted = true; in what case?
                 break;
             }
         }
 
-        return !ref.get("target").isDead();
+        return result;
     }
 
     private static boolean dealDamage(EntityRef ref, boolean hp, Integer damage) {
-        Entity target = ref.get("target");
+        FieldEntity target = (FieldEntity) ref.get("target");
+        return dealDamage(target, ref, hp, damage);
+    }
+
+    private static boolean dealDamage(FieldEntity target, EntityRef ref, boolean hp, Integer damage) {
         UnitParam
                 value = hp ? UnitParam.Hp : target.isTrue(UnitProp.Pure) ? UnitParam.Faith : UnitParam.Sanity,
                 soulBlocker = target.isTrue(UnitProp.Pure) ? UnitParam.Faith : UnitParam.Sanity;
@@ -52,50 +63,62 @@ public class DamageDealer {
             }
         }
 
-        if (!threshold_condition || hp) {
+            if (!threshold_condition || hp) {
 
-            int buffer = target.getInt(value = hp ? UnitParam.Armor : soulBlocker);
-            if (buffer > 0) {
-                int remainder = damage - buffer;
-                if (remainder < 0) {
-                    /* Absorbed by Armor/Faith/Sanity */
-                    // target.addIntValue(value, -damage);
-                    return true;
-                }
-                target.setValue(value, 0);
-                target.setValue(value + "_broken", true);
-                if (!hp){
-                    //TODO
-                    // int excessDamage = damage - current;
-                    // Wounds.apply(excessDamage, value, ref);
-                }
+                int buffer = target.getInt(value = hp ? UnitParam.Armor : soulBlocker);
 
-                damage = remainder;
+                buffer = Math.min(buffer, block);
+
+                if (buffer > 0) {
+                    int remainder = damage - buffer;
+                    if (remainder < 0) {
+                        /* Absorbed by Armor/Faith/Sanity */
+                        // target.addIntValue(value, -damage);
+                        return true;
+                    }
+                    target.addCurValue(value, -buffer);
+
+                    if (target.getInt(value) == 0 )
+                    {
+                        /* Buffer is broken */
+                        target.setValue(value + "_broken", true);
+                    }
+                    if (!hp) {
+                        //cannot hit soul with same atk that was buffer-blocked?
+                        //that follows from the logic of Wounds
+                        //TODO
+                        int excessDamage = remainder;
+                        Wounds.apply(excessDamage, value, ref);
+                    }
+
+                    damage = remainder;
+                }
             }
+
+
+            value = hp ? UnitParam.Hp : UnitParam.Soul;
+            Integer current = target.getInt(value);
+
+            boolean lethal = false;//checkLethal(ref);
+            boolean canKill = threshold_condition || lethal;
+
+            if (damage > current) {
+                if (canKill) {
+                    target.setValue(value, Integer.MIN_VALUE);
+                    return false;
+                }
+            }
+            int excessDamage = damage - current;
+            if (excessDamage > 0) {
+                damage = current;
+                // if (excessDamage> threshold) kill()  => Can a single blow kill? With LETHAL perk
+                logic.rules.combat.wounds.Wounds.apply(excessDamage, value, ref);
+            }
+
+            target.addCurValue(value, -damage); //reduce hp or soul
+
+
+            return true;
         }
 
-
-        value = hp ? UnitParam.Hp : UnitParam.Soul;
-        Integer current = target.getInt(value);
-
-        boolean lethal = false;//checkLethal(ref);
-        boolean canKill = threshold_condition || lethal;
-
-        if (damage > current) {
-            if (canKill) {
-                target.setValue(value, Integer.MIN_VALUE);
-                return false;
-            }
-        }
-
-        target.addCurValue(value, -damage); //reduce hp or soul
-
-        int excessDamage = damage - current;
-        // if (excessDamage> threshold) kill()  => Can a single blow kill? With LETHAL perk
-        logic.rules.combat.wounds.Wounds.apply(excessDamage, value, ref);
-
-        return true;
     }
-
-
-}

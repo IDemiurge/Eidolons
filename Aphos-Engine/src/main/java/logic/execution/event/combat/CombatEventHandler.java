@@ -2,11 +2,15 @@ package logic.execution.event.combat;
 
 import combat.BattleHandler;
 import combat.sub.BattleManager;
+import elements.exec.EntityRef;
+import elements.exec.condition.Condition;
 import elements.exec.trigger.Trigger;
+import elements.exec.trigger.MapModTrigger;
 import elements.exec.trigger.TriggerList;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Created by Alexander on 8/22/2023
@@ -19,13 +23,17 @@ public class CombatEventHandler extends BattleHandler {
         super(battleManager);
     }
 
-    public void addTrigger(Trigger trigger, CombatEventType eventType){
+    public void addTrigger(Trigger conditional, CombatEventType eventType){
         TriggerList triggerList = map.get(eventType);
         if (triggerList==null){
             triggerList = new TriggerList();
             map.put(eventType, triggerList);
         }
-        triggerList.add(trigger);
+        triggerList.add(conditional);
+    }
+    public EventResult fire(CombatEventType damageBeingDealt, EntityRef ref, Object args) {
+        EventResult handle = handle(new CombatEvent(damageBeingDealt, ref, null ));
+        return handle;
     }
 
     public EventResult handle(CombatEvent combatEvent) {
@@ -38,6 +46,11 @@ public class CombatEventHandler extends BattleHandler {
         // checkResult(result);  some more triggers?
         return result;
     }
+
+    public void addModifier(CombatEventType eventType, Condition condition, Consumer<Map> mod) {
+        addTrigger(new MapModTrigger(mod).setCondition(condition), eventType);
+    }
+
     /*
     should we support some of that bind/trigger from Libgdx?
      */

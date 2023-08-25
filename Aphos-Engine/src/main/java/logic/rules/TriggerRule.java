@@ -1,12 +1,8 @@
 package logic.rules;
 
-import combat.Battle;
 import elements.exec.EntityRef;
 import elements.exec.condition.Condition;
-import elements.exec.trigger.Trigger;
 import logic.execution.event.combat.CombatEventType;
-
-import static combat.sub.BattleManager.combat;
 
 /**
  * Created by Alexander on 8/22/2023

@@ -58,29 +58,33 @@ public class CombatTypes {
         }
     }
     public enum DamageType {
-        Strike,
-        Missile,
-        Splash,
+        Strike(true),
+        Missile(true),
+        Splash(true),
 
-        Stun,
-        Poison,
-        Bleed,
+        Stun(true),
+        Poison(true),
+        Bleed(true),
 
-        Death,
-        Eldritch, //Nether? Or Cosmic?
-        Holy,
+        Lightning(true),
+        Fire(true),
+        Cold(true),
 
-        Lightning,
-        Fire,
-        Cold,
+        Death(false),
+        Eldritch(false), //Nether? Or Cosmic?
+        Holy(false),
 
-        Hypnos,
-        Chaos,
-        Psychic,
+        Hypnos(false),
+        Chaos(false),
+        Psychic(false),
         ;
         boolean hpOrSoul;
         boolean blockable; //should this be up to the ACTION?
         boolean sanityOrFaithBlock;
+
+        DamageType(boolean hpOrSoul) {
+            this.hpOrSoul = hpOrSoul;
+        }
 
         public boolean isHp() {
            return hpOrSoul;
