@@ -8,7 +8,6 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ArrayMaster;
-import main.system.sound.SoundMaster;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -33,7 +32,7 @@ public class C3DialogHandler extends C3Handler {
             @Override
             public void run() {
                 playSound(RandomWizard.random()? C3Sound.BACK_TO_WORK : C3Sound.GET_INTO_IT);
-                DialogMaster.inform("Wazzup?");
+                // DialogMaster.inform("Wazzup?");
             }
         };
         breakTimer.schedule(t, breakTime);
@@ -67,7 +66,8 @@ public class C3DialogHandler extends C3Handler {
     }
 
     private void playSound(C3Sound sound) {
-        SoundMaster.play(sound.getPath());
+        //TODO when there's GDX in background
+        // SoundMaster.play(sound.getPath());
     }
 
     public void showOptionsMenu() {

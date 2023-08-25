@@ -1,6 +1,7 @@
 import framework.C3Manager;
 import framework.query.C3_Query;
 import framework.task.C3_Task;
+import main.system.ExceptionMaster;
 import main.system.graphics.GuiManager;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
@@ -13,10 +14,11 @@ import java.util.logging.Logger;
 
 public class C3 implements NativeKeyListener {
     private C3Manager manager;
-    private final boolean sessionTestMode = true;
+    private final boolean sessionTestMode = false;
 
 
     public static void main(String[] args) {
+        ExceptionMaster.setFileLoggingOn(false);
         GuiManager.setSize(Toolkit.getDefaultToolkit().getScreenSize());
         GuiManager.init();
         // C3GdxAdapter gdxAdapter = new C3GdxAdapter();

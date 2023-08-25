@@ -7,7 +7,6 @@ framework\query\C3QueryManager.class
 framework\task\C3TaskManager.class
 music\PlaylistHandler$1.class
 music\PLAYLIST_TYPE.class
-C3GdxAdapter.class
 music\PlaylistFinder.class
 data\C3Enums$SessionType.class
 gui\tray\C3TrayHandler$1.class
@@ -18,13 +17,12 @@ framework\session\C3TimerHandler.class
 framework\C3Handler.class
 framework\session\C3TimerHandler$IntervalOption.class
 data\C3Enums$TaskCategory.class
-music\tray\MC_Tray.class
+system\scripts\HeroAlgo.class
 framework\session\C3Timer.class
 data\C3Enums$TaskMode.class
 data\C3Enums$ContentTaskStatus.class
 framework\task\C3TaskResolver$1.class
 data\C3Reader.class
-C3.class
 data\C3DataManager.class
 framework\task\C3_Task.class
 framework\session\C3Session.class
@@ -36,6 +34,7 @@ gui\tray\C3TrayHandler$TrayMenuItem.class
 system\log\C3Logger.class
 framework\task\C3TaskResolver$2.class
 music\script\PlaylistGenerator.class
+system\scripts\HeroAlgo$Hero.class
 data\C3Enums$QueryMode.class
 framework\task\C3TaskResolver.class
 gui\tray\C3TrayHandler$TrayIconVariant.class

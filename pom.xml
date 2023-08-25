@@ -38,6 +38,7 @@
 
 
     <modules>
+        <module>Aphos-Engine</module>
         <module>C-Engine</module>
         <module>Eidolon-Core</module>
         <module>LibGdx-Core</module>
