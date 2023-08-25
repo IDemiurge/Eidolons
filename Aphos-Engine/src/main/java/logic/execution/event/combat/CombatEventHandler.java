@@ -23,14 +23,18 @@ public class CombatEventHandler extends BattleHandler {
         TriggerList triggerList = map.get(eventType);
         if (triggerList==null){
             triggerList = new TriggerList();
+            map.put(eventType, triggerList);
         }
         triggerList.add(trigger);
     }
 
     public EventResult handle(CombatEvent combatEvent) {
-        combatEvent.getRef();
         //maybe instead of checking ALL triggers we should have maps like we did in bind/trigger sys?
         EventResult result = new EventResult();
+        TriggerList triggerList = map.get(combatEvent.getType());
+        if (triggerList != null) {
+            triggerList.check(combatEvent.getRef(), combatEvent.getArgMap(), result);
+        }
         // checkResult(result);  some more triggers?
         return result;
     }

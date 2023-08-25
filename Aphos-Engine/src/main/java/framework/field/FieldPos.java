@@ -18,20 +18,10 @@ public class FieldPos {
         cell = FieldConsts.Cell.Multi;
     }
     public FieldPos(int cardinal) {
-        this(FieldConsts.all[cardinal]);
+        this(FieldConsts.all[cardinal].getCell());
     }
     public FieldPos(FieldConsts.Cell cell) {
-        this(cell, 0);
-    }
-
-    public FieldPos(FieldConsts.Cell type, int number) {
-        this.cell = type;
-    }
-
-    //need more adj maps
-    public FieldPos getInFront() {
-        // return Field.getInFront(this);
-        return null;
+        this.cell = cell;
     }
 
     public boolean isFlank() {
@@ -47,25 +37,23 @@ public class FieldPos {
             }
         }
         if (obj instanceof FieldPos) {
-            if (!((FieldPos) obj).getCell().equals(cell)) {
-                return false;
+            if (((FieldPos) obj).getCell().equals(cell)) {
+                return true;
             }
         }
-        return super.equals(obj);
+        return false;
     }
-
-    public FieldPos[] getAreaPos() {
-        return areaPos;
-    }
-
     public FieldConsts.Cell getCell() {
         return cell;
     }
 
-    public Integer getX() {
-        return cell.x;
-    }
-    public Integer getY() {
-        return cell.y;
-    }
+    // public FieldPos[] getAreaPos() {
+    //     return areaPos;
+    // }
+    // public Integer getX() {
+    //     return cell.x;
+    // }
+    // public Integer getY() {
+    //     return cell.y;
+    // }
 }

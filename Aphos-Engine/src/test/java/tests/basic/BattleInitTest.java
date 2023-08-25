@@ -36,7 +36,7 @@ public class BattleInitTest extends AphosTest  {
          ally = combat().getUnitById(0);
          enemy = (Unit) combat().getField().getByPos(new FieldPos(12));
         assertTrue(ally.getName().equals(unit_name_ally));
-        assertTrue(ally.getName().equals(unit_name_enemy));
+        assertTrue(enemy.getName().equals(unit_name_enemy));
         assertTrue(combat().getBattleState().getRound() == 1);
     }
 }

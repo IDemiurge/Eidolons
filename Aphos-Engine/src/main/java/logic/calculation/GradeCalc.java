@@ -1,17 +1,14 @@
 package logic.calculation;
 
 import elements.content.enums.types.CombatTypes;
-import main.system.auxiliary.data.MapMaster;
 import main.system.math.MathMaster;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 /**
  * Created by Alexander on 8/19/2023
  */
-public class DieCalc {
+public class GradeCalc {
     static int[] diffToAdv = new int[100];
     static CombatTypes.RollGrade[] grades = CombatTypes.RollGrade.values();
 
@@ -75,13 +72,4 @@ public class DieCalc {
         return null;
     }
 
-    public static void main(String[] args) {
-        Map<String, Integer> gradesMap = new HashMap();
-        for (int j = 0; j < 1000; j++) {
-            CombatTypes.RollGrade grade = calculateGrade(4, 6, 8, 0);
-            MapMaster.addToIntegerMap(gradesMap, grade.getName(), 1);
-        }
-
-        System.out.println(MapMaster.getNetStringForMap(gradesMap).replace(";", "\n"));
-    }
 }

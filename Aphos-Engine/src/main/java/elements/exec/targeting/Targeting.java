@@ -5,7 +5,7 @@ package elements.exec.targeting;
 
 import elements.exec.EntityRef;
 import elements.exec.condition.Condition;
-import elements.exec.preset.ConstructTemplates;
+import framework.data.TypeData;
 import framework.entity.Entity;
 import framework.entity.EntityData;
 import framework.entity.field.FieldEntity;
@@ -24,7 +24,7 @@ import static combat.sub.BattleManager.combat;
  * Let's really examine our targeting reqs: 1) Selective for action is DIFF 2)
  */
 public class Targeting {
-    protected EntityData data;
+    protected TypeData data;
     protected Condition condition;
 
     // boolean all_in_range; //if true, action affects all units that match the Targeting condition
@@ -62,6 +62,21 @@ public class Targeting {
     }
 
 
+    public void setData(TypeData data) {
+        this.data = data;
+    }
+
+    public TypeData getData() {
+        return data;
+    }
+
+    public void setType(TargetingTemplates.TargetingType type) {
+        this.type = type;
+    }
+
+    public TargetingTemplates.TargetingType getType() {
+        return type;
+    }
 }
 
 

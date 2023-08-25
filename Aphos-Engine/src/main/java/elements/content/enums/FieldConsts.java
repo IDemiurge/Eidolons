@@ -94,13 +94,14 @@ public class FieldConsts {
         Reserve,
     }
 
+    //X / Y are set wrong and may be deprecated!
     public enum Cell {
         Multi(555, 555, null),
         Reserve_ally(999, 999, CellType.Reserve),
         Reserve_enemy(666, 666, CellType.Reserve),
-        Vanguard_Bot(3, 102, CellType.Van), //2 vals? /100 and %100
-        Vanguard_Top(3, 102, CellType.Van),
-        Rear_Player(0, 1, CellType.Rear),
+        Vanguard_Bot(302,1,  CellType.Van), //2 vals? /100 and %100
+        Vanguard_Top(302,1,  CellType.Van),
+        Rear_Player(0,1,  CellType.Rear),
         Rear_Enemy(0, 1, CellType.Rear),
 
         Top_Flank_Player(100, 3, CellType.Flank),
@@ -150,28 +151,28 @@ public class FieldConsts {
 
 
     public static final FieldPos[] all = {
-            new FieldPos(Cell.Vanguard_Bot, 0), //0
-            new FieldPos(Cell.Vanguard_Top, 1), //1
+            new FieldPos(Cell.Vanguard_Bot), //0
+            new FieldPos(Cell.Vanguard_Top), //1
 
-            new FieldPos(Cell.Top_Flank_Player, 0), //2
-            new FieldPos(Cell.Front_Player_1, 0), //3
-            new FieldPos(Cell.Front_Player_2, 1), //4
-            new FieldPos(Cell.Front_Player_3, 2), //5
-            new FieldPos(Cell.Back_Player_1, 0), //6
-            new FieldPos(Cell.Back_Player_2, 1), //7
-            new FieldPos(Cell.Back_Player_3, 2), //8
-            new FieldPos(Cell.Bottom_Flank_Player, 0), //9
-            new FieldPos(Cell.Rear_Player, 0), //10
+            new FieldPos(Cell.Top_Flank_Player), //2
+            new FieldPos(Cell.Front_Player_1), //3
+            new FieldPos(Cell.Front_Player_2), //4
+            new FieldPos(Cell.Front_Player_3), //5
+            new FieldPos(Cell.Back_Player_1), //6
+            new FieldPos(Cell.Back_Player_2), //7
+            new FieldPos(Cell.Back_Player_3), //8
+            new FieldPos(Cell.Bottom_Flank_Player), //9
+            new FieldPos(Cell.Rear_Player), //10
 
-            new FieldPos(Cell.Top_Flank_Enemy, 0), //11
-            new FieldPos(Cell.Front_Enemy_1, 0), //12
-            new FieldPos(Cell.Front_Enemy_2, 1), //13
-            new FieldPos(Cell.Front_Enemy_3, 2), //14
-            new FieldPos(Cell.Back_Enemy_1, 0), //15
-            new FieldPos(Cell.Back_Enemy_2, 1), //16
-            new FieldPos(Cell.Back_Enemy_3, 2), //17
-            new FieldPos(Cell.Bottom_Flank_Enemy, 0), //18
-            new FieldPos(Cell.Rear_Enemy, 0), //19
+            new FieldPos(Cell.Top_Flank_Enemy), //11
+            new FieldPos(Cell.Front_Enemy_1), //12
+            new FieldPos(Cell.Front_Enemy_2), //13
+            new FieldPos(Cell.Front_Enemy_3), //14
+            new FieldPos(Cell.Back_Enemy_1), //15
+            new FieldPos(Cell.Back_Enemy_2), //16
+            new FieldPos(Cell.Back_Enemy_3), //17
+            new FieldPos(Cell.Bottom_Flank_Enemy), //18
+            new FieldPos(Cell.Rear_Enemy), //19
 
     };
 }

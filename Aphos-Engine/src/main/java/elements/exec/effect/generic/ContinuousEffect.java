@@ -1,7 +1,8 @@
-package elements.exec.effect.framework;
+package elements.exec.effect.generic;
 
 import elements.exec.EntityRef;
 import elements.exec.effect.Effect;
+import elements.exec.effect.framework.EffectResult;
 
 import static combat.sub.BattleManager.combat;
 
@@ -17,8 +18,7 @@ public class ContinuousEffect extends Effect {
     }
 
     @Override
-    public boolean apply(EntityRef ref) {
+    public void applyThis(EntityRef ref) {
         combat().getBattleState().addEffect(ref, effect);
-        return true;
     }
 }

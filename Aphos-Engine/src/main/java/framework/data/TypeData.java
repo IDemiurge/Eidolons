@@ -3,9 +3,13 @@ package framework.data;
 import content.LinkedStringMap;
 import elements.content.enums.EnumFinder;
 import elements.stats.generic.Stat;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
+import system.consts.MathConsts;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -33,6 +37,13 @@ public class TypeData {
     }
 
     protected Object initValue(String key, Object o) {
+        if (o.toString().contains("__")){
+            //triplet value
+            Iterator<String> iterator = Arrays.asList(new String[]{"min", "base", "max"}).iterator();
+            for (String s : o.toString().split("__")) {
+                set( key + "_"+iterator.next(), NumberUtils.getInt(s));
+            }
+        }
         Object val = getRawValue(o);
         set(key, val);
         return val;
@@ -58,6 +69,9 @@ public class TypeData {
     }
 
 
+    public void multiply(String key, Object val) {
+
+    }
     public void set(String key, Object val) {
         Map<String, Object> map = maps.get(val.getClass());
         map.put(key.toString(), val);

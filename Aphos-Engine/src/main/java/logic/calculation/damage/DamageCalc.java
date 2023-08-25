@@ -15,14 +15,18 @@ import static elements.content.enums.types.CombatTypes.*;
 
 /**
  * Created by Alexander on 8/20/2023
- *
- * For entire action? Aye...
- * >>> What about cases where action is NULL?
+ * <p>
+ * For entire action? Aye... >>> What about cases where action is NULL?
+ * <p>
+ * calculate HP/ARmor/.. to be deducted Further trigger-reductions may apply on deal() step
+ * <p>
+ * Should work for soul too!
  */
 public class DamageCalc {
     private EntityRef ref;
     private boolean precalc;
     private DamageCalcResult result;
+    private RollGrade grade;
     // CalcResult  store result and calc process here
 
     public DamageCalc(EntityRef ref) {
@@ -34,9 +38,9 @@ public class DamageCalc {
         this.precalc = precalc; //what side effects could there be?
         result = new DamageCalcResult(ref);
 
-        //deal based on result? and throw events too? Same process for non-action dmg?
-        //so in the end, the question is - how does the DealDamageEffect work?
-        // should we add a bit more of a ... functional logic to this?
+        MultiDamage damage = getDamage(grade);
+        result.setDamageToDeal(damage);
+
         return result;
     }
     /*
@@ -105,5 +109,13 @@ public class DamageCalc {
 
     private float getUltimateModifier(UnitAction attack, Unit attacker, FieldEntity attacked) {
         return 2;
+    }
+
+    public void setGrade(RollGrade grade) {
+        this.grade = grade;
+    }
+
+    public RollGrade getGrade() {
+        return grade;
     }
 }

@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface Executable {
     List<Pair<Targeting, Effect>> getTargetedEffects();
+
+    void execute(EntityRef ref);
 }

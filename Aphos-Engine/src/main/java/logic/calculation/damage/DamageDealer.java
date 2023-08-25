@@ -36,6 +36,22 @@ public class DamageDealer {
 
         boolean threshold_condition = target.getInt(value) <= 0; //death's door, Madness/Nigredo
 
+        //TODO
+        int block = Integer.MAX_VALUE;
+        if (hp) {
+            // BlockType blockType =BlockType.Unblockable;
+            BlockType blockType = BlockType.Melee;
+            if (ref.get("attack") != null) {
+                blockType = ref.get("attack").getEnum("block type", BlockType.class);
+            }
+            if (blockType == BlockType.Unblockable)
+                block = 0;
+            else {
+                UnitParam blockParam = blockType.getParam();
+                block = blockParam == null ? 0 : ref.get("attacked").getInt(blockParam);
+            }
+        }
+
         if (!threshold_condition || hp) {
 
             int buffer = target.getInt(value = hp ? UnitParam.Armor : soulBlocker);

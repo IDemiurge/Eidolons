@@ -1,6 +1,7 @@
 package elements.exec.effect;
 
 import elements.exec.EntityRef;
+import elements.exec.effect.framework.EffectResult;
 import framework.entity.Entity;
 
 /**
@@ -9,13 +10,12 @@ import framework.entity.Entity;
 public class ModifyStatEffect extends Effect {
 
     @Override
-    public boolean apply(EntityRef ref) {
+    public void applyThis(EntityRef ref) {
         Entity target = ref.getTarget();
         String valueName = data.getS("value_name");
         Object value = data.get("value");
         //maybe we can have clear arg numbers - so (1) is value, (2) is name etc? Then we just input the relevant stuff
         target.modifyValue(valueName, value); //adds or sets if not integer?
-        return false;
     }
     @Override
     public String[] getArgNames(){

@@ -121,7 +121,10 @@ public abstract class Entity {
         if (value instanceof Integer) {
             data.addIntValue(valueName, (Integer) value);
         } else {
-            data.set(valueName, value);
+            if (value.toString().contains(system.consts.MathConsts.MULTIPLY_SYMBOL)){
+                data.multiply(valueName, value.toString().replace(system.consts.MathConsts.MULTIPLY_SYMBOL, ""));
+            } else
+                data.set(valueName, value);
         }
     }
 }

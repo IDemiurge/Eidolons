@@ -149,8 +149,8 @@ public class BattleField extends BattleHandler {
 
     ///////////////// region GETTERS ///////////////////
     public FieldEntity getByPos(FieldPos pos) {
-        for (Entity unit : getData().getUnits()) {
-            if (((FieldEntity) unit).getPos().equals(pos)) {
+        for (Entity unit : getData().getFieldEntities()) {
+            if (((FieldEntity)unit).getPos().equals(pos)) {
                 return (FieldEntity) unit;
             }
         }

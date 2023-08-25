@@ -19,5 +19,13 @@ public class ActionExecutable implements Executable{
         return targetedEffects;
     }
 
+    @Override
+    public void execute(EntityRef ref) {
+        for (Pair<Targeting, Effect> pair : targetedEffects) {
+            pair.getLeft().select(ref);
+            pair.getRight().apply(ref);
+        }
+    }
+
 
 }

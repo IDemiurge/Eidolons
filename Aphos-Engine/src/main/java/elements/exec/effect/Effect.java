@@ -1,13 +1,18 @@
 package elements.exec.effect;
 
+import content.LinkedStringMap;
 import elements.exec.EntityRef;
+import elements.exec.effect.framework.EffectResult;
 import framework.data.TypeData;
+
+import java.util.HashMap;
 
 /**
  * Created by Alexander on 8/21/2023
  */
 public abstract class Effect {
     protected TypeData data;
+    protected EffectResult effectResult;
 
     public TypeData getData() {
         return data;
@@ -20,5 +25,14 @@ public abstract class Effect {
         this.data = effectData;
     }
 
-    public abstract boolean apply(EntityRef ref);
+    public EffectResult apply(EntityRef ref) {
+        effectResult = new EffectResult(new LinkedStringMap<>());
+        applyThis(ref);
+        return effectResult;
+    }
+    public abstract void applyThis(EntityRef ref);
+
+    public EffectResult getResult() {
+        return effectResult;
+    }
 }
