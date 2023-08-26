@@ -2,6 +2,8 @@ package framework.field;
 
 import elements.content.enums.FieldConsts;
 
+import static combat.sub.BattleManager.combat;
+
 /**
  * Created by Alexander on 6/10/2023
  *
@@ -30,13 +32,14 @@ public class FieldPos {
 
     @Override
     public boolean equals(Object obj) {
-        if (cell == FieldConsts.Cell.Multi) {
-            for (FieldPos pos : areaPos) {
-                if (pos.equals(obj))
-                    return true;
-            }
-        }
+        //consider that we need intersection!
         if (obj instanceof FieldPos) {
+            if (cell == FieldConsts.Cell.Multi) {
+                for (FieldPos pos : areaPos) {
+                    if (obj.equals(pos))
+                        return true;
+                }
+            }
             if (((FieldPos) obj).getCell().equals(cell)) {
                 return true;
             }
@@ -45,6 +48,10 @@ public class FieldPos {
     }
     public FieldConsts.Cell getCell() {
         return cell;
+    }
+
+    public FieldPos getAdjacent(FieldConsts.Direction direction) {
+        return  combat().getField().getPos(FieldConsts.getAdjacent(getCell(), direction));
     }
 
     // public FieldPos[] getAreaPos() {

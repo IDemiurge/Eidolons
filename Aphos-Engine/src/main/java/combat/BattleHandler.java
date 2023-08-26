@@ -17,6 +17,8 @@ public abstract class BattleHandler {
 
     public void reset(){
     }
+    public void afterReset(){
+    }
     public void newRound(){
     }
     public void battleStarts(){

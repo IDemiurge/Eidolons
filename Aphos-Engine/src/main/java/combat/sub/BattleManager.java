@@ -10,6 +10,7 @@ import combat.state.BattleState;
 import elements.exec.EntityRef;
 import framework.entity.Entity;
 import framework.entity.field.Unit;
+import framework.entity.sub.UnitAction;
 import logic.execution.ActionExecutor;
 import logic.execution.event.combat.CombatEvent;
 import logic.execution.event.combat.CombatEventHandler;
@@ -45,9 +46,21 @@ public class BattleManager {
         // what should we do with ALL handlers?
         // on game end? On event?
     }
+
+    //////////////////region MAIN METHODS
+    public void executableActivated(UnitAction action, EntityRef ref) {
+        //is this when we send anim data to client? Of results? Interesting
+        action.executed();
+        resetAll();
+        afterResetAll();
+    }
+    //endregion
     //////////////////region UNIVERSAL METHODS
     public void resetAll() {
         handlers.forEach(handler -> handler.reset());
+    }
+    public void afterResetAll() {
+        handlers.forEach(handler -> handler.afterReset());
     }
     public void newRound() {
         handlers.forEach(handler -> handler.newRound());
@@ -109,4 +122,5 @@ public class BattleManager {
     public BattleStatistics stats() {
         return statistics;
     }
+
 }

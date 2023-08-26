@@ -40,6 +40,11 @@ public class ExecTrigger implements Trigger<EntityRef> {
         return retainCondition;
     }
 
+    @Override
+    public EntityRef getTargetRef() {
+        return null;
+    }
+
     public void setRetainCondition(Condition retainCondition) {
         this.retainCondition = retainCondition;
     }
@@ -56,4 +61,5 @@ public class ExecTrigger implements Trigger<EntityRef> {
     public EntityRef getLastRef() {
         return lastRef;
     }
+
 }

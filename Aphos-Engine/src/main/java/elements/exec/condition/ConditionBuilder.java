@@ -2,10 +2,7 @@ package elements.exec.condition;
 
 import elements.exec.EntityRef;
 import elements.exec.targeting.TargetingTemplates;
-import framework.data.Datum;
-import framework.data.TypeData;
 
-import java.util.BitSet;
 import java.util.Map;
 
 /**
@@ -14,7 +11,13 @@ import java.util.Map;
  * self().alive(). etc
  */
 public class ConditionBuilder {
-    Conditions conditions= new Conditions();
+    private Conditions conditions= new Conditions();
+    Map args;
+
+    public ConditionBuilder(Map args) {
+        this.args = args;
+    }
+
     //like with() - set data ?
     /*
     I have a sense of some even more general and concise system:
@@ -31,12 +34,21 @@ public class ConditionBuilder {
 
      */
     public static Condition build(TargetingTemplates.ConditionTemplate conditionTmlt, Map args) {
+        return prebuild(conditionTmlt, args).build();
+    }
+    public static ConditionBuilder prebuild(TargetingTemplates.ConditionTemplate conditionTmlt, Map args) {
+        return prebuild(false, conditionTmlt, args);
+    }
+    public static ConditionBuilder prebuild(boolean targeting, TargetingTemplates.ConditionTemplate conditionTmlt, Map args) {
         //can condition be represented as chain? Kind of... need an  endOr() then
-        ConditionBuilder builder = new ConditionBuilder();
+        ConditionBuilder builder = new ConditionBuilder(args);
         switch (conditionTmlt) {
+            case POS_CHECK -> {
+                return builder.pos();
+            }
             case SELF_CHECK -> {
                 //"targeted condition?"
-                return builder.value(args).self().build();
+                return builder.value(args).self();
                 //can we add data later?
             }
 
@@ -50,10 +62,9 @@ public class ConditionBuilder {
         return null;
     }
 
-
-
     ///////////////// region BASE METHODS
     public Condition build(){
+        append(args);
         return conditions;
     }
 
@@ -135,6 +146,7 @@ public class ConditionBuilder {
         }
         return this;
     }
+
     //endregion
 
 

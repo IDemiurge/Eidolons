@@ -73,7 +73,6 @@ public class DamageCalc {
         FieldEntity attacked = (FieldEntity) ref.get("attacked");
 
         if (grade == RollGrade.Miss) {
-            // Events.fire(x)
             result.setMiss(true);
             return new MultiDamage();
         }

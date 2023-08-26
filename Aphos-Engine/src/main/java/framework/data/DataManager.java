@@ -54,6 +54,9 @@ public class DataManager {
             return  string;
         }
     }
+    public static Map<String, Object> stringToMap(String s) {
+        return stringArrayToMap(s.split(";"));
+    }
 
     public static Map<String, Object> stringArrayToMap(String[] datum) {
         return

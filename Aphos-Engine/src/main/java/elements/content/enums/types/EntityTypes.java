@@ -23,9 +23,10 @@ public class EntityTypes {
         Defense, //DEF?
     }
 
+    @Deprecated //only for display name
     public enum PassiveType {
         Perk,
-        Quality,
+        // Quality,
         Unique,
         Effect, //from something?
 

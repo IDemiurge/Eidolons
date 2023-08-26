@@ -17,11 +17,10 @@ public class ModifyStatEffect extends Effect {
         //maybe we can have clear arg numbers - so (1) is value, (2) is name etc? Then we just input the relevant stuff
         target.modifyValue(valueName, value); //adds or sets if not integer?
     }
+
     @Override
-    public String[] getArgNames(){
-        return new String[]{
-                "value_name",
-                "value"
-        };
+    public String getArgs() {
+        return "value_name|value";
     }
+
 }

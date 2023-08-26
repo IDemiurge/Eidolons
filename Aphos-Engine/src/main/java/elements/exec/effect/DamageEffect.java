@@ -28,10 +28,6 @@ public class DamageEffect extends Effect{
         this.formula = formula;
     }
 
-    @Override
-    public String[] getArgNames() {
-        return new String[0];
-    }
 
     protected void applyThis(EntityRef ref){
         //TODO

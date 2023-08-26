@@ -157,18 +157,21 @@ public class BattleField extends BattleHandler {
         return null;
     }
 
+    public FieldPos getPos( Cell cell) {
+        return cellMap.get(cell);
+    }
     public FieldPos getPos(int cardinal) {
         return cells[cardinal];
     }
 
-    public FieldPos getPos(Boolean ally, String s) {
-        //TODO do we need string syntax?
-        //should we just have some ID's for each position?!
-        if (s.contains("flank")) {
-
-        }
-        return null;
-    }
+    // public FieldPos getPos(Boolean ally, String s) {
+    //     //TODO do we need string syntax?
+    //     //should we just have some ID's for each position?!
+    //     if (s.contains("flank")) {
+    //
+    //     }
+    //     return null;
+    // }
     //endregion
 
 }

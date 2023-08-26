@@ -177,4 +177,8 @@ public class TypeData {
     public boolean isTrue(String s) {
         return new Boolean(true).equals(getB(s));
     }
+
+    public boolean has(String key) {
+        return getterCache.containsKey(key);
+    }
 }

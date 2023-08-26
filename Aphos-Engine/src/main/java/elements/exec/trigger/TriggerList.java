@@ -17,10 +17,13 @@ public class TriggerList {
 
     public void cleanUp(){
         //TODO
-        // triggers.removeIf(trigger -> trigger.getRetainCondition().check(trigger.getLastRef()));
+        triggers.removeIf(trigger ->
+                trigger instanceof PassiveTrigger ||
+                !trigger.getRetainCondition().check(trigger.getTargetRef()));
     }
     public void sort(){
         //need to know each trigger's SOURCE then!
+        //passives first? depends on active unit?
     }
 
     public void add(Trigger trigger) {

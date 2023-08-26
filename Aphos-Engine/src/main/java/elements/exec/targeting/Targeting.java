@@ -10,6 +10,7 @@ import framework.entity.Entity;
 import framework.entity.EntityData;
 import framework.entity.field.FieldEntity;
 import main.system.threading.WaitMaster;
+import system.ListMaster;
 
 import java.util.List;
 
@@ -61,6 +62,16 @@ public class Targeting {
         fieldEntities.removeIf(e -> !condition.check(ref.setMatch(e)));
         // single = true;
 
+        if (type == TargetingTemplates.TargetingType.RANDOM){
+            // if ( data.has(TargetingParams.Number_Of_Targets))
+            if (!data.has("Number_Of_Targets"))
+                ref.setTarget(ListMaster.getRandom(fieldEntities));
+            else {
+                Integer numberOfTargets = data.getInt("Number_Of_Targets");
+                List<FieldEntity> randomGroup = (ListMaster.getRandomElements(fieldEntities, numberOfTargets));
+                ref.setGroup(new TargetGroup(randomGroup));
+            }
+        } else
         if (type == TargetingTemplates.TargetingType.FIXED){
             if (fieldEntities.size() == 1) {
                 ref.setTarget(fieldEntities.get(0));

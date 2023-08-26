@@ -5,6 +5,7 @@ import combat.sub.BattleManager;
 import elements.exec.EntityRef;
 import elements.exec.Executable;
 import elements.exec.effect.Effect;
+import elements.exec.effect.framework.EffectResult;
 import elements.exec.targeting.TargetGroup;
 import elements.exec.targeting.Targeting;
 import framework.client.UserEventHandler;
@@ -12,6 +13,8 @@ import framework.entity.field.FieldEntity;
 import framework.entity.sub.UnitAction;
 import logic.execution.event.user.UserEventType;
 import org.apache.commons.lang3.tuple.Pair;
+
+import static combat.sub.BattleManager.combat;
 
 /**
  * Created by Alexander on 8/21/2023
@@ -33,7 +36,8 @@ public class ActionExecutor extends BattleHandler {
             EntityRef REF = ref.copy();
             targeting.select(REF);
             applyEffects(effect, REF);
-            manager.resetAll();
+
+            manager.executableActivated(action, REF);
         }
         //triggers visual effect and waits for input
         //pack all the cost/boost/targeting/fx into 'executable'?
@@ -54,7 +58,10 @@ public class ActionExecutor extends BattleHandler {
         for (FieldEntity target : targets.getTargets()) {
             EntityRef REF = ref.copy();
             REF.setTarget(target);
-            effect.apply(REF);
+            EffectResult result = effect.apply(REF); //this obj should absorb other results ?
+
+            combat().stats().add(result);
+            combat().getEventHandler().afterEvents(result);
             // boolean result = action.getExecutable().execute(REF);
             // if (REF.isValueBool()) {
             //     break; //interrupted

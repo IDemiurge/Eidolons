@@ -4,6 +4,7 @@ import combat.BattleHandler;
 import combat.sub.BattleManager;
 import elements.exec.EntityRef;
 import elements.exec.condition.Condition;
+import elements.exec.effect.framework.EffectResult;
 import elements.exec.trigger.Trigger;
 import elements.exec.trigger.MapModTrigger;
 import elements.exec.trigger.TriggerList;
@@ -36,6 +37,13 @@ public class CombatEventHandler extends BattleHandler {
         return handle;
     }
 
+    @Override
+    public void reset() {
+        for (CombatEventType eventType : map.keySet()) {
+            map.get(eventType).cleanUp();
+        }
+    }
+
     public EventResult handle(CombatEvent combatEvent) {
         //maybe instead of checking ALL triggers we should have maps like we did in bind/trigger sys?
         EventResult result = new EventResult();
@@ -49,6 +57,11 @@ public class CombatEventHandler extends BattleHandler {
 
     public void addModifier(CombatEventType eventType, Condition condition, Consumer<Map> mod) {
         addTrigger(new MapModTrigger(mod).setCondition(condition), eventType);
+    }
+
+    public void afterEvents(EffectResult result) {
+
+        // result
     }
 
     /*

@@ -28,13 +28,8 @@ public class DamageAttackEffect extends AttackEffect {
     }
 
     @Override
-    public void applyThis(EntityRef ref) {
-        //different grade vs each target!
-        super.applyThis(ref);
+    public String getArgs() {
+        return "damage_type|" + super.getArgs();
     }
 
-    @Override
-    public String[] getArgNames() {
-        return new String[]{"damage_type"};
-    }
 }

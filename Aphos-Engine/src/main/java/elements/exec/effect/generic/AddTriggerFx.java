@@ -31,10 +31,6 @@ public class AddTriggerFx extends Effect {
         this.trigger = new ExecTrigger(condition, ExecBuilder.getOrCreateExecutable(execData));
     }
 
-    @Override
-    public String[] getArgNames() {
-        return super.getArgNames();
-    }
 
     @Override
     protected void applyThis(EntityRef ref) {

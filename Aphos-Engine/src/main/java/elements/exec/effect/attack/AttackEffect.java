@@ -3,10 +3,6 @@ package elements.exec.effect.attack;
 import elements.content.enums.types.CombatTypes;
 import elements.exec.EntityRef;
 import elements.exec.effect.Effect;
-import elements.exec.effect.framework.EffectResult;
-import framework.entity.Entity;
-import framework.entity.field.FieldEntity;
-import framework.entity.field.Unit;
 import framework.entity.sub.UnitAction;
 import logic.calculation.GradeCalc;
 
@@ -25,6 +21,7 @@ import logic.calculation.GradeCalc;
  */
 public abstract class AttackEffect extends Effect {
 
+
     public abstract void process(CombatTypes.RollGrade grade, EntityRef ref);
 
     @Override
@@ -35,7 +32,11 @@ public abstract class AttackEffect extends Effect {
             int def = target.getDefOrRes(action, ref);
             int die = action.getInt("die");
             int offset = 0;
-            CombatTypes.RollGrade grade = GradeCalc.calculateGrade(atk, def, die, offset);
+            CombatTypes.RollGrade grade=null ;
+            if (data.has("grade")){
+                grade = data.getEnum("grade", CombatTypes.RollGrade.class);
+            } else
+                grade = GradeCalc.calculateGrade(atk, def, die, offset);
             // ref.getSource().omenUsed();
             // target.omenUsed();
             process(grade, ref);
@@ -44,5 +45,8 @@ public abstract class AttackEffect extends Effect {
         // still events must be diff for single-attack vs zone-atk!
     }
 
-
+    @Override
+    public String getArgs() {
+        return "grade|";
+    }
 }

@@ -18,15 +18,19 @@ public abstract class Effect {
         return data;
     }
 
-    public String[] getArgNames() {
-        return new String[0];
+    public final String[] getArgNames() {
+        return getArgs().split("\\|");
+    }
+
+    public String getArgs() {
+        return "";
     }
     public void setData(TypeData effectData) {
         this.data = effectData;
     }
 
     public EffectResult apply(EntityRef ref) {
-        effectResult = new EffectResult(new LinkedStringMap<>());
+        effectResult = new EffectResult();
         applyThis(ref);
         return effectResult;
     }

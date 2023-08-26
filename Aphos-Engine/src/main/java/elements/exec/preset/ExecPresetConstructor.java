@@ -51,6 +51,8 @@ public class ExecPresetConstructor {
     private static Effect createEffect(EffectTemplate effectTmlt, TargetingTemplates.ConditionTemplate conditionTmlt, String fxArgs, String cndArgs) {
         //switches?
         Effect effect= effectTmlt.supplier.get();
+        //what if provided fxArgs are incomplete?
+        //maybe append empty's
         TypeData data = createData(effect.getArgNames(), fxArgs);
         effect.setData(data);
         if (conditionTmlt!=null){
@@ -72,7 +74,8 @@ public class ExecPresetConstructor {
         if (args==null)
             return new TypeData(new LinkedStringMap<>());
         Iterator<String> split = Arrays.stream(args.split(";")).iterator();
-        Map<String, Object> map = Arrays.stream(argNames).collect(Collectors.toMap(key-> key, value-> split.next()));
+        Map<String, Object> map = Arrays.stream(argNames).collect(Collectors.toMap(key-> key,
+                 value-> split.hasNext() ? split.next() : ""  ));
         return new TypeData(map);
     }
 }

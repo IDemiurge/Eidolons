@@ -13,9 +13,24 @@ import java.util.stream.Collectors;
  */
 public class FieldConsts {
     public static final Map<Cell, Set<Cell>> adjMap = new HashMap<>();
-
+    public static final Map<Cell, Map<Direction, Cell>> adjMapDirection = new HashMap<>();
+//IDEA: what if the order of this set determined Direction? ...
+    // OR we could try to use X:Y here
+    //Special logic: Flank - has 2 pos on bottom?! Well, it's bottom_left/right! interesting...
+    public static void putAdj(Cell key, Set<Cell> set){
+        adjMap.put(key, set);
+        //TODO
+        // Map<Direction, Cell> dirMap= new HashMap<>();
+        // adjMapDirection.put(key, dirMap);
+        // for (Cell cell : set) {
+        //     for (Direction value : Direction.values()) {
+        //         if (key.getDirection(cell)==value)
+        //             dirMap.put(value, cell);
+        //     }
+        // }
+    }
     static {
-        adjMap.put(Cell.Front_Enemy_1, toSet(Cell.Vanguard_Top, Cell.Back_Enemy_2, Cell.Back_Enemy_1, Cell.Front_Enemy_2, Cell.Top_Flank_Enemy));
+        putAdj(Cell.Front_Enemy_1, toSet(Cell.Vanguard_Top, Cell.Back_Enemy_2, Cell.Back_Enemy_1, Cell.Front_Enemy_2, Cell.Top_Flank_Enemy));
         adjMap.put(Cell.Front_Enemy_2, toSet(Cell.Vanguard_Top, Cell.Vanguard_Bot, Cell.Back_Enemy_3, Cell.Back_Enemy_2, Cell.Back_Enemy_1, Cell.Front_Enemy_1, Cell.Front_Enemy_3));
         adjMap.put(Cell.Front_Enemy_3, toSet(Cell.Vanguard_Bot, Cell.Back_Enemy_2, Cell.Back_Enemy_3, Cell.Front_Enemy_2, Cell.Bottom_Flank_Enemy));
 
@@ -55,6 +70,13 @@ public class FieldConsts {
         return Arrays.stream(positions).collect(Collectors.toSet());
     }
 
+    public static Cell getAdjacent(Cell cell, Direction direction) {
+        //aha! so left/right is actually top/bot? Yeah so far I don't wanna bother with FACING - but maybe we could
+        //consider some FLIP ?
+        return  adjMapDirection.get(cell).get(direction);
+
+    }
+
     public enum Shape {
         Line,
     }
@@ -83,6 +105,10 @@ public class FieldConsts {
             this.diagonal = diagonal;
             this.degrees = degrees;
         }
+
+        public static Direction get(String name) {
+            return EnumFinder.get(Direction.class, name);
+        }
     }
 
     public enum CellType {
@@ -99,6 +125,7 @@ public class FieldConsts {
         Multi(555, 555, null),
         Reserve_ally(999, 999, CellType.Reserve),
         Reserve_enemy(666, 666, CellType.Reserve),
+
         Vanguard_Bot(302,1,  CellType.Van), //2 vals? /100 and %100
         Vanguard_Top(302,1,  CellType.Van),
         Rear_Player(0,1,  CellType.Rear),
@@ -146,6 +173,38 @@ public class FieldConsts {
 
         public boolean isMain() {
             return type == CellType.Front || type == CellType.Back;
+        }
+
+        public Direction getDirection(Cell cell) {
+            for (Direction direction : Direction.values()) {
+                if (check(direction, x, y, cell.x, cell.y))
+                    return direction;
+            }
+            return null;
+        }
+
+        private boolean check(Direction direction, Integer x, Integer y, Integer x1, Integer y1) {
+            //middle position - both? well this is kinda custom...
+            //there's UP_LEFT for that!
+            switch (direction) {
+                //what about positions that are between?
+                case UP: return x == x1 && y> y1;
+                case DOWN:
+                    break;
+                case LEFT:
+                    break;
+                case RIGHT:
+                    break;
+                case UP_LEFT:
+                    break;
+                case UP_RIGHT:
+                    break;
+                case DOWN_RIGHT:
+                    break;
+                case DOWN_LEFT:
+                    break;
+            }
+            return false;
         }
     }
 
