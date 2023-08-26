@@ -29,7 +29,7 @@ public class DamageCalcTest extends BattleInitTest {
         int hp = enemy.getInt(UnitParam.Hp);
         int block= enemy.getInt(UnitParam.Melee_block);
         DamageEffect damageEffect = new DamageEffect(DamageType.Strike, dmg);
-        damageEffect.applyThis(ref);
+        damageEffect.apply(ref);
 
         check(enemy.getInt(UnitParam.Hp) == hp - dmg +block );
         check(enemy.getInt(UnitParam.Armor) == enemy.getInt(UnitParam.Armor_Max)- block );

@@ -2,8 +2,6 @@ package framework.entity.sub;
 
 import elements.content.enums.types.EntityTypes;
 import elements.exec.Executable;
-import elements.exec.effect.Effect;
-import framework.entity.Entity;
 import framework.entity.field.Unit;
 
 import java.util.Map;
@@ -29,5 +27,20 @@ public class UnitAction extends UnitSubEntity {
 
     public boolean isSpell() {
         return false;
+    }
+
+    public boolean isAttack() {
+        return getType() != EntityTypes.ActionType.Defense;
+    }
+
+    public EntityTypes.ActionType getType() {
+        if (type==null) {
+            type = getEnum("action_type", EntityTypes.ActionType.class);
+        }
+        return type;
+    }
+
+    public void executed() {
+        unit.getActionSet().setLastAction(this);
     }
 }

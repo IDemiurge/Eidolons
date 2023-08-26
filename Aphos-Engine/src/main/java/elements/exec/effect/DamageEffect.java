@@ -33,7 +33,7 @@ public class DamageEffect extends Effect{
         return new String[0];
     }
 
-    public void applyThis(EntityRef ref){
+    protected void applyThis(EntityRef ref){
         //TODO
         int amount = system.math.Formula.getInt(formula); //formula.getInt(ref);
         ref.setValueInt(amount);

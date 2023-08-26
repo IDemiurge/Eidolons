@@ -1,5 +1,6 @@
 package elements.exec.condition;
 
+import elements.exec.EntityRef;
 import elements.exec.targeting.TargetingTemplates;
 import framework.data.Datum;
 import framework.data.TypeData;
@@ -39,11 +40,12 @@ public class ConditionBuilder {
                 //can we add data later?
             }
 
-            // case UNTIL_ATTACK_OR_FALL -> {
-            //     return builder.not().or().isAttack().lastAction().status().wounded();
-            //     //this is actually more like a trigger-remove?!
-            //     //we can kinda fake it via adding some status to units that have attacked... or via last-action-check!
-            // }
+            case UNTIL_ATTACK_OR_FALL -> {
+                return builder.not().isAttack().lastAction();
+                // return builder.not().or().isAttack().lastAction().status().wounded();
+                //this is actually more like a trigger-remove?!
+                //we can kinda fake it via adding some status to units that have attacked... or via last-action-check!
+            }
         }
         return null;
     }
@@ -55,42 +57,77 @@ public class ConditionBuilder {
         return conditions;
     }
 
-    private  ConditionBuilder append(ConditionContext context) {
+    public  ConditionBuilder append(ConditionContext context) {
         conditions.getLast().setContext(context);
         //func use!
         // conditions.getLast().setContext(new ConditionContext(ref -> ref.getTarget()));
         return this;
     }
-    private  ConditionBuilder append(Map args) {
+    public  ConditionBuilder append(Map args) {
         Condition last = conditions.getLast();
         for (String arg : last.getArgs()) {
             last.getData().set(arg, args.get(arg));
         }
         return this;
     }
-    private  ConditionBuilder append(Condition condition) {
-        conditions.add(condition);
+    public  ConditionBuilder append(Condition condition, Map args) {
+        return append(condition).append(args);
+    }
+    public  ConditionBuilder append(Condition condition) {
+        if (condition instanceof ConditionImpl) {
+            conditions.add(condition);
+        } else {
+            conditions.add(new ConditionImpl() {
+                @Override
+                protected boolean checkThis(EntityRef ref) {
+                    return condition.check(ref);
+                }
+            });
+        }
         return this;
     }
-    //endregion
-    ///////////////// region COMMON CHAIN METHODS
-    private ConditionBuilder not() {
-        // conditions.setNot(true); //next condition will be NOT?
+
+    public ConditionBuilder not() {
+        Condition last = conditions.getLast();
+        if (last == null) {
+            conditions.setNot(true);
+        } else {
+            conditions.getList().set(conditions.getList().size() - 1, new NotCondition(last));
+        }
         return this;
     }
-    private ConditionBuilder or() {
+    public ConditionBuilder or() {
         conditions.setOr(true);
         return this;
     }
-    private ConditionBuilder self() {
+    //endregion
+    ///////////////// region CONTEXT
+    public ConditionBuilder self() {
         append(new ConditionContext("source"));
         return this;
     }
-    private  ConditionBuilder value(Map args) {
+    public ConditionBuilder lastAction() {
+        // append(new ConditionContext(ref -> ref.getSource().getActionSet().getLastAction()));
+        append(new AdvancedContext(ref -> ref.setAction(ref.getSource().getActionSet().getLastAction())));
+        return this;
+    }
+    //endregion
+    ///////////////// region CONDITION
+    private ConditionBuilder pos() {
+       return  append(new PositionCondition());
+    }
+
+    public ConditionBuilder isAttack() {
+        append(ref ->
+                ref.getAction().isAttack()
+        );
+        return this;
+    }
+    public  ConditionBuilder value(Map args) {
         return comparison(args.get("value")).append(args);
     }
 
-    private ConditionBuilder comparison(Object value) {
+    public ConditionBuilder comparison(Object value) {
         if (value.getClass() == Integer.class) {
             conditions.add(new IntCondition());
             // conditions.add(new StrCondition());

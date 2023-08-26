@@ -10,6 +10,9 @@ import java.util.Map;
 
 /**
  * Created by Alexander on 8/25/2023
+ *
+ * Sometimes we're using those result objects to perform further actions/calc
+ *
  */
 public class BattleStatistics {
     Map<Class, List<Result>> map= new HashMap<>();
@@ -24,5 +27,9 @@ public class BattleStatistics {
             map.put(result.getClass(), list = new ArrayList<>());
         }
         list.add(result);
+    }
+
+    public void report(){
+
     }
 }

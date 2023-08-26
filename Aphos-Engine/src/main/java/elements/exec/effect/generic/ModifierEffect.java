@@ -24,7 +24,7 @@ public  abstract class ModifierEffect extends Effect {
     public abstract void modify(Map map);
 
     @Override
-    public void applyThis(EntityRef ref) {
+    protected void applyThis(EntityRef ref) {
         combat().getEventHandler().addModifier(eventType, condition, map -> modify(map));
     }
 }

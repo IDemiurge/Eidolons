@@ -1,7 +1,10 @@
 package framework.entity;
 
+import elements.stats.UnitParam;
+import elements.stats.UnitProp;
 import elements.stats.generic.Property;
 import elements.stats.generic.Stat;
+import system.consts.MathConsts;
 
 import java.util.Map;
 
@@ -51,7 +54,7 @@ public abstract class Entity {
         //check visibility?
     }
 
-    //////////////// SETTERS ///////////////////
+    ////////////////region  SETTERS ///////////////////
     public void setValue(Stat key, Object val) {
         data.set(key, val);
     }
@@ -68,7 +71,8 @@ public abstract class Entity {
         data.addCurValue(key, i);
     }
 
-    //////////////// GETTERS ///////////////////
+    //endregion
+    ////////////////region GETTERS ///////////////////
     public int getInt(Stat stat) {
         return data.getInt(stat);
     }
@@ -102,7 +106,8 @@ public abstract class Entity {
         return data.isTrue(key);
     }
 
-    ////////////////// SHORTCUTS ////////////////////
+    //endregion
+    //////////////////region  SHORTCUTS ////////////////////
 
     public String getName() {
         return name;
@@ -115,19 +120,26 @@ public abstract class Entity {
         }
         return o.toString();
     }
-
+//endregion
 
     public boolean isDead() {
         return data.isTrue("dead");
     }
 
+    public void modifyValue(UnitParam valueName, Object value) {
+        modifyValue(valueName.getName(), value);
+    }
     public void modifyValue(String valueName, Object value) {
         if (value instanceof Integer) {
             data.addIntValue(valueName, (Integer) value);
         } else {
-            if (value.toString().contains(system.consts.MathConsts.MULTIPLY_SYMBOL)){
-                data.multiply(valueName, value.toString().replace(system.consts.MathConsts.MULTIPLY_SYMBOL, ""));
+            if (value.toString().contains(MathConsts.MULTIPLY_SYMBOL)){
+                data.multiply(valueName, value.toString().replace(MathConsts.MULTIPLY_SYMBOL, ""));
             } else
+                //TODO
+            // if (value.toString().contains(MathConsts.SET_TO_PERCENT_SYMBOL)){
+            //     data.setPercent(valueName, value.toString().replace(MathConsts.SET_TO_PERCENT_SYMBOL, ""));
+            // } else
                 data.set(valueName, value);
         }
     }

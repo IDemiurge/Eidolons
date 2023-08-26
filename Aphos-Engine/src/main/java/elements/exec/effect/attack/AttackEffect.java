@@ -28,7 +28,7 @@ public abstract class AttackEffect extends Effect {
     public abstract void process(CombatTypes.RollGrade grade, EntityRef ref);
 
     @Override
-    public void applyThis(EntityRef ref) {
+    protected void applyThis(EntityRef ref) {
         ref.applyToTargets(target -> {
             UnitAction action = ref.getAction();
             int atk = ref.getSource().getAtkOrSp(action, ref);

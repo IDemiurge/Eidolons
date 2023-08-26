@@ -2,6 +2,9 @@ package system;
 
 import framework.data.statistics.Result;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -10,6 +13,8 @@ import java.util.List;
 public class ListMaster {
 
     public static <T> T getLast(List<T> results) {
+        if (results.isEmpty())
+            return null;
         return results.get(results.size()-1);
     }
 }

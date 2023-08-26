@@ -12,8 +12,8 @@ import static combat.sub.BattleManager.combat;
  */
 public class ContinuousEffect extends Effect {
 
-    Effect effect;
-    Condition retainCondition;
+    private final Effect effect;
+    private Condition retainCondition;
 
     public ContinuousEffect(Effect effect) {
         this.effect = effect;
@@ -25,7 +25,7 @@ public class ContinuousEffect extends Effect {
     }
 
     @Override
-    public void applyThis(EntityRef ref) {
+    protected void applyThis(EntityRef ref) {
         combat().getBattleState().addEffect(ref, effect, retainCondition);
     }
 }

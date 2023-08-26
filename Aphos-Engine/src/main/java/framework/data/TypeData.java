@@ -41,10 +41,10 @@ public class TypeData {
 
     @Override
     public String toString() {
-        // StringBuilder builder = new StringBuilder();
-        // "Data: ";
-        // MapMapster.represent(stringMap);
-        return super.toString();
+        StringBuilder builder = new StringBuilder("Data: ");
+        return builder.append("\n---String: ").append(system.MapMaster.represent(stringMap))
+                .append("\n---Integers: ").append(system.MapMaster.represent(intMap))
+                .append("\n---Booleans: ").append(system.MapMaster.represent(boolMap)).toString();
     }
 
     protected Object initValue(String key, Object o) {
@@ -61,9 +61,35 @@ public class TypeData {
     }
 
     public void addIntValue(String valueName, Integer value) {
-        int prev =getIntOrZero(valueName);
-        int newVal = prev + value;
-        intMap.put(valueName, newVal);
+        String[] values = null ;
+        if (checkTripleValue(valueName)) {
+             values = getTriplet(valueName);
+        } else
+            values = new String[]{valueName};
+
+        for (String name : values) {
+            int prev =getIntOrZero(name);
+            int newVal = prev + value;
+            intMap.put(name, newVal);
+        }
+    }
+
+    private String[] getTriplet(String valueName) {
+        /*
+        blocks, res/def/atk , action value?
+        */
+        valueName = valueName.toLowerCase();
+        if (valueName.endsWith("_all")) {
+            String root = valueName.replace("_all", "");
+            return new String[]{ root+"_min",root+"_base",root+"_max" };
+        }
+        return new String[0];
+    }
+
+    private boolean checkTripleValue(String valueName) {
+        if (valueName.endsWith("_all"))
+            return true;
+        return false;
     }
 
     private int getIntOrZero(String valueName) {

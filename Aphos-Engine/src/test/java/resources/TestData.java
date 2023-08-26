@@ -58,6 +58,7 @@ public class TestData {
                     "type=Action",
                     "ap_cost=1",
                     "exec_data=brace",
+                    "action_type=defense",
             },
             {
                     "name=sword swing",
@@ -65,6 +66,7 @@ public class TestData {
                     "ap_cost=1",
                     "value=1__2__3",
                     "exec_data=sword swing",
+                    "action_type=standard_attack",
                     "die=10",
             }
     };
@@ -74,15 +76,24 @@ public class TestData {
             "enemies::12=dummling"
     };
 
+    public static void initPassivePresets() {
+
+    }
+
+    public static void initTriggerPresets() {
+        initPreset("Sword Swing", CLOSE_QUARTERS, null, ATTACK, null, false, null, "Strike", null, "");
+
+    }
+
     public static void initAllPresets() {
         //it seems that with this syntax, we can easily create EXEC's from plain strings
         //but what will happen with nested stuff?
-        initPreset("Brace", SELF, null, MODIFY, UNTIL_ATTACK_OR_FALL, true, null, "defense_min;2", null,  "");
+        initPreset("Brace", SELF, null, MODIFY, UNTIL_ATTACK_OR_FALL, true, null, "defense_all;2", null, "");
         //restore hp per formation member - could be a special dynamic counter!
         //already not enough for "Restores Armor or if it is full, grants +3 DEF" ...
 
-        initPreset("Sword Swing", CLOSE_QUARTERS, null, ATTACK, null, false, null, "Strike", null,  "");
-        // initPreset("Quick Shot", RANGED, null, ATTACK, SELF_CHECK, false, null,  "values;2_3_4", null,"loaded_weapon;true");
+        initPreset("Sword Swing", CLOSE_QUARTERS, null, ATTACK, null, false, null, "Strike", null, "");
+        // initPreset("Quick Shot", RANGED, null, ATTACK, SELF_CHECK, false, null,  "values;2__3__4", null,"loaded_weapon;true");
         //
         // //PASSIVE
         // initPreset("Instant Fire", SELF, null, MODIFY, SELF_CHECK, true, null,  "initiative;x2", null,"loaded_weapon;true");

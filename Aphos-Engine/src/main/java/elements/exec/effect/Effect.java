@@ -30,7 +30,7 @@ public abstract class Effect {
         applyThis(ref);
         return effectResult;
     }
-    public abstract void applyThis(EntityRef ref);
+    protected abstract void applyThis(EntityRef ref);
 
     public EffectResult getResult() {
         return effectResult;

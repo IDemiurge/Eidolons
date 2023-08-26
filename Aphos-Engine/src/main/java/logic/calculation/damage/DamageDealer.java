@@ -11,6 +11,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.Map;
 
 import static elements.content.enums.types.CombatTypes.*;
+import static system.log.SysLog.printOut;
 
 /**
  * Created by Alexander on 8/21/2023
@@ -72,6 +73,7 @@ public class DamageDealer {
                 if (buffer > 0) {
                     int remainder = damage - buffer;
                     if (remainder < 0) {
+                        printOut("Absorbed by ", value);
                         /* Absorbed by Armor/Faith/Sanity */
                         // target.addIntValue(value, -damage);
                         return true;

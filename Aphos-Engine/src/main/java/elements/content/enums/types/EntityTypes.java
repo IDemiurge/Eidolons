@@ -20,7 +20,7 @@ public class EntityTypes {
         Extra_Standard_Attack,
         Power_Attack,
         Standard_Attack,
-        Auxiliary_Action, //DEF?
+        Defense, //DEF?
     }
 
     public enum PassiveType {

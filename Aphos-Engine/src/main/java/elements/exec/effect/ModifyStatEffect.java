@@ -10,7 +10,7 @@ import framework.entity.Entity;
 public class ModifyStatEffect extends Effect {
 
     @Override
-    public void applyThis(EntityRef ref) {
+    protected void applyThis(EntityRef ref) {
         Entity target = ref.getTarget();
         String valueName = data.getS("value_name");
         Object value = data.get("value");

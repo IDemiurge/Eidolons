@@ -13,6 +13,7 @@ import java.util.List;
 public class Conditions implements Condition {
     private List<Condition> list = new ArrayList<>();
     private boolean or;
+    private boolean not;
 
     public Condition getLast() {
         return ListMaster.getLast(list);
@@ -27,8 +28,19 @@ public class Conditions implements Condition {
         list.add(condition);
     }
 
+    public List<Condition> getList() {
+        return list;
+    }
+
     @Override
     public boolean check(EntityRef ref) {
+        if (not)
+            return !checkResult(ref);
+        return checkResult(ref);
+
+    }
+
+    private boolean checkResult(EntityRef ref) {
         boolean result = !or;
         for (Condition condition : list) {
             boolean check = condition.check(ref);
@@ -45,4 +57,9 @@ public class Conditions implements Condition {
         }
         return result;
     }
+
+    public void setNot(boolean not) {
+        this.not = not;
+    }
+
 }

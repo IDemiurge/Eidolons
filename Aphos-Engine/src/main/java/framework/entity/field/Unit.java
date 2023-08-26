@@ -1,14 +1,14 @@
 package framework.entity.field;
 
+import combat.init.ActionInitializer;
 import elements.content.enums.FieldConsts;
 import elements.exec.EntityRef;
 import elements.stats.UnitParam;
 import elements.stats.UnitProp;
-import elements.stats.generic.Stat;
 import elements.stats.generic.StatConsts;
-import framework.entity.Entity;
 import framework.entity.sub.ActionSet;
 import framework.entity.sub.OmenStack;
+import framework.entity.sub.PassiveSet;
 import framework.entity.sub.UnitAction;
 import framework.field.FieldPos;
 
@@ -23,7 +23,7 @@ public class Unit extends FieldEntity {
     protected final Boolean ally;
 
     protected ActionSet actionSet; //HeroActionSet?
-    // protected PassiveSet passiveSet;
+    protected PassiveSet passiveSet;
     protected OmenStack omens;
     // protected CountersSet counters; //we can intercept get() for calc of formulas and so keep the valueMap free of these!
 
@@ -36,11 +36,7 @@ public class Unit extends FieldEntity {
         super(valueMap, pos);
         this.ally = ally;
         initCurrentValues();
-        actionSet =combat.init. ActionInitializer.initActionSet(this);
-    }
-
-    public ActionSet getActionSet() {
-        return actionSet;
+        actionSet = ActionInitializer.initActionSet(this);
     }
 
     private void initCurrentValues() {
@@ -51,12 +47,19 @@ public class Unit extends FieldEntity {
         }
     }
 
+
+    //////////////////region GETTERS ////////////////////
+    public ActionSet getActionSet() {
+        return actionSet;
+    }
+    //endregion
+    //////////////////region SHORTCUTS ////////////////////
     public int getAtkOrSp(UnitAction action, EntityRef ref) {
         Boolean min_base_max = null;//        omen.current.get();
         if (action.isSpell()){
-        //sp coef and all that?!
+            //sp coef and all that?!
         }
-      return getInt(StatConsts.getAtkVal(min_base_max));
+        return getInt(StatConsts.getAtkVal(min_base_max));
     }
 
     public int getDefOrRes(UnitAction action, EntityRef ref) {
@@ -71,4 +74,15 @@ public class Unit extends FieldEntity {
     public Object get(UnitProp stat) {
         return super.get(stat);
     }
+    public Boolean isTrue(UnitProp key) {
+        return data.isTrue(key);
+    }
+    public int getInt(UnitParam stat) {
+        return data.getInt(stat);
+    }
+    public String getS(UnitProp stat) {
+        return getS(stat.getName());
+    }
+
+    //endregion
 }

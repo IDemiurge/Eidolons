@@ -16,15 +16,16 @@ public class DefenseActionTest extends BattleInitTest {
         super.test();
 
         Unit unit = combat().getUnitById(0);
-        int before = unit.getInt("defense_min") ;
+        int before = unit.getInt("defense_base") ;
         UnitAction action = unit.getActionSet().getDefense();
         combat().getExecutor().activate(action );
         check(
-                unit.getInt("defense_min") > before);
-        before = unit.getInt("defense_min") ;
+                unit.getInt("defense_base") > before);
+        //check that it stacks
+        before = unit.getInt("defense_base") ;
         combat().getExecutor().activate(action );
         check(
-                unit.getInt("defense_min") > before);
-        //what to check?
+                unit.getInt("defense_base") > before);
+
     }
 }

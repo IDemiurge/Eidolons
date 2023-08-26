@@ -37,7 +37,7 @@ public class AddTriggerFx extends Effect {
     }
 
     @Override
-    public void applyThis(EntityRef ref) {
+    protected void applyThis(EntityRef ref) {
         //clone trigger?!
         //continuous addTriggerEffect does not make much sense now, does it?
         trigger.setTargetRef(ref);

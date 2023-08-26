@@ -15,4 +15,12 @@ public class MapMaster {
         }
         return map;
     }
+
+    public static String represent(Map map) {
+        StringBuilder builder = new StringBuilder("Data: ");
+        for (Object o : map.keySet()) {
+            builder.append(o).append(": ").append(map.get(o));
+        }
+        return builder.toString();
+    }
 }

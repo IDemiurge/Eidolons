@@ -51,6 +51,7 @@ public class EntityRef {
     }
 
 
+
     public enum ReferenceKey {
         Source("Attacker,Source,Self"),
         Target("Attacked"),
@@ -189,6 +190,9 @@ public class EntityRef {
         return this;
     }
 
+    public void setAction(UnitAction action) {
+        set("action", action);
+    }
     public void setDamageType(CombatTypes.DamageType damageType) {
         this.damageType = damageType;
     }

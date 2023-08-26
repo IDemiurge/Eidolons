@@ -3,6 +3,7 @@ package elements.exec.condition;
 import elements.exec.EntityRef;
 import framework.entity.Entity;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -24,7 +25,7 @@ public class ConditionContext {
     }
 
     public void init(EntityRef ref) {
-        ref.setMatch(keyFunc.apply(ref));
+            ref.setMatch(keyFunc.apply(ref));
     }
 
 }

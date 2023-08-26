@@ -9,6 +9,8 @@ public class ActionSet {
     private final  UnitAction power;
     private final UnitAction defense;
 
+    private UnitAction lastAction;
+
     public ActionSet(UnitAction standard, UnitAction power, UnitAction defense) {
         this.standard = standard;
         this.power = power;
@@ -25,5 +27,13 @@ public class ActionSet {
 
     public UnitAction getDefense() {
         return defense;
+    }
+
+    public UnitAction getLastAction() {
+        return lastAction;
+    }
+
+    public void setLastAction(UnitAction lastAction) {
+        this.lastAction = lastAction;
     }
 }

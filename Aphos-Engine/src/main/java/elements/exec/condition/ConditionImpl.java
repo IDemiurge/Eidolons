@@ -12,7 +12,7 @@ public abstract class ConditionImpl implements Condition {
     TypeData data;
 
     protected abstract boolean checkThis(EntityRef ref);
-    public abstract String[] getArgs( );
+    // public abstract String[] getArgs( );
 
     @Override
     public boolean check(EntityRef ref) {
