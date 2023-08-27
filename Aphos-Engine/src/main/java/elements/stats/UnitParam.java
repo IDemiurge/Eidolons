@@ -4,6 +4,7 @@ import elements.stats.generic.Stat;
 
 /**
  * Created by Alexander on 8/2/2023
+ * flexible naming?
  */
 public enum UnitParam implements Stat {
         Hp(true),

@@ -18,6 +18,6 @@ public class ActionInitializer {
     }
 
     private static UnitAction initAction(Unit unit, String actionName) {
-        return new UnitAction(DataManager.getEntityData(actionName), unit);
+        return new UnitAction(DataManager.getActionData(actionName), unit);
     }
 }

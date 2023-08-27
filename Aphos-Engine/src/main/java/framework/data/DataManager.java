@@ -20,13 +20,31 @@ public class DataManager {
     nested stuff - ?
     abils - can just insert xml as string value?
      */
-    static Map<String, Map<String, Object>> dataMap = new LinkedStringMap<>();
+    private static Map<String, Map<String, Object>> unitMap = new LinkedStringMap<>();
+    private static Map<String, Map<String, Object>> actionMap = new LinkedStringMap<>();
+    private static Map<String, Map<String, Object>> passiveMap = new LinkedStringMap<>();
 
-    public static void init(String[][] data) {
-        for (String[] datum : data) {
-            Map<String, Object> collect = stringArrayToMap(datum);
-            dataMap.put(collect.get("name").toString(), collect);
+    public static Map<String, Object> getUnitData(String key) {
+        return unitMap.get(key);
+    }
+    public static Map<String, Object> getActionData(String key) {
+        return actionMap.get(key);
+    }
+    public static Map<String, Object> getPassiveData(String key) {
+        return passiveMap.get(key);
+    }
+
+    public static void addTypeData(String typeKey,String name, Map map){
+        if (typeKey.equalsIgnoreCase("unit")){
+            unitMap.put(name, map);
         }
+        if (typeKey.equalsIgnoreCase("action")){
+            actionMap.put(name, map);
+        }
+        if (typeKey.equalsIgnoreCase("passive")){
+            passiveMap.put(name, map);
+        }
+
     }
     public static Map<String, Object> deconstructDataString(String dataString) {
         Map<String, Object> map = new XLinkedMap<>();
@@ -65,7 +83,21 @@ public class DataManager {
                         .collect(Collectors.toMap(pair -> pair.getLeft().toString(), pair -> getRawValue(pair.getRight().toString())));
     }
 
-    public static Map<String, Object> getEntityData(String key) {
-        return dataMap.get(key);
+    public static Map<String, Map<String, Object>> getUnitMap() {
+        return unitMap;
     }
+
+    public static Map<String, Map<String, Object>> getActionMap() {
+        return actionMap;
+    }
+
+    public static Map<String, Map<String, Object>> getPassiveMap() {
+        return passiveMap;
+    }
+    // public static void init(String[][] data) {
+    //     for (String[] datum : data) {
+    //         Map<String, Object> collect = stringArrayToMap(datum);
+    //         dataMap.put(collect.get("name").toString(), collect);
+    //     }
+    // }
 }

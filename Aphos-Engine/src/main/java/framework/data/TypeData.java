@@ -6,6 +6,7 @@ import elements.stats.generic.Stat;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import system.consts.MathConsts;
+import system.consts.StringConsts;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -48,15 +49,18 @@ public class TypeData {
     }
 
     protected Object initValue(String key, Object o) {
-        if (o.toString().contains("__")){
+        Object val = getRawValue(o);
+
+        String s = StringConsts.MIN_BASE_MAX_SEPARATOR;
+        if (o.toString().contains(s)){
             //triplet value
             Iterator<String> iterator = Arrays.asList(new String[]{"min", "base", "max"}).iterator();
-            for (String s : o.toString().split("__")) {
-                set( key + "_"+iterator.next(), NumberUtils.getInt(s));
+            for (String str : o.toString().split(s)) {
+                set( key + "_"+iterator.next(), NumberUtils.getInt(str));
             }
+        } else {
+            set(key, val);
         }
-        Object val = getRawValue(o);
-        set(key, val);
         return val;
     }
 

@@ -28,7 +28,7 @@ public class AddTriggerFx extends Effect {
 
     public AddTriggerFx(CombatEventType eventType, Condition condition, String execData) {
         this.eventType = eventType;
-        this.trigger = new ExecTrigger(condition, ExecBuilder.getOrCreateExecutable(execData));
+        this.trigger = new ExecTrigger(condition, ExecBuilder.getExecutable(execData));
     }
 
 

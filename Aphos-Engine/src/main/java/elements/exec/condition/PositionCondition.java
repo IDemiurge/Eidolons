@@ -42,6 +42,8 @@ public class PositionCondition extends ConditionImpl {
             //TODO
             //multi pos with all matching positions...
         }
+        //TODO
+        //default - source?
         if (data.has("key")) {
             Object key = data.get("key");
             Entity entity = ref.get(key.toString());

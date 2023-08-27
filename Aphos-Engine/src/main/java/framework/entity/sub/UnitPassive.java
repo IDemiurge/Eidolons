@@ -43,7 +43,7 @@ public class UnitPassive extends UnitSubEntity {
             ref.setMatch(unit);
             if (activationCondition.check(ref)) {
                 //are execs free of side-effects, can they be cached?
-                Executable exec = ExecBuilder.getOrCreateExecutable(getS("exec_data"));
+                Executable exec = ExecBuilder.getExecutable(getS("exec_data"));
                 TargetingTemplates.ConditionTemplate tmplt = null;
                 Condition condition = ConditionBuilder.build(tmplt, DataManager.deconstructDataString(getS("condition_args")));
                 PassiveTrigger trigger = new PassiveTrigger(condition, exec);

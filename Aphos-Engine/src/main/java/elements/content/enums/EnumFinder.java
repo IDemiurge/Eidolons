@@ -36,8 +36,15 @@ public class EnumFinder {
     }
     public static <T> T get(Class<T> clazz, Object value) {
         T[] array = clazz.getEnumConstants();
+            String s = value.toString();
         for (T t : array) {
-            if (t.toString().equalsIgnoreCase(value.toString()))
+            if (t.toString().equalsIgnoreCase(s))
+                return t;
+        }
+
+        s = s.replace(" ", "_");
+        for (T t : array) {
+            if (t.toString().equalsIgnoreCase(s))
                 return t;
         }
         return null;

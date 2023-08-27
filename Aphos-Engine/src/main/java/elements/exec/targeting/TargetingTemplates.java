@@ -27,13 +27,15 @@ public class TargetingTemplates {
     }
 
     public enum TargetingTemplate {
+        TARGET(FIXED, () -> ref -> ref.getMatch() == ref.getPrevTarget()),
         SELF(FIXED, () -> ref -> ref.getMatch() == ref.getSource()),
         // MELEE,
         // RANGE,
         //RAY(ALL, ...
         RANDOM_LEFT_RIGHT(RANDOM,()-> ConditionBuilder.prebuild(true,
-                ConditionTemplate.POS_CHECKS, map("positions=left,right")).or().build()),
+                ConditionTemplate.POS_CHECK, map("positions=left,right")).or().build()),
 
+        MELEE(SELECTIVE, () ->MeleeTargeter.getMeleeCondition()),
 
         CLOSE_QUARTERS(SELECTIVE, () ->MeleeTargeter.getCloseQuartersCondition()),
 
@@ -61,7 +63,7 @@ public class TargetingTemplates {
 
     public enum ConditionTemplate {
         SELF_CHECK,
-        POS_CHECK, POS_CHECKS, UNTIL_ATTACK_OR_FALL
+        POS_CHECK, UNTIL_ATTACK_OR_FALL
 
     }
 }

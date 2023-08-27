@@ -35,6 +35,7 @@ public class ActionExecutor extends BattleHandler {
 
             EntityRef REF = ref.copy();
             targeting.select(REF);
+            ref.setPrevTarget(REF.getTarget());
             applyEffects(effect, REF);
 
             manager.executableActivated(action, REF);

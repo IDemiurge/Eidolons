@@ -1,0 +1,24 @@
+Exec: # These are ONLY for anchors!
+  - Hit_Adj_On_Miss:
+      exec data: &Hit_Adj_On_Miss
+        targeting: self
+        effect:
+          trigger:
+            event: Miss
+            after: true
+            condition: self_source # use , for multiple templates!
+            exec data:
+              targeting:
+                type: Random
+                condition: Pos
+              effect: DamageAttackEffect
+              args:
+                grade: Hit
+                adj: up,down
+
+Sylvans:
+  - Clumsy:
+      exec data:
+        <<: *Hit_Adj_On_Miss
+        args:
+          grade: Graze

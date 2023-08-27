@@ -31,6 +31,7 @@ public class EntityRef {
     private Unit source;
     private FieldEntity target;
     private CombatTypes.DamageType damageType;
+    private FieldEntity prevTarget;
 
     public EntityRef(Unit source) {
         set(ReferenceKey.Source, source);
@@ -49,7 +50,6 @@ public class EntityRef {
     public UnitAction getAction() {
         return (UnitAction) get("action");
     }
-
 
 
     public enum ReferenceKey {
@@ -136,6 +136,11 @@ public class EntityRef {
         return valueString;
     }
 
+
+    public FieldEntity getPrevTarget() {
+        return prevTarget;
+    }
+
     //endregion
 
     //////////////////////region SETTERS
@@ -144,6 +149,9 @@ public class EntityRef {
         return this;
     }
 
+    public void setPrevTarget(FieldEntity prevTarget) {
+        this.prevTarget = prevTarget;
+    }
     public EntityRef set(ReferenceKey reference, Entity entity) {
         map.put(reference.toString(), entity);
         for (String name : reference.altNames.split(",")) {

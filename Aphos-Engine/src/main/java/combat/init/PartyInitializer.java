@@ -35,7 +35,7 @@ public class PartyInitializer {
         for (String name : map.keySet()) {
             Integer posId = NumberUtils.getInt(name);
             FieldPos pos = field.getPos(posId);
-            Map<String, Object> unitData= DataManager.getEntityData(map.get(name).toString());
+            Map<String, Object> unitData= DataManager.getUnitData(map.get(name).toString());
             Set<Unit> units = new HashSet<>();
             units.add(new Unit(unitData, ally, pos));
             //save initial party? What for?

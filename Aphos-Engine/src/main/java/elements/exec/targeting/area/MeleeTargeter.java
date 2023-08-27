@@ -44,4 +44,7 @@ public class MeleeTargeter {
         };
     }
 
+    public static Condition getMeleeCondition() {
+        return null;
+    }
 }

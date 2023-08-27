@@ -1,0 +1,39 @@
+Exec: # These are ONLY for anchors!
+  - Base_Attack:
+      exec_data: &Base_Attack
+        targeting: Melee
+        effect: Attack
+  - Bash:
+      exec_data: &Bash
+        targeting: Target
+        effect: Bash
+Temple:
+  - Sword Swing:
+      ap cost: 2
+      exec data:
+        <<: *Base_Attack
+        targeting: Close Quarters
+        args:
+          value: 2/3/4
+  - Brace:
+      ap cost: 2
+      exec data:
+        targeting: self
+        effect: modify
+        args:
+          value_name: defense_all
+          value: 2
+Sylvans:
+  - Smash:
+      ap cost: 2
+      exec data:
+        - exec:
+            <<: *Base_Attack
+            args:
+              damage_type: Splash
+              value: 2/4/8
+        - exec:
+            <<: *Bash
+            args:
+              value: 4
+              resist: false

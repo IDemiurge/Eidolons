@@ -3,6 +3,7 @@ package elements.exec.effect.framework;
 import elements.exec.effect.Effect;
 import elements.exec.effect.ModifyStatEffect;
 import elements.exec.effect.attack.DamageAttackEffect;
+import elements.exec.effect.counter.BashEffect;
 
 import java.util.function.Supplier;
 
@@ -11,8 +12,9 @@ import java.util.function.Supplier;
  */
 public enum EffectTemplate {
     MODIFY(() -> new ModifyStatEffect()),
-    EFFECT(()-> null),
     ATTACK(()-> new DamageAttackEffect()),
+    BASH(()-> new BashEffect()),
+    EFFECT(()-> null),
 
     ;
     public final Supplier<Effect> supplier;
