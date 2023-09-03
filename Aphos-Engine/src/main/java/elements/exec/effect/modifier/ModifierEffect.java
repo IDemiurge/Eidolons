@@ -1,4 +1,4 @@
-package elements.exec.effect.generic;
+package elements.exec.effect.modifier;
 
 import elements.exec.EntityRef;
 import elements.exec.condition.Condition;

@@ -1,9 +1,8 @@
-package elements.exec.effect.generic;
+package elements.exec.effect.framework.wrap;
 
 import elements.exec.EntityRef;
 import elements.exec.condition.Condition;
 import elements.exec.effect.Effect;
-import elements.exec.effect.framework.EffectResult;
 
 import static combat.sub.BattleManager.combat;
 

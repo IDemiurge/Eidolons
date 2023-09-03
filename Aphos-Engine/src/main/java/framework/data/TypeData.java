@@ -52,7 +52,7 @@ public class TypeData {
         Object val = getRawValue(o);
 
         String s = StringConsts.MIN_BASE_MAX_SEPARATOR;
-        if (o.toString().contains(s)){
+        if (o.toString().contains(s) && !o.toString().contains("=")){
             //triplet value
             Iterator<String> iterator = Arrays.asList(new String[]{"min", "base", "max"}).iterator();
             for (String str : o.toString().split(s)) {

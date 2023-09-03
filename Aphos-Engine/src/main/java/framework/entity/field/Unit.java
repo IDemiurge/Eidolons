@@ -37,6 +37,11 @@ public class Unit extends FieldEntity {
         this.ally = ally;
         initCurrentValues();
         actionSet = ActionInitializer.initActionSet(this);
+        initPerks();
+    }
+
+    private void initPerks() {
+
     }
 
     private void initCurrentValues() {

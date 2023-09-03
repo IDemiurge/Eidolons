@@ -27,6 +27,7 @@ public class DamageCalc {
     private boolean precalc;
     private DamageCalcResult result;
     private RollGrade grade;
+    private Integer[] values;
     // CalcResult  store result and calc process here
 
     public DamageCalc(EntityRef ref) {
@@ -110,22 +111,31 @@ public class DamageCalc {
     }
 
     private int getBaseAmount(RollGrade grade, UnitAction attack) {
-        ActionParam
-                minValue = ActionParam.Value_Min,
-                value = ActionParam.Value_Base,
-                maxValue = ActionParam.Value_Max;
+
+        if (values == null) {
+            ActionParam
+                    minValue = ActionParam.Value_Min,
+                    value = ActionParam.Value_Base,
+                    maxValue = ActionParam.Value_Max;
+            values = new Integer[]{
+                    attack.getInt(minValue),
+                    attack.getInt(value),
+                    attack.getInt(maxValue),
+            };
+        }
+
         switch (grade) {
             case Ultimate:
             case Max:
-                return attack.getInt(maxValue);
+                return values[2];
             case Rnd_Avrg_Max:
-                return random(attack.getInt(value), attack.getInt(maxValue));
+                return random(values[1], values[2]);
             case Avrg:
-                return attack.getInt(value);
+                return values[1];
             case Rnd_Min_Avrg:
-                return random(attack.getInt(minValue), attack.getInt(value));
+                return random(values[0], values[1]);
             case Min:
-                return attack.getInt(minValue);
+                return values[0];
         }
         return 0;
     }
@@ -146,4 +156,9 @@ public class DamageCalc {
     public RollGrade getGrade() {
         return grade;
     }
+
+    public void setValues(Integer... values) {
+        this.values = values;
+    }
+
 }

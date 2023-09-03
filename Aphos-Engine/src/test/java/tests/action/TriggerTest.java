@@ -3,7 +3,7 @@ package tests.action;
 import elements.exec.EntityRef;
 import elements.exec.condition.Condition;
 import elements.exec.condition.ConditionBuilder;
-import elements.exec.effect.generic.AddTriggerFx;
+import elements.exec.effect.framework.wrap.AddTriggerFx;
 import elements.exec.targeting.TargetingTemplates;
 import logic.execution.event.combat.CombatEventType;
 import tests.basic.BattleInitTest;

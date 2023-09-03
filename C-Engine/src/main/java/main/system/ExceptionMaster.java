@@ -18,6 +18,7 @@ import java.util.Set;
 public class ExceptionMaster {
 
     static Set<String> printed = new HashSet<>();
+    private static boolean fileLoggingOn=true;
 
     private static boolean isExceptionTraceLogged(StackTraceElement[] stackTrace) {
         for (StackTraceElement el : stackTrace) {
@@ -26,6 +27,10 @@ public class ExceptionMaster {
             }
         }
         return true;
+    }
+
+    public static void setFileLoggingOn(boolean fileLoggingOn) {
+        ExceptionMaster.fileLoggingOn = fileLoggingOn;
     }
 
     public static void printStackTrace(Exception e) {
@@ -49,7 +54,8 @@ public class ExceptionMaster {
             if (SKIP_WRITE) {
                 return;
             }
-            FileLogManager.logException(e);
+            if (fileLoggingOn)
+                FileLogManager.logException(e);
         }
         //        else
         //            try {

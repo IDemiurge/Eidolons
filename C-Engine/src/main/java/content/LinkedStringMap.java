@@ -8,12 +8,12 @@ public class LinkedStringMap<T> extends LinkedHashMap<String, T> {
 
     @Override
     public T get(Object key) {
-        return super.get(key.toString().toUpperCase());
+        return super.get(key.toString().replace(" ", "_").toUpperCase());
     }
 
     @Override
     public T put(String key, T value) {
-        return super.put(key.toUpperCase(), value);
+        return super.put(key.replace(" ", "_"). toUpperCase(), value);
     }
 
     @Override

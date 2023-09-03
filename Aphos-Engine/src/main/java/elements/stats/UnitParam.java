@@ -4,7 +4,8 @@ import elements.stats.generic.Stat;
 
 /**
  * Created by Alexander on 8/2/2023
- * flexible naming?
+ * //TODO flexible naming? without duplicates in the map?
+ * //Auto-replace on entity init? AYE maybe
  */
 public enum UnitParam implements Stat {
         Hp(true),
@@ -49,7 +50,7 @@ public enum UnitParam implements Stat {
         Spell_block,
 
         //Initiative ?
-;
+        Ap_retain;
         boolean cur;
         boolean bonus; //just to keep it separate from main? transparency aye, but it might complicate some calc
         //if a formula needs final value e.g.!

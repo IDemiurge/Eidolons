@@ -1,5 +1,6 @@
 package framework.data.yaml;
 
+import content.GenericLinkedStringMap;
 import content.LinkedStringMap;
 import elements.exec.ExecBuilder;
 import elements.exec.Executable;
@@ -39,11 +40,13 @@ public class YamlBuilder {
             // Create an instance of your custom Map subclass here
             // For example, if your custom class is CustomHashMap, you can do:
             // return new CustomHashMap<>();
-            return new XLinkedMap<>(); // Using HashMap for demonstration
+            return new GenericLinkedStringMap<>(); // Using HashMap for demonstration
         }
     }
     public void buildYamlFile(String filename, String typeKey, String listNameProp, boolean parseVars) {
+        // Yaml yaml = new Yaml(new CustomMapConstructor());
         Yaml yaml = new Yaml();
+
 
         //set map constructor to STR!
         // Map<String, List<Map>> load = new LinkedStringMap();

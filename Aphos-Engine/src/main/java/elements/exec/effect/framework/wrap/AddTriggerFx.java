@@ -1,4 +1,4 @@
-package elements.exec.effect.generic;
+package elements.exec.effect.framework.wrap;
 
 import elements.content.enums.EnumFinder;
 import elements.exec.EntityRef;
@@ -13,6 +13,8 @@ import static combat.sub.BattleManager.combat;
 
 /**
  * Created by Alexander on 8/24/2023
+ *
+ * is this a wrapper or superclass??
  */
 public class AddTriggerFx extends Effect {
     private CombatEventType eventType;

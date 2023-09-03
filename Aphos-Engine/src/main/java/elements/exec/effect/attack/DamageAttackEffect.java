@@ -16,6 +16,7 @@ public class DamageAttackEffect extends AttackEffect {
         ref.setDamageType(data.getEnum( "damage_type", CombatTypes.DamageType.class));
         DamageCalc damageCalc = new DamageCalc(ref);
         damageCalc.setGrade(grade);
+        damageCalc.setValues(data.getInt("value_min"), data.getInt("value_base"), data.getInt("value_max"));
         DamageCalcResult result = damageCalc.calculate(false);
         if (result.isMiss()){
             // handleMiss();

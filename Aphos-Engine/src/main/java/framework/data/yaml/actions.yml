@@ -26,6 +26,7 @@ Temple:
 Sylvans:
   - Smash:
       ap cost: 2
+      die: 10
       exec data:
         - exec:
             <<: *Base_Attack
