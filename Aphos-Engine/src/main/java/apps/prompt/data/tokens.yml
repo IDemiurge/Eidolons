@@ -1,0 +1,24 @@
+# this format will lock tokens in single type/subtype
+# we wanna support inter-type mixing also?
+author:
+  - token:
+      text: seb mckinnon
+      meta_data: default
+  - token:
+      text: seb mckinnon
+      meta_data: default
+content:
+  - token:
+      text: bla
+      meta_data:
+      #would be cool to shape this from our abstract dataset! Realms, chars, themes
+      # wazzup with weights? just by position also?
+#content:
+#  Event_Pic:
+#    intro:
+#      - token: evil magic
+
+
+
+
+
