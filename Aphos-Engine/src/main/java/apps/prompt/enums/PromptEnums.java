@@ -13,12 +13,31 @@ public class PromptEnums {
 
     //use real game enums?
     public enum TokenType {
-        style,
+        // style,
         input,
-        content,
-        pic_type,
-        author,
-        generic,
+        // content,
+        // pic_type,
+        // author,
+        // generic,
+
+
+        content_scene_temple,
+        content_character_temple,
+
+        content_character_wicked,
+        content_character_bone,
+        content_character_ice,
+        content_character_anphis,
+        content_character_winter_kingdom,
+        content_env_wicked,
+        content_env_bone,
+        content_env_ice,
+        content_env_winter_kingdom,
+        content_scene_victim,
+        content_env_desert,
+        content_character_desert,
+        content_env_autumn,
+        content_character_autumn,
     }
 
     public enum PromptType {

@@ -17,7 +17,8 @@ public class TokenParser {
         //what if we just remove
         if (token.getType()== PromptEnums.TokenType.input)
             return token.getInput();
-        return PromptTextData.current.get(token.getType(), token.getPromptType(), createWeightMap((Weighted) token.getSubtype()));
+        return PromptTextData.current.get(token.getType(), token.getPromptType(), null );
+        // return PromptTextData.current.get(token.getType(), token.getPromptType(), createWeightMap((Weighted) token.getSubtype()));
     }
 
     private static WeightMap<String> createWeightMap(Weighted subtype) {

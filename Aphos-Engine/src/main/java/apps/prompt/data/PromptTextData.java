@@ -1,8 +1,10 @@
 package apps.prompt.data;
 
 import elements.content.enums.EnumFinder;
+import main.system.auxiliary.CloneMaster;
 import main.system.datatypes.WeightMap;
 import org.apache.commons.lang3.tuple.Pair;
+import system.CollectionsX;
 
 import java.util.*;
 
@@ -17,11 +19,15 @@ public class PromptTextData {
     private Object nullKey="!";
 
     static Map<TokenType, Map<String, Set<String>>> typeMap_= new HashMap<>();
-    Map<TokenType, Map<String, Set<String>>> typeMap;
+    Map<TokenType, Map<String, Set<String>>> typeMap= new HashMap<>();
 
     public static void reset() {
         current = new PromptTextData();
-        // cloneData(current);
+        cloneData(current);
+    }
+
+    private static void cloneData(PromptTextData current) {
+        current.typeMap = (Map<TokenType, Map<String, Set<String>>>) CloneMaster.deepCopy(typeMap_);
     }
 
     public static void init(TokenType type, Set<Pair<String, String>> data) {
@@ -37,6 +43,9 @@ public class PromptTextData {
     private static void add(Map<String, Set<String>> map, String text, String metaData) {
         //add to all maps that are referenced
         for (String s : metaData.split(",")) {
+            if (metaData.contains("disabled")){
+                return;
+            }
             s = s.trim();
             map.computeIfAbsent(s, k -> new LinkedHashSet<>()).add(text);
         }
@@ -51,23 +60,25 @@ public class PromptTextData {
     weightmap per subtype then? And for each tag, we will have a list of token-texts!
      */
     public String get(TokenType type, PromptType promptType, WeightMap<String> subtype) {
-
-        if (type == TokenType.generic){
-
-        }
-        if (type == TokenType.author){
-
-        }
-        if (type == TokenType.pic_type){
-
-        }
+        // if (type == TokenType.generic){
+        //
+        // }
+        // if (type == TokenType.author){
+        //
+        // }
+        // if (type == TokenType.pic_type){
+        //
+        // }
 
         Map<String, Set<String>> map = typeMap.get(type);
-        String random = subtype.getRandomByWeight();
+        // String random = subtype.getRandomByWeight();
         //will it always have this key?
 
-        Set<String> strings = map.get(random);
-        return system.CollectionsX.getRandomWithOrderPriority(strings);
+        // Set<String> strings = map.get(random);
+        Set<String> strings = map.get("default");
+        String random = CollectionsX.getRandomElement(new ArrayList<>(strings) , 1.25);
+        strings.remove(random);
+        return random;
 
         //how to implement weights here?
         // map = (Map) map.get(promptType);
