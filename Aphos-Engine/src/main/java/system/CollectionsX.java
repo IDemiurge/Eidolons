@@ -10,9 +10,9 @@ import java.util.*;
  * Created by Alexander on 9/2/2023
  */
 public class CollectionsX {
-    public static <T> T getRandomElement(T[] array, double firstToLastRatio) {
+    public static <T> T getRandomElement(List<T> array, double firstToLastRatio) {
         Random rand = new Random();
-        int n = array.length;
+        int n = array.size();
 
         // Calculate the total weight using the arithmetic sequence formula: n/2 * (first + last)
         double totalWeight = (double) n / 2 * (1 + firstToLastRatio);
@@ -26,7 +26,7 @@ public class CollectionsX {
             double currentWeight = 1 + i * (firstToLastRatio - 1) / (n - 1);
             cumulativeWeight += currentWeight;
             if (randomWeight <= cumulativeWeight) {
-                return array[i];
+                return array.get(i);
             }
         }
         return null ;  // This should not happen if the algorithm is correct
@@ -39,7 +39,7 @@ public class CollectionsX {
             map.put(s+"", 0);
         }
         for (int i = 0; i < 10000; i++) {
-            String random = String.valueOf(getRandomElement(array, .3));
+            String random = String.valueOf(getRandomElement(Arrays.asList(array), .3));
             map.put(random, map.get(random)+1);
         }
         System.lineSeparator();

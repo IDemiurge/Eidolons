@@ -13,11 +13,12 @@ import java.util.List;
 public class PromptBuilder {
     private static Prompt lastPrompt;
 
-    public static String build(PromptModel model) {
+    public static String build(PromptModel model, TokenMixer.PromptTemplate t) {
         PromptTextData.reset();
 
         StringBuilder sb = new StringBuilder();
         TokenMixer mixer = new TokenMixer();
+        mixer.setTemplate(t);
         List<Token> tokens= mixer.createTokens(model);
 
         String fixedInput = model.getFixedInput();

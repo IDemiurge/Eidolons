@@ -19,6 +19,12 @@ public class PromptEnums {
         // pic_type,
         // author,
         // generic,
+        lava_env_noun,
+        lava_env_adj,
+        lava_char_noun,
+        lava_char_adj,
+        lava_theme_noun,
+        lava_theme_adj,
 
 
         content_scene_temple,

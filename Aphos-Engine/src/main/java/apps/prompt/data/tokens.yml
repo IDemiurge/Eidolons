@@ -84,7 +84,7 @@ content_character_autumn:
       meta_data: default
   - token:
       text: Enchanted Flutist
-      meta_data: default
+      meta_data: disabled
   - token:
       text: Whispering Ent
       meta_data: default
@@ -99,7 +99,7 @@ content_character_autumn:
       meta_data: default
   - token:
       text: Luscious flautist
-      meta_data: default
+      meta_data: disabled
   - token:
       text: Reaper of Crops
       meta_data: disabled

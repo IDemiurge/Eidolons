@@ -1,12 +1,12 @@
 package apps.prompt;
 
-import apps.JOption;
 import apps.prompt.data.PromptDataManager;
 import apps.prompt.enums.PromptEnums;
+import apps.prompt.token.TokenMixer;
 import campaign.data.enums.AssetEnums;
 import main.system.util.DialogMaster;
+import main.system.util.EnumChooser;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -29,7 +29,6 @@ public class SdPromptGen {
 
         PromptDataManager.read();
 
-        while (true) {
 
             PromptEnums.PromptStyle style = null;
             PromptEnums.PromptType type = PromptEnums.PromptType.Event_Pic;
@@ -38,7 +37,11 @@ public class SdPromptGen {
             Object subType = AssetEnums.AphosEventType.fascination;
             PromptModel promptModel = new PromptModel(style, type, subType, input);
 
-            String build = new PromptBuilder().build(promptModel);
+        TokenMixer.PromptTemplate template =  new EnumChooser().choose(TokenMixer.PromptTemplate.class);
+            while (true) {
+
+
+            String build = new PromptBuilder().build(promptModel, template);
 
             build += "close-up, epic view, low angle, scene illustration dramatic lighting " +
                     "Foreshadowing, " +
