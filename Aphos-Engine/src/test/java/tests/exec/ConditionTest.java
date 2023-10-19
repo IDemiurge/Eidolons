@@ -3,7 +3,6 @@ package tests.exec;
 import elements.exec.EntityRef;
 import elements.exec.condition.Condition;
 import elements.exec.condition.ConditionBuilder;
-import elements.exec.targeting.TargetingTemplates;
 import framework.data.DataManager;
 import tests.basic.BattleInitTest;
 
@@ -19,7 +18,7 @@ public class ConditionTest extends BattleInitTest {
     public void test() {
         super.test();
         String data="value=4;key=Armor";
-        Condition build = ConditionBuilder.build(SELF_CHECK, DataManager.deconstructDataString(data));
+        Condition build = ConditionBuilder.build(SELF_VALUE_CHECK, DataManager.deconstructDataString(data));
 
         check(build.check(new EntityRef(ally)));
         ally.setCur("armor", 1);

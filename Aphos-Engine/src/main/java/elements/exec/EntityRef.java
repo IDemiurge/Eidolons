@@ -32,6 +32,8 @@ public class EntityRef {
     private FieldEntity target;
     private CombatTypes.DamageType damageType;
     private FieldEntity prevTarget;
+    private EntityRef eventRef;
+    public static final String EVENT_PREFIX = "event_";
 
     public EntityRef(Unit source) {
         set(ReferenceKey.Source, source);
@@ -88,6 +90,21 @@ public class EntityRef {
         return ref;
     }
 
+    public EntityRef reversed() {
+        if (!(target instanceof Unit)) {
+            //error
+            return this;
+        }
+        EntityRef copy = copy();
+        copy.reverse();
+        return copy;
+    }
+
+    private void reverse() {
+        FieldEntity buffered = source;
+        source = (Unit) target;
+        target = buffered;
+    }
     //endregion
 
 
@@ -105,6 +122,9 @@ public class EntityRef {
     }
 
     public Entity get(String key) {
+        if (key.startsWith(EVENT_PREFIX)) {
+            return eventRef.get(key.substring((EVENT_PREFIX.length())));
+        }
         return map.get(key);
     }
 
@@ -112,15 +132,17 @@ public class EntityRef {
     public CombatTypes.DamageType getDamageType() {
         return damageType;
     }
+
     public Integer getValueInt() {
         return valueInt;
     }
 
     public void applyToTargets(Consumer<FieldEntity> toApply) {
-        if (group !=null)
+        if (group != null)
             group.getTargets().forEach(toApply);
         toApply.accept(getTarget());
     }
+
     public TargetGroup getGroup() {
         return group;
     }
@@ -141,6 +163,10 @@ public class EntityRef {
         return prevTarget;
     }
 
+    public EntityRef getEventRef() {
+        return eventRef;
+    }
+
     //endregion
 
     //////////////////////region SETTERS
@@ -149,9 +175,6 @@ public class EntityRef {
         return this;
     }
 
-    public void setPrevTarget(FieldEntity prevTarget) {
-        this.prevTarget = prevTarget;
-    }
     public EntityRef set(ReferenceKey reference, Entity entity) {
         map.put(reference.toString(), entity);
         for (String name : reference.altNames.split(",")) {
@@ -164,6 +187,15 @@ public class EntityRef {
         this.valueInt = valueInt;
         return this;
     }
+
+    public void setEventRef(EntityRef eventRef) {
+        this.eventRef = eventRef;
+    }
+
+    public void setPrevTarget(FieldEntity prevTarget) {
+        this.prevTarget = prevTarget;
+    }
+
 
     public EntityRef setGroup(TargetGroup group) {
         this.group = group;
@@ -201,6 +233,7 @@ public class EntityRef {
     public void setAction(UnitAction action) {
         set("action", action);
     }
+
     public void setDamageType(CombatTypes.DamageType damageType) {
         this.damageType = damageType;
     }

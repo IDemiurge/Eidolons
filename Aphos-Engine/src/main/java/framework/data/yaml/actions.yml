@@ -1,4 +1,8 @@
-Exec: # These are ONLY for anchors!
+Exec:
+  - Kill_Self:
+      exec_data: &Kill_Self
+        targeting: Self
+        effect: Kill
   - Base_Attack:
       exec_data: &Base_Attack
         targeting: Melee
@@ -8,6 +12,9 @@ Exec: # These are ONLY for anchors!
         targeting: Target
         effect: Bash
 Temple:
+  - Kill Self:
+      exec data:
+        <<: *Kill_Self
   - Sword Swing:
       ap cost: 2
       exec data:

@@ -38,7 +38,7 @@ public class AddTriggerFx extends Effect {
     protected void applyThis(EntityRef ref) {
         //clone trigger?!
         //continuous addTriggerEffect does not make much sense now, does it?
-        trigger.setTargetRef(ref);
+        trigger.setTargetRef(ref.copy());
         combat().getEventHandler().addTrigger(trigger, eventType);
     }
 }

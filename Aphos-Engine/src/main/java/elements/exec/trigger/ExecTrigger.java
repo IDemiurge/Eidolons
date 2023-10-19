@@ -14,14 +14,13 @@ public class ExecTrigger implements Trigger<EntityRef> {
     private final Condition condition;
     private final Executable executable;
     private Condition retainCondition;
-    private EntityRef lastRef;
-    private EntityRef targetRef;
+    private EntityRef targetRef; //if from passive - ?
 
     public ExecTrigger(Condition condition, Executable executable) {
         this.condition = condition;
         this.executable = executable;
         retainCondition = ref -> true;
-        lastRef = new EntityRef(); //may lead to NPE's?
+        // lastRef = new EntityRef(); //may lead to NPE's?
     }
 
     public void apply(EntityRef arg) {
@@ -42,24 +41,26 @@ public class ExecTrigger implements Trigger<EntityRef> {
 
     @Override
     public EntityRef getTargetRef() {
-        return null;
+        return targetRef;
     }
 
     public void setRetainCondition(Condition retainCondition) {
         this.retainCondition = retainCondition;
     }
 
-    public boolean check(EntityRef ref) {
-        lastRef = ref;
-        return condition.check(ref);
-    }
 
     public void setTargetRef(EntityRef targetRef) {
         this.targetRef = targetRef;
     }
 
-    public EntityRef getLastRef() {
-        return lastRef;
-    }
+
+    // private EntityRef lastRef;
+    // public boolean check(EntityRef ref) {
+    //     lastRef = ref;
+    //     return condition.check(ref);
+    // }
+    // public EntityRef getLastRef() {
+    //     return lastRef;
+    // }
 
 }

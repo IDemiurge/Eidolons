@@ -4,12 +4,15 @@ import elements.exec.EntityRef;
 import elements.exec.condition.Condition;
 import elements.exec.condition.ConditionBuilder;
 import elements.exec.effect.framework.wrap.AddTriggerFx;
-import elements.exec.targeting.TargetingTemplates;
 import logic.execution.event.combat.CombatEventType;
 import tests.basic.BattleInitTest;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static combat.sub.BattleManager.combat;
+import static elements.exec.targeting.TargetingTemplates.ConditionTemplate.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Alexander on 8/24/2023
@@ -19,24 +22,21 @@ public class TriggerTest extends BattleInitTest {
     @Override
     public void test() {
         super.test();
-        /*
-        Clumsy: misses result in grazing random allies left/right
-        Attack with preset grade
-        Random targeting
-        Miss event
-         */
-        String grazeLeftRight="grazeLeftRight";
-        Map map=new HashMap();
-        Condition sourceAttack = ConditionBuilder.build(
-                TargetingTemplates.ConditionTemplate.SELF_CHECK, map);
+        String toTrigger="kill self";
+        Map map=new HashMap(); //should have a separate class for arg map?
+        map.put("key", "event_target");
+        Condition sourceAttack = ConditionBuilder.build(map,
+                IDENTITY_CHECK, TARGET);
 
-        EntityRef ref=new EntityRef();
+        EntityRef ref=new EntityRef(ally);
         //so this would be applied by passive - with default retain condition of ... source is alive
+        ref.setTarget(enemy);
+        new AddTriggerFx(CombatEventType.Unit_Attack_Misses, sourceAttack, toTrigger).apply(ref);
 
-        new AddTriggerFx(CombatEventType.Unit_Attack_Misses, sourceAttack, grazeLeftRight).apply(ref);
+        ref = ref.reversed();
+        combat().event(CombatEventType.Unit_Attack_Misses, ref);
 
-
-
+        assertTrue(enemy.isDead());
     }
 
 

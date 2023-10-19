@@ -8,6 +8,7 @@ import elements.exec.condition.Condition;
  * or should we just use a flag?
  */
 public class PassiveTrigger extends ExecTrigger {
+    // should know its source!
     public PassiveTrigger(Condition condition, Executable executable) {
         super(condition, executable);
     }

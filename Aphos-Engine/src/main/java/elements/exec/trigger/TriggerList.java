@@ -33,7 +33,8 @@ public class TriggerList {
     public void check(EntityRef ref, Map argMap, EventResult result) {
         //add argmap to ref? or what is it for?
         for (Trigger trigger : triggers) {
-            if (trigger.getCondition().check(ref)) {
+
+            if (trigger.checkVsOriginalRef(ref)) {
                 if (trigger instanceof MapModTrigger){
                     trigger.apply(argMap);
                 } else {

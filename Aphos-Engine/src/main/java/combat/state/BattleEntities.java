@@ -2,7 +2,9 @@ package combat.state;
 
 import combat.BattleHandler;
 import combat.sub.BattleManager;
+import elements.exec.EntityRef;
 import elements.stats.UnitParam;
+import elements.stats.UnitProp;
 import elements.stats.generic.StatConsts;
 import framework.entity.Entity;
 import framework.entity.field.FieldEntity;
@@ -10,12 +12,15 @@ import framework.entity.field.FieldOmen;
 import framework.entity.field.HeroUnit;
 import framework.entity.field.Unit;
 import framework.entity.sub.UnitAction;
+import logic.execution.event.combat.CombatEventType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static combat.sub.BattleManager.combat;
 
 /**
  * Created by Alexander on 8/22/2023
@@ -108,6 +113,11 @@ public class BattleEntities extends BattleHandler {
         for (Unit unit : getUnits()) {
             unit.toBase();
         }
+    }
+
+    public void kill(EntityRef ref, boolean body) {
+        ref.getTarget().setValue(UnitProp.Dead, true);
+        combat().event(body ? CombatEventType.Unit_Death_Body : CombatEventType.Unit_Death_Soul, ref);
     }
 
     //endregion

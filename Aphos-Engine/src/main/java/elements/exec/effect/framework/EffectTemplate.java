@@ -1,6 +1,7 @@
 package elements.exec.effect.framework;
 
 import elements.exec.effect.Effect;
+import elements.exec.effect.KillEffect;
 import elements.exec.effect.ModifyStatEffect;
 import elements.exec.effect.attack.DamageAttackEffect;
 import elements.exec.effect.counter.BashEffect;
@@ -14,6 +15,7 @@ public enum EffectTemplate {
     MODIFY(() -> new ModifyStatEffect()),
     ATTACK(()-> new DamageAttackEffect()),
     BASH(()-> new BashEffect()),
+    KILL(()-> new KillEffect()),
     EFFECT(()-> null),
 
     ;

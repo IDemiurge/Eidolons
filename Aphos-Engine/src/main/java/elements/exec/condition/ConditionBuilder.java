@@ -7,11 +7,11 @@ import java.util.Map;
 
 /**
  * Created by Alexander on 8/25/2023
- *
+ * <p>
  * self().alive(). etc
  */
 public class ConditionBuilder {
-    private Conditions conditions= new Conditions();
+    private Conditions conditions = new Conditions();
     Map args;
 
     public ConditionBuilder(Map args) {
@@ -33,58 +33,70 @@ public class ConditionBuilder {
         value:
 
      */
+    public static Condition build( Map args, TargetingTemplates.ConditionTemplate... conditionTmlt) {
+        ConditionBuilder builder = new ConditionBuilder(args);
+        for (TargetingTemplates.ConditionTemplate template : conditionTmlt) {
+              prebuild(false, template, args, builder);
+        }
+        return builder.build();
+    }
     public static Condition build(TargetingTemplates.ConditionTemplate conditionTmlt, Map args) {
         return prebuild(conditionTmlt, args).build();
     }
+
     public static ConditionBuilder prebuild(TargetingTemplates.ConditionTemplate conditionTmlt, Map args) {
         return prebuild(false, conditionTmlt, args);
     }
-    public static ConditionBuilder prebuild(boolean targeting, TargetingTemplates.ConditionTemplate conditionTmlt, Map args) {
-        //can condition be represented as chain? Kind of... need an  endOr() then
-        ConditionBuilder builder = new ConditionBuilder(args);
-        switch (conditionTmlt) {
-            case POS_CHECK -> {
-                return builder.pos();
-            }
-            case SELF_CHECK -> {
-                //"targeted condition?"
-                return builder.value(args).self();
-                //can we add data later?
-            }
 
-            case UNTIL_ATTACK_OR_FALL -> {
-                return builder.not().isAttack().lastAction();
-                // return builder.not().or().isAttack().lastAction().status().wounded();
+    public static ConditionBuilder prebuild(boolean targeting, TargetingTemplates.ConditionTemplate conditionTmlt, Map args) {
+        return prebuild(targeting, conditionTmlt,  args, new ConditionBuilder(args));
+    }
+    public static ConditionBuilder prebuild(boolean targeting, TargetingTemplates.ConditionTemplate conditionTmlt, Map args, ConditionBuilder builder) {
+        //can condition be represented as chain? Kind of... need an  endOr() then
+
+        return switch (conditionTmlt) {
+            case POS_CHECK -> builder.pos();
+            case TARGET -> builder.target();
+            case SELF -> builder.self();
+            case SELF_IDENTITY_CHECK -> builder.identity("source");
+            case IDENTITY_CHECK -> builder.identity(args);
+            case SELF_VALUE_CHECK ->
+                    builder.value(args).self(); //"targeted condition?"
+            //can we add data later?
+            case UNTIL_ATTACK_OR_FALL -> // return builder.not().or().isAttack().lastAction().status().wounded();
                 //this is actually more like a trigger-remove?!
                 //we can kinda fake it via adding some status to units that have attacked... or via last-action-check!
-            }
-        }
-        return null;
+                    builder.not().isAttack().lastAction();
+        };
+
     }
 
     ///////////////// region BASE METHODS
-    public Condition build(){
+    public Condition build() {
         append(args);
         return conditions;
     }
 
-    public  ConditionBuilder append(ConditionContext context) {
+    public ConditionBuilder append(ConditionContext context) {
         conditions.getLast().setContext(context);
         //func use!
         // conditions.getLast().setContext(new ConditionContext(ref -> ref.getTarget()));
         return this;
     }
-    public  ConditionBuilder append(Map args) {
+
+    public ConditionBuilder append(Map args) {
         Condition last = conditions.getLast();
         for (String arg : last.getArgs()) {
             last.getData().set(arg, args.get(arg));
         }
         return this;
     }
-    public  ConditionBuilder append(Condition condition, Map args) {
+
+    public ConditionBuilder append(Condition condition, Map args) {
         return append(condition).append(args);
     }
-    public  ConditionBuilder append(Condition condition) {
+
+    public ConditionBuilder append(Condition condition) {
         if (condition instanceof ConditionImpl) {
             conditions.add(condition);
         } else {
@@ -107,25 +119,33 @@ public class ConditionBuilder {
         }
         return this;
     }
+
     public ConditionBuilder or() {
         conditions.setOr(true);
         return this;
     }
+
     //endregion
     ///////////////// region CONTEXT
     public ConditionBuilder self() {
         append(new ConditionContext("source"));
         return this;
     }
+    public ConditionBuilder target() {
+        append(new ConditionContext("target"));
+        return this;
+    }
+
     public ConditionBuilder lastAction() {
         // append(new ConditionContext(ref -> ref.getSource().getActionSet().getLastAction()));
         append(new AdvancedContext(ref -> ref.setAction(ref.getSource().getActionSet().getLastAction())));
         return this;
     }
+
     //endregion
     ///////////////// region CONDITION
     private ConditionBuilder pos() {
-       return  append(new PositionCondition());
+        return append(new PositionCondition());
     }
 
     public ConditionBuilder isAttack() {
@@ -134,10 +154,20 @@ public class ConditionBuilder {
         );
         return this;
     }
-    public  ConditionBuilder value(Map args) {
-        return comparison(args.get("value")).append(args);
+
+    public ConditionBuilder value(Map args) {
+        if (args.containsKey("value"))
+            return comparison(args.get("value")).append(args);
+        return this;
     }
 
+    public ConditionBuilder identity(Map args) {
+        return identity(args.get("key").toString());
+    }
+    public ConditionBuilder identity(String key) {
+        append(new IdentityCondition(key.toString()));
+        return this;
+    }
     public ConditionBuilder comparison(Object value) {
         if (value.getClass() == Integer.class) {
             conditions.add(new IntCondition());
