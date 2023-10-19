@@ -2,6 +2,7 @@ package elements.exec.trigger;
 
 import elements.exec.EntityRef;
 import elements.exec.condition.Condition;
+import system.log.SysLog;
 
 public interface Trigger<T> {
     void apply(T arg);
@@ -14,7 +15,9 @@ public interface Trigger<T> {
         return getCondition().check(ref);
     }
     default boolean checkVsOriginalRef(EntityRef ref) {
+        SysLog.printOut(SysLog.LogChannel.Main, "Applied", "on", ref);
         getTargetRef().setEventRef(ref);
-        return getCondition().check(getTargetRef());
+        boolean check = getCondition().check(getTargetRef());
+        return check;
     }
 }

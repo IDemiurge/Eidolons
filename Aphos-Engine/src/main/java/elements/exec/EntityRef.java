@@ -8,6 +8,8 @@ import framework.entity.field.FieldEntity;
 import framework.entity.field.Unit;
 import framework.entity.sub.UnitAction;
 import logic.execution.event.IdRef;
+import main.system.auxiliary.StringMaster;
+import system.StringUtils;
 
 import java.util.Map;
 import java.util.function.Consumer;
@@ -73,7 +75,9 @@ public class EntityRef {
 
     @Override
     public String toString() {
-        return super.toString();
+        if (map.size() <= 3)
+            return StringUtils.build("Ref: ", " | ", source, target, match == null ? "" : match);
+        return StringUtils.build("Ref: ", " | ", source, target, match == null ? "" :match, "and", map.size() - 3, "more");
     }
 
     @Override
@@ -87,6 +91,7 @@ public class EntityRef {
         ref.match = match;
         ref.source = source;
         ref.target = target;
+        ref.eventRef = eventRef;
         return ref;
     }
 

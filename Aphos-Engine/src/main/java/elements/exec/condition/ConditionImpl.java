@@ -17,7 +17,10 @@ public abstract class ConditionImpl implements Condition {
     @Override
     public boolean check(EntityRef ref) {
         if (context != null)
+        {
+            ref = ref.copy();
             context.init(ref);
+        }
         return checkThis(ref);
     }
 

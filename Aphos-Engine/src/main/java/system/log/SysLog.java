@@ -1,7 +1,9 @@
 package system.log;
 
+import org.apache.log4j.chainsaw.Main;
 import system.ListMaster;
 import system.MapMaster;
+import system.StringUtils;
 
 import java.util.Collection;
 import java.util.Map;
@@ -10,21 +12,28 @@ import java.util.Map;
  * Created by Alexander on 8/25/2023
  */
 public class SysLog {
-    public static final void printOut(Object... toLog){
 
-        StringBuilder builder = new StringBuilder("Data: ");
-        for (Object o : toLog) {
-            if (o instanceof Map)
-                builder.append(MapMaster.represent((Map) o));
-            else
-            if (o instanceof Collection)
-                builder.append(ListMaster.represent((Collection) o));
-            else
-                builder.append(o);
+    public static final void printOut(int logLevel, Object... toLog){
+        // new LogPriority(logLevel)
+    }
+    public static final void printOut( Object... toLog){
+        printOut(LogChannel.Main, toLog);
+    }
+    public static final void printOut(LogMeta meta, Object... toLog){
+        if (!checkLogged(meta))
+            return;
+       System.out.println(StringUtils.build("System: ", " ", toLog));
+    }
 
-            builder.append(", ");
+    private static boolean checkLogged(LogMeta meta) {
+        if (meta instanceof LogChannel channel){
+            //
         }
-       System.out.println(builder.toString());
+        return true;
+    }
+
+    public enum LogChannel implements LogMeta{
+        Main,
     }
     ////////////////////region STD LOG SHORTCUTS
 
