@@ -1,0 +1,22 @@
+Temple:
+  - Turn Test:
+      Pos_Front_1: Soldier
+      Pos_Rear: Soldier
+      Pos_Flank_Top: Soldier
+      Pos_Back_2: Crossbowman
+  - Standard Temple:
+      Pos_Front_1: Soldier
+      Pos_Front_2: Soldier
+      Pos_Front_3: Soldier
+      Pos_Back_2: Crossbowman
+Sylvan:
+  - Turn Test Enemy:
+      Pos_Front_1: Reveler
+      Pos_Flank_Top: Reveler
+      Pos_Van_Top: Reveler
+      Pos_Back_2: Nymph
+  - Standard Sylvan:
+      Pos_Front_1: Reveler
+      Pos_Front_2: Reveler
+      Pos_Front_3: Reveler
+      Pos_Back_2: Nymph
