@@ -32,6 +32,7 @@ public class YamlBuilder {
         buildYamlFile("units", "Unit", "Faction", false);
         buildYamlFile("actions", "Action", "Faction", true);
         buildYamlFile("passives", "Passive", "Faction", true);
+        buildYamlFile("party", "Party", "Faction", true);
         //PERKS can really just be an ENUM !
     }
     class CustomMapConstructor extends SafeConstructor {
@@ -46,7 +47,6 @@ public class YamlBuilder {
     public void buildYamlFile(String filename, String typeKey, String listNameProp, boolean parseVars) {
         // Yaml yaml = new Yaml(new CustomMapConstructor());
         Yaml yaml = new Yaml();
-
 
         //set map constructor to STR!
         // Map<String, List<Map>> load = new LinkedStringMap();

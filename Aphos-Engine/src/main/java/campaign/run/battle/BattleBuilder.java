@@ -14,17 +14,21 @@ import java.util.Map;
  */
 public class BattleBuilder extends RunHandler {
 
+    public static final  String ALLIES= "allies";
+    public static final  String ENEMIES= "enemies";
+    public static final  String SEPARATOR= "::";
+
     public BattleSetup build(String[] data) {
         Map<String, Object> map = new HashMap<>();
         BattleSetup.CombatParty allies = null;
         BattleSetup.CombatParty enemies = null;
         for (String datum : data) {
-            String key = datum.split("::")[0];
-            String value = datum.split("::")[1];
-            if (key.equalsIgnoreCase("allies")) {
+            String key = datum.split(SEPARATOR)[0];
+            String value = datum.split(SEPARATOR)[1];
+            if (key.equalsIgnoreCase(ALLIES)) {
                 allies = new BattleSetup.CombatParty(value, true);
             } else
-            if (key.equalsIgnoreCase("enemies")) {
+            if (key.equalsIgnoreCase(ENEMIES)) {
                 enemies = new BattleSetup.CombatParty(value, false);
             } else {
                 map = DataManager.stringArrayToMap(value.split(";"));

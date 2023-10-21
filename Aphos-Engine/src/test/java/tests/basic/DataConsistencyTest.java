@@ -43,7 +43,7 @@ public class DataConsistencyTest extends BattleInitTest {
     }
 
     private void testType(Map typeData) {
-        Unit unit = new Unit(typeData, true);
+        Unit unit = new Unit(typeData, 1);
         unit.getActionSet();
         List<Object> invalid = new ArrayList<>();
         for (UnitParam value : UnitParam.values()) {
@@ -58,11 +58,12 @@ public class DataConsistencyTest extends BattleInitTest {
     }
 
     private boolean valueCanBe999(Unit unit, UnitParam value) {
-
+        if (value == UnitParam.Initiative)
+            return true;
         if (value == UnitParam.Essence || value == UnitParam.Essence_Max || value == UnitParam.Power) {
             return !unit.isTrue(UnitProp.Daemon);
         }
-            if (value == UnitParam.Sanity || value == UnitParam.Sanity_Max) {
+        if (value == UnitParam.Sanity || value == UnitParam.Sanity_Max) {
             return unit.isTrue(UnitProp.Pure);
         }
         if (value == UnitParam.Faith || value == UnitParam.Faith_Max) {

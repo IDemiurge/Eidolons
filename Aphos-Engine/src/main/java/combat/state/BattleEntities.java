@@ -17,6 +17,7 @@ import framework.entity.sub.UnitAction;
 import logic.execution.event.combat.CombatEventType;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static combat.sub.BattleManager.combat;
@@ -58,6 +59,26 @@ public class BattleEntities extends BattleHandler {
     public List<Unit> getUnits() {
         // return entityMaps.get(Unit.class).values().stream().collect(Collectors.toList());
         return getEntityList(Unit.class);
+    }
+    public List<Unit> getAlliedUnits() {
+        return getFilteredList(Unit.class, e-> e.isAlly());
+    }
+    public List<Unit> getEnemyUnits() {
+        return getFilteredList(Unit.class, e-> !e.isAlly());
+    }
+    // public List<Unit> sorted(List<Unit> list) {
+    //     return list.stream().sorted(getComparator()).collect(Collectors.toList());
+    // }
+
+    @SuppressWarnings("unchecked")
+    public <T extends Entity> List<T> getFilteredList(Class<T> clazz, Predicate<T>... predicates) {
+        return (List<T>) entityMaps.get(clazz).values().stream().filter(e -> {
+                    for (Predicate<T> predicate : predicates) {
+                        if (!predicate.test((T) e)) return false;
+                    }
+                    return true;
+                }).
+                collect(Collectors.toList());
     }
 
     public <T extends Entity> List<T> getEntityList(Class<T> clazz) {

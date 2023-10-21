@@ -7,6 +7,7 @@ import combat.init.PartyInitializer;
 import combat.init.BattleSetup;
 import combat.state.BattleEntities;
 import combat.state.BattleState;
+import combat.turns.TurnHandler;
 import elements.exec.EntityRef;
 import framework.entity.Entity;
 import framework.entity.field.Unit;
@@ -34,6 +35,7 @@ public class BattleManager {
     private final BattleState battleState;
     private final CombatEventHandler eventHandler;
     private final ActionExecutor executor;
+    private final TurnHandler turnHandler;
 
     public BattleManager(BattleSetup battleSetup) {
         this.battleSetup = battleSetup;
@@ -43,6 +45,7 @@ public class BattleManager {
         handlers.add(battleState = new BattleState(this));
         handlers.add(eventHandler = new CombatEventHandler(this));
         handlers.add(executor = new ActionExecutor(this));
+        handlers.add(turnHandler = new TurnHandler(this));
         // what should we do with ALL handlers?
         // on game end? On event?
     }
@@ -95,6 +98,11 @@ public class BattleManager {
     public ActionExecutor getExecutor() {
         return executor;
     }
+
+    public TurnHandler getTurnHandler() {
+        return turnHandler;
+    }
+
     //endregion
 
     public void event(CombatEventType type, EntityRef ref, Object... args) {

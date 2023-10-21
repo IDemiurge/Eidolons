@@ -41,7 +41,6 @@ public enum UnitParam implements Stat {
         Resistance_Base,
         Resistance_Max,
 
-        // Bonus_,
 
 
         DR, //DR - make duplicate entries in map? Not the best idea
@@ -53,7 +52,9 @@ public enum UnitParam implements Stat {
         //Initiative ?
         Ap_retain,
         Moves_retain,
+        Initiative,
 
+        // Bonus_, should we have a separate param for that?..
         ;
         boolean cur;
         boolean bonus; //just to keep it separate from main? transparency aye, but it might complicate some calc

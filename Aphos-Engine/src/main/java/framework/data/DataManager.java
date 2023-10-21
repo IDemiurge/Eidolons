@@ -23,9 +23,13 @@ public class DataManager {
     private static Map<String, Map<String, Object>> unitMap = new LinkedStringMap<>();
     private static Map<String, Map<String, Object>> actionMap = new LinkedStringMap<>();
     private static Map<String, Map<String, Object>> passiveMap = new LinkedStringMap<>();
+    private static Map<String, Map<String, Object>> partyMap = new LinkedStringMap<>();
 
     public static Map<String, Object> getUnitData(String key) {
         return unitMap.get(key);
+    }
+    public static Map<String, Object> getPartyData(String key) {
+        return partyMap.get(key);
     }
     public static Map<String, Object> getActionData(String key) {
         return actionMap.get(key);
@@ -34,18 +38,22 @@ public class DataManager {
         return passiveMap.get(key);
     }
 
-    public static void addTypeData(String typeKey,String name, Map map){
-        if (typeKey.equalsIgnoreCase("unit")){
-            unitMap.put(name, map);
-        }
-        if (typeKey.equalsIgnoreCase("action")){
-            actionMap.put(name, map);
-        }
-        if (typeKey.equalsIgnoreCase("passive")){
-            passiveMap.put(name, map);
-        }
-
+    public static void addTypeData(String typeKey,String name, Map data){
+        Map map = getTypeMap(typeKey);
+        map.put(name, data);
     }
+
+    public static Map getTypeMap(String typeKey) {
+        return switch(typeKey.toLowerCase()){
+            case "action": yield actionMap;
+            case "passive": yield passiveMap;
+            case "unit": yield unitMap;
+            case "party": yield partyMap;
+            default:
+                throw new RuntimeException("No type map for " + typeKey);
+        };
+    }
+
     public static Map<String, Object> deconstructDataString(String dataString) {
         Map<String, Object> map = new XLinkedMap<>();
         for (String substring : ContainerUtils.openContainer(dataString)) {

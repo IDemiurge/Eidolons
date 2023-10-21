@@ -11,7 +11,6 @@ import framework.entity.sub.OmenStack;
 import framework.entity.sub.PassiveSet;
 import framework.entity.sub.UnitAction;
 import framework.field.FieldPos;
-import system.consts.MathConsts;
 
 import java.util.Map;
 
@@ -20,21 +19,21 @@ import java.util.Map;
  * there a good way to use Aggregation?
  */
 public class Unit extends FieldEntity {
-    protected final Boolean ally;
 
+    private final int faction;
     protected ActionSet actionSet; //HeroActionSet?
     protected PassiveSet passiveSet;
     protected OmenStack omens;
     // protected CountersSet counters; //we can intercept get() for calc of formulas and so keep the valueMap free of these!
 
-    public Unit(Map<String, Object> valueMap, Boolean ally) {
-        this(valueMap, ally, new FieldPos(ally ? FieldConsts.Cell.Reserve_ally : FieldConsts.Cell.Reserve_enemy));
+    public Unit(Map<String, Object> valueMap, int faction) {
+        this(valueMap, faction  , new FieldPos(faction  > 0  ? FieldConsts.Cell.Reserve_ally : FieldConsts.Cell.Reserve_enemy));
         //create w/o pos to deploy later? Or with default 'reserve pos'? To make it non-null!
     }
 
-    public Unit(Map<String, Object> valueMap, Boolean ally, FieldPos pos) {
+    public Unit(Map<String, Object> valueMap, int faction, FieldPos pos) {
         super(valueMap, pos);
-        this.ally = ally;
+        this.faction = faction;
         initCurrentValues();
         actionSet = ActionInitializer.initActionSet(this);
         initPerks();
@@ -96,8 +95,12 @@ public class Unit extends FieldEntity {
         return getS(stat.getName());
     }
 
-    public Boolean isAlly() {
-        return ally;
+    public boolean isAlly() {
+        return faction > 0;
+    }
+
+    public int initiative() {
+        return getInt(UnitParam.Initiative);
     }
 
     //endregion

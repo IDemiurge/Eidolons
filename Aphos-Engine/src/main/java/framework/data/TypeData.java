@@ -18,6 +18,7 @@ import static framework.data.DataManager.getRawValue;
  * Created by Alexander on 8/23/2023
  */
 public class TypeData {
+    //TODO float?
     protected final Map<String, Integer> intMap = new LinkedStringMap<>();
     protected final Map<String, String> stringMap = new LinkedStringMap<>();
     protected final Map<String, Boolean> boolMap = new LinkedStringMap<>();

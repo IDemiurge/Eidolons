@@ -15,6 +15,8 @@ import java.util.Set;
  */
 public class PartyInitializer {
 
+    private static final int ALLY = 1;
+    private static final int ENEMY = -1;
     private final BattleField field;
     private final BattleSetup setup;
 
@@ -37,7 +39,8 @@ public class PartyInitializer {
             FieldPos pos = field.getPos(posId);
             Map<String, Object> unitData= DataManager.getUnitData(map.get(name).toString());
             Set<Unit> units = new HashSet<>();
-            units.add(new Unit(unitData, ally, pos));
+            int faction = ally ? ALLY : ENEMY;
+            units.add(new Unit(unitData, faction, pos));
             //save initial party? What for?
         }
     }
