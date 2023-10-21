@@ -4,7 +4,7 @@ import elements.stats.generic.Stat;
 
 public enum UnitProp implements Stat {
     //bools | qualities
-    Pure, Infiltrator, Agile, Large, Summoned,
+    Daemon, Pure, Infiltrator, Agile, Large, Summoned,
     Dead, Death_Door,
 
     //bools | statuses

@@ -21,19 +21,19 @@ public class AttackTest extends BattleInitTest {
     public void test() {
         super.test();
 
-        Weaver.inNewThread(()->
-                combat().getExecutor().activate(
-                        ally.getActionSet().getStandard()));
-        WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.SELECTION);
-        WaitMaster.WAIT(1000);
-        int id = enemy.getId();
-        //simulation eh?
-        client().receivedEvent(UserEventType.Selection, id);
-        DialogMaster.confirm("Attacked!");
+        // Weaver.inNewThread(()->
+        //         combat().getExecutor().activate(
+        //                 ally.getActionSet().getStandard()));
+        // WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.SELECTION);
+        // WaitMaster.WAIT(1000);
+        // int id = enemy.getId();
+        // //simulation eh?
+        // client().receivedEvent(UserEventType.Selection, id);
+        // DialogMaster.confirm("Attacked!");
 
         //access results statically?
 
-
+        stdAttack(enemy, ally);
         int hp = enemy.getInt("hp");
         int armor = enemy.getInt("armor");
         int ap = ally.getInt("ap");

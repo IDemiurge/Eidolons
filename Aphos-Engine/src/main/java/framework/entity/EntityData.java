@@ -1,7 +1,10 @@
 package framework.entity;
 
 import content.LinkedStringMap;
+import elements.stats.UnitParam;
 import elements.stats.generic.Stat;
+import elements.stats.generic.StatConsts;
+import system.consts.MathConsts;
 
 import java.util.Map;
 
@@ -20,8 +23,17 @@ public class EntityData extends framework.data.TypeData {
 
     public EntityData(Map<String, Object> valueMap) {
         super(valueMap);
+        initDefaultValues();
     }
 
+    private void initDefaultValues() {
+        //if missing, set default value
+        for (UnitParam val : StatConsts.unitDefaultVals) {
+            if (getInt(val) == MathConsts.minValue){
+                initValue(val.getName(), StatConsts.getDefault(val));
+            }
+        }
+    }
     protected Object initValue(String key, Object o) {
         Object val = super.initValue(key, o);
         setBase(key, val);

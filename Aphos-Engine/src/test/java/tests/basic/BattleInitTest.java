@@ -56,7 +56,7 @@ public class BattleInitTest extends AphosTest {
         int id = target.getId();
         //simulation eh?
         client().receivedEvent(UserEventType.Selection, id);
-        DialogMaster.confirm("Attacked!");
+        DialogMaster.confirm(unit + " Attacked " + target);
 
     }
 

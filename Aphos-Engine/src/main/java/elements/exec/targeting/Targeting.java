@@ -40,27 +40,26 @@ public class Targeting {
         this.condition = condition;
     }
 
+    public Condition getCondition() {
+        return condition;
+    }
+
     public void select(EntityRef ref) {
-
         //if there is only Self - will auto-target (if some option is checked)
-
         //modify conditions based on data
-
         /*
         FIXED - single always?
         ALL
         SELECTIVE (++ multi hits)
-
          */
-        List<FieldEntity> fieldEntities = combat().getEntities().getFieldEntities();//should we always start with that list? then remove omens/obst/..
-        // filter( condition.check())
-
-        //how to easily assemble filters? Should have some MNGR for that
-
-        //here we determine if there is Manual Selection
-
-        fieldEntities.removeIf(e -> !condition.check(ref.setMatch(e)));
+        // List<FieldEntity> fieldEntities = combat().getEntities().getFieldEntities();//should we always start with that list? then remove omens/obst/..
+        // // filter( condition.check())
+        // //how to easily assemble filters? Should have some MNGR for that
+        // //here we determine if there is Manual Selection
+        // fieldEntities.removeIf(e -> !condition.check(ref.setMatch(e)));
         // single = true;
+
+        List<FieldEntity> fieldEntities = combat().getEntities().targetFilter(ref, this);
 
         if (type == TargetingTemplates.TargetingType.RANDOM){
             // if ( data.has(TargetingParams.Number_Of_Targets))
@@ -83,6 +82,7 @@ public class Targeting {
         } else
         if (type == TargetingTemplates.TargetingType.SELECTIVE){
             WaitMaster.receiveInput(WaitMaster.WAIT_OPERATIONS.SELECTION, fieldEntities);
+
             Object o = WaitMaster.waitForInput(WaitMaster.WAIT_OPERATIONS.SELECT_BF_OBJ);
             fieldEntities = (List<FieldEntity>) o;
             if (fieldEntities.size() == 1) {

@@ -86,7 +86,10 @@ public class DamageCalc {
                 amount = ref.getValueInt();
             } else {
                 int baseAmount = getBaseAmount(grade, attack);
-                float mod = getUltimateModifier(attack, attacker, attacked);
+                float mod = 1;
+                if (grade == RollGrade.Ultimate) {
+                    getUltimateModifier(attack, attacker, attacked);
+                }
                 amount = Math.round(baseAmount * mod);
             }
 

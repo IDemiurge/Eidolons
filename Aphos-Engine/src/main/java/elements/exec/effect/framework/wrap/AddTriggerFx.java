@@ -18,6 +18,8 @@ import static combat.sub.BattleManager.combat;
  */
 public class AddTriggerFx extends Effect {
     private CombatEventType eventType;
+    private final Condition condition;
+    private final String execData;
     private ExecTrigger trigger;
 
     @Override
@@ -30,7 +32,8 @@ public class AddTriggerFx extends Effect {
 
     public AddTriggerFx(CombatEventType eventType, Condition condition, String execData) {
         this.eventType = eventType;
-        this.trigger = new ExecTrigger(condition, ExecBuilder.getExecutable(execData));
+        this.condition = condition;
+        this.execData = execData;
     }
 
 
@@ -38,6 +41,9 @@ public class AddTriggerFx extends Effect {
     protected void applyThis(EntityRef ref) {
         //clone trigger?!
         //continuous addTriggerEffect does not make much sense now, does it?
+        if (trigger==null){
+            this.trigger = new ExecTrigger(condition, ExecBuilder.getExecutable(execData));
+        }
         trigger.setTargetRef(ref.copy());
         combat().getEventHandler().addTrigger(trigger, eventType);
     }

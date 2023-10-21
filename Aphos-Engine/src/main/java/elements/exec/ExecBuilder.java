@@ -2,9 +2,12 @@ package elements.exec;
 
 import content.LinkedStringMap;
 import elements.content.enums.EnumFinder;
+import elements.exec.condition.Condition;
 import elements.exec.condition.ConditionBuilder;
 import elements.exec.effect.Effect;
 import elements.exec.effect.framework.EffectTemplate;
+import elements.exec.effect.framework.wrap.AddTriggerFx;
+import elements.exec.effect.framework.wrap.ContinuousEffect;
 import framework.data.yaml.YamlBuilder;
 import elements.exec.targeting.Targeting;
 import elements.exec.targeting.TargetingTemplates.ConditionTemplate;
@@ -35,7 +38,6 @@ public class ExecBuilder {
         return execMap.get(execKey);
     }
 
-
     public static Executable build(Object o) {
         List<Pair<Targeting, Effect>> fx = new ArrayList<>();
         if (o instanceof Collection){
@@ -47,31 +49,42 @@ public class ExecBuilder {
         return new ActionExecutable(fx);
     }
 
+    //if maps to string - TEMPLATE; else - nested construct
     private static Pair<Targeting, Effect> buildPair(Map o) {
-        //TODO  TRIGGER
-        //if maps to string - TEMPLATE; else - nested construct
-
+        //TODO  TRIGGER ???
         Map args = (Map) o.get("args");
         if (args == null) {
             args = new HashMap();
         }
         Targeting targeting = createTargeting(o.get("targeting"), args);
-        Effect effect = createEffect(o.get("effect"), args);
-
+        Effect effect = createEffect(o.get("effect"), o.get("retain"), args);
         Pair<Targeting, Effect> pair = new ImmutablePair<>(targeting, effect);
         return pair;
     }
 
-    private static Effect createEffect(Object effectNode, Map args) {
+    private static Effect createEffect(Object effectNode,Object retainNode, Map args) {
         if (effectNode instanceof String) {
             EffectTemplate effectTemplate = EnumFinder.get(EffectTemplate.class, effectNode.toString());
             Effect effect= effectTemplate.supplier.get();
             effect.setData(new TypeData(args));
+            if (retainNode!=null){
+                Condition retain = null; //can be just duration? can be empty - i.e. Permanent?
+                if (retainNode instanceof String condTempl){
+                    retain = ConditionBuilder.build(condTempl, args);
+                } else {
+                    //nested map?
+                }
+                effect = new ContinuousEffect(effect, retain);
+            }
             return effect;
             // return ExecPresetConstructor.createTemplateEffect(effect, args);
         } else {
-            if (((Map) effectNode).containsKey("trigger")) {
-//TODO
+            if (effectNode instanceof Map map){
+                Object trigger = map.get("trigger");
+                //TODO
+                if (trigger instanceof Map triggerMap){
+                    // return new AddTriggerFx(event, condition, data);
+                }
             }
         }
         return null;

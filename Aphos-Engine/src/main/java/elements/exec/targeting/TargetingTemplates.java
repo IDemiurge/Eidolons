@@ -67,7 +67,8 @@ public class TargetingTemplates {
         SELF_VALUE_CHECK,
         SELF_IDENTITY_CHECK,
         IDENTITY_CHECK,
-        POS_CHECK, UNTIL_ATTACK_OR_FALL
+        POS_CHECK,
+        UNTIL_ATTACK_OR_FALL
 
     }
 }

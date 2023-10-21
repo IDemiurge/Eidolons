@@ -17,7 +17,7 @@ public class ConditionTest extends BattleInitTest {
     @Override
     public void test() {
         super.test();
-        String data="value=4;key=Armor";
+        String data="value=3;key=Armor";
         Condition build = ConditionBuilder.build(SELF_VALUE_CHECK, DataManager.deconstructDataString(data));
 
         check(build.check(new EntityRef(ally)));

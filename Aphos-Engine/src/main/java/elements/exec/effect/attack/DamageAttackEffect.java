@@ -21,9 +21,8 @@ public class DamageAttackEffect extends AttackEffect {
         if (result.isMiss()){
             // handleMiss();
         }
-        // effectResult.addAll(result.getData());
         DamageResult finalResult = DamageDealer.deal(result);
-
+        effectResult.addAll(finalResult);
         combat() .stats().add(finalResult);
         // effectResult.addAll(finalResult.getData());
     }

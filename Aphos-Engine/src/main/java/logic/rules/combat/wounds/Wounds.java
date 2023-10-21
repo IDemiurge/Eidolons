@@ -17,7 +17,7 @@ public class Wounds {
         if (value == UnitParam.Sanity) {
             sanityWounds.apply(excessDamage, ref);
         } else
-        if (value == UnitParam.Hp) {
+        if (value == UnitParam.Health) {
             DeathDoorRule.apply(ref);
             hpWounds.apply(excessDamage, ref);
 

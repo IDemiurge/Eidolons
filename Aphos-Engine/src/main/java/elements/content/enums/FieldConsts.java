@@ -1,12 +1,13 @@
 package elements.content.enums;
 
+import elements.exec.targeting.area.CellSets;
 import framework.field.FieldPos;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
+
+import static elements.exec.targeting.area.CellSets.*;
 
 /**
  * Created by Alexander on 6/13/2023 what other static data do we need?
@@ -14,7 +15,8 @@ import java.util.stream.Collectors;
 public class FieldConsts {
     public static final Map<Cell, Set<Cell>> adjMap = new HashMap<>();
     public static final Map<Cell, Map<Direction, Cell>> adjMapDirection = new HashMap<>();
-//IDEA: what if the order of this set determined Direction? ...
+
+    //IDEA: what if the order of this set determined Direction? ...
     // OR we could try to use X:Y here
     //Special logic: Flank - has 2 pos on bottom?! Well, it's bottom_left/right! interesting...
     public static void putAdj(Cell key, Set<Cell> set){
@@ -30,44 +32,40 @@ public class FieldConsts {
         // }
     }
     static {
-        putAdj(Cell.Front_Enemy_1, toSet(Cell.Vanguard_Top, Cell.Back_Enemy_2, Cell.Back_Enemy_1, Cell.Front_Enemy_2, Cell.Top_Flank_Enemy));
-        adjMap.put(Cell.Front_Enemy_2, toSet(Cell.Vanguard_Top, Cell.Vanguard_Bot, Cell.Back_Enemy_3, Cell.Back_Enemy_2, Cell.Back_Enemy_1, Cell.Front_Enemy_1, Cell.Front_Enemy_3));
-        adjMap.put(Cell.Front_Enemy_3, toSet(Cell.Vanguard_Bot, Cell.Back_Enemy_2, Cell.Back_Enemy_3, Cell.Front_Enemy_2, Cell.Bottom_Flank_Enemy));
+        putAdj(Cell.Front_Enemy_1, Set.of(Cell.Vanguard_Top, Cell.Back_Enemy_2, Cell.Back_Enemy_1, Cell.Front_Enemy_2, Cell.Top_Flank_Enemy));
+        adjMap.put(Cell.Front_Enemy_2, Set.of(Cell.Vanguard_Top, Cell.Vanguard_Bot, Cell.Back_Enemy_3, Cell.Back_Enemy_2, Cell.Back_Enemy_1, Cell.Front_Enemy_1, Cell.Front_Enemy_3));
+        adjMap.put(Cell.Front_Enemy_3, Set.of(Cell.Vanguard_Bot, Cell.Back_Enemy_2, Cell.Back_Enemy_3, Cell.Front_Enemy_2, Cell.Bottom_Flank_Enemy));
 
-        adjMap.put(Cell.Back_Enemy_2, toSet(Cell.Rear_Enemy, Cell.Back_Enemy_1, Cell.Back_Enemy_3, Cell.Front_Enemy_1, Cell.Front_Enemy_2, Cell.Front_Enemy_3));
-        adjMap.put(Cell.Back_Enemy_3, toSet(Cell.Rear_Enemy, Cell.Back_Enemy_2, Cell.Front_Enemy_3, Cell.Front_Enemy_2, Cell.Bottom_Flank_Enemy));
+        adjMap.put(Cell.Back_Enemy_2, Set.of(Cell.Rear_Enemy, Cell.Back_Enemy_1, Cell.Back_Enemy_3, Cell.Front_Enemy_1, Cell.Front_Enemy_2, Cell.Front_Enemy_3));
+        adjMap.put(Cell.Back_Enemy_3, Set.of(Cell.Rear_Enemy, Cell.Back_Enemy_2, Cell.Front_Enemy_3, Cell.Front_Enemy_2, Cell.Bottom_Flank_Enemy));
 
-        adjMap.put(Cell.Back_Enemy_1, toSet(Cell.Rear_Enemy, Cell.Back_Enemy_2, Cell.Front_Enemy_1, Cell.Front_Enemy_2, Cell.Top_Flank_Enemy));
-        adjMap.put(Cell.Back_Enemy_2, toSet(Cell.Rear_Enemy, Cell.Back_Enemy_1, Cell.Back_Enemy_3, Cell.Front_Enemy_1, Cell.Front_Enemy_2, Cell.Front_Enemy_3));
-        adjMap.put(Cell.Back_Enemy_3, toSet(Cell.Rear_Enemy, Cell.Back_Enemy_2, Cell.Front_Enemy_3, Cell.Front_Enemy_2, Cell.Bottom_Flank_Enemy));
-        adjMap.put(Cell.Bottom_Flank_Enemy, toSet(Cell.Rear_Enemy, Cell.Vanguard_Bot, Cell.Back_Enemy_3, Cell.Front_Enemy_3, Cell.Bottom_Flank_Player));
-        adjMap.put(Cell.Top_Flank_Enemy, toSet(Cell.Rear_Enemy, Cell.Vanguard_Top, Cell.Back_Enemy_1, Cell.Front_Enemy_1, Cell.Top_Flank_Player));
-        adjMap.put(Cell.Rear_Enemy, toSet(Cell.Back_Enemy_1, Cell.Back_Enemy_2, Cell.Back_Enemy_3, Cell.Bottom_Flank_Enemy, Cell.Top_Flank_Enemy));
+        adjMap.put(Cell.Back_Enemy_1, Set.of(Cell.Rear_Enemy, Cell.Back_Enemy_2, Cell.Front_Enemy_1, Cell.Front_Enemy_2, Cell.Top_Flank_Enemy));
+        adjMap.put(Cell.Back_Enemy_2, Set.of(Cell.Rear_Enemy, Cell.Back_Enemy_1, Cell.Back_Enemy_3, Cell.Front_Enemy_1, Cell.Front_Enemy_2, Cell.Front_Enemy_3));
+        adjMap.put(Cell.Back_Enemy_3, Set.of(Cell.Rear_Enemy, Cell.Back_Enemy_2, Cell.Front_Enemy_3, Cell.Front_Enemy_2, Cell.Bottom_Flank_Enemy));
+        adjMap.put(Cell.Bottom_Flank_Enemy, Set.of(Cell.Rear_Enemy, Cell.Vanguard_Bot, Cell.Back_Enemy_3, Cell.Front_Enemy_3, Cell.Bottom_Flank_Player));
+        adjMap.put(Cell.Top_Flank_Enemy, Set.of(Cell.Rear_Enemy, Cell.Vanguard_Top, Cell.Back_Enemy_1, Cell.Front_Enemy_1, Cell.Top_Flank_Player));
+        adjMap.put(Cell.Rear_Enemy, Set.of(Cell.Back_Enemy_1, Cell.Back_Enemy_2, Cell.Back_Enemy_3, Cell.Bottom_Flank_Enemy, Cell.Top_Flank_Enemy));
 
-        adjMap.put(Cell.Front_Player_1, toSet(Cell.Vanguard_Top, Cell.Back_Player_2, Cell.Back_Player_1, Cell.Front_Player_2, Cell.Top_Flank_Player));
-        adjMap.put(Cell.Front_Player_2, toSet(Cell.Vanguard_Top, Cell.Vanguard_Bot, Cell.Back_Player_3, Cell.Back_Player_2, Cell.Back_Player_1, Cell.Front_Player_1, Cell.Front_Player_3));
-        adjMap.put(Cell.Front_Player_3, toSet(Cell.Vanguard_Bot, Cell.Back_Player_2, Cell.Back_Player_3, Cell.Front_Player_2, Cell.Bottom_Flank_Player));
+        adjMap.put(Cell.Front_Player_1, Set.of(Cell.Vanguard_Top, Cell.Back_Player_2, Cell.Back_Player_1, Cell.Front_Player_2, Cell.Top_Flank_Player));
+        adjMap.put(Cell.Front_Player_2, Set.of(Cell.Vanguard_Top, Cell.Vanguard_Bot, Cell.Back_Player_3, Cell.Back_Player_2, Cell.Back_Player_1, Cell.Front_Player_1, Cell.Front_Player_3));
+        adjMap.put(Cell.Front_Player_3, Set.of(Cell.Vanguard_Bot, Cell.Back_Player_2, Cell.Back_Player_3, Cell.Front_Player_2, Cell.Bottom_Flank_Player));
 
-        adjMap.put(Cell.Back_Player_2, toSet(Cell.Rear_Player, Cell.Back_Player_1, Cell.Back_Player_3, Cell.Front_Player_1, Cell.Front_Player_2, Cell.Front_Player_3));
-        adjMap.put(Cell.Back_Player_3, toSet(Cell.Rear_Player, Cell.Back_Player_2, Cell.Front_Player_3, Cell.Front_Player_2, Cell.Bottom_Flank_Player));
+        adjMap.put(Cell.Back_Player_2, Set.of(Cell.Rear_Player, Cell.Back_Player_1, Cell.Back_Player_3, Cell.Front_Player_1, Cell.Front_Player_2, Cell.Front_Player_3));
+        adjMap.put(Cell.Back_Player_3, Set.of(Cell.Rear_Player, Cell.Back_Player_2, Cell.Front_Player_3, Cell.Front_Player_2, Cell.Bottom_Flank_Player));
 
-        adjMap.put(Cell.Back_Player_1, toSet(Cell.Rear_Player, Cell.Back_Player_2, Cell.Front_Player_1, Cell.Front_Player_2, Cell.Top_Flank_Player));
-        adjMap.put(Cell.Back_Player_2, toSet(Cell.Rear_Player, Cell.Back_Player_1, Cell.Back_Player_3, Cell.Front_Player_1, Cell.Front_Player_2, Cell.Front_Player_3));
-        adjMap.put(Cell.Back_Player_3, toSet(Cell.Rear_Player, Cell.Back_Player_2, Cell.Front_Player_3, Cell.Front_Player_2, Cell.Bottom_Flank_Player));
-        adjMap.put(Cell.Bottom_Flank_Player, toSet(Cell.Rear_Player, Cell.Vanguard_Bot, Cell.Back_Player_3, Cell.Front_Player_3, Cell.Bottom_Flank_Enemy));
-        adjMap.put(Cell.Top_Flank_Player, toSet(Cell.Rear_Player, Cell.Vanguard_Top, Cell.Back_Player_1, Cell.Front_Player_1, Cell.Top_Flank_Enemy));
-        adjMap.put(Cell.Rear_Player, toSet(Cell.Back_Player_1, Cell.Back_Player_2, Cell.Back_Player_3, Cell.Bottom_Flank_Player, Cell.Top_Flank_Player));
+        adjMap.put(Cell.Back_Player_1, Set.of(Cell.Rear_Player, Cell.Back_Player_2, Cell.Front_Player_1, Cell.Front_Player_2, Cell.Top_Flank_Player));
+        adjMap.put(Cell.Back_Player_2, Set.of(Cell.Rear_Player, Cell.Back_Player_1, Cell.Back_Player_3, Cell.Front_Player_1, Cell.Front_Player_2, Cell.Front_Player_3));
+        adjMap.put(Cell.Back_Player_3, Set.of(Cell.Rear_Player, Cell.Back_Player_2, Cell.Front_Player_3, Cell.Front_Player_2, Cell.Bottom_Flank_Player));
+        adjMap.put(Cell.Bottom_Flank_Player, Set.of(Cell.Rear_Player, Cell.Vanguard_Bot, Cell.Back_Player_3, Cell.Front_Player_3, Cell.Bottom_Flank_Enemy));
+        adjMap.put(Cell.Top_Flank_Player, Set.of(Cell.Rear_Player, Cell.Vanguard_Top, Cell.Back_Player_1, Cell.Front_Player_1, Cell.Top_Flank_Enemy));
+        adjMap.put(Cell.Rear_Player, Set.of(Cell.Back_Player_1, Cell.Back_Player_2, Cell.Back_Player_3, Cell.Bottom_Flank_Player, Cell.Top_Flank_Player));
         
-        adjMap.put(Cell.Vanguard_Top, toSet(Cell.Vanguard_Bot,  Cell.Front_Enemy_2, Cell.Front_Enemy_1,Cell.Front_Player_2, Cell.Front_Player_1, Cell.Top_Flank_Enemy));
-        adjMap.put(Cell.Vanguard_Bot, toSet(Cell.Vanguard_Top,  Cell.Front_Enemy_2, Cell.Front_Enemy_3,Cell.Front_Player_2, Cell.Front_Player_3, Cell.Bottom_Flank_Enemy));
+        adjMap.put(Cell.Vanguard_Top, Set.of(Cell.Vanguard_Bot,  Cell.Front_Enemy_2, Cell.Front_Enemy_1,Cell.Front_Player_2, Cell.Front_Player_1, Cell.Top_Flank_Enemy));
+        adjMap.put(Cell.Vanguard_Bot, Set.of(Cell.Vanguard_Top,  Cell.Front_Enemy_2, Cell.Front_Enemy_3,Cell.Front_Player_2, Cell.Front_Player_3, Cell.Bottom_Flank_Enemy));
     }
 
     public static Set<Cell> getAdjacent(Cell cell) {
         return adjMap.get(cell);
-    }
-
-    private static Set<Cell> toSet(Cell... positions) {
-        return Arrays.stream(positions).collect(Collectors.toSet());
     }
 
     public static Cell getAdjacent(Cell cell, Direction direction) {
@@ -126,32 +124,33 @@ public class FieldConsts {
         Reserve_ally(999, 999, CellType.Reserve),
         Reserve_enemy(666, 666, CellType.Reserve),
 
-        Vanguard_Bot(302,1,  CellType.Van), //2 vals? /100 and %100
-        Vanguard_Top(302,1,  CellType.Van),
-        Rear_Player(0,1,  CellType.Rear),
-        Rear_Enemy(0, 1, CellType.Rear),
+        Vanguard_Bot(0,1,  CellType.Van), //2 vals? /100 and %100
+        Vanguard_Top(0,2,  CellType.Van),
+        //TODO SWAP minus
+        Rear_Player(3,1,  CellType.Rear),
+        Rear_Enemy(-3, 1, CellType.Rear),
 
         Top_Flank_Player(100, 3, CellType.Flank),
-        Top_Flank_Enemy(0, 3, CellType.Flank),
+        Top_Flank_Enemy(-100, 3, CellType.Flank),
 
-        Bottom_Flank_Player(0, -1, CellType.Flank),
-        Bottom_Flank_Enemy(0, -1, CellType.Flank),
+        Bottom_Flank_Player(100, -1, CellType.Flank),
+        Bottom_Flank_Enemy(-100, -1, CellType.Flank),
 
 
-        Front_Player_1(1, null, CellType.Front),
-        Back_Player_1(2, null, CellType.Back),
-        Front_Enemy_1(-1, null, CellType.Front),
-        Back_Enemy_1(-2, null, CellType.Back),
+        Front_Player_1(1, 0, CellType.Front),
+        Back_Player_1(2, 0, CellType.Back),
+        Front_Enemy_1(-1, 0, CellType.Front),
+        Back_Enemy_1(-2, 0, CellType.Back),
 
-        Front_Player_2(1, null, CellType.Front),
-        Back_Player_2(2, null, CellType.Back),
-        Front_Enemy_2(-1, null, CellType.Front),
-        Back_Enemy_2(-2, null, CellType.Back),
+        Front_Player_2(1, 1, CellType.Front),
+        Back_Player_2(2, 1, CellType.Back),
+        Front_Enemy_2(-1, 1, CellType.Front),
+        Back_Enemy_2(-2, 1, CellType.Back),
 
-        Front_Player_3(1, null, CellType.Front),
-        Back_Player_3(2, null, CellType.Back),
-        Front_Enemy_3(-1, null, CellType.Front),
-        Back_Enemy_3(-2, null, CellType.Back),
+        Front_Player_3(1, 2, CellType.Front),
+        Back_Player_3(2, 2, CellType.Back),
+        Front_Enemy_3(-1, 2, CellType.Front),
+        Back_Enemy_3(-2, 2, CellType.Back),
         ;
         public final Integer x;
         public final Integer y;
@@ -163,12 +162,25 @@ public class FieldConsts {
             this.type = type;
         }
 
+        public boolean isPlayerZone() {
+            return x>0 && isMain();
+        }
+        public boolean isEnemyZone() {
+            return x<0 && isMain();
+        }
         public boolean isFlank() {
             return type == CellType.Flank;
         }
 
         public boolean isRear() {
             return type == CellType.Rear;
+        }
+        public boolean isVan() {
+            return type == CellType.Van;
+        }
+
+        public boolean isBack() {
+            return type == CellType.Back;
         }
 
         public boolean isMain() {
@@ -206,6 +218,7 @@ public class FieldConsts {
             }
             return false;
         }
+
     }
 
 

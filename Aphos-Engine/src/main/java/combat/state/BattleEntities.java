@@ -3,6 +3,8 @@ package combat.state;
 import combat.BattleHandler;
 import combat.sub.BattleManager;
 import elements.exec.EntityRef;
+import elements.exec.condition.Condition;
+import elements.exec.targeting.Targeting;
 import elements.stats.UnitParam;
 import elements.stats.UnitProp;
 import elements.stats.generic.StatConsts;
@@ -14,10 +16,7 @@ import framework.entity.field.Unit;
 import framework.entity.sub.UnitAction;
 import logic.execution.event.combat.CombatEventType;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static combat.sub.BattleManager.combat;
@@ -66,7 +65,7 @@ public class BattleEntities extends BattleHandler {
     }
 
     public <T extends Entity> List<T> getMergedEntityList(Class<? extends T>... clazz) {
-        List<T>  merged = new ArrayList<>();
+        List<T> merged = new ArrayList<>();
         for (Class aClass : clazz) {
             List<T> collect = (List<T>) entityMaps.get(aClass).values().stream().collect(Collectors.toList());
             merged.addAll(collect);
@@ -100,6 +99,7 @@ public class BattleEntities extends BattleHandler {
             int max = unit.getInt(param.getName() + "_max");
 
             unit.setValue(param, max);
+            //what is this SAVED values exactly?
             unit.addCurValue(param, saved);
 
         }
@@ -118,6 +118,13 @@ public class BattleEntities extends BattleHandler {
     public void kill(EntityRef ref, boolean body) {
         ref.getTarget().setValue(UnitProp.Dead, true);
         combat().event(body ? CombatEventType.Unit_Death_Body : CombatEventType.Unit_Death_Soul, ref);
+    }
+
+    public List<FieldEntity> targetFilter(EntityRef ref, Targeting targeting) {
+        Condition condition = targeting.getCondition();
+        List<FieldEntity> list = getFieldEntities();
+        list.removeIf(e -> !condition.check(ref.setMatch(e)));
+        return list;
     }
 
     //endregion

@@ -17,16 +17,20 @@ Temple:
         <<: *Kill_Self
   - Sword Swing:
       ap cost: 2
+      die: 8
       exec data:
         <<: *Base_Attack
         targeting: Close Quarters
         args:
+          damage_type: Strike
           value: 2/3/4
   - Brace:
       ap cost: 2
+      action_type: Defense
       exec data:
         targeting: self
         effect: modify
+        retain: UNTIL_ATTACK_OR_FALL
         args:
           value_name: defense_all
           value: 2

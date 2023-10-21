@@ -1,12 +1,9 @@
 package tests.calc;
 
-import elements.content.enums.types.CombatTypes;
 import elements.content.enums.types.CombatTypes.DamageType;
 import elements.exec.EntityRef;
 import elements.exec.effect.DamageEffect;
 import elements.stats.UnitParam;
-import logic.calculation.damage.DamageCalc;
-import logic.calculation.damage.DamageCalcResult;
 import tests.basic.BattleInitTest;
 
 /**
@@ -26,12 +23,12 @@ public class DamageCalcTest extends BattleInitTest {
         EntityRef ref = new EntityRef(ally);
         ref.setTarget(enemy);
         int dmg= 5;
-        int hp = enemy.getInt(UnitParam.Hp);
+        int hp = enemy.getInt(UnitParam.Health);
         int block= enemy.getInt(UnitParam.Melee_block);
         DamageEffect damageEffect = new DamageEffect(DamageType.Strike, dmg);
         damageEffect.apply(ref);
 
-        check(enemy.getInt(UnitParam.Hp) == hp - dmg +block );
+        check(enemy.getInt(UnitParam.Health) == hp - dmg +block );
         check(enemy.getInt(UnitParam.Armor) == enemy.getInt(UnitParam.Armor_Max)- block );
         // damageEffect.getResult();
 

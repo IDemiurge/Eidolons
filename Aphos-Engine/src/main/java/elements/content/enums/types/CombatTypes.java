@@ -42,7 +42,7 @@ public class CombatTypes {
     public enum BlockType {
         Melee(UnitParam.Melee_block),
         Ranged(UnitParam.Ranged_block),
-        Spell(UnitParam.Spell_block),
+        Spell(UnitParam.Energy_block),
         Unblockable(null),
         ;
         // Flame, ?

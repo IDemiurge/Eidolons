@@ -5,13 +5,11 @@ import elements.content.enums.EnumFinder;
 import elements.stats.generic.Stat;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
+import system.ListMaster;
 import system.consts.MathConsts;
 import system.consts.StringConsts;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 import static framework.data.DataManager.getRawValue;
@@ -56,7 +54,8 @@ public class TypeData {
             //triplet value
             Iterator<String> iterator = Arrays.asList(new String[]{"min", "base", "max"}).iterator();
             for (String str : o.toString().split(s)) {
-                set( key + "_"+iterator.next(), NumberUtils.getInt(str));
+                key = StringConsts.checkValueNameReplacement(key);
+                initValue( key + "_"+iterator.next(), NumberUtils.getInt(str));
             }
         } else {
             set(key, val);
@@ -162,6 +161,9 @@ public class TypeData {
         return boolMap.get(name);
     }
 
+    public String getS(Stat stat) {
+        return getS(stat.getName());
+    }
     public String getS(String name) {
         return stringMap.get(name);
     }
@@ -179,10 +181,16 @@ public class TypeData {
     }
 
     public boolean isTrue(String s) {
-        return new Boolean(true).equals(getB(s));
+        return  Boolean.TRUE.equals(getB(s));
     }
 
     public boolean has(String key) {
         return getterCache.containsKey(key);
+    }
+
+    public Set<String> keySet() {
+        return ListMaster.mergeToSet(intMap.keySet(),
+                boolMap.keySet(),
+                stringMap.keySet() );
     }
 }

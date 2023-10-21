@@ -34,7 +34,7 @@ public abstract class Entity {
 
     public Entity(Map<String, Object> valueMap) {
         data = new EntityData(valueMap);
-        this.name = data.get(Property.Name).toString();
+        this.name = data.getS(Property.Name).toString();
         //TODO
         id = combat().getEntities().addEntity(this);
 

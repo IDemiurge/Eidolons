@@ -1,7 +1,9 @@
 package elements.exec.condition;
 
+import elements.content.enums.EnumFinder;
 import elements.exec.EntityRef;
 import elements.exec.targeting.TargetingTemplates;
+import elements.exec.targeting.TargetingTemplates.ConditionTemplate;
 
 import java.util.Map;
 
@@ -33,25 +35,42 @@ public class ConditionBuilder {
         value:
 
      */
-    public static Condition build( Map args, TargetingTemplates.ConditionTemplate... conditionTmlt) {
+    public static Condition build(String condTempl, Map args) {
+        if (condTempl.contains(",")) {
+            String[] parts = condTempl.split(",");
+            ConditionTemplate[] templates = new ConditionTemplate[parts.length];
+            int i = 0;
+            for (String s : parts) {
+                ConditionTemplate template = EnumFinder.get(ConditionTemplate.class, s);
+                templates[i++] = template;
+            }
+            return build(args, templates);
+        } else {
+            return build(args, EnumFinder.get(ConditionTemplate.class, condTempl));
+        }
+    }
+
+    public static Condition build(Map args, ConditionTemplate... conditionTmlt) {
         ConditionBuilder builder = new ConditionBuilder(args);
-        for (TargetingTemplates.ConditionTemplate template : conditionTmlt) {
-              prebuild(false, template, args, builder);
+        for (ConditionTemplate template : conditionTmlt) {
+            prebuild(false, template, args, builder);
         }
         return builder.build();
     }
-    public static Condition build(TargetingTemplates.ConditionTemplate conditionTmlt, Map args) {
+
+    public static Condition build(ConditionTemplate conditionTmlt, Map args) {
         return prebuild(conditionTmlt, args).build();
     }
 
-    public static ConditionBuilder prebuild(TargetingTemplates.ConditionTemplate conditionTmlt, Map args) {
+    public static ConditionBuilder prebuild(ConditionTemplate conditionTmlt, Map args) {
         return prebuild(false, conditionTmlt, args);
     }
 
-    public static ConditionBuilder prebuild(boolean targeting, TargetingTemplates.ConditionTemplate conditionTmlt, Map args) {
-        return prebuild(targeting, conditionTmlt,  args, new ConditionBuilder(args));
+    public static ConditionBuilder prebuild(boolean targeting, ConditionTemplate conditionTmlt, Map args) {
+        return prebuild(targeting, conditionTmlt, args, new ConditionBuilder(args));
     }
-    public static ConditionBuilder prebuild(boolean targeting, TargetingTemplates.ConditionTemplate conditionTmlt, Map args, ConditionBuilder builder) {
+
+    public static ConditionBuilder prebuild(boolean targeting, ConditionTemplate conditionTmlt, Map args, ConditionBuilder builder) {
         //can condition be represented as chain? Kind of... need an  endOr() then
 
         return switch (conditionTmlt) {
@@ -60,8 +79,7 @@ public class ConditionBuilder {
             case SELF -> builder.self();
             case SELF_IDENTITY_CHECK -> builder.identity("source");
             case IDENTITY_CHECK -> builder.identity(args);
-            case SELF_VALUE_CHECK ->
-                    builder.value(args).self(); //"targeted condition?"
+            case SELF_VALUE_CHECK -> builder.value(args).self(); //"targeted condition?"
             //can we add data later?
             case UNTIL_ATTACK_OR_FALL -> // return builder.not().or().isAttack().lastAction().status().wounded();
                 //this is actually more like a trigger-remove?!
@@ -70,6 +88,7 @@ public class ConditionBuilder {
         };
 
     }
+
 
     ///////////////// region BASE METHODS
     public Condition build() {
@@ -131,6 +150,7 @@ public class ConditionBuilder {
         append(new ConditionContext("source"));
         return this;
     }
+
     public ConditionBuilder target() {
         append(new ConditionContext("target"));
         return this;
@@ -164,10 +184,12 @@ public class ConditionBuilder {
     public ConditionBuilder identity(Map args) {
         return identity(args.get("key").toString());
     }
+
     public ConditionBuilder identity(String key) {
         append(new IdentityCondition(key.toString()));
         return this;
     }
+
     public ConditionBuilder comparison(Object value) {
         if (value.getClass() == Integer.class) {
             conditions.add(new IntCondition());

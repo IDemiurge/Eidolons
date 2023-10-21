@@ -8,7 +8,7 @@ import elements.stats.generic.Stat;
  * //Auto-replace on entity init? AYE maybe
  */
 public enum UnitParam implements Stat {
-        Hp(true),
+        Health(true),
         Armor(true),
         Soul(true),
         Faith(true),
@@ -16,11 +16,12 @@ public enum UnitParam implements Stat {
         AP(true),
         Moves(true),
 
+        //Daemons
         Essence(true),
         Essence_Max,
         Power,
 
-        Hp_Max,
+        Health_Max,
         Armor_Max,
         Soul_Max,
         Faith_Max,
@@ -40,17 +41,20 @@ public enum UnitParam implements Stat {
         Resistance_Base,
         Resistance_Max,
 
-        Bonus_,
+        // Bonus_,
 
 
         DR, //DR - make duplicate entries in map? Not the best idea
         DR_Soul,
         Melee_block,
         Ranged_block,
-        Spell_block,
+        Energy_block,
 
         //Initiative ?
-        Ap_retain;
+        Ap_retain,
+        Moves_retain,
+
+        ;
         boolean cur;
         boolean bonus; //just to keep it separate from main? transparency aye, but it might complicate some calc
         //if a formula needs final value e.g.!
