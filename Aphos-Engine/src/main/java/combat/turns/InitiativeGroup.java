@@ -9,12 +9,12 @@ import java.util.List;
  */
 public class InitiativeGroup {
     protected int maxInitiative;
-    protected  List<Unit> unitSequence;
+    protected  List<Unit> units;
     protected boolean ally;
 
-    public InitiativeGroup( List<Unit> unitSequence, int maxInitiative, boolean ally) {
+    public InitiativeGroup(List<Unit> units, int maxInitiative, boolean ally) {
         this.maxInitiative = maxInitiative;
-        this.unitSequence = unitSequence;
+        this.units = units;
         this.ally = ally;
     }
 }

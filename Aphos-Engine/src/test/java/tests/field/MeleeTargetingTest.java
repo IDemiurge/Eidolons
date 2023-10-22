@@ -29,18 +29,22 @@ public class MeleeTargetingTest extends BattleInitTest {
     public static final Cell[] testPos = CellSets.allyArea;
 
     private static final List<Cell> targets1 = Arrays.asList(new Cell[]{
-            //TODO
     });
-
+/*
+            Front_Player_1,
+            Front_Player_2,
+            Front_Player_3,
+            Back_Player_1,
+            Back_Player_2,
+            Back_Player_3,
+ */
     static {
-        // checkPosMap = new HashMap<>();
-        // List<List<Cell>> list = List.of(targets1);
-        //         // , targets2, targets3,
-        //         // back_targets1, back_targets2, back_targets3);
+        checkPosMap = new HashMap<>();
+        // List<List<Cell>> list = List.of(targets1, targets2, targets3, back_targets1, back_targets2, back_targets3);
         // Iterator<List<Cell>> iterator = list.iterator();
-        // for (Cell pos : testPos) {
-        //     checkPosMap.put(pos, iterator.next());
-        // }
+        for (Cell pos : testPos) {
+            checkPosMap.put(pos,    new ArrayList<>() );// iterator.next());
+        }
     }
 
     // public void testTargets(boolean full, boolean ) {

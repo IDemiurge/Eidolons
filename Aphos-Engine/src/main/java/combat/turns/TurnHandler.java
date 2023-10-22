@@ -3,10 +3,10 @@ package combat.turns;
 import combat.BattleHandler;
 import combat.sub.BattleManager;
 import elements.stats.UnitParam;
+import elements.stats.UnitProp;
 import framework.entity.field.Unit;
 
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -15,29 +15,59 @@ import java.util.stream.Collectors;
 public class TurnHandler extends BattleHandler {
 
     private List<InitiativeGroup> groups;
+    private InitiativeGroup current;
 
     public TurnHandler(BattleManager battleManager) {
         super(battleManager);
     }
 
     public static int calcInitiative(Unit unit) {
-        return unit.getInt(UnitParam.AP) * 2;
+        return unit.getInt(UnitParam.AP) * 2 + getPositionModifier(unit);
+    }
+
+    private static int getPositionModifier(Unit unit) {
+        return switch(unit.getPos().getCell().type){
+            case Flank -> -2;
+            case Van -> 1;
+            case Front -> 0;
+            case Back -> -1;
+            case Rear -> -3;
+            case Reserve -> -999;
+        };
     }
 
     @Override
     public void newRound() {
         forEach(unit -> unit.setValue(UnitParam.Initiative, calcInitiative(unit)));
         groups = createInitiativeGroups();
+        groupFinished();
     }
 
     public List<InitiativeGroup> getInitiativeGroups() {
         return groups;
     }
 
+    public void groupFinished() {
+        current = nextGroup();
+        current.units.forEach(unit -> unit.setProp(UnitProp.Active, true));
+    }
+
+    public InitiativeGroup getCurrent() {
+        return current;
+    }
+
+
+    public InitiativeGroup nextGroup(){
+        return groups.get(0) ;
+    }
+
     @Override
     public void reset() {
         //same init recalc?
-        groups = createInitiativeGroups();
+
+        //ONLY AFTER GROUP IS FINISHED! But we can displayed some future precalc
+        // groups = createInitiativeGroups();
+
 
         //how to check if any initiative has changed and trigger group re-build? some hashcode for the sum?
         //some groups are already DONE - then their initiative is what?
@@ -81,7 +111,10 @@ public class TurnHandler extends BattleHandler {
     }
 
     public List<InitiativeGroup> createInitiativeGroups(boolean ally) {
-        List<Unit> units = sorted(ally ? getEntities().getAlliedUnits() : getEntities().getEnemyUnits());
+        List<Unit> units = sorted(getEntities().getUnitsFiltered(
+                u -> u.isAlly() == ally &&
+                        !u.isTrue(UnitProp.FinishedTurn) &&
+                        !u.isTrue(UnitProp.Dead)));
         List<InitiativeGroup> groups = new ArrayList<>();
         int max = 3;
         int maxDiff = 1;

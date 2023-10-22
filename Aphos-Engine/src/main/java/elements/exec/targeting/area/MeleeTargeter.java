@@ -2,6 +2,7 @@ package elements.exec.targeting.area;
 
 import elements.exec.EntityRef;
 import elements.exec.condition.Condition;
+import elements.exec.condition.targeting.MeleeCondition;
 import framework.field.FieldAnalyzer;
 import framework.field.FieldGeometry;
 
@@ -36,19 +37,18 @@ import static elements.content.enums.FieldConsts.*;
  * Geom vs melee - we do let unit attack the next front unit, but with disadv? Mind it - such stuff as Disadv has to be
  * precalced to show tooltip!
  */
+
+
 public class MeleeTargeter {
     public static Condition getCloseQuartersCondition() {
-        return new Condition() {
-            @Override
-            public boolean check(EntityRef ref) {
-                return false;
-            }
-        };
+        return new MeleeCondition().setCloseQuarters(true);
     }
 
     public static Condition getMeleeCondition() {
-        return null;
+        return new MeleeCondition();
     }
+
+
 
     //is targeting reversible? For rear/front pair e.g., does it work the same both ways?
     // i: start with full list for each cell (preset), then remove on if's()

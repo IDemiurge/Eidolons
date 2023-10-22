@@ -13,12 +13,13 @@ public class AphosTest {
 
     @Test
     public void test() {
-        if (!testInitDone) {
-            init();
-        }
+        init();
     }
 
     protected void init() {
+        if (testInitDone) {
+            return;
+        }
         Core.init();
         new YamlBuilder().buildYamlFiles();
         testInitDone = true;

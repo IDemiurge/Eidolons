@@ -3,6 +3,7 @@ package combat;
 import combat.init.BattleSetup;
 import combat.sub.BattleManager;
 import combat.sub.skirmish.SkirmishManager;
+import combat.turns.CombatLoop;
 import elements.content.enums.types.MiscTypes;
 
 /**
@@ -11,6 +12,7 @@ import elements.content.enums.types.MiscTypes;
 public class Battle {
     public static Battle current;
     private BattleManager manager;
+    CombatLoop combatLoop;
     //state - round, phase, global data (nf level, ...)
     // BattleAi battleAi;
 
@@ -25,13 +27,16 @@ public class Battle {
             // well, if it is all centralized.... maybe it won't be such a disaster?
             manager = new SkirmishManager(battleSetup);
         }
+        combatLoop = new CombatLoop(manager);
     }
 
     public void end() {
         manager.battleEnds();
     }
+
     public void start() {
         manager.battleStarts();
+        combatLoop.start();
         manager.newRound();
     }
 

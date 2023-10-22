@@ -58,6 +58,9 @@ public class DataConsistencyTest extends BattleInitTest {
     }
 
     private boolean valueCanBe999(Unit unit, UnitParam value) {
+        if (value.isCur()) {
+            return true;
+        }
         if (value == UnitParam.Initiative)
             return true;
         if (value == UnitParam.Essence || value == UnitParam.Essence_Max || value == UnitParam.Power) {

@@ -52,7 +52,9 @@ public enum UnitParam implements Stat {
         //Initiative ?
         Ap_retain,
         Moves_retain,
-        Initiative,
+        AP_saved(true),
+        Moves_saved(true),
+        Initiative(true),
 
         // Bonus_, should we have a separate param for that?..
         ;
@@ -67,4 +69,7 @@ public enum UnitParam implements Stat {
                 this.cur = cur;
         }
 
+        public boolean isCur() {
+                return cur;
+        }
 }

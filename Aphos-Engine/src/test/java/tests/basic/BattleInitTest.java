@@ -56,8 +56,7 @@ public class BattleInitTest extends AphosTest {
         return  combat().getUnitById(0);
     }
     protected Unit getMainEnemyUnit() {
-        return  combat().getUnitById(1);
-        // (Unit) combat().getField().getByPos(new FieldPos(12));
+        return (Unit) combat().getField().getByPos(new FieldPos(12));
     }
 
     protected String[] getBattleData() {

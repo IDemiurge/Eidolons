@@ -24,17 +24,19 @@ public abstract class BattleHandler {
         this.manager = battleManager;
     }
 
+    public void battleStarts(){
+    }
+    public void battleEnds(){
+    }
     public void reset(){
     }
     public void afterReset(){
     }
     public void newRound(){
     }
-    public void battleStarts(){
-    }
-    public void battleEnds(){
-    }
 
+    public void roundEnds() {
+    }
     public void resetAll() {
         manager.resetAll();
     }
@@ -83,4 +85,5 @@ public abstract class BattleHandler {
     public BattleStatistics stats() {
         return manager.stats();
     }
+
 }

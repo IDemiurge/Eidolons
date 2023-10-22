@@ -48,7 +48,7 @@ public class Unit extends FieldEntity {
             Integer value = getInt(cur);
             data.setCur(cur.getName(), value);
             String max = cur.getName() + "_max";
-            data.setCur(max, value);
+            data.set(max, value);
         }
     }
 
@@ -101,6 +101,13 @@ public class Unit extends FieldEntity {
 
     public int initiative() {
         return getInt(UnitParam.Initiative);
+    }
+
+    public void setProp(UnitProp prop, Object value) {
+        setValue(prop, value);
+    }
+    public void setParam(UnitParam param, Object value) {
+        setValue(param, value);
     }
 
     //endregion

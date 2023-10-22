@@ -65,6 +65,9 @@ public class BattleManager {
     public void afterResetAll() {
         handlers.forEach(handler -> handler.afterReset());
     }
+    public void roundEnds() {
+        handlers.forEach(handler -> handler.roundEnds());
+    }
     public void newRound() {
         handlers.forEach(handler -> handler.newRound());
     }

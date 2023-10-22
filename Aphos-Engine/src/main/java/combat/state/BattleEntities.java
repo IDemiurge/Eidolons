@@ -5,6 +5,7 @@ import combat.sub.BattleManager;
 import elements.exec.EntityRef;
 import elements.exec.condition.Condition;
 import elements.exec.targeting.Targeting;
+import elements.stats.ActionProp;
 import elements.stats.UnitParam;
 import elements.stats.UnitProp;
 import elements.stats.generic.StatConsts;
@@ -60,15 +61,21 @@ public class BattleEntities extends BattleHandler {
         // return entityMaps.get(Unit.class).values().stream().collect(Collectors.toList());
         return getEntityList(Unit.class);
     }
+
     public List<Unit> getAlliedUnits() {
-        return getFilteredList(Unit.class, e-> e.isAlly());
+        return getFilteredList(Unit.class, e -> e.isAlly());
     }
+
     public List<Unit> getEnemyUnits() {
-        return getFilteredList(Unit.class, e-> !e.isAlly());
+        return getFilteredList(Unit.class, e -> !e.isAlly());
     }
     // public List<Unit> sorted(List<Unit> list) {
     //     return list.stream().sorted(getComparator()).collect(Collectors.toList());
     // }
+
+    public List<Unit> getUnitsFiltered(Predicate<Unit>... predicates) {
+        return getFilteredList(Unit.class, predicates);
+    }
 
     @SuppressWarnings("unchecked")
     public <T extends Entity> List<T> getFilteredList(Class<T> clazz, Predicate<T>... predicates) {
@@ -104,24 +111,40 @@ public class BattleEntities extends BattleHandler {
 
     @Override
     public void newRound() {
-        for (Unit unit : getUnits()) {
-            restoreRoundlyValues(unit);
-        }
+        forEach(u-> restoreRoundlyValues(u));
+    }
 
+    @Override
+    public void roundEnds() {
+        forEach(u-> markSavedValues(u));
+    }
+
+    private void markSavedValues(Unit unit) {
+        int maxRetain = unit.getInt(UnitParam.Ap_retain);
+        int retain = Math.min(maxRetain, unit.getInt(UnitParam.AP));
+        unit.setValue(UnitParam.AP_saved, retain);
+
+        maxRetain = unit.getInt(UnitParam.Moves_retain);
+        retain = Math.min(maxRetain, unit.getInt(UnitParam.Moves));
+        unit.setValue(UnitParam.Moves_saved, retain);
     }
 
     private void restoreRoundlyValues(Unit unit) {
         // saved | max | cur
         for (UnitParam param : StatConsts.roundlyParams) {
             // if (broken) //disabled regen?
-            //     continue;
-            int cur = unit.getInt(param); //what for? calc saved?
-            int saved = unit.getInt(param.getName() + "_saved"); //sanity/faith?
+            //     continue; //what for? calc saved?
             int max = unit.getInt(param.getName() + "_max");
-
             unit.setValue(param, max);
-            //what is this SAVED values exactly?
-            unit.addCurValue(param, saved);
+            if (param == UnitParam.AP || param == UnitParam.Moves) {
+                int saved = unit.getInt(param.getName() + "_saved"); //sanity/faith?
+                if (saved > 0) {
+                    int cur = unit.getInt(param);
+                    int retain = unit.getInt(param.getName() + "_retain");
+                    if (cur <= max+ retain);
+                    unit.addCurValue(param, saved); //bonus
+                }
+            }
 
         }
     }
