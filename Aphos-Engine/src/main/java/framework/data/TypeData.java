@@ -3,6 +3,7 @@ package framework.data;
 import content.LinkedStringMap;
 import elements.content.enums.EnumFinder;
 import elements.stats.generic.Stat;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import system.ListMaster;
@@ -11,6 +12,7 @@ import system.consts.StringConsts;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static framework.data.DataManager.getRawValue;
 
@@ -42,9 +44,9 @@ public class TypeData {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder("Data: ");
-        return builder.append("\n---String: ").append(system.MapMaster.represent(stringMap))
-                .append("\n---Integers: ").append(system.MapMaster.represent(intMap))
-                .append("\n---Booleans: ").append(system.MapMaster.represent(boolMap)).toString();
+        return builder.append("\n---String: \n").append(system.MapMaster.represent(stringMap))
+                .append("\n---Integers: \n").append(system.MapMaster.represent(intMap))
+                .append("\n---Booleans: \n").append(system.MapMaster.represent(boolMap)).toString();
     }
 
     protected Object initValue(String key, Object o) {
@@ -131,20 +133,21 @@ public class TypeData {
         if (getterCache.containsKey(key)) {
             return getterCache.get(key).apply(key);
         }
-        Integer i = getInt(key);
-        if (i != MathConsts.minValue) {
-            getterCache.put(key, s -> getInt(s));
-            return i;
+        String str = getS(key);
+        if (str != null) {
+            getterCache.put(key, s -> getS(s));
+            return str;
         }
         Boolean b = getB(key);
         if (b != null) {
             getterCache.put(key, s -> getB(s));
             return b;
         }
-        String str = getS(key);
-        if (str != null) {
-            getterCache.put(key, s -> getS(s));
-            return str;
+        Integer i = getInt(key);
+        if (i != null ) {
+            // if (i != MathConsts.minValue) {
+            getterCache.put(key, s -> getInt(s));
+            return i;
         }
         //TODO NOTE ERROR
         return "";
@@ -153,7 +156,8 @@ public class TypeData {
     public Integer getInt(String key) {
         Integer integer = intMap.get(key.toString());
         if (integer == null) {
-            return MathConsts.minValue;
+            return 0;
+            // return MathConsts.minValue;
         }
         return integer;
     }
@@ -193,5 +197,9 @@ public class TypeData {
         return ListMaster.mergeToSet(intMap.keySet(),
                 boolMap.keySet(),
                 stringMap.keySet() );
+    }
+
+    public String toSimpleString() {
+       return keySet().stream().map(key -> key + "=" + get(key)).collect(Collectors.joining(", "));
     }
 }

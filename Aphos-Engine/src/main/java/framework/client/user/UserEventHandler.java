@@ -1,5 +1,7 @@
-package framework.client;
+package framework.client.user;
 
+import framework.client.generic.EventCallback;
+import framework.client.generic.EventCallbackParam;
 import logic.execution.event.user.UserEvent;
 import logic.execution.event.user.UserEventType;
 

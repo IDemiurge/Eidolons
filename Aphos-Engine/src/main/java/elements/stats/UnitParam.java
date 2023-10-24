@@ -57,6 +57,14 @@ public enum UnitParam implements Stat {
         Initiative(true),
 
         // Bonus_, should we have a separate param for that?..
+        Defense_Auto_Fail(false, true),
+        Attack_Auto_Fail(false, true),
+        Resist_Auto_Fail(false, true),
+        Spell_Auto_Fail(false, true),
+        Defense_Auto_Success(false, true),
+        Attack_Auto_Success(false, true),
+        Resist_Auto_Success(false, true),
+        Spell_Auto_Success(false, true),
         ;
         boolean cur;
         boolean bonus; //just to keep it separate from main? transparency aye, but it might complicate some calc
@@ -69,7 +77,16 @@ public enum UnitParam implements Stat {
                 this.cur = cur;
         }
 
+        UnitParam(boolean cur, boolean bonus) {
+                this.cur = cur;
+                this.bonus = bonus;
+        }
+
         public boolean isCur() {
                 return cur;
+        }
+
+        public boolean isBonus() {
+                return bonus;
         }
 }

@@ -1,4 +1,4 @@
-package framework.client;
+package framework.client.generic;
 
 /**
  * Created by Alexander on 8/22/2023

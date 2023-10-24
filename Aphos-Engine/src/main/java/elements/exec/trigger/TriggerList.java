@@ -1,7 +1,7 @@
 package elements.exec.trigger;
 
 import elements.exec.EntityRef;
-import logic.execution.event.combat.EventResult;
+import system.log.result.EventResult;
 
 import java.util.ArrayList;
 import java.util.List;

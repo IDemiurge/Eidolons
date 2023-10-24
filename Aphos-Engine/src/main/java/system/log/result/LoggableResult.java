@@ -1,4 +1,4 @@
-package framework.data;
+package system.log.result;
 
 import content.LinkedStringMap;
 import system.MapMaster;
@@ -7,15 +7,17 @@ import java.util.Map;
 
 /**
  * Created by Alexander on 8/25/2023
+ *
+ * Is it what we also can send to client?
  */
-public abstract class Datum {
+public abstract class LoggableResult {
     protected final Map<String, Object> data;
 
-    public Datum() {
+    public LoggableResult() {
         data = new LinkedStringMap<>();
     }
 
-    public void addAll(Datum datum){
+    public void addAll(LoggableResult datum){
         addAll(datum.data);
     }
 

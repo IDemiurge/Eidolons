@@ -5,8 +5,10 @@ import elements.stats.UnitParam;
 import elements.stats.UnitProp;
 import framework.entity.field.FieldEntity;
 import logic.rules.combat.wounds.Wounds;
+import system.log.result.DamageCalcResult;
+import system.log.result.DamageResult;
+import system.log.result.WoundResult;
 
-import static combat.sub.BattleManager.combat;
 import static elements.content.enums.types.CombatTypes.*;
 import static system.log.SysLog.printOut;
 
@@ -88,7 +90,8 @@ public class DamageDealer {
                     //... that follows from the logic of Wounds
                     //TODO
                     int excessDamage = remainder;
-                    Wounds.apply(excessDamage, reducedValue, ref);
+                    WoundResult woundResult = Wounds.apply(excessDamage, reducedValue, ref);
+                    result.addAll(woundResult);
                 }
                 damage = remainder;
             }
@@ -112,7 +115,7 @@ public class DamageDealer {
         if (excessDamage > 0) {
             damage = current;
             // if (excessDamage> threshold) kill()  => Can a single blow kill? With LETHAL perk
-            logic.rules.combat.wounds.Wounds.apply(excessDamage, reducedValue, ref);
+            Wounds.apply(excessDamage, reducedValue, ref);
         }
 
         target.addCurValue(reducedValue, -damage); //reduce hp or soul

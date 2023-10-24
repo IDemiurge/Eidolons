@@ -3,6 +3,8 @@ package elements.exec.effect.attack;
 import elements.content.enums.types.CombatTypes;
 import elements.exec.EntityRef;
 import logic.calculation.damage.*;
+import system.log.result.DamageCalcResult;
+import system.log.result.DamageResult;
 
 import static combat.sub.BattleManager.combat;
 

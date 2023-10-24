@@ -63,7 +63,7 @@ public class TurnHandler extends BattleHandler {
 
     @Override
     public void reset() {
-        //same init recalc?
+        //what should be done after each ACTION? same init recalc?
 
         //ONLY AFTER GROUP IS FINISHED! But we can displayed some future precalc
         // groups = createInitiativeGroups();

@@ -143,4 +143,8 @@ public abstract class Entity {
                 data.set(valueName, value);
         }
     }
+
+    public EntityData getData() {
+        return data;
+    }
 }

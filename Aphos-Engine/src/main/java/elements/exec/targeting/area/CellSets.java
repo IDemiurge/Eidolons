@@ -118,4 +118,12 @@ public class CellSets {
     public static Cell rear(Boolean ally) {
         return ally ? Rear_Player : Rear_Player;
     }
+
+    public static Cell mid(boolean front, boolean ally) {
+        if (ally){
+            return front ? Cell.Front_Player_2 :Cell.Back_Player_2;
+        } else {
+            return front ? Cell.Front_Enemy_2 :Cell.Back_Enemy_2;
+        }
+    }
 }

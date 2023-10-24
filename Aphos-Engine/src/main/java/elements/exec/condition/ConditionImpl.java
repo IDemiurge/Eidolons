@@ -4,6 +4,8 @@ import content.LinkedStringMap;
 import elements.exec.EntityRef;
 import framework.data.TypeData;
 
+import java.util.function.Supplier;
+
 /**
  * Created by Alexander on 8/22/2023
  */
@@ -41,6 +43,15 @@ public abstract class ConditionImpl implements Condition {
     public ConditionImpl setContext(ConditionContext context) {
         this.context = context;
         return this;
+    }
+
+    @Override
+    public Condition setContext(Supplier<String> keySupplier) {
+        return setContext(new ConditionContext(ref -> ref.get(keySupplier.get())));
+    }
+
+    public ConditionContext getContext() {
+        return context;
     }
     // abstract boolean checkEntity(T entity);
 }

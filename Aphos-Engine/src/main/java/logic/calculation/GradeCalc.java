@@ -2,8 +2,7 @@ package logic.calculation;
 
 import elements.content.enums.types.CombatTypes;
 import main.system.math.MathMaster;
-
-import java.util.Random;
+import system.math.Rolls;
 
 /**
  * Created by Alexander on 8/19/2023
@@ -48,7 +47,7 @@ public class GradeCalc {
         }
         int successes = 0, failures = 0;
         while (true) {
-            Boolean result = roll(die, failure_offset, success_offset);
+            Boolean result = Rolls.roll(die, failure_offset, success_offset);
             if (result == null)
                 break;
             if (result) successes++;
@@ -62,14 +61,5 @@ public class GradeCalc {
         return grades[inverted];
     }
 
-
-    private static Boolean roll(int die, int failureOffset, int successOffset) {
-        int i = new Random().nextInt(die);
-        if (i >= die - successOffset - 1)
-            return true;
-        if (i <= failureOffset)
-            return false;
-        return null;
-    }
 
 }

@@ -1,7 +1,6 @@
 package combat.sub;
 
-import framework.data.statistics.Result;
-import logic.calculation.damage.DamageResult;
+import system.log.result.LoggableResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,14 +14,14 @@ import java.util.Map;
  *
  */
 public class BattleStatistics {
-    Map<Class, List<Result>> map= new HashMap<>();
+    Map<Class, List<LoggableResult>> map= new HashMap<>();
 
-    public Result getLast(Class clazz){
+    public LoggableResult getLast(Class clazz){
         return system.ListMaster.getLast(map.get(clazz));
     }
 
-    public void add(Result result) {
-        List<Result> list = map.get(result.getClass());
+    public void add(LoggableResult result) {
+        List<LoggableResult> list = map.get(result.getClass());
         if (list == null) {
             map.put(result.getClass(), list = new ArrayList<>());
         }

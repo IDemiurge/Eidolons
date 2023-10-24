@@ -19,6 +19,9 @@ public class TargetedEffect {
 
     public TargetedEffect setRetainCondition(Condition retainCondition) {
         this.retainCondition = retainCondition;
+        if (retainCondition.getContext() == null){
+            retainCondition.setContext(() -> "target");
+        }
         return this;
     }
 

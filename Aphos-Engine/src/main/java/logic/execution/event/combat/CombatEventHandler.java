@@ -4,10 +4,11 @@ import combat.BattleHandler;
 import combat.sub.BattleManager;
 import elements.exec.EntityRef;
 import elements.exec.condition.Condition;
-import elements.exec.effect.framework.EffectResult;
+import system.log.result.EffectResult;
 import elements.exec.trigger.Trigger;
 import elements.exec.trigger.MapModTrigger;
 import elements.exec.trigger.TriggerList;
+import system.log.result.EventResult;
 
 import java.util.HashMap;
 import java.util.Map;

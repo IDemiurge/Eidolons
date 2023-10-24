@@ -2,9 +2,8 @@ package elements.exec.effect;
 
 import elements.content.enums.types.CombatTypes;
 import elements.exec.EntityRef;
-import elements.exec.effect.framework.EffectResult;
 import logic.calculation.damage.DamageCalc;
-import logic.calculation.damage.DamageCalcResult;
+import system.log.result.DamageCalcResult;
 import logic.calculation.damage.DamageDealer;
 
 /**

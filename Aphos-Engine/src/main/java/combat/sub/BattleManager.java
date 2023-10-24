@@ -16,7 +16,7 @@ import logic.execution.ActionExecutor;
 import logic.execution.event.combat.CombatEvent;
 import logic.execution.event.combat.CombatEventHandler;
 import logic.execution.event.combat.CombatEventType;
-import logic.execution.event.combat.EventResult;
+import system.log.result.EventResult;
 
 import java.util.ArrayList;
 import java.util.List;

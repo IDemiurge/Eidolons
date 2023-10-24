@@ -17,7 +17,7 @@ public class MapMaster {
     }
 
     public static String represent(Map map) {
-        StringBuilder builder = new StringBuilder("Data: ");
+        StringBuilder builder = new StringBuilder("");
         for (Object o : map.keySet()) {
             builder.append(o).append(": ").append(map.get(o)).append("\n");
         }

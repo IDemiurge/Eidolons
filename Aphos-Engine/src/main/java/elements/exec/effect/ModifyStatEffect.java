@@ -1,7 +1,6 @@
 package elements.exec.effect;
 
 import elements.exec.EntityRef;
-import elements.exec.effect.framework.EffectResult;
 import framework.entity.Entity;
 
 /**

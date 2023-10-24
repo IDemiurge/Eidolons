@@ -11,6 +11,7 @@ import static elements.content.enums.FieldConsts.*;
  * Created by Alexander on 10/20/2023
  */
 public class FieldAnalyzer {
+
     public static boolean isFirstRowFree(boolean ally) {
         return checkFree(CellSets.frontSet(ally));
     }
@@ -44,18 +45,11 @@ public class FieldAnalyzer {
     }
 
     public static boolean isAllButFarthestFree(boolean front, Integer y, boolean ally) {
-        Cell cell1= mid(front, ally);
+        Cell cell1=CellSets.mid(front, ally);
         Cell cell2 = getFarthest(front, 1-y, ally);
         return checkFree(cell1, cell2);
     }
 
-    private static Cell mid(boolean front, boolean ally) {
-        if (ally){
-            return front ? Cell.Front_Player_2 :Cell.Back_Player_2;
-        } else {
-            return front ? Cell.Front_Enemy_2 :Cell.Back_Enemy_2;
-        }
-    }
 }
 
 

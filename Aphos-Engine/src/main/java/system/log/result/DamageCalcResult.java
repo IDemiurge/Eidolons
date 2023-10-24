@@ -1,13 +1,12 @@
-package logic.calculation.damage;
+package system.log.result;
 
 import elements.exec.EntityRef;
-import framework.data.Datum;
-import framework.data.statistics.Result;
+import logic.calculation.damage.MultiDamage;
 
 /**
  * Created by Alexander on 8/21/2023
  */
-public class DamageCalcResult extends Result {
+public class DamageCalcResult extends LoggableResult {
     private final EntityRef ref;
     private MultiDamage damageToDeal;
     private boolean miss;

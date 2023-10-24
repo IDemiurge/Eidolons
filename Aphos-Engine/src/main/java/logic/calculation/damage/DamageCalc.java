@@ -7,6 +7,7 @@ import framework.entity.field.FieldEntity;
 import framework.entity.field.Unit;
 import framework.entity.sub.UnitAction;
 import main.system.auxiliary.RandomWizard;
+import system.log.result.DamageCalcResult;
 
 import java.util.ArrayList;
 import java.util.List;

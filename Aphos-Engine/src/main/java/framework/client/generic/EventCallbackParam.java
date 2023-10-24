@@ -1,4 +1,4 @@
-package framework.client;
+package framework.client.generic;
 
 import java.util.HashMap;
 import java.util.Map;

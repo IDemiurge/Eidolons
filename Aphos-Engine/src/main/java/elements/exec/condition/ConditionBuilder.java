@@ -4,8 +4,11 @@ import elements.content.enums.EnumFinder;
 import elements.exec.EntityRef;
 import elements.exec.targeting.TargetingTemplates;
 import elements.exec.targeting.TargetingTemplates.ConditionTemplate;
+import framework.entity.Entity;
 
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Created by Alexander on 8/25/2023
@@ -96,9 +99,18 @@ public class ConditionBuilder {
         return conditions;
     }
 
+    // public ConditionBuilder append(Function<EntityRef, Entity> func) {
+    //     conditions.getLast().setContext(new ConditionContext(func));
+    //     return this;
+    // }
+
     public ConditionBuilder append(ConditionContext context) {
         conditions.getLast().setContext(context);
-        //func use!
+        return this;
+    }
+
+    public ConditionBuilder append(Supplier<String> context) {
+        conditions.getLast().setContext(context);
         // conditions.getLast().setContext(new ConditionContext(ref -> ref.getTarget()));
         return this;
     }
@@ -147,12 +159,12 @@ public class ConditionBuilder {
     //endregion
     ///////////////// region CONTEXT
     public ConditionBuilder self() {
-        append(new ConditionContext("source"));
+        append(() -> "source");
         return this;
     }
 
     public ConditionBuilder target() {
-        append(new ConditionContext("target"));
+        append(() -> "target");
         return this;
     }
 

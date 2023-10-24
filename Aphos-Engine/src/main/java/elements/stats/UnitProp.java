@@ -7,14 +7,27 @@ public enum UnitProp implements Stat {
     Daemon, Pure, Infiltrator, Agile, Large,
 
     //bools | statuses
-    Waiting, Active,FinishedTurn,
-    Dead, Death_Door,
-    Wound_Body,Wound_Head,Wound_Limbs,
-    Summoned,
+    Waiting(true), Active(true),FinishedTurn(true),
+    Dead(true), Death_Door(true),
+    Wound_Body(true),Wound_Head(true),Wound_Limbs(true),
+    Summoned(true),
     //containers
     Wards, Immune, Vulnerable,
     Perks, Passives, Extra_Actions,
     //single
     Faction,
     Standard_Attack,Power_Attack,Defense_Action,
+    ;
+    boolean persistent;
+
+    UnitProp() {
+    }
+
+    UnitProp(boolean persistent) {
+        this.persistent = persistent;
+    }
+
+    public boolean isPersistent() {
+        return persistent;
+    }
 }

@@ -1,7 +1,5 @@
 package system;
 
-import framework.data.statistics.Result;
-import framework.entity.field.FieldEntity;
 import main.system.auxiliary.RandomWizard;
 
 import java.util.*;

@@ -27,5 +27,33 @@ public class ConditionContext {
     public void init(EntityRef ref) {
             ref.setMatch(keyFunc.apply(ref));
     }
-
+// /*
+//
+//     public class ConditionContext implements Supplier<String> {
+//
+//         private String key;
+//
+//         public ConditionContext() {
+//         }
+//
+//         public ConditionContext(String key) {
+//             this.key = key;
+//         }
+//
+//         public void init(EntityRef ref) {
+//             ref.setMatch(ref.get(get()));
+//         }
+//
+//         @Override
+//         public String get() {
+//             return key;
+//         }
+//
+//         // @Override
+//         // public Entity apply(EntityRef entityRef) {
+//         //     return entityRef.get(key);
+//         // }
+//     }
+//
+//  */
 }

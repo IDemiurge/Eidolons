@@ -1,4 +1,4 @@
-package framework.client;
+package framework.client.user;
 
 import logic.execution.event.user.UserEvent;
 

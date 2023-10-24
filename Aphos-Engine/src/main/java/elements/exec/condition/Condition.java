@@ -27,5 +27,11 @@ public interface Condition  {
     default Condition setContext(ConditionContext context) {
         return this;
     }
+    default Condition setContext(Supplier<String> keySupplier) {
+        return this;
+    }
 
+    default ConditionContext getContext() {
+        return null;
+    }
 }
