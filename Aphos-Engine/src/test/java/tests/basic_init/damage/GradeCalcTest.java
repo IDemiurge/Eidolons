@@ -1,7 +1,8 @@
-package tests.calc;
+package tests.basic_init.damage;
 
 import elements.content.enums.types.CombatTypes;
 import framework.AphosTest;
+import framework.entity.field.Unit;
 import logic.calculation.GradeCalc;
 import main.system.auxiliary.data.MapMaster;
 
@@ -11,7 +12,6 @@ import java.util.Map;
 /**
  * Created by Alexander on 8/25/2023
  */
-@Deprecated
 public class GradeCalcTest extends AphosTest {
 
     @Override
@@ -22,5 +22,10 @@ public class GradeCalcTest extends AphosTest {
             MapMaster.addToIntegerMap(gradesMap, grade.getName(), 1);
         }
         System.out.println(MapMaster.getNetStringForMap(gradesMap).replace(";", "\n"));
+    }
+
+    @Override
+    protected Unit getCheckedUnit() {
+        return null;
     }
 }

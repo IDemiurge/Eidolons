@@ -1,4 +1,4 @@
-package tests.basic;
+package tests.basic_init.basic;
 
 import main.system.auxiliary.data.FileManager;
 import org.junit.Test;

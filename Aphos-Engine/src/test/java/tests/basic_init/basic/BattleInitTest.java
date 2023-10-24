@@ -1,11 +1,9 @@
-package tests.basic;
+package tests.basic_init.basic;
 
 import campaign.run.battle.BattleBuilder;
 import combat.Battle;
 import combat.init.BattleSetup;
-import framework.data.yaml.YamlBuilder;
 import framework.AphosTest;
-import framework.Core;
 import framework.entity.field.Unit;
 import framework.entity.sub.UnitAction;
 import framework.field.FieldPos;
@@ -13,7 +11,6 @@ import logic.execution.event.user.UserEventType;
 import main.system.threading.WaitMaster;
 import main.system.threading.Weaver;
 import main.system.util.DialogMaster;
-import resources.TestData;
 
 import static combat.sub.BattleManager.combat;
 import static framework.client.ClientConnector.client;
@@ -59,6 +56,9 @@ public class BattleInitTest extends AphosTest {
         return (Unit) combat().getField().getByPos(new FieldPos(12));
     }
 
+    protected Unit getCheckedUnit() {
+        return ally;
+    }
     protected String[] getBattleData() {
         if (customData!=null)
             return customData;

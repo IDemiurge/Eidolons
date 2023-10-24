@@ -12,7 +12,7 @@ import framework.field.Transformer;
 import org.apache.commons.lang3.tuple.Pair;
 import system.ListMaster;
 import system.log.SysLog;
-import tests.basic.BattleInitTest;
+import tests.basic_init.basic.BattleInitTest;
 
 import java.util.*;
 

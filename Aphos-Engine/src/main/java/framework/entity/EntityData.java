@@ -88,12 +88,16 @@ public class EntityData extends TypeData {
             retainedProps = new ArrayList<>() ;
             Arrays.stream(UnitProp.values()).forEach(prop -> {
                 if (prop.isPersistent())
-                    retainedProps.add(prop.getName().toUpperCase());
+                    retainedProps.add(LinkedStringMap.format(prop.getName()) );
             });
         }
         return retainedProps;
     }
 
+    public void setPersistent(String key, Object val) {
+        getRetainedProps().add(LinkedStringMap.format(key));
+        set(key, val);
+    }
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder("Entity Data: ");

@@ -1,15 +1,14 @@
-package tests.action;
+package tests.basic_init.action;
 
 import framework.entity.field.Unit;
 import framework.entity.sub.UnitAction;
-import tests.basic.BattleInitTest;
+import tests.basic_init.basic.BattleInitTest;
 
 import static combat.sub.BattleManager.combat;
 
 /**
  * Created by Alexander on 8/22/2023
  */
-@Deprecated
 public class DefenseActionTest extends BattleInitTest {
     @Override
     public void test() {

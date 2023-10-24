@@ -1,20 +1,15 @@
-package tests.basic;
+package tests.basic_init.basic;
 
 import elements.exec.ExecBuilder;
 import elements.exec.Executable;
 import elements.stats.UnitParam;
 import elements.stats.UnitProp;
-import framework.AphosTest;
 import framework.data.DataManager;
 import framework.entity.field.Unit;
-import main.system.auxiliary.NumberUtils;
 import system.ListMaster;
-import system.MapMaster;
-import system.consts.MathConsts;
 import system.log.SysLog;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +18,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by Alexander on 8/27/2023
  */
-public class DataConsistencyTest extends BattleInitTest {
+public class DataConsistencyTest extends tests.basic_init.basic.BattleInitTest {
     @Override
     public void test() {
         super.test();
@@ -47,18 +42,22 @@ public class DataConsistencyTest extends BattleInitTest {
         unit.getActionSet();
         List<Object> invalid = new ArrayList<>();
         for (UnitParam value : UnitParam.values()) {
-            if (unit.getInt(value) == MathConsts.minValue) {
-                if (!valueCanBe999(unit, value)) {
+            if (!valueCanBeNull(unit, value)) {
+                try {
+                    unit.getInt(value);
+                } catch (Exception e) {
+                    // main.system.ExceptionMaster.printStackTrace(e);
                     invalid.add(value);
                 }
             }
         }
         assertTrue(unit.getName() + " has missing or invalid values: \n" + ListMaster.represent(invalid),
                 invalid.isEmpty());
+        SysLog.printOut(unit.getData());
     }
 
-    private boolean valueCanBe999(Unit unit, UnitParam value) {
-        if (value.isCur()) {
+    private boolean valueCanBeNull(Unit unit, UnitParam value) {
+        if (value.isCur() || value.isBonus()) {
             return true;
         }
         if (value == UnitParam.Initiative)

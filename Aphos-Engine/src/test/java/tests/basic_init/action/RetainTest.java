@@ -1,7 +1,7 @@
-package tests.action;
+package tests.basic_init.action;
 
 import elements.stats.UnitParam;
-import tests.basic.BattleInitTest;
+import tests.basic_init.basic.BattleInitTest;
 
 /**
  * Created by Alexander on 8/26/2023

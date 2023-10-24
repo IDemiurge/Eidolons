@@ -1,21 +1,10 @@
-package tests.action;
+package tests.basic_init.action;
 
-import logic.execution.ActionExecutor;
-import logic.execution.event.user.UserEventType;
-import main.system.threading.WaitMaster;
-import main.system.threading.Weaver;
-import main.system.util.DialogMaster;
-import tests.basic.BattleInitTest;
-
-import javax.swing.*;
-
-import static combat.sub.BattleManager.combat;
-import static framework.client.ClientConnector.client;
+import tests.basic_init.basic.BattleInitTest;
 
 /**
  * Created by Alexander on 8/22/2023
  */
-@Deprecated
 public class AttackTest extends BattleInitTest {
     @Override
     public void test() {

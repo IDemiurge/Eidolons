@@ -2,7 +2,7 @@ package tests.field;
 
 import framework.entity.field.Unit;
 import framework.field.FieldPos;
-import tests.basic.BattleInitTest;
+import tests.basic_init.basic.BattleInitTest;
 
 import java.util.Set;
 
@@ -12,7 +12,6 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by Alexander on 8/22/2023
  */
-@Deprecated
 public class MoveTest extends BattleInitTest {
     @Override
     public void test() {

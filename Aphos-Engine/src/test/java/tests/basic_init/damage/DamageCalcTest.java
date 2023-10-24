@@ -1,10 +1,10 @@
-package tests.calc;
+package tests.basic_init.damage;
 
 import elements.content.enums.types.CombatTypes.DamageType;
 import elements.exec.EntityRef;
 import elements.exec.effect.DamageEffect;
 import elements.stats.UnitParam;
-import tests.basic.BattleInitTest;
+import tests.basic_init.basic.BattleInitTest;
 
 /**
  * Created by Alexander on 8/23/2023
@@ -12,8 +12,7 @@ import tests.basic.BattleInitTest;
  * Some real numbers? Real content
  *
  */
-@Deprecated
-public class AdvDamageCalcTest extends BattleInitTest {
+public class DamageCalcTest extends BattleInitTest {
 
     @Override
     public void test() {

@@ -6,6 +6,7 @@ package system.consts;
 public class StringConsts {
     public static final String CONTAINER_SEPARATOR = ";";
     public static final String MIN_BASE_MAX_SEPARATOR = "/";
+    public static final String CONTAINER_PROP_SEPARATOR = ";";
 
     public static String checkValueNameReplacement(String key) {
         return switch (key) {

@@ -1,10 +1,10 @@
-package tests.exec;
+package tests.basic_init.exec;
 
 import elements.exec.EntityRef;
 import elements.exec.condition.Condition;
 import elements.exec.condition.ConditionBuilder;
 import framework.data.DataManager;
-import tests.basic.BattleInitTest;
+import tests.basic_init.basic.BattleInitTest;
 
 import static elements.exec.targeting.TargetingTemplates.ConditionTemplate.*;
 

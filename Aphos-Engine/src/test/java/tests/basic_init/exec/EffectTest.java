@@ -1,6 +1,6 @@
-package tests.exec;
+package tests.basic_init.exec;
 
-import tests.basic.BattleInitTest;
+import tests.basic_init.basic.BattleInitTest;
 
 /**
  * Created by Alexander on 8/23/2023

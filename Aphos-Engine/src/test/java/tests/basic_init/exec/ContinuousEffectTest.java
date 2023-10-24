@@ -1,7 +1,7 @@
-package tests.exec;
+package tests.basic_init.exec;
 
 import framework.entity.field.Unit;
-import tests.basic.BattleInitTest;
+import tests.basic_init.basic.BattleInitTest;
 
 import static combat.sub.BattleManager.combat;
 

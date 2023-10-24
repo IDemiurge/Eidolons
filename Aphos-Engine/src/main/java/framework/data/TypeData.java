@@ -6,6 +6,7 @@ import elements.stats.generic.Stat;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
+import org.apache.commons.lang3.NotImplementedException;
 import system.ListMaster;
 import system.consts.MathConsts;
 import system.consts.StringConsts;
@@ -115,6 +116,9 @@ public class TypeData {
     public void multiply(String key, Object val) {
 
     }
+    public void setPersistent(String key, Object val) {
+        throw new NotImplementedException("Must be EntityData");
+    }
     public void set(String key, Object val) {
         Map<String, Object> map = maps.get(val.getClass());
         map.put(key.toString(), val);
@@ -172,7 +176,13 @@ public class TypeData {
     public String getS(String name) {
         return stringMap.get(name);
     }
-
+    public String getStr(String name) {
+        String s = stringMap.get(name);
+        if (s == null) {
+            return "";
+        }
+        return s;
+    }
     public Object get(Stat stat) {
         return get(stat.getName());
     }
@@ -201,5 +211,13 @@ public class TypeData {
 
     public String toSimpleString() {
        return keySet().stream().map(key -> key + "=" + get(key)).collect(Collectors.joining(", "));
+    }
+
+    public boolean valueContains(String name, String value) {
+        value = value.toLowerCase();
+        String s = getStr(name).toLowerCase();
+        if (s.endsWith(value))
+            return true;
+        return s.contains(value+StringConsts.CONTAINER_PROP_SEPARATOR);
     }
 }

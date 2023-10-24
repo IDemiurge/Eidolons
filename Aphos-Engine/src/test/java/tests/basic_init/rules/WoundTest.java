@@ -1,14 +1,12 @@
-package tests.rules;
+package tests.basic_init.rules;
 
 import elements.exec.EntityRef;
 import elements.stats.UnitParam;
 import elements.stats.UnitProp;
 import logic.rules.combat.wounds.Wounds;
-import logic.rules.combat.wounds.WoundsRule;
 import system.math.Rolls;
-import tests.basic.BattleInitTest;
+import tests.basic_init.basic.BattleInitTest;
 
-import static combat.sub.BattleManager.combat;
 import static main.content.enums.GenericEnums.DieType.d6;
 
 /**
@@ -24,7 +22,8 @@ public class WoundTest extends BattleInitTest {
         EntityRef ref = new EntityRef(ally).setTarget(enemy);
         Wounds.apply(0, UnitParam.Health, ref);
         //pack into tick / reset
-        // check(enemy.getInt(UnitParam.Defense_Auto_Fail) == 2);
+        //do we want continuous to be applied immediately?
+        check(enemy.getInt(UnitParam.Defense_Auto_Fail) == 2);
         reset(2);
         check(enemy.getInt(UnitParam.Defense_Auto_Fail) == 2); // body wound: -2 Категории Броска Защиты
         enemy.setValue(UnitProp.Wound_Body, false);

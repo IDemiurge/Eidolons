@@ -62,6 +62,9 @@ public abstract class Entity {
     public void setValue(String key, Object val) {
         data.set(key, val);
     }
+    public void setValuePersistent(String key, Object val) {
+        data.setPersistent(key, val);
+    }
 
     public void setCur(String key, int val) {
         data.setCur(key, val);

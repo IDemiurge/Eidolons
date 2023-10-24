@@ -1,6 +1,7 @@
 package framework.entity.field;
 
 import elements.exec.EntityRef;
+import elements.stats.UnitProp;
 import framework.entity.Entity;
 import framework.entity.sub.UnitAction;
 import framework.field.FieldPos;
@@ -40,5 +41,9 @@ public class FieldEntity extends Entity {
 
     public int getDefOrRes(UnitAction action, EntityRef ref) {
         return 0;
+    }
+
+    public boolean checkContainerProp(UnitProp prop, String value) {
+       return  data.valueContains(prop.getName(), value);
     }
 }

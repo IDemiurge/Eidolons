@@ -1,11 +1,9 @@
-package tests.game;
+package tests.basic_init.game;
 
 import framework.data.DataManager;
 import framework.entity.field.Unit;
-import main.system.auxiliary.NumberUtils;
-import tests.basic.BattleInitTest;
+import tests.basic_init.basic.BattleInitTest;
 
-import java.util.Locale;
 import java.util.Map;
 
 import static campaign.run.battle.BattleBuilder.*;

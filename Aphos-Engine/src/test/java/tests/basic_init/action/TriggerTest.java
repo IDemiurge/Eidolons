@@ -1,11 +1,11 @@
-package tests.action;
+package tests.basic_init.action;
 
 import elements.exec.EntityRef;
 import elements.exec.condition.Condition;
 import elements.exec.condition.ConditionBuilder;
 import elements.exec.effect.framework.wrap.AddTriggerFx;
 import logic.execution.event.combat.CombatEventType;
-import tests.basic.BattleInitTest;
+import tests.basic_init.basic.BattleInitTest;
 
 import java.util.HashMap;
 import java.util.Map;

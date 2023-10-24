@@ -25,6 +25,7 @@ public class ContinuousEffect extends Effect {
 
     @Override
     protected void applyThis(EntityRef ref) {
+        effect.apply(ref);
         combat().getBattleState().addEffect(ref, effect, retainCondition);
     }
 

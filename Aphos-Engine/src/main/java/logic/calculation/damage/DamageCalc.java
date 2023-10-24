@@ -111,6 +111,12 @@ public class DamageCalc {
     }
 
     private boolean isWardBlock(Damage damage, EntityRef ref) {
+        if (logic.rules.combat.ImmuneRule.checkImmune(ref.getTarget(), damage.getType(), ref.getSource())) {
+            return true;
+        }
+        if (logic.rules.combat.WardRule.checkWard(ref.getTarget(), damage.getType(), ref.getSource())) {
+            return true;
+        }
         return false;
     }
 
