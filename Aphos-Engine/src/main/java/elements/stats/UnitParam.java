@@ -15,6 +15,7 @@ public enum UnitParam implements Stat {
         Sanity(true),
         AP(true),
         Moves(true),
+        Chaos(true),
 
         //Daemons
         Essence(true),

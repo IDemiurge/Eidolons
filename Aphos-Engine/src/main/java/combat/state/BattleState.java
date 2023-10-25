@@ -37,6 +37,11 @@ public class BattleState extends BattleHandler {
         }
     }
 
+    @Override
+    public void afterReset() {
+        forEach(u-> u.getCounters().apply());
+    }
+
     public int getRound() {
         return round;
     }

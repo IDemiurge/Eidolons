@@ -6,10 +6,7 @@ import elements.exec.EntityRef;
 import elements.stats.UnitParam;
 import elements.stats.UnitProp;
 import elements.stats.generic.StatConsts;
-import framework.entity.sub.ActionSet;
-import framework.entity.sub.OmenStack;
-import framework.entity.sub.PassiveSet;
-import framework.entity.sub.UnitAction;
+import framework.entity.sub.*;
 import framework.field.FieldPos;
 
 import java.util.Map;
@@ -24,7 +21,6 @@ public class Unit extends FieldEntity {
     protected ActionSet actionSet; //HeroActionSet?
     protected PassiveSet passiveSet;
     protected OmenStack omens;
-    // protected CountersSet counters; //we can intercept get() for calc of formulas and so keep the valueMap free of these!
 
     public Unit(Map<String, Object> valueMap, int faction) {
         this(valueMap, faction  , new FieldPos(faction  > 0  ? FieldConsts.Cell.Reserve_ally : FieldConsts.Cell.Reserve_enemy));
@@ -75,10 +71,6 @@ public class Unit extends FieldEntity {
                 : StatConsts.getDefVal(min_base_max));
     }
 
-    public Object get(UnitParam stat) {
-        return super.get(stat);
-    }
-
     public Object get(UnitProp stat) {
         return super.get(stat);
     }
@@ -87,6 +79,12 @@ public class Unit extends FieldEntity {
         return data.isTrue(key);
     }
 
+    public int getInt(String key) {
+        Integer value = counters.get(key);
+        if (value==null)
+            return data.getInt(key);
+        return value;
+    }
     public int getInt(UnitParam stat) {
         return data.getInt(stat);
     }

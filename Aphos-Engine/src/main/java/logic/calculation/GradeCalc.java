@@ -1,6 +1,8 @@
 package logic.calculation;
 
 import elements.content.enums.types.CombatTypes;
+import elements.stats.sub.OmenRollFx;
+import logic.calculation.grade_rolls.RollData;
 import main.system.math.MathMaster;
 import system.math.Rolls;
 
@@ -34,8 +36,25 @@ public class GradeCalc {
             }
         }
     }
+    /*
+    omen effects
+     */
+    public static CombatTypes.RollGrade calculateGrade(OmenRollFx rollFx,
+            RollData data) {
+        //just extract some numeric param from this early on!..
+        Boolean dis_adv;
 
+        //note that it is possible that BOTH units have an OMEN!
+        switch (rollFx) {
+
+        }
+        // RollData - alter it?
+
+        return null;
+    }
     public static CombatTypes.RollGrade calculateGrade(int atk, int def, int die, int autoGradeOffset) {
+       //TODO   read auto success/fails
+        int successes = 0, failures = 0;
         int diff = atk - def;
         boolean miss = diff < 0;
         diff = Math.abs(diff);
@@ -45,9 +64,8 @@ public class GradeCalc {
         } else {
             success_offset = calcOffset(diff);
         }
-        int successes = 0, failures = 0;
         while (true) {
-            Boolean result = Rolls.roll(die, failure_offset, success_offset);
+            Boolean result = Rolls.rollSuccessFailOrNothing(die, failure_offset, success_offset);
             if (result == null)
                 break;
             if (result) successes++;

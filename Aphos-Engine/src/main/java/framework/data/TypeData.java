@@ -218,6 +218,7 @@ public class TypeData {
         String s = getStr(name).toLowerCase();
         if (s.endsWith(value))
             return true;
-        return s.contains(value+StringConsts.CONTAINER_PROP_SEPARATOR);
+        return s.contains(value+StringConsts.CONTAINER_SEPARATOR)
+                || s.contains(value+StringConsts.CONTAINER_PROP_SEPARATOR);
     }
 }

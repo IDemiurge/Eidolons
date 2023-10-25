@@ -5,7 +5,6 @@ import combat.sub.BattleManager;
 import elements.exec.EntityRef;
 import elements.exec.condition.Condition;
 import elements.exec.targeting.Targeting;
-import elements.stats.ActionProp;
 import elements.stats.UnitParam;
 import elements.stats.UnitProp;
 import elements.stats.generic.StatConsts;
@@ -16,6 +15,7 @@ import framework.entity.field.HeroUnit;
 import framework.entity.field.Unit;
 import framework.entity.sub.UnitAction;
 import logic.execution.event.combat.CombatEventType;
+import system.consts.StatUtils;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -132,15 +132,18 @@ public class BattleEntities extends BattleHandler {
     private void restoreRoundlyValues(Unit unit) {
         // saved | max | cur
         for (UnitParam param : StatConsts.roundlyParams) {
+            if (unit.isTrue(StatUtils.getBroken(param))) {
+                continue;
+            }
             // if (broken) //disabled regen?
             //     continue; //what for? calc saved?
             int max = unit.getInt(param.getName() + "_max");
-            unit.setValue(param, max);
+            unit.setValue(param, max); //restore to full
             if (param == UnitParam.AP || param == UnitParam.Moves) {
                 int saved = unit.getInt(param.getName() + "_saved"); //sanity/faith?
                 if (saved > 0) {
                     int cur = unit.getInt(param);
-                    int retain = unit.getInt(param.getName() + "_retain");
+                    int retain = unit.getInt(StatUtils.getRetain(param)); //max that unit can retain on their own
                     if (cur <= max+ retain);
                     unit.addCurValue(param, saved); //bonus
                 }

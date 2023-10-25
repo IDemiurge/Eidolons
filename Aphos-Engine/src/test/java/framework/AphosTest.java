@@ -5,6 +5,7 @@ import elements.stats.UnitProp;
 import framework.data.yaml.YamlBuilder;
 import framework.entity.field.Unit;
 import org.junit.Test;
+import system.log.SysLog;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,9 +49,10 @@ public abstract class AphosTest {
         }
     }
 
-    private void checkValueChanged(UnitParam param, Integer offset) {
+    protected void checkValueChanged(UnitParam param, Integer offset) {
         int value = getCheckedUnit().getInt(param);
-        check(getCheckedUnit() + "'s " + param + " is at value " + value, checkParamMap.get(param) - value == offset);
+        check(getCheckedUnit() + "'s " + param + " is at value " + value, value - checkParamMap.get(param) == offset);
+        SysLog.printOut(getCheckedUnit() , "'s " , param , " has changed by " + offset);
     }
 
     protected void checkValueIsSame(UnitParam... params) {
@@ -62,6 +64,8 @@ public abstract class AphosTest {
             for (UnitParam param : checkParamMap.keySet()) {
                 int value = getCheckedUnit().getInt(param);
                 check(getCheckedUnit() + "'s " + param + " has changed to " + value, value == checkParamMap.get(param));
+                //++ prefix
+                SysLog.printOut(getCheckedUnit() , "'s " , param , " has not changed" );
             }
         }
     }

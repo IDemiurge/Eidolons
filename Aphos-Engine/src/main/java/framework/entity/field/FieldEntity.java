@@ -1,8 +1,10 @@
 package framework.entity.field;
 
 import elements.exec.EntityRef;
+import elements.stats.Counter;
 import elements.stats.UnitProp;
 import framework.entity.Entity;
+import framework.entity.sub.CountersSet;
 import framework.entity.sub.UnitAction;
 import framework.field.FieldPos;
 import framework.field.Visibility;
@@ -16,9 +18,12 @@ public class FieldEntity extends Entity {
     protected FieldPos pos; //what about LARGE?
     protected Visibility visibility = Visibility.Visible;
     protected FieldPos prevPos;
+    protected CountersSet counters; //we can intercept get() for calc of formulas and so keep the valueMap free of these!
+
 
     public FieldEntity(Map<String, Object> valueMap, FieldPos pos) {
         super(valueMap);
+        counters = new CountersSet(this);
         this.pos = pos;
     }
 
@@ -45,5 +50,13 @@ public class FieldEntity extends Entity {
 
     public boolean checkContainerProp(UnitProp prop, String value) {
        return  data.valueContains(prop.getName(), value);
+    }
+
+    public void addCounters(Counter counter, Integer amount, EntityRef ref) {
+        counters.tryAdd(amount, counter, ref);
+    }
+
+    public CountersSet getCounters() {
+        return counters;
     }
 }

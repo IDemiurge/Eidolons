@@ -19,7 +19,7 @@ public class Rolls {
         int i = new Random().nextInt(die.value);
         return i+1;
     }
-        public static Boolean roll(int die, int failureOffset, int successOffset) {
+        public static Boolean rollSuccessFailOrNothing(int die, int failureOffset, int successOffset) {
         int i = new Random().nextInt(die);
         if (i >= die - successOffset - 1)
             return true;
