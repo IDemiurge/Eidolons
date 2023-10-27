@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/IDemiurge/Eidolons.svg?branch=dev)](https://travis-ci.org/IDemiurge/Eidolons)
+[![Build Status](https://app.travis-ci.com/IDemiurge/Aphos.svg?branch=master)](https://travis-ci.org/IDemiurge/Aphos)
 # Eidolons: Netherflame
 A Dark Hardcore Roguelike RPG project written in pure Java. 
 Originally using Swing/AWT graphics, Eidolons has been visually upgraded with LibGdx and OpenGL shaders.
