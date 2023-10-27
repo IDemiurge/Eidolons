@@ -4,7 +4,6 @@ env:
   
 dist: trusty
 script: mvn clean test -P travis
-script:
-- echo "skipping tests"
+
 before_script:
   - jdk_switcher use $JDK
